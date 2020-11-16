@@ -1,0 +1,44 @@
+@keyframes flash-r {
+    0% {
+        background: #282a38;
+        /* box-shadow: 0 0 4px 4px rgba(255, 219, 46, 0.01); */
+    }
+    50% {
+        background: #ffdb2e;
+        /* box-shadow: 0 0 4px 4px rgba(255, 219, 46, 0.1); */
+    }
+    100% {
+        background: #282a38;
+        /* box-shadow: 0 0 4px 4px rgba(255, 219, 46, 0.01); */
+    }
+}
+
+@keyframes main-logo-animation {
+    0% {
+        transform: rotate(15deg);
+    }
+    50% {
+        transform: rotate(360deg);
+    }
+    100% {
+        transform: rotate(15deg);
+    }
+}
+
+#flash-r{
+    height: 100%;
+    width: 2px;
+    background: #282a38;
+    animation: flash-r 5000ms ease 250ms infinite;
+}
+
+#flash-l {
+    height: 100%;
+    width: 2px;
+    background: #282a38;
+    animation: flash-r 5000ms ease 750ms infinite;
+}
+
+#main-logo {
+    animation: main-logo-animation 5000ms ease-in-out 1000ms infinite;
+}
