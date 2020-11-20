@@ -13,9 +13,9 @@ export default function Sales() {
         <Container>
             <Box display="flex" my={2}>
                 <Breadcrumbs separator=">">
+                    <Link>Website</Link>
                     <Link>Home</Link>
-                    <Link>Home</Link>
-                    <Link>Home</Link>
+                    <Link>Sales</Link>
                 </Breadcrumbs>
                 <div style={{ flexGrow: 1 }} />
                 <MainTabs tabs={["Quote", "Sales Order", "Purchase Order"]} currentTab={activeTab} onChange={setActiveTab} />

@@ -1,5 +1,5 @@
 import React from "react";
-import { Drawer, List, ListItem, ListItemIcon, makeStyles, useTheme, Divider, Typography, ListItemText } from "@material-ui/core";
+import { Drawer, List, ListItem, ListItemIcon, makeStyles, useTheme, Divider, Box, Typography, ListItemText } from "@material-ui/core";
 import {
     AlternateEmailRounded,
     DashboardRounded,
@@ -14,8 +14,7 @@ import {
 } from "@material-ui/icons";
 import { Link, useLocation } from "react-router-dom";
 
-import "react-calendar/dist/Calendar.css";
-import Calendar from "react-calendar";
+import { Calendar } from "./Calendar";
 
 export const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boolean; onToggle: () => void }) => {
     const useStyles = makeStyles((theme) => ({
@@ -30,17 +29,6 @@ export const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen
             overflow: "hidden",
             width,
             backgroundColor: theme.palette.secondary.main,
-        },
-        calendarTile: {
-            backgroundColor: theme.palette.secondary.main,
-            color: theme.palette.warning.main,
-            borderRadius: 15,
-        },
-        calendar: {
-            color: "#fff",
-            backgroundColor: theme.palette.secondary.main,
-            border: `2px solid ${theme.palette.warning.main}`,
-            borderRadius: 15,
         },
     }));
 
@@ -104,13 +92,7 @@ export const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen
                         </Link>
                     ))}
                     <Divider />
-                    <ListItem>
-                        {isOpen ? (
-                            <Calendar className={classes.calendar} showNavigation={false} tileClassName={classes.calendarTile} />
-                        ) : (
-                            <CalendarTodayRounded color="secondary" />
-                        )}
-                    </ListItem>
+                    <ListItem>{isOpen ? <Calendar /> : <CalendarTodayRounded color="secondary" />}</ListItem>
                     <Divider />
                     <ListItem
                         button
