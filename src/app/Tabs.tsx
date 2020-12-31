@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Tabs, Tab, withStyles, fade } from "@material-ui/core";
+import React from "react";
+import { Tabs, Tab, withStyles } from "@material-ui/core";
 
 interface MyTabsProps {
     value: number;

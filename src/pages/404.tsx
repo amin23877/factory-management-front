@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { BuildRounded } from "@material-ui/icons";
 
 import { Gradients } from "../theme";

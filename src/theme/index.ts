@@ -14,6 +14,11 @@ export const theme = createMuiTheme({
             style:{
                 textDecoration:'none'
             }
+        },
+        MuiTextField:{
+            style:{
+                margin: '0.5em'
+            }
         }
     },
     palette: {

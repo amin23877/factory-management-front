@@ -1,19 +1,5 @@
 import React from "react";
-import {
-    Box,
-    fade,
-    AppBar,
-    Toolbar,
-    Button,
-    IconButton,
-    Typography,
-    InputBase,
-    Badge,
-    Avatar,
-    Menu,
-    MenuItem,
-    makeStyles,
-} from "@material-ui/core";
+import { Box, Hidden, fade, AppBar, useMediaQuery, Toolbar, Button, IconButton, InputBase, Avatar, makeStyles } from "@material-ui/core";
 import { ArrowDropDownRounded, NotificationsRounded, AppsRounded, HelpRounded, MoreVertRounded, SearchRounded } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
@@ -47,21 +33,24 @@ const useStyles = makeStyles((theme) => ({
 
 export const TopAppBar = ({ drawerWidth }: { drawerWidth?: number }) => {
     const classes = useStyles();
+    const matches = useMediaQuery("(max-width: 960px)");
 
     return (
         <AppBar
             position="fixed"
             style={{
-                width: `calc(100% - ${drawerWidth}px)`,
-                marginLeft: drawerWidth,
+                width: matches ? "100%" : `calc(100% - ${drawerWidth}px)`,
+                marginLeft: matches ? "100%" : `calc(100% - ${drawerWidth}px)`,
             }}
             color="default"
         >
             <Toolbar>
-                <Button>
-                    Platform Data
-                    <ArrowDropDownRounded />
-                </Button>
+                <Hidden only="xs">
+                    <Button>
+                        Platform Data
+                        <ArrowDropDownRounded />
+                    </Button>
+                </Hidden>
                 <div style={{ flexGrow: 1 }} />
                 <Box className={classes.search}>
                     <Box className={classes.searchIcon}>
@@ -82,9 +71,11 @@ export const TopAppBar = ({ drawerWidth }: { drawerWidth?: number }) => {
                 <IconButton>
                     <AppsRounded />
                 </IconButton>
-                <IconButton>
-                    <HelpRounded />
-                </IconButton>
+                <Hidden only="xs">
+                    <IconButton>
+                        <HelpRounded />
+                    </IconButton>
+                </Hidden>
                 <IconButton>
                     <MoreVertRounded />
                 </IconButton>

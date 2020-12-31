@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { Box, Grid, List, ListItem, Typography, Button, TextField, MenuItem, Tabs, Tab } from "@material-ui/core";
+import { Box, Grid, List, ListItem, Typography, Button, TextField, Tabs, Tab } from "@material-ui/core";
 
-import { BaseSelect } from "../app/Inputs";
 import { TabTable } from "../app/Table";
 import { BasePaper } from "../app/Paper";
 

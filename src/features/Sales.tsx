@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Typography, Box, Button, List, ListItem, ListItemText } from "@material-ui/core";
+import { Grid, Typography, Box, Button } from "@material-ui/core";
 import {
     UpdateRounded,
     SettingsRounded,
@@ -122,7 +122,7 @@ export const Sales = () => {
     return (
         <Grid container spacing={2}>
             <Grid item md={8}>
-                <Box display="flex" justifyContent="space-between" style={{ height: "50%" }}>
+                <Box display="flex" justifyContent="space-between" style={{ flex: 1, height: "50%" }}>
                     <StatusCard title="Activites" icon={<SettingsRounded fontSize="large" />} iconBg={Gradients.warning}>
                         1
                     </StatusCard>
@@ -133,7 +133,7 @@ export const Sales = () => {
                         123
                     </StatusCard>
                 </Box>
-                <Box display="flex" justifyContent="space-between" style={{ height: "50%" }}>
+                <Box display="flex" justifyContent="space-between" style={{ flex: 1, height: "50%" }}>
                     <StatusCard title="Quotes" icon={<ChatRounded fontSize="large" />} iconBg={Gradients.info}>
                         132
                     </StatusCard>

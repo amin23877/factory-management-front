@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Box, useTheme } from "@material-ui/core";
+import { Box, useTheme } from "@material-ui/core";
 import { FlashOnRounded } from "@material-ui/icons";
 
 import "../styles/splash.css";

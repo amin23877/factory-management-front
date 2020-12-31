@@ -1,5 +1,6 @@
 import React from "react";
-import { Select, SelectProps, MenuItem, InputBase, InputBaseProps, withStyles, fade } from "@material-ui/core";
+import { Select, SelectProps, TextField, InputBase, InputBaseProps, withStyles, fade } from "@material-ui/core";
+import { Autocomplete } from "@material-ui/lab";
 
 export const BaseSelect = withStyles({
     root: {
@@ -18,3 +19,37 @@ export const BaseTextInput = withStyles((theme) => ({
         },
     },
 }))((props: InputBaseProps) => <InputBase {...props} />);
+
+export const ComboBox = ({
+    value,
+    inputValue,
+    onChange,
+    onInputChange,
+    onBlur,
+    options,
+    name,
+}: {
+    value?: string;
+    inputValue: string;
+    onChange?: any;
+    onInputChange: any;
+    onBlur: any;
+    options: string[];
+    name: string;
+}) => {
+    return (
+        <Autocomplete
+            componentName={name}
+            value={value}
+            onBlur={onBlur}
+            inputValue={inputValue}
+            onChange={(e, nv) => onChange(name, nv)}
+            onInputChange={(e, nv) => {
+                onInputChange(name, nv);
+                console.log(name, nv);
+            }}
+            options={options}
+            renderInput={(params) => <TextField {...params} label="Controllable" variant="outlined" />}
+        />
+    );
+};

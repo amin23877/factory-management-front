@@ -13,27 +13,96 @@ import {
     Tab,
     Divider,
     Typography,
+    MenuItem,
+    useMediaQuery,
+    Snackbar,
 } from "@material-ui/core";
-import { AddRounded, FileCopyRounded, DeleteRounded, PrintRounded } from "@material-ui/icons";
+import { EditRounded, NoteRounded, FileCopyRounded, PrintRounded } from "@material-ui/icons";
+import { useFormik } from "formik";
+
+import { Gradients } from "../theme";
+import { AddItemInitialValues, AddItemSchema, updateAnItem } from "../api/items";
+import { getCategories } from "../api/category";
+import { getAllSubTypes, getAllTypes } from "../api/types";
+
+import { AddItemModal } from "./Modals/ItemModals";
+import { NoteModal } from "../features/Modals/NoteModals";
+import { DocumentModal, EditDocumentModal } from "../features/Modals/DocumentModals";
+import { AddChildItem } from "../features/Modals/ChildItemModal";
+// import { CategoryModal } from "../features/Modals/CategoryModals";
+
+import { RecordNotes } from "./DataGrids/NoteDataGrids";
+import { RecordDocuments } from "./DataGrids/DocumentDataGrids";
+import { RecordChildItems } from "./DataGrids/BundleDataGrid";
 
 import { BasePaper } from "../app/Paper";
-import { TabTable } from "../app/Table";
 import { BaseSelect, BaseTextInput } from "../app/Inputs";
 
-const MoreInfo = ({ itemType, onChangeType }: { itemType: string; onChangeType: (arg0: string) => void }) => {
+const MoreInfo = ({
+    values,
+    error,
+    onChange,
+    onBlur,
+    touched,
+    selectedRow,
+    onChangeType,
+}: {
+    values: any;
+    error: any;
+    onChange: any;
+    onBlur: any;
+    touched: any;
+    selectedRow: any;
+    onChangeType: (arg0: string) => void;
+}) => {
     return (
         <Box display="flex" alignItems="center" p={2}>
             <Box>
-                <BaseTextInput placeholder="Item Version" style={{ margin: "4px 0" }} />
-                <BaseTextInput placeholder="Keywords" style={{ marginBottom: 3 }} />
-                <BaseTextInput placeholder="Web URI" style={{ marginBottom: 3 }} />
-                <BaseTextInput placeholder="Item Cost" style={{ marginBottom: 3 }} />
-                <BaseTextInput placeholder="Retail Price" style={{ marginBottom: 3 }} />
+                <BaseTextInput
+                    name="version"
+                    placeholder="version"
+                    value={values.version}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    style={{ margin: "4px 0" }}
+                />
+                <BaseTextInput
+                    name="keywords"
+                    placeholder="keywords"
+                    value={values.keywords}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    style={{ marginBottom: 3 }}
+                />
+                <BaseTextInput
+                    name="url"
+                    placeholder="url"
+                    value={values.url}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    style={{ marginBottom: 3 }}
+                />
+                <BaseTextInput
+                    name="cost"
+                    placeholder="cost"
+                    value={values.cost}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    style={{ marginBottom: 3 }}
+                />
+                <BaseTextInput
+                    name="retailPrice"
+                    placeholder="Retail Price"
+                    value={values.retailPrice}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    style={{ marginBottom: 3 }}
+                />
                 <Divider />
                 <Typography style={{ fontWeight: "bold", textAlign: "center" }}> Markup 200 %</Typography>
             </Box>
             <Box mx={2}>
-                <RadioGroup name="Item Type Radios" value={itemType} onChange={(e) => onChangeType(e.target.value)}>
+                <RadioGroup name="mode" value={values.mode} onChange={onChange}>
                     <FormControlLabel value="Individual" control={<Radio />} label="Individual" />
                     <FormControlLabel value="Bundle" control={<Radio />} label="Bundle" />
                     <FormControlLabel value="Kit" control={<Radio />} label="Kit" />
@@ -46,210 +115,535 @@ const MoreInfo = ({ itemType, onChangeType }: { itemType: string; onChangeType: 
     );
 };
 
-const Quantity = () => {
+const Quantity = ({
+    values,
+    error,
+    onChange,
+    onBlur,
+    touched,
+    selectedRow,
+    onChangeType,
+}: {
+    values: any;
+    error: any;
+    onChange: any;
+    onBlur: any;
+    touched: any;
+    selectedRow: any;
+    onChangeType: (arg0: string) => void;
+}) => {
     return (
         <Box display="flex" alignItems="center" p={2}>
             <Box flex={2} mr={2}>
-                <BaseTextInput placeholder="Quantity Adjustment" style={{ margin: "3px 0" }} />
-                <BaseTextInput placeholder="Total Qty Recieved" style={{ marginBottom: 3 }} />
-                <BaseTextInput placeholder="Total Qty Sold" style={{ marginBottom: 3 }} />
-                <Divider style={{ margin: "1.5em 0" }} />
-                <BaseTextInput placeholder="Quantity on Hand" style={{ marginBottom: 3 }} />
-            </Box>
-            <Box flex={1}>
-                <BaseTextInput placeholder="Minimum" style={{ margin: "3px 0" }} />
-                <BaseTextInput placeholder="Maximum" style={{ marginBottom: 3 }} />
-                <BaseTextInput placeholder="On Order" style={{ marginBottom: 3 }} />
-                <BaseTextInput placeholder="On BackOrder" style={{ marginBottom: 3 }} />
-                <BaseTextInput placeholder="ReOrded Qty" style={{ marginBottom: 3 }} />
+                <Typography>Quantity on hand</Typography>
+                <BaseTextInput
+                    name="qoh"
+                    placeholder={selectedRow.qoh}
+                    value={values.qoh}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    style={{ marginBottom: 3 }}
+                />
+                <Typography>Minimum</Typography>
+                <BaseTextInput
+                    name="minimum"
+                    placeholder={selectedRow.minimum}
+                    value={values.minimum}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    style={{ margin: "3px 0" }}
+                />
+                <Typography>Maximum</Typography>
+                <BaseTextInput
+                    name="maximum"
+                    placeholder={selectedRow.maximum}
+                    value={values.maximum}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    style={{ marginBottom: 3 }}
+                />
             </Box>
         </Box>
     );
 };
 
-const Shipping = () => {
+const Shipping = ({
+    values,
+    error,
+    onChange,
+    onBlur,
+    touched,
+    selectedRow,
+    onChangeType,
+}: {
+    values: any;
+    error: any;
+    onChange: any;
+    onBlur: any;
+    touched: any;
+    selectedRow: any;
+    onChangeType: (arg0: string) => void;
+}) => {
     return (
         <Box display="flex" alignItems="center" p={2}>
             <Box>
-                <BaseTextInput placeholder="Pref vendor" style={{ margin: "3px 0" }} />
-                <BaseTextInput placeholder="Item tiers" style={{ marginBottom: 3 }} />
-                <BaseTextInput placeholder="Aditional Shipping Fee" style={{ marginBottom: 3 }} />
+                <Typography>Tiers</Typography>
+                <BaseTextInput
+                    name="tiers"
+                    placeholder={selectedRow.tiers}
+                    value={values.tiers}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    style={{ marginBottom: 3 }}
+                />
+                <Typography>Adittional Shipping Fee</Typography>
+                <BaseTextInput
+                    name="additionalShippingFee"
+                    placeholder={selectedRow.additionalShippingFee}
+                    value={values.additionalShippingFee}
+                    onBlur={onBlur}
+                    onChange={onChange}
+                    style={{ marginBottom: 3 }}
+                />
                 <Divider style={{ margin: "1em 0" }} />
                 <Box display="flex">
                     <Typography style={{ flex: 1 }}>Item Weight</Typography>
-                    <BaseTextInput style={{ flex: 1 }} placeholder="lb" />
-                    <BaseTextInput style={{ flex: 1 }} placeholder="oz" />
+                    <Box textAlign="center">
+                        <Typography>LB</Typography>
+                        <BaseTextInput
+                            name="weightLb"
+                            placeholder={selectedRow.weightLb}
+                            value={values.weightLb}
+                            onBlur={onBlur}
+                            onChange={onChange}
+                            style={{ flex: 1 }}
+                        />
+                    </Box>
+                    <Box textAlign="center">
+                        <Typography>OZ</Typography>
+                        <BaseTextInput
+                            name="weightOz"
+                            placeholder={selectedRow.weightOz}
+                            value={values.weightOz}
+                            onBlur={onBlur}
+                            onChange={onChange}
+                            style={{ flex: 1 }}
+                        />
+                    </Box>
                 </Box>
                 <Box display="flex" mt={1}>
                     <Typography style={{ flex: 1 }}>Shipping Weight</Typography>
-                    <BaseTextInput style={{ flex: 1 }} placeholder="lb" />
-                    <BaseTextInput style={{ flex: 1 }} placeholder="oz" />
+                    <Box textAlign="center">
+                        <Typography>LB</Typography>
+                        <BaseTextInput
+                            name="shippingLb"
+                            placeholder={selectedRow.shippingLb}
+                            value={values.shippingLb}
+                            onBlur={onBlur}
+                            onChange={onChange}
+                            style={{ flex: 1 }}
+                        />
+                    </Box>
+                    <Box textAlign="center">
+                        <Typography>OZ</Typography>
+                        <BaseTextInput
+                            name="shippingOz"
+                            placeholder={selectedRow.shippingOz}
+                            value={values.shippingOz}
+                            onBlur={onBlur}
+                            onChange={onChange}
+                            style={{ flex: 1 }}
+                        />
+                    </Box>
                 </Box>
             </Box>
         </Box>
     );
 };
 
-function ItemsDetails() {
-    const [itemActive, setItemActive] = useState("");
-    const [itemType, setItemType] = useState("");
+function ItemsDetails({ selectedRow }: { selectedRow: any }) {
+    const matches = useMediaQuery("(max-width: 1250px)");
+
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
+    const [cats, setCats] = useState([{ id: "0", name: "0" }]);
+    const [types, setTypes] = useState([{ id: "0", name: "0" }]);
+    const [subtypes, setSubtypes] = useState([{ id: "0", name: "0" }]);
+
+    const [showSnack, setShowSnack] = useState(false);
+    const [snackMsg, setSnackMsg] = useState("");
+
+    const [selectedNote, setSelectedNote] = useState({ id: "", subject: "", note: "", url: "" } as {
+        id: any;
+        subject: string;
+        note: string;
+        url?: string;
+    });
+
+    const [selectedDoc, setSelectedDoc] = useState({ id: "", path: "", name: "" } as { id: any; path: string; name: string });
+
+    let init: any = { ...AddItemInitialValues };
+    for (let attrname in init) {
+        init[attrname] = selectedRow[attrname];
+    }
+
+    const { values, handleBlur, handleChange, handleSubmit, errors, touched, isSubmitting } = useFormik({
+        initialValues: init,
+        validationSchema: AddItemSchema,
+        onSubmit: (d, { setSubmitting }) => {
+            // console.log(d);
+            updateAnItem(selectedRow.id, d)
+                .then((d) => {
+                    console.log(d);
+                    setShowSnack(true);
+                    setSnackMsg(`Updated item ${d.id}...`);
+                })
+                .catch((e) => {
+                    console.log(e);
+                    setShowSnack(true);
+                    setSnackMsg(`Error: ${e.error}`);
+                })
+                .finally(() => setSubmitting(false));
+        },
+    });
+
+    const [addNoteModal, setAddNoteModal] = useState(false);
+    const [editNoteModal, setEditNoteModal] = useState(false);
+    const [addDocModal, setAddDocModal] = useState(false);
+    const [editDocModal, setEditDocModal] = useState(false);
+    const [addChildItem, setAddChildItem] = useState(false);
+
+    React.useEffect(() => {
+        getCategories().then((d) => setCats(d));
+        getAllTypes().then((d) => setTypes(d));
+        getAllSubTypes().then((d) => setSubtypes(d));
+    }, []);
 
     return (
         <Grid container spacing={3}>
-            <Grid item xs={2}>
-                <List>
+            <NoteModal itemId={selectedRow.id} model="item" open={addNoteModal} onClose={() => setAddNoteModal(false)} />
+            <NoteModal
+                noteData={selectedNote}
+                itemId={selectedRow.id}
+                model="item"
+                open={editNoteModal}
+                onClose={() => setEditNoteModal(false)}
+            />
+
+            <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={selectedRow.id} model="item" />
+            <EditDocumentModal
+                open={editDocModal}
+                itemId={selectedRow.id}
+                model="item"
+                onClose={() => setEditDocModal(false)}
+                docData={selectedDoc}
+            />
+
+            <AddChildItem
+                parentItemId={selectedRow.id}
+                parentItemName={selectedRow.name}
+                open={addChildItem}
+                onClose={() => setAddChildItem(false)}
+            />
+
+            <Snackbar
+                autoHideDuration={2000}
+                anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
+                onClose={() => setShowSnack(false)}
+                open={showSnack}
+                message={snackMsg}
+                key="updateSnack"
+            />
+
+            <Grid item xs={12} lg={2}>
+                <List style={{ display: matches ? "flex" : "block" }}>
                     <ListItem>
-                        <Button title="add item" variant="contained" color="primary" fullWidth>
-                            <AddRounded />
-                            {/* Add Item */}
+                        <Button title="add item" onClick={() => setAddNoteModal(true)} variant="contained" color="primary" fullWidth>
+                            <NoteRounded />
+                            Add New Note
                         </Button>
                     </ListItem>
                     <ListItem>
-                        <Button title="copy item" variant="contained" color="primary" fullWidth>
+                        <Button
+                            title="add item"
+                            onClick={() => selectedNote.subject && setEditNoteModal(true)}
+                            variant="contained"
+                            color="primary"
+                            fullWidth
+                        >
+                            <NoteRounded />
+                            Edit / Remove Note
+                        </Button>
+                    </ListItem>
+                    <ListItem>
+                        <Button title="copy item" variant="contained" color="primary" onClick={() => setAddDocModal(true)} fullWidth>
                             <FileCopyRounded />
-                            {/* Duplicate Item */}
+                            Add Document
                         </Button>
                     </ListItem>
                     <ListItem>
-                        <Button title="delete item" variant="contained" color="primary" fullWidth>
-                            <DeleteRounded />
-                            {/* Delete Item */}
+                        <Button
+                            title="copy item"
+                            variant="contained"
+                            color="primary"
+                            onClick={() => selectedDoc.name && setEditDocModal(true)}
+                            fullWidth
+                        >
+                            <FileCopyRounded />
+                            Edit / Remove Document
                         </Button>
                     </ListItem>
                     <ListItem>
-                        <Button title="print Bill of Material" variant="contained" color="primary" fullWidth>
+                        <Button title="copy item" variant="contained" color="primary" onClick={() => setAddChildItem(true)} fullWidth>
+                            <FileCopyRounded />
+                            Add Child Item
+                        </Button>
+                    </ListItem>
+                    <ListItem>
+                        <Button disabled title="print Bill of Material" variant="contained" color="primary" fullWidth>
                             <PrintRounded />
                             BOM
                         </Button>
                     </ListItem>
                 </List>
             </Grid>
-            <Grid item xs={10}>
+            <Grid item xs={12} lg={10}>
                 <BasePaper>
-                    <Grid container spacing={1}>
-                        <Grid item xs={2} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                            <TextField placeholder="Item Name" variant="outlined" fullWidth />
-                            <TextField placeholder="UPC" style={{ marginTop: "0.5em" }} variant="outlined" fullWidth />
-                            <TextField placeholder="Item SKU" style={{ margin: "0.5em 0" }} variant="outlined" fullWidth />
-                            <TextField placeholder="Description" variant="outlined" fullWidth />
-                        </Grid>
-                        <Grid item xs={2} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                            <TextField placeholder="Item No." variant="outlined" fullWidth />
-                            <BaseSelect placeholder="Category" style={{ marginTop: "0.5em" }} fullWidth />
-                            <BaseSelect placeholder="Type" style={{ margin: "0.35em 0" }} fullWidth />
-                            <BaseSelect placeholder="SubType" fullWidth />
-                        </Grid>
-                        <Grid item xs={2} style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                            <TextField placeholder="MFGR" variant="outlined" fullWidth />
-                            <TextField placeholder="Color" style={{ marginTop: "0.5em" }} variant="outlined" fullWidth />
-                            <TextField placeholder="Size" style={{ margin: "0.5em 0" }} variant="outlined" fullWidth />
-                            <TextField placeholder="Variance" variant="outlined" fullWidth />
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Tabs value={moreInfoTab} onChange={(e, v) => setMoreInfoTab(v)}>
-                                <Tab label="More Info." />
-                                <Tab label="Quantity" />
-                                <Tab label="Shipping" />
-                            </Tabs>
-                            {moreInfoTab === 0 && <MoreInfo itemType={itemType} onChangeType={setItemType} />}
-                            {moreInfoTab === 1 && <Quantity />}
-                            {moreInfoTab === 2 && <Shipping />}
-                        </Grid>
-                        <Grid item xs={12} style={{ flexDirection: "row", display: "flex", alignItems: "center" }}>
-                            <TextField style={{ marginRight: "1em" }} fullWidth placeholder="Special Notes" variant="outlined" multiline />
-                            <RadioGroup name="item active radios" value={itemActive} onChange={(e) => setItemActive(e.target.value)}>
-                                <FormControlLabel value="active" control={<Radio />} label="Active" />
-                                <FormControlLabel value="inactive" control={<Radio />} label="InActive" />
-                            </RadioGroup>
-                        </Grid>
-                        <Grid item xs={12} style={{ marginTop: "1em" }}>
-                            {/* <Divider /> */}
-                            <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} variant="scrollable">
-                                <Tab label="Kit / Bundle" />
-                                <Tab label="Vendors" />
-                                <Tab label="Notes" />
-                                <Tab label="Documents" />
-                                <Tab label="SO History" />
-                                <Tab label="PO History" />
-                                <Tab label="Auditing" />
-                            </Tabs>
-                            <Box p={3}>
-                                {activeTab === 0 && (
-                                    <TabTable
-                                        tableHead={["Item no.", "Item Name", "Description", "Type", "Vendor", "Qty", "Cost"]}
-                                        tableRows={[
-                                            ["1234", "Item 1", "description here", "lorem", "BMW", 500, "1500$"],
-                                            ["1235", "Item 1", "description here", "lorem", "BMW", 500, "1500$"],
-                                        ]}
-                                        title="Kit / Bundle"
+                    <form onSubmit={handleSubmit}>
+                        <Grid container spacing={1}>
+                            <Grid item md={6} xs={12} style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+                                <Box flex={1}>
+                                    <TextField
+                                        placeholder="Item name"
+                                        name="name"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.name && touched.name)}
+                                        value={values.name}
+                                        variant="outlined"
+                                    />
+                                    <TextField
+                                        placeholder="upc"
+                                        name="upc"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.upc && touched.upc)}
+                                        value={values.upc}
+                                        variant="outlined"
+                                    />
+                                    <TextField
+                                        placeholder="sku"
+                                        name="sku"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.sku && touched.sku)}
+                                        value={values.sku}
+                                        variant="outlined"
+                                    />
+                                    <TextField
+                                        placeholder="description"
+                                        name="description"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.description && touched.description)}
+                                        value={values.description}
+                                        variant="outlined"
+                                    />
+                                </Box>
+                                <Box flex={1} display="flex" flexDirection="column" px={1} alignItems="center">
+                                    <TextField
+                                        value={values.no}
+                                        name="no"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.no && touched.no)}
+                                        placeholder={selectedRow.no}
+                                        variant="outlined"
+                                    />
+                                    <BaseSelect
+                                        style={{ margin: "0.4em" }}
+                                        name="CategoryId"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.CategoryId && touched.CategoryId)}
+                                        value={values.CategoryId}
+                                        placeholder={selectedRow.Category.name}
+                                    >
+                                        {cats &&
+                                            cats.map((cat) => (
+                                                <MenuItem value={cat.id} key={cat.id}>
+                                                    {cat.name}
+                                                </MenuItem>
+                                            ))}
+                                    </BaseSelect>
+                                    <BaseSelect
+                                        style={{ margin: "0.4em" }}
+                                        name="TypeId"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.TypeId && touched.TypeId)}
+                                        value={values.TypeId}
+                                    >
+                                        {types &&
+                                            types.map((type) => (
+                                                <MenuItem value={type.id} key={type.id}>
+                                                    {type.name}
+                                                </MenuItem>
+                                            ))}
+                                    </BaseSelect>
+                                    <BaseSelect
+                                        style={{ margin: "0.4em" }}
+                                        name="SubtypeId"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.SubtypeId && touched.SubtypeId)}
+                                        value={values.SubtypeId}
+                                    >
+                                        {subtypes &&
+                                            subtypes.map((subtype) => (
+                                                <MenuItem value={subtype.id} key={subtype.id}>
+                                                    {subtype.name}
+                                                </MenuItem>
+                                            ))}
+                                    </BaseSelect>
+                                </Box>
+                                <Box flex={1}>
+                                    <TextField
+                                        placeholder="mfgr"
+                                        name="mfgr"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.mfgr && touched.mfgr)}
+                                        value={values.mfgr}
+                                        variant="outlined"
+                                    />
+                                    <TextField
+                                        placeholder="color"
+                                        name="color"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.color && touched.color)}
+                                        value={values.color}
+                                        variant="outlined"
+                                    />
+                                    <TextField
+                                        placeholder="size"
+                                        name="size"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.size && touched.size)}
+                                        value={values.size}
+                                        variant="outlined"
+                                    />
+                                    <TextField
+                                        placeholder="variance"
+                                        name="variance"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.variance && touched.variance)}
+                                        value={values.variance}
+                                        variant="outlined"
+                                    />
+                                </Box>
+                            </Grid>
+                            <Grid item md={6} xs={12}>
+                                <Tabs value={moreInfoTab} onChange={(e, v) => setMoreInfoTab(v)}>
+                                    <Tab label="More Info." />
+                                    <Tab label="Quantity" />
+                                    <Tab label="Shipping" />
+                                </Tabs>
+                                {moreInfoTab === 0 && (
+                                    <MoreInfo
+                                        values={values}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={errors}
+                                        touched={touched}
+                                        selectedRow={selectedRow}
+                                        onChangeType={() => {}}
                                     />
                                 )}
-                                {activeTab === 1 && (
-                                    <TabTable
-                                        tableHead={["Vendor No.", "Vendor", "Comment"]}
-                                        tableRows={[
-                                            ["1234", "BMW", "comment 1"],
-                                            ["1235", "Benz", "comment 2"],
-                                        ]}
-                                        title="Vendors"
+                                {moreInfoTab === 1 && (
+                                    <Quantity
+                                        values={values}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={errors}
+                                        touched={touched}
+                                        selectedRow={selectedRow}
+                                        onChangeType={() => {}}
                                     />
                                 )}
-                                {activeTab === 2 && (
-                                    <TabTable
-                                        tableHead={["Date", "Note no.", "Note"]}
-                                        tableRows={[
-                                            ["2020-10-16", "1234", "Nooooooote."],
-                                            ["2020-10-16", "1234", "A lot of notes here..."],
-                                        ]}
-                                        title="Notes"
+                                {moreInfoTab === 2 && (
+                                    <Shipping
+                                        values={values}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={errors}
+                                        touched={touched}
+                                        selectedRow={selectedRow}
+                                        onChangeType={() => {}}
                                     />
                                 )}
-                                {activeTab === 3 && (
-                                    <TabTable
-                                        tableHead={["Date", "Document ID", "Document"]}
-                                        tableRows={[
-                                            ["2020-10-16", "1234", "File.docx"],
-                                            ["2020-10-16", "1234", "File2.xslx"],
-                                        ]}
-                                        title="Documents"
-                                    />
-                                )}
-                                {activeTab === 4 && (
-                                    <TabTable
-                                        tableHead={[
-                                            "Date",
-                                            "SO No.",
-                                            "Client",
-                                            "Desc",
-                                            "Date Inv'd",
-                                            "Price",
-                                            "Qty",
-                                            "Total Qty sold",
-                                            "Total sales",
-                                        ]}
-                                        tableRows={[
-                                            ["2020-10-16", "1234", "Benz", "desc 1", "2020-10-20", "2000$", 500, 10, 100],
-                                            ["2020-10-16", "1234", "Benz", "desc 1", "2020-10-20", "2000$", 500, 10, 100],
-                                        ]}
-                                        title="SO History"
-                                    />
-                                )}
-                                {activeTab === 5 && (
-                                    <TabTable
-                                        tableHead={["Date", "PO No.", "Client", "Desc", "Date Inv'd", "Price", "Qty", "Total"]}
-                                        tableRows={[
-                                            ["2020-10-16", "1234", "Benz", "desc 1", "2020-11-20", "500$", 5000, "10000"],
-                                            ["2020-10-16", "1234", "Benz", "desc 1", "2020-11-20", "500$", 5000, "10000"],
-                                        ]}
-                                        title="PO History"
-                                    />
-                                )}
-                                {activeTab === 6 && <TabTable tableHead={[]} tableRows={[]} title="Auditing" />}
-                            </Box>
+                            </Grid>
+                            <Grid item xs={12} style={{ flexDirection: "row", display: "flex", alignItems: "center" }}>
+                                <TextField
+                                    value={selectedRow.specialNote}
+                                    style={{ marginRight: "1em" }}
+                                    fullWidth
+                                    placeholder={selectedRow.specialNote}
+                                    name="specialNote"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors.specialNote && touched.specialNote)}
+                                    variant="outlined"
+                                    multiline
+                                />
+                                <Box>
+                                    <RadioGroup name="item active radios" value={selectedRow.active} onChange={(e) => e}>
+                                        <FormControlLabel value={true} control={<Radio />} label="Active" />
+                                        <FormControlLabel value={false} control={<Radio />} label="InActive" />
+                                    </RadioGroup>
+                                    <Button
+                                        disabled={isSubmitting}
+                                        title="add item"
+                                        variant="contained"
+                                        type="submit"
+                                        onClick={() => console.log(errors)}
+                                        style={{ color: "#fff", background: Gradients.success }}
+                                        fullWidth
+                                    >
+                                        <EditRounded /> Update
+                                    </Button>
+                                </Box>
+                            </Grid>
                         </Grid>
-                    </Grid>
+                    </form>
+                    <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} variant="scrollable">
+                        <Tab label="Kit / Bundle" />
+                        <Tab label="Notes" />
+                        <Tab label="Documents" />
+                    </Tabs>
+                    <Box p={3}>
+                        {activeTab === 0 && <RecordChildItems parentItemId={selectedRow.id} onRowSelected={(d) => console.log(d)} />}
+                        {activeTab === 1 && (
+                            <RecordNotes
+                                model="item"
+                                itemId={selectedRow.id}
+                                onRowSelected={(d) => {
+                                    console.log(d);
+                                    setSelectedNote({ id: d.data.id, subject: d.data.subject, note: d.data.note, url: d.data.url });
+                                }}
+                            />
+                        )}
+                        {activeTab === 2 && (
+                            <RecordDocuments
+                                model="item"
+                                itemId={selectedRow.id}
+                                onRowSelected={(d) => setSelectedDoc({ id: d.data.id, name: d.data.name, path: d.data.path })}
+                            />
+                        )}
+                    </Box>
                 </BasePaper>
             </Grid>
         </Grid>

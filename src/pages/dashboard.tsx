@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Box, Breadcrumbs, Link } from "@material-ui/core";
+import { Container, Box, Breadcrumbs, Link, Grid } from "@material-ui/core";
 
 import { Production } from "../features/Production";
 import { Ship } from "../features/Ship";
@@ -11,18 +11,18 @@ export default function Dashboard() {
 
     return (
         <Container>
-            <Box display="flex" justifyContent="space-between" my={2}>
-                <Box>
+            <Grid container style={{ margin: "1em 0" }}>
+                <Grid item xs={12} md={4}>
                     <Breadcrumbs separator=">">
                         <Link>Website</Link>
                         <Link>Home</Link>
                         <Link>Dashboard</Link>
                     </Breadcrumbs>
-                </Box>
-                <Box>
+                </Grid>
+                <Grid item xs={12} md={8}>
                     <MainTabs tabs={["Production", "Ship", "Sales"]} currentTab={curTab} onChange={setCurTab} />
-                </Box>
-            </Box>
+                </Grid>
+            </Grid>
             {curTab === 0 && <Production />}
             {curTab === 1 && <Ship />}
             {curTab === 2 && <Sales />}
