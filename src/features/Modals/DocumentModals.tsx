@@ -8,7 +8,7 @@ export const DocumentModal = ({ open, onClose, model, itemId }: { open: boolean;
     const theme = useTheme();
 
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog open={open} onClose={onClose} maxWidth="xs">
             <DialogTitle>
                 Add / Edit Document to {model} {itemId}
             </DialogTitle>
@@ -17,7 +17,7 @@ export const DocumentModal = ({ open, onClose, model, itemId }: { open: boolean;
                     initialValues={{ file: "", description: "" }}
                     onSubmit={(values, { setSubmitting }) => {
                         console.log(values);
-                        createAModelDocument("item", itemId, values.file, values.description)
+                        createAModelDocument(model, itemId, values.file, values.description)
                             .then((d) => {
                                 console.log(d);
                                 setSubmitting(false);
@@ -27,20 +27,23 @@ export const DocumentModal = ({ open, onClose, model, itemId }: { open: boolean;
                 >
                     {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                         <Form>
-                            <input type="file" onChange={(e) => e.target.files !== null && setFieldValue("file", e.target.files[0])} />
-                            <TextField
-                                value={values.description}
-                                name="description"
-                                label="Description"
-                                variant="outlined"
-                                multiline
-                                rows={4}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            <Button type="submit" color="primary" variant="contained" disabled={isSubmitting}>
-                                Save
-                            </Button>
+                            <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
+                                <input type="file" onChange={(e) => e.target.files !== null && setFieldValue("file", e.target.files[0])} />
+                                <TextField
+                                    fullWidth
+                                    value={values.description}
+                                    name="description"
+                                    label="Description"
+                                    variant="outlined"
+                                    multiline
+                                    rows={4}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                <Button type="submit" color="primary" variant="contained" disabled={isSubmitting}>
+                                    Save
+                                </Button>
+                            </Box>
                         </Form>
                     )}
                 </Formik>

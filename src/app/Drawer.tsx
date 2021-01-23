@@ -5,6 +5,7 @@ import {
     BottomNavigationAction,
     List,
     ListItem,
+    Divider,
     Hidden,
     ListItemIcon,
     makeStyles,
@@ -12,21 +13,11 @@ import {
     Typography,
     ListItemText,
 } from "@material-ui/core";
-import {
-    AlternateEmailRounded,
-    DashboardRounded,
-    SendRounded,
-    BorderColorRounded,
-    SettingsRounded,
-    HomeRounded,
-    ChevronLeftRounded,
-    ChevronRightRounded,
-    FlashOnRounded,
-    CalendarTodayRounded,
-} from "@material-ui/icons";
+import { AlternateEmailRounded, DashboardRounded, SendRounded, BorderColorRounded, SettingsRounded, HomeRounded } from "@material-ui/icons";
 import { Link, useLocation, useHistory } from "react-router-dom";
 
-import { Calendar } from "./Calendar";
+import phocusLogo from "../assets/logo.png";
+import drawerBg from "../assets/sidebar.png";
 
 const useStyles = makeStyles((theme) => ({
     btmNavSelectedItem: {
@@ -71,15 +62,14 @@ const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boole
     const useStyles = makeStyles((theme) => ({
         toolbar: {
             ...theme.mixins.toolbar,
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: "#f5f5f5",
+            margin: "0.5em 1em",
         },
         drawerPaper: {
             overflow: "hidden",
             width,
-            backgroundColor: theme.palette.secondary.main,
+            backgroundImage: `url(${drawerBg})`,
+            backgroundPositionX: "center",
+            backgroundSize: "cover",
         },
     }));
 
@@ -90,37 +80,31 @@ const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boole
     return (
         <nav style={{ width, flexShrink: 0 }}>
             <Drawer variant="permanent" style={{ width }} classes={{ paper: classes.drawerPaper }} anchor="left">
-                <div className={classes.toolbar}>
-                    <Typography variant="h6">{isOpen ? "SOLUTIONS GENESIS" : <FlashOnRounded />}</Typography>
+                <div className={classes.toolbar} style={{ backgroundColor: "transparent" }}>
+                    <img src={phocusLogo} alt="Phocus" style={{ width: "80%", height: "auto" }} />
                 </div>
-                {/* <Divider /> */}
-                <List>
+                <Divider />
+                <List style={{ marginBottom: "auto" }}>
                     {drawerItems.map((item, i) => (
                         <Link key={i} to={item.link} style={{ textDecoration: "none" }}>
                             <ListItem
-                                button
                                 style={{
-                                    color: location.pathname === item.link ? theme.palette.warning.main : "#fff",
+                                    color: location.pathname === item.link ? "#fff" : "#848484",
                                 }}
                             >
-                                <ListItemIcon>{item.icon}</ListItemIcon>
+                                <ListItemIcon
+                                    style={{
+                                        color: location.pathname === item.link ? "#fff" : "#848484",
+                                    }}>{item.icon}</ListItemIcon>
                                 <ListItemText> {item.name} </ListItemText>
                             </ListItem>
                         </Link>
                     ))}
-                    {/* <Divider /> */}
-                    <ListItem>{isOpen ? <Calendar /> : <CalendarTodayRounded htmlColor="#ccc" />}</ListItem>
-                    {/* <Divider /> */}
-                    <ListItem
-                        button
-                        onClick={onToggle}
-                        style={{ justifyContent: isOpen ? "flex-end" : "flex-start", color: theme.palette.secondary.main }}
-                    >
-                        <ListItemIcon style={{ color: theme.palette.common.white }}>
-                            {isOpen ? <ChevronLeftRounded /> : <ChevronRightRounded />}
-                        </ListItemIcon>
-                    </ListItem>
                 </List>
+                {/* <Divider /> */}
+                <div>
+                    <Typography>Phazify</Typography>
+                </div>
             </Drawer>
         </nav>
     );

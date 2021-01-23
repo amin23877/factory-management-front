@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Box, Grid, List, ListItem, Typography, Button, TextField, Tabs, Tab } from "@material-ui/core";
 
+import { AddRounded, RemoveRounded, SearchRounded, PrintRounded } from "@material-ui/icons";
+
 import { TabTable } from "../app/Table";
 import { BasePaper } from "../app/Paper";
 
@@ -9,31 +11,23 @@ export const QuotePanel = () => {
 
     return (
         <Grid container spacing={3}>
-            <Grid item xs={3}>
-                <List>
-                    <ListItem style={{ justifyContent: "center" }}>
-                        <Button variant="contained" color="primary" style={{ padding: "1em 2em" }} fullWidth>
-                            Add Quote
-                        </Button>
-                    </ListItem>
-                    <ListItem style={{ justifyContent: "center" }}>
-                        <Button variant="contained" color="primary" style={{ padding: "1em 2em" }} fullWidth>
-                            Remove Quote
-                        </Button>
-                    </ListItem>
-                    <ListItem style={{ justifyContent: "center" }}>
-                        <Button variant="contained" color="primary" style={{ padding: "1em 2em" }} fullWidth>
-                            Show All Quotes
-                        </Button>
-                    </ListItem>
-                    <ListItem style={{ justifyContent: "center" }}>
-                        <Button variant="contained" color="primary" style={{ padding: "1em 2em" }} fullWidth>
-                            Print Report
-                        </Button>
-                    </ListItem>
-                </List>
+            <Grid item xs={1}>
+                <Box px={1} display="flex" flexDirection="column" my={2}>
+                    <Button title="Add item" variant="outlined">
+                        <AddRounded />
+                    </Button>
+                    <Button title="Delete item" variant="outlined" style={{ margin: "1em 0" }}>
+                        <RemoveRounded />
+                    </Button>
+                    <Button title="Payment" variant="outlined">
+                        <SearchRounded />
+                    </Button>
+                    <Button title="Print a report" variant="outlined" style={{ margin: "1em 0" }}>
+                        <PrintRounded />
+                    </Button>
+                </Box>
             </Grid>
-            <Grid item xs={9}>
+            <Grid item xs={11}>
                 <BasePaper>
                     <Grid container spacing={2}>
                         <Grid item xs={8}>

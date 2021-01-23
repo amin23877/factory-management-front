@@ -37,7 +37,7 @@ export const NoteModal = ({
                     validationSchema={AddModelNoteSchema}
                     onSubmit={(values, { setSubmitting }) => {
                         if (noteData) {
-                            updateAModelNote(model, itemId, values)
+                            updateAModelNote(itemId, values)
                                 .then((d) => {
                                     console.log(d);
                                     if (d.status !== 400) {

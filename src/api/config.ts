@@ -1,12 +1,12 @@
 import Axios from 'axios';
 
-export const BaseUrl = 'http://cla99ic.ir:3100/api/';
+export const BaseUrl = 'http://quizupp.ir:3100/api/';
 
-Axios.defaults.baseURL = 'http://cla99ic.ir:3100/api/';
+Axios.defaults.baseURL = BaseUrl;
 
 Axios.interceptors.request.use(config => {
     if(!config.headers.authorization){
-        config.headers.authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2MDU4ODI2NDR9.WUJ--kYBSsqgCdT4iM6TZuaFtKXGPeuKmDiyhn51yus';
+        config.headers.authorization = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJpYXQiOjE2MDk0MzE1NTh9.SfdFzJRnFORw7MbdcTDPdBnfQT-1BXyyA2EZmFizRLg';
         // config.headers['Content-Type'] = 'application/json';
     }
 

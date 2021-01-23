@@ -38,6 +38,7 @@ export const TopAppBar = ({ drawerWidth }: { drawerWidth?: number }) => {
     return (
         <AppBar
             position="fixed"
+            elevation={0}
             style={{
                 width: matches ? "100%" : `calc(100% - ${drawerWidth}px)`,
                 marginLeft: matches ? "100%" : `calc(100% - ${drawerWidth}px)`,

@@ -6,17 +6,25 @@ import { DataGrid, RowData, ColDef } from "@material-ui/data-grid";
 // import { BasePaper } from "../app/Paper";
 // import { BaseTextInput } from "../app/Inputs";
 
-function ItemsList({ onRowSelected, rows }: { onRowSelected: (row: any) => void; rows: RowData[] }) {
+export default function BaseDataGrid({
+    onRowSelected,
+    rows,
+    cols,
+}: {
+    onRowSelected: (row: any) => void;
+    rows: RowData[];
+    cols: ColDef[];
+}) {
     // const [rows, setRows] = useState([] as RowData[]);
 
-    const cols: ColDef[] = [
-        { field: "no", headerName: "Item no" },
-        { field: "name", headerName: "Item name" },
-        { field: "description", headerName: "desc" },
-        { field: "category", valueGetter: (c) => c.data.Category.name, headerName: "cetegory" },
-        { field: "type", valueGetter: (c) => c.data.Type.name, headerName: "type" },
-        { field: "cost", headerName: "Cost" },
-    ];
+    // const cols: ColDef[] = [
+    //     { field: "no", headerName: "Item no" },
+    //     { field: "name", headerName: "Item name" },
+    //     { field: "description", headerName: "desc" },
+    //     { field: "category", valueGetter: (c) => c.data.Category.name, headerName: "cetegory" },
+    //     { field: "type", valueGetter: (c) => c.data.Type.name, headerName: "type" },
+    //     { field: "cost", headerName: "Cost" },
+    // ];
 
     return (
         <Box my={2}>
@@ -43,5 +51,3 @@ function ItemsList({ onRowSelected, rows }: { onRowSelected: (row: any) => void;
         </Box>
     );
 }
-
-export default ItemsList;

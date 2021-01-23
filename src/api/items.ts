@@ -48,7 +48,6 @@ export const AddItemInitialValues = {
     shippingNote: "",
     CategoryId: "",
     TypeId: "",
-    SubtypeId: "",
 };
 
 // ------------------------------------------------------

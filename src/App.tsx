@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, CssBaseline, ThemeProvider, useMediaQuery } from "@material-ui/core";
+import { Box, CssBaseline, ThemeProvider } from "@material-ui/core";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { theme } from "./theme";
 
@@ -23,7 +23,7 @@ console.log(config.BaseUrl);
 function App() {
     const [loading, setLoading] = useState(true);
     const [isOpen, setIsOpen] = useState(true);
-    const [drawerWidth, setDrawerWidth] = useState(240);
+    const [drawerWidth, setDrawerWidth] = useState(220);
 
     React.useEffect(() => {
         setTimeout(() => {

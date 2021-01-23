@@ -1,136 +1,148 @@
-import React, { useState } from "react";
-import {
-    Container,
-    Box,
-    Grid,
-    List,
-    ListItem,
-    Typography,
-    Button,
-    TextField,
-    MenuItem,
-    Tabs,
-    Tab,
-    Breadcrumbs,
-    Link,
-} from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { Container, Box, Grid, Button } from "@material-ui/core";
+import { AddRounded, DeleteRounded, DescriptionRounded, PrintRounded } from "@material-ui/icons";
 
-import { BaseSelect } from "../app/Inputs";
-import { TabTable } from "../app/Table";
-import { BasePaper } from "../app/Paper";
+import { getClients, deleteClient } from "../api/client";
+
+import { AddClientModal } from "../features/Modals/ClientModals";
+import { ClientTypeModal } from "../features/Modals/ClientType";
+import Confirm from "../features/Modals/Confirm";
+
+import { MyTab, MyTabs } from "../app/Tabs";
+
+import { NoteModal } from "../features/Modals/NoteModals";
+import { DocumentModal, EditDocumentModal } from "../features/Modals/DocumentModals";
+
+import ClientDetails from "../features/ClientDetails";
+import ClientOverview from "../features/ClientOverview";
 
 export default function Clients() {
     const [activeTab, setActiveTab] = useState(0);
+    const [addClientModal, setAddClientModal] = useState(false);
+    const [cTypeModal, setCTypeModal] = useState(false);
+    const [clients, setClients] = useState([]);
+
+    const [selectedRow, setSelectedRow] = useState<any>(null);
+    const [selectedNote, setSelectedNote] = useState<any>(null);
+    const [selectedDoc, setSelectedDoc] = useState<any>(null);
+
+    const [editNoteModal, setEditNoteModal] = useState(false);
+    const [editDocModal, setEditDocModal] = useState(false);
+    const [addNoteModal, setAddNoteModal] = useState(false);
+    const [addDocModal, setAddDocModal] = useState(false);
+
+    const [conf, setConf] = useState(false);
+
+    const refreshClients = async () => {
+        try {
+            const resp = await getClients();
+            setClients(resp);
+            // console.log(resp);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleDelete = async () => {
+        try {
+            const resp = await deleteClient(selectedRow.id);
+            console.log(resp);
+            if (resp) {
+                refreshClients();
+                setConf(false);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        refreshClients();
+    }, []);
 
     return (
         <Container style={{ padding: "1em 0" }}>
+            <Confirm open={conf} onClose={() => setConf(false)} onConfirm={handleDelete} />
+
+            <AddClientModal open={addClientModal} onClose={() => setAddClientModal(false)} onDone={refreshClients} />
+
+            <ClientTypeModal open={cTypeModal} onClose={() => setCTypeModal(false)} />
+
+            <NoteModal
+                noteData={selectedNote === null ? "" : selectedNote.data}
+                itemId={selectedRow?.id}
+                model="client"
+                open={editNoteModal}
+                onClose={() => setEditNoteModal(false)}
+            />
+            <EditDocumentModal
+                docData={selectedDoc === null ? "" : selectedDoc.data}
+                open={editDocModal}
+                itemId={selectedRow?.id}
+                model="client"
+                onClose={() => setEditDocModal(false)}
+            />
+
+            <NoteModal itemId={selectedRow?.id} model="client" open={addNoteModal} onClose={() => setAddNoteModal(false)} />
+            <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={selectedRow?.id} model="client" />
+
             <Grid container spacing={3}>
-                <Grid item xs={3}>
-                    <Box display="flex" justifyContent="center">
-                        <Breadcrumbs separator=">">
-                            <Link>Website</Link>
-                            <Link>Home</Link>
-                            <Link>Clients</Link>
-                        </Breadcrumbs>
+                <Grid item xs={1}>
+                    <Box px={1} display="flex" flexDirection="column" my={2}>
+                        <Button onClick={() => setAddClientModal(true)} title="Add item" variant="outlined">
+                            <AddRounded />
+                        </Button>
+                        <Button
+                            disabled={!selectedRow}
+                            onClick={() => setConf(true)}
+                            title="Delete item"
+                            variant="outlined"
+                            style={{ margin: "1em 0" }}
+                        >
+                            <DeleteRounded />
+                        </Button>
+                        <Button title="Payment" variant="outlined">
+                            <DescriptionRounded />
+                        </Button>
+                        <Button title="Print a report" variant="outlined" style={{ margin: "1em 0" }}>
+                            <PrintRounded />
+                        </Button>
                     </Box>
-                    <List>
-                        <ListItem style={{ justifyContent: "center" }}>
-                            <Button variant="contained" color="primary" fullWidth>
-                                Add Client
-                            </Button>
-                        </ListItem>
-                        <ListItem style={{ justifyContent: "center" }}>
-                            <Button variant="contained" color="primary" fullWidth>
-                                Remove Client
-                            </Button>
-                        </ListItem>
-                        <ListItem style={{ justifyContent: "center" }}>
-                            <Button variant="contained" color="primary" fullWidth>
-                                Show All Clients
-                            </Button>
-                        </ListItem>
-                        <ListItem style={{ justifyContent: "center" }}>
-                            <Button variant="contained" color="primary" fullWidth>
-                                Print Report
-                            </Button>
-                        </ListItem>
-                        <ListItem style={{ justifyContent: "center" }}>
-                            <Button variant="contained" color="primary" fullWidth>
-                                Enter a Payment
-                            </Button>
-                        </ListItem>
-                    </List>
                 </Grid>
-                <Grid item xs={9}>
-                    <BasePaper>
-                        <Grid container spacing={2}>
-                            <Grid item xs={8}>
-                                {["Phazify ID", "Client Name", "Client Address", "Client Phone"].map((item) => (
-                                    <Box key={item}>
-                                        <Typography color="textSecondary">{item}</Typography>
-                                        <TextField variant="outlined" fullWidth placeholder={item} />
-                                    </Box>
-                                ))}
-                            </Grid>
-                            <Grid item xs={4}>
-                                {["Client Email", "Client Website", "Main Contact"].map((item) => (
-                                    <Box key={item}>
-                                        <Typography>{item}</Typography>
-                                        <TextField variant="outlined" fullWidth placeholder={item} />
-                                    </Box>
-                                ))}
-                                <Box>
-                                    <Typography>Client Type</Typography>
-                                    <BaseSelect fullWidth>
-                                        <MenuItem>1</MenuItem>
-                                        <MenuItem>2</MenuItem>
-                                        <MenuItem>3</MenuItem>
-                                    </BaseSelect>
-                                </Box>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} variant="fullWidth">
-                                    <Tab label="Related Sales Order" />
-                                    <Tab label="Documents" />
-                                    <Tab label="Notes" />
-                                    <Tab label="Auditing" />
-                                </Tabs>
-                                <Box p={3}>
-                                    {activeTab === 0 && (
-                                        <TabTable
-                                            tableHead={["Date", "SO No.", "Description", "Status", "Note"]}
-                                            tableRows={[
-                                                ["2020-10-16", "1234", "Dessscription", "Pending", "..."],
-                                                ["2020-10-16", "1234", "Dessscription", "Pending", "..."],
-                                            ]}
-                                            title="Related Sales Order"
-                                        />
-                                    )}
-                                    {activeTab === 1 && (
-                                        <TabTable
-                                            tableHead={["Date", "Document ID", "Document"]}
-                                            tableRows={[
-                                                ["2020-10-16", "1234", "File.docx"],
-                                                ["2020-10-16", "1234", "File2.xslx"],
-                                            ]}
-                                            title="Documents"
-                                        />
-                                    )}
-                                    {activeTab === 2 && (
-                                        <TabTable
-                                            tableHead={["Date", "Note no.", "Note"]}
-                                            tableRows={[
-                                                ["2020-10-16", "1234", "Nooooooote."],
-                                                ["2020-10-16", "1234", "A lot of notes here..."],
-                                            ]}
-                                            title="Notes"
-                                        />
-                                    )}
-                                    {activeTab === 3 && <code>This is Auditing</code>}
-                                </Box>
-                            </Grid>
-                        </Grid>
-                    </BasePaper>
+                <Grid item xs={11}>
+                    <Box my={2} display="flex">
+                        <Box display="flex" flex={1} justifyContent="space-around">
+                            <Button onClick={() => setCTypeModal(true)}>Client Types</Button>
+                            <Button onClick={() => setAddNoteModal(true)} disabled={!selectedRow}>
+                                + Add new Note
+                            </Button>
+                            <Button onClick={() => setEditNoteModal(true)} disabled={!selectedNote}>
+                                Edit / Delete Note
+                            </Button>
+                            <Button onClick={() => setAddDocModal(true)} disabled={!selectedRow}>
+                                + Add Document
+                            </Button>
+                            <Button onClick={() => setEditDocModal(true)} disabled={!selectedDoc}>
+                                Edit / Delete Document
+                            </Button>
+                        </Box>
+
+                        <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                            <MyTab label="Overview" />
+                            <MyTab label="Details" disabled={Boolean(selectedRow === null)} />
+                        </MyTabs>
+                    </Box>
+                    {activeTab === 0 && (
+                        <ClientOverview
+                            rows={clients}
+                            onRowSelected={(v) => {
+                                setSelectedRow(v);
+                            }}
+                        />
+                    )}
+                    {activeTab === 1 && (
+                        <ClientDetails onNoteSelected={setSelectedNote} onDocSelected={setSelectedDoc} selectedRow={selectedRow} />
+                    )}
                 </Grid>
             </Grid>
         </Container>

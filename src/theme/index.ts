@@ -3,12 +3,20 @@ import { createMuiTheme } from "@material-ui/core";
 export const Gradients = {
     warning: "linear-gradient(60deg, #ffa726, #fb8c00)",
     error: "linear-gradient(60deg, #ef5350, #e53935)",
-    success: "linear-gradient(60deg, #66bb6a, #43a047)",
+    success: "linear-gradient(90deg, rgba(103,214,73,1) 0%, rgba(5,208,23,1) 100%)",
     info: "linear-gradient(60deg, #26c6da, #00acc1)",
 };
 
 export const theme = createMuiTheme({
     props: { 
+        MuiTabs:{
+            indicatorColor:'primary',
+        },
+        MuiTab:{
+            style:{
+                fontWeight:'bold'
+            }
+        },
         MuiLink: { 
             color: "textSecondary",
             style:{
@@ -22,7 +30,7 @@ export const theme = createMuiTheme({
         }
     },
     palette: {
-        divider: "#aaa",
+        divider: "#4f4f4f",
         primary: {
             main: "#3389ff",
             contrastText: "#fff",
@@ -48,8 +56,7 @@ export const theme = createMuiTheme({
             contrastText: "#545454",
         },
         background: {
-            default: "#eeeeee",
-            paper: "#fff",
+            default: "#f9f9f9",
         },
     },
 });

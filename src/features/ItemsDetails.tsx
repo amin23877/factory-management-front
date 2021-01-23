@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import {
     Box,
     Grid,
-    List,
-    ListItem,
     Button,
     TextField,
+    List,
+    ListItem,
     RadioGroup,
     Radio,
     FormControlLabel,
@@ -14,7 +14,6 @@ import {
     Divider,
     Typography,
     MenuItem,
-    useMediaQuery,
     Snackbar,
 } from "@material-ui/core";
 import { EditRounded, NoteRounded, FileCopyRounded, PrintRounded } from "@material-ui/icons";
@@ -25,11 +24,8 @@ import { AddItemInitialValues, AddItemSchema, updateAnItem } from "../api/items"
 import { getCategories } from "../api/category";
 import { getAllSubTypes, getAllTypes } from "../api/types";
 
-import { AddItemModal } from "./Modals/ItemModals";
 import { NoteModal } from "../features/Modals/NoteModals";
 import { DocumentModal, EditDocumentModal } from "../features/Modals/DocumentModals";
-import { AddChildItem } from "../features/Modals/ChildItemModal";
-// import { CategoryModal } from "../features/Modals/CategoryModals";
 
 import { RecordNotes } from "./DataGrids/NoteDataGrids";
 import { RecordDocuments } from "./DataGrids/DocumentDataGrids";
@@ -262,7 +258,10 @@ const Shipping = ({
 };
 
 function ItemsDetails({ selectedRow }: { selectedRow: any }) {
-    const matches = useMediaQuery("(max-width: 1250px)");
+    const [editNoteModal, setEditNoteModal] = useState(false);
+    const [editDocModal, setEditDocModal] = useState(false);
+    const [addNoteModal, setAddNoteModal] = useState(false);
+    const [addDocModal, setAddDocModal] = useState(false);
 
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
@@ -307,12 +306,6 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
         },
     });
 
-    const [addNoteModal, setAddNoteModal] = useState(false);
-    const [editNoteModal, setEditNoteModal] = useState(false);
-    const [addDocModal, setAddDocModal] = useState(false);
-    const [editDocModal, setEditDocModal] = useState(false);
-    const [addChildItem, setAddChildItem] = useState(false);
-
     React.useEffect(() => {
         getCategories().then((d) => setCats(d));
         getAllTypes().then((d) => setTypes(d));
@@ -320,8 +313,7 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
     }, []);
 
     return (
-        <Grid container spacing={3}>
-            <NoteModal itemId={selectedRow.id} model="item" open={addNoteModal} onClose={() => setAddNoteModal(false)} />
+        <Box>
             <NoteModal
                 noteData={selectedNote}
                 itemId={selectedRow.id}
@@ -329,8 +321,6 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
                 open={editNoteModal}
                 onClose={() => setEditNoteModal(false)}
             />
-
-            <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={selectedRow.id} model="item" />
             <EditDocumentModal
                 open={editDocModal}
                 itemId={selectedRow.id}
@@ -338,13 +328,8 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
                 onClose={() => setEditDocModal(false)}
                 docData={selectedDoc}
             />
-
-            <AddChildItem
-                parentItemId={selectedRow.id}
-                parentItemName={selectedRow.name}
-                open={addChildItem}
-                onClose={() => setAddChildItem(false)}
-            />
+            <NoteModal itemId={selectedNote.id} model="item" open={addNoteModal} onClose={() => setAddNoteModal(false)} />
+            <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={selectedDoc.id} model="item" />
 
             <Snackbar
                 autoHideDuration={2000}
@@ -354,64 +339,70 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
                 message={snackMsg}
                 key="updateSnack"
             />
-
-            <Grid item xs={12} lg={2}>
-                <List style={{ display: matches ? "flex" : "block" }}>
+            <Box>
+                <List style={{ display: "flex" }}>
                     <ListItem>
-                        <Button title="add item" onClick={() => setAddNoteModal(true)} variant="contained" color="primary" fullWidth>
-                            <NoteRounded />
+                        <Button
+                            title="add item"
+                            onClick={() => setAddNoteModal(true)}
+                            color="secondary"
+                            style={{ fontSize: 12, fontWeight: "bold" }}
+                            fullWidth
+                        >
+                            <NoteRounded style={{ fontSize: 16, margin: "0 0.5em" }} />
                             Add New Note
                         </Button>
                     </ListItem>
                     <ListItem>
                         <Button
                             title="add item"
-                            onClick={() => selectedNote.subject && setEditNoteModal(true)}
-                            variant="contained"
-                            color="primary"
+                            onClick={() => setAddNoteModal(true)}
+                            color="secondary"
+                            style={{ fontSize: 12, fontWeight: "bold" }}
                             fullWidth
                         >
-                            <NoteRounded />
-                            Edit / Remove Note
-                        </Button>
-                    </ListItem>
-                    <ListItem>
-                        <Button title="copy item" variant="contained" color="primary" onClick={() => setAddDocModal(true)} fullWidth>
-                            <FileCopyRounded />
-                            Add Document
+                            <NoteRounded style={{ fontSize: 16, margin: "0 0.5em" }} />
+                            Edit/Delete Note
                         </Button>
                     </ListItem>
                     <ListItem>
                         <Button
                             title="copy item"
-                            variant="contained"
-                            color="primary"
-                            onClick={() => selectedDoc.name && setEditDocModal(true)}
+                            color="secondary"
+                            style={{ fontSize: 12, fontWeight: "bold" }}
+                            onClick={() => setAddDocModal(true)}
                             fullWidth
                         >
-                            <FileCopyRounded />
-                            Edit / Remove Document
+                            <FileCopyRounded style={{ fontSize: 16, margin: "0 0.5em" }} />
+                            Add Document
                         </Button>
                     </ListItem>
                     <ListItem>
-                        <Button title="copy item" variant="contained" color="primary" onClick={() => setAddChildItem(true)} fullWidth>
-                            <FileCopyRounded />
-                            Add Child Item
+                        <Button
+                            title="add item"
+                            onClick={() => setAddNoteModal(true)}
+                            color="secondary"
+                            style={{ fontSize: 12, fontWeight: "bold" }}
+                            fullWidth
+                        >
+                            <NoteRounded style={{ fontSize: 16, margin: "0 0.5em" }} />
+                            Edit/Delete Document
                         </Button>
                     </ListItem>
                     <ListItem>
                         <Button disabled title="print Bill of Material" variant="contained" color="primary" fullWidth>
-                            <PrintRounded />
+                            <PrintRounded style={{ fontSize: 16, margin: "0 0.5em" }} />
                             BOM
                         </Button>
                     </ListItem>
                 </List>
-            </Grid>
-            <Grid item xs={12} lg={10}>
-                <BasePaper>
-                    <form onSubmit={handleSubmit}>
-                        <Grid container spacing={1}>
-                            <Grid item md={6} xs={12} style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+            </Box>
+
+            <BasePaper>
+                <form onSubmit={handleSubmit}>
+                    <Grid container>
+                        <Grid item md={6} xs={12} style={{ border: "1px solid #ccc", borderRadius: "1em", padding: "1em" }}>
+                            <Box style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                                 <Box flex={1}>
                                     <TextField
                                         placeholder="Item name"
@@ -467,7 +458,7 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
                                         onBlur={handleBlur}
                                         error={Boolean(errors.CategoryId && touched.CategoryId)}
                                         value={values.CategoryId}
-                                        placeholder={selectedRow.Category.name}
+                                        placeholder={selectedRow.Category?.name}
                                     >
                                         {cats &&
                                             cats.map((cat) => (
@@ -545,108 +536,113 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
                                         variant="outlined"
                                     />
                                 </Box>
-                            </Grid>
-                            <Grid item md={6} xs={12}>
-                                <Tabs value={moreInfoTab} onChange={(e, v) => setMoreInfoTab(v)}>
-                                    <Tab label="More Info." />
-                                    <Tab label="Quantity" />
-                                    <Tab label="Shipping" />
-                                </Tabs>
-                                {moreInfoTab === 0 && (
-                                    <MoreInfo
-                                        values={values}
+                            </Box>
+                            <Box>
+                                <RadioGroup
+                                    style={{ flexDirection: "row" }}
+                                    name="item active radios"
+                                    value={selectedRow.active}
+                                    onChange={(e) => e}
+                                >
+                                    <FormControlLabel value={true} control={<Radio />} label="Active" />
+                                    <FormControlLabel value={false} control={<Radio />} label="InActive" />
+                                </RadioGroup>
+                                <Box display="flex">
+                                    <TextField
+                                        value={selectedRow.specialNote}
+                                        style={{ marginRight: "1em", flex: 5 }}
+                                        fullWidth
+                                        placeholder={selectedRow.specialNote}
+                                        name="specialNote"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        error={errors}
-                                        touched={touched}
-                                        selectedRow={selectedRow}
-                                        onChangeType={() => {}}
+                                        error={Boolean(errors.specialNote && touched.specialNote)}
+                                        variant="outlined"
+                                        multiline
                                     />
-                                )}
-                                {moreInfoTab === 1 && (
-                                    <Quantity
-                                        values={values}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={errors}
-                                        touched={touched}
-                                        selectedRow={selectedRow}
-                                        onChangeType={() => {}}
-                                    />
-                                )}
-                                {moreInfoTab === 2 && (
-                                    <Shipping
-                                        values={values}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={errors}
-                                        touched={touched}
-                                        selectedRow={selectedRow}
-                                        onChangeType={() => {}}
-                                    />
-                                )}
-                            </Grid>
-                            <Grid item xs={12} style={{ flexDirection: "row", display: "flex", alignItems: "center" }}>
-                                <TextField
-                                    value={selectedRow.specialNote}
-                                    style={{ marginRight: "1em" }}
-                                    fullWidth
-                                    placeholder={selectedRow.specialNote}
-                                    name="specialNote"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.specialNote && touched.specialNote)}
-                                    variant="outlined"
-                                    multiline
-                                />
-                                <Box>
-                                    <RadioGroup name="item active radios" value={selectedRow.active} onChange={(e) => e}>
-                                        <FormControlLabel value={true} control={<Radio />} label="Active" />
-                                        <FormControlLabel value={false} control={<Radio />} label="InActive" />
-                                    </RadioGroup>
                                     <Button
                                         disabled={isSubmitting}
                                         title="add item"
                                         variant="contained"
                                         type="submit"
                                         onClick={() => console.log(errors)}
-                                        style={{ color: "#fff", background: Gradients.success }}
+                                        style={{ color: "#fff", background: Gradients.success, flex: 1 }}
                                         fullWidth
                                     >
                                         <EditRounded /> Update
                                     </Button>
                                 </Box>
-                            </Grid>
+                            </Box>
                         </Grid>
-                    </form>
-                    <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} variant="scrollable">
-                        <Tab label="Kit / Bundle" />
-                        <Tab label="Notes" />
-                        <Tab label="Documents" />
-                    </Tabs>
-                    <Box p={3}>
-                        {activeTab === 0 && <RecordChildItems parentItemId={selectedRow.id} onRowSelected={(d) => console.log(d)} />}
-                        {activeTab === 1 && (
-                            <RecordNotes
-                                model="item"
-                                itemId={selectedRow.id}
-                                onRowSelected={(d) => {
-                                    console.log(d);
-                                    setSelectedNote({ id: d.data.id, subject: d.data.subject, note: d.data.note, url: d.data.url });
-                                }}
-                            />
-                        )}
-                        {activeTab === 2 && (
-                            <RecordDocuments
-                                model="item"
-                                itemId={selectedRow.id}
-                                onRowSelected={(d) => setSelectedDoc({ id: d.data.id, name: d.data.name, path: d.data.path })}
-                            />
-                        )}
-                    </Box>
-                </BasePaper>
-            </Grid>
-        </Grid>
+                        <Grid item md={6} xs={12} style={{ border: "1px solid #ccc", borderRadius: "1em", padding: "1em" }}>
+                            <Tabs value={moreInfoTab} onChange={(e, v) => setMoreInfoTab(v)}>
+                                <Tab label="More Info." />
+                                <Tab label="Quantity" />
+                                <Tab label="Shipping" />
+                            </Tabs>
+                            {moreInfoTab === 0 && (
+                                <MoreInfo
+                                    values={values}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={errors}
+                                    touched={touched}
+                                    selectedRow={selectedRow}
+                                    onChangeType={() => {}}
+                                />
+                            )}
+                            {moreInfoTab === 1 && (
+                                <Quantity
+                                    values={values}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={errors}
+                                    touched={touched}
+                                    selectedRow={selectedRow}
+                                    onChangeType={() => {}}
+                                />
+                            )}
+                            {moreInfoTab === 2 && (
+                                <Shipping
+                                    values={values}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={errors}
+                                    touched={touched}
+                                    selectedRow={selectedRow}
+                                    onChangeType={() => {}}
+                                />
+                            )}
+                        </Grid>
+                    </Grid>
+                </form>
+                <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} variant="scrollable">
+                    <Tab label="Kit / Bundle" />
+                    <Tab label="Notes" />
+                    <Tab label="Documents" />
+                </Tabs>
+                <Box p={3}>
+                    {activeTab === 0 && <RecordChildItems parentItemId={selectedRow.id} onRowSelected={(d) => console.log(d)} />}
+                    {activeTab === 1 && (
+                        <RecordNotes
+                            model="item"
+                            itemId={selectedRow.id}
+                            onRowSelected={(d) => {
+                                console.log(d);
+                                setSelectedNote({ id: d.data.id, subject: d.data.subject, note: d.data.note, url: d.data.url });
+                            }}
+                        />
+                    )}
+                    {activeTab === 2 && (
+                        <RecordDocuments
+                            model="item"
+                            itemId={selectedRow.id}
+                            onRowSelected={(d) => setSelectedDoc({ id: d.data.id, name: d.data.name, path: d.data.path })}
+                        />
+                    )}
+                </Box>
+            </BasePaper>
+        </Box>
     );
 }
 
