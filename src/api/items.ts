@@ -35,7 +35,6 @@ export const AddItemInitialValues = {
     url: "",
     cost: 0,
     retailPrice: 0,
-    mode: "Individual",
     modeCost: 0,
     qoh: 0,
     minimum: 0,
@@ -48,6 +47,7 @@ export const AddItemInitialValues = {
     shippingNote: "",
     CategoryId: "",
     TypeId: "",
+    FamilyId:""
 };
 
 // ------------------------------------------------------

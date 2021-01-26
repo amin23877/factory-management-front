@@ -4,7 +4,7 @@ import { RowData } from "@material-ui/data-grid";
 import { AddRounded, DeleteRounded, CategoryRounded } from "@material-ui/icons";
 
 import { AddItemModal, DeleteItem } from "../features/Modals/ItemModals";
-import { CategoryModal } from "../features/Modals/CategoryModals";
+import CatTypeFamilyModal from "../features/Modals/CategoryModals";
 
 import { getItems } from "../api/items";
 
@@ -46,7 +46,7 @@ const Inventory = () => {
         <Container style={{ maxWidth: 1240 }}>
             <AddItemModal open={addItemModal} onClose={() => setAddItemModal(false)} />
             <DeleteItem open={deleteItemModal} onClose={() => setDeleteItemModal(false)} item={selectedItem} />
-            <CategoryModal open={catModal} onClose={() => setCatModal(false)} />
+            <CatTypeFamilyModal open={catModal} onClose={() => setCatModal(false)} />
 
             <Grid container>
                 <Grid item xs={1} style={{ margin: "1em 0" }}>

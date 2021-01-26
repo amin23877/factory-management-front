@@ -2,16 +2,7 @@ import Axios from 'axios';
 
 export const getCategories = async () => {
     try {
-        const resp = await Axios.get('/category');
-        return resp.data;
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-export const getACategory = async (catId:string) => {
-    try {
-        const resp = await Axios.get(`/category/${catId}`);
+        const resp = await Axios.get('/itemcategory');
         return resp.data;
     } catch (error) {
         console.error(error);
@@ -20,25 +11,25 @@ export const getACategory = async (catId:string) => {
 
 export const createCategory = async (name:string) => {
     try {
-        const resp = await Axios.post('/category', {name});
+        const resp = await Axios.post('/itemcategory', {name});
         return resp.data;
     } catch (error) {
         console.log(error);
     }
 }
 
-export const updateACategory = async (catId:string, name:string) => {
+export const updateCategory = async (catId:number, name:string) => {
     try {
-        const resp = await Axios.patch(`/category/${catId}`, {name});
+        const resp = await Axios.patch(`/itemcategory/${catId}`, {name});
         return resp.data;
     } catch (error) {
         console.log(error);
     }
 }
 
-export const deleteACategory = async (catId:string) => {
+export const deleteCategory = async (catId:number) => {
     try {
-        const resp = await Axios.delete(`/category/${catId}`);
+        const resp = await Axios.delete(`/itemcategory/${catId}`);
         return resp.data;
     } catch (error) {
         console.log(error);

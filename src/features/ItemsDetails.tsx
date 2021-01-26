@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Box,
     Grid,
@@ -22,17 +22,18 @@ import { useFormik } from "formik";
 import { Gradients } from "../theme";
 import { AddItemInitialValues, AddItemSchema, updateAnItem } from "../api/items";
 import { getCategories } from "../api/category";
-import { getAllSubTypes, getAllTypes } from "../api/types";
+import { getTypes } from "../api/types";
+import { getFamilies } from "../api/family";
 
-import { NoteModal } from "../features/Modals/NoteModals";
-import { DocumentModal, EditDocumentModal } from "../features/Modals/DocumentModals";
+import { NoteModal } from "./Modals/NoteModals";
+import { DocumentModal, EditDocumentModal } from "./Modals/DocumentModals";
 
 import { RecordNotes } from "./DataGrids/NoteDataGrids";
 import { RecordDocuments } from "./DataGrids/DocumentDataGrids";
-import { RecordChildItems } from "./DataGrids/BundleDataGrid";
 
 import { BasePaper } from "../app/Paper";
 import { BaseSelect, BaseTextInput } from "../app/Inputs";
+import BOMModal from "./BOM/BomModal";
 
 const MoreInfo = ({
     values,
@@ -263,11 +264,13 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
     const [addNoteModal, setAddNoteModal] = useState(false);
     const [addDocModal, setAddDocModal] = useState(false);
 
+    const [bomModal, setBomModal] = useState(false);
+
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
     const [cats, setCats] = useState([{ id: "0", name: "0" }]);
     const [types, setTypes] = useState([{ id: "0", name: "0" }]);
-    const [subtypes, setSubtypes] = useState([{ id: "0", name: "0" }]);
+    const [families, setFamilies] = useState([{ id: "0", name: "0" }]);
 
     const [showSnack, setShowSnack] = useState(false);
     const [snackMsg, setSnackMsg] = useState("");
@@ -306,10 +309,18 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
         },
     });
 
-    React.useEffect(() => {
-        getCategories().then((d) => setCats(d));
-        getAllTypes().then((d) => setTypes(d));
-        getAllSubTypes().then((d) => setSubtypes(d));
+    useEffect(() => {
+        getCategories()
+            .then((d) => setCats(d))
+            .catch((e) => console.log(e));
+
+        getTypes()
+            .then((d) => setTypes(d))
+            .catch((e) => console.log(e));
+
+        getFamilies()
+            .then((d) => setFamilies(d))
+            .catch((e) => console.log(e));
     }, []);
 
     return (
@@ -330,6 +341,8 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
             />
             <NoteModal itemId={selectedNote.id} model="item" open={addNoteModal} onClose={() => setAddNoteModal(false)} />
             <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={selectedDoc.id} model="item" />
+
+            <BOMModal itemId={selectedRow.id} open={bomModal} onClose={() => setBomModal(false)} />
 
             <Snackbar
                 autoHideDuration={2000}
@@ -390,7 +403,13 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
                         </Button>
                     </ListItem>
                     <ListItem>
-                        <Button disabled title="print Bill of Material" variant="contained" color="primary" fullWidth>
+                        <Button
+                            onClick={() => setBomModal(true)}
+                            title="print Bill of Material"
+                            variant="contained"
+                            color="primary"
+                            fullWidth
+                        >
                             <PrintRounded style={{ fontSize: 16, margin: "0 0.5em" }} />
                             BOM
                         </Button>
@@ -484,16 +503,16 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
                                     </BaseSelect>
                                     <BaseSelect
                                         style={{ margin: "0.4em" }}
-                                        name="SubtypeId"
+                                        name="FamilyId"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         error={Boolean(errors.SubtypeId && touched.SubtypeId)}
                                         value={values.SubtypeId}
                                     >
-                                        {subtypes &&
-                                            subtypes.map((subtype) => (
-                                                <MenuItem value={subtype.id} key={subtype.id}>
-                                                    {subtype.name}
+                                        {families &&
+                                            families.map((f: any) => (
+                                                <MenuItem value={f.id} key={f.id}>
+                                                    {f.name}
                                                 </MenuItem>
                                             ))}
                                     </BaseSelect>
@@ -617,13 +636,11 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
                     </Grid>
                 </form>
                 <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} variant="scrollable">
-                    <Tab label="Kit / Bundle" />
                     <Tab label="Notes" />
                     <Tab label="Documents" />
                 </Tabs>
                 <Box p={3}>
-                    {activeTab === 0 && <RecordChildItems parentItemId={selectedRow.id} onRowSelected={(d) => console.log(d)} />}
-                    {activeTab === 1 && (
+                    {activeTab === 0 && (
                         <RecordNotes
                             model="item"
                             itemId={selectedRow.id}
@@ -633,7 +650,7 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
                             }}
                         />
                     )}
-                    {activeTab === 2 && (
+                    {activeTab === 1 && (
                         <RecordDocuments
                             model="item"
                             itemId={selectedRow.id}

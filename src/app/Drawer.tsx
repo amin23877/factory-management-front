@@ -16,6 +16,7 @@ import {
 import { AlternateEmailRounded, DashboardRounded, SendRounded, BorderColorRounded, SettingsRounded, HomeRounded } from "@material-ui/icons";
 import { Link, useLocation, useHistory } from "react-router-dom";
 
+import phazifyLogo from "../assets/phazify.png";
 import phocusLogo from "../assets/logo.png";
 import drawerBg from "../assets/sidebar.png";
 
@@ -95,15 +96,22 @@ const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boole
                                 <ListItemIcon
                                     style={{
                                         color: location.pathname === item.link ? "#fff" : "#848484",
-                                    }}>{item.icon}</ListItemIcon>
+                                    }}
+                                >
+                                    {item.icon}
+                                </ListItemIcon>
                                 <ListItemText> {item.name} </ListItemText>
                             </ListItem>
                         </Link>
                     ))}
                 </List>
                 {/* <Divider /> */}
-                <div>
-                    <Typography>Phazify</Typography>
+                <div style={{ textAlign: "center" }}>
+                    <img
+                        alt="Phazify"
+                        src={phazifyLogo}
+                        style={{ background: "rgba(145, 145, 145, 0.21)", padding: "0 1em", borderRadius: "0.4em" }}
+                    />
                 </div>
             </Drawer>
         </nav>
