@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Grid, Typography, Box, Button } from "@material-ui/core";
 import {
     UpdateRounded,
@@ -14,12 +14,10 @@ import { Gradients } from "../theme";
 import { BasePaper, IconPaper } from "../app/Paper";
 import { BaseTable } from "../app/Table";
 
-const StatusCard = ({ children, title, icon, iconBg }: { title: string; children: any; iconBg: string; icon: any }) => {
+const StatusCard = ({ children, title, value, icon }: { title: string; value: string; children: ReactNode; icon: ReactNode }) => {
     return (
-        <Box m={1} style={{ flex: 1 }}>
+        <Box m={1} display="inline-flex">
             <BasePaper title={title}>
-                <IconPaper style={{ padding: 4, background: iconBg }}>{icon}</IconPaper>
-                <div style={{ flexGrow: 1 }} />
                 <Box display="flex" alignItems="center" justifyContent="center">
                     <Typography variant="h6">{title}</Typography>
                 </Box>
@@ -122,34 +120,10 @@ export const Sales = () => {
     return (
         <Grid container spacing={2}>
             <Grid item md={8}>
-                <Box display="flex" justifyContent="space-between" style={{ flex: 1, height: "50%" }}>
-                    <StatusCard title="Activites" icon={<SettingsRounded fontSize="large" />} iconBg={Gradients.warning}>
-                        1
-                    </StatusCard>
-                    <StatusCard title="Emails" icon={<EmailRounded fontSize="large" />} iconBg={Gradients.info}>
-                        23
-                    </StatusCard>
-                    <StatusCard title="Sales Orders" icon={<PaymentRounded fontSize="large" />} iconBg={Gradients.success}>
-                        123
-                    </StatusCard>
-                </Box>
-                <Box display="flex" justifyContent="space-between" style={{ flex: 1, height: "50%" }}>
-                    <StatusCard title="Quotes" icon={<ChatRounded fontSize="large" />} iconBg={Gradients.info}>
-                        132
-                    </StatusCard>
-                    <StatusCard title="Expiring Waranties" icon={<UpdateRounded fontSize="large" />} iconBg={Gradients.error}>
-                        458
-                    </StatusCard>
-                    <StatusCard title="Opportunities" icon={<EmojiObjectsRounded fontSize="large" />} iconBg={Gradients.warning}>
-                        963
-                    </StatusCard>
-                </Box>
+                <Box>{/* <StatusCard /> */}</Box>
             </Grid>
             <Grid item md={4}>
                 <BasePaper>
-                    <IconPaper style={{ background: Gradients.error }}>
-                        <UpdateRounded fontSize="large" />
-                    </IconPaper>
                     <Typography style={{ margin: 4, textAlign: "center" }}>Expiring Waranties</Typography>
                     <BaseTable
                         tableHeads={["Contract device", "Expiring Date"]}

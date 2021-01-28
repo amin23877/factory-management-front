@@ -3,9 +3,11 @@ import { Container, Box, Grid, Button } from "@material-ui/core";
 import { AddRounded, DeleteRounded, DescriptionRounded, PrintRounded } from "@material-ui/icons";
 
 import { getClients, deleteClient } from "../api/client";
+import { getAllModelNotes } from "../api/note";
+import { getAllModelDocuments } from "../api/document";
 
 import { AddClientModal } from "../features/Modals/ClientModals";
-import { ClientTypeModal } from "../features/Modals/ClientType";
+import { AllClientTypesModal } from "../features/Modals/ClientType";
 import Confirm from "../features/Modals/Confirm";
 
 import { MyTab, MyTabs } from "../app/Tabs";
@@ -21,6 +23,8 @@ export default function Clients() {
     const [addClientModal, setAddClientModal] = useState(false);
     const [cTypeModal, setCTypeModal] = useState(false);
     const [clients, setClients] = useState([]);
+    const [notes, setNotes] = useState([]);
+    const [docs, setDocs] = useState([]);
 
     const [selectedRow, setSelectedRow] = useState<any>(null);
     const [selectedNote, setSelectedNote] = useState<any>(null);
@@ -43,6 +47,19 @@ export default function Clients() {
         }
     };
 
+    const refreshNotes = async () => {
+        if (selectedRow.id) {
+            const resp = await getAllModelNotes("client", selectedRow.id);
+            setNotes(resp);
+        }
+    };
+    const refreshDocs = async () => {
+        if (selectedRow.id) {
+            const resp = await getAllModelDocuments("client", selectedRow.id);
+            setDocs(resp);
+        }
+    };
+
     const handleDelete = async () => {
         try {
             const resp = await deleteClient(selectedRow.id);
@@ -57,6 +74,13 @@ export default function Clients() {
     };
 
     useEffect(() => {
+        if (activeTab === 1) {
+            refreshNotes();
+            refreshDocs();
+        }
+    }, [activeTab]);
+
+    useEffect(() => {
         refreshClients();
     }, []);
 
@@ -66,25 +90,39 @@ export default function Clients() {
 
             <AddClientModal open={addClientModal} onClose={() => setAddClientModal(false)} onDone={refreshClients} />
 
-            <ClientTypeModal open={cTypeModal} onClose={() => setCTypeModal(false)} />
+            <AllClientTypesModal open={cTypeModal} onClose={() => setCTypeModal(false)} />
 
             <NoteModal
-                noteData={selectedNote === null ? "" : selectedNote.data}
+                noteData={selectedNote === null ? "" : selectedNote}
                 itemId={selectedRow?.id}
                 model="client"
                 open={editNoteModal}
                 onClose={() => setEditNoteModal(false)}
+                onDone={refreshNotes}
             />
             <EditDocumentModal
-                docData={selectedDoc === null ? "" : selectedDoc.data}
+                docData={selectedDoc === null ? "" : selectedDoc}
                 open={editDocModal}
                 itemId={selectedRow?.id}
                 model="client"
                 onClose={() => setEditDocModal(false)}
+                onDone={refreshDocs}
             />
 
-            <NoteModal itemId={selectedRow?.id} model="client" open={addNoteModal} onClose={() => setAddNoteModal(false)} />
-            <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={selectedRow?.id} model="client" />
+            <NoteModal
+                itemId={selectedRow?.id}
+                model="client"
+                open={addNoteModal}
+                onClose={() => setAddNoteModal(false)}
+                onDone={refreshNotes}
+            />
+            <DocumentModal
+                open={addDocModal}
+                onClose={() => setAddDocModal(false)}
+                itemId={selectedRow?.id}
+                model="client"
+                onDone={refreshDocs}
+            />
 
             <Grid container spacing={3}>
                 <Grid item xs={1}>
@@ -107,12 +145,30 @@ export default function Clients() {
                         <Button title="Print a report" variant="outlined" style={{ margin: "1em 0" }}>
                             <PrintRounded />
                         </Button>
+                        <Button title="Email Address" variant="outlined" style={{ margin: "1em 0" }}>
+                            Email
+                        </Button>
+                        <Button title="Agency" variant="outlined" style={{ margin: "1em 0" }}>
+                            Agency
+                        </Button>
+                        <Button title="Division" variant="outlined" style={{ margin: "1em 0" }}>
+                            Division
+                        </Button>
+                        <Button title="Contact" variant="outlined" style={{ margin: "1em 0" }}>
+                            Contact
+                        </Button>
+                        <Button title="Phone" variant="outlined" style={{ margin: "1em 0" }}>
+                            Phone
+                        </Button>
+                        <Button title="Address" variant="outlined">
+                            Address
+                        </Button>
                     </Box>
                 </Grid>
                 <Grid item xs={11}>
                     <Box my={2} display="flex">
                         <Box display="flex" flex={1} justifyContent="space-around">
-                            <Button onClick={() => setCTypeModal(true)}>Client Types</Button>
+                            <Button onClick={() => setCTypeModal(true)}>All Types</Button>
                             <Button onClick={() => setAddNoteModal(true)} disabled={!selectedRow}>
                                 + Add new Note
                             </Button>
@@ -141,7 +197,13 @@ export default function Clients() {
                         />
                     )}
                     {activeTab === 1 && (
-                        <ClientDetails onNoteSelected={setSelectedNote} onDocSelected={setSelectedDoc} selectedRow={selectedRow} />
+                        <ClientDetails
+                            notes={notes}
+                            docs={docs}
+                            onNoteSelected={setSelectedNote}
+                            onDocSelected={setSelectedDoc}
+                            selectedRow={selectedRow}
+                        />
                     )}
                 </Grid>
             </Grid>

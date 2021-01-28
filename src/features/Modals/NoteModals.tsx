@@ -17,19 +17,21 @@ export const NoteModal = ({
     model,
     itemId,
     noteData,
+    onDone,
 }: {
     open: boolean;
     onClose: () => void;
     model: string;
     itemId: string;
     noteData?: { id: any; subject: string; note: string; url?: string };
+    onDone?: () => void;
 }) => {
     const theme = useTheme();
 
     return (
         <Dialog open={open} onClose={onClose}>
             <DialogTitle>
-                Add / Edit a note to {model} {itemId}
+                {noteData?.id ? "Edit" : "Add"} a note to {model} {itemId}
             </DialogTitle>
             <Box m={3}>
                 <Formik
@@ -40,16 +42,19 @@ export const NoteModal = ({
                             updateAModelNote(itemId, values)
                                 .then((d) => {
                                     console.log(d);
-                                    if (d.status !== 400) {
-                                        onClose();
-                                    }
+                                    onClose();
+                                    onDone && onDone();
                                 })
                                 .catch((e) => console.log(e))
                                 .finally(() => setSubmitting(false));
                         } else {
                             // console.log(values);
                             createAModelNote(model, itemId, values)
-                                .then((d) => console.log(d))
+                                .then((d) => {
+                                    console.log(d);
+                                    onDone && onDone();
+                                    onClose();
+                                })
                                 .catch((e) => console.log(e))
                                 .finally(() => setSubmitting(false));
                         }

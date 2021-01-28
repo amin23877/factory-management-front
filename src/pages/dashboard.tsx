@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Box, TextField } from "@material-ui/core";
 
-import { Production } from "../features/Production";
+import Quote from "../features/DashboardQuote";
 import { Ship } from "../features/Ship";
 import { Sales } from "../features/Sales";
 import { MyTab, MyTabs } from "../app/Tabs";
@@ -17,12 +17,12 @@ export default function Dashboard() {
                 <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                     <MyTab label="Quote" />
                     <MyTab label="Sales" />
-                    <MyTab label="Purchase" />
+                    <MyTab label="Ship" />
                 </MyTabs>
             </Box>
-            {activeTab === 0 && <Production />}
-            {activeTab === 1 && <Ship />}
-            {activeTab === 2 && <Sales />}
+            {activeTab === 0 && <Quote />}
+            {activeTab === 1 && <Sales />}
+            {activeTab === 2 && <Ship />}
         </Container>
     );
 }

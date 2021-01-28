@@ -22,7 +22,7 @@ export const addClientType = async (name:String) => {
     }
 }
 
-export const editClientType = async (id:string, name:string) => {
+export const editClientType = async (id:number, name:string) => {
     try {
         const resp = await Axios.patch(`/clientType/${id}`, {name});
         return resp.data;

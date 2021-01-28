@@ -4,7 +4,19 @@ import { Formik, Form } from "formik";
 
 import { createAModelDocument, updateAModelDocument, deleteAModelDocument } from "../../api/document";
 
-export const DocumentModal = ({ open, onClose, model, itemId }: { open: boolean; model: string; itemId: string; onClose: () => void }) => {
+export const DocumentModal = ({
+    open,
+    onClose,
+    model,
+    itemId,
+    onDone,
+}: {
+    open: boolean;
+    model: string;
+    onDone?: () => void;
+    itemId: string;
+    onClose: () => void;
+}) => {
     const theme = useTheme();
 
     return (
@@ -21,6 +33,8 @@ export const DocumentModal = ({ open, onClose, model, itemId }: { open: boolean;
                             .then((d) => {
                                 console.log(d);
                                 setSubmitting(false);
+                                onDone && onDone();
+                                onClose();
                             })
                             .catch((e) => console.log(e));
                     }}
@@ -58,12 +72,14 @@ export const EditDocumentModal = ({
     model,
     itemId,
     docData,
+    onDone,
 }: {
     open: boolean;
     model: string;
     itemId: string;
     onClose: () => void;
     docData?: any;
+    onDone?: () => void;
 }) => {
     const [newFile, setNewFile] = useState<File>();
     const [desc, setDesc] = useState("");
@@ -74,9 +90,8 @@ export const EditDocumentModal = ({
         updateAModelDocument(docData.id, newFile, desc)
             .then((d) => {
                 console.log(d);
-                if (d.status !== 400) {
-                    onClose();
-                }
+                onDone && onDone();
+                onClose();
             })
             .catch((e) => console.log(e))
             .finally(() => setIsSubmitting(false));
@@ -87,6 +102,8 @@ export const EditDocumentModal = ({
         deleteAModelDocument(docData.id)
             .then((d) => {
                 console.log(d);
+                onDone && onDone();
+                onClose();
             })
             .catch((e) => console.log(e))
             .finally(() => setIsSubmitting(false));

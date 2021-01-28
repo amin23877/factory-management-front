@@ -12,6 +12,7 @@ import {
     Radio,
     FormControl,
 } from "@material-ui/core";
+import { ColDef } from "@material-ui/data-grid";
 import { useFormik } from "formik";
 
 import { Gradients } from "../theme";
@@ -20,12 +21,10 @@ import { getClientTypes } from "../api/clientType";
 import { editClient, getClients } from "../api/client";
 
 import Snack from "../app/Snack";
-import { TabTable } from "../app/Table";
 import { BaseSelect } from "../app/Inputs";
 import { BasePaper } from "../app/Paper";
 
-import { RecordNotes } from "../features/DataGrids/NoteDataGrids";
-import { RecordDocuments } from "../features/DataGrids/DocumentDataGrids";
+import BaseDataGrid from "../app/BaseDataGrid";
 
 const EditClientForm = ({ data }: { data: any }) => {
     const [clients, setClients] = useState([]);
@@ -165,12 +164,28 @@ export default function ClientDetails({
     selectedRow,
     onNoteSelected,
     onDocSelected,
+    notes,
+    docs,
 }: {
     selectedRow: any;
     onNoteSelected: (v: any) => void;
     onDocSelected: (v: any) => void;
+    notes: any;
+    docs: any;
 }) {
     const [activeTab, setActiveTab] = useState(0);
+
+    const noteCols: ColDef[] = [
+        { field: "subject", headerName: "Subject" },
+        { field: "url", headerName: "URL" },
+        { field: "note", headerName: "Note", width: 300 },
+    ];
+
+    const docCols: ColDef[] = [
+        { field: "name", headerName: "Name" },
+        { field: "description", headerName: "Description", width: 250 },
+        { field: "createdAt", headerName: "Created at", width: 300 },
+    ];
 
     return (
         <BasePaper>
@@ -181,8 +196,8 @@ export default function ClientDetails({
                 <Tab label="Documents" />
             </Tabs>
             <Box p={3}>
-                {activeTab === 0 && <RecordNotes model="client" itemId={selectedRow.id} onRowSelected={onNoteSelected} />}
-                {activeTab === 1 && <RecordDocuments model="client" itemId={selectedRow.id} onRowSelected={onDocSelected} />}
+                {activeTab === 0 && <BaseDataGrid height={250} cols={noteCols} rows={notes} onRowSelected={(v) => onNoteSelected(v)} />}
+                {activeTab === 1 && <BaseDataGrid height={250} cols={docCols} rows={docs} onRowSelected={(v) => onDocSelected(v)} />}
             </Box>
         </BasePaper>
     );

@@ -1,6 +1,6 @@
 import React from "react";
-import { Box, Hidden, fade, AppBar, useMediaQuery, Toolbar, Button, IconButton, InputBase, Avatar, makeStyles } from "@material-ui/core";
-import { ArrowDropDownRounded, NotificationsRounded, AppsRounded, HelpRounded, MoreVertRounded, SearchRounded } from "@material-ui/icons";
+import { Box, fade, AppBar, useMediaQuery, Toolbar, Button, IconButton, Typography, Avatar, makeStyles } from "@material-ui/core";
+import { ArrowDropDownRounded, NotificationsOutlined, HelpOutline, TvRounded } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
     search: {
@@ -46,43 +46,27 @@ export const TopAppBar = ({ drawerWidth }: { drawerWidth?: number }) => {
             color="default"
         >
             <Toolbar>
-                <Hidden only="xs">
-                    <Button>
-                        Platform Data
-                        <ArrowDropDownRounded />
-                    </Button>
-                </Hidden>
+                <Button>
+                    <TvRounded style={{ marginRight: 5 }} />
+                    Phazify
+                    <ArrowDropDownRounded />
+                </Button>
+                <Button>
+                    <HelpOutline style={{ marginRight: 5 }} />
+                    Help
+                </Button>
+                <Button>
+                    <NotificationsOutlined style={{ marginRight: 5 }} />
+                    Alarms
+                </Button>
                 <div style={{ flexGrow: 1 }} />
-                <Box className={classes.search}>
-                    <Box className={classes.searchIcon}>
-                        <SearchRounded />
-                    </Box>
-                    <InputBase
-                        placeholder="Search Something Here..."
-                        classes={{
-                            root: classes.searchRoot,
-                            input: classes.searchInput,
-                        }}
-                    />
-                </Box>
-                <div style={{ flexGrow: 1 }} />
-                <IconButton>
-                    <NotificationsRounded />
-                </IconButton>
-                <IconButton>
-                    <AppsRounded />
-                </IconButton>
-                <Hidden only="xs">
-                    <IconButton>
-                        <HelpRounded />
-                    </IconButton>
-                </Hidden>
-                <IconButton>
-                    <MoreVertRounded />
-                </IconButton>
-                <IconButton>
-                    <Avatar>A</Avatar>
-                </IconButton>
+                <Button>
+                    <span style={{ textAlign: "right", marginRight: 5 }}>
+                        <span style={{ fontSize: 12 }}>Lorem ipsum</span>
+                        <p style={{ fontSize: 10, margin: 0, padding: 0 }}>Product manager</p>
+                    </span>
+                    <Avatar>L</Avatar>
+                </Button>
             </Toolbar>
         </AppBar>
     );

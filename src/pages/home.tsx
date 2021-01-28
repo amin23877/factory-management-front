@@ -1,97 +1,61 @@
-import React from "react";
-import { Typography, Button, Box, Container, Grid, makeStyles } from "@material-ui/core";
-import {
-    DashboardRounded,
-    PersonRounded,
-    PaymentRounded,
-    InboxRounded,
-    AssessmentRounded,
-    SettingsRounded,
-    LoyaltyRounded,
-    AccountBalanceRounded,
-} from "@material-ui/icons";
+import React, { ReactNode } from "react";
+import { Typography, Box, Container, makeStyles } from "@material-ui/core";
+import { GpsFixedRounded, PersonRounded, PaymentRounded, AssessmentRounded } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 
-import { BasePaper } from "../app/Paper";
-
 const useStyles = makeStyles({
-    homeCard: {
-        transition: "600ms all",
-        position: "relative",
-        top: 0,
+    topHeader: {
+        textAlign: "center",
+        margin: "2em 0",
+    },
+    itemCont: {
+        margin: "0 1em",
+        display: "inline-flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#ededed",
+        borderRadius: "1em",
+    },
+    itemIcon: {
+        padding: "4em 5em",
+        borderRadius: "1em",
+        transition: "all 300ms",
+        "& > svg": {
+            fontSize: "6em",
+        },
         "&:hover": {
-            top: -50,
+            backgroundColor: "#1a73e8",
+            boxShadow: "0 0 10px 5px rgba(0,0,0,0.1)",
         },
     },
 });
 
-const HomeCard = ({ children, bg, href, title }: { children: any; bg: string; href: string; title: string }) => {
+const ItemCard = ({ icon, title, href }: { icon: ReactNode; title: string; href: string }) => {
     const classes = useStyles();
 
     return (
-        <BasePaper style={{ padding: 0 }}>
-            <Link to={href} style={{ color: "#000", textDecoration: "none", height: "100%" }}>
-                <Button
-                    className={classes.homeCard}
-                    style={{ borderRadius: 20, color: "#fff", width: "100%", height: "100%", background: bg }}
-                >
-                    {children}
-                </Button>
-                <Typography style={{ textAlign: "center", marginTop: -40 }}>{title}</Typography>
-            </Link>
-        </BasePaper>
+        <Link to={href} style={{ color: "#555", textDecoration: "none" }}>
+            <Box className={classes.itemCont}>
+                <div className={classes.itemIcon}>{icon}</div>
+                <Typography style={{ margin: "1em 0" }}>{title}</Typography>
+            </Box>
+        </Link>
     );
 };
 
-const home = () => {
+export default function Home() {
+    const classes = useStyles();
+
     return (
         <Container>
-            <Box my={1} display="flex" flexDirection="column" flexWrap="wrap" style={{ width: "100%", height: "85vh" }}>
-                <Grid container spacing={3} style={{ height: "100%" }}>
-                    <Grid item lg={3} md={4} sm={6} xs={12} style={{ minHeight: 120 }}>
-                        <HomeCard bg="#373a4d" href="/dashboard" title="Dashboard">
-                            <DashboardRounded fontSize="large" />
-                        </HomeCard>
-                    </Grid>
-                    <Grid item lg={3} md={4} sm={6} xs={12} style={{ minHeight: 120 }}>
-                        <HomeCard bg="#373a4d" href="/clients" title="Clients">
-                            <PersonRounded fontSize="large" />
-                        </HomeCard>
-                    </Grid>
-                    <Grid item lg={3} md={4} sm={6} xs={12} style={{ minHeight: 120 }}>
-                        <HomeCard bg="#373a4d" href="/sales" title="Sales">
-                            <PaymentRounded fontSize="large" />
-                        </HomeCard>
-                    </Grid>
-                    <Grid item lg={3} md={4} sm={6} xs={12} style={{ minHeight: 120 }}>
-                        <HomeCard bg="#373a4d" href="/inventory" title="Inventory">
-                            <InboxRounded fontSize="large" />
-                        </HomeCard>
-                    </Grid>
-                    <Grid item lg={3} md={4} sm={6} xs={12} style={{ minHeight: 120 }}>
-                        <HomeCard bg="#373a4d" href="/report" title="Report">
-                            <AssessmentRounded fontSize="large" />
-                        </HomeCard>
-                    </Grid>
-                    <Grid item lg={3} md={4} sm={6} xs={12} style={{ minHeight: 120 }}>
-                        <HomeCard bg="#373a4d" href="/admin" title="Administration">
-                            <SettingsRounded fontSize="large" />
-                        </HomeCard>
-                    </Grid>
-                    <Grid item lg={3} md={4} sm={6} xs={12} style={{ minHeight: 120 }}>
-                        <HomeCard bg="#373a4d" href="/vendors" title="Vendors">
-                            <LoyaltyRounded fontSize="large" />
-                        </HomeCard>
-                    </Grid>
-                    <Grid item lg={3} md={4} sm={6} xs={12} style={{ minHeight: 120 }}>
-                        <HomeCard bg="#373a4d" href="/accounting" title="Accounting">
-                            <AccountBalanceRounded fontSize="large" />
-                        </HomeCard>
-                    </Grid>
-                </Grid>
+            <h1 className={classes.topHeader}>Home</h1>
+            <Box display="flex" justifyContent="center">
+                <ItemCard icon={<PaymentRounded />} title="Dashboard" href="/dashboard" />
+                <ItemCard icon={<GpsFixedRounded />} title="Inventory" href="/inventory" />
+                <ItemCard icon={<PersonRounded />} title="Clients" href="/clients" />
+                <ItemCard icon={<AssessmentRounded />} title="Sales" href="/sales" />
             </Box>
         </Container>
     );
-};
-
-export default home;
+}
