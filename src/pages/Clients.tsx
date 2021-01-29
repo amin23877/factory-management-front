@@ -1,10 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Container, Box, Grid, Button } from "@material-ui/core";
-import { AddRounded, DeleteRounded, DescriptionRounded, PrintRounded } from "@material-ui/icons";
+import {
+    AddRounded,
+    DeleteRounded,
+    DescriptionRounded,
+    PrintRounded,
+    MapOutlined,
+    EqualizerOutlined,
+    MailOutline,
+    ContactMailOutlined,
+    PhoneOutlined,
+} from "@material-ui/icons";
 
 import { getClients, deleteClient } from "../api/client";
 import { getAllModelNotes } from "../api/note";
 import { getAllModelDocuments } from "../api/document";
+import { getAllModelAddress } from "../api/address";
+import { getAllModelAgency } from "../api/agency";
 
 import { AddClientModal } from "../features/Modals/ClientModals";
 import { AllClientTypesModal } from "../features/Modals/ClientType";
@@ -14,6 +26,8 @@ import { MyTab, MyTabs } from "../app/Tabs";
 
 import { NoteModal } from "../features/Modals/NoteModals";
 import { DocumentModal, EditDocumentModal } from "../features/Modals/DocumentModals";
+import { AddressModal } from "../features/Modals/AddressModal";
+import { AgencyModal } from "../features/Modals/AgencyModal";
 
 import ClientDetails from "../features/ClientDetails";
 import ClientOverview from "../features/ClientOverview";
@@ -23,17 +37,25 @@ export default function Clients() {
     const [addClientModal, setAddClientModal] = useState(false);
     const [cTypeModal, setCTypeModal] = useState(false);
     const [clients, setClients] = useState([]);
+
     const [notes, setNotes] = useState([]);
     const [docs, setDocs] = useState([]);
+    const [addrs, setAddrs] = useState([]);
+    const [agencies, setAgencies] = useState([]);
 
     const [selectedRow, setSelectedRow] = useState<any>(null);
     const [selectedNote, setSelectedNote] = useState<any>(null);
     const [selectedDoc, setSelectedDoc] = useState<any>(null);
+    const [selectedAddr, setSelectedAddr] = useState<any>(null);
+    const [selectedAgency, setSelectedAgency] = useState<any>(null);
 
     const [editNoteModal, setEditNoteModal] = useState(false);
     const [editDocModal, setEditDocModal] = useState(false);
+
     const [addNoteModal, setAddNoteModal] = useState(false);
     const [addDocModal, setAddDocModal] = useState(false);
+    const [addAddress, setAddAddress] = useState(false);
+    const [addAgency, setAddAgency] = useState(false);
 
     const [conf, setConf] = useState(false);
 
@@ -60,6 +82,23 @@ export default function Clients() {
         }
     };
 
+    const refreshAddresses = async () => {
+        if (selectedRow.id) {
+            const resp = await getAllModelAddress("client", selectedRow.id);
+            setAddrs(resp);
+        }
+    };
+
+    const refreshAgencies = async () => {
+        if (selectedRow.id) {
+            const resp = await getAllModelAgency("client", selectedRow.id);
+            setAgencies(resp);
+            console.log("====================================");
+            console.log(resp);
+            console.log("====================================");
+        }
+    };
+
     const handleDelete = async () => {
         try {
             const resp = await deleteClient(selectedRow.id);
@@ -77,6 +116,8 @@ export default function Clients() {
         if (activeTab === 1) {
             refreshNotes();
             refreshDocs();
+            refreshAddresses();
+            refreshAgencies();
         }
     }, [activeTab]);
 
@@ -91,6 +132,23 @@ export default function Clients() {
             <AddClientModal open={addClientModal} onClose={() => setAddClientModal(false)} onDone={refreshClients} />
 
             <AllClientTypesModal open={cTypeModal} onClose={() => setCTypeModal(false)} />
+
+            <AddressModal
+                data={selectedAddr === null ? "" : selectedAddr}
+                itemId={selectedRow?.id}
+                model="client"
+                open={addAddress}
+                onClose={() => setAddAddress(false)}
+                onDone={refreshAddresses}
+            />
+            <AgencyModal
+                data={selectedAgency === null ? "" : selectedAgency}
+                itemId={selectedRow?.id}
+                model="client"
+                open={addAgency}
+                onClose={() => setAddAgency(false)}
+                onDone={refreshAgencies}
+            />
 
             <NoteModal
                 noteData={selectedNote === null ? "" : selectedNote}
@@ -127,7 +185,7 @@ export default function Clients() {
             <Grid container spacing={3}>
                 <Grid item xs={1}>
                     <Box px={1} display="flex" flexDirection="column" my={2}>
-                        <Button onClick={() => setAddClientModal(true)} title="Add item" variant="outlined">
+                        <Button onClick={() => setAddClientModal(true)} title="Add item" variant="outlined" style={{ margin: "0.5em 0" }}>
                             <AddRounded />
                         </Button>
                         <Button
@@ -135,33 +193,33 @@ export default function Clients() {
                             onClick={() => setConf(true)}
                             title="Delete item"
                             variant="outlined"
-                            style={{ margin: "1em 0" }}
+                            style={{ margin: "0.5em 0" }}
                         >
                             <DeleteRounded />
                         </Button>
-                        <Button title="Payment" variant="outlined">
+                        <Button title="Payment" variant="outlined" style={{ margin: "0.5em 0" }}>
                             <DescriptionRounded />
                         </Button>
-                        <Button title="Print a report" variant="outlined" style={{ margin: "1em 0" }}>
+                        <Button title="Print a report" variant="outlined" style={{ margin: "0.5em 0" }}>
                             <PrintRounded />
                         </Button>
-                        <Button title="Email Address" variant="outlined" style={{ margin: "1em 0" }}>
-                            Email
+                        <Button onClick={() => setAddAddress(true)} title="Address" variant="outlined" style={{ margin: "0.5em 0" }}>
+                            <MapOutlined />
                         </Button>
-                        <Button title="Agency" variant="outlined" style={{ margin: "1em 0" }}>
-                            Agency
+                        <Button onClick={() => setAddAgency(true)} title="Agency" variant="outlined" style={{ margin: "0.5em 0" }}>
+                            <EqualizerOutlined />
                         </Button>
-                        <Button title="Division" variant="outlined" style={{ margin: "1em 0" }}>
-                            Division
+                        <Button title="Division" variant="outlined" style={{ margin: "0.5em 0" }}>
+                            %
                         </Button>
-                        <Button title="Contact" variant="outlined" style={{ margin: "1em 0" }}>
-                            Contact
+                        <Button title="Email Address" variant="outlined" style={{ margin: "0.5em 0" }}>
+                            <MailOutline />
                         </Button>
-                        <Button title="Phone" variant="outlined" style={{ margin: "1em 0" }}>
-                            Phone
+                        <Button title="Contact" variant="outlined" style={{ margin: "0.5em 0" }}>
+                            <ContactMailOutlined />
                         </Button>
-                        <Button title="Address" variant="outlined">
-                            Address
+                        <Button title="Phone" variant="outlined" style={{ margin: "0.5em 0" }}>
+                            <PhoneOutlined />
                         </Button>
                     </Box>
                 </Grid>
@@ -200,6 +258,10 @@ export default function Clients() {
                         <ClientDetails
                             notes={notes}
                             docs={docs}
+                            addrs={addrs}
+                            agencies={agencies}
+                            onAgencySelected={setSelectedAgency}
+                            onAddrSelected={setSelectedAddr}
                             onNoteSelected={setSelectedNote}
                             onDocSelected={setSelectedDoc}
                             selectedRow={selectedRow}

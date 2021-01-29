@@ -1,6 +1,7 @@
 import Axios from "axios";
 
-interface IAgency {
+export interface IAgency {
+    id?:number;
     name:string
 }
 
@@ -22,7 +23,7 @@ export const createAModelAgency = async (model: string, id: string, data: IAgenc
     }
 };
 
-export const updateAModelAgency = async (id: string, data: IAgency) => {
+export const updateAModelAgency = async (id: number, data: IAgency) => {
     try {
         const resp = await Axios.patch(`/agency/${id}`, data);
         return resp.data;

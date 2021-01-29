@@ -3,6 +3,8 @@ import { Box, CssBaseline, ThemeProvider } from "@material-ui/core";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { theme } from "./theme";
 
+import { useAuth } from "./store";
+
 import { TopAppBar } from "./app/TopAppBar";
 import MainNav from "./app/Drawer";
 
@@ -21,21 +23,15 @@ console.log(config.BaseUrl);
 // ---------------------------
 
 function App() {
-    const [loading, setLoading] = useState(true);
     const [isOpen, setIsOpen] = useState(true);
     const [drawerWidth, setDrawerWidth] = useState(220);
-
-    React.useEffect(() => {
-        setTimeout(() => {
-            setLoading(false);
-        }, 5000);
-    }, []);
+    const auth = useAuth();
 
     return (
         <BrowserRouter>
             <ThemeProvider theme={theme}>
                 <CssBaseline />
-                {loading ? (
+                {auth?.employee === null ? (
                     <SplashScreen />
                 ) : (
                     <div style={{ display: "flex" }}>

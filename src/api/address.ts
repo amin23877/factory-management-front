@@ -1,6 +1,7 @@
 import Axios from "axios";
 
-interface IAddress {
+export interface IAddress {
+    id?:number,
     address:string,
     address2:string,
     city:string,
@@ -29,7 +30,7 @@ export const createAModelAddress = async (model: string, id: string, data: IAddr
     }
 };
 
-export const updateAModelAddress = async (id: string, data: IAddress) => {
+export const updateAModelAddress = async (id: number, data: IAddress) => {
     try {
         const resp = await Axios.patch(`/address/${id}`, data);
         return resp.data;

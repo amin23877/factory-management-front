@@ -52,11 +52,6 @@ const drawerItems = [
         link: "/inventory",
         icon: <BorderColorRounded htmlColor="#bbb" />,
     },
-    {
-        name: "Settings",
-        link: "/settings",
-        icon: <SettingsRounded htmlColor="#bbb" />,
-    },
 ];
 
 const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boolean; onToggle: () => void }) => {

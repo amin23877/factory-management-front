@@ -164,12 +164,20 @@ export default function ClientDetails({
     selectedRow,
     onNoteSelected,
     onDocSelected,
+    onAddrSelected,
+    onAgencySelected,
+    agencies,
+    addrs,
     notes,
     docs,
 }: {
     selectedRow: any;
     onNoteSelected: (v: any) => void;
     onDocSelected: (v: any) => void;
+    onAddrSelected: (v: any) => void;
+    onAgencySelected: (v: any) => void;
+    agencies: any;
+    addrs: any;
     notes: any;
     docs: any;
 }) {
@@ -187,6 +195,10 @@ export default function ClientDetails({
         { field: "createdAt", headerName: "Created at", width: 300 },
     ];
 
+    const addrCols: ColDef[] = [{ field: "address" }, { field: "city" }, { field: "state" }, { field: "zip" }, { field: "main" }];
+
+    const agencyCols: ColDef[] = [{ field: "name" }];
+
     return (
         <BasePaper>
             <EditClientForm data={selectedRow} />
@@ -194,10 +206,16 @@ export default function ClientDetails({
             <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} variant="fullWidth">
                 <Tab label="Notes" />
                 <Tab label="Documents" />
+                <Tab label="Addresses" />
+                <Tab label="Agency" />
             </Tabs>
             <Box p={3}>
                 {activeTab === 0 && <BaseDataGrid height={250} cols={noteCols} rows={notes} onRowSelected={(v) => onNoteSelected(v)} />}
                 {activeTab === 1 && <BaseDataGrid height={250} cols={docCols} rows={docs} onRowSelected={(v) => onDocSelected(v)} />}
+                {activeTab === 2 && <BaseDataGrid height={250} cols={addrCols} rows={addrs} onRowSelected={(v) => onAddrSelected(v)} />}
+                {activeTab === 3 && (
+                    <BaseDataGrid height={250} cols={agencyCols} rows={agencies} onRowSelected={(v) => onAgencySelected(v)} />
+                )}
             </Box>
         </BasePaper>
     );

@@ -41,7 +41,7 @@ export const NoteModal = ({
                         if (noteData) {
                             updateAModelNote(itemId, values)
                                 .then((d) => {
-                                    console.log(d);
+                                    console.log(d, values);
                                     onClose();
                                     onDone && onDone();
                                 })

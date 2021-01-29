@@ -1,6 +1,6 @@
 import Axios from "axios";
 
-interface IDivision {
+export interface IDivision {
     name:string
 }
 
