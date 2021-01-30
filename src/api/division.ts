@@ -1,39 +1,49 @@
 import Axios from "axios";
 
-export interface IDivision {
+export interface IDivison {
+    id?: number;
     name:string
 }
 
-export const getAllModelDivision = async (model: string, id: string) => {
+export const getAllDivison = async () => {
     try {
-        const resp = await Axios.get(`/division/${model}/${id}`);
+        const resp = await Axios.get(`/divison`);
         return resp.data;
     } catch (e) {
         console.log(e);
     }
 };
 
-export const createAModelDivision = async (model: string, id: string, data: IDivision) => {
+export const getClientDivisons = async (id:number) => {
     try {
-        const resp = await Axios.post(`/division/${model}/${id}`, data);
+        const resp = await Axios.get(`/client/${id}/division`);
+        return resp.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const createDivison = async (id: string, name: string) => {
+    try {
+        const resp = await Axios.post(`/divison`, {ClientId:id, name});
         return resp.data;
     } catch (e) {
         console.log(e);
     }
 };
 
-export const updateAModelDivision = async (id: string, data: IDivision) => {
+export const updateAModelDivison = async (id: number, data: IDivison) => {
     try {
-        const resp = await Axios.patch(`/division/${id}`, data);
+        const resp = await Axios.patch(`/divison/${id}`, data);
         return resp.data;
     } catch (e) {
         console.log(e);
     }
 };
 
-export const deleteAModelDivision = async (id: number) => {
+export const deleteAModelDivison = async (id: number) => {
     try {
-        const resp = await Axios.delete(`/division/${id}`);
+        const resp = await Axios.delete(`/divison/${id}`);
         return resp.data;
     } catch (e) {
         console.log(e);

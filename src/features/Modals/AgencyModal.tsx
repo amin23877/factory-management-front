@@ -61,7 +61,7 @@ export const AgencyModal = ({
                                 onClose();
                             });
                         } else {
-                            createAModelAgency("client", itemId, values).then((d) => {
+                            createAModelAgency(itemId, values.name).then((d) => {
                                 console.log(d);
                                 onDone && onDone();
                                 setSubmitting(false);

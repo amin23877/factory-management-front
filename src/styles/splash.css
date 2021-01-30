@@ -24,7 +24,7 @@
     width: 20em;
     height: 8em;
     animation: main-logo-animation 5000ms ease-in-out 1000ms infinite;
-    background: rgba(0,0,0,0.2);
+    /* background: rgba(0,0,0,0.2); */
     padding: 6px;
     border-radius: 5px;
     /* animation: main-logo-animation 5000ms ease-in-out 1000ms infinite; */

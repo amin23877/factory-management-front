@@ -37,8 +37,6 @@ const Inventory = () => {
         { field: "no", headerName: "Item no" },
         { field: "name", headerName: "Item name" },
         { field: "description", headerName: "desc" },
-        // { field: "category", valueGetter: (c) => c.data.ItemCategory?.name, headerName: "cetegory" },
-        // { field: "type", valueGetter: (c) => c.data.ItemType?.name, headerName: "type" },
         { field: "cost", headerName: "Cost" },
     ];
 
@@ -78,8 +76,8 @@ const Inventory = () => {
                             rows={rows}
                             onRowSelected={(r) => {
                                 setSelectedItem(r);
-                                console.log(r);
                                 setDetailDis(false);
+                                setActiveTab(1);
                             }}
                         />
                     )}

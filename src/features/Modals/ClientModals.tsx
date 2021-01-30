@@ -63,7 +63,7 @@ export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClo
     useEffect(() => {
         refreshClientTypes();
         refreshClients();
-    }, []);
+    }, [open]);
 
     let form_inputs = [];
     // refferedby	prospect	size	parent	defaultbilling	account	allowed	clienttypeid
@@ -118,23 +118,24 @@ export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClo
                                 ))}
                         </BaseSelect>
                     </FormControl>
-
-                    <FormControl fullWidth style={{ margin: "0.5em" }}>
-                        <FormLabel>Size</FormLabel>
-                        <RadioGroup name="size" value={values.size} onChange={(e) => setFieldValue("size", e.target.value)}>
-                            <FormControlLabel value="small" control={<Radio />} label="Small" />
-                            <FormControlLabel value="medium" control={<Radio />} label="Medium" />
-                            <FormControlLabel value="large" control={<Radio />} label="Large" />
-                        </RadioGroup>
-                    </FormControl>
-
-                    <FormControl fullWidth style={{ margin: "0.5em" }}>
-                        <FormLabel>Prospect</FormLabel>
-                        <RadioGroup name="prospect" value={values.prospect} onChange={(e) => setFieldValue("prospect", e.target.value)}>
-                            <FormControlLabel value="true" control={<Radio />} label="Yes" />
-                            <FormControlLabel value="false" control={<Radio />} label="No" />
-                        </RadioGroup>
-                    </FormControl>
+                    <Box display="flex" justifyContent="space-between" alignItems="start">
+                        <FormControl style={{ margin: "0.5em" }}>
+                            <FormLabel>Size</FormLabel>
+                            <RadioGroup name="size" value={values.size} onChange={(e) => setFieldValue("size", e.target.value)}>
+                                <FormControlLabel value="small" control={<Radio />} label="Small" />
+                                <FormControlLabel value="medium" control={<Radio />} label="Medium" />
+                                <FormControlLabel value="large" control={<Radio />} label="Large" />
+                            </RadioGroup>
+                        </FormControl>
+                        <div style={{ height: "140px", borderRight: "1px solid #bbb" }} />
+                        <FormControl style={{ margin: "0.5em" }}>
+                            <FormLabel>Prospect</FormLabel>
+                            <RadioGroup name="prospect" value={values.prospect} onChange={(e) => setFieldValue("prospect", e.target.value)}>
+                                <FormControlLabel value="true" control={<Radio />} label="Yes" />
+                                <FormControlLabel value="false" control={<Radio />} label="No" />
+                            </RadioGroup>
+                        </FormControl>
+                    </Box>
 
                     <Box textAlign="center" my={2}>
                         <Button

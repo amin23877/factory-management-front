@@ -16,7 +16,8 @@ import { getClients, deleteClient } from "../api/client";
 import { getAllModelNotes } from "../api/note";
 import { getAllModelDocuments } from "../api/document";
 import { getAllModelAddress } from "../api/address";
-import { getAllModelAgency } from "../api/agency";
+import { getAllAgencies } from "../api/agency";
+import { getClientDivisons } from "../api/division";
 
 import { AddClientModal } from "../features/Modals/ClientModals";
 import { AllClientTypesModal } from "../features/Modals/ClientType";
@@ -28,6 +29,7 @@ import { NoteModal } from "../features/Modals/NoteModals";
 import { DocumentModal, EditDocumentModal } from "../features/Modals/DocumentModals";
 import { AddressModal } from "../features/Modals/AddressModal";
 import { AgencyModal } from "../features/Modals/AgencyModal";
+import { DivisionModal } from "../features/Modals/DivisionModal";
 
 import ClientDetails from "../features/ClientDetails";
 import ClientOverview from "../features/ClientOverview";
@@ -42,6 +44,7 @@ export default function Clients() {
     const [docs, setDocs] = useState([]);
     const [addrs, setAddrs] = useState([]);
     const [agencies, setAgencies] = useState([]);
+    const [divisions, setDivisions] = useState([]);
 
     const [selectedRow, setSelectedRow] = useState<any>(null);
     const [selectedNote, setSelectedNote] = useState<any>(null);
@@ -56,6 +59,7 @@ export default function Clients() {
     const [addDocModal, setAddDocModal] = useState(false);
     const [addAddress, setAddAddress] = useState(false);
     const [addAgency, setAddAgency] = useState(false);
+    const [addDivision, setAddDivision] = useState(false);
 
     const [conf, setConf] = useState(false);
 
@@ -91,11 +95,23 @@ export default function Clients() {
 
     const refreshAgencies = async () => {
         if (selectedRow.id) {
-            const resp = await getAllModelAgency("client", selectedRow.id);
-            setAgencies(resp);
-            console.log("====================================");
-            console.log(resp);
-            console.log("====================================");
+            const resp = await getAllAgencies();
+            if (resp) {
+                setAgencies(resp.filter((a: any) => a.ClientId === selectedRow.id));
+            }
+        }
+    };
+
+    const refreshDivisions = async () => {
+        try {
+            if (selectedRow.id) {
+                const resp = await getClientDivisons(selectedRow.id);
+                if (resp) {
+                    setDivisions(resp);
+                }
+            }
+        } catch (error) {
+            console.log(error);
         }
     };
 
@@ -118,6 +134,7 @@ export default function Clients() {
             refreshDocs();
             refreshAddresses();
             refreshAgencies();
+            refreshDivisions();
         }
     }, [activeTab]);
 
@@ -148,6 +165,14 @@ export default function Clients() {
                 open={addAgency}
                 onClose={() => setAddAgency(false)}
                 onDone={refreshAgencies}
+            />
+            <DivisionModal
+                data={selectedAgency === null ? "" : selectedAgency}
+                itemId={selectedRow?.id}
+                model="client"
+                open={addDivision}
+                onClose={() => setAddDivision(false)}
+                onDone={refreshDivisions}
             />
 
             <NoteModal
@@ -209,7 +234,7 @@ export default function Clients() {
                         <Button onClick={() => setAddAgency(true)} title="Agency" variant="outlined" style={{ margin: "0.5em 0" }}>
                             <EqualizerOutlined />
                         </Button>
-                        <Button title="Division" variant="outlined" style={{ margin: "0.5em 0" }}>
+                        <Button onClick={() => setAddDivision(true)} title="Division" variant="outlined" style={{ margin: "0.5em 0" }}>
                             %
                         </Button>
                         <Button title="Email Address" variant="outlined" style={{ margin: "0.5em 0" }}>
@@ -250,7 +275,10 @@ export default function Clients() {
                         <ClientOverview
                             rows={clients}
                             onRowSelected={(v) => {
+                                console.log(v);
+
                                 setSelectedRow(v);
+                                setActiveTab(1);
                             }}
                         />
                     )}
@@ -260,6 +288,7 @@ export default function Clients() {
                             docs={docs}
                             addrs={addrs}
                             agencies={agencies}
+                            divisions={divisions}
                             onAgencySelected={setSelectedAgency}
                             onAddrSelected={setSelectedAddr}
                             onNoteSelected={setSelectedNote}

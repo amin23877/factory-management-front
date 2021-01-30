@@ -37,13 +37,17 @@ const EditClientForm = ({ data }: { data: any }) => {
         onSubmit: async (values, { setSubmitting }) => {
             try {
                 const resp = await editClient(data.id, values);
-                if (typeof resp === "object") {
+                console.log(resp);
+
+                if (resp.id) {
                     setShowSnack(true);
                     setMsg("Success");
                 } else {
                     setShowSnack(true);
-                    setMsg("Error " + resp);
+                    setMsg("Error " + resp.error);
                 }
+
+                setSubmitting(false);
             } catch (error) {
                 setShowSnack(true);
                 setMsg("Error " + error);
@@ -170,6 +174,7 @@ export default function ClientDetails({
     addrs,
     notes,
     docs,
+    divisions,
 }: {
     selectedRow: any;
     onNoteSelected: (v: any) => void;
@@ -180,6 +185,7 @@ export default function ClientDetails({
     addrs: any;
     notes: any;
     docs: any;
+    divisions: any;
 }) {
     const [activeTab, setActiveTab] = useState(0);
 
@@ -207,7 +213,8 @@ export default function ClientDetails({
                 <Tab label="Notes" />
                 <Tab label="Documents" />
                 <Tab label="Addresses" />
-                <Tab label="Agency" />
+                <Tab label="Agencies" />
+                <Tab label="Divisions" />
             </Tabs>
             <Box p={3}>
                 {activeTab === 0 && <BaseDataGrid height={250} cols={noteCols} rows={notes} onRowSelected={(v) => onNoteSelected(v)} />}
@@ -215,6 +222,9 @@ export default function ClientDetails({
                 {activeTab === 2 && <BaseDataGrid height={250} cols={addrCols} rows={addrs} onRowSelected={(v) => onAddrSelected(v)} />}
                 {activeTab === 3 && (
                     <BaseDataGrid height={250} cols={agencyCols} rows={agencies} onRowSelected={(v) => onAgencySelected(v)} />
+                )}
+                {activeTab === 4 && (
+                    <BaseDataGrid height={250} cols={agencyCols} rows={divisions} onRowSelected={(v) => onAddrSelected(v)} />
                 )}
             </Box>
         </BasePaper>

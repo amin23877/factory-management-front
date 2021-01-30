@@ -5,18 +5,18 @@ export interface IAgency {
     name:string
 }
 
-export const getAllModelAgency = async (model: string, id: string) => {
+export const getAllAgencies = async () => {
     try {
-        const resp = await Axios.get(`/agency/${model}/${id}`);
+        const resp = await Axios.get(`/agency`);
         return resp.data;
     } catch (e) {
         console.log(e);
     }
 };
 
-export const createAModelAgency = async (model: string, id: string, data: IAgency) => {
+export const createAModelAgency = async (id: string, name: string) => {
     try {
-        const resp = await Axios.post(`/agency/${model}/${id}`, data);
+        const resp = await Axios.post(`/agency`, {ClientId:id, name});
         return resp.data;
     } catch (e) {
         console.log(e);

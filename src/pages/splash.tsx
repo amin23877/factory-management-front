@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { useAuth } from "../store";
 import { Drawer, TextField, Button, Checkbox, FormControlLabel } from "@material-ui/core";
 
-import logo from "../assets/logo.png";
+import logo from "../assets/splogo.png";
 import { Gradients } from "../theme";
 import "../styles/splash.css";
 

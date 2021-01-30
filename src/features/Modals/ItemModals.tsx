@@ -99,7 +99,7 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
         getFamilies()
             .then((d) => setFamilies(d))
             .catch((e) => console.log(e));
-    }, []);
+    }, [open]);
 
     const specials = ["size", "active", "CategoryId", "TypeId", "FamilyId"];
     let form_inputs = [];

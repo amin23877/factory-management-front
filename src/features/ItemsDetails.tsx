@@ -16,6 +16,7 @@ import {
     MenuItem,
     Snackbar,
 } from "@material-ui/core";
+import { ColDef } from "@material-ui/data-grid";
 import { EditRounded, NoteRounded, FileCopyRounded, PrintRounded } from "@material-ui/icons";
 import { useFormik } from "formik";
 
@@ -24,13 +25,13 @@ import { AddItemInitialValues, AddItemSchema, updateAnItem } from "../api/items"
 import { getCategories } from "../api/category";
 import { getTypes } from "../api/types";
 import { getFamilies } from "../api/family";
+import { getAllModelNotes } from "../api/note";
+import { getAllModelDocuments } from "../api/document";
 
 import { NoteModal } from "./Modals/NoteModals";
 import { DocumentModal, EditDocumentModal } from "./Modals/DocumentModals";
 
-import { RecordNotes } from "./DataGrids/NoteDataGrids";
-import { RecordDocuments } from "./DataGrids/DocumentDataGrids";
-
+import BaseDataGrid from "../app/BaseDataGrid";
 import { BasePaper } from "../app/Paper";
 import { BaseSelect, BaseTextInput } from "../app/Inputs";
 import BOMModal from "./BOM/BomModal";
@@ -281,6 +282,44 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
         note: string;
         url?: string;
     });
+
+    const noteCols: ColDef[] = [
+        { field: "subject", headerName: "Subject" },
+        { field: "url", headerName: "URL" },
+        { field: "note", headerName: "Note", width: 300 },
+    ];
+
+    const docCols: ColDef[] = [
+        { field: "name", headerName: "Name" },
+        { field: "description", headerName: "Description", width: 250 },
+        { field: "createdAt", headerName: "Created at", width: 300 },
+    ];
+
+    const [notes, setNotes] = useState([]);
+    const [docs, setDocs] = useState([]);
+
+    const refreshNotes = async () => {
+        try {
+            const resp = await getAllModelNotes("item", selectedRow.id);
+            setNotes(resp);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const refreshDocs = async () => {
+        try {
+            const resp = await getAllModelDocuments("item", selectedRow.id);
+            setDocs(resp);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        refreshNotes();
+        refreshDocs();
+    }, []);
 
     const [selectedDoc, setSelectedDoc] = useState({ id: "", path: "", name: "" } as { id: any; path: string; name: string });
 
@@ -641,9 +680,10 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
                 </Tabs>
                 <Box p={3}>
                     {activeTab === 0 && (
-                        <RecordNotes
-                            model="item"
-                            itemId={selectedRow.id}
+                        <BaseDataGrid
+                            height={250}
+                            cols={noteCols}
+                            rows={notes}
                             onRowSelected={(d) => {
                                 console.log(d);
                                 setSelectedNote({ id: d.data.id, subject: d.data.subject, note: d.data.note, url: d.data.url });
@@ -651,9 +691,10 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
                         />
                     )}
                     {activeTab === 1 && (
-                        <RecordDocuments
-                            model="item"
-                            itemId={selectedRow.id}
+                        <BaseDataGrid
+                            height={250}
+                            cols={docCols}
+                            rows={docs}
                             onRowSelected={(d) => setSelectedDoc({ id: d.data.id, name: d.data.name, path: d.data.path })}
                         />
                     )}
