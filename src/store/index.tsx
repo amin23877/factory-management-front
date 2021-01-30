@@ -1,15 +1,22 @@
 import * as React from "react";
 import { ILogedinEmployee, login } from "../api/employee";
 
-const strName = "phocus_session";
+const StorageKey = "phocus_session";
+
+export const getToken = () => {
+    const emp = localStorage.getItem(StorageKey);
+    if (emp) {
+        return JSON.parse(emp).token;
+    }
+};
 
 interface IContext {
     employee: ILogedinEmployee | null;
-    Login: (d: { username: string; password: string }) => Promise<void>;
+    Login: (d: { username: string; password: string }) => any;
     Logout: () => void;
 }
 
-export const AuthContext = React.createContext<IContext | null>(null);
+export const AuthContext = React.createContext<IContext>({ employee: null, Login: () => {}, Logout: () => {} });
 
 export const ProvideAuth = ({ children }: { children: React.ReactNode }) => {
     const auth = useProvideAuth();
@@ -28,7 +35,7 @@ const useProvideAuth = () => {
         try {
             const resp = await login(data);
             if (resp.employee) {
-                localStorage.setItem(strName, JSON.stringify(resp));
+                localStorage.setItem(StorageKey, JSON.stringify(resp));
                 setEmployee(resp);
             }
         } catch (error) {
@@ -37,12 +44,12 @@ const useProvideAuth = () => {
     };
 
     const Logout = () => {
-        localStorage.removeItem(strName);
+        localStorage.removeItem(StorageKey);
         setEmployee(null);
     };
 
     React.useEffect(() => {
-        const emp = localStorage.getItem(strName);
+        const emp = localStorage.getItem(StorageKey);
         if (emp) {
             setEmployee(JSON.parse(emp));
         } else {

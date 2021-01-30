@@ -37,6 +37,15 @@ export const getAllEmployees = async () => {
     }
 }
 
+export const getEmployeeRoles = async (id:number) => {
+    try {
+        const resp = await Axios.get(`/employee/${id}/role`);
+        return resp.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const deleteEmployee = async (id:number) => {
     try {
         const resp = await Axios.delete(`/employee/${id}`);

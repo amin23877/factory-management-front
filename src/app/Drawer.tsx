@@ -10,11 +10,21 @@ import {
     ListItemIcon,
     makeStyles,
     useTheme,
-    Typography,
     ListItemText,
 } from "@material-ui/core";
-import { AlternateEmailRounded, DashboardRounded, SendRounded, BorderColorRounded, SettingsRounded, HomeRounded } from "@material-ui/icons";
+import {
+    AlternateEmailRounded,
+    AccountBoxRounded,
+    DashboardRounded,
+    SendRounded,
+    BorderColorRounded,
+    ExitToAppRounded,
+    HomeRounded,
+} from "@material-ui/icons";
 import { Link, useLocation, useHistory } from "react-router-dom";
+
+import { useAuth } from "../store";
+import Confirm from "../features/Modals/Confirm";
 
 import phazifyLogo from "../assets/phazify.png";
 import phocusLogo from "../assets/logo.png";
@@ -52,6 +62,11 @@ const drawerItems = [
         link: "/inventory",
         icon: <BorderColorRounded htmlColor="#bbb" />,
     },
+    {
+        name: "Roles",
+        link: "/roles",
+        icon: <AccountBoxRounded htmlColor="#bbb" />,
+    },
 ];
 
 const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boolean; onToggle: () => void }) => {
@@ -69,47 +84,61 @@ const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boole
         },
     }));
 
-    const theme = useTheme();
+    const [confirm, setConfirm] = useState(false);
     const classes = useStyles();
     const location = useLocation();
+    const auth = useAuth();
 
     return (
-        <nav style={{ width, flexShrink: 0 }}>
-            <Drawer variant="permanent" style={{ width }} classes={{ paper: classes.drawerPaper }} anchor="left">
-                <div className={classes.toolbar} style={{ backgroundColor: "transparent" }}>
-                    <img src={phocusLogo} alt="Phocus" style={{ width: "80%", height: "auto" }} />
-                </div>
-                <Divider />
-                <List style={{ marginBottom: "auto" }}>
-                    {drawerItems.map((item, i) => (
-                        <Link key={i} to={item.link} style={{ textDecoration: "none" }}>
-                            <ListItem
-                                style={{
-                                    color: location.pathname === item.link ? "#fff" : "#848484",
-                                }}
-                            >
-                                <ListItemIcon
+        <>
+            <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={auth.Logout} />
+            <nav style={{ width, flexShrink: 0 }}>
+                <Drawer variant="permanent" style={{ width }} classes={{ paper: classes.drawerPaper }} anchor="left">
+                    <div className={classes.toolbar} style={{ backgroundColor: "transparent" }}>
+                        <img src={phocusLogo} alt="Phocus" style={{ width: "80%", height: "auto" }} />
+                    </div>
+                    <Divider />
+                    <List style={{ marginBottom: "auto" }}>
+                        {drawerItems.map((item, i) => (
+                            <Link key={i} to={item.link} style={{ textDecoration: "none" }}>
+                                <ListItem
                                     style={{
                                         color: location.pathname === item.link ? "#fff" : "#848484",
                                     }}
                                 >
-                                    {item.icon}
-                                </ListItemIcon>
-                                <ListItemText> {item.name} </ListItemText>
-                            </ListItem>
-                        </Link>
-                    ))}
-                </List>
-                {/* <Divider /> */}
-                <div style={{ textAlign: "center" }}>
-                    <img
-                        alt="Phazify"
-                        src={phazifyLogo}
-                        style={{ background: "rgba(145, 145, 145, 0.21)", padding: "0 1em", borderRadius: "0.4em" }}
-                    />
-                </div>
-            </Drawer>
-        </nav>
+                                    <ListItemIcon>{item.icon}</ListItemIcon>
+                                    <ListItemText> {item.name} </ListItemText>
+                                </ListItem>
+                            </Link>
+                        ))}
+                        <ListItem
+                            button
+                            onClick={() => setConfirm(true)}
+                            style={{
+                                color: "#848484",
+                            }}
+                        >
+                            <ListItemIcon
+                                style={{
+                                    color: "#848484",
+                                }}
+                            >
+                                <ExitToAppRounded />
+                            </ListItemIcon>
+                            <ListItemText> Logout </ListItemText>
+                        </ListItem>
+                    </List>
+                    {/* <Divider /> */}
+                    <div style={{ textAlign: "center" }}>
+                        <img
+                            alt="Phazify"
+                            src={phazifyLogo}
+                            style={{ background: "rgba(145, 145, 145, 0.21)", padding: "0 1em", borderRadius: "0.4em" }}
+                        />
+                    </div>
+                </Drawer>
+            </nav>
+        </>
     );
 };
 

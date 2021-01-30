@@ -20,7 +20,7 @@ export default function SplashScreen() {
 
     const handleSubmit = async (data: any, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
         try {
-            const resp = await auth?.Login(data);
+            const resp = await auth.Login(data);
             if (resp) {
                 console.log(resp, auth);
             }

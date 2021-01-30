@@ -98,22 +98,24 @@ export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClo
                     <FormControl fullWidth>
                         <FormLabel>Parent</FormLabel>
                         <BaseSelect fullWidth onChange={(e) => setFieldValue("parent", e.target.value)} value={values.parent}>
-                            {clients.map((c: any) => (
-                                <MenuItem key={c.id} value={c.id}>
-                                    {c.name}
-                                </MenuItem>
-                            ))}
+                            {clients &&
+                                clients.map((c: any) => (
+                                    <MenuItem key={c.id} value={c.id}>
+                                        {c.name}
+                                    </MenuItem>
+                                ))}
                         </BaseSelect>
                     </FormControl>
 
                     <FormControl fullWidth>
                         <FormLabel>Client Type</FormLabel>
                         <BaseSelect fullWidth onChange={(e) => setFieldValue("ClientTypeId", e.target.value)} value={values.ClientTypeId}>
-                            {clientTypes.map((c: any) => (
-                                <MenuItem key={c.id} value={c.id}>
-                                    {c.name}
-                                </MenuItem>
-                            ))}
+                            {clientTypes &&
+                                clientTypes.map((c: any) => (
+                                    <MenuItem key={c.id} value={c.id}>
+                                        {c.name}
+                                    </MenuItem>
+                                ))}
                         </BaseSelect>
                     </FormControl>
 

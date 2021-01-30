@@ -15,6 +15,7 @@ import Clients from "./pages/Clients";
 import Sales from "./pages/Sales";
 import Inventory from "./pages/Inventory";
 import Settings from "./pages/Settings";
+import Roles from "./pages/Roles";
 import Page404 from "./pages/404";
 
 // Delete this after useing baseurl somewhere
@@ -54,6 +55,7 @@ function App() {
                                     <Route exact path="/sales" component={Sales} />
                                     <Route exact path="/inventory" component={Inventory} />
                                     <Route exact path="/settings" component={Settings} />
+                                    <Route exact path="/roles" component={Roles} />
                                     <Route exact path="*" component={Page404} />
                                 </Switch>
                             </Box>
