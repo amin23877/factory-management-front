@@ -1,85 +1,9 @@
-import React, { FormEvent, useEffect, useState } from "react";
-import { Dialog, Box, TextField, Button, MenuItem, DialogTitle, List, ListItem } from "@material-ui/core";
+import React from "react";
+import { Dialog, Box, TextField, Button, DialogTitle } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
-import { getRoles } from "../../api/role";
-import { addRoleToEmployee, getEmployeeRoles } from "../../api/employee";
-
-import { BaseSelect } from "../../app/Inputs";
 import { addEmployee } from "../../api/employee";
-
-export const EmployeeDetailsModal = ({
-    open,
-    onClose,
-    employee,
-}: {
-    open: boolean;
-    onClose: () => void;
-    employee: { id: number; username: string };
-}) => {
-    const [role, setRole] = useState(0);
-    const [roles, setRoles] = useState([]);
-    const [empRoles, setEmpRoles] = useState([]);
-
-    const refreshEmpRoles = async () => {
-        try {
-            const resp = await getEmployeeRoles(employee.id);
-            if (resp) {
-                console.log(resp);
-
-                setEmpRoles(resp);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    useEffect(() => {
-        getRoles()
-            .then((d) => setRoles(d))
-            .catch((e) => console.log(e));
-        refreshEmpRoles();
-    }, [employee]);
-
-    const handleSubmit = async (e: FormEvent) => {
-        e.preventDefault();
-        try {
-            const resp = await addRoleToEmployee(employee.id, role);
-            if (resp) {
-                refreshEmpRoles();
-            }
-            console.log(resp);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    return (
-        <Dialog open={open} onClose={onClose}>
-            <DialogTitle>{employee.username}'s details</DialogTitle>
-            <Box m={2}>
-                <form onSubmit={handleSubmit}>
-                    <Box display="flex" alignItems="center">
-                        <BaseSelect onChange={(e: any) => setRole(e.target.value)}>
-                            {roles.map((r: any) => (
-                                <MenuItem key={r.id} value={r.id}>
-                                    {r.name}
-                                </MenuItem>
-                            ))}
-                        </BaseSelect>
-                        <Button type="submit">Add</Button>
-                    </Box>
-                </form>
-                <List>
-                    {empRoles.map((er: any) => (
-                        <ListItem key={er.id}>{er.name}</ListItem>
-                    ))}
-                </List>
-            </Box>
-        </Dialog>
-    );
-};
 
 export const AddEmployeeModal = ({ open, onClose, onDone }: { open: boolean; onClose: () => void; onDone: () => void }) => {
     const schema = Yup.object().shape({

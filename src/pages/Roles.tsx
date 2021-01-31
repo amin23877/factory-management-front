@@ -7,6 +7,7 @@ import { addRoleToEmployee, deleteRoleFromEmployee } from "../api/employee";
 
 import { AddEmployeeModal } from "../features/Modals/EmployeeModal";
 import { AddRoleModal } from "../features/Modals/RoleModals";
+import RoleManagement from "../features/Modals/RoleManagement";
 
 import { BasePaper } from "../app/Paper";
 import Snack from "../app/Snack";
@@ -14,6 +15,7 @@ import Snack from "../app/Snack";
 export default function Roles() {
     const [addEmpModal, setAddEmpModal] = useState(false);
     const [addRoleModal, setAddRoleModal] = useState(false);
+    const [roleManagement, setRoleManagement] = useState(false);
 
     const [snack, setSnack] = useState(false);
     const [msg, setMsg] = useState("");
@@ -68,6 +70,7 @@ export default function Roles() {
         <>
             <AddEmployeeModal open={addEmpModal} onClose={() => setAddEmpModal(false)} onDone={refreshEmpsRoles} />
             <AddRoleModal open={addRoleModal} onClose={() => setAddRoleModal(false)} />
+            <RoleManagement open={roleManagement} onClose={() => setRoleManagement(false)} />
 
             <Snack open={snack} onClose={() => setSnack(false)}>
                 {msg}
@@ -77,6 +80,7 @@ export default function Roles() {
                 <Box display="flex" my={2}>
                     <Button onClick={() => setAddEmpModal(true)}>Add Employee</Button>
                     <Button onClick={() => setAddRoleModal(true)}>Add Role</Button>
+                    <Button onClick={() => setRoleManagement(true)}>Manage Roles</Button>
                 </Box>
                 <BasePaper>
                     <List>
