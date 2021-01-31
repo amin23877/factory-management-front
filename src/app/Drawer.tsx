@@ -100,7 +100,7 @@ const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boole
                     <Divider />
                     <List style={{ marginBottom: "auto" }}>
                         {drawerItems.map((item, i) => (
-                            <Link key={i} to={item.link} style={{ textDecoration: "none" }}>
+                            <Link key={i} to={item.link} style={{ textDecoration: "none", border: "none", outline: "none" }}>
                                 <ListItem
                                     style={{
                                         color: location.pathname === item.link ? "#fff" : "#848484",
