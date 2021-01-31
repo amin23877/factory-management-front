@@ -1,8 +1,9 @@
 import Axios from "axios";
 
-interface IEmailAddress {
+export interface IEmailAddress {
+    id?: number,
     email: string;
-    main?: string;
+    main?: boolean;
     EmailTypeId: number;
 }
 
@@ -24,7 +25,7 @@ export const createAModelEmailAddr = async (model: string, id: string, data: IEm
     }
 };
 
-export const updateAModelEmailAddr = async (id: string, data: IEmailAddress) => {
+export const updateAModelEmailAddr = async (id: number, data: IEmailAddress) => {
     try {
         const resp = await Axios.patch(`/emailAddress/${id}`, data);
         return resp.data;

@@ -18,6 +18,9 @@ import { getAllModelDocuments } from "../api/document";
 import { getAllModelAddress } from "../api/address";
 import { getAllAgencies } from "../api/agency";
 import { getClientDivisons } from "../api/division";
+import { getAllModelPhone } from "../api/phone";
+import { getAllModelEmailAddrs } from "../api/emailAddress";
+import { getAllModelContact } from "../api/contact";
 
 import { AddClientModal } from "../features/Modals/ClientModals";
 import { AllClientTypesModal } from "../features/Modals/ClientType";
@@ -30,6 +33,9 @@ import { DocumentModal, EditDocumentModal } from "../features/Modals/DocumentMod
 import { AddressModal } from "../features/Modals/AddressModal";
 import { AgencyModal } from "../features/Modals/AgencyModal";
 import { DivisionModal } from "../features/Modals/DivisionModal";
+import { PhoneModal } from "../features/Modals/PhoneModal";
+import { EmailModal } from "../features/Modals/EmailModal";
+import { ContactModal } from "../features/Modals/ContactModal";
 
 import ClientDetails from "../features/ClientDetails";
 import ClientOverview from "../features/ClientOverview";
@@ -45,6 +51,9 @@ export default function Clients() {
     const [addrs, setAddrs] = useState([]);
     const [agencies, setAgencies] = useState([]);
     const [divisions, setDivisions] = useState([]);
+    const [phones, setPhones] = useState([]);
+    const [emails, setEmails] = useState([]);
+    const [contacts, setContacts] = useState([]);
 
     const [selectedRow, setSelectedRow] = useState<any>(null);
     const [selectedNote, setSelectedNote] = useState<any>(null);
@@ -60,6 +69,9 @@ export default function Clients() {
     const [addAddress, setAddAddress] = useState(false);
     const [addAgency, setAddAgency] = useState(false);
     const [addDivision, setAddDivision] = useState(false);
+    const [addPhone, setAddPhone] = useState(false);
+    const [addEmail, setAddEmail] = useState(false);
+    const [addContact, setAddContact] = useState(false);
 
     const [conf, setConf] = useState(false);
 
@@ -115,6 +127,33 @@ export default function Clients() {
         }
     };
 
+    const refreshPhones = async () => {
+        try {
+            const resp = await getAllModelPhone("client", selectedRow.id);
+            setPhones(resp);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const refreshEmails = async () => {
+        try {
+            const resp = await getAllModelEmailAddrs("client", selectedRow.id);
+            setEmails(resp);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const refreshContacts = async () => {
+        try {
+            const resp = await getAllModelContact("client", selectedRow.id);
+            setContacts(resp);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const handleDelete = async () => {
         try {
             const resp = await deleteClient(selectedRow.id);
@@ -135,6 +174,9 @@ export default function Clients() {
             refreshAddresses();
             refreshAgencies();
             refreshDivisions();
+            refreshPhones();
+            refreshEmails();
+            refreshContacts();
         }
     }, [activeTab]);
 
@@ -173,6 +215,30 @@ export default function Clients() {
                 open={addDivision}
                 onClose={() => setAddDivision(false)}
                 onDone={refreshDivisions}
+            />
+            <PhoneModal
+                data={selectedAgency === null ? "" : selectedAgency}
+                itemId={selectedRow?.id}
+                model="client"
+                open={addPhone}
+                onClose={() => setAddPhone(false)}
+                onDone={refreshPhones}
+            />
+            <EmailModal
+                data={selectedAgency === null ? "" : selectedAgency}
+                itemId={selectedRow?.id}
+                model="client"
+                open={addEmail}
+                onClose={() => setAddEmail(false)}
+                onDone={refreshEmails}
+            />
+            <ContactModal
+                data={selectedAgency === null ? "" : selectedAgency}
+                itemId={selectedRow?.id}
+                model="client"
+                open={addContact}
+                onClose={() => setAddContact(false)}
+                onDone={refreshContacts}
             />
 
             <NoteModal
@@ -237,14 +303,14 @@ export default function Clients() {
                         <Button onClick={() => setAddDivision(true)} title="Division" variant="outlined" style={{ margin: "0.5em 0" }}>
                             %
                         </Button>
-                        <Button title="Email Address" variant="outlined" style={{ margin: "0.5em 0" }}>
+                        <Button onClick={() => setAddPhone(true)} title="Phone" variant="outlined" style={{ margin: "0.5em 0" }}>
+                            <PhoneOutlined />
+                        </Button>
+                        <Button onClick={() => setAddEmail(true)} title="Email Address" variant="outlined" style={{ margin: "0.5em 0" }}>
                             <MailOutline />
                         </Button>
-                        <Button title="Contact" variant="outlined" style={{ margin: "0.5em 0" }}>
+                        <Button onClick={() => setAddContact(true)} title="Contact" variant="outlined" style={{ margin: "0.5em 0" }}>
                             <ContactMailOutlined />
-                        </Button>
-                        <Button title="Phone" variant="outlined" style={{ margin: "0.5em 0" }}>
-                            <PhoneOutlined />
                         </Button>
                     </Box>
                 </Grid>
@@ -289,6 +355,9 @@ export default function Clients() {
                             addrs={addrs}
                             agencies={agencies}
                             divisions={divisions}
+                            phones={phones}
+                            emails={emails}
+                            contacts={contacts}
                             onAgencySelected={setSelectedAgency}
                             onAddrSelected={setSelectedAddr}
                             onNoteSelected={setSelectedNote}

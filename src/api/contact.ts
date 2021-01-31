@@ -1,6 +1,7 @@
 import Axios from "axios";
 
-interface IContact {
+export interface IContact {
+    id?: number,
     firstName:string,
     lastName:string,
     title:string,
@@ -10,11 +11,11 @@ interface IContact {
     facebook:string,
     instagram:string,
     website:string,
-    optout:string,
+    optout:boolean,
     mi:string,
     prefix:string,
     active:boolean,
-    main:string,
+    main:boolean,
     ContactTypeId:number
 }
 
@@ -36,7 +37,7 @@ export const createAModelContact = async (model: string, id: string, data: ICont
     }
 };
 
-export const updateAModelContact = async (id: string, data: IContact) => {
+export const updateAModelContact = async (id: number, data: IContact) => {
     try {
         const resp = await Axios.patch(`/contact/${id}`, data);
         return resp.data;

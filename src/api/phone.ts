@@ -1,9 +1,10 @@
 import Axios from "axios";
 
-interface IPhone {
+export interface IPhone {
+    id?:number,
     phone:string,
     ext:string,
-    main:string,
+    main:boolean,
     PhoneTypeId:number
 }
 
@@ -25,7 +26,7 @@ export const createAModelPhone = async (model: string, id: string, data: IPhone)
     }
 };
 
-export const updateAModelPhone = async (id: string, data: IPhone) => {
+export const updateAModelPhone = async (id: number, data: IPhone) => {
     try {
         const resp = await Axios.patch(`/phone/${id}`, data);
         return resp.data;

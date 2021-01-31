@@ -25,6 +25,7 @@ import { BaseSelect } from "../app/Inputs";
 import { BasePaper } from "../app/Paper";
 
 import BaseDataGrid from "../app/BaseDataGrid";
+import { IPhone } from "../api/phone";
 
 const EditClientForm = ({ data }: { data: any }) => {
     const [clients, setClients] = useState([]);
@@ -175,6 +176,9 @@ export default function ClientDetails({
     notes,
     docs,
     divisions,
+    phones,
+    emails,
+    contacts,
 }: {
     selectedRow: any;
     onNoteSelected: (v: any) => void;
@@ -186,6 +190,9 @@ export default function ClientDetails({
     notes: any;
     docs: any;
     divisions: any;
+    phones: any;
+    emails: any;
+    contacts: any;
 }) {
     const [activeTab, setActiveTab] = useState(0);
 
@@ -205,16 +212,34 @@ export default function ClientDetails({
 
     const agencyCols: ColDef[] = [{ field: "name" }];
 
+    const phoneCols: ColDef[] = [{ field: "ext" }, { field: "phone" }, { field: "main" }, { field: "PhoneTypeId" }];
+
+    const emailCols: ColDef[] = [{ field: "email" }, { field: "main" }];
+
+    const contactsCols: ColDef[] = [
+        { field: "firstName" },
+        { field: "lastName" },
+        { field: "title" },
+        { field: "department" },
+        { field: "instagram" },
+        { field: "website" },
+        { field: "active" },
+        { field: "main" },
+    ];
+
     return (
         <BasePaper>
             <EditClientForm data={selectedRow} />
 
-            <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} variant="fullWidth">
+            <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} variant="scrollable">
                 <Tab label="Notes" />
                 <Tab label="Documents" />
                 <Tab label="Addresses" />
                 <Tab label="Agencies" />
                 <Tab label="Divisions" />
+                <Tab label="Phones" />
+                <Tab label="Emails" />
+                <Tab label="Contacts" />
             </Tabs>
             <Box p={3}>
                 {activeTab === 0 && <BaseDataGrid height={250} cols={noteCols} rows={notes} onRowSelected={(v) => onNoteSelected(v)} />}
@@ -223,9 +248,10 @@ export default function ClientDetails({
                 {activeTab === 3 && (
                     <BaseDataGrid height={250} cols={agencyCols} rows={agencies} onRowSelected={(v) => onAgencySelected(v)} />
                 )}
-                {activeTab === 4 && (
-                    <BaseDataGrid height={250} cols={agencyCols} rows={divisions} onRowSelected={(v) => onAddrSelected(v)} />
-                )}
+                {activeTab === 4 && <BaseDataGrid height={250} cols={agencyCols} rows={divisions} onRowSelected={(v) => v} />}
+                {activeTab === 5 && <BaseDataGrid height={250} cols={phoneCols} rows={phones} onRowSelected={(v) => v} />}
+                {activeTab === 6 && <BaseDataGrid height={250} cols={emailCols} rows={emails} onRowSelected={(v) => v} />}
+                {activeTab === 7 && <BaseDataGrid height={250} cols={contactsCols} rows={contacts} onRowSelected={(v) => v} />}
             </Box>
         </BasePaper>
     );

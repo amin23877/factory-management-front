@@ -1,24 +1,8 @@
-import React, { useState, useEffect } from "react";
-import {
-    Dialog,
-    useTheme,
-    DialogTitle,
-    Box,
-    Button,
-    TextField,
-    MenuItem,
-    CircularProgress,
-    FormControlLabel,
-    FormLabel,
-    RadioGroup,
-    Radio,
-    FormControl,
-} from "@material-ui/core";
+import React from "react";
+import { Dialog, useTheme, DialogTitle, Box, Button, TextField, CircularProgress } from "@material-ui/core";
 
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-
-import { BaseSelect } from "../../app/Inputs";
 
 import { createAModelAgency, deleteAModelAgency, updateAModelAgency, IAgency } from "../../api/agency";
 
@@ -85,7 +69,7 @@ export const AgencyModal = ({
 
                             <Box my={2} textAlign="center">
                                 <Button type="submit" color="primary" disabled={isSubmitting} variant="contained">
-                                    Save Note
+                                    Save
                                     {isSubmitting && <CircularProgress style={{ margin: "0 0.5em" }} />}
                                 </Button>
                                 {data?.id && (
@@ -104,7 +88,7 @@ export const AgencyModal = ({
                                             }
                                         }}
                                     >
-                                        Delete this note
+                                        Delete
                                     </Button>
                                 )}
                             </Box>
