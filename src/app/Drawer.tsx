@@ -15,6 +15,7 @@ import {
 import {
     AlternateEmailRounded,
     AccountBoxRounded,
+    AccountTreeRounded,
     DashboardRounded,
     SendRounded,
     BorderColorRounded,
@@ -66,6 +67,11 @@ const drawerItems = [
         name: "Roles",
         link: "/roles",
         icon: <AccountBoxRounded htmlColor="#bbb" />,
+    },
+    {
+        name: "Projects",
+        link: "/projects",
+        icon: <AccountTreeRounded htmlColor="#bbb" />,
     },
 ];
 
