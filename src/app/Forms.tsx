@@ -113,14 +113,16 @@ export const GeneralForm = ({
                                 e.preventDefault();
                                 handleAdd();
                             }}
+                            style={{ width: "100%" }}
                         >
-                            <Box width="100%" display="flex" alignItems="center">
+                            <Box width="100%" display="flex">
                                 <TextField
                                     fullWidth
                                     value={addName}
                                     onChange={(e) => setAddName(e.target.value)}
                                     variant="outlined"
-                                    label={`${type} name`}
+                                    inputProps={{ style: { padding: 14 } }}
+                                    placeholder={`${type} name`}
                                 />
                                 <Button
                                     type="submit"
@@ -128,7 +130,7 @@ export const GeneralForm = ({
                                     variant="contained"
                                     onClick={handleAdd}
                                     color="primary"
-                                    style={{ background: Gradients.success }}
+                                    style={{ background: Gradients.success, margin: "0.5em 0" }}
                                 >
                                     Add
                                 </Button>
@@ -144,6 +146,7 @@ export const GeneralForm = ({
                                 e.preventDefault();
                                 handleEdit();
                             }}
+                            style={{ width: "100%" }}
                         >
                             <Box width="100%" display="flex" alignItems="center">
                                 <BaseSelect value={selectedData} onChange={(e: any) => setSelectedData(e.target.value)}>
@@ -158,7 +161,8 @@ export const GeneralForm = ({
                                     value={editName}
                                     onChange={(e) => setEditName(e.target.value)}
                                     fullWidth
-                                    label="New Category Name"
+                                    inputProps={{ style: { padding: 14 } }}
+                                    placeholder={`New ${type} name`}
                                 />
                                 <Button
                                     type="submit"
@@ -166,7 +170,7 @@ export const GeneralForm = ({
                                     variant="contained"
                                     onClick={handleEdit}
                                     color="primary"
-                                    style={{ background: Gradients.info }}
+                                    style={{ background: Gradients.info, padding: "0.8em 0" }}
                                 >
                                     Save
                                 </Button>
@@ -182,8 +186,9 @@ export const GeneralForm = ({
                                 e.preventDefault();
                                 handleDelete();
                             }}
+                            style={{ width: "100%" }}
                         >
-                            <Box width="100%" display="flex" alignItems="center">
+                            <Box width="100%" display="flex">
                                 <BaseSelect
                                     value={selectedData}
                                     onChange={(e: any) => setSelectedData(e.target.value)}
@@ -202,7 +207,7 @@ export const GeneralForm = ({
                                     variant="contained"
                                     onClick={handleDelete}
                                     color="primary"
-                                    style={{ background: Gradients.error }}
+                                    style={{ background: Gradients.error, margin: "0.5em 0" }}
                                 >
                                     Delete
                                 </Button>

@@ -10,7 +10,7 @@ export const BasePaper = withStyles((theme) => ({
         flexDirection: "column",
         justifyContent: "center",
     },
-}))((props: PaperProps) => <Paper {...props} elevation={0} />);
+}))((props: PaperProps) => <Paper {...props} />);
 
 export const IconPaper = withStyles((theme) => ({
     root: {

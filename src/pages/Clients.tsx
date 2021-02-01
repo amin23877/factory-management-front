@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Container, Box, Grid, Button } from "@material-ui/core";
+import { Container, Box, Grid, Button, IconButton } from "@material-ui/core";
 import {
     AddRounded,
     DeleteRounded,
     DescriptionRounded,
+    BackspaceRounded,
     PrintRounded,
     MapOutlined,
     EqualizerOutlined,
@@ -185,7 +186,7 @@ export default function Clients() {
     }, []);
 
     return (
-        <Container style={{ padding: "1em 0" }}>
+        <Container style={{ maxWidth: 1270 }}>
             <Confirm open={conf} onClose={() => setConf(false)} onConfirm={handleDelete} />
 
             <AddClientModal open={addClientModal} onClose={() => setAddClientModal(false)} onDone={refreshClients} />
@@ -273,9 +274,37 @@ export default function Clients() {
                 onDone={refreshDocs}
             />
 
-            <Grid container spacing={3}>
+            <Box my={2} display="flex" style={{ position: "sticky", top: 80, borderRadius: "1em", backgroundColor: "#eee", zIndex: 5 }}>
+                <Box display="flex" flex={1} justifyContent="space-around">
+                    {activeTab === 1 && (
+                        <IconButton onClick={() => setActiveTab(0)}>
+                            <BackspaceRounded />
+                        </IconButton>
+                    )}
+                    <Button onClick={() => setCTypeModal(true)}>All Types</Button>
+                    <Button onClick={() => setAddNoteModal(true)} disabled={!selectedRow}>
+                        + Add new Note
+                    </Button>
+                    <Button onClick={() => setEditNoteModal(true)} disabled={!selectedNote}>
+                        Edit / Delete Note
+                    </Button>
+                    <Button onClick={() => setAddDocModal(true)} disabled={!selectedRow}>
+                        + Add Document
+                    </Button>
+                    <Button onClick={() => setEditDocModal(true)} disabled={!selectedDoc}>
+                        Edit / Delete Document
+                    </Button>
+                </Box>
+
+                <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                    <MyTab label="Overview" />
+                    <MyTab label="Details" disabled={Boolean(selectedRow === null)} />
+                </MyTabs>
+            </Box>
+
+            <Grid container>
                 <Grid item xs={1}>
-                    <Box px={1} display="flex" flexDirection="column" my={2}>
+                    <Box px={1} display="flex" flexDirection="column">
                         <Button onClick={() => setAddClientModal(true)} title="Add item" variant="outlined" style={{ margin: "0.5em 0" }}>
                             <AddRounded />
                         </Button>
@@ -315,28 +344,6 @@ export default function Clients() {
                     </Box>
                 </Grid>
                 <Grid item xs={11}>
-                    <Box my={2} display="flex">
-                        <Box display="flex" flex={1} justifyContent="space-around">
-                            <Button onClick={() => setCTypeModal(true)}>All Types</Button>
-                            <Button onClick={() => setAddNoteModal(true)} disabled={!selectedRow}>
-                                + Add new Note
-                            </Button>
-                            <Button onClick={() => setEditNoteModal(true)} disabled={!selectedNote}>
-                                Edit / Delete Note
-                            </Button>
-                            <Button onClick={() => setAddDocModal(true)} disabled={!selectedRow}>
-                                + Add Document
-                            </Button>
-                            <Button onClick={() => setEditDocModal(true)} disabled={!selectedDoc}>
-                                Edit / Delete Document
-                            </Button>
-                        </Box>
-
-                        <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
-                            <MyTab label="Overview" />
-                            <MyTab label="Details" disabled={Boolean(selectedRow === null)} />
-                        </MyTabs>
-                    </Box>
                     {activeTab === 0 && (
                         <ClientOverview
                             rows={clients}

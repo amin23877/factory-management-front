@@ -25,7 +25,6 @@ import { BaseSelect } from "../app/Inputs";
 import { BasePaper } from "../app/Paper";
 
 import BaseDataGrid from "../app/BaseDataGrid";
-import { IPhone } from "../api/phone";
 
 const EditClientForm = ({ data }: { data: any }) => {
     const [clients, setClients] = useState([]);
@@ -114,52 +113,68 @@ const EditClientForm = ({ data }: { data: any }) => {
                     ))}
                 </Box>
                 <Box display="flex">
-                    <FormControl fullWidth>
-                        <FormLabel>Parent</FormLabel>
-                        <BaseSelect fullWidth onChange={(e) => setFieldValue("parent", e.target.value)} value={values.parent}>
-                            {clients.map((c: any) => (
-                                <MenuItem key={c.id} value={c.id}>
-                                    {c.name}
-                                </MenuItem>
-                            ))}
-                        </BaseSelect>
-                    </FormControl>
+                    <Box display="flex" flexDirection="column" flex={1}>
+                        <FormControl fullWidth>
+                            <FormLabel>Parent</FormLabel>
+                            <BaseSelect fullWidth onChange={(e) => setFieldValue("parent", e.target.value)} value={values.parent}>
+                                {clients.map((c: any) => (
+                                    <MenuItem key={c.id} value={c.id}>
+                                        {c.name}
+                                    </MenuItem>
+                                ))}
+                            </BaseSelect>
+                        </FormControl>
 
-                    <FormControl fullWidth>
-                        <FormLabel>Client Type</FormLabel>
-                        <BaseSelect fullWidth onChange={(e) => setFieldValue("ClientTypeId", e.target.value)} value={values.ClientTypeId}>
-                            {clientTypes.map((c: any) => (
-                                <MenuItem key={c.id} value={c.id}>
-                                    {c.name}
-                                </MenuItem>
-                            ))}
-                        </BaseSelect>
-                    </FormControl>
+                        <FormControl fullWidth>
+                            <FormLabel>Client Type</FormLabel>
+                            <BaseSelect
+                                fullWidth
+                                onChange={(e) => setFieldValue("ClientTypeId", e.target.value)}
+                                value={values.ClientTypeId}
+                            >
+                                {clientTypes.map((c: any) => (
+                                    <MenuItem key={c.id} value={c.id}>
+                                        {c.name}
+                                    </MenuItem>
+                                ))}
+                            </BaseSelect>
+                        </FormControl>
+                    </Box>
 
-                    <FormControl fullWidth style={{ margin: "0.5em" }}>
-                        <FormLabel>Size</FormLabel>
-                        <RadioGroup name="size" value={values.size} onChange={(e) => setFieldValue("size", e.target.value)}>
-                            <FormControlLabel value="small" control={<Radio />} label="Small" />
-                            <FormControlLabel value="medium" control={<Radio />} label="Medium" />
-                            <FormControlLabel value="large" control={<Radio />} label="Large" />
-                        </RadioGroup>
-                    </FormControl>
+                    <Box display="flex" flexDirection="column" justifyContent="center" ml={1} flex={1}>
+                        <FormControl fullWidth style={{ margin: "0.5em" }}>
+                            <FormLabel>Size</FormLabel>
+                            <RadioGroup
+                                style={{ display: "flex", flexDirection: "row" }}
+                                name="size"
+                                value={values.size}
+                                onChange={(e) => setFieldValue("size", e.target.value)}
+                            >
+                                <FormControlLabel value="small" control={<Radio />} label="Small" />
+                                <FormControlLabel value="medium" control={<Radio />} label="Medium" />
+                                <FormControlLabel value="large" control={<Radio />} label="Large" />
+                            </RadioGroup>
+                        </FormControl>
 
-                    <FormControl fullWidth style={{ margin: "0.5em" }}>
-                        <FormLabel>Prospect</FormLabel>
-                        <RadioGroup
-                            name="prospect"
-                            value={values.prospect}
-                            onChange={(e) => setFieldValue("prospect", e.target.value === "true")}
-                        >
-                            <FormControlLabel value={true} control={<Radio />} label="Yes" />
-                            <FormControlLabel value={false} control={<Radio />} label="No" />
-                        </RadioGroup>
-                    </FormControl>
+                        <FormControl fullWidth style={{ margin: "0.5em" }}>
+                            <FormLabel>Prospect</FormLabel>
+                            <RadioGroup
+                                style={{ display: "flex", flexDirection: "row" }}
+                                name="prospect"
+                                value={values.prospect}
+                                onChange={(e) => setFieldValue("prospect", e.target.value === "true")}
+                            >
+                                <FormControlLabel value={true} control={<Radio />} label="Yes" />
+                                <FormControlLabel value={false} control={<Radio />} label="No" />
+                            </RadioGroup>
+                        </FormControl>
+                    </Box>
+                    <Box display="flex" alignItems="center">
+                        <Button type="submit" variant="contained" color="primary" style={{ background: Gradients.success }}>
+                            Save
+                        </Button>
+                    </Box>
                 </Box>
-                <Button type="submit" variant="contained" color="primary" style={{ background: Gradients.success }}>
-                    Save
-                </Button>
             </form>
         </Box>
     );

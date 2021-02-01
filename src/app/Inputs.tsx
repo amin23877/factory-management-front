@@ -6,7 +6,7 @@ export const BaseSelect = withStyles({
     root: {
         borderRadius: 20,
     },
-})((props: SelectProps) => <Select style={{ ...props.style, margin: "0.4em" }} variant="outlined" {...props} />);
+})((props: SelectProps) => <Select style={{ ...props.style, minWidth: 220, margin: "0.4em" }} variant="outlined" {...props} />);
 
 export const BaseTextInput = withStyles((theme) => ({
     root: {

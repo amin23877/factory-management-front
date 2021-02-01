@@ -55,7 +55,7 @@ const MoreInfo = ({
 }) => {
     return (
         <Box display="flex" alignItems="center" p={2}>
-            <Box>
+            <Box mr={2}>
                 <BaseTextInput
                     name="version"
                     placeholder="version"
@@ -98,13 +98,6 @@ const MoreInfo = ({
                 />
                 <Divider />
                 <Typography style={{ fontWeight: "bold", textAlign: "center" }}> Markup 200 %</Typography>
-            </Box>
-            <Box mx={2}>
-                <RadioGroup name="mode" value={values.mode} onChange={onChange}>
-                    <FormControlLabel value="Individual" control={<Radio />} label="Individual" />
-                    <FormControlLabel value="Bundle" control={<Radio />} label="Bundle" />
-                    <FormControlLabel value="Kit" control={<Radio />} label="Kit" />
-                </RadioGroup>
             </Box>
             <Box>
                 <Box style={{ padding: "4em 3em", border: "2px dashed gray", borderRadius: 20 }}></Box>

@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Box, Container, Grid, Button, Tabs, Tab } from "@material-ui/core";
-import { RowData } from "@material-ui/data-grid";
+import { RowData, ColDef } from "@material-ui/data-grid";
 import { AddRounded, DeleteRounded, CategoryRounded } from "@material-ui/icons";
 
 import { AddItemModal, DeleteItem } from "../features/Modals/ItemModals";
 import CatTypeFamilyModal from "../features/Modals/CategoryModals";
+import ItemsDetails from "../features/ItemsDetails";
 
 import { getItems } from "../api/items";
-
-import BaseDataGrid from "../app/BaseDataGrid";
-import { ColDef } from "@material-ui/data-grid";
-import ItemsDetails from "../features/ItemsDetails";
 import { AddItemInitialValues } from "../api/items";
+
+import { MyTabs, MyTab } from "../app/Tabs";
+import BaseDataGrid from "../app/BaseDataGrid";
 
 const Inventory = () => {
     const [rows, setRows] = useState<RowData[]>([]);
@@ -66,10 +66,12 @@ const Inventory = () => {
                     </Box>
                 </Grid>
                 <Grid item xs={11}>
-                    <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="secondary">
-                        <Tab color="primary" label="Overview" />
-                        <Tab label="Details" disabled={detailDis} />
-                    </Tabs>
+                    <Box display="flex" justifyContent="flex-end">
+                        <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="secondary">
+                            <MyTab color="primary" label="Overview" />
+                            <MyTab label="Details" disabled={detailDis} />
+                        </MyTabs>
+                    </Box>
                     {activeTab === 0 && (
                         <BaseDataGrid
                             cols={cols}
