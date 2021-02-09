@@ -24,6 +24,7 @@ export const theme = createMuiTheme({
             }
         },
         MuiTextField:{
+            variant:'outlined',
             style:{
                 margin: '0.5em'
             }

@@ -7,6 +7,15 @@ export interface IEmailAddress {
     EmailTypeId: number;
 }
 
+export const getEmails = async () => {
+    try {
+        const resp = await Axios.get('/emailAddress');
+        return resp.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const getAllModelEmailAddrs = async (model: string, id: string) => {
     try {
         const resp = await Axios.get(`/emailAddress/${model}/${id}`);

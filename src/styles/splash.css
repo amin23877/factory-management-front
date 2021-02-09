@@ -29,3 +29,9 @@
     border-radius: 5px;
     /* animation: main-logo-animation 5000ms ease-in-out 1000ms infinite; */
 }
+
+/* ----------------- */
+
+.MuiDataGrid-row:hover {
+    cursor: pointer;
+}

@@ -8,6 +8,15 @@ export interface IPhone {
     PhoneTypeId:number
 }
 
+export const getPhones = async () => {
+    try {
+        const resp = await Axios.get('/phone');
+        return resp.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const getAllModelPhone = async (model: string, id: string) => {
     try {
         const resp = await Axios.get(`/phone/${model}/${id}`);

@@ -12,6 +12,15 @@ export interface IAddress {
     AddressTypeId:number
 }
 
+export const getAddresses = async () => {
+    try {
+        const resp = await Axios.get('/address');
+        return resp.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const getAllModelAddress = async (model: string, id: string) => {
     try {
         const resp = await Axios.get(`/address/${model}/${id}`);

@@ -19,6 +19,15 @@ export interface IContact {
     ContactTypeId:number
 }
 
+export const getContacts = async () => {
+    try {
+        const resp = await Axios.get('/contact');
+        return resp.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const getAllModelContact = async (model: string, id: string) => {
     try {
         const resp = await Axios.get(`/contact/${model}/${id}`);
