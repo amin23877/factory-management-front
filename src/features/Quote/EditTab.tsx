@@ -1,69 +1,67 @@
 import React, { useState } from "react";
-import { Tabs, Tab, Box, Button } from "@material-ui/core";
-import { Form, Formik } from "formik";
+import { Tabs, Tab, Box } from "@material-ui/core";
+import { ColDef } from "@material-ui/data-grid";
 
-import { BillingTab, CommissionTab, DepositTab, GeneralForm, ShippingTab, TermsTab } from "./Forms";
-import { IQuote, updateQuote } from "../../api/quote";
+import BaseDataGrid from "../../app/BaseDataGrid";
+import EditForm from "./EditForm";
 
-export default function EditTab({ selectedQuote, onDone }: { selectedQuote: IQuote; onDone: () => void }) {
+import { IQuote } from "../../api/quote";
+
+export default function EditTab({
+    selectedQuote,
+    onDone,
+    lineItems,
+    notes,
+    docs,
+    onLISelected,
+    onNoteSelected,
+    onDocSelected,
+}: {
+    notes: any;
+    docs: any;
+    selectedQuote: IQuote;
+    onDone: () => void;
+    lineItems: any;
+    onLISelected: (d: any) => void;
+    onNoteSelected: (d: any) => void;
+    onDocSelected: (d: any) => void;
+}) {
     const [activeTab, setActiveTab] = useState(0);
 
-    const handleSubmit = async (data: IQuote, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
-        try {
-            if (data?.id) {
-                const resp = await updateQuote(data.id, data);
-                console.log(resp);
-                setSubmitting(false);
-                onDone();
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    const LICols: ColDef[] = [
+        { field: "index" },
+        { field: "ItemId" },
+        { field: "description", width: 200 },
+        { field: "quantity" },
+        { field: "price" },
+        { field: "tax" },
+    ];
+
+    const noteCols: ColDef[] = [
+        { field: "subject", headerName: "Subject" },
+        { field: "url", headerName: "URL" },
+        { field: "note", headerName: "Note", width: 300 },
+    ];
+
+    const docCols: ColDef[] = [
+        { field: "name", headerName: "Name" },
+        { field: "description", headerName: "Description", width: 250 },
+        { field: "createdAt", headerName: "Created at", width: 300 },
+    ];
 
     return (
         <Box>
-            <Formik initialValues={selectedQuote} onSubmit={handleSubmit}>
-                {({ handleChange, handleBlur, values, isSubmitting }) => (
-                    <Form>
-                        <Box display="flex" m={1}>
-                            <Box flex={1} mx={2}>
-                                <GeneralForm values={values} handleBlur={handleBlur} handleChange={handleChange} />
-                            </Box>
-                            <Box flex={1} m={1}>
-                                <Tabs
-                                    value={activeTab}
-                                    onChange={(e, nv) => setActiveTab(nv)}
-                                    variant="scrollable"
-                                    style={{ maxWidth: 700 }}
-                                >
-                                    <Tab label="Shipping" />
-                                    <Tab label="Billing" />
-                                    <Tab label="Terms" />
-                                    <Tab label="Deposit" />
-                                    <Tab label="Commission" />
-                                </Tabs>
-                                {activeTab === 0 && <ShippingTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                {activeTab === 1 && <BillingTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                {activeTab === 2 && <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                {activeTab === 3 && <DepositTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                {activeTab === 4 && <CommissionTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                            </Box>
-                        </Box>
-                        <Box display="flex" justifyContent="center" my={2}>
-                            <Button
-                                disabled={isSubmitting}
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                style={{ padding: "2em 4em" }}
-                            >
-                                Save
-                            </Button>
-                        </Box>
-                    </Form>
-                )}
-            </Formik>
+            <EditForm selectedQuote={selectedQuote} onDone={onDone} />
+            <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                <Tab label="Line items" />
+                <Tab label="Notes" />
+                <Tab label="Documents" />
+            </Tabs>
+            <Box p={2}>
+                {activeTab === 0 && <BaseDataGrid cols={LICols} rows={lineItems} onRowSelected={onLISelected} height={300} />}
+                {activeTab === 1 && <BaseDataGrid cols={noteCols} rows={notes} onRowSelected={onNoteSelected} height={300} />}
+                {activeTab === 2 && <BaseDataGrid cols={docCols} rows={docs} onRowSelected={onDocSelected} height={300} />}
+            </Box>
         </Box>
     );
 }

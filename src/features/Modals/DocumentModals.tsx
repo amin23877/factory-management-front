@@ -4,39 +4,56 @@ import { Formik, Form } from "formik";
 
 import { createAModelDocument, updateAModelDocument, deleteAModelDocument } from "../../api/document";
 
-export const DocumentModal = ({
-    open,
-    onClose,
-    model,
-    itemId,
-    onDone,
-}: {
+interface IDocumentModal {
     open: boolean;
     model: string;
     onDone?: () => void;
-    itemId: string;
+    itemId: number;
     onClose: () => void;
-}) => {
-    const theme = useTheme();
+    docData?: any;
+}
+
+export default function DocumentModal({ open, onClose, model, itemId, onDone, docData }: IDocumentModal) {
+    const deleteDocument = async () => {
+        try {
+            if (docData) {
+                const resp = await deleteAModelDocument(docData.id);
+                onDone && onDone();
+                onClose();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="xs">
             <DialogTitle>
-                Add / Edit Document to {model} {itemId}
+                {docData ? "Edit" : "Add"} Document to {model} {itemId}
             </DialogTitle>
             <Box m={3}>
                 <Formik
-                    initialValues={{ file: "", description: "" }}
+                    initialValues={{ file: "", description: docData?.description || "" }}
                     onSubmit={(values, { setSubmitting }) => {
-                        console.log(values);
-                        createAModelDocument(model, itemId, values.file, values.description)
-                            .then((d) => {
-                                console.log(d);
-                                setSubmitting(false);
-                                onDone && onDone();
-                                onClose();
-                            })
-                            .catch((e) => console.log(e));
+                        if (docData) {
+                            updateAModelDocument(docData.id, values.file, values.description)
+                                .then((d) => {
+                                    console.log(d);
+                                    onDone && onDone();
+                                    onClose();
+                                })
+                                .catch((e) => console.log(e))
+                                .finally(() => setSubmitting(false));
+                        } else {
+                            createAModelDocument(model, itemId, values.file, values.description)
+                                .then((d) => {
+                                    console.log(d);
+                                    setSubmitting(false);
+                                    onDone && onDone();
+                                    onClose();
+                                })
+                                .catch((e) => console.log(e));
+                        }
                     }}
                 >
                     {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
@@ -64,7 +81,7 @@ export const DocumentModal = ({
             </Box>
         </Dialog>
     );
-};
+}
 
 export const EditDocumentModal = ({
     open,

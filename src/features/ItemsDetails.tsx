@@ -28,8 +28,8 @@ import { getFamilies } from "../api/family";
 import { getAllModelNotes } from "../api/note";
 import { getAllModelDocuments } from "../api/document";
 
-import { NoteModal } from "./Modals/NoteModals";
-import { DocumentModal, EditDocumentModal } from "./Modals/DocumentModals";
+import NoteModal from "./Modals/NoteModals";
+import DocumentModal, { EditDocumentModal } from "./Modals/DocumentModals";
 
 import BaseDataGrid from "../app/BaseDataGrid";
 import { BasePaper } from "../app/Paper";

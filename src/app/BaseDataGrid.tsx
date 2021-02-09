@@ -1,6 +1,16 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box, makeStyles } from "@material-ui/core";
 import { DataGrid, RowData, ColDef } from "@material-ui/data-grid";
+
+const useStyles = makeStyles({
+    dataGridCont: {
+        width: "100%",
+        margin: "1em 0",
+        backgroundColor: "#fff",
+        borderRadius: 8,
+        border: "1px solid #ccc",
+    },
+});
 
 export default function BaseDataGrid({
     onRowSelected,
@@ -13,17 +23,15 @@ export default function BaseDataGrid({
     cols: ColDef[];
     height?: number;
 }) {
+    const classes = useStyles();
+
     return (
         <Box my={2}>
             <Box display="flex">
                 <div
+                    className={classes.dataGridCont}
                     style={{
                         height: height ? height : 450,
-                        width: "100%",
-                        margin: "1em 0",
-                        backgroundColor: "#fff",
-                        borderRadius: "1em",
-                        border: "1px solid #ccc",
                     }}
                 >
                     <DataGrid

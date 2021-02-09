@@ -29,8 +29,8 @@ import Confirm from "../features/Modals/Confirm";
 
 import { MyTab, MyTabs } from "../app/Tabs";
 
-import { NoteModal } from "../features/Modals/NoteModals";
-import { DocumentModal, EditDocumentModal } from "../features/Modals/DocumentModals";
+import NoteModal from "../features/Modals/NoteModals";
+import DocumentModal, { EditDocumentModal } from "../features/Modals/DocumentModals";
 import { AddressModal } from "../features/Modals/AddressModal";
 import { AgencyModal } from "../features/Modals/AgencyModal";
 import { DivisionModal } from "../features/Modals/DivisionModal";

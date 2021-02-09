@@ -26,7 +26,6 @@ export const FieldSelect = ({ keyField, request, itemValueField, itemTitleField,
         request()
             .then((data) => {
                 setItems(data);
-                console.log(data);
             })
             .catch((e) => console.log(e));
     }, []);

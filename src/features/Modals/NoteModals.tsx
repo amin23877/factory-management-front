@@ -4,28 +4,23 @@ import { Dialog, useTheme, DialogTitle, Box, Button, TextField, CircularProgress
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
-import { createAModelNote, updateAModelNote, deleteAModelNote } from "../../api/note";
+import { createAModelNote, updateAModelNote, deleteAModelNote, INote } from "../../api/note";
 
 const AddModelNoteSchema = Yup.object().shape({
     subject: Yup.string().min(1, "Too short!").required(),
     note: Yup.string().required(),
 });
 
-export const NoteModal = ({
-    open,
-    onClose,
-    model,
-    itemId,
-    noteData,
-    onDone,
-}: {
+interface INoteModal {
     open: boolean;
     onClose: () => void;
     model: string;
-    itemId: string;
-    noteData?: { id: any; subject: string; note: string; url?: string };
+    itemId: number;
+    noteData?: INote;
     onDone?: () => void;
-}) => {
+}
+
+export default function NoteModal({ open, onClose, model, itemId, noteData, onDone }: INoteModal) {
     const theme = useTheme();
 
     return (
@@ -41,7 +36,7 @@ export const NoteModal = ({
                         if (noteData) {
                             updateAModelNote(itemId, values)
                                 .then((d) => {
-                                    console.log(d, values);
+                                    console.log(d);
                                     onClose();
                                     onDone && onDone();
                                 })
@@ -105,8 +100,8 @@ export const NoteModal = ({
                                         variant="contained"
                                         style={{ margin: "0 1em", background: theme.palette.error.main }}
                                         onClick={() => {
-                                            if (noteData.subject) {
-                                                deleteAModelNote(noteData.id)
+                                            if (noteData.id) {
+                                                deleteAModelNote(noteData?.id)
                                                     .then((d) => console.log(d))
                                                     .catch((e) => console.log(e));
                                             }
@@ -122,4 +117,4 @@ export const NoteModal = ({
             </Box>
         </Dialog>
     );
-};
+}

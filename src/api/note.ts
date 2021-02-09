@@ -1,12 +1,13 @@
 import Axios from "axios";
 
-interface NoteInterface {
+export interface INote {
+    id?: number;
     subject: string;
     note: string;
     url?: string;
 }
 
-export const getAllModelNotes = async (model: string, id: string) => {
+export const getAllModelNotes = async (model: string, id: number) => {
     try {
         const resp = await Axios.get(`/note/${model}/${id}`);
         return resp.data;
@@ -15,7 +16,7 @@ export const getAllModelNotes = async (model: string, id: string) => {
     }
 };
 
-export const createAModelNote = async (model: string, id: string, data: NoteInterface) => {
+export const createAModelNote = async (model: string, id: number, data: INote) => {
     try {
         const resp = await Axios.post(`/note/${model}/${id}`, data);
         return resp.data;
@@ -24,8 +25,10 @@ export const createAModelNote = async (model: string, id: string, data: NoteInte
     }
 };
 
-export const updateAModelNote = async (id: string, data: NoteInterface) => {
+export const updateAModelNote = async (id: number, data: INote) => {
     try {
+        console.log(id, data);
+        
         const resp = await Axios.patch(`/note/${id}`, data);
         return resp.data;
     } catch (e) {

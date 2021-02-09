@@ -9,7 +9,7 @@ export const RecordNotes = ({
     onRowSelected,
 }: {
     model: string;
-    itemId: string;
+    itemId: number;
     onRowSelected?: (row: RowSelectedParams) => void;
 }) => {
     const [rows, setRows] = useState([] as RowData[]);
