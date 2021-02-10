@@ -18,7 +18,7 @@ import {
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
-import { BaseSelect } from "../../app/Inputs";
+import { FieldSelect } from "../../app/Inputs";
 
 import { createAModelAddress, deleteAModelAddress, updateAModelAddress, IAddress } from "../../api/address";
 import { getAddressTypes } from "../../api/addressType";
@@ -62,26 +62,39 @@ export const AddressModal = ({
             <Box m={3}>
                 <Formik
                     initialValues={
-                        data?.AddressTypeId
-                            ? data
+                        data?.id
+                            ? {
+                                  address: data.address,
+                                  address2: data.address2,
+                                  city: data.city,
+                                  state: data.state,
+                                  zip: data.zip,
+                                  country: data.country,
+                                  main: data.main,
+                                  AddressTypeId: data?.AddressTypeId,
+                              }
                             : { address: "", address2: "", city: "", state: "", zip: "", country: "", main: false, AddressTypeId: 0 }
                     }
                     validationSchema={schema}
                     onSubmit={(values, { setSubmitting }) => {
                         if (data?.id) {
-                            updateAModelAddress(data?.id, values).then((d) => {
-                                console.log(d);
-                                onDone && onDone();
-                                setSubmitting(false);
-                                onClose();
-                            });
+                            updateAModelAddress(data?.id, values)
+                                .then((d) => {
+                                    console.log(d);
+                                    onDone && onDone();
+                                    setSubmitting(false);
+                                    onClose();
+                                })
+                                .catch((e) => console.log(e));
                         } else {
-                            createAModelAddress("client", itemId, values).then((d) => {
-                                console.log(d);
-                                onDone && onDone();
-                                setSubmitting(false);
-                                onClose();
-                            });
+                            createAModelAddress("client", itemId, values)
+                                .then((d) => {
+                                    console.log(d);
+                                    onDone && onDone();
+                                    setSubmitting(false);
+                                    onClose();
+                                })
+                                .catch((e) => console.log(e));
                         }
                     }}
                 >
@@ -147,16 +160,17 @@ export const AddressModal = ({
                                 label="country"
                                 fullWidth
                             />
-                            <FormControl fullWidth>
-                                <FormLabel>Address Type</FormLabel>
-                                <BaseSelect name="AddressTypeId" fullWidth onChange={handleChange} value={values.AddressTypeId}>
-                                    {ats.map((item: any) => (
-                                        <MenuItem key={item.id} value={item.id}>
-                                            {item.name}
-                                        </MenuItem>
-                                    ))}
-                                </BaseSelect>
-                            </FormControl>
+
+                            <FieldSelect
+                                label="Address type"
+                                request={getAddressTypes}
+                                itemTitleField="name"
+                                itemValueField="id"
+                                name="AddressTypeId"
+                                value={values.AddressTypeId}
+                                fullWidth
+                                onChange={handleChange}
+                            />
 
                             <FormControl fullWidth style={{ margin: "0.5em" }}>
                                 <FormLabel>Main</FormLabel>

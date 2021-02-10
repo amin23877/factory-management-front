@@ -11,7 +11,7 @@ export default function Dashboard() {
 
     return (
         <Container>
-            <Box display="flex" style={{ margin: "1em 0" }}>
+            <Box display="flex" alignItems="center" style={{ margin: "1em 0" }}>
                 <TextField />
                 <div style={{ flexGrow: 1 }} />
                 <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>

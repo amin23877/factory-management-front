@@ -62,12 +62,12 @@ export const GeneralForm = ({
                 fullWidth
             />
             <FieldSelect
-                value={values.reqester}
+                value={values.requester}
                 request={getContacts}
                 itemTitleField="lastName"
                 itemValueField="id"
                 keyField="id"
-                name="reqester"
+                name="requester"
                 label="Requester"
                 onChange={handleChange}
                 fullWidth
@@ -85,7 +85,7 @@ export const GeneralForm = ({
             />
             <FormControl style={{ margin: "0.5em" }}>
                 <FormLabel>Is this client No Tax?</FormLabel>
-                <RadioGroup value={values.noTaxClient} name="noTaxClient" onChange={handleChange} style={{ flexDirection: "row" }}>
+                <RadioGroup value={String(values.noTaxClient)} name="noTaxClient" onChange={handleChange} style={{ flexDirection: "row" }}>
                     <FormControlLabel control={<Radio />} label="Yes" value="true" />
                     <FormControlLabel control={<Radio />} label="No" value="false" />
                 </RadioGroup>
@@ -152,7 +152,12 @@ export const ShippingTab = ({
             />
             <FormControl style={{ margin: "0.5em" }}>
                 <FormLabel>Is this shipping for Client or Agency?</FormLabel>
-                <RadioGroup name="shippingEntitiy" value={values.shippingEntitiy} onChange={handleChange} style={{ flexDirection: "row" }}>
+                <RadioGroup
+                    name="shippingEntitiy"
+                    value={String(values.shippingEntitiy)}
+                    onChange={handleChange}
+                    style={{ flexDirection: "row" }}
+                >
                     <FormControlLabel control={<Radio />} label="Client" value="client" />
                     <FormControlLabel control={<Radio />} label="Agency" value="agency" />
                 </RadioGroup>
@@ -325,7 +330,12 @@ export const DepositTab = ({
             />
             <FormControl style={{ margin: "0.5em" }}>
                 <FormLabel>Is Deposit Required?</FormLabel>
-                <RadioGroup name="depositRequired" value={values.depositRequired} onChange={handleChange} style={{ flexDirection: "row" }}>
+                <RadioGroup
+                    name="depositRequired"
+                    value={String(values.depositRequired)}
+                    onChange={handleChange}
+                    style={{ flexDirection: "row" }}
+                >
                     <FormControlLabel control={<Radio />} label="Yes" value="true" />
                     <FormControlLabel control={<Radio />} label="No" value="false" />
                 </RadioGroup>

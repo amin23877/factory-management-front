@@ -57,10 +57,15 @@ export default function Clients() {
     const [contacts, setContacts] = useState([]);
 
     const [selectedRow, setSelectedRow] = useState<any>(null);
+
     const [selectedNote, setSelectedNote] = useState<any>(null);
     const [selectedDoc, setSelectedDoc] = useState<any>(null);
     const [selectedAddr, setSelectedAddr] = useState<any>(null);
     const [selectedAgency, setSelectedAgency] = useState<any>(null);
+    const [selectedDiv, setSelectedDiv] = useState<any>(null);
+    const [selectedPhone, setSelectedPhone] = useState<any>(null);
+    const [selectedEmail, setSelectedEmail] = useState<any>(null);
+    const [selectedContact, setSelectedContact] = useState<any>(null);
 
     const [editNoteModal, setEditNoteModal] = useState(false);
     const [editDocModal, setEditDocModal] = useState(false);
@@ -80,7 +85,6 @@ export default function Clients() {
         try {
             const resp = await getClients();
             setClients(resp);
-            // console.log(resp);
         } catch (error) {
             console.log(error);
         }
@@ -158,10 +162,10 @@ export default function Clients() {
     const handleDelete = async () => {
         try {
             const resp = await deleteClient(selectedRow.id);
-            console.log(resp);
             if (resp) {
                 refreshClients();
                 setConf(false);
+                setActiveTab(0);
             }
         } catch (error) {
             console.log(error);
@@ -210,7 +214,7 @@ export default function Clients() {
                 onDone={refreshAgencies}
             />
             <DivisionModal
-                data={selectedAgency === null ? "" : selectedAgency}
+                data={selectedDiv === null ? "" : selectedDiv}
                 itemId={selectedRow?.id}
                 model="client"
                 open={addDivision}
@@ -218,7 +222,7 @@ export default function Clients() {
                 onDone={refreshDivisions}
             />
             <PhoneModal
-                data={selectedAgency === null ? "" : selectedAgency}
+                data={selectedPhone === null ? "" : selectedPhone}
                 itemId={selectedRow?.id}
                 model="client"
                 open={addPhone}
@@ -226,7 +230,7 @@ export default function Clients() {
                 onDone={refreshPhones}
             />
             <EmailModal
-                data={selectedAgency === null ? "" : selectedAgency}
+                data={selectedEmail === null ? "" : selectedEmail}
                 itemId={selectedRow?.id}
                 model="client"
                 open={addEmail}
@@ -234,7 +238,7 @@ export default function Clients() {
                 onDone={refreshEmails}
             />
             <ContactModal
-                data={selectedAgency === null ? "" : selectedAgency}
+                data={selectedContact === null ? "" : selectedContact}
                 itemId={selectedRow?.id}
                 model="client"
                 open={addContact}
@@ -274,7 +278,7 @@ export default function Clients() {
                 onDone={refreshDocs}
             />
 
-            <Box my={2} display="flex" style={{ position: "sticky", top: 80, borderRadius: "1em", backgroundColor: "#eee", zIndex: 5 }}>
+            <Box my={2} display="flex" className="sticky-tollbar">
                 <Box display="flex" flex={1} justifyContent="space-around">
                     {activeTab === 1 && (
                         <IconButton onClick={() => setActiveTab(0)}>
@@ -285,14 +289,8 @@ export default function Clients() {
                     <Button onClick={() => setAddNoteModal(true)} disabled={!selectedRow}>
                         + Add new Note
                     </Button>
-                    <Button onClick={() => setEditNoteModal(true)} disabled={!selectedNote}>
-                        Edit / Delete Note
-                    </Button>
                     <Button onClick={() => setAddDocModal(true)} disabled={!selectedRow}>
                         + Add Document
-                    </Button>
-                    <Button onClick={() => setEditDocModal(true)} disabled={!selectedDoc}>
-                        Edit / Delete Document
                     </Button>
                 </Box>
 
@@ -323,22 +321,70 @@ export default function Clients() {
                         <Button title="Print a report" variant="outlined" style={{ margin: "0.5em 0" }}>
                             <PrintRounded />
                         </Button>
-                        <Button onClick={() => setAddAddress(true)} title="Address" variant="outlined" style={{ margin: "0.5em 0" }}>
+                        <Button
+                            onClick={() => {
+                                setSelectedAddr(undefined);
+                                setAddAddress(true);
+                            }}
+                            title="Address"
+                            variant="outlined"
+                            style={{ margin: "0.5em 0" }}
+                        >
                             <MapOutlined />
                         </Button>
-                        <Button onClick={() => setAddAgency(true)} title="Agency" variant="outlined" style={{ margin: "0.5em 0" }}>
+                        <Button
+                            onClick={() => {
+                                setSelectedAgency(undefined);
+                                setAddAgency(true);
+                            }}
+                            title="Agency"
+                            variant="outlined"
+                            style={{ margin: "0.5em 0" }}
+                        >
                             <EqualizerOutlined />
                         </Button>
-                        <Button onClick={() => setAddDivision(true)} title="Division" variant="outlined" style={{ margin: "0.5em 0" }}>
+                        <Button
+                            onClick={() => {
+                                setSelectedDiv(undefined);
+                                setAddDivision(true);
+                            }}
+                            title="Division"
+                            variant="outlined"
+                            style={{ margin: "0.5em 0" }}
+                        >
                             %
                         </Button>
-                        <Button onClick={() => setAddPhone(true)} title="Phone" variant="outlined" style={{ margin: "0.5em 0" }}>
+                        <Button
+                            onClick={() => {
+                                setSelectedPhone(undefined);
+                                setAddPhone(true);
+                            }}
+                            title="Phone"
+                            variant="outlined"
+                            style={{ margin: "0.5em 0" }}
+                        >
                             <PhoneOutlined />
                         </Button>
-                        <Button onClick={() => setAddEmail(true)} title="Email Address" variant="outlined" style={{ margin: "0.5em 0" }}>
+                        <Button
+                            onClick={() => {
+                                setSelectedEmail(undefined);
+                                setAddEmail(true);
+                            }}
+                            title="Email Address"
+                            variant="outlined"
+                            style={{ margin: "0.5em 0" }}
+                        >
                             <MailOutline />
                         </Button>
-                        <Button onClick={() => setAddContact(true)} title="Contact" variant="outlined" style={{ margin: "0.5em 0" }}>
+                        <Button
+                            onClick={() => {
+                                setSelectedContact(undefined);
+                                setAddContact(true);
+                            }}
+                            title="Contact"
+                            variant="outlined"
+                            style={{ margin: "0.5em 0" }}
+                        >
                             <ContactMailOutlined />
                         </Button>
                     </Box>
@@ -348,8 +394,6 @@ export default function Clients() {
                         <ClientOverview
                             rows={clients}
                             onRowSelected={(v) => {
-                                console.log(v);
-
                                 setSelectedRow(v);
                                 setActiveTab(1);
                             }}
@@ -365,10 +409,38 @@ export default function Clients() {
                             phones={phones}
                             emails={emails}
                             contacts={contacts}
-                            onAgencySelected={setSelectedAgency}
-                            onAddrSelected={setSelectedAddr}
-                            onNoteSelected={setSelectedNote}
-                            onDocSelected={setSelectedDoc}
+                            onAgencySelected={(d) => {
+                                setSelectedAgency(d);
+                                setAddAgency(true);
+                            }}
+                            onAddrSelected={(d) => {
+                                setSelectedAddr(d);
+                                setAddAddress(true);
+                            }}
+                            onNoteSelected={(d) => {
+                                setSelectedNote(d);
+                                setEditNoteModal(true);
+                            }}
+                            onDocSelected={(d) => {
+                                setSelectedDoc(d);
+                                setEditDocModal(true);
+                            }}
+                            onDivSelected={(d) => {
+                                setSelectedDiv(d);
+                                setAddDivision(true);
+                            }}
+                            onPhoneSelected={(d) => {
+                                setSelectedPhone(d);
+                                setAddPhone(true);
+                            }}
+                            onEmailSelected={(d) => {
+                                setSelectedEmail(d);
+                                setAddEmail(true);
+                            }}
+                            onContactSelected={(d) => {
+                                setSelectedContact(d);
+                                setAddContact(true);
+                            }}
                             selectedRow={selectedRow}
                         />
                     )}

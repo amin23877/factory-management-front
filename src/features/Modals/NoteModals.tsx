@@ -33,8 +33,8 @@ export default function NoteModal({ open, onClose, model, itemId, noteData, onDo
                     initialValues={{ subject: noteData?.subject || "", url: noteData?.url || "", note: noteData?.note || "" }}
                     validationSchema={AddModelNoteSchema}
                     onSubmit={(values, { setSubmitting }) => {
-                        if (noteData) {
-                            updateAModelNote(itemId, values)
+                        if (noteData && noteData?.id) {
+                            updateAModelNote(noteData?.id, values)
                                 .then((d) => {
                                     console.log(d);
                                     onClose();

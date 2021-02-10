@@ -32,6 +32,13 @@
 
 /* ----------------- */
 
+.sticky-tollbar {
+    position: sticky;
+    top: 80px;
+    border-radius: 1em;
+    background-color: #eee;
+    z-index: 5
+}
 .MuiDataGrid-row:hover {
     cursor: pointer;
 }

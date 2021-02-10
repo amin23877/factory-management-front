@@ -10,7 +10,7 @@ export default function ClientOverview({ rows, onRowSelected }: { rows: RowData[
         { field: "linkedIn", headerName: "linkedIn" },
         { field: "instagram", headerName: "instagram" },
         { field: "abbr", headerName: "abbr" },
-        { field: "location", headerName: "location" },
+        { field: "location", headerName: "location", width: 170 },
         { field: "size", headerName: "size" },
         { field: "prospect", headerName: "prospect" },
     ];

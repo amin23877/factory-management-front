@@ -27,8 +27,6 @@ export const createAModelNote = async (model: string, id: number, data: INote) =
 
 export const updateAModelNote = async (id: number, data: INote) => {
     try {
-        console.log(id, data);
-        
         const resp = await Axios.patch(`/note/${id}`, data);
         return resp.data;
     } catch (e) {
