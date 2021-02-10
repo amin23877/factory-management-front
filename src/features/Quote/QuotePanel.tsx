@@ -168,7 +168,7 @@ export const QuotePanel = () => {
                 {msg}
             </Snack>
 
-            <Box display="flex" alignItems="center" className="sticky-tollbar">
+            <Box display="flex" alignItems="center" className="sticky-toolbar">
                 <Button onClick={() => setAddQ(true)}>Add Quote</Button>
                 <Button onClick={() => setAddLineItem(true)} disabled={!selectedQuote} style={{ margin: "0 0.5em" }}>
                     Add Line item

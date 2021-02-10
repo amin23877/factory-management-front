@@ -278,7 +278,7 @@ export default function Clients() {
                 onDone={refreshDocs}
             />
 
-            <Box my={2} display="flex" className="sticky-tollbar">
+            <Box my={2} display="flex" className="sticky-toolbar">
                 <Box display="flex" flex={1} justifyContent="space-around">
                     {activeTab === 1 && (
                         <IconButton onClick={() => setActiveTab(0)}>

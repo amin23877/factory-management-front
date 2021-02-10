@@ -18,6 +18,9 @@ export const AddItemSchema = Yup.object().shape({
 });
 
 // export const AddItemInitialInterface ( VERY SOON... )
+// export interface IItem {
+    
+// }
 export const AddItemInitialValues = {
     name: "",
     no: 0,
@@ -45,9 +48,9 @@ export const AddItemInitialValues = {
     tiers: "",
     additionalShippingFee: 0,
     shippingNote: "",
-    CategoryId: "",
-    TypeId: "",
-    FamilyId:""
+    ItemCategoryId: "",
+    ItemTypeId: "",
+    ItemFamilyId:""
 };
 
 // ------------------------------------------------------
@@ -71,7 +74,7 @@ export const updateAnItem = async (itemId:string, itemData:any) => {
     }
 }
 
-export const deleteAnItem = async (itemId:string) => {
+export const deleteAnItem = async (itemId:number) => {
     try {
         const resp = await Axios.delete(`/item/${itemId}`);
         return resp.data;
@@ -79,15 +82,6 @@ export const deleteAnItem = async (itemId:string) => {
         console.log(error);
     }
 } 
-
-export const getAnItem = async (itemId:string) => {
-    try {
-        const resp = await Axios.get(`/item/${itemId}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
 
 export const getItems = async () => {
     try {

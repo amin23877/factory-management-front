@@ -42,10 +42,11 @@ export default function BOMModal({ open, onClose, itemId }: { itemId: number; op
 
     const refreshRecords = async () => {
         try {
-            console.log(selectedBom);
-            const resp = await getBomRecord(selectedBom.id);
-            setBomRecords(resp);
-            console.log(resp);
+            if (selectedBom) {
+                const resp = await getBomRecord(selectedBom.id);
+                setBomRecords(resp);
+                console.log(resp);
+            }
         } catch (error) {
             console.log(error);
         }
@@ -53,7 +54,7 @@ export default function BOMModal({ open, onClose, itemId }: { itemId: number; op
 
     useEffect(() => {
         refreshBoms();
-    }, []);
+    }, [open]);
 
     useEffect(() => {
         refreshRecords();
@@ -85,6 +86,7 @@ export default function BOMModal({ open, onClose, itemId }: { itemId: number; op
                         onRowSelected={(d) => {
                             // console.log(d);
                             setSelectedBom(d);
+                            setActiveTab(1);
                         }}
                     />
                 )}
@@ -94,7 +96,7 @@ export default function BOMModal({ open, onClose, itemId }: { itemId: number; op
                         cols={recordCols}
                         rows={bomRecords}
                         onRowSelected={(d) => {
-                            // console.log(d);
+                            console.log(d);
                             setSelectedBomRecord(d);
                         }}
                     />

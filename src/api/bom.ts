@@ -12,7 +12,7 @@ export interface IBomRecord {
     usage: number,
     fixedQty: boolean,
     index:number,
-    itemId: number
+    ItemId: number
 }
 
 export const getBom = async (ItemId:number) => {
@@ -60,9 +60,9 @@ export const getBomRecord = async (BOMId:number) => {
     }
 }
 
-export const addBomRecord = async (bomId:number, {revision, usage, fixedQty, index, itemId}:IBomRecord) => {
+export const addBomRecord = async (bomId:number, {revision, usage, fixedQty, index, ItemId}:IBomRecord) => {
     try {
-        const resp = await Axios.post(`/bom/${bomId}/record`, {revision, usage, fixedQty, index, ItemId:itemId, BOMId:bomId});
+        const resp = await Axios.post(`/bom/${bomId}/record`, {revision, usage, fixedQty, index, ItemId, BOMId:bomId});
         return resp.data;
     } catch (e) {
         console.log(e)

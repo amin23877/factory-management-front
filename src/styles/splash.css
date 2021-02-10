@@ -32,7 +32,8 @@
 
 /* ----------------- */
 
-.sticky-tollbar {
+.sticky-toolbar {
+    padding: 0.5em;
     position: sticky;
     top: 80px;
     border-radius: 1em;

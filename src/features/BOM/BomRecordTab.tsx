@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Box, TextField, FormControlLabel, Select, MenuItem, Checkbox, Button, List, ListItem } from "@material-ui/core";
+import { Box, TextField, FormControlLabel, Checkbox, Button, List, ListItem } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+
+import { FieldSelect } from "../../app/Inputs";
 
 import { getItems } from "../../api/items";
 import { IBomRecord, addBomRecord, updateBomRecord, deleteBomRecord } from "../../api/bom";
@@ -23,10 +25,10 @@ const BomRecordForm = ({
     onDone: () => void;
 }) => {
     const defValues: IBomRecord =
-        initialValues !== undefined ? initialValues : { itemId: 0, index: 0, usage: 0, revision: "", fixedQty: false };
+        initialValues !== undefined ? initialValues : { ItemId: 0, index: 0, usage: 0, revision: "", fixedQty: false };
 
     const schema = Yup.object().shape({
-        itemId: Yup.string().required(),
+        ItemId: Yup.string().required(),
     });
     const [items, setItems] = useState([]);
 
@@ -64,24 +66,18 @@ const BomRecordForm = ({
             <Formik validationSchema={schema} onSubmit={handleSubmit} initialValues={defValues}>
                 {({ values, errors, touched, handleChange, handleBlur }) => (
                     <Form>
-                        <Select
-                            style={{ marginTop: "0.4em" }}
-                            variant="outlined"
-                            name="itemId"
-                            defaultValue={values.itemId}
-                            value={values.itemId}
+                        <FieldSelect
+                            request={getItems}
+                            itemTitleField="name"
+                            itemValueField="id"
+                            name="ItemId"
+                            value={values.ItemId}
                             label="item"
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            error={Boolean(errors.itemId && touched.itemId)}
-                        >
-                            {method === "patch" && <MenuItem value="">{items.find((item: any) => item.id === values.itemId)}</MenuItem>}
-                            {items.map((item: any) => (
-                                <MenuItem key={item.id} value={item.id}>
-                                    {item.name}
-                                </MenuItem>
-                            ))}
-                        </Select>
+                            error={Boolean(errors.ItemId && touched.ItemId)}
+                        />
+
                         <TextField
                             variant="outlined"
                             name="revision"

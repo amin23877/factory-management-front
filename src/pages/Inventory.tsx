@@ -1,37 +1,98 @@
 import React, { useState, useEffect } from "react";
 import { Box, Container, Grid, Button, Tabs, Tab } from "@material-ui/core";
 import { RowData, ColDef } from "@material-ui/data-grid";
-import { AddRounded, DeleteRounded, CategoryRounded } from "@material-ui/icons";
+import { NoteRounded, FileCopyRounded, PrintRounded, AddRounded, DeleteRounded, CategoryRounded } from "@material-ui/icons";
 
-import { AddItemModal, DeleteItem } from "../features/Modals/ItemModals";
+import Confirm from "../features/Modals/Confirm";
+
+import NoteModal from "../features/Modals/NoteModals";
+import DocumentModal from "../features/Modals/DocumentModals";
+import BOMModal from "../features/BOM/BomModal";
+
+import { AddItemModal } from "../features/Modals/ItemModals";
 import CatTypeFamilyModal from "../features/Modals/CategoryModals";
-import ItemsDetails from "../features/ItemsDetails";
+import ItemsDetails from "../features/Items/ItemsDetails";
 
-import { getItems } from "../api/items";
-import { AddItemInitialValues } from "../api/items";
+import { AddItemInitialValues, getItems, deleteAnItem } from "../api/items";
+import { getAllModelNotes } from "../api/note";
+import { getAllModelDocuments } from "../api/document";
 
 import { MyTabs, MyTab } from "../app/Tabs";
 import BaseDataGrid from "../app/BaseDataGrid";
 
 const Inventory = () => {
     const [rows, setRows] = useState<RowData[]>([]);
+    const [notes, setNotes] = useState([]);
+    const [docs, setDocs] = useState([]);
+
     const [activeTab, setActiveTab] = useState(0);
-    const [selectedItem, setSelectedItem] = useState({ ...AddItemInitialValues, id: "" });
     const [detailDis, setDetailDis] = useState(true);
+    const [selectedItem, setSelectedItem] = useState({ ...AddItemInitialValues, id: 0 });
+    const [selectedNote, setSelectedNote] = useState<any>();
+    const [selectedDoc, setSelectedDoc] = useState<any>();
 
     const [addItemModal, setAddItemModal] = useState(false);
     const [deleteItemModal, setDeleteItemModal] = useState(false);
     const [catModal, setCatModal] = useState(false);
+    const [editNoteModal, setEditNoteModal] = useState(false);
+    const [editDocModal, setEditDocModal] = useState(false);
+    const [addNoteModal, setAddNoteModal] = useState(false);
+    const [addDocModal, setAddDocModal] = useState(false);
+
+    const [bomModal, setBomModal] = useState(false);
+
+    const refreshItems = async () => {
+        try {
+            const resp = await getItems();
+            setRows(resp);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const refreshNotes = async () => {
+        try {
+            if (selectedItem && selectedItem.id) {
+                const resp = await getAllModelNotes("item", selectedItem.id);
+                setNotes(resp);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const refreshDocs = async () => {
+        try {
+            if (selectedItem && selectedItem.id) {
+                const resp = await getAllModelDocuments("item", selectedItem.id);
+                setDocs(resp);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
-        getItems()
-            .then((d) => {
-                console.log(d);
-
-                setRows(d);
-            })
-            .catch((e) => console.log(e));
+        refreshItems();
     }, [addItemModal]);
+
+    useEffect(() => {
+        refreshNotes();
+        refreshDocs();
+    }, [selectedItem]);
+
+    const handleDelete = async () => {
+        try {
+            if (selectedItem) {
+                const resp = await deleteAnItem(selectedItem.id);
+                console.log(resp);
+                refreshItems();
+                setActiveTab(0);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const cols: ColDef[] = [
         { field: "no", headerName: "Item no" },
@@ -42,9 +103,78 @@ const Inventory = () => {
 
     return (
         <Container style={{ maxWidth: 1240 }}>
+            {selectedNote && (
+                <NoteModal
+                    onDone={refreshNotes}
+                    noteData={selectedNote}
+                    itemId={selectedItem.id}
+                    model="item"
+                    open={editNoteModal}
+                    onClose={() => setEditNoteModal(false)}
+                />
+            )}
+            {selectedDoc && (
+                <DocumentModal
+                    onDone={refreshDocs}
+                    open={editDocModal}
+                    itemId={selectedItem.id}
+                    model="item"
+                    onClose={() => setEditDocModal(false)}
+                    docData={selectedDoc}
+                />
+            )}
+
+            <NoteModal
+                onDone={refreshNotes}
+                itemId={selectedItem.id}
+                model="item"
+                open={addNoteModal}
+                onClose={() => setAddNoteModal(false)}
+            />
+            <DocumentModal
+                onDone={refreshDocs}
+                open={addDocModal}
+                onClose={() => setAddDocModal(false)}
+                itemId={selectedItem.id}
+                model="item"
+            />
+
+            <BOMModal itemId={selectedItem.id} open={bomModal} onClose={() => setBomModal(false)} />
+
             <AddItemModal open={addItemModal} onClose={() => setAddItemModal(false)} />
-            <DeleteItem open={deleteItemModal} onClose={() => setDeleteItemModal(false)} item={selectedItem} />
+            <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
             <CatTypeFamilyModal open={catModal} onClose={() => setCatModal(false)} />
+
+            <Box display="flex" justifyContent="flex-end" alignItems="center" className="sticky-toolbar">
+                <Button
+                    disabled={activeTab === 0}
+                    onClick={() => setAddNoteModal(true)}
+                    title="add note"
+                    color="secondary"
+                    startIcon={<NoteRounded />}
+                >
+                    Add New Note
+                </Button>
+                <Button
+                    disabled={activeTab === 0}
+                    onClick={() => setAddDocModal(true)}
+                    title="add document"
+                    color="secondary"
+                    startIcon={<FileCopyRounded />}
+                >
+                    Add Document
+                </Button>
+                <Button disabled={activeTab === 0} onClick={() => setBomModal(true)} title="Bill of Material" startIcon={<PrintRounded />}>
+                    BOM
+                </Button>
+
+                <div style={{ flexGrow: 1 }} />
+
+                <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="secondary">
+                    <MyTab color="primary" label="Overview" />
+                    <MyTab label="Details" disabled={detailDis} />
+                </MyTabs>
+            </Box>
 
             <Grid container>
                 <Grid item xs={1} style={{ margin: "1em 0" }}>
@@ -66,24 +196,35 @@ const Inventory = () => {
                     </Box>
                 </Grid>
                 <Grid item xs={11}>
-                    <Box display="flex" justifyContent="flex-end">
-                        <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="secondary">
-                            <MyTab color="primary" label="Overview" />
-                            <MyTab label="Details" disabled={detailDis} />
-                        </MyTabs>
-                    </Box>
                     {activeTab === 0 && (
                         <BaseDataGrid
                             cols={cols}
                             rows={rows}
                             onRowSelected={(r) => {
+                                console.log(r);
+
                                 setSelectedItem(r);
                                 setDetailDis(false);
                                 setActiveTab(1);
                             }}
                         />
                     )}
-                    {activeTab === 1 && <ItemsDetails selectedRow={selectedItem} />}
+                    {activeTab === 1 && (
+                        <ItemsDetails
+                            notes={notes}
+                            docs={docs}
+                            onDone={refreshItems}
+                            onDocSelected={(d) => {
+                                setSelectedDoc(d);
+                                setEditDocModal(true);
+                            }}
+                            onNoteSelected={(d) => {
+                                setSelectedNote(d);
+                                setEditNoteModal(true);
+                            }}
+                            selectedRow={selectedItem}
+                        />
+                    )}
                 </Grid>
             </Grid>
         </Container>
