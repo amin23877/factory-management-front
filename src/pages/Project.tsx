@@ -33,7 +33,14 @@ export default function Project() {
             <ProjectModal open={projectModal} onClose={() => setProjectModal(false)} onDone={refreshProjects} data={pData} />
 
             <Box>
-                <Button onClick={() => setProjectModal(true)}>Add new Project</Button>
+                <Button
+                    onClick={() => {
+                        setProjectModal(true);
+                        setPData(undefined);
+                    }}
+                >
+                    Add new Project
+                </Button>
             </Box>
             <Box>
                 <BaseDataGrid

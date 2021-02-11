@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box, Grid, Tabs, Tab } from "@material-ui/core";
 import { ColDef } from "@material-ui/data-grid";
 import { useFormik } from "formik";
@@ -88,7 +88,6 @@ function ItemsDetails({
                                 handleBlur={handleBlur}
                                 errors={errors}
                                 touched={touched}
-                                selectedRow={selectedRow}
                             />
                         </Grid>
                         <Grid item md={6} xs={12} style={{ padding: "1em" }}>
@@ -104,7 +103,6 @@ function ItemsDetails({
                                     handleBlur={handleBlur}
                                     errors={errors}
                                     touched={touched}
-                                    selectedRow={selectedRow}
                                 />
                             )}
                             {moreInfoTab === 1 && (
@@ -114,7 +112,6 @@ function ItemsDetails({
                                     handleBlur={handleBlur}
                                     errors={errors}
                                     touched={touched}
-                                    selectedRow={selectedRow}
                                 />
                             )}
                             {moreInfoTab === 2 && (
@@ -124,7 +121,6 @@ function ItemsDetails({
                                     handleBlur={handleBlur}
                                     errors={errors}
                                     touched={touched}
-                                    selectedRow={selectedRow}
                                 />
                             )}
                         </Grid>

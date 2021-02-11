@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Box, TextField, FormControlLabel, Checkbox, Button, List, ListItem } from "@material-ui/core";
+import { Box, TextField, FormControlLabel, Checkbox, List, ListItem } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
+import Button from "../../app/Button";
 import { FieldSelect } from "../../app/Inputs";
 
 import { getItems } from "../../api/items";
@@ -66,55 +67,58 @@ const BomRecordForm = ({
             <Formik validationSchema={schema} onSubmit={handleSubmit} initialValues={defValues}>
                 {({ values, errors, touched, handleChange, handleBlur }) => (
                     <Form>
-                        <FieldSelect
-                            request={getItems}
-                            itemTitleField="name"
-                            itemValueField="id"
-                            name="ItemId"
-                            value={values.ItemId}
-                            label="item"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={Boolean(errors.ItemId && touched.ItemId)}
-                        />
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
+                            <FieldSelect
+                                request={getItems}
+                                itemTitleField="name"
+                                itemValueField="id"
+                                name="ItemId"
+                                value={values.ItemId}
+                                label="item"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(errors.ItemId && touched.ItemId)}
+                            />
 
-                        <TextField
-                            variant="outlined"
-                            name="revision"
-                            label="revision"
-                            value={values.revision}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={Boolean(errors.revision && touched.revision)}
-                            helperText={errors.revision}
-                        />
-                        <TextField
-                            variant="outlined"
-                            name="usage"
-                            label="usage"
-                            value={values.usage}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={Boolean(errors.usage && touched.usage)}
-                            helperText={errors.usage}
-                        />
-                        <TextField
-                            variant="outlined"
-                            name="index"
-                            label="index"
-                            value={values.index}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={Boolean(errors.index && touched.index)}
-                            helperText={errors.index}
-                        />
-                        <FormControlLabel
-                            label="fixedQty"
-                            control={<Checkbox checked={values.fixedQty} onChange={handleChange} name="fixedQty" />}
-                        />
-                        <Button type="submit" variant="contained" color="primary">
-                            {method === "post" ? "Add" : "Save"}
-                        </Button>
+                            <TextField
+                                variant="outlined"
+                                name="revision"
+                                label="revision"
+                                value={values.revision}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(errors.revision && touched.revision)}
+                                helperText={errors.revision}
+                                style={{ marginLeft: 15 }}
+                            />
+                            <TextField
+                                variant="outlined"
+                                name="usage"
+                                label="usage"
+                                value={values.usage}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(errors.usage && touched.usage)}
+                                helperText={errors.usage}
+                            />
+                            <TextField
+                                variant="outlined"
+                                name="index"
+                                label="index"
+                                value={values.index}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(errors.index && touched.index)}
+                                helperText={errors.index}
+                            />
+                            <FormControlLabel
+                                label="fixedQty"
+                                control={<Checkbox checked={values.fixedQty} onChange={handleChange} name="fixedQty" />}
+                            />
+                            <Button type="submit" kind={method === "post" ? "add" : "edit"}>
+                                {method === "post" ? "Add" : "Save"}
+                            </Button>
+                        </Box>
                     </Form>
                 )}
             </Formik>

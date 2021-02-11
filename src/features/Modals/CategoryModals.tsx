@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Dialog, DialogTitle, Box, Tabs, Tab } from "@material-ui/core";
+import { Box, Tabs, Tab } from "@material-ui/core";
+
+import Dialog from "../../app/Dialog";
 
 import { GeneralForm } from "../../app/Forms";
 import { createCategory, deleteCategory, updateCategory, getCategories } from "../../api/category";
@@ -10,10 +12,7 @@ export default function CatTypeFamilyModal({ open, onClose }: { open: boolean; o
     const [activeTab, setActiveTab] = useState(0);
 
     return (
-        <Dialog open={open} onClose={onClose}>
-            <DialogTitle>
-                Manage <em>Categories - Types - Families</em>
-            </DialogTitle>
+        <Dialog open={open} onClose={onClose} title={`Manage Categories - Types - Families`}>
             <Box>
                 <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="Category" />

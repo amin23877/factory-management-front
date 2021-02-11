@@ -401,6 +401,7 @@ export default function Clients() {
                     )}
                     {activeTab === 1 && (
                         <ClientDetails
+                            onDone={refreshClients}
                             notes={notes}
                             docs={docs}
                             addrs={addrs}

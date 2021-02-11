@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Container, Grid, Button, Tabs, Tab } from "@material-ui/core";
+import { Box, Container, Grid, Button } from "@material-ui/core";
 import { RowData, ColDef } from "@material-ui/data-grid";
 import { NoteRounded, FileCopyRounded, PrintRounded, AddRounded, DeleteRounded, CategoryRounded } from "@material-ui/icons";
 
@@ -9,7 +9,7 @@ import NoteModal from "../features/Modals/NoteModals";
 import DocumentModal from "../features/Modals/DocumentModals";
 import BOMModal from "../features/BOM/BomModal";
 
-import { AddItemModal } from "../features/Modals/ItemModals";
+import { AddItemModal } from "../features/Items/ItemModals";
 import CatTypeFamilyModal from "../features/Modals/CategoryModals";
 import ItemsDetails from "../features/Items/ItemsDetails";
 
@@ -88,6 +88,7 @@ const Inventory = () => {
                 console.log(resp);
                 refreshItems();
                 setActiveTab(0);
+                setDeleteItemModal(false);
             }
         } catch (error) {
             console.log(error);
@@ -145,7 +146,7 @@ const Inventory = () => {
             <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
             <CatTypeFamilyModal open={catModal} onClose={() => setCatModal(false)} />
 
-            <Box display="flex" justifyContent="flex-end" alignItems="center" className="sticky-toolbar">
+            <Box display="flex" justifyContent="flex-end" alignItems="center">
                 <Button
                     disabled={activeTab === 0}
                     onClick={() => setAddNoteModal(true)}

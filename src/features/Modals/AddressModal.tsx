@@ -1,23 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {
-    Dialog,
-    useTheme,
-    DialogTitle,
-    Box,
-    Button,
-    TextField,
-    MenuItem,
-    CircularProgress,
-    FormControlLabel,
-    FormLabel,
-    RadioGroup,
-    Radio,
-    FormControl,
-} from "@material-ui/core";
-
+import { useTheme, Box, TextField, CircularProgress, FormControlLabel, FormLabel, RadioGroup, Radio, FormControl } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
+import Dialog from "../../app/Dialog";
+import Button from "../../app/Button";
 import { FieldSelect } from "../../app/Inputs";
 
 import { createAModelAddress, deleteAModelAddress, updateAModelAddress, IAddress } from "../../api/address";
@@ -42,23 +29,10 @@ export const AddressModal = ({
     data?: IAddress;
     onDone?: () => void;
 }) => {
-    const [ats, setAts] = useState([]);
     const theme = useTheme();
 
-    useEffect(() => {
-        getAddressTypes()
-            .then((d) => {
-                setAts(d);
-                console.log(d);
-            })
-            .catch((e) => console.log(e));
-    }, []);
-
     return (
-        <Dialog open={open} onClose={onClose}>
-            <DialogTitle>
-                {data?.id ? "Edit" : "Add"} an Address to {model} {itemId}
-            </DialogTitle>
+        <Dialog open={open} onClose={onClose} title={`${data?.id ? "Edit" : "Add"} an Address to ${model}`}>
             <Box m={3}>
                 <Formik
                     initialValues={
@@ -181,15 +155,13 @@ export const AddressModal = ({
                             </FormControl>
 
                             <Box my={2} textAlign="center">
-                                <Button type="submit" color="primary" disabled={isSubmitting} variant="contained">
-                                    Save Note
-                                    {isSubmitting && <CircularProgress style={{ margin: "0 0.5em" }} />}
+                                <Button type="submit" disabled={isSubmitting} kind={data ? "edit" : "add"}>
+                                    Save
                                 </Button>
                                 {data?.id && (
                                     <Button
-                                        color="primary"
-                                        variant="contained"
-                                        style={{ margin: "0 1em", background: theme.palette.error.main }}
+                                        kind="delete"
+                                        style={{ margin: "0 1em" }}
                                         onClick={() => {
                                             if (data?.id) {
                                                 deleteAModelAddress(data.id)
@@ -201,7 +173,7 @@ export const AddressModal = ({
                                             }
                                         }}
                                     >
-                                        Delete this note
+                                        Delete
                                     </Button>
                                 )}
                             </Box>

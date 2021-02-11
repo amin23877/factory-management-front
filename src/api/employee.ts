@@ -6,6 +6,7 @@ export interface ILogedinEmployee {
 }
 
 export interface IEmployee {
+    id?: number;
     username: string;
     password: string;
 }

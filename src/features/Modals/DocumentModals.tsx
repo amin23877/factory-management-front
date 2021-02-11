@@ -74,6 +74,16 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
                                 <Button type="submit" color="primary" variant="contained" disabled={isSubmitting}>
                                     Save
                                 </Button>
+                                {docData && (
+                                    <Button
+                                        onClick={deleteDocument}
+                                        style={{ backgroundColor: "red", color: "#fff" }}
+                                        variant="contained"
+                                        disabled={isSubmitting}
+                                    >
+                                        Delete
+                                    </Button>
+                                )}
                             </Box>
                         </Form>
                     )}

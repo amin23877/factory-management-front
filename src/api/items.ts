@@ -3,13 +3,7 @@ import * as Yup from 'yup'
 
 export const AddItemSchema = Yup.object().shape({
     name: Yup.string().min(4, "Too short!").max(60, "Too long").required("Required !!"),
-
-    size: Yup.string().min(4, "Too short!").max(60, "Too long").oneOf(["large", "medium", "small"]),
-
-    active: Yup.boolean(),
-
-    mode: Yup.string().oneOf(["Individual", "Kit", "Bundle"]),
-
+    
     cost: Yup.number(),
     retailPrice: Yup.number(),
 
@@ -23,10 +17,10 @@ export const AddItemSchema = Yup.object().shape({
 // }
 export const AddItemInitialValues = {
     name: "",
-    no: 0,
-    sku: 0,
-    upc: 0,
-    mfgr: 0,
+    no: "",
+    sku: "",
+    upc: "",
+    mfgr: "",
     color: "",
     description: "",
     size: "small",
@@ -45,7 +39,14 @@ export const AddItemInitialValues = {
     aisle: "",
     shelf: "",
     bin: "",
-    tiers: "",
+    weightOz: 0,
+    weightLb: 0,
+    shippingOz: 0,
+    shippingLb: 0,
+    totalQoh: 0,
+    allocatedQoh: 0,
+    availableQoh: 0,
+    triggerQoh: 0, 
     additionalShippingFee: 0,
     shippingNote: "",
     ItemCategoryId: "",

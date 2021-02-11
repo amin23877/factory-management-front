@@ -103,7 +103,11 @@ export default function NoteModal({ open, onClose, model, itemId, noteData, onDo
                                             if (noteData.id) {
                                                 deleteAModelNote(noteData?.id)
                                                     .then((d) => console.log(d))
-                                                    .catch((e) => console.log(e));
+                                                    .catch((e) => console.log(e))
+                                                    .finally(() => {
+                                                        onDone && onDone();
+                                                        onClose();
+                                                    });
                                             }
                                         }}
                                     >

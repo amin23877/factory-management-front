@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Dialog, Box, Button, List, ListItem, Tabs, Tab } from "@material-ui/core";
+import { Box, Tabs, Tab } from "@material-ui/core";
 import { RowData, ColDef } from "@material-ui/data-grid";
+
+import Dialog from "../../app/Dialog";
 
 import { getBom, getBomRecord } from "../../api/bom";
 import BaseDataGrid from "../../app/BaseDataGrid";
@@ -61,7 +63,7 @@ export default function BOMModal({ open, onClose, itemId }: { itemId: number; op
     }, [selectedBom]);
 
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
+        <Dialog open={open} onClose={onClose} title="BOM" maxWidth="lg" fullWidth>
             <Box m={1}>
                 <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="BOM" />

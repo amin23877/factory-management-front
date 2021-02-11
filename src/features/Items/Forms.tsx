@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Box, Button, TextField, RadioGroup, Radio, FormControlLabel, Tabs, Tab, Divider, Typography } from "@material-ui/core";
-import { EditRounded } from "@material-ui/icons";
+import React from "react";
+import { Box, TextField, RadioGroup, Radio, FormControlLabel, Divider, Typography } from "@material-ui/core";
 
-import { Gradients } from "../../theme";
+import Button from "../../app/Button";
 
 import { getCategories } from "../../api/category";
 import { getTypes } from "../../api/types";
@@ -14,13 +13,12 @@ interface IForm {
     values: any;
     errors: any;
     touched: any;
-    selectedRow: any;
     handleChange: (e: any) => void;
     handleBlur: (e: any) => void;
     isSubmitting?: boolean;
 }
 
-export const General = ({ isSubmitting, values, errors, handleChange, handleBlur, touched, selectedRow }: IForm) => {
+export const General = ({ isSubmitting, values, errors, handleChange, handleBlur, touched }: IForm) => {
     return (
         <>
             <Box style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap" }}>
@@ -66,7 +64,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={Boolean(errors.no && touched.no)}
-                    placeholder={selectedRow.no}
+                    placeholder="no"
                     variant="outlined"
                 />
                 <FieldSelect
@@ -139,16 +137,23 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                 />
             </Box>
             <Box>
-                <RadioGroup style={{ flexDirection: "row" }} name="item active radios" value={selectedRow.active} onChange={(e) => e}>
-                    <FormControlLabel value={true} control={<Radio />} label="Active" />
-                    <FormControlLabel value={false} control={<Radio />} label="InActive" />
+                <RadioGroup
+                    style={{ flexDirection: "row" }}
+                    name="active"
+                    value={String(values.active)}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                >
+                    <FormControlLabel value="true" control={<Radio />} label="Active" />
+                    <FormControlLabel value="false" control={<Radio />} label="Inactive" />
                 </RadioGroup>
+
                 <Box display="flex">
                     <TextField
-                        value={selectedRow.specialNote}
+                        value={values.specialNote}
                         style={{ marginRight: "1em", flex: 5 }}
                         fullWidth
-                        placeholder={selectedRow.specialNote}
+                        placeholder={values.specialNote}
                         name="specialNote"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -156,16 +161,8 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         variant="outlined"
                         multiline
                     />
-                    <Button
-                        disabled={isSubmitting}
-                        title="add item"
-                        variant="contained"
-                        type="submit"
-                        onClick={() => console.log(errors)}
-                        style={{ color: "#fff", background: Gradients.success, flex: 1 }}
-                        fullWidth
-                    >
-                        <EditRounded /> Update
+                    <Button disabled={isSubmitting} kind="edit" type="submit">
+                        Update
                     </Button>
                 </Box>
             </Box>
@@ -173,7 +170,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
     );
 };
 
-export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched, selectedRow }: IForm) => {
+export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
     return (
         <Box display="flex" alignItems="center" p={2}>
             <Box mr={2}>
@@ -218,7 +215,7 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched, se
                     style={{ marginBottom: 3 }}
                 />
                 <Divider />
-                <Typography style={{ fontWeight: "bold", textAlign: "center" }}> Markup 200 %</Typography>
+                {/* <Typography style={{ fontWeight: "bold", textAlign: "center" }}> Markup 200 %</Typography> */}
             </Box>
             <Box>
                 <Box style={{ padding: "4em 3em", border: "2px dashed gray", borderRadius: 20 }}></Box>
@@ -227,33 +224,42 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched, se
     );
 };
 
-export const Quantity = ({ values, errors, handleChange, handleBlur, touched, selectedRow }: IForm) => {
+export const Quantity = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
     return (
         <Box display="flex" alignItems="center" p={2}>
             <Box flex={2} mr={2}>
-                <Typography>Quantity on hand</Typography>
+                <Typography>Total Quantity on hand</Typography>
                 <BaseTextInput
-                    name="qoh"
-                    placeholder={selectedRow.qoh}
-                    value={values.qoh}
+                    name="totalQoh"
+                    placeholder="Total quantity"
+                    value={values.totalQoh}
                     onBlur={handleBlur}
                     onChange={handleChange}
                     style={{ marginBottom: 3 }}
                 />
-                <Typography>Minimum</Typography>
+                <Typography>Allocated qoh</Typography>
                 <BaseTextInput
-                    name="minimum"
-                    placeholder={selectedRow.minimum}
-                    value={values.minimum}
+                    name="allocatedQoh"
+                    placeholder="allocatedQoh"
+                    value={values.allocatedQoh}
                     onBlur={handleBlur}
                     onChange={handleChange}
                     style={{ margin: "3px 0" }}
                 />
-                <Typography>Maximum</Typography>
+                <Typography>Available qoh</Typography>
                 <BaseTextInput
-                    name="maximum"
-                    placeholder={selectedRow.maximum}
-                    value={values.maximum}
+                    name="availableQoh"
+                    placeholder="availableQoh"
+                    value={values.availableQoh}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    style={{ marginBottom: 3 }}
+                />
+                <Typography>Trigger qoh</Typography>
+                <BaseTextInput
+                    name="triggerQoh"
+                    placeholder="triggerQoh"
+                    value={values.triggerQoh}
                     onBlur={handleBlur}
                     onChange={handleChange}
                     style={{ marginBottom: 3 }}
@@ -263,23 +269,14 @@ export const Quantity = ({ values, errors, handleChange, handleBlur, touched, se
     );
 };
 
-export const Shipping = ({ values, errors, handleChange, handleBlur, touched, selectedRow }: IForm) => {
+export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
     return (
         <Box display="flex" alignItems="center" p={2}>
             <Box>
-                <Typography>Tiers</Typography>
-                <BaseTextInput
-                    name="tiers"
-                    placeholder={selectedRow.tiers}
-                    value={values.tiers}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    style={{ marginBottom: 3 }}
-                />
                 <Typography>Adittional Shipping Fee</Typography>
                 <BaseTextInput
                     name="additionalShippingFee"
-                    placeholder={selectedRow.additionalShippingFee}
+                    placeholder="Additional shipping fee"
                     value={values.additionalShippingFee}
                     onBlur={handleBlur}
                     onChange={handleChange}
@@ -289,10 +286,10 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched, se
                 <Box display="flex">
                     <Typography style={{ flex: 1 }}>Item Weight</Typography>
                     <Box textAlign="center">
-                        <Typography>LB</Typography>
+                        <Typography>Lbs</Typography>
                         <BaseTextInput
                             name="weightLb"
-                            placeholder={selectedRow.weightLb}
+                            placeholder="weightLb"
                             value={values.weightLb}
                             onBlur={handleBlur}
                             onChange={handleChange}
@@ -300,10 +297,10 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched, se
                         />
                     </Box>
                     <Box textAlign="center">
-                        <Typography>OZ</Typography>
+                        <Typography>Oz</Typography>
                         <BaseTextInput
                             name="weightOz"
-                            placeholder={selectedRow.weightOz}
+                            placeholder="weightOz"
                             value={values.weightOz}
                             onBlur={handleBlur}
                             onChange={handleChange}
@@ -314,10 +311,10 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched, se
                 <Box display="flex" mt={1}>
                     <Typography style={{ flex: 1 }}>Shipping Weight</Typography>
                     <Box textAlign="center">
-                        <Typography>LB</Typography>
+                        <Typography>Lbs</Typography>
                         <BaseTextInput
                             name="shippingLb"
-                            placeholder={selectedRow.shippingLb}
+                            placeholder="shippingLb"
                             value={values.shippingLb}
                             onBlur={handleBlur}
                             onChange={handleChange}
@@ -328,7 +325,7 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched, se
                         <Typography>OZ</Typography>
                         <BaseTextInput
                             name="shippingOz"
-                            placeholder={selectedRow.shippingOz}
+                            placeholder="shippingOz"
                             value={values.shippingOz}
                             onBlur={handleBlur}
                             onChange={handleChange}

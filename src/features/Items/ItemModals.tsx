@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
     Dialog,
     DialogTitle,
     Box,
     TextField,
-    MenuItem,
     Button,
     FormControlLabel,
     FormLabel,
@@ -19,7 +18,7 @@ import { FieldSelect } from "../../app/Inputs";
 import { getCategories } from "../../api/category";
 import { getTypes } from "../../api/types";
 import { getFamilies } from "../../api/family";
-import { createItem, AddItemInitialValues, AddItemSchema, deleteAnItem } from "../../api/items";
+import { createItem, AddItemInitialValues, AddItemSchema } from "../../api/items";
 
 export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
     const { errors, touched, values, handleChange, handleBlur, isSubmitting, handleSubmit } = useFormik({
@@ -39,23 +38,6 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
                 .catch((e) => console.log(e));
         },
     });
-    const [cats, setCats] = useState([]);
-    const [types, setTypes] = useState([]);
-    const [families, setFamilies] = useState([]);
-
-    useEffect(() => {
-        getCategories()
-            .then((data) => setCats(data))
-            .catch((e) => console.log(e));
-
-        getTypes()
-            .then((data) => setTypes(data))
-            .catch((e) => console.log(e));
-
-        getFamilies()
-            .then((d) => setFamilies(d))
-            .catch((e) => console.log(e));
-    }, [open]);
 
     const specials = ["size", "active", "ItemCategoryId", "ItemTypeId", "ItemFamilyId"];
     let form_inputs = [];
@@ -101,6 +83,7 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
                         title="Type"
                         itemTitleField="name"
                         itemValueField="id"
+                        label="Type"
                         fullWidth
                         name="ItemTypeId"
                         onChange={handleChange}
@@ -108,10 +91,11 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
                         value={values.ItemTypeId}
                     />
                     <FieldSelect
-                        request={getTypes}
+                        request={getFamilies}
                         title="Family"
                         itemTitleField="name"
                         itemValueField="id"
+                        label="Family"
                         fullWidth
                         name="ItemFamilyId"
                         onChange={handleChange}
@@ -130,7 +114,7 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
 
                     <FormControl fullWidth style={{ margin: "0.5em" }}>
                         <FormLabel>Active</FormLabel>
-                        <RadioGroup name="active" value={values.active} onChange={handleChange}>
+                        <RadioGroup name="active" value={String(values.active)} onChange={handleChange}>
                             <FormControlLabel value="true" control={<Radio />} label="Yes" />
                             <FormControlLabel value="false" control={<Radio />} label="No" />
                         </RadioGroup>

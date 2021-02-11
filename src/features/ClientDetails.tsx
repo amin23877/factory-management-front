@@ -26,7 +26,7 @@ import { BasePaper } from "../app/Paper";
 
 import BaseDataGrid from "../app/BaseDataGrid";
 
-const EditClientForm = ({ data }: { data: any }) => {
+const EditClientForm = ({ data, onDone }: { data: any; onDone: () => void }) => {
     const [clients, setClients] = useState([]);
     const [clientTypes, setClientTypes] = useState([]);
     const [showSnack, setShowSnack] = useState(false);
@@ -47,6 +47,7 @@ const EditClientForm = ({ data }: { data: any }) => {
                     setMsg("Error " + resp.error);
                 }
 
+                onDone();
                 setSubmitting(false);
             } catch (error) {
                 setShowSnack(true);
@@ -161,11 +162,11 @@ const EditClientForm = ({ data }: { data: any }) => {
                             <RadioGroup
                                 style={{ display: "flex", flexDirection: "row" }}
                                 name="prospect"
-                                value={values.prospect}
+                                value={String(values.prospect)}
                                 onChange={(e) => setFieldValue("prospect", e.target.value === "true")}
                             >
-                                <FormControlLabel value={true} control={<Radio />} label="Yes" />
-                                <FormControlLabel value={false} control={<Radio />} label="No" />
+                                <FormControlLabel value="true" control={<Radio />} label="Yes" />
+                                <FormControlLabel value="false" control={<Radio />} label="No" />
                             </RadioGroup>
                         </FormControl>
                     </Box>
@@ -198,8 +199,10 @@ export default function ClientDetails({
     phones,
     emails,
     contacts,
+    onDone,
 }: {
     selectedRow: any;
+    onDone: () => void;
     onNoteSelected: (v: any) => void;
     onDocSelected: (v: any) => void;
     onAddrSelected: (v: any) => void;
@@ -252,7 +255,7 @@ export default function ClientDetails({
 
     return (
         <BasePaper>
-            <EditClientForm data={selectedRow} />
+            <EditClientForm onDone={onDone} data={selectedRow} />
 
             <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} variant="scrollable">
                 <Tab label="Notes" />

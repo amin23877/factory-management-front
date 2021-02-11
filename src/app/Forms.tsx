@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Box, Accordion, AccordionSummary, AccordionDetails, TextField, Button, MenuItem, Snackbar } from "@material-ui/core";
+import { Box, Accordion, AccordionSummary, AccordionDetails, TextField, MenuItem } from "@material-ui/core";
 import { ExpandMoreRounded } from "@material-ui/icons";
-import { useFormik } from "formik";
 
-import { Gradients } from "../theme";
-import { BaseSelect } from "../app/Inputs";
+import Snackbar from "./Snack";
+import Button from "./Button";
+import { BaseSelect } from "./Inputs";
 
 export const GeneralForm = ({
     type,
@@ -95,14 +95,9 @@ export const GeneralForm = ({
 
     return (
         <>
-            <Snackbar
-                autoHideDuration={2000}
-                anchorOrigin={{ horizontal: "center", vertical: "bottom" }}
-                onClose={() => setShowSnack(false)}
-                open={showSnack}
-                message={snackMsg}
-                key="updateSnack"
-            />
+            <Snackbar onClose={() => setShowSnack(false)} open={showSnack}>
+                {snackMsg}
+            </Snackbar>
 
             <Box m={2} p={2}>
                 <Accordion>
@@ -124,14 +119,7 @@ export const GeneralForm = ({
                                     inputProps={{ style: { padding: 14 } }}
                                     placeholder={`${type} name`}
                                 />
-                                <Button
-                                    type="submit"
-                                    disabled={dis}
-                                    variant="contained"
-                                    onClick={handleAdd}
-                                    color="primary"
-                                    style={{ background: Gradients.success, margin: "0.5em 0" }}
-                                >
+                                <Button type="submit" kind="add" disabled={dis} onClick={handleAdd} style={{ margin: "0.5em 0" }}>
                                     Add
                                 </Button>
                             </Box>
@@ -160,18 +148,10 @@ export const GeneralForm = ({
                                     variant="outlined"
                                     value={editName}
                                     onChange={(e) => setEditName(e.target.value)}
-                                    fullWidth
-                                    inputProps={{ style: { padding: 14 } }}
+                                    style={{ flex: 1, marginRight: 5 }}
                                     placeholder={`New ${type} name`}
                                 />
-                                <Button
-                                    type="submit"
-                                    disabled={dis}
-                                    variant="contained"
-                                    onClick={handleEdit}
-                                    color="primary"
-                                    style={{ background: Gradients.info, padding: "0.8em 0" }}
-                                >
+                                <Button type="submit" disabled={dis} kind="edit" onClick={handleEdit} style={{ padding: "1em" }}>
                                     Save
                                 </Button>
                             </Box>
@@ -201,14 +181,7 @@ export const GeneralForm = ({
                                         </MenuItem>
                                     ))}
                                 </BaseSelect>
-                                <Button
-                                    type="submit"
-                                    disabled={dis}
-                                    variant="contained"
-                                    onClick={handleDelete}
-                                    color="primary"
-                                    style={{ background: Gradients.error, margin: "0.5em 0" }}
-                                >
+                                <Button type="submit" disabled={dis} onClick={handleDelete} kind="delete" style={{ margin: "0.5em 0" }}>
                                     Delete
                                 </Button>
                             </Box>

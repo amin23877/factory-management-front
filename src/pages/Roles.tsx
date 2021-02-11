@@ -3,8 +3,9 @@ import { Box, Button, IconButton, Typography, FormControlLabel, Checkbox, List, 
 import { DeleteRounded } from "@material-ui/icons";
 
 import { getRoles, getEmployeesRoles } from "../api/role";
-import { addRoleToEmployee, deleteRoleFromEmployee } from "../api/employee";
+import { IEmployee, addRoleToEmployee, deleteRoleFromEmployee, deleteEmployee } from "../api/employee";
 
+import Confirm from "../features/Modals/Confirm";
 import { AddEmployeeModal } from "../features/Modals/EmployeeModal";
 import { AddRoleModal } from "../features/Modals/RoleModals";
 import RoleManagement from "../features/Modals/RoleManagement";
@@ -15,11 +16,13 @@ import Snack from "../app/Snack";
 export default function Roles() {
     const [addEmpModal, setAddEmpModal] = useState(false);
     const [addRoleModal, setAddRoleModal] = useState(false);
+    const [confirm, setConfirm] = useState(false);
     const [roleManagement, setRoleManagement] = useState(false);
 
     const [snack, setSnack] = useState(false);
     const [msg, setMsg] = useState("");
 
+    const [selectedEmp, setSelectedEmp] = useState<IEmployee>();
     const [empsAndRoles, setEmpsAndRoles] = useState([]);
     const [roles, setRoles] = useState([]);
 
@@ -66,8 +69,21 @@ export default function Roles() {
         }
     };
 
+    const handleDelete = async () => {
+        try {
+            if (selectedEmp && selectedEmp?.id) {
+                const resp = await deleteEmployee(selectedEmp?.id);
+                setConfirm(false);
+                refreshEmpsRoles();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <>
+            <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
             <AddEmployeeModal open={addEmpModal} onClose={() => setAddEmpModal(false)} onDone={refreshEmpsRoles} />
             <AddRoleModal open={addRoleModal} onClose={() => setAddRoleModal(false)} />
             <RoleManagement open={roleManagement} onClose={() => setRoleManagement(false)} />
@@ -87,7 +103,13 @@ export default function Roles() {
                         {empsAndRoles &&
                             empsAndRoles.map((emp: any) => (
                                 <ListItem key={emp.id}>
-                                    <IconButton style={{ color: "red" }}>
+                                    <IconButton
+                                        onClick={() => {
+                                            setSelectedEmp(emp);
+                                            setConfirm(true);
+                                        }}
+                                        style={{ color: "red" }}
+                                    >
                                         <DeleteRounded />
                                     </IconButton>
                                     <Typography>{emp.username}</Typography>

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Box, TextField, FormControlLabel, Checkbox, Button, List, ListItem } from "@material-ui/core";
+import { Box, TextField, FormControlLabel, Checkbox, List, ListItem } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
+import Button from "../../app/Button";
 import Confirm from "../Modals/Confirm";
 import { IBom, addBom, updateBom, deleteBom } from "../../api/bom";
 
@@ -50,43 +51,45 @@ const BomForm = ({
             <Formik validationSchema={schema} onSubmit={handleSubmit} initialValues={defValues}>
                 {({ values, errors, touched, handleChange, handleBlur }) => (
                     <Form>
-                        <TextField
-                            variant="outlined"
-                            name="name"
-                            label="name"
-                            value={values.name}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={Boolean(errors.name && touched.name)}
-                            helperText={errors.name}
-                        />
-                        <TextField
-                            variant="outlined"
-                            name="no"
-                            label="no"
-                            value={values.no}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={Boolean(errors.no && touched.no)}
-                            helperText={errors.no}
-                        />
-                        <TextField
-                            variant="outlined"
-                            name="note"
-                            label="note"
-                            value={values.note}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={Boolean(errors.note && touched.note)}
-                            helperText={errors.note}
-                        />
-                        <FormControlLabel
-                            label="current"
-                            control={<Checkbox checked={values.current} onChange={handleChange} name="current" />}
-                        />
-                        <Button type="submit" variant="contained" color="primary">
-                            Add
-                        </Button>
+                        <Box display="flex" justifyContent="space-between" alignItems="center">
+                            <TextField
+                                variant="outlined"
+                                name="name"
+                                label="name"
+                                value={values.name}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(errors.name && touched.name)}
+                                helperText={errors.name}
+                            />
+                            <TextField
+                                variant="outlined"
+                                name="no"
+                                label="no"
+                                value={values.no}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(errors.no && touched.no)}
+                                helperText={errors.no}
+                            />
+                            <TextField
+                                variant="outlined"
+                                name="note"
+                                label="note"
+                                value={values.note}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(errors.note && touched.note)}
+                                helperText={errors.note}
+                            />
+                            <FormControlLabel
+                                label="current"
+                                control={<Checkbox checked={values.current} onChange={handleChange} name="current" />}
+                            />
+                            <Button type="submit" kind={method === "post" ? "add" : "edit"}>
+                                {method === "post" ? "Add" : "edit"}
+                            </Button>
+                        </Box>
                     </Form>
                 )}
             </Formik>

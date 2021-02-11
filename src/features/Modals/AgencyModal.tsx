@@ -1,9 +1,11 @@
 import React from "react";
-import { Dialog, useTheme, DialogTitle, Box, Button, TextField, CircularProgress } from "@material-ui/core";
+import { useTheme, Box, TextField } from "@material-ui/core";
 
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
+import Dialog from "../../app/Dialog";
+import Button from "../../app/Button";
 import { createAModelAgency, deleteAModelAgency, updateAModelAgency, IAgency } from "../../api/agency";
 
 const schema = Yup.object().shape({
@@ -25,14 +27,9 @@ export const AgencyModal = ({
     data?: IAgency;
     onDone?: () => void;
 }) => {
-    const theme = useTheme();
-
     return (
-        <Dialog open={open} onClose={onClose}>
-            <DialogTitle>
-                {data?.id ? "Edit" : "Add"} an Agency to {model} {itemId}
-            </DialogTitle>
-            <Box m={3}>
+        <Dialog open={open} onClose={onClose} title={`${data?.id ? "Edit" : "Add"} an Agency to ${model}`}>
+            <Box m={2}>
                 <Formik
                     initialValues={data?.id ? data : { name: "" }}
                     validationSchema={schema}
@@ -68,15 +65,13 @@ export const AgencyModal = ({
                             />
 
                             <Box my={2} textAlign="center">
-                                <Button type="submit" color="primary" disabled={isSubmitting} variant="contained">
+                                <Button type="submit" disabled={isSubmitting} kind={data ? "edit" : "add"}>
                                     Save
-                                    {isSubmitting && <CircularProgress style={{ margin: "0 0.5em" }} />}
                                 </Button>
                                 {data?.id && (
                                     <Button
-                                        color="primary"
-                                        variant="contained"
-                                        style={{ margin: "0 1em", background: theme.palette.error.main }}
+                                        kind="delete"
+                                        style={{ margin: "0 1em" }}
                                         onClick={() => {
                                             if (data?.id) {
                                                 deleteAModelAgency(data.id)
