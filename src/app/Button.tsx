@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { Button, ButtonProps, makeStyles } from "@material-ui/core";
 import { AddRounded, EditRounded, DeleteRounded } from "@material-ui/icons";
 
@@ -11,7 +11,7 @@ interface IButton extends ButtonProps {
 export default function MyButton({ kind, ...props }: IButton) {
     const useStyles = makeStyles({
         btnStyle: {
-            background: kind === "add" ? Gradients.success : kind === "edit" ? Gradients.warning : Gradients.error,
+            background: kind ? (kind === "add" ? Gradients.success : kind === "edit" ? Gradients.warning : Gradients.error) : "default",
         },
     });
     let icons = {

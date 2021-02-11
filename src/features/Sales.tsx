@@ -1,16 +1,7 @@
 import React, { ReactNode } from "react";
 import { Grid, Typography, Box, Button, Avatar, makeStyles } from "@material-ui/core";
-import {
-    UpdateRounded,
-    SettingsRounded,
-    EmailRounded,
-    PaymentRounded,
-    ChatRounded,
-    EmojiObjectsRounded,
-    AddRounded,
-} from "@material-ui/icons";
+import { AddRounded } from "@material-ui/icons";
 
-import { Gradients } from "../theme";
 import { BasePaper } from "../app/Paper";
 import { BaseTable } from "../app/Table";
 

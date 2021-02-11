@@ -1,21 +1,11 @@
-import React, { useState, useEffect } from "react";
-import {
-    Dialog,
-    useTheme,
-    DialogTitle,
-    Box,
-    Button,
-    TextField,
-    CircularProgress,
-    MenuItem,
-    FormControlLabel,
-    Checkbox,
-} from "@material-ui/core";
-
+import React from "react";
+import { Box, TextField, FormControlLabel, Checkbox } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
-import { BaseSelect } from "../../app/Inputs";
+import Button from "../../app/Button";
+import Dialog from "../../app/Dialog";
+import { FieldSelect } from "../../app/Inputs";
 
 import { getEmailTypes } from "../../api/emailType";
 import { createAModelEmailAddr, deleteAModelEmailAddr, updateAModelEmailAddr, IEmailAddress } from "../../api/emailAddress";
@@ -39,22 +29,8 @@ export const EmailModal = ({
     data?: IEmailAddress;
     onDone?: () => void;
 }) => {
-    const theme = useTheme();
-    const [emailTypes, setEmailTypes] = useState([]);
-
-    useEffect(() => {
-        if (open) {
-            getEmailTypes()
-                .then((d) => setEmailTypes(d))
-                .catch((e) => console.log(e));
-        }
-    }, [open]);
-
     return (
-        <Dialog open={open} onClose={onClose}>
-            <DialogTitle>
-                {data?.id ? "Edit" : "Add"} an Email to {model} {itemId}
-            </DialogTitle>
+        <Dialog open={open} onClose={onClose} title={`${data?.id ? "Edit" : "Add"} an Email to ${model}`}>
             <Box m={3}>
                 <Formik
                     initialValues={data?.id ? data : { email: "", main: false, EmailTypeId: 0 }}
@@ -94,34 +70,29 @@ export const EmailModal = ({
                                 fullWidth
                             />
 
-                            <BaseSelect
+                            <FieldSelect
+                                request={getEmailTypes}
+                                itemTitleField="name"
+                                itemValueField="id"
                                 fullWidth
                                 name="EmailTypeId"
+                                label="Email Type"
                                 value={values.EmailTypeId}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 error={Boolean(errors.EmailTypeId && touched.EmailTypeId)}
-                            >
-                                {emailTypes &&
-                                    emailTypes.map((pt: any) => (
-                                        <MenuItem key={pt.id} value={pt.id}>
-                                            {pt.name}
-                                        </MenuItem>
-                                    ))}
-                            </BaseSelect>
+                            />
 
                             <FormControlLabel name="main" onChange={handleChange} label="Is this Email main?" control={<Checkbox />} />
 
                             <Box my={2} textAlign="center">
-                                <Button type="submit" color="primary" disabled={isSubmitting} variant="contained">
+                                <Button type="submit" disabled={isSubmitting} kind={data ? "edit" : "add"}>
                                     Save
-                                    {isSubmitting && <CircularProgress style={{ margin: "0 0.5em" }} />}
                                 </Button>
                                 {data?.id && (
                                     <Button
-                                        color="primary"
-                                        variant="contained"
-                                        style={{ margin: "0 1em", background: theme.palette.error.main }}
+                                        kind="delete"
+                                        style={{ margin: "0 1em" }}
                                         onClick={() => {
                                             if (data?.id) {
                                                 deleteAModelEmailAddr(data.id)

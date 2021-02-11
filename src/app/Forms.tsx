@@ -12,12 +12,14 @@ export const GeneralForm = ({
     addRecord,
     updateRecord,
     deleteRecord,
+    onDone,
 }: {
     type: string;
     addRecord: (v: string) => Promise<any>;
     getRecord: () => Promise<any>;
     updateRecord: (id: number, v: string) => Promise<any>;
     deleteRecord: (id: number) => Promise<any>;
+    onDone?: () => void;
 }) => {
     const [data, setData] = useState([]);
     const [dis, setDis] = useState(false);
@@ -58,6 +60,7 @@ export const GeneralForm = ({
                 resp && setDis(false);
                 refreshData();
                 showMsg(resp);
+                onDone && onDone();
             }
         } catch (error) {
             console.log(error);
@@ -65,13 +68,13 @@ export const GeneralForm = ({
     };
     const handleEdit = async () => {
         setDis(true);
-        console.log(selectedData, editName);
         try {
             if (selectedData && editName) {
                 const resp = await updateRecord(selectedData, editName);
                 resp && setDis(false);
                 refreshData();
                 showMsg(resp);
+                onDone && onDone();
             }
         } catch (error) {
             console.log(error);
@@ -79,14 +82,13 @@ export const GeneralForm = ({
     };
     const handleDelete = async () => {
         setDis(true);
-        console.log(selectedData);
-
         try {
             if (selectedData) {
                 const resp = await deleteRecord(selectedData);
                 resp && setDis(false);
                 refreshData();
                 showMsg(resp);
+                onDone && onDone();
             }
         } catch (error) {
             console.log(error);

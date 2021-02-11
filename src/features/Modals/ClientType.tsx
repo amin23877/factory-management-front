@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Dialog, DialogTitle, Box, Tabs, Tab } from "@material-ui/core";
+import { Box, Tabs, Tab } from "@material-ui/core";
 
+import Dialog from "../../app/Dialog";
 import { GeneralForm } from "../../app/Forms";
 
 import { addClientType, deleteClientType, editClientType, getClientTypes } from "../../api/clientType";
@@ -9,12 +10,11 @@ import { addContactType, deleteContactType, editContactType, getContactTypes } f
 import { addPhoneType, deletePhoneType, editPhoneType, getPhoneTypes } from "../../api/phoneType";
 import { addAddressType, deleteAddressType, editAddressType, getAddressTypes } from "../../api/addressType";
 
-export const AllClientTypesModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+export const AllClientTypesModal = ({ open, onClose, onCTDone }: { onCTDone: () => void; open: boolean; onClose: () => void }) => {
     const [activeTab, setActiveTab] = useState(0);
 
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="lg">
-            <DialogTitle>All Client Types</DialogTitle>
+        <Dialog open={open} onClose={onClose} maxWidth="lg" title="Add client types">
             <Box m={1}>
                 <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="Client Type" />
@@ -30,6 +30,7 @@ export const AllClientTypesModal = ({ open, onClose }: { open: boolean; onClose:
                         deleteRecord={deleteClientType}
                         getRecord={getClientTypes}
                         updateRecord={editClientType}
+                        onDone={onCTDone}
                     />
                 )}
                 {activeTab === 1 && (

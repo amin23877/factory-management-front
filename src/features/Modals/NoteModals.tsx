@@ -1,8 +1,10 @@
 import React from "react";
-import { Dialog, useTheme, DialogTitle, Box, Button, TextField, CircularProgress } from "@material-ui/core";
-
+import { Box, TextField } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+
+import Dialog from "../../app/Dialog";
+import Button from "../../app/Button";
 
 import { createAModelNote, updateAModelNote, deleteAModelNote, INote } from "../../api/note";
 
@@ -21,13 +23,8 @@ interface INoteModal {
 }
 
 export default function NoteModal({ open, onClose, model, itemId, noteData, onDone }: INoteModal) {
-    const theme = useTheme();
-
     return (
-        <Dialog open={open} onClose={onClose}>
-            <DialogTitle>
-                {noteData?.id ? "Edit" : "Add"} a note to {model} {itemId}
-            </DialogTitle>
+        <Dialog open={open} onClose={onClose} title={`${noteData?.id ? "Edit" : "Add"} a note to ${model}`}>
             <Box m={3}>
                 <Formik
                     initialValues={{ subject: noteData?.subject || "", url: noteData?.url || "", note: noteData?.note || "" }}
@@ -90,15 +87,13 @@ export default function NoteModal({ open, onClose, model, itemId, noteData, onDo
                                 rows={4}
                             />
                             <Box my={2} textAlign="center">
-                                <Button type="submit" color="primary" disabled={isSubmitting} variant="contained">
+                                <Button type="submit" disabled={isSubmitting} kind={noteData ? "edit" : "add"}>
                                     Save Note
-                                    {isSubmitting && <CircularProgress style={{ margin: "0 0.5em" }} />}
                                 </Button>
                                 {noteData?.subject && (
                                     <Button
-                                        color="primary"
-                                        variant="contained"
-                                        style={{ margin: "0 1em", background: theme.palette.error.main }}
+                                        kind="delete"
+                                        style={{ margin: "0 1em" }}
                                         onClick={() => {
                                             if (noteData.id) {
                                                 deleteAModelNote(noteData?.id)

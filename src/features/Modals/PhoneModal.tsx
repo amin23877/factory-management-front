@@ -1,21 +1,11 @@
-import React, { useState, useEffect } from "react";
-import {
-    Dialog,
-    useTheme,
-    DialogTitle,
-    Box,
-    Button,
-    TextField,
-    CircularProgress,
-    MenuItem,
-    FormControlLabel,
-    Checkbox,
-} from "@material-ui/core";
-
+import React from "react";
+import { Box, TextField, FormControlLabel, Checkbox } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
-import { BaseSelect } from "../../app/Inputs";
+import Dialog from "../../app/Dialog";
+import Button from "../../app/Button";
+import { FieldSelect } from "../../app/Inputs";
 
 import { getPhoneTypes } from "../../api/phoneType";
 import { createAModelPhone, deleteAModelPhone, updateAModelPhone, IPhone } from "../../api/phone";
@@ -40,22 +30,8 @@ export const PhoneModal = ({
     data?: IPhone;
     onDone?: () => void;
 }) => {
-    const theme = useTheme();
-    const [phoneTypes, setPhoneTypes] = useState([]);
-
-    useEffect(() => {
-        if (open) {
-            getPhoneTypes()
-                .then((d) => setPhoneTypes(d))
-                .catch((e) => console.log(e));
-        }
-    }, [open]);
-
     return (
-        <Dialog open={open} onClose={onClose}>
-            <DialogTitle>
-                {data?.id ? "Edit" : "Add"} a Phone to {model} {itemId}
-            </DialogTitle>
+        <Dialog open={open} onClose={onClose} title={`${data?.id ? "Edit" : "Add"} a Phone to ${model}`}>
             <Box m={3}>
                 <Formik
                     initialValues={data?.id ? data : { phone: "", ext: "", main: false, PhoneTypeId: 0 }}
@@ -107,34 +83,28 @@ export const PhoneModal = ({
                                 />
                             </Box>
 
-                            <BaseSelect
+                            <FieldSelect
+                                request={getPhoneTypes}
+                                itemTitleField="name"
+                                itemValueField="id"
                                 fullWidth
                                 name="PhoneTypeId"
+                                label="Phone Type"
                                 value={values.PhoneTypeId}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 error={Boolean(errors.PhoneTypeId && touched.PhoneTypeId)}
-                            >
-                                {phoneTypes &&
-                                    phoneTypes.map((pt: any) => (
-                                        <MenuItem key={pt.id} value={pt.id}>
-                                            {pt.name}
-                                        </MenuItem>
-                                    ))}
-                            </BaseSelect>
+                            />
 
                             <FormControlLabel name="main" onChange={handleChange} label="Is this phone main?" control={<Checkbox />} />
 
                             <Box my={2} textAlign="center">
-                                <Button type="submit" color="primary" disabled={isSubmitting} variant="contained">
+                                <Button type="submit" disabled={isSubmitting} kind={data ? "edit" : "add"}>
                                     Save
-                                    {isSubmitting && <CircularProgress style={{ margin: "0 0.5em" }} />}
                                 </Button>
                                 {data?.id && (
                                     <Button
-                                        color="primary"
-                                        variant="contained"
-                                        style={{ margin: "0 1em", background: theme.palette.error.main }}
+                                        kind="delete"
                                         onClick={() => {
                                             if (data?.id) {
                                                 deleteAModelPhone(data.id)

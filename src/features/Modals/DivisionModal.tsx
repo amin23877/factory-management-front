@@ -1,8 +1,10 @@
 import React from "react";
-import { Dialog, useTheme, DialogTitle, Box, Button, TextField, CircularProgress } from "@material-ui/core";
-
+import { Box, TextField } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+
+import Button from "../../app/Button";
+import Dialog from "../../app/Dialog";
 
 import { createDivison, deleteAModelDivison, updateAModelDivison, IDivison } from "../../api/division";
 
@@ -13,7 +15,6 @@ const schema = Yup.object().shape({
 export const DivisionModal = ({
     open,
     onClose,
-    model,
     itemId,
     data,
     onDone,
@@ -25,13 +26,8 @@ export const DivisionModal = ({
     data?: IDivison;
     onDone?: () => void;
 }) => {
-    const theme = useTheme();
-
     return (
-        <Dialog open={open} onClose={onClose}>
-            <DialogTitle>
-                {data?.id ? "Edit" : "Add"} a Division for {model} {itemId}
-            </DialogTitle>
+        <Dialog open={open} onClose={onClose} title={`${data?.id ? "Edit" : "Add"} a Division`}>
             <Box m={3}>
                 <Formik
                     initialValues={data?.id ? data : { name: "" }}
@@ -68,15 +64,13 @@ export const DivisionModal = ({
                             />
 
                             <Box my={2} textAlign="center">
-                                <Button type="submit" color="primary" disabled={isSubmitting} variant="contained">
+                                <Button type="submit" disabled={isSubmitting} kind="add">
                                     Save Note
-                                    {isSubmitting && <CircularProgress style={{ margin: "0 0.5em" }} />}
                                 </Button>
                                 {data?.id && (
                                     <Button
-                                        color="primary"
-                                        variant="contained"
-                                        style={{ margin: "0 1em", background: theme.palette.error.main }}
+                                        kind="delete"
+                                        style={{ margin: "0 1em" }}
                                         onClick={() => {
                                             if (data?.id) {
                                                 deleteAModelDivison(data.id)

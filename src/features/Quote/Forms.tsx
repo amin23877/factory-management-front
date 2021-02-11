@@ -84,7 +84,7 @@ export const GeneralForm = ({
                 fullWidth
             />
             <FormControl style={{ margin: "0.5em" }}>
-                <FormLabel>Is this client No Tax?</FormLabel>
+                <FormLabel>No tax</FormLabel>
                 <RadioGroup value={String(values.noTaxClient)} name="noTaxClient" onChange={handleChange} style={{ flexDirection: "row" }}>
                     <FormControlLabel control={<Radio />} label="Yes" value="true" />
                     <FormControlLabel control={<Radio />} label="No" value="false" />
@@ -151,7 +151,7 @@ export const ShippingTab = ({
                 fullWidth
             />
             <FormControl style={{ margin: "0.5em" }}>
-                <FormLabel>Is this shipping for Client or Agency?</FormLabel>
+                <FormLabel>Client or Agency</FormLabel>
                 <RadioGroup
                     name="shippingEntitiy"
                     value={String(values.shippingEntitiy)}
@@ -223,7 +223,7 @@ export const BillingTab = ({
                 fullWidth
             />
             <FormControl style={{ margin: "0.5em" }}>
-                <FormLabel>Is this billing for Client or Agency?</FormLabel>
+                <FormLabel>Client or Agency</FormLabel>
                 <RadioGroup name="billingEntitiy" onChange={handleChange} value={values.billingEntitiy} style={{ flexDirection: "row" }}>
                     <FormControlLabel control={<Radio />} label="Client" value="client" />
                     <FormControlLabel control={<Radio />} label="Agency" value="agency" />
@@ -329,7 +329,7 @@ export const DepositTab = ({
                 fullWidth
             />
             <FormControl style={{ margin: "0.5em" }}>
-                <FormLabel>Is Deposit Required?</FormLabel>
+                <FormLabel>Deposit</FormLabel>
                 <RadioGroup
                     name="depositRequired"
                     value={String(values.depositRequired)}

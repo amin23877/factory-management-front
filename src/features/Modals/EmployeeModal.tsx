@@ -1,7 +1,10 @@
 import React from "react";
-import { Dialog, Box, TextField, Button, DialogTitle } from "@material-ui/core";
+import { Box, TextField } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+
+import Button from "../../app/Button";
+import Dialog from "../../app/Dialog";
 
 import { addEmployee } from "../../api/employee";
 
@@ -26,8 +29,7 @@ export const AddEmployeeModal = ({ open, onClose, onDone }: { open: boolean; onC
     };
 
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-            <DialogTitle>Add new employee</DialogTitle>
+        <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth title="Add new employee">
             <Box m={2}>
                 <Formik initialValues={{ username: "", password: "" }} validationSchema={schema} onSubmit={handleSubmit}>
                     {({ values, touched, errors, handleChange, handleBlur, isSubmitting }) => (
@@ -56,14 +58,7 @@ export const AddEmployeeModal = ({ open, onClose, onDone }: { open: boolean; onC
                                 helperText={errors.password}
                             />
 
-                            <Button
-                                fullWidth
-                                disabled={isSubmitting}
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                style={{ margin: "2em 0" }}
-                            >
+                            <Button fullWidth disabled={isSubmitting} type="submit" kind="add" style={{ margin: "2em 0" }}>
                                 Add
                             </Button>
                         </Form>

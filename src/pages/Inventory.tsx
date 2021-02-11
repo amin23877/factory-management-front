@@ -13,7 +13,7 @@ import { AddItemModal } from "../features/Items/ItemModals";
 import CatTypeFamilyModal from "../features/Modals/CategoryModals";
 import ItemsDetails from "../features/Items/ItemsDetails";
 
-import { AddItemInitialValues, getItems, deleteAnItem } from "../api/items";
+import { AddItemInitialValues, IItem, getItems, deleteAnItem } from "../api/items";
 import { getAllModelNotes } from "../api/note";
 import { getAllModelDocuments } from "../api/document";
 
@@ -97,9 +97,24 @@ const Inventory = () => {
 
     const cols: ColDef[] = [
         { field: "no", headerName: "Item no" },
-        { field: "name", headerName: "Item name" },
+        { field: "name", headerName: "Item name", width: 120 },
         { field: "description", headerName: "desc" },
         { field: "cost", headerName: "Cost" },
+        {
+            field: "ItemCategory",
+            headerName: "Category",
+            valueGetter: (d) => (d.data.ItemCategory ? d.data.ItemCategory.name : ""),
+        },
+        {
+            field: "ItemType",
+            headerName: "Type",
+            valueGetter: (d) => (d.data.ItemType ? d.data.ItemType.name : ""),
+        },
+        {
+            field: "ItemFamily",
+            headerName: "Family",
+            valueGetter: (d) => (d.data.ItemFamily ? d.data.ItemFamily.name : ""),
+        },
     ];
 
     return (

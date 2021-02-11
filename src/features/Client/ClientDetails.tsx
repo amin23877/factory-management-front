@@ -1,39 +1,30 @@
-import React, { useState, useEffect } from "react";
-import {
-    Box,
-    Button,
-    Tabs,
-    Tab,
-    TextField,
-    MenuItem,
-    FormControlLabel,
-    FormLabel,
-    RadioGroup,
-    Radio,
-    FormControl,
-} from "@material-ui/core";
+import React, { useState } from "react";
+import { Box, Tabs, Tab, TextField, FormControlLabel, FormLabel, RadioGroup, Radio, FormControl } from "@material-ui/core";
 import { ColDef } from "@material-ui/data-grid";
 import { useFormik } from "formik";
+import * as Yup from "yup";
 
-import { Gradients } from "../theme";
+import Button from "../../app/Button";
 
-import { getClientTypes } from "../api/clientType";
-import { editClient, getClients } from "../api/client";
+import { editClient, getClients } from "../../api/client";
 
-import Snack from "../app/Snack";
-import { BaseSelect } from "../app/Inputs";
-import { BasePaper } from "../app/Paper";
+import Snack from "../../app/Snack";
+import { ObjectSelect, FieldSelect } from "../../app/Inputs";
+import { BasePaper } from "../../app/Paper";
 
-import BaseDataGrid from "../app/BaseDataGrid";
+import BaseDataGrid from "../../app/BaseDataGrid";
 
-const EditClientForm = ({ data, onDone }: { data: any; onDone: () => void }) => {
-    const [clients, setClients] = useState([]);
-    const [clientTypes, setClientTypes] = useState([]);
+const EditClientForm = ({ clientTypes, data, onDone }: { clientTypes: any; data: any; onDone: () => void }) => {
     const [showSnack, setShowSnack] = useState(false);
     const [msg, setMsg] = useState("");
 
-    const { values, handleChange, handleBlur, setFieldValue, handleSubmit } = useFormik({
+    const schema = Yup.object().shape({
+        ClientTypeId: Yup.number().required(),
+    });
+
+    const { values, errors, handleChange, handleBlur, handleSubmit } = useFormik({
         initialValues: data,
+        validationSchema: schema,
         onSubmit: async (values, { setSubmitting }) => {
             try {
                 const resp = await editClient(data.id, values);
@@ -55,29 +46,6 @@ const EditClientForm = ({ data, onDone }: { data: any; onDone: () => void }) => 
             }
         },
     });
-
-    const refreshClients = async () => {
-        try {
-            const resp = await getClients();
-            setClients(resp);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const refreshClientTypes = async () => {
-        try {
-            const resp = await getClientTypes();
-            setClientTypes(resp);
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    useEffect(() => {
-        refreshClients();
-        refreshClientTypes();
-    }, []);
 
     const specials = ["id", "createdAt", "updatedAt", "size", "prospect", "parent", "ClientTypeId"];
     let key: keyof typeof values;
@@ -115,31 +83,29 @@ const EditClientForm = ({ data, onDone }: { data: any; onDone: () => void }) => 
                 </Box>
                 <Box display="flex">
                     <Box display="flex" flexDirection="column" flex={1}>
-                        <FormControl fullWidth>
-                            <FormLabel>Parent</FormLabel>
-                            <BaseSelect fullWidth onChange={(e) => setFieldValue("parent", e.target.value)} value={values.parent}>
-                                {clients.map((c: any) => (
-                                    <MenuItem key={c.id} value={c.id}>
-                                        {c.name}
-                                    </MenuItem>
-                                ))}
-                            </BaseSelect>
-                        </FormControl>
-
-                        <FormControl fullWidth>
-                            <FormLabel>Client Type</FormLabel>
-                            <BaseSelect
-                                fullWidth
-                                onChange={(e) => setFieldValue("ClientTypeId", e.target.value)}
-                                value={values.ClientTypeId}
-                            >
-                                {clientTypes.map((c: any) => (
-                                    <MenuItem key={c.id} value={c.id}>
-                                        {c.name}
-                                    </MenuItem>
-                                ))}
-                            </BaseSelect>
-                        </FormControl>
+                        <FieldSelect
+                            request={getClients}
+                            itemTitleField="name"
+                            itemValueField="id"
+                            fullWidth
+                            name="parent"
+                            onChange={handleChange}
+                            value={values.parent}
+                            label="Parent"
+                            error={Boolean(errors.parent)}
+                        />
+                        <ObjectSelect
+                            items={clientTypes}
+                            itemTitleField="name"
+                            itemValueField="id"
+                            fullWidth
+                            name="ClientTypeId"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.parent}
+                            label="Client Type"
+                            error={Boolean(errors.ClientTypeId)}
+                        />
                     </Box>
 
                     <Box display="flex" flexDirection="column" justifyContent="center" ml={1} flex={1}>
@@ -149,7 +115,7 @@ const EditClientForm = ({ data, onDone }: { data: any; onDone: () => void }) => 
                                 style={{ display: "flex", flexDirection: "row" }}
                                 name="size"
                                 value={values.size}
-                                onChange={(e) => setFieldValue("size", e.target.value)}
+                                onChange={handleChange}
                             >
                                 <FormControlLabel value="small" control={<Radio />} label="Small" />
                                 <FormControlLabel value="medium" control={<Radio />} label="Medium" />
@@ -163,7 +129,7 @@ const EditClientForm = ({ data, onDone }: { data: any; onDone: () => void }) => 
                                 style={{ display: "flex", flexDirection: "row" }}
                                 name="prospect"
                                 value={String(values.prospect)}
-                                onChange={(e) => setFieldValue("prospect", e.target.value === "true")}
+                                onChange={handleChange}
                             >
                                 <FormControlLabel value="true" control={<Radio />} label="Yes" />
                                 <FormControlLabel value="false" control={<Radio />} label="No" />
@@ -171,7 +137,7 @@ const EditClientForm = ({ data, onDone }: { data: any; onDone: () => void }) => 
                         </FormControl>
                     </Box>
                     <Box display="flex" alignItems="center">
-                        <Button type="submit" variant="contained" color="primary" style={{ background: Gradients.success }}>
+                        <Button type="submit" kind="edit">
                             Save
                         </Button>
                     </Box>
@@ -199,6 +165,7 @@ export default function ClientDetails({
     phones,
     emails,
     contacts,
+    clientTypes,
     onDone,
 }: {
     selectedRow: any;
@@ -219,6 +186,7 @@ export default function ClientDetails({
     phones: any;
     emails: any;
     contacts: any;
+    clientTypes: any;
 }) {
     const [activeTab, setActiveTab] = useState(0);
 
@@ -255,7 +223,7 @@ export default function ClientDetails({
 
     return (
         <BasePaper>
-            <EditClientForm onDone={onDone} data={selectedRow} />
+            <EditClientForm onDone={onDone} data={selectedRow} clientTypes={clientTypes} />
 
             <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} variant="scrollable">
                 <Tab label="Notes" />

@@ -12,7 +12,7 @@ interface IClient {
     prospect: boolean,
     size:"small" | "medium" | "large",
     fax:string,
-    parent: number,
+    parent: number | null,
     defaultBillingContact?:string,
     preferredCompany:string,
     preferredService:string,
@@ -22,7 +22,7 @@ interface IClient {
     ClientTypeId:string
 }
 
-export const AddClientInit = {
+export const AddClientInit:IClient = {
     name:"",
     abbr:"",
     location:"",

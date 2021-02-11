@@ -1,5 +1,12 @@
 import Axios from 'axios';
 
+export interface IItemType {
+    id?: number,
+    name: string,
+    createdAt?: string,
+    updatedAt?: string
+  }
+
 export const getTypes = async () => {
     try {
         const resp = await Axios.get('/itemtype');

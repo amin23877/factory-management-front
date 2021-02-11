@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useTheme, Box, TextField, CircularProgress, FormControlLabel, FormLabel, RadioGroup, Radio, FormControl } from "@material-ui/core";
+import React from "react";
+import { Box, TextField, FormControlLabel, FormLabel, RadioGroup, Radio, FormControl } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
@@ -29,8 +29,6 @@ export const AddressModal = ({
     data?: IAddress;
     onDone?: () => void;
 }) => {
-    const theme = useTheme();
-
     return (
         <Dialog open={open} onClose={onClose} title={`${data?.id ? "Edit" : "Add"} an Address to ${model}`}>
             <Box m={3}>

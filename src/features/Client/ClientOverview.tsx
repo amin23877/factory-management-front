@@ -1,7 +1,7 @@
 import React from "react";
 import { ColDef, RowData } from "@material-ui/data-grid";
 
-import BaseDataGrid from "../app/BaseDataGrid";
+import BaseDataGrid from "../../app/BaseDataGrid";
 
 export default function ClientOverview({ rows, onRowSelected }: { rows: RowData[]; onRowSelected: (row: any) => void }) {
     const cols: ColDef[] = [

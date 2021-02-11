@@ -36,6 +36,32 @@ export const FieldSelect = ({ keyField, request, itemValueField, itemTitleField,
                 {props.label}
             </InputLabel>
             <BaseSelect variant="outlined" {...props} labelId="field-select-label">
+                <MenuItem value={undefined}>
+                    <em>None</em>
+                </MenuItem>
+                {items.map((item: any, i) => (
+                    <MenuItem key={keyField ? item[keyField] : i} value={item[itemValueField]}>
+                        {item[itemTitleField]}
+                    </MenuItem>
+                ))}
+            </BaseSelect>
+        </FormControl>
+    );
+};
+
+interface IOS extends SelectProps {
+    items: any[];
+    itemValueField: string;
+    itemTitleField: string;
+    keyField?: string;
+}
+export const ObjectSelect = ({ items, itemTitleField, itemValueField, keyField, ...props }: IOS) => {
+    return (
+        <FormControl fullWidth={props.fullWidth}>
+            <InputLabel id="field-select-label" style={{ margin: "0 1.2em" }}>
+                {props.label}
+            </InputLabel>
+            <BaseSelect variant="outlined" {...props} labelId="object-select-label">
                 {items.map((item: any, i) => (
                     <MenuItem key={keyField ? item[keyField] : i} value={item[itemValueField]}>
                         {item[itemTitleField]}

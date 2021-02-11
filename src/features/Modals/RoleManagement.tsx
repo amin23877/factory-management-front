@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Dialog, DialogTitle, Box, MenuItem, Button, List, ListItem, Typography, FormControlLabel, Checkbox } from "@material-ui/core";
+import { Box, List, ListItem, Typography, FormControlLabel, Checkbox } from "@material-ui/core";
 import { DeleteRounded } from "@material-ui/icons";
 
-import { getRoles, getRoleApis, assignApiToRole, deassignApiToRole, IRole } from "../../api/role";
+import { getRoles, getRoleApis, assignApiToRole, deassignApiToRole } from "../../api/role";
 import { getApis, filterRoleApis, IApi } from "../../api/api";
 
-import { BaseSelect } from "../../app/Inputs";
+import Button from "../../app/Button";
+import Dialog from "../../app/Dialog";
+import { FieldSelect } from "../../app/Inputs";
 
 export default function RoleManagement({ open, onClose }: { open: boolean; onClose: () => void }) {
-    const [roles, setRoles] = useState([]);
     const [apis, setApis] = useState<any>([]);
-    // const [avApis, setApis]
 
     const [selRole, setSelRole] = useState<number>();
     const [selRoleApis, setSelRoleApis] = useState<any>([]);
@@ -31,10 +31,6 @@ export default function RoleManagement({ open, onClose }: { open: boolean; onClo
     };
     useEffect(() => {
         if (open) {
-            getRoles()
-                .then((d) => setRoles(d))
-                .catch((e) => console.log(e));
-
             getApis()
                 .then((d) => setApis(d))
                 .catch((e) => console.log(e));
@@ -85,16 +81,18 @@ export default function RoleManagement({ open, onClose }: { open: boolean; onClo
     };
 
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-            <DialogTitle>Role Management</DialogTitle>
+        <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth title="Role management">
             <Box p={2}>
-                <BaseSelect fullWidth name="roles" onChange={(e: any) => setSelRole(e.target.value)}>
-                    {roles.map((role: IRole) => (
-                        <MenuItem key={role.id} value={role.id}>
-                            {role.name}
-                        </MenuItem>
-                    ))}
-                </BaseSelect>
+                <FieldSelect
+                    request={getRoles}
+                    itemTitleField="name"
+                    itemValueField="id"
+                    fullWidth
+                    name="roles"
+                    onChange={(e: any) => setSelRole(e.target.value)}
+                    label="Roles"
+                />
+
                 <List>
                     {selRoleApis &&
                         selRoleApis.map((sra: IApi) => (

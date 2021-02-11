@@ -4,8 +4,7 @@ import { CalendarTodayRounded, UpdateRounded, SearchRounded, RefreshRounded, Set
 
 import { BaseSelect, BaseTextInput } from "../app/Inputs";
 import { BaseTable } from "../app/Table";
-import { BasePaper, IconPaper } from "../app/Paper";
-import { Gradients } from "../theme";
+import { BasePaper } from "../app/Paper";
 
 const UnitsDueDateList = () => {
     return (

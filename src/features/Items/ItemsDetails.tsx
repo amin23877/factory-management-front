@@ -49,7 +49,7 @@ function ItemsDetails({
         init[attrname] = selectedRow[attrname];
     }
 
-    const { values, handleBlur, handleChange, handleSubmit, errors, touched, isSubmitting } = useFormik({
+    const { values, handleBlur, handleChange, handleSubmit, errors, touched } = useFormik({
         initialValues: init,
         validationSchema: AddItemSchema,
         onSubmit: (d, { setSubmitting }) => {

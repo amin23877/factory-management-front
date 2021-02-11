@@ -1,38 +1,8 @@
 import React from "react";
-import { Box, fade, AppBar, useMediaQuery, Toolbar, Button, IconButton, Typography, Avatar, makeStyles } from "@material-ui/core";
+import { AppBar, useMediaQuery, Toolbar, Button, Avatar } from "@material-ui/core";
 import { ArrowDropDownRounded, NotificationsOutlined, HelpOutline, TvRounded } from "@material-ui/icons";
 
-const useStyles = makeStyles((theme) => ({
-    search: {
-        position: "relative",
-        borderRadius: theme.shape.borderRadius,
-        width: "60%",
-        marginLeft: theme.spacing(2),
-        marginRight: theme.spacing(2),
-        backgroundColor: fade(theme.palette.common.black, 0.1),
-        "&:hover": {
-            backgroundColor: fade(theme.palette.common.black, 0.15),
-        },
-    },
-    searchInput: {
-        padding: "1em 2.5em",
-        width: "100%",
-    },
-    searchRoot: {
-        width: "100%",
-    },
-    searchIcon: {
-        padding: "0 0.5em",
-        position: "absolute",
-        height: "100%",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-}));
-
 export const TopAppBar = ({ drawerWidth }: { drawerWidth?: number }) => {
-    const classes = useStyles();
     const matches = useMediaQuery("(max-width: 960px)");
 
     return (

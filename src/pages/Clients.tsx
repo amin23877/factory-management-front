@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Container, Box, Grid, Button, IconButton } from "@material-ui/core";
+import { Container, Box, Grid, IconButton } from "@material-ui/core";
 import {
     AddRounded,
     DeleteRounded,
     DescriptionRounded,
-    BackspaceRounded,
+    ChevronLeftRounded,
     PrintRounded,
     MapOutlined,
     EqualizerOutlined,
@@ -12,6 +12,8 @@ import {
     ContactMailOutlined,
     PhoneOutlined,
 } from "@material-ui/icons";
+
+import Button from "../app/Button";
 
 import { getClients, deleteClient } from "../api/client";
 import { getAllModelNotes } from "../api/note";
@@ -22,15 +24,16 @@ import { getClientDivisons } from "../api/division";
 import { getAllModelPhone } from "../api/phone";
 import { getAllModelEmailAddrs } from "../api/emailAddress";
 import { getAllModelContact } from "../api/contact";
+import { getClientTypes } from "../api/clientType";
 
-import { AddClientModal } from "../features/Modals/ClientModals";
+import { AddClientModal } from "../features/Client/ClientModals";
 import { AllClientTypesModal } from "../features/Modals/ClientType";
 import Confirm from "../features/Modals/Confirm";
 
 import { MyTab, MyTabs } from "../app/Tabs";
 
 import NoteModal from "../features/Modals/NoteModals";
-import DocumentModal, { EditDocumentModal } from "../features/Modals/DocumentModals";
+import DocumentModal from "../features/Modals/DocumentModals";
 import { AddressModal } from "../features/Modals/AddressModal";
 import { AgencyModal } from "../features/Modals/AgencyModal";
 import { DivisionModal } from "../features/Modals/DivisionModal";
@@ -38,8 +41,8 @@ import { PhoneModal } from "../features/Modals/PhoneModal";
 import { EmailModal } from "../features/Modals/EmailModal";
 import { ContactModal } from "../features/Modals/ContactModal";
 
-import ClientDetails from "../features/ClientDetails";
-import ClientOverview from "../features/ClientOverview";
+import ClientDetails from "../features/Client/ClientDetails";
+import ClientOverview from "../features/Client/ClientOverview";
 
 export default function Clients() {
     const [activeTab, setActiveTab] = useState(0);
@@ -55,6 +58,7 @@ export default function Clients() {
     const [phones, setPhones] = useState([]);
     const [emails, setEmails] = useState([]);
     const [contacts, setContacts] = useState([]);
+    const [clientTypes, setClientTypes] = useState([]);
 
     const [selectedRow, setSelectedRow] = useState<any>(null);
 
@@ -85,6 +89,15 @@ export default function Clients() {
         try {
             const resp = await getClients();
             setClients(resp);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const refreshClientTypes = async () => {
+        try {
+            const resp = await getClientTypes();
+            setClientTypes(resp);
         } catch (error) {
             console.log(error);
         }
@@ -182,6 +195,7 @@ export default function Clients() {
             refreshPhones();
             refreshEmails();
             refreshContacts();
+            refreshClientTypes();
         }
     }, [activeTab]);
 
@@ -195,7 +209,7 @@ export default function Clients() {
 
             <AddClientModal open={addClientModal} onClose={() => setAddClientModal(false)} onDone={refreshClients} />
 
-            <AllClientTypesModal open={cTypeModal} onClose={() => setCTypeModal(false)} />
+            <AllClientTypesModal onCTDone={refreshClientTypes} open={cTypeModal} onClose={() => setCTypeModal(false)} />
 
             <AddressModal
                 data={selectedAddr === null ? "" : selectedAddr}
@@ -254,7 +268,7 @@ export default function Clients() {
                 onClose={() => setEditNoteModal(false)}
                 onDone={refreshNotes}
             />
-            <EditDocumentModal
+            <DocumentModal
                 docData={selectedDoc === null ? "" : selectedDoc}
                 open={editDocModal}
                 itemId={selectedRow?.id}
@@ -282,7 +296,7 @@ export default function Clients() {
                 <Box display="flex" flex={1} justifyContent="space-around">
                     {activeTab === 1 && (
                         <IconButton onClick={() => setActiveTab(0)}>
-                            <BackspaceRounded />
+                            <ChevronLeftRounded />
                         </IconButton>
                     )}
                     <Button onClick={() => setCTypeModal(true)}>All Types</Button>
@@ -321,72 +335,76 @@ export default function Clients() {
                         <Button title="Print a report" variant="outlined" style={{ margin: "0.5em 0" }}>
                             <PrintRounded />
                         </Button>
-                        <Button
-                            onClick={() => {
-                                setSelectedAddr(undefined);
-                                setAddAddress(true);
-                            }}
-                            title="Address"
-                            variant="outlined"
-                            style={{ margin: "0.5em 0" }}
-                        >
-                            <MapOutlined />
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                setSelectedAgency(undefined);
-                                setAddAgency(true);
-                            }}
-                            title="Agency"
-                            variant="outlined"
-                            style={{ margin: "0.5em 0" }}
-                        >
-                            <EqualizerOutlined />
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                setSelectedDiv(undefined);
-                                setAddDivision(true);
-                            }}
-                            title="Division"
-                            variant="outlined"
-                            style={{ margin: "0.5em 0" }}
-                        >
-                            %
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                setSelectedPhone(undefined);
-                                setAddPhone(true);
-                            }}
-                            title="Phone"
-                            variant="outlined"
-                            style={{ margin: "0.5em 0" }}
-                        >
-                            <PhoneOutlined />
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                setSelectedEmail(undefined);
-                                setAddEmail(true);
-                            }}
-                            title="Email Address"
-                            variant="outlined"
-                            style={{ margin: "0.5em 0" }}
-                        >
-                            <MailOutline />
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                setSelectedContact(undefined);
-                                setAddContact(true);
-                            }}
-                            title="Contact"
-                            variant="outlined"
-                            style={{ margin: "0.5em 0" }}
-                        >
-                            <ContactMailOutlined />
-                        </Button>
+                        {activeTab === 1 && (
+                            <>
+                                <Button
+                                    onClick={() => {
+                                        setSelectedAddr(undefined);
+                                        setAddAddress(true);
+                                    }}
+                                    title="Address"
+                                    variant="outlined"
+                                    style={{ margin: "0.5em 0" }}
+                                >
+                                    <MapOutlined />
+                                </Button>
+                                <Button
+                                    onClick={() => {
+                                        setSelectedAgency(undefined);
+                                        setAddAgency(true);
+                                    }}
+                                    title="Agency"
+                                    variant="outlined"
+                                    style={{ margin: "0.5em 0" }}
+                                >
+                                    <EqualizerOutlined />
+                                </Button>
+                                <Button
+                                    onClick={() => {
+                                        setSelectedDiv(undefined);
+                                        setAddDivision(true);
+                                    }}
+                                    title="Division"
+                                    variant="outlined"
+                                    style={{ margin: "0.5em 0" }}
+                                >
+                                    %
+                                </Button>
+                                <Button
+                                    onClick={() => {
+                                        setSelectedPhone(undefined);
+                                        setAddPhone(true);
+                                    }}
+                                    title="Phone"
+                                    variant="outlined"
+                                    style={{ margin: "0.5em 0" }}
+                                >
+                                    <PhoneOutlined />
+                                </Button>
+                                <Button
+                                    onClick={() => {
+                                        setSelectedEmail(undefined);
+                                        setAddEmail(true);
+                                    }}
+                                    title="Email Address"
+                                    variant="outlined"
+                                    style={{ margin: "0.5em 0" }}
+                                >
+                                    <MailOutline />
+                                </Button>
+                                <Button
+                                    onClick={() => {
+                                        setSelectedContact(undefined);
+                                        setAddContact(true);
+                                    }}
+                                    title="Contact"
+                                    variant="outlined"
+                                    style={{ margin: "0.5em 0" }}
+                                >
+                                    <ContactMailOutlined />
+                                </Button>
+                            </>
+                        )}
                     </Box>
                 </Grid>
                 <Grid item xs={11}>
@@ -401,6 +419,7 @@ export default function Clients() {
                     )}
                     {activeTab === 1 && (
                         <ClientDetails
+                            clientTypes={clientTypes}
                             onDone={refreshClients}
                             notes={notes}
                             docs={docs}
