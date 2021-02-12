@@ -7,7 +7,6 @@ import { Gradients } from "../theme";
 interface IButton extends ButtonProps {
     kind?: "add" | "edit" | "delete";
 }
-
 export default function MyButton({ kind, ...props }: IButton) {
     const useStyles = makeStyles({
         btnStyle: {

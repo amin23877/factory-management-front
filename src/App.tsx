@@ -3,6 +3,8 @@ import { Box, CssBaseline, ThemeProvider } from "@material-ui/core";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { theme } from "./theme";
 
+import "./styles/main.css";
+
 import { useAuth } from "./store";
 
 import { TopAppBar } from "./app/TopAppBar";
@@ -17,6 +19,7 @@ import Inventory from "./pages/Inventory";
 import Settings from "./pages/Settings";
 import Roles from "./pages/Roles";
 import Projects from "./pages/Project";
+import Activity from "./pages/Activity";
 import Page404 from "./pages/404";
 
 // Delete this after useing baseurl somewhere
@@ -58,6 +61,7 @@ function App() {
                                     <Route exact path="/settings" component={Settings} />
                                     <Route exact path="/roles" component={Roles} />
                                     <Route exact path="/projects" component={Projects} />
+                                    <Route exact path="/activity" component={Activity} />
                                     <Route exact path="*" component={Page404} />
                                 </Switch>
                             </Box>

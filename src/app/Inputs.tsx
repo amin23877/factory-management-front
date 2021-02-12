@@ -1,17 +1,33 @@
 import React, { useState, useEffect } from "react";
-import {
-    Select,
-    MenuItem,
-    SelectProps,
-    TextField,
-    InputBase,
-    InputBaseProps,
-    withStyles,
-    fade,
-    FormControl,
-    InputLabel,
-} from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
+import { Select, SelectProps, FormControl, Typography, InputLabel, MenuItem } from "@material-ui/core";
+import { BootstrapInput } from "./TextField";
+
+interface IOS extends SelectProps {
+    items: any[];
+    itemValueField: string;
+    itemTitleField: string;
+    keyField?: string;
+}
+export const ObjectSelect = ({ items, itemTitleField, itemValueField, keyField, ...props }: IOS) => {
+    return (
+        <FormControl style={{ margin: "0.5em" }} fullWidth={props.fullWidth}>
+            <Typography style={{ margin: "2px 0" }} variant="caption" id="field-select-label">
+                {props.label}
+            </Typography>
+            <Select name={props.name} input={<BootstrapInput />} {...props} labelId="object-select-label">
+                <MenuItem value={undefined}>None</MenuItem>
+                {items.map((item: any, i) => (
+                    <MenuItem
+                        key={keyField ? item[keyField] : i}
+                        value={itemValueField === "id" ? parseInt(item[itemValueField]) : item[itemValueField]}
+                    >
+                        {item[itemTitleField]}
+                    </MenuItem>
+                ))}
+            </Select>
+        </FormControl>
+    );
+};
 
 interface IFieldSelect extends SelectProps {
     request: () => Promise<any>;
@@ -30,116 +46,23 @@ export const FieldSelect = ({ keyField, request, itemValueField, itemTitleField,
             .catch((e) => console.log(e));
     }, []);
 
-    return (
-        <FormControl fullWidth={props.fullWidth}>
-            <InputLabel id="field-select-label" style={{ margin: "0 1.2em" }}>
-                {props.label}
-            </InputLabel>
-            <BaseSelect variant="outlined" {...props} labelId="field-select-label">
-                <MenuItem value={undefined}>
-                    <em>None</em>
-                </MenuItem>
-                {items.map((item: any, i) => (
-                    <MenuItem key={keyField ? item[keyField] : i} value={item[itemValueField]}>
-                        {item[itemTitleField]}
-                    </MenuItem>
-                ))}
-            </BaseSelect>
-        </FormControl>
-    );
-};
-
-interface IOS extends SelectProps {
-    items: any[];
-    itemValueField: string;
-    itemTitleField: string;
-    keyField?: string;
-}
-export const ObjectSelect = ({ items, itemTitleField, itemValueField, keyField, ...props }: IOS) => {
-    return (
-        <FormControl fullWidth={props.fullWidth}>
-            <InputLabel id="field-select-label" style={{ margin: "0 1.2em" }}>
-                {props.label}
-            </InputLabel>
-            <BaseSelect variant="outlined" {...props} labelId="object-select-label">
-                {items.map((item: any, i) => (
-                    <MenuItem key={keyField ? item[keyField] : i} value={item[itemValueField]}>
-                        {item[itemTitleField]}
-                    </MenuItem>
-                ))}
-            </BaseSelect>
-        </FormControl>
-    );
+    return <ObjectSelect {...props} itemTitleField={itemTitleField} itemValueField={itemValueField} items={items} />;
 };
 
 interface IArraySelect extends SelectProps {
-    items: string[];
+    items: any[];
 }
 export const ArraySelect = ({ items, ...props }: IArraySelect) => {
-    return (
-        <FormControl fullWidth={props.fullWidth}>
-            <InputLabel id="field-select-label" style={{ margin: "0 1.2em" }}>
-                {props.label}
-            </InputLabel>
-            <BaseSelect variant="outlined" {...props} labelId="field-select-label">
-                {items.map((item: any, i) => (
-                    <MenuItem key={i} value={item}>
-                        {item}
-                    </MenuItem>
-                ))}
-            </BaseSelect>
-        </FormControl>
-    );
+    return <ObjectSelect itemTitleField="item" itemValueField="item" items={items.map((item) => ({ item: item }))} {...props} />;
 };
 
-export const BaseSelect = withStyles({
-    root: {
-        borderRadius: 20,
-    },
-})((props: SelectProps) => <Select style={{ ...props.style, minWidth: 200, margin: "0.4em" }} variant="outlined" {...props} />);
-
-export const BaseTextInput = withStyles((theme) => ({
-    root: {
-        backgroundColor: fade(theme.palette.common.black, 0.05),
-        padding: "4px 1em",
-        borderRadius: 10,
-        width: "100%",
-        "&:hover": {
-            backgroundColor: fade(theme.palette.common.black, 0.1),
-        },
-    },
-}))((props: InputBaseProps) => <InputBase {...props} />);
-
-export const ComboBox = ({
-    value,
-    inputValue,
-    onChange,
-    onInputChange,
-    onBlur,
-    options,
-    name,
-}: {
-    value?: string;
-    inputValue: string;
-    onChange?: any;
-    onInputChange: any;
-    onBlur: any;
-    options: string[];
-    name: string;
-}) => {
+export const BaseSelect = (props: SelectProps) => {
     return (
-        <Autocomplete
-            componentName={name}
-            value={value}
-            onBlur={onBlur}
-            inputValue={inputValue}
-            onChange={(e, nv) => onChange(name, nv)}
-            onInputChange={(e, nv) => {
-                onInputChange(name, nv);
-                console.log(name, nv);
-            }}
-            options={options}
-            renderInput={(params) => <TextField {...params} label="Controllable" variant="outlined" />}
-        />
+        <FormControl fullWidth={props.fullWidth}>
+            <InputLabel id="field-select-label">{props.label}</InputLabel>
+            <Select name={props.name} input={<BootstrapInput />} {...props} labelId="object-select-label">
+                {props.children}
+            </Select>
+        </FormControl>
     );
 };

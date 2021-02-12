@@ -44,16 +44,21 @@ function ItemsDetails({
         { field: "createdAt", headerName: "Created at", width: 300 },
     ];
 
-    let init: any = { ...AddItemInitialValues };
-    for (let attrname in init) {
-        init[attrname] = selectedRow[attrname];
-    }
+    // let init: any = { ...AddItemInitialValues };
+    // for (let attrname in init) {
+    //     init[attrname] = selectedRow[attrname];
+    // }
 
     const { values, handleBlur, handleChange, handleSubmit, errors, touched } = useFormik({
-        initialValues: init,
+        initialValues: selectedRow,
         validationSchema: AddItemSchema,
         onSubmit: (d, { setSubmitting }) => {
-            // console.log(d);
+            // console.log({
+            //     ...d,
+            //     ItemCategoryId: parseInt(d.ItemCategoryId),
+            //     ItemTypeId: parseInt(d.ItemTypeId),
+            //     ItemFamilyId: parseInt(d.ItemFamilyId),
+            // });
             updateAnItem(selectedRow.id, d)
                 .then((d) => {
                     console.log(d);

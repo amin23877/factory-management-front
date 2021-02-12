@@ -13,6 +13,7 @@ import {
     ListItemText,
 } from "@material-ui/core";
 import {
+    LocalActivityRounded,
     AlternateEmailRounded,
     AccountBoxRounded,
     AccountTreeRounded,
@@ -67,6 +68,11 @@ const drawerItems = [
         name: "Roles",
         link: "/roles",
         icon: <AccountBoxRounded htmlColor="#bbb" />,
+    },
+    {
+        name: "Activity",
+        link: "/activity",
+        icon: <LocalActivityRounded htmlColor="#bbb" />,
     },
     {
         name: "Projects",

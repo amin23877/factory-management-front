@@ -1,20 +1,8 @@
 import React, { useState } from "react";
-import {
-    Box,
-    Grid,
-    List,
-    ListItem,
-    Typography,
-    Button,
-    TextField,
-    MenuItem,
-    FormControlLabel,
-    Checkbox,
-    Tabs,
-    Tab,
-} from "@material-ui/core";
+import { Box, Grid, List, ListItem, Typography, Button, MenuItem, FormControlLabel, Checkbox, Tabs, Tab } from "@material-ui/core";
 
-import { BaseSelect } from "../app/Inputs";
+import TextField from "../app/TextField";
+import { ArraySelect } from "../app/Inputs";
 import { TabTable } from "../app/Table";
 import { BasePaper } from "../app/Paper";
 
@@ -54,15 +42,11 @@ export const SalesOrderPanel = () => {
                             {["Sales Order Number", "Sales Order Date", "Lead Time", "Aknowledgement Date"].map((item) => (
                                 <Box key={item}>
                                     <Typography color="textSecondary">{item}</Typography>
-                                    <TextField variant="outlined" fullWidth placeholder={item} />
+                                    <TextField fullWidth placeholder={item} />
                                 </Box>
                             ))}
                             <Box display="flex" justifyContent="space-between" my={1}>
-                                <BaseSelect fullWidth>
-                                    <MenuItem>Test</MenuItem>
-                                    <MenuItem>Test</MenuItem>
-                                    <MenuItem>Test</MenuItem>
-                                </BaseSelect>
+                                <ArraySelect items={["test"]} />
                                 <FormControlLabel style={{ marginLeft: "1em" }} control={<Checkbox />} label="Expedited" />
                             </Box>
                         </Grid>

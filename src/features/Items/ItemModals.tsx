@@ -1,18 +1,9 @@
 import React from "react";
-import {
-    Dialog,
-    DialogTitle,
-    Box,
-    TextField,
-    Button,
-    FormControlLabel,
-    FormLabel,
-    RadioGroup,
-    Radio,
-    FormControl,
-} from "@material-ui/core";
+import { Dialog, DialogTitle, Box, FormControlLabel, FormLabel, RadioGroup, Radio, Checkbox, FormControl } from "@material-ui/core";
 import { useFormik } from "formik";
 
+import TextField from "../../app/TextField";
+import Button from "../../app/Button";
 import { FieldSelect } from "../../app/Inputs";
 
 import { getCategories } from "../../api/category";
@@ -39,7 +30,46 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
         },
     });
 
-    const specials = ["size", "active", "ItemCategoryId", "ItemTypeId", "ItemFamilyId"];
+    const checks = [
+        "active",
+        "approvedForSales",
+        "obsolete",
+        "rndOnly",
+        "nonInventoryItem",
+        "dontTrackQOH",
+        "dontOrderPO",
+        "archived",
+        "engineeringApproval",
+        "taxable",
+        "invalidCost",
+        "option",
+        "shippableOnBom",
+        "notShippable",
+    ];
+    const specials = [
+        "size",
+        "ItemCategoryId",
+        "ItemTypeId",
+        "ItemFamilyId",
+        "BOM",
+        "archiveDate",
+        "lastCount",
+
+        "active",
+        "approvedForSales",
+        "obsolete",
+        "rndOnly",
+        "nonInventoryItem",
+        "dontTrackQOH",
+        "dontOrderPO",
+        "archived",
+        "engineeringApproval",
+        "taxable",
+        "invalidCost",
+        "option",
+        "shippableOnBom",
+        "notShippable",
+    ];
     let form_inputs = [];
     let key: keyof typeof values;
     for (key in values) {
@@ -47,13 +77,12 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
             form_inputs.push(
                 <TextField
                     fullWidth
-                    variant="outlined"
                     name={key}
                     value={values[key]}
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(errors[key] && touched[key])}
-                    helperText={touched[key] && errors[key] && String(errors[key])}
+                    // helperText={touched[key] && errors[key] && String(errors[key])}
                     label={key}
                 />
             );
@@ -112,16 +141,14 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
                         </RadioGroup>
                     </FormControl>
 
-                    <FormControl fullWidth style={{ margin: "0.5em" }}>
-                        <FormLabel>Active</FormLabel>
-                        <RadioGroup name="active" value={String(values.active)} onChange={handleChange}>
-                            <FormControlLabel value="true" control={<Radio />} label="Yes" />
-                            <FormControlLabel value="false" control={<Radio />} label="No" />
-                        </RadioGroup>
-                    </FormControl>
+                    <Box display="flex" flexWrap="wrap" justifyContent="space-between">
+                        {checks.map((check) => (
+                            <FormControlLabel label={check} key={check} name={check} onChange={handleChange} control={<Checkbox />} />
+                        ))}
+                    </Box>
 
                     <Box textAlign="center" my={2}>
-                        <Button type="submit" variant="contained" color="primary" disabled={isSubmitting}>
+                        <Button type="submit" kind="add" disabled={isSubmitting}>
                             Add Item
                         </Button>
                     </Box>

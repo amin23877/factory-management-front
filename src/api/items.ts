@@ -25,6 +25,7 @@ export interface IItem {
     dontOrderPO: boolean,
     archived: boolean,
     archiveDate: string | null,
+    lastCount: string | null,
     engineeringApproval: boolean,
     taxable: boolean,
     invalidCost: boolean,
@@ -53,14 +54,13 @@ export interface IItem {
     allocatedQoh: number,
     availableQoh: number,
     triggerQoh: number,
-    lastCount: string,
     recentPurchasePrice: number,
     uom: string,
     reorderQty: number,
     minOrder: number,
     perShipment: number,
     location: string,
-    prefVendor: string,
+    prefVendor: number ,
     prefVendorNote: string,
     additionalShippingFee: number,
     shippingNote: string,
@@ -92,7 +92,10 @@ export const AddItemInitialValues : IItem = {
     dontTrackQOH: false,
     dontOrderPO: false,
     archived: false,
-    archiveDate: "",
+
+    archiveDate: null,
+    lastCount: null,
+    
     engineeringApproval: false,
     taxable: false,
     invalidCost: false,
@@ -120,14 +123,13 @@ export const AddItemInitialValues : IItem = {
     allocatedQoh: 0,
     availableQoh: 0,
     triggerQoh: 0,
-    lastCount: "",
     recentPurchasePrice: 0,
     uom: "",
     reorderQty: 0,
     minOrder: 0,
     perShipment: 0,
     location: "",
-    prefVendor: "",
+    prefVendor: 0,
     prefVendorNote: "",
     additionalShippingFee: 0,
     shippingNote: "",
@@ -148,16 +150,24 @@ export const AddItemInitialValues : IItem = {
 export const createItem = async (itemData:any) => {
     try {
         // console.table(itemData);
-        const resp = await Axios.post('/item', itemData);
+        const resp = await Axios.post('/item', {...itemData,
+            ItemCategoryId: parseInt(itemData.ItemCategoryId),
+            ItemTypeId: parseInt(itemData.ItemTypeId),
+            ItemFamilyId: parseInt(itemData.ItemFamilyId),
+        });
         return resp.data;
     } catch (error) {
         console.error(error);
     }
 }
 
-export const updateAnItem = async (itemId:string, itemData:any) => {
+export const updateAnItem = async (itemId:number, itemData:any) => {
     try {
-        const resp = await Axios.patch(`/item/${itemId}`, itemData);
+        const resp = await Axios.patch(`/item/${itemId}`, {...itemData,
+            ItemCategoryId: parseInt(itemData.ItemCategoryId),
+            ItemTypeId: parseInt(itemData.ItemTypeId),
+            ItemFamilyId: parseInt(itemData.ItemFamilyId),
+        });
         return resp.data;
     } catch (error) {
         console.log(error);

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Box, Tabs, Tab, TextField, FormControlLabel, FormLabel, RadioGroup, Radio, FormControl } from "@material-ui/core";
+import { Box, Tabs, Tab, FormControlLabel, FormLabel, RadioGroup, Radio, FormControl } from "@material-ui/core";
 import { ColDef } from "@material-ui/data-grid";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
+import TextField from "../../app/TextField";
 import Button from "../../app/Button";
 
 import { editClient, getClients } from "../../api/client";
@@ -59,7 +60,6 @@ const EditClientForm = ({ clientTypes, data, onDone }: { clientTypes: any; data:
                     value={values[key]}
                     label={key}
                     placeholder={key}
-                    variant="outlined"
                     onBlur={handleBlur}
                     onChange={handleChange}
                 />
@@ -94,6 +94,7 @@ const EditClientForm = ({ clientTypes, data, onDone }: { clientTypes: any; data:
                             label="Parent"
                             error={Boolean(errors.parent)}
                         />
+
                         <ObjectSelect
                             items={clientTypes}
                             itemTitleField="name"

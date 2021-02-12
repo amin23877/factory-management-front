@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, TextField, RadioGroup, Radio, FormControlLabel, Divider, Typography } from "@material-ui/core";
+import { Box, RadioGroup, Radio, FormControlLabel, Divider, Typography } from "@material-ui/core";
 
 import Button from "../../app/Button";
 
@@ -7,7 +7,8 @@ import { getCategories } from "../../api/category";
 import { getTypes } from "../../api/types";
 import { getFamilies } from "../../api/family";
 
-import { BaseTextInput, FieldSelect } from "../../app/Inputs";
+import TextField from "../../app/TextField";
+import { FieldSelect } from "../../app/Inputs";
 
 interface IForm {
     values: any;
@@ -21,122 +22,132 @@ interface IForm {
 export const General = ({ isSubmitting, values, errors, handleChange, handleBlur, touched }: IForm) => {
     return (
         <>
-            <Box style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", flexWrap: "wrap" }}>
-                <TextField
-                    placeholder="Item name"
-                    name="name"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.name && touched.name)}
-                    value={values.name}
-                    variant="outlined"
-                />
-                <TextField
-                    placeholder="upc"
-                    name="upc"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.upc && touched.upc)}
-                    value={values.upc}
-                    variant="outlined"
-                />
-                <TextField
-                    placeholder="sku"
-                    name="sku"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.sku && touched.sku)}
-                    value={values.sku}
-                    variant="outlined"
-                />
-                <TextField
-                    placeholder="description"
-                    name="description"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.description && touched.description)}
-                    value={values.description}
-                    variant="outlined"
-                />
-                <TextField
-                    value={values.no}
-                    name="no"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.no && touched.no)}
-                    placeholder="no"
-                    variant="outlined"
-                />
-                <FieldSelect
-                    request={getCategories}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    name="ItemCategoryId"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.ItemCategoryId && touched.ItemCategoryId)}
-                    value={values.ItemCategoryId}
-                    placeholder={"Category"}
-                />
-                <FieldSelect
-                    request={getTypes}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    name="ItemTypeId"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.ItemTypeId && touched.ItemTypeId)}
-                    value={values.ItemTypeId}
-                />
-                <FieldSelect
-                    request={getFamilies}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    name="ItemFamilyId"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.ItemFamilyId && touched.ItemFamilyId)}
-                    value={values.ItemFamilyId}
-                />
+            <Box display="flex" alignItems="flex-start">
+                <Box flex={1}>
+                    <TextField
+                        label="Item name"
+                        placeholder="Item name"
+                        name="name"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.name && touched.name)}
+                        value={values.name}
+                    />
+                    <TextField
+                        label="upc"
+                        placeholder="upc"
+                        name="upc"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.upc && touched.upc)}
+                        value={values.upc}
+                    />
+                    <TextField
+                        label="sku"
+                        placeholder="sku"
+                        name="sku"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.sku && touched.sku)}
+                        value={values.sku}
+                    />
+                    <TextField
+                        label="description"
+                        placeholder="description"
+                        name="description"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.description && touched.description)}
+                        value={values.description}
+                    />
+                    <TextField
+                        label="no"
+                        value={values.no}
+                        name="no"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.no && touched.no)}
+                        placeholder="no"
+                    />
+                    <TextField
+                        label="variance"
+                        placeholder="variance"
+                        name="variance"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.variance && touched.variance)}
+                        value={values.variance}
+                    />
+                </Box>
+                <Box flex={1}>
+                    <FieldSelect
+                        label="Item category"
+                        fullWidth
+                        request={getCategories}
+                        itemTitleField="name"
+                        itemValueField="id"
+                        name="ItemCategoryId"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.ItemCategoryId && touched.ItemCategoryId)}
+                        value={values.ItemCategoryId}
+                        placeholder={"Category"}
+                    />
+                    <FieldSelect
+                        label="Item type"
+                        request={getTypes}
+                        itemTitleField="name"
+                        itemValueField="id"
+                        name="ItemTypeId"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.ItemTypeId && touched.ItemTypeId)}
+                        value={values.ItemTypeId}
+                        fullWidth
+                    />
+                    <FieldSelect
+                        label="Item family"
+                        request={getFamilies}
+                        itemTitleField="name"
+                        itemValueField="id"
+                        name="ItemFamilyId"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.ItemFamilyId && touched.ItemFamilyId)}
+                        value={values.ItemFamilyId}
+                        fullWidth
+                    />
 
-                <TextField
-                    placeholder="mfgr"
-                    name="mfgr"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.mfgr && touched.mfgr)}
-                    value={values.mfgr}
-                    variant="outlined"
-                />
-                <TextField
-                    placeholder="color"
-                    name="color"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.color && touched.color)}
-                    value={values.color}
-                    variant="outlined"
-                />
-                <TextField
-                    placeholder="size"
-                    name="size"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.size && touched.size)}
-                    value={values.size}
-                    variant="outlined"
-                />
-                <TextField
-                    placeholder="variance"
-                    name="variance"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.variance && touched.variance)}
-                    value={values.variance}
-                    variant="outlined"
-                />
+                    <TextField
+                        label="mfgr"
+                        placeholder="mfgr"
+                        name="mfgr"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.mfgr && touched.mfgr)}
+                        value={values.mfgr}
+                    />
+                    <TextField
+                        label="color"
+                        placeholder="color"
+                        name="color"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.color && touched.color)}
+                        value={values.color}
+                    />
+                    <TextField
+                        label="size"
+                        placeholder="size"
+                        name="size"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.size && touched.size)}
+                        value={values.size}
+                    />
+                </Box>
             </Box>
-            <Box>
+            <Box display="flex" alignItems="center" justifyContent="center">
                 <RadioGroup
                     style={{ flexDirection: "row" }}
                     name="active"
@@ -147,24 +158,20 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     <FormControlLabel value="true" control={<Radio />} label="Active" />
                     <FormControlLabel value="false" control={<Radio />} label="Inactive" />
                 </RadioGroup>
-
-                <Box display="flex">
-                    <TextField
-                        value={values.specialNote}
-                        style={{ marginRight: "1em", flex: 5 }}
-                        fullWidth
-                        placeholder={values.specialNote}
-                        name="specialNote"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.specialNote && touched.specialNote)}
-                        variant="outlined"
-                        multiline
-                    />
-                    <Button disabled={isSubmitting} kind="edit" type="submit">
-                        Update
-                    </Button>
-                </Box>
+                <TextField
+                    label="Special notes"
+                    // style={{ margin: 5 }}
+                    value={values.specialNote}
+                    fullWidth
+                    placeholder={values.specialNote}
+                    name="specialNote"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.specialNote && touched.specialNote)}
+                />
+                <Button disabled={isSubmitting} style={{ marginTop: "1.3em" }} kind="edit" type="submit">
+                    Update
+                </Button>
             </Box>
         </>
     );
@@ -174,15 +181,16 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
     return (
         <Box display="flex" alignItems="center" p={2}>
             <Box mr={2}>
-                <BaseTextInput
+                <TextField
+                    label="version"
                     name="version"
                     placeholder="version"
                     value={values.version}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    style={{ margin: "4px 0" }}
                 />
-                <BaseTextInput
+                <TextField
+                    label="keywords"
                     name="keywords"
                     placeholder="keywords"
                     value={values.keywords}
@@ -190,7 +198,8 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                     onChange={handleChange}
                     style={{ marginBottom: 3 }}
                 />
-                <BaseTextInput
+                <TextField
+                    label="url"
                     name="url"
                     placeholder="url"
                     value={values.url}
@@ -198,7 +207,8 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                     onChange={handleChange}
                     style={{ marginBottom: 3 }}
                 />
-                <BaseTextInput
+                <TextField
+                    label="cost"
                     name="cost"
                     placeholder="cost"
                     value={values.cost}
@@ -206,7 +216,8 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                     onChange={handleChange}
                     style={{ marginBottom: 3 }}
                 />
-                <BaseTextInput
+                <TextField
+                    label="retail price"
                     name="retailPrice"
                     placeholder="Retail Price"
                     value={values.retailPrice}
@@ -229,7 +240,8 @@ export const Quantity = ({ values, errors, handleChange, handleBlur, touched }: 
         <Box display="flex" alignItems="center" p={2}>
             <Box flex={2} mr={2}>
                 <Typography>Total Quantity on hand</Typography>
-                <BaseTextInput
+                <TextField
+                    label="total quantity on hand"
                     name="totalQoh"
                     placeholder="Total quantity"
                     value={values.totalQoh}
@@ -238,7 +250,8 @@ export const Quantity = ({ values, errors, handleChange, handleBlur, touched }: 
                     style={{ marginBottom: 3 }}
                 />
                 <Typography>Allocated qoh</Typography>
-                <BaseTextInput
+                <TextField
+                    label="allocated quantity on hand"
                     name="allocatedQoh"
                     placeholder="allocatedQoh"
                     value={values.allocatedQoh}
@@ -247,7 +260,8 @@ export const Quantity = ({ values, errors, handleChange, handleBlur, touched }: 
                     style={{ margin: "3px 0" }}
                 />
                 <Typography>Available qoh</Typography>
-                <BaseTextInput
+                <TextField
+                    label="available quantity on hand"
                     name="availableQoh"
                     placeholder="availableQoh"
                     value={values.availableQoh}
@@ -256,7 +270,8 @@ export const Quantity = ({ values, errors, handleChange, handleBlur, touched }: 
                     style={{ marginBottom: 3 }}
                 />
                 <Typography>Trigger qoh</Typography>
-                <BaseTextInput
+                <TextField
+                    label="trriger quantity on hand"
                     name="triggerQoh"
                     placeholder="triggerQoh"
                     value={values.triggerQoh}
@@ -274,7 +289,8 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
         <Box display="flex" alignItems="center" p={2}>
             <Box>
                 <Typography>Adittional Shipping Fee</Typography>
-                <BaseTextInput
+                <TextField
+                    label="Additional shipping fee"
                     name="additionalShippingFee"
                     placeholder="Additional shipping fee"
                     value={values.additionalShippingFee}
@@ -284,10 +300,11 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                 />
                 <Divider style={{ margin: "1em 0" }} />
                 <Box display="flex">
-                    <Typography style={{ flex: 1 }}>Item Weight</Typography>
+                    {/* <Typography style={{ flex: 1 }}>Item Weight</Typography> */}
                     <Box textAlign="center">
                         <Typography>Lbs</Typography>
-                        <BaseTextInput
+                        <TextField
+                            label="weight Lb"
                             name="weightLb"
                             placeholder="weightLb"
                             value={values.weightLb}
@@ -298,7 +315,8 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                     </Box>
                     <Box textAlign="center">
                         <Typography>Oz</Typography>
-                        <BaseTextInput
+                        <TextField
+                            label="weight Oz"
                             name="weightOz"
                             placeholder="weightOz"
                             value={values.weightOz}
@@ -309,10 +327,11 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                     </Box>
                 </Box>
                 <Box display="flex" mt={1}>
-                    <Typography style={{ flex: 1 }}>Shipping Weight</Typography>
+                    {/* <Typography style={{ flex: 1 }}>Shipping Weight</Typography> */}
                     <Box textAlign="center">
                         <Typography>Lbs</Typography>
-                        <BaseTextInput
+                        <TextField
+                            label="shipping Lb"
                             name="shippingLb"
                             placeholder="shippingLb"
                             value={values.shippingLb}
@@ -323,7 +342,8 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                     </Box>
                     <Box textAlign="center">
                         <Typography>OZ</Typography>
-                        <BaseTextInput
+                        <TextField
+                            label="shipping Oz"
                             name="shippingOz"
                             placeholder="shippingOz"
                             value={values.shippingOz}

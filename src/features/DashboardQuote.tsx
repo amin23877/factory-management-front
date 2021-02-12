@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { Box, Grid, List, ListItem, ListItemText, Typography, Button, MenuItem } from "@material-ui/core";
 import { CalendarTodayRounded, UpdateRounded, SearchRounded, RefreshRounded, SettingsRounded } from "@material-ui/icons";
 
-import { BaseSelect, BaseTextInput } from "../app/Inputs";
+import TextField from "../app/TextField";
+import { ArraySelect } from "../app/Inputs";
 import { BaseTable } from "../app/Table";
 import { BasePaper } from "../app/Paper";
 
@@ -37,13 +38,8 @@ const SearchForSO = () => {
                 <Typography style={{ margin: "0 1em" }}>Search for SO</Typography>
             </Box>
             <div style={{ flexGrow: 2 }} />
-            <BaseSelect style={{ margin: "1em 0" }} value={val} onChange={(e) => setVal(e.target.value as string)}>
-                <MenuItem value="item">item</MenuItem>
-                <MenuItem value="item1">item1</MenuItem>
-                <MenuItem value="item2">item2</MenuItem>
-                <MenuItem value="item3">item3</MenuItem>
-            </BaseSelect>
-            <BaseTextInput placeholder="Search for..." />
+            <ArraySelect items={["item1", "item2", "item3"]} />
+            <TextField label="Search" />
             <div style={{ flexGrow: 1 }} />
         </BasePaper>
     );
@@ -53,7 +49,7 @@ const UnitsOverDue = () => {
     return (
         <BasePaper style={{ justifyContent: "space-between" }}>
             <Box display="flex" justifyContent="space-between">
-                <BaseTextInput placeholder="Overdue Units as of..." />
+                <TextField label="Overdue Units" />
                 <div style={{ flexGrow: 1 }} />
                 <Button variant="contained" color="primary" style={{ margin: "0 1em" }}>
                     <RefreshRounded />
