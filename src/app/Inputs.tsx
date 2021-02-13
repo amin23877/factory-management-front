@@ -10,10 +10,12 @@ interface IOS extends SelectProps {
 }
 export const ObjectSelect = ({ items, itemTitleField, itemValueField, keyField, ...props }: IOS) => {
     return (
-        <FormControl style={{ margin: "0.5em" }} fullWidth={props.fullWidth}>
-            <Typography style={{ margin: "2px 0" }} variant="caption" id="field-select-label">
-                {props.label}
-            </Typography>
+        <FormControl style={{ margin: "0.5em", minWidth: 243 }} fullWidth={props.fullWidth}>
+            {props.label && (
+                <Typography style={{ margin: "2px 0" }} variant="caption" id="field-select-label">
+                    {props.label}
+                </Typography>
+            )}
             <Select name={props.name} input={<BootstrapInput />} {...props} labelId="object-select-label">
                 <MenuItem value={undefined}>None</MenuItem>
                 {items.map((item: any, i) => (
@@ -59,8 +61,12 @@ export const ArraySelect = ({ items, ...props }: IArraySelect) => {
 export const BaseSelect = (props: SelectProps) => {
     return (
         <FormControl fullWidth={props.fullWidth}>
-            <InputLabel id="field-select-label">{props.label}</InputLabel>
-            <Select name={props.name} input={<BootstrapInput />} {...props} labelId="object-select-label">
+            {props.label && (
+                <Typography style={{ margin: "2px 0" }} variant="caption" id="field-select-label">
+                    {props.label}
+                </Typography>
+            )}
+            <Select style={{ minWidth: 150 }} name={props.name} input={<BootstrapInput />} {...props} labelId="object-select-label">
                 {props.children}
             </Select>
         </FormControl>

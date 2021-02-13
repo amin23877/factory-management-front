@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Box, Accordion, AccordionSummary, AccordionDetails, TextField, MenuItem } from "@material-ui/core";
+import { Box, Accordion, AccordionSummary, AccordionDetails, MenuItem } from "@material-ui/core";
 import { ExpandMoreRounded } from "@material-ui/icons";
 
 import Snackbar from "./Snack";
+import TextField from "./TextField";
 import Button from "./Button";
 import { BaseSelect } from "./Inputs";
 
@@ -112,16 +113,15 @@ export const GeneralForm = ({
                             }}
                             style={{ width: "100%" }}
                         >
-                            <Box width="100%" display="flex">
+                            <Box width="100%" display="flex" justifyContent="space-between" alignItems="end">
                                 <TextField
                                     fullWidth
                                     value={addName}
                                     onChange={(e) => setAddName(e.target.value)}
-                                    variant="outlined"
-                                    inputProps={{ style: { padding: 14 } }}
+                                    label="name"
                                     placeholder={`${type} name`}
                                 />
-                                <Button type="submit" kind="add" disabled={dis} onClick={handleAdd} style={{ margin: "0.5em 0" }}>
+                                <Button type="submit" kind="add" disabled={dis} style={{ margin: "0.5em 0" }}>
                                     Add
                                 </Button>
                             </Box>
@@ -139,7 +139,12 @@ export const GeneralForm = ({
                             style={{ width: "100%" }}
                         >
                             <Box width="100%" display="flex" alignItems="center">
-                                <BaseSelect value={selectedData} onChange={(e: any) => setSelectedData(e.target.value)}>
+                                <BaseSelect
+                                    label={type}
+                                    fullWidth
+                                    value={selectedData}
+                                    onChange={(e: any) => setSelectedData(e.target.value)}
+                                >
                                     {data.map((cat: { id: string; name: string }) => (
                                         <MenuItem key={cat.id} value={cat.id}>
                                             {cat.name}
@@ -147,13 +152,13 @@ export const GeneralForm = ({
                                     ))}
                                 </BaseSelect>
                                 <TextField
-                                    variant="outlined"
+                                    label="new name"
                                     value={editName}
                                     onChange={(e) => setEditName(e.target.value)}
                                     style={{ flex: 1, marginRight: 5 }}
                                     placeholder={`New ${type} name`}
                                 />
-                                <Button type="submit" disabled={dis} kind="edit" onClick={handleEdit} style={{ padding: "1em" }}>
+                                <Button type="submit" disabled={dis} kind="edit" style={{ padding: "1em 2em" }}>
                                     Save
                                 </Button>
                             </Box>
@@ -170,20 +175,15 @@ export const GeneralForm = ({
                             }}
                             style={{ width: "100%" }}
                         >
-                            <Box width="100%" display="flex">
-                                <BaseSelect
-                                    value={selectedData}
-                                    onChange={(e: any) => setSelectedData(e.target.value)}
-                                    fullWidth
-                                    style={{ marginRight: "0.5em" }}
-                                >
+                            <Box width="100%" display="flex" alignItems="center">
+                                <BaseSelect value={selectedData} onChange={(e: any) => setSelectedData(e.target.value)} fullWidth>
                                     {data.map((cat: { id: string; name: string }) => (
                                         <MenuItem key={cat.id} value={cat.id}>
                                             {cat.name}
                                         </MenuItem>
                                     ))}
                                 </BaseSelect>
-                                <Button type="submit" disabled={dis} onClick={handleDelete} kind="delete" style={{ margin: "0.5em 0" }}>
+                                <Button type="submit" disabled={dis} kind="delete" style={{ margin: "0 0.5em" }}>
                                     Delete
                                 </Button>
                             </Box>

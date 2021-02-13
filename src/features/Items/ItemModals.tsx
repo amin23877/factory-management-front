@@ -1,7 +1,8 @@
 import React from "react";
-import { Dialog, DialogTitle, Box, FormControlLabel, FormLabel, RadioGroup, Radio, Checkbox, FormControl } from "@material-ui/core";
+import { Box, FormControlLabel, FormLabel, RadioGroup, Radio, Checkbox, FormControl } from "@material-ui/core";
 import { useFormik } from "formik";
 
+import Dialog from "../../app/Dialog";
 import TextField from "../../app/TextField";
 import Button from "../../app/Button";
 import { FieldSelect } from "../../app/Inputs";
@@ -90,8 +91,7 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
     }
 
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="sm">
-            <DialogTitle>Add new Item to inventory</DialogTitle>
+        <Dialog open={open} onClose={onClose} maxWidth="sm" title="Add new item">
             <Box p={3} display="flex" alignItems="center">
                 <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
                     {form_inputs}

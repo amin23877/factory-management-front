@@ -5,7 +5,6 @@ import { DataGrid, RowData, ColDef } from "@material-ui/data-grid";
 const useStyles = makeStyles({
     dataGridCont: {
         width: "100%",
-        margin: "1em 0",
         backgroundColor: "#fff",
         borderRadius: 8,
         border: "1px solid #ccc",
@@ -26,23 +25,21 @@ export default function BaseDataGrid({
     const classes = useStyles();
 
     return (
-        <Box my={2}>
-            <Box display="flex">
-                <div
-                    className={classes.dataGridCont}
-                    style={{
-                        height: height ? height : 450,
+        <Box display="flex">
+            <div
+                className={classes.dataGridCont}
+                style={{
+                    height: height ? height : 450,
+                }}
+            >
+                <DataGrid
+                    onRowSelected={(r) => {
+                        onRowSelected(r.data);
                     }}
-                >
-                    <DataGrid
-                        onRowSelected={(r) => {
-                            onRowSelected(r.data);
-                        }}
-                        columns={cols}
-                        rows={rows}
-                    />
-                </div>
-            </Box>
+                    columns={cols}
+                    rows={rows}
+                />
+            </div>
         </Box>
     );
 }

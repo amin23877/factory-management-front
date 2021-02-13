@@ -53,7 +53,7 @@ export default function BaseTextField(props: IBaseTextField) {
             <InputLabel shrink htmlFor="bootstrap-input">
                 {props.label}
             </InputLabel>
-            <BootstrapInput {...props} id="bootstrap-input" />
+            <BootstrapInput inputProps={{ style: { borderColor: props.error ? "red" : "#ced4da" } }} {...props} id="bootstrap-input" />
         </FormControl>
     );
 }
