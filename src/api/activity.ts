@@ -16,12 +16,12 @@ export interface IActivity {
 
     OpportunityId?: number | null;
     
-    ActivityCategoryId: number | null;
     ClientId: number | null;
     ContactId: number | null;
     ProjectId: number | null;
     EmployeeId: number | null;
     QuoteId: number | null;
+    ActivityCategoryId: number | null;
     ActivityStatusId: number | null;
     ActivityPriorityId: number | null;
 }
