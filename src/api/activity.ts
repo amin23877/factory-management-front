@@ -60,6 +60,33 @@ export const getActivities = async () => {
     }
 };
 
+export const getClientActivities = async (clientId:number) => {
+    try {
+        const resp = await Axios.get(`/activity/client/${clientId}`);
+        return resp.data;
+    } catch (error) {
+        console.log(error); 
+    }
+}
+
+export const getQuoteActivities = async (quoteId:number) => {
+    try {
+        const resp = await Axios.get(`/activity/quote/${quoteId}`);
+        return resp.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const getProjectActivities = async (projectId:number) => {
+    try {
+        const resp = await Axios.get(`/activity/project/${projectId}`);
+        return resp.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const createActivity = async (data: IActivity) => {
     try {
         const resp = await Axios.post("/activity", {

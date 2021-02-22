@@ -1,12 +1,13 @@
 import React, { useState } from "react";
+import { Drawer, Button, Checkbox, FormControlLabel, Typography, Box } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
+import { Gradients } from "../theme";
+import TextField from "../app/TextField";
 import { useAuth } from "../store";
-import { Drawer, TextField, Button, Checkbox, FormControlLabel } from "@material-ui/core";
 
 import logo from "../assets/splogo.png";
-import { Gradients } from "../theme";
 import "../styles/splash.css";
 
 export default function SplashScreen() {
@@ -39,18 +40,18 @@ export default function SplashScreen() {
                             <Form>
                                 <TextField
                                     fullWidth
-                                    variant="outlined"
+                                    style={{ width: "100%" }}
                                     placeholder="username"
                                     name="username"
                                     value={values.username}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     error={Boolean(errors.username && touched.username)}
-                                    helperText={errors.username}
                                 />
+                                <Typography variant="caption">{errors.username}</Typography>
                                 <TextField
                                     fullWidth
-                                    variant="outlined"
+                                    style={{ width: "100%" }}
                                     placeholder="password"
                                     type="password"
                                     name="password"
@@ -58,8 +59,9 @@ export default function SplashScreen() {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     error={Boolean(errors.password && touched.password)}
-                                    helperText={errors.password}
                                 />
+                                <Typography variant="caption">{errors.password}</Typography>
+                                <br />
                                 <FormControlLabel label="Keep Loged in?" control={<Checkbox />} />
 
                                 <Button

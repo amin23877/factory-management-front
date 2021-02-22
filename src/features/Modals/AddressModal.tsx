@@ -11,7 +11,7 @@ import { createAModelAddress, deleteAModelAddress, updateAModelAddress, IAddress
 import { getAddressTypes } from "../../api/addressType";
 
 const schema = Yup.object().shape({
-    AddressTypeId: Yup.number().required(),
+    AddressTypeId: Yup.number().required().notOneOf([0]),
 });
 
 export const AddressModal = ({
@@ -45,7 +45,16 @@ export const AddressModal = ({
                                   main: data.main,
                                   AddressTypeId: data?.AddressTypeId,
                               }
-                            : { address: "", address2: "", city: "", state: "", zip: "", country: "", main: false, AddressTypeId: 0 }
+                            : {
+                                  address: "",
+                                  address2: "",
+                                  city: "",
+                                  state: "",
+                                  zip: "",
+                                  country: "",
+                                  main: false,
+                                  AddressTypeId: 0,
+                              }
                     }
                     validationSchema={schema}
                     onSubmit={(values, { setSubmitting }) => {

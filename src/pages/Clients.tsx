@@ -20,6 +20,7 @@ import { getAllModelNotes } from "../api/note";
 import { getAllModelDocuments } from "../api/document";
 import { getAllModelAddress } from "../api/address";
 import { getAllAgencies } from "../api/agency";
+import { getClientActivities } from "../api/activity";
 import { getClientDivisons } from "../api/division";
 import { getAllModelPhone } from "../api/phone";
 import { getAllModelEmailAddrs } from "../api/emailAddress";
@@ -43,12 +44,13 @@ import { ContactModal } from "../features/Modals/ContactModal";
 
 import ClientDetails from "../features/Client/ClientDetails";
 import ClientOverview from "../features/Client/ClientOverview";
+import { RowData } from "@material-ui/data-grid";
 
 export default function Clients() {
     const [activeTab, setActiveTab] = useState(0);
     const [addClientModal, setAddClientModal] = useState(false);
     const [cTypeModal, setCTypeModal] = useState(false);
-    const [clients, setClients] = useState([]);
+    const [clients, setClients] = useState<RowData[]>([]);
 
     const [notes, setNotes] = useState([]);
     const [docs, setDocs] = useState([]);
@@ -59,6 +61,7 @@ export default function Clients() {
     const [emails, setEmails] = useState([]);
     const [contacts, setContacts] = useState([]);
     const [clientTypes, setClientTypes] = useState([]);
+    const [activities, setActivities] = useState([]);
 
     const [selectedRow, setSelectedRow] = useState<any>(null);
 
@@ -87,7 +90,7 @@ export default function Clients() {
 
     const refreshClients = async () => {
         try {
-            const resp = await getClients();
+            let resp = await getClients();
             setClients(resp);
         } catch (error) {
             console.log(error);
@@ -172,6 +175,17 @@ export default function Clients() {
         }
     };
 
+    const refreshActivities = async () => {
+        try {
+            const resp = await getClientActivities(selectedRow.id);
+            console.log(resp);
+
+            setActivities(resp);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const handleDelete = async () => {
         try {
             const resp = await deleteClient(selectedRow.id);
@@ -189,6 +203,7 @@ export default function Clients() {
         if (activeTab === 1) {
             refreshNotes();
             refreshDocs();
+            refreshActivities();
             refreshAddresses();
             refreshAgencies();
             refreshDivisions();
@@ -412,6 +427,7 @@ export default function Clients() {
                         <ClientOverview
                             rows={clients}
                             onRowSelected={(v) => {
+                                console.log(v);
                                 setSelectedRow(v);
                                 setActiveTab(1);
                             }}
@@ -421,6 +437,7 @@ export default function Clients() {
                         <ClientDetails
                             clientTypes={clientTypes}
                             onDone={refreshClients}
+                            activities={activities}
                             notes={notes}
                             docs={docs}
                             addrs={addrs}

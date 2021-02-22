@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Tabs, Tab, Box, Button } from "@material-ui/core";
+import { Tabs, Tab, Box } from "@material-ui/core";
 import { Form, Formik } from "formik";
 
+import Button from "../../app/Button";
 import { BillingTab, CommissionTab, DepositTab, GeneralForm, ShippingTab, TermsTab } from "./Forms";
 import { IQuote, updateQuote } from "../../api/quote";
 
@@ -44,13 +45,7 @@ export default function EditForm({ selectedQuote, onDone }: { selectedQuote: IQu
                             {activeTab === 4 && <CommissionTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
 
                             <Box display="flex" justifyContent="flex-end" my={2}>
-                                <Button
-                                    disabled={isSubmitting}
-                                    type="submit"
-                                    variant="contained"
-                                    color="primary"
-                                    style={{ padding: "2em 4em" }}
-                                >
+                                <Button disabled={isSubmitting} type="submit" kind="edit">
                                     Save
                                 </Button>
                             </Box>

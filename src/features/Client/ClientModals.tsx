@@ -11,7 +11,7 @@ import { getClientTypes } from "../../api/clientType";
 
 export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClose: () => void; onDone: () => void }) => {
     const schema = Yup.object().shape({
-        ClientTypeId: Yup.number().required(),
+        ClientTypeId: Yup.number().required().notOneOf([0]),
     });
 
     const { errors, touched, values, handleChange, handleBlur, isSubmitting, handleSubmit } = useFormik({

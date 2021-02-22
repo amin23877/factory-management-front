@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
@@ -7,7 +7,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import CheckBox from "@material-ui/core/Checkbox";
 
 import TextField from "../../app/TextField";
-import { FieldSelect } from "../../app/Inputs";
+import { FieldSelect, BaseSelect } from "../../app/Inputs";
 import Button from "../../app/Button";
 
 import { getClients } from "../../api/client";
@@ -75,17 +75,17 @@ export default function AddActivityForm({ init, onDone }: { init: IActivity; onD
                             onChange={handleChange}
                             onBlur={handleBlur}
                         />
-
                         <FieldSelect
-                            label="Client"
-                            name="ClientId"
                             request={getClients}
                             itemTitleField="name"
                             itemValueField="id"
+                            label="Client"
+                            name="ClientId"
                             value={values.ClientId}
                             onChange={handleChange}
                             onBlur={handleBlur}
                         />
+
                         <FieldSelect
                             label="Contact"
                             name="ContactId"

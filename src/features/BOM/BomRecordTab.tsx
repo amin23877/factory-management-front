@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box, TextField, FormControlLabel, Checkbox, List, ListItem } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -29,9 +29,8 @@ const BomRecordForm = ({
         initialValues !== undefined ? initialValues : { ItemId: 0, index: 0, usage: 0, revision: "", fixedQty: false };
 
     const schema = Yup.object().shape({
-        ItemId: Yup.string().required(),
+        ItemId: Yup.number().required().notOneOf([0]),
     });
-    const [items, setItems] = useState([]);
 
     const handleSubmit = async (values: IBomRecord, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
         try {
@@ -55,12 +54,6 @@ const BomRecordForm = ({
             console.log(error);
         }
     };
-
-    useEffect(() => {
-        getItems()
-            .then((d) => setItems(d))
-            .catch((e) => console.log(e));
-    }, []);
 
     return (
         <Box>

@@ -13,6 +13,7 @@ import { createAModelContact, deleteAModelContact, updateAModelContact, IContact
 const schema = Yup.object().shape({
     firstName: Yup.string().required(),
     lastName: Yup.string().required(),
+    ContactTypeId: Yup.number().required().notOneOf([0]),
 });
 
 const Field = ({

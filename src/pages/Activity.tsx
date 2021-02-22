@@ -73,7 +73,7 @@ export default function Activity() {
             <Box my={1} display="flex" justifyContent="flex-end" alignItems="center">
                 <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                     <MyTab label="List" />
-                    <MyTab label="Details" />
+                    <MyTab label="Details" disabled={!selectedActivity} />
                 </MyTabs>
             </Box>
             <Box display="flex" alignItems="flex-start" mt={1}>

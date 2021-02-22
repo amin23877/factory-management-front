@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Box, TextField } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 
+import TextField from "../../app/TextField";
 import Button from "../../app/Button";
 import Dialog from "../../app/Dialog";
 import { createProject, deleteProject, updateProject } from "../../api/project";
@@ -45,7 +46,7 @@ export const ProjectModal = ({ open, onClose, data, onDone }: { open: boolean; o
         <Dialog open={open} onClose={onClose} title={data ? "Edit project" : "Add new project"}>
             <form onSubmit={handleSubmit}>
                 <Box m={1} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-                    <TextField fullWidth value={name} onChange={(e) => setName(e.target.value)} />
+                    <TextField label="name" fullWidth value={name} onChange={(e) => setName(e.target.value)} />
                     <Box>
                         <Button kind="add" type="submit">
                             save

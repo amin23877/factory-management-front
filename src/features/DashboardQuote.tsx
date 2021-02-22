@@ -45,11 +45,11 @@ const SearchForSO = () => {
     );
 };
 
-const UnitsOverDue = () => {
+const OverDueServices = () => {
     return (
         <BasePaper style={{ justifyContent: "space-between" }}>
-            <Box display="flex" justifyContent="space-between">
-                <TextField label="Overdue Units" />
+            <Box display="flex" justifyContent="space-between" alignItems="center">
+                <TextField label="Overdue services" />
                 <div style={{ flexGrow: 1 }} />
                 <Button variant="contained" color="primary" style={{ margin: "0 1em" }}>
                     <RefreshRounded />
@@ -127,11 +127,11 @@ export default function Quote() {
             <Grid item md={3} sm={6}>
                 <UnitsDueDateList />
             </Grid>
+            <Grid item md={6} xs={12}>
+                <OverDueServices />
+            </Grid>
             <Grid item md={3} sm={6}>
                 <SearchForSO />
-            </Grid>
-            <Grid item md={6} xs={12}>
-                <UnitsOverDue />
             </Grid>
             <Grid item xs={12}>
                 <Manufacturing />

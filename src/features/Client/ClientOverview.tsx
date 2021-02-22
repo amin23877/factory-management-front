@@ -5,13 +5,28 @@ import BaseDataGrid from "../../app/BaseDataGrid";
 
 export default function ClientOverview({ rows, onRowSelected }: { rows: RowData[]; onRowSelected: (row: any) => void }) {
     const cols: ColDef[] = [
-        { field: "name", headerName: "name" },
-        { field: "website", headerName: "website" },
-        { field: "linkedIn", headerName: "linkedIn" },
-        { field: "instagram", headerName: "instagram" },
-        { field: "abbr", headerName: "abbr" },
-        { field: "location", headerName: "location", width: 170 },
+        {
+            field: "name",
+            headerName: "name",
+        },
         { field: "size", headerName: "size" },
+        { field: "address", headerName: "address", width: 170, valueGetter: ({ data }) => (data.address ? data.address.address : "") },
+        {
+            field: "contact",
+            headerName: "contact",
+            width: 170,
+            valueGetter: ({ data }) => (data.contact ? data.contact.firstName + " " + data.contact.lastName : ""),
+        },
+        {
+            field: "phone",
+            headerName: "phone",
+            width: 170,
+            valueGetter: ({ data }) => (data.phone ? data.phone.ext + " " + data.phone.phone : ""),
+        },
+        {
+            field: "Type",
+            valueGetter: ({ data }) => data.ClientType.name,
+        },
         { field: "prospect", headerName: "prospect" },
     ];
 

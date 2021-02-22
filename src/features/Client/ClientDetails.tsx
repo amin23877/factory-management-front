@@ -159,6 +159,7 @@ export default function ClientDetails({
     onEmailSelected,
     onPhoneSelected,
     agencies,
+    activities,
     addrs,
     notes,
     docs,
@@ -180,6 +181,7 @@ export default function ClientDetails({
     onEmailSelected: (v: any) => void;
     onContactSelected: (v: any) => void;
     agencies: any;
+    activities: any;
     addrs: any;
     notes: any;
     docs: any;
@@ -190,6 +192,17 @@ export default function ClientDetails({
     clientTypes: any;
 }) {
     const [activeTab, setActiveTab] = useState(0);
+
+    const activityCols: ColDef[] = [
+        { field: "name" },
+        { field: "subject" },
+        { field: "location" },
+        { field: "startTime", width: 180 },
+        { field: "endTime", width: 180 },
+        { field: "ActivityPriority", valueGetter: ({ data }) => data.ActivityPriority.name, width: 180 },
+        { field: "ActivityStatus", valueGetter: ({ data }) => data.ActivityStatus.name, width: 180 },
+        { field: "notes" },
+    ];
 
     const noteCols: ColDef[] = [
         { field: "subject", headerName: "Subject" },
@@ -227,6 +240,7 @@ export default function ClientDetails({
             <EditClientForm onDone={onDone} data={selectedRow} clientTypes={clientTypes} />
 
             <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} variant="scrollable">
+                <Tab label="Activities" />
                 <Tab label="Notes" />
                 <Tab label="Documents" />
                 <Tab label="Addresses" />
@@ -237,16 +251,17 @@ export default function ClientDetails({
                 <Tab label="Contacts" />
             </Tabs>
             <Box p={3}>
-                {activeTab === 0 && <BaseDataGrid height={250} cols={noteCols} rows={notes} onRowSelected={(v) => onNoteSelected(v)} />}
-                {activeTab === 1 && <BaseDataGrid height={250} cols={docCols} rows={docs} onRowSelected={(v) => onDocSelected(v)} />}
-                {activeTab === 2 && <BaseDataGrid height={250} cols={addrCols} rows={addrs} onRowSelected={(v) => onAddrSelected(v)} />}
-                {activeTab === 3 && (
+                {activeTab === 0 && <BaseDataGrid height={250} cols={activityCols} rows={activities} onRowSelected={() => {}} />}
+                {activeTab === 1 && <BaseDataGrid height={250} cols={noteCols} rows={notes} onRowSelected={(v) => onNoteSelected(v)} />}
+                {activeTab === 2 && <BaseDataGrid height={250} cols={docCols} rows={docs} onRowSelected={(v) => onDocSelected(v)} />}
+                {activeTab === 3 && <BaseDataGrid height={250} cols={addrCols} rows={addrs} onRowSelected={(v) => onAddrSelected(v)} />}
+                {activeTab === 4 && (
                     <BaseDataGrid height={250} cols={agencyCols} rows={agencies} onRowSelected={(v) => onAgencySelected(v)} />
                 )}
-                {activeTab === 4 && <BaseDataGrid height={250} cols={agencyCols} rows={divisions} onRowSelected={onDivSelected} />}
-                {activeTab === 5 && <BaseDataGrid height={250} cols={phoneCols} rows={phones} onRowSelected={onPhoneSelected} />}
-                {activeTab === 6 && <BaseDataGrid height={250} cols={emailCols} rows={emails} onRowSelected={onEmailSelected} />}
-                {activeTab === 7 && <BaseDataGrid height={250} cols={contactsCols} rows={contacts} onRowSelected={onContactSelected} />}
+                {activeTab === 5 && <BaseDataGrid height={250} cols={agencyCols} rows={divisions} onRowSelected={onDivSelected} />}
+                {activeTab === 6 && <BaseDataGrid height={250} cols={phoneCols} rows={phones} onRowSelected={onPhoneSelected} />}
+                {activeTab === 7 && <BaseDataGrid height={250} cols={emailCols} rows={emails} onRowSelected={onEmailSelected} />}
+                {activeTab === 8 && <BaseDataGrid height={250} cols={contactsCols} rows={contacts} onRowSelected={onContactSelected} />}
             </Box>
         </BasePaper>
     );

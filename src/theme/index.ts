@@ -8,27 +8,29 @@ export const Gradients = {
 };
 
 export const theme = createMuiTheme({
-    props: { 
-        MuiTabs:{
-            indicatorColor:'primary',
+    props: {
+        MuiTabs: {
+            indicatorColor: "primary",
         },
-        MuiTab:{
-            style:{
-                fontWeight:'bold'
-            }
+        MuiTab: {
+            style: {
+                minWidth: 72,
+                fontSize: 12,
+                fontWeight: "bold",
+            },
         },
-        MuiLink: { 
+        MuiLink: {
             color: "textSecondary",
-            style:{
-                textDecoration:'none'
-            }
+            style: {
+                textDecoration: "none",
+            },
         },
-        MuiTextField:{
-            variant:'outlined',
-            style:{
-                margin: '0.5em'
-            }
-        }
+        MuiTextField: {
+            variant: "outlined",
+            style: {
+                margin: "0.5em",
+            },
+        },
     },
     palette: {
         divider: "#4f4f4f",

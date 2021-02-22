@@ -5,6 +5,7 @@ import { ColDef } from "@material-ui/data-grid";
 import { INote, getAllModelNotes } from "../../api/note";
 import { IDocument, getAllModelDocuments } from "../../api/document";
 import { getQuotes, getLineItems, IQuote, ILineItem } from "../../api/quote";
+import { getActivities, getQuoteActivities } from "../../api/activity";
 
 import Snack from "../../app/Snack";
 import BaseDataGrid from "../../app/BaseDataGrid";
@@ -31,6 +32,7 @@ export const QuotePanel = () => {
     const [lineItems, setLineItems] = useState([]);
     const [notes, setNotes] = useState([]);
     const [docs, setDocs] = useState([]);
+    const [activities, setActivities] = useState([]);
 
     const [selectedQuote, setSelectedQuote] = useState<IQuote>();
     const [selectedLI, setSelectedLI] = useState<ILineItem>();
@@ -54,25 +56,24 @@ export const QuotePanel = () => {
     const quoteCols: ColDef[] = [
         { field: "entryDate", width: 150 },
         { field: "expireDate", width: 150 },
-        { field: "location" },
-        { field: "leadTime" },
-        { field: "salesperson" },
-        { field: "requester" },
-        { field: "client" },
-        { field: "shippingAddress" },
-        { field: "shippingContact" },
-        { field: "billingAddress" },
-        { field: "billingContact" },
-        { field: "department" },
-        { field: "acctStatus" },
-        { field: "creditTerms" },
-        { field: "quoteStatus" },
+        { field: "quoteStatus", width: 150 },
     ];
 
     const refreshQuotes = async () => {
         try {
             const resp = await getQuotes();
             setQuotes(resp);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const refreshActivities = async () => {
+        try {
+            if (selectedQuote && selectedQuote.id) {
+                const resp = await getQuoteActivities(selectedQuote?.id);
+                setActivities(resp);
+            }
         } catch (error) {
             console.log(error);
         }
@@ -116,6 +117,7 @@ export const QuotePanel = () => {
         refreshLineItems();
         refreshNotes();
         refreshDocs();
+        refreshActivities();
     }, [selectedQuote]);
 
     return (
@@ -210,6 +212,7 @@ export const QuotePanel = () => {
                             setSelectedDocs(d);
                             setEditDoc(true);
                         }}
+                        activities={activities}
                         notes={notes}
                         docs={docs}
                         lineItems={lineItems}

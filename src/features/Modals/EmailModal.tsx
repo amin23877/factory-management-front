@@ -12,6 +12,7 @@ import { createAModelEmailAddr, deleteAModelEmailAddr, updateAModelEmailAddr, IE
 
 const schema = Yup.object().shape({
     email: Yup.string().required(),
+    EmailTypeId: Yup.number().required().notOneOf([0]),
 });
 
 export const EmailModal = ({

@@ -7,7 +7,7 @@ import Tab from "@material-ui/core/Tab";
 
 import { IActivity } from "../../api/activity";
 import { getAllModelNotes, INote } from "../../api/note";
-import { getAllModelDocuments, IDocument } from "../../api/document";
+import { getAllModelDocuments } from "../../api/document";
 
 import EditActivityForm from "./Forms";
 
@@ -21,8 +21,6 @@ export default function EditForm({ selectedActivity, onDone }: { selectedActivit
     const [activeTab, setActiveTab] = useState(0);
     const [addNote, setAddNote] = useState(false);
     const [addDoc, setAddDoc] = useState(false);
-    // const [editNote, setEditNote] = useState(false);
-    // const [editDoc, setEditDoc] = useState(false);
 
     const [selNote, setSelNote] = useState<INote>();
     const [selDoc, setSelDoc] = useState<any>();

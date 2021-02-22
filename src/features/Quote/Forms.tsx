@@ -1,7 +1,8 @@
-import React from "react";
-import { Typography, TextField, Box, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { Typography, Box, FormControl, MenuItem, FormLabel, FormControlLabel, RadioGroup, Radio } from "@material-ui/core";
 
-import { FieldSelect, ArraySelect } from "../../app/Inputs";
+import TextField from "../../app/TextField";
+import { FieldSelect, ArraySelect, BaseSelect } from "../../app/Inputs";
 
 import { getAllEmployees } from "../../api/employee";
 import { getContacts } from "../../api/contact";
@@ -30,9 +31,6 @@ export const GeneralForm = ({
                 type="date"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                InputLabelProps={{
-                    shrink: true,
-                }}
                 fullWidth
             />
             <TextField
@@ -42,9 +40,6 @@ export const GeneralForm = ({
                 type="date"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                InputLabelProps={{
-                    shrink: true,
-                }}
                 fullWidth
             />
             <TextField value={values.location} name="location" label="locaton" onChange={handleChange} onBlur={handleBlur} fullWidth />
@@ -77,12 +72,12 @@ export const GeneralForm = ({
                 request={getClients}
                 itemTitleField="name"
                 itemValueField="id"
-                keyField="id"
                 name="client"
                 label="Client"
                 onChange={handleChange}
                 fullWidth
             />
+
             <FormControl style={{ margin: "0.5em" }}>
                 <FormLabel>No tax</FormLabel>
                 <RadioGroup value={String(values.noTaxClient)} name="noTaxClient" onChange={handleChange} style={{ flexDirection: "row" }}>
@@ -363,9 +358,6 @@ export const CommissionTab = ({
                 type="date"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                InputLabelProps={{
-                    shrink: true,
-                }}
                 fullWidth
             />
             <TextField

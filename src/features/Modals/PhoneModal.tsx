@@ -13,6 +13,7 @@ import { createAModelPhone, deleteAModelPhone, updateAModelPhone, IPhone } from 
 const schema = Yup.object().shape({
     ext: Yup.string().required(),
     phone: Yup.string().required(),
+    PhoneTypeId: Yup.number().required().notOneOf([0]),
 });
 
 export const PhoneModal = ({

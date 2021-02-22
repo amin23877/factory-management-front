@@ -33,7 +33,7 @@ export default function LineItemModal({
 }) {
     const schema = Yup.object().shape({
         index: Yup.number(),
-        ItemId: Yup.number().required(),
+        ItemId: Yup.number().required().notOneOf([0]),
         quantity: Yup.number().min(1),
         price: Yup.number(),
     });
