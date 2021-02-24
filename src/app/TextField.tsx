@@ -1,10 +1,11 @@
 import React from "react";
-import { createStyles, fade, Theme, withStyles, makeStyles } from "@material-ui/core/styles";
+import { createStyles, Theme, withStyles } from "@material-ui/core/styles";
 import InputBase, { InputBaseProps } from "@material-ui/core/InputBase";
 import InputLabel from "@material-ui/core/InputLabel";
-import TextField, { TextFieldProps } from "@material-ui/core/TextField";
+import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
-import { OutlinedInputProps } from "@material-ui/core/OutlinedInput";
+import Typography from "@material-ui/core/Typography";
+// import { OutlinedInputProps } from "@material-ui/core/OutlinedInput";
 
 export const BootstrapInput = withStyles((theme: Theme) =>
     createStyles({
@@ -45,6 +46,7 @@ export const BootstrapInput = withStyles((theme: Theme) =>
 
 export interface IBaseTextField extends InputBaseProps {
     label?: string;
+    helperText?: React.ReactNode;
 }
 
 export default function BaseTextField(props: IBaseTextField) {
@@ -54,6 +56,7 @@ export default function BaseTextField(props: IBaseTextField) {
                 {props.label}
             </InputLabel>
             <BootstrapInput inputProps={{ style: { borderColor: props.error ? "red" : "#ced4da" } }} {...props} id="bootstrap-input" />
+            {props.helperText && <Typography variant="caption">{props.helperText}</Typography>}
         </FormControl>
     );
 }

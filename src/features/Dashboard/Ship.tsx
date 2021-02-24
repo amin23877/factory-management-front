@@ -2,8 +2,8 @@ import React from "react";
 import { Typography, Grid, Box, List, ListItem, ListItemText } from "@material-ui/core";
 import { SettingsRounded, OpenInBrowserRounded, CachedRounded, InboxRounded } from "@material-ui/icons";
 
-import { BasePaper } from "../app/Paper";
-import { NumbersCard, TableCard } from "../app/Cards";
+import { BasePaper } from "../../app/Paper";
+import { NumbersCard, TableCard } from "../../app/Cards";
 
 const TotleShipped = () => {
     return (

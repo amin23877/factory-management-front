@@ -1,11 +1,13 @@
 import React from "react";
-import { Box, TextField, FormControlLabel, FormLabel, RadioGroup, Radio, FormControl } from "@material-ui/core";
+import { Box, FormControlLabel, FormLabel, RadioGroup, Radio, FormControl } from "@material-ui/core";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
+import TextField from "../../app/TextField";
 import Dialog from "../../app/Dialog";
 import Button from "../../app/Button";
 import { FieldSelect } from "../../app/Inputs";
+
 import { addClient, AddClientInit, getClients } from "../../api/client";
 import { getClientTypes } from "../../api/clientType";
 
@@ -43,9 +45,9 @@ export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClo
         if (!specials.includes(key)) {
             form_inputs.push(
                 <TextField
+                    style={{ flex: "1 0 40%" }}
                     key={key}
                     fullWidth
-                    variant="outlined"
                     name={key}
                     value={values[key]}
                     onBlur={handleBlur}
@@ -62,7 +64,9 @@ export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClo
         <Dialog open={open} onClose={onClose} maxWidth="sm" title="Add new client">
             <Box p={2} display="flex" alignItems="center">
                 <form onSubmit={handleSubmit}>
-                    {form_inputs}
+                    <Box display="flex" justifyContent="space-between" flexWrap="wrap">
+                        {form_inputs}
+                    </Box>
 
                     <FieldSelect
                         request={getClients}

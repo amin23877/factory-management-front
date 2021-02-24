@@ -1,8 +1,9 @@
 import React from "react";
-import { Box, TextField, FormControlLabel, Checkbox } from "@material-ui/core";
+import { Box, FormControlLabel, Checkbox } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
+import TextField from "../../app/TextField";
 import Button from "../../app/Button";
 import Dialog from "../../app/Dialog";
 import { FieldSelect } from "../../app/Inputs";
@@ -61,6 +62,7 @@ export const EmailModal = ({
                     {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
                         <Form>
                             <TextField
+                                style={{ width: "100%" }}
                                 name="email"
                                 onBlur={handleBlur}
                                 onChange={handleChange}

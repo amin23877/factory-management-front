@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Container, Box, TextField } from "@material-ui/core";
 
-import Quote from "../features/DashboardQuote";
-import { Ship } from "../features/Ship";
-import { Sales } from "../features/Sales";
+import Quote from "../features/Dashboard/Quote";
+import { Ship } from "../features/Dashboard/Ship";
+import { Sales } from "../features/Dashboard/Sales";
 import { MyTab, MyTabs } from "../app/Tabs";
 
 export default function Dashboard() {

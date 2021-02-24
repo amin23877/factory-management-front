@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Grid, Tabs, Tab } from "@material-ui/core";
 import { ColDef } from "@material-ui/data-grid";
 import { useFormik } from "formik";
 
 import Snackbar from "../../app/Snack";
-import { AddItemInitialValues, AddItemSchema, updateAnItem } from "../../api/items";
+import { AddItemSchema, updateAnItem, getItemQuotes } from "../../api/items";
 
 import BaseDataGrid from "../../app/BaseDataGrid";
 import { BasePaper } from "../../app/Paper";
@@ -26,11 +26,28 @@ function ItemsDetails({
     onNoteSelected: (a: any) => void;
     onDocSelected: (a: any) => void;
 }) {
+    const [itemQuotes, setItemQuotes] = useState([]);
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
 
     const [showSnack, setShowSnack] = useState(false);
     const [snackMsg, setSnackMsg] = useState("");
+
+    useEffect(() => {
+        if (selectedRow && selectedRow.id) {
+            getItemQuotes(selectedRow.id)
+                .then((d) => setItemQuotes(d))
+                .catch((e) => console.log(e));
+        }
+    }, [selectedRow]);
+
+    const quoteCols: ColDef[] = [
+        { field: "number" },
+        { field: "location", width: 180 },
+        { field: "department" },
+        { field: "entryDate", width: 180 },
+        { field: "expireDate", width: 180 },
+    ];
 
     const noteCols: ColDef[] = [
         { field: "subject", headerName: "Subject" },
@@ -44,21 +61,10 @@ function ItemsDetails({
         { field: "createdAt", headerName: "Created at", width: 300 },
     ];
 
-    // let init: any = { ...AddItemInitialValues };
-    // for (let attrname in init) {
-    //     init[attrname] = selectedRow[attrname];
-    // }
-
     const { values, handleBlur, handleChange, handleSubmit, errors, touched } = useFormik({
         initialValues: selectedRow,
         validationSchema: AddItemSchema,
         onSubmit: (d, { setSubmitting }) => {
-            // console.log({
-            //     ...d,
-            //     ItemCategoryId: parseInt(d.ItemCategoryId),
-            //     ItemTypeId: parseInt(d.ItemTypeId),
-            //     ItemFamilyId: parseInt(d.ItemFamilyId),
-            // });
             updateAnItem(selectedRow.id, d)
                 .then((d) => {
                     console.log(d);
@@ -134,10 +140,12 @@ function ItemsDetails({
                 <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} variant="scrollable">
                     <Tab label="Notes" />
                     <Tab label="Documents" />
+                    <Tab label="Related Quotes" />
                 </Tabs>
                 <Box p={3}>
                     {activeTab === 0 && <BaseDataGrid height={250} cols={noteCols} rows={notes} onRowSelected={onNoteSelected} />}
                     {activeTab === 1 && <BaseDataGrid height={250} cols={docCols} rows={docs} onRowSelected={onDocSelected} />}
+                    {activeTab === 2 && <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes} onRowSelected={() => {}} />}
                 </Box>
             </BasePaper>
         </Box>

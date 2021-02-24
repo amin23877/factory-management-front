@@ -103,7 +103,7 @@ const EditClientForm = ({ clientTypes, data, onDone }: { clientTypes: any; data:
                             name="ClientTypeId"
                             onChange={handleChange}
                             onBlur={handleBlur}
-                            value={values.parent}
+                            value={values.ClientTypeId}
                             label="Client Type"
                             error={Boolean(errors.ClientTypeId)}
                         />

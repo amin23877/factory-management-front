@@ -2,16 +2,16 @@ import React, { ReactNode } from "react";
 import { Grid, Typography, Box, Button, Avatar, makeStyles } from "@material-ui/core";
 import { AddRounded } from "@material-ui/icons";
 
-import { BasePaper } from "../app/Paper";
-import { BaseTable } from "../app/Table";
+import { BasePaper } from "../../app/Paper";
+import { BaseTable } from "../../app/Table";
 
-import person from "../assets/icons/person.svg";
-import chat from "../assets/icons/chat.svg";
-import activity from "../assets/icons/activity.svg";
-import quote from "../assets/icons/quote.svg";
-import speaker from "../assets/icons/speaker.svg";
-import badge from "../assets/icons/badge.svg";
-import percent from "../assets/icons/percent.svg";
+import person from "../../assets/icons/person.svg";
+import chat from "../../assets/icons/chat.svg";
+import activity from "../../assets/icons/activity.svg";
+import quote from "../../assets/icons/quote.svg";
+import speaker from "../../assets/icons/speaker.svg";
+import badge from "../../assets/icons/badge.svg";
+import percent from "../../assets/icons/percent.svg";
 
 const useStyles = makeStyles({
     statusCard: {

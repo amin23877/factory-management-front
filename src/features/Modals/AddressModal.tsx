@@ -1,8 +1,9 @@
 import React from "react";
-import { Box, TextField, FormControlLabel, FormLabel, RadioGroup, Radio, FormControl } from "@material-ui/core";
+import { Box, FormControlLabel, FormLabel, RadioGroup, Radio, FormControl } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
+import TextField from "../../app/TextField";
 import Dialog from "../../app/Dialog";
 import Button from "../../app/Button";
 import { FieldSelect } from "../../app/Inputs";

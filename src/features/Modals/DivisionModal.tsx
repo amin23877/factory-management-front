@@ -1,8 +1,9 @@
 import React from "react";
-import { Box, TextField } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
+import TextField from "../../app/TextField";
 import Button from "../../app/Button";
 import Dialog from "../../app/Dialog";
 

@@ -5,7 +5,7 @@ import { ColDef } from "@material-ui/data-grid";
 import { INote, getAllModelNotes } from "../../api/note";
 import { IDocument, getAllModelDocuments } from "../../api/document";
 import { getQuotes, getLineItems, IQuote, ILineItem } from "../../api/quote";
-import { getActivities, getQuoteActivities } from "../../api/activity";
+import { getQuoteActivities } from "../../api/activity";
 
 import Snack from "../../app/Snack";
 import BaseDataGrid from "../../app/BaseDataGrid";
@@ -26,7 +26,7 @@ const useStyles = makeStyles({
     },
 });
 
-export const QuotePanel = () => {
+export default function QuotePanel() {
     const [activeTab, setActiveTab] = useState(0);
     const [quotes, setQuotes] = useState([]);
     const [lineItems, setLineItems] = useState([]);
@@ -62,7 +62,9 @@ export const QuotePanel = () => {
     const refreshQuotes = async () => {
         try {
             const resp = await getQuotes();
-            setQuotes(resp);
+            if (resp && resp.length > 0) {
+                setQuotes(resp);
+            }
         } catch (error) {
             console.log(error);
         }
@@ -227,4 +229,4 @@ export const QuotePanel = () => {
             </Box>
         </div>
     );
-};
+}

@@ -24,24 +24,27 @@ export const GeneralForm = ({
     return (
         <Box my={1} id="general">
             <Typography variant="h6">General</Typography>
-            <TextField
-                value={values.entryDate.substr(0, 10)}
-                name="entryDate"
-                label="Entry Date"
-                type="date"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                fullWidth
-            />
-            <TextField
-                value={values.expireDate.substr(0, 10)}
-                name="expireDate"
-                label="Expire Date"
-                type="date"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                fullWidth
-            />
+            <Box display="flex" justifyContent="space-between">
+                <TextField label="number" value={values.number} disabled />
+                <TextField
+                    value={values.entryDate.substr(0, 10)}
+                    name="entryDate"
+                    label="Entry Date"
+                    type="date"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    fullWidth
+                />
+                <TextField
+                    value={values.expireDate.substr(0, 10)}
+                    name="expireDate"
+                    label="Expire Date"
+                    type="date"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    fullWidth
+                />
+            </Box>
             <TextField value={values.location} name="location" label="locaton" onChange={handleChange} onBlur={handleBlur} fullWidth />
             <TextField value={values.leadTime} name="leadTime" label="lead Time" onChange={handleChange} onBlur={handleBlur} fullWidth />
 

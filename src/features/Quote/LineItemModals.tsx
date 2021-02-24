@@ -1,19 +1,11 @@
 import React from "react";
-import {
-    Dialog,
-    DialogTitle,
-    TextField,
-    Button,
-    Box,
-    FormControl,
-    FormLabel,
-    FormControlLabel,
-    RadioGroup,
-    Radio,
-} from "@material-ui/core";
+import { Box, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
+import Button from "../../app/Button";
+import TextField from "../../app/TextField";
+import Dialog from "../../app/Dialog";
 import { FieldSelect } from "../../app/Inputs";
 import { getItems } from "../../api/items";
 import { ILineItem, LineItemInit, createLineItem, editLineItem, deleteLineItem } from "../../api/quote";
@@ -80,10 +72,7 @@ export default function LineItemModal({
     };
 
     return (
-        <Dialog open={open} onClose={onClose}>
-            <DialogTitle>
-                {quoteId ? "Edit" : "Add"} line item to Quote {quoteId}
-            </DialogTitle>
+        <Dialog open={open} onClose={onClose} title={`${quoteId ? "Edit" : "Add"} line item to Quote`}>
             <Box m={2} mr={3}>
                 <Formik validationSchema={schema} initialValues={LIData ? LIData : LineItemInit} onSubmit={handleSubmit}>
                     {({ values, handleChange, handleBlur, isSubmitting, errors, touched }) => (
@@ -146,23 +135,18 @@ export default function LineItemModal({
 
                             <FormControl style={{ margin: "0.5em" }} fullWidth>
                                 <FormLabel>Has this item tax?</FormLabel>
-                                <RadioGroup value={values.tax} name="tax" onChange={handleChange} style={{ flexDirection: "row" }}>
+                                <RadioGroup value={String(values.tax)} name="tax" onChange={handleChange} style={{ flexDirection: "row" }}>
                                     <FormControlLabel control={<Radio />} label="Yes" value="true" />
                                     <FormControlLabel control={<Radio />} label="No" value="false" />
                                 </RadioGroup>
                             </FormControl>
 
                             <Box textAlign="center">
-                                <Button disabled={isSubmitting} type="submit" variant="contained" color="primary" size="large">
+                                <Button disabled={isSubmitting} type="submit" kind="add">
                                     {LIData ? "Save" : "Add"}
                                 </Button>
                                 {LIData && (
-                                    <Button
-                                        variant="contained"
-                                        style={{ backgroundColor: "red", color: "#fff", margin: "0 1em" }}
-                                        size="large"
-                                        onClick={handleDelete}
-                                    >
+                                    <Button kind="delete" style={{ margin: "0 1em" }} onClick={handleDelete}>
                                         Delete
                                     </Button>
                                 )}

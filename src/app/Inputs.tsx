@@ -10,7 +10,7 @@ interface IOS extends SelectProps {
 }
 export const ObjectSelect = ({ items, itemTitleField, itemValueField, keyField, ...props }: IOS) => {
     return (
-        <FormControl style={{ margin: "0.5em", minWidth: 243 }} fullWidth={props.fullWidth}>
+        <FormControl style={{ margin: "0.5em", minWidth: 243, ...props.style }} fullWidth={props.fullWidth}>
             {props.label && (
                 <Typography style={{ margin: "2px 0" }} variant="caption" id="field-select-label">
                     {props.label}
@@ -18,14 +18,15 @@ export const ObjectSelect = ({ items, itemTitleField, itemValueField, keyField, 
             )}
             <Select name={props.name} input={<BootstrapInput />} {...props} labelId="object-select-label">
                 <MenuItem value={undefined}>None</MenuItem>
-                {items.map((item: any, i) => (
-                    <MenuItem
-                        key={keyField ? item[keyField] : i}
-                        value={itemValueField === "id" ? parseInt(item[itemValueField]) : item[itemValueField]}
-                    >
-                        {item[itemTitleField]}
-                    </MenuItem>
-                ))}
+                {items &&
+                    items.map((item: any, i) => (
+                        <MenuItem
+                            key={keyField ? item[keyField] : i}
+                            value={itemValueField === "id" ? parseInt(item[itemValueField]) : item[itemValueField]}
+                        >
+                            {item[itemTitleField]}
+                        </MenuItem>
+                    ))}
             </Select>
         </FormControl>
     );
