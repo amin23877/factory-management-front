@@ -26,7 +26,7 @@ export default function AddQuoteModal({ open, onClose, onDone }: { open: boolean
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
             <DialogTitle>Add new Quote</DialogTitle>
-            <Box>
+            <Box m={1}>
                 <Formik initialValues={QuoteInit} onSubmit={handleSubmit}>
                     {({ handleChange, handleBlur, values, isSubmitting }) => (
                         <Form>

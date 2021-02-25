@@ -161,7 +161,7 @@ const Inventory = () => {
             <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
             <CatTypeFamilyModal open={catModal} onClose={() => setCatModal(false)} />
 
-            <Box display="flex" justifyContent="flex-end" alignItems="center">
+            <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
                 <Button
                     disabled={activeTab === 0}
                     onClick={() => setAddNoteModal(true)}

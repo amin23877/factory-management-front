@@ -42,6 +42,7 @@ export default function POPanel() {
             console.log(error);
         }
     };
+
     const refreshNotes = async () => {
         try {
             if (selectedPO && selectedPO.id) {

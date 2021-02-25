@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Typography, Box, FormControl, MenuItem, FormLabel, FormControlLabel, RadioGroup, Radio } from "@material-ui/core";
+import React from "react";
+import { Typography, Box, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio } from "@material-ui/core";
 
 import TextField from "../../app/TextField";
-import { FieldSelect, ArraySelect, BaseSelect } from "../../app/Inputs";
+import { FieldSelect, ArraySelect } from "../../app/Inputs";
 
 import { getAllEmployees } from "../../api/employee";
 import { getContacts } from "../../api/contact";

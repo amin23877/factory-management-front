@@ -8,16 +8,16 @@ import TextField from "../../app/TextField";
 import Dialog from "../../app/Dialog";
 import { FieldSelect } from "../../app/Inputs";
 import { getItems } from "../../api/items";
-import { ILineItem, LineItemInit, createLineItem, editLineItem, deleteLineItem } from "../../api/quote";
+import { ILineItem, LineItemInit, createLineItem, editLineItem, deleteLineItem } from "../../api/so";
 
 export default function LineItemModal({
     open,
     onClose,
     onDone,
-    quoteId,
+    soId,
     LIData,
 }: {
-    quoteId?: number | null;
+    soId?: number | null;
     open: boolean;
     onClose: () => void;
     onDone: () => void;
@@ -56,8 +56,8 @@ export default function LineItemModal({
                 }
                 setSubmitting(false);
             } else {
-                if (quoteId) {
-                    const resp = await createLineItem(quoteId, data);
+                if (soId) {
+                    const resp = await createLineItem(soId, data);
                     if (resp) {
                         console.log(resp);
                         onDone();
@@ -72,7 +72,7 @@ export default function LineItemModal({
     };
 
     return (
-        <Dialog open={open} onClose={onClose} title={`${quoteId ? "Edit" : "Add"} line item to Quote`}>
+        <Dialog open={open} onClose={onClose} title={`${soId ? "Edit" : "Add"} line item to Sales order`}>
             <Box m={2} mr={3}>
                 <Formik validationSchema={schema} initialValues={LIData ? LIData : LineItemInit} onSubmit={handleSubmit}>
                     {({ values, handleChange, handleBlur, isSubmitting, errors, touched }) => (
@@ -134,7 +134,7 @@ export default function LineItemModal({
                             />
 
                             <FormControl style={{ margin: "0.5em" }} fullWidth>
-                                <FormLabel>Tax?</FormLabel>
+                                <FormLabel>Tax</FormLabel>
                                 <RadioGroup value={String(values.tax)} name="tax" onChange={handleChange} style={{ flexDirection: "row" }}>
                                     <FormControlLabel control={<Radio />} label="Yes" value="true" />
                                     <FormControlLabel control={<Radio />} label="No" value="false" />

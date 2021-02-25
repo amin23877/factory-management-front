@@ -4,7 +4,7 @@ import { ColDef } from "@material-ui/data-grid";
 import { useFormik } from "formik";
 
 import Snackbar from "../../app/Snack";
-import { AddItemSchema, updateAnItem, getItemQuotes } from "../../api/items";
+import { AddItemSchema, updateAnItem, getItemQuotes, getItemSOs } from "../../api/items";
 
 import BaseDataGrid from "../../app/BaseDataGrid";
 import { BasePaper } from "../../app/Paper";
@@ -27,6 +27,7 @@ function ItemsDetails({
     onDocSelected: (a: any) => void;
 }) {
     const [itemQuotes, setItemQuotes] = useState([]);
+    const [itemSos, setItemSos] = useState([]);
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
 
@@ -36,7 +37,11 @@ function ItemsDetails({
     useEffect(() => {
         if (selectedRow && selectedRow.id) {
             getItemQuotes(selectedRow.id)
-                .then((d) => setItemQuotes(d))
+                .then((d) => d && setItemQuotes(d))
+                .catch((e) => console.log(e));
+
+            getItemSOs(selectedRow.id)
+                .then((d) => d && setItemSos(d))
                 .catch((e) => console.log(e));
         }
     }, [selectedRow]);
@@ -47,6 +52,14 @@ function ItemsDetails({
         { field: "department" },
         { field: "entryDate", width: 180 },
         { field: "expireDate", width: 180 },
+    ];
+
+    const soCols: ColDef[] = [
+        { field: "number" },
+        { field: "quotenumber" },
+        { field: "location", width: 180 },
+        { field: "estShipDate", width: 180 },
+        { field: "actShipDate", width: 180 },
     ];
 
     const noteCols: ColDef[] = [
@@ -141,11 +154,13 @@ function ItemsDetails({
                     <Tab label="Notes" />
                     <Tab label="Documents" />
                     <Tab label="Related Quotes" />
+                    <Tab label="Related Sales orders" />
                 </Tabs>
                 <Box p={3}>
                     {activeTab === 0 && <BaseDataGrid height={250} cols={noteCols} rows={notes} onRowSelected={onNoteSelected} />}
                     {activeTab === 1 && <BaseDataGrid height={250} cols={docCols} rows={docs} onRowSelected={onDocSelected} />}
                     {activeTab === 2 && <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes} onRowSelected={() => {}} />}
+                    {activeTab === 3 && <BaseDataGrid height={250} cols={soCols} rows={itemSos} onRowSelected={(d) => console.log(d)} />}
                 </Box>
             </BasePaper>
         </Box>

@@ -204,3 +204,12 @@ export const getItemQuotes = async (itemId:number) => {
         console.log(error);
     }
 }
+
+export const getItemSOs = async (itemId:number) => {
+    try {
+        const resp = await Axios.get(`/item/${itemId}/so`);
+        return resp.data;
+    } catch (error) {
+        console.log(error);
+    }
+}
