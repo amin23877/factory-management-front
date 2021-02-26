@@ -1,0 +1,45 @@
+.splash-bg{
+    background-image: url(../assets/splash.png);
+    background-size: cover;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@keyframes main-logo-animation {
+    0%{
+        transform: scale(1);
+    }
+    50%{
+        transform: scale(1.2);
+    }
+    100%{
+        transform: scale(1);
+    }
+}
+
+.main-logo {
+    width: 20em;
+    height: 8em;
+    animation: main-logo-animation 5000ms ease-in-out 1000ms infinite;
+    /* background: rgba(0,0,0,0.2); */
+    padding: 6px;
+    border-radius: 5px;
+    /* animation: main-logo-animation 5000ms ease-in-out 1000ms infinite; */
+}
+
+/* ----------------- */
+
+.sticky-toolbar {
+    /* position: sticky;
+    top: 80px; */
+    padding: 0.5em;
+    border-radius: 1em;
+    background-color: #eee;
+    z-index: 5
+}
+.MuiDataGrid-row:hover {
+    cursor: pointer;
+}
