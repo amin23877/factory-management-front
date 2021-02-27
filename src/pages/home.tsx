@@ -14,8 +14,17 @@ const useStyles = makeStyles({
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#ededed",
+        backgroundColor: "#fff",
+        boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
         borderRadius: "1em",
+        "&:hover $itemIcon": {
+            backgroundColor: "#1a73e8",
+            boxShadow: "0 0 10px 5px rgba(0,0,0,0.1)",
+        },
+        "&:hover $itemIcon > svg": {
+            color:"#fff",
+            fontSize: "6em",
+        },
     },
     itemIcon: {
         padding: "4em 5em",
@@ -23,10 +32,6 @@ const useStyles = makeStyles({
         transition: "all 300ms",
         "& > svg": {
             fontSize: "6em",
-        },
-        "&:hover": {
-            backgroundColor: "#1a73e8",
-            boxShadow: "0 0 10px 5px rgba(0,0,0,0.1)",
         },
     },
 });

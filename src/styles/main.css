@@ -1,0 +1,7 @@
+.MuiToolbar-root{
+    height: 54px !important; 
+    padding: 0px;
+}
+.MuiToolbar-regular {
+    min-height: 54px !important;
+}
