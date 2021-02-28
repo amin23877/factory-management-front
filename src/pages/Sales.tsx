@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Box } from "@material-ui/core";
 
-import TextField from "../app/TextField";
+import TextField, { SearchBar } from "../app/TextField";
 import { MyTabs, MyTab } from "../app/Tabs";
 
 import QuotePanel from "../features/Quote";
@@ -14,7 +14,7 @@ export default function Sales() {
     return (
         <Container>
             <Box display="flex" alignItems="center" my={2}>
-                <TextField placeholder="Search..." />
+                <SearchBar />
                 <div style={{ flexGrow: 1 }} />
                 <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                     <MyTab label="Quote" />

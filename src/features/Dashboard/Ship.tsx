@@ -38,7 +38,7 @@ export const Ship = () => {
             <div style={{ display: "flex", width: "100%", height: "230px" }}>
                 <div style={{ flexGrow: 1, margin: "10px", width: "22%" }}>
                     <NumbersCard
-                        title="Number"
+                        title="Total"
                         iconBg="#fff"
                         number={50}
                         total={70}
@@ -60,7 +60,7 @@ export const Ship = () => {
                 </div>
                 <div style={{ flexGrow: 1, margin: "10px", width: "22%" }}>
                     <NumbersCard
-                        title="progress"
+                        title="Progress"
                         iconBg="#fff"
                         number={50}
                         total={70}

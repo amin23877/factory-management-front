@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Box, Grid, IconButton } from "@material-ui/core";
+import { Container, Box, Grid, IconButton, ListItem } from "@material-ui/core";
 import {
     AddRounded,
     DeleteRounded,
@@ -13,6 +13,7 @@ import {
     PhoneOutlined,
 } from "@material-ui/icons";
 
+import List from "../app/SideUtilityList";
 import Button from "../app/Button";
 
 import { getClients, deleteClient } from "../api/client";
@@ -219,7 +220,7 @@ export default function Clients() {
     }, []);
 
     return (
-        <Container style={{ maxWidth: 1270 }}>
+        <Container>
             <Confirm open={conf} onClose={() => setConf(false)} onConfirm={handleDelete} />
 
             <AddClientModal open={addClientModal} onClose={() => setAddClientModal(false)} onDone={refreshClients} />
@@ -331,96 +332,98 @@ export default function Clients() {
 
             <Grid container>
                 <Grid item xs={1}>
-                    <Box px={1} display="flex" flexDirection="column">
-                        <Button onClick={() => setAddClientModal(true)} title="Add item" variant="outlined" style={{ margin: "0.5em 0" }}>
-                            <AddRounded />
-                        </Button>
-                        <Button
-                            disabled={!selectedRow}
-                            onClick={() => setConf(true)}
-                            title="Delete item"
-                            variant="outlined"
-                            style={{ margin: "0.5em 0" }}
-                        >
-                            <DeleteRounded />
-                        </Button>
-                        <Button title="Payment" variant="outlined" style={{ margin: "0.5em 0" }}>
-                            <DescriptionRounded />
-                        </Button>
-                        <Button title="Print a report" variant="outlined" style={{ margin: "0.5em 0" }}>
-                            <PrintRounded />
-                        </Button>
+                    <List>
+                        <ListItem>
+                            <IconButton onClick={() => setAddClientModal(true)} title="Add item">
+                                <AddRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton disabled={!selectedRow} onClick={() => setConf(true)} title="Delete item">
+                                <DeleteRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton title="Payment">
+                                <DescriptionRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton title="Print a report">
+                                <PrintRounded />
+                            </IconButton>
+                        </ListItem>
                         {activeTab === 1 && (
                             <>
-                                <Button
-                                    onClick={() => {
-                                        setSelectedAddr(undefined);
-                                        setAddAddress(true);
-                                    }}
-                                    title="Address"
-                                    variant="outlined"
-                                    style={{ margin: "0.5em 0" }}
-                                >
-                                    <MapOutlined />
-                                </Button>
-                                <Button
-                                    onClick={() => {
-                                        setSelectedAgency(undefined);
-                                        setAddAgency(true);
-                                    }}
-                                    title="Agency"
-                                    variant="outlined"
-                                    style={{ margin: "0.5em 0" }}
-                                >
-                                    <EqualizerOutlined />
-                                </Button>
-                                <Button
-                                    onClick={() => {
-                                        setSelectedDiv(undefined);
-                                        setAddDivision(true);
-                                    }}
-                                    title="Division"
-                                    variant="outlined"
-                                    style={{ margin: "0.5em 0" }}
-                                >
-                                    %
-                                </Button>
-                                <Button
-                                    onClick={() => {
-                                        setSelectedPhone(undefined);
-                                        setAddPhone(true);
-                                    }}
-                                    title="Phone"
-                                    variant="outlined"
-                                    style={{ margin: "0.5em 0" }}
-                                >
-                                    <PhoneOutlined />
-                                </Button>
-                                <Button
-                                    onClick={() => {
-                                        setSelectedEmail(undefined);
-                                        setAddEmail(true);
-                                    }}
-                                    title="Email Address"
-                                    variant="outlined"
-                                    style={{ margin: "0.5em 0" }}
-                                >
-                                    <MailOutline />
-                                </Button>
-                                <Button
-                                    onClick={() => {
-                                        setSelectedContact(undefined);
-                                        setAddContact(true);
-                                    }}
-                                    title="Contact"
-                                    variant="outlined"
-                                    style={{ margin: "0.5em 0" }}
-                                >
-                                    <ContactMailOutlined />
-                                </Button>
+                                <ListItem>
+                                    <IconButton
+                                        onClick={() => {
+                                            setSelectedAddr(undefined);
+                                            setAddAddress(true);
+                                        }}
+                                        title="Address"
+                                    >
+                                        <MapOutlined />
+                                    </IconButton>
+                                </ListItem>
+                                <ListItem>
+                                    <IconButton
+                                        onClick={() => {
+                                            setSelectedAgency(undefined);
+                                            setAddAgency(true);
+                                        }}
+                                        title="Agency"
+                                    >
+                                        <EqualizerOutlined />
+                                    </IconButton>
+                                </ListItem>
+                                <ListItem>
+                                    <IconButton
+                                        onClick={() => {
+                                            setSelectedDiv(undefined);
+                                            setAddDivision(true);
+                                        }}
+                                        title="Division"
+                                    >
+                                        %
+                                    </IconButton>
+                                </ListItem>
+                                <ListItem>
+                                    <IconButton
+                                        onClick={() => {
+                                            setSelectedPhone(undefined);
+                                            setAddPhone(true);
+                                        }}
+                                        title="Phone"
+                                    >
+                                        <PhoneOutlined />
+                                    </IconButton>
+                                </ListItem>
+                                <ListItem>
+                                    <IconButton
+                                        onClick={() => {
+                                            setSelectedEmail(undefined);
+                                            setAddEmail(true);
+                                        }}
+                                        title="Email Address"
+                                    >
+                                        <MailOutline />
+                                    </IconButton>
+                                </ListItem>
+                                <ListItem>
+                                    <IconButton
+                                        onClick={() => {
+                                            setSelectedContact(undefined);
+                                            setAddContact(true);
+                                        }}
+                                        title="Contact"
+                                    >
+                                        <ContactMailOutlined />
+                                    </IconButton>
+                                </ListItem>
                             </>
                         )}
-                    </Box>
+                    </List>
                 </Grid>
                 <Grid item xs={11}>
                     {activeTab === 0 && (

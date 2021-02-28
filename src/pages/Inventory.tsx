@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Container, Grid, Button } from "@material-ui/core";
+import { Box, Container, Grid, Button, IconButton, ListItem } from "@material-ui/core";
 import { RowData, ColDef } from "@material-ui/data-grid";
 import { NoteRounded, FileCopyRounded, PrintRounded, AddRounded, DeleteRounded, CategoryRounded } from "@material-ui/icons";
 
@@ -13,10 +13,11 @@ import { AddItemModal } from "../features/Items/ItemModals";
 import CatTypeFamilyModal from "../features/Modals/CategoryModals";
 import ItemsDetails from "../features/Items/ItemsDetails";
 
-import { AddItemInitialValues, IItem, getItems, deleteAnItem } from "../api/items";
+import { AddItemInitialValues, getItems, deleteAnItem } from "../api/items";
 import { getAllModelNotes } from "../api/note";
 import { getAllModelDocuments } from "../api/document";
 
+import List from "../app/SideUtilityList";
 import { MyTabs, MyTab } from "../app/Tabs";
 import BaseDataGrid from "../app/BaseDataGrid";
 
@@ -118,7 +119,7 @@ const Inventory = () => {
     ];
 
     return (
-        <Container style={{ maxWidth: 1240 }}>
+        <Container>
             {selectedNote && (
                 <NoteModal
                     onDone={refreshNotes}
@@ -192,26 +193,25 @@ const Inventory = () => {
                 </MyTabs>
             </Box>
 
-            <Grid container>
-                <Grid item xs={1} style={{ margin: "1em 0" }}>
-                    <Box px={1} display="flex" flexDirection="column" my={2}>
-                        <Button title="Add item" onClick={() => setAddItemModal(true)} variant="outlined">
+            <Box display="flex" alignItems="flex-start" mt={1}>
+                <List>
+                    <ListItem>
+                        <IconButton title="Add item" onClick={() => setAddItemModal(true)}>
                             <AddRounded />
-                        </Button>
-                        <Button
-                            title="Delete item"
-                            onClick={() => selectedItem && selectedItem?.id && setDeleteItemModal(true)}
-                            variant="outlined"
-                            style={{ margin: "1em 0" }}
-                        >
+                        </IconButton>
+                    </ListItem>
+                    <ListItem>
+                        <IconButton title="Delete item" onClick={() => selectedItem && selectedItem?.id && setDeleteItemModal(true)}>
                             <DeleteRounded />
-                        </Button>
-                        <Button title="Categories" onClick={() => setCatModal(true)} variant="outlined">
+                        </IconButton>
+                    </ListItem>
+                    <ListItem>
+                        <IconButton title="Categories" onClick={() => setCatModal(true)}>
                             <CategoryRounded />
-                        </Button>
-                    </Box>
-                </Grid>
-                <Grid item xs={11}>
+                        </IconButton>
+                    </ListItem>
+                </List>
+                <Box flex={11} ml={2}>
                     {activeTab === 0 && (
                         <BaseDataGrid
                             cols={cols}
@@ -241,8 +241,8 @@ const Inventory = () => {
                             selectedRow={selectedItem}
                         />
                     )}
-                </Grid>
-            </Grid>
+                </Box>
+            </Box>
         </Container>
     );
 };

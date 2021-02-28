@@ -1,11 +1,41 @@
 import React from "react";
-import { createStyles, Theme, withStyles } from "@material-ui/core/styles";
+import { createStyles, Theme, withStyles, makeStyles } from "@material-ui/core/styles";
 import InputBase, { InputBaseProps } from "@material-ui/core/InputBase";
 import InputLabel from "@material-ui/core/InputLabel";
 import TextField from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
 import Typography from "@material-ui/core/Typography";
-// import { OutlinedInputProps } from "@material-ui/core/OutlinedInput";
+
+import { SearchRounded } from "@material-ui/icons";
+
+const useStyles = makeStyles({
+    searchBarRoot: {
+        height: "45px",
+        borderLeft: "3px solid rgb(43,140,255)",
+        borderRadius: "0px  4px 4px 0px",
+        width: "400px",
+        display: "flex",
+        alignItems: "center",
+        padding: "0px 3px",
+        backgroundColor: "white",
+        boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
+    },
+    sinput: {
+        flexGrow: 1,
+        padding: "0 0.5em",
+        boxSizing: "border-box",
+    },
+});
+export const SearchBar = () => {
+    const classes = useStyles();
+
+    return (
+        <div className={classes.searchBarRoot}>
+            <InputBase className={classes.sinput} placeholder="type the biller you want to pay here" />
+            <SearchRounded htmlColor="gray" />
+        </div>
+    );
+};
 
 export const BootstrapInput = withStyles((theme: Theme) =>
     createStyles({

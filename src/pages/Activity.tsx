@@ -2,11 +2,14 @@ import React, { useEffect, useState } from "react";
 
 import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
+import ListItem from "@material-ui/core/ListItem";
+import IconButton from "@material-ui/core/IconButton";
 import { ColDef } from "@material-ui/data-grid";
 import DeleteRounded from "@material-ui/icons/DeleteRounded";
 import AddRounded from "@material-ui/icons/AddRounded";
 import CategoryRounded from "@material-ui/icons/CategoryRounded";
 
+import List from "../app/SideUtilityList";
 import Snack from "../app/Snack";
 import Button from "../app/Button";
 import BaseDateGrid from "../app/BaseDataGrid";
@@ -77,18 +80,24 @@ export default function Activity() {
                 </MyTabs>
             </Box>
             <Box display="flex" alignItems="flex-start" mt={1}>
-                <Box flex={1} height="200px" display="flex" flexDirection="column" mr={1}>
-                    <Button variant="outlined" onClick={() => setAddActivity(true)}>
-                        <AddRounded />
-                    </Button>
-                    <Button variant="outlined" disabled={!selectedActivity} onClick={() => setConfirm(true)} style={{ margin: "0.5em 0" }}>
-                        <DeleteRounded />
-                    </Button>
-                    <Button variant="outlined" style={{ margin: "0.5em 0" }} onClick={() => setCatStatPrio(true)}>
-                        <CategoryRounded />
-                    </Button>
-                </Box>
-                <Box flex={11}>
+                <List>
+                    <ListItem>
+                        <IconButton onClick={() => setAddActivity(true)}>
+                            <AddRounded />
+                        </IconButton>
+                    </ListItem>
+                    <ListItem>
+                        <IconButton disabled={!selectedActivity} onClick={() => setConfirm(true)}>
+                            <DeleteRounded />
+                        </IconButton>
+                    </ListItem>
+                    <ListItem>
+                        <IconButton onClick={() => setCatStatPrio(true)}>
+                            <CategoryRounded />
+                        </IconButton>
+                    </ListItem>
+                </List>
+                <Box flex={11} ml={2}>
                     {activeTab === 0 && (
                         <BaseDateGrid
                             cols={cols}

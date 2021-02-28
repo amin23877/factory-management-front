@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Box, TextField, Typography, Link } from "@material-ui/core";
+import { Box, TextField, Link } from "@material-ui/core";
 import { Formik, Form } from "formik";
 
 import Dialog from "../../app/Dialog";

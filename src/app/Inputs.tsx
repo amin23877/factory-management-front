@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Select, SelectProps, FormControl, Typography, InputLabel, MenuItem } from "@material-ui/core";
+import { Select, SelectProps, FormControl, Typography, MenuItem } from "@material-ui/core";
 import { BootstrapInput } from "./TextField";
 
 interface IOS extends SelectProps {

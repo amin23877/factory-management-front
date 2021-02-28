@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
@@ -7,7 +7,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import CheckBox from "@material-ui/core/Checkbox";
 
 import TextField from "../../app/TextField";
-import { FieldSelect, BaseSelect } from "../../app/Inputs";
+import { FieldSelect } from "../../app/Inputs";
 import Button from "../../app/Button";
 
 import { getClients } from "../../api/client";

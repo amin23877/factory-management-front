@@ -23,13 +23,13 @@ export const GeneralForm = ({
     handleChange: (a: any) => void;
     handleBlur: (a: any) => void;
 }) => {
-    const [quotes, setQuotes] = useState([]);
+    // const [quotes, setQuotes] = useState([]);
 
-    useEffect(() => {
-        getQuotes()
-            .then((d) => setQuotes(d))
-            .catch((e) => console.log(e));
-    }, []);
+    // useEffect(() => {
+    //     getQuotes()
+    //         .then((d) => setQuotes(d))
+    //         .catch((e) => console.log(e));
+    // }, []);
 
     return (
         <Box m={1}>

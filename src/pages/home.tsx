@@ -1,6 +1,15 @@
 import React, { ReactNode } from "react";
 import { Typography, Box, Container, makeStyles } from "@material-ui/core";
-import { GpsFixedRounded, PersonRounded, PaymentRounded, AssessmentRounded } from "@material-ui/icons";
+import {
+    GpsFixedRounded,
+    PersonRounded,
+    PaymentRounded,
+    AssessmentRounded,
+    LocalActivityRounded,
+    AlternateEmailRounded,
+    AccountBoxRounded,
+    AccountTreeRounded,
+} from "@material-ui/icons";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -14,10 +23,6 @@ const useStyles = makeStyles({
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-<<<<<<< HEAD
-        backgroundColor: "#ededed",
-        borderRadius: "1em",
-=======
         backgroundColor: "#fff",
         boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
         borderRadius: "1em",
@@ -26,10 +31,9 @@ const useStyles = makeStyles({
             boxShadow: "0 0 10px 5px rgba(0,0,0,0.1)",
         },
         "&:hover $itemIcon > svg": {
-            color:"#fff",
+            color: "#fff",
             fontSize: "6em",
         },
->>>>>>> amin
     },
     itemIcon: {
         padding: "4em 5em",
@@ -38,13 +42,6 @@ const useStyles = makeStyles({
         "& > svg": {
             fontSize: "6em",
         },
-<<<<<<< HEAD
-        "&:hover": {
-            backgroundColor: "#1a73e8",
-            boxShadow: "0 0 10px 5px rgba(0,0,0,0.1)",
-        },
-=======
->>>>>>> amin
     },
 });
 
@@ -66,12 +63,17 @@ export default function Home() {
 
     return (
         <Container>
-            <h1 className={classes.topHeader}>Home</h1>
-            <Box display="flex" justifyContent="center">
+            <Box my={4} display="flex" justifyContent="center">
                 <ItemCard icon={<PaymentRounded />} title="Dashboard" href="/dashboard" />
-                <ItemCard icon={<GpsFixedRounded />} title="Inventory" href="/inventory" />
                 <ItemCard icon={<PersonRounded />} title="Clients" href="/clients" />
                 <ItemCard icon={<AssessmentRounded />} title="Sales" href="/sales" />
+                <ItemCard icon={<GpsFixedRounded />} title="Inventory" href="/inventory" />
+            </Box>
+            <Box my={4} display="flex" justifyContent="center">
+                <ItemCard icon={<AccountBoxRounded />} title="Roles" href="/roles" />
+                <ItemCard icon={<LocalActivityRounded />} title="Activity" href="/activity" />
+                <ItemCard icon={<AccountTreeRounded />} title="Projects" href="/project" />
+                <ItemCard icon={<AlternateEmailRounded />} title="Prospects" href="#" />
             </Box>
         </Container>
     );

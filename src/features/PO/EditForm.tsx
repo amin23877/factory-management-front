@@ -6,7 +6,6 @@ import Link from "@material-ui/core/Link";
 
 import Snack from "../../app/Snack";
 import TextField from "../../app/TextField";
-import { BasePaper } from "../../app/Paper";
 import Button from "../../app/Button";
 import { FieldSelect } from "../../app/Inputs";
 

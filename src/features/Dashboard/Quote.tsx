@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { Box, Grid, List, ListItem, ListItemText, Typography, Button, MenuItem } from "@material-ui/core";
+import React from "react";
+import { Box, Grid, List, ListItem, ListItemText, Typography, Button } from "@material-ui/core";
 import { CalendarTodayRounded, UpdateRounded, SearchRounded, RefreshRounded, SettingsRounded } from "@material-ui/icons";
 
-import TextField from "../../app/TextField";
+import TextField, { BootstrapInput } from "../../app/TextField";
 import { ArraySelect } from "../../app/Inputs";
 import { BaseTable } from "../../app/Table";
 import { BasePaper } from "../../app/Paper";
@@ -30,7 +30,6 @@ const UnitsDueDateList = () => {
 };
 
 const SearchForSO = () => {
-    const [val, setVal] = useState("");
     return (
         <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" alignItems="center">
@@ -53,11 +52,9 @@ const OverDueServices = () => {
     return (
         <BasePaper style={{ justifyContent: "space-between", boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" justifyContent="space-between" alignItems="center">
-                <input
-                    id="bootstrap-input"
+                <BootstrapInput
                     placeholder="Overdue Services"
                     type="text"
-                    className="MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-2"
                     value=""
                     style={{ borderColor: "rgb(206, 212, 218)", width: "50%" }}
                 />

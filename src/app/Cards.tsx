@@ -29,7 +29,7 @@ export const NumbersCard = ({
                 boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
                 display: "flex",
                 flexDirection: "column",
-                justifyContent: "space-evenly",
+                justifyContent: "flex-start",
             }}
         >
             <Box display="flex" alignItems="center">
@@ -52,7 +52,7 @@ export const NumbersCard = ({
                     </Typography>
                 </Box>
             </Box>
-            <Typography variant="h5" style={{ color: "rgb(33,56,100)", fontWeight: "bold" }}>
+            <Typography variant="h5" style={{ color: "rgb(33,56,100)", fontWeight: "bold", margin: "1em 0" }}>
                 {title}
             </Typography>
             <Typography variant="h6" style={{ color: "rgb(123,123,123)" }}>

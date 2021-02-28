@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { Grid, Typography, Box, Button, Avatar, makeStyles } from "@material-ui/core";
+import { Grid, Typography, Box, Button, makeStyles } from "@material-ui/core";
 import { AddRounded } from "@material-ui/icons";
 
 import { BasePaper } from "../../app/Paper";
@@ -11,7 +11,6 @@ import activity from "../../assets/icons/activity.svg";
 import quote from "../../assets/icons/quote.svg";
 import speaker from "../../assets/icons/speaker.svg";
 import badge from "../../assets/icons/badge.svg";
-import percent from "../../assets/icons/percent.svg";
 
 const useStyles = makeStyles({
     statusCard: {
@@ -22,7 +21,7 @@ const useStyles = makeStyles({
     },
 });
 
-const StatusCard = ({ children, title, value, icon }: { title: string; value: string; children?: ReactNode; icon: string }) => {
+const StatusCard = ({ title, value, icon }: { title: string; value: string; children?: ReactNode; icon: string }) => {
     const classes = useStyles();
 
     return (
@@ -36,9 +35,6 @@ const StatusCard = ({ children, title, value, icon }: { title: string; value: st
                         <Typography variant="body1">{value}</Typography>
                         <Typography variant="caption">{title}</Typography>
                     </Box>
-                    {/* <Box flex={2} ml={1} display="flex">
-                        {children}
-                    </Box> */}
                 </Box>
             </BasePaper>
         </Box>
@@ -137,23 +133,13 @@ export const Sales = () => {
         <Grid container spacing={2}>
             <Grid item md={8}>
                 <Box display="flex">
-                    <StatusCard icon={person} title="Activities" value="2899">
-                        {/* <Avatar>1</Avatar>
-                        <Avatar>1</Avatar>
-                        <Avatar>1</Avatar> */}
-                    </StatusCard>
-                    <StatusCard icon={chat} title="Emails" value="2899">
-                        {/* <h1 style={{ color: "#00b2d6" }}>+123</h1> */}
-                    </StatusCard>
-                    <StatusCard icon={activity} title="Sales Orders" value="2899">
-                        {/* <img src={percent} alt="percent" /> */}
-                    </StatusCard>
+                    <StatusCard icon={person} title="Activities" value="2899"></StatusCard>
+                    <StatusCard icon={chat} title="Emails" value="2899"></StatusCard>
+                    <StatusCard icon={activity} title="Sales Orders" value="2899"></StatusCard>
                 </Box>
                 <Box display="flex">
                     <StatusCard icon={quote} title="Quotes" value="2899"></StatusCard>
-                    <StatusCard icon={speaker} title="Expiring waranties" value="2899">
-                        {/* <h2 style={{ color: "blueviolet" }}>+95</h2> */}
-                    </StatusCard>
+                    <StatusCard icon={speaker} title="Expiring waranties" value="2899"></StatusCard>
                     <StatusCard icon={badge} title="Shippings" value="2899"></StatusCard>
                 </Box>
             </Grid>
