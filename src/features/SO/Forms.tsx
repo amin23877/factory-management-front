@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Typography, Box, FormControl, FormLabel, FormControlLabel, Checkbox, RadioGroup, Radio } from "@material-ui/core";
 
 import TextField from "../../app/TextField";
@@ -12,6 +12,7 @@ import { getPhones } from "../../api/phone";
 import { getEmails } from "../../api/emailAddress";
 import { getProjects } from "../../api/project";
 import { getAllAgencies } from "../../api/agency";
+import { getQuotes } from "../../api/quote";
 
 export const GeneralForm = ({
     handleChange,
@@ -22,6 +23,14 @@ export const GeneralForm = ({
     handleChange: (a: any) => void;
     handleBlur: (a: any) => void;
 }) => {
+    const [quotes, setQuotes] = useState([]);
+
+    useEffect(() => {
+        getQuotes()
+            .then((d) => setQuotes(d))
+            .catch((e) => console.log(e));
+    }, []);
+
     return (
         <Box m={1}>
             <Typography variant="h6">General</Typography>

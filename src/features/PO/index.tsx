@@ -32,7 +32,12 @@ export default function POPanel() {
     const [selectedNote, setSelectedNote] = useState<any>();
     const [selectedDoc, setSelectedDoc] = useState<any>();
 
-    const poCols: ColDef[] = [{ field: "number" }];
+    const poCols: ColDef[] = [
+        { field: "number" },
+        { field: "Contact", valueGetter: ({ data }) => data.Contact.firstName + data.Contact.lastName, width: 180 },
+        { field: "Client", valueGetter: ({ data }) => data.Client.name },
+        { field: "Project", valueGetter: ({ data }) => data.Project.name },
+    ];
 
     const refreshPOs = async () => {
         try {

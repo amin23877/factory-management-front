@@ -27,7 +27,6 @@ export default function ClientOverview({ rows, onRowSelected }: { rows: RowData[
             field: "Type",
             valueGetter: ({ data }) => data.ClientType.name,
         },
-        { field: "prospect", headerName: "prospect" },
     ];
 
     return <BaseDataGrid rows={rows} onRowSelected={onRowSelected} cols={cols} />;

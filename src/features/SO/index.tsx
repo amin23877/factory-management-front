@@ -35,7 +35,11 @@ export default function SalesOrderPanel() {
     const [lineItems, setLineIitems] = useState([]);
     const [selectedSO, setSelectedSO] = useState<ISO>();
 
-    const cols: ColDef[] = [{ field: "number" }];
+    const cols: ColDef[] = [
+        { field: "number" },
+        { field: "Client", valueGetter: ({ data }) => data.Client.name },
+        { field: "Project", valueGetter: ({ data }) => data.Project.name },
+    ];
 
     const refreshSo = async () => {
         try {
