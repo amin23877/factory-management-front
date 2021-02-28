@@ -9,16 +9,18 @@ import { BasePaper } from "../../app/Paper";
 
 const UnitsDueDateList = () => {
     return (
-        <BasePaper style={{boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
+        <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" alignItems="center">
-                <div style={{ backgroundColor: "#fff", padding: 8, paddingBottom: 2, borderRadius: "20%" , boxShadow: "rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px" }}>
+                <div style={{ backgroundColor: "#ebefff", padding: 8, paddingBottom: 2, borderRadius: "30%" }}>
                     <UpdateRounded htmlColor="rgb(43,140,255)" />
                 </div>
-                <Typography style={{ margin: "0 1em" }}>Units due date</Typography>
+                <Typography variant="h6" style={{ marginLeft: "10px", color: "rgb(33,56,100)" }}>
+                    Units due date
+                    </Typography>
             </Box>
             <List>
                 {["this-week", "week-1", "week-2", "week-3"].map((item) => (
-                    <ListItem key={item} style={{ borderLeft: "3px solid #006cff", paddingBottom: 2, margin: "4px 0" }}>
+                    <ListItem key={item} style={{ borderLeft: "3px solid rgb(43,140,255)", paddingBottom: 2, margin: "4px 0" }}>
                         <ListItemText style={{ borderBottom: "1px solid #f5f5f5" }}>10 units due {item}</ListItemText>
                     </ListItem>
                 ))}
@@ -30,15 +32,17 @@ const UnitsDueDateList = () => {
 const SearchForSO = () => {
     const [val, setVal] = useState("");
     return (
-        <BasePaper style={{boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
+        <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" alignItems="center">
-                <div style={{ backgroundColor: "#ebefff", padding: 8, paddingBottom: 2, borderRadius: 100 }}>
-                    <SearchRounded htmlColor="#006cff" />
+                <div style={{ backgroundColor: "#ebefff", padding: 8, paddingBottom: 2, borderRadius: "30%"  }}>
+                    <SearchRounded htmlColor="rgb(43,140,255)" />
                 </div>
-                <Typography style={{ margin: "0 1em" }}>Search for SO</Typography>
+                <Typography variant="h6" style={{ marginLeft: "10px", color: "rgb(33,56,100)" }}>
+                    Search For SO
+                    </Typography>
             </Box>
             <div style={{ flexGrow: 2 }} />
-            <ArraySelect items={["item1", "item2", "item3"]} />
+            <ArraySelect items={["item1", "item2", "item3"]} label="Type" style={{marginBottom:"10px"}} />
             <TextField label="Search" />
             <div style={{ flexGrow: 1 }} />
         </BasePaper>
@@ -47,9 +51,9 @@ const SearchForSO = () => {
 
 const OverDueServices = () => {
     return (
-        <BasePaper style={{ justifyContent: "space-between" , boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
+        <BasePaper style={{ justifyContent: "space-between", boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" justifyContent="space-between" alignItems="center">
-                <TextField label="Overdue services" />
+            <input  id="bootstrap-input" placeholder="Overdue Services" type="text" className="MuiInputBase-input WithStyles(ForwardRef(InputBase))-input-2" value="" style={{borderColor:"rgb(206, 212, 218)" , width:"50%"}}/>
                 <div style={{ flexGrow: 1 }} />
                 <Button variant="contained" color="primary" style={{ margin: "0 1em" }}>
                     <RefreshRounded />
@@ -71,12 +75,12 @@ const OverDueServices = () => {
 
 const Manufacturing = () => {
     return (
-        <BasePaper style={{boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
+        <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" alignItems="center">
-                <Box mr={2} display="flex" style={{ backgroundColor: "#ebefff", padding: 8, borderRadius: 100 }}>
-                    <CalendarTodayRounded style={{ color: "#006cff" }} />
+                <Box mr={2} display="flex" style={{ backgroundColor: "#ebefff", padding: 8, borderRadius: "30%"  }}>
+                    <CalendarTodayRounded style={{ color: "rgb(43,140,255)" }} />
                 </Box>
-                <Typography variant="h6" style={{ color:"rgb(33,56,100)" }}>
+                <Typography variant="h6" style={{ color: "rgb(33,56,100)" }}>
                     Manufacturing
                 </Typography>
                 <div style={{ flexGrow: 1 }} />
@@ -97,12 +101,12 @@ const Manufacturing = () => {
 
 const Servicing = () => {
     return (
-        <BasePaper style={{boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
+        <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" alignItems="center">
-                <Box mr={2} display="flex" style={{ backgroundColor: "#ebefff", padding: 8, borderRadius: 100 }}>
-                    <CalendarTodayRounded style={{ color: "#006cff" }} />
+                <Box mr={2} display="flex" style={{ backgroundColor: "#ebefff", padding: 8, borderRadius: "30%"  }}>
+                    <CalendarTodayRounded style={{ color: "rgb(43,140,255)" }} />
                 </Box>
-                <Typography variant="h6" color="textSecondary">
+                <Typography variant="h6" style={{ color: "rgb(33,56,100)" }}>
                     Servicing
                 </Typography>
                 <div style={{ flexGrow: 1 }} />

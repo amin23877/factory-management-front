@@ -12,11 +12,11 @@ export const ObjectSelect = ({ items, itemTitleField, itemValueField, keyField, 
     return (
         <FormControl style={{ margin: "0.5em", minWidth: 243, ...props.style }} fullWidth={props.fullWidth}>
             {props.label && (
-                <Typography style={{ margin: "2px 0" }} variant="caption" id="field-select-label">
+                <Typography style={{ margin: "2px 0",marginBottom:"10px",color:"rgba(0, 0, 0, 0.54)" }} variant="caption" id="field-select-label">
                     {props.label}
                 </Typography>
             )}
-            <Select name={props.name} input={<BootstrapInput />} {...props} labelId="object-select-label">
+            <Select name={props.name} input={<BootstrapInput />} {...props} labelId="object-select-label" displayEmpty={true}>
                 <MenuItem value={undefined}>None</MenuItem>
                 {items &&
                     items.map((item: any, i) => (
