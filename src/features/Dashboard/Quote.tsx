@@ -43,7 +43,7 @@ const SearchForSO = () => {
             </Box>
             <div style={{ flexGrow: 2 }} />
             <ArraySelect items={["item1", "item2", "item3"]} label="Type" style={{marginBottom:"10px"}} />
-            <TextField label="Search" />
+            <TextField label="Search" placeholder="Search For"/>
             <div style={{ flexGrow: 1 }} />
         </BasePaper>
     );

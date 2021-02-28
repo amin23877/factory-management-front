@@ -7,7 +7,7 @@ import { NumbersCard, TableCard } from "../../app/Cards";
 
 const TotleShipped = () => {
     return (
-        <BasePaper>
+        <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" alignItems="center">
                 <Typography variant="h6">Total Shipped</Typography>
                 <div style={{ flexGrow: 1 }} />
@@ -35,36 +35,44 @@ const TotleShipped = () => {
 export const Ship = () => {
     return (
         <Grid container spacing={2}>
-            <Grid item md={2}>
+            <div style={{display:"flex", width:"100%" , height:"230px"}}>
+            <div style={{flexGrow:1,margin:"10px",width:"22%"}}>
                 <NumbersCard
-                    title="In production"
-                    iconBg="#bfbdff"
+                    title="Number"
+                    iconBg="#fff"
                     number={50}
                     total={70}
-                    icon={<SettingsRounded style={{ color: "#3b4cbf" }} />}
+                    numcolor={"rgb(93,210,172)"}
+                    discription="total productions number"
+                    icon={<SettingsRounded style={{ color: "rgb(76,158,255)" }} />}
                 />
-            </Grid>
-            <Grid item md={2}>
+            </div>
+            <div style={{flexGrow:1,margin:"10px",width:"22%"}}>
                 <NumbersCard
-                    title="Ready to ship"
-                    iconBg="#ffbdbd"
+                    title="Ready"
+                    iconBg="#fff"
+                    number={20}
+                    total={70}
+                    numcolor={"rgb(231,99,101)"}
+                    discription="total ready to ship number"
+                    icon={<OpenInBrowserRounded style={{ color: "rgb(255,194,102)" }} />}
+                />
+            </div>
+            <div style={{flexGrow:1,margin:"10px",width:"22%"}}>
+                <NumbersCard
+                    title="progress"
+                    iconBg="#fff"
                     number={50}
                     total={70}
-                    icon={<OpenInBrowserRounded style={{ color: "#ff0000" }} />}
+                    numcolor={"rgb(93,210,172)"}
+                    discription="total in progressing  number"
+                    icon={<CachedRounded style={{ color: "rgb(38,212,155)" }} />}
                 />
-            </Grid>
-            <Grid item md={2}>
-                <NumbersCard
-                    title="In progress"
-                    iconBg="#dffadd"
-                    number={50}
-                    total={70}
-                    icon={<CachedRounded style={{ color: "#3ad2ce" }} />}
-                />
-            </Grid>
-            <Grid item md={6}>
+            </div>
+            <div style={{flexGrow:3 , width:"34%",margin:"10px"}}>
                 <TotleShipped />
-            </Grid>
+            </div>
+            </div>
             <Grid item md={6}>
                 <TableCard
                     title="Sales Order - In Production"
