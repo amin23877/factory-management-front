@@ -9,10 +9,10 @@ import { BasePaper } from "../../app/Paper";
 
 const UnitsDueDateList = () => {
     return (
-        <BasePaper>
+        <BasePaper style={{boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" alignItems="center">
-                <div style={{ backgroundColor: "#ebefff", padding: 8, paddingBottom: 2, borderRadius: 100 }}>
-                    <UpdateRounded htmlColor="#006cff" />
+                <div style={{ backgroundColor: "#fff", padding: 8, paddingBottom: 2, borderRadius: "20%" , boxShadow: "rgba(17, 17, 26, 0.1) 0px 4px 16px, rgba(17, 17, 26, 0.05) 0px 8px 32px" }}>
+                    <UpdateRounded htmlColor="rgb(43,140,255)" />
                 </div>
                 <Typography style={{ margin: "0 1em" }}>Units due date</Typography>
             </Box>
@@ -30,7 +30,7 @@ const UnitsDueDateList = () => {
 const SearchForSO = () => {
     const [val, setVal] = useState("");
     return (
-        <BasePaper>
+        <BasePaper style={{boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" alignItems="center">
                 <div style={{ backgroundColor: "#ebefff", padding: 8, paddingBottom: 2, borderRadius: 100 }}>
                     <SearchRounded htmlColor="#006cff" />
@@ -47,7 +47,7 @@ const SearchForSO = () => {
 
 const OverDueServices = () => {
     return (
-        <BasePaper style={{ justifyContent: "space-between" }}>
+        <BasePaper style={{ justifyContent: "space-between" , boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" justifyContent="space-between" alignItems="center">
                 <TextField label="Overdue services" />
                 <div style={{ flexGrow: 1 }} />
@@ -71,12 +71,12 @@ const OverDueServices = () => {
 
 const Manufacturing = () => {
     return (
-        <BasePaper>
+        <BasePaper style={{boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" alignItems="center">
                 <Box mr={2} display="flex" style={{ backgroundColor: "#ebefff", padding: 8, borderRadius: 100 }}>
                     <CalendarTodayRounded style={{ color: "#006cff" }} />
                 </Box>
-                <Typography variant="h6" color="textSecondary">
+                <Typography variant="h6" style={{ color:"rgb(33,56,100)" }}>
                     Manufacturing
                 </Typography>
                 <div style={{ flexGrow: 1 }} />
@@ -97,7 +97,7 @@ const Manufacturing = () => {
 
 const Servicing = () => {
     return (
-        <BasePaper>
+        <BasePaper style={{boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" alignItems="center">
                 <Box mr={2} display="flex" style={{ backgroundColor: "#ebefff", padding: 8, borderRadius: 100 }}>
                     <CalendarTodayRounded style={{ color: "#006cff" }} />
