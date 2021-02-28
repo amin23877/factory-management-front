@@ -5,3 +5,25 @@
 .MuiToolbar-regular {
     min-height: 54px !important;
 }
+.MuiListItemIcon-root{
+    width: 24px !important;
+    min-width: 24px !important;
+    margin-right:10px ;
+}
+
+.MuiListItemIcon-root > .MuiSvgIcon-root{
+    color: rgb(132, 132, 132);
+}
+.MuiListItemText-root  > .MuiTypography-body1 {
+    font-weight: 200;
+    font-size: 12px;
+}
+
+.Active > .MuiSvgIcon-root{
+    color:#fff !important
+}
+.Active > .MuiTypography-body1{
+    color:#fff !important;
+    font-weight: 500;
+    font-size: 13px;
+}
