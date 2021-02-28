@@ -8,7 +8,7 @@
 .MuiListItemIcon-root{
     width: 24px !important;
     min-width: 24px !important;
-    margin-right:10px ;
+    margin-right:24px ;
 }
 
 .MuiListItemIcon-root > .MuiSvgIcon-root{
@@ -25,5 +25,4 @@
 .Active > .MuiTypography-body1{
     color:#fff !important;
     font-weight: 500;
-    font-size: 13px;
 }
