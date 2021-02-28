@@ -32,6 +32,8 @@ import phazifyLogo from "../assets/phazify.png";
 import phocusLogo from "../assets/logo.png";
 import drawerBg from "../assets/sidebar.png";
 
+// import '../styles/main.css'
+
 const useStyles = makeStyles((theme) => ({
     btmNavSelectedItem: {
         backgroundColor: theme.palette.secondary.light,
@@ -94,7 +96,21 @@ const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boole
             backgroundPositionX: "center",
             backgroundSize: "cover",
         },
+        icon: {
+            color: "#500",
+        },
     }));
+
+    const dstyle = {
+        marginBottom: "4px",
+        width: "220px",
+    };
+    const adstyle = {
+        marginBottom: "4px",
+        width: "220px",
+        backgroundColor: "gray",
+        display: "flex",
+    };
 
     const [confirm, setConfirm] = useState(false);
     const classes = useStyles();
@@ -110,35 +126,59 @@ const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boole
                         <img src={phocusLogo} alt="Phocus" style={{ width: "80%", height: "auto" }} />
                     </div>
                     <Divider />
-                    <List style={{ marginBottom: "auto" }}>
+                    <List style={{ marginBottom: "auto", paddingTop: "2px" }}>
                         {drawerItems.map((item, i) => (
-                            <Link key={i} to={item.link} style={{ textDecoration: "none", border: "none", outline: "none" }}>
-                                <ListItem
-                                    style={{
-                                        color: location.pathname === item.link ? "#fff" : "#848484",
-                                    }}
-                                >
-                                    <ListItemIcon>{item.icon}</ListItemIcon>
-                                    <ListItemText> {item.name} </ListItemText>
-                                </ListItem>
-                            </Link>
+                            <div style={location.pathname === item.link ? adstyle : dstyle}>
+                                <Link key={i} to={item.link} style={{ textDecoration: "none", border: "none", outline: "none" }}>
+                                    <ListItem
+                                        style={{
+                                            paddingBottom: "12px",
+                                            color: location.pathname === item.link ? "#fff" : "#848484",
+                                            fontWeight: location.pathname === item.link ? "bold" : "normal",
+                                        }}
+                                    >
+                                        <ListItemIcon className={location.pathname === item.link ? "Active" : ""}>{item.icon}</ListItemIcon>
+                                        <ListItemText className={location.pathname === item.link ? "Active" : ""}>
+                                            {" "}
+                                            {item.name}{" "}
+                                        </ListItemText>
+                                    </ListItem>
+                                </Link>
+                                {location.pathname === item.link ? (
+                                    <div
+                                        style={{
+                                            backgroundColor: "#fff",
+                                            height: "15px",
+                                            width: "0px",
+                                            marginBottom: "auto",
+                                            marginTop: "auto",
+                                            border: "1px solid white",
+                                            marginLeft: "auto",
+                                            marginRight: "10px",
+                                            borderRadius: "30%",
+                                        }}
+                                    ></div>
+                                ) : null}
+                            </div>
                         ))}
-                        <ListItem
-                            button
-                            onClick={() => setConfirm(true)}
-                            style={{
-                                color: "#848484",
-                            }}
-                        >
-                            <ListItemIcon
+                        <div style={dstyle}>
+                            <ListItem
+                                button
+                                onClick={() => setConfirm(true)}
                                 style={{
                                     color: "#848484",
                                 }}
                             >
-                                <ExitToAppRounded />
-                            </ListItemIcon>
-                            <ListItemText> Logout </ListItemText>
-                        </ListItem>
+                                <ListItemIcon
+                                    style={{
+                                        color: "#848484",
+                                    }}
+                                >
+                                    <ExitToAppRounded />
+                                </ListItemIcon>
+                                <ListItemText> Logout </ListItemText>
+                            </ListItem>
+                        </div>
                     </List>
                     {/* <Divider /> */}
                     <div style={{ textAlign: "center" }}>

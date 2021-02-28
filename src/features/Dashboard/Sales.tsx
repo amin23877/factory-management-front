@@ -29,16 +29,16 @@ const StatusCard = ({ children, title, value, icon }: { title: string; value: st
         <Box m={1} display="inline-flex" flex={1} height={90}>
             <BasePaper title="title" style={{ width: "100%" }} className={classes.statusCard}>
                 <Box display="flex" width="100%" alignItems="center">
-                    <Box flex={1}>
+                    <Box>
                         <img style={{ backgroundColor: "#f7f7fc", borderRadius: 200, padding: 8 }} src={icon} alt={title} />
                     </Box>
-                    <Box flex={2} ml={1}>
+                    <Box flex={2} ml={1} style={{ marginRight: "auto" }}>
                         <Typography variant="body1">{value}</Typography>
                         <Typography variant="caption">{title}</Typography>
                     </Box>
-                    <Box flex={2} ml={1} display="flex">
+                    {/* <Box flex={2} ml={1} display="flex">
                         {children}
-                    </Box>
+                    </Box> */}
                 </Box>
             </BasePaper>
         </Box>
@@ -47,7 +47,7 @@ const StatusCard = ({ children, title, value, icon }: { title: string; value: st
 
 const Activities = () => {
     return (
-        <BasePaper>
+        <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" alignItems="center">
                 <Typography variant="h6">Activities</Typography>
                 <div style={{ flexGrow: 1 }} />
@@ -74,7 +74,7 @@ const Activities = () => {
 
 const Quotes = () => {
     return (
-        <BasePaper>
+        <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" alignItems="center">
                 <Typography variant="h6">Quotes</Typography>
                 <div style={{ flexGrow: 1 }} />
@@ -95,7 +95,7 @@ const Quotes = () => {
 
 const Emails = () => {
     return (
-        <BasePaper>
+        <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" alignItems="center">
                 <Typography variant="h6">Emails</Typography>
                 <div style={{ flexGrow: 1 }} />
@@ -116,7 +116,7 @@ const Emails = () => {
 
 const SalesOrders = () => {
     return (
-        <BasePaper>
+        <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" alignItems="center">
                 <Typography variant="h6">Sales Orders</Typography>
                 <div style={{ flexGrow: 1 }} />
@@ -138,27 +138,27 @@ export const Sales = () => {
             <Grid item md={8}>
                 <Box display="flex">
                     <StatusCard icon={person} title="Activities" value="2899">
+                        {/* <Avatar>1</Avatar>
                         <Avatar>1</Avatar>
-                        <Avatar>1</Avatar>
-                        <Avatar>1</Avatar>
+                        <Avatar>1</Avatar> */}
                     </StatusCard>
                     <StatusCard icon={chat} title="Emails" value="2899">
-                        <h1 style={{ color: "#00b2d6" }}>+123</h1>
+                        {/* <h1 style={{ color: "#00b2d6" }}>+123</h1> */}
                     </StatusCard>
                     <StatusCard icon={activity} title="Sales Orders" value="2899">
-                        <img src={percent} alt="percent" />
+                        {/* <img src={percent} alt="percent" /> */}
                     </StatusCard>
                 </Box>
                 <Box display="flex">
                     <StatusCard icon={quote} title="Quotes" value="2899"></StatusCard>
                     <StatusCard icon={speaker} title="Expiring waranties" value="2899">
-                        <h2 style={{ color: "blueviolet" }}>+95</h2>
+                        {/* <h2 style={{ color: "blueviolet" }}>+95</h2> */}
                     </StatusCard>
                     <StatusCard icon={badge} title="Shippings" value="2899"></StatusCard>
                 </Box>
             </Grid>
             <Grid item md={4}>
-                <BasePaper>
+                <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
                     <Typography style={{ margin: 4, textAlign: "center" }}>Expiring Waranties</Typography>
                     <BaseTable
                         tableHeads={["Contract device", "Expiring Date"]}
