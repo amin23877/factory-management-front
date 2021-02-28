@@ -11,6 +11,7 @@ const useStyles = makeStyles({
        backgroundColor:"#fefefe"
    },
    btn:{
+       marginRight:"20px",
        marginLeft:"20px",
        padding:"0px"
    },

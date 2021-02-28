@@ -102,14 +102,12 @@ const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boole
     }));
 
     const dstyle = {
-        marginBottom: "2px",
+        marginBottom: "4px",
         width: "220px",
-        paddingLeft: "18px",
     }
     const adstyle = {
-        marginBottom: "2px",
+        marginBottom: "4px",
         width: "220px",
-        paddingLeft: "18px",
         backgroundColor: "gray",
         display: "flex",
     }
@@ -130,7 +128,7 @@ const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boole
                         <img src={phocusLogo} alt="Phocus" style={{ width: "80%", height: "auto" }} />
                     </div>
                     <Divider />
-                    <List style={{ marginBottom: "auto", paddingTop: "30px" }}>
+                    <List style={{ marginBottom: "auto", paddingTop: "2px" }}>
                         {drawerItems.map((item, i) => (
                             <div style={location.pathname === item.link ? adstyle : dstyle}>
 
