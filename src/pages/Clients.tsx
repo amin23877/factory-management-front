@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Box, Grid, IconButton, ListItem } from "@material-ui/core";
+import EditRoundedIcon from '@material-ui/icons/EditRounded';
 import {
     AddRounded,
     DeleteRounded,
@@ -220,7 +221,7 @@ export default function Clients() {
     }, []);
 
     return (
-        <Container>
+        <Container >
             <Confirm open={conf} onClose={() => setConf(false)} onConfirm={handleDelete} />
 
             <AddClientModal open={addClientModal} onClose={() => setAddClientModal(false)} onDone={refreshClients} />
@@ -311,7 +312,10 @@ export default function Clients() {
             <Box my={2} display="flex" className="sticky-toolbar">
                 <Box display="flex" flex={1} justifyContent="space-around">
                     {activeTab === 1 && (
-                        <IconButton onClick={() => setActiveTab(0)}>
+                        <IconButton onClick={() => {
+                            setActiveTab(0);
+                            setSelectedRow(false);
+                        }}>
                             <ChevronLeftRounded />
                         </IconButton>
                     )}
@@ -330,9 +334,9 @@ export default function Clients() {
                 </MyTabs>
             </Box>
 
-            <Grid container>
-                <Grid item xs={1}>
-                    <List>
+            <Grid  container style={{marginRight:"1px"}}>
+                <Grid item xs={1}  >
+                    <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
                         <ListItem>
                             <IconButton onClick={() => setAddClientModal(true)} title="Add item">
                                 <AddRounded />
@@ -341,6 +345,11 @@ export default function Clients() {
                         <ListItem>
                             <IconButton disabled={!selectedRow} onClick={() => setConf(true)} title="Delete item">
                                 <DeleteRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton disabled={!selectedRow} onClick={() => setActiveTab(1)} title="Edit item">
+                                <EditRoundedIcon/>
                             </IconButton>
                         </ListItem>
                         <ListItem>
@@ -432,7 +441,6 @@ export default function Clients() {
                             onRowSelected={(v) => {
                                 console.log(v);
                                 setSelectedRow(v);
-                                setActiveTab(1);
                             }}
                         />
                     )}
