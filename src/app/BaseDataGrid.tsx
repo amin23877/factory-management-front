@@ -6,8 +6,8 @@ const useStyles = makeStyles({
     dataGridCont: {
         width: "100%",
         backgroundColor: "#fff",
-        borderRadius: 8,
-        border: "1px solid #ccc",
+        border:"1px solid lightgray",
+        borderRadius:8
     },
 });
 
@@ -25,7 +25,7 @@ export default function BaseDataGrid({
     const classes = useStyles();
 
     return (
-        <Box display="flex">
+        <Box display="flex" style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", border: "none" }}>
             <div
                 className={classes.dataGridCont}
                 style={{

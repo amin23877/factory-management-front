@@ -29,7 +29,7 @@ export const AgencyModal = ({
     onDone?: () => void;
 }) => {
     return (
-        <Dialog open={open} onClose={onClose} title={`${data?.id ? "Edit" : "Add"} an Agency to ${model}`}>
+        <Dialog open={open} maxWidth="xs" fullWidth onClose={onClose} title={`${data?.id ? "Edit" : "Add"} an Agency to ${model}`}>
             <Box m={2}>
                 <Formik
                     initialValues={data?.id ? data : { name: "" }}
@@ -55,6 +55,7 @@ export const AgencyModal = ({
                     {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
                         <Form>
                             <TextField
+                            style={{width:"100%"}}
                                 name="name"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
@@ -66,7 +67,7 @@ export const AgencyModal = ({
                             />
 
                             <Box my={2} textAlign="center">
-                                <Button type="submit" disabled={isSubmitting} kind={data ? "edit" : "add"}>
+                                <Button type="submit" style={{width:"100%" ,marginLeft:"8px"}} disabled={isSubmitting} kind={data ? "edit" : "add"}>
                                     Save
                                 </Button>
                                 {data?.id && (

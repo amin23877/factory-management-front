@@ -334,7 +334,7 @@ export default function Clients() {
                 </MyTabs>
             </Box>
 
-            <Grid  container style={{marginRight:"1px"}}>
+            <Grid container style={{ marginRight: "1px" }}>
                 <Grid item xs={1}  >
                     <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
                         <ListItem>
@@ -347,11 +347,11 @@ export default function Clients() {
                                 <DeleteRounded />
                             </IconButton>
                         </ListItem>
-                        <ListItem>
+                        {activeTab === 0 && <ListItem>
                             <IconButton disabled={!selectedRow} onClick={() => setActiveTab(1)} title="Edit item">
-                                <EditRoundedIcon/>
+                                <EditRoundedIcon />
                             </IconButton>
-                        </ListItem>
+                        </ListItem>}
                         <ListItem>
                             <IconButton title="Payment">
                                 <DescriptionRounded />

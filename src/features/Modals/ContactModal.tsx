@@ -35,6 +35,7 @@ const Field = ({
 }) => {
     return (
         <TextField
+            style={{ flex: 1 }}
             name={name}
             onBlur={handleBlur}
             onChange={handleChange}
@@ -70,22 +71,22 @@ export const ContactModal = ({
                         data?.id
                             ? data
                             : {
-                                  firstName: "",
-                                  lastName: "",
-                                  title: "",
-                                  department: "",
-                                  refferedBy: "",
-                                  linkedIn: "",
-                                  facebook: "",
-                                  instagram: "",
-                                  website: "",
-                                  optout: false,
-                                  mi: "",
-                                  prefix: "",
-                                  active: false,
-                                  main: false,
-                                  ContactTypeId: 0,
-                              }
+                                firstName: "",
+                                lastName: "",
+                                title: "",
+                                department: "",
+                                refferedBy: "",
+                                linkedIn: "",
+                                facebook: "",
+                                instagram: "",
+                                website: "",
+                                optout: false,
+                                mi: "",
+                                prefix: "",
+                                active: false,
+                                main: false,
+                                ContactTypeId: 0,
+                            }
                     }
                     validationSchema={schema}
                     onSubmit={(values, { setSubmitting }) => {
@@ -124,92 +125,116 @@ export const ContactModal = ({
                                 fullWidth
                             />
                             <Box display="flex" alignItems="center">
-                                <TextField
-                                    name="firstName"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    error={Boolean(errors.firstName && touched.firstName)}
-                                    helperText={errors.firstName && touched.firstName}
-                                    value={values.firstName}
-                                    label="firstName"
-                                    fullWidth
-                                />
-                                <TextField
-                                    name="lastName"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    error={Boolean(errors.lastName && touched.lastName)}
-                                    helperText={errors.lastName && touched.lastName}
-                                    value={values.lastName}
-                                    label="lastName"
-                                    fullWidth
-                                />
-                            </Box>
+                                <div style={{ display: "flex", width: "100%" }}>
 
-                            <Field
-                                name="department"
-                                errors={errors}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                                touched={touched}
-                                values={values}
-                            />
-                            <Field
-                                name="refferedBy"
-                                errors={errors}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                                touched={touched}
-                                values={values}
-                            />
-                            <Field
-                                name="linkedIn"
-                                errors={errors}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                                touched={touched}
-                                values={values}
-                            />
-                            <Field
-                                name="facebook"
-                                errors={errors}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                                touched={touched}
-                                values={values}
-                            />
-                            <Field
-                                name="instagram"
-                                errors={errors}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                                touched={touched}
-                                values={values}
-                            />
-                            <Field
-                                name="website"
-                                errors={errors}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                                touched={touched}
-                                values={values}
-                            />
-                            <Field
-                                name="mi"
-                                errors={errors}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                                touched={touched}
-                                values={values}
-                            />
-                            <Field
-                                name="prefix"
-                                errors={errors}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                                touched={touched}
-                                values={values}
-                            />
+                                    <TextField
+                                        style={{ flex: 1 }}
+                                        name="firstName"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        error={Boolean(errors.firstName && touched.firstName)}
+                                        helperText={errors.firstName && touched.firstName}
+                                        value={values.firstName}
+                                        label="firstName"
+                                        fullWidth
+                                    />
+                                    <TextField
+                                        style={{ flex: 1 }}
+                                        name="lastName"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        error={Boolean(errors.lastName && touched.lastName)}
+                                        helperText={errors.lastName && touched.lastName}
+                                        value={values.lastName}
+                                        label="lastName"
+                                        fullWidth
+                                    />
+                                </div>
+                            </Box>
+                            <div style={{ display: "flex", width: "100%" }}>
+
+                                <Field
+
+                                    name="department"
+                                    errors={errors}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                    touched={touched}
+                                    values={values}
+                                />
+                                <Field
+
+                                    name="refferedBy"
+                                    errors={errors}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                    touched={touched}
+                                    values={values}
+                                />
+                            </div>
+                            <div style={{ display: "flex", width: "100%" }}>
+
+                                <Field
+
+                                    name="linkedIn"
+                                    errors={errors}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                    touched={touched}
+                                    values={values}
+                                />
+                                <Field
+
+                                    name="facebook"
+                                    errors={errors}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                    touched={touched}
+                                    values={values}
+                                />
+                            </div>
+                            <div style={{ display: "flex", width: "100%" }}>
+
+                                <Field
+
+                                    name="instagram"
+                                    errors={errors}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                    touched={touched}
+                                    values={values}
+                                />
+                                <Field
+
+                                    name="website"
+                                    errors={errors}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                    touched={touched}
+                                    values={values}
+                                />
+                            </div>
+                            <div style={{ display: "flex", width: "100%" }}>
+
+                                <Field
+
+                                    name="mi"
+                                    errors={errors}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                    touched={touched}
+                                    values={values}
+                                />
+                                <Field
+
+                                    name="prefix"
+                                    errors={errors}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                    touched={touched}
+                                    values={values}
+                                />
+                            </div>
 
                             <FieldSelect
                                 request={getContactTypes}
@@ -223,23 +248,25 @@ export const ContactModal = ({
                                 onBlur={handleBlur}
                                 error={Boolean(errors.ContactTypeId && touched.ContactTypeId)}
                             />
+                            <div style={{width:"100%",marginLeft:"8px"}}>
 
                             <FormControlLabel
                                 name="active"
                                 onChange={handleChange}
                                 label="Is this Contact active?"
                                 control={<Checkbox />}
-                            />
+                                />
                             <FormControlLabel
                                 name="optout"
                                 onChange={handleChange}
                                 label="Is this Contact optout?"
                                 control={<Checkbox />}
-                            />
+                                />
                             <FormControlLabel name="main" onChange={handleChange} label="Is this Contact main?" control={<Checkbox />} />
+                                </div>
 
                             <Box my={2} textAlign="center">
-                                <Button type="submit" disabled={isSubmitting} kind="add">
+                                <Button type="submit" style={{ width: "100%" }} disabled={isSubmitting} kind="add">
                                     Save
                                 </Button>
                                 {data?.id && (

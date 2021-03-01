@@ -86,10 +86,10 @@ export const EmailModal = ({
                                 error={Boolean(errors.EmailTypeId && touched.EmailTypeId)}
                             />
 
-                            <FormControlLabel name="main" onChange={handleChange} label="Is this Email main?" control={<Checkbox />} />
+                            <FormControlLabel name="main" onChange={handleChange} label="Is this Email main?" control={<Checkbox  style={{marginLeft:"8px"}}/>} />
 
                             <Box my={2} textAlign="center">
-                                <Button type="submit" disabled={isSubmitting} kind={data ? "edit" : "add"}>
+                                <Button type="submit" style={{width:"100%"}} disabled={isSubmitting} kind={data ? "edit" : "add"}>
                                     Save
                                 </Button>
                                 {data?.id && (

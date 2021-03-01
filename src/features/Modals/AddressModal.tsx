@@ -37,25 +37,25 @@ export const AddressModal = ({
                     initialValues={
                         data?.id
                             ? {
-                                  address: data.address,
-                                  address2: data.address2,
-                                  city: data.city,
-                                  state: data.state,
-                                  zip: data.zip,
-                                  country: data.country,
-                                  main: data.main,
-                                  AddressTypeId: data?.AddressTypeId,
-                              }
+                                address: data.address,
+                                address2: data.address2,
+                                city: data.city,
+                                state: data.state,
+                                zip: data.zip,
+                                country: data.country,
+                                main: data.main,
+                                AddressTypeId: data?.AddressTypeId,
+                            }
                             : {
-                                  address: "",
-                                  address2: "",
-                                  city: "",
-                                  state: "",
-                                  zip: "",
-                                  country: "",
-                                  main: false,
-                                  AddressTypeId: 0,
-                              }
+                                address: "",
+                                address2: "",
+                                city: "",
+                                state: "",
+                                zip: "",
+                                country: "",
+                                main: false,
+                                AddressTypeId: 0,
+                            }
                     }
                     validationSchema={schema}
                     onSubmit={(values, { setSubmitting }) => {
@@ -81,28 +81,34 @@ export const AddressModal = ({
                     }}
                 >
                     {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
-                        <Form>
+                        <Form >
+                            <div style={{display:"flex",width:"100%"}}>
+                                <TextField
+                                    style={{ flex: 1 }}
+                                    name="address"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.address && touched.address)}
+                                    helperText={errors.address && touched.address}
+                                    value={values.address}
+                                    label="address"
+                                    fullWidth
+                                />
+                                <TextField
+                                    style={{ flex: 1 }}
+                                    name="address2"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.address2 && touched.address2)}
+                                    helperText={errors.address2 && touched.address2}
+                                    value={values.address2}
+                                    label="address2"
+                                    fullWidth
+                                />
+                            </div>
+                            <div style={{display:"flex",width:"100%"}}>
                             <TextField
-                                name="address"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                error={Boolean(errors.address && touched.address)}
-                                helperText={errors.address && touched.address}
-                                value={values.address}
-                                label="address"
-                                fullWidth
-                            />
-                            <TextField
-                                name="address2"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                error={Boolean(errors.address2 && touched.address2)}
-                                helperText={errors.address2 && touched.address2}
-                                value={values.address2}
-                                label="address2"
-                                fullWidth
-                            />
-                            <TextField
+                                style={{ flex: 1 }}
                                 name="city"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
@@ -113,6 +119,7 @@ export const AddressModal = ({
                                 fullWidth
                             />
                             <TextField
+                                style={{ flex: 1 }}
                                 name="state"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
@@ -122,7 +129,10 @@ export const AddressModal = ({
                                 label="state"
                                 fullWidth
                             />
+                            </div>
+                            <div style={{display:"flex",width:"100%"}}>
                             <TextField
+                                style={{ flex: 1 }}
                                 name="zip"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
@@ -133,6 +143,7 @@ export const AddressModal = ({
                                 fullWidth
                             />
                             <TextField
+                                style={{ flex: 1 }}
                                 name="country"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
@@ -142,8 +153,9 @@ export const AddressModal = ({
                                 label="country"
                                 fullWidth
                             />
-
+                            </div>
                             <FieldSelect
+                                style={{ width:"99%"}}
                                 label="Address type"
                                 request={getAddressTypes}
                                 itemTitleField="name"
@@ -162,8 +174,8 @@ export const AddressModal = ({
                                 </RadioGroup>
                             </FormControl>
 
-                            <Box my={2} textAlign="center">
-                                <Button type="submit" disabled={isSubmitting} kind={data ? "edit" : "add"}>
+                            <Box my={2} textAlign="center" style={{ display: "flex" }}>
+                                <Button type="submit" style={{ flex: 1 }} disabled={isSubmitting} kind={data ? "edit" : "add"}>
                                     Save
                                 </Button>
                                 {data?.id && (

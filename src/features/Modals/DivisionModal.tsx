@@ -28,7 +28,7 @@ export const DivisionModal = ({
     onDone?: () => void;
 }) => {
     return (
-        <Dialog open={open} onClose={onClose} title={`${data?.id ? "Edit" : "Add"} a Division`}>
+        <Dialog open={open} maxWidth="xs" fullWidth onClose={onClose} title={`${data?.id ? "Edit" : "Add"} a Division`}>
             <Box m={3}>
                 <Formik
                     initialValues={data?.id ? data : { name: "" }}
@@ -54,6 +54,7 @@ export const DivisionModal = ({
                     {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
                         <Form>
                             <TextField
+                            style={{width:"100%"}}
                                 name="name"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
@@ -65,7 +66,7 @@ export const DivisionModal = ({
                             />
 
                             <Box my={2} textAlign="center">
-                                <Button type="submit" disabled={isSubmitting} kind="add">
+                                <Button type="submit" style={{width:"100%" , marginLeft:"8px"}} disabled={isSubmitting} kind="add">
                                     Save Note
                                 </Button>
                                 {data?.id && (

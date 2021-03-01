@@ -103,7 +103,7 @@ export const GeneralForm = ({
             </Snackbar>
 
             <Box m={2} p={2}>
-                <Accordion>
+                <Accordion defaultExpanded>
                     <AccordionSummary expandIcon={<ExpandMoreRounded />}>Add</AccordionSummary>
                     <AccordionDetails>
                         <form

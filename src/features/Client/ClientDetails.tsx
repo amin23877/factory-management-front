@@ -236,10 +236,10 @@ export default function ClientDetails({
     ];
 
     return (
-        <BasePaper>
+        <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" ,border:"0px solid black",borderRadius:"5px"}}>
             <EditClientForm onDone={onDone} data={selectedRow} clientTypes={clientTypes} />
 
-            <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} variant="scrollable">
+            <Tabs value={activeTab} textColor="primary" onChange={(e, v) => setActiveTab(v)} variant="scrollable">
                 <Tab label="Activities" />
                 <Tab label="Notes" />
                 <Tab label="Documents" />
@@ -255,9 +255,7 @@ export default function ClientDetails({
                 {activeTab === 1 && <BaseDataGrid height={250} cols={noteCols} rows={notes} onRowSelected={(v) => onNoteSelected(v)} />}
                 {activeTab === 2 && <BaseDataGrid height={250} cols={docCols} rows={docs} onRowSelected={(v) => onDocSelected(v)} />}
                 {activeTab === 3 && <BaseDataGrid height={250} cols={addrCols} rows={addrs} onRowSelected={(v) => onAddrSelected(v)} />}
-                {activeTab === 4 && (
-                    <BaseDataGrid height={250} cols={agencyCols} rows={agencies} onRowSelected={(v) => onAgencySelected(v)} />
-                )}
+                {activeTab === 4 && <BaseDataGrid height={250} cols={agencyCols} rows={agencies} onRowSelected={(v) => onAgencySelected(v)} />}
                 {activeTab === 5 && <BaseDataGrid height={250} cols={agencyCols} rows={divisions} onRowSelected={onDivSelected} />}
                 {activeTab === 6 && <BaseDataGrid height={250} cols={phoneCols} rows={phones} onRowSelected={onPhoneSelected} />}
                 {activeTab === 7 && <BaseDataGrid height={250} cols={emailCols} rows={emails} onRowSelected={onEmailSelected} />}
