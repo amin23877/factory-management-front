@@ -6,6 +6,7 @@ import Dialog from "../../app/Dialog";
 import Button from "../../app/Button";
 
 import { createAModelDocument, updateAModelDocument, deleteAModelDocument } from "../../api/document";
+import PhotoSizeSelectActualOutlinedIcon from '@material-ui/icons/PhotoSizeSelectActualOutlined';
 
 interface IDocumentModal {
     open: boolean;
@@ -31,7 +32,7 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
         }
     };
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="xs" title={`${docData ? "Edit" : "Add"} Document to ${model}`}>
+        <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth title={`${docData ? "Edit" : "Add"} Document to ${model}`}>
             <Box m={3}>
                 <Formik
                     initialValues={{
@@ -69,7 +70,13 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
                                     hidden
                                     onChange={(e) => e.target.files !== null && setFieldValue("file", e.target.files[0])}
                                 />
-                                <Button color="primary" variant="contained" onClick={() => fileUploader.current?.click()}>
+                                <Button color="primary" style={{
+                                    backgroundColor: "#fff", 
+                                    color: " rgb(43,140,255) ",
+                                     border: "1px solid rgb(43,140,255) ",
+                                    width: "100%",
+                                }} variant="contained" onClick={() => fileUploader.current?.click()}>
+                                    <PhotoSizeSelectActualOutlinedIcon style={{ marginRight: "7px" }} />
                                     Upload file
                                 </Button>
 
@@ -81,11 +88,12 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
                                             Download previous file
                                         </Link>
                                     ) : (
-                                        ""
-                                    )}
+                                                ""
+                                            )}
                                 </div>
 
                                 <TextField
+                                    style={{ marginBottom: "10px" }}
                                     fullWidth
                                     value={values.description}
                                     name="description"
@@ -96,8 +104,8 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <Box>
-                                    <Button type="submit" kind={docData ? "edit" : "add"} disabled={isSubmitting}>
+                                <Box style={{display:"flex" ,width:"100%"}}>
+                                    <Button type="submit" kind={docData ? "edit" : "add"} disabled={isSubmitting} style={{flex:1}}>
                                         Save
                                     </Button>
                                     {docData && (

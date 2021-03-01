@@ -87,7 +87,7 @@ export default function NoteModal({ open, onClose, model, itemId, noteData, onDo
                                 rows={4}
                             />
                             <Box my={2} textAlign="center">
-                                <Button type="submit" disabled={isSubmitting} kind={noteData ? "edit" : "add"}>
+                                <Button type="submit" fullWidth style={{marginLeft:"6px"}} disabled={isSubmitting} kind={noteData ? "edit" : "add"}>
                                     Save Note
                                 </Button>
                                 {noteData?.subject && (

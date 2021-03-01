@@ -16,7 +16,7 @@ export const AllClientTypesModal = ({ open, onClose, onCTDone }: { onCTDone: () 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="lg" title="Add client types">
             <Box m={1}>
-                <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="Client Type" />
                     <Tab label="Email Type" />
                     <Tab label="Contact Type" />

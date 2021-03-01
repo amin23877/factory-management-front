@@ -113,15 +113,15 @@ export const GeneralForm = ({
                             }}
                             style={{ width: "100%" }}
                         >
-                            <Box width="100%" display="flex" justifyContent="space-between" alignItems="end">
+                            <Box width="100%" display="flex" justifyContent="space-between" alignItems="flex-end">
                                 <TextField
                                     fullWidth
                                     value={addName}
                                     onChange={(e) => setAddName(e.target.value)}
-                                    label="name"
                                     placeholder={`${type} name`}
+                                    style={{ marginBottom: "0px", flex: 1 }}
                                 />
-                                <Button type="submit" kind="add" disabled={dis} style={{ margin: "0.5em 0" }}>
+                                <Button type="submit" kind="add" disabled={dis} style={{ marginBottom: "5px" }}>
                                     Add
                                 </Button>
                             </Box>
@@ -139,8 +139,19 @@ export const GeneralForm = ({
                             style={{ width: "100%" }}
                         >
                             <Box width="100%" display="flex" alignItems="center">
+                                <TextField
+                                    fullWidth
+                                    label="new name"
+                                    value={editName}
+                                    onChange={(e) => setEditName(e.target.value)}
+                                    style={{ flex: 1, margin:"0px 0px 5px 0px" }}
+                                    placeholder={`New ${type} name`}
+                                />
+                            </Box>
+
+                            <Box width="100%" display="flex" alignItems="center">
                                 <BaseSelect
-                                    label={type}
+                                    displayEmpty={true}
                                     fullWidth
                                     value={selectedData}
                                     onChange={(e: any) => setSelectedData(e.target.value)}
@@ -151,14 +162,8 @@ export const GeneralForm = ({
                                         </MenuItem>
                                     ))}
                                 </BaseSelect>
-                                <TextField
-                                    label="new name"
-                                    value={editName}
-                                    onChange={(e) => setEditName(e.target.value)}
-                                    style={{ flex: 1, marginRight: 5 }}
-                                    placeholder={`New ${type} name`}
-                                />
-                                <Button type="submit" disabled={dis} kind="edit" style={{ padding: "1em 2em" }}>
+
+                                <Button type="submit" disabled={dis} kind="edit" style={{ margin: "0 0.5em" }}>
                                     Save
                                 </Button>
                             </Box>
