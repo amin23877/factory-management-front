@@ -26,11 +26,11 @@ export default function Confirm({
                         color="primary"
                         variant="contained"
                         style={{ background: Gradients.success, marginRight: "2em" }}
-                        onClick={onConfirm}
+                        onClick={onClose}
                     >
                         NO
                     </Button>
-                    <Button color="primary" variant="contained" style={{ background: Gradients.error }} onClick={onClose}>
+                    <Button color="primary" variant="contained" style={{ background: Gradients.error }} onClick={onConfirm}>
                         Yes
                     </Button>
                 </Box>
