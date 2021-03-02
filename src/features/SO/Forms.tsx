@@ -12,36 +12,106 @@ import { getPhones } from "../../api/phone";
 import { getEmails } from "../../api/emailAddress";
 import { getProjects } from "../../api/project";
 import { getAllAgencies } from "../../api/agency";
-import { getQuotes } from "../../api/quote";
+import { getQuoteById, getQuotes } from "../../api/quote";
 
 export const GeneralForm = ({
     handleChange,
     handleBlur,
+    onChangeInit,
     values,
 }: {
     values: any;
     handleChange: (a: any) => void;
     handleBlur: (a: any) => void;
+    onChangeInit: (data: any) => void;
 }) => {
-    // const [quotes, setQuotes] = useState([]);
+    const [selectedQuote, setSelectedQuote] = useState<number>();
 
-    // useEffect(() => {
-    //     getQuotes()
-    //         .then((d) => setQuotes(d))
-    //         .catch((e) => console.log(e));
-    // }, []);
+    useEffect(() => {
+        if (selectedQuote) {
+            getQuoteById(selectedQuote)
+                .then((d) => {
+                    console.log(d);
+                    const {
+                        location,
+                        leadTime,
+                        frieghtTerms,
+                        paymentTerms,
+                        carrier,
+                        issuedBy,
+                        status,
+                        expodate,
+
+                        estShipDate,
+                        actShipDate,
+                        shippingAddress,
+                        shippingContact,
+                        shippingPhone,
+                        shippingEmail,
+                        shippingEntitiy,
+
+                        billingContact,
+                        billingPhone,
+                        billingEmail,
+                        billingAddress,
+                        billingEntitiy,
+
+                        agency,
+                        requester,
+                        ClientId,
+                        ProjectId,
+                    } = d;
+                    onChangeInit({
+                        ...values,
+                        location,
+                        leadTime,
+                        frieghtTerms,
+                        paymentTerms,
+                        carrier,
+                        issuedBy,
+                        status,
+                        expodate,
+
+                        estShipDate,
+                        actShipDate,
+                        shippingAddress,
+                        shippingContact,
+                        shippingPhone,
+                        shippingEmail,
+                        shippingEntitiy,
+
+                        billingContact,
+                        billingPhone,
+                        billingEmail,
+                        billingAddress,
+                        billingEntitiy,
+
+                        agency,
+                        requester,
+                        ClientId,
+                        ProjectId,
+                    });
+                })
+                .catch((e) => console.log(e));
+        }
+    }, [selectedQuote]);
 
     return (
         <Box m={1}>
             <Typography variant="h6">General</Typography>
             <TextField value={values.number} name="number" label="number" onChange={handleChange} onBlur={handleBlur} />
-            <TextField
+            <FieldSelect
                 value={values.quotenumber}
                 name="quotenumber"
                 label="quotenumber"
-                onChange={handleChange}
+                request={getQuotes}
+                itemTitleField="number"
+                itemValueField="id"
+                onChange={(e) => {
+                    handleChange(e);
+                    setSelectedQuote(e.target.value as number);
+                }}
                 onBlur={handleBlur}
-                fullWidth
             />
             <TextField value={values.location} name="location" label="location" onChange={handleChange} onBlur={handleBlur} fullWidth />
             <TextField value={values.leadTime} name="leadTime" label="leadTime" onChange={handleChange} onBlur={handleBlur} fullWidth />

@@ -23,7 +23,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
     return (
         <>
             <Box display="flex" alignItems="flex-start">
-                <Box flex={1}>
+                <Box flex={1} display="flex" flexWrap="wrap">
                     <TextField
                         label="Item name"
                         placeholder="Item name"
@@ -79,7 +79,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         value={values.variance}
                     />
                 </Box>
-                <Box flex={1}>
+                <Box flex={1} display="flex" flexWrap="wrap">
                     <FieldSelect
                         label="Item category"
                         fullWidth
@@ -240,45 +240,45 @@ export const Quantity = ({ values, errors, handleChange, handleBlur, touched }: 
         <Box display="flex" alignItems="center" p={2}>
             <Box flex={2} mr={2}>
                 <Typography>Total Quantity on hand</Typography>
-                <TextField
-                    label="total quantity on hand"
-                    name="totalQoh"
-                    placeholder="Total quantity"
-                    value={values.totalQoh}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    style={{ marginBottom: 3 }}
-                />
-                <Typography>Allocated qoh</Typography>
-                <TextField
-                    label="allocated quantity on hand"
-                    name="allocatedQoh"
-                    placeholder="allocatedQoh"
-                    value={values.allocatedQoh}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    style={{ margin: "3px 0" }}
-                />
+                <Box display="flex" justifyContent="space-between">
+                    <TextField
+                        label="total quantity on hand"
+                        name="totalQoh"
+                        placeholder="Total quantity"
+                        value={values.totalQoh}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        label="allocated quantity on hand"
+                        name="allocatedQoh"
+                        placeholder="allocatedQoh"
+                        value={values.allocatedQoh}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                    />
+                </Box>
                 <Typography>Available qoh</Typography>
-                <TextField
-                    label="available quantity on hand"
-                    name="availableQoh"
-                    placeholder="availableQoh"
-                    value={values.availableQoh}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    style={{ marginBottom: 3 }}
-                />
-                <Typography>Trigger qoh</Typography>
-                <TextField
-                    label="trriger quantity on hand"
-                    name="triggerQoh"
-                    placeholder="triggerQoh"
-                    value={values.triggerQoh}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    style={{ marginBottom: 3 }}
-                />
+                <Box display="flex" justifyContent="space-between">
+                    <TextField
+                        label="available quantity on hand"
+                        name="availableQoh"
+                        placeholder="availableQoh"
+                        value={values.availableQoh}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        style={{ marginBottom: 3 }}
+                    />
+                    <TextField
+                        label="trriger quantity on hand"
+                        name="triggerQoh"
+                        placeholder="triggerQoh"
+                        value={values.triggerQoh}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        style={{ marginBottom: 3 }}
+                    />
+                </Box>
             </Box>
         </Box>
     );

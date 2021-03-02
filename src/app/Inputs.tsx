@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Select, SelectProps, FormControl, Typography, MenuItem } from "@material-ui/core";
+import { Select, SelectProps, FormControl, InputLabel, MenuItem } from "@material-ui/core";
 import { BootstrapInput } from "./TextField";
 
 interface IOS extends SelectProps {
@@ -12,15 +12,11 @@ export const ObjectSelect = ({ items, itemTitleField, itemValueField, keyField, 
     return (
         <FormControl style={{ margin: "0.5em", minWidth: 243, ...props.style }} fullWidth={props.fullWidth}>
             {props.label && (
-                <Typography
-                    style={{ margin: "2px 0", marginBottom: "10px", color: "rgba(0, 0, 0, 0.54)" }}
-                    variant="caption"
-                    id="field-select-label"
-                >
+                <InputLabel shrink htmlFor="object-select">
                     {props.label}
-                </Typography>
+                </InputLabel>
             )}
-            <Select name={props.name} input={<BootstrapInput />} {...props} labelId="object-select-label" displayEmpty={true}>
+            <Select id="object-select" name={props.name} input={<BootstrapInput />} {...props} displayEmpty={true}>
                 <MenuItem value={undefined}>None</MenuItem>
                 {items &&
                     items.map((item: any, i) => (
@@ -67,11 +63,11 @@ export const BaseSelect = (props: SelectProps) => {
     return (
         <FormControl fullWidth={props.fullWidth}>
             {props.label && (
-                <Typography style={{ margin: "2px 0" }} variant="caption" id="field-select-label">
+                <InputLabel shrink id="base-select-label">
                     {props.label}
-                </Typography>
+                </InputLabel>
             )}
-            <Select style={{ minWidth: 150 }} name={props.name} input={<BootstrapInput />} {...props} labelId="object-select-label">
+            <Select style={{ minWidth: 150 }} name={props.name} input={<BootstrapInput />} {...props} labelId="base-select-label">
                 {props.children}
             </Select>
         </FormControl>

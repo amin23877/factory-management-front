@@ -6,12 +6,6 @@ import {IItemType} from './types';
 export const AddItemSchema = Yup.object().shape({
     name: Yup.string().min(4, "Too short!").max(60, "Too long").required("Required !!"),
     
-    cost: Yup.number(),
-    retailPrice: Yup.number(),
-
-    minimum: Yup.number().min(1, "Too short!"),
-    maximum: Yup.number().min(2, "Too short!"),
-    
     ItemCategoryId: Yup.number().required().notOneOf([0]),
     ItemTypeId: Yup.number().required().notOneOf([0]),
     ItemFamilyId: Yup.number().required().notOneOf([0]),

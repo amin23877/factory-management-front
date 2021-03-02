@@ -33,17 +33,17 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
 
     const checks = [
         "active",
-        "approvedForSales",
         "obsolete",
         "rndOnly",
+        "option",
         "nonInventoryItem",
         "dontTrackQOH",
         "dontOrderPO",
         "archived",
         "engineeringApproval",
         "taxable",
+        "approvedForSales",
         "invalidCost",
-        "option",
         "shippableOnBom",
         "notShippable",
     ];
@@ -77,6 +77,7 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
         if (!specials.includes(key)) {
             form_inputs.push(
                 <TextField
+                    style={{ flex: "0 45%" }}
                     fullWidth
                     name={key}
                     value={values[key]}
@@ -94,59 +95,67 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
         <Dialog open={open} onClose={onClose} maxWidth="sm" title="Add new item">
             <Box p={3} display="flex" alignItems="center">
                 <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
-                    {form_inputs}
+                    <Box display="flex" flexWrap="wrap" justifyContent="space-between" alignItems="center">
+                        {form_inputs}
 
-                    <FieldSelect
-                        request={getCategories}
-                        itemTitleField="name"
-                        itemValueField="id"
-                        label="Category"
-                        fullWidth
-                        name="ItemCategoryId"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.ItemCategoryId}
-                    />
-                    <FieldSelect
-                        request={getTypes}
-                        title="Type"
-                        itemTitleField="name"
-                        itemValueField="id"
-                        label="Type"
-                        fullWidth
-                        name="ItemTypeId"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.ItemTypeId}
-                    />
-                    <FieldSelect
-                        request={getFamilies}
-                        title="Family"
-                        itemTitleField="name"
-                        itemValueField="id"
-                        label="Family"
-                        fullWidth
-                        name="ItemFamilyId"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values.ItemFamilyId}
-                    />
-
-                    <FormControl fullWidth style={{ margin: "0.5em" }}>
-                        <FormLabel>Size</FormLabel>
-                        <RadioGroup name="size" value={values.size} onChange={handleChange}>
-                            <FormControlLabel value="small" control={<Radio />} label="Small" />
-                            <FormControlLabel value="medium" control={<Radio />} label="Medium" />
-                            <FormControlLabel value="large" control={<Radio />} label="Large" />
-                        </RadioGroup>
-                    </FormControl>
-
-                    <Box display="flex" flexWrap="wrap" justifyContent="space-between">
-                        {checks.map((check) => (
-                            <FormControlLabel label={check} key={check} name={check} onChange={handleChange} control={<Checkbox />} />
-                        ))}
+                        <FieldSelect
+                            request={getCategories}
+                            itemTitleField="name"
+                            itemValueField="id"
+                            label="Category"
+                            fullWidth
+                            name="ItemCategoryId"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.ItemCategoryId}
+                        />
+                        <FieldSelect
+                            request={getTypes}
+                            title="Type"
+                            itemTitleField="name"
+                            itemValueField="id"
+                            label="Type"
+                            fullWidth
+                            name="ItemTypeId"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.ItemTypeId}
+                        />
+                        <FieldSelect
+                            request={getFamilies}
+                            title="Family"
+                            itemTitleField="name"
+                            itemValueField="id"
+                            label="Family"
+                            fullWidth
+                            name="ItemFamilyId"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.ItemFamilyId}
+                        />
                     </Box>
-
+                    <Box display="flex" justifyContent="space-between">
+                        <FormControl fullWidth style={{ flex: 1 }}>
+                            <FormLabel>Size</FormLabel>
+                            <RadioGroup name="size" value={values.size} onChange={handleChange}>
+                                <FormControlLabel value="small" control={<Radio />} label="Small" />
+                                <FormControlLabel value="medium" control={<Radio />} label="Medium" />
+                                <FormControlLabel value="large" control={<Radio />} label="Large" />
+                            </RadioGroup>
+                        </FormControl>
+                        <Box flex={3} display="flex" flexWrap="wrap" justifyContent="space-between">
+                            {checks.map((check) => (
+                                <FormControlLabel
+                                    style={{ flex: "0 40%" }}
+                                    label={check}
+                                    key={check}
+                                    name={check}
+                                    onChange={handleChange}
+                                    control={<Checkbox />}
+                                />
+                            ))}
+                        </Box>
+                    </Box>
                     <Box textAlign="center" my={2}>
                         <Button type="submit" kind="add" disabled={isSubmitting}>
                             Add Item

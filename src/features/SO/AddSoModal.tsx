@@ -32,11 +32,16 @@ export default function AddSOModal({ open, onClose, onDone }: { open: boolean; o
         <Dialog open={open} onClose={onClose} title="Add new SO" maxWidth="lg" fullWidth>
             <Box m={2}>
                 <Formik initialValues={SOInit} onSubmit={handleSubmit}>
-                    {({ values, handleChange, handleBlur, errors, touched }) => (
+                    {({ values, handleChange, handleBlur, setValues }) => (
                         <Form>
                             <Box display="flex">
                                 <Box flex={1}>
-                                    <GeneralForm values={values} handleChange={handleChange} handleBlur={handleBlur} />
+                                    <GeneralForm
+                                        onChangeInit={setValues}
+                                        values={values}
+                                        handleChange={handleChange}
+                                        handleBlur={handleBlur}
+                                    />
                                 </Box>
                                 <Box flex={1}>
                                     <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>

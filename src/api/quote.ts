@@ -162,6 +162,15 @@ export const getQuotes = async () => {
     }
 }
 
+export const getQuoteById = async (id:number) => {
+    try {
+        const resp = await Axios.get(`/quote/${id}`);
+        return resp.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export const createQuote = async (data:IQuote) => {
     try {
         const resp = await Axios.post('/quote', {...data, 

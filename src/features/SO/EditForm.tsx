@@ -33,11 +33,11 @@ export default function EditForm({ selectedSo, onDone }: { selectedSo: ISO; onDo
                 {msg}
             </Snack>
             <Formik initialValues={selectedSo} onSubmit={handleSubmit}>
-                {({ handleChange, handleBlur, values, isSubmitting }) => (
+                {({ handleChange, handleBlur, values, setValues, isSubmitting }) => (
                     <Form>
                         <Box display="flex" m={1}>
                             <Box flex={1} mx={2}>
-                                <GeneralForm values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                <GeneralForm onChangeInit={setValues} values={values} handleBlur={handleBlur} handleChange={handleChange} />
                             </Box>
                             <Box flex={1} m={1}>
                                 <Tabs
