@@ -29,7 +29,7 @@ export default function AddSOModal({ open, onClose, onDone }: { open: boolean; o
     };
 
     return (
-        <Dialog open={open} onClose={onClose} title="Add new SO" maxWidth="lg" fullWidth>
+        <Dialog open={open} onClose={onClose} title="Add new SO" maxWidth="md" fullWidth>
             <Box m={2}>
                 <Formik initialValues={SOInit} onSubmit={handleSubmit}>
                     {({ values, handleChange, handleBlur, errors, touched }) => (
@@ -39,7 +39,7 @@ export default function AddSOModal({ open, onClose, onDone }: { open: boolean; o
                                     <GeneralForm values={values} handleChange={handleChange} handleBlur={handleBlur} />
                                 </Box>
                                 <Box flex={1}>
-                                    <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                                    <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                                         <Tab label="Shipping" />
                                         <Tab label="Billing" />
                                         <Tab label="Terms" />
@@ -51,9 +51,16 @@ export default function AddSOModal({ open, onClose, onDone }: { open: boolean; o
                                     {activeTab === 2 && <TermsTab values={values} handleChange={handleChange} handleBlur={handleBlur} />}
                                 </Box>
                             </Box>
-                            <Button type="submit" kind="add">
-                                Add
-                            </Button>
+                            <Box display="flex" justifyContent="center" my={2}>
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    style={{ padding: "1em 4em" , width:"50%"}}
+                                >
+                                    Add
+                                </Button>
+                            </Box>
                         </Form>
                     )}
                 </Formik>

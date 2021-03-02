@@ -34,47 +34,68 @@ export const GeneralForm = ({
     return (
         <Box m={1}>
             <Typography variant="h6">General</Typography>
-            <TextField value={values.number} name="number" label="number" onChange={handleChange} onBlur={handleBlur} />
-            <TextField
-                value={values.quotenumber}
-                name="quotenumber"
-                label="quotenumber"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                fullWidth
-            />
-            <TextField value={values.location} name="location" label="location" onChange={handleChange} onBlur={handleBlur} fullWidth />
-            <TextField value={values.leadTime} name="leadTime" label="leadTime" onChange={handleChange} onBlur={handleBlur} fullWidth />
-            <TextField
-                value={values.freightTerms}
-                name="freightTerms"
-                label="freightTerms"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                fullWidth
-            />
-            <TextField
-                value={values.paymentTerms}
-                name="paymentTerms"
-                label="paymentTerms"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                fullWidth
-            />
-            <TextField value={values.carrier} name="carrier" label="carrier" onChange={handleChange} onBlur={handleBlur} fullWidth />
+            <div style={{ display: "flex", width: "100%" }}>
+                <TextField value={values.number} style={{ flex: 1 }} name="number" label="number" onChange={handleChange} onBlur={handleBlur} />
+                <TextField
+                    style={{ flex: 1 }}
+                    value={values.quotenumber}
+                    name="quotenumber"
+                    label="quotenumber"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    fullWidth
+                />
+            </div>
+            <div style={{ display: "flex", width: "100%" }}>
 
-            <FieldSelect
-                value={values.issuedBy}
-                request={getAllEmployees}
-                itemTitleField="username"
-                itemValueField="id"
-                keyField="id"
-                name="issuedBy"
-                label="Issued by"
-                onChange={handleChange}
-            />
-            <Box display="flex" alignItems="center">
+                <TextField value={values.location} style={{ flex: 1 }} name="location" label="location" onChange={handleChange} onBlur={handleBlur} fullWidth />
+                <TextField value={values.leadTime} style={{ flex: 1 }} name="leadTime" label="leadTime" onChange={handleChange} onBlur={handleBlur} fullWidth />
+            </div>
+            <div style={{ display: "flex", width: "100%" }}>
+
+                <TextField
+                    style={{ flex: 1 }}
+                    value={values.freightTerms}
+                    name="freightTerms"
+                    label="freightTerms"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    fullWidth
+                />
+                <TextField
+                    style={{ flex: 1 }}
+                    value={values.paymentTerms}
+                    name="paymentTerms"
+                    label="paymentTerms"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    fullWidth
+                />
+            </div>
+            <div style={{ display: "flex", width: "100%" }}>
+
+                <TextField value={values.carrier} style={{ flex: 1 }} name="carrier" label="carrier" onChange={handleChange} onBlur={handleBlur} fullWidth />
+
+            </div>
+
+            <div style={{ display: "flex", width: "100%" }}>
+                <FieldSelect
+                    style={{ flex: 1 }}
+                    value={values.issuedBy}
+                    request={getAllEmployees}
+                    itemTitleField="username"
+                    itemValueField="id"
+                    keyField="id"
+                    name="issuedBy"
+                    label="Issued by"
+                    onChange={handleChange}
+                />
+            </div>
+            <div style={{ display: "flex", width: "100%" }}>
+
+
                 <ArraySelect
+                    style={{ flex: 1 }}
                     value={values.status}
                     name="status"
                     label="Status"
@@ -82,15 +103,18 @@ export const GeneralForm = ({
                     onBlur={handleBlur}
                     items={["New", "Pending", "Fulfiled"]}
                 />
-                <FormControlLabel
-                    name="expodate"
-                    value={String(values.expodate)}
-                    control={<Checkbox checked={Boolean(values.expodate)} />}
-                    label="Expodate"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
-            </Box>
+            </div>
+
+            <FormControlLabel
+                style={{ marginLeft: "5px" }}
+                name="expodate"
+                value={String(values.expodate)}
+                control={<Checkbox checked={Boolean(values.expodate)} />}
+                label="Expodate"
+                onChange={handleChange}
+                onBlur={handleBlur}
+            />
+
         </Box>
     );
 };
@@ -108,24 +132,29 @@ export const ShippingForm = ({
         <Box m={1}>
             <Typography variant="h6">Shipping</Typography>
             <Box>
-                <TextField
-                    value={values.estShipDate ? values.estShipDate.substr(0, 10) : ""}
-                    name="estShipDate"
-                    label="Estimated ship date"
-                    type="date"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    fullWidth
-                />
-                <TextField
-                    value={values.actShipDate ? values.actShipDate.substr(0, 10) : ""}
-                    name="actShipDate"
-                    label="Actual ship date"
-                    type="date"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    fullWidth
-                />
+                <div style={{ display: "flex", width: "100%" }}>
+
+                    <TextField
+                        style={{ flex: 1 }}
+                        value={values.estShipDate ? values.estShipDate.substr(0, 10) : ""}
+                        name="estShipDate"
+                        label="Estimated ship date"
+                        type="date"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        fullWidth
+                    />
+                    <TextField
+                        style={{ flex: 1 }}
+                        value={values.actShipDate ? values.actShipDate.substr(0, 10) : ""}
+                        name="actShipDate"
+                        label="Actual ship date"
+                        type="date"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        fullWidth
+                    />
+                </div>
                 <FieldSelect
                     value={values.shippingAddress}
                     name="shippingAddress"
