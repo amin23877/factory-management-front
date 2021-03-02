@@ -184,7 +184,7 @@ export default function QuotePanel() {
                     Add Document
                 </Button>
                 <div style={{ flexGrow: 1 }} />
-                <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="List" />
                     <Tab label="Details" disabled={!selectedQuote} />
                 </Tabs>

@@ -113,6 +113,7 @@ export default function SalesOrderPanel() {
 
     return (
         <Box m={1}>
+
             {selectedSO && selectedSO.id && (
                 <LineItemModal
                     open={lineItemModal}
@@ -185,7 +186,7 @@ export default function SalesOrderPanel() {
                     </>
                 )}
                 <div style={{ flexGrow: 1 }} />
-                <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                <Tabs value={activeTab}  textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="Overview" />
                     <Tab label="Details" disabled={!selectedSO} />
                 </Tabs>

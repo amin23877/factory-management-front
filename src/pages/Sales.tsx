@@ -16,7 +16,7 @@ export default function Sales() {
             <Box display="flex" alignItems="center" my={2}>
                 <SearchBar />
                 <div style={{ flexGrow: 1 }} />
-                <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                <MyTabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <MyTab label="Quote" />
                     <MyTab label="Purchase" />
                     <MyTab label="Sales" />

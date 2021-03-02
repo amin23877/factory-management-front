@@ -18,6 +18,7 @@ import Button from "../../app/Button";
 import Details from "./Details";
 import AddPOModal from "./AddPoModal";
 
+
 export default function POPanel() {
     const [activeTab, setActiveTab] = useState(0);
     const [selectedPO, setSelectedPO] = useState<IPO>();
@@ -136,7 +137,7 @@ export default function POPanel() {
                 {activeTab === 1 && <Button onClick={() => setNoteModal(true)}>Add note</Button>}
                 {activeTab === 1 && <Button onClick={() => setDocModal(true)}>Add document</Button>}
                 <div style={{ flexGrow: 1 }} />
-                <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="Overview" />
                     <Tab label="Details" disabled={!selectedPO} />
                 </Tabs>

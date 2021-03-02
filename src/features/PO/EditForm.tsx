@@ -3,6 +3,7 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import Box from "@material-ui/core/Box";
 import Link from "@material-ui/core/Link";
+import PhotoSizeSelectActualOutlinedIcon from '@material-ui/icons/PhotoSizeSelectActualOutlined';
 
 import Snack from "../../app/Snack";
 import TextField from "../../app/TextField";
@@ -62,13 +63,20 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                                         onChange={(e: any) => e.target.files && setFieldValue("file", e.target.files[0])}
                                     />
                                     <Button
-                                        variant="contained"
-                                        color="primary"
-                                        onClick={() => uploader.current?.click()}
-                                        style={{ margin: "0.5em 0" }}
-                                    >
-                                        upload
-                                    </Button>
+                                    variant="contained"
+                                    color="primary"
+                                    onClick={() => uploader.current?.click()}
+                                    style={{
+                                        margin: "0.5em 0",
+                                        backgroundColor: "#fff",
+                                        color: " rgb(43,140,255) ",
+                                        border: "1px solid rgb(43,140,255) ",
+                                        width: "80%"
+                                    }}
+                                >
+                                    <PhotoSizeSelectActualOutlinedIcon style={{ marginRight: "7px" }} />
+                                    upload
+                                </Button>
                                     <Link download href={poData.path}>
                                         Download file
                                     </Link>

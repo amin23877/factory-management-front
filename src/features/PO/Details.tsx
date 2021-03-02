@@ -41,7 +41,7 @@ export default function Details({
     return (
         <BasePaper>
             <EditForm poData={poData} onDone={onDone} />
-            <Tabs style={{ margin: "1em 0" }} value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+            <Tabs style={{ margin: "1em 0" }} textColor="primary" value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                 <Tab label="Notes" />
                 <Tab label="Documents" />
             </Tabs>

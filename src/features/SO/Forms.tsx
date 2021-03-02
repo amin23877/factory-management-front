@@ -133,34 +133,25 @@ export const GeneralForm = ({
             />
             <TextField value={values.carrier} name="carrier" label="carrier" onChange={handleChange} onBlur={handleBlur} fullWidth />
 
-            <FieldSelect
-                value={values.issuedBy}
-                request={getAllEmployees}
-                itemTitleField="username"
-                itemValueField="id"
-                keyField="id"
-                name="issuedBy"
-                label="Issued by"
+            <ArraySelect
+                style={{ flex: 1 }}
+                value={values.status}
+                name="status"
+                label="Status"
                 onChange={handleChange}
+                onBlur={handleBlur}
+                items={["New", "Pending", "Fulfiled"]}
             />
-            <Box display="flex" alignItems="center">
-                <ArraySelect
-                    value={values.status}
-                    name="status"
-                    label="Status"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    items={["New", "Pending", "Fulfiled"]}
-                />
-                <FormControlLabel
-                    name="expodate"
-                    value={String(values.expodate)}
-                    control={<Checkbox checked={Boolean(values.expodate)} />}
-                    label="Expodate"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
-            </Box>
+
+            <FormControlLabel
+                style={{ marginLeft: "5px" }}
+                name="expodate"
+                value={String(values.expodate)}
+                control={<Checkbox checked={Boolean(values.expodate)} />}
+                label="Expodate"
+                onChange={handleChange}
+                onBlur={handleBlur}
+            />
         </Box>
     );
 };
@@ -178,24 +169,28 @@ export const ShippingForm = ({
         <Box m={1}>
             <Typography variant="h6">Shipping</Typography>
             <Box>
-                <TextField
-                    value={values.estShipDate ? values.estShipDate.substr(0, 10) : ""}
-                    name="estShipDate"
-                    label="Estimated ship date"
-                    type="date"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    fullWidth
-                />
-                <TextField
-                    value={values.actShipDate ? values.actShipDate.substr(0, 10) : ""}
-                    name="actShipDate"
-                    label="Actual ship date"
-                    type="date"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    fullWidth
-                />
+                <div style={{ display: "flex", width: "100%" }}>
+                    <TextField
+                        style={{ flex: 1 }}
+                        value={values.estShipDate ? values.estShipDate.substr(0, 10) : ""}
+                        name="estShipDate"
+                        label="Estimated ship date"
+                        type="date"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        fullWidth
+                    />
+                    <TextField
+                        style={{ flex: 1 }}
+                        value={values.actShipDate ? values.actShipDate.substr(0, 10) : ""}
+                        name="actShipDate"
+                        label="Actual ship date"
+                        type="date"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        fullWidth
+                    />
+                </div>
                 <FieldSelect
                     value={values.shippingAddress}
                     name="shippingAddress"

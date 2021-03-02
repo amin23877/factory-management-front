@@ -78,6 +78,7 @@ export default function LineItemModal({
                     {({ values, handleChange, handleBlur, isSubmitting, errors, touched }) => (
                         <Form>
                             <FieldSelect
+                            style={{width:"98.8%"}}
                                 label="Item"
                                 name="ItemId"
                                 value={values.ItemId}
@@ -89,49 +90,59 @@ export default function LineItemModal({
                                 error={Boolean(errors.ItemId && touched.ItemId)}
                                 fullWidth
                             />
+                            <Box mb={2} display="flex" alignItems="center">
 
-                            <TextField
-                                placeholder="description"
-                                label="description"
-                                name="description"
-                                value={values.description}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                fullWidth
-                            />
-                            <TextField
-                                placeholder="quantity"
-                                label="quantity"
-                                name="quantity"
-                                value={values.quantity}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                fullWidth
-                                error={Boolean(errors.quantity && touched.quantity)}
-                                helperText={errors.quantity}
-                            />
-                            <TextField
-                                placeholder="price"
-                                label="price"
-                                name="price"
-                                value={values.price}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                fullWidth
-                                error={Boolean(errors.price && touched.price)}
-                                helperText={errors.price}
-                            />
-                            <TextField
-                                placeholder="index"
-                                label="index"
-                                name="index"
-                                value={values.index}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                fullWidth
-                                error={Boolean(errors.index && touched.index)}
-                                helperText={errors.index}
-                            />
+                                <TextField
+                                    style={{ flex: 1 }}
+                                    placeholder="description"
+                                    label="description"
+                                    name="description"
+                                    value={values.description}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    fullWidth
+                                />
+                                <TextField
+
+                                    style={{ flex: 1 }}
+                                    placeholder="quantity"
+                                    label="quantity"
+                                    name="quantity"
+                                    value={values.quantity}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    fullWidth
+                                    error={Boolean(errors.quantity && touched.quantity)}
+                                    helperText={errors.quantity}
+                                />
+                            </Box>
+                            <Box mb={2} display="flex" alignItems="center">
+
+                                <TextField
+                                    style={{ flex: 1 }}
+                                    placeholder="price"
+                                    label="price"
+                                    name="price"
+                                    value={values.price}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    fullWidth
+                                    error={Boolean(errors.price && touched.price)}
+                                    helperText={errors.price}
+                                />
+                                <TextField
+                                    style={{ flex: 1 }}
+                                    placeholder="index"
+                                    label="index"
+                                    name="index"
+                                    value={values.index}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    fullWidth
+                                    error={Boolean(errors.index && touched.index)}
+                                    helperText={errors.index}
+                                />
+                            </Box>
 
                             <FormControl style={{ margin: "0.5em" }} fullWidth>
                                 <FormLabel>Tax?</FormLabel>

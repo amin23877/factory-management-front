@@ -65,7 +65,7 @@ export default function EditTab({
     return (
         <Box>
             <EditForm selectedQuote={selectedQuote} onDone={onDone} />
-            <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+            <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                 <Tab label="Activities" />
                 <Tab label="Line items" />
                 <Tab label="Notes" />

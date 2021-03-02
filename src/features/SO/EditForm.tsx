@@ -41,6 +41,7 @@ export default function EditForm({ selectedSo, onDone }: { selectedSo: ISO; onDo
                             </Box>
                             <Box flex={1} m={1}>
                                 <Tabs
+                                textColor="primary"
                                     value={activeTab}
                                     onChange={(e, nv) => setActiveTab(nv)}
                                     variant="scrollable"

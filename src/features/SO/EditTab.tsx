@@ -58,7 +58,7 @@ export default function EditTab({
             <Box>
                 <EditForm selectedSo={selectedSo} onDone={onDone} />
             </Box>
-            <Tabs style={{ margin: "1em 0" }} value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+            <Tabs style={{ margin: "1em 0" }} textColor="primary" value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                 <Tab label="Line Items" />
                 <Tab label="Notes" />
                 <Tab label="Documents" />

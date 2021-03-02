@@ -24,9 +24,10 @@ export const GeneralForm = ({
     return (
         <Box my={1} id="general">
             <Typography variant="h6">General</Typography>
+            <TextField label="number" value={values.number} style={{ width: "98.5%" }} disabled />
             <Box display="flex" justifyContent="space-between">
-                <TextField label="number" value={values.number} disabled />
                 <TextField
+                    style={{ flex: 1 }}
                     value={values.entryDate.substr(0, 10)}
                     name="entryDate"
                     label="Entry Date"
@@ -36,6 +37,7 @@ export const GeneralForm = ({
                     fullWidth
                 />
                 <TextField
+                    style={{ flex: 1 }}
                     value={values.expireDate.substr(0, 10)}
                     name="expireDate"
                     label="Expire Date"
@@ -45,10 +47,29 @@ export const GeneralForm = ({
                     fullWidth
                 />
             </Box>
-            <TextField value={values.location} name="location" label="locaton" onChange={handleChange} onBlur={handleBlur} fullWidth />
-            <TextField value={values.leadTime} name="leadTime" label="lead Time" onChange={handleChange} onBlur={handleBlur} fullWidth />
+            <Box display="flex" justifyContent="space-between">
+                <TextField
+                    value={values.location}
+                    style={{ flex: 1 }}
+                    name="location"
+                    label="locaton"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    fullWidth
+                />
+                <TextField
+                    value={values.leadTime}
+                    style={{ flex: 1 }}
+                    name="leadTime"
+                    label="lead Time"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    fullWidth
+                />
+            </Box>
 
             <FieldSelect
+                style={{ width: "98.5%" }}
                 value={values.salesperson}
                 request={getAllEmployees}
                 itemTitleField="username"
@@ -60,6 +81,7 @@ export const GeneralForm = ({
                 fullWidth
             />
             <FieldSelect
+                style={{ width: "98.5%" }}
                 value={values.requester}
                 request={getContacts}
                 itemTitleField="lastName"
@@ -71,6 +93,7 @@ export const GeneralForm = ({
                 fullWidth
             />
             <FieldSelect
+                style={{ width: "98.5%" }}
                 value={values.client}
                 request={getClients}
                 itemTitleField="name"
@@ -244,6 +267,7 @@ export const TermsTab = ({
         <Box my={1} id="terms">
             <Typography variant="h6">Terms</Typography>
             <TextField
+                style={{ width: "100%" }}
                 value={values.department}
                 name="department"
                 label="Department"
@@ -252,6 +276,7 @@ export const TermsTab = ({
                 fullWidth
             />
             <TextField
+                style={{ width: "100%" }}
                 value={values.acctStatus}
                 name="acctStatus"
                 label="acctStatus"
@@ -260,6 +285,7 @@ export const TermsTab = ({
                 fullWidth
             />
             <TextField
+                style={{ width: "100%" }}
                 value={values.creditTerms}
                 name="creditTerms"
                 label="Credit Terms"
@@ -269,6 +295,7 @@ export const TermsTab = ({
             />
 
             <ArraySelect
+                style={{ width: "100%" }}
                 value={values.quoteStatus}
                 name="quoteStatus"
                 label="Quote Status"
@@ -277,6 +304,7 @@ export const TermsTab = ({
                 items={["New", "Pending", "Fulfiled"]}
             />
             <TextField
+                style={{ width: "100%" }}
                 value={values.frieghtTerms}
                 name="frieghtTerms"
                 label="Frieght Terms"
@@ -285,6 +313,7 @@ export const TermsTab = ({
                 fullWidth
             />
             <TextField
+                style={{ width: "100%" }}
                 value={values.paymentTerms}
                 name="paymentTerms"
                 label="Payment Terms"
@@ -309,6 +338,7 @@ export const DepositTab = ({
         <Box my={1} id="deposit">
             <Typography variant="h6">Deposit</Typography>
             <TextField
+                style={{ width: "100%" }}
                 value={values.deposit}
                 name="deposit"
                 label="Deposit"
@@ -318,6 +348,7 @@ export const DepositTab = ({
                 fullWidth
             />
             <TextField
+                style={{ width: "100%" }}
                 value={values.depositAmount}
                 name="depositAmount"
                 label="Deposit Amount"
@@ -355,6 +386,7 @@ export const CommissionTab = ({
         <Box my={1} id="commission">
             <Typography variant="h6">Ship date and Commission</Typography>
             <TextField
+                style={{ width: "100%" }}
                 value={values.estimatedShipDate.substr(0, 10)}
                 name="estimatedShipDate"
                 label="Estimated Ship Date"
@@ -364,6 +396,7 @@ export const CommissionTab = ({
                 fullWidth
             />
             <TextField
+                style={{ width: "100%" }}
                 value={values.commissionLabel}
                 name="commissionLabel"
                 label="Commission Label"
@@ -372,6 +405,7 @@ export const CommissionTab = ({
                 fullWidth
             />
             <TextField
+                style={{ width: "100%" }}
                 value={values.regularCommission}
                 name="regularCommission"
                 label="Regular Commission"
@@ -381,6 +415,7 @@ export const CommissionTab = ({
                 fullWidth
             />
             <TextField
+                style={{ width: "100%" }}
                 value={values.overageCommission}
                 name="overageCommission"
                 label="Overage Commission"
