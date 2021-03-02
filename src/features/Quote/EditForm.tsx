@@ -31,7 +31,7 @@ export default function EditForm({ selectedQuote, onDone }: { selectedQuote: IQu
                             <GeneralForm values={values} handleBlur={handleBlur} handleChange={handleChange} />
                         </Box>
                         <Box flex={1} m={1}>
-                            <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} variant="scrollable" style={{ maxWidth: 700 }}>
+                            <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)} variant="scrollable" style={{ maxWidth: 700 }}>
                                 <Tab label="Shipping" />
                                 <Tab label="Billing" />
                                 <Tab label="Terms" />

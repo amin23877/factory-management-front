@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import Box from "@material-ui/core/Box";
+import PhotoSizeSelectActualOutlinedIcon from '@material-ui/icons/PhotoSizeSelectActualOutlined';
 
 import Dialog from "../../app/Dialog";
 import TextField from "../../app/TextField";
@@ -71,8 +72,15 @@ export default function AddPOModal({ open, onClose, onDone }: { open: boolean; o
                                     variant="contained"
                                     color="primary"
                                     onClick={() => uploader.current?.click()}
-                                    style={{ margin: "0.5em 0" }}
+                                    style={{
+                                        margin: "0.5em 0",
+                                        backgroundColor: "#fff",
+                                        color: " rgb(43,140,255) ",
+                                        border: "1px solid rgb(43,140,255) ",
+                                        width: "80%"
+                                    }}
                                 >
+                                    <PhotoSizeSelectActualOutlinedIcon style={{ marginRight: "7px" }} />
                                     upload
                                 </Button>
                                 {fileName && <Typography variant="caption">{fileName}</Typography>}
@@ -132,8 +140,15 @@ export default function AddPOModal({ open, onClose, onDone }: { open: boolean; o
                                     onBlur={handleBlur}
                                     error={Boolean(errors.reciever && touched.reciever)}
                                 />
+                                <div style={{
+                                    display:"flex",
+                                    width:"100%",
+                                    justifyContent:"center",
+                                    padding:"0px 10%"
+                                }}>
 
                                 <TextField
+                                    style={{ marginBottom:"8px" , flex:1}}
                                     name="number"
                                     label="number"
                                     value={values.number}
@@ -141,8 +156,9 @@ export default function AddPOModal({ open, onClose, onDone }: { open: boolean; o
                                     onBlur={handleBlur}
                                     error={Boolean(errors.number && touched.number)}
                                     helperText={errors.number}
-                                />
-                                <Button type="submit" kind="add">
+                                    />
+                                    </div>
+                                <Button type="submit" style={{width:"80%"}} kind="add">
                                     Add
                                 </Button>
                             </Box>
