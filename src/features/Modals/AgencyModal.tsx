@@ -55,7 +55,7 @@ export const AgencyModal = ({
                     {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
                         <Form>
                             <TextField
-                            style={{width:"100%"}}
+                                style={{ width: "100%" }}
                                 name="name"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
@@ -66,8 +66,8 @@ export const AgencyModal = ({
                                 fullWidth
                             />
 
-                            <Box my={2} textAlign="center">
-                                <Button type="submit" style={{width:"100%" ,marginLeft:"8px"}} disabled={isSubmitting} kind={data ? "edit" : "add"}>
+                            <Box my={2} textAlign="center" display="flex">
+                                <Button type="submit" style={{ flex: 1 }} disabled={isSubmitting} kind={data ? "edit" : "add"}>
                                     Save
                                 </Button>
                                 {data?.id && (

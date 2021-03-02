@@ -71,22 +71,22 @@ export const ContactModal = ({
                         data?.id
                             ? data
                             : {
-                                firstName: "",
-                                lastName: "",
-                                title: "",
-                                department: "",
-                                refferedBy: "",
-                                linkedIn: "",
-                                facebook: "",
-                                instagram: "",
-                                website: "",
-                                optout: false,
-                                mi: "",
-                                prefix: "",
-                                active: false,
-                                main: false,
-                                ContactTypeId: 0,
-                            }
+                                  firstName: "",
+                                  lastName: "",
+                                  title: "",
+                                  department: "",
+                                  refferedBy: "",
+                                  linkedIn: "",
+                                  facebook: "",
+                                  instagram: "",
+                                  website: "",
+                                  optout: false,
+                                  mi: "",
+                                  prefix: "",
+                                  active: false,
+                                  main: false,
+                                  ContactTypeId: 0,
+                              }
                     }
                     validationSchema={schema}
                     onSubmit={(values, { setSubmitting }) => {
@@ -126,7 +126,6 @@ export const ContactModal = ({
                             />
                             <Box display="flex" alignItems="center">
                                 <div style={{ display: "flex", width: "100%" }}>
-
                                     <TextField
                                         style={{ flex: 1 }}
                                         name="firstName"
@@ -152,9 +151,7 @@ export const ContactModal = ({
                                 </div>
                             </Box>
                             <div style={{ display: "flex", width: "100%" }}>
-
                                 <Field
-
                                     name="department"
                                     errors={errors}
                                     handleBlur={handleBlur}
@@ -163,7 +160,6 @@ export const ContactModal = ({
                                     values={values}
                                 />
                                 <Field
-
                                     name="refferedBy"
                                     errors={errors}
                                     handleBlur={handleBlur}
@@ -173,9 +169,7 @@ export const ContactModal = ({
                                 />
                             </div>
                             <div style={{ display: "flex", width: "100%" }}>
-
                                 <Field
-
                                     name="linkedIn"
                                     errors={errors}
                                     handleBlur={handleBlur}
@@ -184,7 +178,6 @@ export const ContactModal = ({
                                     values={values}
                                 />
                                 <Field
-
                                     name="facebook"
                                     errors={errors}
                                     handleBlur={handleBlur}
@@ -194,9 +187,7 @@ export const ContactModal = ({
                                 />
                             </div>
                             <div style={{ display: "flex", width: "100%" }}>
-
                                 <Field
-
                                     name="instagram"
                                     errors={errors}
                                     handleBlur={handleBlur}
@@ -205,7 +196,6 @@ export const ContactModal = ({
                                     values={values}
                                 />
                                 <Field
-
                                     name="website"
                                     errors={errors}
                                     handleBlur={handleBlur}
@@ -215,9 +205,7 @@ export const ContactModal = ({
                                 />
                             </div>
                             <div style={{ display: "flex", width: "100%" }}>
-
                                 <Field
-
                                     name="mi"
                                     errors={errors}
                                     handleBlur={handleBlur}
@@ -226,7 +214,6 @@ export const ContactModal = ({
                                     values={values}
                                 />
                                 <Field
-
                                     name="prefix"
                                     errors={errors}
                                     handleBlur={handleBlur}
@@ -248,25 +235,29 @@ export const ContactModal = ({
                                 onBlur={handleBlur}
                                 error={Boolean(errors.ContactTypeId && touched.ContactTypeId)}
                             />
-                            <div style={{width:"100%",marginLeft:"8px"}}>
-
-                            <FormControlLabel
-                                name="active"
-                                onChange={handleChange}
-                                label="Is this Contact active?"
-                                control={<Checkbox />}
+                            <div style={{ width: "100%", marginLeft: "8px" }}>
+                                <FormControlLabel
+                                    name="active"
+                                    onChange={handleChange}
+                                    label="Active"
+                                    control={<Checkbox checked={values.active} />}
                                 />
-                            <FormControlLabel
-                                name="optout"
-                                onChange={handleChange}
-                                label="Is this Contact optout?"
-                                control={<Checkbox />}
+                                <FormControlLabel
+                                    name="optout"
+                                    onChange={handleChange}
+                                    label="Optout"
+                                    control={<Checkbox checked={values.optout} />}
                                 />
-                            <FormControlLabel name="main" onChange={handleChange} label="Is this Contact main?" control={<Checkbox />} />
-                                </div>
+                                <FormControlLabel
+                                    name="main"
+                                    onChange={handleChange}
+                                    label="Main"
+                                    control={<Checkbox checked={values.main} />}
+                                />
+                            </div>
 
-                            <Box my={2} textAlign="center">
-                                <Button type="submit" style={{ width: "100%" }} disabled={isSubmitting} kind="add">
+                            <Box my={2} textAlign="center" display="flex">
+                                <Button type="submit" style={{ flex: 1 }} disabled={isSubmitting} kind={data ? "edit" : "add"}>
                                     Save
                                 </Button>
                                 {data?.id && (

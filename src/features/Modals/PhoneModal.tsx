@@ -98,15 +98,21 @@ export const PhoneModal = ({
                                 error={Boolean(errors.PhoneTypeId && touched.PhoneTypeId)}
                             />
 
-                            <FormControlLabel name="main" onChange={handleChange} label="Is this phone main?" control={<Checkbox   style={{marginLeft:"8px"}}/>} />
+                            <FormControlLabel
+                                name="main"
+                                onChange={handleChange}
+                                label="Is this phone main?"
+                                control={<Checkbox style={{ marginLeft: "8px" }} />}
+                            />
 
-                            <Box my={2} textAlign="center">
-                                <Button type="submit" style={{width:"100%"}} disabled={isSubmitting} kind={data ? "edit" : "add"}>
+                            <Box my={2} textAlign="center" display="flex">
+                                <Button type="submit" style={{ flex: 1 }} disabled={isSubmitting} kind={data ? "edit" : "add"}>
                                     Save
                                 </Button>
                                 {data?.id && (
                                     <Button
                                         kind="delete"
+                                        style={{ margin: "0 1em" }}
                                         onClick={() => {
                                             if (data?.id) {
                                                 deleteAModelPhone(data.id)

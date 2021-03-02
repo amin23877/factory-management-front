@@ -72,7 +72,7 @@ export default function Home() {
             <Box my={4} display="flex" justifyContent="center">
                 <ItemCard icon={<AccountBoxRounded />} title="Roles" href="/roles" />
                 <ItemCard icon={<LocalActivityRounded />} title="Activity" href="/activity" />
-                <ItemCard icon={<AccountTreeRounded />} title="Projects" href="/project" />
+                <ItemCard icon={<AccountTreeRounded />} title="Projects" href="/projects" />
                 <ItemCard icon={<AlternateEmailRounded />} title="Prospects" href="#" />
             </Box>
         </Container>

@@ -1,10 +1,11 @@
 import React from "react";
-import { Box, TextField } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
 import Dialog from "../../app/Dialog";
 import Button from "../../app/Button";
+import TextField from "../../app/TextField";
 
 import { createAModelNote, updateAModelNote, deleteAModelNote, INote } from "../../api/note";
 
@@ -86,9 +87,14 @@ export default function NoteModal({ open, onClose, model, itemId, noteData, onDo
                                 multiline
                                 rows={4}
                             />
-                            <Box my={2} textAlign="center">
-                                <Button type="submit" fullWidth style={{marginLeft:"6px"}} disabled={isSubmitting} kind={noteData ? "edit" : "add"}>
-                                    Save Note
+                            <Box my={2} textAlign="center" display="flex" alignItems="center">
+                                <Button
+                                    type="submit"
+                                    style={{ flex: 1, marginLeft: "6px" }}
+                                    disabled={isSubmitting}
+                                    kind={noteData ? "edit" : "add"}
+                                >
+                                    Save
                                 </Button>
                                 {noteData?.subject && (
                                     <Button
@@ -106,7 +112,7 @@ export default function NoteModal({ open, onClose, model, itemId, noteData, onDo
                                             }
                                         }}
                                     >
-                                        Delete this note
+                                        Delete
                                     </Button>
                                 )}
                             </Box>
