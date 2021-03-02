@@ -24,7 +24,19 @@ export default function BaseDataGrid({
 }) {
     const classes = useStyles();
 
+    const updatedCols = cols.map((x)=>{
+        let obj = Object.keys(x);
+        let check = false
+        for(let o in obj){
+            if(o=="flex"){
+                check=true;
+            }
+        }
+         if(!check){x={...x , flex:1 }} 
+        return x 
+    })
     return (
+        
         <Box display="flex" style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", border: "none" }}>
             <div
                 className={classes.dataGridCont}
@@ -36,7 +48,7 @@ export default function BaseDataGrid({
                     onRowSelected={(r) => {
                         onRowSelected(r.data);
                     }}
-                    columns={cols}
+                    columns={updatedCols}
                     rows={rows}
                 />
             </div>
