@@ -16,7 +16,7 @@ export const ObjectSelect = ({ items, itemTitleField, itemValueField, keyField, 
                     {props.label}
                 </InputLabel>
             )}
-            <Select id="object-select" name={props.name} input={<BootstrapInput />} {...props} displayEmpty={true}>
+            <Select id="object-select" name={props.name} input={<BootstrapInput />} value={props.value} {...props} displayEmpty={true}>
                 <MenuItem value={undefined}>None</MenuItem>
                 {items &&
                     items.map((item: any, i) => (

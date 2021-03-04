@@ -196,3 +196,12 @@ export const updateQuote = async (id:number, data:IQuote) => {
         console.log(error);
     }
 }
+
+export const deleteQuote = async (id:number) => {
+    try {
+        const resp = await Axios.delete(`/quote/${id}`);
+        return resp.data;
+    } catch (error) {
+        throw error;
+    }
+}

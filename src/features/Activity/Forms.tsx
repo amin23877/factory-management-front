@@ -45,7 +45,7 @@ export default function AddActivityForm({ init, onDone }: { init: IActivity; onD
         <Formik initialValues={init} validationSchema={schema} onSubmit={handleSubmit}>
             {({ values, errors, touched, handleChange, handleBlur }) => (
                 <Form>
-                    <Box textAlign="center">
+                    <Box>
                         <TextField
                             error={Boolean(errors.name && touched.name)}
                             name="name"
@@ -169,7 +169,7 @@ export default function AddActivityForm({ init, onDone }: { init: IActivity; onD
                                 name="allDayActivity"
                                 control={<CheckBox />}
                                 label="All dat activity"
-                                value={values.allDayActivity}
+                                checked={values.allDayActivity}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
@@ -177,7 +177,7 @@ export default function AddActivityForm({ init, onDone }: { init: IActivity; onD
                                 name="doNotShowOnCalendar"
                                 control={<CheckBox />}
                                 label="Do not show on calendar"
-                                value={values.doNotShowOnCalendar}
+                                checked={values.doNotShowOnCalendar}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
@@ -185,7 +185,7 @@ export default function AddActivityForm({ init, onDone }: { init: IActivity; onD
                                 name="recurring"
                                 control={<CheckBox />}
                                 label="Recurring"
-                                value={values.recurring}
+                                checked={values.recurring}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
@@ -193,7 +193,7 @@ export default function AddActivityForm({ init, onDone }: { init: IActivity; onD
                                 name="notifyNow"
                                 control={<CheckBox />}
                                 label="Notify now"
-                                value={values.notifyNow}
+                                checked={values.notifyNow}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
@@ -201,7 +201,7 @@ export default function AddActivityForm({ init, onDone }: { init: IActivity; onD
                                 name="notifyOnDay"
                                 control={<CheckBox />}
                                 label="Notify on day"
-                                value={values.notifyOnDay}
+                                checked={values.notifyOnDay}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />

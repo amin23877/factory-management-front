@@ -16,7 +16,9 @@ export const GeneralForm = ({
     handleChange,
     handleBlur,
     values,
+    edit,
 }: {
+    edit?: boolean;
     values: any;
     handleChange: (a: any) => void;
     handleBlur: (a: any) => void;
@@ -24,7 +26,7 @@ export const GeneralForm = ({
     return (
         <Box my={1} id="general">
             <Typography variant="h6">General</Typography>
-            <TextField label="number" value={values.number} style={{ width: "98.5%" }} disabled />
+            {edit && <TextField label="number" value={values.number} style={{ width: "98.5%" }} disabled />}
             <Box display="flex" justifyContent="space-between">
                 <TextField
                     style={{ flex: 1 }}

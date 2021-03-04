@@ -4,13 +4,14 @@ import { ColDef } from "@material-ui/data-grid";
 
 import { INote, getAllModelNotes } from "../../api/note";
 import { IDocument, getAllModelDocuments } from "../../api/document";
-import { getQuotes, getLineItems, IQuote, ILineItem } from "../../api/quote";
+import { getQuotes, getLineItems, IQuote, ILineItem, deleteQuote } from "../../api/quote";
 import { getQuoteActivities } from "../../api/activity";
 
 import Snack from "../../app/Snack";
 import BaseDataGrid from "../../app/BaseDataGrid";
 import EditTab from "./EditTab";
 
+import Confirm from "../Modals/Confirm";
 import NoteModal from "../Modals/NoteModals";
 import DocumentModal from "../Modals/DocumentModals";
 import LineItemModal from "./LineItemModals";
@@ -47,6 +48,7 @@ export default function QuotePanel() {
     const [editLineItem, setEditLineItem] = useState(false);
     const [editNote, setEditNote] = useState(false);
     const [editDoc, setEditDoc] = useState(false);
+    const [confirm, setConfirm] = useState(false);
 
     const [showSnack, setShowSnack] = useState(false);
     const [msg, setMsg] = useState("");
@@ -122,8 +124,24 @@ export default function QuotePanel() {
         refreshActivities();
     }, [selectedQuote]);
 
+    const handleDelete = async () => {
+        try {
+            if (selectedQuote && selectedQuote.id) {
+                const resp = await deleteQuote(selectedQuote?.id);
+                if (resp) {
+                    setConfirm(false);
+                    refreshQuotes();
+                    setActiveTab(0);
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <div>
+            <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
             <AddQuoteModal open={addQ} onClose={() => setAddQ(false)} onDone={refreshQuotes} />
             <LineItemModal open={addLineItem} onClose={() => setAddLineItem(false)} quoteId={selectedQuote?.id} onDone={refreshLineItems} />
             {selectedQuote && selectedQuote.id && (
@@ -174,6 +192,9 @@ export default function QuotePanel() {
 
             <Box display="flex" alignItems="center">
                 <Button onClick={() => setAddQ(true)}>Add Quote</Button>
+                <Button onClick={() => setConfirm(true)} disabled={!selectedQuote}>
+                    Delete Quote
+                </Button>
                 <Button onClick={() => setAddLineItem(true)} disabled={!selectedQuote} style={{ margin: "0 0.5em" }}>
                     Add Line item
                 </Button>

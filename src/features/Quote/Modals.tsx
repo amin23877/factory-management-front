@@ -52,7 +52,9 @@ export default function AddQuoteModal({ open, onClose, onDone }: { open: boolean
                                     {activeTab === 1 && <BillingTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
                                     {activeTab === 2 && <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
                                     {activeTab === 3 && <DepositTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                    {activeTab === 4 && <CommissionTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
+                                    {activeTab === 4 && (
+                                        <CommissionTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                    )}
                                 </Box>
                             </Box>
                             <Box display="flex" justifyContent="center" my={2}>
@@ -61,7 +63,7 @@ export default function AddQuoteModal({ open, onClose, onDone }: { open: boolean
                                     type="submit"
                                     variant="contained"
                                     color="primary"
-                                    style={{ padding: "1em 4em" , width:"50%"}}
+                                    style={{ padding: "1em 4em", width: "50%" }}
                                 >
                                     Add
                                 </Button>

@@ -37,7 +37,7 @@ export default function AddSOModal({ open, onClose, onDone }: { open: boolean; o
                             <Box display="flex">
                                 <Box flex={1}>
                                     <GeneralForm
-                                        onChangeInit={setValues}
+                                        onChangeInit={(d) => setValues(d)}
                                         values={values}
                                         handleChange={handleChange}
                                         handleBlur={handleBlur}
@@ -57,12 +57,7 @@ export default function AddSOModal({ open, onClose, onDone }: { open: boolean; o
                                 </Box>
                             </Box>
                             <Box display="flex" justifyContent="center" my={2}>
-                                <Button
-                                    type="submit"
-                                    variant="contained"
-                                    color="primary"
-                                    style={{ padding: "1em 4em" , width:"50%"}}
-                                >
+                                <Button type="submit" variant="contained" color="primary" style={{ padding: "1em 4em", width: "50%" }}>
                                     Add
                                 </Button>
                             </Box>

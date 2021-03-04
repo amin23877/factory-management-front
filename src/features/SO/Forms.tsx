@@ -27,6 +27,8 @@ export const GeneralForm = ({
 }) => {
     const [selectedQuote, setSelectedQuote] = useState<number>();
 
+    // const updateInitial = () => {}
+
     useEffect(() => {
         if (selectedQuote) {
             getQuoteById(selectedQuote)
@@ -108,8 +110,8 @@ export const GeneralForm = ({
                 itemTitleField="number"
                 itemValueField="id"
                 onChange={(e) => {
-                    handleChange(e);
                     setSelectedQuote(e.target.value as number);
+                    handleChange(e);
                 }}
                 onBlur={handleBlur}
             />
@@ -200,6 +202,7 @@ export const ShippingForm = ({
                     keyField="id"
                     label="Shipping Address"
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     fullWidth
                 />
                 <FieldSelect
