@@ -134,30 +134,33 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
                             value={values.ItemFamilyId}
                         />
                     </Box>
-                    <Box display="flex" justifyContent="space-between">
-                        <FormControl fullWidth style={{ flex: 1 }}>
-                            <FormLabel>Size</FormLabel>
-                            <RadioGroup name="size" value={values.size} onChange={handleChange}>
-                                <FormControlLabel value="small" control={<Radio />} label="Small" />
-                                <FormControlLabel value="medium" control={<Radio />} label="Medium" />
-                                <FormControlLabel value="large" control={<Radio />} label="Large" />
-                            </RadioGroup>
-                        </FormControl>
-                        <Box flex={3} display="flex" flexWrap="wrap" justifyContent="space-between">
-                            {checks.map((check) => (
-                                <FormControlLabel
-                                    style={{ flex: "0 40%" }}
-                                    label={check}
-                                    key={check}
-                                    name={check}
-                                    onChange={handleChange}
-                                    control={<Checkbox />}
-                                />
-                            ))}
-                        </Box>
+
+                    
+                    <FormControl style={{ margin: "0.5em", display: "flex" }}>
+                        <FormLabel style={{ display: "inline" , marginRight:"auto" }}>Size</FormLabel>
+                        <RadioGroup row name="size" value={values.size} onChange={handleChange}>
+                            <FormControlLabel value="small" control={<Radio />} label="Small" />
+                            <FormControlLabel value="medium" control={<Radio />} label="Medium" />
+                            <FormControlLabel value="large" control={<Radio />} label="Large" />
+                        </RadioGroup>
+                    </FormControl>
+
+                    
+                    <Box display="flex" flexWrap="wrap" justifyContent="space-between">
+                        {checks.map((check) => (
+                            <FormControlLabel
+                                style={{ flex: "0 40%" }}
+                                label={check}
+                                key={check}
+                                name={check}
+                                onChange={handleChange}
+                                control={<Checkbox />}
+                            />
+                        ))}
                     </Box>
+
                     <Box textAlign="center" my={2}>
-                        <Button type="submit" kind="add" disabled={isSubmitting}>
+                        <Button type="submit" kind="add" disabled={isSubmitting} style={{width:"100%"}}>
                             Add Item
                         </Button>
                     </Box>

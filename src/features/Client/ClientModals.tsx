@@ -78,9 +78,10 @@ export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClo
                         onChange={handleChange}
                         value={values.parent}
                         error={Boolean(errors.parent)}
-                        displayEmpty={true}
+                        style={{ width: "98.6%" }}
                     />
                     <FieldSelect
+                        style={{ width: "98.6%" }}
                         request={getClientTypes}
                         itemTitleField="name"
                         itemValueField="id"
@@ -90,29 +91,30 @@ export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClo
                         onChange={handleChange}
                         value={values.ClientTypeId}
                         error={Boolean(errors.ClientTypeId)}
-                        displayEmpty={true}
                     />
 
-                    <Box display="flex" justifyContent="space-between" alignItems="start">
-                        <FormControl style={{ margin: "0.5em" }}>
-                            <FormLabel>Size</FormLabel>
-                            <RadioGroup name="size" value={values.size} onChange={handleChange}>
-                                <FormControlLabel value="small" control={<Radio />} label="Small" />
-                                <FormControlLabel value="medium" control={<Radio />} label="Medium" />
-                                <FormControlLabel value="large" control={<Radio />} label="Large" />
-                            </RadioGroup>
-                        </FormControl>
 
-                        <div style={{ height: "140px", borderRight: "1px solid #bbb" }} />
 
-                        <FormControl style={{ margin: "0.5em" }}>
-                            <FormLabel>Prospect</FormLabel>
-                            <RadioGroup name="prospect" value={values.prospect} onChange={handleChange}>
-                                <FormControlLabel value="true" control={<Radio />} label="Yes" />
-                                <FormControlLabel value="false" control={<Radio />} label="No" />
-                            </RadioGroup>
-                        </FormControl>
-                    </Box>
+                    <FormControl style={{ margin: "0.5em", display: "flex" }}>
+                        <FormLabel style={{ display: "inline" }}>Size</FormLabel>
+                        <RadioGroup row name="size" value={values.size} onChange={handleChange}>
+                            <FormControlLabel value="small" control={<Radio />} label="Small" />
+                            <FormControlLabel value="medium" control={<Radio />} label="Medium" />
+                            <FormControlLabel value="large" control={<Radio />} label="Large" />
+                        </RadioGroup>
+                    </FormControl>
+
+
+
+
+                    <FormControl style={{ margin: "0.5em" }}>
+                        <FormLabel>Prospect</FormLabel>
+                        <RadioGroup row name="prospect" value={values.prospect} onChange={handleChange}>
+                            <FormControlLabel value="true" control={<Radio />} label="Yes" />
+                            <FormControlLabel value="false" control={<Radio />} label="No" />
+                        </RadioGroup>
+                    </FormControl>
+
 
                     <Box textAlign="center" my={2}>
                         <Button disabled={isSubmitting} kind="add" type="submit" fullWidth={true}>

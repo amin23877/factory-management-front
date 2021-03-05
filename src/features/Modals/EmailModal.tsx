@@ -89,7 +89,7 @@ export const EmailModal = ({
                             <FormControlLabel
                                 name="main"
                                 onChange={handleChange}
-                                label="Is this Email main?"
+                                label="Use this as main email address"
                                 control={<Checkbox checked={values.main} style={{ marginLeft: "8px" }} />}
                             />
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, RadioGroup, Radio, FormControlLabel, Divider, Typography } from "@material-ui/core";
+import { Box, RadioGroup, Radio, FormControlLabel, Divider, Typography,Checkbox } from "@material-ui/core";
 
 import Button from "../../app/Button";
 
@@ -148,7 +148,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                 </Box>
             </Box>
             <Box display="flex" alignItems="center" justifyContent="center">
-                <RadioGroup
+                {/* <RadioGroup
                     style={{ flexDirection: "row" }}
                     name="active"
                     value={String(values.active)}
@@ -157,7 +157,14 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                 >
                     <FormControlLabel value="true" control={<Radio />} label="Active" />
                     <FormControlLabel value="false" control={<Radio />} label="Inactive" />
-                </RadioGroup>
+                </RadioGroup> */}
+                <FormControlLabel
+                                style={{ flex: "0 40%" }}
+                                label="Active"
+                                name="Active"
+                                onChange={handleChange}
+                                control={<Checkbox />}
+                            />
                 <TextField
                     label="Special notes"
                     // style={{ margin: 5 }}
@@ -225,7 +232,6 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                     onChange={handleChange}
                     style={{ marginBottom: 3 }}
                 />
-                <Divider />
                 {/* <Typography style={{ fontWeight: "bold", textAlign: "center" }}> Markup 200 %</Typography> */}
             </Box>
             <Box>

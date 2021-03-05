@@ -168,7 +168,7 @@ export const AddressModal = ({
 
                             <FormControl fullWidth style={{ margin: "0.5em" }}>
                                 <FormLabel>Main</FormLabel>
-                                <RadioGroup name="main" value={values.main} onChange={handleChange}>
+                                <RadioGroup  row name="main" value={values.main} onChange={handleChange}>
                                     <FormControlLabel value="true" control={<Radio />} label="Yes" />
                                     <FormControlLabel value="false" control={<Radio />} label="No" />
                                 </RadioGroup>

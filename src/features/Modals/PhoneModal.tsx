@@ -86,6 +86,7 @@ export const PhoneModal = ({
                             </Box>
 
                             <FieldSelect
+                            style={{width:"98.6%"}}
                                 request={getPhoneTypes}
                                 itemTitleField="name"
                                 itemValueField="id"
@@ -101,7 +102,7 @@ export const PhoneModal = ({
                             <FormControlLabel
                                 name="main"
                                 onChange={handleChange}
-                                label="Is this phone main?"
+                                label="Use this as main phone Number "
                                 control={<Checkbox style={{ marginLeft: "8px" }} />}
                             />
 

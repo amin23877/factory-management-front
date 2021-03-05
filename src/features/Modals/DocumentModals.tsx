@@ -93,7 +93,7 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
                                 </div>
 
                                 <TextField
-                                    style={{ marginBottom: "10px" }}
+                                    style={{ marginBottom: "20px" }}
                                     fullWidth
                                     value={values.description}
                                     name="description"

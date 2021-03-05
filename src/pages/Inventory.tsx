@@ -119,7 +119,7 @@ const Inventory = () => {
     ];
 
     return (
-        <Container>
+        <Container >
             {selectedNote && (
                 <NoteModal
                     onDone={refreshNotes}
@@ -187,14 +187,15 @@ const Inventory = () => {
 
                 <div style={{ flexGrow: 1 }} />
 
-                <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="secondary">
+                <MyTabs value={activeTab}  onChange={(e, nv) => setActiveTab(nv)} textColor="primary">
                     <MyTab color="primary" label="Overview" />
                     <MyTab label="Details" disabled={detailDis} />
                 </MyTabs>
+
             </Box>
 
             <Box display="flex" alignItems="flex-start" mt={1}>
-                <List>
+                <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
                     <ListItem>
                         <IconButton title="Add item" onClick={() => setAddItemModal(true)}>
                             <AddRounded />

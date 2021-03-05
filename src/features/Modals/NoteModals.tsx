@@ -55,27 +55,32 @@ export default function NoteModal({ open, onClose, model, itemId, noteData, onDo
                 >
                     {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
                         <Form>
+                            <div style={{display:"flex"}}>
                             <TextField
-                                name="subject"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                error={Boolean(errors.subject && touched.subject)}
-                                helperText={errors.subject && touched.subject}
-                                value={values.subject}
-                                label="subject"
-                                fullWidth
+                            style={{flex:1}}
+                            name="subject"
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            error={Boolean(errors.subject && touched.subject)}
+                            helperText={errors.subject && touched.subject}
+                            value={values.subject}
+                            label="subject"
+                            fullWidth
                             />
                             <TextField
-                                name="url"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                value={values.url}
-                                error={Boolean(errors.url && touched.url)}
-                                helperText={errors.url && touched.url}
-                                label="url"
-                                fullWidth
+                            style={{flex:1}}
+                            name="url"
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            value={values.url}
+                            error={Boolean(errors.url && touched.url)}
+                            helperText={errors.url && touched.url}
+                            label="url"
+                            fullWidth
                             />
+                            </div>
                             <TextField
+                            style={{width:"98.6%"}}
                                 name="note"
                                 onBlur={handleBlur}
                                 onChange={handleChange}

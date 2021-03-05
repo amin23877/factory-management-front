@@ -128,7 +128,7 @@ export const ShippingTab = ({
 }) => {
     return (
         <Box my={1} id="shipping">
-            <Typography variant="h6">Shipping</Typography>
+            <Typography variant="h6" style={{margin:"15px",marginLeft:"0px"}}>Shipping</Typography>
             <FieldSelect
                 value={values.shippingAddress}
                 name="shippingAddress"
@@ -200,7 +200,7 @@ export const BillingTab = ({
 }) => {
     return (
         <Box my={1} id="billing">
-            <Typography variant="h6">Billing</Typography>
+            <Typography variant="h6" style={{margin:"15px",marginLeft:"0px"}}>Billing</Typography>
             <FieldSelect
                 value={values.billingAddress}
                 request={getAddresses}
@@ -267,7 +267,7 @@ export const TermsTab = ({
 }) => {
     return (
         <Box my={1} id="terms">
-            <Typography variant="h6">Terms</Typography>
+            <Typography variant="h6" style={{margin:"15px",marginLeft:"0px"}}>Terms</Typography>
             <TextField
                 style={{ width: "100%" }}
                 value={values.department}
@@ -338,7 +338,7 @@ export const DepositTab = ({
 }) => {
     return (
         <Box my={1} id="deposit">
-            <Typography variant="h6">Deposit</Typography>
+            <Typography variant="h6" style={{margin:"15px",marginLeft:"0px"}}>Deposit</Typography>
             <TextField
                 style={{ width: "100%" }}
                 value={values.deposit}
@@ -386,7 +386,7 @@ export const CommissionTab = ({
 }) => {
     return (
         <Box my={1} id="commission">
-            <Typography variant="h6">Ship date and Commission</Typography>
+            <Typography variant="h6" style={{margin:"15px",marginLeft:"0px"}}>Ship date and Commission</Typography>
             <TextField
                 style={{ width: "100%" }}
                 value={values.estimatedShipDate.substr(0, 10)}

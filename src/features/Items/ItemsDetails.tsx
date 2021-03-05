@@ -228,7 +228,7 @@ function ItemsDetails({
                 {snackMsg}
             </Snackbar>
 
-            <BasePaper>
+            <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
                 <form onSubmit={handleSubmit}>
                     <Grid container>
                         <Grid item md={6} xs={12} style={{ padding: "1em" }}>
@@ -241,7 +241,7 @@ function ItemsDetails({
                             />
                         </Grid>
                         <Grid item md={6} xs={12} style={{ padding: "1em" }}>
-                            <Tabs value={moreInfoTab} onChange={(e, v) => setMoreInfoTab(v)}>
+                            <Tabs value={moreInfoTab} textColor="primary" onChange={(e, v) => setMoreInfoTab(v)}>
                                 <Tab label="More Info." />
                                 <Tab label="Quantity" />
                                 <Tab label="Shipping" />
@@ -276,7 +276,7 @@ function ItemsDetails({
                         </Grid>
                     </Grid>
                 </form>
-                <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} variant="scrollable">
+                <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} textColor="primary" variant="scrollable">
                     <Tab label="Notes" />
                     <Tab label="Documents" />
                     <Tab label="Related Quotes" />
