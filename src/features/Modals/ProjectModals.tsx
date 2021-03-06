@@ -43,19 +43,19 @@ export const ProjectModal = ({ open, onClose, data, onDone }: { open: boolean; o
     };
 
     return (
-        <Dialog open={open} onClose={onClose} title={data ? "Edit project" : "Add new project"}>
+        <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth title={data ? "Edit project" : "Add new project"}>
             <form onSubmit={handleSubmit}>
-                <Box m={1} display="flex" flexDirection="column" justifyContent="center" alignItems="center">
-                    <TextField label="name" fullWidth value={name} onChange={(e) => setName(e.target.value)} />
-                    <Box>
-                        <Button kind="add" type="submit">
-                            save
-                        </Button>
+                <Box m={1} display="flex" flexDirection="column" justifyContent="center" alignItems="center" >
+                    <TextField label="name" style={{flex:1,width:"100%",marginBottom:"13px"}} fullWidth value={name} onChange={(e) => setName(e.target.value)} />
+                    <Box style={{width:"100%",display:"flex"}}>
                         {data && (
-                            <Button style={{ marginLeft: "0.5em" }} onClick={handleDelete} kind="delete">
+                            <Button style={{ marginLeft: "40%",marginRight:"30px" }} onClick={handleDelete} kind="delete">
                                 Delete
                             </Button>
                         )}
+                        <Button kind="add" type="submit" style={{flexGrow:1,marginRight:"3px"}}>
+                            save
+                        </Button>
                     </Box>
                 </Box>
             </form>
