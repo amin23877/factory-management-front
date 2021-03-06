@@ -1,8 +1,12 @@
 import React from "react";
-import { AppBar, useMediaQuery, Toolbar, Button, Avatar } from "@material-ui/core";
+import { AppBar, useMediaQuery, Toolbar, Button, IconButton, Avatar } from "@material-ui/core";
 import { ArrowDropDownRounded, NotificationsOutlined, HelpOutline, TvRounded } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
+
 import "../styles/main.css";
+
+import { useAuth } from "../store";
+
 const useStyles = makeStyles({
     container: {
         height: "54px",
@@ -22,6 +26,8 @@ const useStyles = makeStyles({
 export const TopAppBar = ({ drawerWidth }: { drawerWidth?: number }) => {
     const matches = useMediaQuery("(max-width: 960px)");
     const classes = useStyles();
+    const { employee } = useAuth();
+
     return (
         <AppBar
             position="fixed"
@@ -34,24 +40,22 @@ export const TopAppBar = ({ drawerWidth }: { drawerWidth?: number }) => {
         >
             <Toolbar className={classes.toolbar}>
                 <Button className={classes.btn}>
-                    <Avatar>L</Avatar>
+                    <Avatar>{employee?.employee.username[0]}</Avatar>
                     <span style={{ textAlign: "left", marginLeft: 10 }}>
-                        <span style={{ fontSize: 12, fontWeight: 400, marginBottom: "auto" }}>Lorem ipsum</span>
-                        <p style={{ fontSize: 10, margin: 0, padding: 0, fontWeight: 100 }}>Product manager</p>
+                        <span style={{ fontSize: 12, fontWeight: 400, marginBottom: "auto" }}>{employee?.employee.username}</span>
+                        {/* <p style={{ fontSize: 10, margin: 0, padding: 0, fontWeight: 100 }}>Product manager</p> */}
                     </span>
                 </Button>
                 <div style={{ flexGrow: 1 }} />
-                <Button size="small" className={classes.btn}>
+                <IconButton size="small" title="Help" className={classes.btn}>
                     <HelpOutline style={{ marginRight: 3 }} />
-                    Help
-                </Button>
-                <Button size="small" className={classes.btn}>
+                </IconButton>
+                <IconButton size="small" title="Notifications" className={classes.btn}>
                     <NotificationsOutlined style={{ marginRight: 3 }} />
-                    Alarms
-                </Button>
+                </IconButton>
                 <Button size="small" className={classes.btn}>
                     <TvRounded style={{ marginRight: 3 }} />
-                    Phasyfy
+                    Phazify
                     <ArrowDropDownRounded />
                 </Button>
             </Toolbar>

@@ -15,7 +15,13 @@ import Button from "../app/Button";
 import BaseDateGrid from "../app/BaseDataGrid";
 import { MyTabs, MyTab } from "../app/Tabs";
 
+import { getAllModelNotes, INote } from "../api/note";
+import { getAllModelDocuments } from "../api/document";
+
 import Confirm from "../features/Modals/Confirm";
+import NoteModal from "../features/Modals/NoteModals";
+import DocumentModal from "../features/Modals/DocumentModals";
+
 import EditForm from "../features/Activity/EditForm";
 import CatStatusPrioModal from "../features/Activity/CatStatusPrioModal";
 import AddActivityModal from "../features/Activity/AddActivityModal";
@@ -29,11 +35,47 @@ export default function Activity() {
     const [activities, setActivities] = useState([]);
     const [selectedActivity, setSelectedActivity] = useState<IActivity>();
 
+    const [addNote, setAddNote] = useState(false);
+    const [addDoc, setAddDoc] = useState(false);
+
+    const [selNote, setSelNote] = useState<INote>();
+    const [selDoc, setSelDoc] = useState<any>();
+
     const [confirm, setConfirm] = useState(false);
     const [snack, setSnack] = useState(false);
     const [msg, setMsg] = useState("");
 
+    const [notes, setNotes] = useState([]);
+    const [docs, setDocs] = useState([]);
     const cols: ColDef[] = [{ field: "name" }, { field: "subject" }, { field: "location" }];
+    const refreshNotes = async () => {
+        try {
+            if (selectedActivity && selectedActivity.id) {
+                const resp = await getAllModelNotes("activity", selectedActivity.id);
+                setNotes(resp);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const refreshDocs = async () => {
+        try {
+            if (selectedActivity && selectedActivity.id) {
+                const resp = await getAllModelDocuments("activity", selectedActivity.id);
+                setDocs(resp);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        if (activeTab === 1) {
+            refreshNotes();
+            refreshDocs();
+        }
+    }, [activeTab]);
 
     const refreshActivities = async () => {
         try {
@@ -65,22 +107,62 @@ export default function Activity() {
     };
 
     return (
-        <Container >
+        <Container>
             <Snack open={snack} onClose={() => setSnack(false)}>
                 {msg}
             </Snack>
+
             <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
             <AddActivityModal open={addActivity} onClose={() => setAddActivity(false)} onDone={refreshActivities} />
             <CatStatusPrioModal open={catStatPrio} onClose={() => setCatStatPrio(false)} />
+            {selectedActivity && selectedActivity.id && (
+                <NoteModal
+                    noteData={selNote}
+                    itemId={selectedActivity.id}
+                    model="activity"
+                    open={addNote}
+                    onClose={() => setAddNote(false)}
+                    onDone={refreshNotes}
+                />
+            )}
+            {selectedActivity && selectedActivity.id && (
+                <DocumentModal
+                    docData={selDoc}
+                    itemId={selectedActivity.id}
+                    model="activity"
+                    open={addDoc}
+                    onClose={() => setAddDoc(false)}
+                    onDone={refreshDocs}
+                />
+            )}
 
             <Box my={1} display="flex" justifyContent="flex-end" alignItems="center">
+                <Button
+                    disabled={activeTab === 0}
+                    onClick={() => {
+                        setSelNote(undefined);
+                        setAddNote(true);
+                    }}
+                >
+                    Add Note
+                </Button>
+                <Button
+                    disabled={activeTab === 0}
+                    onClick={() => {
+                        setSelDoc(undefined);
+                        setAddDoc(true);
+                    }}
+                >
+                    Add Document
+                </Button>
+                <div style={{ flexGrow: 1 }} />
                 <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                     <MyTab label="List" />
                     <MyTab label="Details" disabled={!selectedActivity} />
                 </MyTabs>
             </Box>
             <Box display="flex" alignItems="flex-start" mt={1}>
-                <List  style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
+                <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
                     <ListItem>
                         <IconButton onClick={() => setAddActivity(true)}>
                             <AddRounded />
@@ -110,6 +192,16 @@ export default function Activity() {
                     )}
                     {activeTab === 1 && selectedActivity && (
                         <EditForm
+                            notes={notes}
+                            docs={docs}
+                            onNoteSelected={(d) => {
+                                setSelNote(d);
+                                setAddNote(true);
+                            }}
+                            onDocSelected={(d) => {
+                                setSelDoc(d);
+                                setAddDoc(true);
+                            }}
                             onDone={() => {
                                 setMsg("Updated...");
                                 setSnack(true);
