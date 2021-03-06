@@ -11,6 +11,7 @@ import {
     AccountTreeRounded,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
+import '../styles/dashboard.css'
 
 const useStyles = makeStyles({
     topHeader: {
@@ -62,7 +63,10 @@ export default function Home() {
     const classes = useStyles();
 
     return (
-        <Container>
+        <div>
+        <div className="Homebg"></div>
+        <div className="HomeContain"></div>
+            <Container>
             <Box my={4} display="flex" justifyContent="center">
                 <ItemCard icon={<PaymentRounded />} title="Dashboard" href="/dashboard" />
                 <ItemCard icon={<PersonRounded />} title="Clients" href="/clients" />
@@ -75,6 +79,9 @@ export default function Home() {
                 <ItemCard icon={<AccountTreeRounded />} title="Projects" href="/projects" />
                 <ItemCard icon={<AlternateEmailRounded />} title="Prospects" href="#" />
             </Box>
-        </Container>
+            </Container>
+        </div>
+        
+       
     );
 }
