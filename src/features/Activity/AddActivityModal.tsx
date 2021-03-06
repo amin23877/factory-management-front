@@ -9,6 +9,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
     return (
         <Dialog open={open} onClose={onClose} title="Add new activity" maxWidth="sm">
             <AddActivityForm
+                open={open}
                 init={ActivityInit}
                 onDone={() => {
                     onDone();

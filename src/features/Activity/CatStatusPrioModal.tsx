@@ -12,7 +12,7 @@ export default function CatTypeFamilyModal({ open, onClose }: { open: boolean; o
     return (
         <Dialog open={open} onClose={onClose} title={`Manage Category - Satatus - Priority`}>
             <Box>
-                <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="Category" />
                     <Tab label="Status" />
                     <Tab label="Priority" />

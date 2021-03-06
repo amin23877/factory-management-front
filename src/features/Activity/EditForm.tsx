@@ -118,7 +118,7 @@ export default function EditForm({ selectedActivity, onDone }: { selectedActivit
                             Add Document
                         </Button>
                     </Box>
-                    <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                    <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                         <Tab label="Notes" />
                         <Tab label="Documents" />
                     </Tabs>

@@ -187,7 +187,7 @@ const Inventory = () => {
 
                 <div style={{ flexGrow: 1 }} />
 
-                <MyTabs value={activeTab}  onChange={(e, nv) => setActiveTab(nv)} textColor="primary">
+                <MyTabs value={activeTab}  onChange={(e, nv) => setActiveTab(nv)} textColor="secondary">
                     <MyTab color="primary" label="Overview" />
                     <MyTab label="Details" disabled={detailDis} />
                 </MyTabs>

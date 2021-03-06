@@ -65,7 +65,7 @@ export default function Activity() {
     };
 
     return (
-        <Container>
+        <Container >
             <Snack open={snack} onClose={() => setSnack(false)}>
                 {msg}
             </Snack>
@@ -80,7 +80,7 @@ export default function Activity() {
                 </MyTabs>
             </Box>
             <Box display="flex" alignItems="flex-start" mt={1}>
-                <List>
+                <List  style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
                     <ListItem>
                         <IconButton onClick={() => setAddActivity(true)}>
                             <AddRounded />

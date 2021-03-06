@@ -98,7 +98,7 @@ export default function Roles() {
                     <Button onClick={() => setAddRoleModal(true)}>Add Role</Button>
                     <Button onClick={() => setRoleManagement(true)}>Manage Roles</Button>
                 </Box>
-                <BasePaper>
+                <BasePaper  style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
                     <List>
                         {empsAndRoles &&
                             empsAndRoles.map((emp: any) => (
