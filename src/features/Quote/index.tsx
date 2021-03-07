@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button, Tabs, Tab, makeStyles } from "@material-ui/core";
 import { ColDef } from "@material-ui/data-grid";
+import AddRoundedIcon from '@material-ui/icons/AddRounded';
 
 import { INote, getAllModelNotes } from "../../api/note";
 import { IDocument, getAllModelDocuments } from "../../api/document";
@@ -17,6 +18,7 @@ import DocumentModal from "../Modals/DocumentModals";
 import LineItemModal from "./LineItemModals";
 
 import AddQuoteModal from "./Modals";
+import { BasePaper } from "../../app/Paper";
 
 const useStyles = makeStyles({
     TabContainer: {
@@ -190,64 +192,75 @@ export default function QuotePanel() {
                 {msg}
             </Snack>
 
-            <Box display="flex" alignItems="center">
+            <Box display="flex" alignItems="center" style={{marginBottom:"5px"}}>
                 <Button onClick={() => setAddQ(true)}>Add Quote</Button>
-                <Button onClick={() => setConfirm(true)} disabled={!selectedQuote}>
-                    Delete Quote
-                </Button>
-                <Button onClick={() => setAddLineItem(true)} disabled={!selectedQuote} style={{ margin: "0 0.5em" }}>
-                    Add Line item
-                </Button>
-                <Button onClick={() => setAddNote(true)} disabled={!selectedQuote} style={{ marginRight: "0.5em" }}>
-                    Add Note
-                </Button>
-                <Button onClick={() => setAddDoc(true)} disabled={!selectedQuote}>
-                    Add Document
-                </Button>
+                {
+                    selectedQuote ? (
+                        <div>
+                            <Button onClick={() => setConfirm(true)} disabled={!selectedQuote}>
+                                Delete Quote
+                             </Button>
+                            <Button onClick={() => setAddLineItem(true)} disabled={!selectedQuote} style={{ margin: "0 0.5em" }}>
+                                Add Line item
+                             </Button>
+                            <Button onClick={() => setAddNote(true)} disabled={!selectedQuote} style={{ marginRight: "0.5em" }}>
+                                Add Note
+                             </Button>
+                            <Button style={{backgroundColor:"#1a73e8",color:"#fff",marginLeft:"5px"}} onClick={() => setAddDoc(true)} disabled={!selectedQuote}>
+                                <AddRoundedIcon/>
+                                Add Document
+                            </Button>
+                        </div>
+                    ) :
+                        null
+                }
                 <div style={{ flexGrow: 1 }} />
+
+            </Box>
+            <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="List" />
                     <Tab label="Details" disabled={!selectedQuote} />
                 </Tabs>
-            </Box>
-            <Box className={classes.TabContainer}>
-                {activeTab === 0 && (
-                    <BaseDataGrid
-                        cols={quoteCols}
-                        rows={quotes}
-                        onRowSelected={(d) => {
-                            setSelectedQuote(d);
-                            setActiveTab(1);
-                        }}
-                    />
-                )}
-                {activeTab === 1 && selectedQuote && (
-                    <EditTab
-                        onLISelected={(d) => {
-                            setSelectedLI(d);
-                            setEditLineItem(true);
-                        }}
-                        onNoteSelected={(d) => {
-                            setSelectedNote(d);
-                            setEditNote(true);
-                        }}
-                        onDocSelected={(d) => {
-                            setSelectedDocs(d);
-                            setEditDoc(true);
-                        }}
-                        activities={activities}
-                        notes={notes}
-                        docs={docs}
-                        lineItems={lineItems}
-                        onDone={() => {
-                            setShowSnack(true);
-                            setMsg("Record updated");
-                            refreshQuotes();
-                        }}
-                        selectedQuote={selectedQuote}
-                    />
-                )}
-            </Box>
+                <Box className={classes.TabContainer}>
+                    {activeTab === 0 && (
+                        <BaseDataGrid
+                            cols={quoteCols}
+                            rows={quotes}
+                            onRowSelected={(d) => {
+                                setSelectedQuote(d);
+                                setActiveTab(1);
+                            }}
+                        />
+                    )}
+                    {activeTab === 1 && selectedQuote && (
+                        <EditTab
+                            onLISelected={(d) => {
+                                setSelectedLI(d);
+                                setEditLineItem(true);
+                            }}
+                            onNoteSelected={(d) => {
+                                setSelectedNote(d);
+                                setEditNote(true);
+                            }}
+                            onDocSelected={(d) => {
+                                setSelectedDocs(d);
+                                setEditDoc(true);
+                            }}
+                            activities={activities}
+                            notes={notes}
+                            docs={docs}
+                            lineItems={lineItems}
+                            onDone={() => {
+                                setShowSnack(true);
+                                setMsg("Record updated");
+                                refreshQuotes();
+                            }}
+                            selectedQuote={selectedQuote}
+                        />
+                    )}
+                </Box>
+            </BasePaper>
         </div>
     );
 }

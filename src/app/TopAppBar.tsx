@@ -51,7 +51,7 @@ export const TopAppBar = ({ drawerWidth }: { drawerWidth?: number }) => {
                 </Button>
                 <Button size="small" className={classes.btn}>
                     <TvRounded style={{ marginRight: 3 }} />
-                    Phasyfy
+                    Phazify
                     <ArrowDropDownRounded />
                 </Button>
             </Toolbar>

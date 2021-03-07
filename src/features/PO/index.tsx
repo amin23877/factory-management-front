@@ -4,6 +4,7 @@ import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { ColDef } from "@material-ui/data-grid";
+import AddRoundedIcon from '@material-ui/icons/AddRounded';
 
 import { getPO, deletePO, IPO } from "../../api/po";
 import { getAllModelNotes } from "../../api/note";
@@ -17,6 +18,7 @@ import Button from "../../app/Button";
 
 import Details from "./Details";
 import AddPOModal from "./AddPoModal";
+import { BasePaper } from "../../app/Paper";
 
 
 export default function POPanel() {
@@ -135,40 +137,43 @@ export default function POPanel() {
                     Delete PO
                 </Button>
                 {activeTab === 1 && <Button onClick={() => setNoteModal(true)}>Add note</Button>}
-                {activeTab === 1 && <Button onClick={() => setDocModal(true)}>Add document</Button>}
-                <div style={{ flexGrow: 1 }} />
-                <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                {activeTab === 1 && <Button style={{backgroundColor:"#1a73e8",color:"#fff",marginLeft:"5px"}} onClick={() => setDocModal(true)}> <AddRoundedIcon/> Add document</Button>}
+            
+               
+            </Box>
+            <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
+            <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)} style={{marginBottom:"10px"}}>
                     <Tab label="Overview" />
                     <Tab label="Details" disabled={!selectedPO} />
                 </Tabs>
-            </Box>
             {activeTab === 0 && (
                 <BaseDataGrid
-                    rows={pos}
-                    cols={poCols}
-                    onRowSelected={(d) => {
-                        setSelectedPO(d);
-                        setActiveTab(1);
-                        console.log(d);
-                    }}
+                rows={pos}
+                cols={poCols}
+                onRowSelected={(d) => {
+                    setSelectedPO(d);
+                    setActiveTab(1);
+                    console.log(d);
+                }}
                 />
-            )}
+                )}
             {activeTab === 1 && selectedPO && (
                 <Details
-                    poData={selectedPO}
-                    onDone={refreshPOs}
-                    onNoteSelected={(d) => {
-                        setSelectedNote(d);
-                        setNoteModal(true);
-                    }}
-                    onDocSelected={(d) => {
-                        setSelectedDoc(d);
-                        setDocModal(true);
-                    }}
-                    notes={notes}
-                    docs={docs}
+                poData={selectedPO}
+                onDone={refreshPOs}
+                onNoteSelected={(d) => {
+                    setSelectedNote(d);
+                    setNoteModal(true);
+                }}
+                onDocSelected={(d) => {
+                    setSelectedDoc(d);
+                    setDocModal(true);
+                }}
+                notes={notes}
+                docs={docs}
                 />
-            )}
+                )}
+                </BasePaper>
         </Box>
     );
 }

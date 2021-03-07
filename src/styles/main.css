@@ -25,3 +25,13 @@
     color:#fff !important;
     font-weight: 500;
 }
+
+.UpDownPNG{
+    box-sizing: border-box;
+    background-image: url("../assets/updown.png");
+    width: 150px;
+    height: 150px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

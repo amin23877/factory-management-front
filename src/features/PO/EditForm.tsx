@@ -15,6 +15,9 @@ import { getContacts } from "../../api/contact";
 import { getClients } from "../../api/client";
 import { getAllEmployees } from "../../api/employee";
 import { getProjects } from "../../api/project";
+import '../../styles/main.css'
+import uploadpng from '../../assets/bx-cloud-upload.png'
+import downloadpng from '../../assets/bx-cloud-download.png'
 
 export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () => void }) {
     const [snack, setSnack] = useState(false);
@@ -53,110 +56,145 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                 >
                     {({ values, handleChange, handleBlur, errors, touched, setFieldValue }) => (
                         <Form>
-                            <Box display="flex" justifyContent="space-between">
-                                <Box display="flex" flexDirection="column" justifyContent="center" alignItems="center" mr={2}>
-                                    <input
-                                        hidden
-                                        type="file"
-                                        name="file"
-                                        ref={(e) => (uploader.current = e)}
-                                        onChange={(e: any) => e.target.files && setFieldValue("file", e.target.files[0])}
-                                    />
-                                    <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={() => uploader.current?.click()}
-                                    style={{
-                                        margin: "0.5em 0",
-                                        backgroundColor: "#fff",
-                                        color: " rgb(43,140,255) ",
-                                        border: "1px solid rgb(43,140,255) ",
-                                        width: "80%"
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                <div style={{ width: "79%" }}>
+                                    <Box display="flex" justifyContent="space-between">
+
+
+
+
+                                        <TextField
+                                            disabled
+                                            name="number"
+                                            label="number"
+                                            value={values.number}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            error={Boolean(errors.number && touched.number)}
+                                            helperText={errors.number}
+                                            style={{ flex: 1 }}
+                                        />
+                                        <FieldSelect
+                                            label="Client"
+                                            name="ClientId"
+                                            request={getClients}
+                                            itemTitleField="name"
+                                            itemValueField="id"
+                                            value={values.ClientId}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            error={Boolean(errors.ClientId && touched.ClientId)}
+                                            style={{ flex: 1 }}
+                                        />
+                                        <FieldSelect
+                                            label="Employee"
+                                            name="EmployeeId"
+                                            request={getAllEmployees}
+                                            itemTitleField="username"
+                                            itemValueField="id"
+                                            value={values.EmployeeId}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            error={Boolean(errors.EmployeeId && touched.EmployeeId)}
+                                            style={{ flex: 1 }}
+                                        />
+                                    </Box>
+                                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                                        <FieldSelect
+                                            label="Contact"
+                                            name="ContactId"
+                                            request={getContacts}
+                                            itemTitleField="lastName"
+                                            itemValueField="id"
+                                            value={values.ContactId}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            error={Boolean(errors.ContactId && touched.ContactId)}
+                                            style={{ flex: 1, }}
+                                        />
+                                        <FieldSelect
+                                            label="Project"
+                                            name="ProjectId"
+                                            request={getProjects}
+                                            itemTitleField="name"
+                                            itemValueField="id"
+                                            value={values.ProjectId}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            error={Boolean(errors.ProjectId && touched.ProjectId)}
+                                            style={{ flex: 1, }}
+                                        />
+
+
+
+                                        <FieldSelect
+                                            style={{ flex: 1 }}
+                                            request={getAllEmployees}
+                                            itemTitleField="username"
+                                            itemValueField="id"
+                                            label="Reciever"
+                                            name="reciever"
+                                            value={values.reciever}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            error={Boolean(errors.reciever && touched.reciever)}
+                                        />
+
+
+
+
+
+                                    </Box>
+                                    <div style={{width:"100%",display:"flex",justifyContent:"center"}}>
+
+                                        <Button type="submit" kind="edit" style={{ marginTop: "1em" ,width:"20%"}}>
+                                            Edit
+                                            </Button>
+                                    </div>
+
+                                </div>
+                                <div style={{
+                                    width: "19%",
+                                    height: "150px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                    flexDirection: "column",
+                                    alignItems: "center",
+                                    paddingBottom:"20px"
+                                }}>
+                                    <div style={{
+
                                     }}
-                                >
-                                    <PhotoSizeSelectActualOutlinedIcon style={{ marginRight: "7px" }} />
+                                        className="UpDownPNG">
+
+                                    </div>
+                                    <Box display="flex" style={{ width: "100%" }} justifyContent="space-evenly" alignItems="center" mr={2}>
+                                        <input
+                                            hidden
+                                            type="file"
+                                            name="file"
+                                            ref={(e) => (uploader.current = e)}
+                                            onChange={(e: any) => e.target.files && setFieldValue("file", e.target.files[0])}
+                                        />
+                                        <Link
+                                            onClick={() => uploader.current?.click()}
+                                            style={{
+                                                margin: "0.5em 0",
+                                                backgroundColor: "#fff",
+                                                color: " #486cff "
+                                            }}
+                                        >
+                                            <img src={uploadpng} style={{ width: "14px", height: "12px" }} />
                                     upload
-                                </Button>
-                                    <Link download href={poData.path}>
-                                        Download file
+                                </Link>
+                                        <Link download href={poData.path} style={{}}>
+                                            <img src={downloadpng} style={{ width: "14px", height: "12px", display: "inline" }} />
+                                            Download
                                     </Link>
-                                </Box>
-                                <TextField
-                                    disabled
-                                    name="number"
-                                    label="number"
-                                    value={values.number}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.number && touched.number)}
-                                    helperText={errors.number}
-                                    style={{ flex: 1 }}
-                                />
-                                <FieldSelect
-                                    label="Client"
-                                    name="ClientId"
-                                    request={getClients}
-                                    itemTitleField="name"
-                                    itemValueField="id"
-                                    value={values.ClientId}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.ClientId && touched.ClientId)}
-                                    style={{ flex: 1 }}
-                                />
-                                <FieldSelect
-                                    label="Employee"
-                                    name="EmployeeId"
-                                    request={getAllEmployees}
-                                    itemTitleField="username"
-                                    itemValueField="id"
-                                    value={values.EmployeeId}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.EmployeeId && touched.EmployeeId)}
-                                    style={{ flex: 1 }}
-                                />
-                            </Box>
-                            <Box display="flex" justifyContent="space-between" alignItems="center">
-                                <FieldSelect
-                                    label="Contact"
-                                    name="ContactId"
-                                    request={getContacts}
-                                    itemTitleField="lastName"
-                                    itemValueField="id"
-                                    value={values.ContactId}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.ContactId && touched.ContactId)}
-                                    style={{ flex: 1 }}
-                                />
-                                <FieldSelect
-                                    label="Project"
-                                    name="ProjectId"
-                                    request={getProjects}
-                                    itemTitleField="name"
-                                    itemValueField="id"
-                                    value={values.ProjectId}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.ProjectId && touched.ProjectId)}
-                                    style={{ flex: 1 }}
-                                />
-                                <FieldSelect
-                                    request={getAllEmployees}
-                                    itemTitleField="username"
-                                    itemValueField="id"
-                                    label="Reciever"
-                                    name="reciever"
-                                    value={values.reciever}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.reciever && touched.reciever)}
-                                />
-                                <Button type="submit" kind="edit" style={{ marginTop: "1em" }}>
-                                    Edit
-                                </Button>
-                            </Box>
+
+                                    </Box>
+                                </div>
+                            </div>
                         </Form>
                     )}
                 </Formik>
