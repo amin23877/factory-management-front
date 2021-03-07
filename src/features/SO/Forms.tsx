@@ -33,7 +33,7 @@ export const GeneralForm = ({
         if (selectedQuote) {
             getQuoteById(selectedQuote)
                 .then((d) => {
-                    console.log(d);
+                    // console.log(d);
                     const {
                         location,
                         leadTime,
@@ -194,7 +194,7 @@ export const ShippingForm = ({
                     />
                 </div>
                 <FieldSelect
-                    value={values.shippingAddress}
+                    value={values.shippingAddress ? values.shippingAddress : ""}
                     name="shippingAddress"
                     request={getAddresses}
                     itemTitleField="address"
@@ -206,7 +206,7 @@ export const ShippingForm = ({
                     fullWidth
                 />
                 <FieldSelect
-                    value={values.shippingContact}
+                    value={values.shippingContact ? values.shippingContact : ""}
                     request={getContacts}
                     itemTitleField="lastName"
                     itemValueField="id"
@@ -217,7 +217,7 @@ export const ShippingForm = ({
                     fullWidth
                 />
                 <FieldSelect
-                    value={values.shippingPhone}
+                    value={values.shippingPhone ? values.shippingPhone : ""}
                     request={getPhones}
                     itemTitleField="phone"
                     itemValueField="id"
@@ -228,7 +228,7 @@ export const ShippingForm = ({
                     fullWidth
                 />
                 <FieldSelect
-                    value={values.shippingEmail}
+                    value={values.shippingEmail ? values.shippingEmail : ""}
                     request={getEmails}
                     itemTitleField="email"
                     itemValueField="id"
@@ -268,7 +268,7 @@ export const BillingTab = ({
         <Box m={1} id="billing">
             <Typography variant="h6">Billing</Typography>
             <FieldSelect
-                value={values.billingAddress}
+                value={values.billingAddress ? values.billingAddress : ""}
                 request={getAddresses}
                 itemTitleField="address"
                 itemValueField="id"
@@ -279,7 +279,7 @@ export const BillingTab = ({
                 fullWidth
             />
             <FieldSelect
-                value={values.billingContact}
+                value={values.billingContact ? values.billingContact : ""}
                 request={getContacts}
                 itemTitleField="lastName"
                 itemValueField="id"
@@ -290,7 +290,7 @@ export const BillingTab = ({
                 fullWidth
             />
             <FieldSelect
-                value={values.billingPhone}
+                value={values.billingPhone ? values.billingPhone : ""}
                 request={getPhones}
                 itemTitleField="phone"
                 itemValueField="id"
@@ -301,7 +301,7 @@ export const BillingTab = ({
                 fullWidth
             />
             <FieldSelect
-                value={values.billingEmail}
+                value={values.billingEmail ? values.billingEmail : ""}
                 request={getEmails}
                 itemTitleField="email"
                 itemValueField="id"
@@ -334,7 +334,7 @@ export const TermsTab = ({
     return (
         <Box m={1}>
             <FieldSelect
-                value={values.agency}
+                value={values.agency ? values.agency : ""}
                 request={getAllAgencies}
                 itemTitleField="name"
                 itemValueField="id"
@@ -345,7 +345,7 @@ export const TermsTab = ({
                 fullWidth
             />
             <FieldSelect
-                value={values.requester}
+                value={values.requester ? values.requester : ""}
                 request={getAllEmployees}
                 itemTitleField="username"
                 itemValueField="id"
@@ -356,7 +356,7 @@ export const TermsTab = ({
                 fullWidth
             />
             <FieldSelect
-                value={values.ClientId}
+                value={values.ClientId ? values.ClientId : ""}
                 request={getClients}
                 itemTitleField="name"
                 itemValueField="id"
@@ -367,7 +367,7 @@ export const TermsTab = ({
                 fullWidth
             />
             <FieldSelect
-                value={values.ProjectId}
+                value={values.ProjectId ? values.ProjectId : ""}
                 request={getProjects}
                 itemTitleField="name"
                 itemValueField="id"

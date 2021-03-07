@@ -37,8 +37,8 @@ export default function SalesOrderPanel() {
 
     const cols: ColDef[] = [
         { field: "number" },
-        { field: "Client", valueGetter: ({ data }) => data.Client.name },
-        { field: "Project", valueGetter: ({ data }) => data.Project.name },
+        { field: "Client", valueGetter: ({ data }) => (data.Client ? data.Client.name : "") },
+        { field: "Project", valueGetter: ({ data }) => (data.Project ? data.Project.name : "") },
     ];
 
     const refreshSo = async () => {
@@ -113,7 +113,6 @@ export default function SalesOrderPanel() {
 
     return (
         <Box m={1}>
-
             {selectedSO && selectedSO.id && (
                 <LineItemModal
                     open={lineItemModal}
@@ -186,7 +185,7 @@ export default function SalesOrderPanel() {
                     </>
                 )}
                 <div style={{ flexGrow: 1 }} />
-                <Tabs value={activeTab}  textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="Overview" />
                     <Tab label="Details" disabled={!selectedSO} />
                 </Tabs>
