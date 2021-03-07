@@ -1,6 +1,8 @@
 import React from "react";
 import { Box, makeStyles } from "@material-ui/core";
 import { DataGrid, RowData, ColDef } from "@material-ui/data-grid";
+import '../styles/datagrid.css';
+
 
 const useStyles = makeStyles({
     dataGridCont: {
