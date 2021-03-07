@@ -7,8 +7,6 @@ import '../styles/datagrid.css';
 const useStyles = makeStyles({
     dataGridCont: {
         width: "100%",
-        backgroundColor: "#fff",
-        border:"1px solid lightgray",
         borderRadius:8
     },
 });
