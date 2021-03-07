@@ -26,7 +26,7 @@ export const GeneralForm = ({
     return (
         <Box my={1} id="general">
             <Typography variant="h6">General</Typography>
-            {edit && <TextField label="number" value={values.number} style={{ width: "98.5%" }} disabled />}
+            {edit && <TextField label="number" value={values.number} style={{ width: "98.7%" }} disabled />}
             <Box display="flex" justifyContent="space-between">
                 <TextField
                     style={{ flex: 1 }}
@@ -69,33 +69,36 @@ export const GeneralForm = ({
                     fullWidth
                 />
             </Box>
+            <Box display="flex" justifyContent="space-between">
+
+                <FieldSelect
+                    style={{ flex: 1 }}
+                    value={values.salesperson}
+                    request={getAllEmployees}
+                    itemTitleField="username"
+                    itemValueField="id"
+                    keyField="id"
+                    name="salesperson"
+                    label="Sales person"
+                    onChange={handleChange}
+                    fullWidth
+                />
+                <FieldSelect
+                    style={{ flex: 1 }}
+                    value={values.requester}
+                    request={getContacts}
+                    itemTitleField="lastName"
+                    itemValueField="id"
+                    keyField="id"
+                    name="requester"
+                    label="Requester"
+                    onChange={handleChange}
+                    fullWidth
+                />
+            </Box>
 
             <FieldSelect
-                style={{ width: "98.5%" }}
-                value={values.salesperson}
-                request={getAllEmployees}
-                itemTitleField="username"
-                itemValueField="id"
-                keyField="id"
-                name="salesperson"
-                label="Sales person"
-                onChange={handleChange}
-                fullWidth
-            />
-            <FieldSelect
-                style={{ width: "98.5%" }}
-                value={values.requester}
-                request={getContacts}
-                itemTitleField="lastName"
-                itemValueField="id"
-                keyField="id"
-                name="requester"
-                label="Requester"
-                onChange={handleChange}
-                fullWidth
-            />
-            <FieldSelect
-                style={{ width: "98.5%" }}
+                style={{ width: "98.7%" }}
                 value={values.client}
                 request={getClients}
                 itemTitleField="name"
@@ -105,14 +108,15 @@ export const GeneralForm = ({
                 onChange={handleChange}
                 fullWidth
             />
-
             <FormControl style={{ margin: "0.5em" }}>
                 <FormLabel>No tax</FormLabel>
-                <RadioGroup value={String(values.noTaxClient)} name="noTaxClient" onChange={handleChange} style={{ flexDirection: "row" }}>
+                <RadioGroup row value={String(values.noTaxClient)} name="noTaxClient" onChange={handleChange} style={{ flexDirection: "row" }}>
                     <FormControlLabel control={<Radio />} label="Yes" value="true" />
                     <FormControlLabel control={<Radio />} label="No" value="false" />
                 </RadioGroup>
             </FormControl>
+
+
         </Box>
     );
 };
@@ -128,8 +132,9 @@ export const ShippingTab = ({
 }) => {
     return (
         <Box my={1} id="shipping">
-            <Typography variant="h6" style={{margin:"15px",marginLeft:"0px"}}>Shipping</Typography>
+            <Typography variant="h6" style={{ margin: "15px", marginLeft: "0px" }}>Shipping</Typography>
             <FieldSelect
+               
                 value={values.shippingAddress}
                 name="shippingAddress"
                 request={getAddresses}
@@ -139,8 +144,9 @@ export const ShippingTab = ({
                 label="Shipping Address"
                 onChange={handleChange}
                 fullWidth
-            />
+                />
             <FieldSelect
+                
                 value={values.shippingContact}
                 request={getContacts}
                 itemTitleField="lastName"
@@ -150,7 +156,8 @@ export const ShippingTab = ({
                 label="Shipping Contact"
                 onChange={handleChange}
                 fullWidth
-            />
+                />
+               
             <FieldSelect
                 value={values.shippingPhone}
                 request={getPhones}
@@ -200,7 +207,7 @@ export const BillingTab = ({
 }) => {
     return (
         <Box my={1} id="billing">
-            <Typography variant="h6" style={{margin:"15px",marginLeft:"0px"}}>Billing</Typography>
+            <Typography variant="h6" style={{ margin: "15px", marginLeft: "0px" }}>Billing</Typography>
             <FieldSelect
                 value={values.billingAddress}
                 request={getAddresses}
@@ -267,7 +274,7 @@ export const TermsTab = ({
 }) => {
     return (
         <Box my={1} id="terms">
-            <Typography variant="h6" style={{margin:"15px",marginLeft:"0px"}}>Terms</Typography>
+            <Typography variant="h6" style={{ margin: "15px", marginLeft: "0px" }}>Terms</Typography>
             <TextField
                 style={{ width: "100%" }}
                 value={values.department}
@@ -338,7 +345,7 @@ export const DepositTab = ({
 }) => {
     return (
         <Box my={1} id="deposit">
-            <Typography variant="h6" style={{margin:"15px",marginLeft:"0px"}}>Deposit</Typography>
+            <Typography variant="h6" style={{ margin: "15px", marginLeft: "0px" }}>Deposit</Typography>
             <TextField
                 style={{ width: "100%" }}
                 value={values.deposit}
@@ -386,7 +393,7 @@ export const CommissionTab = ({
 }) => {
     return (
         <Box my={1} id="commission">
-            <Typography variant="h6" style={{margin:"15px",marginLeft:"0px"}}>Ship date and Commission</Typography>
+            <Typography variant="h6" style={{ margin: "15px", marginLeft: "0px" }}>Ship date and Commission</Typography>
             <TextField
                 style={{ width: "100%" }}
                 value={values.estimatedShipDate.substr(0, 10)}

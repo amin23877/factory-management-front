@@ -24,7 +24,7 @@ export default function AddQuoteModal({ open, onClose, onDone }: { open: boolean
     };
 
     return (
-        <Dialog open={open} onClose={onClose} fullWidth maxWidth="md">
+        <Dialog open={open} onClose={onClose} maxWidth="lg">
             <DialogTitle>Add new Quote</DialogTitle>
             <Box m={1}>
                 <Formik initialValues={QuoteInit} onSubmit={handleSubmit}>
@@ -34,7 +34,7 @@ export default function AddQuoteModal({ open, onClose, onDone }: { open: boolean
                                 <Box flex={1} mx={2}>
                                     <GeneralForm values={values} handleBlur={handleBlur} handleChange={handleChange} />
                                 </Box>
-                                <Box flex={1} m={1}>
+                                <Box flex={1} m={1} style={{maxWidth:"403px"}}>
                                     <Tabs
                                         value={activeTab}
                                         onChange={(e, nv) => setActiveTab(nv)}
