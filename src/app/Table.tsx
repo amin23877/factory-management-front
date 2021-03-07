@@ -14,11 +14,11 @@ export const BaseTable = ({ tableHeads, tableRows }: { tableHeads: string[]; tab
                         ))}
                     </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody style={{borderBottom:"none"}}>
                     {tableRows.map((tr: string[], i: number) => (
-                        <TableRow key={i}>
+                        <TableRow style={{borderBottom:"none"}} key={i}>
                             {tr.map((item: string) => (
-                                <TableCell key={item}>{item}</TableCell>
+                                <TableCell style={{borderBottom:"none"}} key={item}>{item}</TableCell>
                             ))}
                         </TableRow>
                     ))}

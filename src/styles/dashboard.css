@@ -1,6 +1,11 @@
 body{
     background-image: url("../assets/background.png");
     z-index: -3;
+    height: 100vh;
+    background-position:bottom;
+    background-repeat: no-repeat;
+    background-size: cover;
+
 }
 body .Homebg{
     position: absolute;
