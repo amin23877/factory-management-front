@@ -101,49 +101,62 @@ export const GeneralForm = ({
     return (
         <Box m={1}>
             <Typography variant="h6">General</Typography>
-            <TextField value={values.number} name="number" label="number" onChange={handleChange} onBlur={handleBlur} />
-            <FieldSelect
-                value={values.quotenumber}
-                name="quotenumber"
-                label="quotenumber"
-                request={getQuotes}
-                itemTitleField="number"
-                itemValueField="id"
-                onChange={(e) => {
-                    setSelectedQuote(e.target.value as number);
-                    handleChange(e);
-                }}
-                onBlur={handleBlur}
-            />
-            <TextField value={values.location} name="location" label="location" onChange={handleChange} onBlur={handleBlur} fullWidth />
-            <TextField value={values.leadTime} name="leadTime" label="leadTime" onChange={handleChange} onBlur={handleBlur} fullWidth />
-            <TextField
-                value={values.freightTerms}
-                name="freightTerms"
-                label="freightTerms"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                fullWidth
-            />
-            <TextField
-                value={values.paymentTerms}
-                name="paymentTerms"
-                label="paymentTerms"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                fullWidth
-            />
-            <TextField value={values.carrier} name="carrier" label="carrier" onChange={handleChange} onBlur={handleBlur} fullWidth />
+            <div style={{ width: "100%", display: "flex" }}>
 
-            <ArraySelect
-                style={{ flex: 1 }}
-                value={values.status}
-                name="status"
-                label="Status"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                items={["New", "Pending", "Fulfiled"]}
-            />
+                <TextField style={{ flex: 1 }} value={values.number} name="number" label="number" onChange={handleChange} onBlur={handleBlur} />
+
+                <TextField style={{ flex: 1 }} value={values.location} name="location" label="location" onChange={handleChange} onBlur={handleBlur} fullWidth />
+            </div>
+            <div style={{ width: "100%", display: "flex" }}>
+
+                <TextField style={{ flex: 1 }} value={values.leadTime} name="leadTime" label="leadTime" onChange={handleChange} onBlur={handleBlur} fullWidth />
+                <TextField style={{ flex: 1 }}
+                    value={values.freightTerms}
+                    name="freightTerms"
+                    label="freightTerms"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    fullWidth
+                />
+            </div>
+            <div style={{ width: "100%", display: "flex" }}>
+
+                <TextField style={{ flex: 1 }}
+                    value={values.paymentTerms}
+                    name="paymentTerms"
+                    label="paymentTerms"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    fullWidth
+                />
+                <TextField style={{ flex: 1 }} value={values.carrier} name="carrier" label="carrier" onChange={handleChange} onBlur={handleBlur} fullWidth />
+            </div>
+        
+
+                <FieldSelect
+                    style={{ flex: 1 , width:"98.5%" }}
+                    value={values.quotenumber}
+                    name="quotenumber"
+                    label="quotenumber"
+                    request={getQuotes}
+                    itemTitleField="number"
+                    itemValueField="id"
+                    onChange={(e) => {
+                        setSelectedQuote(e.target.value as number);
+                        handleChange(e);
+                    }}
+                    onBlur={handleBlur}
+                />
+                <ArraySelect
+                    style={{ flex: 1, width:"98.5%" }}
+                    value={values.status}
+                    name="status"
+                    label="Status"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    items={["New", "Pending", "Fulfiled"]}
+                />
+
 
             <FormControlLabel
                 style={{ marginLeft: "5px" }}
@@ -194,6 +207,7 @@ export const ShippingForm = ({
                     />
                 </div>
                 <FieldSelect
+                style={{width:"98.5%"}}
                     value={values.shippingAddress}
                     name="shippingAddress"
                     request={getAddresses}
@@ -206,6 +220,7 @@ export const ShippingForm = ({
                     fullWidth
                 />
                 <FieldSelect
+                style={{width:"98.5%"}}
                     value={values.shippingContact}
                     request={getContacts}
                     itemTitleField="lastName"
@@ -217,6 +232,7 @@ export const ShippingForm = ({
                     fullWidth
                 />
                 <FieldSelect
+                style={{width:"98.5%"}}
                     value={values.shippingPhone}
                     request={getPhones}
                     itemTitleField="phone"
@@ -228,6 +244,7 @@ export const ShippingForm = ({
                     fullWidth
                 />
                 <FieldSelect
+                style={{width:"98.5%"}}
                     value={values.shippingEmail}
                     request={getEmails}
                     itemTitleField="email"
