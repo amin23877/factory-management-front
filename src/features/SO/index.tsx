@@ -17,6 +17,8 @@ import BaseDataGrid from "../../app/BaseDataGrid";
 import { deleteSO, getSO, getLineItems, ISO } from "../../api/so";
 import { getAllModelNotes } from "../../api/note";
 import { getAllModelDocuments } from "../../api/document";
+import { BasePaper } from "../../app/Paper";
+import AddRoundedIcon from "@material-ui/icons/AddRounded";
 
 export default function SalesOrderPanel() {
     const [activeTab, setActiveTab] = useState(0);
@@ -175,55 +177,59 @@ export default function SalesOrderPanel() {
                             Add Note
                         </Button>
                         <Button
+                            style={{ backgroundColor: "#1a73e8", color: "#fff", marginLeft: "5px" }}
                             onClick={() => {
                                 setSelectedDoc(undefined);
                                 setDocModal(true);
                             }}
                         >
+                            <AddRoundedIcon />
                             Add Document
                         </Button>
                     </>
                 )}
                 <div style={{ flexGrow: 1 }} />
-                <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+            </Box>
+            <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
+                <Tabs style={{ marginBottom: "10px" }} value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="Overview" />
                     <Tab label="Details" disabled={!selectedSO} />
                 </Tabs>
-            </Box>
-            {activeTab === 0 && (
-                <BaseDataGrid
-                    cols={cols}
-                    rows={sos}
-                    onRowSelected={(d) => {
-                        console.log(d);
-                        setSelectedSO(d);
-                        setActiveTab(1);
-                    }}
-                />
-            )}
-            {activeTab === 1 && selectedSO && (
-                <EditTab
-                    selectedSo={selectedSO}
-                    onDone={refreshSo}
-                    notes={notes}
-                    docs={docs}
-                    lineItems={lineItems}
-                    onLineItemSelected={(d) => {
-                        console.log(d);
+                {activeTab === 0 && (
+                    <BaseDataGrid
+                        cols={cols}
+                        rows={sos}
+                        onRowSelected={(d) => {
+                            console.log(d);
+                            setSelectedSO(d);
+                            setActiveTab(1);
+                        }}
+                    />
+                )}
+                {activeTab === 1 && selectedSO && (
+                    <EditTab
+                        selectedSo={selectedSO}
+                        onDone={refreshSo}
+                        notes={notes}
+                        docs={docs}
+                        lineItems={lineItems}
+                        onLineItemSelected={(d) => {
+                            console.log(d);
 
-                        setSelectedLI(d);
-                        setLineItemModal(true);
-                    }}
-                    onNoteSelected={(d) => {
-                        setSelectedNote(d);
-                        setNoteModal(true);
-                    }}
-                    onDocSelected={(d) => {
-                        setSelectedDoc(d);
-                        setDocModal(true);
-                    }}
-                />
-            )}
+                            setSelectedLI(d);
+                            setLineItemModal(true);
+                        }}
+                        onNoteSelected={(d) => {
+                            setSelectedNote(d);
+                            setNoteModal(true);
+                        }}
+                        onDocSelected={(d) => {
+                            setSelectedDoc(d);
+                            setDocModal(true);
+                        }}
+                    />
+                )}
+            </BasePaper>
         </Box>
     );
 }

@@ -101,8 +101,69 @@ export const GeneralForm = ({
     return (
         <Box m={1}>
             <Typography variant="h6">General</Typography>
-            <TextField value={values.number} name="number" label="number" onChange={handleChange} onBlur={handleBlur} />
+            <div style={{ width: "100%", display: "flex" }}>
+                <TextField
+                    style={{ flex: 1 }}
+                    value={values.number}
+                    name="number"
+                    label="number"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+
+                <TextField
+                    style={{ flex: 1 }}
+                    value={values.location}
+                    name="location"
+                    label="location"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    fullWidth
+                />
+            </div>
+            <div style={{ width: "100%", display: "flex" }}>
+                <TextField
+                    style={{ flex: 1 }}
+                    value={values.leadTime}
+                    name="leadTime"
+                    label="leadTime"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    fullWidth
+                />
+                <TextField
+                    style={{ flex: 1 }}
+                    value={values.freightTerms}
+                    name="freightTerms"
+                    label="freightTerms"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    fullWidth
+                />
+            </div>
+            <div style={{ width: "100%", display: "flex" }}>
+                <TextField
+                    style={{ flex: 1 }}
+                    value={values.paymentTerms}
+                    name="paymentTerms"
+                    label="paymentTerms"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    fullWidth
+                />
+                <TextField
+                    style={{ flex: 1 }}
+                    value={values.carrier}
+                    name="carrier"
+                    label="carrier"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    fullWidth
+                />
+            </div>
+
             <FieldSelect
+                style={{ flex: 1, width: "98.5%" }}
                 value={values.quotenumber}
                 name="quotenumber"
                 label="quotenumber"
@@ -115,28 +176,8 @@ export const GeneralForm = ({
                 }}
                 onBlur={handleBlur}
             />
-            <TextField value={values.location} name="location" label="location" onChange={handleChange} onBlur={handleBlur} fullWidth />
-            <TextField value={values.leadTime} name="leadTime" label="leadTime" onChange={handleChange} onBlur={handleBlur} fullWidth />
-            <TextField
-                value={values.freightTerms}
-                name="freightTerms"
-                label="freightTerms"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                fullWidth
-            />
-            <TextField
-                value={values.paymentTerms}
-                name="paymentTerms"
-                label="paymentTerms"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                fullWidth
-            />
-            <TextField value={values.carrier} name="carrier" label="carrier" onChange={handleChange} onBlur={handleBlur} fullWidth />
-
             <ArraySelect
-                style={{ flex: 1 }}
+                style={{ flex: 1, width: "98.5%" }}
                 value={values.status}
                 name="status"
                 label="Status"

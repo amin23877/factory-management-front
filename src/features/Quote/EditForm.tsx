@@ -26,11 +26,11 @@ export default function EditForm({ selectedQuote, onDone }: { selectedQuote: IQu
         <Formik initialValues={selectedQuote} onSubmit={handleSubmit}>
             {({ handleChange, handleBlur, values, isSubmitting }) => (
                 <Form>
-                    <Box display="flex" m={1}>
-                        <Box flex={1} mx={2}>
+                    <Box display="flex" m={1} style={{justifyContent:"space-evenly"}}>
+                        <Box flex={1} mx={2} style={{maxWidth:"45%"}}>
                             <GeneralForm edit values={values} handleBlur={handleBlur} handleChange={handleChange} />
                         </Box>
-                        <Box flex={1} m={1}>
+                        <Box flex={1} m={1} style={{maxWidth:"403px"}}>
                             <Tabs
                                 value={activeTab}
                                 textColor="primary"

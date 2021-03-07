@@ -29,6 +29,9 @@ const useStyles = makeStyles({
             boxShadow: " rgba(149, 157, 165, 0.2) 0px 8px 24px",
             backgroundColor: "#fff",
         },
+        "& .MuiDataGrid-sortIcon": {
+            fill: "white",
+        },
     },
 });
 
@@ -69,7 +72,7 @@ export default function BaseDataGrid({ onRowSelected, rows, cols, height }: IBas
                     onRowSelected={(r) => {
                         onRowSelected(r.data);
                     }}
-                    columns={cols}
+                    columns={updatedCols}
                     rows={rows}
                 />
             </div>
