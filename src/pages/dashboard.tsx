@@ -16,7 +16,7 @@ export default function Dashboard() {
             <Box display="flex" alignItems="center" style={{ margin: "1em 0" }}>
                 <SearchBar />
                 <div style={{ flexGrow: 1 }} />
-                <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} style={{ height: "45px" }}>
+                <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} style={{ height: "40px" }}>
                     <MyTab label="Quote" />
                     <MyTab label="Sales" />
                     <MyTab label="Ship" />

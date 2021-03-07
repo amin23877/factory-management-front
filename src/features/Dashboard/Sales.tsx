@@ -26,7 +26,7 @@ const StatusCard = ({ title, value, icon }: { title: string; value: string; chil
 
     return (
         <Box m={1} display="inline-flex" flex={1} height={90}>
-            <BasePaper title="title" style={{ width: "100%" }} className={classes.statusCard}>
+            <BasePaper title="title" style={{ width: "100%" , boxShadow: "rgba(0, 0, 0, 0.2) 0px 10px 30px -10px"}} className={classes.statusCard}>
                 <Box display="flex" width="100%" alignItems="center">
                     <Box>
                         <img style={{ backgroundColor: "#f7f7fc", borderRadius: 200, padding: 8 }} src={icon} alt={title} />
