@@ -3,13 +3,14 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-import { ProvideAuth } from "./store";
+import { store } from "./store";
+import { Provider } from "react-redux";
 
 ReactDOM.render(
     <React.StrictMode>
-        <ProvideAuth>
+        <Provider store={store}>
             <App />
-        </ProvideAuth>
+        </Provider>
     </React.StrictMode>,
     document.getElementById("root")
 );

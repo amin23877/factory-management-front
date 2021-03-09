@@ -1,33 +1,29 @@
 import React, { useState } from "react";
-import { Drawer, Button, Checkbox, FormControlLabel, Typography, Box } from "@material-ui/core";
+import { Drawer, Button, Checkbox, FormControlLabel, Typography } from "@material-ui/core";
+import { useDispatch } from "react-redux";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
+import { loginThunk } from "../features/Session/sessionsSlice";
+
 import { Gradients } from "../theme";
 import TextField from "../app/TextField";
-import { useAuth } from "../store";
 
 import logo from "../assets/splogo.png";
+
 import "../styles/splash.css";
 
 export default function SplashScreen() {
     const [open, setOpen] = useState(true);
-    const auth = useAuth();
+    const dispatch = useDispatch();
 
     const schema = Yup.object().shape({
         username: Yup.string().required(),
         password: Yup.string().required().min(4),
     });
 
-    const handleSubmit = async (data: any, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
-        try {
-            const resp = await auth.Login(data);
-            if (resp) {
-                console.log(resp, auth);
-            }
-        } catch (error) {
-            console.log(error);
-        }
+    const handleSubmit = (data: any) => {
+        dispatch(loginThunk(data));
     };
 
     return (

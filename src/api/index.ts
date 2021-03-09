@@ -1,5 +1,14 @@
 import Axios from 'axios';
 
+export const StorageKey = "phocus_session";
+
+export const getToken = () => {
+    const emp = localStorage.getItem(StorageKey);
+    if (emp) {
+        return JSON.parse(emp).token;
+    }
+};
+
 export const baseGet = async (url:string, params?:string) => {
     try {
         const resp = await Axios.get(url, {params})

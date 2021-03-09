@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-import {getToken} from '../store';
+import {getToken} from './';
 
 export const BaseUrl = 'http://quizupp.ir:3100/api/';
 

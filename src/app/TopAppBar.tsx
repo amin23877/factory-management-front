@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import "../styles/main.css";
 
-import { useAuth } from "../store";
+import { useSession } from "../features/Session/sessionsSlice";
 
 const useStyles = makeStyles({
     container: {
@@ -26,7 +26,7 @@ const useStyles = makeStyles({
 export const TopAppBar = ({ drawerWidth }: { drawerWidth?: number }) => {
     const matches = useMediaQuery("(max-width: 960px)");
     const classes = useStyles();
-    const { employee } = useAuth();
+    const session = useSession();
 
     return (
         <AppBar
@@ -40,10 +40,9 @@ export const TopAppBar = ({ drawerWidth }: { drawerWidth?: number }) => {
         >
             <Toolbar className={classes.toolbar}>
                 <Button className={classes.btn}>
-                    <Avatar>{employee?.employee.username[0]}</Avatar>
+                    <Avatar>{session?.employee.username[0]}</Avatar>
                     <span style={{ textAlign: "left", marginLeft: 10 }}>
-                        <span style={{ fontSize: 12, fontWeight: 400, marginBottom: "auto" }}>{employee?.employee.username}</span>
-                        {/* <p style={{ fontSize: 10, margin: 0, padding: 0, fontWeight: 100 }}>Product manager</p> */}
+                        <span style={{ fontSize: 12, fontWeight: 400, marginBottom: "auto" }}>{session?.employee.username}</span>
                     </span>
                 </Button>
                 <div style={{ flexGrow: 1 }} />

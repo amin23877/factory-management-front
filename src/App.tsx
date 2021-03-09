@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, CssBaseline, ThemeProvider } from "@material-ui/core";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { theme } from "./theme";
 
-import "./styles/main.css";
+import { selectSession, getCurrentSession } from "./features/Session/sessionsSlice";
 
-import { useAuth } from "./store";
+import "./styles/main.css";
 
 import { TopAppBar } from "./app/TopAppBar";
 import MainNav from "./app/Drawer";
@@ -30,13 +31,18 @@ console.log(config.BaseUrl);
 function App() {
     const [isOpen, setIsOpen] = useState(true);
     const [drawerWidth, setDrawerWidth] = useState(220);
-    const auth = useAuth();
+    const session = useSelector(selectSession);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getCurrentSession());
+    }, []);
 
     return (
         <BrowserRouter>
             <ThemeProvider theme={theme}>
                 <CssBaseline />
-                {auth?.employee === null ? (
+                {session.session === null ? (
                     <SplashScreen />
                 ) : (
                     <div style={{ display: "flex" }}>
