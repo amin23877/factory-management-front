@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Select, SelectProps, FormControl, InputLabel, MenuItem } from "@material-ui/core";
-import { BootstrapInput } from "./TextField";
+import { BootstrapInput } from "../TextField";
+
+import styles from "./inputs.module.css";
 
 interface IOS extends SelectProps {
     items: any[];
@@ -10,7 +12,7 @@ interface IOS extends SelectProps {
 }
 export const ObjectSelect = ({ items, itemTitleField, itemValueField, keyField, ...props }: IOS) => {
     return (
-        <FormControl style={{ margin: "0.5em", minWidth: 243, ...props.style }} fullWidth={props.fullWidth}>
+        <FormControl className={styles.objectSelect} style={{ ...props.style }} fullWidth={props.fullWidth}>
             {props.label && (
                 <InputLabel shrink htmlFor="object-select">
                     {props.label}
@@ -67,7 +69,7 @@ export const BaseSelect = (props: SelectProps) => {
                     {props.label}
                 </InputLabel>
             )}
-            <Select style={{ minWidth: 150 }} name={props.name} input={<BootstrapInput />} {...props} labelId="base-select-label">
+            <Select className={styles.baseSelect} name={props.name} input={<BootstrapInput />} {...props} labelId="base-select-label">
                 {props.children}
             </Select>
         </FormControl>

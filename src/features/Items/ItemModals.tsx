@@ -135,9 +135,8 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
                         />
                     </Box>
 
-                    
                     <FormControl style={{ margin: "0.5em", display: "flex" }}>
-                        <FormLabel style={{ display: "inline" , marginRight:"auto" }}>Size</FormLabel>
+                        <FormLabel style={{ display: "inline", marginRight: "auto" }}>Size</FormLabel>
                         <RadioGroup row name="size" value={values.size} onChange={handleChange}>
                             <FormControlLabel value="small" control={<Radio />} label="Small" />
                             <FormControlLabel value="medium" control={<Radio />} label="Medium" />
@@ -145,7 +144,6 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
                         </RadioGroup>
                     </FormControl>
 
-                    
                     <Box display="flex" flexWrap="wrap" justifyContent="space-between">
                         {checks.map((check) => (
                             <FormControlLabel
@@ -160,7 +158,7 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
                     </Box>
 
                     <Box textAlign="center" my={2}>
-                        <Button type="submit" kind="add" disabled={isSubmitting} style={{width:"100%"}}>
+                        <Button type="submit" kind="add" disabled={isSubmitting} style={{ width: "100%" }}>
                             Add Item
                         </Button>
                     </Box>

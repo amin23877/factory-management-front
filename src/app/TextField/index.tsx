@@ -8,30 +8,12 @@ import Typography from "@material-ui/core/Typography";
 
 import { SearchRounded } from "@material-ui/icons";
 
-const useStyles = makeStyles({
-    searchBarRoot: {
-        height: "45px",
-        borderLeft: "3px solid rgb(43,140,255)",
-        borderRadius: "0px  4px 4px 0px",
-        width: "400px",
-        display: "flex",
-        alignItems: "center",
-        padding: "0px 3px",
-        backgroundColor: "white",
-        boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
-    },
-    sinput: {
-        flexGrow: 1,
-        padding: "0 0.5em",
-        boxSizing: "border-box",
-    },
-});
-export const SearchBar = () => {
-    const classes = useStyles();
+import styles from "./TextField.module.css";
 
+export const SearchBar = () => {
     return (
-        <div className={classes.searchBarRoot}>
-            <InputBase className={classes.sinput} placeholder="type the biller you want to pay here" />
+        <div className={styles.searchBarRoot}>
+            <InputBase className={styles.searchInput} placeholder="type the biller you want to pay here" />
             <SearchRounded htmlColor="gray" />
         </div>
     );

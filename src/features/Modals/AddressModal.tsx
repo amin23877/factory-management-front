@@ -37,25 +37,25 @@ export const AddressModal = ({
                     initialValues={
                         data?.id
                             ? {
-                                address: data.address,
-                                address2: data.address2,
-                                city: data.city,
-                                state: data.state,
-                                zip: data.zip,
-                                country: data.country,
-                                main: data.main,
-                                AddressTypeId: data?.AddressTypeId,
-                            }
+                                  address: data.address,
+                                  address2: data.address2,
+                                  city: data.city,
+                                  state: data.state,
+                                  zip: data.zip,
+                                  country: data.country,
+                                  main: data.main,
+                                  AddressTypeId: data?.AddressTypeId,
+                              }
                             : {
-                                address: "",
-                                address2: "",
-                                city: "",
-                                state: "",
-                                zip: "",
-                                country: "",
-                                main: false,
-                                AddressTypeId: 0,
-                            }
+                                  address: "",
+                                  address2: "",
+                                  city: "",
+                                  state: "",
+                                  zip: "",
+                                  country: "",
+                                  main: false,
+                                  AddressTypeId: 0,
+                              }
                     }
                     validationSchema={schema}
                     onSubmit={(values, { setSubmitting }) => {
@@ -81,8 +81,8 @@ export const AddressModal = ({
                     }}
                 >
                     {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
-                        <Form >
-                            <div style={{display:"flex",width:"100%"}}>
+                        <Form>
+                            <div style={{ display: "flex", width: "100%" }}>
                                 <TextField
                                     style={{ flex: 1 }}
                                     name="address"
@@ -106,56 +106,56 @@ export const AddressModal = ({
                                     fullWidth
                                 />
                             </div>
-                            <div style={{display:"flex",width:"100%"}}>
-                            <TextField
-                                style={{ flex: 1 }}
-                                name="city"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                error={Boolean(errors.city && touched.city)}
-                                helperText={errors.city && touched.city}
-                                value={values.city}
-                                label="city"
-                                fullWidth
-                            />
-                            <TextField
-                                style={{ flex: 1 }}
-                                name="state"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                error={Boolean(errors.state && touched.state)}
-                                helperText={errors.state && touched.state}
-                                value={values.state}
-                                label="state"
-                                fullWidth
-                            />
+                            <div style={{ display: "flex", width: "100%" }}>
+                                <TextField
+                                    style={{ flex: 1 }}
+                                    name="city"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.city && touched.city)}
+                                    helperText={errors.city && touched.city}
+                                    value={values.city}
+                                    label="city"
+                                    fullWidth
+                                />
+                                <TextField
+                                    style={{ flex: 1 }}
+                                    name="state"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.state && touched.state)}
+                                    helperText={errors.state && touched.state}
+                                    value={values.state}
+                                    label="state"
+                                    fullWidth
+                                />
                             </div>
-                            <div style={{display:"flex",width:"100%"}}>
-                            <TextField
-                                style={{ flex: 1 }}
-                                name="zip"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                error={Boolean(errors.zip && touched.zip)}
-                                helperText={errors.zip && touched.zip}
-                                value={values.zip}
-                                label="zip"
-                                fullWidth
-                            />
-                            <TextField
-                                style={{ flex: 1 }}
-                                name="country"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                error={Boolean(errors.country && touched.country)}
-                                helperText={errors.country && touched.country}
-                                value={values.country}
-                                label="country"
-                                fullWidth
-                            />
+                            <div style={{ display: "flex", width: "100%" }}>
+                                <TextField
+                                    style={{ flex: 1 }}
+                                    name="zip"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.zip && touched.zip)}
+                                    helperText={errors.zip && touched.zip}
+                                    value={values.zip}
+                                    label="zip"
+                                    fullWidth
+                                />
+                                <TextField
+                                    style={{ flex: 1 }}
+                                    name="country"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.country && touched.country)}
+                                    helperText={errors.country && touched.country}
+                                    value={values.country}
+                                    label="country"
+                                    fullWidth
+                                />
                             </div>
                             <FieldSelect
-                                style={{ width:"99%"}}
+                                style={{ width: "99%" }}
                                 label="Address type"
                                 request={getAddressTypes}
                                 itemTitleField="name"
@@ -168,7 +168,7 @@ export const AddressModal = ({
 
                             <FormControl fullWidth style={{ margin: "0.5em" }}>
                                 <FormLabel>Main</FormLabel>
-                                <RadioGroup  row name="main" value={values.main} onChange={handleChange}>
+                                <RadioGroup row name="main" value={values.main} onChange={handleChange}>
                                     <FormControlLabel value="true" control={<Radio />} label="Yes" />
                                     <FormControlLabel value="false" control={<Radio />} label="No" />
                                 </RadioGroup>

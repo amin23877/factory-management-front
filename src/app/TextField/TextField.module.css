@@ -1,0 +1,17 @@
+.searchBarRoot {
+    height: 45px;
+    border-left: 3px solid rgb(43,140,255);
+    border-radius: 0 4px;
+    width: 400px;
+    display: flex;
+    align-items: center;
+    pad: 0 3px;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+}
+
+.searchInput {
+    flex-grow: 1;
+    padding: 0 0.5em;
+    box-sizing: border-box;
+}

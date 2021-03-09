@@ -18,7 +18,7 @@ import { getQuotes } from "../../api/quote";
 import { IActivity, createActivity, updateActivity } from "../../api/activity";
 import { baseGet } from "../../api";
 
-export default function AddActivityForm({ open,init, onDone }: {open?:boolean ; init: IActivity; onDone: () => void }) {
+export default function AddActivityForm({ open, init, onDone }: { open?: boolean; init: IActivity; onDone: () => void }) {
     const schema = Yup.object().shape({
         name: Yup.string().required(),
     });
@@ -41,26 +41,27 @@ export default function AddActivityForm({ open,init, onDone }: {open?:boolean ; 
         }
     };
 
-    const modalStyle= open ? {
-        display:"flex"
-    } : {
-        display:"inline"
-    }
-    const TFStyle= open ? {
-        flex:1
-    } : {
-        width:"243px"
-    }
-    
+    const modalStyle = open
+        ? {
+              display: "flex",
+          }
+        : {
+              display: "inline",
+          };
+    const TFStyle = open
+        ? {
+              flex: 1,
+          }
+        : {
+              width: "243px",
+          };
 
     return (
         <Formik initialValues={init} validationSchema={schema} onSubmit={handleSubmit}>
             {({ values, errors, touched, handleChange, handleBlur }) => (
                 <Form>
                     <Box>
-                        
                         <div style={modalStyle}>
-
                             <TextField
                                 style={TFStyle}
                                 error={Boolean(errors.name && touched.name)}
@@ -70,15 +71,34 @@ export default function AddActivityForm({ open,init, onDone }: {open?:boolean ; 
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
-                            <TextField style={TFStyle} name="subject" label="subject" value={values.subject} onChange={handleChange} onBlur={handleBlur} />
-                        </div> 
-                        <div style={modalStyle}>
-
-                            <TextField name="location" style={TFStyle} label="location" value={values.location} onChange={handleChange} onBlur={handleBlur} />
-                            <TextField name="notes" style={TFStyle} label="notes" value={values.notes} onChange={handleChange} onBlur={handleBlur} />
+                            <TextField
+                                style={TFStyle}
+                                name="subject"
+                                label="subject"
+                                value={values.subject}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
                         </div>
                         <div style={modalStyle}>
-
+                            <TextField
+                                name="location"
+                                style={TFStyle}
+                                label="location"
+                                value={values.location}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            <TextField
+                                name="notes"
+                                style={TFStyle}
+                                label="notes"
+                                value={values.notes}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                        </div>
+                        <div style={modalStyle}>
                             <TextField
                                 type="date"
                                 style={{ width: 243 }}
@@ -99,7 +119,6 @@ export default function AddActivityForm({ open,init, onDone }: {open?:boolean ; 
                             />
                         </div>
                         <div style={modalStyle}>
-
                             <FieldSelect
                                 request={getClients}
                                 itemTitleField="name"
@@ -123,7 +142,6 @@ export default function AddActivityForm({ open,init, onDone }: {open?:boolean ; 
                             />
                         </div>
                         <div style={modalStyle}>
-
                             <FieldSelect
                                 label="Project"
                                 name="ProjectId"
@@ -146,7 +164,6 @@ export default function AddActivityForm({ open,init, onDone }: {open?:boolean ; 
                             />
                         </div>
                         <div style={modalStyle}>
-
                             <FieldSelect
                                 label="Quote"
                                 name="QuoteId"
@@ -177,7 +194,6 @@ export default function AddActivityForm({ open,init, onDone }: {open?:boolean ; 
                             />
                         </div>
                         <div style={modalStyle}>
-
                             <FieldSelect
                                 label="ActivityStatusId"
                                 name="ActivityStatusId"
@@ -201,7 +217,6 @@ export default function AddActivityForm({ open,init, onDone }: {open?:boolean ; 
                         </div>
                         <Box>
                             <div style={modalStyle}>
-
                                 <FormControlLabel
                                     style={TFStyle}
                                     name="allDayActivity"
@@ -220,10 +235,8 @@ export default function AddActivityForm({ open,init, onDone }: {open?:boolean ; 
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-
                             </div>
                             <div style={modalStyle}>
-
                                 <FormControlLabel
                                     style={TFStyle}
                                     name="recurring"
@@ -251,13 +264,28 @@ export default function AddActivityForm({ open,init, onDone }: {open?:boolean ; 
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
-
                         </Box>
                         <Box my={2}>
-                            <div style={{display:"flex",width:"100%" ,alignItems:"flex-end"}}>
-                            <Button kind="add" type="submit" style={open ? {width:"100%"}: { marginLeft:"auto",marginRight:"auto",width:"40%" ,marginBottom:"20px",marginTop:"20px",paddingTop:"8px",paddingBottom:"8px"} }>
-                               {open ? "Add" : "Save" }
-                            </Button>
+                            <div style={{ display: "flex", width: "100%", alignItems: "flex-end" }}>
+                                <Button
+                                    kind="add"
+                                    type="submit"
+                                    style={
+                                        open
+                                            ? { width: "100%" }
+                                            : {
+                                                  marginLeft: "auto",
+                                                  marginRight: "auto",
+                                                  width: "40%",
+                                                  marginBottom: "20px",
+                                                  marginTop: "20px",
+                                                  paddingTop: "8px",
+                                                  paddingBottom: "8px",
+                                              }
+                                    }
+                                >
+                                    {open ? "Add" : "Save"}
+                                </Button>
                             </div>
                         </Box>
                     </Box>

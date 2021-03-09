@@ -144,7 +144,7 @@ export const GeneralForm = ({
                                     label="new name"
                                     value={editName}
                                     onChange={(e) => setEditName(e.target.value)}
-                                    style={{ flex: 1, margin:"0px 0px 5px 0px" }}
+                                    style={{ flex: 1, margin: "0px 0px 5px 0px" }}
                                     placeholder={`New ${type} name`}
                                 />
                             </Box>

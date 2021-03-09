@@ -78,7 +78,7 @@ export default function LineItemModal({
                     {({ values, handleChange, handleBlur, isSubmitting, errors, touched }) => (
                         <Form>
                             <FieldSelect
-                            style={{width:"98.8%"}}
+                                style={{ width: "98.8%" }}
                                 label="Item"
                                 name="ItemId"
                                 value={values.ItemId}
@@ -91,7 +91,6 @@ export default function LineItemModal({
                                 fullWidth
                             />
                             <Box mb={2} display="flex" alignItems="center">
-
                                 <TextField
                                     style={{ flex: 1 }}
                                     placeholder="description"
@@ -103,7 +102,6 @@ export default function LineItemModal({
                                     fullWidth
                                 />
                                 <TextField
-
                                     style={{ flex: 1 }}
                                     placeholder="quantity"
                                     label="quantity"
@@ -117,7 +115,6 @@ export default function LineItemModal({
                                 />
                             </Box>
                             <Box mb={2} display="flex" alignItems="center">
-
                                 <TextField
                                     style={{ flex: 1 }}
                                     placeholder="price"

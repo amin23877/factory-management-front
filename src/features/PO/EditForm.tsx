@@ -3,7 +3,7 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import Box from "@material-ui/core/Box";
 import Link from "@material-ui/core/Link";
-import PhotoSizeSelectActualOutlinedIcon from '@material-ui/icons/PhotoSizeSelectActualOutlined';
+import PhotoSizeSelectActualOutlinedIcon from "@material-ui/icons/PhotoSizeSelectActualOutlined";
 
 import Snack from "../../app/Snack";
 import TextField from "../../app/TextField";
@@ -15,9 +15,9 @@ import { getContacts } from "../../api/contact";
 import { getClients } from "../../api/client";
 import { getAllEmployees } from "../../api/employee";
 import { getProjects } from "../../api/project";
-import '../../styles/main.css'
-import uploadpng from '../../assets/bx-cloud-upload.png'
-import downloadpng from '../../assets/bx-cloud-download.png'
+import "../../styles/main.css";
+import uploadpng from "../../assets/bx-cloud-upload.png";
+import downloadpng from "../../assets/bx-cloud-download.png";
 
 export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () => void }) {
     const [snack, setSnack] = useState(false);
@@ -59,10 +59,6 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                 <div style={{ width: "79%" }}>
                                     <Box display="flex" justifyContent="space-between">
-
-
-
-
                                         <TextField
                                             disabled
                                             name="number"
@@ -110,7 +106,7 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             error={Boolean(errors.ContactId && touched.ContactId)}
-                                            style={{ flex: 1, }}
+                                            style={{ flex: 1 }}
                                         />
                                         <FieldSelect
                                             label="Project"
@@ -122,10 +118,8 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             error={Boolean(errors.ProjectId && touched.ProjectId)}
-                                            style={{ flex: 1, }}
+                                            style={{ flex: 1 }}
                                         />
-
-
 
                                         <FieldSelect
                                             style={{ flex: 1 }}
@@ -139,35 +133,25 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                                             onBlur={handleBlur}
                                             error={Boolean(errors.reciever && touched.reciever)}
                                         />
-
-
-
-
-
                                     </Box>
-                                    <div style={{width:"100%",display:"flex",justifyContent:"center"}}>
-
-                                        <Button type="submit" kind="edit" style={{ marginTop: "1em" ,width:"20%"}}>
+                                    <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+                                        <Button type="submit" kind="edit" style={{ marginTop: "1em", width: "20%" }}>
                                             Edit
-                                            </Button>
+                                        </Button>
                                     </div>
-
                                 </div>
-                                <div style={{
-                                    width: "19%",
-                                    height: "150px",
-                                    display: "flex",
-                                    justifyContent: "center",
-                                    flexDirection: "column",
-                                    alignItems: "center",
-                                    paddingBottom:"20px"
-                                }}>
-                                    <div style={{
-
+                                <div
+                                    style={{
+                                        width: "19%",
+                                        height: "150px",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        flexDirection: "column",
+                                        alignItems: "center",
+                                        paddingBottom: "20px",
                                     }}
-                                        className="UpDownPNG">
-
-                                    </div>
+                                >
+                                    <div style={{}} className="UpDownPNG"></div>
                                     <Box display="flex" style={{ width: "100%" }} justifyContent="space-evenly" alignItems="center" mr={2}>
                                         <input
                                             hidden
@@ -181,17 +165,16 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                                             style={{
                                                 margin: "0.5em 0",
                                                 backgroundColor: "#fff",
-                                                color: " #486cff "
+                                                color: " #486cff ",
                                             }}
                                         >
                                             <img src={uploadpng} style={{ width: "14px", height: "12px" }} />
-                                    upload
-                                </Link>
+                                            upload
+                                        </Link>
                                         <Link download href={poData.path} style={{}}>
                                             <img src={downloadpng} style={{ width: "14px", height: "12px", display: "inline" }} />
                                             Download
-                                    </Link>
-
+                                        </Link>
                                     </Box>
                                 </div>
                             </div>

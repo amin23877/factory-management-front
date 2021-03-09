@@ -91,7 +91,6 @@ export default function LineItemModal({
                                 fullWidth
                             />
                             <div style={{ display: "flex", width: "100%" }}>
-
                                 <TextField
                                     style={{ flex: 1 }}
                                     placeholder="description"
@@ -116,7 +115,6 @@ export default function LineItemModal({
                                 />
                             </div>
                             <div style={{ display: "flex", width: "100%" }}>
-
                                 <TextField
                                     style={{ flex: 1 }}
                                     placeholder="price"
@@ -151,8 +149,8 @@ export default function LineItemModal({
                                 </RadioGroup>
                             </FormControl>
 
-                            <Box textAlign="center" style={{width:"100%",display:"flex"}}>
-                                <Button disabled={isSubmitting} style={{flex:1}} type="submit" kind="add">
+                            <Box textAlign="center" style={{ width: "100%", display: "flex" }}>
+                                <Button disabled={isSubmitting} style={{ flex: 1 }} type="submit" kind="add">
                                     {LIData ? "Save" : "Add"}
                                 </Button>
                                 {LIData && (

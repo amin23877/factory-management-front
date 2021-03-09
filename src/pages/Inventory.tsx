@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Box, Container, Grid, Button, IconButton, ListItem } from "@material-ui/core";
+import { Box, Container, Button, IconButton, ListItem, TextField } from "@material-ui/core";
 import { RowData, ColDef } from "@material-ui/data-grid";
 import { NoteRounded, FileCopyRounded, PrintRounded, AddRounded, DeleteRounded, CategoryRounded } from "@material-ui/icons";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 import Confirm from "../features/Modals/Confirm";
 
@@ -14,9 +15,13 @@ import CatTypeFamilyModal from "../features/Modals/CategoryModals";
 import ItemsDetails from "../features/Items/ItemsDetails";
 
 import { AddItemInitialValues, getItems, deleteAnItem } from "../api/items";
+import { getTypes } from "../api/types";
+import { getCategories } from "../api/category";
+import { getFamilies } from "../api/family";
 import { getAllModelNotes } from "../api/note";
 import { getAllModelDocuments } from "../api/document";
 
+// import TextField from "../app/TextField";
 import List from "../app/SideUtilityList";
 import { MyTabs, MyTab } from "../app/Tabs";
 import BaseDataGrid from "../app/BaseDataGrid";
@@ -25,6 +30,10 @@ const Inventory = () => {
     const [rows, setRows] = useState<RowData[]>([]);
     const [notes, setNotes] = useState([]);
     const [docs, setDocs] = useState([]);
+
+    const [cats, setCats] = useState([]);
+    const [types, setTypes] = useState([]);
+    const [families, setFamilies] = useState([]);
 
     const [activeTab, setActiveTab] = useState(0);
     const [detailDis, setDetailDis] = useState(true);
@@ -73,6 +82,43 @@ const Inventory = () => {
         }
     };
 
+    const refreshCats = async () => {
+        try {
+            const resp = await getCategories();
+            if (resp) {
+                setCats(resp);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const refreshTypes = async () => {
+        try {
+            const resp = await getTypes();
+            if (resp) {
+                setTypes(resp);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const refreshFamilies = async () => {
+        try {
+            const resp = await getFamilies();
+            if (resp) {
+                setFamilies(resp);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        refreshCats();
+        refreshTypes();
+        refreshFamilies();
+    }, []);
+
     useEffect(() => {
         refreshItems();
     }, [addItemModal]);
@@ -86,13 +132,33 @@ const Inventory = () => {
         try {
             if (selectedItem) {
                 const resp = await deleteAnItem(selectedItem.id);
-                console.log(resp);
                 refreshItems();
                 setActiveTab(0);
                 setDeleteItemModal(false);
             }
         } catch (error) {
             console.log(error);
+        }
+    };
+
+    const filterItems = (type: "type" | "category" | "family", val: any) => {
+        console.log(type, val);
+        if (!val) {
+            refreshItems();
+            return;
+        }
+        switch (type) {
+            case "type":
+                setRows((rows) => rows.filter((row) => row.ItemTypeId === val.id));
+                break;
+            case "category":
+                setRows((rows) => rows.filter((row) => row.ItemCategoryId === val.id));
+                break;
+            case "family":
+                setRows((rows) => rows.filter((row) => row.ItemFamilyId === val.id));
+                break;
+            default:
+                break;
         }
     };
 
@@ -119,7 +185,7 @@ const Inventory = () => {
     ];
 
     return (
-        <Container >
+        <Container>
             {selectedNote && (
                 <NoteModal
                     onDone={refreshNotes}
@@ -187,11 +253,10 @@ const Inventory = () => {
 
                 <div style={{ flexGrow: 1 }} />
 
-                <MyTabs value={activeTab}  onChange={(e, nv) => setActiveTab(nv)} textColor="secondary">
+                <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="secondary">
                     <MyTab color="primary" label="Overview" />
                     <MyTab label="Details" disabled={detailDis} />
                 </MyTabs>
-
             </Box>
 
             <Box display="flex" alignItems="flex-start" mt={1}>
@@ -213,13 +278,32 @@ const Inventory = () => {
                     </ListItem>
                 </List>
                 <Box flex={11} ml={2}>
+                    <Box my={2} display="flex" alignItems="center">
+                        <Autocomplete
+                            onChange={(v, nv) => filterItems("category", nv)}
+                            options={cats}
+                            getOptionLabel={(op: any) => op.name}
+                            renderInput={(params) => <TextField label="Category" {...params} />}
+                        />
+                        <Autocomplete
+                            onChange={(v, nv) => filterItems("type", nv)}
+                            options={types}
+                            getOptionLabel={(op: any) => op.name}
+                            style={{ margin: "0 0.5em" }}
+                            renderInput={(params) => <TextField label="Type" {...params} />}
+                        />
+                        <Autocomplete
+                            onChange={(v, nv) => filterItems("family", nv)}
+                            options={families}
+                            getOptionLabel={(op: any) => op.name}
+                            renderInput={(params) => <TextField label="Family" {...params} />}
+                        />
+                    </Box>
                     {activeTab === 0 && (
                         <BaseDataGrid
                             cols={cols}
                             rows={rows}
                             onRowSelected={(r) => {
-                                console.log(r);
-
                                 setSelectedItem(r);
                                 setDetailDis(false);
                                 setActiveTab(1);

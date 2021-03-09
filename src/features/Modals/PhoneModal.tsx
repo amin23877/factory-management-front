@@ -86,7 +86,7 @@ export const PhoneModal = ({
                             </Box>
 
                             <FieldSelect
-                            style={{width:"98.6%"}}
+                                style={{ width: "98.6%" }}
                                 request={getPhoneTypes}
                                 itemTitleField="name"
                                 itemValueField="id"

@@ -93,8 +93,6 @@ export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClo
                         error={Boolean(errors.ClientTypeId)}
                     />
 
-
-
                     <FormControl style={{ margin: "0.5em", display: "flex" }}>
                         <FormLabel style={{ display: "inline" }}>Size</FormLabel>
                         <RadioGroup row name="size" value={values.size} onChange={handleChange}>
@@ -104,9 +102,6 @@ export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClo
                         </RadioGroup>
                     </FormControl>
 
-
-
-
                     <FormControl style={{ margin: "0.5em" }}>
                         <FormLabel>Prospect</FormLabel>
                         <RadioGroup row name="prospect" value={values.prospect} onChange={handleChange}>
@@ -114,7 +109,6 @@ export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClo
                             <FormControlLabel value="false" control={<Radio />} label="No" />
                         </RadioGroup>
                     </FormControl>
-
 
                     <Box textAlign="center" my={2}>
                         <Button disabled={isSubmitting} kind="add" type="submit" fullWidth={true}>
