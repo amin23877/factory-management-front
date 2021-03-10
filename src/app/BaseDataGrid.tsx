@@ -27,7 +27,7 @@ const useStyles = makeStyles({
         },
         "& .Mui-selected": {
             boxShadow: " rgba(149, 157, 165, 0.2) 0px 8px 24px",
-            backgroundColor: "#fff",
+            backgroundColor: "#fff !important",
         },
         "& .MuiDataGrid-sortIcon": {
             fill: "white",

@@ -5,6 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { theme } from "./theme";
 
 import { selectSession, getCurrentSession } from "./features/Session/sessionsSlice";
+import { fetchQuotes } from "./features/Quote/quoteSlice";
+import { fetchActivities } from "./features/Activity/activitySlice";
+import { fetchPOs } from "./features/PO/poSlice";
+import { fetchSOs } from "./features/SO/soSlice";
 
 import "./styles/main.css";
 
@@ -33,6 +37,15 @@ function App() {
     const [drawerWidth, setDrawerWidth] = useState(220);
     const session = useSelector(selectSession);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        if (session.session !== null) {
+            dispatch(fetchQuotes());
+            dispatch(fetchActivities());
+            dispatch(fetchPOs());
+            dispatch(fetchSOs());
+        }
+    }, [session]);
 
     useEffect(() => {
         dispatch(getCurrentSession());
