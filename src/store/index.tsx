@@ -1,4 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
 
 import sessionSlice from "../features/Session/sessionsSlice";
 import quoteSlice from "../features/Quote/quoteSlice";
@@ -15,3 +16,6 @@ export const store = configureStore({
         SOs: SOSlice,
     },
 });
+
+export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch = () => useDispatch<AppDispatch>();

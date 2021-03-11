@@ -2,22 +2,25 @@ import React, { useState } from "react";
 import { Dialog, DialogTitle, Button, Box, Tabs, Tab } from "@material-ui/core";
 import { Formik, Form } from "formik";
 
+import { useAppDispatch } from "../../store";
+import { createQuoteThunk } from "./quoteSlice";
+
 import { BillingTab, CommissionTab, DepositTab, ShippingTab, TermsTab, GeneralForm } from "./Forms";
 
-import { IQuote, QuoteInit, createQuote } from "../../api/quote";
+import { IQuote, QuoteInit } from "../../api/quote";
+import { unwrapResult } from "@reduxjs/toolkit";
 
-export default function AddQuoteModal({ open, onClose, onDone }: { open: boolean; onClose: () => void; onDone: () => void }) {
+export default function AddQuoteModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+    const dispatch = useAppDispatch();
     const [activeTab, setActiveTab] = useState(0);
 
     const handleSubmit = async (data: IQuote, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
         try {
-            const resp = await createQuote(data);
-            if (resp) {
-                console.log(resp);
-                setSubmitting(false);
-                onDone();
-                onClose();
-            }
+            const resp = await dispatch(createQuoteThunk(data));
+            unwrapResult(resp);
+            console.log(resp);
+            setSubmitting(false);
+            onClose();
         } catch (error) {
             console.log(error);
         }
@@ -34,7 +37,7 @@ export default function AddQuoteModal({ open, onClose, onDone }: { open: boolean
                                 <Box flex={1} mx={2}>
                                     <GeneralForm values={values} handleBlur={handleBlur} handleChange={handleChange} />
                                 </Box>
-                                <Box flex={1} m={1} style={{maxWidth:"403px"}}>
+                                <Box flex={1} m={1} style={{ maxWidth: "403px" }}>
                                     <Tabs
                                         value={activeTab}
                                         onChange={(e, nv) => setActiveTab(nv)}

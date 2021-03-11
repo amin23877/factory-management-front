@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button, Tabs, Tab, makeStyles } from "@material-ui/core";
 import { ColDef } from "@material-ui/data-grid";
-import AddRoundedIcon from '@material-ui/icons/AddRounded';
+import AddRoundedIcon from "@material-ui/icons/AddRounded";
+
+import { useSelector } from "react-redux";
+import { deleteQuoteThunk, selectQuotes } from "./quoteSlice";
+import { useAppDispatch } from "../../store";
 
 import { INote, getAllModelNotes } from "../../api/note";
 import { IDocument, getAllModelDocuments } from "../../api/document";
@@ -19,6 +23,7 @@ import LineItemModal from "./LineItemModals";
 
 import AddQuoteModal from "./Modals";
 import { BasePaper } from "../../app/Paper";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 const useStyles = makeStyles({
     TabContainer: {
@@ -30,8 +35,10 @@ const useStyles = makeStyles({
 });
 
 export default function QuotePanel() {
+    const quotes = useSelector(selectQuotes);
+    const dispatch = useAppDispatch();
+
     const [activeTab, setActiveTab] = useState(0);
-    const [quotes, setQuotes] = useState([]);
     const [lineItems, setLineItems] = useState([]);
     const [notes, setNotes] = useState([]);
     const [docs, setDocs] = useState([]);
@@ -52,9 +59,6 @@ export default function QuotePanel() {
     const [editDoc, setEditDoc] = useState(false);
     const [confirm, setConfirm] = useState(false);
 
-    const [showSnack, setShowSnack] = useState(false);
-    const [msg, setMsg] = useState("");
-
     const classes = useStyles();
 
     const quoteCols: ColDef[] = [
@@ -62,17 +66,6 @@ export default function QuotePanel() {
         { field: "expireDate", width: 150 },
         { field: "quoteStatus", width: 150 },
     ];
-
-    const refreshQuotes = async () => {
-        try {
-            const resp = await getQuotes();
-            if (resp && resp.length > 0) {
-                setQuotes(resp);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
     const refreshActivities = async () => {
         try {
@@ -119,7 +112,6 @@ export default function QuotePanel() {
     };
 
     useEffect(() => {
-        refreshQuotes();
         refreshLineItems();
         refreshNotes();
         refreshDocs();
@@ -129,12 +121,10 @@ export default function QuotePanel() {
     const handleDelete = async () => {
         try {
             if (selectedQuote && selectedQuote.id) {
-                const resp = await deleteQuote(selectedQuote?.id);
-                if (resp) {
-                    setConfirm(false);
-                    refreshQuotes();
-                    setActiveTab(0);
-                }
+                const resp = await dispatch(deleteQuoteThunk(selectedQuote.id));
+                unwrapResult(resp);
+                setConfirm(false);
+                setActiveTab(0);
             }
         } catch (error) {
             console.log(error);
@@ -144,7 +134,7 @@ export default function QuotePanel() {
     return (
         <div>
             <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
-            <AddQuoteModal open={addQ} onClose={() => setAddQ(false)} onDone={refreshQuotes} />
+            <AddQuoteModal open={addQ} onClose={() => setAddQ(false)} />
             <LineItemModal open={addLineItem} onClose={() => setAddLineItem(false)} quoteId={selectedQuote?.id} onDone={refreshLineItems} />
             {selectedQuote && selectedQuote.id && (
                 <NoteModal itemId={selectedQuote.id} model="quote" open={addNote} onClose={() => setAddNote(false)} onDone={refreshNotes} />
@@ -188,34 +178,30 @@ export default function QuotePanel() {
                 />
             )}
 
-            <Snack open={showSnack} onClose={() => setShowSnack(false)}>
-                {msg}
-            </Snack>
-
-            <Box display="flex" alignItems="center" style={{marginBottom:"5px"}}>
+            <Box display="flex" alignItems="center" style={{ marginBottom: "5px" }}>
                 <Button onClick={() => setAddQ(true)}>Add Quote</Button>
-                {
-                    selectedQuote ? (
-                        <div>
-                            <Button onClick={() => setConfirm(true)} disabled={!selectedQuote}>
-                                Delete Quote
-                             </Button>
-                            <Button onClick={() => setAddLineItem(true)} disabled={!selectedQuote} style={{ margin: "0 0.5em" }}>
-                                Add Line item
-                             </Button>
-                            <Button onClick={() => setAddNote(true)} disabled={!selectedQuote} style={{ marginRight: "0.5em" }}>
-                                Add Note
-                             </Button>
-                            <Button style={{backgroundColor:"#1a73e8",color:"#fff",marginLeft:"5px"}} onClick={() => setAddDoc(true)} disabled={!selectedQuote}>
-                                <AddRoundedIcon/>
-                                Add Document
-                            </Button>
-                        </div>
-                    ) :
-                        null
-                }
+                {selectedQuote ? (
+                    <div>
+                        <Button onClick={() => setConfirm(true)} disabled={!selectedQuote}>
+                            Delete Quote
+                        </Button>
+                        <Button onClick={() => setAddLineItem(true)} disabled={!selectedQuote} style={{ margin: "0 0.5em" }}>
+                            Add Line item
+                        </Button>
+                        <Button onClick={() => setAddNote(true)} disabled={!selectedQuote} style={{ marginRight: "0.5em" }}>
+                            Add Note
+                        </Button>
+                        <Button
+                            style={{ backgroundColor: "#1a73e8", color: "#fff", marginLeft: "5px" }}
+                            onClick={() => setAddDoc(true)}
+                            disabled={!selectedQuote}
+                        >
+                            <AddRoundedIcon />
+                            Add Document
+                        </Button>
+                    </div>
+                ) : null}
                 <div style={{ flexGrow: 1 }} />
-
             </Box>
             <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
@@ -251,11 +237,6 @@ export default function QuotePanel() {
                             notes={notes}
                             docs={docs}
                             lineItems={lineItems}
-                            onDone={() => {
-                                setShowSnack(true);
-                                setMsg("Record updated");
-                                refreshQuotes();
-                            }}
                             selectedQuote={selectedQuote}
                         />
                     )}

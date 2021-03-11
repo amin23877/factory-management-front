@@ -4,12 +4,13 @@ import { ColDef } from "@material-ui/data-grid";
 import { useFormik } from "formik";
 
 import Snackbar from "../../app/Snack";
-import { AddItemSchema, AddItemInitialValues, updateAnItem, getItemQuotes, getItemSOs } from "../../api/items";
+import { AddItemSchema, updateAnItem, getItemQuotes, getItemSOs } from "../../api/items";
 
 import BaseDataGrid from "../../app/BaseDataGrid";
 import { BasePaper } from "../../app/Paper";
 
 import { MoreInfo, Quantity, Shipping, General } from "./Forms";
+import { SalesReport } from "./Reports";
 
 function ItemsDetails({
     selectedRow,
@@ -281,12 +282,14 @@ function ItemsDetails({
                     <Tab label="Documents" />
                     <Tab label="Related Quotes" />
                     <Tab label="Related Sales orders" />
+                    <Tab label="Sales Report" />
                 </Tabs>
                 <Box p={3}>
                     {activeTab === 0 && <BaseDataGrid height={250} cols={noteCols} rows={notes} onRowSelected={onNoteSelected} />}
                     {activeTab === 1 && <BaseDataGrid height={250} cols={docCols} rows={docs} onRowSelected={onDocSelected} />}
                     {activeTab === 2 && <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes} onRowSelected={() => {}} />}
                     {activeTab === 3 && <BaseDataGrid height={250} cols={soCols} rows={itemSos} onRowSelected={(d) => console.log(d)} />}
+                    {activeTab === 4 && <SalesReport quotes={itemQuotes} salesOrders={itemSos} />}
                 </Box>
             </BasePaper>
         </Box>

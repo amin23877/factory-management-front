@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Container, Button, IconButton, ListItem, TextField, LinearProgress } from "@material-ui/core";
+import { Box, Container, Button, IconButton, ListItem, LinearProgress } from "@material-ui/core";
 import { RowData, ColDef } from "@material-ui/data-grid";
 import { NoteRounded, FileCopyRounded, PrintRounded, AddRounded, DeleteRounded, CategoryRounded } from "@material-ui/icons";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -12,7 +12,7 @@ import BOMModal from "../features/BOM/BomModal";
 
 import { AddItemModal } from "../features/Items/ItemModals";
 import CatTypeFamilyModal from "../features/Modals/CategoryModals";
-import ItemsDetails from "../features/Items/ItemsDetails";
+import ItemsDetails from "../features/Items";
 
 import { AddItemInitialValues, getItems, getItemsByQuery, deleteAnItem } from "../api/items";
 import { getTypes } from "../api/types";
@@ -21,7 +21,7 @@ import { getFamilies } from "../api/family";
 import { getAllModelNotes } from "../api/note";
 import { getAllModelDocuments } from "../api/document";
 
-// import TextField from "../app/TextField";
+import TextField from "../app/TextField";
 import List from "../app/SideUtilityList";
 import { MyTabs, MyTab } from "../app/Tabs";
 import BaseDataGrid from "../app/BaseDataGrid";
@@ -291,14 +291,12 @@ const Inventory = () => {
                     {activeTab === 0 && (
                         <Box my={2} display="flex" alignItems="center">
                             <Autocomplete
-                                // value={filters.category}
                                 onChange={(v, nv: any) => setFilters((prev) => ({ ...prev, category: nv?.id }))}
                                 options={cats}
                                 getOptionLabel={(op: any) => op.name}
                                 renderInput={(params) => <TextField label="Category" {...params} />}
                             />
                             <Autocomplete
-                                // value={filters.type}
                                 onChange={(v, nv: any) => setFilters((prev) => ({ ...prev, type: nv?.id }))}
                                 options={types}
                                 getOptionLabel={(op: any) => op.name}
@@ -306,7 +304,6 @@ const Inventory = () => {
                                 renderInput={(params) => <TextField label="Type" {...params} />}
                             />
                             <Autocomplete
-                                // value={filters.family}
                                 onChange={(v, nv: any) => setFilters((prev) => ({ ...prev, family: nv?.id }))}
                                 options={families}
                                 getOptionLabel={(op: any) => op.name}

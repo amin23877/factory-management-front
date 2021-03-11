@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Box, CssBaseline, ThemeProvider } from "@material-ui/core";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { theme } from "./theme";
+
+import { useAppDispatch } from "./store";
 
 import { selectSession, getCurrentSession } from "./features/Session/sessionsSlice";
 import { fetchQuotes } from "./features/Quote/quoteSlice";
@@ -36,7 +38,7 @@ function App() {
     const [isOpen, setIsOpen] = useState(true);
     const [drawerWidth, setDrawerWidth] = useState(220);
     const session = useSelector(selectSession);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         if (session.session !== null) {

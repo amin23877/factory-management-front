@@ -9,7 +9,6 @@ import { IQuote } from "../../api/quote";
 
 export default function EditTab({
     selectedQuote,
-    onDone,
     lineItems,
     notes,
     docs,
@@ -21,7 +20,6 @@ export default function EditTab({
     notes: any;
     docs: any;
     selectedQuote: IQuote;
-    onDone: () => void;
     lineItems: any;
     activities: any;
     onLISelected: (d: any) => void;
@@ -64,7 +62,7 @@ export default function EditTab({
 
     return (
         <Box>
-            <EditForm selectedQuote={selectedQuote} onDone={onDone} />
+            <EditForm selectedQuote={selectedQuote} />
             <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                 <Tab label="Activities" />
                 <Tab label="Line items" />
