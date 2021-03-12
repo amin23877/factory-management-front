@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, RadioGroup, Radio, FormControlLabel, Divider, Typography,Checkbox } from "@material-ui/core";
+import { Box, RadioGroup, Radio, FormControlLabel, Divider, Typography, Checkbox } from "@material-ui/core";
 
 import Button from "../../app/Button";
 
@@ -80,44 +80,49 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     />
                 </Box>
                 <Box flex={1} display="flex" flexWrap="wrap">
-                    <FieldSelect
-                        label="Item category"
-                        fullWidth
-                        request={getCategories}
-                        itemTitleField="name"
-                        itemValueField="id"
-                        name="ItemCategoryId"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.ItemCategoryId && touched.ItemCategoryId)}
-                        value={values.ItemCategoryId}
-                        placeholder={"Category"}
-                    />
-                    <FieldSelect
-                        label="Item type"
-                        request={getTypes}
-                        itemTitleField="name"
-                        itemValueField="id"
-                        name="ItemTypeId"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.ItemTypeId && touched.ItemTypeId)}
-                        value={values.ItemTypeId}
-                        fullWidth
-                    />
-                    <FieldSelect
-                        label="Item family"
-                        request={getFamilies}
-                        itemTitleField="name"
-                        itemValueField="id"
-                        name="ItemFamilyId"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.ItemFamilyId && touched.ItemFamilyId)}
-                        value={values.ItemFamilyId}
-                        fullWidth
-                    />
-
+                    <Box m={1}>
+                        <FieldSelect
+                            label="Item category"
+                            fullWidth
+                            request={getCategories}
+                            itemTitleField="name"
+                            itemValueField="id"
+                            name="ItemCategoryId"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.ItemCategoryId && touched.ItemCategoryId)}
+                            value={values.ItemCategoryId}
+                            placeholder={"Category"}
+                        />
+                    </Box>
+                    <Box m={1}>
+                        <FieldSelect
+                            label="Item type"
+                            request={getTypes}
+                            itemTitleField="name"
+                            itemValueField="id"
+                            name="ItemTypeId"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.ItemTypeId && touched.ItemTypeId)}
+                            value={values.ItemTypeId}
+                            fullWidth
+                        />
+                    </Box>
+                    <Box m={1}>
+                        <FieldSelect
+                            label="Item family"
+                            request={getFamilies}
+                            itemTitleField="name"
+                            itemValueField="id"
+                            name="ItemFamilyId"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.ItemFamilyId && touched.ItemFamilyId)}
+                            value={values.ItemFamilyId}
+                            fullWidth
+                        />
+                    </Box>
                     <TextField
                         label="mfgr"
                         placeholder="mfgr"
@@ -158,13 +163,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     <FormControlLabel value="true" control={<Radio />} label="Active" />
                     <FormControlLabel value="false" control={<Radio />} label="Inactive" />
                 </RadioGroup> */}
-                <FormControlLabel
-                                style={{ flex: "0 40%" }}
-                                label="Active"
-                                name="Active"
-                                onChange={handleChange}
-                                control={<Checkbox />}
-                            />
+                <FormControlLabel style={{ flex: "0 40%" }} label="Active" name="Active" onChange={handleChange} control={<Checkbox />} />
                 <TextField
                     label="Special notes"
                     // style={{ margin: 5 }}
