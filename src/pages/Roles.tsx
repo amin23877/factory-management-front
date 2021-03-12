@@ -23,7 +23,7 @@ export default function Roles() {
     const [msg, setMsg] = useState("");
 
     const [selectedEmp, setSelectedEmp] = useState<IEmployee>();
-    const [empsAndRoles, setEmpsAndRoles] = useState([]);
+    const [empsAndRoles, setEmpsAndRoles] = useState<any>([]);
     const [roles, setRoles] = useState([]);
 
     const refreshEmpsRoles = async () => {
@@ -56,13 +56,18 @@ export default function Roles() {
                 setMsg("Role added !");
                 setSnack(true);
                 refreshEmpsRoles();
-                console.log(resp);
             } else {
-                const resp = await deleteRoleFromEmployee(id, role);
-                setMsg("Role Removed !");
-                setSnack(true);
-                refreshEmpsRoles();
-                console.log(resp);
+                const userIndex = empsAndRoles.findIndex((item: any) => item.id === id);
+
+                if (empsAndRoles[userIndex].Roles.length > 1) {
+                    const resp = await deleteRoleFromEmployee(id, role);
+                    setMsg("Role Removed !");
+                    setSnack(true);
+                    refreshEmpsRoles();
+                } else {
+                    setMsg("Sorry, You can't have employee with no role");
+                    setSnack(true);
+                }
             }
         } catch (error) {
             console.log(error);
@@ -98,7 +103,7 @@ export default function Roles() {
                     <Button onClick={() => setAddRoleModal(true)}>Add Role</Button>
                     <Button onClick={() => setRoleManagement(true)}>Manage Roles</Button>
                 </Box>
-                <BasePaper  style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
+                <BasePaper>
                     <List>
                         {empsAndRoles &&
                             empsAndRoles.map((emp: any) => (

@@ -1,8 +1,9 @@
 import React from "react";
-import { Box, TextField } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
+import TextField from "../../app/TextField";
 import Button from "../../app/Button";
 import Dialog from "../../app/Dialog";
 
@@ -35,8 +36,9 @@ export const AddEmployeeModal = ({ open, onClose, onDone }: { open: boolean; onC
                     {({ values, touched, errors, handleChange, handleBlur, isSubmitting }) => (
                         <Form>
                             <TextField
+                                label="Username"
                                 fullWidth
-                                variant="outlined"
+                                style={{ width: "100%" }}
                                 placeholder="username"
                                 name="username"
                                 value={values.username}
@@ -46,8 +48,9 @@ export const AddEmployeeModal = ({ open, onClose, onDone }: { open: boolean; onC
                                 helperText={errors.username}
                             />
                             <TextField
+                                label="Password"
                                 fullWidth
-                                variant="outlined"
+                                style={{ width: "100%" }}
                                 placeholder="password"
                                 type="password"
                                 name="password"

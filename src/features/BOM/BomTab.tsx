@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Box, TextField, FormControlLabel, Checkbox, List, ListItem } from "@material-ui/core";
+import { Box, FormControlLabel, Checkbox, List, ListItem } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
+import TextField from "../../app/TextField";
 import Button from "../../app/Button";
 import Confirm from "../Modals/Confirm";
 import { IBom, addBom, updateBom, deleteBom } from "../../api/bom";
@@ -53,7 +54,6 @@ const BomForm = ({
                     <Form>
                         <Box display="flex" justifyContent="space-between" alignItems="center">
                             <TextField
-                                variant="outlined"
                                 name="name"
                                 label="name"
                                 value={values.name}
@@ -63,7 +63,6 @@ const BomForm = ({
                                 helperText={errors.name}
                             />
                             <TextField
-                                variant="outlined"
                                 name="no"
                                 label="no"
                                 value={values.no}
@@ -73,7 +72,6 @@ const BomForm = ({
                                 helperText={errors.no}
                             />
                             <TextField
-                                variant="outlined"
                                 name="note"
                                 label="note"
                                 value={values.note}

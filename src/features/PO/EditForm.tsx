@@ -3,7 +3,6 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import Box from "@material-ui/core/Box";
 import Link from "@material-ui/core/Link";
-import PhotoSizeSelectActualOutlinedIcon from "@material-ui/icons/PhotoSizeSelectActualOutlined";
 
 import Snack from "../../app/Snack";
 import TextField from "../../app/TextField";
@@ -166,6 +165,7 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                                                 margin: "0.5em 0",
                                                 backgroundColor: "#fff",
                                                 color: " #486cff ",
+                                                cursor: "pointer",
                                             }}
                                         >
                                             <img src={uploadpng} style={{ width: "14px", height: "12px" }} />

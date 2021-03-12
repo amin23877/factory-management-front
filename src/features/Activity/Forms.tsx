@@ -17,8 +17,19 @@ import { getAllEmployees } from "../../api/employee";
 import { getQuotes } from "../../api/quote";
 import { IActivity, createActivity, updateActivity } from "../../api/activity";
 import { baseGet } from "../../api";
+import { makeStyles } from "@material-ui/core";
+
+const useStyles = makeStyles({
+    fieldCont: (props: any) => ({
+        display: props.open ? "flex" : "inline",
+        justifyContent: "space-between",
+        margin: "0 0.5em",
+    }),
+});
 
 export default function AddActivityForm({ open, init, onDone }: { open?: boolean; init: IActivity; onDone: () => void }) {
+    const classes = useStyles({ open });
+
     const schema = Yup.object().shape({
         name: Yup.string().required(),
     });
@@ -118,7 +129,7 @@ export default function AddActivityForm({ open, init, onDone }: { open?: boolean
                                 onBlur={handleBlur}
                             />
                         </div>
-                        <div style={modalStyle}>
+                        <div className={classes.fieldCont}>
                             <FieldSelect
                                 request={getClients}
                                 itemTitleField="name"
@@ -141,7 +152,7 @@ export default function AddActivityForm({ open, init, onDone }: { open?: boolean
                                 onBlur={handleBlur}
                             />
                         </div>
-                        <div style={modalStyle}>
+                        <div className={classes.fieldCont}>
                             <FieldSelect
                                 label="Project"
                                 name="ProjectId"
@@ -163,7 +174,7 @@ export default function AddActivityForm({ open, init, onDone }: { open?: boolean
                                 onBlur={handleBlur}
                             />
                         </div>
-                        <div style={modalStyle}>
+                        <div className={classes.fieldCont}>
                             <FieldSelect
                                 label="Quote"
                                 name="QuoteId"
@@ -193,7 +204,7 @@ export default function AddActivityForm({ open, init, onDone }: { open?: boolean
                                 onBlur={handleBlur}
                             />
                         </div>
-                        <div style={modalStyle}>
+                        <div className={classes.fieldCont}>
                             <FieldSelect
                                 label="ActivityStatusId"
                                 name="ActivityStatusId"

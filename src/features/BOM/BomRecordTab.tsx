@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Box, TextField, FormControlLabel, Checkbox, List, ListItem } from "@material-ui/core";
+import { Box, FormControlLabel, Checkbox, List, ListItem } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
+import TextField from "../../app/TextField";
 import Button from "../../app/Button";
 import { FieldSelect } from "../../app/Inputs";
 
@@ -74,7 +75,6 @@ const BomRecordForm = ({
                             />
 
                             <TextField
-                                variant="outlined"
                                 name="revision"
                                 label="revision"
                                 value={values.revision}
@@ -85,7 +85,6 @@ const BomRecordForm = ({
                                 style={{ marginLeft: 15 }}
                             />
                             <TextField
-                                variant="outlined"
                                 name="usage"
                                 label="usage"
                                 value={values.usage}
@@ -95,7 +94,6 @@ const BomRecordForm = ({
                                 helperText={errors.usage}
                             />
                             <TextField
-                                variant="outlined"
                                 name="index"
                                 label="index"
                                 value={values.index}

@@ -29,7 +29,7 @@ export default function AddQuoteModal({ open, onClose }: { open: boolean; onClos
     return (
         <Dialog open={open} onClose={onClose} maxWidth="lg">
             <DialogTitle>Add new Quote</DialogTitle>
-            <Box m={1}>
+            <Box m={1} style={{ height: 600 }}>
                 <Formik initialValues={QuoteInit} onSubmit={handleSubmit}>
                     {({ handleChange, handleBlur, values, isSubmitting }) => (
                         <Form>
@@ -60,7 +60,7 @@ export default function AddQuoteModal({ open, onClose }: { open: boolean; onClos
                                     )}
                                 </Box>
                             </Box>
-                            <Box display="flex" justifyContent="center" my={2}>
+                            <Box display="flex" justifyContent="center" my={2} py={2}>
                                 <Button
                                     disabled={isSubmitting}
                                     type="submit"
