@@ -12,7 +12,7 @@ interface IOS extends SelectProps {
 }
 export const ObjectSelect = ({ items, itemTitleField, itemValueField, keyField, ...props }: IOS) => {
     return (
-        <FormControl className={styles.objectSelect} style={{ ...props.style }} fullWidth={props.fullWidth}>
+        <FormControl className={styles.objectSelect} fullWidth={props.fullWidth}>
             {props.label && (
                 <InputLabel shrink htmlFor="object-select">
                     {props.label}
