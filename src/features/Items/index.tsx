@@ -229,10 +229,10 @@ function ItemsDetails({
                 {snackMsg}
             </Snackbar>
 
-            <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
-                <form onSubmit={handleSubmit}>
-                    <Grid container>
-                        <Grid item md={6} xs={12} style={{ padding: "1em" }}>
+            <form onSubmit={handleSubmit}>
+                <Grid container>
+                    <Grid item md={8} xs={12} style={{ padding: "1em" }}>
+                        <BasePaper>
                             <General
                                 values={values}
                                 handleChange={handleChange}
@@ -240,8 +240,10 @@ function ItemsDetails({
                                 errors={errors}
                                 touched={touched}
                             />
-                        </Grid>
-                        <Grid item md={6} xs={12} style={{ padding: "1em" }}>
+                        </BasePaper>
+                    </Grid>
+                    <Grid item md={4} xs={12} style={{ padding: "1em" }}>
+                        <BasePaper style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
                             <Tabs value={moreInfoTab} textColor="primary" onChange={(e, v) => setMoreInfoTab(v)}>
                                 <Tab label="More Info." />
                                 <Tab label="Quantity" />
@@ -274,9 +276,12 @@ function ItemsDetails({
                                     touched={touched}
                                 />
                             )}
-                        </Grid>
+                            <div style={{ flexGrow: 1 }} />
+                        </BasePaper>
                     </Grid>
-                </form>
+                </Grid>
+            </form>
+            <BasePaper style={{ margin: "1em 0" }}>
                 <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} textColor="primary" variant="scrollable">
                     <Tab label="Notes" />
                     <Tab label="Documents" />

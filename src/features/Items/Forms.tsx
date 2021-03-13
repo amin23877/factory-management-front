@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, RadioGroup, Radio, FormControlLabel, Divider, Typography, Checkbox } from "@material-ui/core";
+import { Box, FormControlLabel, Divider, Typography, Checkbox } from "@material-ui/core";
 
 import Button from "../../app/Button";
 
@@ -22,8 +22,8 @@ interface IForm {
 export const General = ({ isSubmitting, values, errors, handleChange, handleBlur, touched }: IForm) => {
     return (
         <>
-            <Box display="flex" alignItems="flex-start">
-                <Box flex={1} display="flex" flexWrap="wrap">
+            <Box display="flex" flexDirection="column">
+                <Box display="flex" justifyContent="space-between">
                     <TextField
                         label="Item name"
                         placeholder="Item name"
@@ -51,6 +51,8 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         error={Boolean(errors.sku && touched.sku)}
                         value={values.sku}
                     />
+                </Box>
+                <Box display="flex" justifyContent="space-between">
                     <TextField
                         label="description"
                         placeholder="description"
@@ -79,50 +81,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         value={values.variance}
                     />
                 </Box>
-                <Box flex={1} display="flex" flexWrap="wrap">
-                    <Box m={1}>
-                        <FieldSelect
-                            label="Item category"
-                            fullWidth
-                            request={getCategories}
-                            itemTitleField="name"
-                            itemValueField="id"
-                            name="ItemCategoryId"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={Boolean(errors.ItemCategoryId && touched.ItemCategoryId)}
-                            value={values.ItemCategoryId}
-                            placeholder={"Category"}
-                        />
-                    </Box>
-                    <Box m={1}>
-                        <FieldSelect
-                            label="Item type"
-                            request={getTypes}
-                            itemTitleField="name"
-                            itemValueField="id"
-                            name="ItemTypeId"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={Boolean(errors.ItemTypeId && touched.ItemTypeId)}
-                            value={values.ItemTypeId}
-                            fullWidth
-                        />
-                    </Box>
-                    <Box m={1}>
-                        <FieldSelect
-                            label="Item family"
-                            request={getFamilies}
-                            itemTitleField="name"
-                            itemValueField="id"
-                            name="ItemFamilyId"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={Boolean(errors.ItemFamilyId && touched.ItemFamilyId)}
-                            value={values.ItemFamilyId}
-                            fullWidth
-                        />
-                    </Box>
+                <Box display="flex" justifyContent="space-between">
                     <TextField
                         label="mfgr"
                         placeholder="mfgr"
@@ -151,42 +110,71 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         value={values.size}
                     />
                 </Box>
+                <Box display="flex" justifyContent="space-between">
+                    <FieldSelect
+                        style={{ width: 215 }}
+                        label="Item category"
+                        request={getCategories}
+                        itemTitleField="name"
+                        itemValueField="id"
+                        name="ItemCategoryId"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.ItemCategoryId && touched.ItemCategoryId)}
+                        value={values.ItemCategoryId}
+                        placeholder={"Category"}
+                    />
+                    <FieldSelect
+                        style={{ width: 215, margin: "1.5em auto" }}
+                        label="Item type"
+                        request={getTypes}
+                        itemTitleField="name"
+                        itemValueField="id"
+                        name="ItemTypeId"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.ItemTypeId && touched.ItemTypeId)}
+                        value={values.ItemTypeId}
+                    />
+                    <FieldSelect
+                        style={{ width: 215 }}
+                        label="Item family"
+                        request={getFamilies}
+                        itemTitleField="name"
+                        itemValueField="id"
+                        name="ItemFamilyId"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.ItemFamilyId && touched.ItemFamilyId)}
+                        value={values.ItemFamilyId}
+                    />
+                </Box>
             </Box>
-            <Box display="flex" alignItems="center" justifyContent="center">
-                {/* <RadioGroup
-                    style={{ flexDirection: "row" }}
-                    name="active"
-                    value={String(values.active)}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                >
-                    <FormControlLabel value="true" control={<Radio />} label="Active" />
-                    <FormControlLabel value="false" control={<Radio />} label="Inactive" />
-                </RadioGroup> */}
-                <FormControlLabel style={{ flex: "0 40%" }} label="Active" name="Active" onChange={handleChange} control={<Checkbox />} />
-                <TextField
-                    label="Special notes"
-                    // style={{ margin: 5 }}
-                    value={values.specialNote}
-                    fullWidth
-                    placeholder={values.specialNote}
-                    name="specialNote"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.specialNote && touched.specialNote)}
-                />
-                <Button disabled={isSubmitting} style={{ marginTop: "1.3em" }} kind="edit" type="submit">
-                    Update
-                </Button>
-            </Box>
+
+            <FormControlLabel style={{ flex: "0 40%" }} label="Active" name="Active" onChange={handleChange} control={<Checkbox />} />
+            <TextField
+                label="Special notes"
+                // style={{ margin: 5 }}
+                value={values.specialNote}
+                fullWidth
+                placeholder={values.specialNote}
+                name="specialNote"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.specialNote && touched.specialNote)}
+            />
+            <Button disabled={isSubmitting} style={{ marginTop: "1.3em" }} kind="edit" type="submit">
+                Update
+            </Button>
         </>
     );
 };
 
 export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
     return (
-        <Box display="flex" alignItems="center" p={2}>
-            <Box mr={2}>
+        <Box display="flex" flexDirection="column" alignItems="center" p={2}>
+            {/* <Box style={{ padding: "4em 3em", border: "2px dashed gray", borderRadius: 20 }} /> */}
+            <Box mr={2} textAlign="center">
                 <TextField
                     label="version"
                     name="version"
@@ -231,10 +219,6 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                     onChange={handleChange}
                     style={{ marginBottom: 3 }}
                 />
-                {/* <Typography style={{ fontWeight: "bold", textAlign: "center" }}> Markup 200 %</Typography> */}
-            </Box>
-            <Box>
-                <Box style={{ padding: "4em 3em", border: "2px dashed gray", borderRadius: 20 }}></Box>
             </Box>
         </Box>
     );
@@ -245,15 +229,17 @@ export const Quantity = ({ values, errors, handleChange, handleBlur, touched }: 
         <Box display="flex" alignItems="center" p={2}>
             <Box flex={2} mr={2}>
                 <Typography>Total Quantity on hand</Typography>
-                <Box display="flex" justifyContent="space-between">
-                    <TextField
-                        label="total quantity on hand"
-                        name="totalQoh"
-                        placeholder="Total quantity"
-                        value={values.totalQoh}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                    />
+                <Box display="flex" justifyContent="space-between" my={1}>
+                    <Box mr={1}>
+                        <TextField
+                            label="total quantity on hand"
+                            name="totalQoh"
+                            placeholder="Total quantity"
+                            value={values.totalQoh}
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                        />
+                    </Box>
                     <TextField
                         label="allocated quantity on hand"
                         name="allocatedQoh"
@@ -264,16 +250,18 @@ export const Quantity = ({ values, errors, handleChange, handleBlur, touched }: 
                     />
                 </Box>
                 <Typography>Available qoh</Typography>
-                <Box display="flex" justifyContent="space-between">
-                    <TextField
-                        label="available quantity on hand"
-                        name="availableQoh"
-                        placeholder="availableQoh"
-                        value={values.availableQoh}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        style={{ marginBottom: 3 }}
-                    />
+                <Box display="flex" justifyContent="space-between" my={1}>
+                    <Box mr={1}>
+                        <TextField
+                            label="available quantity on hand"
+                            name="availableQoh"
+                            placeholder="availableQoh"
+                            value={values.availableQoh}
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            style={{ marginBottom: 3 }}
+                        />
+                    </Box>
                     <TextField
                         label="trriger quantity on hand"
                         name="triggerQoh"
