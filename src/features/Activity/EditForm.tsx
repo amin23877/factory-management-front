@@ -43,11 +43,11 @@ export default function EditForm({
 
     return (
         <Box>
-            <BasePaper>
-                <EditActivityForm init={selectedActivity} onDone={onDone} />
+            <EditActivityForm init={selectedActivity} onDone={onDone} />
 
+            <BasePaper style={{ marginTop: "1em" }}>
                 <Box>
-                    <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                    <Tabs style={{ marginBottom: 10 }} value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                         <Tab label="Notes" />
                         <Tab label="Documents" />
                     </Tabs>

@@ -285,8 +285,8 @@ function ItemsDetails({
                 <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} textColor="primary" variant="scrollable">
                     <Tab label="Notes" />
                     <Tab label="Documents" />
-                    <Tab label="Related Quotes" />
-                    <Tab label="Related Sales orders" />
+                    <Tab label="Quote History" />
+                    <Tab label="Sales order History" />
                     <Tab label="Sales Report" />
                 </Tabs>
                 <Box p={3}>

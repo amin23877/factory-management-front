@@ -35,11 +35,11 @@ export default function EditForm({ selectedSo, onDone }: { selectedSo: ISO; onDo
             <Formik initialValues={selectedSo} onSubmit={handleSubmit}>
                 {({ handleChange, handleBlur, values, setValues, isSubmitting }) => (
                     <Form>
-                        <Box display="flex" m={1} style={{justifyContent:"space-evenly"}}>
-                            <Box flex={1} mx={2} style={{maxWidth:"45%"}}>
+                        <Box display="flex" style={{ justifyContent: "space-evenly" }}>
+                            <Box flex={2}>
                                 <GeneralForm onChangeInit={setValues} values={values} handleBlur={handleBlur} handleChange={handleChange} />
                             </Box>
-                            <Box flex={1} m={1} style={{maxWidth:"403px"}}>
+                            <Box flex={1}>
                                 <Tabs
                                     textColor="primary"
                                     value={activeTab}
@@ -51,10 +51,13 @@ export default function EditForm({ selectedSo, onDone }: { selectedSo: ISO; onDo
                                     <Tab label="Billing" />
                                     <Tab label="Terms" />
                                 </Tabs>
-                                {activeTab === 0 && <ShippingForm values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                {activeTab === 1 && <BillingTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                {activeTab === 2 && <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-
+                                <Box style={{ height: 300, overflowY: "auto" }}>
+                                    {activeTab === 0 && (
+                                        <ShippingForm values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                    )}
+                                    {activeTab === 1 && <BillingTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
+                                    {activeTab === 2 && <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
+                                </Box>
                                 <Box display="flex" justifyContent="flex-end" my={2}>
                                     <Button disabled={isSubmitting} type="submit" kind="edit">
                                         Save

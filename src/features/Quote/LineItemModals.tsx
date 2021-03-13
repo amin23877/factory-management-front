@@ -78,7 +78,7 @@ export default function LineItemModal({
                     {({ values, handleChange, handleBlur, isSubmitting, errors, touched }) => (
                         <Form>
                             <FieldSelect
-                                style={{ width: "98.8%" }}
+                                style={{ width: "100%" }}
                                 label="Item"
                                 name="ItemId"
                                 value={values.ItemId}
@@ -92,7 +92,7 @@ export default function LineItemModal({
                             />
                             <Box mb={2} display="flex" alignItems="center">
                                 <TextField
-                                    style={{ flex: 1 }}
+                                    style={{ flex: 1, marginRight: 8 }}
                                     placeholder="description"
                                     label="description"
                                     name="description"
@@ -116,7 +116,7 @@ export default function LineItemModal({
                             </Box>
                             <Box mb={2} display="flex" alignItems="center">
                                 <TextField
-                                    style={{ flex: 1 }}
+                                    style={{ flex: 1, marginRight: 8 }}
                                     placeholder="price"
                                     label="price"
                                     name="price"
@@ -150,7 +150,7 @@ export default function LineItemModal({
                             </FormControl>
 
                             <Box textAlign="center">
-                                <Button disabled={isSubmitting} type="submit" kind="add">
+                                <Button disabled={isSubmitting} type="submit" kind={LIData ? "edit" : "add"}>
                                     {LIData ? "Save" : "Add"}
                                 </Button>
                                 {LIData && (
