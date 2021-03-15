@@ -79,7 +79,7 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             error={Boolean(errors.ClientId && touched.ClientId)}
-                                            style={{ flex: 1 }}
+                                            style={{ flex: 1, marginRight: "0.5em", marginLeft: "0.5em" }}
                                         />
                                         <FieldSelect
                                             label="Employee"
@@ -94,7 +94,7 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                                             style={{ flex: 1 }}
                                         />
                                     </Box>
-                                    <Box display="flex" justifyContent="space-between" alignItems="center">
+                                    <Box display="flex" mt={1} justifyContent="space-between" alignItems="center">
                                         <FieldSelect
                                             label="Contact"
                                             name="ContactId"
@@ -117,9 +117,8 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             error={Boolean(errors.ProjectId && touched.ProjectId)}
-                                            style={{ flex: 1 }}
+                                            style={{ flex: 1, marginRight: "0.5em", marginLeft: "0.5em" }}
                                         />
-
                                         <FieldSelect
                                             style={{ flex: 1 }}
                                             request={getAllEmployees}
@@ -133,7 +132,7 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                                             error={Boolean(errors.reciever && touched.reciever)}
                                         />
                                     </Box>
-                                    <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+                                    <div style={{ width: "100%", display: "flex", justifyContent: "flex-end" }}>
                                         <Button type="submit" kind="edit" style={{ marginTop: "1em", width: "20%" }}>
                                             Edit
                                         </Button>

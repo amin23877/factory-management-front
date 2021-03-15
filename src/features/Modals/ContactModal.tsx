@@ -25,6 +25,7 @@ const Field = ({
     errors,
     values,
     touched,
+    style,
 }: {
     name: string;
     handleBlur: any;
@@ -32,10 +33,11 @@ const Field = ({
     errors: any;
     values: any;
     touched: any;
+    style?: any;
 }) => {
     return (
         <TextField
-            style={{ flex: 1 }}
+            style={{ flex: 1, ...style }}
             name={name}
             onBlur={handleBlur}
             onChange={handleChange}
@@ -114,7 +116,7 @@ export const ContactModal = ({
                     {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
                         <Form>
                             <TextField
-                                style={{ width: "98%" }}
+                                style={{ width: "100%" }}
                                 name="title"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
@@ -127,7 +129,7 @@ export const ContactModal = ({
                             <Box display="flex" alignItems="center">
                                 <div style={{ display: "flex", width: "100%" }}>
                                     <TextField
-                                        style={{ flex: 1 }}
+                                        style={{ flex: 1, marginRight: 8 }}
                                         name="firstName"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
@@ -152,6 +154,7 @@ export const ContactModal = ({
                             </Box>
                             <div style={{ display: "flex", width: "100%" }}>
                                 <Field
+                                    style={{ marginRight: 8 }}
                                     name="department"
                                     errors={errors}
                                     handleBlur={handleBlur}
@@ -170,6 +173,7 @@ export const ContactModal = ({
                             </div>
                             <div style={{ display: "flex", width: "100%" }}>
                                 <Field
+                                    style={{ marginRight: 8 }}
                                     name="linkedIn"
                                     errors={errors}
                                     handleBlur={handleBlur}
@@ -188,6 +192,7 @@ export const ContactModal = ({
                             </div>
                             <div style={{ display: "flex", width: "100%" }}>
                                 <Field
+                                    style={{ marginRight: 8 }}
                                     name="instagram"
                                     errors={errors}
                                     handleBlur={handleBlur}
@@ -206,6 +211,7 @@ export const ContactModal = ({
                             </div>
                             <div style={{ display: "flex", width: "100%" }}>
                                 <Field
+                                    style={{ marginRight: 8 }}
                                     name="mi"
                                     errors={errors}
                                     handleBlur={handleBlur}
@@ -224,10 +230,10 @@ export const ContactModal = ({
                             </div>
 
                             <FieldSelect
+                                fullWidth
                                 request={getContactTypes}
                                 itemTitleField="name"
                                 itemValueField="id"
-                                fullWidth
                                 name="ContactTypeId"
                                 label="Contact Type"
                                 value={values.ContactTypeId}

@@ -84,7 +84,7 @@ export const AddressModal = ({
                         <Form>
                             <div style={{ display: "flex", width: "100%" }}>
                                 <TextField
-                                    style={{ flex: 1 }}
+                                    style={{ flex: 1, marginRight: 8 }}
                                     name="address"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
@@ -92,10 +92,9 @@ export const AddressModal = ({
                                     helperText={errors.address && touched.address}
                                     value={values.address}
                                     label="address"
-                                    fullWidth
                                 />
                                 <TextField
-                                    style={{ flex: 1 }}
+                                    style={{ flex: 1, marginRight: 8 }}
                                     name="address2"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
@@ -103,12 +102,11 @@ export const AddressModal = ({
                                     helperText={errors.address2 && touched.address2}
                                     value={values.address2}
                                     label="address2"
-                                    fullWidth
                                 />
                             </div>
                             <div style={{ display: "flex", width: "100%" }}>
                                 <TextField
-                                    style={{ flex: 1 }}
+                                    style={{ flex: 1, marginRight: 8 }}
                                     name="city"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
@@ -116,10 +114,9 @@ export const AddressModal = ({
                                     helperText={errors.city && touched.city}
                                     value={values.city}
                                     label="city"
-                                    fullWidth
                                 />
                                 <TextField
-                                    style={{ flex: 1 }}
+                                    style={{ flex: 1, marginRight: 8 }}
                                     name="state"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
@@ -127,12 +124,11 @@ export const AddressModal = ({
                                     helperText={errors.state && touched.state}
                                     value={values.state}
                                     label="state"
-                                    fullWidth
                                 />
                             </div>
                             <div style={{ display: "flex", width: "100%" }}>
                                 <TextField
-                                    style={{ flex: 1 }}
+                                    style={{ flex: 1, marginRight: 8 }}
                                     name="zip"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
@@ -140,10 +136,9 @@ export const AddressModal = ({
                                     helperText={errors.zip && touched.zip}
                                     value={values.zip}
                                     label="zip"
-                                    fullWidth
                                 />
                                 <TextField
-                                    style={{ flex: 1 }}
+                                    style={{ flex: 1, marginRight: 8 }}
                                     name="country"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
@@ -151,11 +146,10 @@ export const AddressModal = ({
                                     helperText={errors.country && touched.country}
                                     value={values.country}
                                     label="country"
-                                    fullWidth
                                 />
                             </div>
                             <FieldSelect
-                                style={{ width: "99%" }}
+                                style={{ marginRight: 8, width: "98%" }}
                                 label="Address type"
                                 request={getAddressTypes}
                                 itemTitleField="name"

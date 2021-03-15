@@ -1,8 +1,7 @@
 .objectSelect {
-    margin: 0.5em;
     width: 215px;
 }
 
 .baseSelect {
-    min-width: 243px;
+    width: 215px;
 }

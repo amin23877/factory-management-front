@@ -26,10 +26,10 @@ export const GeneralForm = ({
     return (
         <Box my={1} id="general">
             <Typography variant="h6">General</Typography>
-            {edit && <TextField label="number" value={values.number} style={{ width: "98.7%" }} disabled />}
+            {edit && <TextField label="number" value={values.number} style={{ width: "100%" }} disabled />}
             <Box display="flex" justifyContent="space-between">
                 <TextField
-                    style={{ flex: 1 }}
+                    style={{ flex: 1, marginRight: 8 }}
                     value={values.entryDate.substr(0, 10)}
                     name="entryDate"
                     label="Entry Date"
@@ -52,7 +52,7 @@ export const GeneralForm = ({
             <Box display="flex" justifyContent="space-between">
                 <TextField
                     value={values.location}
-                    style={{ flex: 1 }}
+                    style={{ flex: 1, marginRight: 8 }}
                     name="location"
                     label="locaton"
                     onChange={handleChange}
@@ -71,7 +71,7 @@ export const GeneralForm = ({
             </Box>
             <Box display="flex" justifyContent="space-between">
                 <FieldSelect
-                    style={{ flex: 1 }}
+                    style={{ flex: 1, marginRight: 8 }}
                     value={values.salesperson}
                     request={getAllEmployees}
                     itemTitleField="username"
@@ -97,7 +97,7 @@ export const GeneralForm = ({
             </Box>
 
             <FieldSelect
-                style={{ width: "98.7%" }}
+                style={{ width: "100%" }}
                 value={values.client}
                 request={getClients}
                 itemTitleField="name"
@@ -105,7 +105,6 @@ export const GeneralForm = ({
                 name="client"
                 label="Client"
                 onChange={handleChange}
-                fullWidth
             />
             <FormControl style={{ margin: "0.5em" }}>
                 <FormLabel>No tax</FormLabel>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Box, Container, Button, IconButton, TextField, ListItem, LinearProgress } from "@material-ui/core";
-import { RowData, ColDef } from "@material-ui/data-grid";
 import { NoteRounded, FileCopyRounded, PrintRounded, AddRounded, DeleteRounded, CategoryRounded } from "@material-ui/icons";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
@@ -14,7 +13,7 @@ import { AddItemModal } from "../features/Items/ItemModals";
 import CatTypeFamilyModal from "../features/Modals/CategoryModals";
 import ItemsDetails from "../features/Items";
 
-import { AddItemInitialValues, getItems, getItemsByQuery, deleteAnItem } from "../api/items";
+import { AddItemInitialValues, getItems, getItemsByQuery, deleteAnItem, IItem } from "../api/items";
 import { getTypes } from "../api/types";
 import { getCategories } from "../api/category";
 import { getFamilies } from "../api/family";
@@ -23,10 +22,11 @@ import { getAllModelDocuments } from "../api/document";
 
 import List from "../app/SideUtilityList";
 import { MyTabs, MyTab } from "../app/Tabs";
-import BaseDataGrid from "../app/BaseDataGrid";
+
+import DataTable from "../features/Items/Table";
 
 const Inventory = () => {
-    const [rows, setRows] = useState<RowData[]>([]);
+    const [rows, setRows] = useState<any[]>([]);
     const [notes, setNotes] = useState([]);
     const [docs, setDocs] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -42,7 +42,7 @@ const Inventory = () => {
 
     const [activeTab, setActiveTab] = useState(0);
     const [detailDis, setDetailDis] = useState(true);
-    const [selectedItem, setSelectedItem] = useState({ ...AddItemInitialValues, id: 0 });
+    const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
     const [selectedNote, setSelectedNote] = useState<any>();
     const [selectedDoc, setSelectedDoc] = useState<any>();
 
@@ -135,7 +135,7 @@ const Inventory = () => {
 
     const handleDelete = async () => {
         try {
-            if (selectedItem) {
+            if (selectedItem && selectedItem.id) {
                 const resp = await deleteAnItem(selectedItem.id);
                 refreshItems();
                 setActiveTab(0);
@@ -171,31 +171,9 @@ const Inventory = () => {
         filterItems();
     }, [filters]);
 
-    const cols: ColDef[] = [
-        { field: "no", headerName: "Item no" },
-        { field: "name", headerName: "Item name", width: 120 },
-        { field: "description", headerName: "desc" },
-        { field: "cost", headerName: "Cost" },
-        {
-            field: "ItemCategory",
-            headerName: "Category",
-            valueGetter: (d) => (d.data.ItemCategory ? d.data.ItemCategory.name : ""),
-        },
-        {
-            field: "ItemType",
-            headerName: "Type",
-            valueGetter: (d) => (d.data.ItemType ? d.data.ItemType.name : ""),
-        },
-        {
-            field: "ItemFamily",
-            headerName: "Family",
-            valueGetter: (d) => (d.data.ItemFamily ? d.data.ItemFamily.name : ""),
-        },
-    ];
-
     return (
         <Container>
-            {selectedNote && (
+            {selectedNote && selectedItem && selectedItem.id && (
                 <NoteModal
                     onDone={refreshNotes}
                     noteData={selectedNote}
@@ -205,7 +183,7 @@ const Inventory = () => {
                     onClose={() => setEditNoteModal(false)}
                 />
             )}
-            {selectedDoc && (
+            {selectedDoc && selectedItem && selectedItem.id && (
                 <DocumentModal
                     onDone={refreshDocs}
                     open={editDocModal}
@@ -216,22 +194,26 @@ const Inventory = () => {
                 />
             )}
 
-            <NoteModal
-                onDone={refreshNotes}
-                itemId={selectedItem.id}
-                model="item"
-                open={addNoteModal}
-                onClose={() => setAddNoteModal(false)}
-            />
-            <DocumentModal
-                onDone={refreshDocs}
-                open={addDocModal}
-                onClose={() => setAddDocModal(false)}
-                itemId={selectedItem.id}
-                model="item"
-            />
+            {selectedItem && selectedItem.id && (
+                <NoteModal
+                    onDone={refreshNotes}
+                    itemId={selectedItem.id}
+                    model="item"
+                    open={addNoteModal}
+                    onClose={() => setAddNoteModal(false)}
+                />
+            )}
+            {selectedItem && selectedItem.id && (
+                <DocumentModal
+                    onDone={refreshDocs}
+                    open={addDocModal}
+                    onClose={() => setAddDocModal(false)}
+                    itemId={selectedItem.id}
+                    model="item"
+                />
+            )}
 
-            <BOMModal itemId={selectedItem.id} open={bomModal} onClose={() => setBomModal(false)} />
+            {selectedItem && selectedItem.id && <BOMModal itemId={selectedItem.id} open={bomModal} onClose={() => setBomModal(false)} />}
 
             <AddItemModal open={addItemModal} onClose={() => setAddItemModal(false)} />
             <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
@@ -312,15 +294,16 @@ const Inventory = () => {
                     )}
                     {loading && <LinearProgress />}
                     {activeTab === 0 && !loading && (
-                        <BaseDataGrid
-                            cols={cols}
-                            rows={rows}
-                            onRowSelected={(r) => {
-                                setSelectedItem(r);
-                                setDetailDis(false);
-                                setActiveTab(1);
-                            }}
-                        />
+                        <Box display="flex" style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", border: "none" }}>
+                            <DataTable
+                                rows={rows}
+                                onRowSelected={(d) => {
+                                    setSelectedItem(d);
+                                    setDetailDis(false);
+                                    setActiveTab(1);
+                                }}
+                            />
+                        </Box>
                     )}
                     {activeTab === 1 && (
                         <ItemsDetails

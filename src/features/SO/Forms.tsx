@@ -103,7 +103,7 @@ export const GeneralForm = ({
             <Typography variant="h6">General</Typography>
             <div style={{ width: "100%", display: "flex" }}>
                 <TextField
-                    style={{ flex: 1 }}
+                    style={{ flex: 1, marginRight: 8 }}
                     value={values.number}
                     name="number"
                     label="number"
@@ -123,7 +123,7 @@ export const GeneralForm = ({
             </div>
             <div style={{ width: "100%", display: "flex" }}>
                 <TextField
-                    style={{ flex: 1 }}
+                    style={{ flex: 1, marginRight: 8 }}
                     value={values.leadTime}
                     name="leadTime"
                     label="leadTime"
@@ -143,7 +143,7 @@ export const GeneralForm = ({
             </div>
             <div style={{ width: "100%", display: "flex" }}>
                 <TextField
-                    style={{ flex: 1 }}
+                    style={{ flex: 1, marginRight: 8 }}
                     value={values.paymentTerms}
                     name="paymentTerms"
                     label="paymentTerms"
@@ -163,7 +163,7 @@ export const GeneralForm = ({
             </div>
 
             <FieldSelect
-                style={{ flex: 1, width: "98.5%" }}
+                style={{ flex: 1, width: "100%" }}
                 value={values.quotenumber}
                 name="quotenumber"
                 label="quotenumber"
@@ -177,7 +177,7 @@ export const GeneralForm = ({
                 onBlur={handleBlur}
             />
             <ArraySelect
-                style={{ flex: 1, width: "98.5%" }}
+                style={{ flex: 1, width: "100%" }}
                 value={values.status}
                 name="status"
                 label="Status"
@@ -211,29 +211,27 @@ export const ShippingForm = ({
     return (
         <Box m={1}>
             <Typography variant="h6">Shipping</Typography>
-            <Box>
-                <div style={{ display: "flex", width: "100%" }}>
-                    <TextField
-                        style={{ flex: 1 }}
-                        value={values.estShipDate ? values.estShipDate.substr(0, 10) : ""}
-                        name="estShipDate"
-                        label="Estimated ship date"
-                        type="date"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        fullWidth
-                    />
-                    <TextField
-                        style={{ flex: 1 }}
-                        value={values.actShipDate ? values.actShipDate.substr(0, 10) : ""}
-                        name="actShipDate"
-                        label="Actual ship date"
-                        type="date"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        fullWidth
-                    />
-                </div>
+            <Box mt={1}>
+                <TextField
+                    style={{ width: "100%" }}
+                    value={values.estShipDate ? values.estShipDate.substr(0, 10) : ""}
+                    name="estShipDate"
+                    label="Estimated ship date"
+                    type="date"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    fullWidth
+                />
+                <TextField
+                    style={{ width: "100%" }}
+                    value={values.actShipDate ? values.actShipDate.substr(0, 10) : ""}
+                    name="actShipDate"
+                    label="Actual ship date"
+                    type="date"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    fullWidth
+                />
                 <FieldSelect
                     value={values.shippingAddress ? values.shippingAddress : ""}
                     name="shippingAddress"
@@ -307,7 +305,9 @@ export const BillingTab = ({
 }) => {
     return (
         <Box m={1} id="billing">
-            <Typography variant="h6">Billing</Typography>
+            <Typography variant="h6" style={{ marginBottom: 10 }}>
+                Billing
+            </Typography>
             <FieldSelect
                 value={values.billingAddress ? values.billingAddress : ""}
                 request={getAddresses}

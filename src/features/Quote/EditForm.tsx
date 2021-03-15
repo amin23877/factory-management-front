@@ -21,10 +21,6 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
     const handleSubmit = async (data: IQuote, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
         try {
             if (data?.id) {
-                // const resp = await updateQuote(data.id, data);
-                // console.log(resp);
-                // setSubmitting(false);
-                // onDone();
                 const resp = await dispatch(updateQuoteThunk({ id: data.id, data }));
                 unwrapResult(resp);
                 setShowSnack(true);
@@ -43,11 +39,11 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
             <Formik initialValues={selectedQuote} onSubmit={handleSubmit}>
                 {({ handleChange, handleBlur, values, isSubmitting }) => (
                     <Form>
-                        <Box display="flex" m={1} style={{ justifyContent: "space-evenly" }}>
-                            <Box flex={1} mx={2} style={{ maxWidth: "45%" }}>
+                        <Box display="flex" justifyContent="space-evenly">
+                            <Box flex={3} mr={2}>
                                 <GeneralForm edit values={values} handleBlur={handleBlur} handleChange={handleChange} />
                             </Box>
-                            <Box flex={1} m={1} style={{ maxWidth: "403px" }}>
+                            <Box flex={1}>
                                 <Tabs
                                     value={activeTab}
                                     textColor="primary"
@@ -61,11 +57,15 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
                                     <Tab label="Deposit" />
                                     <Tab label="Commission" />
                                 </Tabs>
-                                {activeTab === 0 && <ShippingTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                {activeTab === 1 && <BillingTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                {activeTab === 2 && <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                {activeTab === 3 && <DepositTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                {activeTab === 4 && <CommissionTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
+                                <Box style={{ height: 300, overflowY: "auto" }}>
+                                    {activeTab === 0 && <ShippingTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
+                                    {activeTab === 1 && <BillingTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
+                                    {activeTab === 2 && <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
+                                    {activeTab === 3 && <DepositTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
+                                    {activeTab === 4 && (
+                                        <CommissionTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                    )}
+                                </Box>
 
                                 <Box display="flex" justifyContent="flex-end" my={2}>
                                     <Button disabled={isSubmitting} type="submit" kind="edit">

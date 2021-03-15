@@ -85,6 +85,25 @@ export default function AddPOModal({ open, onClose, onDone }: { open: boolean; o
                                 </Button>
                                 {fileName && <Typography variant="caption">{fileName}</Typography>}
 
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        width: "100%",
+                                        justifyContent: "center",
+                                        padding: "0px 10%",
+                                    }}
+                                >
+                                    <TextField
+                                        style={{ marginBottom: "8px", flex: 1 }}
+                                        name="number"
+                                        label="number"
+                                        value={values.number}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.number && touched.number)}
+                                        helperText={errors.number}
+                                    />
+                                </div>
                                 <FieldSelect
                                     label="Contact"
                                     name="ContactId"
@@ -140,26 +159,7 @@ export default function AddPOModal({ open, onClose, onDone }: { open: boolean; o
                                     onBlur={handleBlur}
                                     error={Boolean(errors.reciever && touched.reciever)}
                                 />
-                                <div
-                                    style={{
-                                        display: "flex",
-                                        width: "100%",
-                                        justifyContent: "center",
-                                        padding: "0px 10%",
-                                    }}
-                                >
-                                    <TextField
-                                        style={{ marginBottom: "8px", flex: 1 }}
-                                        name="number"
-                                        label="number"
-                                        value={values.number}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={Boolean(errors.number && touched.number)}
-                                        helperText={errors.number}
-                                    />
-                                </div>
-                                <Button type="submit" style={{ width: "80%" }} kind="add">
+                                <Button type="submit" style={{ width: "70%", margin: "1em 0" }} kind="add">
                                     Add
                                 </Button>
                             </Box>

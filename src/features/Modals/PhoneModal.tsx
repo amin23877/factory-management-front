@@ -64,6 +64,7 @@ export const PhoneModal = ({
                         <Form>
                             <Box display="flex" alignItems="center">
                                 <TextField
+                                    style={{ marginRight: 8 }}
                                     name="ext"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
@@ -86,7 +87,7 @@ export const PhoneModal = ({
                             </Box>
 
                             <FieldSelect
-                                style={{ width: "98.6%" }}
+                                style={{ width: "99%" }}
                                 request={getPhoneTypes}
                                 itemTitleField="name"
                                 itemValueField="id"

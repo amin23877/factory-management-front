@@ -63,7 +63,7 @@ export interface IBaseTextField extends InputBaseProps {
 
 export default function BaseTextField(props: IBaseTextField) {
     return (
-        <FormControl style={{ ...props.style }}>
+        <FormControl style={{ ...props.style, marginTop: 5, marginBottom: 5 }}>
             <InputLabel shrink htmlFor="bootstrap-input">
                 {props.label}
             </InputLabel>

@@ -55,6 +55,7 @@ const EditClientForm = ({ clientTypes, data, onDone }: { clientTypes: any; data:
         if (!specials.includes(key)) {
             fields.push(
                 <TextField
+                    style={{ marginRight: 8 }}
                     key={key}
                     name={key}
                     value={values[key]}

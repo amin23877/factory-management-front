@@ -56,11 +56,12 @@ function ItemsDetails({
     ];
 
     const soCols: ColDef[] = [
-        { field: "number" },
-        { field: "quotenumber" },
-        { field: "location", width: 180 },
-        { field: "estShipDate", width: 180 },
-        { field: "actShipDate", width: 180 },
+        { field: "number", headerName: "SO Number" },
+        { field: "description", headerName: "Description" },
+        { field: "Client" },
+        { field: "Quantity usage" },
+        { field: "Price" },
+        { field: "CreatedAt", headerName: "Date" },
     ];
 
     const noteCols: ColDef[] = [
@@ -285,8 +286,8 @@ function ItemsDetails({
                 <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} textColor="primary" variant="scrollable">
                     <Tab label="Notes" />
                     <Tab label="Documents" />
-                    <Tab label="Related Quotes" />
-                    <Tab label="Related Sales orders" />
+                    <Tab label="Quote History" />
+                    <Tab label="Sales order History" />
                     <Tab label="Sales Report" />
                 </Tabs>
                 <Box p={3}>

@@ -125,7 +125,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         placeholder={"Category"}
                     />
                     <FieldSelect
-                        style={{ width: 215, margin: "1.5em auto" }}
+                        style={{ width: 215 }}
                         label="Item type"
                         request={getTypes}
                         itemTitleField="name"
@@ -229,49 +229,45 @@ export const Quantity = ({ values, errors, handleChange, handleBlur, touched }: 
         <Box display="flex" alignItems="center" p={2}>
             <Box flex={2} mr={2}>
                 <Typography>Total Quantity on hand</Typography>
-                <Box display="flex" justifyContent="space-between" my={1}>
-                    <Box mr={1}>
-                        <TextField
-                            label="total quantity on hand"
-                            name="totalQoh"
-                            placeholder="Total quantity"
-                            value={values.totalQoh}
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                        />
-                    </Box>
-                    <TextField
-                        label="allocated quantity on hand"
-                        name="allocatedQoh"
-                        placeholder="allocatedQoh"
-                        value={values.allocatedQoh}
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                    />
-                </Box>
+                <TextField
+                    style={{ marginLeft: "1em" }}
+                    label="total quantity on hand"
+                    name="totalQoh"
+                    placeholder="Total quantity"
+                    value={values.totalQoh}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                />
+                <TextField
+                    style={{ marginLeft: "1em" }}
+                    label="allocated quantity on hand"
+                    name="allocatedQoh"
+                    placeholder="allocatedQoh"
+                    value={values.allocatedQoh}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                />
                 <Typography>Available qoh</Typography>
-                <Box display="flex" justifyContent="space-between" my={1}>
-                    <Box mr={1}>
-                        <TextField
-                            label="available quantity on hand"
-                            name="availableQoh"
-                            placeholder="availableQoh"
-                            value={values.availableQoh}
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            style={{ marginBottom: 3 }}
-                        />
-                    </Box>
+                <Box mr={1}>
                     <TextField
-                        label="trriger quantity on hand"
-                        name="triggerQoh"
-                        placeholder="triggerQoh"
-                        value={values.triggerQoh}
+                        style={{ marginLeft: "1em" }}
+                        label="available quantity on hand"
+                        name="availableQoh"
+                        placeholder="availableQoh"
+                        value={values.availableQoh}
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        style={{ marginBottom: 3 }}
                     />
                 </Box>
+                <TextField
+                    style={{ marginLeft: "1em" }}
+                    label="trriger quantity on hand"
+                    name="triggerQoh"
+                    placeholder="triggerQoh"
+                    value={values.triggerQoh}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                />
             </Box>
         </Box>
     );

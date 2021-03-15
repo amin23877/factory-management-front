@@ -3,22 +3,31 @@ import { Select, SelectProps, FormControl, InputLabel, MenuItem } from "@materia
 import { BootstrapInput } from "../TextField";
 
 import styles from "./inputs.module.css";
+import { CSSProperties } from "@material-ui/styles";
 
 interface IOS extends SelectProps {
     items: any[];
     itemValueField: string;
     itemTitleField: string;
     keyField?: string;
+    inputStyle?: CSSProperties;
 }
-export const ObjectSelect = ({ items, itemTitleField, itemValueField, keyField, ...props }: IOS) => {
+export const ObjectSelect = ({ inputStyle, items, itemTitleField, itemValueField, keyField, ...props }: IOS) => {
     return (
-        <FormControl className={styles.objectSelect} fullWidth={props.fullWidth}>
+        <FormControl className={styles.objectSelect} style={{ ...props.style }} fullWidth={props.fullWidth}>
             {props.label && (
                 <InputLabel shrink htmlFor="object-select">
                     {props.label}
                 </InputLabel>
             )}
-            <Select id="object-select" name={props.name} input={<BootstrapInput />} {...props} displayEmpty={true}>
+            <Select
+                id="object-select"
+                name={props.name}
+                style={{ ...inputStyle }}
+                input={<BootstrapInput />}
+                {...props}
+                displayEmpty={true}
+            >
                 <MenuItem value={undefined}>None</MenuItem>
                 {items &&
                     items.map((item: any, i) => (
