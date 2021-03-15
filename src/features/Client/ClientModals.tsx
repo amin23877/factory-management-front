@@ -45,7 +45,7 @@ export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClo
         if (!specials.includes(key)) {
             form_inputs.push(
                 <TextField
-                    style={{ flex: "1 0 40%" }}
+                    style={{ flex: "1 0 40%", marginRight: 5, marginLeft: 5 }}
                     key={key}
                     fullWidth
                     name={key}
@@ -78,10 +78,10 @@ export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClo
                         onChange={handleChange}
                         value={values.parent}
                         error={Boolean(errors.parent)}
-                        style={{ width: "98.6%" }}
+                        style={{ width: "100%" }}
                     />
                     <FieldSelect
-                        style={{ width: "98.6%" }}
+                        style={{ width: "100%" }}
                         request={getClientTypes}
                         itemTitleField="name"
                         itemValueField="id"

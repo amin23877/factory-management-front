@@ -56,11 +56,12 @@ function ItemsDetails({
     ];
 
     const soCols: ColDef[] = [
-        { field: "number" },
-        { field: "quotenumber" },
-        { field: "location", width: 180 },
-        { field: "estShipDate", width: 180 },
-        { field: "actShipDate", width: 180 },
+        { field: "number", headerName: "SO Number" },
+        { field: "description", headerName: "Description" },
+        { field: "Client" },
+        { field: "Quantity usage" },
+        { field: "Price" },
+        { field: "CreatedAt", headerName: "Date" },
     ];
 
     const noteCols: ColDef[] = [
