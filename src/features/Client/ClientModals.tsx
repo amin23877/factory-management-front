@@ -67,7 +67,7 @@ export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClo
                     <Box display="flex" justifyContent="space-between" flexWrap="wrap">
                         {form_inputs}
                     </Box>
-                    <Box display="flex" justifyContent="space-between" style={{marginLeft:"7.5px",marginRight:"5px"}}>
+                    <Box display="flex" justifyContent="space-between" style={{ marginLeft: "7.5px", marginRight: "5px" }}>
 
                         <FieldSelect
                             request={getClients}
@@ -79,10 +79,10 @@ export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClo
                             onChange={handleChange}
                             value={values.parent}
                             error={Boolean(errors.parent)}
-                            style={{ width: "100%" ,marginRight:"3.5px"}}
+                            style={{ width: "100%", marginRight: "3.5px" }}
                         />
                         <FieldSelect
-                            style={{ width: "100%",marginLeft:"3.5px" }}
+                            style={{ width: "100%", marginLeft: "3.5px" }}
                             request={getClientTypes}
                             itemTitleField="name"
                             itemValueField="id"
