@@ -42,7 +42,7 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
                     <Form>
                         <Box display="flex" justifyContent="space-evenly">
                             <Box flex={3} mr={2}>
-                                <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", border: "none" }}>
+                                <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", border: "none" ,margin: "0 1em " }}>
 
                                     <GeneralForm edit values={values} handleBlur={handleBlur} handleChange={handleChange} />
                                     <Box display="flex" justifyContent="flex-end" my={2}>
@@ -53,7 +53,7 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
                                 </BasePaper>
                             </Box>
                             <Box flex={1}>
-                                <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", border: "none" }}>
+                                <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", border: "none", margin: "0 1em " }}>
 
                                     <Tabs
                                         value={activeTab}
