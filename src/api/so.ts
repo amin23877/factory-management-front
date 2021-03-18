@@ -34,38 +34,6 @@ export interface ISO {
     ProjectId?: number;
 }
 
-export const SOInit: ISO = {
-    number: "",
-    quotenumber: "",
-    location: "",
-    leadTime: "",
-    frieghtTerms: "",
-    paymentTerms: "",
-    carrier: "",
-    issuedBy: undefined,
-    status: "",
-    expodate: false,
-
-    estShipDate: "",
-    actShipDate: "",
-    shippingAddress: undefined,
-    shippingContact: undefined,
-    shippingPhone: undefined,
-    shippingEmail: undefined,
-    shippingEntitiy: "",
-
-    billingContact: undefined,
-    billingPhone: undefined,
-    billingEmail: undefined,
-    billingAddress: undefined,
-    billingEntitiy: "",
-
-    agency: undefined,
-    requester: undefined,
-    ClientId: undefined,
-    ProjectId: undefined,
-};
-
 export interface ILineItem {
     id?: number;
     SoId?: number;
@@ -77,14 +45,8 @@ export interface ILineItem {
     tax: boolean;
 }
 
-export const LineItemInit: ILineItem = {
-    index: 0,
-    ItemId: 0,
-    description: "",
-    quantity: 0,
-    price: 0,
-    tax: false,
-};
+export const SOInit:any = {};
+export const LineItemInit:any = {};
 
 export const getSO = async () => {
     try {

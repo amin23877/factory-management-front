@@ -61,61 +61,9 @@ export interface ILineItem {
     tax: boolean,
 }
 
-export const LineItemInit:ILineItem ={
-    index: 0,
-    ItemId: 0,
-    description: '',
-    quantity: 0,
-    price: 0,
-    tax: false,
-}
+export const LineItemInit:any ={}
 
-export const QuoteInit:IQuote = {
-    entryDate: "",
-    expireDate: "",
-    
-    location: "",
-    leadTime: "",
-    
-    salesperson: null,
-    requester: null,
-    client: null,
-    noTaxClient: false,
-    
-    shippingAddress: null,
-    shippingContact: null,
-    shippingPhone: null,
-    shippingEmail: null,
-    shippingEntitiy: "",
-    
-    billingContact: null,
-    billingAddress: null,
-    billingPhone: null,
-    billingEmail: null,
-    billingEntitiy: "",
-    
-    department: "",
-    acctStatus: "",
-    creditTerms: "",
-
-    quoteStatus: "",
-    
-    frieghtTerms: "",
-    paymentTerms: "",
-    
-    depositRequired: false,
-    deposit: null,
-    depositAmount: null,
-    
-    estimatedShipDate: "",
-    commissionLabel: "",
-    
-    regularCommission: null,
-    overageCommission: null,
-    
-    EmployeeId: null,
-    ProjectId: null
-}
+export const QuoteInit:any = {};
 
 export const createLineItem = async (qId:number, data:ILineItem) => {
     try {

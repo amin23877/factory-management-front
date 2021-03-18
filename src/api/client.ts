@@ -22,26 +22,7 @@ interface IClient {
     ClientTypeId:string
 }
 
-export const AddClientInit:IClient = {
-    name:"",
-    abbr:"",
-    location:"",
-    refferedBy:"",
-    linkedIn:"",
-    facebook:"",
-    instagram:"",
-    website:"",
-    prospect:false,
-    size:'small',
-    fax:"",
-    parent: null,
-    preferredCompany:"",
-    preferredService:"",
-    account:"",
-    specialInstructions:"",
-    allowedShippingPercentOverUnder:0.0,
-    ClientTypeId:""
-}
+export const AddClientInit:any = {};
 
 export const getClients = async () => {
     try {

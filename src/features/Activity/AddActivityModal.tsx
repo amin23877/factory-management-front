@@ -32,13 +32,11 @@ const useStyles = makeStyles({
 });
 
 export default function AddActivityModal({ open, onClose, onDone }: { open: boolean; onClose: () => void; onDone: () => void }) {
-    const classes = useStyles({ open });
-
     const schema = Yup.object().shape({
         name: Yup.string().required(),
     });
 
-    const handleSubmit = async (data: IActivity, { setSubmitting }: { setSubmitting: any }) => {
+    const handleSubmit = async (data: any, { setSubmitting }: { setSubmitting: any }) => {
         try {
             if (init && init?.id) {
                 const resp = await updateActivity(init.id, data);
