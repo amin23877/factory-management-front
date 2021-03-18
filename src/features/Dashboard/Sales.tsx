@@ -190,10 +190,10 @@ export const Sales = () => {
                 <Activities />
             </Grid>
             <Grid item md={4}>
-                <SalesOrders />
+                <Emails />
             </Grid>
             <Grid item md={8}>
-                <Emails />
+                <SalesOrders />
             </Grid>
             <Grid item md={4}>
                 <BasePaper>

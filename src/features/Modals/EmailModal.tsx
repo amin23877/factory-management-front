@@ -32,7 +32,7 @@ export const EmailModal = ({
     onDone?: () => void;
 }) => {
     return (
-        <Dialog open={open} onClose={onClose} title={`${data?.id ? "Edit" : "Add"} an Email to ${model}`}>
+        <Dialog open={open} onClose={onClose} maxWidth="xs" title={`${data?.id ? "Edit" : "Add"} an Email to ${model}`}>
             <Box m={3}>
                 <Formik
                     initialValues={data?.id ? data : { email: "", main: false, EmailTypeId: 0 }}

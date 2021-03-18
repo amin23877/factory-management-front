@@ -103,7 +103,7 @@ export const GeneralForm = ({
             </Snackbar>
 
             <Box m={2} p={2}>
-                <Accordion defaultExpanded>
+                <Accordion >
                     <AccordionSummary expandIcon={<ExpandMoreRounded />}>Add</AccordionSummary>
                     <AccordionDetails>
                         <form
@@ -119,16 +119,16 @@ export const GeneralForm = ({
                                     value={addName}
                                     onChange={(e) => setAddName(e.target.value)}
                                     placeholder={`${type} name`}
-                                    style={{ marginBottom: "0px", flex: 1 }}
+                                    style={{ marginRight:"8px", flex: 1 }}
                                 />
-                                <Button type="submit" kind="add" disabled={dis} style={{ marginBottom: "5px" }}>
+                                <Button type="submit" kind="add" disabled={dis} style={{ marginBottom: "8px" }}>
                                     Add
                                 </Button>
                             </Box>
                         </form>
                     </AccordionDetails>
                 </Accordion>
-                <Accordion>
+                <Accordion defaultExpanded>
                     <AccordionSummary expandIcon={<ExpandMoreRounded />}>Edit</AccordionSummary>
                     <AccordionDetails>
                         <form
