@@ -30,7 +30,7 @@ export const GeneralForm = ({
             <Box display="flex" justifyContent="space-between">
                 <TextField
                     style={{ flex: 1, marginRight: 8 }}
-                    value={values.entryDate?.substr(0, 10)}
+                    value={values.entryDate ? values.entryDate.substr(0, 10) : ""}
                     name="entryDate"
                     label="Entry Date"
                     type="date"
@@ -40,7 +40,7 @@ export const GeneralForm = ({
                 />
                 <TextField
                     style={{ flex: 1 }}
-                    value={values.expireDate?.substr(0, 10)}
+                    value={values.expireDate ? values.expireDate.substr(0, 10) : ""}
                     name="expireDate"
                     label="Expire Date"
                     type="date"
@@ -406,7 +406,7 @@ export const CommissionTab = ({
             </Typography>
             <TextField
                 style={{ width: "100%" }}
-                value={values.estimatedShipDate.substr(0, 10)}
+                value={values.estimatedShipDate ? values.estimatedShipDate.substr(0, 10) : ""}
                 name="estimatedShipDate"
                 label="Estimated Ship Date"
                 type="date"

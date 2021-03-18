@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import CheckBox from "@material-ui/core/Checkbox";
 import TextField from "@material-ui/core/TextField";
 import Slider from "@material-ui/core/Slider";
 
@@ -47,7 +45,7 @@ export const FilterWithChecks = ({
     return (
         <Box display="flex" flexDirection="column" alignItems="flex-start" style={{ padding: "0.5em 1em" }}>
             <Autocomplete
-                value={filters && filters[filterBy] ? (filters[filterBy] as any[]) : undefined}
+                value={filters && filters[filterBy] ? (filters[filterBy] as any[]) : []}
                 multiple
                 fullWidth
                 options={filterBy === "cat" ? cats : filterBy === "type" ? types : families}
@@ -63,14 +61,14 @@ export const FilterByCost = ({ filters, onChange }: { filters?: IFilters; filter
     const [val, setVal] = useState([0, 10]);
 
     useEffect(() => {
-        setVal(filters?.cost ? filters.cost : [0, 10]);
+        setVal(filters?.cost ? filters.cost : [0, 1000]);
     }, [filters]);
 
     return (
         <Box display="flex" flexDirection="column" alignItems="flex-start" style={{ padding: "0.5em 1em" }}>
             <Typography>Filter by cost</Typography>
             <Slider
-                // value={filters?.cost ? filters.cost : [0, 10]}
+                max={1000}
                 value={val}
                 onChange={(e, nv) => setVal(nv as number[])}
                 onChangeCommitted={(e, nv) => onChange((prev: any) => ({ ...prev, cost: nv as number[] }))}

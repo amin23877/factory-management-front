@@ -23,8 +23,9 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
     return (
         <>
             <Box display="flex" flexDirection="column">
-                <Box display="flex" justifyContent="space-between">
+                <Box display="flex" justifyContent="space-between" flexWrap="wrap">
                     <TextField
+                        style={{ flex: "1 1 30%" }}
                         label="Item name"
                         placeholder="Item name"
                         name="name"
@@ -34,7 +35,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         value={values.name}
                     />
                     <TextField
-                        style={{ marginRight: 5, marginLeft: 5 }}
+                        style={{ flex: "1 1 30%", marginRight: 5, marginLeft: 5 }}
                         label="upc"
                         placeholder="upc"
                         name="upc"
@@ -44,6 +45,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         value={values.upc}
                     />
                     <TextField
+                        style={{ flex: "1 1 30%" }}
                         label="sku"
                         placeholder="sku"
                         name="sku"
@@ -53,8 +55,9 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         value={values.sku}
                     />
                 </Box>
-                <Box display="flex" justifyContent="space-between">
+                <Box display="flex" justifyContent="space-between" flexWrap="wrap">
                     <TextField
+                        style={{ flex: "1 1 30%" }}
                         label="description"
                         placeholder="description"
                         name="description"
@@ -64,7 +67,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         value={values.description}
                     />
                     <TextField
-                        style={{ marginRight: 5, marginLeft: 5 }}
+                        style={{ flex: "1 1 30%", marginRight: 5, marginLeft: 5 }}
                         label="no"
                         value={values.no}
                         name="no"
@@ -74,6 +77,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         placeholder="no"
                     />
                     <TextField
+                        style={{ flex: "1 1 30%" }}
                         label="variance"
                         placeholder="variance"
                         name="variance"
@@ -83,8 +87,9 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         value={values.variance}
                     />
                 </Box>
-                <Box display="flex" justifyContent="space-between">
+                <Box display="flex" justifyContent="space-between" flexWrap="wrap">
                     <TextField
+                        style={{ flex: "1 1 30%" }}
                         label="mfgr"
                         placeholder="mfgr"
                         name="mfgr"
@@ -94,7 +99,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         value={values.mfgr}
                     />
                     <TextField
-                        style={{ marginRight: 5, marginLeft: 5 }}
+                        style={{ flex: "1 1 30%", marginRight: 5, marginLeft: 5 }}
                         label="color"
                         placeholder="color"
                         name="color"
@@ -104,6 +109,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         value={values.color}
                     />
                     <TextField
+                        style={{ flex: "1 1 30%" }}
                         label="size"
                         placeholder="size"
                         name="size"
@@ -113,9 +119,9 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         value={values.size}
                     />
                 </Box>
-                <Box display="flex" justifyContent="space-between">
+                <Box display="flex" justifyContent="space-between" flexWrap="wrap">
                     <FieldSelect
-                        style={{ width: 215 }}
+                        style={{ flex: "1 1 30%" }}
                         label="Item category"
                         request={getCategories}
                         itemTitleField="name"
@@ -128,7 +134,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         placeholder={"Category"}
                     />
                     <FieldSelect
-                        style={{ width: 215 }}
+                        style={{ flex: "1 1 30%", marginRight: 5, marginLeft: 5 }}
                         label="Item type"
                         request={getTypes}
                         itemTitleField="name"
@@ -140,7 +146,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         value={values.ItemTypeId}
                     />
                     <FieldSelect
-                        style={{ width: 215 }}
+                        style={{ flex: "1 1 30%" }}
                         label="Item family"
                         request={getFamilies}
                         itemTitleField="name"
@@ -260,7 +266,7 @@ export const Quantity = ({ values, errors, handleChange, handleBlur, touched }: 
                 <Box display="flex">
                     <TextField
                         style={{ marginRight: 5 }}
-                        label="total quantity on hand"
+                        label="total quantity"
                         name="totalQoh"
                         placeholder="Total quantity"
                         value={values.totalQoh}
@@ -296,7 +302,7 @@ export const Quantity = ({ values, errors, handleChange, handleBlur, touched }: 
                         onChange={handleChange}
                     />
                     <TextField
-                        label="allocated quantity on hand"
+                        label="allocated quantity"
                         name="allocatedQoh"
                         value={values.allocatedQoh}
                         onBlur={handleBlur}

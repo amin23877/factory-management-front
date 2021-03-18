@@ -155,8 +155,8 @@ const Inventory = () => {
                     ItemTypeId: filters.type && filters.type.length > 0 ? filters.type.map((item) => item.id).join(",") : undefined,
                     ItemFamilyId: filters.family && filters.family.length > 0 ? filters.family.map((item) => item.id).join(",") : undefined,
 
-                    minCost: filters.cost && filters.cost[0] ? filters.cost[0] : undefined,
-                    maxCost: filters.cost && filters.cost[1] ? filters.cost[1] : undefined,
+                    minCost: filters.cost && filters.cost[1] ? filters.cost[1] : undefined,
+                    maxCost: filters.cost && filters.cost[0] ? filters.cost[0] : undefined,
 
                     no: filters.itemNo ? filters.itemNo : undefined,
                     name: filters.name ? filters.name : undefined,
