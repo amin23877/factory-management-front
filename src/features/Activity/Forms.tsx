@@ -58,9 +58,10 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                         value={values.name}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
+                                        style={{ flex: "1 1 25%" }}
                                     />
                                     <TextField
-                                        style={{ marginRight: "0.5em", marginLeft: "0.5em" }}
+                                        style={{ flex: "1 1 25%", marginRight: 5, marginLeft: 5 }}
                                         name="subject"
                                         label="subject"
                                         value={values.subject}
@@ -68,7 +69,7 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                         onBlur={handleBlur}
                                     />
                                     <TextField
-                                        style={{ marginRight: "0.5em" }}
+                                        style={{ flex: "1 1 25%", marginRight: 5 }}
                                         name="location"
                                         label="location"
                                         value={values.location}
@@ -81,12 +82,13 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                         value={values.notes}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
+                                        style={{ flex: "1 1 25%" }}
                                     />
                                 </Box>
-                                <Box display="flex" justifyContent="space-between" my={1}>
+                                <Box display="flex" alignItems="center" justifyContent="space-between" my={1}>
                                     <TextField
+                                        style={{ flex: "1 1 25%" }}
                                         type="date"
-                                        style={{ marginRight: 12 }}
                                         name="startTime"
                                         label="Start time"
                                         value={values.startTime}
@@ -94,7 +96,7 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                         onBlur={handleBlur}
                                     />
                                     <TextField
-                                        style={{ marginRight: 10 }}
+                                        style={{ marginRight: 5, marginLeft: 5, flex: "1 1 25%" }}
                                         type="date"
                                         name="endTime"
                                         label="End time"
@@ -103,7 +105,7 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                         onBlur={handleBlur}
                                     />
                                     <FieldSelect
-                                        style={{ marginRight: 5 }}
+                                        style={{ flex: "1 1 25%", marginRight: 5 }}
                                         request={getClients}
                                         itemTitleField="name"
                                         itemValueField="id"
@@ -115,6 +117,7 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                     />
 
                                     <FieldSelect
+                                        style={{ flex: "1 1 25%" }}
                                         label="Contact"
                                         name="ContactId"
                                         request={getContacts}
@@ -125,8 +128,9 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                         onBlur={handleBlur}
                                     />
                                 </Box>
-                                <Box display="flex" justifyContent="space-between" my={1}>
+                                <Box display="flex" alignItems="center" justifyContent="space-between" my={1}>
                                     <FieldSelect
+                                        style={{ flex: "1 1 25%" }}
                                         label="ActivityPriorityId"
                                         name="ActivityPriorityId"
                                         request={() => baseGet("/activitypriority")}
@@ -137,6 +141,7 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                         onBlur={handleBlur}
                                     />
                                     <FieldSelect
+                                        style={{ flex: "1 1 25%", marginRight: 5, marginLeft: 5 }}
                                         label="Project"
                                         name="ProjectId"
                                         request={getProjects}
@@ -147,6 +152,7 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                         onBlur={handleBlur}
                                     />
                                     <FieldSelect
+                                        style={{ flex: "1 1 25%", marginRight: 5 }}
                                         label="Employee"
                                         name="EmployeeId"
                                         request={getAllEmployees}
@@ -157,6 +163,7 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                         onBlur={handleBlur}
                                     />
                                     <FieldSelect
+                                        style={{ flex: "1 1 25%" }}
                                         label="Quote"
                                         name="QuoteId"
                                         request={getQuotes}
@@ -177,6 +184,7 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                         value={values.ActivityCategoryId}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
+                                        style={{ marginRight: 5 }}
                                     />
                                     <FieldSelect
                                         label="ActivityStatusId"

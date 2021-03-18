@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Button, makeStyles } from "@material-ui/core";
+import { Button, IconButton, makeStyles } from "@material-ui/core";
 import Menu from "@material-ui/core/Menu";
 import Box from "@material-ui/core/Box";
 
@@ -11,6 +11,8 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+
+import SortRounded from "@material-ui/icons/SortRounded";
 
 import { IItem } from "../../../api/items";
 import MenuFilters, { IFilters } from "./Filters";
@@ -50,6 +52,10 @@ const useStyles = makeStyles((theme) => ({
         "& .MuiDataGrid-sortIcon": {
             fill: "white",
         },
+    },
+    tableHeadBtn: {
+        color: "white",
+        padding: 0,
     },
 }));
 
@@ -94,61 +100,117 @@ export default function DataTable({
                 <Table aria-label="Items table" className={classes.root}>
                     <TableHead>
                         <TableRow>
-                            <TableCell
-                                onClick={(e) => {
-                                    setMenuAnchorEl(e.target);
-                                    setFilterBy("itemNo");
-                                }}
-                            >
-                                Item number
+                            <TableCell>
+                                <Box display="flex">
+                                    <Button
+                                        onClick={(e) => {
+                                            setMenuAnchorEl(e.target);
+                                            setFilterBy("itemNo");
+                                        }}
+                                        className={classes.tableHeadBtn}
+                                    >
+                                        Item number
+                                    </Button>
+                                    <IconButton style={{ color: "white" }}>
+                                        <SortRounded />
+                                    </IconButton>
+                                </Box>
                             </TableCell>
-                            <TableCell
-                                onClick={(e) => {
-                                    setMenuAnchorEl(e.target);
-                                    setFilterBy("name");
-                                }}
-                            >
-                                Name
+                            <TableCell>
+                                <Box display="flex">
+                                    <Button
+                                        onClick={(e) => {
+                                            setMenuAnchorEl(e.target);
+                                            setFilterBy("name");
+                                        }}
+                                        className={classes.tableHeadBtn}
+                                    >
+                                        Name
+                                    </Button>
+                                    <IconButton style={{ color: "white" }}>
+                                        <SortRounded />
+                                    </IconButton>
+                                </Box>
                             </TableCell>
-                            <TableCell
-                                onClick={(e) => {
-                                    setMenuAnchorEl(e.target);
-                                    setFilterBy("desc");
-                                }}
-                            >
-                                Description
+                            <TableCell>
+                                <Box display="flex">
+                                    <Button
+                                        onClick={(e) => {
+                                            setMenuAnchorEl(e.target);
+                                            setFilterBy("desc");
+                                        }}
+                                        className={classes.tableHeadBtn}
+                                    >
+                                        Description
+                                    </Button>
+                                    <IconButton style={{ color: "white" }}>
+                                        <SortRounded />
+                                    </IconButton>
+                                </Box>
                             </TableCell>
-                            <TableCell
-                                onClick={(e) => {
-                                    setMenuAnchorEl(e.target);
-                                    setFilterBy("cost");
-                                }}
-                            >
-                                Cost
+                            <TableCell>
+                                <Box display="flex">
+                                    <Button
+                                        onClick={(e) => {
+                                            setMenuAnchorEl(e.target);
+                                            setFilterBy("cost");
+                                        }}
+                                        className={classes.tableHeadBtn}
+                                    >
+                                        Cost
+                                    </Button>
+                                    <IconButton style={{ color: "white" }}>
+                                        <SortRounded />
+                                    </IconButton>
+                                </Box>
                             </TableCell>
-                            <TableCell
-                                onClick={(e) => {
-                                    setMenuAnchorEl(e.target);
-                                    setFilterBy("cat");
-                                }}
-                            >
-                                Category
+                            <TableCell>
+                                <Box display="flex">
+                                    <Button
+                                        onClick={(e) => {
+                                            setMenuAnchorEl(e.target);
+                                            setFilterBy("cat");
+                                        }}
+                                        className={classes.tableHeadBtn}
+                                    >
+                                        Category
+                                    </Button>
+                                    <IconButton style={{ color: "white" }}>
+                                        <SortRounded />
+                                    </IconButton>
+                                </Box>
                             </TableCell>
-                            <TableCell
-                                onClick={(e) => {
-                                    setMenuAnchorEl(e.target);
-                                    setFilterBy("type");
-                                }}
-                            >
-                                Types
+                            <TableCell>
+                                <Box display="flex">
+                                    <Button
+                                        onClick={(e) => {
+                                            setMenuAnchorEl(e.target);
+                                            setFilterBy("type");
+                                        }}
+                                        className={classes.tableHeadBtn}
+                                    >
+                                        Type
+                                    </Button>
+                                    <IconButton style={{ color: "white" }}>
+                                        <SortRounded />
+                                    </IconButton>
+                                </Box>
                             </TableCell>
-                            <TableCell
-                                onClick={(e) => {
-                                    setMenuAnchorEl(e.target);
-                                    setFilterBy("family");
-                                }}
-                            >
-                                Family
+                            <TableCell>
+                                <Box>
+                                    <Button
+                                        onClick={(e) => {
+                                            setMenuAnchorEl(e.target);
+                                            setFilterBy("family");
+                                        }}
+                                        className={classes.tableHeadBtn}
+                                    >
+                                        Family
+                                    </Button>
+                                    <IconButton style={{ color: "white" }}>
+                                        <SortRounded />
+                                    </IconButton>
+                                </Box>
                             </TableCell>
                         </TableRow>
                     </TableHead>

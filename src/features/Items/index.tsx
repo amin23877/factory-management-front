@@ -249,7 +249,7 @@ function ItemsDetails({
                     </Grid>
                     <Grid item md={4} xs={12} style={{ padding: "1em" }}>
                         <BasePaper style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                            <Tabs value={moreInfoTab} textColor="primary" onChange={(e, v) => setMoreInfoTab(v)}>
+                            <Tabs value={moreInfoTab} variant="scrollable" textColor="primary" onChange={(e, v) => setMoreInfoTab(v)}>
                                 <Tab label="More Info." />
                                 <Tab label="Quantity" />
                                 <Tab label="Shipping" />
