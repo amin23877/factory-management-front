@@ -72,9 +72,13 @@ function ItemsDetails({
 
     const docCols: ColDef[] = [
         { field: "name", headerName: "Name" },
+        { field: "EmployeeId", headerName: "Employee" },
         { field: "description", headerName: "Description", width: 250 },
-        { field: "createdAt", headerName: "Created at", width: 300 },
+        { field: "createdAt", headerName: "Date", width: 300 },
     ];
+
+    const vendorCols: ColDef[] = [{ field: "Vendor Id" }, { field: "Name" }, { field: "Vendor description" }, { field: "Last price" }];
+
     const {
         name,
         no,
@@ -286,6 +290,7 @@ function ItemsDetails({
                 <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} textColor="primary" variant="scrollable">
                     <Tab label="Notes" />
                     <Tab label="Documents" />
+                    <Tab label="Vendors" />
                     <Tab label="Quote History" />
                     <Tab label="Sales order History" />
                     <Tab label="Sales Report" />
@@ -293,9 +298,10 @@ function ItemsDetails({
                 <Box p={3}>
                     {activeTab === 0 && <BaseDataGrid height={250} cols={noteCols} rows={notes} onRowSelected={onNoteSelected} />}
                     {activeTab === 1 && <BaseDataGrid height={250} cols={docCols} rows={docs} onRowSelected={onDocSelected} />}
-                    {activeTab === 2 && <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes} onRowSelected={() => {}} />}
-                    {activeTab === 3 && <BaseDataGrid height={250} cols={soCols} rows={itemSos} onRowSelected={(d) => console.log(d)} />}
-                    {activeTab === 4 && <SalesReport quotes={itemQuotes} salesOrders={itemSos} />}
+                    {activeTab === 2 && <BaseDataGrid height={250} cols={vendorCols} rows={[]} onRowSelected={() => {}} />}
+                    {activeTab === 3 && <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes} onRowSelected={() => {}} />}
+                    {activeTab === 4 && <BaseDataGrid height={250} cols={soCols} rows={itemSos} onRowSelected={(d) => console.log(d)} />}
+                    {activeTab === 5 && <SalesReport quotes={itemQuotes} salesOrders={itemSos} />}
                 </Box>
             </BasePaper>
         </Box>

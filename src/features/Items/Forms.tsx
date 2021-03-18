@@ -34,6 +34,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         value={values.name}
                     />
                     <TextField
+                        style={{ marginRight: 5, marginLeft: 5 }}
                         label="upc"
                         placeholder="upc"
                         name="upc"
@@ -63,6 +64,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         value={values.description}
                     />
                     <TextField
+                        style={{ marginRight: 5, marginLeft: 5 }}
                         label="no"
                         value={values.no}
                         name="no"
@@ -92,6 +94,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         value={values.mfgr}
                     />
                     <TextField
+                        style={{ marginRight: 5, marginLeft: 5 }}
                         label="color"
                         placeholder="color"
                         name="color"
@@ -151,7 +154,32 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                 </Box>
             </Box>
 
-            <FormControlLabel style={{ flex: "0 40%" }} label="Active" name="Active" onChange={handleChange} control={<Checkbox />} />
+            <Box display="flex">
+                <FormControlLabel
+                    style={{ flex: "0 30%" }}
+                    checked={values.active}
+                    label="Active"
+                    name="active"
+                    onChange={handleChange}
+                    control={<Checkbox />}
+                />
+                <FormControlLabel
+                    style={{ flex: "0 30%" }}
+                    checked={values.obsolete}
+                    label="Obsolete"
+                    name="obsolete"
+                    onChange={handleChange}
+                    control={<Checkbox />}
+                />
+                <FormControlLabel
+                    style={{ flex: "0 30%" }}
+                    checked={values.rndOnly}
+                    label="rndOnly"
+                    name="rndOnly"
+                    onChange={handleChange}
+                    control={<Checkbox />}
+                />
+            </Box>
             <TextField
                 label="Special notes"
                 // style={{ margin: 5 }}
@@ -227,40 +255,66 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
 export const Quantity = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
     return (
         <Box display="flex" alignItems="center" p={2}>
-            <Box flex={2} mr={2}>
+            <Box>
                 <Typography>Total Quantity on hand</Typography>
-                <TextField
-                    style={{ marginLeft: "1em" }}
-                    label="total quantity on hand"
-                    name="totalQoh"
-                    placeholder="Total quantity"
-                    value={values.totalQoh}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                />
-                <TextField
-                    style={{ marginLeft: "1em" }}
-                    label="allocated quantity on hand"
-                    name="allocatedQoh"
-                    placeholder="allocatedQoh"
-                    value={values.allocatedQoh}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                />
-                <Typography>Available qoh</Typography>
-                <Box mr={1}>
+                <Box display="flex">
                     <TextField
-                        style={{ marginLeft: "1em" }}
-                        label="available quantity on hand"
-                        name="availableQoh"
-                        placeholder="availableQoh"
-                        value={values.availableQoh}
+                        style={{ marginRight: 5 }}
+                        label="total quantity on hand"
+                        name="totalQoh"
+                        placeholder="Total quantity"
+                        value={values.totalQoh}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        label="Reorder Quantity"
+                        name="reorderQty"
+                        value={values.reorderQty}
                         onBlur={handleBlur}
                         onChange={handleChange}
                     />
                 </Box>
+                <Box display="flex">
+                    <TextField
+                        label="Lead time"
+                        style={{ marginRight: 5 }}
+                        name="lead"
+                        value={values.lead}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                    />
+                    <TextField label="Last count" name="lastCount" value={values.lastCount} onBlur={handleBlur} onChange={handleChange} />
+                </Box>
+                <Box display="flex">
+                    <TextField
+                        style={{ marginRight: 5 }}
+                        label="Recent purchase price"
+                        name="recentPurchasePrice"
+                        value={values.recentPurchasePrice}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        label="allocated quantity on hand"
+                        name="allocatedQoh"
+                        value={values.allocatedQoh}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                    />
+                </Box>
+                <Typography>Available qoh</Typography>
                 <TextField
-                    style={{ marginLeft: "1em" }}
+                    style={{ width: "100%" }}
+                    label="available quantity on hand"
+                    name="availableQoh"
+                    placeholder="availableQoh"
+                    value={values.availableQoh}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                />
+                <TextField
+                    style={{ width: "100%" }}
                     label="trriger quantity on hand"
                     name="triggerQoh"
                     placeholder="triggerQoh"
@@ -285,7 +339,7 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                     value={values.additionalShippingFee}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    style={{ marginBottom: 3 }}
+                    style={{ marginBottom: 3, width: "100%" }}
                 />
                 <Divider style={{ margin: "1em 0" }} />
                 <Box display="flex">
@@ -299,7 +353,7 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                             value={values.weightLb}
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            style={{ flex: 1 }}
+                            style={{ flex: 1, marginRight: 5 }}
                         />
                     </Box>
                     <Box textAlign="center">
@@ -326,7 +380,7 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                             value={values.shippingLb}
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            style={{ flex: 1 }}
+                            style={{ flex: 1, marginRight: 5 }}
                         />
                     </Box>
                     <Box textAlign="center">

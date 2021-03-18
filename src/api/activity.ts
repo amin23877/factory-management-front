@@ -26,30 +26,7 @@ export interface IActivity {
     ActivityPriorityId: number | null;
 }
 
-export const ActivityInit: IActivity = {
-    name: "",
-    subject: "",
-    location: "",
-    notes: "",
-    startTime: "",
-    endTime: "",
-    allDayActivity: false,
-    doNotShowOnCalendar: false,
-    recurring: false,
-    notifyNow: false,
-    notifyOnDay: false,
-    
-    // OpportunityId: null,
-
-    ActivityCategoryId: null,
-    ClientId: null,
-    ContactId: null,
-    ProjectId: null,
-    EmployeeId: null,
-    QuoteId: null,
-    ActivityStatusId: null,
-    ActivityPriorityId: null,
-};
+export const ActivityInit:any = {};
 
 export const getActivities = async () => {
     try {

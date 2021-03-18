@@ -28,7 +28,7 @@ export interface IItem {
     taxable: boolean,
     invalidCost: boolean,
     option: boolean,
-    lead: number,
+    lead: string,
     qbtype: string,
     qbid: string,
     sku: string,
@@ -79,79 +79,16 @@ export interface IItem {
     ItemType?: IItemType,
     ItemFamily?: IItemType 
 }
-export const AddItemInitialValues : IItem = {
-    name: "",
-    no: "",
-    active: false,
-    approvedForSales: false,
-    obsolete: false,
-    rndOnly: false,
-    nonInventoryItem: false,
-    dontTrackQOH: false,
-    dontOrderPO: false,
-    archived: false,
 
-    archiveDate: null,
-    lastCount: null,
-    
-    engineeringApproval: false,
-    taxable: false,
-    invalidCost: false,
-    option: false,
-    lead: 0,
-    qbtype: "",
-    qbid: "",
-    sku: "",
-    upc: "",
-    manufacturer: "",
-    jobDays: 0,
-    color: "",
-    description: "",
-    size: "small",
-    specialNote: "",
-    version: "",
-    revision: [],
-    keywords: "",
-    url: "",
-    cost: 0,
-    retailPrice: 0,
-    BOM: false,
-    bomCost: 0,
-    totalQoh: 0,
-    allocatedQoh: 0,
-    availableQoh: 0,
-    triggerQoh: 0,
-    recentPurchasePrice: 0,
-    uom: "",
-    reorderQty: 0,
-    minOrder: 0,
-    perShipment: 0,
-    location: "",
-    prefVendor: 0,
-    prefVendorNote: "",
-    additionalShippingFee: 0,
-    shippingNote: "",
-    weightOz: 0,
-    weightLb: 0,
-    shippingOz: 0,
-    shippingLb: 0,
-    shippingInstruction: "",
-    shippableOnBom: false,
-    notShippable: false,
-    ItemCategoryId: null,
-    ItemTypeId: null,
-    ItemFamilyId: null,
-};
-
-// ------------------------------------------------------
+export const AddItemInitialValues = {}
 
 export const createItem = async (itemData:any) => {
     try {
         // console.table(itemData);
         const resp = await Axios.post('/item', {...itemData,
-            ItemCategoryId: parseInt(itemData.ItemCategoryId),
-            ItemTypeId: parseInt(itemData.ItemTypeId),
-            ItemFamilyId: parseInt(itemData.ItemFamilyId),
+            ItemCategoryId: String(itemData.ItemCategoryId),
+            ItemTypeId: String(itemData.ItemTypeId),
+            ItemFamilyId: String(itemData.ItemFamilyId),
         });
         return resp.data;
     } catch (error) {

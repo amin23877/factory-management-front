@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { makeStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import Menu from "@material-ui/core/Menu";
 import Box from "@material-ui/core/Box";
 
@@ -13,7 +13,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
 import { IItem } from "../../../api/items";
-import { FilterByValue, FilterByWord } from "./Filters";
+import MenuFilters, { IFilters } from "./Filters";
 
 const useStyles = makeStyles((theme) => ({
     tableCont: {
@@ -53,8 +53,23 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function DataTable({ rows, onRowSelected }: { rows: IItem[]; onRowSelected: (item: IItem) => void }) {
-    // const [menuAnchorEl, setMenuAnchorEl] = useState<HTMLElement | null>(null);
+export default function DataTable({
+    rows,
+    onRowSelected,
+    cats,
+    types,
+    families,
+    filters,
+    setFilters,
+}: {
+    filters?: IFilters;
+    setFilters: any;
+    rows: IItem[];
+    onRowSelected: (item: IItem) => void;
+    cats: any[];
+    types: any[];
+    families: any[];
+}) {
     const [menuAnchorEl, setMenuAnchorEl] = useState<any>(null);
     const [filterBy, setFilterBy] = useState("");
     const classes = useStyles();
@@ -63,13 +78,15 @@ export default function DataTable({ rows, onRowSelected }: { rows: IItem[]; onRo
         <>
             <Menu open={Boolean(menuAnchorEl)} anchorEl={menuAnchorEl} onClose={() => setMenuAnchorEl(null)}>
                 <Box width={300}>
-                    {(filterBy === "itemNo" ||
-                        filterBy === "name" ||
-                        filterBy === "desc" ||
-                        filterBy === "cat" ||
-                        filterBy === "type" ||
-                        filterBy === "family") && <FilterByWord />}
-                    {filterBy === "cost" && <FilterByValue />}
+                    <MenuFilters
+                        cats={cats}
+                        types={types}
+                        families={families}
+                        filterBy={filterBy}
+                        filters={filters}
+                        onFilterChange={setFilters}
+                    />
+                    <Button onClick={() => setFilters(undefined)}>clear</Button>
                 </Box>
             </Menu>
 

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Box, Container, Button, IconButton, TextField, ListItem, LinearProgress } from "@material-ui/core";
+import { Box, Container, Button, IconButton, ListItem, LinearProgress } from "@material-ui/core";
 import { NoteRounded, FileCopyRounded, PrintRounded, AddRounded, DeleteRounded, CategoryRounded } from "@material-ui/icons";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 
 import Confirm from "../features/Modals/Confirm";
 
@@ -13,7 +12,7 @@ import { AddItemModal } from "../features/Items/ItemModals";
 import CatTypeFamilyModal from "../features/Modals/CategoryModals";
 import ItemsDetails from "../features/Items";
 
-import { AddItemInitialValues, getItems, getItemsByQuery, deleteAnItem, IItem } from "../api/items";
+import { getItems, getItemsByQuery, deleteAnItem, IItem } from "../api/items";
 import { getTypes } from "../api/types";
 import { getCategories } from "../api/category";
 import { getFamilies } from "../api/family";
@@ -23,6 +22,7 @@ import { getAllModelDocuments } from "../api/document";
 import List from "../app/SideUtilityList";
 import { MyTabs, MyTab } from "../app/Tabs";
 
+import { IFilters } from "../features/Items/Table/Filters";
 import DataTable from "../features/Items/Table";
 
 const Inventory = () => {
@@ -30,11 +30,8 @@ const Inventory = () => {
     const [notes, setNotes] = useState([]);
     const [docs, setDocs] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [filters, setFilters] = useState<{ category: string | null; type: string | null; family: string | null }>({
-        category: "",
-        type: "",
-        family: "",
-    });
+
+    const [filters, setFilters] = useState<IFilters>();
 
     const [cats, setCats] = useState([]);
     const [types, setTypes] = useState([]);
@@ -149,14 +146,21 @@ const Inventory = () => {
     const filterItems = async () => {
         try {
             setLoading(true);
-            if (!filters.category && !filters.type && !filters.family) {
+            if (!filters) {
                 refreshItems();
                 return;
             } else {
                 const resp = await getItemsByQuery({
-                    ItemCategoryId: filters.category,
-                    ItemTypeId: filters.type,
-                    ItemFamilyId: filters.family,
+                    ItemCategoryId: filters.cat && filters.cat.length > 0 ? filters.cat.map((item) => item.id).join(",") : undefined,
+                    ItemTypeId: filters.type && filters.type.length > 0 ? filters.type.map((item) => item.id).join(",") : undefined,
+                    ItemFamilyId: filters.family && filters.family.length > 0 ? filters.family.map((item) => item.id).join(",") : undefined,
+
+                    minCost: filters.cost && filters.cost[0] ? filters.cost[0] : undefined,
+                    maxCost: filters.cost && filters.cost[1] ? filters.cost[1] : undefined,
+
+                    no: filters.itemNo ? filters.itemNo : undefined,
+                    name: filters.name ? filters.name : undefined,
+                    description: filters.desc ? filters.desc : undefined,
                 });
                 resp && setRows(resp);
             }
@@ -269,33 +273,15 @@ const Inventory = () => {
                     </ListItem>
                 </List>
                 <Box flex={11} ml={2}>
-                    {activeTab === 0 && (
-                        <Box my={2} display="flex" alignItems="center">
-                            <Autocomplete
-                                onChange={(v, nv: any) => setFilters((prev) => ({ ...prev, category: nv?.id }))}
-                                options={cats}
-                                getOptionLabel={(op: any) => op.name}
-                                renderInput={(params) => <TextField label="Category" {...params} />}
-                            />
-                            <Autocomplete
-                                onChange={(v, nv: any) => setFilters((prev) => ({ ...prev, type: nv?.id }))}
-                                options={types}
-                                getOptionLabel={(op: any) => op.name}
-                                style={{ margin: "0 0.5em" }}
-                                renderInput={(params) => <TextField label="Type" {...params} />}
-                            />
-                            <Autocomplete
-                                onChange={(v, nv: any) => setFilters((prev) => ({ ...prev, family: nv?.id }))}
-                                options={families}
-                                getOptionLabel={(op: any) => op.name}
-                                renderInput={(params) => <TextField label="Family" {...params} />}
-                            />
-                        </Box>
-                    )}
                     {loading && <LinearProgress />}
                     {activeTab === 0 && !loading && (
                         <Box display="flex" style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", border: "none" }}>
                             <DataTable
+                                filters={filters}
+                                setFilters={setFilters}
+                                cats={cats}
+                                types={types}
+                                families={families}
                                 rows={rows}
                                 onRowSelected={(d) => {
                                     setSelectedItem(d);
