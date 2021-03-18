@@ -203,7 +203,7 @@ export default function QuotePanel() {
                 ) : null}
                 <div style={{ flexGrow: 1 }} />
             </Box>
-            <BasePaper>
+            
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="List" />
                     <Tab label="Details" disabled={!selectedQuote} />
@@ -241,7 +241,7 @@ export default function QuotePanel() {
                         />
                     )}
                 </Box>
-            </BasePaper>
+           
         </div>
     );
 }

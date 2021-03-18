@@ -80,7 +80,7 @@ export default function NoteModal({ open, onClose, model, itemId, noteData, onDo
                                 />
                             </div>
                             <TextField
-                                style={{ width: "98.6%" }}
+                                style={{ width:'100%' }}
                                 name="note"
                                 onBlur={handleBlur}
                                 onChange={handleChange}

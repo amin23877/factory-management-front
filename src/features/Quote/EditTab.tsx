@@ -6,6 +6,7 @@ import BaseDataGrid from "../../app/BaseDataGrid";
 import EditForm from "./EditForm";
 
 import { IQuote } from "../../api/quote";
+import { BasePaper } from "../../app/Paper";
 
 export default function EditTab({
     selectedQuote,
@@ -69,6 +70,7 @@ export default function EditTab({
                 <Tab label="Notes" />
                 <Tab label="Documents" />
             </Tabs>
+           
             <Box p={2}>
                 {activeTab === 0 && <BaseDataGrid cols={activityCols} rows={activities} onRowSelected={() => {}} height={300} />}
                 {activeTab === 1 && <BaseDataGrid cols={LICols} rows={lineItems} onRowSelected={onLISelected} height={300} />}

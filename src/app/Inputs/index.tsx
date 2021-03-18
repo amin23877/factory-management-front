@@ -26,7 +26,6 @@ export const ObjectSelect = ({ inputStyle, items, itemTitleField, itemValueField
                 style={{ ...inputStyle }}
                 input={<BootstrapInput />}
                 {...props}
-                displayEmpty={true}
             >
                 <MenuItem value={undefined}>None</MenuItem>
                 {items &&

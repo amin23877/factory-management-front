@@ -104,18 +104,25 @@ export default function AddPOModal({ open, onClose, onDone }: { open: boolean; o
                                         helperText={errors.number}
                                     />
                                 </div>
+                                <div style={{ marginBottom: "5px", width: "80%", marginRight: "auto", marginLeft: "auto", display: "flex",justifyContent:"center" }}>
+
+                                    <FieldSelect
+                                        style={{flex:1}}
+                                        label="Contact"
+                                        name="ContactId"
+                                        request={getContacts}
+                                        itemTitleField="lastName"
+                                        itemValueField="id"
+                                        value={values.ContactId}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.ContactId && touched.ContactId)}
+                                    />
+                                </div>
+                                <div style={{ marginBottom: "5px", width: "80%", marginRight: "auto", marginLeft: "auto", display: "flex",justifyContent:"center" }}>
+
                                 <FieldSelect
-                                    label="Contact"
-                                    name="ContactId"
-                                    request={getContacts}
-                                    itemTitleField="lastName"
-                                    itemValueField="id"
-                                    value={values.ContactId}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.ContactId && touched.ContactId)}
-                                />
-                                <FieldSelect
+                                    style={{flex:1}}
                                     label="Client"
                                     name="ClientId"
                                     request={getClients}
@@ -125,8 +132,12 @@ export default function AddPOModal({ open, onClose, onDone }: { open: boolean; o
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     error={Boolean(errors.ClientId && touched.ClientId)}
-                                />
+                                    />
+                                    </div>
+                                    <div style={{ marginBottom: "5px", width: "80%", marginRight: "auto", marginLeft: "auto", display: "flex",justifyContent:"center" }}>
+
                                 <FieldSelect
+                                    style={{flex:1}}
                                     label="Employee"
                                     name="EmployeeId"
                                     request={getAllEmployees}
@@ -136,8 +147,12 @@ export default function AddPOModal({ open, onClose, onDone }: { open: boolean; o
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     error={Boolean(errors.EmployeeId && touched.EmployeeId)}
-                                />
+                                    />
+                                    </div>
+                                    <div style={{ marginBottom: "5px", width: "80%", marginRight: "auto", marginLeft: "auto", display: "flex",justifyContent:"center" }}>
+
                                 <FieldSelect
+                                    style={{flex:1}}
                                     label="Project"
                                     name="ProjectId"
                                     request={getProjects}
@@ -147,8 +162,12 @@ export default function AddPOModal({ open, onClose, onDone }: { open: boolean; o
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     error={Boolean(errors.ProjectId && touched.ProjectId)}
-                                />
+                                    />
+                                    </div>
+                                    <div style={{ marginBottom: "5px", width: "80%", marginRight: "auto", marginLeft: "auto", display: "flex",justifyContent:"center" }}>
+
                                 <FieldSelect
+                                    style={{flex:1}}
                                     request={getAllEmployees}
                                     itemTitleField="username"
                                     itemValueField="id"
@@ -158,8 +177,10 @@ export default function AddPOModal({ open, onClose, onDone }: { open: boolean; o
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     error={Boolean(errors.reciever && touched.reciever)}
-                                />
-                                <Button type="submit" style={{ width: "70%", margin: "1em 0" }} kind="add">
+                                    />
+                                    </div>
+
+                                <Button type="submit" style={{ width: "80%", margin: "1em 0" }} kind="add">
                                     Add
                                 </Button>
                             </Box>

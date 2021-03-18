@@ -54,18 +54,20 @@ export default function EditTab({
     ];
 
     return (
-        <BasePaper>
+        <div>
+
             <Box>
-                <EditForm selectedSo={selectedSo} onDone={onDone} />
+                    <EditForm selectedSo={selectedSo} onDone={onDone} />
             </Box>
             <Tabs style={{ margin: "1em 0" }} textColor="primary" value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                 <Tab label="Line Items" />
                 <Tab label="Notes" />
                 <Tab label="Documents" />
             </Tabs>
-            {activeTab === 0 && <BaseDataGrid cols={LICols} rows={lineItems} onRowSelected={onLineItemSelected} height={300} />}
-            {activeTab === 1 && <BaseDataGrid cols={noteCols} rows={notes} onRowSelected={onNoteSelected} height={300} />}
-            {activeTab === 2 && <BaseDataGrid cols={docCols} rows={docs} onRowSelected={onDocSelected} height={300} />}
-        </BasePaper>
+            { activeTab === 0 && <BaseDataGrid cols={LICols} rows={lineItems} onRowSelected={onLineItemSelected} height={300} />}
+            { activeTab === 1 && <BaseDataGrid cols={noteCols} rows={notes} onRowSelected={onNoteSelected} height={300} />}
+            { activeTab === 2 && <BaseDataGrid cols={docCols} rows={docs} onRowSelected={onDocSelected} height={300} />}
+
+        </div>
     );
 }

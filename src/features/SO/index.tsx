@@ -190,7 +190,7 @@ export default function SalesOrderPanel() {
                 )}
                 <div style={{ flexGrow: 1 }} />
             </Box>
-            <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
+            
                 <Tabs style={{ marginBottom: "10px" }} value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="Overview" />
                     <Tab label="Details" disabled={!selectedSO} />
@@ -229,7 +229,6 @@ export default function SalesOrderPanel() {
                         }}
                     />
                 )}
-            </BasePaper>
         </Box>
     );
 }
