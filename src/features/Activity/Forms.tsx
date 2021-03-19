@@ -17,7 +17,6 @@ import { getAllEmployees } from "../../api/employee";
 import { getQuotes } from "../../api/quote";
 import { IActivity, createActivity, updateActivity } from "../../api/activity";
 import { baseGet } from "../../api";
-import { makeStyles } from "@material-ui/core";
 import { BasePaper } from "../../app/Paper";
 
 export default function EditActivityForm({ open, init, onDone }: { open?: boolean; init: IActivity; onDone: () => void }) {
@@ -91,7 +90,7 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                         type="date"
                                         name="startTime"
                                         label="Start time"
-                                        value={values.startTime}
+                                        value={values.startTime ? values.startTime.substr(0, 10) : ""}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
@@ -100,7 +99,7 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                         type="date"
                                         name="endTime"
                                         label="End time"
-                                        value={values.endTime}
+                                        value={values.endTime ? values.endTime.substr(0, 10) : ""}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />

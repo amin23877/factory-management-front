@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { Container, Box, Button, Typography } from "@material-ui/core";
+import { Container, Box, Button } from "@material-ui/core";
 import { ColDef } from "@material-ui/data-grid";
 
 import { MyTabs, MyTab } from "../app/Tabs";
 import BaseDataGrid from "../app/BaseDataGrid";
 import { ProjectModal } from "../features/Modals/ProjectModals";
+import ActivityModal from "../features/Activity/ActivityModal";
 
-import { getProjectActivities } from "../api/activity";
+import { getProjectActivities, IActivity } from "../api/activity";
 import { getProjects } from "../api/project";
 
 export default function Project() {
     const [activeTab, setActiveTab] = useState(0);
-    const [activities, setActivities] = useState([]);
-    const [projectModal, setProjectModal] = useState(false);
     const [pData, setPData] = useState<any>();
     const [projects, setProjects] = useState([]);
+    const [activities, setActivities] = useState([]);
+    const [selectedActivity, setSelectedActivity] = useState<IActivity>();
+
+    const [projectModal, setProjectModal] = useState(false);
+    const [activityModal, setActivityModal] = useState(false);
 
     const refreshProjects = async () => {
         try {
@@ -63,6 +67,7 @@ export default function Project() {
     return (
         <Container>
             <ProjectModal open={projectModal} onClose={() => setProjectModal(false)} onDone={refreshProjects} data={pData} />
+            {selectedActivity && <ActivityModal open={activityModal} onClose={() => setActivityModal(false)} activity={selectedActivity} />}
 
             <Box my={2} display="flex" alignItems="center">
                 <Button
@@ -96,7 +101,14 @@ export default function Project() {
                 {activeTab === 1 && (
                     <Box>
                         <h4>Activities</h4>
-                        <BaseDataGrid cols={activityCols} rows={activities} onRowSelected={() => {}} />{" "}
+                        <BaseDataGrid
+                            cols={activityCols}
+                            rows={activities}
+                            onRowSelected={(d) => {
+                                setSelectedActivity(d);
+                                setActivityModal(true);
+                            }}
+                        />
                     </Box>
                 )}
             </Box>

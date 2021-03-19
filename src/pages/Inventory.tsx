@@ -23,6 +23,7 @@ import List from "../app/SideUtilityList";
 import { MyTabs, MyTab } from "../app/Tabs";
 
 import { IFilters } from "../features/Items/Table/Filters";
+import { IOrder } from "../features/Items/Table/Sorts";
 import DataTable from "../features/Items/Table";
 
 const Inventory = () => {
@@ -32,6 +33,7 @@ const Inventory = () => {
     const [loading, setLoading] = useState(false);
 
     const [filters, setFilters] = useState<IFilters>();
+    const [order, setOrder] = useState<IOrder>();
 
     const [cats, setCats] = useState([]);
     const [types, setTypes] = useState([]);
@@ -143,37 +145,81 @@ const Inventory = () => {
         }
     };
 
-    const filterItems = async () => {
-        try {
-            setLoading(true);
-            if (!filters) {
-                refreshItems();
-                return;
-            } else {
-                const resp = await getItemsByQuery({
-                    ItemCategoryId: filters.cat && filters.cat.length > 0 ? filters.cat.map((item) => item.id).join(",") : undefined,
-                    ItemTypeId: filters.type && filters.type.length > 0 ? filters.type.map((item) => item.id).join(",") : undefined,
-                    ItemFamilyId: filters.family && filters.family.length > 0 ? filters.family.map((item) => item.id).join(",") : undefined,
-
-                    minCost: filters.cost && filters.cost[1] ? filters.cost[1] : undefined,
-                    maxCost: filters.cost && filters.cost[0] ? filters.cost[0] : undefined,
-
-                    no: filters.itemNo ? filters.itemNo : undefined,
-                    name: filters.name ? filters.name : undefined,
-                    description: filters.desc ? filters.desc : undefined,
-                });
-                resp && setRows(resp);
-            }
-        } catch (e) {
-            console.log(e);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
+        const filterItems = async () => {
+            try {
+                setLoading(true);
+                if (!filters) {
+                    refreshItems();
+                    return;
+                } else {
+                    const resp = await getItemsByQuery({
+                        ItemCategoryId: filters.cat && filters.cat.length > 0 ? filters.cat.map((item) => item.id).join(",") : undefined,
+                        ItemTypeId: filters.type && filters.type.length > 0 ? filters.type.map((item) => item.id).join(",") : undefined,
+                        ItemFamilyId:
+                            filters.family && filters.family.length > 0 ? filters.family.map((item) => item.id).join(",") : undefined,
+
+                        minCost: filters.cost && filters.cost[0] ? filters.cost[0] : undefined,
+                        maxCost: filters.cost && filters.cost[1] ? filters.cost[1] : undefined,
+
+                        no: filters.itemNo ? filters.itemNo : undefined,
+                        name: filters.name ? filters.name : undefined,
+                        description: filters.desc ? filters.desc : undefined,
+
+                        sort: order && order.orderBy ? order.orderBy : undefined,
+                        order: order && order.order ? (order.order === "asc" ? "ASC" : "DESC") : undefined,
+                    });
+                    resp && setRows(resp);
+                }
+            } catch (e) {
+                console.log(e);
+            } finally {
+                setLoading(false);
+            }
+        };
+
         filterItems();
     }, [filters]);
+
+    useEffect(() => {
+        const sortItems = async () => {
+            try {
+                setLoading(true);
+                if (!order) {
+                    refreshItems();
+                    return;
+                } else {
+                    const resp = await getItemsByQuery({
+                        ItemCategoryId:
+                            filters && filters.cat && filters.cat.length > 0 ? filters.cat.map((item) => item.id).join(",") : undefined,
+                        ItemTypeId:
+                            filters && filters.type && filters.type.length > 0 ? filters.type.map((item) => item.id).join(",") : undefined,
+                        ItemFamilyId:
+                            filters && filters.family && filters.family.length > 0
+                                ? filters.family.map((item) => item.id).join(",")
+                                : undefined,
+
+                        minCost: filters && filters.cost && filters.cost[0] ? filters.cost[0] : undefined,
+                        maxCost: filters && filters.cost && filters.cost[1] ? filters.cost[1] : undefined,
+
+                        no: filters && filters.itemNo ? filters.itemNo : undefined,
+                        name: filters && filters.name ? filters.name : undefined,
+                        description: filters && filters.desc ? filters.desc : undefined,
+
+                        sort: order.orderBy ? order.orderBy : undefined,
+                        order: order.order ? (order.order === "asc" ? "ASC" : "DESC") : undefined,
+                    });
+                    resp && setRows(resp);
+                }
+            } catch (e) {
+                console.log(e);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        sortItems();
+    }, [order]);
 
     return (
         <Container>
@@ -277,6 +323,8 @@ const Inventory = () => {
                     {activeTab === 0 && !loading && (
                         <Box display="flex" style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", border: "none" }}>
                             <DataTable
+                                order={order}
+                                setOrder={setOrder}
                                 filters={filters}
                                 setFilters={setFilters}
                                 cats={cats}
