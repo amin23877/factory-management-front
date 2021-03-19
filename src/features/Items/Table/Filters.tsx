@@ -19,7 +19,7 @@ export const FilterByWord = ({ filters, filterBy, onChange }: { filters?: IFilte
                 value={val}
                 onChange={(e) => setVal(e.target.value)}
                 onBlur={(e) => onChange((prev: any) => ({ ...prev, [filterBy]: e.target.value }))}
-                label={`Searcg by ${filterBy === "desc" ? "description" : filterBy === "itemNo" ? "item number" : filterBy}`}
+                label={`Search by ${filterBy === "desc" ? "description" : filterBy === "itemNo" ? "item number" : filterBy}`}
                 fullWidth
                 style={{ margin: "5px 0" }}
             />
