@@ -61,9 +61,8 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                     {({ values, errors, touched, handleChange, handleBlur }) => (
                         <Form>
                             <Box>
-                                <Box display="flex" justifyContent="space-between">
+                                <Box display="grid" gridTemplateColumns="auto auto auto" gridColumnGap={5}>
                                     <TextField
-                                        style={{ marginRight: 5 }}
                                         error={Boolean(errors.name && touched.name)}
                                         name="name"
                                         label="name"
@@ -78,8 +77,6 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
-                                </Box>
-                                <Box display="flex" justifyContent="space-between">
                                     <TextField
                                         name="location"
                                         label="location"
@@ -94,8 +91,6 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
-                                </Box>
-                                <Box display="flex" justifyContent="space-between">
                                     <TextField
                                         type="date"
                                         name="startTime"
@@ -103,7 +98,6 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                         value={values.startTime}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        style={{ width: 215 }}
                                     />
                                     <TextField
                                         type="date"
@@ -112,11 +106,9 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                         value={values.endTime}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        style={{ width: 215 }}
                                     />
-                                </Box>
-                                <Box display="flex" justifyContent="space-between">
                                     <FieldSelect
+                                        style={{ width: "100%" }}
                                         request={getClients}
                                         itemTitleField="name"
                                         itemValueField="id"
@@ -128,6 +120,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                     />
 
                                     <FieldSelect
+                                        style={{ width: "100%" }}
                                         label="Contact"
                                         name="ContactId"
                                         request={getContacts}
@@ -137,9 +130,8 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
-                                </Box>
-                                <Box display="flex" justifyContent="space-between">
                                     <FieldSelect
+                                        style={{ width: "100%" }}
                                         label="Project"
                                         name="ProjectId"
                                         request={getProjects}
@@ -150,6 +142,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                         onBlur={handleBlur}
                                     />
                                     <FieldSelect
+                                        style={{ width: "100%" }}
                                         label="Employee"
                                         name="EmployeeId"
                                         request={getAllEmployees}
@@ -159,9 +152,8 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
-                                </Box>
-                                <Box display="flex" justifyContent="space-between">
                                     <FieldSelect
+                                        style={{ width: "100%" }}
                                         label="Quote"
                                         name="QuoteId"
                                         request={getQuotes}
@@ -172,6 +164,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                         onBlur={handleBlur}
                                     />
                                     <FieldSelect
+                                        style={{ width: "100%" }}
                                         label="ActivityCategoryId"
                                         name="ActivityCategoryId"
                                         request={() => baseGet("/activitycategory")}
@@ -192,6 +185,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                         value={values.ActivityStatusId}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
+                                        style={{ flex: 1, marginRight: 5 }}
                                     />
                                     <FieldSelect
                                         label="ActivityPriorityId"
@@ -202,6 +196,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                         value={values.ActivityPriorityId}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
+                                        style={{ flex: 1 }}
                                     />
                                 </Box>
                                 <Box>

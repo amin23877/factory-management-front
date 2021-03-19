@@ -3,7 +3,6 @@ import { Box, FormControlLabel, FormLabel, RadioGroup, Radio, Checkbox, FormCont
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import TextField from "../../app/TextField";
 import Dialog from "../../app/Dialog";
 import Button from "../../app/Button";
 import { FieldSelect } from "../../app/Inputs";
@@ -11,7 +10,6 @@ import { GeneralForm } from "./Forms";
 
 import { addClient, AddClientInit, getClients } from "../../api/client";
 import { getClientTypes } from "../../api/clientType";
-import { Check, CheckBox } from "@material-ui/icons";
 
 export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClose: () => void; onDone: () => void }) => {
     const schema = Yup.object().shape({
@@ -43,15 +41,8 @@ export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClo
         <Dialog open={open} onClose={onClose} maxWidth="sm" title="Add new client">
             <Box p={2} display="flex" alignItems="center">
                 <form onSubmit={handleSubmit}>
-{/* <<<<<<< HEAD
-                <Box display="flex" justifyContent="space-between" flexWrap="wrap">
-                    {form_inputs}
-                </Box>
-                ======= */}
-                <Box display="flex" justifyContent="space-between" style={{ marginLeft: "7.5px", marginRight: "5px" }}>
                     <GeneralForm values={values} errors={errors} touched={touched} handleBlur={handleBlur} handleChange={handleChange} />
-{/* >>>>>>> origin/beta */}
-
+                    <Box display="flex" justifyContent="space-between">
                         <FieldSelect
                             request={getClients}
                             itemTitleField="name"
@@ -76,7 +67,6 @@ export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClo
                             value={values.ClientTypeId}
                             error={Boolean(errors.ClientTypeId)}
                         />
-
                     </Box>
                     <FormControl style={{ margin: "0.5em", display: "flex" }}>
                         <FormLabel style={{ display: "inline" }}>Size</FormLabel>

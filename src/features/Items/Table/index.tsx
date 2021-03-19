@@ -10,12 +10,14 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 
 import SortRounded from "@material-ui/icons/SortRounded";
 
 import { IItem } from "../../../api/items";
 import MenuFilters, { IFilters } from "./Filters";
+import Sort, { IOrder } from "./Sorts";
 
 const useStyles = makeStyles((theme) => ({
     tableCont: {
@@ -34,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
             cursor: "pointer",
             color: "#fff",
             border: "1px solid #333b44",
+        },
+        "& .MuiTableSortLabel-icon ": {
+            fill: "white",
         },
         "& .MuiTableCell-head:hover": {
             backgroundColor: "#333b44",
@@ -67,6 +72,8 @@ export default function DataTable({
     families,
     filters,
     setFilters,
+    order,
+    setOrder,
 }: {
     filters?: IFilters;
     setFilters: any;
@@ -75,6 +82,8 @@ export default function DataTable({
     cats: any[];
     types: any[];
     families: any[];
+    order?: IOrder;
+    setOrder: (v: IOrder) => void;
 }) {
     const [menuAnchorEl, setMenuAnchorEl] = useState<any>(null);
     const [filterBy, setFilterBy] = useState("");
@@ -111,9 +120,7 @@ export default function DataTable({
                                     >
                                         Item number
                                     </Button>
-                                    <IconButton style={{ color: "white" }}>
-                                        <SortRounded />
-                                    </IconButton>
+                                    <Sort field="no" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
                             <TableCell>
@@ -127,9 +134,7 @@ export default function DataTable({
                                     >
                                         Name
                                     </Button>
-                                    <IconButton style={{ color: "white" }}>
-                                        <SortRounded />
-                                    </IconButton>
+                                    <Sort field="name" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
                             <TableCell>
@@ -143,9 +148,7 @@ export default function DataTable({
                                     >
                                         Description
                                     </Button>
-                                    <IconButton style={{ color: "white" }}>
-                                        <SortRounded />
-                                    </IconButton>
+                                    <Sort field="description" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
                             <TableCell>
@@ -159,9 +162,7 @@ export default function DataTable({
                                     >
                                         Cost
                                     </Button>
-                                    <IconButton style={{ color: "white" }}>
-                                        <SortRounded />
-                                    </IconButton>
+                                    <Sort field="cost" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
                             <TableCell>
@@ -175,9 +176,7 @@ export default function DataTable({
                                     >
                                         Category
                                     </Button>
-                                    <IconButton style={{ color: "white" }}>
-                                        <SortRounded />
-                                    </IconButton>
+                                    <Sort field="ItemCategoryId" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
                             <TableCell>
@@ -191,9 +190,7 @@ export default function DataTable({
                                     >
                                         Type
                                     </Button>
-                                    <IconButton style={{ color: "white" }}>
-                                        <SortRounded />
-                                    </IconButton>
+                                    <Sort field="ItemTypeId" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
                             <TableCell>
@@ -207,9 +204,7 @@ export default function DataTable({
                                     >
                                         Family
                                     </Button>
-                                    <IconButton style={{ color: "white" }}>
-                                        <SortRounded />
-                                    </IconButton>
+                                    <Sort field="ItemFamilyId" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
                         </TableRow>
