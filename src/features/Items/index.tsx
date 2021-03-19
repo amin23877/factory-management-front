@@ -48,11 +48,11 @@ function ItemsDetails({
     }, [selectedRow]);
 
     const quoteCols: ColDef[] = [
-        { field: "number" },
-        { field: "location", width: 180 },
-        { field: "department" },
-        { field: "entryDate", width: 180 },
-        { field: "expireDate", width: 180 },
+        { field: "number", headerName: "Number" },
+        { field: "location", headerName: "Location", width: 180 },
+        { field: "department", headerName: "Department" },
+        { field: "entryDate", headerName: "Entry date", width: 180 },
+        { field: "expireDate", headerName: "Expire date", width: 180 },
     ];
 
     const soCols: ColDef[] = [
