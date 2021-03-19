@@ -345,9 +345,9 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                     value={values.additionalShippingFee}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    style={{ marginBottom: 3, width: "100%" }}
+                    style={{ marginBottom: 35, width: "100%" }}
                 />
-                <Divider style={{ margin: "1em 0" }} />
+                {/* <Divider style={{ margin: "1em 0" }} /> */}
                 <Box display="flex">
                     {/* <Typography style={{ flex: 1 }}>Item Weight</Typography> */}
                     <Box textAlign="center">

@@ -48,7 +48,7 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
                                 isSubmitting={isSubmitting}
                             />
                         </Box>
-                        <Box flex={1} textAlign="center" width={400} ml={1}>
+                        <Box flex={1}  width={300} ml={5}>
                             <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="primary">
                                 <Tab label="More info" />
                                 <Tab label="Quantity" />

@@ -200,8 +200,9 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                     />
                                 </Box>
                                 <Box>
-                                    <Box display="flex" justifyContent="space-between">
+                                    <Box display="flex" >
                                         <FormControlLabel
+                                            style={{ flex: 1 }}
                                             name="allDayActivity"
                                             control={<CheckBox />}
                                             label="All day activity"
@@ -210,6 +211,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                             onBlur={handleBlur}
                                         />
                                         <FormControlLabel
+                                            style={{ flex: 1 }}
                                             name="notifyOnDay"
                                             control={<CheckBox />}
                                             label="Notify on day"
@@ -220,6 +222,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                     </Box>
                                     <Box display="flex" justifyContent="space-between">
                                         <FormControlLabel
+                                            style={{ flex: 1 }}
                                             name="recurring"
                                             control={<CheckBox />}
                                             label="Recurring"
@@ -228,6 +231,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                             onBlur={handleBlur}
                                         />
                                         <FormControlLabel
+                                            style={{ flex: 1 }}
                                             name="notifyNow"
                                             control={<CheckBox />}
                                             label="Notify now"
@@ -252,16 +256,16 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                             type="submit"
                                             style={
                                                 open
-                                                    ? { width: "100%" }
+                                                    ? { width: "50%",marginLeft:"auto",marginRight:"auto" }
                                                     : {
-                                                          marginLeft: "auto",
-                                                          marginRight: "auto",
-                                                          width: "40%",
-                                                          marginBottom: "20px",
-                                                          marginTop: "20px",
-                                                          paddingTop: "8px",
-                                                          paddingBottom: "8px",
-                                                      }
+                                                        marginLeft: "auto",
+                                                        marginRight: "auto",
+                                                        width: "40%",
+                                                        marginBottom: "20px",
+                                                        marginTop: "20px",
+                                                        paddingTop: "8px",
+                                                        paddingBottom: "8px",
+                                                    }
                                             }
                                         >
                                             {open ? "Add" : "Save"}

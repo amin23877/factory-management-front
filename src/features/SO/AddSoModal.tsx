@@ -61,7 +61,7 @@ const AddForm = ({ onClose, onDone }: { onDone: () => void; onClose: () => void 
 
 export default function AddSOModal({ open, onClose, onDone }: { open: boolean; onDone: () => void; onClose: () => void }) {
     return (
-        <Dialog open={open} onClose={onClose} title="Add new SO" maxWidth="lg" fullWidth>
+        <Dialog open={open} onClose={onClose} title="Add new SO" maxWidth="md" fullWidth>
             <Box m={2} style={{ height: "72vh" }}>
                 <AddForm onClose={onClose} onDone={onDone} />
             </Box>

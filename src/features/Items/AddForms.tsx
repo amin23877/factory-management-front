@@ -128,7 +128,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         placeholder={"Category"}
                     />
                     <FieldSelect
-                        style={{ width: 215, marginLeft: 5 }}
+                        style={{ width: 215, marginLeft: 5, marginRight: 5 }}
                         label="Item type"
                         request={getTypes}
                         itemTitleField="name"
@@ -140,7 +140,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                         value={values.ItemTypeId}
                     />
                     <FieldSelect
-                        style={{ width: 215, marginLeft: 5 }}
+                        style={{ width: 215, marginLeft: 5, marginRight: 5 }}
                         label="Item family"
                         request={getFamilies}
                         itemTitleField="name"
@@ -167,7 +167,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
             <Box display="flex">
                 <FormControlLabel style={{ flex: "0 40%" }} label="Active" name="Active" onChange={handleChange} control={<Checkbox />} />
             </Box>
-            <Button disabled={isSubmitting} fullWidth style={{ marginTop: "1.3em" }} kind="add" type="submit">
+            <Button disabled={isSubmitting} fullWidth style={{ marginTop: "1.3em", width: "50%" }} kind="add" type="submit">
                 Add
             </Button>
         </>
@@ -178,6 +178,7 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
     return (
         <Box display="flex" flexDirection="column" alignItems="center" p={2}>
             <TextField
+            style={{ width: "100%" }}
                 label="version"
                 name="version"
                 placeholder="version"
@@ -192,7 +193,7 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                 value={values.keywords}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                style={{ marginBottom: 3 }}
+                style={{ marginBottom: 3, width: "100%" }}
             />
             <TextField
                 label="url"
@@ -201,7 +202,7 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                 value={values.url}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                style={{ marginBottom: 3 }}
+                style={{ marginBottom: 3, width: "100%"  }}
             />
             <TextField
                 label="cost"
@@ -210,7 +211,7 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                 value={values.cost}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                style={{ marginBottom: 3 }}
+                style={{ marginBottom: 3, width: "100%"  }}
             />
             <TextField
                 label="retail price"
@@ -219,7 +220,7 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                 value={values.retailPrice}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                style={{ marginBottom: 3 }}
+                style={{ marginBottom: 3 , width: "100%" }}
             />
         </Box>
     );
@@ -227,43 +228,45 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
 
 export const Quantity = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
     return (
-        <Box display="flex" flexDirection="column" alignItems="center" p={2}>
-            <Typography>Total Quantity on hand</Typography>
+        <Box display="flex" flexDirection="column" p={2}>
+            <Typography
+                style={{ textAlign: "left", marginBottom: "5px" }}>Total Quantity on hand</Typography>
             <TextField
-                style={{ marginLeft: "1em" }}
+                style={{ width: "100%" }}
                 label="total quantity on hand"
                 name="totalQoh"
-                placeholder="Total quantity"
+
                 value={values.totalQoh}
                 onBlur={handleBlur}
                 onChange={handleChange}
             />
             <TextField
-                style={{ marginLeft: "1em" }}
+                style={{ width: "100%", marginBottom: "10px" }}
                 label="allocated quantity on hand"
                 name="allocatedQoh"
-                placeholder="allocatedQoh"
+
                 value={values.allocatedQoh}
                 onBlur={handleBlur}
                 onChange={handleChange}
             />
-            <Typography>Available qoh</Typography>
+            <Typography
+                style={{ textAlign: "left", marginBottom: "5px" }}>Available qoh</Typography>
             <Box mr={1}>
                 <TextField
-                    style={{ marginLeft: "1em" }}
+                    style={{ width: "100%" }}
                     label="available quantity on hand"
                     name="availableQoh"
-                    placeholder="availableQoh"
+
                     value={values.availableQoh}
                     onBlur={handleBlur}
                     onChange={handleChange}
                 />
             </Box>
             <TextField
-                style={{ marginLeft: "1em" }}
+                style={{ width: "100%" }}
                 label="trriger quantity on hand"
                 name="triggerQoh"
-                placeholder="triggerQoh"
+
                 value={values.triggerQoh}
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -280,13 +283,12 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                 <TextField
                     label="Additional shipping fee"
                     name="additionalShippingFee"
-                    placeholder="Additional shipping fee"
+
                     value={values.additionalShippingFee}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    style={{ width: "100%" }}
+                    style={{ width: "100%", marginBottom: 35 }}
                 />
-                <Divider style={{ margin: "1em 0" }} />
                 <Box display="flex">
                     {/* <Typography style={{ flex: 1 }}>Item Weight</Typography> */}
                     <Box textAlign="center">
@@ -294,11 +296,11 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                         <TextField
                             label="weight Lb"
                             name="weightLb"
-                            placeholder="weightLb"
+
                             value={values.weightLb}
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            style={{ flex: 1 }}
+                            style={{ flex: 1, marginRight: 2 }}
                         />
                     </Box>
                     <Box textAlign="center">
@@ -306,11 +308,11 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                         <TextField
                             label="weight Oz"
                             name="weightOz"
-                            placeholder="weightOz"
+
                             value={values.weightOz}
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            style={{ flex: 1 }}
+                            style={{ flex: 1, marginLeft: 2 }}
                         />
                     </Box>
                 </Box>
@@ -321,11 +323,11 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                         <TextField
                             label="shipping Lb"
                             name="shippingLb"
-                            placeholder="shippingLb"
+
                             value={values.shippingLb}
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            style={{ flex: 1 }}
+                            style={{ flex: 1, marginRight: 2 }}
                         />
                     </Box>
                     <Box textAlign="center">
@@ -333,11 +335,11 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                         <TextField
                             label="shipping Oz"
                             name="shippingOz"
-                            placeholder="shippingOz"
+
                             value={values.shippingOz}
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            style={{ flex: 1 }}
+                            style={{ flex: 1, marginLeft: 2 }}
                         />
                     </Box>
                 </Box>

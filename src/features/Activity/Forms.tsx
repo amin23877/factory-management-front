@@ -198,7 +198,7 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                 </Box>
                             </Box>
                         </BasePaper>
-                        <BasePaper style={{ height: "100%" }}>
+                        <BasePaper style={{ height:"100%",minHeight:"350px" ,display:"flex",flexDirection:"column",justifyContent:"space-evenly"}}>
                             <Box flex={1}>
                                 <Box>
                                     <div>
@@ -246,9 +246,9 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                         onBlur={handleBlur}
                                     />
                                 </Box>
-                                <Box my={2}>
-                                    <div style={{ display: "flex", width: "100%", alignItems: "flex-end" }}>
-                                        <Button kind="add" type="submit">
+                                <Box my={4}>
+                                    <div style={{ display: "flex", width: "100%", alignItems: "flex-end",marginTop:"auto" }}>
+                                        <Button kind="add" type="submit" style={{flex:1}}>
                                             {open ? "Add" : "Save"}
                                         </Button>
                                     </div>
