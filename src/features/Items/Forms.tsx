@@ -258,12 +258,25 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                     onChange={handleChange}
                     style={{ marginBottom: 3 }}
                 />
+                <TextField
+                    label="lastUsedInBom"
+                    name="lastUsedInBom"
+                    placeholder="lastUsedInBom"
+                    value={values.lastUsedInBom}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                />
             </Box>
         </Box>
     );
 };
 
 export const Quantity = ({ values, errors, handleChange, handleBlur, handleManualCount }: IQForm) => {
+    // Quantity on hand : Toye anbaar
+    // Allocated quantity : gharare toye so masraf beshe
+    // Available quantity : menhaye so
+    // Total quantity : on hand + onayi ke to raahe
+
     return (
         <Box display="flex" alignItems="center" p={2}>
             <Box>

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
-import { Button, IconButton, makeStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import Menu from "@material-ui/core/Menu";
 import Box from "@material-ui/core/Box";
 
@@ -10,16 +10,13 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
-
-import SortRounded from "@material-ui/icons/SortRounded";
 
 import { IItem } from "../../../api/items";
 import MenuFilters, { IFilters } from "./Filters";
 import Sort, { IOrder } from "./Sorts";
 
-const useStyles = makeStyles((theme) => ({
+export const useStyles = makeStyles((theme) => ({
     tableCont: {
         borderRadius: 10,
     },

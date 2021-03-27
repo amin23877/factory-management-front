@@ -13,6 +13,7 @@ import { MoreInfo, Quantity, Shipping, General } from "./Forms";
 import { SalesReport } from "./Reports";
 
 import ManualCountModal from "./ManualCountModal";
+import SOTable from "./SOTable";
 
 function ItemsDetails({
     selectedRow,
@@ -315,7 +316,7 @@ function ItemsDetails({
                     {activeTab === 1 && <BaseDataGrid height={250} cols={docCols} rows={docs} onRowSelected={onDocSelected} />}
                     {activeTab === 2 && <BaseDataGrid height={250} cols={vendorCols} rows={[]} onRowSelected={() => {}} />}
                     {activeTab === 3 && <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes} onRowSelected={() => {}} />}
-                    {activeTab === 4 && <BaseDataGrid height={250} cols={soCols} rows={itemSos} onRowSelected={(d) => console.log(d)} />}
+                    {activeTab === 4 && <SOTable rows={itemSos} />}
                     {activeTab === 5 && <SalesReport quotes={itemQuotes} salesOrders={itemSos} />}
                 </Box>
             </BasePaper>
