@@ -153,3 +153,12 @@ export const getItemSOs = async (itemId:number) => {
         console.log(error);
     }
 }
+
+export const addManualCount = async (ItemId:number, count:number, date:string) => {
+    try {
+        const resp = await Axios.post('/manualCount', {ItemId, count, date});
+        return resp.data;
+    } catch (error) {
+        throw error;
+    }
+}

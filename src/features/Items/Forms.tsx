@@ -1,11 +1,12 @@
-import React from "react";
-import { Box, FormControlLabel, Divider, Typography, Checkbox } from "@material-ui/core";
+import React, { useState } from "react";
+import { Box, FormControlLabel, Typography, Checkbox } from "@material-ui/core";
 
 import Button from "../../app/Button";
 
 import { getCategories } from "../../api/category";
 import { getTypes } from "../../api/types";
 import { getFamilies } from "../../api/family";
+import ManualCountModal from "./ManualCountModal";
 
 import TextField from "../../app/TextField";
 import { FieldSelect } from "../../app/Inputs";
@@ -17,6 +18,10 @@ interface IForm {
     handleChange: (e: any) => void;
     handleBlur: (e: any) => void;
     isSubmitting?: boolean;
+}
+
+interface IQForm extends IForm {
+    handleManualCount: () => void;
 }
 
 export const General = ({ isSubmitting, values, errors, handleChange, handleBlur, touched }: IForm) => {
@@ -258,7 +263,7 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
     );
 };
 
-export const Quantity = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
+export const Quantity = ({ values, errors, handleChange, handleBlur, handleManualCount }: IQForm) => {
     return (
         <Box display="flex" alignItems="center" p={2}>
             <Box>
@@ -328,6 +333,9 @@ export const Quantity = ({ values, errors, handleChange, handleBlur, touched }: 
                     onBlur={handleBlur}
                     onChange={handleChange}
                 />
+                <Button kind="add" fullWidth style={{ marginTop: 10 }} onClick={handleManualCount}>
+                    Adjust
+                </Button>
             </Box>
         </Box>
     );

@@ -12,6 +12,8 @@ import { BasePaper } from "../../app/Paper";
 import { MoreInfo, Quantity, Shipping, General } from "./Forms";
 import { SalesReport } from "./Reports";
 
+import ManualCountModal from "./ManualCountModal";
+
 function ItemsDetails({
     selectedRow,
     onNoteSelected,
@@ -34,6 +36,8 @@ function ItemsDetails({
 
     const [showSnack, setShowSnack] = useState(false);
     const [snackMsg, setSnackMsg] = useState("");
+
+    const [manualCountModal, setManualCountModal] = useState(false);
 
     useEffect(() => {
         if (selectedRow && selectedRow.id) {
@@ -230,6 +234,16 @@ function ItemsDetails({
 
     return (
         <Box my={2}>
+            <ManualCountModal
+                open={manualCountModal}
+                onClose={() => setManualCountModal(false)}
+                itemId={selectedRow.id}
+                onDone={() => {
+                    setSnackMsg("Record added");
+                    setShowSnack(true);
+                }}
+            />
+
             <Snackbar onClose={() => setShowSnack(false)} open={showSnack}>
                 {snackMsg}
             </Snackbar>
@@ -265,6 +279,7 @@ function ItemsDetails({
                             )}
                             {moreInfoTab === 1 && (
                                 <Quantity
+                                    handleManualCount={() => setManualCountModal(true)}
                                     values={values}
                                     handleChange={handleChange}
                                     handleBlur={handleBlur}

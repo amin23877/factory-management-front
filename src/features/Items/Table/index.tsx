@@ -210,19 +210,20 @@ export default function DataTable({
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((item) => (
-                            <TableRow key={item.id} onClick={() => onRowSelected(item)}>
-                                <TableCell component="th" scope="row">
-                                    {item.no}
-                                </TableCell>
-                                <TableCell>{item.name}</TableCell>
-                                <TableCell>{item.description}</TableCell>
-                                <TableCell>{item.cost} </TableCell>
-                                <TableCell>{item.ItemCategory ? item.ItemCategory.name : ""}</TableCell>
-                                <TableCell>{item.ItemType ? item.ItemType.name : ""}</TableCell>
-                                <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell>
-                            </TableRow>
-                        ))}
+                        {rows &&
+                            rows.map((item) => (
+                                <TableRow key={item.id} onClick={() => onRowSelected(item)}>
+                                    <TableCell component="th" scope="row">
+                                        {item.no}
+                                    </TableCell>
+                                    <TableCell>{item.name}</TableCell>
+                                    <TableCell>{item.description}</TableCell>
+                                    <TableCell>{item.cost} </TableCell>
+                                    <TableCell>{item.ItemCategory ? item.ItemCategory.name : ""}</TableCell>
+                                    <TableCell>{item.ItemType ? item.ItemType.name : ""}</TableCell>
+                                    <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell>
+                                </TableRow>
+                            ))}
                     </TableBody>
                 </Table>
             </TableContainer>
