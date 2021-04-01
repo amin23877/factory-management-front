@@ -77,7 +77,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: IVe
         >
             {({ values, errors, handleChange, handleBlur }) => (
                 <Form>
-                    <Box display="flex" flexDirection="row" alignItems="end" p={2}>
+                    <Box display="flex" flexDirection="row" alignItems="flex-end" p={2}>
                         <TextField
                             name="name"
                             label="Name"
