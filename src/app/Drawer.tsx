@@ -153,11 +153,11 @@ const drawerItems = [
             </svg>
         ),
     },
-    {
-        name: "Purchase",
-        link: "/purchase",
-        icon: <ShoppingCartRounded />,
-    },
+    // {
+    //     name: "Purchase",
+    //     link: "/purchase",
+    //     icon: <ShoppingCartRounded />,
+    // },
     {
         name: "Vendors",
         link: "/vendor",
