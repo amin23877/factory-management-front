@@ -69,7 +69,7 @@ export const AddressModal = ({
                                 })
                                 .catch((e) => console.log(e));
                         } else {
-                            createAModelAddress("client", itemId, values)
+                            createAModelAddress(model, itemId, values)
                                 .then((d) => {
                                     console.log(d);
                                     onDone && onDone();

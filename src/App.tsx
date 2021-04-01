@@ -31,6 +31,8 @@ import Page404 from "./pages/404";
 
 // Delete this after useing baseurl somewhere
 import * as config from "./api/config";
+import Vendros from "./pages/Vandors";
+import Purchase from "./pages/Purchase";
 console.log(config.BaseUrl);
 // ---------------------------
 
@@ -83,6 +85,8 @@ function App() {
                                     <Route exact path="/roles" component={Roles} />
                                     <Route exact path="/projects" component={Projects} />
                                     <Route exact path="/activity" component={Activity} />
+                                    <Route exact path="/vendor" component={Vendros} />
+                                    <Route exact path="/purchase" component={Purchase} />
                                     <Route exact path="*" component={Page404} />
                                 </Switch>
                             </Box>

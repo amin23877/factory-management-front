@@ -48,7 +48,7 @@ export const EmailModal = ({
                                 })
                                 .catch((e) => console.log(e));
                         } else {
-                            createAModelEmailAddr("client", itemId, values)
+                            createAModelEmailAddr(model, itemId, values)
                                 .then((d: any) => {
                                     console.log(d);
                                     onDone && onDone();

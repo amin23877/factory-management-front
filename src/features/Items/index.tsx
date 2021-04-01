@@ -14,6 +14,7 @@ import { SalesReport } from "./Reports";
 
 import ManualCountModal from "./ManualCountModal";
 import SOTable from "./SOTable";
+import { getItemVendors } from "../../api/vendor";
 
 function ItemsDetails({
     selectedRow,
@@ -32,6 +33,8 @@ function ItemsDetails({
 }) {
     const [itemQuotes, setItemQuotes] = useState([]);
     const [itemSos, setItemSos] = useState([]);
+    const [vendors, setVendors] = useState([]);
+
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
 
@@ -48,6 +51,10 @@ function ItemsDetails({
 
             getItemSOs(selectedRow.id)
                 .then((d) => d && setItemSos(d))
+                .catch((e) => console.log(e));
+
+            getItemVendors(selectedRow.id)
+                .then((d) => d && setVendors(d))
                 .catch((e) => console.log(e));
         }
     }, [selectedRow]);
@@ -82,7 +89,10 @@ function ItemsDetails({
         { field: "createdAt", headerName: "Date", width: 300 },
     ];
 
-    const vendorCols: ColDef[] = [{ field: "Vendor Id" }, { field: "Name" }, { field: "Vendor description" }, { field: "Last price" }];
+    const vendorCols: ColDef[] = [
+        { field: "id", headerName: "Vendor Id" },
+        { field: "name", headerName: "Name" },
+    ];
 
     const {
         name,
@@ -314,7 +324,7 @@ function ItemsDetails({
                 <Box p={3}>
                     {activeTab === 0 && <BaseDataGrid height={250} cols={noteCols} rows={notes} onRowSelected={onNoteSelected} />}
                     {activeTab === 1 && <BaseDataGrid height={250} cols={docCols} rows={docs} onRowSelected={onDocSelected} />}
-                    {activeTab === 2 && <BaseDataGrid height={250} cols={vendorCols} rows={[]} onRowSelected={() => {}} />}
+                    {activeTab === 2 && <BaseDataGrid height={250} cols={vendorCols} rows={vendors} onRowSelected={() => {}} />}
                     {activeTab === 3 && <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes} onRowSelected={() => {}} />}
                     {activeTab === 4 && <SOTable rows={itemSos} />}
                     {activeTab === 5 && <SalesReport quotes={itemQuotes} salesOrders={itemSos} />}

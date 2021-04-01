@@ -12,10 +12,12 @@ import {
     useTheme,
     ListItemText,
 } from "@material-ui/core";
+import ShopRounded from "@material-ui/icons/ShopRounded";
+import ShoppingCartRounded from "@material-ui/icons/ShoppingCartRounded";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import { useSession, logout } from "../features/Session/sessionsSlice";
+import { logout } from "../features/Session/sessionsSlice";
 import Confirm from "../features/Modals/Confirm";
 
 import phazifyLogo from "../assets/phazify.png";
@@ -150,6 +152,16 @@ const drawerItems = [
                 />
             </svg>
         ),
+    },
+    {
+        name: "Purchase",
+        link: "/purchase",
+        icon: <ShoppingCartRounded />,
+    },
+    {
+        name: "Vendors",
+        link: "/vendor",
+        icon: <ShopRounded />,
     },
     {
         name: "Inventory",

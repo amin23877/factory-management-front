@@ -49,7 +49,7 @@ export const PhoneModal = ({
                                 })
                                 .catch((e) => console.log(e));
                         } else {
-                            createAModelPhone("client", itemId, values)
+                            createAModelPhone(model, itemId, values)
                                 .then((d: any) => {
                                     console.log(d);
                                     onDone && onDone();
