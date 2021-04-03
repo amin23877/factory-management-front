@@ -1,16 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ColDef } from "@material-ui/data-grid";
 import { Box, Button, IconButton, ListItem } from "@material-ui/core";
-import {
-    AddRounded,
-    DeleteRounded,
-    PrintRounded,
-    MapRounded,
-    PhoneOutlined,
-    MailOutline,
-    ContactsOutlined,
-    MapOutlined,
-} from "@material-ui/icons";
+import { AddRounded, DeleteRounded, PrintRounded, PhoneOutlined, MailOutline, ContactsOutlined, MapOutlined } from "@material-ui/icons";
 
 import BaseDataGrid from "../app/BaseDataGrid";
 import List from "../app/SideUtilityList";

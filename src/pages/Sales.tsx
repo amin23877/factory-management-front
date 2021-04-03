@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Box } from "@material-ui/core";
 
-import TextField, { SearchBar } from "../app/TextField";
+import { SearchBar } from "../app/TextField";
 import { MyTabs, MyTab } from "../app/Tabs";
 
 import QuotePanel from "../features/Quote";
