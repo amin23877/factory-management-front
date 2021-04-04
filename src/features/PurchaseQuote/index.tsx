@@ -97,7 +97,7 @@ function Index() {
                 </List>
             </Box>
             <Box>
-                <Tabs style={{ marginBottom: "1em" }} value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                <Tabs style={{ marginBottom: "1em" }} textColor='primary' value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="List" />
                     <Tab label="Details" disabled={!selPQ} />
                 </Tabs>

@@ -87,7 +87,7 @@ export default function AddPQModal({ open, onClose, onDone }: { open: boolean; o
                                 />
                             </Box>
                             <Box textAlign="center">
-                                <Button type="submit" kind="add">
+                                <Button type="submit" kind="add" style={{width:'31%'}}>
                                     Add
                                 </Button>
                             </Box>
