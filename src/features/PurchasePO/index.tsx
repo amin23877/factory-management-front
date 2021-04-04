@@ -11,19 +11,20 @@ import { ColDef } from "@material-ui/data-grid";
 import List from "../../app/SideUtilityList";
 import BaseDataGrid from "../../app/BaseDataGrid";
 
-import AddPQuoteModal from "./AddPQuoteModal";
+import AddPOModal from "./AddPurchasePO";
 import Details from "./Details";
 
-import { deletePurchaseQuote, getPurchaseQuotes, IPurchaseQuote } from "../../api/purchaseQuote";
 import Confirm from "../Modals/Confirm";
+
+import { getPurchasePOs, deletePurchasePO, IPurchasePO } from "../../api/purchasePO";
 
 function Index() {
     const [activeTab, setActiveTab] = useState(0);
-    const [addPQ, setAddPQ] = useState(false);
+    const [addPO, setAddPO] = useState(false);
     const [confirm, setConfirm] = useState(false);
-    const [pqs, setPqs] = useState([]);
+    const [pos, setPOs] = useState([]);
 
-    const [selPQ, setSelPQ] = useState<IPurchaseQuote>();
+    const [selPO, setSelPO] = useState<IPurchasePO>();
 
     const cols: ColDef[] = [
         { field: "number", headerName: "Number" },
@@ -33,10 +34,10 @@ function Index() {
         { field: "EmployeeId" },
     ];
 
-    const refreshPQs = async () => {
+    const refreshPOs = async () => {
         try {
-            const resp = await getPurchaseQuotes();
-            resp && setPqs(resp);
+            const resp = await getPurchasePOs();
+            resp && setPOs(resp);
         } catch (error) {
             console.log(error);
         }
@@ -44,10 +45,10 @@ function Index() {
 
     const handleDelete = async () => {
         try {
-            if (selPQ && selPQ.id) {
-                const resp = await deletePurchaseQuote(selPQ.id);
+            if (selPO && selPO.id) {
+                const resp = await deletePurchasePO(selPO.id);
                 if (resp) {
-                    refreshPQs();
+                    refreshPOs();
                     setConfirm(false);
                 }
             }
@@ -57,18 +58,18 @@ function Index() {
     };
 
     useEffect(() => {
-        refreshPQs();
+        refreshPOs();
     }, []);
 
     return (
         <Box display="grid" gridTemplateColumns="1fr 11fr">
-            <AddPQuoteModal open={addPQ} onClose={() => setAddPQ(false)} onDone={refreshPQs} />
-            {selPQ && (
+            <AddPOModal open={addPO} onClose={() => setAddPO(false)} onDone={refreshPOs} />
+            {selPO && (
                 <Confirm
                     open={confirm}
                     onClose={() => setConfirm(false)}
                     onConfirm={handleDelete}
-                    text={`Are you sure? You are going to delete purchase quote ${selPQ?.number}`}
+                    text={`Are you sure? You are going to delete purchase PO ${selPO?.number}`}
                 />
             )}
 
@@ -77,8 +78,8 @@ function Index() {
                     <ListItem>
                         <IconButton
                             onClick={() => {
-                                setSelPQ(undefined);
-                                setAddPQ(true);
+                                setSelPO(undefined);
+                                setAddPO(true);
                             }}
                         >
                             <AddRounded />
@@ -99,19 +100,19 @@ function Index() {
             <Box>
                 <Tabs style={{ marginBottom: "1em" }} value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="List" />
-                    <Tab label="Details" disabled={!selPQ} />
+                    <Tab label="Details" disabled={!selPO} />
                 </Tabs>
                 {activeTab === 0 && (
                     <BaseDataGrid
                         cols={cols}
-                        rows={pqs}
+                        rows={pos}
                         onRowSelected={(d) => {
-                            setSelPQ(d);
+                            setSelPO(d);
                             setActiveTab(1);
                         }}
                     />
                 )}
-                {activeTab === 1 && <Details />}
+                {activeTab === 1 && selPO && <Details initialValues={selPO} onDone={refreshPOs} />}
             </Box>
         </Box>
     );

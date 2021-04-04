@@ -98,9 +98,9 @@ export default function Details({ onDone }: { onDone?: () => void }) {
                     )}
                 </Formik>
             </BasePaper>
-            {/* <BasePaper style={{ marginTop: "1em" }}>
+            <BasePaper style={{ marginTop: "1em" }}>
                 <h1>Datagrid</h1>
-            </BasePaper> */}
+            </BasePaper>
         </Box>
     );
 }
