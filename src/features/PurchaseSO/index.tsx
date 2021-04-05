@@ -11,24 +11,24 @@ import { ColDef } from "@material-ui/data-grid";
 import List from "../../app/SideUtilityList";
 import BaseDataGrid from "../../app/BaseDataGrid";
 
-import AddPOModal from "./AddPurchasePO";
+import AddSOModal from "./AddPurchaseSO";
 import AddLineItem from "../LineItem";
 import Details from "./Details";
 
 import Confirm from "../Modals/Confirm";
 
-import { getPurchasePOs, deletePurchasePO, IPurchasePO, getPurchasePOLines, IPurchasePOLine } from "../../api/purchasePO";
+import { getPurchaseSOs, deletePurchaseSO, IPurchaseSO, getPurchaseSOLines, IPurchaseSOLine } from "../../api/purchaseSO";
 
 function Index() {
     const [activeTab, setActiveTab] = useState(0);
-    const [addPO, setAddPO] = useState(false);
+    const [addSO, setAddSO] = useState(false);
     const [addLineItem, setAddLineItem] = useState(false);
     const [confirm, setConfirm] = useState(false);
-    const [pos, setPOs] = useState([]);
+    const [sos, setSOs] = useState([]);
     const [lines, setLines] = useState([]);
 
-    const [selectedLine, setSelectedLine] = useState<IPurchasePOLine>();
-    const [selPO, setSelPO] = useState<IPurchasePO>();
+    const [selectedLine, setSelectedLine] = useState<IPurchaseSOLine>();
+    const [selSO, setSelSO] = useState<IPurchaseSO>();
 
     const cols: ColDef[] = [
         { field: "number", headerName: "Number" },
@@ -36,12 +36,15 @@ function Index() {
         { field: "VendorId" },
         { field: "ContactId" },
         { field: "EmployeeId" },
+        { field: "estimatedObtainDate", headerName: "Estimated obtain date" },
+        { field: "status", headerName: "Status" },
+        { field: "obtained", headerName: "Obtained" },
     ];
 
     const refreshLines = async () => {
         try {
-            if (selPO && selPO.id) {
-                const resp = await getPurchasePOLines(selPO.id);
+            if (selSO && selSO.id) {
+                const resp = await getPurchaseSOLines(selSO.id);
                 resp && setLines(resp);
             }
         } catch (error) {
@@ -49,10 +52,10 @@ function Index() {
         }
     };
 
-    const refreshPOs = async () => {
+    const refreshSOs = async () => {
         try {
-            const resp = await getPurchasePOs();
-            resp && setPOs(resp);
+            const resp = await getPurchaseSOs();
+            resp && setSOs(resp);
         } catch (error) {
             console.log(error);
         }
@@ -60,10 +63,10 @@ function Index() {
 
     const handleDelete = async () => {
         try {
-            if (selPO && selPO.id) {
-                const resp = await deletePurchasePO(selPO.id);
+            if (selSO && selSO.id) {
+                const resp = await deletePurchaseSO(selSO.id);
                 if (resp) {
-                    refreshPOs();
+                    refreshSOs();
                     setConfirm(false);
                 }
             }
@@ -73,7 +76,7 @@ function Index() {
     };
 
     useEffect(() => {
-        refreshPOs();
+        refreshSOs();
     }, []);
 
     useEffect(() => {
@@ -84,23 +87,23 @@ function Index() {
 
     return (
         <Box display="grid" gridTemplateColumns="1fr 11fr">
-            <AddPOModal open={addPO} onClose={() => setAddPO(false)} onDone={refreshPOs} />
-            {selPO && selPO.id && (
+            <AddSOModal open={addSO} onClose={() => setAddSO(false)} onDone={refreshSOs} />
+            {selSO && selSO.id && (
                 <AddLineItem
                     selectedLine={selectedLine}
                     open={addLineItem}
                     onClose={() => setAddLineItem(false)}
                     onDone={refreshLines}
-                    record="purchasePO"
-                    recordId={selPO.id}
+                    record="purchaseSO"
+                    recordId={selSO.id}
                 />
             )}
-            {selPO && (
+            {selSO && (
                 <Confirm
                     open={confirm}
                     onClose={() => setConfirm(false)}
                     onConfirm={handleDelete}
-                    text={`Are you sure? You are going to delete purchase PO ${selPO?.number}`}
+                    text={`Are you sure? You are going to delete purchase SO ${selSO?.number}`}
                 />
             )}
 
@@ -109,8 +112,8 @@ function Index() {
                     <ListItem>
                         <IconButton
                             onClick={() => {
-                                setSelPO(undefined);
-                                setAddPO(true);
+                                setSelSO(undefined);
+                                setAddSO(true);
                             }}
                         >
                             <AddRounded />
@@ -144,22 +147,22 @@ function Index() {
             <Box>
                 <Tabs style={{ marginBottom: "1em" }} value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="List" />
-                    <Tab label="Details" disabled={!selPO} />
+                    <Tab label="Details" disabled={!selSO} />
                 </Tabs>
                 {activeTab === 0 && (
                     <BaseDataGrid
                         cols={cols}
-                        rows={pos}
+                        rows={sos}
                         onRowSelected={(d) => {
-                            setSelPO(d);
+                            setSelSO(d);
                             setActiveTab(1);
                         }}
                     />
                 )}
-                {activeTab === 1 && selPO && (
+                {activeTab === 1 && selSO && (
                     <Details
-                        initialValues={selPO}
-                        onDone={refreshPOs}
+                        initialValues={selSO}
+                        onDone={refreshSOs}
                         lines={lines}
                         onLineSelected={(d) => {
                             setSelectedLine(d);

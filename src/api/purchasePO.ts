@@ -55,9 +55,9 @@ export const deletePurchasePO = async (id:number) => {
     }
 }
 
-export const getPurchasePOLines = async (id:number) => {
+export const getPurchasePOLines = async (PurchasePOId:number) => {
     try {
-        const resp = await Axios.get(`/purchasePo/${id}/line`);
+        const resp = await Axios.get(`/line`, {params:{PurchasePOId}});
         return resp.data;
     } catch (error) { 
         throw error;
@@ -67,6 +67,24 @@ export const getPurchasePOLines = async (id:number) => {
 export const createPurchasePOLine = async (id:number,data:IPurchasePOLine) => {
     try {
         const resp = await Axios.post(`/purchasePo/${id}/line`, data);
+        return resp.data;    
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const updatePurchasePOLine = async (id:number, data:IPurchasePOLine) => {
+    try {
+        const resp = await Axios.patch(`/line/${id}`, data);
+        return resp.data;    
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const deletePurchasePOLine = async (id:number) => {
+    try {
+        const resp = await Axios.delete(`/line/${id}`);
         return resp.data;    
     } catch (error) {
         throw error;

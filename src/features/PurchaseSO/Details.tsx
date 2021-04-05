@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Form, Formik } from "formik";
 
 import Box from "@material-ui/core/Box";
@@ -8,7 +8,7 @@ import { ColDef } from "@material-ui/data-grid";
 
 import BaseDataGrid from "../../app/BaseDataGrid";
 
-import { updatePurchasePO, IPurchasePO } from "../../api/purchasePO";
+import { updatePurchaseSO, IPurchaseSO } from "../../api/purchaseSO";
 import { BasePaper } from "../../app/Paper";
 import Button from "../../app/Button";
 import EditForm from "./Forms";
@@ -20,7 +20,7 @@ export default function Details({
     lines,
     onLineSelected,
 }: {
-    initialValues: IPurchasePO;
+    initialValues: IPurchaseSO;
     onDone: () => void;
     lines: any[];
     onLineSelected: (v: any) => void;
@@ -41,7 +41,7 @@ export default function Details({
     const handleSubmit = async () => {
         try {
             if (initialValues.id) {
-                const resp = await updatePurchasePO(initialValues.id, initialValues);
+                const resp = await updatePurchaseSO(initialValues.id, initialValues);
                 if (resp) {
                     setMsg("Record updated");
                     setSnack(true);
@@ -61,10 +61,16 @@ export default function Details({
 
             <BasePaper>
                 <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-                    {({ values, handleChange, handleBlur, errors }) => (
+                    {({ values, handleChange, handleBlur, errors, setFieldValue }) => (
                         <Form>
                             <Box display="grid" gridTemplateColumns="auto auto auto auto" gridGap={5}>
-                                <EditForm values={values} errors={errors} handleBlur={handleBlur} handleChange={handleChange} />
+                                <EditForm
+                                    values={values}
+                                    errors={errors}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                    setFieldValue={setFieldValue}
+                                />
                                 <Button type="submit" kind="edit" style={{ alignSelf: "end", marginBottom: 5 }}>
                                     Save
                                 </Button>

@@ -6,6 +6,7 @@ import { MyTabs, MyTab } from "../app/Tabs";
 
 import PurchaseQuote from "../features/PurchaseQuote";
 import PurchasePO from "../features/PurchasePO";
+import PurchaseSO from "../features/PurchaseSO";
 
 export default function Purchase() {
     const [activeTab, setActiveTab] = useState(0);
@@ -18,11 +19,12 @@ export default function Purchase() {
                 <MyTabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <MyTab label="Quote" />
                     <MyTab label="PO" />
-                    <MyTab label="SO" disabled />
+                    <MyTab label="SO" />
                 </MyTabs>
             </Box>
             {activeTab === 0 && <PurchaseQuote />}
             {activeTab === 1 && <PurchasePO />}
+            {activeTab === 2 && <PurchaseSO />}
         </Container>
     );
 }
