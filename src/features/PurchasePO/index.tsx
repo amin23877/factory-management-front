@@ -5,7 +5,7 @@ import ListItem from "@material-ui/core/ListItem";
 import IconButton from "@material-ui/core/IconButton";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { AddRounded, DeleteRounded, PrintRounded, PostAddRounded } from "@material-ui/icons";
+import { AddRounded, DeleteRounded, PrintRounded, PostAddRounded, NoteAddRounded, FileCopyRounded } from "@material-ui/icons";
 import { ColDef } from "@material-ui/data-grid";
 
 import List from "../../app/SideUtilityList";
@@ -18,6 +18,10 @@ import Details from "./Details";
 import Confirm from "../Modals/Confirm";
 
 import { getPurchasePOs, deletePurchasePO, IPurchasePO, getPurchasePOLines, IPurchasePOLine } from "../../api/purchasePO";
+import NoteModal from "../Modals/NoteModals";
+import DocumentModal from "../Modals/DocumentModals";
+import { getAllModelNotes } from "../../api/note";
+import { getAllModelDocuments } from "../../api/document";
 
 function Index() {
     const [activeTab, setActiveTab] = useState(0);
@@ -26,6 +30,13 @@ function Index() {
     const [confirm, setConfirm] = useState(false);
     const [pos, setPOs] = useState([]);
     const [lines, setLines] = useState([]);
+    const [noteModal, setNoteModal] = useState(false);
+    const [docModal, setDocModal] = useState(false);
+    const [notes, setNotes] = useState([]);
+    const [docs, setDocs] = useState([]);
+
+    const [selNote, setSelNote] = useState<any>();
+    const [selDoc, setSelDoc] = useState<any>();
 
     const [selectedLine, setSelectedLine] = useState<IPurchasePOLine>();
     const [selPO, setSelPO] = useState<IPurchasePO>();
@@ -37,6 +48,28 @@ function Index() {
         { field: "ContactId" },
         { field: "EmployeeId" },
     ];
+
+    const refreshNotes = async () => {
+        try {
+            if (selPO && selPO.id) {
+                const resp = await getAllModelNotes("purchasePO", selPO.id);
+                resp && !resp.error && setNotes(resp);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const refreshDocs = async () => {
+        try {
+            if (selPO && selPO.id) {
+                const resp = await getAllModelDocuments("purchasePO", selPO.id);
+                resp && !resp.error && setDocs(resp);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const refreshLines = async () => {
         try {
@@ -79,6 +112,8 @@ function Index() {
     useEffect(() => {
         if (activeTab === 1) {
             refreshLines();
+            refreshNotes();
+            refreshDocs();
         }
     }, [activeTab]);
 
@@ -103,6 +138,26 @@ function Index() {
                     text={`Are you sure? You are going to delete purchase PO ${selPO?.number}`}
                 />
             )}
+            {selPO && selPO.id && (
+                <NoteModal
+                    itemId={selPO.id}
+                    model="purchasePO"
+                    open={noteModal}
+                    onClose={() => setNoteModal(false)}
+                    noteData={selNote}
+                    onDone={refreshNotes}
+                />
+            )}
+            {selPO && selPO.id && (
+                <DocumentModal
+                    itemId={selPO.id}
+                    model="purchasePO"
+                    open={docModal}
+                    onClose={() => setDocModal(false)}
+                    docData={selDoc}
+                    onDone={refreshDocs}
+                />
+            )}
 
             <Box>
                 <List>
@@ -122,17 +177,29 @@ function Index() {
                         </IconButton>
                     </ListItem>
                     {activeTab === 1 && (
-                        <ListItem>
-                            <IconButton
-                                onClick={() => {
-                                    setSelectedLine(undefined);
-                                    setAddLineItem(true);
-                                }}
-                                title="Add new line item"
-                            >
-                                <PostAddRounded />
-                            </IconButton>
-                        </ListItem>
+                        <>
+                            <ListItem>
+                                <IconButton
+                                    onClick={() => {
+                                        setSelectedLine(undefined);
+                                        setAddLineItem(true);
+                                    }}
+                                    title="Add new line item"
+                                >
+                                    <PostAddRounded />
+                                </IconButton>
+                            </ListItem>
+                            <ListItem>
+                                <IconButton onClick={() => setNoteModal(true)}>
+                                    <NoteAddRounded />
+                                </IconButton>
+                            </ListItem>
+                            <ListItem>
+                                <IconButton onClick={() => setDocModal(true)}>
+                                    <FileCopyRounded />
+                                </IconButton>
+                            </ListItem>
+                        </>
                     )}
                     <ListItem>
                         <IconButton>
@@ -161,6 +228,16 @@ function Index() {
                         initialValues={selPO}
                         onDone={refreshPOs}
                         lines={lines}
+                        notes={notes}
+                        docs={docs}
+                        onNoteSelected={(d) => {
+                            setSelNote(d);
+                            setNoteModal(true);
+                        }}
+                        onDocumentSelected={(d) => {
+                            setSelDoc(d);
+                            setDocModal(true);
+                        }}
                         onLineSelected={(d) => {
                             setSelectedLine(d);
                             setAddLineItem(true);

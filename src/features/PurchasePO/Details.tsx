@@ -13,16 +13,25 @@ import { BasePaper } from "../../app/Paper";
 import Button from "../../app/Button";
 import EditForm from "./Forms";
 import Snack from "../../app/Snack";
+import { DocumentsDataGrid, NotesDataGrid } from "../common/DataGrids";
 
 export default function Details({
     initialValues,
     onDone,
     lines,
     onLineSelected,
+    notes,
+    docs,
+    onNoteSelected,
+    onDocumentSelected,
 }: {
     initialValues: IPurchasePO;
     onDone: () => void;
     lines: any[];
+    notes: any;
+    docs: any;
+    onNoteSelected: (d: any) => void;
+    onDocumentSelected: (d: any) => void;
     onLineSelected: (v: any) => void;
 }) {
     const [activeTab, setActiveTab] = useState(0);
@@ -54,18 +63,18 @@ export default function Details({
     };
 
     return (
-        <Box>
+        <Box display="flex">
             <Snack open={snack} onClose={() => setSnack(false)}>
                 {msg}
             </Snack>
 
-            <BasePaper>
+            <BasePaper style={{ flex: 1 }}>
                 <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                     {({ values, handleChange, handleBlur, errors }) => (
                         <Form>
-                            <Box display="grid" gridTemplateColumns="auto auto auto auto" gridGap={5}>
-                                <EditForm values={values} errors={errors} handleBlur={handleBlur} handleChange={handleChange} />
-                                <Button type="submit" kind="edit" style={{ alignSelf: "end", marginBottom: 5 }}>
+                            <EditForm values={values} errors={errors} handleBlur={handleBlur} handleChange={handleChange} />
+                            <Box textAlign="left" display="flex">
+                                <Button style={{ margin: "0.5em 1em", flex: 1 }} type="submit" kind="edit">
                                     Save
                                 </Button>
                             </Box>
@@ -73,13 +82,15 @@ export default function Details({
                     )}
                 </Formik>
             </BasePaper>
-            <BasePaper style={{ marginTop: "1em" }}>
+            <BasePaper style={{ marginLeft: "1em", flex: 5 }}>
                 <Tabs style={{ marginBottom: "1em" }} value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="Line items" />
                     <Tab label="Notes" />
                     <Tab label="Documents" />
                 </Tabs>
-                {activeTab === 0 && <BaseDataGrid rows={lines} cols={lineCols} onRowSelected={(d) => onLineSelected(d)} />}
+                {activeTab === 0 && <BaseDataGrid rows={lines} cols={lineCols} onRowSelected={(d) => onLineSelected(d)} height={300} />}
+                {activeTab === 1 && <NotesDataGrid notes={notes} onNoteSelected={onNoteSelected} />}
+                {activeTab === 2 && <DocumentsDataGrid documents={docs} onDocumentSelected={onDocumentSelected} />}
             </BasePaper>
         </Box>
     );

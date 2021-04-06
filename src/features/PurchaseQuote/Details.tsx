@@ -3,41 +3,62 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
 import Box from "@material-ui/core/Box";
-import CloudUploadOutlinedIcon from '@material-ui/icons/CloudUploadOutlined';
+import Link from "@material-ui/core/Link";
+import Typography from "@material-ui/core/Typography";
+import { Tab, Tabs } from "@material-ui/core";
+import CloudUploadOutlinedIcon from "@material-ui/icons/CloudUploadOutlined";
 
-import Dialog from "../../app/Dialog";
 import { FieldSelect } from "../../app/Inputs";
-import TextField from "../../app/TextField";
 import Button from "../../app/Button";
+import { BasePaper } from "../../app/Paper";
+
 import { getAllEmployees } from "../../api/employee";
 import { getVendors } from "../../api/vendor";
 import { getContacts } from "../../api/contact";
-import { Typography } from "@material-ui/core";
-import { createPurchaseQuote } from "../../api/purchaseQuote";
+import { IPurchaseQuote, updatePurchaseQuote } from "../../api/purchaseQuote";
 
-import { BasePaper } from "../../app/Paper";
+import { DocumentsDataGrid, NotesDataGrid } from "../common/DataGrids";
 
-export default function Details({ onDone }: { onDone?: () => void }) {
+export default function Details({
+    onDone,
+    initialValues,
+    notes,
+    docs,
+    onDocumentSelected,
+    onNoteSelected,
+}: {
+    onDone?: () => void;
+    initialValues: IPurchaseQuote;
+    notes: any;
+    docs: any;
+    onNoteSelected: (d: any) => void;
+    onDocumentSelected: (d: any) => void;
+}) {
+    const [activeTab, setActiveTab] = useState(0);
     const uploader = useRef<HTMLInputElement | null>();
     const [file, setFile] = useState<File | null>(null);
 
+    const schema = Yup.object().shape({
+        VendorId: Yup.number().required(),
+    });
+
+    const handleSubmit = async (d: any) => {
+        try {
+            if (initialValues.id) {
+                const resp = await updatePurchaseQuote(initialValues.id, { ...d, file });
+                if (resp) {
+                    onDone && onDone();
+                }
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
     return (
-        <Box display='flex'>
-            <BasePaper  >
+        <Box display="flex">
+            <BasePaper>
                 <Box display="flex" flexDirection="column">
-                    <Formik
-                        initialValues={{}}
-                        onSubmit={async (d: any) => {
-                            try {
-                                const resp = await createPurchaseQuote({ ...d, file });
-                                if (resp) {
-                                    onDone && onDone();
-                                }
-                            } catch (e) {
-                                console.log(e);
-                            }
-                        }}
-                    >
+                    <Formik initialValues={initialValues} validationSchema={schema} onSubmit={handleSubmit}>
                         {({ values, errors, handleChange, handleBlur }: any) => (
                             <Form>
                                 <input
@@ -47,12 +68,17 @@ export default function Details({ onDone }: { onDone?: () => void }) {
                                     ref={(e) => (uploader.current = e)}
                                     onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
                                 />
-                                <Button fullWidth  variant="outlined" onClick={() => uploader.current && uploader.current.click()}>
-                                    < CloudUploadOutlinedIcon style={{marginRight:'3px'}}/>
+                                <Button fullWidth variant="outlined" onClick={() => uploader.current && uploader.current.click()}>
+                                    <CloudUploadOutlinedIcon style={{ marginRight: "3px" }} />
                                     File
-                            </Button>
+                                </Button>
                                 <Box my={1}>
                                     <Typography variant="caption">{file?.name}</Typography>
+                                    {initialValues.path && (
+                                        <Link download rel="noopenner norefferer" href={initialValues?.path}>
+                                            Donwload file
+                                        </Link>
+                                    )}
                                 </Box>
                                 <Box display="flex" flexDirection="column" my={2}>
                                     <FieldSelect
@@ -68,7 +94,7 @@ export default function Details({ onDone }: { onDone?: () => void }) {
                                         error={Boolean(errors.requester)}
                                     />
                                     <FieldSelect
-                                        style={{ flex: 1}}
+                                        style={{ flex: 1 }}
                                         request={getVendors}
                                         itemTitleField="name"
                                         itemValueField="id"
@@ -92,18 +118,23 @@ export default function Details({ onDone }: { onDone?: () => void }) {
                                         error={Boolean(errors.ContactId)}
                                     />
                                 </Box>
-                                <Box textAlign="left" display='flex'>
-                                    <Button  style={{marginLeft:'20px',marginRight:'20px',flex:1}} type="submit" kind="add">
-                                        Add
-                                </Button>
+                                <Box textAlign="left" display="flex">
+                                    <Button style={{ margin: "0.5em 1em", flex: 1 }} type="submit" kind="edit">
+                                        Save
+                                    </Button>
                                 </Box>
                             </Form>
                         )}
                     </Formik>
                 </Box>
             </BasePaper>
-            <BasePaper style={{marginLeft:'1em' ,flex:1}}>
-                <h1>Datagrid</h1>
+            <BasePaper style={{ marginLeft: "1em", flex: 1 }}>
+                <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} style={{ margin: "0.5em 0" }}>
+                    <Tab label="Notes" />
+                    <Tab label="Documents" />
+                </Tabs>
+                {activeTab === 0 && <NotesDataGrid notes={notes} onNoteSelected={onNoteSelected} />}
+                {activeTab === 1 && <DocumentsDataGrid documents={docs} onDocumentSelected={onDocumentSelected} />}
             </BasePaper>
         </Box>
     );
