@@ -39,7 +39,7 @@ export default function UpdateForm({
                 </Button>
                 <Typography variant="caption">{values.file?.name}</Typography>
             </Box>
-            <FieldSelect
+            {/* <FieldSelect
                 style={{ width: "100%" }}
                 request={getAllEmployees}
                 itemTitleField="username"
@@ -50,7 +50,7 @@ export default function UpdateForm({
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={Boolean(errors.requester)}
-            />
+            /> */}
             <FieldSelect
                 style={{ width: "100%" }}
                 request={getVendors}
