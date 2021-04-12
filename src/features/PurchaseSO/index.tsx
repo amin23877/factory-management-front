@@ -145,7 +145,7 @@ function Index() {
             {selSO && selSO.id && (
                 <NoteModal
                     itemId={selSO.id}
-                    model="purchaseQuote"
+                    model="purchaseSO"
                     open={noteModal}
                     onClose={() => setNoteModal(false)}
                     noteData={selNote}
@@ -155,7 +155,7 @@ function Index() {
             {selSO && selSO.id && (
                 <DocumentModal
                     itemId={selSO.id}
-                    model="purchaseQuote"
+                    model="purchaseSO"
                     open={docModal}
                     onClose={() => setDocModal(false)}
                     docData={selDoc}

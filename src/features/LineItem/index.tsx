@@ -22,7 +22,7 @@ export default function AddLineItemModal({
     recordId: number;
 }) {
     return (
-        <Dialog open={open} onClose={onClose} title={`Add new line item to ${record === "purchasePO" ? "purchase po" : "purchase so"}`}>
+        <Dialog open={open} onClose={onClose} title={`Add new line item to ${record === "purchasePO" ? "purchase order" : "sales order"}`}>
             <Box p={2}>
                 <Form
                     initialValues={selectedLine}

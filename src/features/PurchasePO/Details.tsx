@@ -11,7 +11,7 @@ import BaseDataGrid from "../../app/BaseDataGrid";
 import { updatePurchasePO, IPurchasePO } from "../../api/purchasePO";
 import { BasePaper } from "../../app/Paper";
 import Button from "../../app/Button";
-import EditForm from "./Forms";
+import { UpdateForm } from "./Forms";
 import Snack from "../../app/Snack";
 import { DocumentsDataGrid, NotesDataGrid } from "../common/DataGrids";
 
@@ -72,12 +72,12 @@ export default function Details({
                 <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                     {({ values, handleChange, handleBlur, errors }) => (
                         <Form>
-                            <EditForm values={values} errors={errors} handleBlur={handleBlur} handleChange={handleChange} />
-                            <Box textAlign="left" display="flex">
+                            <UpdateForm values={values} errors={errors} handleBlur={handleBlur} handleChange={handleChange} />
+                            {/* <Box textAlign="left" display="flex">
                                 <Button style={{ margin: "0.5em 1em", flex: 1 }} type="submit" kind="edit">
                                     Save
                                 </Button>
-                            </Box>
+                            </Box> */}
                         </Form>
                     )}
                 </Formik>

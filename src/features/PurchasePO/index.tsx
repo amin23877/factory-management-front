@@ -178,7 +178,7 @@ function Index() {
                     </ListItem>
                     {activeTab === 1 && (
                         <>
-                            <ListItem>
+                            {/* <ListItem>
                                 <IconButton
                                     onClick={() => {
                                         setSelectedLine(undefined);
@@ -188,14 +188,14 @@ function Index() {
                                 >
                                     <PostAddRounded />
                                 </IconButton>
-                            </ListItem>
+                            </ListItem> */}
                             <ListItem>
-                                <IconButton onClick={() => setNoteModal(true)}>
+                                <IconButton title="Add note" onClick={() => setNoteModal(true)}>
                                     <NoteAddRounded />
                                 </IconButton>
                             </ListItem>
                             <ListItem>
-                                <IconButton onClick={() => setDocModal(true)}>
+                                <IconButton title="Add document" onClick={() => setDocModal(true)}>
                                     <FileCopyRounded />
                                 </IconButton>
                             </ListItem>

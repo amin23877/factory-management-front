@@ -6,7 +6,8 @@ export type IPurchasePO = {
     requester: number,
     VendorId: number,
     ContactId: number,
-    EmployeeId: number
+    EmployeeId: number,
+    status: string
 }
 
 export type IPurchasePOLine = {

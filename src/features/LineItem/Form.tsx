@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
+import { Box } from "@material-ui/core";
 import CheckBox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import TextField from "@material-ui/core/TextField";
@@ -9,11 +10,11 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 
 import BootstrapTextField from "../../app/TextField";
 import Button from "../../app/Button";
+import { FieldSelect } from "../../app/Inputs";
 
-import { createPurchasePOLine, deletePurchasePOLine, IPurchasePOLine, updatePurchasePOLine } from "../../api/purchasePO";
 import { createPurchaseSOLine, deletePurchaseSOLine, IPurchaseSOLine, updatePurchaseSOLine } from "../../api/purchaseSO";
+import { createPurchasePOLine, deletePurchasePOLine, IPurchasePOLine, updatePurchasePOLine } from "../../api/purchasePO";
 import { getItems } from "../../api/items";
-import { Box } from "@material-ui/core";
 
 export default function MainForm({
     initialValues,
@@ -78,15 +79,26 @@ export default function MainForm({
         <Formik initialValues={initialValues ? initialValues : ({} as IPurchasePOLine)} validationSchema={schema} onSubmit={handleSubmit}>
             {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
                 <Form>
-                    <Autocomplete
+                    <FieldSelect
+                        request={getItems}
+                        itemTitleField="name"
+                        itemValueField="id"
+                        value={values?.ItemId as any}
+                        name="ItemId"
+                        fullWidth
+                        disabled
+                    />
+                    {/* <Autocomplete
+                        value={values?.ItemId as any}
                         options={items}
                         getOptionLabel={(item: any) => item.name}
                         onChange={(e, nv) => setFieldValue("ItemId", nv.id)}
                         onBlur={handleBlur}
                         renderInput={(params) => <TextField {...params} label="Item" name="ItemId" variant="outlined" />}
                         fullWidth
-                    />
+                    /> */}
                     <BootstrapTextField
+                        disabled
                         style={{ width: "100%" }}
                         name="description"
                         label="Description"
@@ -96,6 +108,7 @@ export default function MainForm({
                         error={Boolean(errors.description)}
                     />
                     <BootstrapTextField
+                        disabled
                         style={{ width: "100%" }}
                         name="quantity"
                         label="Quantity"
@@ -105,6 +118,7 @@ export default function MainForm({
                         error={Boolean(errors.quantity)}
                     />
                     <BootstrapTextField
+                        disabled
                         style={{ width: "100%" }}
                         name="price"
                         label="Price"
@@ -114,6 +128,7 @@ export default function MainForm({
                         error={Boolean(errors.price)}
                     />
                     <BootstrapTextField
+                        disabled
                         style={{ width: "100%" }}
                         name="index"
                         label="Index"
@@ -123,6 +138,7 @@ export default function MainForm({
                         error={Boolean(errors.index)}
                     />
                     <FormControlLabel
+                        disabled
                         style={{ width: "100%" }}
                         checked={values.tax}
                         label="Tax"
@@ -130,7 +146,7 @@ export default function MainForm({
                         onChange={handleChange}
                         control={<CheckBox />}
                     />
-                    <Box display="flex">
+                    {/* <Box display="flex">
                         <Button style={{ flex: 3 }} type="submit" kind={initialValues && initialValues.id ? "edit" : "add"} fullWidth>
                             Submit
                         </Button>
@@ -139,7 +155,7 @@ export default function MainForm({
                                 Delete
                             </Button>
                         )}
-                    </Box>
+                    </Box> */}
                 </Form>
             )}
         </Formik>
