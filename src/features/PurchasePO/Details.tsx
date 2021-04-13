@@ -47,10 +47,10 @@ export default function Details({
         { field: "index", headerName: "Index" },
     ];
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (d: any) => {
         try {
-            if (initialValues.id) {
-                const resp = await updatePurchasePO(initialValues.id, initialValues);
+            if (initialValues.id && d.status) {
+                const resp = await updatePurchasePO(initialValues.id, { status: d.status } as any);
                 if (resp) {
                     setMsg("Record updated");
                     setSnack(true);
@@ -73,11 +73,11 @@ export default function Details({
                     {({ values, handleChange, handleBlur, errors }) => (
                         <Form>
                             <UpdateForm values={values} errors={errors} handleBlur={handleBlur} handleChange={handleChange} />
-                            {/* <Box textAlign="left" display="flex">
+                            <Box textAlign="left" display="flex">
                                 <Button style={{ margin: "0.5em 1em", flex: 1 }} type="submit" kind="edit">
-                                    Save
+                                    Save status
                                 </Button>
-                            </Box> */}
+                            </Box>
                         </Form>
                     )}
                 </Formik>

@@ -194,17 +194,17 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
             <Box display="flex">
                 <FormControlLabel
                     style={{ flex: "0 30%" }}
-                    checked={values.salesApprove}
+                    checked={values.salesApproved}
                     label="Sales Approve"
-                    name="salesApprove"
+                    name="salesApproved"
                     onChange={handleChange}
                     control={<Checkbox />}
                 />
                 <FormControlLabel
                     style={{ flex: "0 30%" }}
-                    checked={values.engineeringApprove}
+                    checked={values.engineeringApproved}
                     label="Engineering Approve"
-                    name="engineeringApprove"
+                    name="engineeringApproved"
                     onChange={handleChange}
                     control={<Checkbox />}
                 />

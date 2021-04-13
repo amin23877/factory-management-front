@@ -40,6 +40,7 @@ function Index() {
 
     const [selectedLine, setSelectedLine] = useState<IPurchasePOLine>();
     const [selPO, setSelPO] = useState<IPurchasePO>();
+    const [compPo, setCompPo] = useState<any>();
 
     const cols: ColDef[] = [
         { field: "number", headerName: "Number" },
@@ -98,6 +99,7 @@ function Index() {
                 if (resp) {
                     refreshPOs();
                     setConfirm(false);
+                    setActiveTab(0);
                 }
             }
         } catch (e) {
@@ -119,7 +121,17 @@ function Index() {
 
     return (
         <Box display="grid" gridTemplateColumns="1fr 11fr">
-            <AddPOModal open={addPO} onClose={() => setAddPO(false)} onDone={refreshPOs} />
+            <AddPOModal
+                initialData={compPo}
+                open={addPO}
+                onClose={() => setAddPO(false)}
+                onDone={() => {
+                    refreshPOs();
+                    setActiveTab(0);
+                    setLines([]);
+                }}
+            />
+
             {selPO && selPO.id && (
                 <AddLineItem
                     selectedLine={selectedLine}
@@ -178,17 +190,17 @@ function Index() {
                     </ListItem>
                     {activeTab === 1 && (
                         <>
-                            {/* <ListItem>
+                            <ListItem>
                                 <IconButton
                                     onClick={() => {
-                                        setSelectedLine(undefined);
-                                        setAddLineItem(true);
+                                        setCompPo({ ...selPO, lines });
+                                        setAddPO(true);
                                     }}
-                                    title="Add new line item"
+                                    title="Add new PO based on this PO"
                                 >
                                     <PostAddRounded />
                                 </IconButton>
-                            </ListItem> */}
+                            </ListItem>
                             <ListItem>
                                 <IconButton title="Add note" onClick={() => setNoteModal(true)}>
                                     <NoteAddRounded />

@@ -1,13 +1,29 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Step, StepLabel, Stepper, Dialog, DialogTitle, IconButton, Typography } from "@material-ui/core";
 import { CloseRounded } from "@material-ui/icons";
 
 import { CreateForm, FinalForm, LinesForm } from "./Forms";
-import { IPurchasePO } from "../../api/purchasePO";
+import { IPurchasePOComplete } from "../../api/purchasePO";
 
-export default function AddPOModal({ open, onClose, onDone }: { open: boolean; onClose: () => void; onDone: () => void }) {
+export default function AddPOModal({
+    open,
+    onClose,
+    onDone,
+    initialData,
+}: {
+    initialData?: IPurchasePOComplete;
+    open: boolean;
+    onClose: () => void;
+    onDone: () => void;
+}) {
     const [step, setStep] = useState(0);
-    const [createdPO, setCreatedPO] = useState<IPurchasePO | null>(null);
+    const [po, setPO] = useState(initialData);
+
+    useEffect(() => {
+        if (initialData) {
+            setPO(initialData);
+        }
+    }, [initialData]);
 
     return (
         <Dialog open={open} title="Add new purchase order" fullWidth maxWidth="md">
@@ -40,8 +56,9 @@ export default function AddPOModal({ open, onClose, onDone }: { open: boolean; o
                             </Typography>
                             <Box my={2}>
                                 <CreateForm
+                                    data={po}
                                     onDone={(d) => {
-                                        setCreatedPO(d);
+                                        setPO((prev) => ({ ...prev, ...d }));
                                         setStep(1);
                                     }}
                                 />
@@ -50,9 +67,19 @@ export default function AddPOModal({ open, onClose, onDone }: { open: boolean; o
                         <div style={{ flexGrow: 1 }} />
                     </Box>
                 )}
-                {step === 1 && createdPO && createdPO.id && <LinesForm recordId={createdPO?.id} onDone={() => setStep(2)} />}
-                {step === 2 && (
+                {step === 1 && (
+                    <LinesForm
+                        data={po}
+                        onBack={() => setStep(0)}
+                        onDone={(items: any) => {
+                            setPO((d: any) => ({ ...d, lines: items }));
+                            setStep(2);
+                        }}
+                    />
+                )}
+                {step === 2 && po && (
                     <FinalForm
+                        data={po}
                         onBack={() => setStep(1)}
                         onDone={() => {
                             onClose();
@@ -62,11 +89,10 @@ export default function AddPOModal({ open, onClose, onDone }: { open: boolean; o
                 )}
                 {/* <Button
                     onClick={() => {
-                        setStep((p) => (p + 1) % 3);
-                        setCreatedPO({ id: 1 } as IPurchasePO);
+                        console.log(po);
                     }}
                 >
-                    next
+                    log
                 </Button> */}
             </Box>
         </Dialog>

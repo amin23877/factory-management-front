@@ -17,6 +17,8 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import DeleteRounded from "@material-ui/icons/DeleteRounded";
+import ChevronRight from "@material-ui/icons/ChevronRight";
+import ChevronLeft from "@material-ui/icons/ChevronLeft";
 
 import BootstrapTextField from "../../app/TextField";
 
@@ -29,26 +31,64 @@ import {
     updatePurchasePOLine,
     IPurchasePO,
     createPurchasePO,
+    IPurchasePOComplete,
+    createPurchasePOComplete,
 } from "../../api/purchasePO";
 import { getVendors } from "../../api/vendor";
 import { getItems } from "../../api/items";
 
 import { FieldSelect, ArraySelect } from "../../app/Inputs";
 import Button from "../../app/Button";
+import { LinearProgress } from "@material-ui/core";
 
-export const FinalForm = ({ onDone, onBack }: { onDone: () => void; onBack: () => void }) => {
+export const FinalForm = ({ onDone, onBack, data }: { onDone: () => void; onBack: () => void; data: IPurchasePOComplete }) => {
+    const [loading, setLoading] = useState(false);
+
+    const handleSubmit = async () => {
+        try {
+            const { ContactId, requester, status, VendorId, lines } = data;
+            let newLines = [...lines];
+            newLines.forEach(function (v: any) {
+                delete v.createdAt;
+                delete v.id;
+                delete v.PurchasePOId;
+                delete v.PurchaseSOId;
+                delete v.QuoteId;
+                delete v.SOId;
+                delete v.updatedAt;
+            });
+            const resp = await createPurchasePOComplete({
+                ContactId,
+                requester,
+                status,
+                VendorId,
+                lines: newLines,
+            } as IPurchasePOComplete);
+            if (resp) {
+                console.log(resp);
+                onDone();
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
-        <Box>
+        <Box height="85%" display="flex" flexDirection="column">
             <Typography variant="h5">Are you sure?</Typography>
             <Typography variant="subtitle1" style={{ margin: "1em 0" }}>
                 If you finilize your Purchase order, You can't update it, So if you want to update it you should make new version or add new
                 one
             </Typography>
+            {loading && <LinearProgress />}
+            <div style={{ flexGrow: 1 }} />
             <Box display="flex" justifyContent="space-between" mt={4}>
-                <Button onClick={onBack} color="secondary" variant="contained">
+                <Button disabled={loading} onClick={onBack} color="secondary" variant="contained">
                     Back to lines
                 </Button>
-                <Button onClick={onDone} color="primary" variant="contained">
+                <Button disabled={loading} onClick={handleSubmit} color="primary" variant="contained">
                     Finilize
                 </Button>
             </Box>
@@ -56,9 +96,17 @@ export const FinalForm = ({ onDone, onBack }: { onDone: () => void; onBack: () =
     );
 };
 
-export const LinesForm = ({ recordId, onDone }: { recordId: number; onDone: () => void }) => {
+export const LinesForm = ({
+    onDone,
+    onBack,
+    data,
+}: {
+    data?: IPurchasePOComplete;
+    onDone: (items: IPurchasePOLine[]) => void;
+    onBack: () => void;
+}) => {
     const [items, setItems] = useState([]);
-    const [createdItems, setCreatedItems] = useState([]);
+    const [createdItems, setCreatedItems] = useState<IPurchasePOLine[]>(data && data.lines ? data.lines : []);
 
     const schema = Yup.object().shape({
         ItemId: Yup.number().required(),
@@ -72,27 +120,14 @@ export const LinesForm = ({ recordId, onDone }: { recordId: number; onDone: () =
             .catch((e) => console.log(e));
     }, []);
 
-    const handleSubmit = async (d: IPurchasePOLine) => {
-        try {
-            const createLine = createPurchasePOLine;
-            const resp = await createLine(recordId, d);
-            if (resp) {
-                setCreatedItems((prev) => prev.concat(resp));
-            }
-        } catch (error) {
-            console.log(error);
+    const handleSubmit = (d: IPurchasePOLine) => {
+        if (d) {
+            setCreatedItems((prev) => prev.concat(d));
         }
     };
 
-    const handleDelete = async (id: number) => {
-        const deleteLine = deletePurchasePOLine;
-
-        try {
-            const resp = await deleteLine(id);
-            resp && setCreatedItems((prev) => prev.filter((item: any) => item.id !== id));
-        } catch (error) {
-            console.log(error);
-        }
+    const handleDelete = async (index: number) => {
+        setCreatedItems((prev) => prev.filter((item: any, ind) => ind !== index));
     };
 
     return (
@@ -153,12 +188,24 @@ export const LinesForm = ({ recordId, onDone }: { recordId: number; onDone: () =
                                 onChange={handleChange}
                                 control={<CheckBox />}
                             />
-                            <Button type="submit" kind={"add"} fullWidth>
-                                Submit
-                            </Button>
-                            <Button style={{ margin: "0.5em 0" }} onClick={onDone} variant="contained" color="primary" fullWidth>
-                                Next
-                            </Button>
+                            <Box display="flex" alignItems="center" justifyContent="space-between">
+                                <Button startIcon={<ChevronLeft />} onClick={onBack} variant="contained" color="primary">
+                                    Back
+                                </Button>
+                                <Button style={{ margin: "0 0.5em" }} type="submit" kind={"add"}>
+                                    Submit
+                                </Button>
+                                <Button
+                                    endIcon={<ChevronRight />}
+                                    onClick={() => {
+                                        onDone(createdItems);
+                                    }}
+                                    variant="contained"
+                                    color="primary"
+                                >
+                                    Next
+                                </Button>
+                            </Box>
                         </Form>
                     )}
                 </Formik>
@@ -178,7 +225,7 @@ export const LinesForm = ({ recordId, onDone }: { recordId: number; onDone: () =
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {createdItems.map((item: any) => (
+                            {createdItems.map((item: any, i: number) => (
                                 <TableRow>
                                     <TableCell>{item.id}</TableCell>
                                     {/* <TableCell>{item.name}</TableCell> */}
@@ -187,7 +234,7 @@ export const LinesForm = ({ recordId, onDone }: { recordId: number; onDone: () =
                                     <TableCell>{item.price}</TableCell>
                                     <TableCell>{item.tax}</TableCell>
                                     <TableCell>
-                                        <IconButton onClick={() => handleDelete(item.id)}>
+                                        <IconButton onClick={() => handleDelete(i)}>
                                             <DeleteRounded htmlColor="red" />
                                         </IconButton>
                                     </TableCell>
@@ -201,26 +248,19 @@ export const LinesForm = ({ recordId, onDone }: { recordId: number; onDone: () =
     );
 };
 
-export const CreateForm = ({ onDone }: { onDone: (d: IPurchasePO) => void }) => {
+export const CreateForm = ({ onDone, data }: { data?: IPurchasePOComplete; onDone: (data: IPurchasePOComplete) => void }) => {
     const schema = Yup.object().shape({
         requester: Yup.number().required(),
         VendorId: Yup.number().required(),
         ContactId: Yup.number().required(),
     });
 
-    const handleSubmit = async (d: IPurchasePO) => {
-        try {
-            const resp = await createPurchasePO(d);
-            if (resp) {
-                onDone(resp);
-            }
-        } catch (error) {
-            console.log(error);
-        }
+    const handleSubmit = (d: IPurchasePOComplete) => {
+        onDone(d);
     };
 
     return (
-        <Formik initialValues={{} as IPurchasePO} validationSchema={schema} onSubmit={handleSubmit}>
+        <Formik initialValues={data ? data : ({} as IPurchasePOComplete)} validationSchema={schema} onSubmit={handleSubmit}>
             {({ values, errors, handleChange, handleBlur }) => (
                 <Form>
                     <Box display="grid" gridTemplateColumns="auto" gridGap={8}>
@@ -335,12 +375,11 @@ export const UpdateForm = ({
             <ArraySelect
                 items={["completed", "shipped", "pending"]}
                 name="status"
-                label="status"
+                label="Status"
                 value={values.status}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={Boolean(errors.status)}
-                disabled
                 fullWidth
             />
         </>

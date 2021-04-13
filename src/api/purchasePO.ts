@@ -20,9 +20,22 @@ export type IPurchasePOLine = {
     index: number,
 }
 
+export interface IPurchasePOComplete extends IPurchasePO {
+    lines:IPurchasePOLine[]
+}
+
 export const getPurchasePOs = async () => {
     try {
         const resp = await Axios.get('/purchasePo');
+        return resp.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const createPurchasePOComplete = async (data:IPurchasePOComplete) => {
+    try {
+        const resp = await Axios.post('/puchasePO/complete', data);
         return resp.data;
     } catch (error) {
         throw error;
