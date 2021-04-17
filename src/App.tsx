@@ -27,6 +27,7 @@ import Settings from "./pages/Settings";
 import Roles from "./pages/Roles";
 import Projects from "./pages/Project";
 import Activity from "./pages/Activity";
+import Service from "./pages/Service";
 import Page404 from "./pages/404";
 
 // Delete this after useing baseurl somewhere
@@ -86,6 +87,7 @@ function App() {
                                     <Route exact path="/projects" component={Projects} />
                                     <Route exact path="/activity" component={Activity} />
                                     <Route exact path="/vendor" component={Vendros} />
+                                    <Route exact path="/service" component={Service} />
                                     <Route exact path="/purchase" component={Purchase} />
                                     <Route exact path="*" component={Page404} />
                                 </Switch>

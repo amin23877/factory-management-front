@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import ShopRounded from "@material-ui/icons/ShopRounded";
 import ShoppingCartRounded from "@material-ui/icons/ShoppingCartRounded";
+import SettingsApplicationsRounded from "@material-ui/icons/SettingsApplicationsRounded";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
@@ -197,6 +198,11 @@ const drawerItems = [
         ),
     },
     {
+        name: "Service",
+        link: "/service",
+        icon: <SettingsApplicationsRounded />,
+    },
+    {
         name: "Roles",
         link: "/roles",
         icon: (
@@ -344,7 +350,7 @@ const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boole
                         <img src={phocusLogo} alt="Phocus" style={{ width: "80%", height: "auto" }} />
                     </div>
                     <Divider />
-                    <List style={{ marginBottom: "auto", paddingTop: "2px" }}>
+                    <List style={{ marginBottom: "auto", paddingTop: "2px", height: 700, overflowY: "auto", overflowX: "clip" }}>
                         {drawerItems.map((item, i) => (
                             <div style={location.pathname === item.link ? adstyle : dstyle}>
                                 <Link key={i} to={item.link} style={{ textDecoration: "none", border: "none", outline: "none" }}>
