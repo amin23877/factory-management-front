@@ -16,7 +16,7 @@ export default function Purchase() {
                 <div style={{ flexGrow: 1 }} />
                 <MyTabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <MyTab label="List" />
-                    <MyTab label="Details" />
+                    <MyTab label="Details" disabled />
                 </MyTabs>
             </Box>
             {activeTab === 0 && <ServiceIndex />}

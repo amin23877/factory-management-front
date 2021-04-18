@@ -18,6 +18,7 @@ import SettingsApplicationsRounded from "@material-ui/icons/SettingsApplications
 import { Link, useLocation, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
+import CustomScrollbars from "./CustomScroll";
 import { logout } from "../features/Session/sessionsSlice";
 import Confirm from "../features/Modals/Confirm";
 
@@ -350,46 +351,48 @@ const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boole
                         <img src={phocusLogo} alt="Phocus" style={{ width: "80%", height: "auto" }} />
                     </div>
                     <Divider />
-                    <List style={{ marginBottom: "auto", paddingTop: "2px", height: 700, overflowY: "auto", overflowX: "clip" }}>
-                        {drawerItems.map((item, i) => (
-                            <div style={location.pathname === item.link ? adstyle : dstyle}>
-                                <Link key={i} to={item.link} style={{ textDecoration: "none", border: "none", outline: "none" }}>
-                                    <ListItem
-                                        style={{
-                                            paddingBottom: "12px",
-                                            color: location.pathname === item.link ? "#fff" : "#848484",
-                                            fontWeight: location.pathname === item.link ? "bold" : "normal",
-                                        }}
-                                    >
-                                        <ListItemIcon
+                    <CustomScrollbars style={{ height: 700 }}>
+                        <List style={{ marginBottom: "auto", paddingTop: "2px" }}>
+                            {drawerItems.map((item, i) => (
+                                <div style={location.pathname === item.link ? adstyle : dstyle}>
+                                    <Link key={i} to={item.link} style={{ textDecoration: "none", border: "none", outline: "none" }}>
+                                        <ListItem
                                             style={{
-                                                fill: location.pathname === item.link ? "#fff" : "#8e8e8e",
+                                                paddingBottom: "12px",
+                                                color: location.pathname === item.link ? "#fff" : "#848484",
+                                                fontWeight: location.pathname === item.link ? "bold" : "normal",
                                             }}
-                                            className={location.pathname === item.link ? "Active" : ""}
                                         >
-                                            {item.icon}
-                                        </ListItemIcon>
-                                        <ListItemText> {item.name} </ListItemText>
-                                    </ListItem>
-                                </Link>
-                                {location.pathname === item.link ? (
-                                    <div
-                                        style={{
-                                            backgroundColor: "#fff",
-                                            height: "15px",
-                                            width: "0px",
-                                            marginBottom: "auto",
-                                            marginTop: "auto",
-                                            border: "1px solid white",
-                                            marginLeft: "auto",
-                                            marginRight: "10px",
-                                            borderRadius: "30%",
-                                        }}
-                                    ></div>
-                                ) : null}
-                            </div>
-                        ))}
-                    </List>
+                                            <ListItemIcon
+                                                style={{
+                                                    fill: location.pathname === item.link ? "#fff" : "#8e8e8e",
+                                                }}
+                                                className={location.pathname === item.link ? "Active" : ""}
+                                            >
+                                                {item.icon}
+                                            </ListItemIcon>
+                                            <ListItemText> {item.name} </ListItemText>
+                                        </ListItem>
+                                    </Link>
+                                    {location.pathname === item.link ? (
+                                        <div
+                                            style={{
+                                                backgroundColor: "#fff",
+                                                height: "15px",
+                                                width: "0px",
+                                                marginBottom: "auto",
+                                                marginTop: "auto",
+                                                border: "1px solid white",
+                                                marginLeft: "auto",
+                                                marginRight: "10px",
+                                                borderRadius: "30%",
+                                            }}
+                                        ></div>
+                                    ) : null}
+                                </div>
+                            ))}
+                        </List>
+                    </CustomScrollbars>
                     <div style={dstyle}>
                         <ListItem
                             button

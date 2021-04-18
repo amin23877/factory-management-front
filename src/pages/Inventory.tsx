@@ -34,6 +34,7 @@ const Inventory = () => {
 
     const [filters, setFilters] = useState<IFilters>();
     const [order, setOrder] = useState<IOrder>();
+    const [page, setPage] = useState(1);
 
     const [cats, setCats] = useState([]);
     const [types, setTypes] = useState([]);
@@ -221,6 +222,43 @@ const Inventory = () => {
         sortItems();
     }, [order]);
 
+    useEffect(() => {
+        const sortItems = async () => {
+            try {
+                setLoading(true);
+
+                const resp = await getItemsByQuery({
+                    page,
+                    ItemCategoryId:
+                        filters && filters.cat && filters.cat.length > 0 ? filters.cat.map((item) => item.id).join(",") : undefined,
+                    ItemTypeId:
+                        filters && filters.type && filters.type.length > 0 ? filters.type.map((item) => item.id).join(",") : undefined,
+                    ItemFamilyId:
+                        filters && filters.family && filters.family.length > 0
+                            ? filters.family.map((item) => item.id).join(",")
+                            : undefined,
+
+                    minCost: filters && filters.cost && filters.cost[0] ? filters.cost[0] : undefined,
+                    maxCost: filters && filters.cost && filters.cost[1] ? filters.cost[1] : undefined,
+
+                    no: filters && filters.itemNo ? filters.itemNo : undefined,
+                    name: filters && filters.name ? filters.name : undefined,
+                    description: filters && filters.desc ? filters.desc : undefined,
+
+                    sort: order && order.orderBy ? order.orderBy : undefined,
+                    order: order && order.order ? (order.order === "asc" ? "ASC" : "DESC") : undefined,
+                });
+                resp && setRows(resp);
+            } catch (e) {
+                console.log(e);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        sortItems();
+    }, [page]);
+
     return (
         <Container>
             {selectedNote && selectedItem && selectedItem.id && (
@@ -321,23 +359,25 @@ const Inventory = () => {
                 <Box flex={11} ml={2}>
                     {loading && <LinearProgress />}
                     {activeTab === 0 && !loading && (
-                        <Box display="flex" style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", border: "none" }}>
-                            <DataTable
-                                order={order}
-                                setOrder={setOrder}
-                                filters={filters}
-                                setFilters={setFilters}
-                                cats={cats}
-                                types={types}
-                                families={families}
-                                rows={rows}
-                                onRowSelected={(d) => {
-                                    setSelectedItem(d);
-                                    setDetailDis(false);
-                                    setActiveTab(1);
-                                }}
-                            />
-                        </Box>
+                        // <Box display="flex" style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", border: "none" }}>
+                        <DataTable
+                            order={order}
+                            setOrder={setOrder}
+                            filters={filters}
+                            setFilters={setFilters}
+                            cats={cats}
+                            types={types}
+                            families={families}
+                            rows={rows}
+                            page={page}
+                            setPage={setPage}
+                            onRowSelected={(d) => {
+                                setSelectedItem(d);
+                                setDetailDis(false);
+                                setActiveTab(1);
+                            }}
+                        />
+                        // </Box>
                     )}
                     {activeTab === 1 && (
                         <ItemsDetails

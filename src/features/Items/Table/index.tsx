@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Button, makeStyles } from "@material-ui/core";
+import { Button, IconButton, makeStyles } from "@material-ui/core";
 import Menu from "@material-ui/core/Menu";
 import Box from "@material-ui/core/Box";
 
@@ -10,7 +10,10 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import TableFooter from "@material-ui/core/TableFooter";
 import Paper from "@material-ui/core/Paper";
+
+import { ChevronLeft, ChevronRight } from "@material-ui/icons";
 
 import { IItem } from "../../../api/items";
 import MenuFilters, { IFilters } from "./Filters";
@@ -19,12 +22,17 @@ import Sort, { IOrder } from "./Sorts";
 export const useStyles = makeStyles((theme) => ({
     tableCont: {
         borderRadius: 10,
+        maxHeight: 550,
     },
     root: {
         backgroundColor: "#f9f9f9",
         border: "none",
         borderRadius: 15,
 
+        "& .MuiTableHead-root": {
+            position: ["sticky", "-webkit-sticky"],
+            top: 0,
+        },
         "& .MuiTableRow-head": {
             backgroundColor: "#202731",
             borderRadius: " 10px 10px 0 0",
@@ -70,6 +78,8 @@ export default function DataTable({
     filters,
     setFilters,
     order,
+    page,
+    setPage,
     setOrder,
 }: {
     filters?: IFilters;
@@ -80,6 +90,8 @@ export default function DataTable({
     types: any[];
     families: any[];
     order?: IOrder;
+    page: number;
+    setPage: any;
     setOrder: (v: IOrder) => void;
 }) {
     const [menuAnchorEl, setMenuAnchorEl] = useState<any>(null);
@@ -103,7 +115,7 @@ export default function DataTable({
             </Menu>
 
             <TableContainer component={Paper} className={classes.tableCont}>
-                <Table aria-label="Items table" className={classes.root}>
+                <Table size="small" aria-label="Items table" className={classes.root}>
                     <TableHead>
                         <TableRow>
                             <TableCell>
@@ -222,6 +234,22 @@ export default function DataTable({
                                 </TableRow>
                             ))}
                     </TableBody>
+                    <TableFooter>
+                        <TableRow>
+                            <TableCell colSpan={5} />
+                            <TableCell>Page: {page}</TableCell>
+                            <TableCell>
+                                <Box display="flex" alignItems="center" justifyContent="space-between">
+                                    <IconButton onClick={() => setPage((prev: any) => prev - 1)}>
+                                        <ChevronLeft />
+                                    </IconButton>
+                                    <IconButton onClick={() => setPage((prev: any) => prev + 1)}>
+                                        <ChevronRight />
+                                    </IconButton>
+                                </Box>
+                            </TableCell>
+                        </TableRow>
+                    </TableFooter>
                 </Table>
             </TableContainer>
         </>
