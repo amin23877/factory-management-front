@@ -260,7 +260,7 @@ const Inventory = () => {
     }, [page]);
 
     return (
-        <Container>
+        <Box>
             {selectedNote && selectedItem && selectedItem.id && (
                 <NoteModal
                     onDone={refreshNotes}
@@ -397,7 +397,7 @@ const Inventory = () => {
                     )}
                 </Box>
             </Box>
-        </Container>
+        </Box>
     );
 };
 

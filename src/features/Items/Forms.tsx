@@ -27,147 +27,139 @@ interface IQForm extends IForm {
 export const General = ({ isSubmitting, values, errors, handleChange, handleBlur, touched }: IForm) => {
     return (
         <>
-            <Box display="flex" flexDirection="column">
-                <Box display="flex" justifyContent="space-between" flexWrap="wrap">
-                    <TextField
-                        style={{ flex: "1 1 30%" }}
-                        label="Item name"
-                        placeholder="Item name"
-                        name="name"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.name && touched.name)}
-                        value={values.name}
-                    />
-                    <TextField
-                        style={{ flex: "1 1 30%", marginRight: 5, marginLeft: 5 }}
-                        label="upc"
-                        placeholder="upc"
-                        name="upc"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.upc && touched.upc)}
-                        value={values.upc}
-                    />
-                    <TextField
-                        style={{ flex: "1 1 30%" }}
-                        label="sku"
-                        placeholder="sku"
-                        name="sku"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.sku && touched.sku)}
-                        value={values.sku}
-                    />
-                </Box>
-                <Box display="flex" justifyContent="space-between" flexWrap="wrap">
-                    <TextField
-                        style={{ flex: "1 1 30%" }}
-                        label="description"
-                        placeholder="description"
-                        name="description"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.description && touched.description)}
-                        value={values.description}
-                    />
-                    <TextField
-                        style={{ flex: "1 1 30%", marginRight: 5, marginLeft: 5 }}
-                        label="no"
-                        value={values.no}
-                        name="no"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.no && touched.no)}
-                        placeholder="no"
-                    />
-                    <TextField
-                        style={{ flex: "1 1 30%" }}
-                        label="variance"
-                        placeholder="variance"
-                        name="variance"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.variance && touched.variance)}
-                        value={values.variance}
-                    />
-                </Box>
-                <Box display="flex" justifyContent="space-between" flexWrap="wrap">
-                    <TextField
-                        style={{ flex: "1 1 30%" }}
-                        label="mfgr"
-                        placeholder="mfgr"
-                        name="mfgr"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.mfgr && touched.mfgr)}
-                        value={values.mfgr}
-                    />
-                    <TextField
-                        style={{ flex: "1 1 30%", marginRight: 5, marginLeft: 5 }}
-                        label="color"
-                        placeholder="color"
-                        name="color"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.color && touched.color)}
-                        value={values.color}
-                    />
-                    <TextField
-                        style={{ flex: "1 1 30%" }}
-                        label="size"
-                        placeholder="size"
-                        name="size"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.size && touched.size)}
-                        value={values.size}
-                    />
-                </Box>
-                <Box display="flex" justifyContent="space-between" flexWrap="wrap">
-                    <FieldSelect
-                        style={{ flex: "1 1 30%" }}
-                        label="Item category"
-                        request={getCategories}
-                        itemTitleField="name"
-                        itemValueField="id"
-                        name="ItemCategoryId"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.ItemCategoryId && touched.ItemCategoryId)}
-                        value={values.ItemCategoryId}
-                        placeholder={"Category"}
-                    />
-                    <FieldSelect
-                        style={{ flex: "1 1 30%", marginRight: 5, marginLeft: 5 }}
-                        label="Item type"
-                        request={getTypes}
-                        itemTitleField="name"
-                        itemValueField="id"
-                        name="ItemTypeId"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.ItemTypeId && touched.ItemTypeId)}
-                        value={values.ItemTypeId}
-                    />
-                    <FieldSelect
-                        style={{ flex: "1 1 30%" }}
-                        label="Item family"
-                        request={getFamilies}
-                        itemTitleField="name"
-                        itemValueField="id"
-                        name="ItemFamilyId"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.ItemFamilyId && touched.ItemFamilyId)}
-                        value={values.ItemFamilyId}
-                    />
-                </Box>
+            <Box display="grid" gridTemplateColumns="auto auto auto" gridColumnGap={5}>
+                <TextField
+                    style={{ flex: "1 1 30%" }}
+                    label="Item name"
+                    placeholder="Item name"
+                    name="name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.name && touched.name)}
+                    value={values.name}
+                />
+                <TextField
+                    style={{ flex: "1 1 30%", marginRight: 5, marginLeft: 5 }}
+                    label="upc"
+                    placeholder="upc"
+                    name="upc"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.upc && touched.upc)}
+                    value={values.upc}
+                />
+                <TextField
+                    style={{ flex: "1 1 30%" }}
+                    label="sku"
+                    placeholder="sku"
+                    name="sku"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.sku && touched.sku)}
+                    value={values.sku}
+                />
+                <TextField
+                    style={{ flex: "1 1 30%" }}
+                    label="description"
+                    placeholder="description"
+                    name="description"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.description && touched.description)}
+                    value={values.description}
+                />
+                <TextField
+                    style={{ flex: "1 1 30%", marginRight: 5, marginLeft: 5 }}
+                    label="no"
+                    value={values.no}
+                    name="no"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.no && touched.no)}
+                    placeholder="no"
+                />
+                <TextField
+                    style={{ flex: "1 1 30%" }}
+                    label="variance"
+                    placeholder="variance"
+                    name="variance"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.variance && touched.variance)}
+                    value={values.variance}
+                />
+                <TextField
+                    style={{ flex: "1 1 30%" }}
+                    label="mfgr"
+                    placeholder="mfgr"
+                    name="mfgr"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.mfgr && touched.mfgr)}
+                    value={values.mfgr}
+                />
+                <TextField
+                    style={{ flex: "1 1 30%", marginRight: 5, marginLeft: 5 }}
+                    label="color"
+                    placeholder="color"
+                    name="color"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.color && touched.color)}
+                    value={values.color}
+                />
+                <TextField
+                    style={{ flex: "1 1 30%" }}
+                    label="size"
+                    placeholder="size"
+                    name="size"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.size && touched.size)}
+                    value={values.size}
+                />
+                <FieldSelect
+                    style={{ flex: "1 1 30%" }}
+                    label="Item category"
+                    request={getCategories}
+                    itemTitleField="name"
+                    itemValueField="id"
+                    name="ItemCategoryId"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.ItemCategoryId && touched.ItemCategoryId)}
+                    value={values.ItemCategoryId}
+                    placeholder={"Category"}
+                />
+                <FieldSelect
+                    style={{ flex: "1 1 30%", marginRight: 5, marginLeft: 5 }}
+                    label="Item type"
+                    request={getTypes}
+                    itemTitleField="name"
+                    itemValueField="id"
+                    name="ItemTypeId"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.ItemTypeId && touched.ItemTypeId)}
+                    value={values.ItemTypeId}
+                />
+                <FieldSelect
+                    style={{ flex: "1 1 30%" }}
+                    label="Item family"
+                    request={getFamilies}
+                    itemTitleField="name"
+                    itemValueField="id"
+                    name="ItemFamilyId"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.ItemFamilyId && touched.ItemFamilyId)}
+                    value={values.ItemFamilyId}
+                />
             </Box>
 
-            <Box display="flex">
+            <Box display="flex" justifyContent="space-between">
                 <FormControlLabel
-                    style={{ flex: "0 30%" }}
+                    style={{ fontSize: "0.7rem" }}
                     checked={values.active}
                     label="Active"
                     name="active"
@@ -175,7 +167,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     control={<Checkbox />}
                 />
                 <FormControlLabel
-                    style={{ flex: "0 30%" }}
+                    style={{ fontSize: "0.7rem" }}
                     checked={values.obsolete}
                     label="Obsolete"
                     name="obsolete"
@@ -183,17 +175,15 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     control={<Checkbox />}
                 />
                 <FormControlLabel
-                    style={{ flex: "0 30%" }}
+                    style={{ fontSize: "0.7rem" }}
                     checked={values.rndOnly}
                     label="rndOnly"
                     name="rndOnly"
                     onChange={handleChange}
                     control={<Checkbox />}
                 />
-            </Box>
-            <Box display="flex">
                 <FormControlLabel
-                    style={{ flex: "0 30%" }}
+                    style={{ fontSize: "0.7rem" }}
                     checked={values.salesApproved}
                     label="Sales Approve"
                     name="salesApproved"
@@ -201,7 +191,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     control={<Checkbox />}
                 />
                 <FormControlLabel
-                    style={{ flex: "0 30%" }}
+                    style={{ fontSize: "0.7rem" }}
                     checked={values.engineeringApproved}
                     label="Engineering Approve"
                     name="engineeringApproved"
@@ -231,7 +221,7 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
     return (
         <Box display="flex" flexDirection="column" alignItems="center" p={2}>
             {/* <Box style={{ padding: "4em 3em", border: "2px dashed gray", borderRadius: 20 }} /> */}
-            <Box mr={2} textAlign="center">
+            <Box display="grid" gridTemplateColumns="auto auto" gridColumnGap={5}>
                 <TextField
                     label="version"
                     name="version"

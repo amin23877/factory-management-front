@@ -358,7 +358,7 @@ const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boole
                                     <Link key={i} to={item.link} style={{ textDecoration: "none", border: "none", outline: "none" }}>
                                         <ListItem
                                             style={{
-                                                paddingBottom: "12px",
+                                                padding: "5px 12px",
                                                 color: location.pathname === item.link ? "#fff" : "#848484",
                                                 fontWeight: location.pathname === item.link ? "bold" : "normal",
                                             }}

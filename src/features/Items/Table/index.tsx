@@ -33,9 +33,8 @@ export const useStyles = makeStyles((theme) => ({
             position: ["sticky", "-webkit-sticky"],
             top: 0,
         },
-        "& .MuiTableRow-head": {
+        "& .MuiTableRow-head, .MuiTableCell-stickyHeader": {
             backgroundColor: "#202731",
-            borderRadius: " 10px 10px 0 0",
         },
         "& .MuiTableCell-head": {
             cursor: "pointer",
@@ -50,6 +49,10 @@ export const useStyles = makeStyles((theme) => ({
         },
         "& tbody .MuiTableCell-root": {
             border: "1px solid #dddddd",
+            fontSize: "0.700rem",
+        },
+        "& .MuiButton-root": {
+            fontSize: "0.700rem",
         },
         "& tbody tr:hover": {
             backgroundColor: "#f3f3f3",
@@ -115,7 +118,7 @@ export default function DataTable({
             </Menu>
 
             <TableContainer component={Paper} className={classes.tableCont}>
-                <Table size="small" aria-label="Items table" className={classes.root}>
+                <Table stickyHeader size="small" aria-label="Items table" className={classes.root}>
                     <TableHead>
                         <TableRow>
                             <TableCell>
@@ -127,7 +130,7 @@ export default function DataTable({
                                         }}
                                         className={classes.tableHeadBtn}
                                     >
-                                        Item number
+                                        Item no.
                                     </Button>
                                     <Sort field="no" order={order} setOrder={setOrder} />
                                 </Box>
@@ -203,7 +206,7 @@ export default function DataTable({
                                 </Box>
                             </TableCell>
                             <TableCell>
-                                <Box>
+                                <Box display="flex">
                                     <Button
                                         onClick={(e) => {
                                             setMenuAnchorEl(e.target);
