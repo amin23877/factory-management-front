@@ -27,9 +27,8 @@ interface IQForm extends IForm {
 export const General = ({ isSubmitting, values, errors, handleChange, handleBlur, touched }: IForm) => {
     return (
         <>
-            <Box display="grid" gridTemplateColumns="auto auto auto" gridColumnGap={5}>
+            <Box display="grid" gridTemplateColumns="25% 25% 25% 25%" gridColumnGap={5} pr={1}>
                 <TextField
-                    style={{ flex: "1 1 30%" }}
                     label="Item name"
                     placeholder="Item name"
                     name="name"
@@ -39,7 +38,6 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     value={values.name}
                 />
                 <TextField
-                    style={{ flex: "1 1 30%", marginRight: 5, marginLeft: 5 }}
                     label="upc"
                     placeholder="upc"
                     name="upc"
@@ -49,7 +47,6 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     value={values.upc}
                 />
                 <TextField
-                    style={{ flex: "1 1 30%" }}
                     label="sku"
                     placeholder="sku"
                     name="sku"
@@ -59,7 +56,6 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     value={values.sku}
                 />
                 <TextField
-                    style={{ flex: "1 1 30%" }}
                     label="description"
                     placeholder="description"
                     name="description"
@@ -69,7 +65,6 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     value={values.description}
                 />
                 <TextField
-                    style={{ flex: "1 1 30%", marginRight: 5, marginLeft: 5 }}
                     label="no"
                     value={values.no}
                     name="no"
@@ -79,7 +74,6 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     placeholder="no"
                 />
                 <TextField
-                    style={{ flex: "1 1 30%" }}
                     label="variance"
                     placeholder="variance"
                     name="variance"
@@ -89,7 +83,6 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     value={values.variance}
                 />
                 <TextField
-                    style={{ flex: "1 1 30%" }}
                     label="mfgr"
                     placeholder="mfgr"
                     name="mfgr"
@@ -99,7 +92,6 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     value={values.mfgr}
                 />
                 <TextField
-                    style={{ flex: "1 1 30%", marginRight: 5, marginLeft: 5 }}
                     label="color"
                     placeholder="color"
                     name="color"
@@ -109,7 +101,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     value={values.color}
                 />
                 <TextField
-                    style={{ flex: "1 1 30%" }}
+                    fullWidth
                     label="size"
                     placeholder="size"
                     name="size"
@@ -119,7 +111,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     value={values.size}
                 />
                 <FieldSelect
-                    style={{ flex: "1 1 30%" }}
+                    fullWidth
                     label="Item category"
                     request={getCategories}
                     itemTitleField="name"
@@ -132,7 +124,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     placeholder={"Category"}
                 />
                 <FieldSelect
-                    style={{ flex: "1 1 30%", marginRight: 5, marginLeft: 5 }}
+                    fullWidth
                     label="Item type"
                     request={getTypes}
                     itemTitleField="name"
@@ -144,7 +136,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     value={values.ItemTypeId}
                 />
                 <FieldSelect
-                    style={{ flex: "1 1 30%" }}
+                    fullWidth
                     label="Item family"
                     request={getFamilies}
                     itemTitleField="name"
@@ -336,24 +328,25 @@ export const Quantity = ({ values, errors, handleChange, handleBlur, handleManua
                     />
                 </Box>
                 <Typography>Available qoh</Typography>
-                <TextField
-                    style={{ width: "100%" }}
-                    label="available quantity on hand"
-                    name="availableQoh"
-                    placeholder="availableQoh"
-                    value={values.availableQoh}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                />
-                <TextField
-                    style={{ width: "100%" }}
-                    label="trriger quantity on hand"
-                    name="triggerQoh"
-                    placeholder="triggerQoh"
-                    value={values.triggerQoh}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                />
+                <Box display="flex" alignItems="center">
+                    <TextField
+                        label="available quantity on hand"
+                        name="availableQoh"
+                        placeholder="availableQoh"
+                        value={values.availableQoh}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                    />
+                    <TextField
+                        style={{ marginLeft: 8 }}
+                        label="trriger quantity on hand"
+                        name="triggerQoh"
+                        placeholder="triggerQoh"
+                        value={values.triggerQoh}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                    />
+                </Box>
                 <Button kind="add" fullWidth style={{ marginTop: 10 }} onClick={handleManualCount}>
                     Adjust
                 </Button>
