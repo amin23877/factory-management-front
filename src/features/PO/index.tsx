@@ -37,8 +37,8 @@ export default function POPanel() {
     const poCols: ColDef[] = [
         { field: "number" },
         { field: "Contact", valueGetter: ({ data }) => data.Contact && data.Contact.firstName + data.Contact.lastName, width: 180 },
-        { field: "Client", valueGetter: ({ data }) => data.Client.name },
-        { field: "Project", valueGetter: ({ data }) => data.Project.name },
+        { field: "Client", valueGetter: ({ data }) => data.Client?.name },
+        { field: "Project", valueGetter: ({ data }) => data.Project?.name },
     ];
 
     const refreshPOs = async () => {
