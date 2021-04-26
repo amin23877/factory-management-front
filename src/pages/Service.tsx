@@ -1,16 +1,24 @@
 import React, { useState } from "react";
-import { Container, Box } from "@material-ui/core";
+import { Container, Box, IconButton, ListItem } from "@material-ui/core";
+import AddRounded from "@material-ui/icons/AddRounded";
+import DeleteRounded from "@material-ui/icons/DeleteRounded";
+import PrintRounded from "@material-ui/icons/PrintRounded";
 
 import { SearchBar } from "../app/TextField";
 import { MyTabs, MyTab } from "../app/Tabs";
+import List from "../app/SideUtilityList";
 
 import ServiceIndex from "../features/Service";
+import AddServiceModal from "../features/Service/AddServiceModal";
 
 export default function Purchase() {
     const [activeTab, setActiveTab] = useState(0);
+    const [addService, setAddService] = useState(false);
 
     return (
-        <Container>
+        <Box>
+            <AddServiceModal open={addService} onClose={() => setAddService(false)} />
+
             <Box display="flex" alignItems="center" my={2}>
                 <SearchBar />
                 <div style={{ flexGrow: 1 }} />
@@ -19,7 +27,30 @@ export default function Purchase() {
                     <MyTab label="Details" disabled />
                 </MyTabs>
             </Box>
-            {activeTab === 0 && <ServiceIndex />}
-        </Container>
+            <Box display="flex">
+                <Box>
+                    <List>
+                        <ListItem>
+                            <IconButton onClick={() => setAddService(true)}>
+                                <AddRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton>
+                                <DeleteRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton>
+                                <PrintRounded />
+                            </IconButton>
+                        </ListItem>
+                    </List>
+                </Box>
+                <Box flex={1} ml={2}>
+                    {activeTab === 0 && <ServiceIndex />}
+                </Box>
+            </Box>
+        </Box>
     );
 }
