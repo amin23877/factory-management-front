@@ -11,7 +11,7 @@ import { Box } from "@material-ui/core";
 
 export default function AddServiceModal({ open, onClose }: { open: boolean; onClose: () => void }) {
     return (
-        <Dialog open={open} onClose={onClose} title="Add new service" fullWidth maxWidth="sm">
+        <Dialog open={open} onClose={onClose} title="Add new field service" fullWidth maxWidth="sm">
             <Box p={2}>
                 <Formik initialValues={{} as any} onSubmit={(d) => console.log(d)}>
                     {({ values, errors, handleChange, handleBlur }) => (
@@ -28,22 +28,8 @@ export default function AddServiceModal({ open, onClose }: { open: boolean; onCl
                                     onBlur={handleBlur}
                                     fullWidth
                                 />
-                                <TextField
-                                    label="Start date"
-                                    name="startDate"
-                                    type="date"
-                                    value={values.startDate}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                <TextField
-                                    label="End date"
-                                    name="endDate"
-                                    type="date"
-                                    value={values.endDate}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
+                                <TextField label="Name" name="name" value={values.name} onChange={handleChange} onBlur={handleBlur} />
+                                <TextField label="length" name="length" value={values.length} onChange={handleChange} onBlur={handleBlur} />
                                 <TextField
                                     label="Price"
                                     name="price"

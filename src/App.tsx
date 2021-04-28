@@ -87,7 +87,7 @@ function App() {
                                     <Route exact path="/projects" component={Projects} />
                                     <Route exact path="/activity" component={Activity} />
                                     <Route exact path="/vendor" component={Vendros} />
-                                    <Route exact path="/service" component={Service} />
+                                    <Route exact path="/fieldservice" component={Service} />
                                     <Route exact path="/purchase" component={Purchase} />
                                     <Route exact path="*" component={Page404} />
                                 </Switch>

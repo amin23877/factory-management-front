@@ -8,6 +8,7 @@ import { AddItemSchema, updateAnItem, getItemQuotes, getItemSOs } from "../../ap
 
 import BaseDataGrid from "../../app/BaseDataGrid";
 import { BasePaper } from "../../app/Paper";
+import VendorsTable from "./VandorsTable";
 
 import { MoreInfo, Quantity, Shipping, General } from "./Forms";
 import { SalesReport } from "./Reports";
@@ -43,18 +44,25 @@ function ItemsDetails({
 
     const [manualCountModal, setManualCountModal] = useState(false);
 
+    const refreshVendors = async () => {
+        try {
+            const resp = await getItemVendors(selectedRow.id);
+            resp && setVendors(resp);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
         if (selectedRow && selectedRow.id) {
+            refreshVendors();
+
             getItemQuotes(selectedRow.id)
                 .then((d) => d && setItemQuotes(d))
                 .catch((e) => console.log(e));
 
             getItemSOs(selectedRow.id)
                 .then((d) => d && setItemSos(d))
-                .catch((e) => console.log(e));
-
-            getItemVendors(selectedRow.id)
-                .then((d) => d && setVendors(d))
                 .catch((e) => console.log(e));
         }
     }, [selectedRow]);
@@ -65,15 +73,6 @@ function ItemsDetails({
         { field: "department", headerName: "Department" },
         { field: "entryDate", headerName: "Entry date", width: 180 },
         { field: "expireDate", headerName: "Expire date", width: 180 },
-    ];
-
-    const soCols: ColDef[] = [
-        { field: "number", headerName: "SO Number" },
-        { field: "description", headerName: "Description" },
-        { field: "Client" },
-        { field: "Quantity usage" },
-        { field: "Price" },
-        { field: "CreatedAt", headerName: "Date" },
     ];
 
     const noteCols: ColDef[] = [
@@ -87,11 +86,6 @@ function ItemsDetails({
         { field: "EmployeeId", headerName: "Employee" },
         { field: "description", headerName: "Description", width: 250 },
         { field: "createdAt", headerName: "Date", width: 300 },
-    ];
-
-    const vendorCols: ColDef[] = [
-        { field: "id", headerName: "Vendor Id" },
-        { field: "name", headerName: "Name" },
     ];
 
     const { values, handleBlur, handleChange, handleSubmit, errors, touched } = useFormik({
@@ -198,7 +192,7 @@ function ItemsDetails({
                 <Box p={3}>
                     {activeTab === 0 && <BaseDataGrid height={250} cols={noteCols} rows={notes} onRowSelected={onNoteSelected} />}
                     {activeTab === 1 && <BaseDataGrid height={250} cols={docCols} rows={docs} onRowSelected={onDocSelected} />}
-                    {activeTab === 2 && <BaseDataGrid height={250} cols={vendorCols} rows={vendors} onRowSelected={() => {}} />}
+                    {activeTab === 2 && <VendorsTable selectedItem={selectedRow} rows={vendors} onRowSelected={() => {}} />}
                     {activeTab === 3 && <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes} onRowSelected={() => {}} />}
                     {activeTab === 4 && <SOTable rows={itemSos} />}
                     {activeTab === 5 && <SalesReport quotes={itemQuotes} salesOrders={itemSos} />}
