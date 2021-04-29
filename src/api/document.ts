@@ -16,11 +16,14 @@ export const getAllModelDocuments = async (model:string, id:number) => {
     }
 }
 
-export const createAModelDocument = async (model:string, id:number, file: any, description:string) => {
+export const createAModelDocument = async (model:string, id:number, file: any, description:string, fileName?:string) => {
     try {
         const formData = new FormData();
+        
         formData.append('document', file);
         formData.append('description', description);
+        fileName && formData.append('fileName', fileName);
+
         const resp = await Axios.post(`/document/${model}/${id}`, formData);
         return resp.data;
     } catch (error) {

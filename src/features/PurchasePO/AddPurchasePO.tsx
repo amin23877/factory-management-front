@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Box, Button, Step, StepLabel, Stepper, Dialog, DialogTitle, IconButton, Typography } from "@material-ui/core";
 import { CloseRounded } from "@material-ui/icons";
 
-import { CreateForm, FinalForm, LinesForm } from "./Forms";
-import { IPurchasePOComplete } from "../../api/purchasePO";
+import { CreateForm, FinalForm, LinesForm, DocumentForm } from "./Forms";
+import { IPurchasePO, IPurchasePOComplete } from "../../api/purchasePO";
 
 export default function AddPOModal({
     open,
@@ -18,6 +18,7 @@ export default function AddPOModal({
 }) {
     const [step, setStep] = useState(0);
     const [po, setPO] = useState(initialData);
+    const [createdPO, setCreatedPO] = useState<IPurchasePO>();
 
     useEffect(() => {
         if (initialData) {
@@ -44,6 +45,9 @@ export default function AddPOModal({
                     </Step>
                     <Step>
                         <StepLabel>Final</StepLabel>
+                    </Step>
+                    <Step>
+                        <StepLabel>Document</StepLabel>
                     </Step>
                 </Stepper>
                 {step === 0 && (
@@ -81,19 +85,24 @@ export default function AddPOModal({
                     <FinalForm
                         data={po}
                         onBack={() => setStep(1)}
+                        onDone={(data) => {
+                            // onClose();
+                            setStep(3);
+                            onDone();
+                            setCreatedPO(data);
+                        }}
+                    />
+                )}
+                {step === 3 && po && createdPO && (
+                    <DocumentForm
                         onDone={() => {
                             onClose();
                             onDone();
                         }}
+                        createdPO={createdPO}
+                        data={po}
                     />
                 )}
-                {/* <Button
-                    onClick={() => {
-                        console.log(po);
-                    }}
-                >
-                    log
-                </Button> */}
             </Box>
         </Dialog>
     );

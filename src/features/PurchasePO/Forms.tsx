@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
@@ -22,26 +22,154 @@ import ChevronLeft from "@material-ui/icons/ChevronLeft";
 
 import BootstrapTextField from "../../app/TextField";
 
-import { getContacts } from "../../api/contact";
-import { getAllEmployees } from "../../api/employee";
-import {
-    createPurchasePOLine,
-    deletePurchasePOLine,
-    IPurchasePOLine,
-    updatePurchasePOLine,
-    IPurchasePO,
-    createPurchasePO,
-    IPurchasePOComplete,
-    createPurchasePOComplete,
-} from "../../api/purchasePO";
-import { getVendors } from "../../api/vendor";
+import { getContacts, IContact } from "../../api/contact";
+import { getAllEmployees, IEmployee } from "../../api/employee";
+import { IPurchasePOLine, IPurchasePOComplete, createPurchasePOComplete, IPurchasePO } from "../../api/purchasePO";
+import { getVendors, IVendor } from "../../api/vendor";
 import { getItems } from "../../api/items";
+import { createAModelDocument } from "../../api/document";
 
 import { FieldSelect, ArraySelect } from "../../app/Inputs";
 import Button from "../../app/Button";
 import { LinearProgress } from "@material-ui/core";
 
-export const FinalForm = ({ onDone, onBack, data }: { onDone: () => void; onBack: () => void; data: IPurchasePOComplete }) => {
+import { exportPdf } from "../../logic/pdf";
+
+export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; data: IPurchasePOComplete; createdPO: IPurchasePO }) => {
+    const divToPrint = useRef<HTMLElement | null>();
+
+    useEffect(() => {
+        getContacts()
+            .then((d) => {
+                let contact = d.find((c: any) => c.id === data.ContactId);
+                sampleData.contact = contact;
+            })
+            .catch((e) => console.log(e));
+
+        getVendors()
+            .then((d) => {
+                let vendor = d.find((v: any) => v.id === data.VendorId);
+                sampleData.vendor = vendor;
+            })
+            .catch((e) => console.log(e));
+
+        getAllEmployees()
+            .then((d) => {
+                let emp = d.find((e: any) => e.id === sampleData.requester);
+                sampleData.requester = emp;
+            })
+            .catch((e) => console.log(e));
+    }, []);
+
+    const sampleData: {
+        contact: IContact;
+        requester: IEmployee;
+        status: string;
+        vendor: IVendor;
+        lines: IPurchasePOLine[];
+    } = {
+        contact: {
+            id: 1,
+            firstName: "lorreeem",
+            lastName: "upsum",
+            title: "newtest",
+            department: "",
+            refferedBy: "",
+            linkedIn: "",
+            facebook: "",
+            instagram: "",
+            website: "",
+            optout: true,
+            mi: "",
+            prefix: "",
+            ContactTypeId: 1,
+            active: true,
+            main: true,
+        },
+        requester: { username: "admin", password: "123" },
+        status: "shipped",
+        vendor: {
+            id: 3,
+            name: "Uber",
+        },
+        lines: data.lines,
+    };
+
+    const handleSaveDocument = async () => {
+        if (divToPrint.current && createdPO.id) {
+            const { blobPDF, blobUrl } = await exportPdf(divToPrint.current);
+            console.log({ blobPDF, blobUrl });
+            const resp = await createAModelDocument(
+                "purchasePO",
+                createdPO.id,
+                blobPDF,
+                `${new Date().toJSON().slice(0, 19)} - ${createdPO.number}`,
+                `PO_${createdPO.number}.pdf`
+            );
+            if (resp) {
+                onDone();
+            }
+        }
+    };
+
+    console.log({ createdPO, data });
+
+    return (
+        <Box>
+            <Typography>We made a pdf from your PO, now you can save it</Typography>
+            <div style={{ height: 400, overflowY: "auto" }}>
+                <div id="myMm" style={{ height: "1mm" }} />
+                <div
+                    id="divToPrint"
+                    ref={(e) => (divToPrint.current = e)}
+                    style={{
+                        backgroundColor: "#fff",
+                        color: "black",
+                        width: "550px",
+                        minHeight: "910px",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                    }}
+                >
+                    <h3>Date: {new Date().toJSON().slice(0, 19)}</h3>
+                    <h3>Contact: {`${sampleData.contact.firstName} ${sampleData.contact.lastName} - ${sampleData.contact.department}`}</h3>
+                    <h3>Vendor: {sampleData.vendor.name}</h3>
+                    <h3>Requester: {sampleData.requester.username}</h3>
+                    <h3>Status: {sampleData.status}</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Description</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Tax</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {sampleData.lines.map((l: any, i: number) => (
+                                <tr key={i}>
+                                    <td>{l.ItemId}</td>
+                                    <td>{l.description}</td>
+                                    <td>{l.price}</td>
+                                    <td>{l.quantity}</td>
+                                    <td>{l.tax ? "Yes" : "No"}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <Box textAlign="right">
+                <Button kind="add" onClick={handleSaveDocument}>
+                    Save
+                </Button>
+            </Box>
+        </Box>
+    );
+};
+
+export const FinalForm = ({ onDone, onBack, data }: { onDone: (a: any) => void; onBack: () => void; data: IPurchasePOComplete }) => {
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async () => {
@@ -66,7 +194,7 @@ export const FinalForm = ({ onDone, onBack, data }: { onDone: () => void; onBack
             } as IPurchasePOComplete);
             if (resp) {
                 console.log(resp);
-                onDone();
+                onDone(resp);
             }
         } catch (error) {
             console.log(error);
