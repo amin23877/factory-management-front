@@ -34,6 +34,9 @@ import Button from "../../app/Button";
 import { LinearProgress } from "@material-ui/core";
 
 import { exportPdf } from "../../logic/pdf";
+import pdfLogo from "../../assets/pdf/logo.jpg";
+
+import "../../styles/splash.css";
 
 export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; data: IPurchasePOComplete; createdPO: IPurchasePO }) => {
     const divToPrint = useRef<HTMLElement | null>();
@@ -43,6 +46,9 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
 
     const [canSave, setCanSave] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
+
+    let sum = 0;
+    data.lines.forEach((l) => (sum += l.price * l.quantity));
 
     const setData = async () => {
         try {
@@ -110,39 +116,166 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                     style={{
                         backgroundColor: "#fff",
                         color: "black",
-                        width: "550px",
+                        width: "700px",
                         minHeight: "910px",
                         marginLeft: "auto",
                         marginRight: "auto",
+                        padding: " 20px",
                     }}
                 >
-                    <h3>Date: {new Date().toJSON().slice(0, 19)}</h3>
-                    <h3>Contact: {`${contact?.firstName} ${contact?.lastName} - ${contact?.department}`}</h3>
-                    <h3>Vendor: {vendor?.name}</h3>
-                    <h3>Requester: {requester?.username}</h3>
-                    <h3>Status: {data.status}</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Id</th>
-                                <th>Description</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Tax</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {data.lines.map((l: any, i: number) => (
-                                <tr key={i}>
-                                    <td>{l.ItemId}</td>
-                                    <td>{l.description}</td>
-                                    <td>{l.price}</td>
-                                    <td>{l.quantity}</td>
-                                    <td>{l.tax ? "Yes" : "No"}</td>
-                                </tr>
-                            ))}
-                        </tbody>
+                    <div
+                        style={{
+                            width: "100%",
+                            display: "flex",
+                            height: "100px",
+                            marginBottom: "20px",
+                        }}
+                    >
+                        <div style={{ marginRight: "10px", flex: 1 }}>
+                            <img src={pdfLogo} alt="DSPM" style={{ width: "100%" }} />
+                        </div>
+                        <div style={{ marginRight: "10px", flex: 1 }}>
+                            Digital Signal Power Manufacturer, Inc. 439 S. Stoddard Ave San Bernardino, CA 92401 (909) 930-3353 • FAX (909)
+                            930-3335
+                        </div>
+                        <div
+                            style={{
+                                flex: 1,
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "end",
+                                justifyContent: "space-between",
+                            }}
+                        >
+                            <div style={{ fontSize: "x-large", fontWeight: "bold", textAlign: "end", marginLeft: "auto" }}>
+                                Purchase Order
+                            </div>
+                            <div style={{ width: "100%", flex: 1 }}>
+                                <table style={{ width: "100%", height: "100%" }}>
+                                    <tr
+                                        style={{
+                                            borderBottom: "black 1px solid",
+                                            width: "100%",
+                                            height: "50%",
+                                        }}
+                                    >
+                                        <td style={{ flex: 1, fontSize: "small" }}> {createdPO?.createdAt?.slice(0, 10)} </td>
+                                        <td style={{ flex: 1, fontSize: "small" }}> {createdPO.number} </td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ borderRight: "none", flex: 1 }}></td>
+                                        <td style={{ flex: 1 }}></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <table style={{ width: "100%" }}>
+                        <tr
+                            style={{
+                                backgroundColor: "lightgray",
+                                height: "50px",
+                                borderBottom: "black 1px solid",
+                                width: "100%",
+                            }}
+                        >
+                            <th>Vendor</th>
+                            <th>Bill to </th>
+                            <th>Ship to </th>
+                        </tr>
+                        <tr>
+                            <td>{vendor?.name}</td>
+                            <td>{contact?.lastName}</td>
+                            <td>{contact?.department}</td>
+                        </tr>
                     </table>
+                    <table style={{ width: "100%" }}>
+                        <tr
+                            style={{
+                                backgroundColor: "lightgray",
+                                height: "50px",
+                                borderBottom: "black 1px solid",
+                                width: "100%",
+                            }}
+                        >
+                            <th>Phone</th>
+                            <th>Fax</th>
+                            <th>RMA No.</th>
+                            <th>Terms</th>
+                            <th>Date</th>
+                            <th>Ship via</th>
+                        </tr>
+                        <tr>
+                            <td>123 456 789</td>
+                            <td>123 456 789</td>
+                            <td>123 456 789</td>
+                            <td> </td>
+                            <td>{createdPO?.createdAt?.slice(0, 10)}</td>
+                            <td> </td>
+                        </tr>
+                    </table>
+                    <table style={{ width: "100%" }}>
+                        <tr
+                            style={{
+                                backgroundColor: "lightgray",
+                                height: "50px",
+                                borderBottom: "black 1px solid",
+                                width: "100%",
+                            }}
+                        >
+                            <th style={{ borderRight: "1px solid black" }}>Item</th>
+                            <th style={{ borderRight: "1px solid black" }}>Description</th>
+                            <th style={{ borderRight: "1px solid black" }}>Qty</th>
+                            <th style={{ borderRight: "1px solid black" }}>Price</th>
+                            <th style={{ borderRight: "1px solid black", fontSize: "small" }}>Date required</th>
+                            <th style={{ borderRight: "1px solid black" }}>Rate</th>
+                            <th style={{ borderRight: "1px solid black" }}>MPN</th>
+                            <th style={{ borderRight: "1px solid black" }}>Amount</th>
+                        </tr>
+                        {data.lines.map((l, i) => (
+                            <tr key={i} style={{ marginBottom: "10px" }}>
+                                <td>{l.ItemId}</td>
+                                <td style={{ width: "30%" }}>{l.description}</td>
+                                <td>{l.quantity}</td>
+                                <td>{l.price}</td>
+                                <td> </td>
+                                <td> </td>
+                                <td> </td>
+                                <td> {l.quantity * l.price} </td>
+                            </tr>
+                        ))}
+                    </table>
+                    <div style={{ width: "100%", display: "flex", alignItems: "center" }}>
+                        <div style={{ flex: 1 }}>notes :</div>
+                        <div style={{ padding: " 5px 20px", border: "1px solid black", borderTop: "none" }}>total :{sum}$</div>
+                    </div>
+                    <div style={{ width: "50%", textAlign: "center", fontSize: "large", fontWeight: "bold", marginLeft: "30px" }}></div>
+                    <div
+                        style={{
+                            width: "80%",
+                            marginLeft: "auto",
+                            marginRight: "auto",
+                            color: "darkred",
+                            fontSize: "small",
+                            marginTop: "30px",
+                            textAlign: "center",
+                        }}
+                    >
+                        <strong>Note :</strong> Any product that requires a data sheet, drawings, or specs, needs to be made to the DSPM
+                        specifications provided on documents or it will not be accepted.
+                    </div>
+                    <div
+                        style={{
+                            width: "50%",
+                            marginTop: "20px",
+                            fontSize: "10px",
+                            marginLeft: "auto",
+                            marginRight: "auto",
+                            textAlign: "center",
+                        }}
+                    >
+                        439 S. Stoddard Ave, San Bernardino, CA 92401 - Phone (909) 930-3353
+                    </div>
                 </div>
             </div>
             <Box textAlign="right">
@@ -184,6 +317,7 @@ export const FinalForm = ({ onDone, onBack, data }: { onDone: (a: any) => void; 
             }
         } catch (error) {
             console.log(error);
+            console.log(error.response.data.error);
         } finally {
             setLoading(false);
         }

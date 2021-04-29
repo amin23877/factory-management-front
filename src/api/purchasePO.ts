@@ -8,6 +8,7 @@ export type IPurchasePO = {
     ContactId: number,
     EmployeeId: number,
     status: string
+    createdAt?:string
 }
 
 export type IPurchasePOLine = {
