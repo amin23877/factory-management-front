@@ -1,17 +1,17 @@
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 
-const pxToMm = (px:any) => {
+const pxToMm = (px: any) => {
     return Math.floor(px / (document.getElementById("myMm") as any).offsetHeight);
 };
 
-const mmToPx = (mm:any) => {
+const mmToPx = (mm: any) => {
     return (document.getElementById("myMm") as any).offsetHeight * mm;
 };
-const range = (start:any, end:any) => {
+const range = (start: any, end: any) => {
     return Array(end - start)
-        .join('0')
-        .split('0')
+        .join("0")
+        .split("0")
         .map(function (val, id) {
             return id + start;
         });
@@ -59,7 +59,7 @@ export const exportPdf = async (input: HTMLElement) => {
             pdf.setPage(i + 1);
             //! now we add content to that page!
             // pdf.addImage(canvasDataURL, "PNG", 20, 40, width * 0.62, height * 0.62);
-            pdf.addImage(canvasDataURL, "PNG", 40,30, 650 , height*0.62 );
+            pdf.addImage(canvasDataURL, "PNG", 40, 30, 650, height * 0.62);
         }
         //! after the for loop is finished running, we save the pdf.
         pdf.save("Test.pdf");

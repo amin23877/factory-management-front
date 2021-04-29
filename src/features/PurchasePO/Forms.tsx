@@ -103,7 +103,7 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
         }
     };
 
-    console.log({ createdPO, data });
+    // console.log({ createdPO, data });
 
     return (
         <Box>
@@ -461,7 +461,7 @@ export const LinesForm = ({
                 </Formik>
             </Box>
             <Box flex={1}>
-                <TableContainer component={Paper}>
+                <TableContainer component={Paper} style={{ maxHeight: 500, overflowY: "auto" }}>
                     <Table>
                         <TableHead>
                             <TableRow>
