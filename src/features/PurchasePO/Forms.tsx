@@ -116,7 +116,7 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                     style={{
                         backgroundColor: "#fff",
                         color: "black",
-                        width: "700px",
+                        width: "600px",
                         minHeight: "910px",
                         marginLeft: "auto",
                         marginRight: "auto",
@@ -147,7 +147,7 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                                 justifyContent: "space-between",
                             }}
                         >
-                            <div style={{ fontSize: "x-large", fontWeight: "bold", textAlign: "end", marginLeft: "auto" }}>
+                            <div style={{ fontSize: "large", fontWeight: "bold", textAlign: "end", marginLeft: "auto" }}>
                                 Purchase Order
                             </div>
                             <div style={{ width: "100%", flex: 1 }}>

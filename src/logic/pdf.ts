@@ -5,32 +5,34 @@ export const exportPdf = async (input: HTMLElement) => {
     let ResBlob: { blobPDF: any; blobUrl: string } = { blobPDF: {}, blobUrl: "" };
     try {
         const canvas = await html2canvas(input);
-        var pdf = new jsPDF("p", "pt", "letter");
-        for (var i = 0; i <= input.clientHeight / 980; i++) {
-            //! This is all just html2canvas stuff
-            var srcImg = canvas;
-            var sX = 0;
-            var sY = 980 * i; // start 980 pixels down for every new page
-            var sWidth = 900;
-            var sHeight = 980;
-            var dX = 0;
-            var dY = 0;
-            var dWidth = 900;
-            var dHeight = 980;
+        let pdf = new jsPDF("p", "pt", "letter");
+        //! This is all just html2canvas stuff
+        let srcImg = canvas;
+        let sX = 0;
+        let sY = 0; // start 980 pixels down for every new page
+        let sWidth = 900;
+        let sHeight = 980;
+        let dX = 0;
+        let dY = 0;
+        let dWidth = 900;
+        let dHeight = 980;
+
+        for (let i = 0; i <= input.clientHeight / 980; i++) {
+            sY = 980 * i; // start 980 pixels down for every new page
 
             const onePageCanvas = document.createElement("canvas");
-            onePageCanvas.setAttribute("width", "900");
-            onePageCanvas.setAttribute("height", "980");
-            var ctx = onePageCanvas.getContext("2d");
+            onePageCanvas.setAttribute("width", String(sWidth));
+            onePageCanvas.setAttribute("height", String(sHeight));
+            const ctx = onePageCanvas.getContext("2d");
             // details on this usage of this function:
             // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images#Slicing
             ctx?.drawImage(srcImg, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight);
 
             // document.body.appendChild(canvas);
-            var canvasDataURL = onePageCanvas.toDataURL("image/png", 1.0);
+            const canvasDataURL = onePageCanvas.toDataURL("image/png", 1.0);
 
-            var width = onePageCanvas.width;
-            var height = onePageCanvas.clientHeight;
+            const width = onePageCanvas.width;
+            const height = onePageCanvas.clientHeight;
 
             //! If we're on anything other than the first page,
             // add another page
@@ -44,8 +46,8 @@ export const exportPdf = async (input: HTMLElement) => {
         }
         //! after the for loop is finished running, we save the pdf.
         // pdf.save("Test.pdf");
-        var blobPDF = pdf.output("blob");
-        var blobUrl = URL.createObjectURL(blobPDF);
+        const blobPDF = pdf.output("blob");
+        const blobUrl = URL.createObjectURL(blobPDF);
 
         ResBlob = { blobPDF, blobUrl };
         return ResBlob;
