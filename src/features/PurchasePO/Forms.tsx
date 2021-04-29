@@ -35,6 +35,9 @@ import { LinearProgress } from "@material-ui/core";
 
 import { exportPdf } from "../../logic/pdf";
 
+import '../../styles/splash.css'
+
+
 export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; data: IPurchasePOComplete; createdPO: IPurchasePO }) => {
     const divToPrint = useRef<HTMLElement | null>();
 
@@ -125,13 +128,14 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                     style={{
                         backgroundColor: "#fff",
                         color: "black",
-                        width: "550px",
+                        width: "700px",
                         minHeight: "910px",
                         marginLeft: "auto",
                         marginRight: "auto",
+                        padding: " 20px"
                     }}
                 >
-                    <h3>Date: {new Date().toJSON().slice(0, 19)}</h3>
+                    {/* <h3>Date: {new Date().toJSON().slice(0, 19)}</h3>
                     <h3>Contact: {`${sampleData.contact.firstName} ${sampleData.contact.lastName} - ${sampleData.contact.department}`}</h3>
                     <h3>Vendor: {sampleData.vendor.name}</h3>
                     <h3>Requester: {sampleData.requester.username}</h3>
@@ -157,7 +161,119 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                                 </tr>
                             ))}
                         </tbody>
+                    </table> */}
+                    <div style={{
+                        width: '100%',
+                        display: 'flex',
+                        height: '100px',
+                        marginBottom: '20px'
+                    }}>
+                        <div style={{ marginRight: '10px', flex: 1 }}>
+                            lorem1
+                        </div>
+                        <div style={{ marginRight: '10px', flex: 1 }}>
+                            lorem2
+                        </div>
+                        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'end', justifyContent: 'space-between' }}>
+                            <div style={{ fontSize: 'x-large', fontWeight: 'bold', textAlign: 'end', marginLeft: 'auto' }}>Purchase Order</div>
+                            <div style={{ width: '100%', flex: 1 }}>
+                                <table style={{ width: '100%', height: '100%' }}>
+                                    <tr style={{
+                                        borderBottom: 'black 1px solid',
+                                        width: '100%',height:'50%'
+                                    }}>
+                                        <td style={{ flex: 1, fontSize: 'small' }}> 12-21-20</td>
+                                        <td style={{ flex: 1, fontSize: 'small' }}> PO210014</td>
+                                    </tr>
+                                    <tr>
+                                        <td style={{ borderRight: 'none', flex: 1 }}></td>
+                                        <td style={{ flex: 1 }}></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <table style={{ width: '100%' }}>
+                        <tr style={{
+                            backgroundColor: 'lightgray',
+                            height: '50px',
+                            borderBottom: 'black 1px solid',
+                            width: '100%'
+                        }}>
+                            <th>Vendor</th>
+                            <th>Bill to </th>
+                            <th>Ship to </th>
+                        </tr>
+                        <tr>
+                            <td>February</td>
+                            <td>$80</td>
+                            <td>$80</td>
+                        </tr>
                     </table>
+                    <table style={{ width: '100%' }}>
+                        <tr style={{
+                            backgroundColor: 'lightgray',
+                            height: '50px',
+                            borderBottom: 'black 1px solid',
+                            width: '100%'
+                        }}>
+                            <th>Phone</th>
+                            <th>Fax</th>
+                            <th>RMA No.</th>
+                            <th>Terms</th>
+                            <th>Date</th>
+                            <th>Ship via</th>
+                        </tr>
+                        <tr>
+                            <td>February</td>
+                            <td>$80</td>
+                            <td>$80</td>
+                            <td>$80</td>
+                            <td>$80</td>
+                            <td>$80</td>
+                        </tr>
+                    </table>
+                    <table style={{ width: '100%' }}>
+                        <tr style={{
+                            backgroundColor: 'lightgray',
+                            height: '50px',
+                            borderBottom: 'black 1px solid',
+                            width: '100%'
+                        }}>
+                            <th style={{ borderRight: '1px solid black' }}>Item</th>
+                            <th style={{ borderRight: '1px solid black' }}>Description</th>
+                            <th style={{ borderRight: '1px solid black' }}>Qty</th>
+                            <th style={{ borderRight: '1px solid black' }}>U/M</th>
+                            <th style={{ borderRight: '1px solid black', fontSize: 'small' }}>Date required</th>
+                            <th style={{ borderRight: '1px solid black' }}>Rate</th>
+                            <th style={{ borderRight: '1px solid black' }}>MPN</th>
+                            <th style={{ borderRight: '1px solid black' }}>Amount</th>
+                        </tr>
+                        <tr style={{ marginBottom: '10px' }} >
+                            <td>February</td>
+                            <td style={{ width: '30%' }}>$80</td>
+                            <td>$80</td>
+                            <td>$80</td>
+                            <td>$80</td>
+                            <td>$80</td>
+                            <td>$80</td>
+                            <td>$80</td>
+                        </tr>
+                    </table>
+                    <div style={{ width: '100%', display: 'flex', alignItems: 'center' }}>
+                        <div style={{ flex: 1 }}>
+                            notes :
+                        </div>
+                        <div style={{ padding: ' 5px 20px', border: '1px solid black', borderTop: 'none' }}>
+                            total :  54646843 $
+                        </div>
+
+                    </div>
+                    <div style={{ width: '50%', textAlign: 'center', fontSize: 'large', fontWeight: 'bold', marginLeft: '30px' }}> lorem ipsum  lorem ipsum  lorem ipsum  lorem ipsum  lorem ipsum  lorem ipsum  lorem ipsum</div>
+                    <div style={{ width: '80%', marginLeft: 'auto', marginRight: 'auto', color: 'darkred', fontSize: 'small', marginTop: '30px', textAlign: 'center' }}> <strong>Note :</strong> Any product that requires a data sheet, drawings, or specs, needs to be made to the DSPM specifications
+                        provided on documents or it will not be accepted.</div>
+                    <div style={{ width: '50%', marginTop: '20px', fontSize: '10px', marginLeft: 'auto', marginRight: 'auto', textAlign: 'center' }}>439 S. Stoddard Ave, San Bernardino, CA 92401 - Phone (909) 930-3353</div>
                 </div>
             </div>
             <Box textAlign="right">
@@ -198,6 +314,7 @@ export const FinalForm = ({ onDone, onBack, data }: { onDone: (a: any) => void; 
             }
         } catch (error) {
             console.log(error);
+            console.log(error.response.data.error);
         } finally {
             setLoading(false);
         }
