@@ -37,78 +37,63 @@ import { exportPdf } from "../../logic/pdf";
 
 export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; data: IPurchasePOComplete; createdPO: IPurchasePO }) => {
     const divToPrint = useRef<HTMLElement | null>();
+    const [contact, setContact] = useState<IContact>();
+    const [vendor, setVendor] = useState<IVendor>();
+    const [requester, setRequester] = useState<IEmployee>();
 
-    useEffect(() => {
-        getContacts()
-            .then((d) => {
-                let contact = d.find((c: any) => c.id === data.ContactId);
-                sampleData.contact = contact;
-            })
-            .catch((e) => console.log(e));
+    const [canSave, setCanSave] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
 
-        getVendors()
-            .then((d) => {
-                let vendor = d.find((v: any) => v.id === data.VendorId);
-                sampleData.vendor = vendor;
-            })
-            .catch((e) => console.log(e));
+    const setData = async () => {
+        try {
+            const contacts = await getContacts();
+            const vendors = await getVendors();
+            const emps = await getAllEmployees();
 
-        getAllEmployees()
-            .then((d) => {
-                let emp = d.find((e: any) => e.id === sampleData.requester);
-                sampleData.requester = emp;
-            })
-            .catch((e) => console.log(e));
-    }, []);
+            let fcontact = contacts.find((c: any) => c.id === data.ContactId);
+            setContact(fcontact);
 
-    const sampleData: {
-        contact: IContact;
-        requester: IEmployee;
-        status: string;
-        vendor: IVendor;
-        lines: IPurchasePOLine[];
-    } = {
-        contact: {
-            id: 1,
-            firstName: "lorreeem",
-            lastName: "upsum",
-            title: "newtest",
-            department: "",
-            refferedBy: "",
-            linkedIn: "",
-            facebook: "",
-            instagram: "",
-            website: "",
-            optout: true,
-            mi: "",
-            prefix: "",
-            ContactTypeId: 1,
-            active: true,
-            main: true,
-        },
-        requester: { username: "admin", password: "123" },
-        status: "shipped",
-        vendor: {
-            id: 3,
-            name: "Uber",
-        },
-        lines: data.lines,
+            let fvendor = vendors.find((v: any) => v.id === data.VendorId);
+            setVendor(fvendor);
+
+            let femp = emps.find((e: any) => e.id === data.requester);
+            setRequester(femp);
+
+            if (fcontact && fvendor && femp) {
+                setCanSave(true);
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
+    useEffect(() => {
+        setData();
+    }, []);
+
     const handleSaveDocument = async () => {
-        if (divToPrint.current && createdPO.id) {
-            const { blobPDF, blobUrl } = await exportPdf(divToPrint.current);
-            console.log({ blobPDF, blobUrl });
-            const resp = await createAModelDocument(
-                "purchasePO",
-                createdPO.id,
-                blobPDF,
-                `${new Date().toJSON().slice(0, 19)} - ${createdPO.number}`,
-                `PO_${createdPO.number}.pdf`
-            );
-            if (resp) {
-                onDone();
+        try {
+            setCanSave(false);
+            setIsUploading(true);
+            if (divToPrint.current && createdPO.id) {
+                const { blobPDF, blobUrl } = await exportPdf(divToPrint.current);
+                // console.log({ blobPDF, blobUrl });
+                const resp = await createAModelDocument(
+                    "purchasePO",
+                    createdPO.id,
+                    blobPDF,
+                    `${new Date().toJSON().slice(0, 19)} - ${createdPO.number}`,
+                    `PO_${createdPO.number}.pdf`
+                );
+                if (resp) {
+                    onDone();
+                }
             }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setCanSave(true);
+            setIsUploading(false);
         }
     };
 
@@ -132,10 +117,10 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                     }}
                 >
                     <h3>Date: {new Date().toJSON().slice(0, 19)}</h3>
-                    <h3>Contact: {`${sampleData.contact.firstName} ${sampleData.contact.lastName} - ${sampleData.contact.department}`}</h3>
-                    <h3>Vendor: {sampleData.vendor.name}</h3>
-                    <h3>Requester: {sampleData.requester.username}</h3>
-                    <h3>Status: {sampleData.status}</h3>
+                    <h3>Contact: {`${contact?.firstName} ${contact?.lastName} - ${contact?.department}`}</h3>
+                    <h3>Vendor: {vendor?.name}</h3>
+                    <h3>Requester: {requester?.username}</h3>
+                    <h3>Status: {data.status}</h3>
                     <table>
                         <thead>
                             <tr>
@@ -147,7 +132,7 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                             </tr>
                         </thead>
                         <tbody>
-                            {sampleData.lines.map((l: any, i: number) => (
+                            {data.lines.map((l: any, i: number) => (
                                 <tr key={i}>
                                     <td>{l.ItemId}</td>
                                     <td>{l.description}</td>
@@ -161,9 +146,10 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                 </div>
             </div>
             <Box textAlign="right">
-                <Button kind="add" onClick={handleSaveDocument}>
+                <Button disabled={!canSave} kind="add" onClick={handleSaveDocument}>
                     Save
                 </Button>
+                {isUploading && <LinearProgress />}
             </Box>
         </Box>
     );
@@ -272,6 +258,7 @@ export const LinesForm = ({
                                 renderInput={(params) => <TextField {...params} label="Item" name="ItemId" variant="outlined" />}
                                 fullWidth
                             />
+                            {errors.ItemId && <Typography variant="caption">{errors.ItemId}</Typography>}
                             <BootstrapTextField
                                 style={{ width: "100%" }}
                                 name="description"
@@ -328,6 +315,7 @@ export const LinesForm = ({
                                     onClick={() => {
                                         onDone(createdItems);
                                     }}
+                                    disabled={createdItems.length === 0}
                                     variant="contained"
                                     color="primary"
                                 >
@@ -389,7 +377,7 @@ export const CreateForm = ({ onDone, data }: { data?: IPurchasePOComplete; onDon
 
     return (
         <Formik initialValues={data ? data : ({} as IPurchasePOComplete)} validationSchema={schema} onSubmit={handleSubmit}>
-            {({ values, errors, handleChange, handleBlur }) => (
+            {({ values, errors, handleChange, handleBlur, isValid }) => (
                 <Form>
                     <Box display="grid" gridTemplateColumns="auto" gridGap={8}>
                         <FieldSelect
@@ -404,6 +392,7 @@ export const CreateForm = ({ onDone, data }: { data?: IPurchasePOComplete; onDon
                             onBlur={handleBlur}
                             error={Boolean(errors.requester)}
                         />
+                        {errors.requester && <Typography variant="caption">{errors.requester}</Typography>}
                         <FieldSelect
                             style={{ width: "100%" }}
                             request={getVendors}
@@ -416,6 +405,7 @@ export const CreateForm = ({ onDone, data }: { data?: IPurchasePOComplete; onDon
                             onBlur={handleBlur}
                             error={Boolean(errors.VendorId)}
                         />
+                        {errors.VendorId && <Typography variant="caption">{errors.VendorId}</Typography>}
                         <FieldSelect
                             style={{ width: "100%" }}
                             request={getContacts}
@@ -428,6 +418,7 @@ export const CreateForm = ({ onDone, data }: { data?: IPurchasePOComplete; onDon
                             onBlur={handleBlur}
                             error={Boolean(errors.ContactId)}
                         />
+                        {errors.ContactId && <Typography variant="caption">{errors.ContactId}</Typography>}
                         <ArraySelect
                             items={["completed", "shipped", "pending"]}
                             name="status"
@@ -438,7 +429,7 @@ export const CreateForm = ({ onDone, data }: { data?: IPurchasePOComplete; onDon
                             error={Boolean(errors.status)}
                             fullWidth
                         />
-                        <Button type="submit" kind="add" style={{ margin: "0.5em 0" }}>
+                        <Button type="submit" disabled={!isValid} kind="add" style={{ margin: "0.5em 0" }}>
                             Next
                         </Button>
                     </Box>
