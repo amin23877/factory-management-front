@@ -120,7 +120,7 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                         minHeight: "910px",
                         marginLeft: "auto",
                         marginRight: "auto",
-                        padding: " 20px",
+                        paddingRight: "2px",
                     }}
                 >
                     <div

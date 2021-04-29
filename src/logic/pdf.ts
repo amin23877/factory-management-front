@@ -58,10 +58,11 @@ export const exportPdf = async (input: HTMLElement) => {
             //! now we declare that we're working on that page
             pdf.setPage(i + 1);
             //! now we add content to that page!
-            pdf.addImage(canvasDataURL, "PNG", 20, 40, width * 0.62, height * 0.62);
+            // pdf.addImage(canvasDataURL, "PNG", 20, 40, width * 0.62, height * 0.62);
+            pdf.addImage(canvasDataURL, "PNG", 40,30, 650 , height*0.62 );
         }
         //! after the for loop is finished running, we save the pdf.
-        // pdf.save("Test.pdf");
+        pdf.save("Test.pdf");
         const blobPDF = pdf.output("blob");
         const blobUrl = URL.createObjectURL(blobPDF);
 
