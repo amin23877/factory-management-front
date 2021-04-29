@@ -1,6 +1,22 @@
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 
+const pxToMm = (px:any) => {
+    return Math.floor(px / (document.getElementById("myMm") as any).offsetHeight);
+};
+
+const mmToPx = (mm:any) => {
+    return (document.getElementById("myMm") as any).offsetHeight * mm;
+};
+const range = (start:any, end:any) => {
+    return Array(end - start)
+        .join('0')
+        .split('0')
+        .map(function (val, id) {
+            return id + start;
+        });
+};
+
 export const exportPdf = async (input: HTMLElement) => {
     let ResBlob: { blobPDF: any; blobUrl: string } = { blobPDF: {}, blobUrl: "" };
     try {
