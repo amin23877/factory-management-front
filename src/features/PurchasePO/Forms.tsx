@@ -84,16 +84,16 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
             if (divToPrint.current && createdPO.id) {
                 const { blobPDF, blobUrl } = await exportPdf(divToPrint.current);
                 // console.log({ blobPDF, blobUrl });
-                const resp = await createAModelDocument(
-                    "purchasePO",
-                    createdPO.id,
-                    blobPDF,
-                    `${new Date().toJSON().slice(0, 19)} - ${createdPO.number}`,
-                    `PO_${createdPO.number}.pdf`
-                );
-                if (resp) {
-                    onDone();
-                }
+                // const resp = await createAModelDocument(
+                //     "purchasePO",
+                //     createdPO.id,
+                //     blobPDF,
+                //     `${new Date().toJSON().slice(0, 19)} - ${createdPO.number}`,
+                //     `PO_${createdPO.number}.pdf`
+                // );
+                // if (resp) {
+                //     onDone();
+                // }
             }
         } catch (error) {
             console.log(error);
