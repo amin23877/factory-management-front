@@ -20,8 +20,8 @@ const range = (start: any, end: any) => {
 export const exportPdf = async (input: HTMLElement) => {
     let ResBlob: { blobPDF: any; blobUrl: string } = { blobPDF: {}, blobUrl: "" };
     try {
-        const canvas = await html2canvas(input);
-        // console.log(canvas);
+        const canvas = await html2canvas(input, {scale:1});
+        console.log(canvas);
         let pdf = new jsPDF("p", "pt", "letter");
         //! This is all just html2canvas stuff
         let sX = 0;
@@ -54,7 +54,7 @@ export const exportPdf = async (input: HTMLElement) => {
                     sY = 980 * ( i*0.95 );
                     break;
                 }default : {
-                    sY = sY + 980 *0.95 ;
+                    sY = sY + 980 *0.85 ;
                 }
             }
             // start 980 pixels down for every new page
@@ -82,7 +82,7 @@ export const exportPdf = async (input: HTMLElement) => {
             //! now we add content to that page!
             // pdf.addImage(canvasDataURL, "PNG", 20, 40, width * 0.62, height * 0.62);
             // pdf.addImage(canvasDataURL, "PNG", 40, 30, (input.clientWidth * 1.12), (input.clientHeight * 0.62));
-            pdf.addImage(canvasDataURL, "PNG", 40, 30, (width*0.62), 0);
+            pdf.addImage(canvasDataURL, "PNG", 40, 30, (width*0.62), (height*0.8));
             console.log(onePageCanvas);
             console.log(height * 0.62);
             console.log(height);
