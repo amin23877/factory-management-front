@@ -43,7 +43,7 @@ export const exportPdf = async (input: HTMLElement) => {
         // canvas.height = canvas.height * scaleY;
         let srcImg = canvas;
         // for (let i = 0; i <= (input.clientHeight) / 980; i++) {
-        for (let i = 0; i <= (cHeight) / 980; i++) {
+        for (let i = 0; i <= (cHeight) / 791; i++) {
             // sY = 980 * (i!=1 ? i*0.85 : 1)  ;
             switch(i){
                 case 0 : {
@@ -54,7 +54,7 @@ export const exportPdf = async (input: HTMLElement) => {
                     sY = 980 * ( i*0.95 );
                     break;
                 }default : {
-                    sY = sY + 980 *0.85 ;
+                    sY = sY + 980 *0.98;
                 }
             }
             // start 980 pixels down for every new page
@@ -75,7 +75,7 @@ export const exportPdf = async (input: HTMLElement) => {
             //! If we're on anything other than the first page,
             // add another page
             if (i > 0) {
-                pdf.addPage([612, 700]);
+                pdf.addPage([612, 791]);
             }
             //! now we declare that we're working on that page
             pdf.setPage(i + 1);
@@ -91,6 +91,8 @@ export const exportPdf = async (input: HTMLElement) => {
             console.log(canvas);
             console.log(input.clientHeight);
             console.log(input.clientWidth);
+            console.log(canvas.height);
+            console.log(canvas.width);
         }
         //! after the for loop is finished running, we save the pdf.
         pdf.save("Test.pdf");
