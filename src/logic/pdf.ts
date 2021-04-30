@@ -34,11 +34,13 @@ export const exportPdf = async (input: HTMLElement) => {
         let dHeight = 980;
         let scaleX = 600 / canvas.width;
         let scaleY = 1034 / canvas.height;
+        let cWidth = canvas.width;
+        let cHeight = canvas.height;
         //we need to scale the canvas but we dont have the element :|
-        const ctx1 = canvas.getContext('2d');
-        ctx1?.scale(scaleX, scaleY);
-        canvas.width = canvas.width * scaleX;
-        canvas.height = canvas.height * scaleY;
+        // const ctx1 = canvas.getContext('2d');
+        // ctx1?.scale(scaleX, scaleY);
+        // canvas.width = canvas.width * scaleX;
+        // canvas.height = canvas.height * scaleY;
         let srcImg = canvas;
         for (let i = 0; i <= input.clientHeight / 980; i++) {
             sY = 980 * i; // start 980 pixels down for every new page
@@ -49,7 +51,7 @@ export const exportPdf = async (input: HTMLElement) => {
             const ctx = onePageCanvas.getContext("2d");
             // details on this usage of this function:
             // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images#Slicing
-            ctx?.drawImage(srcImg, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight);
+            ctx?.drawImage(srcImg, sX, sY, cWidth, cHeight, dX, dY, dWidth, dHeight);
             ctx?.scale(scaleX, scaleY);
 
             const canvasDataURL = onePageCanvas.toDataURL("image/png", 1.0);
@@ -67,7 +69,8 @@ export const exportPdf = async (input: HTMLElement) => {
             pdf.setPage(i + 1);
             //! now we add content to that page!
             // pdf.addImage(canvasDataURL, "PNG", 20, 40, width * 0.62, height * 0.62);
-            pdf.addImage(canvasDataURL, "PNG", 40, 30, (input.clientWidth * 1.12), (input.clientHeight * 0.62));
+            // pdf.addImage(canvasDataURL, "PNG", 40, 30, (input.clientWidth * 1.12), (input.clientHeight * 0.62));
+            pdf.addImage(canvasDataURL, "PNG", 40, 30, (width*0.62), (height*0.62));
             console.log(onePageCanvas);
             console.log(height * 0.62);
             console.log(height);
