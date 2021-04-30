@@ -42,8 +42,9 @@ export const exportPdf = async (input: HTMLElement) => {
         // canvas.width = canvas.width * scaleX;
         // canvas.height = canvas.height * scaleY;
         let srcImg = canvas;
+        var pheight = pdf.internal.pageSize.getHeight();
         // for (let i = 0; i <= (input.clientHeight) / 980; i++) {
-        for (let i = 0; i <= (cHeight) / 791; i++) {
+        for (let i = 0; i <= (cHeight) / pheight; i++) {
             // sY = 980 * (i!=1 ? i*0.85 : 1)  ;
             switch(i){
                 case 0 : {
@@ -75,7 +76,7 @@ export const exportPdf = async (input: HTMLElement) => {
             //! If we're on anything other than the first page,
             // add another page
             if (i > 0) {
-                pdf.addPage([612, 791]);
+                pdf.addPage([612, pheight]);
             }
             //! now we declare that we're working on that page
             pdf.setPage(i + 1);
