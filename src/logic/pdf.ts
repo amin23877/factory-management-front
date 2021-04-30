@@ -25,8 +25,22 @@ export const exportPdf = async (input: HTMLElement) => {
         // canvas.width = canvas.width * scaleX;
         // canvas.height = canvas.height * scaleY;
         let srcImg = canvas;
-        for (let i = 0; i <= input.clientHeight / 980; i++) {
-            sY = 980 * i; // start 980 pixels down for every new page
+        // for (let i = 0; i <= (input.clientHeight) / 980; i++) {
+        for (let i = 0; i <= (cHeight) / 980; i++) {
+            // sY = 980 * (i!=1 ? i*0.85 : 1)  ;
+            switch(i){
+                case 0 : {
+                    sY = 980 * 0  ;
+                    break;
+                } 
+                case 1 :{
+                    sY = 980 * ( i*0.95 );
+                    break;
+                }default : {
+                    sY = sY + 980 *0.85 ;
+                }
+            }
+            // start 980 pixels down for every new page
 
             const onePageCanvas = document.createElement("canvas");
             onePageCanvas.setAttribute("width", String(sWidth));
@@ -34,15 +48,13 @@ export const exportPdf = async (input: HTMLElement) => {
             const ctx = onePageCanvas.getContext("2d");
             // details on this usage of this function:
             // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images#Slicing
-            ctx?.drawImage(srcImg, sX, sY, cWidth, cHeight, dX, dY, dWidth, dHeight);
+            ctx?.drawImage(srcImg, sX, sY, cWidth, sHeight, dX, dY, dWidth, dHeight);
             ctx?.scale(scaleX, scaleY);
 
             const canvasDataURL = onePageCanvas.toDataURL("image/png", 1.0);
 
             const width = onePageCanvas.width;
             const height = onePageCanvas.height;
-            const cwidth = canvas.width;
-            const cheight = canvas.height;
             //! If we're on anything other than the first page,
             // add another page
             if (i > 0) {
@@ -53,7 +65,7 @@ export const exportPdf = async (input: HTMLElement) => {
             //! now we add content to that page!
             // pdf.addImage(canvasDataURL, "PNG", 20, 40, width * 0.62, height * 0.62);
             // pdf.addImage(canvasDataURL, "PNG", 40, 30, (input.clientWidth * 1.12), (input.clientHeight * 0.62));
-            pdf.addImage(canvasDataURL, "PNG", 40, 30, (width*0.62), (height));
+            pdf.addImage(canvasDataURL, "PNG", 40, 30, (width*0.62), (height*0.8));
             console.log(onePageCanvas);
             console.log(height * 0.62);
             console.log(height);
