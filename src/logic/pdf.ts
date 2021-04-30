@@ -21,6 +21,7 @@ export const exportPdf = async (input: HTMLElement) => {
     let ResBlob: { blobPDF: any; blobUrl: string } = { blobPDF: {}, blobUrl: "" };
     try {
         const canvas = await html2canvas(input);
+        // console.log(canvas);
         let pdf = new jsPDF("p", "pt", "letter");
         //! This is all just html2canvas stuff
         let srcImg = canvas;
