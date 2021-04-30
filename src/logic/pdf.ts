@@ -70,7 +70,7 @@ export const exportPdf = async (input: HTMLElement) => {
             //! now we add content to that page!
             // pdf.addImage(canvasDataURL, "PNG", 20, 40, width * 0.62, height * 0.62);
             // pdf.addImage(canvasDataURL, "PNG", 40, 30, (input.clientWidth * 1.12), (input.clientHeight * 0.62));
-            pdf.addImage(canvasDataURL, "PNG", 40, 30, (width*0.62), (height*0.62));
+            pdf.addImage(canvasDataURL, "PNG", 40, 30, (width*0.62), (height));
             console.log(onePageCanvas);
             console.log(height * 0.62);
             console.log(height);
