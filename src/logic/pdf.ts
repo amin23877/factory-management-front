@@ -20,6 +20,8 @@ export const exportPdf = async (input: HTMLElement) => {
         //we need to scale the canvas but we dont have the element :|
         const ctx1 = canvas.getContext('2d');
         ctx1?.scale(scaleX,scaleY);
+        canvas.width = canvas.width * scaleX;
+        canvas.height = canvas.height * scaleY;
         let srcImg = canvas;
         for (let i = 0; i <= input.clientHeight / 980; i++) {
             sY = 980 * i; // start 980 pixels down for every new page
