@@ -24,7 +24,6 @@ export const exportPdf = async (input: HTMLElement) => {
         // console.log(canvas);
         let pdf = new jsPDF("p", "pt", "letter");
         //! This is all just html2canvas stuff
-        let srcImg = canvas;
         let sX = 0;
         let sY = 0; // start 980 pixels down for every new page
         let sWidth = 900;
@@ -33,7 +32,12 @@ export const exportPdf = async (input: HTMLElement) => {
         let dY = 0;
         let dWidth = 900;
         let dHeight = 980;
-
+        let scaleX = canvas.width/600;
+        let scaleY = canvas.height/1034;
+        //we need to scale the canvas but we dont have the element :|
+        const ctx1 = canvas.getContext('2d');
+        ctx1?.scale(scaleX,scaleY);
+        let srcImg = canvas;
         for (let i = 0; i <= input.clientHeight / 980; i++) {
             sY = 980 * i; // start 980 pixels down for every new page
 
@@ -44,23 +48,32 @@ export const exportPdf = async (input: HTMLElement) => {
             // details on this usage of this function:
             // https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images#Slicing
             ctx?.drawImage(srcImg, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight);
-
-            // document.body.appendChild(canvas);
+            ctx?.scale(scaleX,scaleY);
+            
             const canvasDataURL = onePageCanvas.toDataURL("image/png", 1.0);
 
             const width = onePageCanvas.width;
-            const height = onePageCanvas.clientHeight;
-
+            const height = onePageCanvas.height;
+            const cwidth = canvas.width ;
+            const cheight = canvas.height;
             //! If we're on anything other than the first page,
             // add another page
             if (i > 0) {
-                pdf.addPage([612, 791]);
+                pdf.addPage([612, 700]);
             }
             //! now we declare that we're working on that page
             pdf.setPage(i + 1);
             //! now we add content to that page!
             // pdf.addImage(canvasDataURL, "PNG", 20, 40, width * 0.62, height * 0.62);
-            pdf.addImage(canvasDataURL, "PNG", 40, 30, 650, height * 0.62);
+            pdf.addImage(canvasDataURL, "PNG", 40,30, (input.clientWidth*1.12) ,(input.clientHeight*0.62));
+            console.log(onePageCanvas);
+            console.log(height*0.62);
+            console.log(height);
+            console.log(width*0.62);
+            console.log(width);
+            console.log(canvas);
+            console.log(input.clientHeight);
+            console.log(input.clientWidth);
         }
         //! after the for loop is finished running, we save the pdf.
         pdf.save("Test.pdf");
