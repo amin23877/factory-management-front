@@ -117,7 +117,6 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                         backgroundColor: "#fff",
                         color: "black",
                         width: "600px",
-                        minHeight: "910px",
                         marginLeft: "auto",
                         marginRight: "auto",
                         paddingRight: "2px",
