@@ -27,7 +27,7 @@ import Settings from "./pages/Settings";
 import Roles from "./pages/Roles";
 import Projects from "./pages/Project";
 import Activity from "./pages/Activity";
-import Service from "./pages/Service";
+import Service from "./pages/FieldService";
 import Page404 from "./pages/404";
 
 // Delete this after useing baseurl somewhere

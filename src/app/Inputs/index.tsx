@@ -24,10 +24,7 @@ export const ObjectSelect = ({ inputStyle, items, itemTitleField, itemValueField
                 <MenuItem value={undefined}>None</MenuItem>
                 {items &&
                     items.map((item: any, i) => (
-                        <MenuItem
-                            key={keyField ? item[keyField] : i}
-                            value={itemValueField === "id" ? parseInt(item[itemValueField]) : item[itemValueField]}
-                        >
+                        <MenuItem key={keyField ? item[keyField] : i} value={item[itemValueField]}>
                             {item[itemTitleField]}
                         </MenuItem>
                     ))}
