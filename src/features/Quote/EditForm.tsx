@@ -7,7 +7,7 @@ import { updateQuoteThunk } from "./quoteSlice";
 
 import Snack from "../../app/Snack";
 import Button from "../../app/Button";
-import { BillingTab, CommissionTab, DepositTab, GeneralForm, ShippingTab, TermsTab } from "./Forms";
+import { CommissionTab, DepositTab, GeneralForm, TermsTab } from "./Forms";
 import { IQuote } from "../../api/quote";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { BasePaper } from "../../app/Paper";
@@ -42,19 +42,17 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
                     <Form>
                         <Box display="flex" justifyContent="space-evenly">
                             <Box flex={3} mr={2}>
-                                <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", border: "none" ,margin: "0 1em " }}>
-
+                                <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", border: "none", margin: "0 1em " }}>
                                     <GeneralForm edit values={values} handleBlur={handleBlur} handleChange={handleChange} />
                                     <Box display="flex" justifyContent="flex-end" my={2}>
                                         <Button disabled={isSubmitting} type="submit" kind="edit">
                                             Save
-                                    </Button>
+                                        </Button>
                                     </Box>
                                 </BasePaper>
                             </Box>
                             <Box flex={1}>
                                 <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", border: "none", margin: "0 1em " }}>
-
                                     <Tabs
                                         value={activeTab}
                                         textColor="primary"
@@ -62,24 +60,22 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
                                         variant="scrollable"
                                         style={{ maxWidth: 700 }}
                                     >
-                                        <Tab label="Shipping" />
-                                        <Tab label="Billing" />
                                         <Tab label="Terms" />
                                         <Tab label="Deposit" />
                                         <Tab label="Commission" />
                                     </Tabs>
-                                    <Box style={{minHeight:"600", overflowY: "auto",marginBottom:"auto" }}>
-                                        {activeTab === 0 && <ShippingTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                        {activeTab === 1 && <BillingTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                        {activeTab === 2 && <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                        {activeTab === 3 && <DepositTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                        {activeTab === 4 && (
+                                    <Box style={{ minHeight: "600", overflowY: "auto", marginBottom: "auto" }}>
+                                        {activeTab === 0 && (
+                                            <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                        )}
+                                        {activeTab === 1 && (
+                                            <DepositTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                        )}
+                                        {activeTab === 2 && (
                                             <CommissionTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
                                         )}
                                     </Box>
                                 </BasePaper>
-
-
                             </Box>
                         </Box>
                     </Form>

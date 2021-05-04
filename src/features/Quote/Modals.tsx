@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Dialog, DialogTitle, Button, Box, Tabs, Tab } from "@material-ui/core";
+import { Box, Tabs, Tab } from "@material-ui/core";
 import { Formik, Form } from "formik";
 
 import { useAppDispatch } from "../../store";
 import { createQuoteThunk } from "./quoteSlice";
 
-import { BillingTab, CommissionTab, DepositTab, ShippingTab, TermsTab, GeneralForm } from "./Forms";
+import Dialog from "../../app/Dialog";
+import Button from "../../app/Button";
+import { CommissionTab, DepositTab, TermsTab, GeneralForm } from "./Forms";
 
 import { IQuote, QuoteInit } from "../../api/quote";
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -27,9 +29,8 @@ export default function AddQuoteModal({ open, onClose }: { open: boolean; onClos
     };
 
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="lg">
-            <DialogTitle>Add new Quote</DialogTitle>
-            <Box m={1} style={{ height: 600 }}>
+        <Dialog open={open} onClose={onClose} title="Add new quote" maxWidth="md" fullWidth>
+            <Box m={1} style={{ height: 600, overflowY: "auto" }}>
                 <Formik initialValues={QuoteInit} onSubmit={handleSubmit}>
                     {({ handleChange, handleBlur, values, isSubmitting }) => (
                         <Form>
@@ -45,29 +46,19 @@ export default function AddQuoteModal({ open, onClose }: { open: boolean; onClos
                                         style={{ maxWidth: 500 }}
                                         textColor="primary"
                                     >
-                                        <Tab label="Shipping" />
-                                        <Tab label="Billing" />
                                         <Tab label="Terms" />
                                         <Tab label="Deposit" />
                                         <Tab label="Commission" />
                                     </Tabs>
-                                    {activeTab === 0 && <ShippingTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                    {activeTab === 1 && <BillingTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                    {activeTab === 2 && <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                    {activeTab === 3 && <DepositTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                    {activeTab === 4 && (
+                                    {activeTab === 0 && <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
+                                    {activeTab === 1 && <DepositTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
+                                    {activeTab === 2 && (
                                         <CommissionTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
                                     )}
                                 </Box>
                             </Box>
                             <Box display="flex" justifyContent="center" my={2} py={2}>
-                                <Button
-                                    disabled={isSubmitting}
-                                    type="submit"
-                                    variant="contained"
-                                    color="primary"
-                                    style={{ padding: "1em 4em", width: "50%" }}
-                                >
+                                <Button disabled={isSubmitting} type="submit" kind="add" style={{ padding: "1em 2em" }}>
                                     Add
                                 </Button>
                             </Box>

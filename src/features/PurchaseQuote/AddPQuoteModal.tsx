@@ -51,6 +51,14 @@ export default function AddPQModal({ open, onClose, onDone }: { open: boolean; o
                                 <Typography variant="caption">{file?.name}</Typography>
                             </Box>
                             <Box display="flex" my={2}>
+                                <TextField
+                                    name="senderNumber"
+                                    label="Sender number"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.senderNumber}
+                                    error={Boolean(errors.senderNumber)}
+                                />
                                 <FieldSelect
                                     request={getAllEmployees}
                                     itemTitleField="username"
@@ -87,7 +95,7 @@ export default function AddPQModal({ open, onClose, onDone }: { open: boolean; o
                                 />
                             </Box>
                             <Box textAlign="center">
-                                <Button type="submit" kind="add" style={{width:'31%'}}>
+                                <Button type="submit" kind="add" style={{ width: "31%" }}>
                                     Add
                                 </Button>
                             </Box>

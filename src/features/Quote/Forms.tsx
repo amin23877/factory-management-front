@@ -7,9 +7,6 @@ import { FieldSelect, ArraySelect } from "../../app/Inputs";
 import { getAllEmployees } from "../../api/employee";
 import { getContacts } from "../../api/contact";
 import { getClients } from "../../api/client";
-import { getAddresses } from "../../api/address";
-import { getPhones } from "../../api/phone";
-import { getEmails } from "../../api/emailAddress";
 import { getProjects } from "../../api/project";
 
 export const GeneralForm = ({
@@ -50,26 +47,6 @@ export const GeneralForm = ({
                 />
             </Box>
             <Box display="flex" justifyContent="space-between">
-                <TextField
-                    value={values.location}
-                    style={{ flex: 1, marginRight: 8 }}
-                    name="location"
-                    label="locaton"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    fullWidth
-                />
-                <TextField
-                    value={values.leadTime}
-                    style={{ flex: 1 }}
-                    name="leadTime"
-                    label="lead Time"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    fullWidth
-                />
-            </Box>
-            <Box display="flex" justifyContent="space-between">
                 <FieldSelect
                     style={{ flex: 1, marginRight: 8 }}
                     value={values.salesperson}
@@ -86,7 +63,7 @@ export const GeneralForm = ({
                     style={{ flex: 1 }}
                     value={values.requester}
                     request={getContacts}
-                    itemTitleField="lastName"
+                    itemTitleField="name"
                     itemValueField="id"
                     keyField="id"
                     name="requester"
@@ -106,163 +83,6 @@ export const GeneralForm = ({
                 label="Client"
                 onChange={handleChange}
             />
-            <FormControl style={{ margin: "0.5em" }}>
-                <FormLabel>No tax</FormLabel>
-                <RadioGroup
-                    row
-                    value={String(values.noTaxClient)}
-                    name="noTaxClient"
-                    onChange={handleChange}
-                    style={{ flexDirection: "row" }}
-                >
-                    <FormControlLabel control={<Radio />} label="Yes" value="true" />
-                    <FormControlLabel control={<Radio />} label="No" value="false" />
-                </RadioGroup>
-            </FormControl>
-        </Box>
-    );
-};
-
-export const ShippingTab = ({
-    handleChange,
-    handleBlur,
-    values,
-}: {
-    values: any;
-    handleChange: (a: any) => void;
-    handleBlur: (a: any) => void;
-}) => {
-    return (
-        <Box my={1} id="shipping">
-            <Typography variant="h6" style={{ margin: "15px", marginLeft: "0px" }}>
-                Shipping
-            </Typography>
-            <FieldSelect
-                value={values.shippingAddress}
-                name="shippingAddress"
-                request={getAddresses}
-                itemTitleField="address"
-                itemValueField="id"
-                keyField="id"
-                label="Shipping Address"
-                onChange={handleChange}
-                fullWidth
-            />
-            <FieldSelect
-                value={values.shippingContact}
-                request={getContacts}
-                itemTitleField="lastName"
-                itemValueField="id"
-                keyField="id"
-                name="shippingContact"
-                label="Shipping Contact"
-                onChange={handleChange}
-                fullWidth
-            />
-
-            <FieldSelect
-                value={values.shippingPhone}
-                request={getPhones}
-                itemTitleField="phone"
-                itemValueField="id"
-                keyField="id"
-                name="shippingPhone"
-                label="Shipping Phone"
-                onChange={handleChange}
-                fullWidth
-            />
-            <FieldSelect
-                value={values.shippingEmail}
-                request={getEmails}
-                itemTitleField="email"
-                itemValueField="id"
-                keyField="id"
-                name="shippingEmail"
-                label="Shipping Email"
-                onChange={handleChange}
-                fullWidth
-            />
-            <FormControl style={{ margin: "0.5em" }}>
-                <FormLabel>Client or Agency</FormLabel>
-                <RadioGroup
-                    name="shippingEntitiy"
-                    value={String(values.shippingEntitiy)}
-                    onChange={handleChange}
-                    style={{ flexDirection: "row" }}
-                >
-                    <FormControlLabel control={<Radio />} label="Client" value="client" />
-                    <FormControlLabel control={<Radio />} label="Agency" value="agency" />
-                </RadioGroup>
-            </FormControl>
-        </Box>
-    );
-};
-
-export const BillingTab = ({
-    handleChange,
-    handleBlur,
-    values,
-}: {
-    values: any;
-    handleChange: (a: any) => void;
-    handleBlur: (a: any) => void;
-}) => {
-    return (
-        <Box my={1} id="billing">
-            <Typography variant="h6" style={{ margin: "15px", marginLeft: "0px" }}>
-                Billing
-            </Typography>
-            <FieldSelect
-                value={values.billingAddress}
-                request={getAddresses}
-                itemTitleField="address"
-                itemValueField="id"
-                keyField="id"
-                name="billingAddress"
-                label="billing Address"
-                onChange={handleChange}
-                fullWidth
-            />
-            <FieldSelect
-                value={values.billingContact}
-                request={getContacts}
-                itemTitleField="lastName"
-                itemValueField="id"
-                keyField="id"
-                name="billingContact"
-                label="billing Contact"
-                onChange={handleChange}
-                fullWidth
-            />
-            <FieldSelect
-                value={values.billingPhone}
-                request={getPhones}
-                itemTitleField="phone"
-                itemValueField="id"
-                keyField="id"
-                name="billingPhone"
-                label="billing Phone"
-                onChange={handleChange}
-                fullWidth
-            />
-            <FieldSelect
-                value={values.billingEmail}
-                request={getEmails}
-                itemTitleField="email"
-                itemValueField="id"
-                keyField="id"
-                name="billingEmail"
-                label="billing Email"
-                onChange={handleChange}
-                fullWidth
-            />
-            <FormControl style={{ margin: "0.5em" }}>
-                <FormLabel>Client or Agency</FormLabel>
-                <RadioGroup name="billingEntitiy" onChange={handleChange} value={values.billingEntitiy} style={{ flexDirection: "row" }}>
-                    <FormControlLabel control={<Radio />} label="Client" value="client" />
-                    <FormControlLabel control={<Radio />} label="Agency" value="agency" />
-                </RadioGroup>
-            </FormControl>
         </Box>
     );
 };
@@ -281,38 +101,10 @@ export const TermsTab = ({
             <Typography variant="h6" style={{ margin: "15px", marginLeft: "0px" }}>
                 Terms
             </Typography>
-            <TextField
-                style={{ width: "100%" }}
-                value={values.department}
-                name="department"
-                label="Department"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                fullWidth
-            />
-            <TextField
-                style={{ width: "100%" }}
-                value={values.acctStatus}
-                name="acctStatus"
-                label="acctStatus"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                fullWidth
-            />
-            <TextField
-                style={{ width: "100%" }}
-                value={values.creditTerms}
-                name="creditTerms"
-                label="Credit Terms"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                fullWidth
-            />
-
             <ArraySelect
                 style={{ width: "100%" }}
-                value={values.quoteStatus}
-                name="quoteStatus"
+                value={values.status}
+                name="status"
                 label="Quote Status"
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -441,18 +233,6 @@ export const CommissionTab = ({
                 type="number"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                fullWidth
-            />
-
-            <FieldSelect
-                value={values.EmployeeId}
-                request={getAllEmployees}
-                itemTitleField="username"
-                itemValueField="id"
-                keyField="id"
-                name="EmployeeId"
-                label="Employee"
-                onChange={handleChange}
                 fullWidth
             />
             <FieldSelect

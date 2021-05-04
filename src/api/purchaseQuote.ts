@@ -3,7 +3,8 @@ import Axios from 'axios';
 export type IPurchaseQuote = {
     id?: number,
     file?: File | null,
-    number?: number,
+    number?: string,
+    senderNumber?: string,
     path?: string,
     requester: number,
     VendorId: number,

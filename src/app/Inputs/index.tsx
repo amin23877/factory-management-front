@@ -20,13 +20,7 @@ export const ObjectSelect = ({ inputStyle, items, itemTitleField, itemValueField
                     {props.label}
                 </InputLabel>
             )}
-            <Select
-                id="object-select"
-                name={props.name}
-                style={{ ...inputStyle }}
-                input={<BootstrapInput />}
-                {...props}
-            >
+            <Select id="object-select" name={props.name} style={{ ...inputStyle }} input={<BootstrapInput />} {...props}>
                 <MenuItem value={undefined}>None</MenuItem>
                 {items &&
                     items.map((item: any, i) => (
@@ -46,15 +40,20 @@ interface IFieldSelect extends SelectProps {
     request: () => Promise<any>;
     itemValueField: string;
     itemTitleField: string;
+    limit?: number;
     keyField?: string;
 }
-export const FieldSelect = ({ keyField, request, itemValueField, itemTitleField, ...props }: IFieldSelect) => {
+export const FieldSelect = ({ keyField, request, itemValueField, itemTitleField, limit, ...props }: IFieldSelect) => {
     const [items, setItems] = useState([]);
 
     useEffect(() => {
         request()
             .then((data) => {
-                setItems(data);
+                if (limit && limit > 0) {
+                    setItems(data.slice(0, limit));
+                } else {
+                    setItems(data);
+                }
             })
             .catch((e) => console.log(e));
     }, []);

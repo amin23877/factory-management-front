@@ -184,7 +184,7 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                         </tr>
                         <tr>
                             <td>{vendor?.name}</td>
-                            <td>{contact?.lastName}</td>
+                            <td>{contact?.name}</td>
                             <td>{contact?.department}</td>
                         </tr>
                     </table>

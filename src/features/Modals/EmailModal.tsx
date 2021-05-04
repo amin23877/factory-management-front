@@ -8,7 +8,7 @@ import Button from "../../app/Button";
 import Dialog from "../../app/Dialog";
 import { FieldSelect } from "../../app/Inputs";
 
-import { getEmailTypes } from "../../api/emailType";
+import { getEmailAddressTypes } from "../../api/emailAddressType";
 import { createAModelEmailAddr, deleteAModelEmailAddr, updateAModelEmailAddr, IEmailAddress } from "../../api/emailAddress";
 
 const schema = Yup.object().shape({
@@ -74,7 +74,7 @@ export const EmailModal = ({
                             />
 
                             <FieldSelect
-                                request={getEmailTypes}
+                                request={getEmailAddressTypes}
                                 itemTitleField="name"
                                 itemValueField="id"
                                 fullWidth

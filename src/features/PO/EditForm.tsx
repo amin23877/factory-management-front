@@ -25,7 +25,7 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
     const schema = Yup.object().shape({
         // name: Yup.string().required(),
     });
-    const { number, file, ContactId, ClientId, EmployeeId, ProjectId, reciever } = poData;
+    const { number, file, ContactId, ClientId, EmployeeId, ProjectId, reciever, senderNumber } = poData;
 
     return (
         <div>
@@ -35,7 +35,7 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
             <Box>
                 <Formik
                     validationSchema={schema}
-                    initialValues={{ number, file, ContactId, ClientId, EmployeeId, ProjectId, reciever }}
+                    initialValues={{ number, file, ContactId, ClientId, EmployeeId, ProjectId, reciever, senderNumber }}
                     onSubmit={async (data, { setSubmitting }) => {
                         try {
                             if (poData.id) {
@@ -60,13 +60,13 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                                     <Box display="flex" justifyContent="space-between">
                                         <TextField
                                             disabled
-                                            name="number"
-                                            label="number"
-                                            value={values.number}
+                                            name="senderNumber"
+                                            label="senderNumber"
+                                            value={values.senderNumber}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            error={Boolean(errors.number && touched.number)}
-                                            helperText={errors.number}
+                                            error={Boolean(errors.senderNumber && touched.senderNumber)}
+                                            helperText={errors.senderNumber}
                                             style={{ flex: 1 }}
                                         />
                                         <FieldSelect
@@ -99,7 +99,7 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                                             label="Contact"
                                             name="ContactId"
                                             request={getContacts}
-                                            itemTitleField="lastName"
+                                            itemTitleField="name"
                                             itemValueField="id"
                                             value={values.ContactId}
                                             onChange={handleChange}
