@@ -12,7 +12,7 @@ export const AddItemSchema = Yup.object().shape({
 });
 
 export interface IItem {
-    id?: number,
+    id?: string,
     name: string,
     no: string,
     approvedForSales: boolean,
@@ -96,7 +96,7 @@ export const createItem = async (itemData:any) => {
     }
 }
 
-export const updateAnItem = async (itemId:number, itemData:any) => {
+export const updateAnItem = async (itemId:string, itemData:any) => {
     try {
         const resp = await Axios.patch(`/item/${itemId}`, {...itemData,
             ItemCategoryId: parseInt(itemData.ItemCategoryId),
@@ -109,7 +109,7 @@ export const updateAnItem = async (itemId:number, itemData:any) => {
     }
 }
 
-export const deleteAnItem = async (itemId:number) => {
+export const deleteAnItem = async (itemId:string) => {
     try {
         const resp = await Axios.delete(`/item/${itemId}`);
         return resp.data;
@@ -136,7 +136,7 @@ export const getItemsByQuery = async (params:any) => {
     }
 }
 
-export const getItemQuotes = async (itemId:number) => {
+export const getItemQuotes = async (itemId:string) => {
     try {
         const resp = await Axios.get(`/item/${itemId}/quote`);
         return resp.data;
@@ -145,7 +145,7 @@ export const getItemQuotes = async (itemId:number) => {
     }
 }
 
-export const getItemSOs = async (itemId:number) => {
+export const getItemSOs = async (itemId:string) => {
     try {
         const resp = await Axios.get(`/item/${itemId}/so`);
         return resp.data;
@@ -154,7 +154,7 @@ export const getItemSOs = async (itemId:number) => {
     }
 }
 
-export const addManualCount = async (ItemId:number, count:number, date:string) => {
+export const addManualCount = async (ItemId:string, count:number, date:string) => {
     try {
         const resp = await Axios.post('/manualCount', {ItemId, count, date});
         return resp.data;

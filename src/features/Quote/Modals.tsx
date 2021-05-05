@@ -20,9 +20,10 @@ export default function AddQuoteModal({ open, onClose }: { open: boolean; onClos
         try {
             const resp = await dispatch(createQuoteThunk(data));
             unwrapResult(resp);
-            console.log(resp);
             setSubmitting(false);
-            onClose();
+            if (resp.payload) {
+                onClose();
+            }
         } catch (error) {
             console.log(error);
         }

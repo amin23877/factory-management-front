@@ -21,7 +21,7 @@ export const RecordNotes = ({
     ];
 
     useEffect(() => {
-        getAllModelNotes(model, itemId)
+        getAllModelNotes(model, itemId as any)
             .then((data) => setRows(data))
             .catch((e) => console.log(e));
     }, [itemId, model]);

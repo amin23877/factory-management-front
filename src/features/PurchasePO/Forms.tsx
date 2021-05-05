@@ -125,80 +125,44 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                         style={{
                             width: "100%",
                             display: "flex",
-                            flexDirection: 'column',
+                            flexDirection: "column",
                             height: "150px",
-                            backgroundColor: '#416364',
-                            color: 'white',
+                            backgroundColor: "#416364",
+                            color: "white",
                         }}
                     >
                         <div>
-                            <div style={{ fontSize: "x-large", textAlign: "center", marginBottom: '10px', marginTop: '20px' }}>
+                            <div style={{ fontSize: "x-large", textAlign: "center", marginBottom: "10px", marginTop: "20px" }}>
                                 Purchase Order
                             </div>
                         </div>
-                        <div>
-
-                            {/* <div style={{ marginRight: "10px", flex: 1 }}>
-                                Digital Signal Power Manufacturer, Inc. 439 S. Stoddard Ave San Bernardino, CA 92401 (909) 930-3353 • FAX (909)
-                                930-3335
-                            </div>
-                            <div
-                                style={{
-                                    flex: 1,
-                                    display: "flex",
-                                    flexDirection: "column",
-                                    alignItems: 'flex-start',
-                                    textAlign: 'left',
-                                    justifyContent: "space-between",
-                                }}
-                            >
-
-                                <div style={{ width: "100%", flex: 1 }}>
-                                   <table style={{ width: "100%", height: "100%" }}>
-                                    <tr
-                                    style={{
-                                        borderBottom: "black 1px solid",
-                                        width: "100%",
-                                        height: "50%",
-                                    }}
-                                    >
-                                    <td style={{ flex: 1, fontSize: "small" }}> {createdPO?.createdAt?.slice(0, 10)} </td>
-                                    <td style={{ flex: 1, fontSize: "small" }}> {createdPO.number} </td>
-                                    </tr>
-                                    <tr>
-                                    <td style={{ borderRight: "none", flex: 1 }}></td>
-                                    <td style={{ flex: 1 }}></td>
-                                    </tr>
-                                </table> 
-                                </div>
-                            </div> */}
-                        </div>
                     </div>
-                    <table style={{ width: "100%", border: '2px solid #416364', borderTop: 'none', minHeight: '150px', borderBottom: 'none' }}>
+                    <table
+                        style={{ width: "100%", border: "2px solid #416364", borderTop: "none", minHeight: "150px", borderBottom: "none" }}
+                    >
                         <tr
                             style={{
                                 backgroundColor: "#c4d69c",
                                 width: "100%",
-                                height: '26px'
+                                height: "26px",
                             }}
                         >
-                            {/* <th>Vendor</th> */}
-                            <th>Purchase from :</th>
-                            {/* <th>Bill to </th> */}
-                            <th>Ship to : </th>
+                            <th>Purchase from: </th>
+                            <th>Ship to: </th>
                         </tr>
-                        <tr className='minHeight'>
-                            <td >{vendor?.name}</td>
-                            <td >{contact?.name}</td>
-                            {/* <td>{contact?.department}</td> */}
+                        <tr className="minHeight">
+                            <td>{vendor?.name}</td>
+                            <td>{contact?.name}</td>
                         </tr>
                     </table>
-                    <table style={{ width: "100%", border: '2px solid #416364', borderTop: 'none', minHeight: '100px', borderBottom: 'none' }}>
+                    <table
+                        style={{ width: "100%", border: "2px solid #416364", borderTop: "none", minHeight: "100px", borderBottom: "none" }}
+                    >
                         <tr
                             style={{
                                 backgroundColor: "#c4d69c",
                                 width: "100%",
-                                height: '26px'
+                                height: "26px",
                             }}
                         >
                             {/* <th>Phone</th>
@@ -211,10 +175,10 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                             <th>Payment Terms</th>
                             <th>Required By Date</th>
                         </tr>
-                        <tr >
-                            <td style={{ borderRight: '2px solid #416364 ' }}></td>
-                            <td style={{ borderRight: '2px solid #416364 ', width: '20%' }}></td>
-                            <td style={{ width: '34%' }}></td>
+                        <tr>
+                            <td style={{ borderRight: "2px solid #416364 " }}></td>
+                            <td style={{ borderRight: "2px solid #416364 ", width: "20%" }}></td>
+                            <td style={{ width: "34%" }}></td>
                             {/* <td>123 456 789</td>
                             <td>123 456 789</td>
                             <td>123 456 789</td>
@@ -223,77 +187,78 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                             <td> </td> */}
                         </tr>
                     </table>
-                    <table style={{ width: "100%", border: '2px solid #416364', borderTop: 'none' }}>
+                    <table style={{ width: "100%", border: "2px solid #416364", borderTop: "none" }}>
                         <tr
                             style={{
                                 backgroundColor: "#c4d69c",
                                 width: "100%",
-                                height: '26px'
+                                height: "26px",
                             }}
                         >
                             {/* <th style={{ borderRight: "1px solid black" }}>Item</th> */}
-                            <th > Item Description</th>
-                            <th >Qty</th>
-                            <th >Price</th>
-                            <th >Amount</th>
+                            <th> Item Description</th>
+                            <th>Qty</th>
+                            <th>Price</th>
+                            <th>Amount</th>
                         </tr>
                         {data.lines.map((l, i) => (
                             <tr key={i} style={{ marginBottom: "10px" }}>
                                 {/* <td>{l.ItemId}</td> */}
-                                <td style={{ borderRight: '2px solid #416364 ' }}>{l.description}</td>
-                                <td style={{ width: "20%", borderRight: '2px solid #416364 ' }}>{l.quantity}</td>
-                                <td style={{ width: "17%", borderRight: '2px solid #416364 ' }}>{l.price}</td>
+                                <td style={{ borderRight: "2px solid #416364 " }}>{l.description}</td>
+                                <td style={{ width: "20%", borderRight: "2px solid #416364 " }}>{l.quantity}</td>
+                                <td style={{ width: "17%", borderRight: "2px solid #416364 " }}>{l.price}</td>
                                 <td style={{ width: "17%" }}> {l.quantity * l.price} </td>
                             </tr>
                         ))}
                     </table>
-                    <div style={{ width: "100%", border: '2px solid #416364', borderTop: 'none', minHeight: '150px', padding: '10px 10px 10px 30px' }}>
+                    <div
+                        style={{
+                            width: "100%",
+                            border: "2px solid #416364",
+                            borderTop: "none",
+                            minHeight: "150px",
+                            padding: "10px 10px 10px 30px",
+                        }}
+                    >
                         <div style={{ width: "100%", display: "flex", alignItems: "center" }}>
-                            <div style={{ flex: 3, display: 'flex', flexDirection: 'column', marginTop: '20px' }}>
+                            <div style={{ flex: 3, display: "flex", flexDirection: "column", marginTop: "20px" }}>
                                 <strong> Approved By:</strong>
-                                <div style={{ display: 'flex', marginTop: '20px', alignItems: 'center' }}>X <div style={{ margin: '15px 10px 10px 10px ', borderBottom: '2px solid black ', width: '300px'}}></div></div>
+                                <div style={{ display: "flex", marginTop: "20px", alignItems: "center" }}>
+                                    X{" "}
+                                    <div style={{ margin: "15px 10px 10px 10px ", borderBottom: "2px solid black ", width: "300px" }}></div>
+                                </div>
                             </div>
-                            <div style={{
-                                flex:1,
-                                padding: " 5px 20px",
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'start',
-                            }}>
-                                <div>Subtotal :  {sum}$</div>
-                                <div>Freight :  {sum}$</div>
-                                <div>Sales Tax :  {sum}$</div>
-                                <div style={{fontWeight:'bold',width:'100%'}}>Order Total :<div style={{display:'flex',width:'100%',height:'auto', fontWeight:'bold',backgroundColor:'#c4d69c',borderBottom:'1px solid black ',padding:'3px 10px'}}>{sum}$</div></div>
+                            <div
+                                style={{
+                                    flex: 1,
+                                    padding: " 5px 20px",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: "start",
+                                }}
+                            >
+                                <div>Subtotal : {sum}$</div>
+                                <div>Freight : {sum}$</div>
+                                <div>Sales Tax : {sum}$</div>
+                                <div style={{ fontWeight: "bold", width: "100%" }}>
+                                    Order Total :
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            width: "100%",
+                                            height: "auto",
+                                            fontWeight: "bold",
+                                            backgroundColor: "#c4d69c",
+                                            borderBottom: "1px solid black ",
+                                            padding: "3px 10px",
+                                        }}
+                                    >
+                                        {sum}$
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    {/* <div style={{ width: "50%", textAlign: "center", fontSize: "large", fontWeight: "bold", marginLeft: "30px" }}></div>
-                    <div
-                        style={{
-                            width: "80%",
-                            marginLeft: "auto",
-                            marginRight: "auto",
-                            color: "darkred",
-                            fontSize: "small",
-                            marginTop: "30px",
-                            textAlign: "center",
-                        }}
-                    >
-                        <strong>Note :</strong> Any product that requires a data sheet, drawings, or specs, needs to be made to the DSPM
-                        specifications provided on documents or it will not be accepted.
-                    </div>
-                    <div
-                        style={{
-                            width: "50%",
-                            marginTop: "20px",
-                            fontSize: "10px",
-                            marginLeft: "auto",
-                            marginRight: "auto",
-                            textAlign: "center",
-                        }}
-                    >
-                        439 S. Stoddard Ave, San Bernardino, CA 92401 - Phone (909) 930-3353
-                    </div> */}
                 </div>
             </div>
             <Box textAlign="right">

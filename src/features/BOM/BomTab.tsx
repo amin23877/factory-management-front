@@ -15,13 +15,13 @@ const BomForm = ({
     bomId,
     onDone,
 }: {
-    itemId: number;
-    bomId?: number;
+    itemId: string;
+    bomId?: string;
     initialValues?: IBom;
     method: "post" | "patch";
     onDone: () => void;
 }) => {
-    const defValues: IBom = initialValues !== undefined ? initialValues : { note: "", no: "", name: "", current: false };
+    const defValues: IBom = initialValues ? initialValues : ({} as IBom);
 
     const schema = Yup.object().shape({
         name: Yup.string().required().min(3),
@@ -95,7 +95,7 @@ const BomForm = ({
     );
 };
 
-export default function BomTab({ itemId, selectedBom, refreshBoms }: { itemId: number; selectedBom: any; refreshBoms: () => void }) {
+export default function BomTab({ itemId, selectedBom, refreshBoms }: { itemId: string; selectedBom: any; refreshBoms: () => void }) {
     const [activeTab, setActiveTab] = useState(0);
     const [confirm, setConfirm] = useState(false);
 

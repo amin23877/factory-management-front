@@ -6,13 +6,13 @@ import Dialog from "../../app/Dialog";
 import Button from "../../app/Button";
 
 import { createAModelDocument, updateAModelDocument, deleteAModelDocument } from "../../api/document";
-import PhotoSizeSelectActualOutlinedIcon from '@material-ui/icons/PhotoSizeSelectActualOutlined';
+import PhotoSizeSelectActualOutlinedIcon from "@material-ui/icons/PhotoSizeSelectActualOutlined";
 
 interface IDocumentModal {
     open: boolean;
     model: string;
     onDone?: () => void;
-    itemId: number;
+    itemId: any;
     onClose: () => void;
     docData?: any;
 }
@@ -50,7 +50,7 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
                                 .catch((e) => console.log(e))
                                 .finally(() => setSubmitting(false));
                         } else {
-                            createAModelDocument(model, itemId, values.file, values.description)
+                            createAModelDocument(model, itemId as any, values.file, values.description)
                                 .then((d) => {
                                     console.log(d);
                                     setSubmitting(false);
@@ -70,12 +70,17 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
                                     hidden
                                     onChange={(e) => e.target.files !== null && setFieldValue("file", e.target.files[0])}
                                 />
-                                <Button color="primary" style={{
-                                    backgroundColor: "#fff", 
-                                    color: " rgb(43,140,255) ",
-                                     border: "1px solid rgb(43,140,255) ",
-                                    width: "100%",
-                                }} variant="contained" onClick={() => fileUploader.current?.click()}>
+                                <Button
+                                    color="primary"
+                                    style={{
+                                        backgroundColor: "#fff",
+                                        color: " rgb(43,140,255) ",
+                                        border: "1px solid rgb(43,140,255) ",
+                                        width: "100%",
+                                    }}
+                                    variant="contained"
+                                    onClick={() => fileUploader.current?.click()}
+                                >
                                     <PhotoSizeSelectActualOutlinedIcon style={{ marginRight: "7px" }} />
                                     Upload file
                                 </Button>
@@ -88,8 +93,8 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
                                             Download previous file
                                         </Link>
                                     ) : (
-                                                ""
-                                            )}
+                                        ""
+                                    )}
                                 </div>
 
                                 <TextField
@@ -104,8 +109,8 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <Box style={{display:"flex" ,width:"100%"}}>
-                                    <Button type="submit" kind={docData ? "edit" : "add"} disabled={isSubmitting} style={{flex:1}}>
+                                <Box style={{ display: "flex", width: "100%" }}>
+                                    <Button type="submit" kind={docData ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
                                         Save
                                     </Button>
                                     {docData && (

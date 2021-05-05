@@ -26,7 +26,7 @@ export default function VendingModal({
     onDone: () => void;
 }) {
     const schema = Yup.object().shape({
-        ItemId: Yup.number().required(),
+        ItemId: Yup.string().required(),
         leadTime: Yup.number().required(),
         lastCheckedPrice: Yup.number().required(),
     });

@@ -53,7 +53,7 @@ export default function POPanel() {
     const refreshNotes = async () => {
         try {
             if (selectedPO && selectedPO.id) {
-                const resp = await getAllModelNotes("po", selectedPO.id);
+                const resp = await getAllModelNotes("po", selectedPO.id as any);
                 setNotes(resp);
             }
         } catch (error) {
@@ -64,7 +64,7 @@ export default function POPanel() {
     const refreshDocs = async () => {
         try {
             if (selectedPO && selectedPO.id) {
-                const resp = await getAllModelDocuments("po", selectedPO.id);
+                const resp = await getAllModelDocuments("po", selectedPO.id as any);
                 setDocs(resp);
             }
         } catch (error) {
@@ -86,7 +86,7 @@ export default function POPanel() {
     const handleDelete = async () => {
         try {
             if (selectedPO && selectedPO.id) {
-                const resp = deletePO(selectedPO.id);
+                const resp = deletePO(selectedPO.id as any);
                 if (resp) {
                     refreshPOs();
                     setActiveTab(0);
@@ -105,7 +105,7 @@ export default function POPanel() {
                 <NoteModal
                     open={noteModal}
                     onClose={() => setNoteModal(false)}
-                    itemId={selectedPO.id}
+                    itemId={selectedPO.id as any}
                     model="po"
                     noteData={selectedNote}
                     onDone={refreshNotes}

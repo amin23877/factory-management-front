@@ -265,7 +265,7 @@ const Inventory = () => {
                 <NoteModal
                     onDone={refreshNotes}
                     noteData={selectedNote}
-                    itemId={selectedItem.id}
+                    itemId={selectedItem.id as any}
                     model="item"
                     open={editNoteModal}
                     onClose={() => setEditNoteModal(false)}
@@ -275,7 +275,7 @@ const Inventory = () => {
                 <DocumentModal
                     onDone={refreshDocs}
                     open={editDocModal}
-                    itemId={selectedItem.id}
+                    itemId={selectedItem.id as any}
                     model="item"
                     onClose={() => setEditDocModal(false)}
                     docData={selectedDoc}
@@ -285,7 +285,7 @@ const Inventory = () => {
             {selectedItem && selectedItem.id && (
                 <NoteModal
                     onDone={refreshNotes}
-                    itemId={selectedItem.id}
+                    itemId={selectedItem.id as any}
                     model="item"
                     open={addNoteModal}
                     onClose={() => setAddNoteModal(false)}
@@ -296,7 +296,7 @@ const Inventory = () => {
                     onDone={refreshDocs}
                     open={addDocModal}
                     onClose={() => setAddDocModal(false)}
-                    itemId={selectedItem.id}
+                    itemId={selectedItem.id as any}
                     model="item"
                 />
             )}

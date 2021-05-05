@@ -30,7 +30,7 @@ export default function MainForm({
     const [items, setItems] = useState([]);
 
     const schema = Yup.object().shape({
-        ItemId: Yup.number().required(),
+        ItemId: Yup.string().required(),
         quantity: Yup.number().required().min(1),
         price: Yup.number().required().min(0.1),
     });

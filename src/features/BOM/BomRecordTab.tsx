@@ -19,18 +19,17 @@ const BomRecordForm = ({
     bomRecordId,
     onDone,
 }: {
-    itemId?: number;
-    bomId: number;
-    bomRecordId?: number;
+    itemId?: string;
+    bomId: string;
+    bomRecordId?: string;
     initialValues?: IBomRecord;
     method: "post" | "patch";
     onDone: () => void;
 }) => {
-    const defValues: IBomRecord =
-        initialValues !== undefined ? initialValues : { ItemId: 0, index: 0, usage: 0, revision: "", fixedQty: false };
+    const defValues: IBomRecord = initialValues ? initialValues : ({} as IBomRecord);
 
     const schema = Yup.object().shape({
-        ItemId: Yup.number().required().notOneOf([0]),
+        ItemId: Yup.string().required().notOneOf([0]),
     });
 
     const handleSubmit = async (values: IBomRecord, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
@@ -123,8 +122,8 @@ export default function BomRecordTab({
     selectedRecord,
     refreshRecords,
 }: {
-    itemId: number;
-    bomId: number;
+    itemId: string;
+    bomId: string;
     selectedRecord: any;
     refreshRecords: () => void;
 }) {
@@ -134,7 +133,7 @@ export default function BomRecordTab({
     const handleDelete = async () => {
         try {
             const resp = await deleteBomRecord(selectedRecord.id);
-            console.log(resp);
+            // console.log(resp);
             refreshRecords();
             setConfirm(false);
         } catch (error) {

@@ -75,11 +75,11 @@ export const GeneralForm = ({
 
             <FieldSelect
                 style={{ width: "100%" }}
-                value={values.client}
+                value={values.ClientId}
                 request={getClients}
                 itemTitleField="name"
                 itemValueField="id"
-                name="client"
+                name="ClientId"
                 label="Client"
                 onChange={handleChange}
             />

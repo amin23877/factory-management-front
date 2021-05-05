@@ -18,7 +18,7 @@ interface INoteModal {
     open: boolean;
     onClose: () => void;
     model: string;
-    itemId: number;
+    itemId: any;
     noteData?: INote;
     onDone?: () => void;
 }
@@ -42,7 +42,7 @@ export default function NoteModal({ open, onClose, model, itemId, noteData, onDo
                                 .finally(() => setSubmitting(false));
                         } else {
                             // console.log(values);
-                            createAModelNote(model, itemId, values)
+                            createAModelNote(model, itemId as any, values)
                                 .then((d) => {
                                     console.log(d);
                                     onDone && onDone();
@@ -80,7 +80,7 @@ export default function NoteModal({ open, onClose, model, itemId, noteData, onDo
                                 />
                             </div>
                             <TextField
-                                style={{ width:'100%' }}
+                                style={{ width: "100%" }}
                                 name="note"
                                 onBlur={handleBlur}
                                 onChange={handleChange}

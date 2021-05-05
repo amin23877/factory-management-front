@@ -16,7 +16,7 @@ export const DocumentsDataGrid = ({ documents, onDocumentSelected }: { documents
     const docCols: ColDef[] = [
         { field: "name", headerName: "Name" },
         { field: "description", headerName: "Description", width: 250 },
-        { field: "createdAt", headerName: "Created at", width: 300 },
+        // { field: "createdAt", headerName: "Created at", width: 300 },
     ];
 
     return <BaseDataGrid cols={docCols} rows={documents} onRowSelected={onDocumentSelected} height={300} />;

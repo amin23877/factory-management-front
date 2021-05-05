@@ -21,7 +21,7 @@ export const RecordDocuments = ({
     ];
 
     useEffect(() => {
-        getAllModelDocuments(model, itemId)
+        getAllModelDocuments(model, itemId as any)
             .then((data) => setRows(data))
             .catch((e) => console.log(e));
     }, [itemId, model]);

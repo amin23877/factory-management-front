@@ -14,7 +14,7 @@ export default function ManualCountModal({
     onClose,
     onDone,
 }: {
-    itemId: number;
+    itemId: string;
     open: boolean;
     onClose: () => void;
     onDone: () => void;

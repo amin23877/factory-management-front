@@ -1,13 +1,13 @@
 import Axios from 'axios';
 
 export interface IDocument {
-    id?: number,
+    id?: string,
     path?: string,
     file: File | string,
     description: string,
 }
 
-export const getAllModelDocuments = async (model:string, id:number) => {
+export const getAllModelDocuments = async (model:string, id:any) => {
     try {
         const resp = await Axios.get(`/document/${model}/${id}`);
         return resp.data;
@@ -16,7 +16,7 @@ export const getAllModelDocuments = async (model:string, id:number) => {
     }
 }
 
-export const createAModelDocument = async (model:string, id:number, file: any, description:string, fileName?:string) => {
+export const createAModelDocument = async (model:string, id:any, file: any, description:string, fileName?:string) => {
     try {
         const formData = new FormData();
         
@@ -31,7 +31,7 @@ export const createAModelDocument = async (model:string, id:number, file: any, d
     }
 }
 
-export const updateAModelDocument = async (docid:number, file: any, description:string) => {
+export const updateAModelDocument = async (docid:any, file: any, description:string) => {
     try {
         const formData = new FormData();
         formData.append('document', file);
@@ -43,7 +43,7 @@ export const updateAModelDocument = async (docid:number, file: any, description:
     }
 }
 
-export const deleteAModelDocument = async (docid:number) => {
+export const deleteAModelDocument = async (docid:any) => {
     try {
         const resp = await Axios.delete(`/document/${docid}`);
         return resp.data;

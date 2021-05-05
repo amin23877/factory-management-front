@@ -64,7 +64,7 @@ function Index() {
     const refreshDocs = async () => {
         try {
             if (selPO && selPO.id) {
-                const resp = await getAllModelDocuments("purchasePO", selPO.id);
+                const resp = await getAllModelDocuments("purchasePO", selPO.id as any);
                 resp && !resp.error && setDocs(resp);
             }
         } catch (error) {
@@ -76,7 +76,9 @@ function Index() {
         try {
             if (selPO && selPO.id) {
                 const resp = await getPurchasePOLines(selPO.id);
-                resp && setLines(resp);
+                if (typeof resp === "object") {
+                    setLines(resp);
+                }
             }
         } catch (error) {
             console.log(error);

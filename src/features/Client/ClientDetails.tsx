@@ -20,7 +20,7 @@ const EditClientForm = ({ clientTypes, data, onDone }: { clientTypes: any; data:
     const [msg, setMsg] = useState("");
 
     const schema = Yup.object().shape({
-        ClientTypeId: Yup.number().required(),
+        ClientTypeId: Yup.string().required(),
     });
 
     const { values, errors, handleChange, handleBlur, handleSubmit } = useFormik({
@@ -48,7 +48,7 @@ const EditClientForm = ({ clientTypes, data, onDone }: { clientTypes: any; data:
         },
     });
 
-    const specials = ["id", "createdAt", "updatedAt", "size", "prospect", "parent", "ClientTypeId"];
+    const specials = ["id", "createdAt", "updatedAt", "size", "prospect", "parent", "ClientTypeId", "__v", "_v"];
     let key: keyof typeof values;
     let fields: any[] = [];
     for (key in values) {

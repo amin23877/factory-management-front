@@ -24,8 +24,7 @@ export default function LineItemModal({
     LIData?: ILineItem;
 }) {
     const schema = Yup.object().shape({
-        index: Yup.number(),
-        ItemId: Yup.number().required().notOneOf([0]),
+        ItemId: Yup.string().required().notOneOf([0]),
         quantity: Yup.number().min(1),
         price: Yup.number(),
     });
@@ -72,7 +71,7 @@ export default function LineItemModal({
     };
 
     return (
-        <Dialog open={open} onClose={onClose} title={`${quoteId ? "Edit" : "Add"} line item to Quote`}>
+        <Dialog open={open} onClose={onClose} title={`${LIData ? "Edit" : "Add"} line item to Quote`}>
             <Box m={2} mr={3}>
                 <Formik validationSchema={schema} initialValues={LIData ? LIData : LineItemInit} onSubmit={handleSubmit}>
                     {({ values, handleChange, handleBlur, isSubmitting, errors, touched }) => (

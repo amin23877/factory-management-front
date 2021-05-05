@@ -10,7 +10,7 @@ import BaseDataGrid from "../../app/BaseDataGrid";
 import BomTab from "./BomTab";
 import BomRecordTab from "./BomRecordTab";
 
-export default function BOMModal({ open, onClose, itemId }: { itemId: number; open: boolean; onClose: () => void }) {
+export default function BOMModal({ open, onClose, itemId }: { itemId: string; open: boolean; onClose: () => void }) {
     const [activeTab, setActiveTab] = useState(0);
     const [rows, setRows] = useState<RowData[]>([]);
     const [bomRecords, setBomRecords] = useState([]);
