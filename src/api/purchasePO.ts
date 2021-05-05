@@ -36,7 +36,7 @@ export const getPurchasePOs = async () => {
 
 export const createPurchasePOComplete = async (data:IPurchasePOComplete) => {
     try {
-        const resp = await Axios.post('/puchasePO/complete', data);
+        const resp = await Axios.post('/purchasePO', data);
         return resp.data;
     } catch (error) {
         throw error;

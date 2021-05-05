@@ -356,7 +356,7 @@ export const LinesForm = ({
     const [createdItems, setCreatedItems] = useState<IPurchasePOLine[]>(data && data.lines ? data.lines : []);
 
     const schema = Yup.object().shape({
-        ItemId: Yup.number().required(),
+        ItemId: Yup.string().required(),
         quantity: Yup.number().required().min(1),
         price: Yup.number().required().min(0.1),
     });
@@ -499,9 +499,9 @@ export const LinesForm = ({
 
 export const CreateForm = ({ onDone, data }: { data?: IPurchasePOComplete; onDone: (data: IPurchasePOComplete) => void }) => {
     const schema = Yup.object().shape({
-        requester: Yup.number().required(),
-        VendorId: Yup.number().required(),
-        ContactId: Yup.number().required(),
+        requester: Yup.string().required(),
+        VendorId: Yup.string().required(),
+        ContactId: Yup.string().required(),
     });
 
     const handleSubmit = (d: IPurchasePOComplete) => {
@@ -542,7 +542,7 @@ export const CreateForm = ({ onDone, data }: { data?: IPurchasePOComplete; onDon
                         <FieldSelect
                             style={{ width: "100%" }}
                             request={getContacts}
-                            itemTitleField="lastName"
+                            itemTitleField="name"
                             itemValueField="id"
                             name="ContactId"
                             label="Contact"
