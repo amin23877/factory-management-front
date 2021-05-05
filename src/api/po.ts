@@ -5,6 +5,7 @@ export interface IPO {
     path?: string;
     number?: string;
     file?: any;
+    senderNumber?: string;
     reciever?: number;
     ContactId?: number;
     ClientId?: number;
@@ -30,7 +31,7 @@ export const createPO = async (data: IPO) => {
     }
 };
 
-export const updatePO = async (id:number,data: IPO) => {
+export const updatePO = async (id: number, data: IPO) => {
     try {
         const formData = new FormData();
         formData.append("file", data.file);

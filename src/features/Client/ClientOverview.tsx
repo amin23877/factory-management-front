@@ -13,43 +13,35 @@ export default function ClientOverview({ rows, onRowSelected }: { rows: RowData[
         {
             field: "size",
             flex: 1,
-            headerName: "size"
+            headerName: "size",
         },
         {
             field: "address",
             headerName: "address",
             width: 170,
             flex: 1,
-            valueGetter: ({ data }) => (data.address ? data.address.address : "")
+            valueGetter: ({ data }) => (data.address ? data?.address?.address : ""),
         },
         {
             field: "contact",
             headerName: "contact",
             flex: 1,
             width: 170,
-            valueGetter: ({ data }) => (data.contact ? data.contact.firstName + " " + data.contact.lastName : ""),
+            valueGetter: ({ data }) => (data.contact ? data?.contact?.name : ""),
         },
         {
             field: "phone",
             headerName: "phone",
             width: 170,
             flex: 1,
-            valueGetter: ({ data }) => (data.phone ? data.phone.ext + " " + data.phone.phone : ""),
+            valueGetter: ({ data }) => (data.phone ? data?.phone?.ext + " " + data?.phone?.phone : ""),
         },
         {
             field: "Type",
             flex: 1,
-            valueGetter: ({ data }) => data.ClientType.name,
+            valueGetter: ({ data }) => data?.ClientType?.name,
         },
     ];
 
-    return (
-        <BaseDataGrid
-            
-            rows={rows}
-            onRowSelected={onRowSelected}
-            cols={cols}
-        />
-    );
-
+    return <BaseDataGrid rows={rows} onRowSelected={onRowSelected} cols={cols} />;
 }

@@ -13,6 +13,7 @@ import { getEmails } from "../../api/emailAddress";
 import { getProjects } from "../../api/project";
 import { getAllAgencies } from "../../api/agency";
 import { getQuoteById, getQuotes } from "../../api/quote";
+import { getAllDivison } from "../../api/division";
 
 export const GeneralForm = ({
     handleChange,
@@ -27,16 +28,11 @@ export const GeneralForm = ({
 }) => {
     const [selectedQuote, setSelectedQuote] = useState<number>();
 
-    // const updateInitial = () => {}
-
     useEffect(() => {
         if (selectedQuote) {
             getQuoteById(selectedQuote)
                 .then((d) => {
-                    // console.log(d);
                     const {
-                        location,
-                        leadTime,
                         frieghtTerms,
                         paymentTerms,
                         carrier,
@@ -65,8 +61,6 @@ export const GeneralForm = ({
                     } = d;
                     onChangeInit({
                         ...values,
-                        location,
-                        leadTime,
                         frieghtTerms,
                         paymentTerms,
                         carrier,
@@ -103,35 +97,6 @@ export const GeneralForm = ({
             <Typography variant="h6">General</Typography>
             <div style={{ width: "100%", display: "flex" }}>
                 <TextField
-                    style={{ flex: 1, marginRight: 8 }}
-                    value={values.number}
-                    name="number"
-                    label="number"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
-
-                <TextField
-                    style={{ flex: 1 }}
-                    value={values.location}
-                    name="location"
-                    label="location"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    fullWidth
-                />
-            </div>
-            <div style={{ width: "100%", display: "flex" }}>
-                <TextField
-                    style={{ flex: 1, marginRight: 8 }}
-                    value={values.leadTime}
-                    name="leadTime"
-                    label="leadTime"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    fullWidth
-                />
-                <TextField
                     style={{ flex: 1 }}
                     value={values.freightTerms}
                     name="freightTerms"
@@ -164,9 +129,9 @@ export const GeneralForm = ({
 
             <FieldSelect
                 style={{ flex: 1, width: "100%" }}
-                value={values.quotenumber}
-                name="quotenumber"
-                label="quotenumber"
+                value={values.QuoteId}
+                name="QuoteId"
+                label="QuoteId"
                 request={getQuotes}
                 itemTitleField="number"
                 itemValueField="id"
@@ -174,6 +139,28 @@ export const GeneralForm = ({
                     setSelectedQuote(e.target.value as number);
                     handleChange(e);
                 }}
+                onBlur={handleBlur}
+            />
+            <FieldSelect
+                style={{ flex: 1, width: "100%" }}
+                value={values.issuedBy}
+                name="issuedBy"
+                label="issuedBy"
+                request={getAllEmployees}
+                itemTitleField="username"
+                itemValueField="id"
+                onChange={handleChange}
+                onBlur={handleBlur}
+            />
+            <FieldSelect
+                style={{ flex: 1, width: "100%" }}
+                value={values.DivisionId}
+                name="DivisionId"
+                label="DivisionId"
+                request={getAllDivison}
+                itemTitleField="name"
+                itemValueField="id"
+                onChange={handleChange}
                 onBlur={handleBlur}
             />
             <ArraySelect
@@ -192,6 +179,15 @@ export const GeneralForm = ({
                 value={String(values.expodate)}
                 control={<Checkbox checked={Boolean(values.expodate)} />}
                 label="Expodate"
+                onChange={handleChange}
+                onBlur={handleBlur}
+            />
+            <FormControlLabel
+                style={{ marginLeft: "5px" }}
+                name="noTaxClient"
+                value={String(values.noTaxClient)}
+                control={<Checkbox checked={Boolean(values.noTaxClient)} />}
+                label="No tax client"
                 onChange={handleChange}
                 onBlur={handleBlur}
             />

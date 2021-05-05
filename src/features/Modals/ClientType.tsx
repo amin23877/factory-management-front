@@ -5,7 +5,7 @@ import Dialog from "../../app/Dialog";
 import { GeneralForm } from "../../app/Forms";
 
 import { addClientType, deleteClientType, editClientType, getClientTypes } from "../../api/clientType";
-import { addEmailType, deleteEmailType, editEmailType, getEmailTypes } from "../../api/emailType";
+import { addEmailAddressType, deleteEmailAddressType, editEmailAddressType, getEmailAddressTypes } from "../../api/emailAddressType";
 import { addContactType, deleteContactType, editContactType, getContactTypes } from "../../api/contactType";
 import { addPhoneType, deletePhoneType, editPhoneType, getPhoneTypes } from "../../api/phoneType";
 import { addAddressType, deleteAddressType, editAddressType, getAddressTypes } from "../../api/addressType";
@@ -35,11 +35,11 @@ export const AllClientTypesModal = ({ open, onClose, onCTDone }: { onCTDone: () 
                 )}
                 {activeTab === 1 && (
                     <GeneralForm
-                        type="Email Type"
-                        addRecord={addEmailType}
-                        deleteRecord={deleteEmailType}
-                        getRecord={getEmailTypes}
-                        updateRecord={editEmailType}
+                        type="Email address type"
+                        addRecord={addEmailAddressType}
+                        deleteRecord={deleteEmailAddressType}
+                        getRecord={getEmailAddressTypes}
+                        updateRecord={editEmailAddressType}
                     />
                 )}
                 {activeTab === 2 && (

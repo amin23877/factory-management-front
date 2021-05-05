@@ -2,8 +2,7 @@ import Axios from "axios";
 
 export interface IContact {
     id?: number,
-    firstName:string,
-    lastName:string,
+    name:string,
     title:string,
     department:string,
     refferedBy:string,

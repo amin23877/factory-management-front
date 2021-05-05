@@ -44,18 +44,19 @@
     cursor: pointer;
 }
 table,
-th,
 td {
-    padding: 10px 10px;
+    padding: 10px ;
     text-align: center;
-    border-right: 1px black solid;
 }
 
-th {
-    border-right: none;
+table{
+    min-height: 100px;
+}
+
+th{
+    padding: 2px ;
 }
 
 table {
-    border: 1px solid black;
     border-collapse: collapse;
 }

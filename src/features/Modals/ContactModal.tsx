@@ -69,27 +69,7 @@ export const ContactModal = ({
         <Dialog open={open} onClose={onClose} title={`${data?.id ? "Edit" : "Add"} a Contact to ${model}`}>
             <Box m={3}>
                 <Formik
-                    initialValues={
-                        data?.id
-                            ? data
-                            : {
-                                  firstName: "",
-                                  lastName: "",
-                                  title: "",
-                                  department: "",
-                                  refferedBy: "",
-                                  linkedIn: "",
-                                  facebook: "",
-                                  instagram: "",
-                                  website: "",
-                                  optout: false,
-                                  mi: "",
-                                  prefix: "",
-                                  active: false,
-                                  main: false,
-                                  ContactTypeId: 0,
-                              }
-                    }
+                    initialValues={data?.id ? data : ({} as IContact)}
                     validationSchema={schema}
                     onSubmit={(values, { setSubmitting }) => {
                         if (data?.id) {
@@ -130,24 +110,13 @@ export const ContactModal = ({
                                 <div style={{ display: "flex", width: "100%" }}>
                                     <TextField
                                         style={{ flex: 1, marginRight: 8 }}
-                                        name="firstName"
+                                        name="name"
                                         onBlur={handleBlur}
                                         onChange={handleChange}
-                                        error={Boolean(errors.firstName && touched.firstName)}
-                                        helperText={errors.firstName && touched.firstName}
-                                        value={values.firstName}
-                                        label="firstName"
-                                        fullWidth
-                                    />
-                                    <TextField
-                                        style={{ flex: 1 }}
-                                        name="lastName"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        error={Boolean(errors.lastName && touched.lastName)}
-                                        helperText={errors.lastName && touched.lastName}
-                                        value={values.lastName}
-                                        label="lastName"
+                                        error={Boolean(errors.name && touched.name)}
+                                        helperText={errors.name && touched.name}
+                                        value={values.name}
+                                        label="name"
                                         fullWidth
                                     />
                                 </div>

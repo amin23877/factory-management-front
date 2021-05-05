@@ -1,43 +1,42 @@
 import React from "react";
+import { Box } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import { getItems } from "../../api/items";
 
 import Button from "../../app/Button";
 import Dialog from "../../app/Dialog";
-import { FieldSelect } from "../../app/Inputs";
-import TextField from "../../app/TextField";
-import { Box } from "@material-ui/core";
 
-export default function AddServiceModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+import { createFieldService, IFieldService } from "../../api/fieldService";
+import FieldServiceForm from "./Forms";
+
+export default function AddServiceModal({ open, onClose, onDone }: { open: boolean; onClose: () => void; onDone: () => void }) {
+    const schema = Yup.object().shape({
+        name: Yup.string().required(),
+        price: Yup.string().required(),
+        length: Yup.string().required(),
+        ItemId: Yup.string().required(),
+    });
+
+    const handleSubmit = async (data: any) => {
+        try {
+            const resp = await createFieldService(data);
+            if (resp) {
+                onDone();
+                onClose();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <Dialog open={open} onClose={onClose} title="Add new field service" fullWidth maxWidth="sm">
             <Box p={2}>
-                <Formik initialValues={{} as any} onSubmit={(d) => console.log(d)}>
+                <Formik initialValues={{} as IFieldService} validationSchema={schema} onSubmit={handleSubmit}>
                     {({ values, errors, handleChange, handleBlur }) => (
                         <Form>
                             <Box display="flex" flexDirection="column">
-                                <FieldSelect
-                                    request={getItems}
-                                    itemTitleField="name"
-                                    itemValueField="id"
-                                    label="Item"
-                                    name="ItemId"
-                                    value={values.ItemId}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    fullWidth
-                                />
-                                <TextField label="Name" name="name" value={values.name} onChange={handleChange} onBlur={handleBlur} />
-                                <TextField label="length" name="length" value={values.length} onChange={handleChange} onBlur={handleBlur} />
-                                <TextField
-                                    label="Price"
-                                    name="price"
-                                    type="number"
-                                    value={values.price}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
+                                <FieldServiceForm values={values} handleChange={handleChange} handleBlur={handleBlur} errors={errors} />
                                 <Button style={{ margin: "0.5em 0" }} type="submit" kind="add">
                                     Save
                                 </Button>

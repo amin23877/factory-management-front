@@ -3,17 +3,18 @@ import Axios from "axios";
 export interface ISO {
     id?: number;
     number: string;
-    location: string;
-    leadTime: string;
     frieghtTerms: string;
     paymentTerms: string;
     carrier: string;
-    quotenumber: string;
-    issuedBy?: number;
+    QuoteId: string;
+    issuedBy?: string;
     status: string;
 
     estShipDate: string;
     actShipDate: string;
+    DivisionId: string;
+    noTaxClient: boolean;
+    department: string;
 
     expodate: boolean;
     shippingAddress?: number;

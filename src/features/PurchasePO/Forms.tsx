@@ -84,16 +84,16 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
             if (divToPrint.current && createdPO.id) {
                 const { blobPDF, blobUrl } = await exportPdf(divToPrint.current);
                 // console.log({ blobPDF, blobUrl });
-                // const resp = await createAModelDocument(
-                //     "purchasePO",
-                //     createdPO.id,
-                //     blobPDF,
-                //     `${new Date().toJSON().slice(0, 19)} - ${createdPO.number}`,
-                //     `PO_${createdPO.number}.pdf`
-                // );
-                // if (resp) {
-                //     onDone();
-                // }
+                const resp = await createAModelDocument(
+                    "purchasePO",
+                    createdPO.id,
+                    blobPDF,
+                    `${new Date().toJSON().slice(0, 19)} - ${createdPO.number}`,
+                    `PO_${createdPO.number}.pdf`
+                );
+                if (resp) {
+                    onDone();
+                }
             }
         } catch (error) {
             console.log(error);
@@ -116,140 +116,158 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                     style={{
                         backgroundColor: "#fff",
                         color: "black",
-                        width: "600px",
-                        minHeight: "910px",
+                        width: "700px",
                         marginLeft: "auto",
                         marginRight: "auto",
-                        paddingRight: "2px",
                     }}
                 >
                     <div
                         style={{
                             width: "100%",
                             display: "flex",
-                            height: "100px",
-                            marginBottom: "20px",
+                            flexDirection: 'column',
+                            height: "150px",
+                            backgroundColor: '#416364',
+                            color: 'white',
                         }}
                     >
-                        <div style={{ marginRight: "10px", flex: 1 }}>
-                            <img src={pdfLogo} alt="DSPM" style={{ width: "100%" }} />
-                        </div>
-                        <div style={{ marginRight: "10px", flex: 1 }}>
-                            Digital Signal Power Manufacturer, Inc. 439 S. Stoddard Ave San Bernardino, CA 92401 (909) 930-3353 • FAX (909)
-                            930-3335
-                        </div>
-                        <div
-                            style={{
-                                flex: 1,
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "end",
-                                justifyContent: "space-between",
-                            }}
-                        >
-                            <div style={{ fontSize: "large", fontWeight: "bold", textAlign: "end", marginLeft: "auto" }}>
+                        <div>
+                            <div style={{ fontSize: "x-large", textAlign: "center", marginBottom: '10px', marginTop: '20px' }}>
                                 Purchase Order
                             </div>
-                            <div style={{ width: "100%", flex: 1 }}>
-                                <table style={{ width: "100%", height: "100%" }}>
+                        </div>
+                        <div>
+
+                            {/* <div style={{ marginRight: "10px", flex: 1 }}>
+                                Digital Signal Power Manufacturer, Inc. 439 S. Stoddard Ave San Bernardino, CA 92401 (909) 930-3353 • FAX (909)
+                                930-3335
+                            </div>
+                            <div
+                                style={{
+                                    flex: 1,
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    alignItems: 'flex-start',
+                                    textAlign: 'left',
+                                    justifyContent: "space-between",
+                                }}
+                            >
+
+                                <div style={{ width: "100%", flex: 1 }}>
+                                   <table style={{ width: "100%", height: "100%" }}>
                                     <tr
-                                        style={{
-                                            borderBottom: "black 1px solid",
-                                            width: "100%",
-                                            height: "50%",
-                                        }}
+                                    style={{
+                                        borderBottom: "black 1px solid",
+                                        width: "100%",
+                                        height: "50%",
+                                    }}
                                     >
-                                        <td style={{ flex: 1, fontSize: "small" }}> {createdPO?.createdAt?.slice(0, 10)} </td>
-                                        <td style={{ flex: 1, fontSize: "small" }}> {createdPO.number} </td>
+                                    <td style={{ flex: 1, fontSize: "small" }}> {createdPO?.createdAt?.slice(0, 10)} </td>
+                                    <td style={{ flex: 1, fontSize: "small" }}> {createdPO.number} </td>
                                     </tr>
                                     <tr>
-                                        <td style={{ borderRight: "none", flex: 1 }}></td>
-                                        <td style={{ flex: 1 }}></td>
+                                    <td style={{ borderRight: "none", flex: 1 }}></td>
+                                    <td style={{ flex: 1 }}></td>
                                     </tr>
-                                </table>
-                            </div>
+                                </table> 
+                                </div>
+                            </div> */}
                         </div>
                     </div>
-                    <table style={{ width: "100%" }}>
+                    <table style={{ width: "100%", border: '2px solid #416364', borderTop: 'none', minHeight: '150px', borderBottom: 'none' }}>
                         <tr
                             style={{
-                                backgroundColor: "lightgray",
-                                height: "50px",
-                                borderBottom: "black 1px solid",
+                                backgroundColor: "#c4d69c",
                                 width: "100%",
+                                height: '26px'
                             }}
                         >
-                            <th>Vendor</th>
-                            <th>Bill to </th>
-                            <th>Ship to </th>
+                            {/* <th>Vendor</th> */}
+                            <th>Purchase from :</th>
+                            {/* <th>Bill to </th> */}
+                            <th>Ship to : </th>
                         </tr>
-                        <tr>
-                            <td>{vendor?.name}</td>
-                            <td>{contact?.lastName}</td>
-                            <td>{contact?.department}</td>
+                        <tr className='minHeight'>
+                            <td >{vendor?.name}</td>
+                            <td >{contact?.name}</td>
+                            {/* <td>{contact?.department}</td> */}
                         </tr>
                     </table>
-                    <table style={{ width: "100%" }}>
+                    <table style={{ width: "100%", border: '2px solid #416364', borderTop: 'none', minHeight: '100px', borderBottom: 'none' }}>
                         <tr
                             style={{
-                                backgroundColor: "lightgray",
-                                height: "50px",
-                                borderBottom: "black 1px solid",
+                                backgroundColor: "#c4d69c",
                                 width: "100%",
+                                height: '26px'
                             }}
                         >
-                            <th>Phone</th>
+                            {/* <th>Phone</th>
                             <th>Fax</th>
                             <th>RMA No.</th>
                             <th>Terms</th>
                             <th>Date</th>
-                            <th>Ship via</th>
+                            <th>Ship via</th> */}
+                            <th>Shipping Method</th>
+                            <th>Payment Terms</th>
+                            <th>Required By Date</th>
                         </tr>
-                        <tr>
-                            <td>123 456 789</td>
+                        <tr >
+                            <td style={{ borderRight: '2px solid #416364 ' }}></td>
+                            <td style={{ borderRight: '2px solid #416364 ', width: '20%' }}></td>
+                            <td style={{ width: '34%' }}></td>
+                            {/* <td>123 456 789</td>
                             <td>123 456 789</td>
                             <td>123 456 789</td>
                             <td> </td>
                             <td>{createdPO?.createdAt?.slice(0, 10)}</td>
-                            <td> </td>
+                            <td> </td> */}
                         </tr>
                     </table>
-                    <table style={{ width: "100%" }}>
+                    <table style={{ width: "100%", border: '2px solid #416364', borderTop: 'none' }}>
                         <tr
                             style={{
-                                backgroundColor: "lightgray",
-                                height: "50px",
-                                borderBottom: "black 1px solid",
+                                backgroundColor: "#c4d69c",
                                 width: "100%",
+                                height: '26px'
                             }}
                         >
-                            <th style={{ borderRight: "1px solid black" }}>Item</th>
-                            <th style={{ borderRight: "1px solid black" }}>Description</th>
-                            <th style={{ borderRight: "1px solid black" }}>Qty</th>
-                            <th style={{ borderRight: "1px solid black" }}>Price</th>
-                            <th style={{ borderRight: "1px solid black", fontSize: "small" }}>Date required</th>
-                            <th style={{ borderRight: "1px solid black" }}>Rate</th>
-                            <th style={{ borderRight: "1px solid black" }}>MPN</th>
-                            <th style={{ borderRight: "1px solid black" }}>Amount</th>
+                            {/* <th style={{ borderRight: "1px solid black" }}>Item</th> */}
+                            <th > Item Description</th>
+                            <th >Qty</th>
+                            <th >Price</th>
+                            <th >Amount</th>
                         </tr>
                         {data.lines.map((l, i) => (
                             <tr key={i} style={{ marginBottom: "10px" }}>
-                                <td>{l.ItemId}</td>
-                                <td style={{ width: "30%" }}>{l.description}</td>
-                                <td>{l.quantity}</td>
-                                <td>{l.price}</td>
-                                <td> </td>
-                                <td> </td>
-                                <td> </td>
-                                <td> {l.quantity * l.price} </td>
+                                {/* <td>{l.ItemId}</td> */}
+                                <td style={{ borderRight: '2px solid #416364 ' }}>{l.description}</td>
+                                <td style={{ width: "20%", borderRight: '2px solid #416364 ' }}>{l.quantity}</td>
+                                <td style={{ width: "17%", borderRight: '2px solid #416364 ' }}>{l.price}</td>
+                                <td style={{ width: "17%" }}> {l.quantity * l.price} </td>
                             </tr>
                         ))}
                     </table>
-                    <div style={{ width: "100%", display: "flex", alignItems: "center" }}>
-                        <div style={{ flex: 1 }}>notes :</div>
-                        <div style={{ padding: " 5px 20px", border: "1px solid black", borderTop: "none" }}>total :{sum}$</div>
+                    <div style={{ width: "100%", border: '2px solid #416364', borderTop: 'none', minHeight: '150px', padding: '10px 10px 10px 30px' }}>
+                        <div style={{ width: "100%", display: "flex", alignItems: "center" }}>
+                            <div style={{ flex: 3, display: 'flex', flexDirection: 'column', marginTop: '20px' }}>
+                                <strong> Approved By:</strong>
+                                <div style={{ display: 'flex', marginTop: '20px', alignItems: 'center' }}>X <div style={{ margin: '15px 10px 10px 10px ', borderBottom: '2px solid black ', width: '300px'}}></div></div>
+                            </div>
+                            <div style={{
+                                flex:1,
+                                padding: " 5px 20px",
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'start',
+                            }}>
+                                <div>Subtotal :  {sum}$</div>
+                                <div>Freight :  {sum}$</div>
+                                <div>Sales Tax :  {sum}$</div>
+                                <div style={{fontWeight:'bold',width:'100%'}}>Order Total :<div style={{display:'flex',width:'100%',height:'auto', fontWeight:'bold',backgroundColor:'#c4d69c',borderBottom:'1px solid black ',padding:'3px 10px'}}>{sum}$</div></div>
+                            </div>
+                        </div>
                     </div>
-                    <div style={{ width: "50%", textAlign: "center", fontSize: "large", fontWeight: "bold", marginLeft: "30px" }}></div>
+                    {/* <div style={{ width: "50%", textAlign: "center", fontSize: "large", fontWeight: "bold", marginLeft: "30px" }}></div>
                     <div
                         style={{
                             width: "80%",
@@ -275,7 +293,7 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                         }}
                     >
                         439 S. Stoddard Ave, San Bernardino, CA 92401 - Phone (909) 930-3353
-                    </div>
+                    </div> */}
                 </div>
             </div>
             <Box textAlign="right">
@@ -357,7 +375,7 @@ export const LinesForm = ({
     const [createdItems, setCreatedItems] = useState<IPurchasePOLine[]>(data && data.lines ? data.lines : []);
 
     const schema = Yup.object().shape({
-        ItemId: Yup.number().required(),
+        ItemId: Yup.string().required(),
         quantity: Yup.number().required().min(1),
         price: Yup.number().required().min(0.1),
     });
@@ -500,9 +518,9 @@ export const LinesForm = ({
 
 export const CreateForm = ({ onDone, data }: { data?: IPurchasePOComplete; onDone: (data: IPurchasePOComplete) => void }) => {
     const schema = Yup.object().shape({
-        requester: Yup.number().required(),
-        VendorId: Yup.number().required(),
-        ContactId: Yup.number().required(),
+        requester: Yup.string().required(),
+        VendorId: Yup.string().required(),
+        ContactId: Yup.string().required(),
     });
 
     const handleSubmit = (d: IPurchasePOComplete) => {
@@ -543,7 +561,7 @@ export const CreateForm = ({ onDone, data }: { data?: IPurchasePOComplete; onDon
                         <FieldSelect
                             style={{ width: "100%" }}
                             request={getContacts}
-                            itemTitleField="lastName"
+                            itemTitleField="name"
                             itemValueField="id"
                             name="ContactId"
                             label="Contact"
