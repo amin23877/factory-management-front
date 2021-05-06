@@ -49,7 +49,7 @@ export default function Roles() {
         refreshEmpsRoles();
     }, [addRoleModal]);
 
-    const toggleRole = async (id: number, role: number, v: boolean) => {
+    const toggleRole = async (id: string, role: string, v: boolean) => {
         try {
             if (v) {
                 const resp = await addRoleToEmployee(id, role);

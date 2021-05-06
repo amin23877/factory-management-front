@@ -1,16 +1,16 @@
 import Axios from "axios";
 
 export interface IPO {
-    id?: number;
+    id?: string;
     path?: string;
     number?: string;
     file?: any;
     senderNumber?: string;
-    reciever?: number;
-    ContactId?: number;
-    ClientId?: number;
-    EmployeeId?: number;
-    ProjectId?: number;
+    reciever?: string;
+    ContactId?: string;
+    ClientId?: string;
+    EmployeeId?: string;
+    ProjectId?: string;
 }
 
 export const createPO = async (data: IPO) => {
@@ -31,7 +31,7 @@ export const createPO = async (data: IPO) => {
     }
 };
 
-export const updatePO = async (id: number, data: IPO) => {
+export const updatePO = async (id: string, data: IPO) => {
     try {
         const formData = new FormData();
         formData.append("file", data.file);
@@ -58,7 +58,7 @@ export const getPO = async () => {
     }
 };
 
-export const deletePO = async (id: number) => {
+export const deletePO = async (id: string) => {
     try {
         const resp = await Axios.delete(`/po/${id}`);
         return resp.data;

@@ -42,7 +42,7 @@ export const addClient = async (clientData:IClient) => {
     }
 }
 
-export const deleteClient = async (id:number) => {
+export const deleteClient = async (id:string) => {
     try {
         const resp = await Axios.delete(`/client/${id}`);
         return resp.data;
@@ -51,7 +51,7 @@ export const deleteClient = async (id:number) => {
     }
 }
 
-export const editClient = async (id:number, data:IClient) => {
+export const editClient = async (id:string, data:IClient) => {
     try {
         const resp = await Axios.patch(`/client/${id}`, data);
         return resp.data;

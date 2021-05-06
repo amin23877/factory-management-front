@@ -26,7 +26,7 @@ export const GeneralForm = ({
     handleBlur: (a: any) => void;
     onChangeInit: (data: any) => void;
 }) => {
-    const [selectedQuote, setSelectedQuote] = useState<number>();
+    const [selectedQuote, setSelectedQuote] = useState<string>();
 
     useEffect(() => {
         if (selectedQuote) {
@@ -136,7 +136,7 @@ export const GeneralForm = ({
                 itemTitleField="number"
                 itemValueField="id"
                 onChange={(e) => {
-                    setSelectedQuote(e.target.value as number);
+                    setSelectedQuote(e.target.value as string);
                     handleChange(e);
                 }}
                 onBlur={handleBlur}

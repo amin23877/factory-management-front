@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 export interface IQuote {
-    id?: number | null;
+    id?: string;
     number?: string;
 
     entryDate: string;
@@ -26,15 +26,15 @@ export interface IQuote {
     regularCommission: number | null;
     overageCommission: number | null;
 
-    EmployeeId: number | null;
-    ProjectId: number | null;
+    EmployeeId: string | null;
+    ProjectId: string | null;
 }
 
 export interface ILineItem {
-    id?: number;
-    QuoteId?: number;
+    id?: string;
+    QuoteId?: string;
+    ItemId: string;
     index: number;
-    ItemId: number;
     description: string;
     quantity: number;
     price: number;
@@ -45,7 +45,7 @@ export const LineItemInit: any = {};
 
 export const QuoteInit: any = {};
 
-export const createLineItem = async (qId: number, data: ILineItem) => {
+export const createLineItem = async (qId: string, data: ILineItem) => {
     try {
         const resp = await Axios.post(`/quote/${qId}/line`, data);
         return resp.data;
@@ -54,7 +54,7 @@ export const createLineItem = async (qId: number, data: ILineItem) => {
     }
 };
 
-export const editLineItem = async (id: number, data: ILineItem) => {
+export const editLineItem = async (id: string, data: ILineItem) => {
     try {
         const resp = await Axios.patch(`/line/${id}`, data);
         return resp.data;
@@ -63,7 +63,7 @@ export const editLineItem = async (id: number, data: ILineItem) => {
     }
 };
 
-export const deleteLineItem = async (id: number) => {
+export const deleteLineItem = async (id: string) => {
     try {
         const resp = await Axios.delete(`/line/${id}`);
         return resp.data;
@@ -72,7 +72,7 @@ export const deleteLineItem = async (id: number) => {
     }
 };
 
-export const getLineItems = async (quoteId: number) => {
+export const getLineItems = async (quoteId: string) => {
     try {
         const resp = await Axios.get(`/line`, { params: { QuoteId: quoteId } });
         return resp.data;
@@ -90,7 +90,7 @@ export const getQuotes = async () => {
     }
 };
 
-export const getQuoteById = async (id: number) => {
+export const getQuoteById = async (id: string) => {
     try {
         const resp = await Axios.get(`/quote/${id}`);
         return resp.data;
@@ -113,7 +113,7 @@ export const createQuote = async (data: IQuote) => {
     }
 };
 
-export const updateQuote = async (id: number, data: IQuote) => {
+export const updateQuote = async (id: string, data: IQuote) => {
     try {
         const resp = await Axios.patch(`/quote/${id}`, {
             ...data,
@@ -127,7 +127,7 @@ export const updateQuote = async (id: number, data: IQuote) => {
     }
 };
 
-export const deleteQuote = async (id: number) => {
+export const deleteQuote = async (id: string) => {
     try {
         const resp = await Axios.delete(`/quote/${id}`);
         return resp.data;

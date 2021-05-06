@@ -7,7 +7,7 @@ export interface INote {
     url?: string;
 }
 
-export const getAllModelNotes = async (model: string, id: any) => {
+export const getAllModelNotes = async (model: string, id: string) => {
     try {
         const resp = await Axios.get(`/note/${model}/${id}`);
         return resp.data;
@@ -16,7 +16,7 @@ export const getAllModelNotes = async (model: string, id: any) => {
     }
 };
 
-export const createAModelNote = async (model: string, id: any, data: INote) => {
+export const createAModelNote = async (model: string, id: string, data: INote) => {
     try {
         const resp = await Axios.post(`/note/${model}/${id}`, data);
         return resp.data;
@@ -25,7 +25,7 @@ export const createAModelNote = async (model: string, id: any, data: INote) => {
     }
 };
 
-export const updateAModelNote = async (id: any, data: INote) => {
+export const updateAModelNote = async (id: string, data: INote) => {
     try {
         const resp = await Axios.patch(`/note/${id}`, data);
         return resp.data;
@@ -34,7 +34,7 @@ export const updateAModelNote = async (id: any, data: INote) => {
     }
 };
 
-export const deleteAModelNote = async (id: any) => {
+export const deleteAModelNote = async (id: string) => {
     try {
         const resp = await Axios.delete(`/note/${id}`);
         return resp.data;

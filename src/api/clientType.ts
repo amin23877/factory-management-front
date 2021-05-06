@@ -13,7 +13,7 @@ export const getClientTypes = async () => {
     }
 }
 
-export const addClientType = async (name:String) => {
+export const addClientType = async (name:string) => {
     try {
         const resp = await Axios.post('/clientType', {name});
         return resp.data;
@@ -22,7 +22,7 @@ export const addClientType = async (name:String) => {
     }
 }
 
-export const editClientType = async (id:number, name:string) => {
+export const editClientType = async (id:string, name:string) => {
     try {
         const resp = await Axios.patch(`/clientType/${id}`, {name});
         return resp.data;
@@ -31,7 +31,7 @@ export const editClientType = async (id:number, name:string) => {
     }
 }
 
-export const deleteClientType = async (id:number) => {
+export const deleteClientType = async (id:string) => {
     try {
         const resp = await Axios.delete(`/clientType/${id}`);
         return resp.data;

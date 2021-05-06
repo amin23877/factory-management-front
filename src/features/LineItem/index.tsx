@@ -19,7 +19,7 @@ export default function AddLineItemModal({
     onClose: () => void;
     onDone: () => void;
     record: "purchaseSO" | "purchasePO";
-    recordId: number;
+    recordId: string;
 }) {
     return (
         <Dialog open={open} onClose={onClose} title={`Add new line item to ${record === "purchasePO" ? "purchase order" : "sales order"}`}>

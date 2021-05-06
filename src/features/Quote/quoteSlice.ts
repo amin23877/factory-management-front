@@ -9,12 +9,12 @@ export const createQuoteThunk = createAsyncThunk("quote/createQuoteThunk", async
     return await createQuote(data);
 });
 
-export const deleteQuoteThunk = createAsyncThunk('quote/deleteQuoteThunk', async (id:number) => {
+export const deleteQuoteThunk = createAsyncThunk('quote/deleteQuoteThunk', async (id:string) => {
     const resp = await deleteQuote(id);
     return {...resp, id};
 })
 
-export const updateQuoteThunk = createAsyncThunk('quote/updateQuoteThunk', async (data:{id:number, data:IQuote}) => {
+export const updateQuoteThunk = createAsyncThunk('quote/updateQuoteThunk', async (data:{id:string, data:IQuote}) => {
     const resp =  await updateQuote(data.id, data.data);
     return {id:data.id, resp};
 })
@@ -88,7 +88,7 @@ const quoteSlice = createSlice({
         builder.addCase(deleteQuoteThunk.fulfilled, (state, action) => {
             if (action.payload) {
                 state.status = "success";
-                state.quotes = state.quotes.filter(q => q.id !== parseInt(action.payload.id));
+                state.quotes = state.quotes.filter(q => q.id !== action.payload.id);
             } else {
                 state.status = "error";
             }

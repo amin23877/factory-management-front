@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 export interface ISO {
-    id?: number;
+    id?: string;
     number: string;
     frieghtTerms: string;
     paymentTerms: string;
@@ -17,37 +17,37 @@ export interface ISO {
     department: string;
 
     expodate: boolean;
-    shippingAddress?: number;
-    shippingContact?: number;
-    shippingPhone?: number;
-    shippingEmail?: number;
+    shippingAddress?: string;
+    shippingContact?: string;
+    shippingPhone?: string;
+    shippingEmail?: string;
     shippingEntitiy: string;
 
-    billingContact?: number;
-    billingPhone?: number;
-    billingEmail?: number;
-    billingAddress?: number;
+    billingContact?: string;
+    billingPhone?: string;
+    billingEmail?: string;
+    billingAddress?: string;
     billingEntitiy: string;
 
-    agency?: number;
-    requester?: number;
-    ClientId?: number;
-    ProjectId?: number;
+    agency?: string;
+    requester?: string;
+    ClientId?: string;
+    ProjectId?: string;
 }
 
 export interface ILineItem {
-    id?: number;
-    SoId?: number;
+    id?: string;
+    SoId?: string;
+    ItemId: string;
     index: number;
-    ItemId: number;
     description: string;
     quantity: number;
     price: number;
     tax: boolean;
 }
 
-export const SOInit:any = {};
-export const LineItemInit:any = {};
+export const SOInit: any = {};
+export const LineItemInit: any = {};
 
 export const getSO = async () => {
     try {
@@ -71,7 +71,7 @@ export const createSO = async (data: ISO) => {
     }
 };
 
-export const editSO = async (id: number, data: ISO) => {
+export const editSO = async (id: string, data: ISO) => {
     try {
         const resp = await Axios.patch(`/so/${id}`, data);
         return resp.data;
@@ -80,7 +80,7 @@ export const editSO = async (id: number, data: ISO) => {
     }
 };
 
-export const deleteSO = async (id: number) => {
+export const deleteSO = async (id: string) => {
     try {
         const resp = await Axios.delete(`/so/${id}`);
         return resp.data;
@@ -89,7 +89,7 @@ export const deleteSO = async (id: number) => {
     }
 };
 
-export const createLineItem = async (soId: number, data: ILineItem) => {
+export const createLineItem = async (soId: string, data: ILineItem) => {
     try {
         const resp = await Axios.post(`/so/${soId}/line`, data);
         return resp.data;
@@ -98,7 +98,7 @@ export const createLineItem = async (soId: number, data: ILineItem) => {
     }
 };
 
-export const editLineItem = async (id: number, data: ILineItem) => {
+export const editLineItem = async (id: string, data: ILineItem) => {
     try {
         const resp = await Axios.patch(`/line/${id}`, data);
         return resp.data;
@@ -107,7 +107,7 @@ export const editLineItem = async (id: number, data: ILineItem) => {
     }
 };
 
-export const deleteLineItem = async (id: number) => {
+export const deleteLineItem = async (id: string) => {
     try {
         const resp = await Axios.delete(`/line/${id}`);
         return resp.data;
@@ -116,7 +116,7 @@ export const deleteLineItem = async (id: number) => {
     }
 };
 
-export const getLineItems = async (SOId: number) => {
+export const getLineItems = async (SOId: string) => {
     try {
         const resp = await Axios.get(`/line`, { params: { SOId } });
         return resp.data;

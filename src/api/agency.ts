@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 export interface IAgency {
-    id?:number;
+    id?:string;
     name:string
 }
 
@@ -23,7 +23,7 @@ export const createAModelAgency = async (id: string, name: string) => {
     }
 };
 
-export const updateAModelAgency = async (id: number, data: IAgency) => {
+export const updateAModelAgency = async (id: string, data: IAgency) => {
     try {
         const resp = await Axios.patch(`/agency/${id}`, data);
         return resp.data;
@@ -32,7 +32,7 @@ export const updateAModelAgency = async (id: number, data: IAgency) => {
     }
 };
 
-export const deleteAModelAgency = async (id: number) => {
+export const deleteAModelAgency = async (id: string) => {
     try {
         const resp = await Axios.delete(`/agency/${id}`);
         return resp.data;

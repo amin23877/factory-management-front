@@ -36,7 +36,7 @@ export const PhoneModal = ({
         <Dialog open={open} onClose={onClose} title={`${data?.id ? "Edit" : "Add"} a Phone to ${model}`}>
             <Box m={3}>
                 <Formik
-                    initialValues={data?.id ? data : { phone: "", ext: "", main: false, PhoneTypeId: 0 }}
+                    initialValues={data?.id ? data : ({} as IPhone)}
                     validationSchema={schema}
                     onSubmit={(values, { setSubmitting }) => {
                         if (data?.id) {

@@ -1,9 +1,9 @@
 import Axios from 'axios';
 
 export type IVending = {
-    id?:number,
-    VendorId: number,
-    ItemId: number,
+    id?:string,
+    VendorId: string,
+    ItemId: string,
     leadTime: number,
     lastCheckedPrice: number,
     comment: string
@@ -27,7 +27,7 @@ export const getVendings = async () => {
     }
 }
 
-export const updateVending = async (id:number, data:IVending) => {
+export const updateVending = async (id:string, data:IVending) => {
     try {
         const resp = await Axios.patch(`/vending/${id}`, data);
         return resp.data;
@@ -36,7 +36,7 @@ export const updateVending = async (id:number, data:IVending) => {
     }
 }
 
-export const deleteVending = async (id:number) => {
+export const deleteVending = async (id:string) => {
     try {
         const resp = await Axios.delete(`/vending/${id}`);
         return resp.data;

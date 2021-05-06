@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 export interface IProject {
-    id?: number;
+    id?: string;
     name: string;
 }
 
@@ -23,7 +23,7 @@ export const createProject = async (name: string) => {
     }
 };
 
-export const updateProject = async (pId: number, data: any) => {
+export const updateProject = async (pId: string, data: any) => {
     try {
         const resp = await Axios.patch(`/project/${pId}`, data);
         return resp.data;
@@ -32,7 +32,7 @@ export const updateProject = async (pId: number, data: any) => {
     }
 };
 
-export const deleteProject = async (pId: number) => {
+export const deleteProject = async (pId: string) => {
     try {
         const resp = await Axios.delete(`/project/${pId}`);
         return resp.data;

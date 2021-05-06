@@ -18,7 +18,7 @@ export const createFamily = async (name:string) => {
     }
 }
 
-export const updateFamily = async (familyId:number, name:string) => {
+export const updateFamily = async (familyId:string, name:string) => {
     try {
         const resp = await Axios.patch(`/itemfamily/${familyId}`, {name});
         return resp.data;
@@ -27,7 +27,7 @@ export const updateFamily = async (familyId:number, name:string) => {
     }
 }
 
-export const deleteFamily = async (familyId:number) => {
+export const deleteFamily = async (familyId:string) => {
     try {
         const resp = await Axios.delete(`/itemfamily/${familyId}`);
         return resp.data;

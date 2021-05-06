@@ -17,7 +17,7 @@ export default function LineItemModal({
     quoteId,
     LIData,
 }: {
-    quoteId?: number | null;
+    quoteId?: string | null;
     open: boolean;
     onClose: () => void;
     onDone: () => void;

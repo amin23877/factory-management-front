@@ -6,7 +6,7 @@ export interface ILogedinEmployee {
 }
 
 export interface IEmployee {
-    id?: number;
+    id?: string;
     username: string;
     password: string;
 }
@@ -38,7 +38,7 @@ export const getAllEmployees = async () => {
     }
 }
 
-export const getEmployeeRoles = async (id:number) => {
+export const getEmployeeRoles = async (id:string) => {
     try {
         const resp = await Axios.get(`/employee/${id}/role`);
         return resp.data;
@@ -47,7 +47,7 @@ export const getEmployeeRoles = async (id:number) => {
     }
 }
 
-export const deleteEmployee = async (id:number) => {
+export const deleteEmployee = async (id:string) => {
     try {
         const resp = await Axios.delete(`/employee/${id}`);
         return resp.data;
@@ -56,7 +56,7 @@ export const deleteEmployee = async (id:number) => {
     }
 }
 
-export const addRoleToEmployee = async (empId:number, role:number) => {
+export const addRoleToEmployee = async (empId:string, role:string) => {
     try {
         const resp = await Axios.post(`/employee/${empId}/${role}`);
         return resp.data;
@@ -65,7 +65,7 @@ export const addRoleToEmployee = async (empId:number, role:number) => {
     }
 }
 
-export const deleteRoleFromEmployee = async (empId:number, role:number) => {
+export const deleteRoleFromEmployee = async (empId:string, role:string) => {
     try {
         const resp = await Axios.delete(`/employee/${empId}/${role}`);
         return resp.data;

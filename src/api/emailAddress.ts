@@ -1,10 +1,10 @@
 import Axios from "axios";
 
 export interface IEmailAddress {
-    id?: number,
+    id?: string,
     email: string;
     main?: boolean;
-    EmailTypeId: number;
+    EmailTypeId: string;
 }
 
 export const getEmails = async () => {
@@ -34,7 +34,7 @@ export const createAModelEmailAddr = async (model: string, id: string, data: IEm
     }
 };
 
-export const updateAModelEmailAddr = async (id: number, data: IEmailAddress) => {
+export const updateAModelEmailAddr = async (id: string, data: IEmailAddress) => {
     try {
         const resp = await Axios.patch(`/emailAddress/${id}`, data);
         return resp.data;
@@ -43,7 +43,7 @@ export const updateAModelEmailAddr = async (id: number, data: IEmailAddress) => 
     }
 };
 
-export const deleteAModelEmailAddr = async (id: number) => {
+export const deleteAModelEmailAddr = async (id: string) => {
     try {
         const resp = await Axios.delete(`/emailAddress/${id}`);
         return resp.data;

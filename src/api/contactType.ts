@@ -13,7 +13,7 @@ export const getContactTypes = async () => {
     }
 }
 
-export const addContactType = async (name:String) => {
+export const addContactType = async (name:string) => {
     try {
         const resp = await Axios.post('/contactType', {name});
         return resp.data;
@@ -22,7 +22,7 @@ export const addContactType = async (name:String) => {
     }
 }
 
-export const editContactType = async (id:number, name:string) => {
+export const editContactType = async (id:string, name:string) => {
     try {
         const resp = await Axios.patch(`/contactType/${id}`, {name});
         return resp.data;
@@ -31,7 +31,7 @@ export const editContactType = async (id:number, name:string) => {
     }
 }
 
-export const deleteContactType = async (id:number) => {
+export const deleteContactType = async (id:string) => {
     try {
         const resp = await Axios.delete(`/contactType/${id}`);
         return resp.data;

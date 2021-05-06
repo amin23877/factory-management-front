@@ -17,7 +17,7 @@ export default function LineItemModal({
     soId,
     LIData,
 }: {
-    soId?: number | null;
+    soId?: string;
     open: boolean;
     onClose: () => void;
     onDone: () => void;

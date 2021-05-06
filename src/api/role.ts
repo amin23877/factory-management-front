@@ -1,7 +1,7 @@
 import Axios from 'axios';
 
 export interface IRole {
-    id: number,
+    id: string,
     name: string
 }
 
@@ -14,7 +14,7 @@ export const addRole = async (name:string) => {
     }
 }
 
-export const assignApiToRole = async (roleId:number, apiId:number) => {
+export const assignApiToRole = async (roleId:string, apiId:string) => {
     try {
         const resp = await Axios.post(`/role/${roleId}/api/${apiId}`);
         return resp.data;
@@ -22,7 +22,7 @@ export const assignApiToRole = async (roleId:number, apiId:number) => {
         console.log(error);
     }
 }
-export const deassignApiToRole = async (roleId:number, apiId:number) => {
+export const deassignApiToRole = async (roleId:string, apiId:string) => {
     try {
         const resp = await Axios.delete(`/role/${roleId}/api/${apiId}`);
         return resp.data;
@@ -40,7 +40,7 @@ export const getRoles = async () => {
     }
 }
 
-export const getRoleApis = async (id:number) => {
+export const getRoleApis = async (id:string) => {
     try {
         const resp = await Axios.get(`/role/${id}/api`);
         return resp.data;
@@ -58,7 +58,7 @@ export const getEmployeesRoles = async () => {
     }
 }
 
-export const updateRole = async (id:number, name:string) => {
+export const updateRole = async (id:string, name:string) => {
     try {
         const resp = await Axios.patch(`/role/${id}`, {name});
         return resp.data;
@@ -67,7 +67,7 @@ export const updateRole = async (id:number, name:string) => {
     }
 }
 
-export const deleteRole = async (id:number) => {
+export const deleteRole = async (id:string) => {
     try {
         const resp = await Axios.delete(`/role/${id}`);
         return resp.data;

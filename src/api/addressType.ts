@@ -22,7 +22,7 @@ export const addAddressType = async (name:String) => {
     }
 }
 
-export const editAddressType = async (id:number, name:string) => {
+export const editAddressType = async (id:string, name:string) => {
     try {
         const resp = await Axios.patch(`/addressType/${id}`, {name});
         return resp.data;
@@ -31,7 +31,7 @@ export const editAddressType = async (id:number, name:string) => {
     }
 }
 
-export const deleteAddressType = async (id:number) => {
+export const deleteAddressType = async (id:string) => {
     try {
         const resp = await Axios.delete(`/addressType/${id}`);
         return resp.data;

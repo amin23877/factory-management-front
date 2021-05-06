@@ -1,41 +1,41 @@
-import Axios from 'axios';
+import Axios from "axios";
 
 export interface IPhoneType {
-    name: string
+    name: string;
 }
 
 export const getPhoneTypes = async () => {
     try {
-        const resp = await Axios.get('/phoneType');
+        const resp = await Axios.get("/phoneType");
         return resp.data;
     } catch (error) {
         console.log(error);
     }
-}
+};
 
-export const addPhoneType = async (name:String) => {
+export const addPhoneType = async (name: string) => {
     try {
-        const resp = await Axios.post('/phoneType', {name});
+        const resp = await Axios.post("/phoneType", { name });
         return resp.data;
     } catch (error) {
         console.log(error);
     }
-}
+};
 
-export const editPhoneType = async (id:number, name:string) => {
+export const editPhoneType = async (id: string, name: string) => {
     try {
-        const resp = await Axios.patch(`/phoneType/${id}`, {name});
+        const resp = await Axios.patch(`/phoneType/${id}`, { name });
         return resp.data;
     } catch (error) {
-        console.log(error);        
+        console.log(error);
     }
-}
+};
 
-export const deletePhoneType = async (id:number) => {
+export const deletePhoneType = async (id: string) => {
     try {
         const resp = await Axios.delete(`/phoneType/${id}`);
         return resp.data;
     } catch (error) {
         console.log(error);
     }
-}
+};

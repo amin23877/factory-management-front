@@ -18,8 +18,8 @@ export const GeneralForm = ({
     type: string;
     addRecord: (v: string) => Promise<any>;
     getRecord: () => Promise<any>;
-    updateRecord: (id: number, v: string) => Promise<any>;
-    deleteRecord: (id: number) => Promise<any>;
+    updateRecord: (id: string, v: string) => Promise<any>;
+    deleteRecord: (id: string) => Promise<any>;
     onDone?: () => void;
 }) => {
     const [data, setData] = useState([]);
@@ -29,7 +29,7 @@ export const GeneralForm = ({
 
     const [addName, setAddName] = useState("");
     const [editName, setEditName] = useState("");
-    const [selectedData, setSelectedData] = useState<number>();
+    const [selectedData, setSelectedData] = useState<string>();
 
     const showMsg = (d: any) => {
         setShowSnack(true);
@@ -103,7 +103,7 @@ export const GeneralForm = ({
             </Snackbar>
 
             <Box m={2} p={2}>
-                <Accordion >
+                <Accordion>
                     <AccordionSummary expandIcon={<ExpandMoreRounded />}>Add</AccordionSummary>
                     <AccordionDetails>
                         <form
@@ -119,7 +119,7 @@ export const GeneralForm = ({
                                     value={addName}
                                     onChange={(e) => setAddName(e.target.value)}
                                     placeholder={`${type} name`}
-                                    style={{ marginRight:"8px", flex: 1 }}
+                                    style={{ marginRight: "8px", flex: 1 }}
                                 />
                                 <Button type="submit" kind="add" disabled={dis} style={{ marginBottom: "8px" }}>
                                     Add

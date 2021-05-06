@@ -25,7 +25,7 @@ export default function MainForm({
     initialValues?: IPurchasePOLine | IPurchaseSOLine;
     onDone: () => void;
     record: "purchaseSO" | "purchasePO";
-    recordId: number;
+    recordId: string;
 }) {
     const [items, setItems] = useState([]);
 

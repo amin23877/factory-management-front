@@ -1,11 +1,11 @@
 import Axios from "axios";
 
 export interface IPhone {
-    id?:number,
+    id?:string,
     phone:string,
     ext:string,
     main:boolean,
-    PhoneTypeId:number
+    PhoneTypeId:string
 }
 
 export const getPhones = async () => {
@@ -35,7 +35,7 @@ export const createAModelPhone = async (model: string, id: string, data: IPhone)
     }
 };
 
-export const updateAModelPhone = async (id: number, data: IPhone) => {
+export const updateAModelPhone = async (id: string, data: IPhone) => {
     try {
         const resp = await Axios.patch(`/phone/${id}`, data);
         return resp.data;
@@ -44,7 +44,7 @@ export const updateAModelPhone = async (id: number, data: IPhone) => {
     }
 };
 
-export const deleteAModelPhone = async (id: number) => {
+export const deleteAModelPhone = async (id: string) => {
     try {
         const resp = await Axios.delete(`/phone/${id}`);
         return resp.data;

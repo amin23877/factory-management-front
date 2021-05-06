@@ -18,7 +18,7 @@ export const createCategory = async (name:string) => {
     }
 }
 
-export const updateCategory = async (catId:number, name:string) => {
+export const updateCategory = async (catId:string, name:string) => {
     try {
         const resp = await Axios.patch(`/itemcategory/${catId}`, {name});
         return resp.data;
@@ -27,7 +27,7 @@ export const updateCategory = async (catId:number, name:string) => {
     }
 }
 
-export const deleteCategory = async (catId:number) => {
+export const deleteCategory = async (catId:string) => {
     try {
         const resp = await Axios.delete(`/itemcategory/${catId}`);
         return resp.data;

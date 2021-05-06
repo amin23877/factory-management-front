@@ -17,23 +17,21 @@ const range = (start: any, end: any) => {
         });
 };
 
-export const exportPdf = (input:HTMLElement) => {
-    const doc = new jsPDF({unit:'px'});
+export const exportPdf = async (input: HTMLElement) => {
+    const doc = new jsPDF({ unit: "px" });
     let res;
-    doc.html(input, {
+    await doc.html(input, {
         callback: (doc) => {
             doc.save();
-            res = doc.output('blob');
+            res = doc.output("blob");
         },
         x: 15,
         y: 15,
         html2canvas: { scale: 0.5 },
     });
 
-    if(res){
-        return res;
-    }
-}
+    return res;
+};
 
 export const oldExportPdf = async (input: HTMLElement) => {
     let ResBlob: { blobPDF: any; blobUrl: string } = { blobPDF: {}, blobUrl: "" };
@@ -62,7 +60,7 @@ export const oldExportPdf = async (input: HTMLElement) => {
         let srcImg = canvas;
         var pheight = pdf.internal.pageSize.getHeight();
         // for (let i = 0; i <= (input.clientHeight) / 980; i++) {
-        for (let i = 0; i <= (cHeight) / pheight; i++) {
+        for (let i = 0; i <= cHeight / pheight; i++) {
             // sY = 980 * (i!=1 ? i*0.85 : 1)  ;
             switch (i) {
                 case 0: {

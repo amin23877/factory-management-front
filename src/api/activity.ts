@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 export interface IActivity {
-    id?: number;
+    id?: string;
     name: string;
     subject: string;
     location: string;
@@ -37,7 +37,7 @@ export const getActivities = async () => {
     }
 };
 
-export const getClientActivities = async (clientId:number) => {
+export const getClientActivities = async (clientId:string) => {
     try {
         const resp = await Axios.get(`/activity/client/${clientId}`);
         return resp.data;
@@ -46,7 +46,7 @@ export const getClientActivities = async (clientId:number) => {
     }
 }
 
-export const getQuoteActivities = async (quoteId:number) => {
+export const getQuoteActivities = async (quoteId:string) => {
     try {
         const resp = await Axios.get(`/activity/quote/${quoteId}`);
         return resp.data;
@@ -55,7 +55,7 @@ export const getQuoteActivities = async (quoteId:number) => {
     }
 }
 
-export const getProjectActivities = async (projectId:number) => {
+export const getProjectActivities = async (projectId:string) => {
     try {
         const resp = await Axios.get(`/activity/project/${projectId}`);
         return resp.data;
@@ -77,7 +77,7 @@ export const createActivity = async (data: IActivity) => {
     }
 };
 
-export const updateActivity = async (id: number, data: IActivity) => {
+export const updateActivity = async (id: string, data: IActivity) => {
     try {
         const resp = await Axios.patch(`/activity/${id}`, {
             ...data,
@@ -90,7 +90,7 @@ export const updateActivity = async (id: number, data: IActivity) => {
     }
 };
 
-export const deleteActivity = async (id: number) => {
+export const deleteActivity = async (id: string) => {
     try {
         const resp = await Axios.delete(`/activity/${id}`);
         return resp.data;

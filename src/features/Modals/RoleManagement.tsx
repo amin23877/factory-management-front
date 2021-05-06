@@ -12,7 +12,7 @@ import { FieldSelect } from "../../app/Inputs";
 export default function RoleManagement({ open, onClose }: { open: boolean; onClose: () => void }) {
     const [apis, setApis] = useState<any>([]);
 
-    const [selRole, setSelRole] = useState<number>();
+    const [selRole, setSelRole] = useState<string>();
     const [selRoleApis, setSelRoleApis] = useState<any>([]);
 
     const refreshRoleApis = async () => {
@@ -52,7 +52,7 @@ export default function RoleManagement({ open, onClose }: { open: boolean; onClo
         refreshAvailableApis();
     }, [selRole]);
 
-    const handleChange = async (apiId: number, v: boolean) => {
+    const handleChange = async (apiId: string, v: boolean) => {
         try {
             if (v) {
                 if (selRole) {
@@ -67,7 +67,7 @@ export default function RoleManagement({ open, onClose }: { open: boolean; onClo
         }
     };
 
-    const handleDeassign = async (apiId: number) => {
+    const handleDeassign = async (apiId: string) => {
         try {
             if (selRole) {
                 const resp = await deassignApiToRole(selRole, apiId);

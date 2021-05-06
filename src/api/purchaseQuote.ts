@@ -1,15 +1,15 @@
 import Axios from 'axios';
 
 export type IPurchaseQuote = {
-    id?: number,
+    id?: string,
     file?: File | null,
     number?: string,
     senderNumber?: string,
     path?: string,
-    requester: number,
-    VendorId: number,
-    ContactId: number,
-    EmployeeId?: number
+    requester: string,
+    VendorId: string,
+    ContactId: string,
+    EmployeeId?: string
 }
 
 export const getPurchaseQuotes = async () => {
@@ -36,7 +36,7 @@ export const createPurchaseQuote = async (data:IPurchaseQuote) => {
     }
 }
 
-export const updatePurchaseQuote = async (id:number, data:IPurchaseQuote) => {
+export const updatePurchaseQuote = async (id:string, data:IPurchaseQuote) => {
     try {
         const resp = await Axios.patch(`/purchaseQuote/${id}`, data);
         return resp.data;
@@ -45,7 +45,7 @@ export const updatePurchaseQuote = async (id:number, data:IPurchaseQuote) => {
     }
 }
 
-export const deletePurchaseQuote = async (id:number) => {
+export const deletePurchaseQuote = async (id:string) => {
     try {
         const resp = await Axios.delete(`/purchaseQuote/${id}`);
         return resp.data;

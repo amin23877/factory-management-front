@@ -13,7 +13,7 @@ export const getEmailAddressTypes = async () => {
     }
 };
 
-export const addEmailAddressType = async (name: String) => {
+export const addEmailAddressType = async (name: string) => {
     try {
         const resp = await Axios.post("/emailAddressType", { name });
         return resp.data;
@@ -22,7 +22,7 @@ export const addEmailAddressType = async (name: String) => {
     }
 };
 
-export const editEmailAddressType = async (id: number, name: string) => {
+export const editEmailAddressType = async (id: string, name: string) => {
     try {
         const resp = await Axios.patch(`/emailAddressType/${id}`, { name });
         return resp.data;
@@ -31,7 +31,7 @@ export const editEmailAddressType = async (id: number, name: string) => {
     }
 };
 
-export const deleteEmailAddressType = async (id: number) => {
+export const deleteEmailAddressType = async (id: string) => {
     try {
         const resp = await Axios.delete(`/emailAddressType/${id}`);
         return resp.data;

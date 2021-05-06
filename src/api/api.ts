@@ -1,7 +1,7 @@
 import Axios from 'axios';
 
 export interface IApi {
-    id:number,
+    id:string,
     route: string,
     method: string,
     routerFile: string,

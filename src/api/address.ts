@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 export interface IAddress {
-    id?:number,
+    id?:string,
     address:string,
     address2:string,
     city:string,
@@ -39,7 +39,7 @@ export const createAModelAddress = async (model: string, id: string, data: IAddr
     }
 };
 
-export const updateAModelAddress = async (id: number, data: IAddress) => {
+export const updateAModelAddress = async (id: string, data: IAddress) => {
     try {
         const resp = await Axios.patch(`/address/${id}`, data);
         return resp.data;
@@ -48,7 +48,7 @@ export const updateAModelAddress = async (id: number, data: IAddress) => {
     }
 };
 
-export const deleteAModelAddress = async (id: number) => {
+export const deleteAModelAddress = async (id: string) => {
     try {
         const resp = await Axios.delete(`/address/${id}`);
         return resp.data;

@@ -1,31 +1,31 @@
 import Axios from "axios";
 
 export interface IContact {
-    id?: number,
-    name:string,
-    title:string,
-    department:string,
-    refferedBy:string,
-    linkedIn:string,
-    facebook:string,
-    instagram:string,
-    website:string,
-    optout:boolean,
-    mi:string,
-    prefix:string,
-    active:boolean,
-    main:boolean,
-    ContactTypeId:number
+    id?: string;
+    name: string;
+    title: string;
+    department: string;
+    refferedBy: string;
+    linkedIn: string;
+    facebook: string;
+    instagram: string;
+    website: string;
+    optout: boolean;
+    mi: string;
+    prefix: string;
+    active: boolean;
+    main: boolean;
+    ContactTypeId: string;
 }
 
 export const getContacts = async () => {
     try {
-        const resp = await Axios.get('/contact');
+        const resp = await Axios.get("/contact");
         return resp.data;
     } catch (error) {
         console.log(error);
     }
-}
+};
 
 export const getAllModelContact = async (model: string, id: string) => {
     try {
@@ -45,7 +45,7 @@ export const createAModelContact = async (model: string, id: string, data: ICont
     }
 };
 
-export const updateAModelContact = async (id: number, data: IContact) => {
+export const updateAModelContact = async (id: string, data: IContact) => {
     try {
         const resp = await Axios.patch(`/contact/${id}`, data);
         return resp.data;
@@ -54,7 +54,7 @@ export const updateAModelContact = async (id: number, data: IContact) => {
     }
 };
 
-export const deleteAModelContact = async (id: number) => {
+export const deleteAModelContact = async (id: string) => {
     try {
         const resp = await Axios.delete(`/contact/${id}`);
         return resp.data;

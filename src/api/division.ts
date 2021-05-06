@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 export interface IDivison {
-    id?: number;
+    id?: string;
     name:string
 }
 
@@ -14,7 +14,7 @@ export const getAllDivison = async () => {
     }
 };
 
-export const getClientDivisons = async (id:number) => {
+export const getClientDivisons = async (id:string) => {
     try {
         const resp = await Axios.get(`/client/${id}/division`);
         return resp.data;
@@ -32,7 +32,7 @@ export const createDivison = async (id: string, name: string) => {
     }
 };
 
-export const updateAModelDivison = async (id: number, data: IDivison) => {
+export const updateAModelDivison = async (id: string, data: IDivison) => {
     try {
         const resp = await Axios.patch(`/divison/${id}`, data);
         return resp.data;
@@ -41,7 +41,7 @@ export const updateAModelDivison = async (id: number, data: IDivison) => {
     }
 };
 
-export const deleteAModelDivison = async (id: number) => {
+export const deleteAModelDivison = async (id: string) => {
     try {
         const resp = await Axios.delete(`/divison/${id}`);
         return resp.data;

@@ -35,7 +35,7 @@ export const EmailModal = ({
         <Dialog open={open} onClose={onClose} maxWidth="xs" title={`${data?.id ? "Edit" : "Add"} an Email to ${model}`}>
             <Box m={3}>
                 <Formik
-                    initialValues={data?.id ? data : { email: "", main: false, EmailTypeId: 0 }}
+                    initialValues={data?.id ? data : ({} as IEmailAddress)}
                     validationSchema={schema}
                     onSubmit={(values, { setSubmitting }) => {
                         if (data?.id) {

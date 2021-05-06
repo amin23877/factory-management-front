@@ -34,7 +34,6 @@ import Button from "../../app/Button";
 import { LinearProgress } from "@material-ui/core";
 
 import { exportPdf } from "../../logic/pdf";
-import { jsPDF } from "jspdf";
 
 import "../../styles/splash.css";
 
@@ -82,23 +81,13 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
             setCanSave(false);
             setIsUploading(true);
             if (divToPrint.current && createdPO.id) {
-                const doc = new jsPDF({ unit: "px" });
-                let res;
-                await doc.html(divToPrint.current, {
-                    callback: (doc) => {
-                        doc.save();
-                        res = doc.output("blob");
-                    },
-                    x: 15,
-                    y: 15,
-                    html2canvas: { scale: 0.5 },
-                });
+                const generatedPdf = await exportPdf(divToPrint.current);
 
-                // console.log(res);
+                console.log(generatedPdf);
                 const resp = await createAModelDocument(
                     "purchasePO",
                     createdPO.id,
-                    res,
+                    generatedPdf,
                     `${new Date().toJSON().slice(0, 19)} - ${createdPO.number}`,
                     `PO_${createdPO.number}.pdf`
                 );
@@ -113,8 +102,6 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
             setIsUploading(false);
         }
     };
-
-    // console.log({ createdPO, data });
 
     return (
         <Box>
