@@ -13,7 +13,6 @@ export default function AddServiceModal({ open, onClose, onDone }: { open: boole
     const schema = Yup.object().shape({
         name: Yup.string().required(),
         price: Yup.string().required(),
-        length: Yup.string().required(),
         ItemId: Yup.string().required(),
     });
 

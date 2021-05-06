@@ -4,8 +4,9 @@ export interface IFieldService {
     id?: string;
     name: string;
     ItemId: string;
-    length: number;
+    period: number;
     price: number;
+    description?:string
 }
 
 export const getFieldServices = async (ItemId?: string) => {

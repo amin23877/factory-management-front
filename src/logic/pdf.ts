@@ -17,7 +17,25 @@ const range = (start: any, end: any) => {
         });
 };
 
-export const exportPdf = async (input: HTMLElement) => {
+export const exportPdf = (input:HTMLElement) => {
+    const doc = new jsPDF({unit:'px'});
+    let res;
+    doc.html(input, {
+        callback: (doc) => {
+            doc.save();
+            res = doc.output('blob');
+        },
+        x: 15,
+        y: 15,
+        html2canvas: { scale: 0.5 },
+    });
+
+    if(res){
+        return res;
+    }
+}
+
+export const oldExportPdf = async (input: HTMLElement) => {
     let ResBlob: { blobPDF: any; blobUrl: string } = { blobPDF: {}, blobUrl: "" };
     try {
         const canvas = await html2canvas(input, { scale: 1.02 });

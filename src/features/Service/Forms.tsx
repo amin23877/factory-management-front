@@ -47,12 +47,12 @@ export default function FieldServiceForm({
                 fullWidth
             />
             <TextField
-                label="length"
-                name="length"
-                value={values.length}
+                label="Period"
+                name="period"
+                value={values.period}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={Boolean(errors.length)}
+                error={Boolean(errors.period)}
                 fullWidth
             />
             <TextField
@@ -63,6 +63,17 @@ export default function FieldServiceForm({
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={Boolean(errors.price)}
+                fullWidth
+            />
+            <TextField
+                label="description"
+                name="description"
+                multiline
+                rows={4}
+                value={values.description}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.description)}
                 fullWidth
             />
         </>

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Container, Box, IconButton, ListItem } from "@material-ui/core";
+import { Box, IconButton, ListItem } from "@material-ui/core";
 import AddRounded from "@material-ui/icons/AddRounded";
 import DeleteRounded from "@material-ui/icons/DeleteRounded";
 import PrintRounded from "@material-ui/icons/PrintRounded";
+import CategoryRounded from "@material-ui/icons/CategoryRounded";
 
 import { SearchBar } from "../app/TextField";
 import { MyTabs, MyTab } from "../app/Tabs";
@@ -10,12 +11,14 @@ import List from "../app/SideUtilityList";
 
 import ServiceIndex from "../features/Service";
 import AddServiceModal from "../features/Service/AddServiceModal";
+import ServiceFamilyModal from "../features/Service/ServiceFamilyModal";
 import { getFieldServices, IFieldService } from "../api/fieldService";
 import FieldServiceDetails from "../features/Service/Details";
 
 export default function Purchase() {
     const [activeTab, setActiveTab] = useState(0);
     const [addService, setAddService] = useState(false);
+    const [serviceFamilyModal, setServiceFamilyModal] = useState(false);
     const [fieldServices, setFieldServices] = useState([]);
     const [selectedFS, setSelectedFS] = useState<IFieldService>();
 
@@ -37,6 +40,7 @@ export default function Purchase() {
     return (
         <Box>
             <AddServiceModal open={addService} onClose={() => setAddService(false)} onDone={refreshFieldServices} />
+            <ServiceFamilyModal open={serviceFamilyModal} onClose={() => setServiceFamilyModal(false)} />
 
             <Box display="flex" alignItems="center" my={2}>
                 <SearchBar />
@@ -58,6 +62,15 @@ export default function Purchase() {
                                 }}
                             >
                                 <AddRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton
+                                onClick={() => {
+                                    setServiceFamilyModal(true);
+                                }}
+                            >
+                                <CategoryRounded />
                             </IconButton>
                         </ListItem>
                         <ListItem>
