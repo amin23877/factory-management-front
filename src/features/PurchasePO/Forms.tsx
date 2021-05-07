@@ -115,9 +115,10 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                     style={{
                         backgroundColor: "#fff",
                         color: "black",
-                        width: "700px",
+                        width: "835px",
                         marginLeft: "auto",
                         marginRight: "auto",
+                        minHeight: "1200px",
                     }}
                 >
                     <div
@@ -137,7 +138,7 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                         </div>
                     </div>
                     <table
-                        style={{ width: "100%", border: "2px solid #416364", borderTop: "none", minHeight: "150px", borderBottom: "none" }}
+                        style={{ width: "100.1%", border: "2px solid #416364", borderTop: "none", minHeight: "150px", borderBottom: "none" }}
                     >
                         <tr
                             style={{
@@ -155,7 +156,7 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                         </tr>
                     </table>
                     <table
-                        style={{ width: "100%", border: "2px solid #416364", borderTop: "none", minHeight: "100px", borderBottom: "none" }}
+                        style={{ width: "100.1%", border: "2px solid #416364", borderTop: "none", minHeight: "100px", borderBottom: "none" }}
                     >
                         <tr
                             style={{
@@ -186,29 +187,42 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                             <td> </td> */}
                         </tr>
                     </table>
-                    <table style={{ width: "100%", border: "2px solid #416364", borderTop: "none" }}>
+                    <table style={{ width: "100%", border: "2px solid #416364", borderTop: "none", minHeight: '650px', display: 'flex', flexDirection: 'column', padding: '0px'}}>
                         <tr
                             style={{
                                 backgroundColor: "#c4d69c",
                                 width: "100%",
                                 height: "26px",
+                                maxHeight: '26px',
+                                display: 'flex',
+                                justifyContent: 'space-evenly'
                             }}
                         >
                             {/* <th style={{ borderRight: "1px solid black" }}>Item</th> */}
-                            <th> Item Description</th>
-                            <th>Qty</th>
-                            <th>Price</th>
-                            <th>Amount</th>
+                            <th style={{width:'46%'}}> Item Description</th>
+                            <th style={{width:'20%'}}>Qty</th>
+                            <th style={{width:'17%'}}>Price</th>
+                            <th style={{width:'17%'}}>Amount</th>
                         </tr>
                         {data.lines.map((l, i) => (
-                            <tr key={i} style={{ marginBottom: "10px" }}>
+                            <tr key={i} style={{
+                                display: 'flex',
+                                justifyContent: 'space-evenly'
+                            }}>
                                 {/* <td>{l.ItemId}</td> */}
-                                <td style={{ borderRight: "2px solid #416364 " }}>{l.description}</td>
-                                <td style={{ width: "20%", borderRight: "2px solid #416364 " }}>{l.quantity}</td>
-                                <td style={{ width: "17%", borderRight: "2px solid #416364 " }}>{l.price}</td>
-                                <td style={{ width: "17%" }}> {l.quantity * l.price} </td>
+                                <td style={{ width:'46%',borderRight: "2px solid #416364 ", verticalAlign: 'top' }}>{l.description}</td>
+                                <td style={{ width: "20%", borderRight: "2px solid #416364 ", verticalAlign: 'top' }}>{l.quantity}</td>
+                                <td style={{ width: "17%", borderRight: "2px solid #416364 ", verticalAlign: 'top' }}>{l.price}</td>
+                                <td style={{ width: "17%", verticalAlign: 'top' }}> {l.quantity * l.price} </td>
                             </tr>
                         ))}
+                        <tr style={{ width:'100%',display:'flex',justifyContent:'space-between',flexGrow:1}}>
+                            {/* <td>{l.ItemId}</td> */}
+                            <td style={{ width:'46%', borderRight: "2px solid #416364 ", verticalAlign: 'top' }}></td>
+                            <td style={{ width: "20%", borderRight: "2px solid #416364 ", verticalAlign: 'top' }}></td>
+                            <td style={{ width: "17%", borderRight: "2px solid #416364 ", verticalAlign: 'top' }}></td>
+                            <td style={{ width: "17%", verticalAlign: 'top' }}></td>
+                        </tr>
                     </table>
                     <div
                         style={{
