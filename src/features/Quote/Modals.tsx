@@ -9,7 +9,7 @@ import Dialog from "../../app/Dialog";
 import Button from "../../app/Button";
 import { CommissionTab, DepositTab, TermsTab, GeneralForm } from "./Forms";
 
-import { IQuote, QuoteInit } from "../../api/quote";
+import { IQuote } from "../../api/quote";
 import { unwrapResult } from "@reduxjs/toolkit";
 
 export default function AddQuoteModal({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -32,7 +32,7 @@ export default function AddQuoteModal({ open, onClose }: { open: boolean; onClos
     return (
         <Dialog open={open} onClose={onClose} title="Add new quote" maxWidth="md" fullWidth>
             <Box m={1} style={{ height: 600, overflowY: "auto" }}>
-                <Formik initialValues={QuoteInit} onSubmit={handleSubmit}>
+                <Formik initialValues={{} as IQuote} onSubmit={handleSubmit}>
                     {({ handleChange, handleBlur, values, isSubmitting }) => (
                         <Form>
                             <Box display="flex" m={1}>

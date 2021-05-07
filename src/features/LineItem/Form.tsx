@@ -12,8 +12,9 @@ import BootstrapTextField from "../../app/TextField";
 import Button from "../../app/Button";
 import { FieldSelect } from "../../app/Inputs";
 
-import { createPurchaseSOLine, deletePurchaseSOLine, IPurchaseSOLine, updatePurchaseSOLine } from "../../api/purchaseSO";
-import { createPurchasePOLine, deletePurchasePOLine, IPurchasePOLine, updatePurchasePOLine } from "../../api/purchasePO";
+import { createPurchaseSOLine, deletePurchaseSOLine, updatePurchaseSOLine } from "../../api/purchaseSO";
+import { createPurchasePOLine, deletePurchasePOLine, updatePurchasePOLine } from "../../api/purchasePO";
+import { ILineItem } from "../../api/lineItem";
 import { getItems } from "../../api/items";
 
 export default function MainForm({
@@ -22,7 +23,7 @@ export default function MainForm({
     record,
     recordId,
 }: {
-    initialValues?: IPurchasePOLine | IPurchaseSOLine;
+    initialValues?: ILineItem;
     onDone: () => void;
     record: "purchaseSO" | "purchasePO";
     recordId: string;
@@ -41,7 +42,7 @@ export default function MainForm({
             .catch((e) => console.log(e));
     }, []);
 
-    const handleSubmit = async (d: IPurchasePOLine) => {
+    const handleSubmit = async (d: ILineItem) => {
         try {
             const createLine = record === "purchasePO" ? createPurchasePOLine : createPurchaseSOLine;
             const updateLine = record === "purchasePO" ? updatePurchasePOLine : updatePurchaseSOLine;
@@ -76,7 +77,7 @@ export default function MainForm({
     };
 
     return (
-        <Formik initialValues={initialValues ? initialValues : ({} as IPurchasePOLine)} validationSchema={schema} onSubmit={handleSubmit}>
+        <Formik initialValues={initialValues ? initialValues : ({} as ILineItem)} validationSchema={schema} onSubmit={handleSubmit}>
             {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
                 <Form>
                     <FieldSelect

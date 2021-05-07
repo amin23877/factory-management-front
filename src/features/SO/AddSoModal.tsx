@@ -9,7 +9,7 @@ import Button from "../../app/Button";
 
 import { GeneralForm, ShippingForm, BillingTab, TermsTab } from "./Forms";
 
-import { SOInit, ISO, createSO } from "../../api/so";
+import { ISO, createSO } from "../../api/so";
 
 const AddForm = ({ onClose, onDone }: { onDone: () => void; onClose: () => void }) => {
     const [activeTab, setActiveTab] = useState(0);
@@ -30,7 +30,7 @@ const AddForm = ({ onClose, onDone }: { onDone: () => void; onClose: () => void 
     };
 
     return (
-        <Formik initialValues={SOInit} onSubmit={handleSubmit}>
+        <Formik initialValues={{} as ISO} onSubmit={handleSubmit}>
             {({ values, handleChange, handleBlur, setValues }) => (
                 <Form>
                     <Box display="flex">

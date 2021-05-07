@@ -7,8 +7,10 @@ import Button from "../../app/Button";
 import TextField from "../../app/TextField";
 import Dialog from "../../app/Dialog";
 import { FieldSelect } from "../../app/Inputs";
+
 import { getItems } from "../../api/items";
-import { ILineItem, LineItemInit, createLineItem, editLineItem, deleteLineItem } from "../../api/so";
+import { createLineItem, editLineItem, deleteLineItem } from "../../api/so";
+import { ILineItem } from "../../api/lineItem";
 
 export default function LineItemModal({
     open,
@@ -74,7 +76,7 @@ export default function LineItemModal({
     return (
         <Dialog open={open} onClose={onClose} title={`${soId ? "Edit" : "Add"} line item to Sales order`}>
             <Box m={2} mr={3}>
-                <Formik validationSchema={schema} initialValues={LIData ? LIData : LineItemInit} onSubmit={handleSubmit}>
+                <Formik validationSchema={schema} initialValues={LIData ? LIData : ({} as ILineItem)} onSubmit={handleSubmit}>
                     {({ values, handleChange, handleBlur, isSubmitting, errors, touched }) => (
                         <Form>
                             <FieldSelect

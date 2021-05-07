@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 
 import Dialog from "../../app/Dialog";
 import Form from "./Form";
-import { IPurchasePOLine } from "../../api/purchasePO";
+import { ILineItem } from "../../api/lineItem";
 
 export default function AddLineItemModal({
     open,
@@ -14,7 +14,7 @@ export default function AddLineItemModal({
     recordId,
     selectedLine,
 }: {
-    selectedLine?: IPurchasePOLine;
+    selectedLine?: ILineItem;
     open: boolean;
     onClose: () => void;
     onDone: () => void;

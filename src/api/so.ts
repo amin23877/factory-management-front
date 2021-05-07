@@ -1,5 +1,7 @@
 import Axios from "axios";
 
+import { ILineItem } from "./lineItem";
+
 export interface ISO {
     id?: string;
     number: string;
@@ -34,20 +36,6 @@ export interface ISO {
     ClientId?: string;
     ProjectId?: string;
 }
-
-export interface ILineItem {
-    id?: string;
-    SoId?: string;
-    ItemId: string;
-    index: number;
-    description: string;
-    quantity: number;
-    price: number;
-    tax: boolean;
-}
-
-export const SOInit: any = {};
-export const LineItemInit: any = {};
 
 export const getSO = async () => {
     try {

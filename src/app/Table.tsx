@@ -1,6 +1,59 @@
 import React from "react";
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Typography, Box } from "@material-ui/core";
-import { ColDef, RowData } from "@material-ui/data-grid";
+import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Typography, Box, makeStyles } from "@material-ui/core";
+import { ColDef } from "@material-ui/data-grid";
+
+export const useStyles = makeStyles((theme) => ({
+    tableCont: {
+        borderRadius: 10,
+        maxHeight: 550,
+    },
+    root: {
+        backgroundColor: "#f9f9f9",
+        border: "none",
+        borderRadius: 15,
+
+        "& .MuiTableHead-root": {
+            position: ["sticky", "-webkit-sticky"],
+            top: 0,
+        },
+        "& .MuiTableRow-head, .MuiTableCell-stickyHeader": {
+            backgroundColor: "#202731",
+        },
+        "& .MuiTableCell-head": {
+            cursor: "pointer",
+            color: "#fff",
+            border: "1px solid #333b44",
+        },
+        "& .MuiTableSortLabel-icon ": {
+            fill: "white",
+        },
+        "& .MuiTableCell-head:hover": {
+            backgroundColor: "#333b44",
+        },
+        "& tbody .MuiTableCell-root": {
+            border: "1px solid #dddddd",
+            fontSize: "0.700rem",
+        },
+        "& .MuiButton-root": {
+            fontSize: "0.700rem",
+        },
+        "& tbody tr:hover": {
+            backgroundColor: "#f3f3f3",
+            cursor: "pointer",
+        },
+        "& .Mui-selected": {
+            boxShadow: " rgba(149, 157, 165, 0.2) 0px 8px 24px",
+            backgroundColor: "#fff !important",
+        },
+        "& .MuiDataGrid-sortIcon": {
+            fill: "white",
+        },
+    },
+    tableHeadBtn: {
+        color: "white",
+        padding: 0,
+    },
+}));
 
 export const MinimalTable = ({ cols, rows }: { cols: ColDef[]; rows: any[] }) => {
     return (

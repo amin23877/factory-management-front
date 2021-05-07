@@ -24,8 +24,9 @@ import BootstrapTextField from "../../app/TextField";
 
 import { getContacts, IContact } from "../../api/contact";
 import { getAllEmployees, IEmployee } from "../../api/employee";
-import { IPurchasePOLine, IPurchasePOComplete, createPurchasePOComplete, IPurchasePO } from "../../api/purchasePO";
+import { IPurchasePOComplete, createPurchasePOComplete, IPurchasePO } from "../../api/purchasePO";
 import { getVendors, IVendor } from "../../api/vendor";
+import { ILineItem } from "../../api/lineItem";
 import { getItems } from "../../api/items";
 import { createAModelDocument } from "../../api/document";
 
@@ -331,11 +332,11 @@ export const LinesForm = ({
     data,
 }: {
     data?: IPurchasePOComplete;
-    onDone: (items: IPurchasePOLine[]) => void;
+    onDone: (items: ILineItem[]) => void;
     onBack: () => void;
 }) => {
     const [items, setItems] = useState([]);
-    const [createdItems, setCreatedItems] = useState<IPurchasePOLine[]>(data && data.lines ? data.lines : []);
+    const [createdItems, setCreatedItems] = useState<ILineItem[]>(data && data.lines ? data.lines : []);
 
     const schema = Yup.object().shape({
         ItemId: Yup.string().required(),
@@ -349,7 +350,7 @@ export const LinesForm = ({
             .catch((e) => console.log(e));
     }, []);
 
-    const handleSubmit = (d: IPurchasePOLine) => {
+    const handleSubmit = (d: ILineItem) => {
         if (d) {
             setCreatedItems((prev) => prev.concat(d));
         }
@@ -362,7 +363,7 @@ export const LinesForm = ({
     return (
         <Box display="flex">
             <Box flex={1} mr={2}>
-                <Formik initialValues={{} as IPurchasePOLine} validationSchema={schema} onSubmit={handleSubmit}>
+                <Formik initialValues={{} as ILineItem} validationSchema={schema} onSubmit={handleSubmit}>
                     {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
                         <Form>
                             <Autocomplete

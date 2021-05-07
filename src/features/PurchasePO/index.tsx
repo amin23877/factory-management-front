@@ -16,12 +16,13 @@ import AddLineItem from "../LineItem";
 import Details from "./Details";
 
 import Confirm from "../Modals/Confirm";
-
-import { getPurchasePOs, deletePurchasePO, IPurchasePO, getPurchasePOLines, IPurchasePOLine } from "../../api/purchasePO";
 import NoteModal from "../Modals/NoteModals";
 import DocumentModal from "../Modals/DocumentModals";
+
+import { getPurchasePOs, deletePurchasePO, IPurchasePO, getPurchasePOLines } from "../../api/purchasePO";
 import { getAllModelNotes } from "../../api/note";
 import { getAllModelDocuments } from "../../api/document";
+import { ILineItem } from "../../api/lineItem";
 
 function Index() {
     const [activeTab, setActiveTab] = useState(0);
@@ -38,7 +39,7 @@ function Index() {
     const [selNote, setSelNote] = useState<any>();
     const [selDoc, setSelDoc] = useState<any>();
 
-    const [selectedLine, setSelectedLine] = useState<IPurchasePOLine>();
+    const [selectedLine, setSelectedLine] = useState<ILineItem>();
     const [selPO, setSelPO] = useState<IPurchasePO>();
     const [compPo, setCompPo] = useState<any>();
 

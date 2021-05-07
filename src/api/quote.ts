@@ -1,5 +1,7 @@
 import Axios from "axios";
 
+import {ILineItem} from './lineItem';
+
 export interface IQuote {
     id?: string;
     number?: string;
@@ -29,21 +31,6 @@ export interface IQuote {
     EmployeeId: string | null;
     ProjectId: string | null;
 }
-
-export interface ILineItem {
-    id?: string;
-    QuoteId?: string;
-    ItemId: string;
-    index: number;
-    description: string;
-    quantity: number;
-    price: number;
-    tax: boolean;
-}
-
-export const LineItemInit: any = {};
-
-export const QuoteInit: any = {};
 
 export const createLineItem = async (qId: string, data: ILineItem) => {
     try {

@@ -1,5 +1,7 @@
 import Axios from "axios";
 
+import {ILineItem} from './lineItem';
+
 export type IPurchaseSO = {
     id?: string;
     file?: any;
@@ -12,16 +14,6 @@ export type IPurchaseSO = {
     estimatedObtainDate: string;
     status: string;
     obtained: boolean;
-};
-
-export type IPurchaseSOLine = {
-    id?: string;
-    ItemId: string;
-    description: string;
-    quantity: number;
-    price: number;
-    tax: boolean;
-    index: number;
 };
 
 export const getPurchaseSOs = async () => {
@@ -78,7 +70,7 @@ export const getPurchaseSOLines = async (PurchaseSOId: string) => {
     }
 };
 
-export const createPurchaseSOLine = async (id: string, data: IPurchaseSOLine) => {
+export const createPurchaseSOLine = async (id: string, data: ILineItem) => {
     try {
         const resp = await Axios.post(`/purchaseSo/${id}/line`, data);
         return resp.data;
@@ -87,7 +79,7 @@ export const createPurchaseSOLine = async (id: string, data: IPurchaseSOLine) =>
     }
 };
 
-export const updatePurchaseSOLine = async (id: string, data: IPurchaseSOLine) => {
+export const updatePurchaseSOLine = async (id: string, data: ILineItem) => {
     try {
         const resp = await Axios.patch(`/line/${id}`, data);
         return resp.data;

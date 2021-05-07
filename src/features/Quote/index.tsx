@@ -9,10 +9,10 @@ import { useAppDispatch } from "../../store";
 
 import { INote, getAllModelNotes } from "../../api/note";
 import { IDocument, getAllModelDocuments } from "../../api/document";
-import { getQuotes, getLineItems, IQuote, ILineItem, deleteQuote } from "../../api/quote";
+import { getLineItems, IQuote } from "../../api/quote";
 import { getQuoteActivities } from "../../api/activity";
+import { ILineItem } from "../../api/lineItem";
 
-import Snack from "../../app/Snack";
 import BaseDataGrid from "../../app/BaseDataGrid";
 import EditTab from "./EditTab";
 
@@ -203,45 +203,44 @@ export default function QuotePanel() {
                 ) : null}
                 <div style={{ flexGrow: 1 }} />
             </Box>
-            
-                <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-                    <Tab label="List" />
-                    <Tab label="Details" disabled={!selectedQuote} />
-                </Tabs>
-                <Box className={classes.TabContainer}>
-                    {activeTab === 0 && (
-                        <BaseDataGrid
-                            cols={quoteCols}
-                            rows={quotes}
-                            onRowSelected={(d) => {
-                                setSelectedQuote(d);
-                                setActiveTab(1);
-                            }}
-                        />
-                    )}
-                    {activeTab === 1 && selectedQuote && (
-                        <EditTab
-                            onLISelected={(d) => {
-                                setSelectedLI(d);
-                                setEditLineItem(true);
-                            }}
-                            onNoteSelected={(d) => {
-                                setSelectedNote(d);
-                                setEditNote(true);
-                            }}
-                            onDocSelected={(d) => {
-                                setSelectedDocs(d);
-                                setEditDoc(true);
-                            }}
-                            activities={activities}
-                            notes={notes}
-                            docs={docs}
-                            lineItems={lineItems}
-                            selectedQuote={selectedQuote}
-                        />
-                    )}
-                </Box>
-           
+
+            <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                <Tab label="List" />
+                <Tab label="Details" disabled={!selectedQuote} />
+            </Tabs>
+            <Box className={classes.TabContainer}>
+                {activeTab === 0 && (
+                    <BaseDataGrid
+                        cols={quoteCols}
+                        rows={quotes}
+                        onRowSelected={(d) => {
+                            setSelectedQuote(d);
+                            setActiveTab(1);
+                        }}
+                    />
+                )}
+                {activeTab === 1 && selectedQuote && (
+                    <EditTab
+                        onLISelected={(d) => {
+                            setSelectedLI(d);
+                            setEditLineItem(true);
+                        }}
+                        onNoteSelected={(d) => {
+                            setSelectedNote(d);
+                            setEditNote(true);
+                        }}
+                        onDocSelected={(d) => {
+                            setSelectedDocs(d);
+                            setEditDoc(true);
+                        }}
+                        activities={activities}
+                        notes={notes}
+                        docs={docs}
+                        lineItems={lineItems}
+                        selectedQuote={selectedQuote}
+                    />
+                )}
+            </Box>
         </div>
     );
 }
