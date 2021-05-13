@@ -1,14 +1,15 @@
 import React from "react";
-import { ColDef, RowData } from "@material-ui/data-grid";
+import { GridColDef, GridRowData } from "@material-ui/data-grid";
 
 import BaseDataGrid from "../../app/BaseDataGrid";
 
-export default function ClientOverview({ rows, onRowSelected }: { rows: RowData[]; onRowSelected: (row: any) => void }) {
-    const cols: ColDef[] = [
+export default function ClientOverview({ rows, onRowSelected }: { rows: GridRowData[]; onRowSelected: (row: any) => void }) {
+    const cols: GridColDef[] = [
         {
             field: "name",
             flex: 1,
             headerName: "name",
+            editable: true,
         },
         {
             field: "size",
@@ -20,28 +21,30 @@ export default function ClientOverview({ rows, onRowSelected }: { rows: RowData[
             headerName: "address",
             width: 170,
             flex: 1,
-            valueGetter: ({ data }) => (data.address ? data?.address?.address : ""),
+            valueFormatter: (d) => {
+                return d.row.address?.city;
+            },
         },
         {
             field: "contact",
             headerName: "contact",
             flex: 1,
             width: 170,
-            valueGetter: ({ data }) => (data.contact ? data?.contact?.name : ""),
+            valueFormatter: (data) => data.row?.contact?.name,
         },
         {
             field: "phone",
             headerName: "phone",
             width: 170,
             flex: 1,
-            valueGetter: ({ data }) => (data.phone ? data?.phone?.ext + " " + data?.phone?.phone : ""),
+            valueFormatter: (data) => (data.row.phone ? data.row?.phone?.ext + " " + data.row?.phone?.phone : ""),
         },
         {
             field: "Type",
             flex: 1,
-            valueGetter: ({ data }) => data?.ClientType?.name,
+            valueFormatter: (data) => data.row?.ClientType?.name,
         },
     ];
 
-    return <BaseDataGrid rows={rows} onRowSelected={onRowSelected} cols={cols} />;
+    return <BaseDataGrid rows={rows} onRowSelected={() => {}} cols={cols} />;
 }

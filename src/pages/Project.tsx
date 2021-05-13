@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Box, Button } from "@material-ui/core";
-import { ColDef } from "@material-ui/data-grid";
+import { GridColDef } from "@material-ui/data-grid";
 
 import { MyTabs, MyTab } from "../app/Tabs";
 import BaseDataGrid from "../app/BaseDataGrid";
@@ -51,18 +51,18 @@ export default function Project() {
         }
     }, [activeTab]);
 
-    const activityCols: ColDef[] = [
+    const activityCols: GridColDef[] = [
         { field: "name" },
         { field: "subject" },
         { field: "location" },
         { field: "startTime", width: 180 },
         { field: "endTime", width: 180 },
-        { field: "ActivityPriority", valueGetter: ({ data }) => data.ActivityPriority.name, width: 180 },
-        { field: "ActivityStatus", valueGetter: ({ data }) => data.ActivityStatus.name, width: 180 },
+        { field: "ActivityPriority", valueGetter: (data) => data.row.ActivityPriority?.name, width: 180 },
+        { field: "ActivityStatus", valueGetter: (data) => data.row.ActivityStatus?.name, width: 180 },
         { field: "notes" },
     ];
 
-    const cols: ColDef[] = [{ field: "name" }];
+    const cols: GridColDef[] = [{ field: "name" }];
 
     return (
         <Container>

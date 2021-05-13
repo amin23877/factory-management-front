@@ -1,20 +1,14 @@
 import React from "react";
 import { Box } from "@material-ui/core";
-// import { FindInPageRounded, SearchRounded } from "@material-ui/icons";
-import { DataGrid, RowData, ColDef } from "@material-ui/data-grid";
+import { DataGrid } from "@material-ui/data-grid";
 
-// import { BasePaper } from "../app/Paper";
-// import { BaseTextInput } from "../app/Inputs";
-
-function ItemsList({ onRowSelected, rows }: { onRowSelected: (row: any) => void; rows: RowData[] }) {
-    // const [rows, setRows] = useState([] as RowData[]);
-
-    const cols: ColDef[] = [
+function ItemsList({ onRowSelected, rows }: { onRowSelected: (row: any) => void; rows: any[] }) {
+    const cols = [
         { field: "no", headerName: "Item no" },
         { field: "name", headerName: "Item name" },
         { field: "description", headerName: "desc" },
-        { field: "category", valueGetter: (c) => c.data.Category.name, headerName: "cetegory" },
-        { field: "type", valueGetter: (c) => c.data.Type.name, headerName: "type" },
+        { field: "category", valueGetter: (c: any) => c.data.Category.name, headerName: "cetegory" },
+        { field: "type", valueGetter: (c: any) => c.data.Type.name, headerName: "type" },
         { field: "cost", headerName: "Cost" },
     ];
 

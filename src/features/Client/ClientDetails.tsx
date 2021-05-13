@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Box, Tabs, Tab, FormControlLabel, FormLabel, RadioGroup, Radio, FormControl } from "@material-ui/core";
-import { ColDef } from "@material-ui/data-grid";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -194,38 +193,38 @@ export default function ClientDetails({
 }) {
     const [activeTab, setActiveTab] = useState(0);
 
-    const activityCols: ColDef[] = [
+    const activityCols = [
         { field: "name" },
         { field: "subject" },
         { field: "location" },
         { field: "startTime", width: 180 },
         { field: "endTime", width: 180 },
-        { field: "ActivityPriority", valueGetter: ({ data }) => data.ActivityPriority.name, width: 180 },
-        { field: "ActivityStatus", valueGetter: ({ data }) => data.ActivityStatus.name, width: 180 },
+        { field: "ActivityPriority", valueGetter: ({ data }: any) => data.ActivityPriority.name, width: 180 },
+        { field: "ActivityStatus", valueGetter: ({ data }: any) => data.ActivityStatus.name, width: 180 },
         { field: "notes" },
     ];
 
-    const noteCols: ColDef[] = [
+    const noteCols = [
         { field: "subject", headerName: "Subject" },
         { field: "url", headerName: "URL" },
         { field: "note", headerName: "Note", width: 300 },
     ];
 
-    const docCols: ColDef[] = [
+    const docCols = [
         { field: "name", headerName: "Name" },
         { field: "description", headerName: "Description", width: 250 },
         { field: "createdAt", headerName: "Created at", width: 300 },
     ];
 
-    const addrCols: ColDef[] = [{ field: "address" }, { field: "city" }, { field: "state" }, { field: "zip" }, { field: "main" }];
+    const addrCols = [{ field: "address" }, { field: "city" }, { field: "state" }, { field: "zip" }, { field: "main" }];
 
-    const agencyCols: ColDef[] = [{ field: "name", width: 220 }];
+    const agencyCols = [{ field: "name", width: 220 }];
 
-    const phoneCols: ColDef[] = [{ field: "ext" }, { field: "phone" }, { field: "main" }, { field: "PhoneTypeId" }];
+    const phoneCols = [{ field: "ext" }, { field: "phone" }, { field: "main" }, { field: "PhoneTypeId" }];
 
-    const emailCols: ColDef[] = [{ field: "email" }, { field: "main" }];
+    const emailCols = [{ field: "email" }, { field: "main" }];
 
-    const contactsCols: ColDef[] = [
+    const contactsCols = [
         { field: "firstName" },
         { field: "lastName" },
         { field: "title" },

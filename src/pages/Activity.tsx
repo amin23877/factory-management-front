@@ -4,7 +4,7 @@ import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import ListItem from "@material-ui/core/ListItem";
 import IconButton from "@material-ui/core/IconButton";
-import { ColDef } from "@material-ui/data-grid";
+import { GridColDef } from "@material-ui/data-grid";
 import DeleteRounded from "@material-ui/icons/DeleteRounded";
 import AddRounded from "@material-ui/icons/AddRounded";
 import CategoryRounded from "@material-ui/icons/CategoryRounded";
@@ -47,7 +47,7 @@ export default function Activity() {
 
     const [notes, setNotes] = useState([]);
     const [docs, setDocs] = useState([]);
-    const cols: ColDef[] = [{ field: "name" }, { field: "subject" }, { field: "location" }];
+    const cols: GridColDef[] = [{ field: "name" }, { field: "subject" }, { field: "location" }];
     const refreshNotes = async () => {
         try {
             if (selectedActivity && selectedActivity.id) {

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
-import { RowData, ColDef } from "@material-ui/data-grid";
 
 import Dialog from "../../app/Dialog";
 
@@ -12,20 +11,20 @@ import BomRecordTab from "./BomRecordTab";
 
 export default function BOMModal({ open, onClose, itemId }: { itemId: string; open: boolean; onClose: () => void }) {
     const [activeTab, setActiveTab] = useState(0);
-    const [rows, setRows] = useState<RowData[]>([]);
+    const [rows, setRows] = useState<any[]>([]);
     const [bomRecords, setBomRecords] = useState([]);
 
     const [selectedBom, setSelectedBom] = useState<any>();
     const [selectedBomRecord, setSelectedBomRecord] = useState<any>();
 
-    const cols: ColDef[] = [
+    const cols = [
         { field: "name", headerName: "name" },
         { field: "no", headerName: "no" },
         { field: "note", headerName: "note" },
         { field: "current", headerName: "current" },
     ];
 
-    const recordCols: ColDef[] = [
+    const recordCols = [
         { field: "index", headerName: "index" },
         { field: "ItemId", headerName: "ItemId" },
         { field: "revision", headerName: "revision" },

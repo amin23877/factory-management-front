@@ -6,6 +6,8 @@ export const getToken = () => {
     const emp = localStorage.getItem(StorageKey);
     if (emp) {
         return JSON.parse(emp).token;
+    } else {
+        return null;
     }
 };
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Button, Tabs, Tab, makeStyles } from "@material-ui/core";
-import { ColDef } from "@material-ui/data-grid";
+import { GridColDef } from "@material-ui/data-grid";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 
 import { useSelector } from "react-redux";
@@ -61,7 +61,7 @@ export default function QuotePanel() {
 
     const classes = useStyles();
 
-    const quoteCols: ColDef[] = [
+    const quoteCols: GridColDef[] = [
         { field: "entryDate", width: 150 },
         { field: "expireDate", width: 150 },
         { field: "quoteStatus", width: 150 },

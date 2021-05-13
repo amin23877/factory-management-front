@@ -1,20 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { DataGrid, RowData, RowSelectedParams, ColDef } from "@material-ui/data-grid";
+import { DataGrid } from "@material-ui/data-grid";
 
-import { getAllModelNotes } from "../../api/note";
+import { getAllModelNotes, INote } from "../../api/note";
 
-export const RecordNotes = ({
-    model,
-    itemId,
-    onRowSelected,
-}: {
-    model: string;
-    itemId: number;
-    onRowSelected?: (row: RowSelectedParams) => void;
-}) => {
-    const [rows, setRows] = useState([] as RowData[]);
+export const RecordNotes = ({ model, itemId, onRowSelected }: { model: string; itemId: number; onRowSelected?: (row: any) => void }) => {
+    const [rows, setRows] = useState<INote[]>([]);
 
-    const cols: ColDef[] = [
+    const cols = [
         { field: "subject", headerName: "Subject" },
         { field: "url", headerName: "URL" },
         { field: "note", headerName: "Note", width: 300 },

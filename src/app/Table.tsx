@@ -1,6 +1,5 @@
 import React from "react";
 import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Typography, Box, makeStyles } from "@material-ui/core";
-import { ColDef } from "@material-ui/data-grid";
 
 export const useStyles = makeStyles((theme) => ({
     tableCont: {
@@ -55,7 +54,7 @@ export const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const MinimalTable = ({ cols, rows }: { cols: ColDef[]; rows: any[] }) => {
+export const MinimalTable = ({ cols, rows }: { cols: any[]; rows: any[] }) => {
     return (
         <TableContainer style={{ maxHeight: 280, overflow: "auto" }}>
             <Table style={{ background: "#f1f1f1", margin: "1em 0", borderRadius: 10 }}>

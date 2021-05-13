@@ -1,9 +1,8 @@
 import React from "react";
-import { ColDef } from "@material-ui/data-grid";
 import BaseDataGrid from "../../app/BaseDataGrid";
 
 export const NotesDataGrid = ({ notes, onNoteSelected }: { notes: any[]; onNoteSelected: (a: any) => void }) => {
-    const noteCols: ColDef[] = [
+    const noteCols = [
         { field: "subject", headerName: "Subject" },
         { field: "url", headerName: "URL" },
         { field: "note", headerName: "Note", width: 300 },
@@ -13,7 +12,7 @@ export const NotesDataGrid = ({ notes, onNoteSelected }: { notes: any[]; onNoteS
 };
 
 export const DocumentsDataGrid = ({ documents, onDocumentSelected }: { documents: any[]; onDocumentSelected: (a: any) => void }) => {
-    const docCols: ColDef[] = [
+    const docCols = [
         { field: "name", headerName: "Name" },
         { field: "description", headerName: "Description", width: 250 },
         // { field: "createdAt", headerName: "Created at", width: 300 },

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { DataGrid, RowData, RowSelectedParams, ColDef } from "@material-ui/data-grid";
+import { DataGrid } from "@material-ui/data-grid";
 
 import { getAllModelDocuments } from "../../api/document";
 
@@ -10,11 +10,11 @@ export const RecordDocuments = ({
 }: {
     model: string;
     itemId: number;
-    onRowSelected?: (row: RowSelectedParams) => void;
+    onRowSelected?: (row: any) => void;
 }) => {
-    const [rows, setRows] = useState([] as RowData[]);
+    const [rows, setRows] = useState<any[]>([]);
 
-    const cols: ColDef[] = [
+    const cols = [
         { field: "name", headerName: "Name" },
         { field: "description", headerName: "Description", width: 250 },
         { field: "createdAt", headerName: "Created at", width: 300 },

@@ -3,14 +3,13 @@ import { Select, SelectProps, FormControl, InputLabel, MenuItem } from "@materia
 import { BootstrapInput } from "../TextField";
 
 import styles from "./inputs.module.css";
-import { CSSProperties } from "@material-ui/styles";
 
 interface IOS extends SelectProps {
     items: any[];
     itemValueField: string;
     itemTitleField: string;
     keyField?: string;
-    inputStyle?: CSSProperties;
+    inputStyle?: any;
 }
 export const ObjectSelect = ({ inputStyle, items, itemTitleField, itemValueField, keyField, ...props }: IOS) => {
     return (

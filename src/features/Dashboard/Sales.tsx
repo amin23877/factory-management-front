@@ -1,6 +1,5 @@
 import React, { ReactNode } from "react";
 import { Grid, Typography, Box, Button, makeStyles, LinearProgress } from "@material-ui/core";
-import { ColDef } from "@material-ui/data-grid";
 import { AddRounded } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -58,7 +57,7 @@ const StatusCard = ({ title, value, icon, children }: { title: string; value: st
 const Activities = () => {
     const activities = useSelector(selectActivities);
 
-    const cols: ColDef[] = [{ field: "name" }, { field: "subject" }, { field: "startTime" }, { field: "endTime" }];
+    const cols = [{ field: "name" }, { field: "subject" }, { field: "startTime" }, { field: "endTime" }];
 
     if (!activities) {
         return <LinearProgress />;
@@ -89,7 +88,7 @@ const Activities = () => {
 const Quotes = () => {
     const quotes = useSelector(selectQuotes);
 
-    const cols: ColDef[] = [{ field: "number" }, { field: "expireDate" }];
+    const cols = [{ field: "number" }, { field: "expireDate" }];
 
     if (!quotes) {
         return <LinearProgress />;
@@ -135,7 +134,7 @@ const Emails = () => {
 const SalesOrders = () => {
     const SOs = useSelector(selectSOs);
 
-    const cols: ColDef[] = [{ field: "number" }, { field: "estShipDate" }, { field: "actShipDate" }];
+    const cols = [{ field: "number" }, { field: "estShipDate" }, { field: "actShipDate" }];
 
     if (!SOs) {
         return <LinearProgress />;

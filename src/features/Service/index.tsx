@@ -1,5 +1,5 @@
 import React from "react";
-import { ColDef } from "@material-ui/data-grid";
+import { GridColDef } from "@material-ui/data-grid";
 
 import BaseDataGrid from "../../app/BaseDataGrid";
 import { IFieldService } from "../../api/fieldService";
@@ -11,7 +11,7 @@ export default function ServiceIndex({
     fieldServices: any[];
     onFieldServiceSelected: (fs: IFieldService) => void;
 }) {
-    const cols: ColDef[] = [
+    const cols: GridColDef[] = [
         { field: "name", headerName: "Name" },
         { field: "price", headerName: "Price" },
         { field: "length", headerName: "Length" },

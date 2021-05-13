@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, makeStyles } from "@material-ui/core";
-import { DataGrid, RowData, ColDef } from "@material-ui/data-grid";
+import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbar } from "@material-ui/data-grid";
 
 const useStyles = makeStyles({
     dataGridCont: {
@@ -35,10 +35,18 @@ const useStyles = makeStyles({
     },
 });
 
+function CustomToolbar() {
+    return (
+        <GridToolbarContainer>
+            <GridToolbarExport />
+        </GridToolbarContainer>
+    );
+}
+
 interface IBaseDataGrid {
     onRowSelected: (row: any) => void;
-    rows: RowData[];
-    cols: ColDef[];
+    rows: any[];
+    cols: any[];
     height?: number;
 }
 
@@ -60,14 +68,15 @@ export default function BaseDataGrid({ onRowSelected, rows, cols, height }: IBas
     });
 
     return (
-        <Box display="flex" style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", border: "none" }}>
+        <Box display="flex" boxShadow="rgba(0, 0, 0, 0.08) 0px 4px 12px" border="none" height="100%">
             <div
-                className={classes.dataGridCont}
                 style={{
+                    flexGrow: 1,
                     height: height ? height : 450,
                 }}
             >
                 <DataGrid
+                    components={{ Toolbar: GridToolbar }}
                     className={classes.root}
                     onRowSelected={(r) => {
                         onRowSelected(r.data);

@@ -19,11 +19,18 @@ import Snack from "../../app/Snack";
 
 import { getItems } from "../../api/items";
 import { ILineItem, getALineItem } from "../../api/lineItem";
-import { addServiceToLineitem, getFieldServices, IFieldService, updateFieldService } from "../../api/fieldService";
+import {
+    addServiceToLineitem,
+    getFieldServices,
+    IFieldService,
+    removeServiceFromLineitem,
+    updateFieldService,
+} from "../../api/fieldService";
 import { getServiceFamilies } from "../../api/serviceFamily";
 
 export const LineItemFSForm = ({ LineItem }: { LineItem: ILineItem }) => {
     const [snack, setSnack] = useState(false);
+    const [msg, setMsg] = useState("");
     const [services, setServices] = useState([]);
 
     const schema = Yup.object().shape({
@@ -48,12 +55,28 @@ export const LineItemFSForm = ({ LineItem }: { LineItem: ILineItem }) => {
         refreshServices();
     }, []);
 
+    const handleDelete = async (id: string) => {
+        try {
+            if (LineItem.id) {
+                const resp = await removeServiceFromLineitem(LineItem.id, id);
+                if (resp) {
+                    setSnack(true);
+                    setMsg("Field service deleted from line item");
+                    refreshServices();
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const handleSubmit = async (d: any) => {
         try {
             if (LineItem.id) {
                 const resp = await addServiceToLineitem(LineItem.id, d.serviceId, d.count);
                 if (resp) {
                     setSnack(true);
+                    setMsg("Field service added to line item");
                     refreshServices();
                 }
             }
@@ -64,6 +87,10 @@ export const LineItemFSForm = ({ LineItem }: { LineItem: ILineItem }) => {
 
     return (
         <Box>
+            <Snack open={snack} onClose={() => setSnack(false)}>
+                {msg}
+            </Snack>
+
             <Formik initialValues={{} as any} validationSchema={schema} onSubmit={handleSubmit}>
                 {({ values, handleChange, handleBlur, errors }) => (
                     <Form>
@@ -105,16 +132,18 @@ export const LineItemFSForm = ({ LineItem }: { LineItem: ILineItem }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        <TableRow>
-                            <TableCell>1</TableCell>
-                            <TableCell>1</TableCell>
-                            <TableCell>1</TableCell>
-                            <TableCell style={{ textAlign: "center" }}>
-                                <IconButton>
-                                    <DeleteRounded />
-                                </IconButton>
-                            </TableCell>
-                        </TableRow>
+                        {services.map((s: any) => (
+                            <TableRow key={s.id}>
+                                <TableCell>{s.service.name}</TableCell>
+                                <TableCell>{s.service.period}</TableCell>
+                                <TableCell>{s.service.price}</TableCell>
+                                <TableCell onClick={() => handleDelete(s.ServiceId)} style={{ textAlign: "center" }}>
+                                    <IconButton>
+                                        <DeleteRounded />
+                                    </IconButton>
+                                </TableCell>
+                            </TableRow>
+                        ))}
                     </TableBody>
                 </Table>
             </TableContainer>

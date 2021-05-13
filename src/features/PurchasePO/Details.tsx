@@ -4,7 +4,6 @@ import { Form, Formik } from "formik";
 import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { ColDef } from "@material-ui/data-grid";
 
 import BaseDataGrid from "../../app/BaseDataGrid";
 
@@ -38,7 +37,7 @@ export default function Details({
     const [snack, setSnack] = useState(false);
     const [msg, setMsg] = useState("");
 
-    const lineCols: ColDef[] = [
+    const lineCols = [
         { field: "ItemId", headerName: "Item" },
         { field: "description", headerName: "Description" },
         { field: "quantity", headerName: "Quantity" },

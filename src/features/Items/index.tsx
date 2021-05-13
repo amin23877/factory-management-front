@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Box, Grid, Tabs, Tab } from "@material-ui/core";
-import { ColDef } from "@material-ui/data-grid";
 import { useFormik } from "formik";
 
 import Snackbar from "../../app/Snack";
@@ -67,7 +66,7 @@ function ItemsDetails({
         }
     }, [selectedRow]);
 
-    const quoteCols: ColDef[] = [
+    const quoteCols = [
         { field: "number", headerName: "Number" },
         { field: "location", headerName: "Location", width: 180 },
         { field: "department", headerName: "Department" },
@@ -75,13 +74,13 @@ function ItemsDetails({
         { field: "expireDate", headerName: "Expire date", width: 180 },
     ];
 
-    const noteCols: ColDef[] = [
+    const noteCols = [
         { field: "subject", headerName: "Subject" },
         { field: "url", headerName: "URL" },
         { field: "note", headerName: "Note", width: 300 },
     ];
 
-    const docCols: ColDef[] = [
+    const docCols = [
         { field: "name", headerName: "Name" },
         { field: "EmployeeId", headerName: "Employee" },
         { field: "description", headerName: "Description", width: 250 },

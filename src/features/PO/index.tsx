@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { ColDef } from "@material-ui/data-grid";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 
 import { getPO, deletePO, IPO } from "../../api/po";
@@ -34,11 +33,11 @@ export default function POPanel() {
     const [selectedNote, setSelectedNote] = useState<any>();
     const [selectedDoc, setSelectedDoc] = useState<any>();
 
-    const poCols: ColDef[] = [
+    const poCols = [
         { field: "number" },
-        { field: "Contact", valueGetter: ({ data }) => data.Contact && data.Contact.firstName + data.Contact.lastName, width: 180 },
-        { field: "Client", valueGetter: ({ data }) => data.Client?.name },
-        { field: "Project", valueGetter: ({ data }) => data.Project?.name },
+        { field: "Contact", valueGetter: ({ data }: any) => data.Contact && data.Contact.firstName + data.Contact.lastName, width: 180 },
+        { field: "Client", valueGetter: ({ data }: any) => data.Client?.name },
+        { field: "Project", valueGetter: ({ data }: any) => data.Project?.name },
     ];
 
     const refreshPOs = async () => {

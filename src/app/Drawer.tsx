@@ -14,7 +14,6 @@ import {
 } from "@material-ui/core";
 import ShopRounded from "@material-ui/icons/ShopRounded";
 import ShoppingCartRounded from "@material-ui/icons/ShoppingCartRounded";
-import SettingsApplicationsRounded from "@material-ui/icons/SettingsApplicationsRounded";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
@@ -26,8 +25,6 @@ import phazifyLogo from "../assets/phazify.png";
 import phocusLogo from "../assets/logo.png";
 import drawerBg from "../assets/sidebar.png";
 
-// import '../styles/main.css'
-
 const useStyles = makeStyles((theme) => ({
     btmNavSelectedItem: {
         backgroundColor: theme.palette.secondary.light,
@@ -37,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
 const drawerItems = [
     {
         name: "Home",
-        link: "/",
+        link: "/panel",
         icon: (
             <svg xmlns="http://www.w3.org/2000/svg" fill="inherit" width="17" height="18" viewBox="0 0 17 18">
                 <defs>
@@ -70,7 +67,7 @@ const drawerItems = [
     },
     {
         name: "Dashboard",
-        link: "/dashboard",
+        link: "/panel/dashboard",
         icon: (
             <svg xmlns="http://www.w3.org/2000/svg" width="18.327" height="18.327" viewBox="0 0 18.327 18.327" fill="inherit">
                 <defs>
@@ -97,7 +94,7 @@ const drawerItems = [
     },
     {
         name: "Clients",
-        link: "/clients",
+        link: "/panel/clients",
         icon: (
             <svg
                 id="file-text"
@@ -143,7 +140,7 @@ const drawerItems = [
     },
     {
         name: "Sales",
-        link: "/sales",
+        link: "/panel/sales",
         icon: (
             <svg xmlns="http://www.w3.org/2000/svg" fill="inherit" width="19.037" height="16.414" viewBox="0 0 19.037 16.414">
                 <path
@@ -157,17 +154,17 @@ const drawerItems = [
     },
     {
         name: "Purchase",
-        link: "/purchase",
+        link: "/panel/purchase",
         icon: <ShoppingCartRounded />,
     },
     {
         name: "Vendors",
-        link: "/vendor",
+        link: "/panel/vendor",
         icon: <ShopRounded />,
     },
     {
         name: "Inventory",
-        link: "/inventory",
+        link: "/panel/inventory",
         icon: (
             <svg xmlns="http://www.w3.org/2000/svg" fill="inherit" width="15.733" height="16.978" viewBox="0 0 15.733 16.978">
                 <defs>
@@ -200,7 +197,7 @@ const drawerItems = [
     },
     {
         name: "Field Service",
-        link: "/fieldservice",
+        link: "/panel/fieldservice",
         icon: (
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="inherit" viewBox="0 0 16 16">
                 <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
@@ -210,7 +207,7 @@ const drawerItems = [
     },
     {
         name: "Roles",
-        link: "/roles",
+        link: "/panel/roles",
         icon: (
             <svg xmlns="http://www.w3.org/2000/svg" fill="inherit" width="15.34" height="15.34" viewBox="0 0 15.34 15.34">
                 <path
@@ -224,7 +221,7 @@ const drawerItems = [
     },
     {
         name: "Activity",
-        link: "/activity",
+        link: "/panel/activity",
         icon: (
             <svg
                 id="Group_40201"
@@ -258,7 +255,7 @@ const drawerItems = [
     },
     {
         name: "Projects",
-        link: "/projects",
+        link: "/panel/projects",
         icon: (
             <svg
                 id="Group_40203"
@@ -475,7 +472,7 @@ const MainBottomNav = () => {
                 <BottomNavigationAction
                     key={item.name}
                     classes={{ selected: classes.btmNavSelectedItem }}
-                    style={{ color: item.link === location.pathname ? theme.palette.common.white : "gray" }}
+                    style={{ color: item.link === location.pathname ? theme.palette.common.white : "white" }}
                     label={item.name}
                     icon={item.icon}
                     onClick={() => history.push(item.link)}

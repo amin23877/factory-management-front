@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-import { Box, Tab, Tabs, Typography } from "@material-ui/core";
+import { Box, Tab, Tabs } from "@material-ui/core";
 import { getVendorItems, IVendor } from "../../api/vendor";
 import { BasePaper } from "../../app/Paper";
 
 import { UpdateVendorForm } from "./Forms";
 import { IVending } from "../../api/vending";
-import { ColDef } from "@material-ui/data-grid";
+import { GridColDef } from "@material-ui/data-grid";
 import BaseDataGrid from "../../app/BaseDataGrid";
 
 export default function VendorDetails({
@@ -64,7 +64,7 @@ export default function VendorDetails({
         }
     }, [activeTab]);
 
-    const cols: ColDef[] = [
+    const cols: GridColDef[] = [
         { field: "VendorId" },
         { field: "ItemId" },
         { field: "leadTime" },
@@ -72,7 +72,7 @@ export default function VendorDetails({
         { field: "comment" },
     ];
 
-    const itemCols: ColDef[] = [
+    const itemCols: GridColDef[] = [
         { field: "no" },
         { field: "name" },
         { field: "cost" },
@@ -80,26 +80,26 @@ export default function VendorDetails({
         { field: "availableQoh" },
         { field: "allocatedQoh" },
     ];
-    const noteCols: ColDef[] = [
+    const noteCols: GridColDef[] = [
         { field: "subject", headerName: "Subject" },
         { field: "url", headerName: "URL" },
         { field: "note", headerName: "Note", width: 300 },
     ];
 
-    const docCols: ColDef[] = [
+    const docCols: GridColDef[] = [
         { field: "name", headerName: "Name" },
         { field: "EmployeeId", headerName: "Employee" },
         { field: "description", headerName: "Description", width: 250 },
         { field: "createdAt", headerName: "Date", width: 300 },
     ];
 
-    const addrCols: ColDef[] = [{ field: "address" }, { field: "city" }, { field: "state" }, { field: "zip" }, { field: "main" }];
+    const addrCols: GridColDef[] = [{ field: "address" }, { field: "city" }, { field: "state" }, { field: "zip" }, { field: "main" }];
 
-    const phoneCols: ColDef[] = [{ field: "ext" }, { field: "phone" }, { field: "main" }, { field: "PhoneTypeId" }];
+    const phoneCols: GridColDef[] = [{ field: "ext" }, { field: "phone" }, { field: "main" }, { field: "PhoneTypeId" }];
 
-    const emailCols: ColDef[] = [{ field: "email" }, { field: "main" }];
+    const emailCols: GridColDef[] = [{ field: "email" }, { field: "main" }];
 
-    const contactsCols: ColDef[] = [
+    const contactsCols: GridColDef[] = [
         { field: "firstName" },
         { field: "lastName" },
         { field: "title" },

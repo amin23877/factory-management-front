@@ -4,7 +4,7 @@ import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Button from "@material-ui/core/Button";
-import { ColDef } from "@material-ui/data-grid";
+import { GridColDef } from "@material-ui/data-grid";
 
 import Confirm from "../Modals/Confirm";
 import NoteModal from "../Modals/NoteModals";
@@ -37,10 +37,10 @@ export default function SalesOrderPanel() {
     const [lineItems, setLineIitems] = useState([]);
     const [selectedSO, setSelectedSO] = useState<ISO>();
 
-    const cols: ColDef[] = [
+    const cols: GridColDef[] = [
         { field: "number" },
-        { field: "Client", valueGetter: ({ data }) => (data.Client ? data.Client.name : "") },
-        { field: "Project", valueGetter: ({ data }) => (data.Project ? data.Project.name : "") },
+        { field: "Client", valueGetter: (data) => (data.row.Client ? data.row.Client.name : "") },
+        { field: "Project", valueGetter: (data) => (data.row.Project ? data.row.Project.name : "") },
     ];
 
     const refreshSo = async () => {
@@ -190,45 +190,45 @@ export default function SalesOrderPanel() {
                 )}
                 <div style={{ flexGrow: 1 }} />
             </Box>
-            
-                <Tabs style={{ marginBottom: "10px" }} value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-                    <Tab label="Overview" />
-                    <Tab label="Details" disabled={!selectedSO} />
-                </Tabs>
-                {activeTab === 0 && (
-                    <BaseDataGrid
-                        cols={cols}
-                        rows={sos}
-                        onRowSelected={(d) => {
-                            console.log(d);
-                            setSelectedSO(d);
-                            setActiveTab(1);
-                        }}
-                    />
-                )}
-                {activeTab === 1 && selectedSO && (
-                    <EditTab
-                        selectedSo={selectedSO}
-                        onDone={refreshSo}
-                        notes={notes}
-                        docs={docs}
-                        lineItems={lineItems}
-                        onLineItemSelected={(d) => {
-                            console.log(d);
 
-                            setSelectedLI(d);
-                            setLineItemModal(true);
-                        }}
-                        onNoteSelected={(d) => {
-                            setSelectedNote(d);
-                            setNoteModal(true);
-                        }}
-                        onDocSelected={(d) => {
-                            setSelectedDoc(d);
-                            setDocModal(true);
-                        }}
-                    />
-                )}
+            <Tabs style={{ marginBottom: "10px" }} value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                <Tab label="Overview" />
+                <Tab label="Details" disabled={!selectedSO} />
+            </Tabs>
+            {activeTab === 0 && (
+                <BaseDataGrid
+                    cols={cols}
+                    rows={sos}
+                    onRowSelected={(d) => {
+                        console.log(d);
+                        setSelectedSO(d);
+                        setActiveTab(1);
+                    }}
+                />
+            )}
+            {activeTab === 1 && selectedSO && (
+                <EditTab
+                    selectedSo={selectedSO}
+                    onDone={refreshSo}
+                    notes={notes}
+                    docs={docs}
+                    lineItems={lineItems}
+                    onLineItemSelected={(d) => {
+                        console.log(d);
+
+                        setSelectedLI(d);
+                        setLineItemModal(true);
+                    }}
+                    onNoteSelected={(d) => {
+                        setSelectedNote(d);
+                        setNoteModal(true);
+                    }}
+                    onDocSelected={(d) => {
+                        setSelectedDoc(d);
+                        setDocModal(true);
+                    }}
+                />
+            )}
         </Box>
     );
 }

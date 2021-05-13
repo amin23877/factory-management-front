@@ -6,7 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { AddRounded, DeleteRounded, PrintRounded, NoteAddRounded, FileCopyRounded } from "@material-ui/icons";
-import { ColDef } from "@material-ui/data-grid";
+import { GridColDef } from "@material-ui/data-grid";
 
 import List from "../../app/SideUtilityList";
 import BaseDataGrid from "../../app/BaseDataGrid";
@@ -36,7 +36,7 @@ function Index() {
     const [selDoc, setSelDoc] = useState<any>();
     const [selPQ, setSelPQ] = useState<IPurchaseQuote>();
 
-    const cols: ColDef[] = [
+    const cols: GridColDef[] = [
         { field: "number", headerName: "Number" },
         { field: "requester", headerName: "Requester" },
         { field: "VendorId" },

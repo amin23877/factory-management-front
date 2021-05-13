@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-import { ColDef } from "@material-ui/data-grid/";
 import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -29,13 +28,13 @@ export default function EditForm({
 }) {
     const [activeTab, setActiveTab] = useState(0);
 
-    const noteCols: ColDef[] = [
+    const noteCols = [
         { field: "subject", headerName: "Subject" },
         { field: "url", headerName: "URL" },
         { field: "note", headerName: "Note", width: 300 },
     ];
 
-    const docCols: ColDef[] = [
+    const docCols = [
         { field: "name", headerName: "Name" },
         { field: "description", headerName: "Description", width: 250 },
         { field: "createdAt", headerName: "Created at", width: 300 },

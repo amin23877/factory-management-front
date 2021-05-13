@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ColDef } from "@material-ui/data-grid";
+import { GridColDef } from "@material-ui/data-grid";
 import { Box, Button, IconButton, ListItem } from "@material-ui/core";
 import { AddRounded, DeleteRounded, PrintRounded, PhoneOutlined, MailOutline, ContactsOutlined, MapOutlined } from "@material-ui/icons";
 
@@ -174,7 +174,7 @@ export default function Vendros() {
         }
     }, [selectedVendor]);
 
-    const cols: ColDef[] = [
+    const cols: GridColDef[] = [
         { field: "id", headerName: "ID" },
         { field: "name", headerName: "Name" },
     ];
@@ -261,7 +261,7 @@ export default function Vendros() {
                 onConfirm={handleDelete}
             />
 
-            <Box display="flex" className="sticky-toolbar">
+            <Box display="flex">
                 <Button
                     disabled={!selectedVendor}
                     onClick={() => {

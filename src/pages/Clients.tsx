@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Box, Grid, IconButton, ListItem } from "@material-ui/core";
-import EditRoundedIcon from '@material-ui/icons/EditRounded';
+import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import {
     AddRounded,
     DeleteRounded,
@@ -46,13 +46,13 @@ import { ContactModal } from "../features/Modals/ContactModal";
 
 import ClientDetails from "../features/Client/ClientDetails";
 import ClientOverview from "../features/Client/ClientOverview";
-import { RowData } from "@material-ui/data-grid";
+import { GridRowData } from "@material-ui/data-grid";
 
 export default function Clients() {
     const [activeTab, setActiveTab] = useState(0);
     const [addClientModal, setAddClientModal] = useState(false);
     const [cTypeModal, setCTypeModal] = useState(false);
-    const [clients, setClients] = useState<RowData[]>([]);
+    const [clients, setClients] = useState<GridRowData[]>([]);
 
     const [notes, setNotes] = useState([]);
     const [docs, setDocs] = useState([]);
@@ -221,7 +221,7 @@ export default function Clients() {
     }, []);
 
     return (
-        <Container >
+        <Container>
             <Confirm open={conf} onClose={() => setConf(false)} onConfirm={handleDelete} />
 
             <AddClientModal open={addClientModal} onClose={() => setAddClientModal(false)} onDone={refreshClients} />
@@ -309,13 +309,15 @@ export default function Clients() {
                 onDone={refreshDocs}
             />
 
-            <Box my={2} display="flex" className="sticky-toolbar">
+            <Box my={2} display="flex">
                 <Box display="flex" flex={1} justifyContent="space-around">
                     {activeTab === 1 && (
-                        <IconButton onClick={() => {
-                            setActiveTab(0);
-                            setSelectedRow(false);
-                        }}>
+                        <IconButton
+                            onClick={() => {
+                                setActiveTab(0);
+                                setSelectedRow(false);
+                            }}
+                        >
                             <ChevronLeftRounded />
                         </IconButton>
                     )}
@@ -335,7 +337,7 @@ export default function Clients() {
             </Box>
 
             <Grid container style={{ marginRight: "1px" }}>
-                <Grid item xs={1}  >
+                <Grid item xs={1}>
                     <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
                         <ListItem>
                             <IconButton onClick={() => setAddClientModal(true)} title="Add item">
@@ -347,11 +349,13 @@ export default function Clients() {
                                 <DeleteRounded />
                             </IconButton>
                         </ListItem>
-                        {activeTab === 0 && <ListItem>
-                            <IconButton disabled={!selectedRow} onClick={() => setActiveTab(1)} title="Edit item">
-                                <EditRoundedIcon />
-                            </IconButton>
-                        </ListItem>}
+                        {activeTab === 0 && (
+                            <ListItem>
+                                <IconButton disabled={!selectedRow} onClick={() => setActiveTab(1)} title="Edit item">
+                                    <EditRoundedIcon />
+                                </IconButton>
+                            </ListItem>
+                        )}
                         <ListItem>
                             <IconButton title="Payment">
                                 <DescriptionRounded />
@@ -439,8 +443,8 @@ export default function Clients() {
                         <ClientOverview
                             rows={clients}
                             onRowSelected={(v) => {
-                                console.log(v);
                                 setSelectedRow(v);
+                                setActiveTab(1);
                             }}
                         />
                     )}

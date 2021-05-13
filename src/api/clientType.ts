@@ -1,41 +1,42 @@
-import Axios from 'axios';
+import Axios from "axios";
 
 export interface IClientType {
-    name: string
+    inputValue?: string;
+    name: string;
 }
 
 export const getClientTypes = async () => {
     try {
-        const resp = await Axios.get('/clientType');
+        const resp = await Axios.get("/clientType");
         return resp.data;
     } catch (error) {
         console.log(error);
     }
-}
+};
 
-export const addClientType = async (name:string) => {
+export const addClientType = async (name: string) => {
     try {
-        const resp = await Axios.post('/clientType', {name});
+        const resp = await Axios.post("/clientType", { name });
         return resp.data;
     } catch (error) {
         console.log(error);
     }
-}
+};
 
-export const editClientType = async (id:string, name:string) => {
+export const editClientType = async (id: string, name: string) => {
     try {
-        const resp = await Axios.patch(`/clientType/${id}`, {name});
+        const resp = await Axios.patch(`/clientType/${id}`, { name });
         return resp.data;
     } catch (error) {
-        console.log(error);        
+        console.log(error);
     }
-}
+};
 
-export const deleteClientType = async (id:string) => {
+export const deleteClientType = async (id: string) => {
     try {
         const resp = await Axios.delete(`/clientType/${id}`);
         return resp.data;
     } catch (error) {
         console.log(error);
     }
-}
+};

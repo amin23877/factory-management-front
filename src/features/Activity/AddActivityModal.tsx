@@ -124,7 +124,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                         label="Contact"
                                         name="ContactId"
                                         request={getContacts}
-                                        itemTitleField="lastName"
+                                        itemTitleField="name"
                                         itemValueField="id"
                                         value={values.ContactId}
                                         onChange={handleChange}
@@ -200,7 +200,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                     />
                                 </Box>
                                 <Box>
-                                    <Box display="flex" >
+                                    <Box display="flex">
                                         <FormControlLabel
                                             style={{ flex: 1 }}
                                             name="allDayActivity"
@@ -256,16 +256,16 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                             type="submit"
                                             style={
                                                 open
-                                                    ? { width: "50%",marginLeft:"auto",marginRight:"auto" }
+                                                    ? { width: "50%", marginLeft: "auto", marginRight: "auto" }
                                                     : {
-                                                        marginLeft: "auto",
-                                                        marginRight: "auto",
-                                                        width: "40%",
-                                                        marginBottom: "20px",
-                                                        marginTop: "20px",
-                                                        paddingTop: "8px",
-                                                        paddingBottom: "8px",
-                                                    }
+                                                          marginLeft: "auto",
+                                                          marginRight: "auto",
+                                                          width: "40%",
+                                                          marginBottom: "20px",
+                                                          marginTop: "20px",
+                                                          paddingTop: "8px",
+                                                          paddingBottom: "8px",
+                                                      }
                                             }
                                         >
                                             {open ? "Add" : "Save"}
