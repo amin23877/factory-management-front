@@ -14,6 +14,8 @@ import {
 } from "@material-ui/core";
 import ShopRounded from "@material-ui/icons/ShopRounded";
 import ShoppingCartRounded from "@material-ui/icons/ShoppingCartRounded";
+import PhoneRounded from "@material-ui/icons/PhoneRounded";
+import AssessmentRounded from "@material-ui/icons/AssessmentRounded";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
@@ -298,6 +300,16 @@ const drawerItems = [
                 />
             </svg>
         ),
+    },
+    {
+        name: "Calls",
+        link: "/panel/calls",
+        icon: <PhoneRounded />,
+    },
+    {
+        name: "Tasks",
+        link: "/panel/tasks",
+        icon: <AssessmentRounded />,
     },
 ];
 

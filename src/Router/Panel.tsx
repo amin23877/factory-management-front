@@ -18,6 +18,8 @@ import Service from "../pages/FieldService";
 import Vendros from "../pages/Vandors";
 import Purchase from "../pages/Purchase";
 import Page404 from "../pages/404";
+import Calls from "../pages/Calls";
+import Tasks from "../pages/Tasks";
 
 export default function PanelRouter() {
     const [isOpen, setIsOpen] = useState(true);
@@ -51,6 +53,8 @@ export default function PanelRouter() {
                         <Route exact path="/panel/vendor" component={Vendros} />
                         <Route exact path="/panel/fieldservice" component={Service} />
                         <Route exact path="/panel/purchase" component={Purchase} />
+                        <Route exact path="/panel/calls" component={Calls} />
+                        <Route exact path="/panel/tasks" component={Tasks} />
                         <Route exact path="*" component={Page404} />
                     </Switch>
                 </Box>

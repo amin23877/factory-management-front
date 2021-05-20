@@ -1,6 +1,7 @@
 import Axios from "axios";
 
 import {ILineItem} from './lineItem';
+import { ILineService } from "./lineService";
 
 export interface IQuote {
     id?: string;
@@ -32,9 +33,45 @@ export interface IQuote {
     ProjectId: string | null;
 }
 
+export const createQuoteLineService = async (quoteId: string, data: ILineService) => {
+    try {
+        const resp = await Axios.post(`/quote/${quoteId}/lineservice`, data);
+        return resp.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const editQuoteLineService = async (id: string, data: ILineService) => {
+    try {
+        const resp = await Axios.patch(`/lineservice/${id}`, data);
+        return resp.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const deleteQuoteLineService = async (id: string) => {
+    try {
+        const resp = await Axios.delete(`/lineservice/${id}`);
+        return resp.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getQuoteLineServices = async (quoteId: string) => {
+    try {
+        const resp = await Axios.get(`/lineservice`, { params: { quoteId } });
+        return resp.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export const createLineItem = async (qId: string, data: ILineItem) => {
     try {
-        const resp = await Axios.post(`/quote/${qId}/line`, data);
+        const resp = await Axios.post(`/quote/${qId}/lineitem`, data);
         return resp.data;
     } catch (error) {
         console.log(error);
@@ -43,7 +80,7 @@ export const createLineItem = async (qId: string, data: ILineItem) => {
 
 export const editLineItem = async (id: string, data: ILineItem) => {
     try {
-        const resp = await Axios.patch(`/line/${id}`, data);
+        const resp = await Axios.patch(`/lineitem/${id}`, data);
         return resp.data;
     } catch (error) {
         console.log(error);
@@ -52,7 +89,7 @@ export const editLineItem = async (id: string, data: ILineItem) => {
 
 export const deleteLineItem = async (id: string) => {
     try {
-        const resp = await Axios.delete(`/line/${id}`);
+        const resp = await Axios.delete(`/lineitem/${id}`);
         return resp.data;
     } catch (error) {
         console.log(error);
@@ -61,7 +98,7 @@ export const deleteLineItem = async (id: string) => {
 
 export const getLineItems = async (quoteId: string) => {
     try {
-        const resp = await Axios.get(`/line`, { params: { QuoteId: quoteId } });
+        const resp = await Axios.get(`/lineitem`, { params: { QuoteId: quoteId } });
         return resp.data;
     } catch (error) {
         console.log(error);

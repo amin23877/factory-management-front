@@ -5,11 +5,13 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Button from "@material-ui/core/Button";
 import { GridColDef } from "@material-ui/data-grid";
+import AddRoundedIcon from "@material-ui/icons/AddRounded";
 
 import Confirm from "../Modals/Confirm";
 import NoteModal from "../Modals/NoteModals";
 import DocumentModal from "../Modals/DocumentModals";
-import LineItemModal from "./LineItemModals";
+import LineItemModal from "../LineItem";
+import LineServiceModal from "../LineService";
 import EditTab from "./EditTab";
 import AddSOModal from "./AddSoModal";
 import BaseDataGrid from "../../app/BaseDataGrid";
@@ -18,7 +20,8 @@ import { deleteSO, getSO, getLineItems, ISO } from "../../api/so";
 import { getAllModelNotes } from "../../api/note";
 import { getAllModelDocuments } from "../../api/document";
 import { BasePaper } from "../../app/Paper";
-import AddRoundedIcon from "@material-ui/icons/AddRounded";
+import { ILineItem } from "../../api/lineItem";
+import { getSOLineServices, ILineService } from "../../api/lineService";
 
 export default function SalesOrderPanel() {
     const [activeTab, setActiveTab] = useState(0);
@@ -27,20 +30,23 @@ export default function SalesOrderPanel() {
     const [noteModal, setNoteModal] = useState(false);
     const [docModal, setDocModal] = useState(false);
     const [lineItemModal, setLineItemModal] = useState(false);
+    const [lineServiceModal, setLineServiceModal] = useState(false);
     const [selectedNote, setSelectedNote] = useState<any>();
     const [selectedDoc, setSelectedDoc] = useState<any>();
-    const [selectedLI, setSelectedLI] = useState<any>();
+    const [selectedLI, setSelectedLI] = useState<ILineItem>();
+    const [selectedLS, setSelectedLS] = useState<ILineService>();
+    const [selectedSO, setSelectedSO] = useState<ISO>();
 
     const [notes, setNotes] = useState([]);
     const [docs, setDocs] = useState([]);
     const [sos, setSos] = useState([]);
     const [lineItems, setLineIitems] = useState([]);
-    const [selectedSO, setSelectedSO] = useState<ISO>();
+    const [lineServices, setLineServices] = useState([]);
 
     const cols: GridColDef[] = [
         { field: "number" },
-        { field: "Client", valueGetter: (data) => (data.row.Client ? data.row.Client.name : "") },
-        { field: "Project", valueGetter: (data) => (data.row.Project ? data.row.Project.name : "") },
+        { field: "Client", valueGetter: (data) => (data.row.ClientId ? data.row.ClientId.name : "") },
+        { field: "Project", valueGetter: (data) => (data.row.ProjectId ? data.row.ProjectId.name : "") },
     ];
 
     const refreshSo = async () => {
@@ -68,6 +74,17 @@ export default function SalesOrderPanel() {
             if (selectedSO && selectedSO.id) {
                 const resp = await getLineItems(selectedSO.id);
                 resp && setLineIitems(resp);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const refreshLineServices = async () => {
+        try {
+            if (selectedSO && selectedSO.id) {
+                const resp = await getSOLineServices(selectedSO.id);
+                resp && setLineServices(resp);
             }
         } catch (error) {
             console.log(error);
@@ -108,6 +125,7 @@ export default function SalesOrderPanel() {
     useEffect(() => {
         if (activeTab === 1) {
             refreshLineItems();
+            refreshLineServices();
             refreshNotes();
             refreshDocs();
         }
@@ -119,9 +137,20 @@ export default function SalesOrderPanel() {
                 <LineItemModal
                     open={lineItemModal}
                     onClose={() => setLineItemModal(false)}
-                    soId={selectedSO.id}
-                    LIData={selectedLI}
+                    record="SO"
+                    recordId={selectedSO.id}
+                    selectedLine={selectedLI}
                     onDone={refreshLineItems}
+                />
+            )}
+            {selectedSO && selectedSO.id && (
+                <LineServiceModal
+                    open={lineServiceModal}
+                    onClose={() => setLineServiceModal(false)}
+                    record="SO"
+                    recordId={selectedSO.id}
+                    selectedLine={selectedLS}
+                    onDone={refreshLineServices}
                 />
             )}
             {selectedSO && selectedSO.id && (
@@ -166,7 +195,15 @@ export default function SalesOrderPanel() {
                                 setLineItemModal(true);
                             }}
                         >
-                            Add Line Item
+                            Add Line item
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                setSelectedLS(undefined);
+                                setLineServiceModal(true);
+                            }}
+                        >
+                            Add Line service
                         </Button>
                         <Button
                             onClick={() => {
@@ -174,7 +211,7 @@ export default function SalesOrderPanel() {
                                 setNoteModal(true);
                             }}
                         >
-                            Add Note
+                            Add note
                         </Button>
                         <Button
                             style={{ backgroundColor: "#1a73e8", color: "#fff", marginLeft: "5px" }}
@@ -213,9 +250,12 @@ export default function SalesOrderPanel() {
                     notes={notes}
                     docs={docs}
                     lineItems={lineItems}
+                    lineServices={lineServices}
+                    onLineServiceSelected={(d) => {
+                        setSelectedLS(d);
+                        setLineServiceModal(true);
+                    }}
                     onLineItemSelected={(d) => {
-                        console.log(d);
-
                         setSelectedLI(d);
                         setLineItemModal(true);
                     }}

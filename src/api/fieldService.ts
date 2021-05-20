@@ -57,7 +57,7 @@ export const deleteFieldService = async (id: string) => {
 
 export const addServiceToLineitem = async (lineId: string, serviceId: string, count?: number) => {
     try {
-        const resp = await Axios.post(`/line/${lineId}/service/${serviceId}`, { count });
+        const resp = await Axios.post(`/lineitem/${lineId}/lineservice/${serviceId}`, { count });
         return resp.data;
     } catch (error) {
         throw error;
@@ -66,7 +66,7 @@ export const addServiceToLineitem = async (lineId: string, serviceId: string, co
 
 export const removeServiceFromLineitem = async (lineId: string, serviceId: string) => {
     try {
-        const resp = await Axios.delete(`/line/${lineId}/service/${serviceId}`);
+        const resp = await Axios.delete(`/lineitem/${lineId}/lineservice/${serviceId}`);
         return resp.data;
     } catch (error) {
         throw error;

@@ -4,9 +4,9 @@ import Box from "@material-ui/core/Box";
 
 import Dialog from "../../app/Dialog";
 import Form from "./Form";
-import { ILineItem } from "../../api/lineItem";
+import { ILineService } from "../../api/lineService";
 
-export default function AddLineItemModal({
+export default function AddLineServiceModal({
     open,
     onClose,
     onDone,
@@ -15,16 +15,16 @@ export default function AddLineItemModal({
     selectedLine,
     readOnly,
 }: {
-    selectedLine?: ILineItem;
+    selectedLine?: ILineService;
     open: boolean;
     onClose: () => void;
     onDone: () => void;
-    record: "purchaseSO" | "purchasePO" | "SO";
+    record: "Quote" | "SO";
     recordId: string;
     readOnly?: boolean;
 }) {
     return (
-        <Dialog open={open} onClose={onClose} title={`Add new line item to ${record === "purchasePO" ? "purchase order" : "sales order"}`}>
+        <Dialog open={open} onClose={onClose} title={`Add new line service to ${record}`}>
             <Box p={2}>
                 <Form
                     initialValues={selectedLine}

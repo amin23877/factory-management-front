@@ -17,7 +17,9 @@ export default function EditTab({
     notes,
     docs,
     lineItems,
+    lineServices,
     onLineItemSelected,
+    onLineServiceSelected,
     onNoteSelected,
     onDocSelected,
 }: {
@@ -26,7 +28,9 @@ export default function EditTab({
     notes: any;
     docs: any;
     lineItems: any;
+    lineServices: any;
     onLineItemSelected: (a: any) => void;
+    onLineServiceSelected: (a: any) => void;
     onNoteSelected: (a: any) => void;
     onDocSelected: (a: any) => void;
 }) {
@@ -53,6 +57,14 @@ export default function EditTab({
         { field: "tax" },
     ];
 
+    const LSCols: GridColDef[] = [
+        { field: "ServiceId" },
+        { field: "LineItemRecordId", width: 200 },
+        { field: "quantity" },
+        { field: "price" },
+        { field: "tax" },
+    ];
+
     return (
         <div>
             <Box>
@@ -60,12 +72,14 @@ export default function EditTab({
             </Box>
             <Tabs style={{ margin: "1em 0" }} textColor="primary" value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                 <Tab label="Line Items" />
+                <Tab label="Line Services" />
                 <Tab label="Notes" />
                 <Tab label="Documents" />
             </Tabs>
             {activeTab === 0 && <BaseDataGrid cols={LICols} rows={lineItems} onRowSelected={onLineItemSelected} height={300} />}
-            {activeTab === 1 && <BaseDataGrid cols={noteCols} rows={notes} onRowSelected={onNoteSelected} height={300} />}
-            {activeTab === 2 && <BaseDataGrid cols={docCols} rows={docs} onRowSelected={onDocSelected} height={300} />}
+            {activeTab === 1 && <BaseDataGrid cols={LSCols} rows={lineServices} onRowSelected={onLineServiceSelected} height={300} />}
+            {activeTab === 2 && <BaseDataGrid cols={noteCols} rows={notes} onRowSelected={onNoteSelected} height={300} />}
+            {activeTab === 3 && <BaseDataGrid cols={docCols} rows={docs} onRowSelected={onDocSelected} height={300} />}
         </div>
     );
 }

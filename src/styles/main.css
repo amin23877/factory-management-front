@@ -1,32 +1,36 @@
-.MuiToolbar-root{
-    height: 54px !important; 
+.MuiToolbar-root {
+    height: 54px !important;
     padding: 0px;
 }
+
 .MuiToolbar-regular {
     min-height: 54px !important;
 }
-.MuiListItemIcon-root{
+
+.MuiListItemIcon-root {
     width: 24px !important;
     min-width: 24px !important;
-    margin-right:24px ;
+    margin-right: 24px;
 }
 
-.MuiListItemIcon-root > .MuiSvgIcon-root{
+.MuiListItemIcon-root>.MuiSvgIcon-root {
     color: rgb(132, 132, 132);
 }
-.MuiListItemText-root  > .MuiTypography-body1 {
+
+.MuiListItemText-root>.MuiTypography-body1 {
     font-weight: 200;
 }
 
-.Active > .MuiSvgIcon-root{
-    color:#fff !important
+.Active>.MuiSvgIcon-root {
+    color: #fff !important
 }
-.Active > .MuiTypography-body1{
-    color:#fff !important;
+
+.Active>.MuiTypography-body1 {
+    color: #fff !important;
     font-weight: 500;
 }
 
-.UpDownPNG{
+.UpDownPNG {
     box-sizing: border-box;
     background-image: url("../assets/updown.png");
     width: 150px;
@@ -34,4 +38,13 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+#external-events .fc-event, .fc-event-dragging {
+    background: #03a9f4;
+    border-radius: 0.2em;
+    text-align: center;
+    padding: 4px;
+    color: #fff;
+    margin: 4px 0;
 }

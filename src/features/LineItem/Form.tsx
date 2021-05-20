@@ -16,17 +16,20 @@ import { createPurchaseSOLine, deletePurchaseSOLine, updatePurchaseSOLine } from
 import { createPurchasePOLine, deletePurchasePOLine, updatePurchasePOLine } from "../../api/purchasePO";
 import { ILineItem } from "../../api/lineItem";
 import { getItems } from "../../api/items";
+import { createLineItem, editLineItem } from "../../api/so";
 
 export default function MainForm({
     initialValues,
     onDone,
     record,
     recordId,
+    readOnly,
 }: {
     initialValues?: ILineItem;
     onDone: () => void;
-    record: "purchaseSO" | "purchasePO";
+    record: "purchaseSO" | "purchasePO" | "SO";
     recordId: string;
+    readOnly?: boolean;
 }) {
     const [items, setItems] = useState([]);
 
@@ -44,8 +47,23 @@ export default function MainForm({
 
     const handleSubmit = async (d: ILineItem) => {
         try {
-            const createLine = record === "purchasePO" ? createPurchasePOLine : createPurchaseSOLine;
-            const updateLine = record === "purchasePO" ? updatePurchasePOLine : updatePurchaseSOLine;
+            let createLine: any, updateLine: any;
+            switch (record) {
+                case "purchasePO":
+                    createLine = createPurchasePOLine;
+                    updateLine = updatePurchasePOLine;
+                    break;
+                case "purchaseSO":
+                    createLine = createPurchaseSOLine;
+                    updateLine = updatePurchaseSOLine;
+                    break;
+                case "SO":
+                    createLine = createLineItem;
+                    updateLine = editLineItem;
+                    break;
+                default:
+                    break;
+            }
 
             if (initialValues && initialValues.id) {
                 const resp = await updateLine(initialValues.id, d);
@@ -85,9 +103,13 @@ export default function MainForm({
                         itemTitleField="name"
                         itemValueField="id"
                         value={values?.ItemId as any}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.ItemId)}
                         name="ItemId"
+                        label="Item"
                         fullWidth
-                        disabled
+                        disabled={Boolean(readOnly)}
                     />
                     {/* <Autocomplete
                         value={values?.ItemId as any}
@@ -99,7 +121,6 @@ export default function MainForm({
                         fullWidth
                     /> */}
                     <BootstrapTextField
-                        disabled
                         style={{ width: "100%" }}
                         name="description"
                         label="Description"
@@ -107,9 +128,9 @@ export default function MainForm({
                         onChange={handleChange}
                         onBlur={handleBlur}
                         error={Boolean(errors.description)}
+                        disabled={Boolean(readOnly)}
                     />
                     <BootstrapTextField
-                        disabled
                         style={{ width: "100%" }}
                         name="quantity"
                         label="Quantity"
@@ -117,9 +138,9 @@ export default function MainForm({
                         onChange={handleChange}
                         onBlur={handleBlur}
                         error={Boolean(errors.quantity)}
+                        disabled={Boolean(readOnly)}
                     />
                     <BootstrapTextField
-                        disabled
                         style={{ width: "100%" }}
                         name="price"
                         label="Price"
@@ -127,36 +148,35 @@ export default function MainForm({
                         onChange={handleChange}
                         onBlur={handleBlur}
                         error={Boolean(errors.price)}
-                    />
-                    <BootstrapTextField
-                        disabled
-                        style={{ width: "100%" }}
-                        name="index"
-                        label="Index"
-                        value={values.index}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.index)}
+                        disabled={Boolean(readOnly)}
                     />
                     <FormControlLabel
-                        disabled
                         style={{ width: "100%" }}
                         checked={values.tax}
                         label="Tax"
                         name="tax"
                         onChange={handleChange}
                         control={<CheckBox />}
+                        disabled={Boolean(readOnly)}
                     />
-                    {/* <Box display="flex">
-                        <Button style={{ flex: 3 }} type="submit" kind={initialValues && initialValues.id ? "edit" : "add"} fullWidth>
-                            Submit
-                        </Button>
-                        {initialValues && initialValues.id && (
-                            <Button style={{ flex: 1, margin: "0 0.5em" }} kind="delete" onClick={handleDelete}>
-                                Delete
+                    {!Boolean(readOnly) && (
+                        <Box display="flex">
+                            <Button
+                                style={{ flex: 3 }}
+                                type="submit"
+                                // onClick={() => console.log(errors, values)}
+                                kind={initialValues && initialValues.id ? "edit" : "add"}
+                                fullWidth
+                            >
+                                Submit
                             </Button>
-                        )}
-                    </Box> */}
+                            {initialValues && initialValues.id && (
+                                <Button style={{ flex: 1, margin: "0 0.5em" }} kind="delete" onClick={handleDelete}>
+                                    Delete
+                                </Button>
+                            )}
+                        </Box>
+                    )}
                 </Form>
             )}
         </Formik>

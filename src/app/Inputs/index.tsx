@@ -1,8 +1,60 @@
 import React, { useState, useEffect } from "react";
-import { Select, SelectProps, FormControl, InputLabel, MenuItem } from "@material-ui/core";
+import { Select, SelectProps, FormControl, InputLabel, MenuItem, TextField } from "@material-ui/core";
 import { BootstrapInput } from "../TextField";
 
 import styles from "./inputs.module.css";
+import { Autocomplete, AutocompleteProps } from "@material-ui/lab";
+import { CSSProperties } from "@material-ui/styles";
+
+interface IMFS {
+    request: () => Promise<any>;
+    limit?: number;
+    label?: string;
+    getOptionLabel: (option: any) => string;
+    getOptionValue: (option: any) => string;
+    onChange?: (e: React.ChangeEvent<{}>, newValue: any) => void;
+    onBlur?: React.FocusEventHandler<HTMLDivElement>;
+    error?: boolean;
+    placeholder?: string;
+    style?: CSSProperties;
+    value?: any;
+}
+export const MaterialFieldSelect = ({ request, limit, getOptionLabel, getOptionValue, onChange, value, ...props }: IMFS) => {
+    const [options, setOptions] = useState([]);
+
+    useEffect(() => {
+        request()
+            .then((data) => {
+                if (limit && limit > 0) {
+                    setOptions(data.slice(0, limit));
+                } else {
+                    setOptions(data);
+                }
+            })
+            .catch((e) => console.log(e));
+    }, []);
+
+    return (
+        <Autocomplete
+            style={props.style as any}
+            getOptionLabel={getOptionLabel}
+            options={options}
+            onChange={onChange}
+            onBlur={props.onBlur}
+            value={value}
+            renderInput={(params) => (
+                <TextField
+                    {...params}
+                    label={props?.label}
+                    error={props.error}
+                    placeholder={props.placeholder}
+                    size="small"
+                    variant="outlined"
+                />
+            )}
+        />
+    );
+};
 
 interface IOS extends SelectProps {
     items: any[];

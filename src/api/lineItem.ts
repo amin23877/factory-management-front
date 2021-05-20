@@ -15,7 +15,7 @@ export interface ILineItem {
 
 export const getALineItem = async (id:string) => {
     try {
-        const resp = await Axios.get(`/line/${id}`);
+        const resp = await Axios.get(`/lineitem/${id}`);
         return resp.data;
     } catch (error) {
         throw error;
