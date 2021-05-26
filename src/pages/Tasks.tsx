@@ -1,33 +1,54 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Box, Button, Container, Grid, Paper, Typography } from "@material-ui/core";
-import FullCalendar, { EventClickArg } from "@fullcalendar/react";
+import FullCalendar, { EventClickArg, EventDropArg } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin, { Draggable, DropArg } from "@fullcalendar/interaction";
 import Swal from "sweetalert2";
 
 import { BasePaper } from "../app/Paper";
-
-interface ITask {
-    title: string;
-    id: string;
-}
+import { changeTaskDate, getTasks, ITask, updateTask } from "../api/task";
+import TaskModal from "../features/Tasks/TaskModal";
 
 export default function Tasks() {
     const [calendarEvents, setCalendarEvents] = useState([
-        {
-            title: "Default event",
-            start: new Date(),
-            // end: new Date().setDate(new Date().getDate() + 1),
-            id: "999",
-            color: "red",
-        },
+        // {
+        //     title: "Default event",
+        //     start: new Date(),
+        //     // end: new Date().setDate(new Date().getDate() + 1),
+        //     id: "999",
+        //     color: "red",
+        // },
     ]);
     const [tasks, setTasks] = useState<ITask[]>([]);
+    const [selectedTask, setSelectedTask] = useState<ITask>();
+    const [taskModal, setTaskModal] = useState(false);
+    const calendar = useRef<FullCalendar | null>(null);
 
     const draggableEvents = useRef<HTMLElement | null>();
 
+    const refreshTasks = async (refreshCalendar?: boolean) => {
+        try {
+            const resp = await getTasks();
+            if (resp) {
+                setTasks(resp);
+                if (refreshCalendar) {
+                    const ctasks = resp.filter((t: any) => Boolean(t.deadline));
+                    ctasks.forEach((element: any) => {
+                        element.title = element.name;
+                        element.start = element.deadline;
+                    });
+                    setCalendarEvents(ctasks);
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     useEffect(() => {
+        refreshTasks(true);
+
         if (draggableEvents.current) {
             new Draggable(draggableEvents.current, {
                 itemSelector: ".fc-event",
@@ -40,74 +61,49 @@ export default function Tasks() {
         }
     }, []);
 
-    const addEvent = (e: DropArg) => {
-        console.log({ title: e.draggedEl.innerHTML, id: e.draggedEl.id, start: e.dateStr as any });
+    const addEvent = async (e: DropArg) => {
+        try {
+            const resp = await changeTaskDate(e.draggedEl.id, e.dateStr);
+            if (resp) {
+                refreshTasks();
+            }
+        } catch (error) {
+            console.log(error);
+        }
     };
 
-    const handleEventClick = (eventClick: EventClickArg) => {
-        Swal.fire({
-            title: eventClick.event.title,
-            html:
-                `<div class="table-responsive">
-            <table class="table">
-            <tbody>
-            <tr >
-            <td>Title</td>
-            <td><strong>` +
-                eventClick.event.title +
-                `</strong></td>
-            </tr>
-            <tr >
-            <td>Start Time</td>
-            <td><strong>
-            ` +
-                eventClick.event.start +
-                `
-            </strong></td>
-            </tr>
-            </tbody>
-            </table>
-            </div>`,
-
-            showCancelButton: true,
-            confirmButtonColor: "#d33",
-            cancelButtonColor: "#3085d6",
-            confirmButtonText: "Remove Event",
-            cancelButtonText: "Close",
-        }).then((result) => {
-            if (result.value) {
-                eventClick.event.remove(); // It will remove event from the calendar
-                Swal.fire("Deleted!", "Your Event has been deleted.", "success");
+    const handleChangeEventDate = async (e: EventDropArg) => {
+        try {
+            if (e.event.start?.toString()) {
+                const resp = await changeTaskDate(e.event.id, e.event.start?.toString());
             }
-        });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleEventClick = (e: EventClickArg) => {
+        console.log(calendar.current?.getApi());
+        if (e.event.id) {
+            const task = tasks.find((t) => t.id === e.event.id);
+            if (task) {
+                setSelectedTask(task);
+                setTaskModal(true);
+            }
+        }
     };
 
     const handleAddTaskClick = () => {
-        Swal.fire({
-            title: "Task Form",
-            html: `<input type="text" id="task-name" class="swal2-input" placeholder="Task name...">`,
-            confirmButtonText: "Add",
-            focusConfirm: false,
-            preConfirm: () => {
-                const name = (Swal?.getPopup()?.querySelector("#task-name") as any).value;
-                if (!name) {
-                    Swal.showValidationMessage(`Please enter name`);
-                }
-                return { name };
-            },
-        }).then((result) => {
-            if (result.value) {
-                const id = String(Math.floor(Math.random() * 100));
-                Swal.fire(`Task ${result?.value?.name} added.`.trim());
-                setTasks((prev) => [...prev, { title: result.value?.name, id }]);
-            }
-        });
+        setSelectedTask(undefined);
+        setTaskModal(true);
     };
 
     return (
         <Container>
+            <TaskModal open={taskModal} onClose={() => setTaskModal(false)} onDone={() => refreshTasks(true)} selectedTask={selectedTask} />
+
             <Grid container spacing={2}>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} md={2}>
                     <Paper
                         style={{
                             borderRadius: 20,
@@ -120,28 +116,31 @@ export default function Tasks() {
                             <Button onClick={handleAddTaskClick}>Add new task</Button>
                         </Box>
                         <div id="external-events" ref={(e) => (draggableEvents.current = e)}>
-                            {tasks.map((e) => (
-                                <div className="fc-event" title={e.title} key={e.id} id={e.id}>
-                                    {e.title}
-                                </div>
-                            ))}
+                            {tasks.map(
+                                (e) =>
+                                    !e.deadline && (
+                                        <div className="fc-event" title={e.name} key={e.id} id={e.id}>
+                                            {e.name}
+                                        </div>
+                                    )
+                            )}
                         </div>
                     </Paper>
                 </Grid>
-                <Grid item xs={12} md={9}>
+                <Grid item xs={12} md={10}>
                     <BasePaper>
                         <FullCalendar
+                            ref={(e) => (calendar.current = e)}
                             initialView="dayGridMonth"
-                            weekends={false}
                             rerenderDelay={10}
                             eventDurationEditable={false}
                             editable={true}
                             droppable={true}
-                            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+                            plugins={[dayGridPlugin, interactionPlugin]}
                             events={calendarEvents}
                             eventClick={handleEventClick}
                             drop={addEvent}
-                            // eventReceive={(e) => console.log(e)}
+                            eventDrop={handleChangeEventDate}
                         />
                     </BasePaper>
                 </Grid>

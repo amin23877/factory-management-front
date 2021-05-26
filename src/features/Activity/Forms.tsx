@@ -16,7 +16,7 @@ import { getProjects } from "../../api/project";
 import { getAllEmployees } from "../../api/employee";
 import { getQuotes } from "../../api/quote";
 import { IActivity, createActivity, updateActivity } from "../../api/activity";
-import { baseGet } from "../../api";
+import { fetcher } from "../../api";
 import { BasePaper } from "../../app/Paper";
 
 export default function EditActivityForm({ open, init, onDone }: { open?: boolean; init: IActivity; onDone: () => void }) {
@@ -132,7 +132,7 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                         style={{ flex: "1 1 25%" }}
                                         label="ActivityPriorityId"
                                         name="ActivityPriorityId"
-                                        request={() => baseGet("/activitypriority")}
+                                        request={() => fetcher("/activitypriority")}
                                         itemTitleField="name"
                                         itemValueField="id"
                                         value={values.ActivityPriorityId}
@@ -177,7 +177,7 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                     <FieldSelect
                                         label="ActivityCategoryId"
                                         name="ActivityCategoryId"
-                                        request={() => baseGet("/activitycategory")}
+                                        request={() => fetcher("/activitycategory")}
                                         itemTitleField="name"
                                         itemValueField="id"
                                         value={values.ActivityCategoryId}
@@ -188,7 +188,7 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                     <FieldSelect
                                         label="ActivityStatusId"
                                         name="ActivityStatusId"
-                                        request={() => baseGet("/activitystatus")}
+                                        request={() => fetcher("/activitystatus")}
                                         itemTitleField="name"
                                         itemValueField="id"
                                         value={values.ActivityStatusId}
@@ -198,7 +198,15 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                 </Box>
                             </Box>
                         </BasePaper>
-                        <BasePaper style={{ height:"100%",minHeight:"350px" ,display:"flex",flexDirection:"column",justifyContent:"space-evenly"}}>
+                        <BasePaper
+                            style={{
+                                height: "100%",
+                                minHeight: "350px",
+                                display: "flex",
+                                flexDirection: "column",
+                                justifyContent: "space-evenly",
+                            }}
+                        >
                             <Box flex={1}>
                                 <Box>
                                     <div>
@@ -247,8 +255,8 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                     />
                                 </Box>
                                 <Box my={4}>
-                                    <div style={{ display: "flex", width: "100%", alignItems: "flex-end",marginTop:"auto" }}>
-                                        <Button kind="add" type="submit" style={{flex:1}}>
+                                    <div style={{ display: "flex", width: "100%", alignItems: "flex-end", marginTop: "auto" }}>
+                                        <Button kind="add" type="submit" style={{ flex: 1 }}>
                                             {open ? "Add" : "Save"}
                                         </Button>
                                     </div>

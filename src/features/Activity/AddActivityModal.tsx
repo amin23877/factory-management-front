@@ -21,7 +21,7 @@ import { getProjects } from "../../api/project";
 import { getAllEmployees } from "../../api/employee";
 import { getQuotes } from "../../api/quote";
 import { IActivity, createActivity, updateActivity } from "../../api/activity";
-import { baseGet } from "../../api";
+import { fetcher } from "../../api";
 
 const useStyles = makeStyles({
     fieldCont: (props: any) => ({
@@ -167,7 +167,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                         style={{ width: "100%" }}
                                         label="ActivityCategoryId"
                                         name="ActivityCategoryId"
-                                        request={() => baseGet("/activitycategory")}
+                                        request={() => fetcher("/activitycategory")}
                                         itemTitleField="name"
                                         itemValueField="id"
                                         value={values.ActivityCategoryId}
@@ -179,7 +179,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                     <FieldSelect
                                         label="ActivityStatusId"
                                         name="ActivityStatusId"
-                                        request={() => baseGet("/activitystatus")}
+                                        request={() => fetcher("/activitystatus")}
                                         itemTitleField="name"
                                         itemValueField="id"
                                         value={values.ActivityStatusId}
@@ -190,7 +190,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                     <FieldSelect
                                         label="ActivityPriorityId"
                                         name="ActivityPriorityId"
-                                        request={() => baseGet("/activitypriority")}
+                                        request={() => fetcher("/activitypriority")}
                                         itemTitleField="name"
                                         itemValueField="id"
                                         value={values.ActivityPriorityId}

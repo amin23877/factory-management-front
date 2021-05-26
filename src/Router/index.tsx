@@ -13,7 +13,7 @@ export default function BaseRouter() {
             <Route exact path="/">
                 {isAuthenticated ? <Redirect to="/panel" /> : <Redirect to="/login" />}
             </Route>
-            <Route path="/panel">{isAuthenticated ? <PanelRouter /> : <Redirect to="/panel" />}</Route>
+            <Route path="/panel">{isAuthenticated ? <PanelRouter /> : <Redirect to="/login" />}</Route>
             <Route exact path="/login">
                 {isAuthenticated ? <Redirect to="/panel" /> : <LoginPage />}
             </Route>

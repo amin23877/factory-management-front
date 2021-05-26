@@ -15,76 +15,70 @@ const schema = Yup.object().shape({
     AddressTypeId: Yup.number().required().notOneOf([0]),
 });
 
-export const AddressModal = ({
-    open,
-    onClose,
-    model,
-    itemId,
-    data,
-    onDone,
-}: {
+type addressModalProps = {
     open: boolean;
     onClose: () => void;
     model: string;
     itemId: string;
     data?: IAddress;
     onDone?: () => void;
-}) => {
+};
+
+export const AddressModal = ({ open, onClose, model, itemId, data, onDone }: addressModalProps) => {
+    const handleSubmit = (values: any, { setSubmitting }: any) => {
+        if (data?.id) {
+            updateAModelAddress(data?.id, values)
+                .then((d) => {
+                    console.log(d);
+                    onDone && onDone();
+                    setSubmitting(false);
+                    onClose();
+                })
+                .catch((e) => console.log(e));
+        } else {
+            createAModelAddress(model, itemId, values)
+                .then((d) => {
+                    console.log(d);
+                    onDone && onDone();
+                    setSubmitting(false);
+                    onClose();
+                })
+                .catch((e) => console.log(e));
+        }
+    };
+
+    const initialValues = data?.id
+        ? {
+              address: data.address,
+              address2: data.address2,
+              city: data.city,
+              state: data.state,
+              zip: data.zip,
+              country: data.country,
+              main: data.main,
+              AddressTypeId: data?.AddressTypeId,
+          }
+        : ({} as IAddress);
+
+    const handleDelete = () => {
+        if (data?.id) {
+            deleteAModelAddress(data.id)
+                .then((d) => {
+                    onClose();
+                    onDone && onDone();
+                })
+                .catch((e) => console.log(e));
+        }
+    };
+
     return (
         <Dialog open={open} onClose={onClose} title={`${data?.id ? "Edit" : "Add"} an Address to ${model}`}>
             <Box m={3}>
-                <Formik
-                    initialValues={
-                        data?.id
-                            ? {
-                                  address: data.address,
-                                  address2: data.address2,
-                                  city: data.city,
-                                  state: data.state,
-                                  zip: data.zip,
-                                  country: data.country,
-                                  main: data.main,
-                                  AddressTypeId: data?.AddressTypeId,
-                              }
-                            : {
-                                  address: "",
-                                  address2: "",
-                                  city: "",
-                                  state: "",
-                                  zip: "",
-                                  country: "",
-                                  main: false,
-                                  AddressTypeId: 0,
-                              }
-                    }
-                    validationSchema={schema}
-                    onSubmit={(values, { setSubmitting }) => {
-                        if (data?.id) {
-                            updateAModelAddress(data?.id, values)
-                                .then((d) => {
-                                    console.log(d);
-                                    onDone && onDone();
-                                    setSubmitting(false);
-                                    onClose();
-                                })
-                                .catch((e) => console.log(e));
-                        } else {
-                            createAModelAddress(model, itemId, values)
-                                .then((d) => {
-                                    console.log(d);
-                                    onDone && onDone();
-                                    setSubmitting(false);
-                                    onClose();
-                                })
-                                .catch((e) => console.log(e));
-                        }
-                    }}
-                >
+                <Formik initialValues={initialValues} validationSchema={schema} onSubmit={handleSubmit}>
                     {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
                         <Form>
-                            <div style={{ display: "flex", width: "100%" }}>
+                            <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={8} gridColumnGap={8}>
                                 <TextField
-                                    style={{ flex: 1, marginRight: 8 }}
                                     name="address"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
@@ -94,7 +88,6 @@ export const AddressModal = ({
                                     label="address"
                                 />
                                 <TextField
-                                    style={{ flex: 1, marginRight: 8 }}
                                     name="address2"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
@@ -103,10 +96,7 @@ export const AddressModal = ({
                                     value={values.address2}
                                     label="address2"
                                 />
-                            </div>
-                            <div style={{ display: "flex", width: "100%" }}>
                                 <TextField
-                                    style={{ flex: 1, marginRight: 8 }}
                                     name="city"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
@@ -116,7 +106,6 @@ export const AddressModal = ({
                                     label="city"
                                 />
                                 <TextField
-                                    style={{ flex: 1, marginRight: 8 }}
                                     name="state"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
@@ -125,10 +114,7 @@ export const AddressModal = ({
                                     value={values.state}
                                     label="state"
                                 />
-                            </div>
-                            <div style={{ display: "flex", width: "100%" }}>
                                 <TextField
-                                    style={{ flex: 1, marginRight: 8 }}
                                     name="zip"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
@@ -138,7 +124,6 @@ export const AddressModal = ({
                                     label="zip"
                                 />
                                 <TextField
-                                    style={{ flex: 1, marginRight: 8 }}
                                     name="country"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
@@ -147,46 +132,30 @@ export const AddressModal = ({
                                     value={values.country}
                                     label="country"
                                 />
-                            </div>
-                            <FieldSelect
-                                style={{ marginRight: 8, width: "98%" }}
-                                label="Address type"
-                                request={getAddressTypes}
-                                itemTitleField="name"
-                                itemValueField="id"
-                                name="AddressTypeId"
-                                value={values.AddressTypeId}
-                                fullWidth
-                                onChange={handleChange}
-                            />
+                                <FieldSelect
+                                    style={{ gridColumnEnd: "span 2" }}
+                                    label="Address type"
+                                    request={getAddressTypes}
+                                    itemTitleField="name"
+                                    itemValueField="id"
+                                    name="AddressTypeId"
+                                    value={values.AddressTypeId}
+                                    onChange={handleChange}
+                                />
 
-                            <FormControl fullWidth style={{ margin: "0.5em" }}>
-                                <FormLabel>Main</FormLabel>
-                                <RadioGroup row name="main" value={values.main} onChange={handleChange}>
-                                    <FormControlLabel value="true" control={<Radio />} label="Yes" />
-                                    <FormControlLabel value="false" control={<Radio />} label="No" />
-                                </RadioGroup>
-                            </FormControl>
+                                <FormControl fullWidth style={{ gridColumnEnd: "span 2" }}>
+                                    <FormLabel>Main</FormLabel>
+                                    <RadioGroup row name="main" value={values.main} onChange={handleChange}>
+                                        <FormControlLabel value="true" control={<Radio />} label="Yes" />
+                                        <FormControlLabel value="false" control={<Radio />} label="No" />
+                                    </RadioGroup>
+                                </FormControl>
 
-                            <Box my={2} textAlign="center" style={{ display: "flex" }}>
-                                <Button type="submit" style={{ flex: 1 }} disabled={isSubmitting} kind={data ? "edit" : "add"}>
+                                <Button type="submit" disabled={isSubmitting} kind={data ? "edit" : "add"}>
                                     Save
                                 </Button>
                                 {data?.id && (
-                                    <Button
-                                        kind="delete"
-                                        style={{ margin: "0 1em" }}
-                                        onClick={() => {
-                                            if (data?.id) {
-                                                deleteAModelAddress(data.id)
-                                                    .then((d) => {
-                                                        onClose();
-                                                        onDone && onDone();
-                                                    })
-                                                    .catch((e) => console.log(e));
-                                            }
-                                        }}
-                                    >
+                                    <Button kind="delete" onClick={handleDelete}>
                                         Delete
                                     </Button>
                                 )}

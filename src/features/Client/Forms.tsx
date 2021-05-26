@@ -1,7 +1,11 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box, FormControlLabel, FormLabel, RadioGroup, Radio, Checkbox, FormControl } from "@material-ui/core";
 
+import { FieldSelect } from "../../app/Inputs";
 import TextField from "../../app/TextField";
+
+import { getClients } from "../../api/client";
+import { getClientTypes } from "../../api/clientType";
 
 export const GeneralForm = ({
     values,
@@ -17,7 +21,7 @@ export const GeneralForm = ({
     handleChange: any;
 }) => {
     return (
-        <Box display="grid" gridColumnGap={5} gridTemplateColumns="auto auto auto">
+        <Box mb={1} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="auto auto auto">
             <TextField
                 name="name"
                 value={values.name}
@@ -156,6 +160,47 @@ export const GeneralForm = ({
                 error={Boolean(errors.fax && touched.fax)}
                 helperText={touched.fax && errors.fax && String(errors.fax)}
                 label="fax"
+            />
+            <FieldSelect
+                request={getClients}
+                itemTitleField="name"
+                itemValueField="id"
+                name="parent"
+                label="Parent"
+                fullWidth
+                onChange={handleChange}
+                value={values.parent}
+                error={Boolean(errors.parent)}
+                style={{ gridColumnEnd: "span 2" }}
+            />
+            <FieldSelect
+                request={getClientTypes}
+                itemTitleField="name"
+                itemValueField="id"
+                name="ClientTypeId"
+                label="Client Type"
+                fullWidth
+                onChange={handleChange}
+                value={values.ClientTypeId}
+                error={Boolean(errors.ClientTypeId)}
+            />
+
+            <FormControl style={{ gridColumnEnd: "span 3", display: "flex" }}>
+                <FormLabel style={{ display: "inline" }}>Size</FormLabel>
+                <RadioGroup row name="size" value={values.size} onChange={handleChange}>
+                    <FormControlLabel value="small" control={<Radio />} label="Small" />
+                    <FormControlLabel value="medium" control={<Radio />} label="Medium" />
+                    <FormControlLabel value="large" control={<Radio />} label="Large" />
+                </RadioGroup>
+            </FormControl>
+
+            <FormControlLabel
+                style={{ gridColumnEnd: "span 3" }}
+                checked={values.prospect}
+                label="prospect"
+                name="prospect"
+                onChange={handleChange}
+                control={<Checkbox />}
             />
         </Box>
     );

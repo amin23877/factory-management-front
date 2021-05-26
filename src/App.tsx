@@ -3,6 +3,8 @@ import { CssBaseline, ThemeProvider } from "@material-ui/core";
 import { BrowserRouter } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { theme } from "./theme";
+import DateFnsUtils from "@date-io/date-fns";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 
 import { useAppDispatch } from "./store";
 
@@ -38,12 +40,14 @@ function App() {
     }, []);
 
     return (
-        <BrowserRouter>
-            <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <BaseRouter />
-            </ThemeProvider>
-        </BrowserRouter>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <BrowserRouter>
+                <ThemeProvider theme={theme}>
+                    <CssBaseline />
+                    <BaseRouter />
+                </ThemeProvider>
+            </BrowserRouter>
+        </MuiPickersUtilsProvider>
     );
 }
 

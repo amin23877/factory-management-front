@@ -17,7 +17,7 @@ import { getProjects } from "../../api/project";
 import { getAllEmployees } from "../../api/employee";
 import { getQuotes } from "../../api/quote";
 import { IActivity } from "../../api/activity";
-import { baseGet } from "../../api";
+import { fetcher } from "../../api";
 
 export default function ActivityModal({ open, onClose, activity }: { open: boolean; onClose: () => void; activity: IActivity }) {
     const schema = Yup.object().shape({
@@ -100,7 +100,7 @@ export default function ActivityModal({ open, onClose, activity }: { open: boole
                                 <FieldSelect
                                     label="ActivityPriorityId"
                                     name="ActivityPriorityId"
-                                    request={() => baseGet("/activitypriority")}
+                                    request={() => fetcher("/activitypriority")}
                                     itemTitleField="name"
                                     itemValueField="id"
                                     value={values.ActivityPriorityId}
@@ -144,7 +144,7 @@ export default function ActivityModal({ open, onClose, activity }: { open: boole
                                 <FieldSelect
                                     label="ActivityCategoryId"
                                     name="ActivityCategoryId"
-                                    request={() => baseGet("/activitycategory")}
+                                    request={() => fetcher("/activitycategory")}
                                     itemTitleField="name"
                                     itemValueField="id"
                                     value={values.ActivityCategoryId}
@@ -155,7 +155,7 @@ export default function ActivityModal({ open, onClose, activity }: { open: boole
                                 <FieldSelect
                                     label="ActivityStatusId"
                                     name="ActivityStatusId"
-                                    request={() => baseGet("/activitystatus")}
+                                    request={() => fetcher("/activitystatus")}
                                     itemTitleField="name"
                                     itemValueField="id"
                                     value={values.ActivityStatusId}

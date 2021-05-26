@@ -1,4 +1,5 @@
 import Axios from "axios";
+import * as Yup from 'yup';
 
 export interface IJob {
     id: string;
@@ -11,6 +12,10 @@ export interface IJob {
     status: string;
     deadline: number;
 }
+
+export const schema = Yup.object().shape({
+    LineServiceRecordId: Yup.string().required()
+});
 
 export const getJobs = async () => {
     try {
@@ -39,7 +44,7 @@ export const updateJob = async (id: string, data: IJob) => {
     }
 };
 
-export const deleteJobs = async (id: string) => {
+export const deleteJob = async (id: string) => {
     try {
         const resp = await Axios.delete(`/job/${id}`);
         return resp.data;

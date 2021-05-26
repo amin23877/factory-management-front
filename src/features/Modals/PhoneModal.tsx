@@ -32,39 +32,47 @@ export const PhoneModal = ({
     data?: IPhone;
     onDone?: () => void;
 }) => {
+    const handleSubmit = (values: any, { setSubmitting }: any) => {
+        if (data?.id) {
+            updateAModelPhone(data?.id, values)
+                .then((d: any) => {
+                    console.log(d);
+                    onDone && onDone();
+                    setSubmitting(false);
+                    onClose();
+                })
+                .catch((e) => console.log(e));
+        } else {
+            createAModelPhone(model, itemId, values)
+                .then((d: any) => {
+                    console.log(d);
+                    onDone && onDone();
+                    setSubmitting(false);
+                    onClose();
+                })
+                .catch((e) => console.log(e));
+        }
+    };
+
+    const handleDelete = () => {
+        if (data?.id) {
+            deleteAModelPhone(data.id)
+                .then(() => {
+                    onClose();
+                    onDone && onDone();
+                })
+                .catch((e) => console.log(e));
+        }
+    };
+
     return (
         <Dialog open={open} onClose={onClose} title={`${data?.id ? "Edit" : "Add"} a Phone to ${model}`}>
             <Box m={3}>
-                <Formik
-                    initialValues={data?.id ? data : ({} as IPhone)}
-                    validationSchema={schema}
-                    onSubmit={(values, { setSubmitting }) => {
-                        if (data?.id) {
-                            updateAModelPhone(data?.id, values)
-                                .then((d: any) => {
-                                    console.log(d);
-                                    onDone && onDone();
-                                    setSubmitting(false);
-                                    onClose();
-                                })
-                                .catch((e) => console.log(e));
-                        } else {
-                            createAModelPhone(model, itemId, values)
-                                .then((d: any) => {
-                                    console.log(d);
-                                    onDone && onDone();
-                                    setSubmitting(false);
-                                    onClose();
-                                })
-                                .catch((e) => console.log(e));
-                        }
-                    }}
-                >
+                <Formik initialValues={data?.id ? data : ({} as IPhone)} validationSchema={schema} onSubmit={handleSubmit}>
                     {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
                         <Form>
-                            <Box display="flex" alignItems="center">
+                            <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={8} gridColumnGap={8}>
                                 <TextField
-                                    style={{ marginRight: 8 }}
                                     name="ext"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
@@ -84,47 +92,34 @@ export const PhoneModal = ({
                                     label="phone"
                                     fullWidth
                                 />
-                            </Box>
 
-                            <FieldSelect
-                                request={getPhoneTypes}
-                                itemTitleField="name"
-                                itemValueField="id"
-                                fullWidth
-                                name="PhoneTypeId"
-                                label="Phone Type"
-                                value={values.PhoneTypeId}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={Boolean(errors.PhoneTypeId && touched.PhoneTypeId)}
-                            />
+                                <FieldSelect
+                                    style={{ gridColumnEnd: "span 2" }}
+                                    request={getPhoneTypes}
+                                    itemTitleField="name"
+                                    itemValueField="id"
+                                    fullWidth
+                                    name="PhoneTypeId"
+                                    label="Phone Type"
+                                    value={values.PhoneTypeId}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors.PhoneTypeId && touched.PhoneTypeId)}
+                                />
 
-                            <FormControlLabel
-                                name="main"
-                                onChange={handleChange}
-                                label="Use this as main phone Number "
-                                control={<Checkbox style={{ marginLeft: "8px" }} />}
-                            />
+                                <FormControlLabel
+                                    style={{ gridColumnEnd: "span 2" }}
+                                    name="main"
+                                    onChange={handleChange}
+                                    label="Main phone number"
+                                    control={<Checkbox />}
+                                />
 
-                            <Box my={2} textAlign="center" display="flex">
                                 <Button type="submit" style={{ flex: 1 }} disabled={isSubmitting} kind={data ? "edit" : "add"}>
                                     Save
                                 </Button>
                                 {data?.id && (
-                                    <Button
-                                        kind="delete"
-                                        style={{ margin: "0 1em" }}
-                                        onClick={() => {
-                                            if (data?.id) {
-                                                deleteAModelPhone(data.id)
-                                                    .then(() => {
-                                                        onClose();
-                                                        onDone && onDone();
-                                                    })
-                                                    .catch((e) => console.log(e));
-                                            }
-                                        }}
-                                    >
+                                    <Button kind="delete" onClick={handleDelete}>
                                         Delete
                                     </Button>
                                 )}

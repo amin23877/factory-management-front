@@ -11,7 +11,7 @@ export const getToken = () => {
     }
 };
 
-export const baseGet = async (url:string, params?:string) => {
+export const fetcher = async (url:string, params?:string) => {
     try {
         const resp = await Axios.get(url, {params})
         return resp.data;

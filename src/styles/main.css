@@ -40,11 +40,16 @@
     background-size: cover;
 }
 
-#external-events .fc-event, .fc-event-dragging {
+#external-events .fc-event,
+.fc-event-dragging {
     background: #03a9f4;
     border-radius: 0.2em;
     text-align: center;
     padding: 4px;
     color: #fff;
     margin: 4px 0;
+}
+
+.MuiPickersBasePicker-container .MuiToolbar-root {
+    padding: 3em 1em;
 }

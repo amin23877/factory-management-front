@@ -1,16 +1,10 @@
 import React, { useState } from "react";
-import { Box, FormControlLabel, FormLabel, RadioGroup, Radio, Checkbox, FormControl, Tabs, Tab } from "@material-ui/core";
+import { Box, Tabs, Tab } from "@material-ui/core";
 import { useFormik } from "formik";
 
 import Dialog from "../../app/Dialog";
-import TextField from "../../app/TextField";
-import Button from "../../app/Button";
-import { FieldSelect } from "../../app/Inputs";
 import { General, MoreInfo, Quantity, Shipping } from "./AddForms";
 
-import { getCategories } from "../../api/category";
-import { getTypes } from "../../api/types";
-import { getFamilies } from "../../api/family";
 import { createItem, AddItemInitialValues, AddItemSchema } from "../../api/items";
 
 export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
@@ -48,7 +42,7 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
                                 isSubmitting={isSubmitting}
                             />
                         </Box>
-                        <Box flex={1}  width={300} ml={5}>
+                        <Box flex={1} width={300} ml={5}>
                             <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="primary">
                                 <Tab label="More info" />
                                 <Tab label="Quantity" />

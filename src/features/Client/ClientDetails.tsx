@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Box, Tabs, Tab, FormControlLabel, FormLabel, RadioGroup, Radio, FormControl } from "@material-ui/core";
-import { useFormik } from "formik";
+import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
+import { GeneralForm } from "./Forms";
 import TextField from "../../app/TextField";
 import Button from "../../app/Button";
 
@@ -22,50 +23,26 @@ const EditClientForm = ({ clientTypes, data, onDone }: { clientTypes: any; data:
         ClientTypeId: Yup.string().required(),
     });
 
-    const { values, errors, handleChange, handleBlur, handleSubmit } = useFormik({
-        initialValues: data,
-        validationSchema: schema,
-        onSubmit: async (values, { setSubmitting }) => {
-            try {
-                const resp = await editClient(data.id, values);
-                console.log(resp);
+    const handleSubmit = async (values: any, { setSubmitting }: any) => {
+        try {
+            const resp = await editClient(data.id, values);
+            console.log(resp);
 
-                if (resp.id) {
-                    setShowSnack(true);
-                    setMsg("Success");
-                } else {
-                    setShowSnack(true);
-                    setMsg("Error " + resp.error);
-                }
-
-                onDone();
-                setSubmitting(false);
-            } catch (error) {
+            if (resp.id) {
                 setShowSnack(true);
-                setMsg("Error " + error);
+                setMsg("Success");
+            } else {
+                setShowSnack(true);
+                setMsg("Error " + resp.error);
             }
-        },
-    });
 
-    const specials = ["id", "createdAt", "updatedAt", "size", "prospect", "parent", "ClientTypeId", "__v", "_v"];
-    let key: keyof typeof values;
-    let fields: any[] = [];
-    for (key in values) {
-        if (!specials.includes(key)) {
-            fields.push(
-                <TextField
-                    style={{ marginRight: 8 }}
-                    key={key}
-                    name={key}
-                    value={values[key]}
-                    label={key}
-                    placeholder={key}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                />
-            );
+            onDone();
+            setSubmitting(false);
+        } catch (error) {
+            setShowSnack(true);
+            setMsg("Error " + error);
         }
-    }
+    };
 
     return (
         <Box>
@@ -73,77 +50,23 @@ const EditClientForm = ({ clientTypes, data, onDone }: { clientTypes: any; data:
                 {msg}
             </Snack>
 
-            <form onSubmit={handleSubmit}>
-                <Box display="flex" justifyContent="space-between">
-                    {[0, 1, 2, 3].map((i) => (
-                        <Box key={i} display="flex" flexDirection="column" flex={1}>
-                            {fields.slice(0 + 4 * i, 4 * (i + 1))}
-                        </Box>
-                    ))}
-                </Box>
-                <Box display="flex">
-                    <Box display="flex" flexDirection="column" flex={1}>
-                        <FieldSelect
-                            request={getClients}
-                            itemTitleField="name"
-                            itemValueField="id"
-                            fullWidth
-                            name="parent"
-                            onChange={handleChange}
-                            value={values.parent}
-                            label="Parent"
-                            error={Boolean(errors.parent)}
+            <Formik initialValues={data} onSubmit={handleSubmit}>
+                {({ values, errors, touched, handleChange, handleBlur }) => (
+                    <Form>
+                        <GeneralForm
+                            values={values}
+                            errors={errors}
+                            handleBlur={handleBlur}
+                            handleChange={handleChange}
+                            touched={touched}
                         />
 
-                        <ObjectSelect
-                            items={clientTypes}
-                            itemTitleField="name"
-                            itemValueField="id"
-                            fullWidth
-                            name="ClientTypeId"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values.ClientTypeId}
-                            label="Client Type"
-                            error={Boolean(errors.ClientTypeId)}
-                        />
-                    </Box>
-
-                    <Box display="flex" flexDirection="column" justifyContent="center" ml={1} flex={1}>
-                        <FormControl fullWidth style={{ margin: "0.5em" }}>
-                            <FormLabel>Size</FormLabel>
-                            <RadioGroup
-                                style={{ display: "flex", flexDirection: "row" }}
-                                name="size"
-                                value={values.size}
-                                onChange={handleChange}
-                            >
-                                <FormControlLabel value="small" control={<Radio />} label="Small" />
-                                <FormControlLabel value="medium" control={<Radio />} label="Medium" />
-                                <FormControlLabel value="large" control={<Radio />} label="Large" />
-                            </RadioGroup>
-                        </FormControl>
-
-                        <FormControl fullWidth style={{ margin: "0.5em" }}>
-                            <FormLabel>Prospect</FormLabel>
-                            <RadioGroup
-                                style={{ display: "flex", flexDirection: "row" }}
-                                name="prospect"
-                                value={String(values.prospect)}
-                                onChange={handleChange}
-                            >
-                                <FormControlLabel value="true" control={<Radio />} label="Yes" />
-                                <FormControlLabel value="false" control={<Radio />} label="No" />
-                            </RadioGroup>
-                        </FormControl>
-                    </Box>
-                    <Box display="flex" alignItems="center">
                         <Button type="submit" kind="edit">
                             Save
                         </Button>
-                    </Box>
-                </Box>
-            </form>
+                    </Form>
+                )}
+            </Formik>
         </Box>
     );
 };

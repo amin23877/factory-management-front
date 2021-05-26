@@ -43,20 +43,6 @@
 .MuiDataGrid-row:hover {
     cursor: pointer;
 }
-table,
-td {
-    padding: 10px ;
-    text-align: center;
-}
-
-table{
-    min-height: 100px;
-}
-
-th{
-    padding: 2px ;
-}
-
 table {
     border-collapse: collapse;
 }

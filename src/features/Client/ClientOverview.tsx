@@ -46,5 +46,5 @@ export default function ClientOverview({ rows, onRowSelected }: { rows: GridRowD
         },
     ];
 
-    return <BaseDataGrid rows={rows} onRowSelected={() => {}} cols={cols} />;
+    return <BaseDataGrid rows={rows} onRowSelected={onRowSelected} cols={cols} />;
 }

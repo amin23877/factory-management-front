@@ -2,7 +2,7 @@ import React from "react";
 import { createStyles, Theme, withStyles, makeStyles } from "@material-ui/core/styles";
 import InputBase, { InputBaseProps } from "@material-ui/core/InputBase";
 import InputLabel from "@material-ui/core/InputLabel";
-import TextField from "@material-ui/core/TextField";
+import TextField, { StandardTextFieldProps } from "@material-ui/core/TextField";
 import FormControl from "@material-ui/core/FormControl";
 import Typography from "@material-ui/core/Typography";
 
@@ -61,17 +61,18 @@ export interface IBaseTextField extends InputBaseProps {
     helperText?: React.ReactNode;
 }
 
-export default function BaseTextField(props: IBaseTextField) {
+export default function BaseTextField(props: StandardTextFieldProps) {
     return (
-        <FormControl style={{ ...props.style, marginTop: 5, marginBottom: 5 }}>
-            {props.label && (
-                <InputLabel shrink htmlFor="bootstrap-input">
-                    {props.label}
-                </InputLabel>
-            )}
-            <BootstrapInput inputProps={{ style: { borderColor: props.error ? "red" : "#ced4da" } }} {...props} id="bootstrap-input" />
-            {props.helperText && <Typography variant="caption">{props.helperText}</Typography>}
-        </FormControl>
+        // <FormControl style={{ ...props.style, marginTop: 5, marginBottom: 5 }}>
+        //     {props.label && (
+        //         <InputLabel shrink htmlFor="bootstrap-input">
+        //             {props.label}
+        //         </InputLabel>
+        //     )}
+        //     <BootstrapInput inputProps={{ style: { borderColor: props.error ? "red" : "#ced4da" } }} {...props} id="bootstrap-input" />
+        //     {props.helperText && <Typography variant="caption">{props.helperText}</Typography>}
+        // </FormControl>
+        <TextField variant="outlined" size="small" {...props} />
     );
 }
 

@@ -1,6 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Box, Container, Button, IconButton, ListItem, LinearProgress } from "@material-ui/core";
-import { NoteRounded, FileCopyRounded, PrintRounded, AddRounded, DeleteRounded, CategoryRounded } from "@material-ui/icons";
+import {
+    NoteRounded,
+    FileCopyRounded,
+    PrintRounded,
+    AddRounded,
+    DeleteRounded,
+    CategoryRounded,
+    FilterRounded,
+    PostAddRounded,
+} from "@material-ui/icons";
 
 import Confirm from "../features/Modals/Confirm";
 
@@ -25,6 +34,7 @@ import { MyTabs, MyTab } from "../app/Tabs";
 import { IFilters } from "../features/Items/Table/Filters";
 import { IOrder } from "../features/Items/Table/Sorts";
 import DataTable from "../features/Items/Table";
+import FiltersModal from "../features/Filter/Modals";
 
 const Inventory = () => {
     const [rows, setRows] = useState<any[]>([]);
@@ -55,6 +65,7 @@ const Inventory = () => {
     const [addDocModal, setAddDocModal] = useState(false);
 
     const [bomModal, setBomModal] = useState(false);
+    const [filterModal, setFilterModal] = useState(false);
 
     const refreshItems = async () => {
         try {
@@ -300,12 +311,13 @@ const Inventory = () => {
                     model="item"
                 />
             )}
-
             {selectedItem && selectedItem.id && <BOMModal itemId={selectedItem.id} open={bomModal} onClose={() => setBomModal(false)} />}
 
             <AddItemModal open={addItemModal} onClose={() => setAddItemModal(false)} />
             <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
             <CatTypeFamilyModal open={catModal} onClose={() => setCatModal(false)} />
+
+            <FiltersModal open={filterModal} onClose={() => setFilterModal(false)} />
 
             <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
                 <Button
@@ -355,11 +367,20 @@ const Inventory = () => {
                             <CategoryRounded />
                         </IconButton>
                     </ListItem>
+                    <ListItem>
+                        <IconButton title="Filters" onClick={() => setFilterModal(true)}>
+                            <FilterRounded />
+                        </IconButton>
+                    </ListItem>
+                    <ListItem>
+                        <IconButton title="Dyanamic fields">
+                            <PostAddRounded />
+                        </IconButton>
+                    </ListItem>
                 </List>
                 <Box flex={11} ml={2}>
                     {loading && <LinearProgress />}
                     {activeTab === 0 && !loading && (
-                        // <Box display="flex" style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", border: "none" }}>
                         <DataTable
                             order={order}
                             setOrder={setOrder}
@@ -377,7 +398,6 @@ const Inventory = () => {
                                 setActiveTab(1);
                             }}
                         />
-                        // </Box>
                     )}
                     {activeTab === 1 && (
                         <ItemsDetails

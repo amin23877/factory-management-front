@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { Typography, Box, Container, makeStyles } from "@material-ui/core";
+import { Typography, Box, Container, GridList, GridListTile, makeStyles, Grid } from "@material-ui/core";
 import {
     GpsFixedRounded,
     PersonRounded,
@@ -11,7 +11,7 @@ import {
     AccountTreeRounded,
 } from "@material-ui/icons";
 import { Link } from "react-router-dom";
-import '../styles/dashboard.css'
+import "../styles/dashboard.css";
 
 const useStyles = makeStyles({
     topHeader: {
@@ -19,6 +19,8 @@ const useStyles = makeStyles({
         margin: "2em 0",
     },
     itemCont: {
+        width: "90%",
+        height: "95%",
         margin: "0 1em",
         display: "inline-flex",
         flexDirection: "column",
@@ -37,7 +39,7 @@ const useStyles = makeStyles({
         },
     },
     itemIcon: {
-        padding: "4em 5em",
+        // padding: "4em 5em",
         borderRadius: "1em",
         transition: "all 300ms",
         "& > svg": {
@@ -60,28 +62,38 @@ const ItemCard = ({ icon, title, href }: { icon: ReactNode; title: string; href:
 };
 
 export default function Home() {
-    const classes = useStyles();
-
     return (
         <div>
-        <div className="Homebg"></div>
-        <div className="HomeContain"></div>
-            <Container>
-            <Box my={4} display="flex" justifyContent="center">
-                <ItemCard icon={<PaymentRounded />} title="Dashboard" href="/dashboard" />
-                <ItemCard icon={<PersonRounded />} title="Clients" href="/clients" />
-                <ItemCard icon={<AssessmentRounded />} title="Sales" href="/sales" />
-                <ItemCard icon={<GpsFixedRounded />} title="Inventory" href="/inventory" />
-            </Box>
-            <Box my={4} display="flex" justifyContent="center">
-                <ItemCard icon={<AccountBoxRounded />} title="Roles" href="/roles" />
-                <ItemCard icon={<LocalActivityRounded />} title="Activity" href="/activity" />
-                <ItemCard icon={<AccountTreeRounded />} title="Projects" href="/projects" />
-                <ItemCard icon={<AlternateEmailRounded />} title="Prospects" href="#" />
-            </Box>
+            <div className="Homebg"></div>
+            <div className="HomeContain"></div>
+            <Container style={{ height: "87vh" }}>
+                <Grid container style={{ height: "100%" }}>
+                    <Grid item xs={12} sm={6} md={4} lg={3}>
+                        <ItemCard icon={<PaymentRounded />} title="Dashboard" href="/panel/dashboard" />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={3}>
+                        <ItemCard icon={<PersonRounded />} title="Clients" href="/panel/clients" />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={3}>
+                        <ItemCard icon={<AssessmentRounded />} title="Sales" href="/panel/sales" />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={3}>
+                        <ItemCard icon={<GpsFixedRounded />} title="Inventory" href="/panel/inventory" />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={3}>
+                        <ItemCard icon={<AccountBoxRounded />} title="Roles" href="/panel/roles" />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={3}>
+                        <ItemCard icon={<LocalActivityRounded />} title="Activity" href="/panel/activity" />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={3}>
+                        <ItemCard icon={<AccountTreeRounded />} title="Projects" href="/panel/projects" />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={3}>
+                        <ItemCard icon={<AlternateEmailRounded />} title="Prospects" href="#" />
+                    </Grid>
+                </Grid>
             </Container>
         </div>
-        
-       
     );
 }

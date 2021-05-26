@@ -11,6 +11,8 @@ import {
     makeStyles,
     useTheme,
     ListItemText,
+    Box,
+    useMediaQuery,
 } from "@material-ui/core";
 import ShopRounded from "@material-ui/icons/ShopRounded";
 import ShoppingCartRounded from "@material-ui/icons/ShoppingCartRounded";
@@ -505,6 +507,8 @@ export default function MainNavbar({
     onToggle: () => void;
     children: any;
 }) {
+    const isMobile = useMediaQuery("max-width:600px");
+
     return (
         <>
             <Hidden only={["sm", "xs"]}>

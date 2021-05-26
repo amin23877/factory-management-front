@@ -18,38 +18,6 @@ const schema = Yup.object().shape({
     ContactTypeId: Yup.number().required().notOneOf([0]),
 });
 
-const Field = ({
-    name,
-    handleBlur,
-    handleChange,
-    errors,
-    values,
-    touched,
-    style,
-}: {
-    name: string;
-    handleBlur: any;
-    handleChange: any;
-    errors: any;
-    values: any;
-    touched: any;
-    style?: any;
-}) => {
-    return (
-        <TextField
-            style={{ flex: 1, ...style }}
-            name={name}
-            onBlur={handleBlur}
-            onChange={handleChange}
-            error={Boolean(errors[name] && touched[name])}
-            helperText={errors[name] && touched[name]}
-            value={values[name]}
-            label={name}
-            fullWidth
-        />
-    );
-};
-
 export const ContactModal = ({
     open,
     onClose,
@@ -65,152 +33,147 @@ export const ContactModal = ({
     data?: IContact;
     onDone?: () => void;
 }) => {
+    const handleDelete = () => {
+        if (data?.id) {
+            deleteAModelContact(data.id)
+                .then(() => {
+                    onClose();
+                    onDone && onDone();
+                })
+                .catch((e) => console.log(e));
+        }
+    };
+
+    const handleSubmit = (values: any, { setSubmitting }: any) => {
+        if (data?.id) {
+            updateAModelContact(data?.id, values)
+                .then((d: any) => {
+                    console.log(d);
+                    onDone && onDone();
+                    setSubmitting(false);
+                    onClose();
+                })
+                .catch((e) => console.log(e));
+        } else {
+            createAModelContact("client", itemId, values)
+                .then((d: any) => {
+                    console.log(d);
+                    onDone && onDone();
+                    setSubmitting(false);
+                    onClose();
+                })
+                .catch((e) => console.log(e));
+        }
+    };
+
     return (
         <Dialog open={open} onClose={onClose} title={`${data?.id ? "Edit" : "Add"} a Contact to ${model}`}>
             <Box m={3}>
-                <Formik
-                    initialValues={data?.id ? data : ({} as IContact)}
-                    validationSchema={schema}
-                    onSubmit={(values, { setSubmitting }) => {
-                        if (data?.id) {
-                            updateAModelContact(data?.id, values)
-                                .then((d: any) => {
-                                    console.log(d);
-                                    onDone && onDone();
-                                    setSubmitting(false);
-                                    onClose();
-                                })
-                                .catch((e) => console.log(e));
-                        } else {
-                            createAModelContact("client", itemId, values)
-                                .then((d: any) => {
-                                    console.log(d);
-                                    onDone && onDone();
-                                    setSubmitting(false);
-                                    onClose();
-                                })
-                                .catch((e) => console.log(e));
-                        }
-                    }}
-                >
+                <Formik initialValues={data?.id ? data : ({} as IContact)} validationSchema={schema} onSubmit={handleSubmit}>
                     {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
                         <Form>
-                            <TextField
-                                style={{ width: "100%" }}
-                                name="title"
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                error={Boolean(errors.title && touched.title)}
-                                helperText={errors.title && touched.title}
-                                value={values.title}
-                                label="title"
-                                fullWidth
-                            />
-                            <Box display="flex" alignItems="center">
-                                <div style={{ display: "flex", width: "100%" }}>
-                                    <TextField
-                                        style={{ flex: 1, marginRight: 8 }}
-                                        name="name"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        error={Boolean(errors.name && touched.name)}
-                                        helperText={errors.name && touched.name}
-                                        value={values.name}
-                                        label="name"
-                                        fullWidth
-                                    />
-                                </div>
-                            </Box>
-                            <div style={{ display: "flex", width: "100%" }}>
-                                <Field
-                                    style={{ marginRight: 8 }}
+                            <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={8} gridColumnGap={8}>
+                                <TextField
+                                    name="title"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.title && touched.title)}
+                                    helperText={errors.title && touched.title}
+                                    value={values.title}
+                                    label="title"
+                                />
+                                <TextField
+                                    name="name"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.name && touched.name)}
+                                    helperText={errors.name && touched.name}
+                                    value={values.name}
+                                    label="name"
+                                />
+                                <TextField
                                     name="department"
-                                    errors={errors}
-                                    handleBlur={handleBlur}
-                                    handleChange={handleChange}
-                                    touched={touched}
-                                    values={values}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.department && touched.department)}
+                                    helperText={errors.department && touched.department}
+                                    value={values.department}
+                                    label="department"
                                 />
-                                <Field
+                                <TextField
                                     name="refferedBy"
-                                    errors={errors}
-                                    handleBlur={handleBlur}
-                                    handleChange={handleChange}
-                                    touched={touched}
-                                    values={values}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.refferedBy && touched.refferedBy)}
+                                    helperText={errors.refferedBy && touched.refferedBy}
+                                    value={values.refferedBy}
+                                    label="refferedBy"
                                 />
-                            </div>
-                            <div style={{ display: "flex", width: "100%" }}>
-                                <Field
-                                    style={{ marginRight: 8 }}
+                                <TextField
                                     name="linkedIn"
-                                    errors={errors}
-                                    handleBlur={handleBlur}
-                                    handleChange={handleChange}
-                                    touched={touched}
-                                    values={values}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.linkedIn && touched.linkedIn)}
+                                    helperText={errors.linkedIn && touched.linkedIn}
+                                    value={values.linkedIn}
+                                    label="linkedIn"
                                 />
-                                <Field
+                                <TextField
                                     name="facebook"
-                                    errors={errors}
-                                    handleBlur={handleBlur}
-                                    handleChange={handleChange}
-                                    touched={touched}
-                                    values={values}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.facebook && touched.facebook)}
+                                    helperText={errors.facebook && touched.facebook}
+                                    value={values.facebook}
+                                    label="facebook"
                                 />
-                            </div>
-                            <div style={{ display: "flex", width: "100%" }}>
-                                <Field
-                                    style={{ marginRight: 8 }}
+                                <TextField
                                     name="instagram"
-                                    errors={errors}
-                                    handleBlur={handleBlur}
-                                    handleChange={handleChange}
-                                    touched={touched}
-                                    values={values}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.instagram && touched.instagram)}
+                                    helperText={errors.instagram && touched.instagram}
+                                    value={values.instagram}
+                                    label="instagram"
                                 />
-                                <Field
+                                <TextField
                                     name="website"
-                                    errors={errors}
-                                    handleBlur={handleBlur}
-                                    handleChange={handleChange}
-                                    touched={touched}
-                                    values={values}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.website && touched.website)}
+                                    helperText={errors.website && touched.website}
+                                    value={values.website}
+                                    label="website"
                                 />
-                            </div>
-                            <div style={{ display: "flex", width: "100%" }}>
-                                <Field
-                                    style={{ marginRight: 8 }}
+                                <TextField
                                     name="mi"
-                                    errors={errors}
-                                    handleBlur={handleBlur}
-                                    handleChange={handleChange}
-                                    touched={touched}
-                                    values={values}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.mi && touched.mi)}
+                                    helperText={errors.mi && touched.mi}
+                                    value={values.mi}
+                                    label="mi"
                                 />
-                                <Field
+                                <TextField
                                     name="prefix"
-                                    errors={errors}
-                                    handleBlur={handleBlur}
-                                    handleChange={handleChange}
-                                    touched={touched}
-                                    values={values}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.prefix && touched.prefix)}
+                                    helperText={errors.prefix && touched.prefix}
+                                    value={values.prefix}
+                                    label="prefix"
                                 />
-                            </div>
-
-                            <FieldSelect
-                                fullWidth
-                                request={getContactTypes}
-                                itemTitleField="name"
-                                itemValueField="id"
-                                name="ContactTypeId"
-                                label="Contact Type"
-                                value={values.ContactTypeId}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={Boolean(errors.ContactTypeId && touched.ContactTypeId)}
-                            />
-                            <div style={{ width: "100%", marginLeft: "8px" }}>
+                                <FieldSelect
+                                    request={getContactTypes}
+                                    itemTitleField="name"
+                                    itemValueField="id"
+                                    name="ContactTypeId"
+                                    label="Contact Type"
+                                    value={values.ContactTypeId}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors.ContactTypeId && touched.ContactTypeId)}
+                                />
                                 <FormControlLabel
                                     name="active"
                                     onChange={handleChange}
@@ -229,27 +192,11 @@ export const ContactModal = ({
                                     label="Main"
                                     control={<Checkbox checked={values.main} />}
                                 />
-                            </div>
-
-                            <Box my={2} textAlign="center" display="flex">
-                                <Button type="submit" style={{ flex: 1 }} disabled={isSubmitting} kind={data ? "edit" : "add"}>
+                                <Button type="submit" disabled={isSubmitting} kind={data ? "edit" : "add"}>
                                     Save
                                 </Button>
                                 {data?.id && (
-                                    <Button
-                                        kind="delete"
-                                        style={{ margin: "0 1em" }}
-                                        onClick={() => {
-                                            if (data?.id) {
-                                                deleteAModelContact(data.id)
-                                                    .then(() => {
-                                                        onClose();
-                                                        onDone && onDone();
-                                                    })
-                                                    .catch((e) => console.log(e));
-                                            }
-                                        }}
-                                    >
+                                    <Button kind="delete" onClick={handleDelete}>
                                         Delete
                                     </Button>
                                 )}

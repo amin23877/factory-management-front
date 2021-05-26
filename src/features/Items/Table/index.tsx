@@ -118,7 +118,7 @@ export default function DataTable({
             </Menu>
 
             <TableContainer component={Paper} className={classes.tableCont}>
-                <Table stickyHeader size="small" aria-label="Items table" className={classes.root}>
+                <Table size="small" stickyHeader aria-label="Items table" className={classes.root}>
                     <TableHead>
                         <TableRow>
                             <TableCell>

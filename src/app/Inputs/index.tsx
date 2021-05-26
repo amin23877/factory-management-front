@@ -1,9 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Select, SelectProps, FormControl, InputLabel, MenuItem, TextField } from "@material-ui/core";
+import {
+    Select,
+    SelectProps,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    TextField,
+    OutlinedTextFieldProps,
+    TextFieldProps,
+    StandardTextFieldProps,
+} from "@material-ui/core";
 import { BootstrapInput } from "../TextField";
 
 import styles from "./inputs.module.css";
-import { Autocomplete, AutocompleteProps } from "@material-ui/lab";
+import { Autocomplete } from "@material-ui/lab";
 import { CSSProperties } from "@material-ui/styles";
 
 interface IMFS {
@@ -21,6 +31,12 @@ interface IMFS {
 }
 export const MaterialFieldSelect = ({ request, limit, getOptionLabel, getOptionValue, onChange, value, ...props }: IMFS) => {
     const [options, setOptions] = useState([]);
+    const [findValue, setFindValue] = useState<any>();
+
+    useEffect(() => {
+        const t = options.find((o) => getOptionValue(o) === value);
+        setFindValue(t);
+    }, [value, options]);
 
     useEffect(() => {
         request()
@@ -41,7 +57,7 @@ export const MaterialFieldSelect = ({ request, limit, getOptionLabel, getOptionV
             options={options}
             onChange={onChange}
             onBlur={props.onBlur}
-            value={value}
+            value={findValue}
             renderInput={(params) => (
                 <TextField
                     {...params}
@@ -56,7 +72,7 @@ export const MaterialFieldSelect = ({ request, limit, getOptionLabel, getOptionV
     );
 };
 
-interface IOS extends SelectProps {
+interface IOS extends StandardTextFieldProps {
     items: any[];
     itemValueField: string;
     itemTitleField: string;
@@ -65,26 +81,35 @@ interface IOS extends SelectProps {
 }
 export const ObjectSelect = ({ inputStyle, items, itemTitleField, itemValueField, keyField, ...props }: IOS) => {
     return (
-        <FormControl className={styles.objectSelect} style={{ ...props.style }} fullWidth={props.fullWidth}>
-            {props.label && (
-                <InputLabel shrink htmlFor="object-select">
-                    {props.label}
-                </InputLabel>
-            )}
-            <Select id="object-select" name={props.name} style={{ ...inputStyle }} input={<BootstrapInput />} {...props}>
-                <MenuItem value={undefined}>None</MenuItem>
-                {items &&
-                    items.map((item: any, i) => (
-                        <MenuItem key={keyField ? item[keyField] : i} value={item[itemValueField]}>
-                            {item[itemTitleField]}
-                        </MenuItem>
-                    ))}
-            </Select>
-        </FormControl>
+        // <FormControl className={styles.objectSelect} style={{ ...props.style }} fullWidth={props.fullWidth}>
+        //     {props.label && (
+        //         <InputLabel shrink htmlFor="object-select">
+        //             {props.label}
+        //         </InputLabel>
+        //     )}
+        //     <Select id="object-select" name={props.name} style={{ ...inputStyle }} input={<BootstrapInput />} {...props}>
+        //         <MenuItem value={undefined}>None</MenuItem>
+        //         {items &&
+        //             items.map((item: any, i) => (
+        //                 <MenuItem key={keyField ? item[keyField] : i} value={item[itemValueField]}>
+        //                     {item[itemTitleField]}
+        //                 </MenuItem>
+        //             ))}
+        //     </Select>
+        // </FormControl>
+        <TextField {...props} variant="outlined" size="small" select>
+            <MenuItem value={undefined}>None</MenuItem>
+            {items &&
+                items.map((item: any, i) => (
+                    <MenuItem key={keyField ? item[keyField] : i} value={item[itemValueField]}>
+                        {item[itemTitleField]}
+                    </MenuItem>
+                ))}
+        </TextField>
     );
 };
 
-interface IFieldSelect extends SelectProps {
+interface IFieldSelect extends StandardTextFieldProps {
     request: () => Promise<any>;
     itemValueField: string;
     itemTitleField: string;
@@ -109,7 +134,7 @@ export const FieldSelect = ({ keyField, request, itemValueField, itemTitleField,
     return <ObjectSelect {...props} itemTitleField={itemTitleField} itemValueField={itemValueField} items={items} />;
 };
 
-interface IArraySelect extends SelectProps {
+interface IArraySelect extends StandardTextFieldProps {
     items: any[];
 }
 export const ArraySelect = ({ items, ...props }: IArraySelect) => {
