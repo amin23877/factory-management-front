@@ -54,7 +54,7 @@ export default function FiltersModal({ open, onClose }: { open: boolean; onClose
     );
 }
 
-export const ApplyFilterModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+export const ApplyFilterModal = ({ open, onClose , setter }: { open: boolean; onClose: () => void ; setter : (a:any)=>void  }) => {
     const { data: filters, mutate } = useSWR<IFilter[]>("/filter", fetcher);
     const classes = useStyles();
 
@@ -62,7 +62,7 @@ export const ApplyFilterModal = ({ open, onClose }: { open: boolean; onClose: ()
         <Dialog open={open} onClose={onClose} title="Filters" maxWidth="sm" >
             <Box p={2} display="flex" alignItems="flex-start" >
                 {!filters && <LinearProgress />}
-                {filters && <ApplyFilterForm filter={filters}/>}
+                {filters && <ApplyFilterForm filter={filters} applyFilter={setter}/>}
             </Box>
         </Dialog>
     );

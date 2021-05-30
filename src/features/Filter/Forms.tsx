@@ -9,6 +9,7 @@ import TextField from "../../app/TextField";
 import { IFilter } from "../../api/filter";
 import { basePost } from "../../api";
 import { BaseSelect } from "../../app/Inputs/index";
+import { getItemsByQuery } from "../../api/items";
 
 export default function FilterForm() {
     const schema = Yup.object().shape({
@@ -58,7 +59,7 @@ export default function FilterForm() {
 }
 
 
-export const ApplyFilterForm = ({ filter }: any) => {
+export const ApplyFilterForm = ({ filter, applyFilter }: { filter: any; applyFilter: (a: any) => void }) => {
     const schema = Yup.object().shape({
         name: Yup.string().required(),
         valid: Yup.string().required(),
@@ -72,6 +73,13 @@ export const ApplyFilterForm = ({ filter }: any) => {
         const n = name.name;
         const params = { [n]: value }
         console.log(params)
+        try {
+            // const resp = await getItemsByQuery(params);
+            // console.log(resp);
+            applyFilter((prev: any) => ({ ...prev, params}))
+        } catch (e) {
+            console.log(e);
+        }
         // try {
         //     await basePost("/filter", d);
         //     mutate("/filter");

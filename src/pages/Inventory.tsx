@@ -166,7 +166,11 @@ const Inventory = () => {
                     refreshItems();
                     return;
                 } else {
+                    
+                    const key = Object.keys(filters.params)
+                    const v = Object.values(filters.params) 
                     const resp = await getItemsByQuery({
+                        [key[0]]:v[0],
                         ItemCategoryId: filters.cat && filters.cat.length > 0 ? filters.cat.map((item) => item.id).join(",") : undefined,
                         ItemTypeId: filters.type && filters.type.length > 0 ? filters.type.map((item) => item.id).join(",") : undefined,
                         ItemFamilyId:
@@ -181,6 +185,7 @@ const Inventory = () => {
 
                         sort: order && order.orderBy ? order.orderBy : undefined,
                         order: order && order.order ? (order.order === "asc" ? "ASC" : "DESC") : undefined,
+                        
                     });
                     resp && setRows(resp);
                 }
@@ -319,7 +324,7 @@ const Inventory = () => {
             <CatTypeFamilyModal open={catModal} onClose={() => setCatModal(false)} />
 
             <FiltersModal open={filterModal} onClose={() => setFilterModal(false)} />
-            <ApplyFilterModal open={applyFilterModal} onClose={()=> setApplyFilterModal(false)}/>
+            <ApplyFilterModal open={applyFilterModal} onClose={()=> setApplyFilterModal(false)} setter={setFilters}/>
             <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
                 <Button
                     disabled={activeTab === 0}

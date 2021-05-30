@@ -91,6 +91,7 @@ export interface IFilters {
     QOH: string;
     lastUsed: any[];
     resellCost: number[];
+    [key:string]:any;
 }
 
 export default function MenuFilters({
