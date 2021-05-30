@@ -86,6 +86,11 @@ export interface IFilters {
     type: any[];
     family: any[];
     cost: number[];
+    salesApprove: boolean;
+    engineeringApproves: boolean;
+    QOH: string;
+    lastUsed: any[];
+    resellCost: number[];
 }
 
 export default function MenuFilters({
@@ -103,10 +108,10 @@ export default function MenuFilters({
     types: any[];
     families: any[];
 }) {
-    if (filterBy === "itemNo" || filterBy === "name" || filterBy === "desc") {
+    if (filterBy === "itemNo" || filterBy === "name" || filterBy === "desc" || filterBy === "QOH" || filterBy === "lastUsed" || filterBy === "resellCost") {
         return <FilterByWord filters={filters} filterBy={filterBy} onChange={onFilterChange} />;
     }
-    if (filterBy === "cat" || filterBy === "type" || filterBy === "family") {
+    if (filterBy === "cat" || filterBy === "type" || filterBy === "family" || filterBy === "salesApprove" || filterBy === "engineeringApproves") {
         return (
             <FilterWithChecks
                 cats={cats}

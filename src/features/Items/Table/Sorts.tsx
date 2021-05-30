@@ -3,7 +3,7 @@ import { IconButton, TableSortLabel } from "@material-ui/core";
 import SortRounded from "@material-ui/icons/SortRounded";
 
 export type IOrder = {
-    orderBy: "no" | "name" | "description" | "cost" | "ItemCategoryId" | "ItemTypeId" | "ItemFamilyId";
+    orderBy: "no" | "name" | "description" | "cost" | "ItemCategoryId" | "ItemTypeId" | "ItemFamilyId" | "SalesApproveId" | "EngineeringApprovesId" | "QOH" | "LastUsed" | "ResellCost";
     order: "asc" | "desc";
 };
 
@@ -12,7 +12,7 @@ export default function Sort({
     order,
     setOrder,
 }: {
-    field: "no" | "name" | "description" | "cost" | "ItemCategoryId" | "ItemTypeId" | "ItemFamilyId";
+    field: "no" | "name" | "description" | "cost" | "ItemCategoryId" | "ItemTypeId" | "ItemFamilyId" | "SalesApproveId" | "EngineeringApprovesId" | "QOH" | "LastUsed" | "ResellCost";
     order?: IOrder;
     setOrder: (v: IOrder) => void;
 }) {
