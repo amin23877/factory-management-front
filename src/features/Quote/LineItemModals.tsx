@@ -5,7 +5,7 @@ import * as Yup from "yup";
 
 import Dialog from "../../app/Dialog";
 import { LineItemForm } from "./Forms";
-import { LineItemFSForm } from "../Service/Forms";
+import { LineItemFSForm } from "../FieldService/Forms";
 
 import { createLineItem, editLineItem, deleteLineItem } from "../../api/quote";
 import { ILineItem } from "../../api/lineItem";

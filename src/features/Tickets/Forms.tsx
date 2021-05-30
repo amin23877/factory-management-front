@@ -28,6 +28,7 @@ export const JobDetails = ({
     setFieldValue: (a: any, b: any) => void;
     setSelectedSO: (a: any) => void;
 }) => {
+    console.log(services);
     return (
         <Form>
             <Typography>Job details</Typography>

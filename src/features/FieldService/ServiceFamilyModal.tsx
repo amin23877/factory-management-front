@@ -7,7 +7,7 @@ import { GeneralForm } from "../../app/Forms";
 
 export default function ServiceFamilyModal({ open, onClose }: { open: boolean; onClose: () => void }) {
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog title="Service family" open={open} onClose={onClose}>
             <Box m={2}>
                 <GeneralForm
                     type="serviceFamily"

@@ -303,16 +303,6 @@ const drawerItems = [
             </svg>
         ),
     },
-    {
-        name: "Calls",
-        link: "/panel/calls",
-        icon: <PhoneRounded />,
-    },
-    {
-        name: "Tasks",
-        link: "/panel/tasks",
-        icon: <AssessmentRounded />,
-    },
 ];
 
 const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boolean; onToggle: () => void }) => {

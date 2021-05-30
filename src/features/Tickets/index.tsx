@@ -1,57 +1,34 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Container, Grid, Typography, Box, TextField, IconButton } from "@material-ui/core";
-import { Formik } from "formik";
-
-import { BasePaper } from "../app/Paper";
-import { SearchRounded } from "@material-ui/icons";
-import { getSOLineServices } from "../api/lineService";
-import { createJob, getJobs, IJob, schema } from "../api/job";
-import Snack from "../app/Snack";
-import BaseDataGrid from "../app/BaseDataGrid";
 import { GridColDef } from "@material-ui/data-grid";
-import { JobDetails } from "../features/Job/Forms";
-import JobModal from "../features/Job/Modals";
+import { SearchRounded } from "@material-ui/icons";
+import { Formik } from "formik";
+import useSWR from "swr";
 
-export default function Calls() {
-    const [jobs, setJobs] = useState<IJob[]>([]);
+import { BasePaper } from "../../app/Paper";
+import Snack from "../../app/Snack";
+import BaseDataGrid from "../../app/BaseDataGrid";
+
+import { JobDetails } from "../../features/Tickets/Forms";
+import JobModal from "../../features/Tickets/Modals";
+
+import { createJob, IJob, schema } from "../../api/job";
+import { fetcher } from "../../api";
+import { ILineService } from "../../api/lineService";
+import { ISO } from "../../api/so";
+
+export default function Tickets() {
+    const { data: jobs, mutate: mutateJobs } = useSWR<IJob[]>("/job", fetcher);
+    const { data: services, mutate: mutateServices } = useSWR<ILineService[]>(["/lineservice"], fetcher);
+
     const [jobModal, setJobModal] = useState(false);
-    const [services, setServices] = useState([]);
-    const [selectedSO, setSelectedSO] = useState<string>();
+    const [selectedSO, setSelectedSO] = useState<ISO>();
     const [selectedJob, setSelectedJob] = useState<IJob>();
     const [snack, setSnack] = useState(false);
     const [msg, setMsg] = useState("");
     const [severity, setSeverity] = useState<"success" | "info" | "warning" | "error">("info");
 
     const cols: GridColDef[] = [{ field: "description" }, { field: "deadline" }, { field: "callTime" }, { field: "status" }];
-
-    const refreshJobs = async () => {
-        try {
-            const resp = await getJobs();
-            if (resp) {
-                setJobs(resp);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const refreshServices = async () => {
-        try {
-            if (selectedSO) {
-                const resp = await getSOLineServices(selectedSO);
-                if (resp) {
-                    setServices(resp);
-                }
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    useEffect(() => {
-        refreshJobs();
-        refreshServices();
-    }, [selectedSO]);
 
     const handleSubmit = async (d: any) => {
         try {
@@ -61,7 +38,8 @@ export default function Calls() {
                 setMsg("Job created!");
                 setSeverity("success");
                 setSnack(true);
-                refreshJobs();
+
+                mutateJobs();
             }
         } catch (error) {
             setMsg("an error occurred !");
@@ -80,15 +58,14 @@ export default function Calls() {
                 <JobModal
                     open={jobModal}
                     onClose={() => setJobModal(false)}
-                    onDone={refreshJobs}
+                    onDone={mutateJobs}
                     selectedJob={selectedJob}
                     services={services}
-                    setSelectedSO={setSelectedSO}
                 />
             )}
 
             <Typography style={{ marginBottom: 8 }} variant="h5">
-                Calls
+                Tickets
             </Typography>
             <Formik initialValues={selectedJob ? selectedJob : ({} as IJob)} validationSchema={schema} onSubmit={handleSubmit}>
                 {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
@@ -111,20 +88,22 @@ export default function Calls() {
                                     handleChange={handleChange}
                                     setFieldValue={setFieldValue}
                                     services={services}
-                                    setSelectedSO={setSelectedSO}
+                                    setSelectedSO={() => {}}
                                 />
                             </BasePaper>
                         </Grid>
                         <Grid item xs={12} md={6} lg={7}>
                             <BasePaper>
-                                <BaseDataGrid
-                                    cols={cols}
-                                    rows={jobs}
-                                    onRowSelected={(d) => {
-                                        setSelectedJob(d);
-                                        setJobModal(true);
-                                    }}
-                                />
+                                {jobs && (
+                                    <BaseDataGrid
+                                        cols={cols}
+                                        rows={jobs}
+                                        onRowSelected={(d) => {
+                                            setSelectedJob(d);
+                                            setJobModal(true);
+                                        }}
+                                    />
+                                )}
                             </BasePaper>
                         </Grid>
                     </Grid>

@@ -11,14 +11,12 @@ export default function JobModal({
     onDone,
     selectedJob,
     services,
-    setSelectedSO,
 }: {
     open: boolean;
     onClose: () => void;
     onDone: () => void;
     selectedJob: IJob;
     services: any;
-    setSelectedSO: (a: any) => void;
 }) {
     const handleSubmit = async (d: any) => {
         // console.log(selectedJob.id, d);
@@ -57,7 +55,7 @@ export default function JobModal({
                         handleDelete={handleDelete}
                         setFieldValue={setFieldValue}
                         services={services}
-                        setSelectedSO={setSelectedSO}
+                        setSelectedSO={() => {}}
                     />
                 )}
             </Formik>

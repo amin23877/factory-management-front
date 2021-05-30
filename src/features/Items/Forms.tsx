@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, FormControlLabel, Typography, Checkbox } from "@material-ui/core";
+import { Box, FormControlLabel, Typography, Checkbox, useMediaQuery } from "@material-ui/core";
 
 import Button from "../../app/Button";
 

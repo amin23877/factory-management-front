@@ -86,6 +86,7 @@ export interface IFilters {
     type: any[];
     family: any[];
     cost: number[];
+    [key: string]: any;
 }
 
 export default function MenuFilters({
