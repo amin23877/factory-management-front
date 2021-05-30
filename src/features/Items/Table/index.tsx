@@ -219,6 +219,76 @@ export default function DataTable({
                                     <Sort field="ItemFamilyId" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
+                            <TableCell>
+                                <Box display="flex">
+                                    <Button
+                                        onClick={(e) => {
+                                            setMenuAnchorEl(e.target);
+                                            setFilterBy("salesApprove");
+                                        }}
+                                        className={classes.tableHeadBtn}
+                                    >
+                                        Sales Approve
+                                    </Button>
+                                    <Sort field="SalesApproveId" order={order} setOrder={setOrder} />
+                                </Box>
+                            </TableCell>
+                            <TableCell>
+                                <Box display="flex">
+                                    <Button
+                                        onClick={(e) => {
+                                            setMenuAnchorEl(e.target);
+                                            setFilterBy("engineeringApproves");
+                                        }}
+                                        className={classes.tableHeadBtn}
+                                    >
+                                        Engineering Approves
+                                    </Button>
+                                    <Sort field="EngineeringApprovesId" order={order} setOrder={setOrder} />
+                                </Box>
+                            </TableCell>
+                            <TableCell>
+                                <Box display="flex">
+                                    <Button
+                                        onClick={(e) => {
+                                            setMenuAnchorEl(e.target);
+                                            setFilterBy("QOH");
+                                        }}
+                                        className={classes.tableHeadBtn}
+                                    >
+                                        QOH
+                                    </Button>
+                                    <Sort field="QOH" order={order} setOrder={setOrder} />
+                                </Box>
+                            </TableCell>
+                            <TableCell>
+                                <Box display="flex">
+                                    <Button
+                                        onClick={(e) => {
+                                            setMenuAnchorEl(e.target);
+                                            setFilterBy("lastUsed");
+                                        }}
+                                        className={classes.tableHeadBtn}
+                                    >
+                                        Last Used in 90 days
+                                    </Button>
+                                    <Sort field="LastUsed" order={order} setOrder={setOrder} />
+                                </Box>
+                            </TableCell>
+                            <TableCell>
+                                <Box display="flex">
+                                    <Button
+                                        onClick={(e) => {
+                                            setMenuAnchorEl(e.target);
+                                            setFilterBy("resellCost");
+                                        }}
+                                        className={classes.tableHeadBtn}
+                                    >
+                                        Resell Cost
+                                    </Button>
+                                    <Sort field="ResellCost" order={order} setOrder={setOrder} />
+                                </Box>
+                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -233,6 +303,11 @@ export default function DataTable({
                                     <TableCell>{item.cost} </TableCell>
                                     <TableCell>{item.ItemCategory ? item.ItemCategory.name : ""}</TableCell>
                                     <TableCell>{item.ItemType ? item.ItemType.name : ""}</TableCell>
+                                    <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell>
+                                    <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell>
+                                    <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell>
+                                    <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell>
+                                    <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell>
                                     <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell>
                                 </TableRow>
                             ))}

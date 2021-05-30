@@ -4,7 +4,7 @@ import { DeleteRounded } from "@material-ui/icons";
 import useSWR from "swr";
 
 import Dialog from "../../app/Dialog";
-import FilterForm from "./Forms";
+import FilterForm, { ApplyFilterForm } from "./Forms";
 import { baseDelete, fetcher } from "../../api";
 import { IFilter } from "../../api/filter";
 
@@ -49,6 +49,20 @@ export default function FiltersModal({ open, onClose }: { open: boolean; onClose
                         ))}
                     </List>
                 )}
+            </Box>
+        </Dialog>
+    );
+}
+
+export const ApplyFilterModal = ({ open, onClose , setter }: { open: boolean; onClose: () => void ; setter : (a:any)=>void  }) => {
+    const { data: filters, mutate } = useSWR<IFilter[]>("/filter", fetcher);
+    const classes = useStyles();
+
+    return (
+        <Dialog open={open} onClose={onClose} title="Filters" maxWidth="sm" >
+            <Box p={2} display="flex" alignItems="flex-start" >
+                {!filters && <LinearProgress />}
+                {filters && <ApplyFilterForm filter={filters} applyFilter={setter}/>}
             </Box>
         </Dialog>
     );

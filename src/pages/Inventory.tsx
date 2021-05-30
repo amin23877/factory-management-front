@@ -9,8 +9,8 @@ import {
     CategoryRounded,
     FilterRounded,
     PostAddRounded,
+    FilterListRounded,
 } from "@material-ui/icons";
-
 import Confirm from "../features/Modals/Confirm";
 
 import NoteModal from "../features/Modals/NoteModals";
@@ -34,7 +34,7 @@ import { MyTabs, MyTab } from "../app/Tabs";
 import { IFilters } from "../features/Items/Table/Filters";
 import { IOrder } from "../features/Items/Table/Sorts";
 import DataTable from "../features/Items/Table";
-import FiltersModal from "../features/Filter/Modals";
+import FiltersModal, { ApplyFilterModal } from "../features/Filter/Modals";
 
 const Inventory = () => {
     const [rows, setRows] = useState<any[]>([]);
@@ -66,6 +66,7 @@ const Inventory = () => {
 
     const [bomModal, setBomModal] = useState(false);
     const [filterModal, setFilterModal] = useState(false);
+    const [applyFilterModal, setApplyFilterModal] = useState(false);
 
     const refreshItems = async () => {
         try {
@@ -165,7 +166,11 @@ const Inventory = () => {
                     refreshItems();
                     return;
                 } else {
+                    
+                    const key = Object.keys(filters.params)
+                    const v = Object.values(filters.params) 
                     const resp = await getItemsByQuery({
+                        [key[0]]:v[0],
                         ItemCategoryId: filters.cat && filters.cat.length > 0 ? filters.cat.map((item) => item.id).join(",") : undefined,
                         ItemTypeId: filters.type && filters.type.length > 0 ? filters.type.map((item) => item.id).join(",") : undefined,
                         ItemFamilyId:
@@ -180,6 +185,7 @@ const Inventory = () => {
 
                         sort: order && order.orderBy ? order.orderBy : undefined,
                         order: order && order.order ? (order.order === "asc" ? "ASC" : "DESC") : undefined,
+                        
                     });
                     resp && setRows(resp);
                 }
@@ -318,7 +324,7 @@ const Inventory = () => {
             <CatTypeFamilyModal open={catModal} onClose={() => setCatModal(false)} />
 
             <FiltersModal open={filterModal} onClose={() => setFilterModal(false)} />
-
+            <ApplyFilterModal open={applyFilterModal} onClose={()=> setApplyFilterModal(false)} setter={setFilters}/>
             <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
                 <Button
                     disabled={activeTab === 0}
@@ -373,10 +379,16 @@ const Inventory = () => {
                         </IconButton>
                     </ListItem>
                     <ListItem>
+                        <IconButton title="َApply Filter" onClick={() => setApplyFilterModal(true)}>
+                            <FilterListRounded />
+                        </IconButton>
+                    </ListItem>
+                    <ListItem>
                         <IconButton title="Dyanamic fields">
                             <PostAddRounded />
                         </IconButton>
                     </ListItem>
+
                 </List>
                 <Box flex={11} ml={2}>
                     {loading && <LinearProgress />}

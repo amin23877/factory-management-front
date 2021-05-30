@@ -1,5 +1,5 @@
-import React from "react";
-import { Box } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { Box, MenuItem } from "@material-ui/core";
 import { mutate } from "swr";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -8,6 +8,8 @@ import Button from "../../app/Button";
 import TextField from "../../app/TextField";
 import { IFilter } from "../../api/filter";
 import { basePost } from "../../api";
+import { BaseSelect } from "../../app/Inputs/index";
+import { getItemsByQuery } from "../../api/items";
 
 export default function FilterForm() {
     const schema = Yup.object().shape({
@@ -48,6 +50,78 @@ export default function FilterForm() {
                         />
                         <Button type="submit" kind="add">
                             Add
+                        </Button>
+                    </Box>
+                </Form>
+            )}
+        </Formik>
+    );
+}
+
+
+export const ApplyFilterForm = ({ filter, applyFilter }: { filter: any; applyFilter: (a: any) => void }) => {
+    const schema = Yup.object().shape({
+        name: Yup.string().required(),
+        valid: Yup.string().required(),
+    });
+
+    const [name, setName] = useState<any>();
+    const [value, setValue] = useState();
+
+    const handleSubmit = async (d: any) => {
+        console.log(name.name, value)
+        const n = name.name;
+        const params = { [n]: value }
+        console.log(params)
+        try {
+            // const resp = await getItemsByQuery(params);
+            // console.log(resp);
+            applyFilter((prev: any) => ({ ...prev, params}))
+        } catch (e) {
+            console.log(e);
+        }
+        // try {
+        //     await basePost("/filter", d);
+        //     mutate("/filter");
+        // } catch (error) {
+        //     console.log(error);
+        // }
+    };
+
+
+    return (
+        <Formik initialValues={{} as IFilter} validationSchema={schema} onSubmit={handleSubmit}>
+            {({ values, errors, handleChange, handleBlur }) => (
+                <Form style={{ width: '250px' }} >
+                    <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} >
+                        <BaseSelect
+                            displayEmpty={true}
+                            fullWidth
+                            value={name}
+                            onChange={(e: any) => setName(e.target.value)}
+                        >
+                            {filter.map((i: any) => (
+                                <MenuItem key={i.id} value={i}>
+                                    {i.name}
+                                </MenuItem>
+                            ))}
+                        </BaseSelect>
+                        {name && <BaseSelect
+                            displayEmpty={true}
+                            fullWidth
+                            value={value}
+                            onChange={(e: any) => setValue(e.target.value)}
+                        >
+                            {name?.valid.map((i: any) => (
+                                <MenuItem key={i} value={i}>
+                                    {i}
+                                </MenuItem>
+                            ))}
+                        </BaseSelect>}
+
+
+                        <Button type="submit" kind="add" onClick={handleSubmit}>
+                            Apply
                         </Button>
                     </Box>
                 </Form>
