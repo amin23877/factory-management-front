@@ -23,6 +23,7 @@ export const useStyles = makeStyles((theme) => ({
     tableCont: {
         borderRadius: 10,
         maxHeight: 550,
+        maxWidth:'77vw'
     },
     root: {
         backgroundColor: "#f9f9f9",
