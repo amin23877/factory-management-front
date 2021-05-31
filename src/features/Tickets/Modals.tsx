@@ -1,41 +1,18 @@
 import { Formik } from "formik";
 import React from "react";
-import { deleteJob, IJob, schema, updateJob } from "../../api/job";
+import { mutate } from "swr";
+import { createJob, IJob, schema } from "../../api/job";
 
 import Dialog from "../../app/Dialog";
-import { JobDetails } from "./Forms";
+import JobForm from "./Forms";
 
-export default function JobModal({
-    open,
-    onClose,
-    onDone,
-    selectedJob,
-    services,
-}: {
-    open: boolean;
-    onClose: () => void;
-    onDone: () => void;
-    selectedJob: IJob;
-    services: any;
-}) {
+export default function JobModal({ open, onClose }: { open: boolean; onClose: () => void }) {
     const handleSubmit = async (d: any) => {
         // console.log(selectedJob.id, d);
         try {
-            const resp = await updateJob(selectedJob.id, d);
+            const resp = await createJob(d);
             if (resp) {
-                onDone();
-                onClose();
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const handleDelete = async () => {
-        try {
-            const resp = await deleteJob(selectedJob.id);
-            if (resp) {
-                onDone();
+                mutate("/job");
                 onClose();
             }
         } catch (error) {
@@ -45,17 +22,14 @@ export default function JobModal({
 
     return (
         <Dialog open={open} onClose={onClose} title="Job details">
-            <Formik initialValues={selectedJob ? selectedJob : ({} as IJob)} validationSchema={schema} onSubmit={handleSubmit}>
+            <Formik initialValues={{} as IJob} validationSchema={schema} onSubmit={handleSubmit}>
                 {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
-                    <JobDetails
+                    <JobForm
                         errors={errors}
                         values={values}
                         handleBlur={handleBlur}
                         handleChange={handleChange}
-                        handleDelete={handleDelete}
                         setFieldValue={setFieldValue}
-                        services={services}
-                        setSelectedSO={() => {}}
                     />
                 )}
             </Formik>

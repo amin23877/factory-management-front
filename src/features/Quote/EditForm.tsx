@@ -44,7 +44,7 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
                             <Box flex={3} mr={2}>
                                 <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", border: "none", margin: "0 1em " }}>
                                     <GeneralForm edit values={values} handleBlur={handleBlur} handleChange={handleChange} />
-                                    <Box display="flex" justifyContent="flex-end" my={2}>
+                                    <Box display="flex" justifyContent="flex-end" mt={1}>
                                         <Button disabled={isSubmitting} type="submit" kind="edit">
                                             Save
                                         </Button>

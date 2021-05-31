@@ -19,7 +19,6 @@ import BaseDataGrid from "../../app/BaseDataGrid";
 import { deleteSO, getSO, getLineItems, ISO } from "../../api/so";
 import { getAllModelNotes } from "../../api/note";
 import { getAllModelDocuments } from "../../api/document";
-import { BasePaper } from "../../app/Paper";
 import { ILineItem } from "../../api/lineItem";
 import { getSOLineServices, ILineService } from "../../api/lineService";
 

@@ -6,9 +6,6 @@ export const BasePaper = withStyles((theme) => ({
         borderRadius: 20,
         height: "100%",
         padding: "1em",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
         boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
     },
 }))((props: PaperProps) => <Paper {...props} />);

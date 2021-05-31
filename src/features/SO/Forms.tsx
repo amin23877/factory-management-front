@@ -14,6 +14,7 @@ import { getProjects } from "../../api/project";
 import { getAllAgencies } from "../../api/agency";
 import { getQuoteById, getQuotes } from "../../api/quote";
 import { getAllDivison } from "../../api/division";
+import { DateTimePicker } from "@material-ui/pickers";
 
 export const GeneralForm = ({
     handleChange,
@@ -93,42 +94,11 @@ export const GeneralForm = ({
     }, [selectedQuote]);
 
     return (
-        <Box m={1}>
-            <Typography variant="h6">General</Typography>
-            <div style={{ width: "100%", display: "flex" }}>
-                <TextField
-                    style={{ flex: 1 }}
-                    value={values.freightTerms}
-                    name="freightTerms"
-                    label="freightTerms"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    fullWidth
-                />
-            </div>
-            <div style={{ width: "100%", display: "flex" }}>
-                <TextField
-                    style={{ flex: 1, marginRight: 8 }}
-                    value={values.paymentTerms}
-                    name="paymentTerms"
-                    label="paymentTerms"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    fullWidth
-                />
-                <TextField
-                    style={{ flex: 1 }}
-                    value={values.carrier}
-                    name="carrier"
-                    label="carrier"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    fullWidth
-                />
-            </div>
-
+        <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10}>
+            <TextField value={values.freightTerms} name="freightTerms" label="freightTerms" onChange={handleChange} onBlur={handleBlur} />
+            <TextField value={values.paymentTerms} name="paymentTerms" label="paymentTerms" onChange={handleChange} onBlur={handleBlur} />
+            <TextField value={values.carrier} name="carrier" label="carrier" onChange={handleChange} onBlur={handleBlur} />
             <FieldSelect
-                style={{ flex: 1, width: "100%" }}
                 value={values.QuoteId}
                 name="QuoteId"
                 label="QuoteId"
@@ -142,7 +112,6 @@ export const GeneralForm = ({
                 onBlur={handleBlur}
             />
             <FieldSelect
-                style={{ flex: 1, width: "100%" }}
                 value={values.issuedBy}
                 name="issuedBy"
                 label="issuedBy"
@@ -153,7 +122,6 @@ export const GeneralForm = ({
                 onBlur={handleBlur}
             />
             <FieldSelect
-                style={{ flex: 1, width: "100%" }}
                 value={values.DivisionId}
                 name="DivisionId"
                 label="DivisionId"
@@ -164,7 +132,7 @@ export const GeneralForm = ({
                 onBlur={handleBlur}
             />
             <ArraySelect
-                style={{ flex: 1, width: "100%" }}
+                style={{ gridColumnEnd: "span 2" }}
                 value={values.status}
                 name="status"
                 label="Status"
@@ -172,9 +140,7 @@ export const GeneralForm = ({
                 onBlur={handleBlur}
                 items={["New", "Pending", "Fulfiled"]}
             />
-
             <FormControlLabel
-                style={{ marginLeft: "5px" }}
                 name="expodate"
                 value={String(values.expodate)}
                 control={<Checkbox checked={Boolean(values.expodate)} />}
@@ -183,7 +149,6 @@ export const GeneralForm = ({
                 onBlur={handleBlur}
             />
             <FormControlLabel
-                style={{ marginLeft: "5px" }}
                 name="noTaxClient"
                 value={String(values.noTaxClient)}
                 control={<Checkbox checked={Boolean(values.noTaxClient)} />}
@@ -205,87 +170,78 @@ export const ShippingForm = ({
     handleBlur: (a: any) => void;
 }) => {
     return (
-        <Box m={1}>
-            <Typography variant="h6">Shipping</Typography>
-            <Box mt={1}>
-                <TextField
-                    style={{ width: "100%" }}
-                    value={values.estShipDate ? values.estShipDate.substr(0, 10) : ""}
-                    name="estShipDate"
-                    label="Estimated ship date"
-                    type="date"
+        <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10}>
+            <DateTimePicker
+                style={{ gridColumnEnd: "span 2" }}
+                // value={values.estShipDate ? values.estShipDate.substr(0, 10) : ""}
+                value={values.estShipDate}
+                name="estShipDate"
+                label="Estimated ship date"
+                onChange={handleChange}
+                onBlur={handleBlur}
+            />
+            <DateTimePicker
+                style={{ gridColumnEnd: "span 2" }}
+                // value={values.actShipDate ? values.actShipDate.substr(0, 10) : ""}
+                value={values.actShipDate}
+                name="actShipDate"
+                label="Actual ship date"
+                onChange={handleChange}
+                onBlur={handleBlur}
+            />
+            <FieldSelect
+                value={values.shippingAddress ? values.shippingAddress : ""}
+                name="shippingAddress"
+                request={getAddresses}
+                itemTitleField="address"
+                itemValueField="id"
+                keyField="id"
+                label="Shipping Address"
+                onChange={handleChange}
+                onBlur={handleBlur}
+            />
+            <FieldSelect
+                value={values.shippingContact ? values.shippingContact : ""}
+                request={getContacts}
+                itemTitleField="lastName"
+                itemValueField="id"
+                keyField="id"
+                name="shippingContact"
+                label="Shipping Contact"
+                onChange={handleChange}
+            />
+            <FieldSelect
+                value={values.shippingPhone ? values.shippingPhone : ""}
+                request={getPhones}
+                itemTitleField="phone"
+                itemValueField="id"
+                keyField="id"
+                name="shippingPhone"
+                label="Shipping Phone"
+                onChange={handleChange}
+            />
+            <FieldSelect
+                value={values.shippingEmail ? values.shippingEmail : ""}
+                request={getEmails}
+                itemTitleField="email"
+                itemValueField="id"
+                keyField="id"
+                name="shippingEmail"
+                label="Shipping Email"
+                onChange={handleChange}
+            />
+            <FormControl style={{ gridColumnEnd: "span 2" }}>
+                <FormLabel>Client or Agency</FormLabel>
+                <RadioGroup
+                    style={{ flexDirection: "row" }}
+                    name="shippingEntitiy"
+                    value={String(values.shippingEntitiy)}
                     onChange={handleChange}
-                    onBlur={handleBlur}
-                    fullWidth
-                />
-                <TextField
-                    style={{ width: "100%" }}
-                    value={values.actShipDate ? values.actShipDate.substr(0, 10) : ""}
-                    name="actShipDate"
-                    label="Actual ship date"
-                    type="date"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    fullWidth
-                />
-                <FieldSelect
-                    value={values.shippingAddress ? values.shippingAddress : ""}
-                    name="shippingAddress"
-                    request={getAddresses}
-                    itemTitleField="address"
-                    itemValueField="id"
-                    keyField="id"
-                    label="Shipping Address"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    fullWidth
-                />
-                <FieldSelect
-                    value={values.shippingContact ? values.shippingContact : ""}
-                    request={getContacts}
-                    itemTitleField="lastName"
-                    itemValueField="id"
-                    keyField="id"
-                    name="shippingContact"
-                    label="Shipping Contact"
-                    onChange={handleChange}
-                    fullWidth
-                />
-                <FieldSelect
-                    value={values.shippingPhone ? values.shippingPhone : ""}
-                    request={getPhones}
-                    itemTitleField="phone"
-                    itemValueField="id"
-                    keyField="id"
-                    name="shippingPhone"
-                    label="Shipping Phone"
-                    onChange={handleChange}
-                    fullWidth
-                />
-                <FieldSelect
-                    value={values.shippingEmail ? values.shippingEmail : ""}
-                    request={getEmails}
-                    itemTitleField="email"
-                    itemValueField="id"
-                    keyField="id"
-                    name="shippingEmail"
-                    label="Shipping Email"
-                    onChange={handleChange}
-                    fullWidth
-                />
-                <FormControl style={{ margin: "0.5em" }}>
-                    <FormLabel>Client or Agency</FormLabel>
-                    <RadioGroup
-                        name="shippingEntitiy"
-                        value={String(values.shippingEntitiy)}
-                        onChange={handleChange}
-                        style={{ flexDirection: "row" }}
-                    >
-                        <FormControlLabel control={<Radio />} label="Client" value="client" />
-                        <FormControlLabel control={<Radio />} label="Agency" value="agency" />
-                    </RadioGroup>
-                </FormControl>
-            </Box>
+                >
+                    <FormControlLabel control={<Radio />} label="Client" value="client" />
+                    <FormControlLabel control={<Radio />} label="Agency" value="agency" />
+                </RadioGroup>
+            </FormControl>
         </Box>
     );
 };
@@ -300,10 +256,7 @@ export const BillingTab = ({
     handleBlur: (a: any) => void;
 }) => {
     return (
-        <Box m={1} id="billing">
-            <Typography variant="h6" style={{ marginBottom: 10 }}>
-                Billing
-            </Typography>
+        <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
             <FieldSelect
                 value={values.billingAddress ? values.billingAddress : ""}
                 request={getAddresses}
@@ -313,7 +266,6 @@ export const BillingTab = ({
                 name="billingAddress"
                 label="billing Address"
                 onChange={handleChange}
-                fullWidth
             />
             <FieldSelect
                 value={values.billingContact ? values.billingContact : ""}
@@ -324,7 +276,6 @@ export const BillingTab = ({
                 name="billingContact"
                 label="billing Contact"
                 onChange={handleChange}
-                fullWidth
             />
             <FieldSelect
                 value={values.billingPhone ? values.billingPhone : ""}
@@ -335,7 +286,6 @@ export const BillingTab = ({
                 name="billingPhone"
                 label="billing Phone"
                 onChange={handleChange}
-                fullWidth
             />
             <FieldSelect
                 value={values.billingEmail ? values.billingEmail : ""}
@@ -346,9 +296,8 @@ export const BillingTab = ({
                 name="billingEmail"
                 label="billing Email"
                 onChange={handleChange}
-                fullWidth
             />
-            <FormControl style={{ margin: "0.5em" }}>
+            <FormControl>
                 <FormLabel>Client or Agency</FormLabel>
                 <RadioGroup name="billingEntitiy" onChange={handleChange} value={values.billingEntitiy} style={{ flexDirection: "row" }}>
                     <FormControlLabel control={<Radio />} label="Client" value="client" />
@@ -369,7 +318,7 @@ export const TermsTab = ({
     handleBlur: (a: any) => void;
 }) => {
     return (
-        <Box m={1}>
+        <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
             <FieldSelect
                 value={values.agency ? values.agency : ""}
                 request={getAllAgencies}
@@ -379,7 +328,6 @@ export const TermsTab = ({
                 name="agency"
                 label="Agency"
                 onChange={handleChange}
-                fullWidth
             />
             <FieldSelect
                 value={values.requester ? values.requester : ""}
@@ -390,7 +338,6 @@ export const TermsTab = ({
                 name="requester"
                 label="requester"
                 onChange={handleChange}
-                fullWidth
             />
             <FieldSelect
                 value={values.ClientId ? values.ClientId : ""}
@@ -401,7 +348,6 @@ export const TermsTab = ({
                 name="ClientId"
                 label="Client"
                 onChange={handleChange}
-                fullWidth
             />
             <FieldSelect
                 value={values.ProjectId ? values.ProjectId : ""}
@@ -412,7 +358,6 @@ export const TermsTab = ({
                 name="ProjectId"
                 label="Project"
                 onChange={handleChange}
-                fullWidth
             />
         </Box>
     );

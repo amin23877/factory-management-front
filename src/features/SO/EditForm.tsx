@@ -39,17 +39,21 @@ export default function EditForm({ selectedSo, onDone }: { selectedSo: ISO; onDo
                         <Box display="flex" style={{ justifyContent: "space-evenly" }}>
                             <Box flex={2}>
                                 <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", margin: "0 1em " }}>
-                                    <GeneralForm onChangeInit={setValues} values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                    <GeneralForm
+                                        onChangeInit={setValues}
+                                        values={values}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                    />
                                     <Box display="flex" justifyContent="flex-end" my={2}>
                                         <Button disabled={isSubmitting} type="submit" kind="edit">
                                             Save
-                                    </Button>
+                                        </Button>
                                     </Box>
                                 </BasePaper>
                             </Box>
                             <Box flex={1}>
                                 <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", margin: "0 1em " }}>
-
                                     <Tabs
                                         textColor="primary"
                                         value={activeTab}
@@ -61,14 +65,17 @@ export default function EditForm({ selectedSo, onDone }: { selectedSo: ISO; onDo
                                         <Tab label="Billing" />
                                         <Tab label="Terms" />
                                     </Tabs>
-                                    <Box style={{ height:"460px", overflowY: "auto",marginBottom:"auto",paddingTop:"0px",paddingBottom:"0px" }}>
+                                    <Box>
                                         {activeTab === 0 && (
                                             <ShippingForm values={values} handleBlur={handleBlur} handleChange={handleChange} />
                                         )}
-                                        {activeTab === 1 && <BillingTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                        {activeTab === 2 && <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
+                                        {activeTab === 1 && (
+                                            <BillingTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                        )}
+                                        {activeTab === 2 && (
+                                            <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                        )}
                                     </Box>
-
                                 </BasePaper>
                             </Box>
                         </Box>

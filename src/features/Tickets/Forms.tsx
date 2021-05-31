@@ -1,42 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { Typography, Box, TextField } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 import { Autocomplete } from "@material-ui/lab";
 import { Form } from "formik";
+import useSWR from "swr";
 
 import Button from "../../app/Button";
-import { ArraySelect, MaterialFieldSelect } from "../../app/Inputs";
+import { ArraySelect, MaterialFieldSelect, FieldSelect } from "../../app/Inputs";
 import { getContacts } from "../../api/contact";
 import { getSO } from "../../api/so";
+import { fetcher } from "../../api";
 
-export const JobDetails = ({
+export default function JobForm({
     values,
     errors,
-    services,
     handleChange,
     handleBlur,
     handleDelete,
     setFieldValue,
-    setSelectedSO,
 }: {
     values: any;
     errors: any;
-    services: any;
     handleChange: (a: any) => void;
     handleBlur: (a: any) => void;
     handleDelete?: () => void;
     setFieldValue: (a: any, b: any) => void;
-    setSelectedSO: (a: any) => void;
-}) => {
-    console.log(services);
+}) {
+    const [SOId, setSOId] = useState<string>();
+    const { data: services } = useSWR(SOId ? ["/lineservice", SOId] : null, fetcher);
+
     return (
         <Form>
             <Typography>Job details</Typography>
-            <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridRowGap={10} gridColumnGap={5}>
+            <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" style={{ gap: 8 }}>
                 <ArraySelect
                     fullWidth
                     label="Status"
-                    style={{ gridColumnEnd: "span 3" }}
                     items={["new", "done"]}
                     name="status"
                     value={values.status}
@@ -66,16 +65,16 @@ export const JobDetails = ({
                     placeholder="Deadline"
                     label="Deadline"
                 />
-                <MaterialFieldSelect
+                <FieldSelect
+                    name="ContactId"
                     label="Contact"
                     value={values.ContactId}
                     request={getContacts}
-                    onChange={(e, nv) => setFieldValue("ContactId", nv?.id)}
-                    getOptionLabel={(option: any) => option.name}
-                    getOptionValue={(option: any) => option.id}
+                    itemTitleField="name"
+                    itemValueField="id"
+                    onChange={handleChange}
                 />
                 <TextField
-                    style={{ gridColumnEnd: "span 3" }}
                     name="tags"
                     value={values.tags}
                     onChange={handleChange}
@@ -85,19 +84,19 @@ export const JobDetails = ({
                     size="small"
                     placeholder="Tags"
                 />
-                <MaterialFieldSelect
+                <FieldSelect
                     label="SO"
                     request={getSO}
-                    onChange={(e, nv) => {
-                        setSelectedSO(nv?.id);
-                        setFieldValue("SOId", nv?.id);
+                    itemTitleField="id"
+                    itemValueField="id"
+                    onChange={(e) => {
+                        setSOId(e.target.value);
                     }}
-                    getOptionLabel={(option: any) => option?.number || option?.id}
-                    getOptionValue={(option: any) => option.id}
                 />
                 <Autocomplete
-                    style={{ gridColumn: "2 / span 2" }}
+                    disabled={!SOId}
                     // value={values.LineServiceRecordId}
+                    style={{ gridColumnEnd: "span 2" }}
                     options={services}
                     getOptionLabel={(option: any) => option.description}
                     onChange={(e, nv) => setFieldValue("LineServiceRecordId", nv?.id)}
@@ -116,6 +115,7 @@ export const JobDetails = ({
                     helperText={errors.description}
                     size="small"
                     placeholder="Description"
+                    label="Description"
                     fullWidth
                     multiline
                     rows={4}
@@ -142,4 +142,4 @@ export const JobDetails = ({
             </Box>
         </Form>
     );
-};
+}
