@@ -18,6 +18,9 @@ import { createSOLineService, deleteSOLineService, editSOLineService, getLineIte
 import { createQuoteLineService, deleteQuoteLineService, editQuoteLineService, getLineItems as getQuoteLineItems } from "../../api/quote";
 import { getServers } from "dns";
 import { getFieldServices } from "../../api/fieldService";
+import useSWR from "swr";
+import { RemoveFromQueueOutlined } from "@material-ui/icons";
+import { fetcher } from "../../api";
 
 export default function MainForm({
     initialValues,
@@ -32,7 +35,17 @@ export default function MainForm({
     recordId: string;
     readOnly?: boolean;
 }) {
-    const [lineItems, setLineItems] = useState([]);
+    const { data: lineItems } = useSWR(() => {
+        switch (record) {
+            case "Quote":
+                return `/lineitem?QuoteId=${recordId}`;
+            case "SO":
+                return `/lineitem?SOId=${recordId}`;
+            default:
+                return null;
+        }
+    }, fetcher);
+    // const [lineItems, setLineItems] = useState([]);
 
     const schema = Yup.object().shape({
         ServiceId: Yup.string().required(),
@@ -41,22 +54,22 @@ export default function MainForm({
         price: Yup.number().required().min(0.1),
     });
 
-    useEffect(() => {
-        switch (record) {
-            case "Quote":
-                getQuoteLineItems(recordId)
-                    .then((d) => d && setLineItems(d))
-                    .catch((e) => console.log(e));
-                break;
-            case "SO":
-                getSOLineItems(recordId)
-                    .then((d) => d && setLineItems(d))
-                    .catch((e) => console.log(e));
-                break;
-            default:
-                break;
-        }
-    }, []);
+    // useEffect(() => {
+    //     switch (record) {
+    //         case "Quote":
+    //             getQuoteLineItems(recordId)
+    //                 .then((d) => d && setLineItems(d))
+    //                 .catch((e) => console.log(e));
+    //             break;
+    //         case "SO":
+    //             getSOLineItems(recordId)
+    //                 .then((d) => d && setLineItems(d))
+    //                 .catch((e) => console.log(e));
+    //             break;
+    //         default:
+    //             break;
+    //     }
+    // }, []);
 
     const handleSubmit = async (d: ILineService) => {
         try {
@@ -132,8 +145,9 @@ export default function MainForm({
                             disabled={Boolean(readOnly)}
                         />
                         <Autocomplete
+                            disabled={!lineItems}
                             value={values?.LineItemRecordId as any}
-                            options={lineItems}
+                            options={lineItems.length ? lineItems : []}
                             getOptionLabel={(item: any) => item.description}
                             onChange={(e, nv) => setFieldValue("LineItemRecordId", nv?.id)}
                             onBlur={handleBlur}

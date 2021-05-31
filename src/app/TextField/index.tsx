@@ -1,10 +1,7 @@
 import React from "react";
 import { createStyles, Theme, withStyles, makeStyles } from "@material-ui/core/styles";
 import InputBase, { InputBaseProps } from "@material-ui/core/InputBase";
-import InputLabel from "@material-ui/core/InputLabel";
 import TextField, { StandardTextFieldProps } from "@material-ui/core/TextField";
-import FormControl from "@material-ui/core/FormControl";
-import Typography from "@material-ui/core/Typography";
 
 import { SearchRounded } from "@material-ui/icons";
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Button, Tabs, Tab, makeStyles } from "@material-ui/core";
+import { Box, Button, Tabs, Tab, makeStyles, LinearProgress } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 
@@ -9,7 +9,7 @@ import { useAppDispatch } from "../../store";
 
 import { INote, getAllModelNotes } from "../../api/note";
 import { IDocument, getAllModelDocuments } from "../../api/document";
-import { getLineItems, IQuote } from "../../api/quote";
+import { deleteQuote, getLineItems, IQuote } from "../../api/quote";
 import { getQuoteActivities } from "../../api/activity";
 import { ILineItem } from "../../api/lineItem";
 
@@ -24,6 +24,10 @@ import LineItemModal from "./LineItemModals";
 import AddQuoteModal from "./Modals";
 import { BasePaper } from "../../app/Paper";
 import { unwrapResult } from "@reduxjs/toolkit";
+import AddLineServiceModal from "../LineService";
+import { ILineService } from "../../api/lineService";
+import useSWR, { mutate } from "swr";
+import { fetcher } from "../../api";
 
 const useStyles = makeStyles({
     TabContainer: {
@@ -35,8 +39,7 @@ const useStyles = makeStyles({
 });
 
 export default function QuotePanel() {
-    const quotes = useSelector(selectQuotes);
-    const dispatch = useAppDispatch();
+    const { data: quotes, mutate: mutateQuotes } = useSWR("/quote", fetcher);
 
     const [activeTab, setActiveTab] = useState(0);
     const [lineItems, setLineItems] = useState([]);
@@ -46,6 +49,7 @@ export default function QuotePanel() {
 
     const [selectedQuote, setSelectedQuote] = useState<IQuote>();
     const [selectedLI, setSelectedLI] = useState<ILineItem>();
+    const [selectedLS, setSelectedLS] = useState<ILineService>();
     const [selectedNote, setSelectedNote] = useState<INote>();
     const [selectedDoc, setSelectedDocs] = useState<IDocument>();
 
@@ -58,6 +62,7 @@ export default function QuotePanel() {
     const [editNote, setEditNote] = useState(false);
     const [editDoc, setEditDoc] = useState(false);
     const [confirm, setConfirm] = useState(false);
+    const [lineServiceModal, setLineServiceModal] = useState(false);
 
     const classes = useStyles();
 
@@ -121,8 +126,10 @@ export default function QuotePanel() {
     const handleDelete = async () => {
         try {
             if (selectedQuote && selectedQuote.id) {
-                const resp = await dispatch(deleteQuoteThunk(selectedQuote.id));
-                unwrapResult(resp);
+                const resp = await deleteQuote(selectedQuote.id);
+                if (resp) {
+                    mutateQuotes();
+                }
                 setConfirm(false);
                 setActiveTab(0);
             }
@@ -177,6 +184,16 @@ export default function QuotePanel() {
                     onDone={refreshLineItems}
                 />
             )}
+            {selectedQuote && selectedQuote.id && (
+                <AddLineServiceModal
+                    open={lineServiceModal}
+                    onClose={() => setLineServiceModal(false)}
+                    record="Quote"
+                    recordId={selectedQuote.id}
+                    onDone={mutateQuotes}
+                    selectedLine={selectedLS}
+                />
+            )}
 
             <Box display="flex" alignItems="center" style={{ marginBottom: "5px" }}>
                 <Button onClick={() => setAddQ(true)}>Add Quote</Button>
@@ -187,6 +204,9 @@ export default function QuotePanel() {
                         </Button>
                         <Button onClick={() => setAddLineItem(true)} disabled={!selectedQuote} style={{ margin: "0 0.5em" }}>
                             Add Line item
+                        </Button>
+                        <Button onClick={() => setLineServiceModal(true)} disabled={!selectedQuote} style={{ margin: "0 0.5em" }}>
+                            Add Line Service
                         </Button>
                         <Button onClick={() => setAddNote(true)} disabled={!selectedQuote} style={{ marginRight: "0.5em" }}>
                             Add Note
@@ -209,7 +229,8 @@ export default function QuotePanel() {
                 <Tab label="Details" disabled={!selectedQuote} />
             </Tabs>
             <Box className={classes.TabContainer}>
-                {activeTab === 0 && (
+                {!quotes && <LinearProgress />}
+                {activeTab === 0 && quotes && (
                     <BaseDataGrid
                         cols={quoteCols}
                         rows={quotes}
