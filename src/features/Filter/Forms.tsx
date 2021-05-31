@@ -66,7 +66,7 @@ export const ApplyFilterForm = ({ filter, applyFilter }: { filter: any; applyFil
     });
 
     const [name, setName] = useState<any>();
-    const [value, setValue] = useState();
+    const [value, setValue] = useState<any>();
 
     const handleSubmit = async (d: any) => {
         console.log(name.name, value)
@@ -76,7 +76,7 @@ export const ApplyFilterForm = ({ filter, applyFilter }: { filter: any; applyFil
         try {
             // const resp = await getItemsByQuery(params);
             // console.log(resp);
-            applyFilter((prev: any) => ({ ...prev, params}))
+            applyFilter((prev: any) => ({ ...prev, params }))
         } catch (e) {
             console.log(e);
         }
@@ -90,15 +90,21 @@ export const ApplyFilterForm = ({ filter, applyFilter }: { filter: any; applyFil
 
 
     return (
-        <Formik initialValues={{} as IFilter} validationSchema={schema} onSubmit={handleSubmit}>
-            {({ values, errors, handleChange, handleBlur }) => (
+        <Formik initialValues={{ name: '', valid: '' }} validationSchema={schema} onSubmit={handleSubmit}>
+            {({ values, errors, handleChange, handleBlur, handleSubmit }) => (
                 <Form style={{ width: '250px' }} >
                     <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} >
                         <BaseSelect
+                            name="name"
+                            id="name"
                             displayEmpty={true}
                             fullWidth
-                            value={name}
-                            onChange={(e: any) => setName(e.target.value)}
+                            value={values.name}
+                            onChange={(e) => {
+                                handleChange(e);
+                                setName(e.target.value)
+                            }}
+                        // (e: any) => setName(e.target.value)
                         >
                             {filter.map((i: any) => (
                                 <MenuItem key={i.id} value={i}>
@@ -107,10 +113,16 @@ export const ApplyFilterForm = ({ filter, applyFilter }: { filter: any; applyFil
                             ))}
                         </BaseSelect>
                         {name && <BaseSelect
+                            id="valid"
+                            name="valid"
                             displayEmpty={true}
                             fullWidth
-                            value={value}
-                            onChange={(e: any) => setValue(e.target.value)}
+                            value={values.valid}
+                            onChange={(e) => {
+                                handleChange(e);
+                                setValue(e.target.value)
+                            }}
+                        // (e: any) => setValue(e.target.value)
                         >
                             {name?.valid.map((i: any) => (
                                 <MenuItem key={i} value={i}>
@@ -118,14 +130,13 @@ export const ApplyFilterForm = ({ filter, applyFilter }: { filter: any; applyFil
                                 </MenuItem>
                             ))}
                         </BaseSelect>}
-
-
-                        <Button type="submit" kind="add" onClick={handleSubmit}>
+                        <Button type="submit" kind="add" >
                             Apply
                         </Button>
                     </Box>
                 </Form>
-            )}
-        </Formik>
+            )
+            }
+        </Formik >
     );
 }

@@ -25,7 +25,7 @@ export const basePost = async (url:string, data:any) => {
         const resp = await Axios.post(url, data);
         return resp.data;
     } catch (error) {
-        console.log(error);
+        console.log(error.response)
     }
 }
 
