@@ -35,6 +35,8 @@ import { IFilters } from "../features/Items/Table/Filters";
 import { IOrder } from "../features/Items/Table/Sorts";
 import DataTable from "../features/Items/Table";
 import FiltersModal, { ApplyFilterModal } from "../features/Filter/Modals";
+import {AddFieldModal} from '../features/Modals/AddFieldModal';
+
 
 const Inventory = () => {
     const [rows, setRows] = useState<any[]>([]);
@@ -67,6 +69,7 @@ const Inventory = () => {
     const [bomModal, setBomModal] = useState(false);
     const [filterModal, setFilterModal] = useState(false);
     const [applyFilterModal, setApplyFilterModal] = useState(false);
+    const [addFieldModal , setAddFieldModal] = useState(false);
 
     const refreshItems = async () => {
         try {
@@ -323,6 +326,7 @@ const Inventory = () => {
             <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
             <CatTypeFamilyModal open={catModal} onClose={() => setCatModal(false)} />
 
+            <AddFieldModal open={addFieldModal} onClose={() => setAddFieldModal(false)} />
             <FiltersModal open={filterModal} onClose={() => setFilterModal(false)} />
             <ApplyFilterModal open={applyFilterModal} onClose={()=> setApplyFilterModal(false)} setter={setFilters}/>
             <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
@@ -384,7 +388,7 @@ const Inventory = () => {
                         </IconButton>
                     </ListItem>
                     <ListItem>
-                        <IconButton title="Dyanamic fields">
+                        <IconButton title="Dyanamic fields"  onClick={() => setAddFieldModal(true)}>
                             <PostAddRounded />
                         </IconButton>
                     </ListItem>
