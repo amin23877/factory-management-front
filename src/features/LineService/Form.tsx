@@ -44,7 +44,7 @@ export default function MainForm({
             default:
                 return null;
         }
-    }, fetcher);
+    });
     // const [lineItems, setLineItems] = useState([]);
 
     const schema = Yup.object().shape({
@@ -147,7 +147,7 @@ export default function MainForm({
                         <Autocomplete
                             disabled={!lineItems}
                             value={values?.LineItemRecordId as any}
-                            options={lineItems.length ? lineItems : []}
+                            options={lineItems?.length ? lineItems : []}
                             getOptionLabel={(item: any) => item.description}
                             onChange={(e, nv) => setFieldValue("LineItemRecordId", nv?.id)}
                             onBlur={handleBlur}

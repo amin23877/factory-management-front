@@ -58,7 +58,7 @@ export default function FieldServiceDetails({ selectedFieldService, onDone }: { 
                 </BasePaper>
             </Grid>
             <Grid item xs={12} md={9}>
-                {/* <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} /> */}
+                <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />
             </Grid>
         </Grid>
     );

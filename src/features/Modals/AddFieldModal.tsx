@@ -18,21 +18,19 @@ const schema = Yup.object().shape({
     type: Yup.string().required(),
     name: Yup.string().required(),
     required: Yup.string().required(),
-    default:Yup.string(),
-    valid:Yup.string()
+    default: Yup.string(),
+    valid: Yup.string(),
 });
 
-
-
-export const AddFieldModal = ({ open, onClose}:{open: boolean; onClose: () => void ;}) => {
+export const AddFieldModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
     const handleSubmit = async (values: any, { setSubmitting }: any) => {
         console.log(values);
-        try{
-            const resp = await basePost('/field',values);
-            if(resp){
+        try {
+            const resp = await basePost("/field", values);
+            if (resp) {
                 console.log(resp);
             }
-        } catch (e){
+        } catch (e) {
             console.log(e);
         }
 
@@ -84,8 +82,12 @@ export const AddFieldModal = ({ open, onClose}:{open: boolean; onClose: () => vo
     return (
         <Dialog open={open} onClose={onClose} title={"Add Field Modal"}>
             <Box m={3}>
-            {/* initialValues={initialValues} */}
-                <Formik initialValues={{filterName : '' , filterValue : '' , type:'',name:'',required:'',default:'',valid:''}} validationSchema={schema} onSubmit={handleSubmit}>
+                {/* initialValues={initialValues} */}
+                <Formik
+                    initialValues={{ filterName: "", filterValue: "", type: "", name: "", required: "", default: "", valid: "" }}
+                    validationSchema={schema}
+                    onSubmit={handleSubmit}
+                >
                     {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
                         <Form>
                             <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={8} gridColumnGap={8}>
@@ -216,7 +218,7 @@ export const AddFieldModal = ({ open, onClose}:{open: boolean; onClose: () => vo
                                     </RadioGroup>
                                 </FormControl> */}
 
-                                <Button type="submit" disabled={isSubmitting} kind= "add">
+                                <Button type="submit" disabled={isSubmitting} kind="add">
                                     Save
                                 </Button>
                                 {/* {data?.id && (

@@ -34,7 +34,7 @@ export default function AddServiceModal({ open, onClose, onDone }: { open: boole
                 <Formik initialValues={{} as IFieldService} validationSchema={schema} onSubmit={handleSubmit}>
                     {({ values, errors, handleChange, handleBlur }) => (
                         <Form>
-                            <Box display="flex" flexDirection="column">
+                            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
                                 <FieldServiceForm values={values} handleChange={handleChange} handleBlur={handleBlur} errors={errors} />
                                 <Button style={{ margin: "0.5em 0" }} type="submit" kind="add">
                                     Save

@@ -10,6 +10,7 @@ import { ArraySelect, MaterialFieldSelect, FieldSelect } from "../../app/Inputs"
 import { getContacts } from "../../api/contact";
 import { getSO } from "../../api/so";
 import { fetcher } from "../../api";
+import { ILineService } from "../../api/lineService";
 
 export default function JobForm({
     values,
@@ -26,13 +27,15 @@ export default function JobForm({
     handleDelete?: () => void;
     setFieldValue: (a: any, b: any) => void;
 }) {
-    const [SOId, setSOId] = useState<string>();
-    const { data: services } = useSWR(SOId ? ["/lineservice", SOId] : null, fetcher);
+    // const selectedLineService = values ? values.LineServiceRecordId : null;
+    const [selectedLineService, setSelectedLineService] = useState<ILineService>(values.LineServiceRecordId);
+    const [SOId, setSOId] = useState<string>(values.LineServiceRecordId?.SOId);
+    const { data: services } = useSWR(SOId ? `/lineservice?SOId=${SOId}` : null);
 
     return (
         <Form>
             <Typography>Job details</Typography>
-            <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" style={{ gap: 8 }}>
+            <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
                 <ArraySelect
                     fullWidth
                     label="Status"
@@ -42,6 +45,15 @@ export default function JobForm({
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={Boolean(errors.status)}
+                />
+                <FieldSelect
+                    name="ContactId"
+                    label="Contact"
+                    value={values.ContactId}
+                    request={getContacts}
+                    itemTitleField="name"
+                    itemValueField="id"
+                    onChange={handleChange}
                 />
                 <DateTimePicker
                     name="callTime"
@@ -63,16 +75,7 @@ export default function JobForm({
                     helperText={errors.deadline}
                     size="small"
                     placeholder="Deadline"
-                    label="Deadline"
-                />
-                <FieldSelect
-                    name="ContactId"
-                    label="Contact"
-                    value={values.ContactId}
-                    request={getContacts}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    onChange={handleChange}
+                    label="Target date"
                 />
                 <TextField
                     name="tags"
@@ -86,6 +89,7 @@ export default function JobForm({
                 />
                 <FieldSelect
                     label="SO"
+                    value={SOId ? SOId : undefined}
                     request={getSO}
                     itemTitleField="id"
                     itemValueField="id"
@@ -95,11 +99,14 @@ export default function JobForm({
                 />
                 <Autocomplete
                     disabled={!SOId}
-                    // value={values.LineServiceRecordId}
+                    value={selectedLineService}
                     style={{ gridColumnEnd: "span 2" }}
-                    options={services}
+                    options={services ? services : []}
                     getOptionLabel={(option: any) => option.description}
-                    onChange={(e, nv) => setFieldValue("LineServiceRecordId", nv?.id)}
+                    onChange={(e, nv) => {
+                        nv && setSelectedLineService(nv);
+                        setFieldValue("LineServiceRecordId", nv?.id);
+                    }}
                     renderInput={(params) => (
                         <TextField {...params} label="Line service" placeholder="Line service" size="small" variant="outlined" />
                     )}
@@ -118,7 +125,7 @@ export default function JobForm({
                     label="Description"
                     fullWidth
                     multiline
-                    rows={4}
+                    rows={2}
                 />
             </Box>
             <Box display="flex" alignItems="center" mt={1}>

@@ -26,7 +26,7 @@ export default function Tickets() {
     const [activeTab, setActiveTab] = useState(0);
 
     return (
-        <Container>
+        <>
             {selectedJob && (
                 <NoteModal
                     open={noteModal}
@@ -116,6 +116,6 @@ export default function Tickets() {
                     )}
                 </Box>
             </Box>
-        </Container>
+        </>
     );
 }

@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { theme } from "./theme";
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { SWRConfig } from "swr";
 
 import { useAppDispatch } from "./store";
 
@@ -19,6 +20,7 @@ import BaseRouter from "./Router";
 
 // Delete this after useing baseurl somewhere
 import * as config from "./api/config";
+import { fetcher } from "./api";
 console.log(config.BaseUrl);
 // ---------------------------
 
@@ -41,12 +43,18 @@ function App() {
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <BrowserRouter>
-                <ThemeProvider theme={theme}>
-                    <CssBaseline />
-                    <BaseRouter />
-                </ThemeProvider>
-            </BrowserRouter>
+            <SWRConfig
+                value={{
+                    fetcher: (url, param) => fetcher(url, param),
+                }}
+            >
+                <BrowserRouter>
+                    <ThemeProvider theme={theme}>
+                        <CssBaseline />
+                        <BaseRouter />
+                    </ThemeProvider>
+                </BrowserRouter>
+            </SWRConfig>
         </MuiPickersUtilsProvider>
     );
 }

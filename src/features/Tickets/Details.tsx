@@ -27,7 +27,10 @@ export default function Details({
 }) {
     const { data: notes } = useSWR(`/note/job/${initialValue.id}`, fetcher);
     const { data: documents } = useSWR(`/document/job/${initialValue.id}`, fetcher);
-    console.log(notes, documents);
+
+    const { data: lineItem } = useSWR(`/lineitem/${initialValue.LineServiceRecordId.LineItemRecordId}`);
+    const { data: itemNotes } = useSWR(lineItem ? `/note/item/${lineItem.ItemId}` : null);
+    const { data: itemDocuments } = useSWR(lineItem ? `/document/item/${lineItem.ItemId}` : null);
 
     const [activeTab, setActiveTab] = useState(0);
     const [snack, setSnack] = useState(false);
@@ -72,12 +75,13 @@ export default function Details({
                 {msg}
             </Snack>
 
-            <Box my={1}>
-                <Formik initialValues={initialValue} validationSchema={schema} onSubmit={handleSubmit}>
-                    {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
-                        <BasePaper>
-                            <Box display="grid" gridTemplateColumns="1fr 5fr" gridColumnGap={24}>
-                                <div>
+            <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10}>
+                <Box my={1}>
+                    <Formik initialValues={initialValue} validationSchema={schema} onSubmit={handleSubmit}>
+                        {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
+                            <BasePaper>
+                                <Box display="grid" gridTemplateColumns="1fr" gridColumnGap={24}>
+                                    {/* <div>
                                     <Typography>Client search</Typography>
                                     <Box mt={1} mb={1} display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
                                         <TextField size="small" placeholder="Name" label="Name" />
@@ -87,50 +91,56 @@ export default function Details({
                                             <SearchRounded />
                                         </Button>
                                     </Box>
-                                </div>
-                                <JobForm
-                                    errors={errors}
-                                    values={values}
-                                    handleBlur={handleBlur}
-                                    handleChange={handleChange}
-                                    setFieldValue={setFieldValue}
-                                />
-                            </Box>
-                        </BasePaper>
+                                </div> */}
+                                    <JobForm
+                                        errors={errors}
+                                        values={values}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        setFieldValue={setFieldValue}
+                                    />
+                                </Box>
+                            </BasePaper>
+                        )}
+                    </Formik>
+                </Box>
+                <BasePaper>
+                    <Tabs variant="scrollable" value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                        <Tab label="Sales orders" />
+                        <Tab label="Quotes" />
+                        <Tab label="Item Notes" />
+                        <Tab label="Item Documents" />
+                        <Tab label="Ticket documents" />
+                        <Tab label="Ticket notes" />
+                        <Tab label="RMAs" />
+                        <Tab label="Forms" />
+                    </Tabs>
+                    {activeTab === 0 && <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />}
+                    {activeTab === 1 && <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />}
+                    {activeTab === 2 && <BaseDataGrid cols={noteCols} rows={itemNotes ? itemNotes : []} onRowSelected={() => {}} />}
+                    {activeTab === 3 && <BaseDataGrid cols={docCols} rows={itemDocuments ? itemDocuments : []} onRowSelected={() => {}} />}
+                    {activeTab === 4 && (
+                        <BaseDataGrid
+                            cols={noteCols}
+                            rows={notes ? notes : []}
+                            onRowSelected={(n) => {
+                                onNoteSelected(n);
+                            }}
+                        />
                     )}
-                </Formik>
+                    {activeTab === 5 && (
+                        <BaseDataGrid
+                            cols={docCols}
+                            rows={documents ? documents : []}
+                            onRowSelected={(d) => {
+                                onDocumentSelected(d);
+                            }}
+                        />
+                    )}
+                    {activeTab === 6 && <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />}
+                    {activeTab === 7 && <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />}
+                </BasePaper>
             </Box>
-
-            <BasePaper>
-                <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
-                    <Tab label="Sales orders" />
-                    <Tab label="Quotes" />
-                    <Tab label="Item Documents" />
-                    <Tab label="Item Notes" />
-                    <Tab label="Ticket documents" />
-                    <Tab label="Ticket notes" />
-                    <Tab label="RMAs" />
-                    <Tab label="Forms" />
-                </Tabs>
-                {activeTab === 4 && (
-                    <BaseDataGrid
-                        cols={noteCols}
-                        rows={[]}
-                        onRowSelected={(n) => {
-                            onNoteSelected(n);
-                        }}
-                    />
-                )}
-                {activeTab === 5 && (
-                    <BaseDataGrid
-                        cols={docCols}
-                        rows={[]}
-                        onRowSelected={(d) => {
-                            onDocumentSelected(d);
-                        }}
-                    />
-                )}
-            </BasePaper>
         </>
     );
 }

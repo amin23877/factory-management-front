@@ -58,7 +58,6 @@ export default function FilterForm() {
     );
 }
 
-
 export const ApplyFilterForm = ({ filter, applyFilter }: { filter: any; applyFilter: (a: any) => void }) => {
     const schema = Yup.object().shape({
         name: Yup.string().required(),
@@ -69,14 +68,14 @@ export const ApplyFilterForm = ({ filter, applyFilter }: { filter: any; applyFil
     const [value, setValue] = useState<any>();
 
     const handleSubmit = async (d: any) => {
-        console.log(name.name, value)
+        console.log(name.name, value);
         const n = name.name;
-        const params = { [n]: value }
-        console.log(params)
+        const params = { [n]: value };
+        console.log(params);
         try {
             // const resp = await getItemsByQuery(params);
             // console.log(resp);
-            applyFilter((prev: any) => ({ ...prev, params }))
+            applyFilter((prev: any) => ({ ...prev, params }));
         } catch (e) {
             console.log(e);
         }
@@ -88,12 +87,11 @@ export const ApplyFilterForm = ({ filter, applyFilter }: { filter: any; applyFil
         // }
     };
 
-
     return (
-        <Formik initialValues={{ name: '', valid: '' }} validationSchema={schema} onSubmit={handleSubmit}>
+        <Formik initialValues={{ name: "", valid: "" }} validationSchema={schema} onSubmit={handleSubmit}>
             {({ values, errors, handleChange, handleBlur, handleSubmit }) => (
-                <Form style={{ width: '250px' }} >
-                    <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} >
+                <Form style={{ width: "250px" }}>
+                    <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
                         <BaseSelect
                             name="name"
                             id="name"
@@ -102,9 +100,9 @@ export const ApplyFilterForm = ({ filter, applyFilter }: { filter: any; applyFil
                             value={values.name}
                             onChange={(e) => {
                                 handleChange(e);
-                                setName(e.target.value)
+                                setName(e.target.value);
                             }}
-                        // (e: any) => setName(e.target.value)
+                            // (e: any) => setName(e.target.value)
                         >
                             {filter.map((i: any) => (
                                 <MenuItem key={i.id} value={i}>
@@ -112,31 +110,32 @@ export const ApplyFilterForm = ({ filter, applyFilter }: { filter: any; applyFil
                                 </MenuItem>
                             ))}
                         </BaseSelect>
-                        {name && <BaseSelect
-                            id="valid"
-                            name="valid"
-                            displayEmpty={true}
-                            fullWidth
-                            value={values.valid}
-                            onChange={(e) => {
-                                handleChange(e);
-                                setValue(e.target.value)
-                            }}
-                        // (e: any) => setValue(e.target.value)
-                        >
-                            {name?.valid.map((i: any) => (
-                                <MenuItem key={i} value={i}>
-                                    {i}
-                                </MenuItem>
-                            ))}
-                        </BaseSelect>}
-                        <Button type="submit" kind="add" >
+                        {name && (
+                            <BaseSelect
+                                id="valid"
+                                name="valid"
+                                displayEmpty={true}
+                                fullWidth
+                                value={values.valid}
+                                onChange={(e) => {
+                                    handleChange(e);
+                                    setValue(e.target.value);
+                                }}
+                                // (e: any) => setValue(e.target.value)
+                            >
+                                {name?.valid.map((i: any) => (
+                                    <MenuItem key={i} value={i}>
+                                        {i}
+                                    </MenuItem>
+                                ))}
+                            </BaseSelect>
+                        )}
+                        <Button type="submit" kind="add">
                             Apply
                         </Button>
                     </Box>
                 </Form>
-            )
-            }
-        </Formik >
+            )}
+        </Formik>
     );
-}
+};

@@ -5,7 +5,7 @@ export interface IJob {
     id: string;
     name: string;
     ContactId: string;
-    LineServiceRecordId: string;
+    LineServiceRecordId: any;
     tags: string;
     callTime: number;
     description: string;

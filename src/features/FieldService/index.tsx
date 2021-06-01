@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { GridColDef } from "@material-ui/data-grid";
 import useSWR from "swr";
 
@@ -8,17 +8,15 @@ import DeleteRounded from "@material-ui/icons/DeleteRounded";
 import PrintRounded from "@material-ui/icons/PrintRounded";
 import CategoryRounded from "@material-ui/icons/CategoryRounded";
 
-import { SearchBar } from "../../app/TextField";
 import List from "../../app/SideUtilityList";
 
 import AddServiceModal from "../../features/FieldService/AddServiceModal";
 import ServiceFamilyModal from "../../features/FieldService/ServiceFamilyModal";
 import FieldServiceDetails from "../../features/FieldService/Details";
 
-import { getFieldServices, IFieldService } from "../../api/fieldService";
+import { IFieldService } from "../../api/fieldService";
 
 import BaseDataGrid from "../../app/BaseDataGrid";
-import { fetcher } from "../../api";
 
 export default function ServiceIndex() {
     const [activeTab, setActiveTab] = useState(0);
@@ -27,7 +25,7 @@ export default function ServiceIndex() {
 
     const [selectedFS, setSelectedFS] = useState<IFieldService>();
 
-    const { data: fieldServices, mutate } = useSWR<IFieldService[]>("/service", fetcher);
+    const { data: fieldServices, mutate } = useSWR<IFieldService[]>("/service");
 
     const cols: GridColDef[] = [
         { field: "name", headerName: "Name" },
@@ -44,7 +42,7 @@ export default function ServiceIndex() {
             <AddServiceModal open={addService} onClose={() => setAddService(false)} onDone={mutate} />
             <ServiceFamilyModal open={serviceFamilyModal} onClose={() => setServiceFamilyModal(false)} />
 
-            <Box display="flex" alignItems="center" my={2}>
+            <Box display="flex" alignItems="center">
                 <div style={{ flexGrow: 1 }} />
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="List" />
