@@ -35,16 +35,19 @@ export default function MainForm({
     recordId: string;
     readOnly?: boolean;
 }) {
-    const { data: lineItems } = useSWR(() => {
-        switch (record) {
-            case "Quote":
-                return `/lineitem?QuoteId=${recordId}`;
-            case "SO":
-                return `/lineitem?SOId=${recordId}`;
-            default:
-                return null;
-        }
-    });
+    const { data: lineItems } = useSWR(
+        () => {
+            switch (record) {
+                case "Quote":
+                    return `/lineitem?QuoteId=${recordId}`;
+                case "SO":
+                    return `/lineitem?SOId=${recordId}`;
+                default:
+                    return null;
+            }
+        },
+        { initialData: [] }
+    );
     // const [lineItems, setLineItems] = useState([]);
 
     const schema = Yup.object().shape({
@@ -144,18 +147,20 @@ export default function MainForm({
                             fullWidth
                             disabled={Boolean(readOnly)}
                         />
-                        <Autocomplete
-                            disabled={!lineItems}
-                            value={values?.LineItemRecordId as any}
-                            options={lineItems?.length ? lineItems : []}
-                            getOptionLabel={(item: any) => item.description}
-                            onChange={(e, nv) => setFieldValue("LineItemRecordId", nv?.id)}
-                            onBlur={handleBlur}
-                            fullWidth
-                            renderInput={(params) => (
-                                <TextField {...params} size="small" label="Line Item" name="LineItemRecordId" variant="outlined" />
-                            )}
-                        />
+                        {lineItems && (
+                            <Autocomplete
+                                disabled={!lineItems}
+                                value={values?.LineItemRecordId}
+                                options={lineItems ? lineItems : []}
+                                getOptionLabel={(item: any) => item.description}
+                                onChange={(e, nv: any) => setFieldValue("LineItemRecordId", nv?.id)}
+                                onBlur={handleBlur}
+                                fullWidth
+                                renderInput={(params) => (
+                                    <TextField {...params} size="small" label="Line Item" name="LineItemRecordId" variant="outlined" />
+                                )}
+                            />
+                        )}
                         <TextField
                             size="small"
                             name="description"
