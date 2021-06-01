@@ -1,12 +1,12 @@
 import React from "react";
-import { Box, FormControlLabel, FormLabel, RadioGroup, Radio, FormControl } from "@material-ui/core";
+import { Box, FormControlLabel, FormLabel, RadioGroup, Radio, FormControl, Checkbox } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
 import TextField from "../../app/TextField";
 import Dialog from "../../app/Dialog";
 import Button from "../../app/Button";
-import { FieldSelect } from "../../app/Inputs";
+import { ArraySelect, FieldSelect } from "../../app/Inputs";
 
 import { createAModelAddress, deleteAModelAddress, updateAModelAddress, IAddress } from "../../api/address";
 import { getAddressTypes } from "../../api/addressType";
@@ -17,7 +17,7 @@ const schema = Yup.object().shape({
     filterValue: Yup.string().required(),
     type: Yup.string().required(),
     name: Yup.string().required(),
-    required: Yup.string().required(),
+    required: Yup.boolean().required(),
     default: Yup.string(),
     valid: Yup.string(),
 });
@@ -84,32 +84,73 @@ export const AddFieldModal = ({ open, onClose }: { open: boolean; onClose: () =>
             <Box m={3}>
                 {/* initialValues={initialValues} */}
                 <Formik
-                    initialValues={{ filterName: "", filterValue: "", type: "", name: "", required: "", default: "", valid: "" }}
+                    initialValues={{
+                        filterName: "",
+                        filterValue: "",
+                        type: "",
+                        name: "",
+                        required: false,
+                        default: "",
+                        valid: "",
+                        all: false,
+                    }}
                     validationSchema={schema}
                     onSubmit={handleSubmit}
                 >
                     {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
                         <Form>
-                            <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={8} gridColumnGap={8}>
-                                <TextField
-                                    name="filterName"
+                            <FormControlLabel
+                                style={{ fontSize: "0.7rem", marginBottom: "10px" }}
+                                checked={values.all}
+                                name="all"
+                                label="Add this field for all filters"
+                                // error={errors.required && touched.required}
+                                // helperText={errors.required && touched.required}
+                                onChange={handleChange}
+                                control={<Checkbox />}
+                            />
+
+                            {!values.all ? (
+                                <Box
+                                    display="grid"
+                                    gridTemplateColumns="1fr 1fr"
+                                    gridRowGap={8}
+                                    gridColumnGap={8}
+                                    style={{ marginBottom: "12px" }}
+                                >
+                                    <TextField
+                                        name="filterName"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        error={Boolean(errors.filterName && touched.filterName)}
+                                        helperText={errors.filterName && touched.filterName}
+                                        value={values.filterName}
+                                        label="Filter Name"
+                                    />
+                                    <TextField
+                                        name="filterValue"
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        error={Boolean(errors.filterValue && touched.filterValue)}
+                                        helperText={errors.filterValue && touched.filterValue}
+                                        value={values.filterValue}
+                                        label="Filter Value"
+                                    />
+                                </Box>
+                            ) : null}
+                            <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={12} gridColumnGap={12}>
+                                {/* <TextField
+                                    name="type"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
-                                    error={Boolean(errors.filterName && touched.filterName)}
-                                    helperText={errors.filterName && touched.filterName}
-                                    value={values.filterName}
-                                    label="Filter Name"
-                                />
-                                <TextField
-                                    name="filterValue"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    error={Boolean(errors.filterValue && touched.filterValue)}
-                                    helperText={errors.filterValue && touched.filterValue}
-                                    value={values.filterValue}
-                                    label="Filter Value"
-                                />
-                                <TextField
+                                    error={Boolean(errors.type && touched.type)}
+                                    helperText={errors.type && touched.type}
+                                    value={values.type}
+                                    label="Type"
+                                /> */}
+                                <ArraySelect
+                                    items={["string", "boolean", "number", "enum"]}
+                                    defaultValue="string"
                                     name="type"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
@@ -126,15 +167,6 @@ export const AddFieldModal = ({ open, onClose }: { open: boolean; onClose: () =>
                                     helperText={errors.name && touched.name}
                                     value={values.name}
                                     label="Name"
-                                />
-                                <TextField
-                                    name="required"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    error={Boolean(errors.required && touched.required)}
-                                    helperText={errors.required && touched.required}
-                                    value={values.required}
-                                    label="Required"
                                 />
                                 <TextField
                                     name="default"
@@ -155,6 +187,25 @@ export const AddFieldModal = ({ open, onClose }: { open: boolean; onClose: () =>
                                     label="Valid"
                                 />
                                 {/* <TextField
+                                    name="required"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.required && touched.required)}
+                                    helperText={errors.required && touched.required}
+                                    value={values.required}
+                                    label="Required"
+                                /> */}
+                                <FormControlLabel
+                                    style={{ fontSize: "0.7rem" }}
+                                    checked={values.required}
+                                    name="required"
+                                    label="Required"
+                                    // error={errors.required && touched.required}
+                                    // helperText={errors.required && touched.required}
+                                    onChange={handleChange}
+                                    control={<Checkbox />}
+                                />
+                                {/* <TextField
                                     name="filterName2"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
@@ -162,8 +213,8 @@ export const AddFieldModal = ({ open, onClose }: { open: boolean; onClose: () =>
                                     helperText={errors.address2 && touched.address2}
                                     value={values.address2}
                                     label="address2"
-                                />
-                                <TextField
+                                    />
+                                    <TextField
                                     name="city"
                                     onBlur={handleBlur}
                                     onChange={handleChange}

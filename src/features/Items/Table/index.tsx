@@ -23,7 +23,7 @@ export const useStyles = makeStyles((theme) => ({
     tableCont: {
         borderRadius: 10,
         maxHeight: 550,
-        maxWidth:'77vw'
+        maxWidth: '77vw'
     },
     root: {
         backgroundColor: "#f9f9f9",
@@ -225,13 +225,13 @@ export default function DataTable({
                                     <Button
                                         onClick={(e) => {
                                             setMenuAnchorEl(e.target);
-                                            setFilterBy("salesApprove");
+                                            setFilterBy("salesApproved");
                                         }}
                                         className={classes.tableHeadBtn}
                                     >
                                         Sales Approve
                                     </Button>
-                                    <Sort field="SalesApproveId" order={order} setOrder={setOrder} />
+                                    <Sort field="salesApproved" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
                             <TableCell>
@@ -239,13 +239,13 @@ export default function DataTable({
                                     <Button
                                         onClick={(e) => {
                                             setMenuAnchorEl(e.target);
-                                            setFilterBy("engineeringApproves");
+                                            setFilterBy("engineeringApproved");
                                         }}
                                         className={classes.tableHeadBtn}
                                     >
                                         Engineering Approves
                                     </Button>
-                                    <Sort field="EngineeringApprovesId" order={order} setOrder={setOrder} />
+                                    <Sort field="engineeringApproved" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
                             <TableCell>
@@ -253,13 +253,13 @@ export default function DataTable({
                                     <Button
                                         onClick={(e) => {
                                             setMenuAnchorEl(e.target);
-                                            setFilterBy("QOH");
+                                            setFilterBy("totalQoh");
                                         }}
                                         className={classes.tableHeadBtn}
                                     >
                                         QOH
                                     </Button>
-                                    <Sort field="QOH" order={order} setOrder={setOrder} />
+                                    <Sort field="totalQoh" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
                             <TableCell>
@@ -267,13 +267,13 @@ export default function DataTable({
                                     <Button
                                         onClick={(e) => {
                                             setMenuAnchorEl(e.target);
-                                            setFilterBy("lastUsed");
+                                            setFilterBy("usedInLastQuarter");
                                         }}
                                         className={classes.tableHeadBtn}
                                     >
                                         Last Used in 90 days
                                     </Button>
-                                    <Sort field="LastUsed" order={order} setOrder={setOrder} />
+                                    <Sort field="usedInLastQuarter" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
                             <TableCell>
@@ -287,7 +287,7 @@ export default function DataTable({
                                     >
                                         Resell Cost
                                     </Button>
-                                    <Sort field="ResellCost" order={order} setOrder={setOrder} />
+                                    <Sort field="resellCost" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
                         </TableRow>
@@ -305,11 +305,11 @@ export default function DataTable({
                                     <TableCell>{item.ItemCategory ? item.ItemCategory.name : ""}</TableCell>
                                     <TableCell>{item.ItemType ? item.ItemType.name : ""}</TableCell>
                                     <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell>
-                                    <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell>
-                                    <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell>
-                                    <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell>
-                                    <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell>
-                                    <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell>
+                                    <TableCell>{item.salesApproved ? item.salesApproved : ""}</TableCell>
+                                    <TableCell>{item.engineeringApproved ? item.engineeringApproved : ""}</TableCell>
+                                    <TableCell>{item.totalQoh ? item.totalQoh : ""}</TableCell>
+                                    <TableCell>{item.usedInLastQuarter ? item.usedInLastQuarter : ""}</TableCell>
+                                    <TableCell>{item.resellCost ? item.resellCost : ""}</TableCell>
                                 </TableRow>
                             ))}
                     </TableBody>
