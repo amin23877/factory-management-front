@@ -112,10 +112,7 @@ export default function MenuFilters({
     if (
         filterBy === "itemNo" ||
         filterBy === "name" ||
-        filterBy === "desc" ||
-        filterBy === "QOH" ||
-        filterBy === "lastUsed" ||
-        filterBy === "resellCost"
+        filterBy === "desc" 
     ) {
         return <FilterByWord filters={filters} filterBy={filterBy} onChange={onFilterChange} />;
     }
@@ -123,8 +120,8 @@ export default function MenuFilters({
         filterBy === "cat" ||
         filterBy === "type" ||
         filterBy === "family" ||
-        filterBy === "salesApprove" ||
-        filterBy === "engineeringApproves"
+        filterBy === "salesApproved" ||
+        filterBy === "engineeringApproved"
     ) {
         return (
             <FilterWithChecks
@@ -137,7 +134,10 @@ export default function MenuFilters({
             />
         );
     }
-    if (filterBy === "cost") {
+    if (filterBy === "cost" ||
+        filterBy === "totalQoh" ||
+        filterBy === "usedInLastQuarter" ||
+        filterBy === "resellCost") {
         return <FilterByCost filters={filters} filterBy={filterBy} onChange={onFilterChange} />;
     }
     return <></>;

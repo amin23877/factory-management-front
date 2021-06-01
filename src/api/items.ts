@@ -78,6 +78,7 @@ export interface IItem {
     ItemCategory?: IItemType;
     ItemType?: IItemType;
     ItemFamily?: IItemType;
+    [key: string]: any;
 }
 
 export const AddItemInitialValues = {};
