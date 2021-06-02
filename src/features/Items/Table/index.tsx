@@ -35,7 +35,7 @@ export const useStyles = makeStyles((theme) => ({
             top: 0,
         },
         "& .MuiTableCell-sizeSmall": {
-            padding:'6px 0px'
+            padding: '15px 0px'
         },
         "& .MuiTableRow-head, .MuiTableCell-stickyHeader": {
             backgroundColor: "#202731",
@@ -72,7 +72,10 @@ export const useStyles = makeStyles((theme) => ({
         "& .MuiDataGrid-sortIcon": {
             fill: "white",
         },
-        
+        "& .MuiBox-root , .MuiBox-root-295":{
+            justifyContent:'space-between'
+        }
+
     },
     tableHeadBtn: {
         color: "white",
@@ -142,7 +145,7 @@ export default function DataTable({
                                     <Sort field="no" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
-                            <TableCell>
+                            <TableCell style={{ padding: '15px 6px ' }}>
                                 <Box display="flex">
                                     <Button
                                         onClick={(e) => {
@@ -156,7 +159,7 @@ export default function DataTable({
                                     <Sort field="name" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
-                            <TableCell>
+                            <TableCell style={{ padding: '15px 6px ' }}>
                                 <Box display="flex">
                                     <Button
                                         onClick={(e) => {
@@ -165,7 +168,7 @@ export default function DataTable({
                                         }}
                                         className={classes.tableHeadBtn}
                                     >
-                                        Des.
+                                        Description
                                     </Button>
                                     <Sort field="description" order={order} setOrder={setOrder} />
                                 </Box>
@@ -184,7 +187,7 @@ export default function DataTable({
                                     <Sort field="cost" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
-                            <TableCell>
+                            {/* <TableCell>
                                 <Box display="flex">
                                     <Button
                                         onClick={(e) => {
@@ -225,7 +228,7 @@ export default function DataTable({
                                     </Button>
                                     <Sort field="ItemFamilyId" order={order} setOrder={setOrder} />
                                 </Box>
-                            </TableCell>
+                            </TableCell> */}
                             <TableCell size='small' >
                                 <Box display="flex">
                                     <Button
@@ -308,12 +311,12 @@ export default function DataTable({
                                     <TableCell component="th" scope="row">
                                         {item.no}
                                     </TableCell>
-                                    <TableCell>{item.name}</TableCell>
-                                    <TableCell>{item.description}</TableCell>
+                                    <TableCell style={{ padding: '15px 6px ' }}>{item.name}</TableCell>
+                                    <TableCell style={{ padding: '15px 6px ' }}>{item.description}</TableCell>
                                     <TableCell>{item.cost} </TableCell>
-                                    <TableCell>{item.ItemCategory ? item.ItemCategory.name : ""}</TableCell>
+                                    {/* <TableCell>{item.ItemCategory ? item.ItemCategory.name : ""}</TableCell>
                                     <TableCell>{item.ItemType ? item.ItemType.name : ""}</TableCell>
-                                    <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell>
+                                    <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell> */}
                                     <TableCell >{item.salesApproved ? '+' : "-"}</TableCell>
                                     <TableCell>{item.engineeringApproved ? '+' : "-"}</TableCell>
                                     <TableCell>{item.totalQoh ? item.totalQoh : ""}</TableCell>
