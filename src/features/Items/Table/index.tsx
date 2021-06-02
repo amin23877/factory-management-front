@@ -19,6 +19,10 @@ import { IItem } from "../../../api/items";
 import MenuFilters, { IFilters } from "./Filters";
 import Sort, { IOrder } from "./Sorts";
 
+
+import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
+import ClearRoundedIcon from '@material-ui/icons/ClearRounded';
+
 export const useStyles = makeStyles((theme) => ({
     tableCont: {
         borderRadius: 10,
@@ -72,8 +76,8 @@ export const useStyles = makeStyles((theme) => ({
         "& .MuiDataGrid-sortIcon": {
             fill: "white",
         },
-        "& .MuiBox-root , .MuiBox-root-295":{
-            justifyContent:'space-between'
+        "& .MuiBox-root , .MuiBox-root-295": {
+            justifyContent: 'space-between'
         }
 
     },
@@ -317,8 +321,16 @@ export default function DataTable({
                                     {/* <TableCell>{item.ItemCategory ? item.ItemCategory.name : ""}</TableCell>
                                     <TableCell>{item.ItemType ? item.ItemType.name : ""}</TableCell>
                                     <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell> */}
-                                    <TableCell >{item.salesApproved ? '+' : "-"}</TableCell>
-                                    <TableCell>{item.engineeringApproved ? '+' : "-"}</TableCell>
+                                    <TableCell >{!item.salesApproved ? <div style={{ color: '#4caf50', backgroundColor: 'rgb(237, 247, 237)', width: '25px', height: '25px', borderRadius: '100%', fontSize: 'small', margin: '0px auto',display:'flex' , alignItems:'center', justifyContent:'center'}}>
+                                        <CheckRoundedIcon />
+                                    </div> : <div style={{ color: '#f44336', backgroundColor: 'rgb(253, 236, 234)', width: '25px', height: '25px', borderRadius: '100%', fontSize: 'small', margin: '0px auto',display:'flex' , alignItems:'center', justifyContent:'center'}}>
+                                        <ClearRoundedIcon />
+                                    </div>}</TableCell>
+                                    <TableCell>{item.engineeringApproved ? <div style={{ color: '#4caf50', backgroundColor: 'rgb(237, 247, 237)', width: '25px', height: '25px', borderRadius: '100%', fontSize: 'small', margin: '0px auto',display:'flex' , alignItems:'center', justifyContent:'center'}}>
+                                        <CheckRoundedIcon />
+                                    </div> : <div style={{ color: '#f44336', backgroundColor: 'rgb(253, 236, 234)', width: '25px', height: '25px', borderRadius: '100%', fontSize: 'small', margin: '0px auto',display:'flex' , alignItems:'center', justifyContent:'center'}}>
+                                        <ClearRoundedIcon />
+                                    </div>}</TableCell>
                                     <TableCell>{item.totalQoh ? item.totalQoh : ""}</TableCell>
                                     <TableCell>{item.usedInLastQuarter ? item.usedInLastQuarter : ""}</TableCell>
                                     <TableCell>{item.resellCost ? item.resellCost : ""}</TableCell>
