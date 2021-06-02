@@ -23,7 +23,7 @@ export const useStyles = makeStyles((theme) => ({
     tableCont: {
         borderRadius: 10,
         maxHeight: 550,
-        maxWidth: '77vw'
+        // maxWidth: '77vw'
     },
     root: {
         backgroundColor: "#f9f9f9",
@@ -33,6 +33,9 @@ export const useStyles = makeStyles((theme) => ({
         "& .MuiTableHead-root": {
             position: ["sticky", "-webkit-sticky"],
             top: 0,
+        },
+        "& .MuiTableCell-sizeSmall": {
+            padding:'6px 0px'
         },
         "& .MuiTableRow-head, .MuiTableCell-stickyHeader": {
             backgroundColor: "#202731",
@@ -51,6 +54,9 @@ export const useStyles = makeStyles((theme) => ({
         "& tbody .MuiTableCell-root": {
             border: "1px solid #dddddd",
             fontSize: "0.700rem",
+            textAlign: 'center',
+            // width:'5px',
+            // backgroundColor:'red',
         },
         "& .MuiButton-root": {
             fontSize: "0.700rem",
@@ -66,6 +72,7 @@ export const useStyles = makeStyles((theme) => ({
         "& .MuiDataGrid-sortIcon": {
             fill: "white",
         },
+        
     },
     tableHeadBtn: {
         color: "white",
@@ -117,7 +124,6 @@ export default function DataTable({
                     <Button onClick={() => setFilters(undefined)}>clear</Button>
                 </Box>
             </Menu>
-
             <TableContainer component={Paper} className={classes.tableCont}>
                 <Table size="small" stickyHeader aria-label="Items table" className={classes.root}>
                     <TableHead>
@@ -159,7 +165,7 @@ export default function DataTable({
                                         }}
                                         className={classes.tableHeadBtn}
                                     >
-                                        Description
+                                        Des.
                                     </Button>
                                     <Sort field="description" order={order} setOrder={setOrder} />
                                 </Box>
@@ -187,7 +193,7 @@ export default function DataTable({
                                         }}
                                         className={classes.tableHeadBtn}
                                     >
-                                        Category
+                                        Cat.
                                     </Button>
                                     <Sort field="ItemCategoryId" order={order} setOrder={setOrder} />
                                 </Box>
@@ -215,12 +221,12 @@ export default function DataTable({
                                         }}
                                         className={classes.tableHeadBtn}
                                     >
-                                        Family
+                                        Fam.
                                     </Button>
                                     <Sort field="ItemFamilyId" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
-                            <TableCell>
+                            <TableCell size='small' >
                                 <Box display="flex">
                                     <Button
                                         onClick={(e) => {
@@ -228,8 +234,9 @@ export default function DataTable({
                                             setFilterBy("salesApproved");
                                         }}
                                         className={classes.tableHeadBtn}
+                                        title='Sales Approved'
                                     >
-                                        Sales Approve
+                                        S.A.
                                     </Button>
                                     <Sort field="salesApproved" order={order} setOrder={setOrder} />
                                 </Box>
@@ -242,8 +249,9 @@ export default function DataTable({
                                             setFilterBy("engineeringApproved");
                                         }}
                                         className={classes.tableHeadBtn}
+                                        title="Engineering Approved"
                                     >
-                                        Engineering Approves
+                                        E.A.
                                     </Button>
                                     <Sort field="engineeringApproved" order={order} setOrder={setOrder} />
                                 </Box>
@@ -270,8 +278,9 @@ export default function DataTable({
                                             setFilterBy("usedInLastQuarter");
                                         }}
                                         className={classes.tableHeadBtn}
+                                        title=" Last Used in 90 days"
                                     >
-                                        Last Used in 90 days
+                                        L.U.90
                                     </Button>
                                     <Sort field="usedInLastQuarter" order={order} setOrder={setOrder} />
                                 </Box>
@@ -285,7 +294,7 @@ export default function DataTable({
                                         }}
                                         className={classes.tableHeadBtn}
                                     >
-                                        Resell Cost
+                                        Re.Co.
                                     </Button>
                                     <Sort field="resellCost" order={order} setOrder={setOrder} />
                                 </Box>
@@ -305,8 +314,8 @@ export default function DataTable({
                                     <TableCell>{item.ItemCategory ? item.ItemCategory.name : ""}</TableCell>
                                     <TableCell>{item.ItemType ? item.ItemType.name : ""}</TableCell>
                                     <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell>
-                                    <TableCell>{item.salesApproved ? item.salesApproved : ""}</TableCell>
-                                    <TableCell>{item.engineeringApproved ? item.engineeringApproved : ""}</TableCell>
+                                    <TableCell >{item.salesApproved ? '+' : "-"}</TableCell>
+                                    <TableCell>{item.engineeringApproved ? '+' : "-"}</TableCell>
                                     <TableCell>{item.totalQoh ? item.totalQoh : ""}</TableCell>
                                     <TableCell>{item.usedInLastQuarter ? item.usedInLastQuarter : ""}</TableCell>
                                     <TableCell>{item.resellCost ? item.resellCost : ""}</TableCell>
