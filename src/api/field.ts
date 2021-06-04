@@ -6,4 +6,5 @@ export interface IField {
     required: boolean;
     default: string;
     valid: string[];
+    all?:boolean
 }

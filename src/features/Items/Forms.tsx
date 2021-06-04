@@ -1,15 +1,17 @@
-import React, { useState } from "react";
-import { Box, FormControlLabel, Typography, Checkbox, useMediaQuery } from "@material-ui/core";
+import React, { ReactNode, useEffect, useState } from "react";
+import { Box, FormControlLabel, Typography, Checkbox, LinearProgress, Divider } from "@material-ui/core";
 
 import Button from "../../app/Button";
 
 import { getCategories } from "../../api/category";
 import { getTypes } from "../../api/types";
 import { getFamilies } from "../../api/family";
-import ManualCountModal from "./ManualCountModal";
 
 import TextField from "../../app/TextField";
-import { FieldSelect } from "../../app/Inputs";
+import { ArraySelect, FieldSelect } from "../../app/Inputs";
+import useSWR from "swr";
+import { IFilter } from "../../api/filter";
+import { IField } from "../../api/field";
 
 interface IForm {
     values: any;
@@ -21,7 +23,7 @@ interface IForm {
 }
 
 interface IQForm extends IForm {
-    handleManualCount: () => void;
+    handleManualCount?: () => void;
 }
 
 export const General = ({ isSubmitting, values, errors, handleChange, handleBlur, touched }: IForm) => {
@@ -112,7 +114,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                 />
                 <FieldSelect
                     fullWidth
-                    label="Item category"
+                    label="Category"
                     request={getCategories}
                     itemTitleField="name"
                     itemValueField="id"
@@ -125,7 +127,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                 />
                 <FieldSelect
                     fullWidth
-                    label="Item type"
+                    label="Type"
                     request={getTypes}
                     itemTitleField="name"
                     itemValueField="id"
@@ -137,7 +139,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                 />
                 <FieldSelect
                     fullWidth
-                    label="Item family"
+                    label="Family"
                     request={getFamilies}
                     itemTitleField="name"
                     itemValueField="id"
@@ -157,7 +159,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     onBlur={handleBlur}
                     error={Boolean(errors.specialNote && touched.specialNote)}
                 />
-                <Box style={{ gridColumnEnd: "span 4" }} display="flex" justifyContent="space-between">
+                <Box style={{ gridColumnEnd: "span 4" }} display="flex" justifyContent="space-between" flexWrap="wrap">
                     <FormControlLabel
                         style={{ fontSize: "0.7rem" }}
                         checked={values.active}
@@ -317,9 +319,11 @@ export const Quantity = ({ values, errors, handleChange, handleBlur, handleManua
                 onBlur={handleBlur}
                 onChange={handleChange}
             />
-            <Button kind="add" fullWidth style={{ marginTop: 10, gridColumnEnd: "span 2" }} onClick={handleManualCount}>
-                Adjust
-            </Button>
+            {handleManualCount && (
+                <Button kind="add" fullWidth style={{ marginTop: 10, gridColumnEnd: "span 2" }} onClick={handleManualCount}>
+                    Adjust
+                </Button>
+            )}
         </Box>
     );
 };
@@ -368,6 +372,53 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                 onBlur={handleBlur}
                 onChange={handleChange}
             />
+        </Box>
+    );
+};
+
+export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
+    const [dynamicFields, setDynamicFields] = useState<ReactNode[]>([]);
+    const { data: filters } = useSWR<IFilter[]>("/filter");
+    const { data: fields } = useSWR<IField[]>("/field");
+
+    useEffect(() => {
+        let validFields: ReactNode[] = [];
+        fields?.map((field) => {
+            if (field.filterValue.includes(values[field.filterName])) {
+                if (field.type === "string" || field.type === "number") {
+                    validFields.push(<TextField name={field.name} label={field.name} onChange={handleChange} onBlur={handleBlur} />);
+                } else if (field.type === "enum") {
+                    validFields.push(
+                        <ArraySelect name={field.name} label={field.name} items={field.valid} onChange={handleChange} onBlur={handleBlur} />
+                    );
+                } else if (field.type === "boolean") {
+                    validFields.push(
+                        <FormControlLabel
+                            control={<Checkbox />}
+                            name={field.name}
+                            label={field.name}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                    );
+                }
+            }
+        });
+
+        setDynamicFields(validFields);
+    }, [fields, values]);
+
+    if (!filters) {
+        return <LinearProgress />;
+    }
+
+    return (
+        <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
+            {filters.map((filter) => (
+                <ArraySelect name={filter.name} label={filter.name} items={filter.valid} onChange={handleChange} onBlur={handleBlur} />
+            ))}
+            <Divider style={{ gridColumnEnd: "span 2" }} />
+            {dynamicFields}
         </Box>
     );
 };

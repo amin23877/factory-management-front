@@ -35,7 +35,7 @@ import { IFilters } from "../features/Items/Table/Filters";
 import { IOrder } from "../features/Items/Table/Sorts";
 import DataTable from "../features/Items/Table";
 import FiltersModal, { ApplyFilterModal } from "../features/Filter/Modals";
-import { AddFieldModal } from "../features/Modals/AddFieldModal";
+import { AddFieldModal } from "../features/Field/Modal";
 
 const Inventory = () => {
     const [rows, setRows] = useState<any[]>([]);

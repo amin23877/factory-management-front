@@ -135,10 +135,12 @@ export const FieldSelect = ({ keyField, request, itemValueField, itemTitleField,
 };
 
 interface IArraySelect extends StandardTextFieldProps {
-    items: any[];
+    items?: any[];
 }
 export const ArraySelect = ({ items, ...props }: IArraySelect) => {
-    return <ObjectSelect itemTitleField="item" itemValueField="item" items={items.map((item) => ({ item: item }))} {...props} />;
+    return (
+        <ObjectSelect itemTitleField="item" itemValueField="item" items={items ? items.map((item) => ({ item: item })) : []} {...props} />
+    );
 };
 
 export const BaseSelect = (props: SelectProps) => {
