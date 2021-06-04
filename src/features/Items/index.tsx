@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Grid, Tabs, Tab } from "@material-ui/core";
-import { useFormik } from "formik";
+import { Formik, Form } from "formik";
 
 import Snackbar from "../../app/Snack";
 import { AddItemSchema, updateAnItem, getItemQuotes, getItemSOs } from "../../api/items";
@@ -9,7 +9,7 @@ import BaseDataGrid from "../../app/BaseDataGrid";
 import { BasePaper } from "../../app/Paper";
 import VendorsTable from "./VandorsTable";
 
-import { MoreInfo, Quantity, Shipping, General } from "./Forms";
+import { MoreInfo, Quantity, Shipping, General, DynamicFilterAndFields } from "./Forms";
 import { SalesReport } from "./Reports";
 
 import ManualCountModal from "./ManualCountModal";
@@ -87,28 +87,20 @@ function ItemsDetails({
         { field: "createdAt", headerName: "Date", width: 300 },
     ];
 
-    const { values, handleBlur, handleChange, handleSubmit, errors, touched } = useFormik({
-        initialValues: { ...selectedRow },
-        validationSchema: AddItemSchema,
-        onSubmit: (d, { setSubmitting }) => {
-            // console.log(d);
-            updateAnItem(selectedRow.id, d)
-                .then((d) => {
-                    console.log(d);
-                    setShowSnack(true);
-                    setSnackMsg(`Updated item ${d.id}...`);
-                })
-                .catch((e) => {
-                    console.log(e);
-                    setShowSnack(true);
-                    setSnackMsg(`Error: ${e.error}`);
-                })
-                .finally(() => {
-                    setSubmitting(false);
-                    onDone && onDone();
-                });
-        },
-    });
+    const handleSubmit = async (data: any, { setSubmitting }: any) => {
+        try {
+            const resp = await updateAnItem(selectedRow.id, data);
+            if (resp) {
+                setSubmitting(false);
+                setShowSnack(true);
+                setSnackMsg(`Updated item ${data.id}...`);
+                onDone && onDone();
+            }
+        } catch (error) {
+            setShowSnack(true);
+            setSnackMsg(`Error: ${error.error}`);
+        }
+    };
 
     return (
         <Box my={2}>
@@ -126,59 +118,82 @@ function ItemsDetails({
                 {snackMsg}
             </Snackbar>
 
-            <form onSubmit={handleSubmit}>
-                <Grid container>
-                    <Grid item md={8} xs={12} style={{ padding: "1em" }}>
-                        <BasePaper>
-                            <General
-                                values={values}
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
-                                errors={errors}
-                                touched={touched}
-                            />
-                        </BasePaper>
-                    </Grid>
-                    <Grid item md={4} xs={12} style={{ padding: "1em" }}>
-                        <BasePaper style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-                            <Tabs value={moreInfoTab} variant="scrollable" textColor="primary" onChange={(e, v) => setMoreInfoTab(v)}>
-                                <Tab label="More Info." />
-                                <Tab label="Quantity" />
-                                <Tab label="Shipping" />
-                            </Tabs>
-                            {moreInfoTab === 0 && (
-                                <MoreInfo
-                                    values={values}
-                                    handleChange={handleChange}
-                                    handleBlur={handleBlur}
-                                    errors={errors}
-                                    touched={touched}
-                                />
-                            )}
-                            {moreInfoTab === 1 && (
-                                <Quantity
-                                    handleManualCount={() => setManualCountModal(true)}
-                                    values={values}
-                                    handleChange={handleChange}
-                                    handleBlur={handleBlur}
-                                    errors={errors}
-                                    touched={touched}
-                                />
-                            )}
-                            {moreInfoTab === 2 && (
-                                <Shipping
-                                    values={values}
-                                    handleChange={handleChange}
-                                    handleBlur={handleBlur}
-                                    errors={errors}
-                                    touched={touched}
-                                />
-                            )}
-                            <div style={{ flexGrow: 1 }} />
-                        </BasePaper>
-                    </Grid>
-                </Grid>
-            </form>
+            <Formik initialValues={selectedRow} validationSchema={AddItemSchema} onSubmit={handleSubmit}>
+                {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
+                    <Form>
+                        <Grid container>
+                            <Grid item md={8} xs={12} style={{ padding: "1em" }}>
+                                <BasePaper>
+                                    <General
+                                        values={values}
+                                        handleChange={handleChange}
+                                        handleBlur={handleBlur}
+                                        setFieldValue={setFieldValue}
+                                        errors={errors}
+                                        touched={touched}
+                                    />
+                                </BasePaper>
+                            </Grid>
+                            <Grid item md={4} xs={12} style={{ padding: "1em" }}>
+                                <BasePaper style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                                    <Tabs
+                                        value={moreInfoTab}
+                                        variant="scrollable"
+                                        textColor="primary"
+                                        onChange={(e, v) => setMoreInfoTab(v)}
+                                    >
+                                        <Tab label="More Info." />
+                                        <Tab label="Quantity" />
+                                        <Tab label="Shipping" />
+                                        <Tab label="Filter and fields" />
+                                    </Tabs>
+                                    {moreInfoTab === 0 && (
+                                        <MoreInfo
+                                            values={values}
+                                            handleChange={handleChange}
+                                            handleBlur={handleBlur}
+                                            setFieldValue={setFieldValue}
+                                            errors={errors}
+                                            touched={touched}
+                                        />
+                                    )}
+                                    {moreInfoTab === 1 && (
+                                        <Quantity
+                                            handleManualCount={() => setManualCountModal(true)}
+                                            values={values}
+                                            handleChange={handleChange}
+                                            handleBlur={handleBlur}
+                                            setFieldValue={setFieldValue}
+                                            errors={errors}
+                                            touched={touched}
+                                        />
+                                    )}
+                                    {moreInfoTab === 2 && (
+                                        <Shipping
+                                            values={values}
+                                            handleChange={handleChange}
+                                            handleBlur={handleBlur}
+                                            setFieldValue={setFieldValue}
+                                            errors={errors}
+                                            touched={touched}
+                                        />
+                                    )}
+                                    {moreInfoTab === 3 && (
+                                        <DynamicFilterAndFields
+                                            values={values}
+                                            handleChange={handleChange}
+                                            handleBlur={handleBlur}
+                                            setFieldValue={setFieldValue}
+                                            errors={errors}
+                                            touched={touched}
+                                        />
+                                    )}
+                                </BasePaper>
+                            </Grid>
+                        </Grid>
+                    </Form>
+                )}
+            </Formik>
             <BasePaper style={{ margin: "1em 0" }}>
                 <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} textColor="primary" variant="scrollable">
                     <Tab label="Notes" />

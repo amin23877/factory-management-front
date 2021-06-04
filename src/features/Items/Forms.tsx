@@ -1,15 +1,14 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { Box, FormControlLabel, Typography, Checkbox, LinearProgress, Divider } from "@material-ui/core";
+import useSWR from "swr";
 
+import TextField from "../../app/TextField";
+import { ArraySelect, FieldSelect } from "../../app/Inputs";
 import Button from "../../app/Button";
 
 import { getCategories } from "../../api/category";
 import { getTypes } from "../../api/types";
 import { getFamilies } from "../../api/family";
-
-import TextField from "../../app/TextField";
-import { ArraySelect, FieldSelect } from "../../app/Inputs";
-import useSWR from "swr";
 import { IFilter } from "../../api/filter";
 import { IField } from "../../api/field";
 
@@ -19,6 +18,7 @@ interface IForm {
     touched: any;
     handleChange: (e: any) => void;
     handleBlur: (e: any) => void;
+    setFieldValue: any;
     isSubmitting?: boolean;
 }
 
@@ -26,7 +26,7 @@ interface IQForm extends IForm {
     handleManualCount?: () => void;
 }
 
-export const General = ({ isSubmitting, values, errors, handleChange, handleBlur, touched }: IForm) => {
+export const General = ({ isSubmitting, values, errors, handleChange, handleBlur, touched, setFieldValue }: IForm) => {
     return (
         <>
             <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
@@ -119,9 +119,10 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     itemTitleField="name"
                     itemValueField="id"
                     name="ItemCategoryId"
-                    onChange={handleChange}
+                    onChange={(e: any) => setFieldValue("ItemCategoryId", e.target.value)}
                     onBlur={handleBlur}
                     error={Boolean(errors.ItemCategoryId && touched.ItemCategoryId)}
+                    defaultValue={values?.ItemCategoryId?.id}
                     value={values.ItemCategoryId}
                     placeholder={"Category"}
                 />
@@ -132,9 +133,10 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     itemTitleField="name"
                     itemValueField="id"
                     name="ItemTypeId"
-                    onChange={handleChange}
+                    onChange={(e: any) => setFieldValue("ItemTypeId", e.target.value)}
                     onBlur={handleBlur}
                     error={Boolean(errors.ItemTypeId && touched.ItemTypeId)}
+                    defaultValue={values?.ItemTypeId?.id}
                     value={values.ItemTypeId}
                 />
                 <FieldSelect
@@ -144,9 +146,10 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     itemTitleField="name"
                     itemValueField="id"
                     name="ItemFamilyId"
-                    onChange={handleChange}
+                    onChange={(e: any) => setFieldValue("ItemFamilyId", e.target.value)}
                     onBlur={handleBlur}
                     error={Boolean(errors.ItemFamilyId && touched.ItemFamilyId)}
+                    defaultValue={values?.ItemFamilyId?.id}
                     value={values.ItemFamilyId}
                 />
                 <TextField
@@ -202,7 +205,13 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     />
                 </Box>
             </Box>
-            <Button disabled={isSubmitting} style={{ marginTop: "1.3em" }} kind="edit" type="submit">
+            <Button
+                onClick={() => console.log(errors, values)}
+                disabled={isSubmitting}
+                style={{ marginTop: "1.3em" }}
+                kind="edit"
+                type="submit"
+            >
                 Update
             </Button>
         </>
@@ -386,14 +395,30 @@ export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlu
         fields?.map((field) => {
             if (field.filterValue.includes(values[field.filterName])) {
                 if (field.type === "string" || field.type === "number") {
-                    validFields.push(<TextField name={field.name} label={field.name} onChange={handleChange} onBlur={handleBlur} />);
+                    validFields.push(
+                        <TextField
+                            name={field.name}
+                            label={field.name}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values[field.name]}
+                        />
+                    );
                 } else if (field.type === "enum") {
                     validFields.push(
-                        <ArraySelect name={field.name} label={field.name} items={field.valid} onChange={handleChange} onBlur={handleBlur} />
+                        <ArraySelect
+                            name={field.name}
+                            label={field.name}
+                            items={field.valid}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values[field.name]}
+                        />
                     );
                 } else if (field.type === "boolean") {
                     validFields.push(
                         <FormControlLabel
+                            checked={values[field.name]}
                             control={<Checkbox />}
                             name={field.name}
                             label={field.name}

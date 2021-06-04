@@ -6,9 +6,9 @@ import { IItemType } from "./types";
 export const AddItemSchema = Yup.object().shape({
     name: Yup.string().min(4, "Too short!").max(60, "Too long").required("Required !!"),
 
-    ItemCategoryId: Yup.number().required(),
-    ItemTypeId: Yup.number().required(),
-    ItemFamilyId: Yup.number().required(),
+    ItemCategoryId: Yup.string().required(),
+    ItemTypeId: Yup.string().required(),
+    ItemFamilyId: Yup.string().required(),
 });
 
 export interface IItem {
@@ -86,12 +86,7 @@ export const AddItemInitialValues = {};
 export const createItem = async (itemData: any) => {
     try {
         // console.table(itemData);
-        const resp = await Axios.post("/item", {
-            ...itemData,
-            ItemCategoryId: String(itemData.ItemCategoryId),
-            ItemTypeId: String(itemData.ItemTypeId),
-            ItemFamilyId: String(itemData.ItemFamilyId),
-        });
+        const resp = await Axios.post("/item", itemData);
         return resp.data;
     } catch (error) {
         console.error(error);
@@ -100,12 +95,7 @@ export const createItem = async (itemData: any) => {
 
 export const updateAnItem = async (itemId: string, itemData: any) => {
     try {
-        const resp = await Axios.patch(`/item/${itemId}`, {
-            ...itemData,
-            ItemCategoryId: parseInt(itemData.ItemCategoryId),
-            ItemTypeId: parseInt(itemData.ItemTypeId),
-            ItemFamilyId: parseInt(itemData.ItemFamilyId),
-        });
+        const resp = await Axios.patch(`/item/${itemId}`, itemData);
         return resp.data;
     } catch (error) {
         console.log(error);

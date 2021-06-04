@@ -12,6 +12,7 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
     const [activeTab, setActiveTab] = useState(0);
 
     const handleSubmit = async (data: any, { setSubmitting }: any) => {
+        // console.log(data);
         setSubmitting(true);
         try {
             const resp = await createItem(data);
@@ -27,8 +28,9 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="lg" title="Add new item">
             <Box p={1} height={420}>
-                <Formik initialValues={{} as IItem} validationSchema={AddItemSchema} onSubmit={handleSubmit}>
-                    {({ values, errors, handleChange, handleBlur, touched, isSubmitting }) => (
+                {/** Add validation schema */}
+                <Formik initialValues={{} as IItem} onSubmit={handleSubmit}>
+                    {({ values, errors, handleChange, handleBlur, touched, isSubmitting, setFieldValue }) => (
                         <Form>
                             <Box display="flex">
                                 <Box flex={2}>
@@ -38,6 +40,7 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
                                         handleChange={handleChange}
                                         touched={touched}
                                         values={values}
+                                        setFieldValue={setFieldValue}
                                         isSubmitting={isSubmitting}
                                     />
                                 </Box>
@@ -53,6 +56,7 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
                                             errors={errors}
                                             handleBlur={handleBlur}
                                             handleChange={handleChange}
+                                            setFieldValue={setFieldValue}
                                             touched={touched}
                                             values={values}
                                             isSubmitting={isSubmitting}
@@ -63,6 +67,7 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
                                             errors={errors}
                                             handleBlur={handleBlur}
                                             handleChange={handleChange}
+                                            setFieldValue={setFieldValue}
                                             touched={touched}
                                             values={values}
                                             isSubmitting={isSubmitting}
@@ -73,6 +78,7 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
                                             errors={errors}
                                             handleBlur={handleBlur}
                                             handleChange={handleChange}
+                                            setFieldValue={setFieldValue}
                                             touched={touched}
                                             values={values}
                                             isSubmitting={isSubmitting}
@@ -84,6 +90,7 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
                                                 errors={errors}
                                                 handleBlur={handleBlur}
                                                 handleChange={handleChange}
+                                                setFieldValue={setFieldValue}
                                                 touched={touched}
                                                 values={values}
                                                 isSubmitting={isSubmitting}
