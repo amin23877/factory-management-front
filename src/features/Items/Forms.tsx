@@ -112,6 +112,24 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     error={Boolean(errors.size && touched.size)}
                     value={values.size}
                 />
+                <TextField
+                    label="Resell Cost"
+                    value={values.resellCost}
+                    placeholder={values.resellCost}
+                    name="resellCost"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.resellCost && touched.resellCost)}
+                />
+                <TextField
+                    label="last used in 90 days"
+                    value={values.usedInLastQuarter}
+                    placeholder={values.usedInLastQuarter}
+                    name="usedInLastQuarter"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.usedInLastQuarter && touched.usedInLastQuarter)}
+                />
                 <FieldSelect
                     fullWidth
                     label="Category"
@@ -153,7 +171,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     value={values.ItemFamilyId}
                 />
                 <TextField
-                    style={{ gridColumnEnd: "span 4" }}
+                    style={{ gridColumnEnd: "span 2" }}
                     label="Special notes"
                     value={values.specialNote}
                     placeholder={values.specialNote}
