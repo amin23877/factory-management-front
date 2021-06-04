@@ -5,6 +5,7 @@ import { Formik, Form } from "formik";
 import Snackbar from "../../app/Snack";
 import { AddItemSchema, updateAnItem, getItemQuotes, getItemSOs } from "../../api/items";
 
+import Button from "../../app/Button";
 import BaseDataGrid from "../../app/BaseDataGrid";
 import { BasePaper } from "../../app/Paper";
 import VendorsTable from "./VandorsTable";
@@ -132,6 +133,10 @@ function ItemsDetails({
                                         errors={errors}
                                         touched={touched}
                                     />
+
+                                    <Button style={{ marginTop: "1.3em" }} kind="edit" type="submit">
+                                        Save
+                                    </Button>
                                 </BasePaper>
                             </Grid>
                             <Grid item md={4} xs={12} style={{ padding: "1em" }}>

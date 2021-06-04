@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import { Formik, Form } from "formik";
 
+import Button from "../../app/Button";
 import Dialog from "../../app/Dialog";
 import CustomScrollbars from "../../app/CustomScroll";
 import { DynamicFilterAndFields, General, MoreInfo, Quantity, Shipping } from "./Forms";
@@ -43,6 +44,9 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
                                         setFieldValue={setFieldValue}
                                         isSubmitting={isSubmitting}
                                     />
+                                    <Button disabled={isSubmitting} style={{ marginTop: "1.3em" }} kind="add" type="submit">
+                                        Save
+                                    </Button>
                                 </Box>
                                 <Box flex={1} ml={1}>
                                     <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="primary">

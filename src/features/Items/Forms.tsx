@@ -223,15 +223,6 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     />
                 </Box>
             </Box>
-            <Button
-                onClick={() => console.log(errors, values)}
-                disabled={isSubmitting}
-                style={{ marginTop: "1.3em" }}
-                kind="edit"
-                type="submit"
-            >
-                Update
-            </Button>
         </>
     );
 };
