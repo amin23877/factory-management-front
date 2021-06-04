@@ -19,11 +19,15 @@ import { IItem } from "../../../api/items";
 import MenuFilters, { IFilters } from "./Filters";
 import Sort, { IOrder } from "./Sorts";
 
+
+import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
+import ClearRoundedIcon from '@material-ui/icons/ClearRounded';
+
 export const useStyles = makeStyles((theme) => ({
     tableCont: {
         borderRadius: 10,
         maxHeight: 550,
-        maxWidth: '77vw'
+        // maxWidth: '77vw'
     },
     root: {
         backgroundColor: "#f9f9f9",
@@ -33,6 +37,9 @@ export const useStyles = makeStyles((theme) => ({
         "& .MuiTableHead-root": {
             position: ["sticky", "-webkit-sticky"],
             top: 0,
+        },
+        "& .MuiTableCell-sizeSmall": {
+            padding: '15px 0px'
         },
         "& .MuiTableRow-head, .MuiTableCell-stickyHeader": {
             backgroundColor: "#202731",
@@ -51,6 +58,9 @@ export const useStyles = makeStyles((theme) => ({
         "& tbody .MuiTableCell-root": {
             border: "1px solid #dddddd",
             fontSize: "0.700rem",
+            textAlign: 'center',
+            // width:'5px',
+            // backgroundColor:'red',
         },
         "& .MuiButton-root": {
             fontSize: "0.700rem",
@@ -66,6 +76,10 @@ export const useStyles = makeStyles((theme) => ({
         "& .MuiDataGrid-sortIcon": {
             fill: "white",
         },
+        "& .MuiBox-root , .MuiBox-root-295": {
+            justifyContent: 'space-between'
+        }
+
     },
     tableHeadBtn: {
         color: "white",
@@ -117,7 +131,6 @@ export default function DataTable({
                     <Button onClick={() => setFilters(undefined)}>clear</Button>
                 </Box>
             </Menu>
-
             <TableContainer component={Paper} className={classes.tableCont}>
                 <Table size="small" stickyHeader aria-label="Items table" className={classes.root}>
                     <TableHead>
@@ -136,7 +149,7 @@ export default function DataTable({
                                     <Sort field="no" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
-                            <TableCell>
+                            <TableCell style={{ padding: '15px 6px ' }}>
                                 <Box display="flex">
                                     <Button
                                         onClick={(e) => {
@@ -150,7 +163,7 @@ export default function DataTable({
                                     <Sort field="name" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
-                            <TableCell>
+                            <TableCell style={{ padding: '15px 6px ' }}>
                                 <Box display="flex">
                                     <Button
                                         onClick={(e) => {
@@ -178,7 +191,7 @@ export default function DataTable({
                                     <Sort field="cost" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
-                            <TableCell>
+                            {/* <TableCell>
                                 <Box display="flex">
                                     <Button
                                         onClick={(e) => {
@@ -187,7 +200,7 @@ export default function DataTable({
                                         }}
                                         className={classes.tableHeadBtn}
                                     >
-                                        Category
+                                        Cat.
                                     </Button>
                                     <Sort field="ItemCategoryId" order={order} setOrder={setOrder} />
                                 </Box>
@@ -215,12 +228,12 @@ export default function DataTable({
                                         }}
                                         className={classes.tableHeadBtn}
                                     >
-                                        Family
+                                        Fam.
                                     </Button>
                                     <Sort field="ItemFamilyId" order={order} setOrder={setOrder} />
                                 </Box>
-                            </TableCell>
-                            <TableCell>
+                            </TableCell> */}
+                            <TableCell size='small' >
                                 <Box display="flex">
                                     <Button
                                         onClick={(e) => {
@@ -228,8 +241,9 @@ export default function DataTable({
                                             setFilterBy("salesApproved");
                                         }}
                                         className={classes.tableHeadBtn}
+                                        title='Sales Approved'
                                     >
-                                        Sales Approve
+                                        S.A.
                                     </Button>
                                     <Sort field="salesApproved" order={order} setOrder={setOrder} />
                                 </Box>
@@ -242,8 +256,9 @@ export default function DataTable({
                                             setFilterBy("engineeringApproved");
                                         }}
                                         className={classes.tableHeadBtn}
+                                        title="Engineering Approved"
                                     >
-                                        Engineering Approves
+                                        E.A.
                                     </Button>
                                     <Sort field="engineeringApproved" order={order} setOrder={setOrder} />
                                 </Box>
@@ -270,8 +285,9 @@ export default function DataTable({
                                             setFilterBy("usedInLastQuarter");
                                         }}
                                         className={classes.tableHeadBtn}
+                                        title=" Last Used in 90 days"
                                     >
-                                        Last Used in 90 days
+                                        L.U.90
                                     </Button>
                                     <Sort field="usedInLastQuarter" order={order} setOrder={setOrder} />
                                 </Box>
@@ -285,7 +301,7 @@ export default function DataTable({
                                         }}
                                         className={classes.tableHeadBtn}
                                     >
-                                        Resell Cost
+                                        Re.Co.
                                     </Button>
                                     <Sort field="resellCost" order={order} setOrder={setOrder} />
                                 </Box>
@@ -299,14 +315,22 @@ export default function DataTable({
                                     <TableCell component="th" scope="row">
                                         {item.no}
                                     </TableCell>
-                                    <TableCell>{item.name}</TableCell>
-                                    <TableCell>{item.description}</TableCell>
+                                    <TableCell style={{ padding: '15px 6px ' }}>{item.name}</TableCell>
+                                    <TableCell style={{ padding: '15px 6px ' }}>{item.description}</TableCell>
                                     <TableCell>{item.cost} </TableCell>
-                                    <TableCell>{item.ItemCategory ? item.ItemCategory.name : ""}</TableCell>
+                                    {/* <TableCell>{item.ItemCategory ? item.ItemCategory.name : ""}</TableCell>
                                     <TableCell>{item.ItemType ? item.ItemType.name : ""}</TableCell>
-                                    <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell>
-                                    <TableCell>{item.salesApproved ? item.salesApproved : ""}</TableCell>
-                                    <TableCell>{item.engineeringApproved ? item.engineeringApproved : ""}</TableCell>
+                                    <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell> */}
+                                    <TableCell >{!item.salesApproved ? <div style={{ color: '#4caf50', backgroundColor: 'rgb(237, 247, 237)', width: '25px', height: '25px', borderRadius: '100%', fontSize: 'small', margin: '0px auto',display:'flex' , alignItems:'center', justifyContent:'center'}}>
+                                        <CheckRoundedIcon />
+                                    </div> : <div style={{ color: '#f44336', backgroundColor: 'rgb(253, 236, 234)', width: '25px', height: '25px', borderRadius: '100%', fontSize: 'small', margin: '0px auto',display:'flex' , alignItems:'center', justifyContent:'center'}}>
+                                        <ClearRoundedIcon />
+                                    </div>}</TableCell>
+                                    <TableCell>{item.engineeringApproved ? <div style={{ color: '#4caf50', backgroundColor: 'rgb(237, 247, 237)', width: '25px', height: '25px', borderRadius: '100%', fontSize: 'small', margin: '0px auto',display:'flex' , alignItems:'center', justifyContent:'center'}}>
+                                        <CheckRoundedIcon />
+                                    </div> : <div style={{ color: '#f44336', backgroundColor: 'rgb(253, 236, 234)', width: '25px', height: '25px', borderRadius: '100%', fontSize: 'small', margin: '0px auto',display:'flex' , alignItems:'center', justifyContent:'center'}}>
+                                        <ClearRoundedIcon />
+                                    </div>}</TableCell>
                                     <TableCell>{item.totalQoh ? item.totalQoh : ""}</TableCell>
                                     <TableCell>{item.usedInLastQuarter ? item.usedInLastQuarter : ""}</TableCell>
                                     <TableCell>{item.resellCost ? item.resellCost : ""}</TableCell>

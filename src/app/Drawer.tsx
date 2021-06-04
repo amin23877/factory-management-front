@@ -20,6 +20,7 @@ import PhoneRounded from "@material-ui/icons/PhoneRounded";
 import AssessmentRounded from "@material-ui/icons/AssessmentRounded";
 import { Link, useLocation, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 
 import CustomScrollbars from "./CustomScroll";
 import { logout } from "../features/Session/sessionsSlice";
@@ -305,7 +306,7 @@ const drawerItems = [
     },
 ];
 
-const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boolean; onToggle: () => void }) => {
+const MainDrawer = ({ width, isOpen, onToggle, closeThis }: { width?: number; isOpen: boolean; onToggle: () => void; closeThis: () => void }) => {
     const useStyles = makeStyles((theme) => ({
         toolbar: {
             ...theme.mixins.toolbar,
@@ -355,6 +356,7 @@ const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boole
                 <Drawer variant="permanent" style={{ width }} classes={{ paper: classes.drawerPaper }} anchor="left">
                     <div className={classes.toolbar} style={{ backgroundColor: "transparent" }}>
                         <img src={phocusLogo} alt="Phocus" style={{ width: "80%", height: "auto" }} />
+                        <div style={{ color: 'white', position: 'absolute', top: "25px", right: '15px', cursor: 'pointer' }} onClick={closeThis}> <ChevronLeftIcon /> </div>
                     </div>
                     <Divider />
                     <CustomScrollbars style={{ height: 700 }}>
@@ -491,18 +493,20 @@ export default function MainNavbar({
     isOpen,
     onToggle,
     children,
+    closeIt
 }: {
     width?: number;
     isOpen: boolean;
     onToggle: () => void;
     children: any;
+    closeIt: () => void
 }) {
     const isMobile = useMediaQuery("max-width:600px");
 
     return (
         <>
             <Hidden only={["sm", "xs"]}>
-                <MainDrawer onToggle={onToggle} width={width} isOpen={isOpen} />
+                <MainDrawer onToggle={onToggle} width={width} isOpen={isOpen} closeThis={closeIt} />
             </Hidden>
             <Hidden mdUp>
                 <MainBottomNav />
