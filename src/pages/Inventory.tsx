@@ -35,8 +35,7 @@ import { IFilters } from "../features/Items/Table/Filters";
 import { IOrder } from "../features/Items/Table/Sorts";
 import DataTable from "../features/Items/Table";
 import FiltersModal, { ApplyFilterModal } from "../features/Filter/Modals";
-import {AddFieldModal} from '../features/Modals/AddFieldModal';
-
+import { AddFieldModal } from "../features/Modals/AddFieldModal";
 
 const Inventory = () => {
     const [rows, setRows] = useState<any[]>([]);
@@ -69,7 +68,7 @@ const Inventory = () => {
     const [bomModal, setBomModal] = useState(false);
     const [filterModal, setFilterModal] = useState(false);
     const [applyFilterModal, setApplyFilterModal] = useState(false);
-    const [addFieldModal , setAddFieldModal] = useState(false);
+    const [addFieldModal, setAddFieldModal] = useState(false);
 
     const refreshItems = async () => {
         try {
@@ -169,11 +168,9 @@ const Inventory = () => {
                     refreshItems();
                     return;
                 } else {
-                    
-                    const key = Object.keys(filters.params)
-                    const v = Object.values(filters.params) 
+                    const key = Object.keys(filters.params);
+                    const v = Object.values(filters.params);
                     const resp = await getItemsByQuery({
-                        [key[0]]:v[0],
                         ItemCategoryId: filters.cat && filters.cat.length > 0 ? filters.cat.map((item) => item.id).join(",") : undefined,
                         ItemTypeId: filters.type && filters.type.length > 0 ? filters.type.map((item) => item.id).join(",") : undefined,
                         ItemFamilyId:
@@ -188,7 +185,7 @@ const Inventory = () => {
 
                         sort: order && order.orderBy ? order.orderBy : undefined,
                         order: order && order.order ? (order.order === "asc" ? "ASC" : "DESC") : undefined,
-                        
+                        [key[0]]: v[0],
                     });
                     resp && setRows(resp);
                 }
@@ -328,7 +325,7 @@ const Inventory = () => {
 
             <AddFieldModal open={addFieldModal} onClose={() => setAddFieldModal(false)} />
             <FiltersModal open={filterModal} onClose={() => setFilterModal(false)} />
-            <ApplyFilterModal open={applyFilterModal} onClose={()=> setApplyFilterModal(false)} setter={setFilters}/>
+            <ApplyFilterModal open={applyFilterModal} onClose={() => setApplyFilterModal(false)} setter={setFilters} />
             <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
                 <Button
                     disabled={activeTab === 0}
@@ -388,11 +385,10 @@ const Inventory = () => {
                         </IconButton>
                     </ListItem>
                     <ListItem>
-                        <IconButton title="Dyanamic fields"  onClick={() => setAddFieldModal(true)}>
+                        <IconButton title="Dyanamic fields" onClick={() => setAddFieldModal(true)}>
                             <PostAddRounded />
                         </IconButton>
                     </ListItem>
-
                 </List>
                 <Box flex={11} ml={2}>
                     {loading && <LinearProgress />}

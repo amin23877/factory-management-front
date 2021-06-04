@@ -13,13 +13,11 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
         initialValues: AddItemInitialValues,
         validationSchema: AddItemSchema,
         onSubmit: (data, { setSubmitting }) => {
-            // console.log(data);
-
             createItem(data)
                 .then((res: any) => {
-                    console.log(res);
                     setSubmitting(false);
-                    if (res.status !== 400) {
+
+                    if (res) {
                         onClose();
                     }
                 })
@@ -29,8 +27,8 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="lg" title="Add new item">
-            <Box p={3} display="flex" alignItems="center">
-                <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
+            <Box p={1} display="flex" alignItems="center">
+                <form onSubmit={handleSubmit}>
                     <Box display="flex">
                         <Box flex={1}>
                             <General

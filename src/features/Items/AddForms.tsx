@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, FormControlLabel, Divider, Typography, Checkbox } from "@material-ui/core";
+import React, { ReactNode } from "react";
+import { Box, FormControlLabel, Typography, Checkbox } from "@material-ui/core";
 
 import Button from "../../app/Button";
 
@@ -8,7 +8,10 @@ import { getTypes } from "../../api/types";
 import { getFamilies } from "../../api/family";
 
 import TextField from "../../app/TextField";
-import { FieldSelect } from "../../app/Inputs";
+import { ArraySelect, FieldSelect } from "../../app/Inputs";
+import useSWR from "swr";
+import { IFilter } from "../../api/filter";
+import { IField } from "../../api/field";
 
 interface IForm {
     values: any;
@@ -20,6 +23,18 @@ interface IForm {
 }
 
 export const General = ({ isSubmitting, values, errors, handleChange, handleBlur, touched }: IForm) => {
+    const { data: filters } = useSWR<IFilter[]>("/filter");
+    const { data: fields } = useSWR<IField[]>("/field");
+
+    let dynamicFieldInputs: ReactNode[] = [];
+    if (fields) {
+        fields.map((field) => {
+            if (field.filterValue.includes(values[field.filterName])) {
+                dynamicFieldInputs.push(<TextField label={field.name} />);
+            }
+        });
+    }
+
     return (
         <>
             <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridRowGap={5} gridColumnGap={5}>
@@ -148,6 +163,18 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     onBlur={handleBlur}
                     error={Boolean(errors.specialNote && touched.specialNote)}
                 />
+                {filters &&
+                    filters.map((filter, i) => (
+                        <ArraySelect
+                            key={i}
+                            name={filter.name}
+                            items={filter.valid as any}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            label={filter.name}
+                        />
+                    ))}
+                {dynamicFieldInputs}
                 <FormControlLabel
                     style={{ gridColumnEnd: "span 3" }}
                     label="Active"
