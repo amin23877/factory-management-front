@@ -111,6 +111,15 @@ export default function JobForm({
                         <TextField {...params} label="Line service" placeholder="Line service" size="small" variant="outlined" />
                     )}
                 />
+                <ArraySelect
+                    style={{ gridColumnEnd: "span 2" }}
+                    items={["1", "2", "3", "4", "5"]}
+                    label="Priority"
+                    name="priority"
+                    value={values.priority}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
             </Box>
             <Box mt={1}>
                 <TextField

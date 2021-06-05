@@ -326,6 +326,7 @@ const Inventory = () => {
             <AddFieldModal open={addFieldModal} onClose={() => setAddFieldModal(false)} />
             <FiltersModal open={filterModal} onClose={() => setFilterModal(false)} />
             <ApplyFilterModal open={applyFilterModal} onClose={() => setApplyFilterModal(false)} setter={setFilters} />
+
             <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
                 <Button
                     disabled={activeTab === 0}

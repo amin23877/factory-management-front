@@ -150,12 +150,7 @@ export const GeneralForm = ({
                             </Box>
 
                             <Box width="100%" display="flex" alignItems="center">
-                                <BaseSelect
-                                    displayEmpty={true}
-                                    fullWidth
-                                    value={selectedData}
-                                    onChange={(e: any) => setSelectedData(e.target.value)}
-                                >
+                                <BaseSelect fullWidth value={selectedData} onChange={(e: any) => setSelectedData(e.target.value)}>
                                     {data.map((cat: { id: string; name: string }) => (
                                         <MenuItem key={cat.id} value={cat.id}>
                                             {cat.name}

@@ -143,17 +143,10 @@ export const ArraySelect = ({ items, ...props }: IArraySelect) => {
     );
 };
 
-export const BaseSelect = (props: SelectProps) => {
+export const BaseSelect = (props: StandardTextFieldProps) => {
     return (
-        <FormControl fullWidth={props.fullWidth}>
-            {props.label && (
-                <InputLabel shrink id="base-select-label">
-                    {props.label}
-                </InputLabel>
-            )}
-            <Select className={styles.baseSelect} name={props.name} input={<BootstrapInput />} {...props} labelId="base-select-label">
-                {props.children}
-            </Select>
-        </FormControl>
+        <TextField {...props} variant="outlined" size="small" select>
+            {props.children}
+        </TextField>
     );
 };

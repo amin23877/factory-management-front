@@ -1,135 +1,150 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Box, MenuItem } from "@material-ui/core";
-import { mutate } from "swr";
+import useSWR, { mutate } from "swr";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
 import Button from "../../app/Button";
 import TextField from "../../app/TextField";
-import { IFilter } from "../../api/filter";
-import { basePost } from "../../api";
 import { BaseSelect } from "../../app/Inputs/index";
-import { getItemsByQuery } from "../../api/items";
+import Snack from "../../app/Snack";
 
-export default function FilterForm() {
+import { IFilter } from "../../api/filter";
+import { baseDelete, basePatch, basePost } from "../../api";
+
+export default function FilterForm({ initialValues }: { initialValues?: IFilter }) {
     const schema = Yup.object().shape({
         name: Yup.string().required(),
         valid: Yup.string().required(),
     });
 
-    const handleSubmit = async (d: any) => {
+    const handleDelete = async (id: string) => {
         try {
-            await basePost("/filter", d);
+            await baseDelete(`/filter/${id}`);
             mutate("/filter");
         } catch (error) {
             console.log(error);
         }
     };
+
+    const handleSubmit = async (d: any) => {
+        try {
+            if (initialValues) {
+                await basePatch(`/filter/${initialValues.id}`, d);
+            } else {
+                await basePost("/filter", d);
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            mutate("/filter");
+        }
+    };
+
     return (
-        <Formik initialValues={{} as IFilter} validationSchema={schema} onSubmit={handleSubmit}>
-            {({ values, errors, handleChange, handleBlur }) => (
-                <Form>
-                    <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-                        <TextField
-                            name="name"
-                            label="Name"
-                            value={values.name}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={Boolean(errors.name)}
-                            helperText={errors.name}
-                        />
-                        <TextField
-                            name="valid"
-                            label="Valid values"
-                            value={values.valid}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={Boolean(errors.valid)}
-                            helperText={errors.valid ? errors.valid : "Comma seprated valid values"}
-                        />
-                        <Button type="submit" kind="add">
-                            Add
-                        </Button>
-                    </Box>
-                </Form>
-            )}
-        </Formik>
+        <>
+            <Formik initialValues={initialValues ? initialValues : ({} as IFilter)} validationSchema={schema} onSubmit={handleSubmit}>
+                {({ values, errors, handleChange, handleBlur }) => (
+                    <Form>
+                        <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
+                            <TextField
+                                name="name"
+                                label="Name"
+                                value={values.name}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(errors.name)}
+                                helperText={errors.name}
+                            />
+                            <TextField
+                                name="valid"
+                                label="Valid values"
+                                value={values.valid}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(errors.valid)}
+                                helperText={errors.valid ? errors.valid : "Comma seprated valid values"}
+                            />
+                            {!initialValues && (
+                                <Button type="submit" kind="add">
+                                    Add
+                                </Button>
+                            )}
+                            {initialValues && (
+                                <Box display="flex">
+                                    <Button type="submit" kind="edit">
+                                        Save
+                                    </Button>
+                                    <Button onClick={() => handleDelete} kind="delete">
+                                        Delete
+                                    </Button>
+                                </Box>
+                            )}
+                        </Box>
+                    </Form>
+                )}
+            </Formik>
+        </>
     );
 }
 
-export const ApplyFilterForm = ({ filter, applyFilter }: { filter: any; applyFilter: (a: any) => void }) => {
+export const ApplyFilterForm = ({ applyFilter }: { applyFilter: (a: any) => void }) => {
+    const { data: filters } = useSWR<IFilter[]>("/filter");
+
     const schema = Yup.object().shape({
         name: Yup.string().required(),
         valid: Yup.string().required(),
     });
 
-    const [name, setName] = useState<any>();
-    const [value, setValue] = useState<any>();
-
     const handleSubmit = async (d: any) => {
-        console.log(name.name, value);
-        const n = name.name;
-        const params = { [n]: value };
-        console.log(params);
         try {
-            // const resp = await getItemsByQuery(params);
-            // console.log(resp);
-            applyFilter((prev: any) => ({ ...prev, params }));
+            console.log(d);
+            // applyFilter((prev: any) => ({ ...prev, ...d }));
         } catch (e) {
             console.log(e);
         }
-        // try {
-        //     await basePost("/filter", d);
-        //     mutate("/filter");
-        // } catch (error) {
-        //     console.log(error);
-        // }
     };
 
     return (
-        <Formik initialValues={{ name: "", valid: "" }} validationSchema={schema} onSubmit={handleSubmit}>
-            {({ values, errors, handleChange, handleBlur, handleSubmit }) => (
+        <Formik initialValues={{} as IFilter} validationSchema={schema} onSubmit={handleSubmit}>
+            {({ values, errors, handleChange, handleBlur }) => (
                 <Form style={{ width: "250px" }}>
                     <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
                         <BaseSelect
                             name="name"
                             id="name"
-                            displayEmpty={true}
-                            fullWidth
+                            label="Name"
                             value={values.name}
-                            onChange={(e) => {
-                                handleChange(e);
-                                setName(e.target.value);
-                            }}
-                            // (e: any) => setName(e.target.value)
+                            error={Boolean(errors.name)}
+                            helperText={errors.name}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
                         >
-                            {filter.map((i: any) => (
-                                <MenuItem key={i.id} value={i}>
-                                    {i.name}
-                                </MenuItem>
-                            ))}
+                            {filters &&
+                                filters.map((i: any) => (
+                                    <MenuItem key={i.id} value={i.name}>
+                                        {i.name}
+                                    </MenuItem>
+                                ))}
                         </BaseSelect>
-                        {name && (
-                            <BaseSelect
-                                id="valid"
-                                name="valid"
-                                displayEmpty={true}
-                                fullWidth
-                                value={values.valid}
-                                onChange={(e) => {
-                                    handleChange(e);
-                                    setValue(e.target.value);
-                                }}
-                                // (e: any) => setValue(e.target.value)
-                            >
-                                {name?.valid.map((i: any) => (
+                        <BaseSelect
+                            disabled={!values.name}
+                            label="Value"
+                            name="valid"
+                            value={values.valid}
+                            error={Boolean(errors.name)}
+                            helperText={errors.name}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        >
+                            {filters
+                                ?.find((f) => f.name === values.name)
+                                ?.valid.map((i: any) => (
                                     <MenuItem key={i} value={i}>
                                         {i}
                                     </MenuItem>
                                 ))}
-                            </BaseSelect>
-                        )}
+                        </BaseSelect>
                         <Button type="submit" kind="add">
                             Apply
                         </Button>
