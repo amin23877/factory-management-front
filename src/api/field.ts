@@ -1,11 +1,11 @@
 export interface IField {
-    id?:string;
+    id?: string;
     filterName: string;
-    filterValue: string;
+    filterValue: string[];
     type: "string" | "boolean" | "number" | "enum";
     name: string;
     required: boolean;
     default: string;
     valid: string[];
-    all?:boolean
+    all?: boolean
 }
