@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import { Formik, Form } from "formik";
+import useSWR from "swr";
 
 import Button from "../../app/Button";
 import Dialog from "../../app/Dialog";
@@ -8,9 +9,13 @@ import CustomScrollbars from "../../app/CustomScroll";
 import { DynamicFilterAndFields, General, MoreInfo, Quantity, Shipping } from "./Forms";
 
 import { createItem, AddItemSchema, IItem } from "../../api/items";
+import { IFilter } from "../../api/filter";
 
 export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
     const [activeTab, setActiveTab] = useState(0);
+    // const {data:filters} = useSWR<IFilter[]>('/filter');
+
+    // const initialFilterValues = filters.map(filter => ({filter.name}))
 
     const handleSubmit = async (data: any, { setSubmitting }: any) => {
         // console.log(data);
@@ -29,8 +34,7 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="lg" title="Add new item">
             <Box p={1} height={420}>
-                {/** Add validation schema */}
-                <Formik initialValues={{} as IItem} onSubmit={handleSubmit}>
+                <Formik initialValues={{} as IItem} validationSchema={AddItemSchema} onSubmit={handleSubmit}>
                     {({ values, errors, handleChange, handleBlur, touched, isSubmitting, setFieldValue }) => (
                         <Form>
                             <Box display="flex">

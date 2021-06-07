@@ -401,41 +401,47 @@ export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlu
 
     useEffect(() => {
         let validFields: ReactNode[] = [];
+        const addInputToArray = (field: IField) => {
+            if (field.type === "string" || field.type === "number") {
+                validFields.push(
+                    <TextField
+                        required={field.required}
+                        name={field.name}
+                        label={field.name}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values[field.name]}
+                    />
+                );
+            } else if (field.type === "enum") {
+                validFields.push(
+                    <ArraySelect
+                        required={field.required}
+                        name={field.name}
+                        label={field.name}
+                        items={field.valid}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values[field.name]}
+                    />
+                );
+            } else if (field.type === "boolean") {
+                validFields.push(
+                    <FormControlLabel
+                        checked={values[field.name]}
+                        control={<Checkbox required={field.required} />}
+                        name={field.name}
+                        label={field.name}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                );
+            }
+        };
+
         fields?.map((field) => {
-            if (field.filterValue.includes(values[field.filterName])) {
-                if (field.type === "string" || field.type === "number") {
-                    validFields.push(
-                        <TextField
-                            name={field.name}
-                            label={field.name}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values[field.name]}
-                        />
-                    );
-                } else if (field.type === "enum") {
-                    validFields.push(
-                        <ArraySelect
-                            name={field.name}
-                            label={field.name}
-                            items={field.valid}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            value={values[field.name]}
-                        />
-                    );
-                } else if (field.type === "boolean") {
-                    validFields.push(
-                        <FormControlLabel
-                            checked={values[field.name]}
-                            control={<Checkbox />}
-                            name={field.name}
-                            label={field.name}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                    );
-                }
+            if (field.all || field.filterValue.includes(values[field.filterName])) {
+                addInputToArray(field);
             }
         });
 
@@ -449,7 +455,14 @@ export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlu
     return (
         <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
             {filters.map((filter) => (
-                <ArraySelect name={filter.name} label={filter.name} items={filter.valid} onChange={handleChange} onBlur={handleBlur} />
+                <ArraySelect
+                    defaultValue="Default"
+                    name={filter.name}
+                    label={filter.name}
+                    items={filter.valid}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
             ))}
             <Divider style={{ gridColumnEnd: "span 2" }} />
             {dynamicFields}

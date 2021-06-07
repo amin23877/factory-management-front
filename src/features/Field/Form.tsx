@@ -24,12 +24,7 @@ const schema = Yup.object().shape({
     valid: Yup.string(),
 });
 
-export default function FieldForm({
-    initial
-}: {
-    initial?: IField;
-
-}) {
+export default function FieldForm({ initial }: { initial?: IField }) {
     const { data: filters } = useSWR<IFilter[]>("/filter");
     const handleSubmit = async (values: any, { setSubmitting }: any) => {
         setSubmitting(true);
@@ -45,11 +40,10 @@ export default function FieldForm({
     };
     return (
         <>
-            <Formik initialValues={initial ? initial : {} as IField} validationSchema={schema} onSubmit={handleSubmit}>
+            <Formik initialValues={initial ? initial : ({} as IField)} validationSchema={schema} onSubmit={handleSubmit}>
                 {({ values, errors, touched, handleBlur, handleChange, isSubmitting, setValues, setTouched }) => (
-                    <Form >
-
-                        <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={12} gridColumnGap={12} style={{ marginTop: "10px" }}  >
+                    <Form>
+                        <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={12} gridColumnGap={12} style={{ marginTop: "10px" }}>
                             <TextField
                                 name="name"
                                 onBlur={handleBlur}
@@ -132,7 +126,8 @@ export default function FieldForm({
                                 Save
                             </Button>
                         </Box>
-                    </Form>)}
+                    </Form>
+                )}
             </Formik>
         </>
     );
