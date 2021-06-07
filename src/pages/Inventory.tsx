@@ -36,6 +36,8 @@ import { IOrder } from "../features/Items/Table/Sorts";
 import DataTable from "../features/Items/Table";
 import FiltersModal, { ApplyFilterModal } from "../features/Filter/Modals";
 import { AddFieldModal } from "../features/Field/Modal";
+import FieldNFilter from '../features/FieldAndFilter/Modal';
+
 
 const Inventory = () => {
     const [rows, setRows] = useState<any[]>([]);
@@ -69,6 +71,7 @@ const Inventory = () => {
     const [filterModal, setFilterModal] = useState(false);
     const [applyFilterModal, setApplyFilterModal] = useState(false);
     const [addFieldModal, setAddFieldModal] = useState(false);
+    const [FieldNFilterModal, setFieldNFilterModal] = useState(false);
 
     const refreshItems = async () => {
         try {
@@ -323,8 +326,9 @@ const Inventory = () => {
             <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
             <CatTypeFamilyModal open={catModal} onClose={() => setCatModal(false)} />
 
-            <AddFieldModal open={addFieldModal} onClose={() => setAddFieldModal(false)} />
-            <FiltersModal open={filterModal} onClose={() => setFilterModal(false)} />
+            <FieldNFilter open={FieldNFilterModal} onClose={() => setFieldNFilterModal(false)} />
+            {/* <AddFieldModal open={addFieldModal} onClose={() => setAddFieldModal(false)} /> */}
+            {/* <FiltersModal open={filterModal} onClose={() => setFilterModal(false)} /> */}
             <ApplyFilterModal open={applyFilterModal} onClose={() => setApplyFilterModal(false)} setter={setFilters} />
 
             <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
@@ -375,18 +379,23 @@ const Inventory = () => {
                             <CategoryRounded />
                         </IconButton>
                     </ListItem>
-                    <ListItem>
+                    {/* <ListItem>
                         <IconButton title="Filters" onClick={() => setFilterModal(true)}>
                             <FilterRounded />
                         </IconButton>
-                    </ListItem>
+                    </ListItem> */}
                     <ListItem>
                         <IconButton title="َApply Filter" onClick={() => setApplyFilterModal(true)}>
                             <FilterListRounded />
                         </IconButton>
                     </ListItem>
-                    <ListItem>
+                    {/* <ListItem>
                         <IconButton title="Dyanamic fields" onClick={() => setAddFieldModal(true)}>
+                            <PostAddRounded />
+                        </IconButton>
+                    </ListItem> */}
+                    <ListItem>
+                        <IconButton title="Dyanamic fields" onClick={() => setFieldNFilterModal(true)}>
                             <PostAddRounded />
                         </IconButton>
                     </ListItem>

@@ -7,40 +7,41 @@ import FilterForm, { ApplyFilterForm } from "./Forms";
 import { IFilter } from "../../api/filter";
 import FilterTable from "./Table";
 
-export default function FiltersModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+// { open, onClose }: { open: boolean; onClose: () => void }
+export default function FiltersModal() {
     const [activeTab, setActiveTab] = useState(0);
     const [selectedFilter, setSelectedFilter] = useState<IFilter>();
 
     return (
-        <Dialog open={open} onClose={onClose} title="Filters" maxWidth="sm" fullWidth>
-            <Box p={1} display="flex" flexDirection="column">
-                <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
-                    <Tab label="List" />
-                    <Tab label="Form" />
-                </Tabs>
-                {activeTab === 0 && (
-                    <>
-                        <Button
-                            kind="add"
-                            style={{ margin: "1em 0" }}
-                            onClick={() => {
-                                setSelectedFilter(undefined);
-                                setActiveTab(1);
-                            }}
-                        >
-                            Add new
+        // <Dialog open={open} onClose={onClose} title="Filters" maxWidth="sm" fullWidth>
+        <Box p={1} display="flex" flexDirection="column">
+            <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                <Tab label="List" />
+                <Tab label="Form" />
+            </Tabs>
+            {activeTab === 0 && (
+                <>
+                    <Button
+                        kind="add"
+                        style={{ margin: "1em 0" }}
+                        onClick={() => {
+                            setSelectedFilter(undefined);
+                            setActiveTab(1);
+                        }}
+                    >
+                        Add new
                         </Button>
-                        <FilterTable
-                            onFilterSelected={(f) => {
-                                setSelectedFilter(f);
-                                setActiveTab(1);
-                            }}
-                        />
-                    </>
-                )}
-                {activeTab === 1 && <FilterForm initialValues={selectedFilter} />}
-            </Box>
-        </Dialog>
+                    <FilterTable
+                        onFilterSelected={(f) => {
+                            setSelectedFilter(f);
+                            setActiveTab(1);
+                        }}
+                    />
+                </>
+            )}
+            {activeTab === 1 && <FilterForm initialValues={selectedFilter} />}
+        </Box>
+        // </Dialog>
     );
 }
 
