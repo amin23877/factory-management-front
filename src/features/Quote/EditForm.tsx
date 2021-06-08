@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Tabs, Tab, Box } from "@material-ui/core";
+import { Tabs, Tab, Box, Typography, LinearProgress } from "@material-ui/core";
 import { Form, Formik } from "formik";
 
 import { useAppDispatch } from "../../store";
@@ -84,3 +84,62 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
         </>
     );
 }
+
+export const FinalForm = ({ onDone, onBack, data }: { onDone: (a: any) => void; onBack: () => void; data: any }) => {
+    const [loading, setLoading] = useState(false);
+
+    const handleSubmit = async () => {
+        onDone(data);
+        //     try {
+        //         const { ContactId, requester, status, VendorId, lines } = data;
+        //         let newLines = [...lines];
+        //         newLines.forEach(function (v: any) {
+        //             delete v.createdAt;
+        //             delete v.id;
+        //             delete v.PurchasePOId;
+        //             delete v.PurchaseSOId;
+        //             delete v.QuoteId;
+        //             delete v.SOId;
+        //             delete v.updatedAt;
+        //         });
+        //         const resp = await createPurchasePOComplete({
+        //             ContactId,
+        //             requester,
+        //             status,
+        //             VendorId,
+        //             lines: newLines,
+        //         } as IPurchasePOComplete);
+        //         if (resp) {
+        //             console.log(resp);
+        //             onDone(resp);
+        //         }
+        //     } catch (error) {
+        //         console.log(error);
+        //         console.log(error.response.data.error);
+        //     } finally {
+        //         setLoading(false);
+        //     }
+        // };
+    }
+    return (
+        <>
+            <Box height="85%" display="flex" flexDirection="column">
+                <Typography variant="h5">Are you sure?</Typography>
+                <Typography variant="subtitle1" style={{ margin: "1em 0" }}>
+                    If you finilize your Purchase order, You can't update it, So if you want to update it you should make new version or add new
+                    one
+            </Typography>
+                {loading && <LinearProgress />}
+                <div style={{ flexGrow: 1 }} />
+                <Box display="flex" justifyContent="space-between" mt={4}>
+                    <Button disabled={loading} onClick={onBack} color="secondary" variant="contained">
+                        Back to lines
+                </Button>
+                    <Button disabled={loading} onClick={handleSubmit} color="primary" variant="contained">
+                        Finilize
+                </Button>
+                </Box>
+            </Box>
+        </>
+    );
+};
