@@ -21,13 +21,16 @@ import NoteModal from "../Modals/NoteModals";
 import DocumentModal from "../Modals/DocumentModals";
 import LineItemModal from "./LineItemModals";
 
-import AddQuoteModal from "./Modals";
+import AddQuote from "./AddQuote"
+import AddQuoteModal from "./General";
 import { BasePaper } from "../../app/Paper";
 import { unwrapResult } from "@reduxjs/toolkit";
 import AddLineServiceModal from "../LineService";
 import { ILineService } from "../../api/lineService";
 import useSWR, { mutate } from "swr";
 import { fetcher } from "../../api";
+
+
 
 const useStyles = makeStyles({
     TabContainer: {
@@ -46,6 +49,7 @@ export default function QuotePanel() {
     const [notes, setNotes] = useState([]);
     const [docs, setDocs] = useState([]);
     const [activities, setActivities] = useState([]);
+    const [lines, setLines] = useState([]);
 
     const [selectedQuote, setSelectedQuote] = useState<IQuote>();
     const [selectedLI, setSelectedLI] = useState<ILineItem>();
@@ -63,6 +67,7 @@ export default function QuotePanel() {
     const [editDoc, setEditDoc] = useState(false);
     const [confirm, setConfirm] = useState(false);
     const [lineServiceModal, setLineServiceModal] = useState(false);
+    const [compQ, setCompQ] = useState<any>();
 
     const classes = useStyles();
 
@@ -141,7 +146,15 @@ export default function QuotePanel() {
     return (
         <div>
             <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
-            <AddQuoteModal open={addQ} onClose={() => setAddQ(false)} />
+            <AddQuote
+                open={addQ}
+                onClose={() => setAddQ(false)}
+                initialData={compQ}
+                onDone={() => {
+                    // refreshPOs();
+                    setActiveTab(0);
+                    setLines([]);
+                }} />
             <LineItemModal open={addLineItem} onClose={() => setAddLineItem(false)} quoteId={selectedQuote?.id} onDone={refreshLineItems} />
             {selectedQuote && selectedQuote.id && (
                 <NoteModal itemId={selectedQuote.id} model="quote" open={addNote} onClose={() => setAddNote(false)} onDone={refreshNotes} />

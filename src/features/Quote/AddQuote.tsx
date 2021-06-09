@@ -3,10 +3,11 @@ import { Box, Button, Step, StepLabel, Stepper, Dialog, DialogTitle, IconButton,
 import { CloseRounded } from "@material-ui/icons";
 
 
-import { CreateForm, FinalForm, LinesForm, DocumentForm } from "./Forms";
+import { CreateForm, LinesForm, DocumentForm } from "../PurchasePO/Forms";
 import { IPurchasePO, IPurchasePOComplete } from "../../api/purchasePO";
-
-export default function AddPOModal({
+import General from './General'
+import { FinalForm } from './EditForm';
+export default function AddQuote({
     open,
     onClose,
     onDone,
@@ -42,7 +43,7 @@ export default function AddPOModal({
                         <StepLabel>General information</StepLabel>
                     </Step>
                     <Step>
-                        <StepLabel>PO Line items</StepLabel>
+                        <StepLabel> Line items</StepLabel>
                     </Step>
                     <Step>
                         <StepLabel>Final</StepLabel>
@@ -53,23 +54,30 @@ export default function AddPOModal({
                 </Stepper>
                 {step === 0 && (
                     <Box display="flex" justifyContent="center">
-                        <div style={{ flexGrow: 1 }} />
+
                         <Box flex={1}>
                             <Typography variant="h6">General information</Typography>
                             <Typography variant="caption">
                                 Please consider this after you finilize your po (last step) you can't edit it
                             </Typography>
                             <Box my={2}>
-                                <CreateForm
+                                {/* <CreateForm
                                     data={po}
                                     onDone={(d) => {
                                         setPO((prev) => ({ ...prev, ...d }));
                                         setStep(1);
                                     }}
+                                /> */}
+                                <General
+                                    data={po}
+                                    onDone={(d) => {
+                                        // setPO((prev) => ({ ...prev, ...d }));
+                                        setStep(1);
+                                    }}
                                 />
                             </Box>
                         </Box>
-                        <div style={{ flexGrow: 1 }} />
+
                     </Box>
                 )}
                 {step === 1 && (
@@ -90,7 +98,7 @@ export default function AddPOModal({
                             // onClose();
                             setStep(3);
                             onDone();
-                            setCreatedPO(data);
+                            // setCreatedPO(data);
                         }}
                     />
                 )}
