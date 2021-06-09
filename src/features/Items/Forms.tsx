@@ -3,12 +3,9 @@ import { Box, FormControlLabel, Typography, Checkbox, LinearProgress, Divider } 
 import useSWR from "swr";
 
 import TextField from "../../app/TextField";
-import { ArraySelect, FieldSelect } from "../../app/Inputs";
+import { ArraySelect } from "../../app/Inputs";
 import Button from "../../app/Button";
 
-import { getCategories } from "../../api/category";
-import { getTypes } from "../../api/types";
-import { getFamilies } from "../../api/family";
 import { IFilter } from "../../api/filter";
 import { IField } from "../../api/field";
 
@@ -115,66 +112,24 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                 <TextField
                     label="Resell Cost"
                     value={values.resellCost}
-                    placeholder={values.resellCost}
                     name="resellCost"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={Boolean(errors.resellCost && touched.resellCost)}
                 />
                 <TextField
+                    style={{ gridColumnEnd: "span 2" }}
                     label="last used in 90 days"
                     value={values.usedInLastQuarter}
-                    placeholder={values.usedInLastQuarter}
                     name="usedInLastQuarter"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={Boolean(errors.usedInLastQuarter && touched.usedInLastQuarter)}
                 />
-                <FieldSelect
-                    fullWidth
-                    label="Category"
-                    request={getCategories}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    name="ItemCategoryId"
-                    onChange={(e: any) => setFieldValue("ItemCategoryId", e.target.value)}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.ItemCategoryId && touched.ItemCategoryId)}
-                    defaultValue={values?.ItemCategoryId?.id}
-                    value={values.ItemCategoryId}
-                    placeholder={"Category"}
-                />
-                <FieldSelect
-                    fullWidth
-                    label="Type"
-                    request={getTypes}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    name="ItemTypeId"
-                    onChange={(e: any) => setFieldValue("ItemTypeId", e.target.value)}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.ItemTypeId && touched.ItemTypeId)}
-                    defaultValue={values?.ItemTypeId?.id}
-                    value={values.ItemTypeId}
-                />
-                <FieldSelect
-                    fullWidth
-                    label="Family"
-                    request={getFamilies}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    name="ItemFamilyId"
-                    onChange={(e: any) => setFieldValue("ItemFamilyId", e.target.value)}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.ItemFamilyId && touched.ItemFamilyId)}
-                    defaultValue={values?.ItemFamilyId?.id}
-                    value={values.ItemFamilyId}
-                />
                 <TextField
-                    style={{ gridColumnEnd: "span 2" }}
+                    style={{ gridColumnEnd: "span 4" }}
                     label="Special notes"
                     value={values.specialNote}
-                    placeholder={values.specialNote}
                     name="specialNote"
                     onChange={handleChange}
                     onBlur={handleBlur}

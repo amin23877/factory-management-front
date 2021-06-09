@@ -33,7 +33,7 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="lg" title="Add new item">
-            <Box p={1} height={420}>
+            <Box p={1}>
                 <Formik initialValues={{} as IItem} validationSchema={AddItemSchema} onSubmit={handleSubmit}>
                     {({ values, errors, handleChange, handleBlur, touched, isSubmitting, setFieldValue }) => (
                         <Form>

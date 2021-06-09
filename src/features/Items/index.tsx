@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import { Box, Grid, Tabs, Tab } from "@material-ui/core";
 import { Formik, Form } from "formik";
+import useSWR from "swr";
 
 import Snackbar from "../../app/Snack";
-import { AddItemSchema, updateAnItem, getItemQuotes, getItemSOs } from "../../api/items";
 
 import Button from "../../app/Button";
 import BaseDataGrid from "../../app/BaseDataGrid";
@@ -15,26 +15,26 @@ import { SalesReport } from "./Reports";
 
 import ManualCountModal from "./ManualCountModal";
 import SOTable from "./SOTable";
-import { getItemVendors } from "../../api/vendor";
+import { INote } from "../../api/note";
+import { IDocument } from "../../api/document";
+import { AddItemSchema, updateAnItem } from "../../api/items";
 
 function ItemsDetails({
     selectedRow,
     onNoteSelected,
     onDocSelected,
-    notes,
-    docs,
     onDone,
 }: {
-    notes: any;
-    docs: any;
     selectedRow: any;
     onDone?: () => void;
     onNoteSelected: (a: any) => void;
     onDocSelected: (a: any) => void;
 }) {
-    const [itemQuotes, setItemQuotes] = useState([]);
-    const [itemSos, setItemSos] = useState([]);
-    const [vendors, setVendors] = useState([]);
+    const { data: vendors } = useSWR([`/item/${selectedRow.id}/venors`, selectedRow]);
+    const { data: itemQuotes } = useSWR([`/item/${selectedRow.id}/so`, selectedRow]);
+    const { data: itemSOs } = useSWR([`/item/${selectedRow.id}/quote`, selectedRow]);
+    const { data: notes, mutate: mutateNotes } = useSWR<INote[]>([`/note/item/${selectedRow.id}`, selectedRow]);
+    const { data: docs, mutate: mutateDocs } = useSWR<IDocument[]>([`/document/item/${selectedRow.id}`, selectedRow]);
 
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
@@ -44,49 +44,35 @@ function ItemsDetails({
 
     const [manualCountModal, setManualCountModal] = useState(false);
 
-    const refreshVendors = async () => {
-        try {
-            const resp = await getItemVendors(selectedRow.id);
-            resp && setVendors(resp);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    const quoteCols = useMemo(
+        () => [
+            { field: "number", headerName: "Number" },
+            { field: "location", headerName: "Location", width: 180 },
+            { field: "department", headerName: "Department" },
+            { field: "entryDate", headerName: "Entry date", width: 180 },
+            { field: "expireDate", headerName: "Expire date", width: 180 },
+        ],
+        []
+    );
 
-    useEffect(() => {
-        if (selectedRow && selectedRow.id) {
-            refreshVendors();
+    const noteCols = useMemo(
+        () => [
+            { field: "subject", headerName: "Subject" },
+            { field: "url", headerName: "URL" },
+            { field: "note", headerName: "Note", width: 300 },
+        ],
+        []
+    );
 
-            getItemQuotes(selectedRow.id)
-                .then((d) => d && setItemQuotes(d))
-                .catch((e) => console.log(e));
-
-            getItemSOs(selectedRow.id)
-                .then((d) => d && setItemSos(d))
-                .catch((e) => console.log(e));
-        }
-    }, [selectedRow]);
-
-    const quoteCols = [
-        { field: "number", headerName: "Number" },
-        { field: "location", headerName: "Location", width: 180 },
-        { field: "department", headerName: "Department" },
-        { field: "entryDate", headerName: "Entry date", width: 180 },
-        { field: "expireDate", headerName: "Expire date", width: 180 },
-    ];
-
-    const noteCols = [
-        { field: "subject", headerName: "Subject" },
-        { field: "url", headerName: "URL" },
-        { field: "note", headerName: "Note", width: 300 },
-    ];
-
-    const docCols = [
-        { field: "name", headerName: "Name" },
-        { field: "EmployeeId", headerName: "Employee" },
-        { field: "description", headerName: "Description", width: 250 },
-        { field: "createdAt", headerName: "Date", width: 300 },
-    ];
+    const docCols = useMemo(
+        () => [
+            { field: "name", headerName: "Name" },
+            { field: "EmployeeId", headerName: "Employee" },
+            { field: "description", headerName: "Description", width: 250 },
+            { field: "createdAt", headerName: "Date", width: 300 },
+        ],
+        []
+    );
 
     const handleSubmit = async (data: any, { setSubmitting }: any) => {
         try {
@@ -209,12 +195,12 @@ function ItemsDetails({
                     <Tab label="Sales Report" />
                 </Tabs>
                 <Box p={3}>
-                    {activeTab === 0 && <BaseDataGrid height={250} cols={noteCols} rows={notes} onRowSelected={onNoteSelected} />}
-                    {activeTab === 1 && <BaseDataGrid height={250} cols={docCols} rows={docs} onRowSelected={onDocSelected} />}
-                    {activeTab === 2 && <VendorsTable selectedItem={selectedRow} rows={vendors} onRowSelected={() => {}} />}
-                    {activeTab === 3 && <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes} onRowSelected={() => {}} />}
-                    {activeTab === 4 && <SOTable rows={itemSos} />}
-                    {activeTab === 5 && <SalesReport quotes={itemQuotes} salesOrders={itemSos} />}
+                    {activeTab === 0 && <BaseDataGrid height={250} cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />}
+                    {activeTab === 1 && <BaseDataGrid height={250} cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />}
+                    {activeTab === 2 && <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => {}} />}
+                    {activeTab === 3 && <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes || []} onRowSelected={() => {}} />}
+                    {activeTab === 4 && <SOTable rows={itemSOs || []} />}
+                    {activeTab === 5 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
                 </Box>
             </BasePaper>
         </Box>

@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { Typography, Box, Container, GridList, GridListTile, makeStyles, Grid } from "@material-ui/core";
+import { Typography, Box, Container, makeStyles, Grid } from "@material-ui/core";
 import {
     GpsFixedRounded,
     PersonRounded,

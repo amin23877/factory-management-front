@@ -19,9 +19,8 @@ import { IItem } from "../../../api/items";
 import MenuFilters, { IFilters } from "./Filters";
 import Sort, { IOrder } from "./Sorts";
 
-
-import CheckRoundedIcon from '@material-ui/icons/CheckRounded';
-import ClearRoundedIcon from '@material-ui/icons/ClearRounded';
+import CheckRoundedIcon from "@material-ui/icons/CheckRounded";
+import ClearRoundedIcon from "@material-ui/icons/ClearRounded";
 
 export const useStyles = makeStyles((theme) => ({
     tableCont: {
@@ -39,7 +38,7 @@ export const useStyles = makeStyles((theme) => ({
             top: 0,
         },
         "& .MuiTableCell-sizeSmall": {
-            padding: '15px 0px'
+            padding: "15px 0px",
         },
         "& .MuiTableRow-head, .MuiTableCell-stickyHeader": {
             backgroundColor: "#202731",
@@ -58,7 +57,7 @@ export const useStyles = makeStyles((theme) => ({
         "& tbody .MuiTableCell-root": {
             border: "1px solid #dddddd",
             fontSize: "0.700rem",
-            textAlign: 'center',
+            textAlign: "center",
             // width:'5px',
             // backgroundColor:'red',
         },
@@ -77,9 +76,8 @@ export const useStyles = makeStyles((theme) => ({
             fill: "white",
         },
         "& .MuiBox-root , .MuiBox-root-295": {
-            justifyContent: 'space-between'
-        }
-
+            justifyContent: "space-between",
+        },
     },
     tableHeadBtn: {
         color: "white",
@@ -149,7 +147,7 @@ export default function DataTable({
                                     <Sort field="no" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
-                            <TableCell style={{ padding: '15px 6px ' }}>
+                            <TableCell style={{ padding: "15px 6px " }}>
                                 <Box display="flex">
                                     <Button
                                         onClick={(e) => {
@@ -163,7 +161,7 @@ export default function DataTable({
                                     <Sort field="name" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell>
-                            <TableCell style={{ padding: '15px 6px ' }}>
+                            <TableCell style={{ padding: "15px 6px " }}>
                                 <Box display="flex">
                                     <Button
                                         onClick={(e) => {
@@ -233,7 +231,7 @@ export default function DataTable({
                                     <Sort field="ItemFamilyId" order={order} setOrder={setOrder} />
                                 </Box>
                             </TableCell> */}
-                            <TableCell size='small' >
+                            <TableCell size="small">
                                 <Box display="flex">
                                     <Button
                                         onClick={(e) => {
@@ -241,7 +239,7 @@ export default function DataTable({
                                             setFilterBy("salesApproved");
                                         }}
                                         className={classes.tableHeadBtn}
-                                        title='Sales Approved'
+                                        title="Sales Approved"
                                     >
                                         S.A.
                                     </Button>
@@ -315,22 +313,86 @@ export default function DataTable({
                                     <TableCell component="th" scope="row">
                                         {item.no}
                                     </TableCell>
-                                    <TableCell style={{ padding: '15px 6px ' }}>{item.name}</TableCell>
-                                    <TableCell style={{ padding: '15px 6px ' }}>{item.description}</TableCell>
+                                    <TableCell style={{ padding: "15px 6px " }}>{item.name}</TableCell>
+                                    <TableCell style={{ padding: "15px 6px " }}>{item.description}</TableCell>
                                     <TableCell>{item.cost} </TableCell>
                                     {/* <TableCell>{item.ItemCategory ? item.ItemCategory.name : ""}</TableCell>
                                     <TableCell>{item.ItemType ? item.ItemType.name : ""}</TableCell>
                                     <TableCell>{item.ItemFamily ? item.ItemFamily.name : ""}</TableCell> */}
-                                    <TableCell >{!item.salesApproved ? <div style={{ color: '#4caf50', backgroundColor: 'rgb(237, 247, 237)', width: '25px', height: '25px', borderRadius: '100%', fontSize: 'small', margin: '0px auto',display:'flex' , alignItems:'center', justifyContent:'center'}}>
-                                        <CheckRoundedIcon />
-                                    </div> : <div style={{ color: '#f44336', backgroundColor: 'rgb(253, 236, 234)', width: '25px', height: '25px', borderRadius: '100%', fontSize: 'small', margin: '0px auto',display:'flex' , alignItems:'center', justifyContent:'center'}}>
-                                        <ClearRoundedIcon />
-                                    </div>}</TableCell>
-                                    <TableCell>{item.engineeringApproved ? <div style={{ color: '#4caf50', backgroundColor: 'rgb(237, 247, 237)', width: '25px', height: '25px', borderRadius: '100%', fontSize: 'small', margin: '0px auto',display:'flex' , alignItems:'center', justifyContent:'center'}}>
-                                        <CheckRoundedIcon />
-                                    </div> : <div style={{ color: '#f44336', backgroundColor: 'rgb(253, 236, 234)', width: '25px', height: '25px', borderRadius: '100%', fontSize: 'small', margin: '0px auto',display:'flex' , alignItems:'center', justifyContent:'center'}}>
-                                        <ClearRoundedIcon />
-                                    </div>}</TableCell>
+                                    <TableCell>
+                                        {!item.salesApproved ? (
+                                            <div
+                                                style={{
+                                                    color: "#4caf50",
+                                                    backgroundColor: "rgb(237, 247, 237)",
+                                                    width: "25px",
+                                                    height: "25px",
+                                                    borderRadius: "100%",
+                                                    fontSize: "small",
+                                                    margin: "0px auto",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                }}
+                                            >
+                                                <CheckRoundedIcon />
+                                            </div>
+                                        ) : (
+                                            <div
+                                                style={{
+                                                    color: "#f44336",
+                                                    backgroundColor: "rgb(253, 236, 234)",
+                                                    width: "25px",
+                                                    height: "25px",
+                                                    borderRadius: "100%",
+                                                    fontSize: "small",
+                                                    margin: "0px auto",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                }}
+                                            >
+                                                <ClearRoundedIcon />
+                                            </div>
+                                        )}
+                                    </TableCell>
+                                    <TableCell>
+                                        {item.engineeringApproved ? (
+                                            <div
+                                                style={{
+                                                    color: "#4caf50",
+                                                    backgroundColor: "rgb(237, 247, 237)",
+                                                    width: "25px",
+                                                    height: "25px",
+                                                    borderRadius: "100%",
+                                                    fontSize: "small",
+                                                    margin: "0px auto",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                }}
+                                            >
+                                                <CheckRoundedIcon />
+                                            </div>
+                                        ) : (
+                                            <div
+                                                style={{
+                                                    color: "#f44336",
+                                                    backgroundColor: "rgb(253, 236, 234)",
+                                                    width: "25px",
+                                                    height: "25px",
+                                                    borderRadius: "100%",
+                                                    fontSize: "small",
+                                                    margin: "0px auto",
+                                                    display: "flex",
+                                                    alignItems: "center",
+                                                    justifyContent: "center",
+                                                }}
+                                            >
+                                                <ClearRoundedIcon />
+                                            </div>
+                                        )}
+                                    </TableCell>
                                     <TableCell>{item.totalQoh ? item.totalQoh : ""}</TableCell>
                                     <TableCell>{item.usedInLastQuarter ? item.usedInLastQuarter : ""}</TableCell>
                                     <TableCell>{item.resellCost ? item.resellCost : ""}</TableCell>

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Box, Container, Button, IconButton, ListItem, LinearProgress } from "@material-ui/core";
+import React, { useCallback, useMemo, useState } from "react";
+import { Box, Button, IconButton, ListItem } from "@material-ui/core";
 import {
     NoteRounded,
     FileCopyRounded,
@@ -7,10 +7,10 @@ import {
     AddRounded,
     DeleteRounded,
     CategoryRounded,
-    FilterRounded,
     PostAddRounded,
     FilterListRounded,
 } from "@material-ui/icons";
+import useSWR from "swr";
 import Confirm from "../features/Modals/Confirm";
 
 import NoteModal from "../features/Modals/NoteModals";
@@ -21,41 +21,35 @@ import { AddItemModal } from "../features/Items/ItemModals";
 import CatTypeFamilyModal from "../features/Modals/CategoryModals";
 import ItemsDetails from "../features/Items";
 
-import { getItems, getItemsByQuery, deleteAnItem, IItem } from "../api/items";
-import { getTypes } from "../api/types";
-import { getCategories } from "../api/category";
-import { getFamilies } from "../api/family";
-import { getAllModelNotes } from "../api/note";
-import { getAllModelDocuments } from "../api/document";
+import { deleteAnItem, getFilterOperator, IItem } from "../api/items";
 
 import List from "../app/SideUtilityList";
 import { MyTabs, MyTab } from "../app/Tabs";
 
-import { IFilters } from "../features/Items/Table/Filters";
-import { IOrder } from "../features/Items/Table/Sorts";
-import DataTable from "../features/Items/Table";
-import FiltersModal, { ApplyFilterModal } from "../features/Filter/Modals";
-import { AddFieldModal } from "../features/Field/Modal";
-import FieldNFilter from '../features/FieldAndFilter/Modal';
+import FieldNFilter from "../features/FieldAndFilter/Modal";
 
+import { DataGrid, GridColDef, GridFilterItem, GridToolbar } from "@material-ui/data-grid";
+import { INote } from "../api/note";
+import { IDocument } from "../api/document";
+// import DataTable from "../features/Items/Table";
 
 const Inventory = () => {
-    const [rows, setRows] = useState<any[]>([]);
-    const [notes, setNotes] = useState([]);
-    const [docs, setDocs] = useState([]);
-    const [loading, setLoading] = useState(false);
-
-    const [filters, setFilters] = useState<IFilters>();
-    const [order, setOrder] = useState<IOrder>();
+    const [filters, setFilters] = useState<GridFilterItem[]>([]);
     const [page, setPage] = useState(1);
 
-    const [cats, setCats] = useState([]);
-    const [types, setTypes] = useState([]);
-    const [families, setFamilies] = useState([]);
+    const {
+        data: items,
+        mutate: mutateItems,
+        revalidate: revalidateItems,
+    } = useSWR<IItem[]>(
+        filters.length > 0 || filters[0]?.value
+            ? [`/item?${getFilterOperator(filters[0]?.operatorValue)}${filters[0]?.columnField}=${filters[0]?.value}`, filters]
+            : "/item"
+    );
+
+    const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
 
     const [activeTab, setActiveTab] = useState(0);
-    const [detailDis, setDetailDis] = useState(true);
-    const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
     const [selectedNote, setSelectedNote] = useState<any>();
     const [selectedDoc, setSelectedDoc] = useState<any>();
 
@@ -68,222 +62,41 @@ const Inventory = () => {
     const [addDocModal, setAddDocModal] = useState(false);
 
     const [bomModal, setBomModal] = useState(false);
-    const [filterModal, setFilterModal] = useState(false);
     const [applyFilterModal, setApplyFilterModal] = useState(false);
-    const [addFieldModal, setAddFieldModal] = useState(false);
     const [FieldNFilterModal, setFieldNFilterModal] = useState(false);
 
-    const refreshItems = async () => {
-        try {
-            const resp = await getItems();
-            setRows(resp);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    const gridColumns = useMemo<GridColDef[]>(
+        () => [
+            { field: "no", headerName: "Item no.", flex: 1 },
+            { field: "name", headerName: "Name", flex: 2 },
+            { field: "description", headerName: "Description", width: 250 },
+            { field: "cost", headerName: "cost" },
+            { field: "salesApproved", headerName: "salesApproved", type: "boolean" },
+            { field: "engineeringApproved", headerName: "engineeringApproved", type: "boolean" },
+            { field: "totalQoh", headerName: "totalQoh" },
+            { field: "usedInLastQuarter", headerName: "usedInLastQuarter" },
+            { field: "resellCost", headerName: "resellCost" },
+        ],
+        []
+    );
 
-    const refreshNotes = async () => {
-        try {
-            if (selectedItem && selectedItem.id) {
-                const resp = await getAllModelNotes("item", selectedItem.id);
-                setNotes(resp);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const refreshDocs = async () => {
+    const handleDelete = useCallback(async () => {
         try {
             if (selectedItem && selectedItem.id) {
-                const resp = await getAllModelDocuments("item", selectedItem.id);
-                setDocs(resp);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const refreshCats = async () => {
-        try {
-            const resp = await getCategories();
-            if (resp) {
-                setCats(resp);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-    const refreshTypes = async () => {
-        try {
-            const resp = await getTypes();
-            if (resp) {
-                setTypes(resp);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-    const refreshFamilies = async () => {
-        try {
-            const resp = await getFamilies();
-            if (resp) {
-                setFamilies(resp);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    useEffect(() => {
-        refreshCats();
-        refreshTypes();
-        refreshFamilies();
-    }, []);
-
-    useEffect(() => {
-        refreshItems();
-    }, [addItemModal]);
-
-    useEffect(() => {
-        refreshNotes();
-        refreshDocs();
-    }, [selectedItem]);
-
-    const handleDelete = async () => {
-        try {
-            if (selectedItem && selectedItem.id) {
-                const resp = await deleteAnItem(selectedItem.id);
-                refreshItems();
+                await deleteAnItem(selectedItem.id);
+                mutateItems();
                 setActiveTab(0);
                 setDeleteItemModal(false);
             }
         } catch (error) {
             console.log(error);
         }
-    };
-
-    useEffect(() => {
-        const filterItems = async () => {
-            try {
-                setLoading(true);
-                if (!filters) {
-                    refreshItems();
-                    return;
-                } else {
-                    const key = Object.keys(filters.params);
-                    const v = Object.values(filters.params);
-                    const resp = await getItemsByQuery({
-                        ItemCategoryId: filters.cat && filters.cat.length > 0 ? filters.cat.map((item) => item.id).join(",") : undefined,
-                        ItemTypeId: filters.type && filters.type.length > 0 ? filters.type.map((item) => item.id).join(",") : undefined,
-                        ItemFamilyId:
-                            filters.family && filters.family.length > 0 ? filters.family.map((item) => item.id).join(",") : undefined,
-
-                        minCost: filters.cost && filters.cost[0] ? filters.cost[0] : undefined,
-                        maxCost: filters.cost && filters.cost[1] ? filters.cost[1] : undefined,
-
-                        no: filters.itemNo ? filters.itemNo : undefined,
-                        name: filters.name ? filters.name : undefined,
-                        description: filters.desc ? filters.desc : undefined,
-
-                        sort: order && order.orderBy ? order.orderBy : undefined,
-                        order: order && order.order ? (order.order === "asc" ? "ASC" : "DESC") : undefined,
-                        [key[0]]: v[0],
-                    });
-                    resp && setRows(resp);
-                }
-            } catch (e) {
-                console.log(e);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        filterItems();
-    }, [filters]);
-
-    useEffect(() => {
-        const sortItems = async () => {
-            try {
-                setLoading(true);
-                if (!order) {
-                    refreshItems();
-                    return;
-                } else {
-                    const resp = await getItemsByQuery({
-                        ItemCategoryId:
-                            filters && filters.cat && filters.cat.length > 0 ? filters.cat.map((item) => item.id).join(",") : undefined,
-                        ItemTypeId:
-                            filters && filters.type && filters.type.length > 0 ? filters.type.map((item) => item.id).join(",") : undefined,
-                        ItemFamilyId:
-                            filters && filters.family && filters.family.length > 0
-                                ? filters.family.map((item) => item.id).join(",")
-                                : undefined,
-
-                        minCost: filters && filters.cost && filters.cost[0] ? filters.cost[0] : undefined,
-                        maxCost: filters && filters.cost && filters.cost[1] ? filters.cost[1] : undefined,
-
-                        no: filters && filters.itemNo ? filters.itemNo : undefined,
-                        name: filters && filters.name ? filters.name : undefined,
-                        description: filters && filters.desc ? filters.desc : undefined,
-
-                        sort: order.orderBy ? order.orderBy : undefined,
-                        order: order.order ? (order.order === "asc" ? "ASC" : "DESC") : undefined,
-                    });
-                    resp && setRows(resp);
-                }
-            } catch (e) {
-                console.log(e);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        sortItems();
-    }, [order]);
-
-    useEffect(() => {
-        const sortItems = async () => {
-            try {
-                setLoading(true);
-
-                const resp = await getItemsByQuery({
-                    page,
-                    ItemCategoryId:
-                        filters && filters.cat && filters.cat.length > 0 ? filters.cat.map((item) => item.id).join(",") : undefined,
-                    ItemTypeId:
-                        filters && filters.type && filters.type.length > 0 ? filters.type.map((item) => item.id).join(",") : undefined,
-                    ItemFamilyId:
-                        filters && filters.family && filters.family.length > 0
-                            ? filters.family.map((item) => item.id).join(",")
-                            : undefined,
-
-                    minCost: filters && filters.cost && filters.cost[0] ? filters.cost[0] : undefined,
-                    maxCost: filters && filters.cost && filters.cost[1] ? filters.cost[1] : undefined,
-
-                    no: filters && filters.itemNo ? filters.itemNo : undefined,
-                    name: filters && filters.name ? filters.name : undefined,
-                    description: filters && filters.desc ? filters.desc : undefined,
-
-                    sort: order && order.orderBy ? order.orderBy : undefined,
-                    order: order && order.order ? (order.order === "asc" ? "ASC" : "DESC") : undefined,
-                });
-                resp && setRows(resp);
-            } catch (e) {
-                console.log(e);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        sortItems();
-    }, [page]);
+    }, [selectedItem]);
 
     return (
         <Box>
             {selectedNote && selectedItem && selectedItem.id && (
                 <NoteModal
-                    onDone={refreshNotes}
                     noteData={selectedNote}
                     itemId={selectedItem.id as any}
                     model="item"
@@ -293,7 +106,6 @@ const Inventory = () => {
             )}
             {selectedDoc && selectedItem && selectedItem.id && (
                 <DocumentModal
-                    onDone={refreshDocs}
                     open={editDocModal}
                     itemId={selectedItem.id as any}
                     model="item"
@@ -303,22 +115,10 @@ const Inventory = () => {
             )}
 
             {selectedItem && selectedItem.id && (
-                <NoteModal
-                    onDone={refreshNotes}
-                    itemId={selectedItem.id as any}
-                    model="item"
-                    open={addNoteModal}
-                    onClose={() => setAddNoteModal(false)}
-                />
+                <NoteModal itemId={selectedItem.id as any} model="item" open={addNoteModal} onClose={() => setAddNoteModal(false)} />
             )}
             {selectedItem && selectedItem.id && (
-                <DocumentModal
-                    onDone={refreshDocs}
-                    open={addDocModal}
-                    onClose={() => setAddDocModal(false)}
-                    itemId={selectedItem.id as any}
-                    model="item"
-                />
+                <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={selectedItem.id as any} model="item" />
             )}
             {selectedItem && selectedItem.id && <BOMModal itemId={selectedItem.id} open={bomModal} onClose={() => setBomModal(false)} />}
 
@@ -327,9 +127,7 @@ const Inventory = () => {
             <CatTypeFamilyModal open={catModal} onClose={() => setCatModal(false)} />
 
             <FieldNFilter open={FieldNFilterModal} onClose={() => setFieldNFilterModal(false)} />
-            {/* <AddFieldModal open={addFieldModal} onClose={() => setAddFieldModal(false)} /> */}
-            {/* <FiltersModal open={filterModal} onClose={() => setFilterModal(false)} /> */}
-            <ApplyFilterModal open={applyFilterModal} onClose={() => setApplyFilterModal(false)} setter={setFilters} />
+            {/* <ApplyFilterModal open={applyFilterModal} onClose={() => setApplyFilterModal(false)} setter={setFilters} /> */}
 
             <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
                 <Button
@@ -358,7 +156,7 @@ const Inventory = () => {
 
                 <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="secondary">
                     <MyTab color="primary" label="Overview" />
-                    <MyTab label="Details" disabled={detailDis} />
+                    <MyTab label="Details" disabled={!selectedItem} />
                 </MyTabs>
             </Box>
 
@@ -379,21 +177,11 @@ const Inventory = () => {
                             <CategoryRounded />
                         </IconButton>
                     </ListItem>
-                    {/* <ListItem>
-                        <IconButton title="Filters" onClick={() => setFilterModal(true)}>
-                            <FilterRounded />
-                        </IconButton>
-                    </ListItem> */}
                     <ListItem>
                         <IconButton title="َApply Filter" onClick={() => setApplyFilterModal(true)}>
                             <FilterListRounded />
                         </IconButton>
                     </ListItem>
-                    {/* <ListItem>
-                        <IconButton title="Dyanamic fields" onClick={() => setAddFieldModal(true)}>
-                            <PostAddRounded />
-                        </IconButton>
-                    </ListItem> */}
                     <ListItem>
                         <IconButton title="Dyanamic fields" onClick={() => setFieldNFilterModal(true)}>
                             <PostAddRounded />
@@ -401,31 +189,48 @@ const Inventory = () => {
                     </ListItem>
                 </List>
                 <Box flex={11} ml={2}>
-                    {loading && <LinearProgress />}
-                    {activeTab === 0 && !loading && (
-                        <DataTable
-                            order={order}
-                            setOrder={setOrder}
-                            filters={filters}
-                            setFilters={setFilters}
-                            cats={cats}
-                            types={types}
-                            families={families}
-                            rows={rows}
-                            page={page}
-                            setPage={setPage}
-                            onRowSelected={(d) => {
-                                setSelectedItem(d);
-                                setDetailDis(false);
-                                setActiveTab(1);
-                            }}
-                        />
+                    {activeTab === 0 && (
+                        <Box height={400}>
+                            <DataGrid
+                                loading={!items}
+                                onRowSelected={(r) => {
+                                    setSelectedItem(r.data as any);
+                                    setActiveTab(1);
+                                }}
+                                filterMode="server"
+                                onFilterModelChange={(d) => {
+                                    console.log(d.filterModel.items);
+                                    if (d.filterModel.items[0].value) {
+                                        setFilters(d.filterModel.items);
+                                    }
+                                }}
+                                rows={items || []}
+                                columns={gridColumns}
+                                components={{ Toolbar: GridToolbar }}
+                            />
+                        </Box>
+                        // <DataTable
+                        //     order={order}
+                        //     setOrder={setOrder}
+                        //     filters={filters}
+                        //     setFilters={setFilters}
+                        //     cats={cats}
+                        //     types={types}
+                        //     families={families}
+                        //     rows={items}
+                        //     page={page}
+                        //     setPage={setPage}
+                        //     onRowSelected={(d) => {
+                        //         setSelectedItem(d);
+                        //         setDetailDis(false);
+                        //         setActiveTab(1);
+                        //     }}
+                        // />
                     )}
                     {activeTab === 1 && (
                         <ItemsDetails
-                            notes={notes}
-                            docs={docs}
-                            onDone={refreshItems}
+                            onDone={mutateItems}
+                            selectedRow={selectedItem}
                             onDocSelected={(d) => {
                                 setSelectedDoc(d);
                                 setEditDocModal(true);
@@ -434,7 +239,6 @@ const Inventory = () => {
                                 setSelectedNote(d);
                                 setEditNoteModal(true);
                             }}
-                            selectedRow={selectedItem}
                         />
                     )}
                 </Box>

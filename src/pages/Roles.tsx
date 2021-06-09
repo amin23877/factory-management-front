@@ -52,7 +52,7 @@ export default function Roles() {
     const toggleRole = async (id: string, role: string, v: boolean) => {
         try {
             if (v) {
-                const resp = await addRoleToEmployee(id, role);
+                await addRoleToEmployee(id, role);
                 setMsg("Role added !");
                 setSnack(true);
                 refreshEmpsRoles();
@@ -60,7 +60,7 @@ export default function Roles() {
                 const userIndex = empsAndRoles.findIndex((item: any) => item.id === id);
 
                 if (empsAndRoles[userIndex].Roles.length > 1) {
-                    const resp = await deleteRoleFromEmployee(id, role);
+                    await deleteRoleFromEmployee(id, role);
                     setMsg("Role Removed !");
                     setSnack(true);
                     refreshEmpsRoles();
@@ -77,7 +77,7 @@ export default function Roles() {
     const handleDelete = async () => {
         try {
             if (selectedEmp && selectedEmp?.id) {
-                const resp = await deleteEmployee(selectedEmp?.id);
+                await deleteEmployee(selectedEmp?.id);
                 setConfirm(false);
                 refreshEmpsRoles();
             }
