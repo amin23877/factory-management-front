@@ -1,5 +1,15 @@
-import React from "react";
-import { Typography, Box, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio } from "@material-ui/core";
+import React, { useRef } from "react";
+import {
+    Typography,
+    Box,
+    FormControl,
+    FormLabel,
+    FormControlLabel,
+    RadioGroup,
+    Radio,
+    LinearProgress,
+} from "@material-ui/core";
+import { DateTimePicker } from "@material-ui/pickers";
 
 import TextField from "../../app/TextField";
 import Button from "../../app/Button";
@@ -10,6 +20,46 @@ import { getContacts } from "../../api/contact";
 import { getClients } from "../../api/client";
 import { getProjects } from "../../api/project";
 import { getItems } from "../../api/items";
+import { exportPdf } from "../../logic/pdf";
+
+export const DocumentForm = ({ onDone }: { onDone: () => void }) => {
+    const divToPrint = useRef<HTMLElement | null>(null);
+
+    const handleSaveDocument = async () => {
+        if (divToPrint.current) {
+            await exportPdf(divToPrint.current);
+        }
+    };
+
+    return (
+        <Box>
+            <Typography>We made a pdf from your Quote, now you can save it</Typography>
+            <div style={{ height: 400, overflowY: "auto" }}>
+                <div id="myMm" style={{ height: "1mm" }} />
+                <div
+                    id="divToPrint"
+                    ref={(e) => (divToPrint.current = e)}
+                    style={{
+                        backgroundColor: "#fff",
+                        color: "black",
+                        width: "835px",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        minHeight: "1200px",
+                    }}
+                >
+                    <h1>PDF Goes here</h1>
+                </div>
+            </div>
+            <Box textAlign="right">
+                <Button kind="add" onClick={handleSaveDocument}>
+                    Save
+                </Button>
+                {/* {isUploading && <LinearProgress />} */}
+            </Box>
+        </Box>
+    );
+};
 
 export const LineItemForm = ({
     handleChange,
@@ -83,9 +133,14 @@ export const LineItemForm = ({
                     error={Boolean(errors.index && touched.index)}
                     helperText={errors.index}
                 />
-                <FormControl style={{ margin: "0.5em" }} fullWidth>
+                <FormControl style={{ margin: "0.5em" }}>
                     <FormLabel>Tax?</FormLabel>
-                    <RadioGroup value={String(values.tax)} name="tax" onChange={handleChange} style={{ flexDirection: "row" }}>
+                    <RadioGroup
+                        value={String(values.tax)}
+                        name="tax"
+                        onChange={handleChange}
+                        style={{ flexDirection: "row" }}
+                    >
                         <FormControlLabel control={<Radio />} label="Yes" value="true" />
                         <FormControlLabel control={<Radio />} label="No" value="false" />
                     </RadioGroup>
@@ -122,28 +177,21 @@ export const GeneralForm = ({
             <Typography variant="h6">General</Typography>
             <Box my={1} display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10}>
                 {edit && <TextField label="number" value={values.number} style={{ width: "100%" }} disabled />}
-                <TextField
-                    style={{ flex: 1, marginRight: 8 }}
-                    value={values.entryDate ? values.entryDate.substr(0, 10) : ""}
+                <DateTimePicker
+                    value={values.entryDate}
                     name="entryDate"
                     label="Entry Date"
-                    type="date"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    fullWidth
                 />
-                <TextField
-                    style={{ flex: 1 }}
-                    value={values.expireDate ? values.expireDate.substr(0, 10) : ""}
+                <DateTimePicker
+                    value={values.expireDate}
                     name="expireDate"
                     label="Expire Date"
-                    type="date"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    fullWidth
                 />
                 <FieldSelect
-                    style={{ flex: 1, marginRight: 8 }}
                     value={values.salesperson}
                     request={getAllEmployees}
                     itemTitleField="username"
@@ -152,10 +200,8 @@ export const GeneralForm = ({
                     name="salesperson"
                     label="Sales person"
                     onChange={handleChange}
-                    fullWidth
                 />
                 <FieldSelect
-                    style={{ flex: 1 }}
                     value={values.requester}
                     request={getContacts}
                     itemTitleField="name"
@@ -164,10 +210,8 @@ export const GeneralForm = ({
                     name="requester"
                     label="Requester"
                     onChange={handleChange}
-                    fullWidth
                 />
                 <FieldSelect
-                    style={{ width: "100%" }}
                     value={values.ClientId}
                     request={getClients}
                     itemTitleField="name"
@@ -186,11 +230,10 @@ export const GeneralForm = ({
                     label="Project"
                     onChange={handleChange}
                 />
-                <TextField
-                    value={values.estimatedShipDate ? values.estimatedShipDate.substr(0, 10) : ""}
+                <DateTimePicker
+                    value={values.estimatedShipDate}
                     name="estimatedShipDate"
                     label="Estimated Ship Date"
-                    type="date"
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
@@ -226,7 +269,6 @@ export const TermsTab = ({
                 label="Frieght Terms"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                fullWidth
             />
             <TextField
                 style={{ width: "100%" }}
@@ -235,7 +277,6 @@ export const TermsTab = ({
                 label="Payment Terms"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                fullWidth
             />
         </Box>
     );
@@ -252,7 +293,14 @@ export const DepositTab = ({
 }) => {
     return (
         <Box my={1} display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-            <TextField value={values.deposit} name="deposit" label="Deposit" type="number" onChange={handleChange} onBlur={handleBlur} />
+            <TextField
+                value={values.deposit}
+                name="deposit"
+                label="Deposit"
+                type="number"
+                onChange={handleChange}
+                onBlur={handleBlur}
+            />
             <TextField
                 value={values.depositAmount}
                 name="depositAmount"

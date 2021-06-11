@@ -2,36 +2,19 @@ import React, { useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import { Formik, Form } from "formik";
 
-import { useAppDispatch } from "../../store";
-import { createQuoteThunk } from "./quoteSlice";
-
-import Dialog from "../../app/Dialog";
 import Button from "../../app/Button";
 import { CommissionTab, DepositTab, TermsTab, GeneralForm } from "./Forms";
 
 import { IQuote } from "../../api/quote";
-import { unwrapResult } from "@reduxjs/toolkit";
-// { open, onClose }: { open: boolean; onClose: () => void }
+
 export default function GeneralQuote({ onDone, data }: { data?: any; onDone: (data: any) => void }) {
-    const dispatch = useAppDispatch();
     const [activeTab, setActiveTab] = useState(0);
 
     const handleSubmit = async (data: IQuote, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
-        // try {
-        //     const resp = await dispatch(createQuoteThunk(data));
-        //     unwrapResult(resp);
-        //     setSubmitting(false);
-        //     if (resp.payload) {
-        //         // onClose();
-        //     }
-        // } catch (error) {
-        //     console.log(error);
-        // }
         onDone(data);
     };
 
     return (
-        // <Dialog open={open} onClose={onClose} title="Add new quote" maxWidth="md" fullWidth>
         <Box m={1} style={{ height: 600, overflowY: "auto" }}>
             <Formik initialValues={{} as IQuote} onSubmit={handleSubmit}>
                 {({ handleChange, handleBlur, values, isSubmitting }) => (
@@ -54,20 +37,17 @@ export default function GeneralQuote({ onDone, data }: { data?: any; onDone: (da
                                 </Tabs>
                                 {activeTab === 0 && <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
                                 {activeTab === 1 && <DepositTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                {activeTab === 2 && (
-                                    <CommissionTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
-                                )}
+                                {activeTab === 2 && <CommissionTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
                             </Box>
                         </Box>
                         <Box display="flex" justifyContent="center" my={2} py={2}>
                             <Button disabled={isSubmitting} type="submit" kind="add" style={{ padding: "1em 2em" }}>
                                 Add
-                                </Button>
+                            </Button>
                         </Box>
                     </Form>
                 )}
             </Formik>
         </Box>
-        // </Dialog>
     );
 }
