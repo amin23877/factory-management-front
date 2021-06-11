@@ -609,55 +609,58 @@ export const UpdateForm = ({
 }) => {
     return (
         <>
-            <FieldSelect
-                disabled
-                style={{ width: "100%" }}
-                request={getAllEmployees}
-                itemTitleField="username"
-                itemValueField="id"
-                name="requester"
-                label="Requester"
-                value={values.requester}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={Boolean(errors.requester)}
-            />
-            <FieldSelect
-                disabled
-                style={{ width: "100%" }}
-                request={getVendors}
-                itemTitleField="name"
-                itemValueField="id"
-                name="VendorId"
-                label="Vendor"
-                value={values.VendorId}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={Boolean(errors.VendorId)}
-            />
-            <FieldSelect
-                disabled
-                style={{ width: "100%" }}
-                request={getContacts}
-                itemTitleField="lastName"
-                itemValueField="id"
-                name="ContactId"
-                label="Contact"
-                value={values.ContactId}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={Boolean(errors.ContactId)}
-            />
-            <ArraySelect
-                items={["completed", "shipped", "pending"]}
-                name="status"
-                label="Status"
-                value={values.status}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={Boolean(errors.status)}
-                fullWidth
-            />
+            <Box mb={2} display="grid" gridTemplateColumns=" 1fr" gridRowGap={20}>
+
+                <FieldSelect
+                    disabled
+                    style={{ width: "100%" }}
+                    request={getAllEmployees}
+                    itemTitleField="username"
+                    itemValueField="id"
+                    name="requester"
+                    label="Requester"
+                    value={values.requester}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.requester)}
+                />
+                <FieldSelect
+                    disabled
+                    style={{ width: "100%" }}
+                    request={getVendors}
+                    itemTitleField="name"
+                    itemValueField="id"
+                    name="VendorId"
+                    label="Vendor"
+                    value={values.VendorId}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.VendorId)}
+                />
+                <FieldSelect
+                    disabled
+                    style={{ width: "100%" }}
+                    request={getContacts}
+                    itemTitleField="lastName"
+                    itemValueField="id"
+                    name="ContactId"
+                    label="Contact"
+                    value={values.ContactId}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.ContactId)}
+                />
+                <ArraySelect
+                    items={["completed", "shipped", "pending"]}
+                    name="status"
+                    label="Status"
+                    value={values.status}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.status)}
+                    fullWidth
+                />
+            </Box>
         </>
     );
 };

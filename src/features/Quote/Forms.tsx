@@ -92,8 +92,7 @@ export const DocumentForm = ({ onDone }: { onDone: () => void }) => {
                     id="divToPrint"
                     ref={(e) => (divToPrint.current = e)}
                     style={{
-                        backgroundColor: "#f1f4f9",
-                        padding: '7px',
+                        backgroundColor: "#fff",
                         color: "black",
                         width: "835px",
                         marginLeft: "auto",
