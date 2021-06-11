@@ -10,6 +10,7 @@ export interface ITask {
     assigner: string;
     assignee: string;
     TPCId: string;
+    priority?:string;
 }
 
 export const schema = Yup.object().shape({
