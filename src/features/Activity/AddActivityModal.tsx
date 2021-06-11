@@ -61,7 +61,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                     {({ values, errors, touched, handleChange, handleBlur }) => (
                         <Form>
                             <Box>
-                                <Box display="grid" gridTemplateColumns="auto auto auto" gridColumnGap={5}>
+                                <Box display="grid" gridTemplateColumns="auto auto auto" gridColumnGap={10} gridRowGap={10}>
                                     <TextField
                                         error={Boolean(errors.name && touched.name)}
                                         name="name"
@@ -175,7 +175,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                         onBlur={handleBlur}
                                     />
                                 </Box>
-                                <Box display="flex" justifyContent="space-between">
+                                <Box display="flex" justifyContent="space-between" my={1.2}>
                                     <FieldSelect
                                         label="ActivityStatusId"
                                         name="ActivityStatusId"
