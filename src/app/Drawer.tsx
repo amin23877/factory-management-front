@@ -1,25 +1,10 @@
 import React, { useState } from "react";
-import {
-    Drawer,
-    BottomNavigation,
-    BottomNavigationAction,
-    List,
-    ListItem,
-    Divider,
-    Hidden,
-    ListItemIcon,
-    makeStyles,
-    useTheme,
-    ListItemText,
-    Box,
-    useMediaQuery,
-} from "@material-ui/core";
+import { Drawer, List, ListItem, Divider, Hidden, ListItemIcon, makeStyles, ListItemText, useMediaQuery } from "@material-ui/core";
 import ShopRounded from "@material-ui/icons/ShopRounded";
 import ShoppingCartRounded from "@material-ui/icons/ShoppingCartRounded";
-import PhoneRounded from "@material-ui/icons/PhoneRounded";
-import AssessmentRounded from "@material-ui/icons/AssessmentRounded";
-import { Link, useLocation, useHistory } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 
 import CustomScrollbars from "./CustomScroll";
 import { logout } from "../features/Session/sessionsSlice";
@@ -28,12 +13,6 @@ import Confirm from "../features/Modals/Confirm";
 import phazifyLogo from "../assets/phazify.png";
 import phocusLogo from "../assets/logo.png";
 import drawerBg from "../assets/sidebar.png";
-
-const useStyles = makeStyles((theme) => ({
-    btmNavSelectedItem: {
-        backgroundColor: theme.palette.secondary.light,
-    },
-}));
 
 const drawerItems = [
     {
@@ -305,7 +284,17 @@ const drawerItems = [
     },
 ];
 
-const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boolean; onToggle: () => void }) => {
+const MainDrawer = ({
+    width,
+    isOpen,
+    onToggle,
+    closeThis,
+}: {
+    width?: number;
+    isOpen: boolean;
+    onToggle: () => void;
+    closeThis: () => void;
+}) => {
     const useStyles = makeStyles((theme) => ({
         toolbar: {
             ...theme.mixins.toolbar,
@@ -355,6 +344,12 @@ const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boole
                 <Drawer variant="permanent" style={{ width }} classes={{ paper: classes.drawerPaper }} anchor="left">
                     <div className={classes.toolbar} style={{ backgroundColor: "transparent" }}>
                         <img src={phocusLogo} alt="Phocus" style={{ width: "80%", height: "auto" }} />
+                        <div
+                            style={{ color: "white", position: "absolute", top: "25px", right: "15px", cursor: "pointer" }}
+                            onClick={closeThis}
+                        >
+                            <ChevronLeftIcon />
+                        </div>
                     </div>
                     <Divider />
                     <CustomScrollbars style={{ height: 700 }}>
@@ -456,57 +451,22 @@ const MainDrawer = ({ width, isOpen, onToggle }: { width?: number; isOpen: boole
     );
 };
 
-const MainBottomNav = () => {
-    const [active, setActive] = useState(0);
-    const history = useHistory();
-    const location = useLocation();
-
-    const classes = useStyles();
-
-    const theme = useTheme();
-
-    return (
-        <BottomNavigation
-            color="primary"
-            value={active}
-            onChange={(e, nv) => setActive(nv)}
-            style={{ width: "100%", position: "fixed", bottom: 0, zIndex: 100, backgroundColor: theme.palette.secondary.main }}
-        >
-            {drawerItems.slice(0, 4).map((item) => (
-                <BottomNavigationAction
-                    key={item.name}
-                    classes={{ selected: classes.btmNavSelectedItem }}
-                    style={{ color: item.link === location.pathname ? theme.palette.common.white : "white" }}
-                    label={item.name}
-                    icon={item.icon}
-                    onClick={() => history.push(item.link)}
-                />
-            ))}
-        </BottomNavigation>
-    );
-};
-
 export default function MainNavbar({
     width,
     isOpen,
     onToggle,
     children,
+    closeIt,
 }: {
     width?: number;
     isOpen: boolean;
     onToggle: () => void;
     children: any;
+    closeIt: () => void;
 }) {
-    const isMobile = useMediaQuery("max-width:600px");
-
     return (
         <>
-            <Hidden only={["sm", "xs"]}>
-                <MainDrawer onToggle={onToggle} width={width} isOpen={isOpen} />
-            </Hidden>
-            <Hidden mdUp>
-                <MainBottomNav />
-            </Hidden>
+            <MainDrawer onToggle={onToggle} width={width} isOpen={isOpen} closeThis={closeIt} />
             {children}
         </>
     );

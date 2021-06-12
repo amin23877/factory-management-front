@@ -50,7 +50,7 @@ export default function AddPQModal({ open, onClose, onDone }: { open: boolean; o
                             <Box my={1}>
                                 <Typography variant="caption">{file?.name}</Typography>
                             </Box>
-                            <Box display="flex" alignItems="center" my={2}>
+                            <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10} my={2} >
                                 <TextField
                                     name="senderNumber"
                                     label="Sender number"

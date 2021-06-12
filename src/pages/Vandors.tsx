@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { GridColDef } from "@material-ui/data-grid";
 import { Box, Button, IconButton, ListItem } from "@material-ui/core";
 import { AddRounded, DeleteRounded, PrintRounded, PhoneOutlined, MailOutline, ContactsOutlined, MapOutlined } from "@material-ui/icons";
@@ -70,7 +70,7 @@ export default function Vendros() {
         }
     };
 
-    const refreshVendings = async () => {
+    const refreshVendings = useCallback(async () => {
         try {
             if (selectedVendor && selectedVendor.id) {
                 const resp = await getVendorVendings(selectedVendor.id);
@@ -79,9 +79,9 @@ export default function Vendros() {
         } catch (error) {
             console.log(error);
         }
-    };
+    }, [selectedVendor]);
 
-    const refreshNotes = async () => {
+    const refreshNotes = useCallback(async () => {
         try {
             if (selectedVendor && selectedVendor.id) {
                 const resp = await getAllModelNotes("vendor", selectedVendor.id);
@@ -90,9 +90,9 @@ export default function Vendros() {
         } catch (error) {
             console.log(error);
         }
-    };
+    }, [selectedVendor]);
 
-    const refreshDocs = async () => {
+    const refreshDocs = useCallback(async () => {
         try {
             if (selectedVendor && selectedVendor.id) {
                 const resp = await getAllModelDocuments("vendor", selectedVendor.id);
@@ -101,9 +101,9 @@ export default function Vendros() {
         } catch (error) {
             console.log(error);
         }
-    };
+    }, [selectedVendor]);
 
-    const refreshPhones = async () => {
+    const refreshPhones = useCallback(async () => {
         try {
             if (selectedVendor && selectedVendor.id) {
                 const resp = await getAllModelPhone("vendor", String(selectedVendor.id));
@@ -112,9 +112,9 @@ export default function Vendros() {
         } catch (error) {
             console.log(error);
         }
-    };
+    }, [selectedVendor]);
 
-    const refreshEmails = async () => {
+    const refreshEmails = useCallback(async () => {
         try {
             if (selectedVendor && selectedVendor.id) {
                 const resp = await getAllModelEmailAddrs("vendor", String(selectedVendor.id));
@@ -123,9 +123,9 @@ export default function Vendros() {
         } catch (error) {
             console.log(error);
         }
-    };
+    }, [selectedVendor]);
 
-    const refreshContacts = async () => {
+    const refreshContacts = useCallback(async () => {
         try {
             if (selectedVendor && selectedVendor.id) {
                 const resp = await getAllModelContact("vendor", String(selectedVendor.id));
@@ -134,14 +134,14 @@ export default function Vendros() {
         } catch (error) {
             console.log(error);
         }
-    };
+    }, [selectedVendor]);
 
-    const refreshAddresses = async () => {
+    const refreshAddresses = useCallback(async () => {
         if (selectedVendor && selectedVendor.id) {
             const resp = await getAllModelAddress("vendor", String(selectedVendor.id));
             setAddresses(resp);
         }
-    };
+    }, [selectedVendor]);
 
     const handleDelete = async () => {
         try {
@@ -172,7 +172,7 @@ export default function Vendros() {
             refreshPhones();
             refreshContacts();
         }
-    }, [selectedVendor]);
+    }, [selectedVendor, refreshVendings, refreshNotes, refreshDocs, refreshAddresses, refreshEmails, refreshPhones, refreshContacts]);
 
     const cols: GridColDef[] = [
         { field: "id", headerName: "ID" },

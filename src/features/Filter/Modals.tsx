@@ -1,69 +1,56 @@
-import React from "react";
-import { Box, IconButton, LinearProgress, List, ListItem, ListItemSecondaryAction, ListItemText, makeStyles } from "@material-ui/core";
-import { DeleteRounded } from "@material-ui/icons";
-import useSWR from "swr";
+import React, { useState } from "react";
+import { Box, makeStyles, Tab, Tabs } from "@material-ui/core";
 
 import Dialog from "../../app/Dialog";
+import Button from "../../app/Button";
 import FilterForm, { ApplyFilterForm } from "./Forms";
-import { baseDelete, fetcher } from "../../api";
 import { IFilter } from "../../api/filter";
+import FilterTable from "./Table";
 
-const useStyles = makeStyles({
-    filterList: {
-        flex: 1,
-        border: "0.5px solid gray",
-        borderRadius: 4,
-        marginLeft: "1em",
-    },
-});
-
-export default function FiltersModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-    const { data: filters, mutate } = useSWR<IFilter[]>("/filter", fetcher);
-    const classes = useStyles();
-
-    const handleDelete = async (id: string) => {
-        try {
-            await baseDelete(`/filter/${id}`);
-            mutate();
-        } catch (error) {
-            console.log(error);
-        }
-    };
+// { open, onClose }: { open: boolean; onClose: () => void }
+export default function FiltersModal() {
+    const [activeTab, setActiveTab] = useState(0);
+    const [selectedFilter, setSelectedFilter] = useState<IFilter>();
 
     return (
-        <Dialog open={open} onClose={onClose} title="Filters" maxWidth="sm" fullWidth>
+        // <Dialog open={open} onClose={onClose} title="Filters" maxWidth="sm" fullWidth>
+        <Box p={1} display="flex" flexDirection="column">
+            <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                <Tab label="List" />
+                <Tab label="Form" />
+            </Tabs>
+            {activeTab === 0 && (
+                <>
+                    <Button
+                        kind="add"
+                        style={{ margin: "1em 0" }}
+                        onClick={() => {
+                            setSelectedFilter(undefined);
+                            setActiveTab(1);
+                        }}
+                    >
+                        Add new
+                        </Button>
+                    <FilterTable
+                        onFilterSelected={(f) => {
+                            setSelectedFilter(f);
+                            setActiveTab(1);
+                        }}
+                    />
+                </>
+            )}
+            {activeTab === 1 && <FilterForm initialValues={selectedFilter} />}
+        </Box>
+        // </Dialog>
+    );
+}
+
+export const ApplyFilterModal = ({ open, onClose, setter }: { open: boolean; onClose: () => void; setter: (a: any) => void }) => {
+    return (
+        <Dialog open={open} onClose={onClose} title="Filters" maxWidth="sm">
             <Box p={2} display="flex" alignItems="flex-start">
-                <FilterForm />
-                {!filters && <LinearProgress />}
-                {filters && (
-                    <List className={classes.filterList}>
-                        {filters.map((f) => (
-                            <ListItem key={f.id}>
-                                <ListItemText>{`${f.name} - ${f.valid}`}</ListItemText>
-                                <ListItemSecondaryAction>
-                                    <IconButton edge="end" onClick={() => handleDelete(f.id as string)}>
-                                        <DeleteRounded />
-                                    </IconButton>
-                                </ListItemSecondaryAction>
-                            </ListItem>
-                        ))}
-                    </List>
-                )}
+                <ApplyFilterForm applyFilter={setter} />
             </Box>
         </Dialog>
     );
-}
-
-export const ApplyFilterModal = ({ open, onClose , setter }: { open: boolean; onClose: () => void ; setter : (a:any)=>void  }) => {
-    const { data: filters, mutate } = useSWR<IFilter[]>("/filter", fetcher);
-    const classes = useStyles();
-
-    return (
-        <Dialog open={open} onClose={onClose} title="Filters" maxWidth="sm" >
-            <Box p={2} display="flex" alignItems="flex-start" >
-                {!filters && <LinearProgress />}
-                {filters && <ApplyFilterForm filter={filters} applyFilter={setter}/>}
-            </Box>
-        </Dialog>
-    );
-}
+};

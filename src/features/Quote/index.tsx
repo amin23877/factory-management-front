@@ -1,16 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Box, Button, Tabs, Tab, makeStyles, LinearProgress } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 
-import { useSelector } from "react-redux";
-import { deleteQuoteThunk, selectQuotes } from "./quoteSlice";
-import { useAppDispatch } from "../../store";
-
 import { INote, getAllModelNotes } from "../../api/note";
 import { IDocument, getAllModelDocuments } from "../../api/document";
 import { deleteQuote, getLineItems, IQuote } from "../../api/quote";
-import { getQuoteActivities } from "../../api/activity";
+import { getQuoteActivities, IActivity } from "../../api/activity";
 import { ILineItem } from "../../api/lineItem";
 
 import BaseDataGrid from "../../app/BaseDataGrid";
@@ -21,13 +17,10 @@ import NoteModal from "../Modals/NoteModals";
 import DocumentModal from "../Modals/DocumentModals";
 import LineItemModal from "./LineItemModals";
 
-import AddQuoteModal from "./Modals";
-import { BasePaper } from "../../app/Paper";
-import { unwrapResult } from "@reduxjs/toolkit";
+import AddQuote from "./AddQuote";
 import AddLineServiceModal from "../LineService";
 import { ILineService } from "../../api/lineService";
-import useSWR, { mutate } from "swr";
-import { fetcher } from "../../api";
+import useSWR from "swr";
 
 const useStyles = makeStyles({
     TabContainer: {
@@ -39,19 +32,31 @@ const useStyles = makeStyles({
 });
 
 export default function QuotePanel() {
-    const { data: quotes, mutate: mutateQuotes } = useSWR("/quote", fetcher);
-
-    const [activeTab, setActiveTab] = useState(0);
-    const [lineItems, setLineItems] = useState([]);
-    const [notes, setNotes] = useState([]);
-    const [docs, setDocs] = useState([]);
-    const [activities, setActivities] = useState([]);
-
     const [selectedQuote, setSelectedQuote] = useState<IQuote>();
     const [selectedLI, setSelectedLI] = useState<ILineItem>();
     const [selectedLS, setSelectedLS] = useState<ILineService>();
     const [selectedNote, setSelectedNote] = useState<INote>();
     const [selectedDoc, setSelectedDocs] = useState<IDocument>();
+
+    const { data: quotes, mutate: mutateQuotes } = useSWR("/quote");
+
+    const { data: activities } = useSWR<IActivity[]>(
+        selectedQuote && selectedQuote.id ? [`/activity/quote/${selectedQuote.id}`, selectedQuote.id] : null
+    );
+    const { data: notes } = useSWR(
+        selectedQuote && selectedQuote.id ? [`/note/quote/${selectedQuote.id}`, selectedQuote] : null
+    );
+    const { data: documents } = useSWR(
+        selectedQuote && selectedQuote.id ? [`/document/quote/${selectedQuote.id}`, selectedQuote] : null
+    );
+    const { data: lineItems, mutate: mutateLineItems } = useSWR(
+        selectedQuote && selectedQuote.id ? [`/lineitem?QuoteId=${selectedQuote.id}`, selectedQuote] : null
+    );
+    const { data: lineServices, mutate: mutateLineServices } = useSWR(
+        selectedQuote && selectedQuote.id ? [`/lineservice?QuoteId=${selectedQuote.id}`, selectedQuote] : null
+    );
+
+    const [activeTab, setActiveTab] = useState(0);
 
     const [addQ, setAddQ] = useState(false);
 
@@ -63,65 +68,18 @@ export default function QuotePanel() {
     const [editDoc, setEditDoc] = useState(false);
     const [confirm, setConfirm] = useState(false);
     const [lineServiceModal, setLineServiceModal] = useState(false);
+    const [compQ, setCompQ] = useState<any>();
 
     const classes = useStyles();
 
-    const quoteCols: GridColDef[] = [
-        { field: "entryDate", width: 150 },
-        { field: "expireDate", width: 150 },
-        { field: "quoteStatus", width: 150 },
-    ];
-
-    const refreshActivities = async () => {
-        try {
-            if (selectedQuote && selectedQuote.id) {
-                const resp = await getQuoteActivities(selectedQuote?.id);
-                setActivities(resp);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const refreshNotes = async () => {
-        try {
-            if (selectedQuote && selectedQuote.id) {
-                const resp = await getAllModelNotes("quote", selectedQuote.id);
-                setNotes(resp);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const refreshDocs = async () => {
-        try {
-            if (selectedQuote && selectedQuote.id) {
-                const resp = await getAllModelDocuments("quote", selectedQuote.id);
-                setDocs(resp);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const refreshLineItems = async () => {
-        try {
-            if (selectedQuote && selectedQuote.id) {
-                const resp = await getLineItems(selectedQuote?.id);
-                setLineItems(resp);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    useEffect(() => {
-        refreshLineItems();
-        refreshNotes();
-        refreshDocs();
-        refreshActivities();
-    }, [selectedQuote]);
+    const quoteCols: GridColDef[] = useMemo(
+        () => [
+            { field: "entryDate", width: 150 },
+            { field: "expireDate", width: 150 },
+            { field: "quoteStatus", width: 150 },
+        ],
+        []
+    );
 
     const handleDelete = async () => {
         try {
@@ -141,19 +99,13 @@ export default function QuotePanel() {
     return (
         <div>
             <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
-            <AddQuoteModal open={addQ} onClose={() => setAddQ(false)} />
-            <LineItemModal open={addLineItem} onClose={() => setAddLineItem(false)} quoteId={selectedQuote?.id} onDone={refreshLineItems} />
+            <AddQuote open={addQ} onClose={() => setAddQ(false)} initialData={compQ} onDone={() => {}} />
+
             {selectedQuote && selectedQuote.id && (
-                <NoteModal itemId={selectedQuote.id} model="quote" open={addNote} onClose={() => setAddNote(false)} onDone={refreshNotes} />
+                <NoteModal itemId={selectedQuote.id} model="quote" open={addNote} onClose={() => setAddNote(false)} />
             )}
             {selectedQuote && selectedQuote.id && (
-                <DocumentModal
-                    itemId={selectedQuote.id}
-                    model="quote"
-                    open={addDoc}
-                    onClose={() => setAddDoc(false)}
-                    onDone={refreshDocs}
-                />
+                <DocumentModal itemId={selectedQuote.id} model="quote" open={addDoc} onClose={() => setAddDoc(false)} />
             )}
             {selectedNote && selectedQuote && selectedQuote?.id && (
                 <NoteModal
@@ -162,7 +114,6 @@ export default function QuotePanel() {
                     model="quote"
                     open={editNote}
                     onClose={() => setEditNote(false)}
-                    onDone={refreshNotes}
                 />
             )}
             {selectedDoc && selectedQuote && selectedQuote?.id && (
@@ -172,16 +123,21 @@ export default function QuotePanel() {
                     model="quote"
                     open={editDoc}
                     onClose={() => setEditDoc(false)}
-                    onDone={refreshDocs}
                 />
             )}
+            <LineItemModal
+                open={addLineItem}
+                onClose={() => setAddLineItem(false)}
+                quoteId={selectedQuote?.id}
+                onDone={mutateLineItems}
+            />
             {selectedLI && (
                 <LineItemModal
                     LIData={selectedLI}
                     open={editLineItem}
                     onClose={() => setEditLineItem(false)}
                     quoteId={selectedQuote?.id}
-                    onDone={refreshLineItems}
+                    onDone={mutateLineItems}
                 />
             )}
             {selectedQuote && selectedQuote.id && (
@@ -202,13 +158,25 @@ export default function QuotePanel() {
                         <Button onClick={() => setConfirm(true)} disabled={!selectedQuote}>
                             Delete Quote
                         </Button>
-                        <Button onClick={() => setAddLineItem(true)} disabled={!selectedQuote} style={{ margin: "0 0.5em" }}>
+                        <Button
+                            onClick={() => setAddLineItem(true)}
+                            disabled={!selectedQuote}
+                            style={{ margin: "0 0.5em" }}
+                        >
                             Add Line item
                         </Button>
-                        <Button onClick={() => setLineServiceModal(true)} disabled={!selectedQuote} style={{ margin: "0 0.5em" }}>
+                        <Button
+                            onClick={() => setLineServiceModal(true)}
+                            disabled={!selectedQuote}
+                            style={{ margin: "0 0.5em" }}
+                        >
                             Add Line Service
                         </Button>
-                        <Button onClick={() => setAddNote(true)} disabled={!selectedQuote} style={{ marginRight: "0.5em" }}>
+                        <Button
+                            onClick={() => setAddNote(true)}
+                            disabled={!selectedQuote}
+                            style={{ marginRight: "0.5em" }}
+                        >
                             Add Note
                         </Button>
                         <Button
@@ -246,6 +214,10 @@ export default function QuotePanel() {
                             setSelectedLI(d);
                             setEditLineItem(true);
                         }}
+                        onLSSelected={(d) => {
+                            setSelectedLS(d);
+                            setLineServiceModal(true);
+                        }}
                         onNoteSelected={(d) => {
                             setSelectedNote(d);
                             setEditNote(true);
@@ -254,10 +226,11 @@ export default function QuotePanel() {
                             setSelectedDocs(d);
                             setEditDoc(true);
                         }}
-                        activities={activities}
-                        notes={notes}
-                        docs={docs}
-                        lineItems={lineItems}
+                        activities={activities || []}
+                        notes={notes || []}
+                        docs={documents || []}
+                        lineItems={lineItems || []}
+                        lineServices={lineServices || []}
                         selectedQuote={selectedQuote}
                     />
                 )}

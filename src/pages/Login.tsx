@@ -14,7 +14,7 @@ import logo from "../assets/splogo.png";
 import "../styles/splash.css";
 
 export default function SplashScreen() {
-    const [open, setOpen] = useState(true);
+    const [open] = useState(true);
     const dispatch = useDispatch();
 
     const schema = Yup.object().shape({

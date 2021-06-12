@@ -1,56 +1,60 @@
 import Axios from "axios";
 import * as Yup from "yup";
 
-import { IItemType } from "./types";
+export const getFilterOperator = (operator?: string) => {
+    switch (operator) {
+        case "contains":
+            return "contain";
+        case "equals":
+            return "";
+        default:
+            return operator;
+    }
+};
 
 export const AddItemSchema = Yup.object().shape({
     name: Yup.string().min(4, "Too short!").max(60, "Too long").required("Required !!"),
-
-    ItemCategoryId: Yup.number().required(),
-    ItemTypeId: Yup.number().required(),
-    ItemFamilyId: Yup.number().required(),
 });
 
 export interface IItem {
     id?: string;
-    name: string;
-    no: string;
     approvedForSales: boolean;
     obsolete: boolean;
     rndOnly: boolean;
+    engineeringApproved: boolean;
+    salesApproved: boolean;
     nonInventoryItem: boolean;
     dontTrackQOH: boolean;
     dontOrderPO: boolean;
     archived: boolean;
-    archiveDate: string | null;
-    lastCount: string | null;
-    engineeringApproval: boolean;
     taxable: boolean;
     invalidCost: boolean;
     option: boolean;
-    lead: string;
+    lead: number;
     qbtype: string;
     qbid: string;
     sku: string;
     active: boolean;
     upc: string;
     manufacturer: string;
-    jobDays?: number;
+    jobDays: number;
     color: string;
     description: string;
-    size: "small" | "medium" | "large";
+    size: string;
     specialNote: string;
     version: string;
-    revision: string[];
+    revision: any[];
     keywords: string;
     url: string;
     cost: number;
+    totalValue: number;
     retailPrice: number;
     BOM: boolean;
     bomCost: number;
     totalQoh: number;
     allocatedQoh: number;
     availableQoh: number;
+    owQoh: number;
     triggerQoh: number;
     recentPurchasePrice: number;
     uom: string;
@@ -58,7 +62,9 @@ export interface IItem {
     minOrder: number;
     perShipment: number;
     location: string;
-    prefVendor: number;
+    shlef: string;
+    aisle: string;
+    bin: string;
     prefVendorNote: string;
     additionalShippingFee: number;
     shippingNote: string;
@@ -69,15 +75,17 @@ export interface IItem {
     shippingInstruction: string;
     shippableOnBom: boolean;
     notShippable: boolean;
-    createdAt?: string;
-    updatedAt?: string;
-    ItemCategoryId: string | null;
-    ItemTypeId: string | null;
-    ItemFamilyId: string | null;
+    engineeringApproval: boolean;
+    no: string;
+    name: string;
+    usedInLastQuarter: number;
+    filters: {
+        [key: string]: string | number;
+    };
+    fields: {
+        [key: string]: string | number;
+    };
 
-    ItemCategory?: IItemType;
-    ItemType?: IItemType;
-    ItemFamily?: IItemType;
     [key: string]: any;
 }
 
@@ -86,12 +94,7 @@ export const AddItemInitialValues = {};
 export const createItem = async (itemData: any) => {
     try {
         // console.table(itemData);
-        const resp = await Axios.post("/item", {
-            ...itemData,
-            ItemCategoryId: String(itemData.ItemCategoryId),
-            ItemTypeId: String(itemData.ItemTypeId),
-            ItemFamilyId: String(itemData.ItemFamilyId),
-        });
+        const resp = await Axios.post("/item", itemData);
         return resp.data;
     } catch (error) {
         console.error(error);
@@ -100,12 +103,7 @@ export const createItem = async (itemData: any) => {
 
 export const updateAnItem = async (itemId: string, itemData: any) => {
     try {
-        const resp = await Axios.patch(`/item/${itemId}`, {
-            ...itemData,
-            ItemCategoryId: parseInt(itemData.ItemCategoryId),
-            ItemTypeId: parseInt(itemData.ItemTypeId),
-            ItemFamilyId: parseInt(itemData.ItemFamilyId),
-        });
+        const resp = await Axios.patch(`/item/${itemId}`, itemData);
         return resp.data;
     } catch (error) {
         console.log(error);

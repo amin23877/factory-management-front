@@ -138,7 +138,13 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                         </div>
                     </div>
                     <table
-                        style={{ width: "100.1%", border: "2px solid #416364", borderTop: "none", minHeight: "150px", borderBottom: "none" }}
+                        style={{
+                            width: "100.1%",
+                            border: "2px solid #416364",
+                            borderTop: "none",
+                            minHeight: "150px",
+                            borderBottom: "none",
+                        }}
                     >
                         <tr
                             style={{
@@ -156,7 +162,13 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                         </tr>
                     </table>
                     <table
-                        style={{ width: "100.1%", border: "2px solid #416364", borderTop: "none", minHeight: "100px", borderBottom: "none" }}
+                        style={{
+                            width: "100.1%",
+                            border: "2px solid #416364",
+                            borderTop: "none",
+                            minHeight: "100px",
+                            borderBottom: "none",
+                        }}
                     >
                         <tr
                             style={{
@@ -187,41 +199,54 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                             <td> </td> */}
                         </tr>
                     </table>
-                    <table style={{ width: "100%", border: "2px solid #416364", borderTop: "none", minHeight: '650px', display: 'flex', flexDirection: 'column', padding: '0px'}}>
+                    <table
+                        style={{
+                            width: "100%",
+                            border: "2px solid #416364",
+                            borderTop: "none",
+                            minHeight: "650px",
+                            display: "flex",
+                            flexDirection: "column",
+                            padding: "0px",
+                        }}
+                    >
                         <tr
                             style={{
                                 backgroundColor: "#c4d69c",
                                 width: "100%",
                                 height: "26px",
-                                maxHeight: '26px',
-                                display: 'flex',
-                                justifyContent: 'space-evenly'
+                                maxHeight: "26px",
+                                display: "flex",
+                                justifyContent: "space-evenly",
                             }}
                         >
                             {/* <th style={{ borderRight: "1px solid black" }}>Item</th> */}
-                            <th style={{width:'46%'}}> Item Description</th>
-                            <th style={{width:'20%'}}>Qty</th>
-                            <th style={{width:'17%'}}>Price</th>
-                            <th style={{width:'17%'}}>Amount</th>
+                            <th style={{ width: "46%" }}> Item Description</th>
+                            <th style={{ width: "20%" }}>Qty</th>
+                            <th style={{ width: "17%" }}>Price</th>
+                            <th style={{ width: "17%" }}>Amount</th>
                         </tr>
                         {data.lines.map((l, i) => (
-                            <tr key={i} style={{
-                                display: 'flex',
-                                justifyContent: 'space-evenly'
-                            }}>
+                            <tr
+                                key={i}
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-evenly",
+                                }}
+                            >
                                 {/* <td>{l.ItemId}</td> */}
-                                <td style={{ width:'46%',borderRight: "2px solid #416364 ", verticalAlign: 'top' }}>{l.description}</td>
-                                <td style={{ width: "20%", borderRight: "2px solid #416364 ", verticalAlign: 'top' }}>{l.quantity}</td>
-                                <td style={{ width: "17%", borderRight: "2px solid #416364 ", verticalAlign: 'top' }}>{l.price}</td>
-                                <td style={{ width: "17%", verticalAlign: 'top' }}> {l.quantity * l.price} </td>
+                                <td style={{ width: "46%", borderRight: "2px solid #416364 ", verticalAlign: "top" }}>{l.description}</td>
+                                <td style={{ width: "20%", borderRight: "2px solid #416364 ", verticalAlign: "top" }}>{l.quantity}</td>
+                                <td style={{ width: "17%", borderRight: "2px solid #416364 ", verticalAlign: "top" }}>{l.price}</td>
+                                <td style={{ width: "17%", verticalAlign: "top" }}> {l.quantity * l.price} </td>
                             </tr>
                         ))}
-                        <tr style={{ width:'100%',display:'flex',justifyContent:'space-between',flexGrow:1}}>
+                        <tr style={{ width: "100%", display: "flex", justifyContent: "space-between", flexGrow: 1 }}>
                             {/* <td>{l.ItemId}</td> */}
-                            <td style={{ width:'46%', borderRight: "2px solid #416364 ", verticalAlign: 'top' }}></td>
-                            <td style={{ width: "20%", borderRight: "2px solid #416364 ", verticalAlign: 'top' }}></td>
-                            <td style={{ width: "17%", borderRight: "2px solid #416364 ", verticalAlign: 'top' }}></td>
-                            <td style={{ width: "17%", verticalAlign: 'top' }}></td>
+                            <td style={{ width: "46%", borderRight: "2px solid #416364 ", verticalAlign: "top" }}></td>
+                            <td style={{ width: "20%", borderRight: "2px solid #416364 ", verticalAlign: "top" }}></td>
+                            <td style={{ width: "17%", borderRight: "2px solid #416364 ", verticalAlign: "top" }}></td>
+                            <td style={{ width: "17%", verticalAlign: "top" }}></td>
                         </tr>
                     </table>
                     <div
@@ -380,77 +405,79 @@ export const LinesForm = ({
                 <Formik initialValues={{} as ILineItem} validationSchema={schema} onSubmit={handleSubmit}>
                     {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
                         <Form>
-                            <Autocomplete
-                                options={items}
-                                getOptionLabel={(item: any) => item.name}
-                                onChange={(e, nv) => setFieldValue("ItemId", nv.id)}
-                                onBlur={handleBlur}
-                                renderInput={(params) => <TextField {...params} label="Item" name="ItemId" variant="outlined" />}
-                                fullWidth
-                            />
-                            {errors.ItemId && <Typography variant="caption">{errors.ItemId}</Typography>}
-                            <BootstrapTextField
-                                style={{ width: "100%" }}
-                                name="description"
-                                label="Description"
-                                value={values.description}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={Boolean(errors.description)}
-                            />
-                            <BootstrapTextField
-                                style={{ width: "100%" }}
-                                name="quantity"
-                                label="Quantity"
-                                value={values.quantity}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={Boolean(errors.quantity)}
-                            />
-                            <BootstrapTextField
-                                style={{ width: "100%" }}
-                                name="price"
-                                label="Price"
-                                value={values.price}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={Boolean(errors.price)}
-                            />
-                            <BootstrapTextField
-                                style={{ width: "100%" }}
-                                name="index"
-                                label="Index"
-                                value={values.index}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={Boolean(errors.index)}
-                            />
-                            <FormControlLabel
-                                style={{ width: "100%" }}
-                                checked={values.tax}
-                                label="Tax"
-                                name="tax"
-                                onChange={handleChange}
-                                control={<CheckBox />}
-                            />
-                            <Box display="flex" alignItems="center" justifyContent="space-between">
-                                <Button startIcon={<ChevronLeft />} onClick={onBack} variant="contained" color="primary">
-                                    Back
-                                </Button>
-                                <Button style={{ margin: "0 0.5em" }} type="submit" kind={"add"}>
-                                    Submit
-                                </Button>
-                                <Button
-                                    endIcon={<ChevronRight />}
-                                    onClick={() => {
-                                        onDone(createdItems);
-                                    }}
-                                    disabled={createdItems.length === 0}
-                                    variant="contained"
-                                    color="primary"
-                                >
-                                    Next
-                                </Button>
+                            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
+                                <Autocomplete
+                                    options={items}
+                                    getOptionLabel={(item: any) => item.name}
+                                    onChange={(e, nv) => setFieldValue("ItemId", nv.id)}
+                                    onBlur={handleBlur}
+                                    renderInput={(params) => <TextField {...params} label="Item" name="ItemId" variant="outlined" />}
+                                    fullWidth
+                                />
+                                {errors.ItemId && <Typography variant="caption">{errors.ItemId}</Typography>}
+                                <BootstrapTextField
+                                    style={{ width: "100%" }}
+                                    name="description"
+                                    label="Description"
+                                    value={values.description}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors.description)}
+                                />
+                                <BootstrapTextField
+                                    style={{ width: "100%" }}
+                                    name="quantity"
+                                    label="Quantity"
+                                    value={values.quantity}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors.quantity)}
+                                />
+                                <BootstrapTextField
+                                    style={{ width: "100%" }}
+                                    name="price"
+                                    label="Price"
+                                    value={values.price}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors.price)}
+                                />
+                                <BootstrapTextField
+                                    style={{ width: "100%" }}
+                                    name="index"
+                                    label="Index"
+                                    value={values.index}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors.index)}
+                                />
+                                <FormControlLabel
+                                    style={{ width: "100%" }}
+                                    checked={values.tax}
+                                    label="Tax"
+                                    name="tax"
+                                    onChange={handleChange}
+                                    control={<CheckBox />}
+                                />
+                                <Box display="flex" alignItems="center" justifyContent="space-between">
+                                    <Button startIcon={<ChevronLeft />} onClick={onBack} variant="contained" color="primary">
+                                        Back
+                                    </Button>
+                                    <Button style={{ margin: "0 0.5em" }} type="submit" kind={"add"}>
+                                        Submit
+                                    </Button>
+                                    <Button
+                                        endIcon={<ChevronRight />}
+                                        onClick={() => {
+                                            onDone(createdItems);
+                                        }}
+                                        disabled={createdItems.length === 0}
+                                        variant="contained"
+                                        color="primary"
+                                    >
+                                        Next
+                                    </Button>
+                                </Box>
                             </Box>
                         </Form>
                     )}
@@ -582,55 +609,58 @@ export const UpdateForm = ({
 }) => {
     return (
         <>
-            <FieldSelect
-                disabled
-                style={{ width: "100%" }}
-                request={getAllEmployees}
-                itemTitleField="username"
-                itemValueField="id"
-                name="requester"
-                label="Requester"
-                value={values.requester}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={Boolean(errors.requester)}
-            />
-            <FieldSelect
-                disabled
-                style={{ width: "100%" }}
-                request={getVendors}
-                itemTitleField="name"
-                itemValueField="id"
-                name="VendorId"
-                label="Vendor"
-                value={values.VendorId}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={Boolean(errors.VendorId)}
-            />
-            <FieldSelect
-                disabled
-                style={{ width: "100%" }}
-                request={getContacts}
-                itemTitleField="lastName"
-                itemValueField="id"
-                name="ContactId"
-                label="Contact"
-                value={values.ContactId}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={Boolean(errors.ContactId)}
-            />
-            <ArraySelect
-                items={["completed", "shipped", "pending"]}
-                name="status"
-                label="Status"
-                value={values.status}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={Boolean(errors.status)}
-                fullWidth
-            />
+            <Box mb={2} display="grid" gridTemplateColumns=" 1fr" gridRowGap={20}>
+
+                <FieldSelect
+                    disabled
+                    style={{ width: "100%" }}
+                    request={getAllEmployees}
+                    itemTitleField="username"
+                    itemValueField="id"
+                    name="requester"
+                    label="Requester"
+                    value={values.requester}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.requester)}
+                />
+                <FieldSelect
+                    disabled
+                    style={{ width: "100%" }}
+                    request={getVendors}
+                    itemTitleField="name"
+                    itemValueField="id"
+                    name="VendorId"
+                    label="Vendor"
+                    value={values.VendorId}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.VendorId)}
+                />
+                <FieldSelect
+                    disabled
+                    style={{ width: "100%" }}
+                    request={getContacts}
+                    itemTitleField="lastName"
+                    itemValueField="id"
+                    name="ContactId"
+                    label="Contact"
+                    value={values.ContactId}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.ContactId)}
+                />
+                <ArraySelect
+                    items={["completed", "shipped", "pending"]}
+                    name="status"
+                    label="Status"
+                    value={values.status}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.status)}
+                    fullWidth
+                />
+            </Box>
         </>
     );
 };

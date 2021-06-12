@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Container, Box, Button } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
 
@@ -20,7 +20,7 @@ export default function Project() {
     const [projectModal, setProjectModal] = useState(false);
     const [activityModal, setActivityModal] = useState(false);
 
-    const refreshProjects = async () => {
+    const refreshProjects = useCallback(async () => {
         try {
             const resp = await getProjects();
             setProjects(resp);
@@ -28,9 +28,9 @@ export default function Project() {
         } catch (error) {
             console.log(error);
         }
-    };
+    }, [setProjects, setPData]);
 
-    const refreshActivities = async () => {
+    const refreshActivities = useCallback(async () => {
         try {
             if (pData) {
                 const resp = await getProjectActivities(pData.id);
@@ -39,17 +39,17 @@ export default function Project() {
         } catch (error) {
             console.log(error);
         }
-    };
+    }, [pData, setActivities]);
 
     useEffect(() => {
         refreshProjects();
-    }, []);
+    }, [refreshProjects]);
 
     useEffect(() => {
         if (activeTab === 1) {
             refreshActivities();
         }
-    }, [activeTab]);
+    }, [activeTab, refreshActivities]);
 
     const activityCols: GridColDef[] = [
         { field: "name" },

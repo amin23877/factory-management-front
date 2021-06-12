@@ -44,7 +44,7 @@ function CustomToolbar() {
 }
 
 interface IBaseDataGrid {
-    onRowSelected: (row: any) => void;
+    onRowSelected?: (row: any) => void;
     rows: any[];
     cols: any[];
     height?: number;
@@ -79,7 +79,7 @@ export default function BaseDataGrid({ onRowSelected, rows, cols, height }: IBas
                     components={{ Toolbar: GridToolbar }}
                     className={classes.root}
                     onRowSelected={(r) => {
-                        onRowSelected(r.data);
+                        onRowSelected && onRowSelected(r.data);
                     }}
                     columns={updatedCols}
                     rows={rows}

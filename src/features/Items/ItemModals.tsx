@@ -1,86 +1,115 @@
 import React, { useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
-import { useFormik } from "formik";
+import { Formik, Form } from "formik";
+import useSWR from "swr";
 
+import Button from "../../app/Button";
 import Dialog from "../../app/Dialog";
-import { General, MoreInfo, Quantity, Shipping } from "./AddForms";
+import CustomScrollbars from "../../app/CustomScroll";
+import { DynamicFilterAndFields, General, MoreInfo, Quantity, Shipping } from "./Forms";
 
-import { createItem, AddItemInitialValues, AddItemSchema } from "../../api/items";
+import { createItem, AddItemSchema, IItem } from "../../api/items";
+import { IFilter } from "../../api/filter";
 
 export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
     const [activeTab, setActiveTab] = useState(0);
-    const { errors, touched, values, handleChange, handleBlur, isSubmitting, handleSubmit } = useFormik({
-        initialValues: AddItemInitialValues,
-        validationSchema: AddItemSchema,
-        onSubmit: (data, { setSubmitting }) => {
-            // console.log(data);
+    // const {data:filters} = useSWR<IFilter[]>('/filter');
 
-            createItem(data)
-                .then((res: any) => {
-                    console.log(res);
-                    setSubmitting(false);
-                    if (res.status !== 400) {
-                        onClose();
-                    }
-                })
-                .catch((e) => console.log(e));
-        },
-    });
+    // const initialFilterValues = filters.map(filter => ({filter.name}))
+
+    const handleSubmit = async (data: any, { setSubmitting }: any) => {
+        // console.log(data);
+        setSubmitting(true);
+        try {
+            const resp = await createItem(data);
+            setSubmitting(false);
+            if (resp) {
+                onClose();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <Dialog open={open} onClose={onClose} maxWidth="lg" title="Add new item">
-            <Box p={3} display="flex" alignItems="center">
-                <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
-                    <Box display="flex">
-                        <Box flex={1}>
-                            <General
-                                errors={errors}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                                touched={touched}
-                                values={values}
-                                isSubmitting={isSubmitting}
-                            />
-                        </Box>
-                        <Box flex={1} width={300} ml={5}>
-                            <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="primary">
-                                <Tab label="More info" />
-                                <Tab label="Quantity" />
-                                <Tab label="Shipping" />
-                            </Tabs>
-                            {activeTab === 0 && (
-                                <MoreInfo
-                                    errors={errors}
-                                    handleBlur={handleBlur}
-                                    handleChange={handleChange}
-                                    touched={touched}
-                                    values={values}
-                                    isSubmitting={isSubmitting}
-                                />
-                            )}
-                            {activeTab === 1 && (
-                                <Quantity
-                                    errors={errors}
-                                    handleBlur={handleBlur}
-                                    handleChange={handleChange}
-                                    touched={touched}
-                                    values={values}
-                                    isSubmitting={isSubmitting}
-                                />
-                            )}
-                            {activeTab === 2 && (
-                                <Shipping
-                                    errors={errors}
-                                    handleBlur={handleBlur}
-                                    handleChange={handleChange}
-                                    touched={touched}
-                                    values={values}
-                                    isSubmitting={isSubmitting}
-                                />
-                            )}
-                        </Box>
-                    </Box>
-                </form>
+            <Box p={1}>
+                <Formik initialValues={{} as IItem} validationSchema={AddItemSchema} onSubmit={handleSubmit}>
+                    {({ values, errors, handleChange, handleBlur, touched, isSubmitting, setFieldValue }) => (
+                        <Form>
+                            <Box display="flex">
+                                <Box flex={2}>
+                                    <General
+                                        errors={errors}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        touched={touched}
+                                        values={values}
+                                        setFieldValue={setFieldValue}
+                                        isSubmitting={isSubmitting}
+                                    />
+                                    <Button disabled={isSubmitting} style={{ marginTop: "1.3em" }} kind="add" type="submit">
+                                        Save
+                                    </Button>
+                                </Box>
+                                <Box flex={1} ml={1}>
+                                    <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="primary">
+                                        <Tab label="More info" />
+                                        <Tab label="Quantity" />
+                                        <Tab label="Shipping" />
+                                        <Tab label="Field and filters" />
+                                    </Tabs>
+                                    {activeTab === 0 && (
+                                        <MoreInfo
+                                            errors={errors}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            setFieldValue={setFieldValue}
+                                            touched={touched}
+                                            values={values}
+                                            isSubmitting={isSubmitting}
+                                        />
+                                    )}
+                                    {activeTab === 1 && (
+                                        <Quantity
+                                            errors={errors}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            setFieldValue={setFieldValue}
+                                            touched={touched}
+                                            values={values}
+                                            isSubmitting={isSubmitting}
+                                        />
+                                    )}
+                                    {activeTab === 2 && (
+                                        <Shipping
+                                            errors={errors}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            setFieldValue={setFieldValue}
+                                            touched={touched}
+                                            values={values}
+                                            isSubmitting={isSubmitting}
+                                        />
+                                    )}
+                                    {activeTab === 3 && (
+                                        <CustomScrollbars style={{ height: 290 }} thumbColor="#555">
+                                            <DynamicFilterAndFields
+                                                errors={errors}
+                                                handleBlur={handleBlur}
+                                                handleChange={handleChange}
+                                                setFieldValue={setFieldValue}
+                                                touched={touched}
+                                                values={values}
+                                                isSubmitting={isSubmitting}
+                                            />
+                                        </CustomScrollbars>
+                                    )}
+                                </Box>
+                            </Box>
+                        </Form>
+                    )}
+                </Formik>
             </Box>
         </Dialog>
     );

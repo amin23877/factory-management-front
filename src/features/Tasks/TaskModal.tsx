@@ -6,7 +6,7 @@ import Dialog from "../../app/Dialog";
 import Button from "../../app/Button";
 import { Box, TextField } from "@material-ui/core";
 import { createTask, deleteTasks, ITask, updateTask } from "../../api/task";
-import { MaterialFieldSelect } from "../../app/Inputs";
+import { ArraySelect, MaterialFieldSelect } from "../../app/Inputs";
 import { getJobs } from "../../api/job";
 import { getAllEmployees } from "../../api/employee";
 import TPCAutocomplete from "../TPC/autocomplete";
@@ -76,6 +76,15 @@ export default function TaskModal({
                                     helperText={errors.name}
                                     variant="outlined"
                                     size="small"
+                                />
+                                <ArraySelect
+                                    style={{ gridColumnEnd: "span 2" }}
+                                    items={["1", "2", "3", "4", "5"]}
+                                    label="Priority"
+                                    name="priority"
+                                    value={values.priority}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                 />
                                 {selectedTask && (
                                     <DateTimePicker

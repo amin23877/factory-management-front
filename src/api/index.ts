@@ -11,9 +11,9 @@ export const getToken = () => {
     }
 };
 
-export const fetcher = async (url: string, params?: any) => {
+export const fetcher = async (url: string) => {
     try {
-        const resp = await Axios.get(url, { params });
+        const resp = await Axios.get(url);
         return resp.data;
     } catch (error) {
         console.log(error);

@@ -45,7 +45,7 @@ function App() {
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <SWRConfig
                 value={{
-                    fetcher: (url, param) => fetcher(url, param),
+                    fetcher,
                 }}
             >
                 <BrowserRouter>
