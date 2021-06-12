@@ -1,8 +1,8 @@
 import React from "react";
-import { Checkbox, FormControlLabel, Box } from "@material-ui/core";
+import { Checkbox, FormControlLabel, TextField, Box } from "@material-ui/core";
 import useSWR from "swr";
 
-import TextField from "../../app/TextField";
+// import TextField from "../../app/TextField";
 import { ArraySelect } from "../../app/Inputs";
 
 import { IFilter } from "../../api/filter";
@@ -27,6 +27,7 @@ const schema = Yup.object().shape({
 
 export default function FieldForm({ initial }: { initial?: IField }) {
     const { data: filters } = useSWR<IFilter[]>("/filter");
+    const { data: fields } = useSWR<IField[]>("/field");
 
     const handleSubmit = async (values: any, { setSubmitting }: any) => {
         setSubmitting(true);
@@ -45,7 +46,7 @@ export default function FieldForm({ initial }: { initial?: IField }) {
     return (
         <>
             <Formik
-                initialValues={initial ? initial : ({ type: "string" } as IField)}
+                initialValues={initial ? initial : ({ type: "string" } as any)}
                 validationSchema={schema}
                 onSubmit={handleSubmit}
             >
@@ -58,7 +59,7 @@ export default function FieldForm({ initial }: { initial?: IField }) {
                             gridColumnGap={12}
                             style={{ marginTop: "10px" }}
                         >
-                            <TextField
+                            {/* <TextField
                                 name="name"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
@@ -66,6 +67,23 @@ export default function FieldForm({ initial }: { initial?: IField }) {
                                 helperText={errors.name && touched.name}
                                 value={values.name}
                                 label="Name"
+                            /> */}
+                            <Autocomplete
+                                onBlur={handleBlur}
+                                onInputChange={(e, v) => setFieldValue("name", v)}
+                                value={values.name}
+                                freeSolo
+                                options={fields?.map((f) => f.name) || []}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        size="small"
+                                        label="Name"
+                                        name="name"
+                                        margin="normal"
+                                        variant="outlined"
+                                    />
+                                )}
                             />
                             <ArraySelect
                                 items={["string", "boolean", "number", "enum"]}
@@ -77,6 +95,7 @@ export default function FieldForm({ initial }: { initial?: IField }) {
                                 helperText={errors.type && touched.type}
                                 value={values.type}
                                 label="Type"
+                                style={{ alignSelf: "center", marginTop: 6 }}
                             />
                             {!values.all && (
                                 <>
@@ -87,7 +106,7 @@ export default function FieldForm({ initial }: { initial?: IField }) {
                                         onChange={handleChange}
                                         error={Boolean(errors.filterName && touched.filterName)}
                                         helperText={errors.filterName && touched.filterName}
-                                        value={values.filterName}
+                                        value={String(values.filterName)}
                                         label="Filter Name"
                                     />
                                     <Autocomplete
@@ -100,11 +119,20 @@ export default function FieldForm({ initial }: { initial?: IField }) {
                                         getOptionLabel={(option) => option}
                                         filterSelectedOptions
                                         onChange={(e, v) => setFieldValue("filterValue", v.join())}
-                                        renderInput={(params) => <TextField {...params} label="Filter values" />}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                label="Filter values"
+                                                variant="outlined"
+                                                size="small"
+                                            />
+                                        )}
                                     />
                                 </>
                             )}
                             <TextField
+                                variant="outlined"
+                                size="small"
                                 name="default"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
@@ -114,6 +142,8 @@ export default function FieldForm({ initial }: { initial?: IField }) {
                                 label="Default"
                             />
                             <TextField
+                                size="small"
+                                variant="outlined"
                                 name="valid"
                                 onBlur={handleBlur}
                                 onChange={handleChange}
