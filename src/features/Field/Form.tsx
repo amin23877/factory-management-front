@@ -13,22 +13,25 @@ import Button from "../../app/Button";
 import * as Yup from "yup";
 import { basePost } from "../../api";
 import { mutate } from "swr";
+import { Autocomplete } from "@material-ui/lab";
 
 const schema = Yup.object().shape({
     filterName: Yup.string().required(),
     filterValue: Yup.string().required(),
     type: Yup.string().required(),
     name: Yup.string().required(),
-    required: Yup.boolean().required(),
+    required: Yup.boolean(),
     default: Yup.string(),
     valid: Yup.string(),
 });
 
 export default function FieldForm({ initial }: { initial?: IField }) {
     const { data: filters } = useSWR<IFilter[]>("/filter");
+
     const handleSubmit = async (values: any, { setSubmitting }: any) => {
         setSubmitting(true);
         try {
+            // console.log(values);
             const resp = await basePost("/field", values);
             if (resp) {
                 mutate("/field");
@@ -38,12 +41,23 @@ export default function FieldForm({ initial }: { initial?: IField }) {
             console.log(e);
         }
     };
+
     return (
         <>
-            <Formik initialValues={initial ? initial : ({} as IField)} validationSchema={schema} onSubmit={handleSubmit}>
-                {({ values, errors, touched, handleBlur, handleChange, isSubmitting, setValues, setTouched }) => (
+            <Formik
+                initialValues={initial ? initial : ({ type: "string" } as IField)}
+                validationSchema={schema}
+                onSubmit={handleSubmit}
+            >
+                {({ values, errors, touched, handleBlur, handleChange, isSubmitting, setFieldValue }) => (
                     <Form>
-                        <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={12} gridColumnGap={12} style={{ marginTop: "10px" }}>
+                        <Box
+                            display="grid"
+                            gridTemplateColumns="1fr 1fr"
+                            gridRowGap={12}
+                            gridColumnGap={12}
+                            style={{ marginTop: "10px" }}
+                        >
                             <TextField
                                 name="name"
                                 onBlur={handleBlur}
@@ -76,15 +90,17 @@ export default function FieldForm({ initial }: { initial?: IField }) {
                                         value={values.filterName}
                                         label="Filter Name"
                                     />
-                                    <ArraySelect
-                                        items={initial ? initial.filterValue : filters?.find((f) => f.name === values.filterName)?.valid}
-                                        name="filterValue"
-                                        onBlur={handleBlur}
-                                        onChange={handleChange}
-                                        error={Boolean(errors.filterValue && touched.filterValue)}
-                                        helperText={errors.filterValue && touched.filterValue}
-                                        value={values.filterValue}
-                                        label="Filter Value"
+                                    <Autocomplete
+                                        multiple
+                                        options={
+                                            initial
+                                                ? initial.filterValue
+                                                : filters?.find((f) => f.name === values.filterName)?.valid || []
+                                        }
+                                        getOptionLabel={(option) => option}
+                                        filterSelectedOptions
+                                        onChange={(e, v) => setFieldValue("filterValue", v.join())}
+                                        renderInput={(params) => <TextField {...params} label="Filter values" />}
                                     />
                                 </>
                             )}
@@ -122,7 +138,12 @@ export default function FieldForm({ initial }: { initial?: IField }) {
                                 onChange={handleChange}
                                 control={<Checkbox />}
                             />
-                            <Button type="submit" disabled={isSubmitting} kind="add">
+                            <Button
+                                onClick={() => console.log(errors)}
+                                type="submit"
+                                disabled={isSubmitting}
+                                kind="add"
+                            >
                                 Save
                             </Button>
                         </Box>
