@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Box, FormControl, FormLabel, FormControlLabel, Checkbox, RadioGroup, Radio } from "@material-ui/core";
+import {
+    Typography,
+    Box,
+    FormControl,
+    FormLabel,
+    FormControlLabel,
+    Checkbox,
+    RadioGroup,
+    Radio,
+} from "@material-ui/core";
 
 import TextField from "../../app/TextField";
 import { FieldSelect, ArraySelect } from "../../app/Inputs";
@@ -15,6 +24,7 @@ import { getAllAgencies } from "../../api/agency";
 import { getQuoteById, getQuotes } from "../../api/quote";
 import { getAllDivison } from "../../api/division";
 import { DateTimePicker } from "@material-ui/pickers";
+import { getJobs } from "../../api/job";
 
 export const GeneralForm = ({
     handleChange,
@@ -95,9 +105,27 @@ export const GeneralForm = ({
 
     return (
         <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10}>
-            <TextField value={values.freightTerms} name="freightTerms" label="freightTerms" onChange={handleChange} onBlur={handleBlur} />
-            <TextField value={values.paymentTerms} name="paymentTerms" label="paymentTerms" onChange={handleChange} onBlur={handleBlur} />
-            <TextField value={values.carrier} name="carrier" label="carrier" onChange={handleChange} onBlur={handleBlur} />
+            <TextField
+                value={values.freightTerms}
+                name="freightTerms"
+                label="freightTerms"
+                onChange={handleChange}
+                onBlur={handleBlur}
+            />
+            <TextField
+                value={values.paymentTerms}
+                name="paymentTerms"
+                label="paymentTerms"
+                onChange={handleChange}
+                onBlur={handleBlur}
+            />
+            <TextField
+                value={values.carrier}
+                name="carrier"
+                label="carrier"
+                onChange={handleChange}
+                onBlur={handleBlur}
+            />
             <FieldSelect
                 value={values.QuoteId}
                 name="QuoteId"
@@ -299,7 +327,12 @@ export const BillingTab = ({
             />
             <FormControl>
                 <FormLabel>Client or Agency</FormLabel>
-                <RadioGroup name="billingEntitiy" onChange={handleChange} value={values.billingEntitiy} style={{ flexDirection: "row" }}>
+                <RadioGroup
+                    name="billingEntitiy"
+                    onChange={handleChange}
+                    value={values.billingEntitiy}
+                    style={{ flexDirection: "row" }}
+                >
                     <FormControlLabel control={<Radio />} label="Client" value="client" />
                     <FormControlLabel control={<Radio />} label="Agency" value="agency" />
                 </RadioGroup>
@@ -357,6 +390,16 @@ export const TermsTab = ({
                 keyField="id"
                 name="ProjectId"
                 label="Project"
+                onChange={handleChange}
+            />
+            <FieldSelect
+                value={values.JobId ? values.JobId : ""}
+                request={getJobs}
+                itemTitleField="description"
+                itemValueField="id"
+                keyField="id"
+                name="JobId"
+                label="Job"
                 onChange={handleChange}
             />
         </Box>
