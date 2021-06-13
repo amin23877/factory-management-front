@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import {
     Typography,
     Box,
@@ -21,7 +22,6 @@ import { getClients } from "../../api/client";
 import { getProjects } from "../../api/project";
 import { getItems } from "../../api/items";
 import { exportPdf } from "../../logic/pdf";
-import { makeStyles } from "@material-ui/core/styles";
 import { getJobs } from "../../api/job";
 
 const useStyles = makeStyles({
@@ -122,7 +122,9 @@ const useStyles = makeStyles({
 
 export const DocumentForm = ({ onDone }: { onDone: () => void }) => {
     const divToPrint = useRef<HTMLElement | null>(null);
+
     const classes = useStyles();
+
     const handleSaveDocument = async () => {
         if (divToPrint.current) {
             await exportPdf(divToPrint.current);

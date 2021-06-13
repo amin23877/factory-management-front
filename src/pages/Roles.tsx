@@ -127,7 +127,9 @@ export default function Roles() {
                                                     label={role.name}
                                                     control={
                                                         <Checkbox
-                                                            checked={Boolean(emp.Roles.find((r: any) => parseInt(r.id) === role.id))}
+                                                            checked={Boolean(
+                                                                emp?.Roles?.find((r: any) => parseInt(r.id) === role.id)
+                                                            )}
                                                         />
                                                     }
                                                 />
