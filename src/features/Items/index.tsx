@@ -120,7 +120,7 @@ function ItemsDetails({
                                         touched={touched}
                                     />
 
-                                    <Button style={{ marginTop: "1.3em" }} kind="edit" type="submit">
+                                    <Button style={{ margin: "1.3em 43% 0.5em 43%" }} kind="edit" type="submit">
                                         Save
                                     </Button>
                                 </BasePaper>
