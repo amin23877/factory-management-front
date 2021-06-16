@@ -90,7 +90,7 @@ function ItemsDetails({
     };
 
     return (
-        <Box my={2}>
+        <Box>
             <ManualCountModal
                 open={manualCountModal}
                 onClose={() => setManualCountModal(false)}
@@ -108,8 +108,8 @@ function ItemsDetails({
             <Formik initialValues={selectedRow} validationSchema={AddItemSchema} onSubmit={handleSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
                     <Form>
-                        <Grid container>
-                            <Grid item md={8} xs={12} style={{ padding: "1em" }}>
+                        <Grid container spacing={2}>
+                            <Grid item md={8} xs={12}>
                                 <BasePaper>
                                     <General
                                         values={values}
@@ -125,8 +125,14 @@ function ItemsDetails({
                                     </Button>
                                 </BasePaper>
                             </Grid>
-                            <Grid item md={4} xs={12} style={{ padding: "1em" }}>
-                                <BasePaper style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                            <Grid item md={4} xs={12}>
+                                <BasePaper
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        justifyContent: "space-between",
+                                    }}
+                                >
                                     <Tabs
                                         value={moreInfoTab}
                                         variant="scrollable"
@@ -195,10 +201,18 @@ function ItemsDetails({
                     <Tab label="Sales Report" />
                 </Tabs>
                 <Box p={3}>
-                    {activeTab === 0 && <BaseDataGrid height={250} cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />}
-                    {activeTab === 1 && <BaseDataGrid height={250} cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />}
-                    {activeTab === 2 && <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => {}} />}
-                    {activeTab === 3 && <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes || []} onRowSelected={() => {}} />}
+                    {activeTab === 0 && (
+                        <BaseDataGrid height={250} cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
+                    )}
+                    {activeTab === 1 && (
+                        <BaseDataGrid height={250} cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />
+                    )}
+                    {activeTab === 2 && (
+                        <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => {}} />
+                    )}
+                    {activeTab === 3 && (
+                        <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes || []} onRowSelected={() => {}} />
+                    )}
                     {activeTab === 4 && <SOTable rows={itemSOs || []} />}
                     {activeTab === 5 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
                 </Box>

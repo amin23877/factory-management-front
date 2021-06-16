@@ -1,17 +1,6 @@
 import Axios from "axios";
 import * as Yup from "yup";
 
-export const getFilterOperator = (operator?: string) => {
-    switch (operator) {
-        case "contains":
-            return "contain";
-        case "equals":
-            return "";
-        default:
-            return operator;
-    }
-};
-
 export const AddItemSchema = Yup.object().shape({
     name: Yup.string().min(4, "Too short!").max(60, "Too long").required("Required !!"),
 });
@@ -85,8 +74,6 @@ export interface IItem {
     fields: {
         [key: string]: string | number;
     };
-
-    [key: string]: any;
 }
 
 export const AddItemInitialValues = {};

@@ -78,8 +78,13 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     error={Boolean(errors.name && touched.name)}
                     value={values.name}
                 />
-                <Box style={{ gridColumnEnd: "span 4" }} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10}>
-
+                <Box
+                    style={{ gridColumnEnd: "span 4" }}
+                    display="grid"
+                    gridTemplateColumns="1fr 1fr 1fr"
+                    gridRowGap={10}
+                    gridColumnGap={10}
+                >
                     <TextField
                         label="no"
                         value={values.no}
@@ -111,8 +116,9 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                 <TextField
                     multiline
                     style={{ gridColumnEnd: "span 4" }}
-                    rowsMax={4}
+                    rows={4}
                     placeholder="description"
+                    label="Description"
                     name="description"
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -127,7 +133,6 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     onBlur={handleBlur}
                     error={Boolean(errors.specialNote && touched.specialNote)}
                 />
-
             </Box>
         </>
     );
@@ -243,9 +248,21 @@ export const Quantity = ({ values, errors, handleChange, handleBlur, handleManua
                 onBlur={handleBlur}
                 onChange={handleChange}
             />
-            <TextField label="Reorder Quantity" name="reorderQty" value={values.reorderQty} onBlur={handleBlur} onChange={handleChange} />
+            <TextField
+                label="Reorder Quantity"
+                name="reorderQty"
+                value={values.reorderQty}
+                onBlur={handleBlur}
+                onChange={handleChange}
+            />
             <TextField label="Lead time" name="lead" value={values.lead} onBlur={handleBlur} onChange={handleChange} />
-            <TextField label="Last count" name="lastCount" value={values.lastCount} onBlur={handleBlur} onChange={handleChange} />
+            <TextField
+                label="Last count"
+                name="lastCount"
+                value={values.lastCount}
+                onBlur={handleBlur}
+                onChange={handleChange}
+            />
             <TextField
                 label="Recent purchase price"
                 name="recentPurchasePrice"
@@ -278,7 +295,12 @@ export const Quantity = ({ values, errors, handleChange, handleBlur, handleManua
                 onChange={handleChange}
             />
             {handleManualCount && (
-                <Button kind="add" fullWidth style={{ marginTop: 10, gridColumnEnd: "span 2" }} onClick={handleManualCount}>
+                <Button
+                    kind="add"
+                    fullWidth
+                    style={{ marginTop: 10, gridColumnEnd: "span 2" }}
+                    onClick={handleManualCount}
+                >
                     Adjust
                 </Button>
             )}
@@ -289,7 +311,6 @@ export const Quantity = ({ values, errors, handleChange, handleBlur, handleManua
 export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
     return (
         <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10} mt={1}>
-
             <TextField
                 style={{ gridColumnEnd: "span 2" }}
                 label="Additional shipping fee"

@@ -6,9 +6,7 @@ import {
     PrintRounded,
     AddRounded,
     DeleteRounded,
-    CategoryRounded,
     PostAddRounded,
-    FilterListRounded,
 } from "@material-ui/icons";
 import useSWR from "swr";
 import Confirm from "../features/Modals/Confirm";
@@ -18,38 +16,32 @@ import DocumentModal from "../features/Modals/DocumentModals";
 import BOMModal from "../features/BOM/BomModal";
 
 import { AddItemModal } from "../features/Items/ItemModals";
-import CatTypeFamilyModal from "../features/Modals/CategoryModals";
 import ItemsDetails from "../features/Items";
 
-import { deleteAnItem, getFilterOperator, IItem } from "../api/items";
+import { deleteAnItem, IItem } from "../api/items";
 
 import List from "../app/SideUtilityList";
 import { MyTabs, MyTab } from "../app/Tabs";
 
 import FieldNFilter from "../features/FieldAndFilter/Modal";
 
-import { DataGrid, GridColDef, GridFilterItem, GridToolbar } from "@material-ui/data-grid";
-// import { INote } from "../api/note";
-// import { IDocument } from "../api/document";
-// import DataTable from "../features/Items/Table";
+import {
+    DataGrid,
+    GridColDef,
+    GridFilterModelParams,
+    GridPageChangeParams,
+    GridSortModelParams,
+    GridToolbar,
+} from "@material-ui/data-grid";
+import { generateURL } from "../logic/filterSortPage";
 
 const Inventory = () => {
-    const [filters, setFilters] = useState<GridFilterItem[]>([]);
-    const [page, setPage] = useState(1);
+    const [filters, setFilters] = useState<GridFilterModelParams>();
+    const [page, setPage] = useState<GridPageChangeParams>();
+    const [sorts, setSort] = useState<GridSortModelParams>();
 
-    const {
-        data: items,
-        mutate: mutateItems,
-        revalidate: revalidateItems,
-    } = useSWR<IItem[]>(
-        filters.length > 0 || filters[0]?.value
-            ? [
-                  `/item?${getFilterOperator(filters[0]?.operatorValue)}${filters[0]?.columnField}=${
-                      filters[0]?.value
-                  }`,
-                  filters,
-              ]
-            : "/item"
+    const { data: items, mutate: mutateItems } = useSWR<{ items: IItem[]; total: number }>(
+        generateURL(filters, sorts, page)
     );
 
     const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
@@ -60,18 +52,16 @@ const Inventory = () => {
 
     const [addItemModal, setAddItemModal] = useState(false);
     const [deleteItemModal, setDeleteItemModal] = useState(false);
-    const [catModal, setCatModal] = useState(false);
     const [editNoteModal, setEditNoteModal] = useState(false);
     const [editDocModal, setEditDocModal] = useState(false);
     const [addNoteModal, setAddNoteModal] = useState(false);
     const [addDocModal, setAddDocModal] = useState(false);
 
     const [bomModal, setBomModal] = useState(false);
-    const [applyFilterModal, setApplyFilterModal] = useState(false);
     const [FieldNFilterModal, setFieldNFilterModal] = useState(false);
 
-    const gridColumns = useMemo<GridColDef[]>(
-        () => [
+    const gridColumns = useMemo<GridColDef[]>(() => {
+        const res: GridColDef[] = [
             { field: "no", headerName: "Item no.", flex: 1 },
             { field: "name", headerName: "Name", flex: 2 },
             { field: "description", headerName: "Description", flex: 2 },
@@ -81,18 +71,33 @@ const Inventory = () => {
             { field: "totalQoh", headerName: "totalQoh" },
             { field: "usedInLastQuarter", headerName: "usedInLastQuarter" },
             { field: "resellCost", headerName: "resellCost" },
-            { field: "qbtype", headerName: "qbtype", hide: true },
-            { field: "qbid", headerName: "qbid", hide: true },
-            { field: "sku", headerName: "sku", hide: true },
-            { field: "active", headerName: "active", hide: true, type: "boolean" },
-            { field: "manufacturer", headerName: "manufacturer", hide: true },
-            { field: "jobDays", headerName: "jobDays", hide: true },
-            { field: "color", headerName: "color", hide: true },
-            { field: "size", headerName: "size", hide: true },
-            { field: "color", headerName: "color", hide: true },
-        ],
-        []
-    );
+        ];
+
+        const exceptions = [
+            "__v",
+            "id",
+            "no",
+            "name",
+            "description",
+            "cost",
+            "salesApproved",
+            "engineeringApproved",
+            "totalQog",
+            "usedInLastQuarter",
+            "resellCost",
+            "filters",
+            "fields",
+        ];
+        if (items && items.items && items.items.length > 0) {
+            for (let f of Object.keys(items.items[0])) {
+                if (!exceptions.includes(f)) {
+                    res.push({ field: f, headerName: f, hide: true });
+                }
+            }
+        }
+
+        return res;
+    }, []);
 
     const handleDelete = useCallback(async () => {
         try {
@@ -105,7 +110,7 @@ const Inventory = () => {
         } catch (error) {
             console.log(error);
         }
-    }, [selectedItem]);
+    }, [selectedItem, mutateItems]);
 
     return (
         <Box>
@@ -150,10 +155,8 @@ const Inventory = () => {
 
             <AddItemModal open={addItemModal} onClose={() => setAddItemModal(false)} />
             <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
-            {/* <CatTypeFamilyModal open={catModal} onClose={() => setCatModal(false)} /> */}
 
             <FieldNFilter open={FieldNFilterModal} onClose={() => setFieldNFilterModal(false)} />
-            {/* <ApplyFilterModal open={applyFilterModal} onClose={() => setApplyFilterModal(false)} setter={setFilters} /> */}
 
             <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
                 <Button
@@ -207,11 +210,6 @@ const Inventory = () => {
                         </IconButton>
                     </ListItem>
                     <ListItem>
-                        <IconButton title="َApply Filter" onClick={() => setApplyFilterModal(true)}>
-                            <FilterListRounded />
-                        </IconButton>
-                    </ListItem>
-                    <ListItem>
                         <IconButton title="Dyanamic fields" onClick={() => setFieldNFilterModal(true)}>
                             <PostAddRounded />
                         </IconButton>
@@ -222,41 +220,26 @@ const Inventory = () => {
                         <Paper>
                             <Box height={550}>
                                 <DataGrid
-                                    loading={!items}
                                     onRowSelected={(r) => {
                                         setSelectedItem(r.data as any);
                                         setActiveTab(1);
                                     }}
+                                    pagination
+                                    pageSize={25}
+                                    rowCount={items ? items.total : 0}
                                     filterMode="server"
-                                    onFilterModelChange={(d) => {
-                                        console.log(d.filterModel.items);
-                                        if (d.filterModel.items[0].value) {
-                                            setFilters(d.filterModel.items);
-                                        }
-                                    }}
-                                    rows={items || []}
+                                    paginationMode="server"
+                                    sortingMode="server"
+                                    onSortModelChange={(s) => setSort(s)}
+                                    onPageChange={(p) => setPage(p)}
+                                    onPageSizeChange={(ps) => setPage(ps)}
+                                    onFilterModelChange={(f) => setFilters(f)}
+                                    rows={items ? items.items : []}
                                     columns={gridColumns}
                                     components={{ Toolbar: GridToolbar }}
                                 />
                             </Box>
                         </Paper>
-                        // <DataTable
-                        //     order={order}
-                        //     setOrder={setOrder}
-                        //     filters={filters}
-                        //     setFilters={setFilters}
-                        //     cats={cats}
-                        //     types={types}
-                        //     families={families}
-                        //     rows={items}
-                        //     page={page}
-                        //     setPage={setPage}
-                        //     onRowSelected={(d) => {
-                        //         setSelectedItem(d);
-                        //         setDetailDis(false);
-                        //         setActiveTab(1);
-                        //     }}
-                        // />
                     )}
                     {activeTab === 1 && (
                         <ItemsDetails
