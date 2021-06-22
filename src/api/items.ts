@@ -87,6 +87,17 @@ export const createItem = async (itemData: any) => {
         console.error(error);
     }
 };
+export const addImage = async (itemId: string, file: any) => {
+    const data = new FormData();
+    data.append('photo', file);
+    try {
+        // console.table(itemData);
+        const resp = await Axios.patch(`/item/${itemId}`, data);
+        return resp.data;
+    } catch (error) {
+        console.error(error);
+    }
+};
 
 export const updateAnItem = async (itemId: string, itemData: any) => {
     try {

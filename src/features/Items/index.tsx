@@ -40,6 +40,19 @@ function ItemsDetails({
     const { data: docs } = useSWR<IDocument[]>(`/document/item/${selectedRow.id}`);
     const { data: boms } = useSWR<IBom[]>(`/bom?ItemId=${selectedRow.id}`);
 
+    const [img, setImg] = useState<any>();
+
+    const handleFileChange = async (e: any) => {
+        if (!e.target.files) {
+            return;
+        }
+        let file = e.target.files[0];
+        let url = URL.createObjectURL(file);
+        const resp = await addImage(selectedRow.id, file);
+        if (resp) {
+            setImg(url);
+        }
+    };
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
 
@@ -164,7 +177,8 @@ function ItemsDetails({
                                         <Tab label="More Info." />
                                         <Tab label="Quantity" />
                                         <Tab label="Shipping" />
-                                        <Tab label="Filter and fields" />
+                                        <Tab label="Clusters and Levels" />
+                                        <Tab label="Image" />
                                     </Tabs>
                                     {moreInfoTab === 0 && (
                                         <MoreInfo
@@ -206,6 +220,38 @@ function ItemsDetails({
                                             errors={errors}
                                             touched={touched}
                                         />
+                                    )}
+                                    {moreInfoTab === 4 && (
+                                        <Box mt={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                                            <img
+                                                style={{ maxWidth: "100%", height: "auto" }}
+                                                alt={selectedRow?.photo}
+                                                src={img ? img : `http://zarph.ir:3100${selectedRow?.photo}`}
+                                            />
+                                            <div style={{ display: "flex", justifyContent: "center" }}>
+                                                <label htmlFor="file">
+                                                    <div
+                                                        style={{
+                                                            width: "100%",
+                                                            height: "50px",
+                                                            display: "flex",
+                                                            alignItems: "center",
+                                                            justifyContent: "center",
+                                                        }}
+                                                    >
+                                                        Upload Image
+                                                    </div>
+                                                    <input
+                                                        id="file"
+                                                        name="file"
+                                                        style={{ display: "none" }}
+                                                        type="file"
+                                                        onChange={handleFileChange}
+                                                        accept="image/*"
+                                                    />
+                                                </label>
+                                            </div>
+                                        </Box>
                                     )}
                                 </BasePaper>
                             </Grid>

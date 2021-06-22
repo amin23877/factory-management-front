@@ -8,7 +8,6 @@ import {
     FormControlLabel,
     RadioGroup,
     Radio,
-    LinearProgress,
 } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
     Typography,
     Box,
@@ -9,6 +9,7 @@ import {
     RadioGroup,
     Radio,
 } from "@material-ui/core";
+
 
 import TextField from "../../app/TextField";
 import { FieldSelect, ArraySelect } from "../../app/Inputs";
@@ -25,6 +26,11 @@ import { getQuoteById, getQuotes } from "../../api/quote";
 import { getAllDivison } from "../../api/division";
 import { DateTimePicker } from "@material-ui/pickers";
 import { getJobs } from "../../api/job";
+import Button from "../../app/Button";
+import { exportPdf } from "../../logic/pdf";
+
+
+
 
 export const GeneralForm = ({
     handleChange,
@@ -403,5 +409,49 @@ export const TermsTab = ({
                 onChange={handleChange}
             />
         </Box>
+    );
+};
+
+
+
+export const DocumentForm = ({ onDone }: { onDone: () => void }) => {
+    const divToPrint = useRef<HTMLElement | null>(null);
+
+    // const classes = useStyles();
+
+    const handleSaveDocument = async () => {
+        if (divToPrint.current) {
+            await exportPdf(divToPrint.current);
+        }
+    };
+
+    return (
+        <Box>
+            <Typography>We made a pdf from your Quote, now you can save it</Typography>
+            <div style={{ height: 400, overflowY: "auto" }}>
+                <div id="myMm" style={{ height: "1mm" }} />
+                <div
+                    id="divToPrint"
+                    ref={(e) => (divToPrint.current = e)}
+                    style={{
+                        backgroundColor: "#fff",
+                        color: "black",
+                        width: "835px",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        minHeight: "1200px",
+                    }}
+                >
+
+                </div>
+            </div>
+
+            <Box textAlign="right">
+                <Button kind="add" onClick={handleSaveDocument}>
+                    Save
+                </Button>
+                {/* {isUploading && <LinearProgress />} */}
+            </Box>
+        </Box >
     );
 };
