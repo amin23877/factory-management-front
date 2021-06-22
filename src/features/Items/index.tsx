@@ -176,9 +176,9 @@ function ItemsDetails({
                             <Grid item md={4} xs={12}>
                                 <BasePaper
                                     style={{
+                                        height: "100%",
                                         display: "flex",
                                         flexDirection: "column",
-                                        justifyContent: "space-between",
                                     }}
                                 >
                                     <Tabs
@@ -236,11 +236,13 @@ function ItemsDetails({
                                     )}
                                     {moreInfoTab === 4 && (
                                         <Box mt={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
-                                            <img
-                                                style={{ maxWidth: "100%", height: "auto" }}
-                                                alt={selectedRow?.photo}
-                                                src={img ? img : `http://zarph.ir:3100${selectedRow?.photo}`}
-                                            />
+                                            {selectedRow?.photo && (
+                                                <img
+                                                    style={{ maxWidth: "100%", height: "auto", maxHeight: 400 }}
+                                                    alt={selectedRow?.photo}
+                                                    src={img ? img : `http://zarph.ir:3100${selectedRow?.photo}`}
+                                                />
+                                            )}
                                             <div>
                                                 <Box textAlign="center">
                                                     <Button

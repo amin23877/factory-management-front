@@ -1,12 +1,12 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { Box, Button, IconButton, ListItem, Paper } from "@material-ui/core";
+import { Box, IconButton, ListItem, Paper } from "@material-ui/core";
 import {
     NoteRounded,
     FileCopyRounded,
-    PrintRounded,
     AddRounded,
     DeleteRounded,
     PostAddRounded,
+    DescriptionRounded,
 } from "@material-ui/icons";
 import useSWR from "swr";
 import Confirm from "../features/Modals/Confirm";
@@ -159,33 +159,6 @@ const Inventory = () => {
             <FieldNFilter open={FieldNFilterModal} onClose={() => setFieldNFilterModal(false)} />
 
             <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
-                <Button
-                    disabled={activeTab === 0}
-                    onClick={() => setAddNoteModal(true)}
-                    title="add note"
-                    color="secondary"
-                    startIcon={<NoteRounded />}
-                >
-                    Add New Note
-                </Button>
-                <Button
-                    disabled={activeTab === 0}
-                    onClick={() => setAddDocModal(true)}
-                    title="add document"
-                    color="secondary"
-                    startIcon={<FileCopyRounded />}
-                >
-                    Add Document
-                </Button>
-                <Button
-                    disabled={activeTab === 0}
-                    onClick={() => setBomModal(true)}
-                    title="Bill of Material"
-                    startIcon={<PrintRounded />}
-                >
-                    BOM
-                </Button>
-
                 <div style={{ flexGrow: 1 }} />
 
                 <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="secondary">
@@ -210,8 +183,31 @@ const Inventory = () => {
                         </IconButton>
                     </ListItem>
                     <ListItem>
-                        <IconButton title="Dyanamic fields" onClick={() => setFieldNFilterModal(true)}>
+                        <IconButton title="Cluster and level" onClick={() => setFieldNFilterModal(true)}>
                             <PostAddRounded />
+                        </IconButton>
+                    </ListItem>
+                    <ListItem>
+                        <IconButton
+                            disabled={activeTab === 0}
+                            title="Bill of Material"
+                            onClick={() => setBomModal(true)}
+                        >
+                            <DescriptionRounded />
+                        </IconButton>
+                    </ListItem>
+                    <ListItem>
+                        <IconButton disabled={activeTab === 0} title="Add note" onClick={() => setAddNoteModal(true)}>
+                            <NoteRounded />
+                        </IconButton>
+                    </ListItem>
+                    <ListItem>
+                        <IconButton
+                            disabled={activeTab === 0}
+                            title="Add document"
+                            onClick={() => setAddDocModal(true)}
+                        >
+                            <FileCopyRounded />
                         </IconButton>
                     </ListItem>
                 </List>
