@@ -17,8 +17,10 @@ import ManualCountModal from "./ManualCountModal";
 import SOTable from "./SOTable";
 import { INote } from "../../api/note";
 import { IDocument } from "../../api/document";
-import { addImage, AddItemSchema, updateAnItem } from "../../api/items";
-import { useEffect } from "react";
+import { AddItemSchema, updateAnItem, addImage } from "../../api/items";
+import { IBom } from "../../api/bom";
+import { GridColDef } from "@material-ui/data-grid";
+import { useRef } from "react";
 
 function ItemsDetails({
     selectedRow,
@@ -31,13 +33,7 @@ function ItemsDetails({
     onNoteSelected: (a: any) => void;
     onDocSelected: (a: any) => void;
 }) {
-    const { data: vendors } = useSWR([`/item/${selectedRow.id}/venors`, selectedRow]);
-    const { data: itemQuotes } = useSWR([`/item/${selectedRow.id}/so`, selectedRow]);
-    const { data: itemSOs } = useSWR([`/item/${selectedRow.id}/quote`, selectedRow]);
-    const { data: notes, mutate: mutateNotes } = useSWR<INote[]>([`/note/item/${selectedRow.id}`, selectedRow]);
-    const { data: docs, mutate: mutateDocs } = useSWR<IDocument[]>([`/document/item/${selectedRow.id}`, selectedRow]);
-
-
+    const imageUploader = useRef<HTMLElement | null>(null);
     const [img, setImg] = useState<any>();
 
     const handleFileChange = async (e: any) => {
@@ -46,13 +42,22 @@ function ItemsDetails({
         }
         let file = e.target.files[0];
         let url = URL.createObjectURL(file);
-        const resp = await addImage(selectedRow.id, file)
+        const resp = await addImage(selectedRow.id, file);
         if (resp) {
             setImg(url);
         }
-    }
+    };
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
+
+    const { data: notes } = useSWR<INote[]>(activeTab === 0 ? `/note/item/${selectedRow.id}` : null);
+    const { data: docs } = useSWR<IDocument[]>(activeTab === 1 ? `/document/item/${selectedRow.id}` : null);
+    const { data: uses } = useSWR(activeTab === 2 ? `/item/${selectedRow.id}/uses` : null);
+    const { data: boms } = useSWR<IBom[]>(activeTab === 3 ? `/bom?ItemId=${selectedRow.id}` : null);
+    const { data: vendors } = useSWR(activeTab === 4 ? `/item/${selectedRow.id}/vendors` : null);
+    const { data: itemQuotes } = useSWR(activeTab === 5 ? `/item/${selectedRow.id}/quote` : null);
+    const { data: itemSOs } = useSWR(activeTab === 6 ? `/item/${selectedRow.id}/so` : null);
+    const { data: itemPOs } = useSWR(activeTab === 7 ? `/item/${selectedRow.id}/purchasepo` : null);
 
     const [showSnack, setShowSnack] = useState(false);
     const [snackMsg, setSnackMsg] = useState("");
@@ -66,6 +71,14 @@ function ItemsDetails({
             { field: "department", headerName: "Department" },
             { field: "entryDate", headerName: "Entry date", width: 180 },
             { field: "expireDate", headerName: "Expire date", width: 180 },
+        ],
+        []
+    );
+
+    const poCols = useMemo(
+        () => [
+            { field: "number", headerName: "Number" },
+            { field: "status", headerName: "Status", width: 180 },
         ],
         []
     );
@@ -85,6 +98,26 @@ function ItemsDetails({
             { field: "EmployeeId", headerName: "Employee" },
             { field: "description", headerName: "Description", width: 250 },
             { field: "createdAt", headerName: "Date", width: 300 },
+        ],
+        []
+    );
+
+    const bomCols = useMemo<GridColDef[]>(
+        () => [
+            { field: "no", headerName: "no." },
+            { field: "name", headerName: "Name" },
+            { field: "note", headerName: "note", flex: 1 },
+            { field: "current", headerName: "current", type: "boolean" },
+        ],
+        []
+    );
+
+    const usesCols = useMemo<GridColDef[]>(
+        () => [
+            { field: "no", headerName: "no." },
+            { field: "name", headerName: "Name" },
+            { field: "note", headerName: "note", flex: 1 },
+            { field: "current", headerName: "current", type: "boolean" },
         ],
         []
     );
@@ -204,25 +237,29 @@ function ItemsDetails({
                                     {moreInfoTab === 4 && (
                                         <Box mt={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
                                             <img
-                                                style={{ maxWidth: '100%', height: 'auto' }}
+                                                style={{ maxWidth: "100%", height: "auto" }}
                                                 alt={selectedRow?.photo}
                                                 src={img ? img : `http://zarph.ir:3100${selectedRow?.photo}`}
-                                                
                                             />
-                                            <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                                <label htmlFor="file">
-                                                    <div style={{ width: '100%', height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                            <div>
+                                                <Box textAlign="center">
+                                                    <Button
+                                                        onClick={() =>
+                                                            imageUploader.current && imageUploader.current.click()
+                                                        }
+                                                    >
                                                         Upload Image
-                                                    </div>
-                                                    <input
-                                                        id='file'
-                                                        name='file'
-                                                        style={{ display: "none" }}
-                                                        type="file"
-                                                        onChange={handleFileChange}
-                                                        accept='image/*'
-                                                    />
-                                                </label>
+                                                    </Button>
+                                                </Box>
+                                                <input
+                                                    id="file"
+                                                    name="file"
+                                                    style={{ display: "none" }}
+                                                    type="file"
+                                                    ref={(e) => (imageUploader.current = e)}
+                                                    onChange={handleFileChange}
+                                                    accept="image/*"
+                                                />
                                             </div>
                                         </Box>
                                     )}
@@ -236,9 +273,12 @@ function ItemsDetails({
                 <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} textColor="primary" variant="scrollable">
                     <Tab label="Notes" />
                     <Tab label="Documents" />
+                    <Tab label="Uses" />
+                    <Tab label="BOM" />
                     <Tab label="Vendors" />
                     <Tab label="Quote History" />
                     <Tab label="Sales order History" />
+                    <Tab label="Purchase order History" />
                     <Tab label="Sales Report" />
                 </Tabs>
                 <Box p={3}>
@@ -249,13 +289,22 @@ function ItemsDetails({
                         <BaseDataGrid height={250} cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />
                     )}
                     {activeTab === 2 && (
-                        <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => { }} />
+                        <BaseDataGrid height={250} cols={usesCols} rows={uses || []} onRowSelected={() => {}} />
                     )}
                     {activeTab === 3 && (
-                        <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes || []} onRowSelected={() => { }} />
+                        <BaseDataGrid height={250} cols={bomCols} rows={boms || []} onRowSelected={() => {}} />
                     )}
-                    {activeTab === 4 && <SOTable rows={itemSOs || []} />}
-                    {activeTab === 5 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
+                    {activeTab === 4 && (
+                        <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => {}} />
+                    )}
+                    {activeTab === 5 && (
+                        <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes || []} onRowSelected={() => {}} />
+                    )}
+                    {activeTab === 6 && <SOTable rows={itemSOs || []} />}
+                    {activeTab === 7 && (
+                        <BaseDataGrid height={250} cols={poCols} rows={itemPOs || []} onRowSelected={() => {}} />
+                    )}
+                    {activeTab === 8 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
                 </Box>
             </BasePaper>
         </Box>

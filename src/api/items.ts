@@ -89,7 +89,7 @@ export const createItem = async (itemData: any) => {
 };
 export const addImage = async (itemId: string, file: any) => {
     const data = new FormData();
-    data.append('photo', file);
+    data.append("photo", file);
     try {
         // console.table(itemData);
         const resp = await Axios.patch(`/item/${itemId}`, data);

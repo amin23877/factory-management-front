@@ -97,7 +97,7 @@ const Inventory = () => {
         }
 
         return res;
-    }, []);
+    }, [items]);
 
     const handleDelete = useCallback(async () => {
         try {
@@ -233,7 +233,10 @@ const Inventory = () => {
                                     onSortModelChange={(s) => setSort(s)}
                                     onPageChange={(p) => setPage(p)}
                                     onPageSizeChange={(ps) => setPage(ps)}
-                                    onFilterModelChange={(f) => setFilters(f)}
+                                    onFilterModelChange={(f) => {
+                                        setFilters(f);
+                                        console.log(f);
+                                    }}
                                     rows={items ? items.items : []}
                                     columns={gridColumns}
                                     components={{ Toolbar: GridToolbar }}

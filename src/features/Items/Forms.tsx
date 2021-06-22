@@ -426,7 +426,13 @@ export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlu
     }
 
     return (
-        <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
+        <Box
+            mt={1}
+            display="grid"
+            gridTemplateColumns="1fr 1fr"
+            gridGap={10}
+            style={{ maxHeight: 600, overflowY: "auto" }}
+        >
             {filters.map((filter) => (
                 <ArraySelect
                     defaultValue="Default"

@@ -59,7 +59,7 @@ export const generateURL = (
 
     if (filters || sorts || page) url += "?";
 
-    params.push(generatePage(page));
+    // params.push(generatePage(page));
     const generatedFilters = generateFilter(filters);
     const generatedSorts = generateSorts(sorts);
     

@@ -30,12 +30,12 @@ export default function SOTable({ rows }: { rows: any[] }) {
                     {rows &&
                         rows.map((row: any, i) => (
                             <TableRow key={i}>
-                                <TableCell>{row.SO.number}</TableCell>
-                                <TableCell>{row.LineItemRecord?.description}</TableCell>
-                                <TableCell>{row.SO.Client?.name}</TableCell>
-                                <TableCell>{row.LineItemRecord?.quantity}</TableCell>
-                                <TableCell>{row.LineItemRecord?.price}</TableCell>
-                                <TableCell>{row.LineItemRecord?.createdAt}</TableCell>
+                                <TableCell>{row?.SO?.number}</TableCell>
+                                <TableCell>{row?.LineItemRecord?.description}</TableCell>
+                                <TableCell>{row?.SO?.Client?.name}</TableCell>
+                                <TableCell>{row?.LineItemRecord?.quantity}</TableCell>
+                                <TableCell>{row?.LineItemRecord?.price}</TableCell>
+                                <TableCell>{row?.LineItemRecord?.createdAt}</TableCell>
                             </TableRow>
                         ))}
                 </TableBody>

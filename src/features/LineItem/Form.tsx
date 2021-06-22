@@ -31,19 +31,11 @@ export default function MainForm({
     recordId: string;
     readOnly?: boolean;
 }) {
-    const [items, setItems] = useState([]);
-
     const schema = Yup.object().shape({
         ItemId: Yup.string().required(),
         quantity: Yup.number().required().min(1),
         price: Yup.number().required().min(0.1),
     });
-
-    useEffect(() => {
-        getItems()
-            .then((d) => d && setItems(d))
-            .catch((e) => console.log(e));
-    }, []);
 
     const handleSubmit = async (d: ILineItem) => {
         try {
@@ -95,11 +87,16 @@ export default function MainForm({
     };
 
     return (
-        <Formik initialValues={initialValues ? initialValues : ({} as ILineItem)} validationSchema={schema} onSubmit={handleSubmit}>
+        <Formik
+            initialValues={initialValues ? initialValues : ({} as ILineItem)}
+            validationSchema={schema}
+            onSubmit={handleSubmit}
+        >
             {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
                 <Form>
                     <FieldSelect
                         request={getItems}
+                        getOptionList={(data) => data.items}
                         itemTitleField="name"
                         itemValueField="id"
                         value={values?.ItemId as any}

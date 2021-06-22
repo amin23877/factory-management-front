@@ -46,7 +46,11 @@ export default function VendingModal({
     };
 
     return (
-        <Dialog title={initialValues?.id ? "Edit Vending" : `Add new vending to ${vendor?.name}`} open={open} onClose={onClose}>
+        <Dialog
+            title={initialValues?.id ? "Edit Vending" : `Add new vending to ${vendor?.name}`}
+            open={open}
+            onClose={onClose}
+        >
             <Box p={2}>
                 <Formik
                     initialValues={initialValues || {}}
@@ -106,6 +110,7 @@ export default function VendingModal({
                                 <FieldSelect
                                     style={{ width: "100%", justifyContent: "space-around" }}
                                     request={getItems}
+                                    getOptionList={(data) => data.items}
                                     itemTitleField="name"
                                     itemValueField="id"
                                     name="ItemId"
@@ -119,7 +124,12 @@ export default function VendingModal({
                                 <div />
                             </Box>
                             <Box display="flex" alignItems="center">
-                                <Button fullWidth type="submit" kind={initialValues?.id ? "edit" : "add"} style={{ margin: "0.5em 0" }}>
+                                <Button
+                                    fullWidth
+                                    type="submit"
+                                    kind={initialValues?.id ? "edit" : "add"}
+                                    style={{ margin: "0.5em 0" }}
+                                >
                                     {initialValues?.id ? "Save" : "submit"}
                                 </Button>
                                 {initialValues && initialValues.id && (
