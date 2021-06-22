@@ -122,7 +122,7 @@ export default function FieldForm({ initial }: { initial?: IField }) {
                                         renderInput={(params) => (
                                             <TextField
                                                 {...params}
-                                                label="Cluster values"
+                                                label="Cluster Values"
                                                 variant="outlined"
                                                 size="small"
                                             />
@@ -156,7 +156,7 @@ export default function FieldForm({ initial }: { initial?: IField }) {
                                 style={{ fontSize: "0.7rem" }}
                                 checked={values.all}
                                 name="all"
-                                label="Add this field for all filters"
+                                label="Add this Level for all Clusters"
                                 onChange={handleChange}
                                 control={<Checkbox />}
                             />

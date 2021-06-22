@@ -15,7 +15,7 @@ import { exportPdf } from "../../logic/pdf";
 import { getJobs } from "../../api/job";
 import QuotePDF from "../../PDFTemplates/Quote";
 
-export const DocumentForm = ({ onDone }: { onDone: () => void }) => {
+export const DocumentForm = ({ onDone, createdQoute, data }: { onDone: () => void, createdQoute: any, data: any }) => {
     const divToPrint = useRef<HTMLElement | null>(null);
 
     const handleSaveDocument = async () => {
