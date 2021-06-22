@@ -8,7 +8,7 @@ import Button from "../../app/Button";
 import { BasePaper } from "../../app/Paper";
 import { CommissionTab, DepositTab, GeneralForm, TermsTab } from "./Forms";
 
-import { IQuote, updateQuote } from "../../api/quote";
+import { createQuoteComplete, IQuote, updateQuote } from "../../api/quote";
 
 export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
     const [activeTab, setActiveTab] = useState(0);
@@ -114,8 +114,7 @@ export const FinalForm = ({ onDone, onBack, data }: { onDone: (a: any) => void; 
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async () => {
-        onDone(data);
-        //     try {
+        // onDone(data);
         //         const { ContactId, requester, status, VendorId, lines } = data;
         //         let newLines = [...lines];
         //         newLines.forEach(function (v: any) {
@@ -127,24 +126,18 @@ export const FinalForm = ({ onDone, onBack, data }: { onDone: (a: any) => void; 
         //             delete v.SOId;
         //             delete v.updatedAt;
         //         });
-        //         const resp = await createPurchasePOComplete({
-        //             ContactId,
-        //             requester,
-        //             status,
-        //             VendorId,
-        //             lines: newLines,
-        //         } as IPurchasePOComplete);
-        //         if (resp) {
-        //             console.log(resp);
-        //             onDone(resp);
-        //         }
-        //     } catch (error) {
-        //         console.log(error);
-        //         console.log(error.response.data.error);
-        //     } finally {
-        //         setLoading(false);
-        //     }
-        // };
+        try {
+            const resp = await createQuoteComplete(data);
+            if (resp) {
+                console.log(resp);
+                onDone(resp);
+            }
+        } catch (error) {
+            console.log(error);
+            console.log(error.response.data.error);
+        } finally {
+            setLoading(false);
+        }
     };
     return (
         <>

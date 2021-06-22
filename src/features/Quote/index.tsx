@@ -96,8 +96,20 @@ export default function QuotePanel() {
 
     return (
         <div>
-            <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
-            <AddQuote open={addQ} onClose={() => setAddQ(false)} initialData={compQ} onDone={() => {}} />
+            <Confirm
+                open={confirm}
+                onClose={() => setConfirm(false)}
+                onConfirm={handleDelete}
+            />
+
+            <AddQuote
+                open={addQ}
+                onClose={() => setAddQ(false)}
+                initialData={compQ}
+                onDone={() => {
+                    console.log('done')
+                }}
+            />
 
             {selectedQuote && selectedQuote.id && (
                 <NoteModal itemId={selectedQuote.id} model="quote" open={addNote} onClose={() => setAddNote(false)} />
