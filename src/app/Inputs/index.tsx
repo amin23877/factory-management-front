@@ -29,7 +29,15 @@ interface IMFS {
     style?: CSSProperties;
     value?: any;
 }
-export const MaterialFieldSelect = ({ request, limit, getOptionLabel, getOptionValue, onChange, value, ...props }: IMFS) => {
+export const MaterialFieldSelect = ({
+    request,
+    limit,
+    getOptionLabel,
+    getOptionValue,
+    onChange,
+    value,
+    ...props
+}: IMFS) => {
     const [options, setOptions] = useState([]);
     const [findValue, setFindValue] = useState<any>();
 
@@ -81,25 +89,10 @@ interface IOS extends StandardTextFieldProps {
 }
 export const ObjectSelect = ({ inputStyle, items, itemTitleField, itemValueField, keyField, ...props }: IOS) => {
     return (
-        // <FormControl className={styles.objectSelect} style={{ ...props.style }} fullWidth={props.fullWidth}>
-        //     {props.label && (
-        //         <InputLabel shrink htmlFor="object-select">
-        //             {props.label}
-        //         </InputLabel>
-        //     )}
-        //     <Select id="object-select" name={props.name} style={{ ...inputStyle }} input={<BootstrapInput />} {...props}>
-        //         <MenuItem value={undefined}>None</MenuItem>
-        //         {items &&
-        //             items.map((item: any, i) => (
-        //                 <MenuItem key={keyField ? item[keyField] : i} value={item[itemValueField]}>
-        //                     {item[itemTitleField]}
-        //                 </MenuItem>
-        //             ))}
-        //     </Select>
-        // </FormControl>
         <TextField {...props} variant="outlined" size="small" select>
             <MenuItem value={undefined}>None</MenuItem>
             {items &&
+                items.length >= 0 &&
                 items.map((item: any, i) => (
                     <MenuItem key={keyField ? item[keyField] : i} value={item[itemValueField]}>
                         {item[itemTitleField]}
@@ -111,21 +104,32 @@ export const ObjectSelect = ({ inputStyle, items, itemTitleField, itemValueField
 
 interface IFieldSelect extends StandardTextFieldProps {
     request: () => Promise<any>;
+    getOptionList?: (data: any) => any;
     itemValueField: string;
     itemTitleField: string;
     limit?: number;
     keyField?: string;
 }
-export const FieldSelect = ({ keyField, request, itemValueField, itemTitleField, limit, ...props }: IFieldSelect) => {
+export const FieldSelect = ({
+    keyField,
+    request,
+    itemValueField,
+    itemTitleField,
+    limit,
+    getOptionList,
+    ...props
+}: IFieldSelect) => {
     const [items, setItems] = useState([]);
 
     useEffect(() => {
         request()
             .then((data) => {
                 if (limit && limit > 0) {
-                    setItems(data.slice(0, limit));
+                    let options = getOptionList ? getOptionList(data) : data.slice(0, limit);
+                    setItems(options);
                 } else {
-                    setItems(data);
+                    let options = getOptionList ? getOptionList(data) : data;
+                    setItems(options);
                 }
             })
             .catch((e) => console.log(e));
@@ -139,7 +143,12 @@ interface IArraySelect extends StandardTextFieldProps {
 }
 export const ArraySelect = ({ items, ...props }: IArraySelect) => {
     return (
-        <ObjectSelect itemTitleField="item" itemValueField="item" items={items ? items.map((item) => ({ item: item })) : []} {...props} />
+        <ObjectSelect
+            itemTitleField="item"
+            itemValueField="item"
+            items={items ? items.map((item) => ({ item: item })) : []}
+            {...props}
+        />
     );
 };
 

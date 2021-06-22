@@ -62,6 +62,7 @@ const BomRecordForm = ({
                     <Form>
                         <Box display="flex" justifyContent="space-between" alignItems="center">
                             <FieldSelect
+                                getOptionList={(items) => items.items}
                                 request={getItems}
                                 itemTitleField="name"
                                 itemValueField="id"
@@ -132,8 +133,8 @@ export default function BomRecordTab({
 
     const handleDelete = async () => {
         try {
-            const resp = await deleteBomRecord(selectedRecord.id);
-            // console.log(resp);
+            await deleteBomRecord(selectedRecord.id);
+
             refreshRecords();
             setConfirm(false);
         } catch (error) {
@@ -145,12 +146,17 @@ export default function BomRecordTab({
             <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
 
             <Box flex={1} mr={1}>
-                <h5 style={{ textAlign: "center" }}>BOM {bomId}'s records</h5>
+                <h5 style={{ textAlign: "center" }}>BOM's record list</h5>
                 <List>
                     <ListItem button selected={activeTab === 0} onClick={() => setActiveTab(0)}>
                         Add
                     </ListItem>
-                    <ListItem button disabled={!selectedRecord} selected={activeTab === 1} onClick={() => setActiveTab(1)}>
+                    <ListItem
+                        button
+                        disabled={!selectedRecord}
+                        selected={activeTab === 1}
+                        onClick={() => setActiveTab(1)}
+                    >
                         Edit
                     </ListItem>
                     <ListItem button disabled={!selectedRecord} onClick={() => setConfirm(true)}>
@@ -159,7 +165,9 @@ export default function BomRecordTab({
                 </List>
             </Box>
             <Box flex={4}>
-                {activeTab === 0 && <BomRecordForm itemId={itemId} onDone={refreshRecords} bomId={bomId} method="post" />}
+                {activeTab === 0 && (
+                    <BomRecordForm itemId={itemId} onDone={refreshRecords} bomId={bomId} method="post" />
+                )}
                 {activeTab === 1 && (
                     <BomRecordForm
                         onDone={refreshRecords}
