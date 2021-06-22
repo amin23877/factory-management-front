@@ -13,9 +13,8 @@ import { getContactTypes } from "../../api/contactType";
 import { createAModelContact, deleteAModelContact, updateAModelContact, IContact } from "../../api/contact";
 
 const schema = Yup.object().shape({
-    firstName: Yup.string().required(),
-    lastName: Yup.string().required(),
-    ContactTypeId: Yup.number().required().notOneOf([0]),
+    name: Yup.string().required(),
+    ContactTypeId: Yup.string().required(),
 });
 
 export const ContactModal = ({
@@ -69,7 +68,11 @@ export const ContactModal = ({
     return (
         <Dialog open={open} onClose={onClose} title={`${data?.id ? "Edit" : "Add"} a Contact to ${model}`}>
             <Box m={3}>
-                <Formik initialValues={data?.id ? data : ({} as IContact)} validationSchema={schema} onSubmit={handleSubmit}>
+                <Formik
+                    initialValues={data?.id ? data : ({} as IContact)}
+                    validationSchema={schema}
+                    onSubmit={handleSubmit}
+                >
                     {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
                         <Form>
                             <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={8} gridColumnGap={8}>

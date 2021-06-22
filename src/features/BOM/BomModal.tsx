@@ -46,7 +46,6 @@ export default function BOMModal({ open, onClose, itemId }: { itemId: string; op
             if (selectedBom) {
                 const resp = await getBomRecord(selectedBom.id);
                 setBomRecords(resp);
-                console.log(resp);
             }
         } catch (error) {
             console.log(error);

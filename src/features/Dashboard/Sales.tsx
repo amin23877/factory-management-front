@@ -4,8 +4,6 @@ import { AddRounded } from "@material-ui/icons";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import { selectQuotes } from "../Quote/quoteSlice";
-
 import LineChart from "../../app/Chart/LineChart";
 import { BasePaper } from "../../app/Paper";
 import { BaseTable, MinimalTable } from "../../app/Table";
@@ -19,6 +17,7 @@ import badge from "../../assets/icons/badge.svg";
 import { selectActivities } from "../Activity/activitySlice";
 import { selectSOs } from "../SO/soSlice";
 import { selectPOs } from "../PO/poSlice";
+import useSWR from "swr";
 
 const useStyles = makeStyles({
     statusCard: {
@@ -29,7 +28,17 @@ const useStyles = makeStyles({
     },
 });
 
-const StatusCard = ({ title, value, icon, children }: { title: string; value: string; children?: ReactNode; icon: string }) => {
+const StatusCard = ({
+    title,
+    value,
+    icon,
+    children,
+}: {
+    title: string;
+    value: string;
+    children?: ReactNode;
+    icon: string;
+}) => {
     const classes = useStyles();
 
     return (
@@ -41,7 +50,11 @@ const StatusCard = ({ title, value, icon, children }: { title: string; value: st
             >
                 <Box display="flex" width="100%" alignItems="center">
                     <Box>
-                        <img style={{ backgroundColor: "#f7f7fc", borderRadius: 200, padding: 8 }} src={icon} alt={title} />
+                        <img
+                            style={{ backgroundColor: "#f7f7fc", borderRadius: 200, padding: 8 }}
+                            src={icon}
+                            alt={title}
+                        />
                     </Box>
                     <Box flex={2} ml={1} style={{ marginRight: "auto" }}>
                         <Typography variant="body1">{value}</Typography>
@@ -86,7 +99,7 @@ const Activities = () => {
 };
 
 const Quotes = () => {
-    const quotes = useSelector(selectQuotes);
+    const { data: quotes } = useSWR("/quote");
 
     const cols = [{ field: "number" }, { field: "expireDate" }];
 
@@ -152,7 +165,7 @@ const SalesOrders = () => {
 };
 
 export const Sales = () => {
-    const quotes = useSelector(selectQuotes);
+    const { data: quotes } = useSWR("/quote");
     const activities = useSelector(selectActivities);
     const POs = useSelector(selectPOs);
     const SOs = useSelector(selectSOs);

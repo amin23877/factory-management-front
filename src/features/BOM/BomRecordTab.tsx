@@ -62,8 +62,8 @@ const BomRecordForm = ({
                     <Form>
                         <Box display="flex" justifyContent="space-between" alignItems="center">
                             <FieldSelect
-                                getOptionList={(items) => items.items}
                                 request={getItems}
+                                getOptionList={(items) => items.items}
                                 itemTitleField="name"
                                 itemValueField="id"
                                 name="ItemId"

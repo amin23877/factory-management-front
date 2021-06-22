@@ -214,23 +214,11 @@ export default function Clients() {
             refreshContacts();
             refreshClientTypes();
         }
-    }, [
-        activeTab,
-        refreshNotes,
-        refreshDocs,
-        refreshActivities,
-        refreshAddresses,
-        refreshAgencies,
-        refreshDivisions,
-        refreshPhones,
-        refreshEmails,
-        refreshContacts,
-        refreshClientTypes,
-    ]);
+    }, [activeTab]);
 
     useEffect(() => {
         refreshClients();
-    }, [refreshClients]);
+    }, []);
 
     return (
         <Container>
