@@ -9,11 +9,11 @@ export default function FieldNFilter({ open, onClose }: { open: boolean; onClose
     const [activeTab, setActiveTab] = useState(0);
 
     return (
-        <Dialog open={open} onClose={onClose} title="Filters" maxWidth="md" fullWidth>
+        <Dialog open={open} onClose={onClose} title="Clusters" maxWidth="md" fullWidth>
             <Box p={1} display="flex" flexDirection="column">
                 <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
-                    <Tab label="Filter" />
-                    <Tab label="Field" />
+                    <Tab label="Cluster" />
+                    <Tab label="level" />
                     <Tab label="Flowchart" />
                 </Tabs>
                 {activeTab === 0 && (
