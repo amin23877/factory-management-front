@@ -395,7 +395,7 @@ export default function DataTable({
                                     </TableCell>
                                     <TableCell>{item.totalQoh ? item.totalQoh : ""}</TableCell>
                                     <TableCell>{item.usedInLastQuarter ? item.usedInLastQuarter : ""}</TableCell>
-                                    <TableCell>{item.resellCost ? item.resellCost : ""}</TableCell>
+                                    {/* <TableCell>{item.resellCost ? item.resellCost : ""}</TableCell> */}
                                 </TableRow>
                             ))}
                     </TableBody>

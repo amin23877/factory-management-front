@@ -18,6 +18,7 @@ import Button from "../../app/Button";
 import Details from "./Details";
 import AddPOModal from "./AddPoModal";
 import { BasePaper } from "../../app/Paper";
+import { GridColDef } from "@material-ui/data-grid";
 
 export default function POPanel() {
     const [activeTab, setActiveTab] = useState(0);
@@ -33,11 +34,18 @@ export default function POPanel() {
     const [selectedNote, setSelectedNote] = useState<any>();
     const [selectedDoc, setSelectedDoc] = useState<any>();
 
-    const poCols = [
+    const poCols: GridColDef[] = [
         { field: "number" },
-        { field: "Contact", valueGetter: ({ data }: any) => data.Contact && data.Contact.firstName + data.Contact.lastName, width: 180 },
-        { field: "Client", valueGetter: ({ data }: any) => data.Client?.name },
-        { field: "Project", valueGetter: ({ data }: any) => data.Project?.name },
+        {
+            field: "Contact",
+            valueFormatter: (r) => r.row?.ContactId?.name,
+            width: 180,
+        },
+        { field: "Client", valueFormatter: (r) => r.row?.ClientId?.name },
+        {
+            field: "Project",
+            valueFormatter: (r) => r.row?.ProjectId?.name,
+        },
     ];
 
     const refreshPOs = async () => {
@@ -136,14 +144,22 @@ export default function POPanel() {
                 </Button>
                 {activeTab === 1 && <Button onClick={() => setNoteModal(true)}>Add note</Button>}
                 {activeTab === 1 && (
-                    <Button style={{ backgroundColor: "#1a73e8", color: "#fff", marginLeft: "5px" }} onClick={() => setDocModal(true)}>
+                    <Button
+                        style={{ backgroundColor: "#1a73e8", color: "#fff", marginLeft: "5px" }}
+                        onClick={() => setDocModal(true)}
+                    >
                         {" "}
                         <AddRoundedIcon /> Add document
                     </Button>
                 )}
             </Box>
             <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
-                <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)} style={{ marginBottom: "10px" }}>
+                <Tabs
+                    value={activeTab}
+                    textColor="primary"
+                    onChange={(e, nv) => setActiveTab(nv)}
+                    style={{ marginBottom: "10px" }}
+                >
                     <Tab label="Overview" />
                     <Tab label="Details" disabled={!selectedPO} />
                 </Tabs>

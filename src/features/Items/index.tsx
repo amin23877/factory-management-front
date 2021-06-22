@@ -17,7 +17,8 @@ import ManualCountModal from "./ManualCountModal";
 import SOTable from "./SOTable";
 import { INote } from "../../api/note";
 import { IDocument } from "../../api/document";
-import { AddItemSchema, updateAnItem } from "../../api/items";
+import { addImage, AddItemSchema, updateAnItem } from "../../api/items";
+import { useEffect } from "react";
 
 function ItemsDetails({
     selectedRow,
@@ -37,19 +38,19 @@ function ItemsDetails({
     const { data: docs, mutate: mutateDocs } = useSWR<IDocument[]>([`/document/item/${selectedRow.id}`, selectedRow]);
 
 
-    const [file, setFile] = useState();
     const [img, setImg] = useState<any>();
 
-    const handleFileChange = (e: any) => {
+    const handleFileChange = async (e: any) => {
         if (!e.target.files) {
             return;
         }
         let file = e.target.files[0];
-        setFile(file);
-        let url = URL.createObjectURL(e.target.files[0]);
-        setImg(url);
+        let url = URL.createObjectURL(file);
+        const resp = await addImage(selectedRow.id, file)
+        if (resp) {
+            setImg(url);
+        }
     }
-
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
 
@@ -104,7 +105,7 @@ function ItemsDetails({
     };
 
     return (
-        <Box my={2}>
+        <Box>
             <ManualCountModal
                 open={manualCountModal}
                 onClose={() => setManualCountModal(false)}
@@ -122,8 +123,8 @@ function ItemsDetails({
             <Formik initialValues={selectedRow} validationSchema={AddItemSchema} onSubmit={handleSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
                     <Form>
-                        <Grid container>
-                            <Grid item md={8} xs={12} style={{ padding: "1em" }}>
+                        <Grid container spacing={2}>
+                            <Grid item md={8} xs={12}>
                                 <BasePaper>
                                     <General
                                         values={values}
@@ -139,8 +140,14 @@ function ItemsDetails({
                                     </Button>
                                 </BasePaper>
                             </Grid>
-                            <Grid item md={4} xs={12} style={{ padding: "1em" }}>
-                                <BasePaper style={{ display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                            <Grid item md={4} xs={12}>
+                                <BasePaper
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        justifyContent: "space-between",
+                                    }}
+                                >
                                     <Tabs
                                         value={moreInfoTab}
                                         variant="scrollable"
@@ -194,12 +201,13 @@ function ItemsDetails({
                                             touched={touched}
                                         />
                                     )}
-                                    {moreInfoTab === 3 && (
-                                        <Box >
+                                    {moreInfoTab === 4 && (
+                                        <Box mt={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
                                             <img
                                                 style={{ maxWidth: '100%', height: 'auto' }}
-                                                alt="inventory image"
-                                                src={img ? img : selectedRow?.photo}
+                                                alt={selectedRow?.photo}
+                                                src={img ? img : `http://zarph.ir:3100${selectedRow?.photo}`}
+                                                
                                             />
                                             <div style={{ display: 'flex', justifyContent: 'center' }}>
                                                 <label htmlFor="file">
@@ -234,10 +242,18 @@ function ItemsDetails({
                     <Tab label="Sales Report" />
                 </Tabs>
                 <Box p={3}>
-                    {activeTab === 0 && <BaseDataGrid height={250} cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />}
-                    {activeTab === 1 && <BaseDataGrid height={250} cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />}
-                    {activeTab === 2 && <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => { }} />}
-                    {activeTab === 3 && <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes || []} onRowSelected={() => { }} />}
+                    {activeTab === 0 && (
+                        <BaseDataGrid height={250} cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
+                    )}
+                    {activeTab === 1 && (
+                        <BaseDataGrid height={250} cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />
+                    )}
+                    {activeTab === 2 && (
+                        <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => { }} />
+                    )}
+                    {activeTab === 3 && (
+                        <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes || []} onRowSelected={() => { }} />
+                    )}
                     {activeTab === 4 && <SOTable rows={itemSOs || []} />}
                     {activeTab === 5 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
                 </Box>
