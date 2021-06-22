@@ -172,7 +172,7 @@ export default function SalesOrderPanel() {
                     onDone={refreshDocs}
                 />
             )}
-
+    
             <AddSOModal open={addSo} onClose={() => setAddSo(false)} onDone={refreshSo} />
             <Confirm
                 open={confirm}

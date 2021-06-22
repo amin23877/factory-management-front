@@ -44,11 +44,10 @@ const Inventory = () => {
     } = useSWR<IItem[]>(
         filters.length > 0 || filters[0]?.value
             ? [
-                  `/item?${getFilterOperator(filters[0]?.operatorValue)}${filters[0]?.columnField}=${
-                      filters[0]?.value
-                  }`,
-                  filters,
-              ]
+                `/item?${getFilterOperator(filters[0]?.operatorValue)}${filters[0]?.columnField}=${filters[0]?.value
+                }`,
+                filters,
+            ]
             : "/item"
     );
 

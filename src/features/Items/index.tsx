@@ -36,6 +36,20 @@ function ItemsDetails({
     const { data: notes, mutate: mutateNotes } = useSWR<INote[]>([`/note/item/${selectedRow.id}`, selectedRow]);
     const { data: docs, mutate: mutateDocs } = useSWR<IDocument[]>([`/document/item/${selectedRow.id}`, selectedRow]);
 
+
+    const [file, setFile] = useState();
+    const [img, setImg] = useState<any>();
+
+    const handleFileChange = (e: any) => {
+        if (!e.target.files) {
+            return;
+        }
+        let file = e.target.files[0];
+        setFile(file);
+        let url = URL.createObjectURL(e.target.files[0]);
+        setImg(url);
+    }
+
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
 
@@ -136,7 +150,8 @@ function ItemsDetails({
                                         <Tab label="More Info." />
                                         <Tab label="Quantity" />
                                         <Tab label="Shipping" />
-                                        <Tab label="Filter and fields" />
+                                        <Tab label="Clusters and Levels" />
+                                        <Tab label="Image" />
                                     </Tabs>
                                     {moreInfoTab === 0 && (
                                         <MoreInfo
@@ -179,6 +194,30 @@ function ItemsDetails({
                                             touched={touched}
                                         />
                                     )}
+                                    {moreInfoTab === 3 && (
+                                        <Box >
+                                            <img
+                                                style={{ maxWidth: '100%', height: 'auto' }}
+                                                alt="inventory image"
+                                                src={img ? img : selectedRow?.photo}
+                                            />
+                                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                <label htmlFor="file">
+                                                    <div style={{ width: '100%', height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                        Upload Image
+                                                    </div>
+                                                    <input
+                                                        id='file'
+                                                        name='file'
+                                                        style={{ display: "none" }}
+                                                        type="file"
+                                                        onChange={handleFileChange}
+                                                        accept='image/*'
+                                                    />
+                                                </label>
+                                            </div>
+                                        </Box>
+                                    )}
                                 </BasePaper>
                             </Grid>
                         </Grid>
@@ -197,8 +236,8 @@ function ItemsDetails({
                 <Box p={3}>
                     {activeTab === 0 && <BaseDataGrid height={250} cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />}
                     {activeTab === 1 && <BaseDataGrid height={250} cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />}
-                    {activeTab === 2 && <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => {}} />}
-                    {activeTab === 3 && <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes || []} onRowSelected={() => {}} />}
+                    {activeTab === 2 && <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => { }} />}
+                    {activeTab === 3 && <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes || []} onRowSelected={() => { }} />}
                     {activeTab === 4 && <SOTable rows={itemSOs || []} />}
                     {activeTab === 5 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
                 </Box>

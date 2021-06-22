@@ -95,7 +95,7 @@ export default function QuotePanel() {
             console.log(error);
         }
     };
-
+    
     return (
         <div>
             <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
