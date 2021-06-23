@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Box, Step, StepLabel, Stepper, Dialog, DialogTitle, IconButton } from "@material-ui/core";
 import { CloseRounded } from "@material-ui/icons";
@@ -56,17 +55,13 @@ export default function AddQuote({
                     </Step>
                 </Stepper>
                 {step === 0 && (
-                    <Box display="flex" justifyContent="center">
-                        <Box flex={1}>
-                            <Box my={2}>
-                                <General
-                                    data={po}
-                                    onDone={(d) => {
-                                        setStep(1);
-                                    }}
-                                />
-                            </Box>
-                        </Box>
+                    <Box my={1}>
+                        <General
+                            data={po}
+                            onDone={(d) => {
+                                setStep(1);
+                            }}
+                        />
                     </Box>
                 )}
                 {step === 1 && (

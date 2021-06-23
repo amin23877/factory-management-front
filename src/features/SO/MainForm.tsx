@@ -14,7 +14,7 @@ export default function MainForm({ onDone, data }: { data?: any; onDone: (data: 
     const [activeTab, setActiveTab] = useState(0);
 
     const handleSubmit = async (data: ISO, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
-        onDone(data)
+        onDone(data);
         // try {
         //     const resp = await createSO(data);
         //     if (resp) {
@@ -29,26 +29,29 @@ export default function MainForm({ onDone, data }: { data?: any; onDone: (data: 
     };
 
     return (
-        <Box m={2} style={{ height: "75vh" }}>
+        <Box m={2}>
             <Formik initialValues={{} as ISO} onSubmit={handleSubmit}>
                 {({ values, handleChange, handleBlur, setValues }) => (
                     <Form>
-                        <Box display="flex">
-                            <Box flex={2}>
+                        <Box display="grid" gridTemplateColumns="3fr 2fr" gridGap={10}>
+                            <Box>
                                 <GeneralForm
                                     onChangeInit={setValues}
                                     values={values}
                                     handleChange={handleChange}
                                     handleBlur={handleBlur}
                                 />
-                                <Box display="flex" justifyContent="center" my={2}>
-                                    <Button type="submit" kind="add" style={{ padding: "1em 4em", width: "50%" }}>
-                                        Add
-                                    </Button>
-                                </Box>
+                                <Button type="submit" kind="add">
+                                    Add
+                                </Button>
                             </Box>
-                            <Box flex={1}>
-                                <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                            <Box>
+                                <Tabs
+                                    value={activeTab}
+                                    textColor="primary"
+                                    onChange={(e, nv) => setActiveTab(nv)}
+                                    style={{ marginBottom: 16 }}
+                                >
                                     <Tab label="Shipping" />
                                     <Tab label="Billing" />
                                     <Tab label="Terms" />
@@ -56,8 +59,12 @@ export default function MainForm({ onDone, data }: { data?: any; onDone: (data: 
                                 {activeTab === 0 && (
                                     <ShippingForm values={values} handleChange={handleChange} handleBlur={handleBlur} />
                                 )}
-                                {activeTab === 1 && <BillingTab values={values} handleChange={handleChange} handleBlur={handleBlur} />}
-                                {activeTab === 2 && <TermsTab values={values} handleChange={handleChange} handleBlur={handleBlur} />}
+                                {activeTab === 1 && (
+                                    <BillingTab values={values} handleChange={handleChange} handleBlur={handleBlur} />
+                                )}
+                                {activeTab === 2 && (
+                                    <TermsTab values={values} handleChange={handleChange} handleBlur={handleBlur} />
+                                )}
                             </Box>
                         </Box>
                     </Form>

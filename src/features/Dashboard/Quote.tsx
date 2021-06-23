@@ -1,6 +1,12 @@
 import React from "react";
 import { Box, Grid, List, ListItem, ListItemText, Typography, Button } from "@material-ui/core";
-import { CalendarTodayRounded, UpdateRounded, SearchRounded, RefreshRounded, SettingsRounded } from "@material-ui/icons";
+import {
+    CalendarTodayRounded,
+    UpdateRounded,
+    SearchRounded,
+    RefreshRounded,
+    SettingsRounded,
+} from "@material-ui/icons";
 
 import TextField, { BootstrapInput } from "../../app/TextField";
 import { ArraySelect } from "../../app/Inputs";
@@ -20,7 +26,10 @@ const UnitsDueDateList = () => {
             </Box>
             <List>
                 {["this-week", "week-1", "week-2", "week-3"].map((item) => (
-                    <ListItem key={item} style={{ borderLeft: "3px solid rgb(43,140,255)", paddingBottom: 2, margin: "4px 0" }}>
+                    <ListItem
+                        key={item}
+                        style={{ borderLeft: "3px solid rgb(43,140,255)", paddingBottom: 2, margin: "4px 0" }}
+                    >
                         <ListItemText style={{ borderBottom: "1px solid #f5f5f5" }}>10 units due {item}</ListItemText>
                     </ListItem>
                 ))}
@@ -32,7 +41,7 @@ const UnitsDueDateList = () => {
 const SearchForSO = () => {
     return (
         <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
-            <Box display="flex" alignItems="center">
+            <Box display="flex" alignItems="center" mb={1}>
                 <div style={{ backgroundColor: "#ebefff", padding: 8, paddingBottom: 2, borderRadius: "30%" }}>
                     <SearchRounded htmlColor="rgb(43,140,255)" />
                 </div>
@@ -41,8 +50,8 @@ const SearchForSO = () => {
                 </Typography>
             </Box>
             <div style={{ flexGrow: 2 }} />
-            <ArraySelect items={["item1", "item2", "item3"]} label="Type" style={{ marginBottom: "10px", width: "100%" }} />
-            <TextField label="Search" placeholder="Search For" />
+            <ArraySelect items={["item1", "item2", "item3"]} label="Type" style={{ marginBottom: "10px" }} fullWidth />
+            <TextField label="Search" placeholder="Search For" fullWidth />
             <div style={{ flexGrow: 1 }} />
         </BasePaper>
     );

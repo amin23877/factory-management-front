@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react";
 import { Grid, Typography, Box, Button, makeStyles, LinearProgress } from "@material-ui/core";
 import { AddRounded } from "@material-ui/icons";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import useSWR from "swr";
 
 import LineChart from "../../app/Chart/LineChart";
 import { BasePaper } from "../../app/Paper";
@@ -14,10 +14,6 @@ import activity from "../../assets/icons/activity.svg";
 import quote from "../../assets/icons/quote.svg";
 import speaker from "../../assets/icons/speaker.svg";
 import badge from "../../assets/icons/badge.svg";
-import { selectActivities } from "../Activity/activitySlice";
-import { selectSOs } from "../SO/soSlice";
-import { selectPOs } from "../PO/poSlice";
-import useSWR from "swr";
 
 const useStyles = makeStyles({
     statusCard: {
@@ -68,7 +64,7 @@ const StatusCard = ({
 };
 
 const Activities = () => {
-    const activities = useSelector(selectActivities);
+    const { data: activities } = useSWR("/activity");
 
     const cols = [{ field: "name" }, { field: "subject" }, { field: "startTime" }, { field: "endTime" }];
 
@@ -145,7 +141,7 @@ const Emails = () => {
 };
 
 const SalesOrders = () => {
-    const SOs = useSelector(selectSOs);
+    const { data: SOs } = useSWR("/so");
 
     const cols = [{ field: "number" }, { field: "estShipDate" }, { field: "actShipDate" }];
 
@@ -166,9 +162,10 @@ const SalesOrders = () => {
 
 export const Sales = () => {
     const { data: quotes } = useSWR("/quote");
-    const activities = useSelector(selectActivities);
-    const POs = useSelector(selectPOs);
-    const SOs = useSelector(selectSOs);
+    const { data: activities } = useSWR("/activity");
+    const { data: SOs } = useSWR("/so");
+    const { data: POs } = useSWR("/po");
+
     return (
         <Grid container spacing={2}>
             <Grid item md={8}>
