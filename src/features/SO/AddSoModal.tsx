@@ -58,7 +58,7 @@ export default function AddQuote({
                     <Box my={1}>
                         <General
                             data={po}
-                            onDone={(d) => {
+                            onDone={(d:any) => {
                                 setStep(1);
                             }}
                         />
