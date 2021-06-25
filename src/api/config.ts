@@ -1,6 +1,6 @@
 import Axios from "axios";
 
-import { getToken } from "./";
+import {getToken} from "./";
 
 export const BaseUrl = "http://zarph.ir:3100/api/";
 
