@@ -96,7 +96,7 @@ const useStyles = makeStyles({
         margin: "0px 5px",
     },
 });
-export default function QuotePDF() {
+export default function QuotePDF({ data }: { data: any }) {
     const classes = useStyles();
 
     return (
@@ -164,7 +164,7 @@ export default function QuotePDF() {
                     <div>LOGO</div>
                     <div>
                         <div>Quoted By :</div>
-                        <div>felani</div>
+                        <div>{data.requester}</div>
                     </div>
                     <div className={classes.pfe}>
                         <div style={{ fontSize: "x-large", fontWeight: "bold", color: "teal" }}>Quote</div>

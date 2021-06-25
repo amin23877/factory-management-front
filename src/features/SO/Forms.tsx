@@ -27,8 +27,10 @@ import { getAllDivison } from "../../api/division";
 import { DateTimePicker } from "@material-ui/pickers";
 import { getJobs } from "../../api/job";
 import Button from "../../app/Button";
+import SOCus from '../../PDFTemplates/SOCus';
+import SORep from '../../PDFTemplates/SORep';
+import SOAcc from '../../PDFTemplates/SOAcc';
 import { exportPdf } from "../../logic/pdf";
-
 
 
 
@@ -427,7 +429,7 @@ export const DocumentForm = ({ onDone }: { onDone: () => void }) => {
 
     return (
         <Box>
-            <Typography>We made a pdf from your Quote, now you can save it</Typography>
+            <Typography>We made a pdf from your Sales Order, now you can save it</Typography>
             <div style={{ height: 400, overflowY: "auto" }}>
                 <div id="myMm" style={{ height: "1mm" }} />
                 <div
@@ -442,7 +444,9 @@ export const DocumentForm = ({ onDone }: { onDone: () => void }) => {
                         minHeight: "1200px",
                     }}
                 >
-
+                    <SOAcc data='amin'/>
+                    <SORep data='amin' />
+                    <SOCus data='amin' />
                 </div>
             </div>
 
