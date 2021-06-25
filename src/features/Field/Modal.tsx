@@ -37,13 +37,12 @@ export const AddFieldModal = () => {
                             }}
                             style={{ margin: "10px auto" }}
                         >
-                            Add Dynamic Filed
+                            Add Dynamic Level
                         </Button>
                     </Box>
                     <FieldTable
                         onRowSelected={(row) => {
                             setSelectedField(row);
-                            console.log(row);
                             setActiveTab(1);
                         }}
                     />

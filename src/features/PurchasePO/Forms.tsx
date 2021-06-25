@@ -38,7 +38,15 @@ import { exportPdf } from "../../logic/pdf";
 
 import "../../styles/splash.css";
 
-export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; data: IPurchasePOComplete; createdPO: IPurchasePO }) => {
+export const DocumentForm = ({
+    createdPO,
+    data,
+    onDone,
+}: {
+    onDone: () => void;
+    data: IPurchasePOComplete;
+    createdPO: IPurchasePO;
+}) => {
     const divToPrint = useRef<HTMLElement | null>();
     const [contact, setContact] = useState<IContact>();
     const [vendor, setVendor] = useState<IVendor>();
@@ -132,7 +140,14 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                         }}
                     >
                         <div>
-                            <div style={{ fontSize: "x-large", textAlign: "center", marginBottom: "10px", marginTop: "20px" }}>
+                            <div
+                                style={{
+                                    fontSize: "x-large",
+                                    textAlign: "center",
+                                    marginBottom: "10px",
+                                    marginTop: "20px",
+                                }}
+                            >
                                 Purchase Order
                             </div>
                         </div>
@@ -235,9 +250,15 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                                 }}
                             >
                                 {/* <td>{l.ItemId}</td> */}
-                                <td style={{ width: "46%", borderRight: "2px solid #416364 ", verticalAlign: "top" }}>{l.description}</td>
-                                <td style={{ width: "20%", borderRight: "2px solid #416364 ", verticalAlign: "top" }}>{l.quantity}</td>
-                                <td style={{ width: "17%", borderRight: "2px solid #416364 ", verticalAlign: "top" }}>{l.price}</td>
+                                <td style={{ width: "46%", borderRight: "2px solid #416364 ", verticalAlign: "top" }}>
+                                    {l.description}
+                                </td>
+                                <td style={{ width: "20%", borderRight: "2px solid #416364 ", verticalAlign: "top" }}>
+                                    {l.quantity}
+                                </td>
+                                <td style={{ width: "17%", borderRight: "2px solid #416364 ", verticalAlign: "top" }}>
+                                    {l.price}
+                                </td>
                                 <td style={{ width: "17%", verticalAlign: "top" }}> {l.quantity * l.price} </td>
                             </tr>
                         ))}
@@ -263,7 +284,13 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
                                 <strong> Approved By:</strong>
                                 <div style={{ display: "flex", marginTop: "20px", alignItems: "center" }}>
                                     X{" "}
-                                    <div style={{ margin: "15px 10px 10px 10px ", borderBottom: "2px solid black ", width: "300px" }}></div>
+                                    <div
+                                        style={{
+                                            margin: "15px 10px 10px 10px ",
+                                            borderBottom: "2px solid black ",
+                                            width: "300px",
+                                        }}
+                                    ></div>
                                 </div>
                             </div>
                             <div
@@ -309,7 +336,15 @@ export const DocumentForm = ({ createdPO, data, onDone }: { onDone: () => void; 
     );
 };
 
-export const FinalForm = ({ onDone, onBack, data }: { onDone: (a: any) => void; onBack: () => void; data: IPurchasePOComplete }) => {
+export const FinalForm = ({
+    onDone,
+    onBack,
+    data,
+}: {
+    onDone: (a: any) => void;
+    onBack: () => void;
+    data: IPurchasePOComplete;
+}) => {
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async () => {
@@ -348,8 +383,8 @@ export const FinalForm = ({ onDone, onBack, data }: { onDone: (a: any) => void; 
         <Box height="85%" display="flex" flexDirection="column">
             <Typography variant="h5">Are you sure?</Typography>
             <Typography variant="subtitle1" style={{ margin: "1em 0" }}>
-                If you finilize your Purchase order, You can't update it, So if you want to update it you should make new version or add new
-                one
+                If you finilize your Purchase order, You can't update it, So if you want to update it you should make
+                new version or add new one
             </Typography>
             {loading && <LinearProgress />}
             <div style={{ flexGrow: 1 }} />
@@ -385,7 +420,7 @@ export const LinesForm = ({
 
     useEffect(() => {
         getItems()
-            .then((d) => d && setItems(d))
+            .then((d) => d && setItems(d.items))
             .catch((e) => console.log(e));
     }, []);
 
@@ -411,7 +446,9 @@ export const LinesForm = ({
                                     getOptionLabel={(item: any) => item.name}
                                     onChange={(e, nv) => setFieldValue("ItemId", nv.id)}
                                     onBlur={handleBlur}
-                                    renderInput={(params) => <TextField {...params} label="Item" name="ItemId" variant="outlined" />}
+                                    renderInput={(params) => (
+                                        <TextField {...params} label="Item" name="ItemId" variant="outlined" />
+                                    )}
                                     fullWidth
                                 />
                                 {errors.ItemId && <Typography variant="caption">{errors.ItemId}</Typography>}
@@ -460,7 +497,12 @@ export const LinesForm = ({
                                     control={<CheckBox />}
                                 />
                                 <Box display="flex" alignItems="center" justifyContent="space-between">
-                                    <Button startIcon={<ChevronLeft />} onClick={onBack} variant="contained" color="primary">
+                                    <Button
+                                        startIcon={<ChevronLeft />}
+                                        onClick={onBack}
+                                        variant="contained"
+                                        color="primary"
+                                    >
                                         Back
                                     </Button>
                                     <Button style={{ margin: "0 0.5em" }} type="submit" kind={"add"}>
@@ -521,7 +563,13 @@ export const LinesForm = ({
     );
 };
 
-export const CreateForm = ({ onDone, data }: { data?: IPurchasePOComplete; onDone: (data: IPurchasePOComplete) => void }) => {
+export const CreateForm = ({
+    onDone,
+    data,
+}: {
+    data?: IPurchasePOComplete;
+    onDone: (data: IPurchasePOComplete) => void;
+}) => {
     const schema = Yup.object().shape({
         requester: Yup.string().required(),
         VendorId: Yup.string().required(),
@@ -533,7 +581,11 @@ export const CreateForm = ({ onDone, data }: { data?: IPurchasePOComplete; onDon
     };
 
     return (
-        <Formik initialValues={data ? data : ({} as IPurchasePOComplete)} validationSchema={schema} onSubmit={handleSubmit}>
+        <Formik
+            initialValues={data ? data : ({} as IPurchasePOComplete)}
+            validationSchema={schema}
+            onSubmit={handleSubmit}
+        >
             {({ values, errors, handleChange, handleBlur, isValid }) => (
                 <Form>
                     <Box display="grid" gridTemplateColumns="auto" gridGap={8}>
@@ -610,7 +662,6 @@ export const UpdateForm = ({
     return (
         <>
             <Box mb={2} display="grid" gridTemplateColumns=" 1fr" gridRowGap={20}>
-
                 <FieldSelect
                     disabled
                     style={{ width: "100%" }}

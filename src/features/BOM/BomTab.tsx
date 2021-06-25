@@ -95,7 +95,15 @@ const BomForm = ({
     );
 };
 
-export default function BomTab({ itemId, selectedBom, refreshBoms }: { itemId: string; selectedBom: any; refreshBoms: () => void }) {
+export default function BomTab({
+    itemId,
+    selectedBom,
+    refreshBoms,
+}: {
+    itemId: string;
+    selectedBom: any;
+    refreshBoms: () => void;
+}) {
     const [activeTab, setActiveTab] = useState(0);
     const [confirm, setConfirm] = useState(false);
 
@@ -115,7 +123,7 @@ export default function BomTab({ itemId, selectedBom, refreshBoms }: { itemId: s
             <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
 
             <Box flex={1} mr={1}>
-                <h5 style={{ textAlign: "center" }}>Item {itemId}'s BOMs</h5>
+                <h5 style={{ textAlign: "center" }}>Item's BOM list</h5>
                 <List>
                     <ListItem button selected={activeTab === 0} onClick={() => setActiveTab(0)}>
                         Add
@@ -136,7 +144,12 @@ export default function BomTab({ itemId, selectedBom, refreshBoms }: { itemId: s
                         itemId={itemId}
                         method="patch"
                         bomId={selectedBom.id}
-                        initialValues={{ name: selectedBom.name, no: selectedBom.no, note: selectedBom.note, current: selectedBom.current }}
+                        initialValues={{
+                            name: selectedBom.name,
+                            no: selectedBom.no,
+                            note: selectedBom.note,
+                            current: selectedBom.current,
+                        }}
                     />
                 )}
             </Box>

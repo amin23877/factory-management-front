@@ -56,8 +56,9 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
     }, []);
 
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth title={`${docData ? "Edit" : "Add"} Document to ${model}`}>
-            <Box m={3}>
+        <Dialog open={open} onClose={onClose} fullScreen title={`${docData ? "Edit" : "Add"} Document to ${model}`}>
+            <Box height="82vh" m={3} display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10}>
+                <Box>{docData?.path && <PDFPreview height="100%" pdf={"http://zarph.ir:3100" + docData?.path} />}</Box>
                 <Formik initialValues={docData ? docData : ({} as IDocument)} onSubmit={handleSubmit}>
                     {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                         <Form>
@@ -66,7 +67,9 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
                                     type="file"
                                     ref={(e) => (fileUploader.current = e)}
                                     hidden
-                                    onChange={(e) => e.target.files !== null && setFieldValue("file", e.target.files[0])}
+                                    onChange={(e) =>
+                                        e.target.files !== null && setFieldValue("file", e.target.files[0])
+                                    }
                                 />
                                 <Button
                                     color="primary"
@@ -109,7 +112,12 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
                                     onBlur={handleBlur}
                                 />
                                 <Box style={{ display: "flex", width: "100%" }}>
-                                    <Button type="submit" kind={docData ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
+                                    <Button
+                                        type="submit"
+                                        kind={docData ? "edit" : "add"}
+                                        disabled={isSubmitting}
+                                        style={{ flex: 1 }}
+                                    >
                                         Save
                                     </Button>
                                     {docData && (

@@ -9,7 +9,15 @@ import Dialog from "../../app/Dialog";
 
 import { addEmployee } from "../../api/employee";
 
-export const AddEmployeeModal = ({ open, onClose, onDone }: { open: boolean; onClose: () => void; onDone: () => void }) => {
+export const AddEmployeeModal = ({
+    open,
+    onClose,
+    onDone,
+}: {
+    open: boolean;
+    onClose: () => void;
+    onDone: () => void;
+}) => {
     const schema = Yup.object().shape({
         username: Yup.string().required().min(3),
         password: Yup.string().required().min(4),
@@ -32,38 +40,40 @@ export const AddEmployeeModal = ({ open, onClose, onDone }: { open: boolean; onC
     return (
         <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth title="Add new employee">
             <Box m={2}>
-                <Formik initialValues={{ username: "", password: "" }} validationSchema={schema} onSubmit={handleSubmit}>
+                <Formik
+                    initialValues={{ username: "", password: "" }}
+                    validationSchema={schema}
+                    onSubmit={handleSubmit}
+                >
                     {({ values, touched, errors, handleChange, handleBlur, isSubmitting }) => (
                         <Form>
-                            <TextField
-                                label="Username"
-                                fullWidth
-                                style={{ width: "100%" }}
-                                placeholder="username"
-                                name="username"
-                                value={values.username}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={Boolean(errors.username && touched.username)}
-                                helperText={errors.username}
-                            />
-                            <TextField
-                                label="Password"
-                                fullWidth
-                                style={{ width: "100%" }}
-                                placeholder="password"
-                                type="password"
-                                name="password"
-                                value={values.password}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={Boolean(errors.password && touched.password)}
-                                helperText={errors.password}
-                            />
+                            <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                                <TextField
+                                    label="Username"
+                                    placeholder="username"
+                                    name="username"
+                                    value={values.username}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors.username && touched.username)}
+                                    helperText={errors.username}
+                                />
+                                <TextField
+                                    label="Password"
+                                    placeholder="password"
+                                    type="password"
+                                    name="password"
+                                    value={values.password}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors.password && touched.password)}
+                                    helperText={errors.password}
+                                />
 
-                            <Button fullWidth disabled={isSubmitting} type="submit" kind="add" style={{ margin: "2em 0" }}>
-                                Add
-                            </Button>
+                                <Button fullWidth disabled={isSubmitting} type="submit" kind="add">
+                                    Add
+                                </Button>
+                            </Box>
                         </Form>
                     )}
                 </Formik>

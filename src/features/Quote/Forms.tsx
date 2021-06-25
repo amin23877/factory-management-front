@@ -1,14 +1,5 @@
 import React, { useRef } from "react";
-import {
-    Typography,
-    Box,
-    FormControl,
-    FormLabel,
-    FormControlLabel,
-    RadioGroup,
-    Radio,
-    LinearProgress,
-} from "@material-ui/core";
+import { Typography, Box, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 
 import TextField from "../../app/TextField";
@@ -21,62 +12,12 @@ import { getClients } from "../../api/client";
 import { getProjects } from "../../api/project";
 import { getItems } from "../../api/items";
 import { exportPdf } from "../../logic/pdf";
-import { makeStyles } from '@material-ui/core/styles';
+import { getJobs } from "../../api/job";
+import QuotePDF from "../../PDFTemplates/Quote";
 
-const useStyles = makeStyles({
-    header: {
-        width: '100%',
-        display: 'flex',
-        justifyContent: 'space-between',
-        marginBottom: '7px',
-    },
-    pfe: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    headContain: {
-        width: '40%',
-        display: 'flex',
-        flexDirection: 'column'
-    },
-    title: {
-        width: '30',
-        fontWeight: 'bold',
-        textAlign: 'right'
-    },
-    info: {
-        width: '65%',
-    },
-    gray: {
-        backgroundColor: 'lightgray',
-        textAlign: 'center',
-        fontSize: 'large',
-        fontWeight: 'bold',
-        padding: '5px 20px 20px 20px'
-    },
-    Qty: {
-        width: '30%',
-        display: 'flex',
-        justifyContent: 'space-between',
-
-    },
-    lineItemName: {
-        flex: 1,
-        display: 'flex',
-        flexDirection: 'column'
-    },
-    item: {
-        padding: '0px 3px 5px 3px',
-        borderBottom: '2px solid black',
-        fontWeight: 'bold',
-        marginBottom: '5px',
-    }
-});
-
-export const DocumentForm = ({ onDone }: { onDone: () => void }) => {
+export const DocumentForm = ({ onDone, createdQoute, data }: { onDone: () => void, createdQoute: any, data: any }) => {
     const divToPrint = useRef<HTMLElement | null>(null);
-    const classes = useStyles();
+
     const handleSaveDocument = async () => {
         if (divToPrint.current) {
             await exportPdf(divToPrint.current);
@@ -100,156 +41,7 @@ export const DocumentForm = ({ onDone }: { onDone: () => void }) => {
                         minHeight: "1200px",
                     }}
                 >
-                    <div className={classes.header} style={{ marginBottom: '15px' }}>
-                        <div>LOGO</div>
-                        <div>
-                            <div>
-                                Quoted By :
-                            </div>
-                            <div>
-                                felani
-                            </div>
-                        </div>
-                        <div className={classes.pfe}>
-                            <div style={{ fontSize: 'x-large', fontWeight: 'bold', color: 'teal' }}>Quote</div>
-                            <div>
-                                <span>phone: </span>
-                                <span> +989906055809</span>
-                            </div>
-                            <div>
-                                <span>fax: </span>
-                                <span> +989906055809</span>
-                            </div>
-                            <div>
-                                <span>email: </span>
-                                <span> akdjakhdkjhHA@GMAIL.com</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className={classes.header}>
-                        <div className={classes.headContain} style={{ marginTop: 'auto' }}>
-                            <div className={classes.header}>
-                                <span className={classes.title}>Agency: </span>
-                                <span className={classes.info}> Qui pariatur cupidatat elit pariatur nisi nisi pariatur incididunt minim sint. </span>
-                            </div>
-                            <div className={classes.header}>
-                                <span className={classes.title}>Requested By: </span>
-                                <span className={classes.info}>Aute id sit consequat ipsum est excepteur. Qui qui mollit non fugiat laboris tempor in. </span>
-                            </div>
-                            <div className={classes.header}>
-                                <span className={classes.title}>Project: </span>
-                                <span className={classes.info}> </span>
-                            </div>
-                        </div>
-                        <div className={classes.headContain}>
-                            <div className={classes.header}>
-                                <span className={classes.title}>Quote # : </span>
-                                <span className={classes.info}></span>
-                            </div>
-                            <div className={classes.header}>
-                                <span className={classes.title}>Prepaired On : </span>
-                                <span className={classes.info}></span>
-                            </div>
-                            <div className={classes.header}>
-                                <span className={classes.title}>Expires : </span>
-                                <span className={classes.info}></span>
-                            </div>
-                            <div className={classes.header}>
-                                <span className={classes.title}>Lead Time :</span>
-                                <span className={classes.info}></span>
-                            </div>
-                            <div className={classes.header} style={{ marginTop: '15px' }}>
-                                <span className={classes.title}>Ship Via: </span>
-                                <span className={classes.info}></span>
-                            </div>
-                            <div className={classes.header}>
-                                <span className={classes.title}>Freight Terms: </span>
-                                <span className={classes.info}></span>
-                            </div>
-                            <div className={classes.header}>
-                                <span className={classes.title}>Payment Terms:</span>
-                                <span className={classes.info}></span>
-                            </div>
-                        </div>
-                    </div>
-                    <hr />
-                    <div className={classes.gray} style={{ marginBottom: '15px' }}>Item Name maybe i dont know </div>
-                    {/* inja mire too lineItems.map() */}
-                    <div className={classes.header} style={{ marginBottom: '15px' }}>
-                        <div className={classes.lineItemName}>
-                            <div className={classes.Qty} style={{ width: '50%' }}>
-                                <div>
-                                    <div className={classes.item}>Line[group]</div>
-                                    <div style={{ textAlign: 'center' }}> 11 </div>
-                                </div>
-                                <div>
-                                    <div className={classes.item}>Item No./Description</div>
-                                    <div style={{ textAlign: 'center' }}> 11 </div>
-                                </div>
-                            </div>
-                            <ul style={{ paddingRight: '10px' }}>
-                                <li>Proident proident et sunt ipsum duis commodo magna esse minim.</li>
-                                <li>Sint voluptate enim reprehenderit fugiat.</li>
-                                <li>Do cillum ut irure nostrud commodo eiusmod labore adipisicing sint proident qui non.</li>
-                                <li>Aliquip reprehenderit nisi anim do sint in enim aliqua officia pariatur id excepteur.</li>
-                                <li>Commodo aliqua do excepteur nulla eiusmod do sit ullamco ullamco qui laboris anim ea.</li>
-                                <li>Consectetur sint aute amet do eiusmod do consequat.</li>
-                                <li>Elit officia sit velit aliquip et non in ut exercitation enim.</li>
-                            </ul>
-                        </div>
-                        <div className={classes.Qty}>
-                            <div>
-                                <div className={classes.item}>QTY</div>
-                                <div style={{ textAlign: 'center' }}> 11 </div>
-                            </div>
-                            <div>
-                                <div className={classes.item}>Unit Price</div>
-                                <div style={{ textAlign: 'center' }}> 11 </div>
-                            </div>
-                            <div>
-                                <div className={classes.item}>Unit Total</div>
-                                <div style={{ textAlign: 'center' }}> 11 </div>
-                            </div>
-                        </div>
-                    </div>
-                    {/* ta inja */}
-                    <div className={classes.header} style={{ marginBottom: '15px' }}>
-                        <div className={classes.lineItemName}>
-                            <div className={classes.Qty} style={{ width: '50%' }}>
-                                <div>
-                                    <div className={classes.item}>Line[group]</div>
-                                    <div style={{ textAlign: 'center' }}> 11 </div>
-                                </div>
-                                <div>
-                                    <div className={classes.item}>Item No./Description</div>
-                                    <div style={{ textAlign: 'center' }}> 11 </div>
-                                </div>
-                            </div>
-                            <ul style={{ paddingRight: '10px' }}>
-                                <li>Proident proident et sunt ipsum duis commodo magna esse minim.</li>
-                                <li>Sint voluptate enim reprehenderit fugiat.</li>
-                                <li>Do cillum ut irure nostrud commodo eiusmod labore adipisicing sint proident qui non.</li>
-                                <li>Aliquip reprehenderit nisi anim do sint in enim aliqua officia pariatur id excepteur.</li>
-                                <li>Commodo aliqua do excepteur nulla eiusmod do sit ullamco ullamco qui laboris anim ea.</li>
-                                <li>Consectetur sint aute amet do eiusmod do consequat.</li>
-                                <li>Elit officia sit velit aliquip et non in ut exercitation enim.</li>
-                            </ul>
-                        </div>
-                        <div className={classes.Qty}>
-                            <div>
-                                <div className={classes.item}>QTY</div>
-                                <div style={{ textAlign: 'center' }}> 11 </div>
-                            </div>
-                            <div>
-                                <div className={classes.item}>Unit Price</div>
-                                <div style={{ textAlign: 'center' }}> 11 </div>
-                            </div>
-                            <div>
-                                <div className={classes.item}>Unit Total</div>
-                                <div style={{ textAlign: 'center' }}> 11 </div>
-                            </div>
-                        </div>
-                    </div>
+                    <QuotePDF />
                 </div>
             </div>
             <Box textAlign="right">
@@ -292,6 +84,7 @@ export const LineItemForm = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                     request={getItems}
+                    getOptionList={(data) => data.items}
                     itemTitleField="name"
                     itemValueField="id"
                     error={Boolean(errors.ItemId && touched.ItemId)}
@@ -478,6 +271,16 @@ export const TermsTab = ({
                 label="Payment Terms"
                 onChange={handleChange}
                 onBlur={handleBlur}
+            />
+            <FieldSelect
+                value={values.JobId ? values.JobId : ""}
+                request={getJobs}
+                itemTitleField="description"
+                itemValueField="id"
+                keyField="id"
+                name="JobId"
+                label="Job"
+                onChange={handleChange}
             />
         </Box>
     );

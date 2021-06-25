@@ -21,12 +21,12 @@ export default function AddQuote({
     onDone: () => void;
 }) {
     const [step, setStep] = useState(0);
-    const [po, setPO] = useState(initialData);
-    const [createdPO, setCreatedPO] = useState<IPurchasePO>();
+    const [quote, setQuote] = useState(initialData);
+    const [createdQuote, setCreatedQuote] = useState<IPurchasePO>();
 
     useEffect(() => {
         if (initialData) {
-            setPO(initialData);
+            setQuote(initialData);
         }
     }, [initialData]);
 
@@ -59,8 +59,9 @@ export default function AddQuote({
                         <Box flex={1}>
                             <Box my={2}>
                                 <General
-                                    data={po}
+                                    data={quote}
                                     onDone={(d) => {
+                                        setQuote((prev) => ({ ...prev, ...d }));
                                         setStep(1);
                                     }}
                                 />
@@ -70,28 +71,30 @@ export default function AddQuote({
                 )}
                 {step === 1 && (
                     <LinesForm
-                        data={po}
+                        data={quote}
                         onBack={() => setStep(0)}
                         onDone={(items: any) => {
-                            setPO((d: any) => ({ ...d, lines: items }));
+                            setQuote((d: any) => ({ ...d, lines: items }));
                             setStep(2);
                         }}
                     />
                 )}
-                {step === 2 && po && (
+                {step === 2 && quote && (
                     <FinalForm
-                        data={po}
+                        data={quote}
                         onBack={() => setStep(1)}
                         onDone={(data) => {
                             // onClose();
                             setStep(3);
-                            // onDone();
-                            // setCreatedPO(data);
+                            onDone();
+                            setCreatedQuote(data);
                         }}
                     />
                 )}
                 {step === 3 && (
                     <DocumentForm
+                        data={quote}
+                        createdQoute={createdQuote}
                         onDone={() => {
                             onClose();
                             onDone();

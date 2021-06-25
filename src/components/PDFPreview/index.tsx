@@ -1,30 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Typography } from "@material-ui/core";
-import { Document, Page, pdfjs } from "react-pdf";
-pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+import React from "react";
 
-export default function PDFPreview({ file }: { file: string }) {
-    const [numPages, setNumPages] = useState(null);
-    const [pageNumber, setPageNumber] = useState(1);
-
+export default function PDFPreview({ pdf, height }: { pdf: string; height?: string }) {
     return (
-        <div>
-            {/* Dosen't works :( */}
-            <Document
-                file={file}
-                options={{
-                    cMapUrl: `//cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjs.version}/cmaps/`,
-                    cMapPacked: true,
-                }}
-                onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-            >
-                <Page onLoadError={(e) => console.log(e)} pageNumber={pageNumber} />
-            </Document>
-            <button>next</button>
-            <button>previous</button>
-            <Typography>
-                Page {pageNumber} of {numPages}
-            </Typography>
-        </div>
+        <object width="100%" height={height ? height : 400} data={pdf} type="application/pdf">
+            <embed src={pdf} type="application/pdf" />
+            Can"t load pdf :(, If you have IDM extention please desable it or download the file
+        </object>
     );
 }

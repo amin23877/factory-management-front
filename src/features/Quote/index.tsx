@@ -41,19 +41,17 @@ export default function QuotePanel() {
     const { data: quotes, mutate: mutateQuotes } = useSWR("/quote");
 
     const { data: activities } = useSWR<IActivity[]>(
-        selectedQuote && selectedQuote.id ? [`/activity/quote/${selectedQuote.id}`, selectedQuote.id] : null
+        selectedQuote && selectedQuote.id ? `/activity/quote/${selectedQuote.id}` : null
     );
-    const { data: notes } = useSWR(
-        selectedQuote && selectedQuote.id ? [`/note/quote/${selectedQuote.id}`, selectedQuote] : null
-    );
+    const { data: notes } = useSWR(selectedQuote && selectedQuote.id ? `/note/quote/${selectedQuote.id}` : null);
     const { data: documents } = useSWR(
-        selectedQuote && selectedQuote.id ? [`/document/quote/${selectedQuote.id}`, selectedQuote] : null
+        selectedQuote && selectedQuote.id ? `/document/quote/${selectedQuote.id}` : null
     );
     const { data: lineItems, mutate: mutateLineItems } = useSWR(
-        selectedQuote && selectedQuote.id ? [`/lineitem?QuoteId=${selectedQuote.id}`, selectedQuote] : null
+        selectedQuote && selectedQuote.id ? `/lineitem?QuoteId=${selectedQuote.id}` : null
     );
     const { data: lineServices, mutate: mutateLineServices } = useSWR(
-        selectedQuote && selectedQuote.id ? [`/lineservice?QuoteId=${selectedQuote.id}`, selectedQuote] : null
+        selectedQuote && selectedQuote.id ? `/lineservice?QuoteId=${selectedQuote.id}` : null
     );
 
     const [activeTab, setActiveTab] = useState(0);
@@ -98,8 +96,20 @@ export default function QuotePanel() {
 
     return (
         <div>
-            <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
-            <AddQuote open={addQ} onClose={() => setAddQ(false)} initialData={compQ} onDone={() => {}} />
+            <Confirm
+                open={confirm}
+                onClose={() => setConfirm(false)}
+                onConfirm={handleDelete}
+            />
+
+            <AddQuote
+                open={addQ}
+                onClose={() => setAddQ(false)}
+                initialData={compQ}
+                onDone={() => {
+                    console.log('done')
+                }}
+            />
 
             {selectedQuote && selectedQuote.id && (
                 <NoteModal itemId={selectedQuote.id} model="quote" open={addNote} onClose={() => setAddNote(false)} />

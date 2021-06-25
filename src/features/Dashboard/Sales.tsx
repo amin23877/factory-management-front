@@ -1,10 +1,8 @@
 import React, { ReactNode } from "react";
 import { Grid, Typography, Box, Button, makeStyles, LinearProgress } from "@material-ui/core";
 import { AddRounded } from "@material-ui/icons";
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-
-import { selectQuotes } from "../Quote/quoteSlice";
+import useSWR from "swr";
 
 import LineChart from "../../app/Chart/LineChart";
 import { BasePaper } from "../../app/Paper";
@@ -16,9 +14,6 @@ import activity from "../../assets/icons/activity.svg";
 import quote from "../../assets/icons/quote.svg";
 import speaker from "../../assets/icons/speaker.svg";
 import badge from "../../assets/icons/badge.svg";
-import { selectActivities } from "../Activity/activitySlice";
-import { selectSOs } from "../SO/soSlice";
-import { selectPOs } from "../PO/poSlice";
 
 const useStyles = makeStyles({
     statusCard: {
@@ -29,7 +24,17 @@ const useStyles = makeStyles({
     },
 });
 
-const StatusCard = ({ title, value, icon, children }: { title: string; value: string; children?: ReactNode; icon: string }) => {
+const StatusCard = ({
+    title,
+    value,
+    icon,
+    children,
+}: {
+    title: string;
+    value: string;
+    children?: ReactNode;
+    icon: string;
+}) => {
     const classes = useStyles();
 
     return (
@@ -41,7 +46,11 @@ const StatusCard = ({ title, value, icon, children }: { title: string; value: st
             >
                 <Box display="flex" width="100%" alignItems="center">
                     <Box>
-                        <img style={{ backgroundColor: "#f7f7fc", borderRadius: 200, padding: 8 }} src={icon} alt={title} />
+                        <img
+                            style={{ backgroundColor: "#f7f7fc", borderRadius: 200, padding: 8 }}
+                            src={icon}
+                            alt={title}
+                        />
                     </Box>
                     <Box flex={2} ml={1} style={{ marginRight: "auto" }}>
                         <Typography variant="body1">{value}</Typography>
@@ -55,7 +64,7 @@ const StatusCard = ({ title, value, icon, children }: { title: string; value: st
 };
 
 const Activities = () => {
-    const activities = useSelector(selectActivities);
+    const { data: activities } = useSWR("/activity");
 
     const cols = [{ field: "name" }, { field: "subject" }, { field: "startTime" }, { field: "endTime" }];
 
@@ -86,7 +95,7 @@ const Activities = () => {
 };
 
 const Quotes = () => {
-    const quotes = useSelector(selectQuotes);
+    const { data: quotes } = useSWR("/quote");
 
     const cols = [{ field: "number" }, { field: "expireDate" }];
 
@@ -132,7 +141,7 @@ const Emails = () => {
 };
 
 const SalesOrders = () => {
-    const SOs = useSelector(selectSOs);
+    const { data: SOs } = useSWR("/so");
 
     const cols = [{ field: "number" }, { field: "estShipDate" }, { field: "actShipDate" }];
 
@@ -152,10 +161,11 @@ const SalesOrders = () => {
 };
 
 export const Sales = () => {
-    const quotes = useSelector(selectQuotes);
-    const activities = useSelector(selectActivities);
-    const POs = useSelector(selectPOs);
-    const SOs = useSelector(selectSOs);
+    const { data: quotes } = useSWR("/quote");
+    const { data: activities } = useSWR("/activity");
+    const { data: SOs } = useSWR("/so");
+    const { data: POs } = useSWR("/po");
+
     return (
         <Grid container spacing={2}>
             <Grid item md={8}>

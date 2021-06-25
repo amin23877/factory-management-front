@@ -1,7 +1,6 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { Box, FormControlLabel, Typography, Checkbox, LinearProgress, Divider } from "@material-ui/core";
 import useSWR from "swr";
-
 import TextField from "../../app/TextField";
 import { ArraySelect } from "../../app/Inputs";
 import Button from "../../app/Button";
@@ -27,114 +26,6 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
     return (
         <>
             <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
-                <TextField
-                    label="Item name"
-                    placeholder="Item name"
-                    name="name"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.name && touched.name)}
-                    value={values.name}
-                />
-                <TextField
-                    label="upc"
-                    placeholder="upc"
-                    name="upc"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.upc && touched.upc)}
-                    value={values.upc}
-                />
-                <TextField
-                    label="sku"
-                    placeholder="sku"
-                    name="sku"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.sku && touched.sku)}
-                    value={values.sku}
-                />
-                <TextField
-                    label="description"
-                    placeholder="description"
-                    name="description"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.description && touched.description)}
-                    value={values.description}
-                />
-                <TextField
-                    label="no"
-                    value={values.no}
-                    name="no"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.no && touched.no)}
-                    placeholder="no"
-                />
-                <TextField
-                    label="variance"
-                    placeholder="variance"
-                    name="variance"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.variance && touched.variance)}
-                    value={values.variance}
-                />
-                <TextField
-                    label="mfgr"
-                    placeholder="mfgr"
-                    name="mfgr"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.mfgr && touched.mfgr)}
-                    value={values.mfgr}
-                />
-                <TextField
-                    label="color"
-                    placeholder="color"
-                    name="color"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.color && touched.color)}
-                    value={values.color}
-                />
-                <TextField
-                    fullWidth
-                    label="size"
-                    placeholder="size"
-                    name="size"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.size && touched.size)}
-                    value={values.size}
-                />
-                <TextField
-                    label="Resell Cost"
-                    value={values.resellCost}
-                    name="resellCost"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.resellCost && touched.resellCost)}
-                />
-                <TextField
-                    style={{ gridColumnEnd: "span 2" }}
-                    label="last used in 90 days"
-                    value={values.usedInLastQuarter}
-                    name="usedInLastQuarter"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.usedInLastQuarter && touched.usedInLastQuarter)}
-                />
-                <TextField
-                    style={{ gridColumnEnd: "span 4" }}
-                    label="Special notes"
-                    value={values.specialNote}
-                    name="specialNote"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.specialNote && touched.specialNote)}
-                />
                 <Box style={{ gridColumnEnd: "span 4" }} display="flex" justifyContent="space-between" flexWrap="wrap">
                     <FormControlLabel
                         style={{ fontSize: "0.7rem" }}
@@ -163,7 +54,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     <FormControlLabel
                         style={{ fontSize: "0.7rem" }}
                         checked={values.salesApproved}
-                        label="Sales Approve"
+                        label="Sales Approved"
                         name="salesApproved"
                         onChange={handleChange}
                         control={<Checkbox />}
@@ -171,12 +62,77 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     <FormControlLabel
                         style={{ fontSize: "0.7rem" }}
                         checked={values.engineeringApproved}
-                        label="Engineering Approve"
+                        label="Engineering Approved"
                         name="engineeringApproved"
                         onChange={handleChange}
                         control={<Checkbox />}
                     />
                 </Box>
+                <TextField
+                    style={{ gridColumnEnd: "span 4" }}
+                    label="Item name"
+                    placeholder="Item name"
+                    name="name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.name && touched.name)}
+                    value={values.name}
+                />
+                <Box
+                    style={{ gridColumnEnd: "span 4" }}
+                    display="grid"
+                    gridTemplateColumns="1fr 1fr 1fr"
+                    gridRowGap={10}
+                    gridColumnGap={10}
+                >
+                    <TextField
+                        label="no"
+                        value={values.no}
+                        name="no"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.no && touched.no)}
+                        placeholder="no"
+                    />
+                    <TextField
+                        label="mfgr"
+                        placeholder="mfgr"
+                        name="mfgr"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.mfgr && touched.mfgr)}
+                        value={values.mfgr}
+                    />
+                    <TextField
+                        label="color"
+                        placeholder="color"
+                        name="color"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.color && touched.color)}
+                        value={values.color}
+                    />
+                </Box>
+                <TextField
+                    multiline
+                    style={{ gridColumnEnd: "span 4" }}
+                    rows={4}
+                    placeholder="description"
+                    label="Description"
+                    name="description"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.description}
+                />
+                <TextField
+                    style={{ gridColumnEnd: "span 4" }}
+                    label="Special notes"
+                    value={values.specialNote}
+                    name="specialNote"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.specialNote && touched.specialNote)}
+                />
             </Box>
         </>
     );
@@ -237,6 +193,40 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                 onBlur={handleBlur}
                 onChange={handleChange}
             />
+            <TextField
+                label="Resell Cost"
+                value={values.resellCost}
+                name="resellCost"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.resellCost && touched.resellCost)}
+            />
+            <TextField
+                label="last used in 90 days"
+                value={values.usedInLastQuarter}
+                name="usedInLastQuarter"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.usedInLastQuarter && touched.usedInLastQuarter)}
+            />
+            <TextField
+                label="upc"
+                placeholder="upc"
+                name="upc"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.upc && touched.upc)}
+                value={values.upc}
+            />
+            <TextField
+                label="sku"
+                placeholder="sku"
+                name="sku"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.sku && touched.sku)}
+                value={values.sku}
+            />
         </Box>
     );
 };
@@ -258,9 +248,21 @@ export const Quantity = ({ values, errors, handleChange, handleBlur, handleManua
                 onBlur={handleBlur}
                 onChange={handleChange}
             />
-            <TextField label="Reorder Quantity" name="reorderQty" value={values.reorderQty} onBlur={handleBlur} onChange={handleChange} />
+            <TextField
+                label="Reorder Quantity"
+                name="reorderQty"
+                value={values.reorderQty}
+                onBlur={handleBlur}
+                onChange={handleChange}
+            />
             <TextField label="Lead time" name="lead" value={values.lead} onBlur={handleBlur} onChange={handleChange} />
-            <TextField label="Last count" name="lastCount" value={values.lastCount} onBlur={handleBlur} onChange={handleChange} />
+            <TextField
+                label="Last count"
+                name="lastCount"
+                value={values.lastCount}
+                onBlur={handleBlur}
+                onChange={handleChange}
+            />
             <TextField
                 label="Recent purchase price"
                 name="recentPurchasePrice"
@@ -293,7 +295,12 @@ export const Quantity = ({ values, errors, handleChange, handleBlur, handleManua
                 onChange={handleChange}
             />
             {handleManualCount && (
-                <Button kind="add" fullWidth style={{ marginTop: 10, gridColumnEnd: "span 2" }} onClick={handleManualCount}>
+                <Button
+                    kind="add"
+                    fullWidth
+                    style={{ marginTop: 10, gridColumnEnd: "span 2" }}
+                    onClick={handleManualCount}
+                >
                     Adjust
                 </Button>
             )}
@@ -344,6 +351,17 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                 value={values.shippingOz}
                 onBlur={handleBlur}
                 onChange={handleChange}
+            />
+            <TextField
+                style={{ gridColumnEnd: "span 2" }}
+                fullWidth
+                label="size"
+                placeholder="size"
+                name="size"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.size && touched.size)}
+                value={values.size}
             />
         </Box>
     );

@@ -1,70 +1,99 @@
-import React, { useState } from "react";
-import { Formik, Form } from "formik";
+import React, { useEffect, useState } from "react";
+import { Box, Step, StepLabel, Stepper, Dialog, DialogTitle, IconButton } from "@material-ui/core";
+import { CloseRounded } from "@material-ui/icons";
 
-import Box from "@material-ui/core/Box";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Dialog from "../../app/Dialog";
-import Button from "../../app/Button";
+import { LinesForm } from "../PurchasePO/Forms";
+import General from "./MainForm";
+import { FinalForm } from "./EditForm";
+import { DocumentForm } from "./Forms";
 
-import { GeneralForm, ShippingForm, BillingTab, TermsTab } from "./Forms";
+import { IPurchasePO, IPurchasePOComplete } from "../../api/purchasePO";
 
-import { ISO, createSO } from "../../api/so";
+export default function AddQuote({
+    open,
+    onClose,
+    onDone,
+    initialData,
+}: {
+    initialData?: IPurchasePOComplete;
+    open: boolean;
+    onClose: () => void;
+    onDone: () => void;
+}) {
+    const [step, setStep] = useState(0);
+    const [po, setPO] = useState(initialData);
+    const [createdPO, setCreatedPO] = useState<IPurchasePO>();
 
-export default function AddSOModal({ open, onClose, onDone }: { open: boolean; onDone: () => void; onClose: () => void }) {
-    const [activeTab, setActiveTab] = useState(0);
-
-    const handleSubmit = async (data: ISO, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
-        try {
-            // console.log(data);
-            const resp = await createSO(data);
-            if (resp) {
-                console.log(resp);
-                setSubmitting(false);
-                onDone();
-                onClose();
-            }
-        } catch (error) {
-            console.log(error);
+    useEffect(() => {
+        if (initialData) {
+            setPO(initialData);
         }
-    };
+    }, [initialData]);
 
     return (
-        <Dialog open={open} onClose={onClose} title="Add new SO" maxWidth="md" fullWidth>
-            <Box m={2} style={{ height: "75vh" }}>
-                <Formik initialValues={{} as ISO} onSubmit={handleSubmit}>
-                    {({ values, handleChange, handleBlur, setValues }) => (
-                        <Form>
-                            <Box display="flex">
-                                <Box flex={2}>
-                                    <GeneralForm
-                                        onChangeInit={setValues}
-                                        values={values}
-                                        handleChange={handleChange}
-                                        handleBlur={handleBlur}
-                                    />
-                                    <Box display="flex" justifyContent="center" my={2}>
-                                        <Button type="submit" kind="add" style={{ padding: "1em 4em", width: "50%" }}>
-                                            Add
-                                        </Button>
-                                    </Box>
-                                </Box>
-                                <Box flex={1}>
-                                    <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-                                        <Tab label="Shipping" />
-                                        <Tab label="Billing" />
-                                        <Tab label="Terms" />
-                                    </Tabs>
-                                    {activeTab === 0 && (
-                                        <ShippingForm values={values} handleChange={handleChange} handleBlur={handleBlur} />
-                                    )}
-                                    {activeTab === 1 && <BillingTab values={values} handleChange={handleChange} handleBlur={handleBlur} />}
-                                    {activeTab === 2 && <TermsTab values={values} handleChange={handleChange} handleBlur={handleBlur} />}
-                                </Box>
-                            </Box>
-                        </Form>
-                    )}
-                </Formik>
+        <Dialog open={open} title="Add new Sales order" fullWidth maxWidth="md">
+            <Box display="flex" justifyContent="space-between" alignItems="center" mx={1}>
+                <DialogTitle>Add new Sales order</DialogTitle>
+                <div style={{ flexGrow: 1 }} />
+                <IconButton onClick={onClose}>
+                    <CloseRounded />
+                </IconButton>
+            </Box>
+            <Box p={2} height={600}>
+                <Stepper activeStep={step}>
+                    <Step>
+                        <StepLabel>General information</StepLabel>
+                    </Step>
+                    <Step>
+                        <StepLabel> Line items</StepLabel>
+                    </Step>
+                    <Step>
+                        <StepLabel>Final</StepLabel>
+                    </Step>
+                    <Step>
+                        <StepLabel>Document</StepLabel>
+                    </Step>
+                </Stepper>
+                {step === 0 && (
+                    <Box my={1}>
+                        <General
+                            data={po}
+                            onDone={(d) => {
+                                setStep(1);
+                            }}
+                        />
+                    </Box>
+                )}
+                {step === 1 && (
+                    <LinesForm
+                        data={po}
+                        onBack={() => setStep(0)}
+                        onDone={(items: any) => {
+                            setPO((d: any) => ({ ...d, lines: items }));
+                            setStep(2);
+                        }}
+                    />
+                )}
+                {step === 2 && po && (
+                    <FinalForm
+                        data={po}
+                        onBack={() => setStep(1)}
+                        onDone={(data) => {
+                            // onClose();
+                            setStep(3);
+                            // onDone();
+                            // setCreatedPO(data);
+                        }}
+                    />
+                )}
+                {step === 3 && (
+                    <DocumentForm
+                        onDone={() => {
+                            onClose();
+                            onDone();
+                        }}
+                    />
+                )}
             </Box>
         </Dialog>
     );

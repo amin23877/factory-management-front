@@ -57,7 +57,7 @@ export default function EditTab({
     const LICols: GridColDef[] = useMemo(
         () => [
             { field: "index" },
-            { field: "ItemId" },
+            { field: "ItemId", valueFormatter: (r) => r.row.ItemId.name },
             { field: "description", width: 200 },
             { field: "quantity" },
             { field: "price" },
@@ -68,7 +68,7 @@ export default function EditTab({
 
     const LSCols: GridColDef[] = useMemo(
         () => [
-            { field: "ServiceId" },
+            { field: "ServiceId", valueFormatter: (r) => r.row.ServiceId.name },
             { field: "LineItemRecordId", width: 200 },
             { field: "quantity" },
             { field: "price" },

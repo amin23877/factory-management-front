@@ -76,7 +76,11 @@ export default function LineItemModal({
     return (
         <Dialog open={open} onClose={onClose} title={`${soId ? "Edit" : "Add"} line item to Sales order`}>
             <Box m={2} mr={3}>
-                <Formik validationSchema={schema} initialValues={LIData ? LIData : ({} as ILineItem)} onSubmit={handleSubmit}>
+                <Formik
+                    validationSchema={schema}
+                    initialValues={LIData ? LIData : ({} as ILineItem)}
+                    onSubmit={handleSubmit}
+                >
                     {({ values, handleChange, handleBlur, isSubmitting, errors, touched }) => (
                         <Form>
                             <FieldSelect
@@ -87,6 +91,7 @@ export default function LineItemModal({
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 request={getItems}
+                                getOptionList={(data) => data.items}
                                 itemTitleField="name"
                                 itemValueField="id"
                                 error={Boolean(errors.ItemId && touched.ItemId)}
@@ -145,7 +150,12 @@ export default function LineItemModal({
 
                             <FormControl style={{ margin: "0.5em" }} fullWidth>
                                 <FormLabel>Tax</FormLabel>
-                                <RadioGroup value={String(values.tax)} name="tax" onChange={handleChange} style={{ flexDirection: "row" }}>
+                                <RadioGroup
+                                    value={String(values.tax)}
+                                    name="tax"
+                                    onChange={handleChange}
+                                    style={{ flexDirection: "row" }}
+                                >
                                     <FormControlLabel control={<Radio />} label="Yes" value="true" />
                                     <FormControlLabel control={<Radio />} label="No" value="false" />
                                 </RadioGroup>

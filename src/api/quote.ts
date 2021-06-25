@@ -1,6 +1,6 @@
 import Axios from "axios";
-
-import {ILineItem} from './lineItem';
+ 
+import { ILineItem } from './lineItem';
 import { ILineService } from "./lineService";
 
 export interface IQuote {
@@ -131,6 +131,14 @@ export const createQuote = async (data: IQuote) => {
             expireDate: data.expireDate === "" ? null : new Date(data.expireDate).toISOString(),
             estimatedShipDate: data.estimatedShipDate === "" ? null : new Date(data.estimatedShipDate).toISOString(),
         });
+        return resp.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const createQuoteComplete = async (data: any) => {
+    try {
+        const resp = await Axios.post("/quote", data);
         return resp.data;
     } catch (error) {
         console.log(error);
