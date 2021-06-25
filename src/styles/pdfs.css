@@ -1,0 +1,334 @@
+/* * {
+    margin: 0px;
+    padding: 0px;
+}
+
+.side-box {
+    background-color: #8c8c8c;
+    color: #8c8c8c;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 17%;
+    height: 100vh;
+    border: 2px black solid;
+}
+
+.inside-box {
+    color: white;
+    background-color: #808080;
+    position: absolute;
+    right: -35px;
+    top: -2px;
+    width: 65px;
+    height: 50px;
+    border: 2px black solid;
+    text-align: center;
+    font-size: 25px;
+    padding-top: 20px;
+}
+
+.parent {
+    background-color: #4f81bd;
+    color: #4f81bd;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    border: 2px black solid;
+}
+
+.inside-box-side1 {
+    color: #37608c;
+    background-color: #37608c;
+    position: absolute;
+    left: 0px;
+    top: 272px;
+    border: 2px white solid;
+    width: 64px;
+    height: 64px;
+}
+
+.inside-box-side2 {
+    color: #37608c;
+    background-color: #37608c;
+    position: absolute;
+    left: 67px;
+    top: 338px;
+    border: 2px white solid;
+    width: 64px;
+    height: 64px;
+}
+
+.inside-box-side3 {
+    color: #17375e;
+    background-color: #17375e;
+    position: absolute;
+    left: 0px;
+    top: 338px;
+    border: 2px white solid;
+    width: 64px;
+    height: 64px;
+}
+
+.inside-box-side4 {
+    color: #17375e;
+    background-color: #17375e;
+    position: absolute;
+    left: 67px;
+    top: 404px;
+    border: 2px white solid;
+    width: 64px;
+    height: 64px;
+}
+
+.inside-box-side5 {
+    color: #10253f;
+    background-color: #10253f;
+    position: absolute;
+    left: 0px;
+    top: 404px;
+    border: 2px white solid;
+    width: 64px;
+    height: 64px;
+}
+
+.inside-box-side6 {
+    color: #10253f;
+    background-color: #10253f;
+    position: absolute;
+    left: 67px;
+    top: 470px;
+    border: 2px white solid;
+    width: 64px;
+    height: 64px;
+}
+
+.title {
+    color: white;
+    font-size: 60px;
+    text-align: left;
+    position: absolute;
+    left: 25%;
+    top: 20%;
+}
+
+.code {
+    color: white;
+    font-size: 20px;
+    text-align: left;
+    position: absolute;
+    left: 25%;
+    top: 50%;
+}
+
+.txt {
+    color: white;
+    font-size: 20px;
+    text-align: left;
+    position: absolute;
+    left: 25%;
+    top: 60%;
+}
+
+.under {
+    color: black;
+    font-size: 20px;
+    text-align: left;
+    position: absolute;
+    left: 10px;
+    top: 800px;
+}
+
+.sub {
+    color: black;
+    font-size: 20px;
+    text-align: left;
+    position: absolute;
+    left: 430px;
+    top: 785px;
+}
+
+.hr {
+    margin-top: 220px;
+}
+
+.frst-txt1 {
+    color: black;
+    font-size: 20px;
+    text-align: right;
+    position: relative;
+    right: 10%;
+    top: 100px;
+}
+
+.frst-txt2 {
+    color: black;
+    font-size: 20px;
+    text-align: right;
+    position: relative;
+    right: 4%;
+    top: 120px;
+}
+
+.frst-txt3 {
+    color: black;
+    font-size: 20px;
+    text-align: right;
+    position: relative;
+    right: 14%;
+    top: 140px;
+}
+
+.frst-txt4 {
+    color: black;
+    font-size: 20px;
+    text-align: right;
+    position: relative;
+    right: 17%;
+    top: 160px;
+}
+
+.frst-txt5 {
+    color: black;
+    font-size: 20px;
+    text-align: right;
+    position: relative;
+    right: 3%;
+    top: 170px;
+}
+
+.frst-txt6 {
+    color: black;
+    font-size: 20px;
+    text-align: left;
+    position: relative;
+    left: 10%;
+    top: 130px;
+}
+
+.frst-txt7 {
+    color: black;
+    font-size: 20px;
+    text-align: left;
+    position: relative;
+    left: 9.7%;
+    top: 160px;
+}
+
+.frst-txt8 {
+    color: black;
+    font-size: 20px;
+    text-align: left;
+    position: relative;
+    left: 10%;
+    top: 180px;
+}
+
+.frst-txt9 {
+    color: black;
+    font-size: 20px;
+    text-align: left;
+    position: relative;
+    left: 10%;
+    top: 200px;
+}
+
+.frst-txt10 {
+    color: black;
+    font-size: 20px;
+    text-align: left;
+    position: relative;
+    left: 60%;
+    top: 120px;
+}
+
+.frst-txt11 {
+    color: black;
+    font-size: 20px;
+    text-align: left;
+    position: relative;
+    left: 60%;
+    top: 140px;
+}
+
+.frst-txt12 {
+    color: black;
+    font-size: 20px;
+    text-align: left;
+    position: relative;
+    left: 60%;
+    top: 160px;
+} */
+
+.box-blue {
+    background-color: #dce4e7;
+    width: 100%;
+    height: 100px;
+    position: relative;
+    top: 300px;
+}
+
+.box-blue1 {
+    background-color: #dce4e7;
+    width: 100%;
+    height: 100px;
+    position: relative;
+    top: 450px;
+}
+
+.h1-1 {
+    text-align: center;
+}
+
+/* .p1-1 {
+    margin-top: 30px;
+}
+
+.p1-2 {
+    text-align: right;
+    position: relative;
+    right: 100px;
+    margin-top: -23px;
+} */
+
+li {
+    margin-left: 25px;
+    margin-top: 5px;
+}
+
+/* .boxes {
+    position: relative;
+    top: 400px;
+    margin-left: 20px;
+    margin-top: 80px;
+}
+
+.boxes-txt {
+    position: relative;
+    top: 480px;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+
+.pre {
+    text-align: right;
+    position: relative;
+    right: 5%;
+    top: -20px;
+}
+
+.erea {
+    border: black solid 2px;
+    width: 80%;
+    height: 100px;
+    position: relative;
+    left: 10%;
+    margin-top: 550px;
+    padding-left: 10px;
+    padding-bottom: 30px;
+}
+
+.h3-3 {
+    position: relative;
+    top: -30px;
+} */

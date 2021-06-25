@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Typography, Box, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 
@@ -23,7 +23,6 @@ export const DocumentForm = ({ onDone, createdQoute, data }: { onDone: () => voi
             await exportPdf(divToPrint.current);
         }
     };
-
     return (
         <Box>
             <Typography>We made a pdf from your Quote, now you can save it</Typography>
@@ -41,7 +40,7 @@ export const DocumentForm = ({ onDone, createdQoute, data }: { onDone: () => voi
                         minHeight: "1200px",
                     }}
                 >
-                    <QuotePDF />
+                    <QuotePDF data={data} />
                 </div>
             </div>
             <Box textAlign="right">
