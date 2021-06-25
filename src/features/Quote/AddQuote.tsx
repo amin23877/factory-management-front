@@ -61,7 +61,7 @@ export default function AddQuote({
                                 <General
                                     data={quote}
                                     onDone={(d) => {
-                                        setQuote((prev) => ({ ...prev, ...d }))
+                                        setQuote((prev) => ({ ...prev, ...d }));
                                         setStep(1);
                                     }}
                                 />
