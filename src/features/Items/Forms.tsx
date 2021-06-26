@@ -54,7 +54,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     <FormControlLabel
                         style={{ fontSize: "0.7rem" }}
                         checked={values.salesApproved}
-                        label="Sales Approved"
+                        label="S. Ap."
                         name="salesApproved"
                         onChange={handleChange}
                         control={<Checkbox />}
@@ -62,8 +62,16 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     <FormControlLabel
                         style={{ fontSize: "0.7rem" }}
                         checked={values.engineeringApproved}
-                        label="Engineering Approved"
+                        label="En. Ap."
                         name="engineeringApproved"
+                        onChange={handleChange}
+                        control={<Checkbox />}
+                    />
+                    <FormControlLabel
+                        style={{ fontSize: "0.7rem" }}
+                        checked={values.device}
+                        label="device"
+                        name="device"
                         onChange={handleChange}
                         control={<Checkbox />}
                     />
