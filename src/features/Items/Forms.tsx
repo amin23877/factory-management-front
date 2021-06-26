@@ -194,28 +194,12 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                 style={{ marginBottom: 3 }}
             />
             <TextField
-                label="lastUsedInBom"
-                name="lastUsedInBom"
-                placeholder="lastUsedInBom"
-                value={values.lastUsedInBom}
-                onBlur={handleBlur}
-                onChange={handleChange}
-            />
-            <TextField
                 label="Resell Cost"
                 value={values.resellCost}
                 name="resellCost"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={Boolean(errors.resellCost && touched.resellCost)}
-            />
-            <TextField
-                label="last used in 90 days"
-                value={values.usedInLastQuarter}
-                name="usedInLastQuarter"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={Boolean(errors.usedInLastQuarter && touched.usedInLastQuarter)}
             />
             <TextField
                 label="upc"
@@ -447,6 +431,50 @@ export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlu
             ))}
             <Divider style={{ gridColumnEnd: "span 2" }} />
             {dynamicFields}
+        </Box>
+    );
+};
+
+
+export const LastUsed = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
+    return (
+        <Box mt={1} display="grid" gridTemplateColumns="auto" gridColumnGap={10} gridRowGap={10}>
+            <TextField
+                label="lastUsedInBom"
+                name="lastUsedInBom"
+                placeholder="lastUsedInBom"
+                value={values.lastUsedInBom}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                disabled
+            />
+            <TextField
+                label="last used in 90 days"
+                value={values.usedInLastQuarter}
+                name="usedInLastQuarter"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                disabled
+                error={Boolean(errors.usedInLastQuarter && touched.usedInLastQuarter)}
+            />
+            <TextField
+                label="last used in 60 days"
+                value={values.usedInLastSixty}
+                name="usedInLastSixty"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.usedInLastSixty && touched.usedInLastSixty)}
+                disabled
+            />
+            <TextField
+                label="last used in 30 days"
+                disabled
+                value={values.usedInLastThirty}
+                name="usedInLastThirty"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.usedInLastThirty && touched.usedInLastThirty)}
+            />
         </Box>
     );
 };

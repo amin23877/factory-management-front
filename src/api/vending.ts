@@ -1,15 +1,16 @@
 import Axios from 'axios';
 
 export type IVending = {
-    id?:string,
+    id?: string,
     VendorId: string,
     ItemId: string,
     leadTime: number,
     lastCheckedPrice: number,
-    comment: string
+    comment: string,
+    serialNo: string,
 }
 
-export const createVending = async (data:IVending) => {
+export const createVending = async (data: IVending) => {
     try {
         const resp = await Axios.post('/vending', data);
         return resp.data;
@@ -27,7 +28,7 @@ export const getVendings = async () => {
     }
 }
 
-export const updateVending = async (id:string, data:IVending) => {
+export const updateVending = async (id: string, data: IVending) => {
     try {
         const resp = await Axios.patch(`/vending/${id}`, data);
         return resp.data;
@@ -36,7 +37,7 @@ export const updateVending = async (id:string, data:IVending) => {
     }
 }
 
-export const deleteVending = async (id:string) => {
+export const deleteVending = async (id: string) => {
     try {
         const resp = await Axios.delete(`/vending/${id}`);
         return resp.data;

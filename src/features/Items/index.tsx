@@ -10,7 +10,7 @@ import BaseDataGrid from "../../app/BaseDataGrid";
 import { BasePaper } from "../../app/Paper";
 import VendorsTable from "./VandorsTable";
 
-import { MoreInfo, Quantity, Shipping, General, DynamicFilterAndFields } from "./Forms";
+import { MoreInfo, Quantity, Shipping, General, DynamicFilterAndFields, LastUsed } from "./Forms";
 import { SalesReport } from "./Reports";
 
 import ManualCountModal from "./ManualCountModal";
@@ -58,6 +58,7 @@ function ItemsDetails({
     const { data: itemQuotes } = useSWR(activeTab === 5 ? `/item/${selectedRow.id}/quote` : null);
     const { data: itemSOs } = useSWR(activeTab === 6 ? `/item/${selectedRow.id}/so` : null);
     const { data: itemPOs } = useSWR(activeTab === 7 ? `/item/${selectedRow.id}/purchasepo` : null);
+    // const { data: itemUsage } = useSWR(activeTab === 9 ? `/item/${selectedRow.id}/usage` : null);
 
     const [showSnack, setShowSnack] = useState(false);
     const [snackMsg, setSnackMsg] = useState("");
@@ -191,8 +192,9 @@ function ItemsDetails({
                                         <Tab label="More Info." />
                                         <Tab label="Quantity" />
                                         <Tab label="Shipping" />
-                                        <Tab label="Clusters and Levels" />
+                                        <Tab label="Last Used" />
                                         <Tab label="Image" />
+                                        <Tab label="Clusters and Levels" />
                                     </Tabs>
                                     {moreInfoTab === 0 && (
                                         <MoreInfo
@@ -226,6 +228,16 @@ function ItemsDetails({
                                         />
                                     )}
                                     {moreInfoTab === 3 && (
+                                        <LastUsed
+                                            values={values}
+                                            handleChange={handleChange}
+                                            handleBlur={handleBlur}
+                                            setFieldValue={setFieldValue}
+                                            errors={errors}
+                                            touched={touched}
+                                        />
+                                    )}
+                                    {moreInfoTab === 5 && (
                                         <DynamicFilterAndFields
                                             values={values}
                                             handleChange={handleChange}
@@ -276,13 +288,14 @@ function ItemsDetails({
                 <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} textColor="primary" variant="scrollable">
                     <Tab label="Notes" />
                     <Tab label="Documents" />
-                    <Tab label="Uses" />
+                    <Tab label="BOM allocated" />
                     <Tab label="BOM" />
                     <Tab label="Vendors" />
                     <Tab label="Quote History" />
                     <Tab label="Sales order History" />
                     <Tab label="Purchase order History" />
                     <Tab label="Sales Report" />
+                    <Tab label="Usage" />
                 </Tabs>
                 <Box p={3}>
                     {activeTab === 0 && (
@@ -292,22 +305,26 @@ function ItemsDetails({
                         <BaseDataGrid height={250} cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />
                     )}
                     {activeTab === 2 && (
-                        <BaseDataGrid height={250} cols={usesCols} rows={uses || []} onRowSelected={() => {}} />
+                        <BaseDataGrid height={250} cols={usesCols} rows={uses || []} onRowSelected={() => { }} />
                     )}
                     {activeTab === 3 && (
-                        <BaseDataGrid height={250} cols={bomCols} rows={boms || []} onRowSelected={() => {}} />
+                        <BaseDataGrid height={250} cols={bomCols} rows={boms || []} onRowSelected={() => { }} />
                     )}
                     {activeTab === 4 && (
-                        <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => {}} />
+                        <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => { }} />
                     )}
                     {activeTab === 5 && (
-                        <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes || []} onRowSelected={() => {}} />
+                        <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes || []} onRowSelected={() => { }} />
                     )}
                     {activeTab === 6 && <SOTable rows={itemSOs || []} />}
                     {activeTab === 7 && (
-                        <BaseDataGrid height={250} cols={poCols} rows={itemPOs || []} onRowSelected={() => {}} />
+                        <BaseDataGrid height={250} cols={poCols} rows={itemPOs || []} onRowSelected={() => { }} />
                     )}
                     {activeTab === 8 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
+                    //list of units
+                    {activeTab === 9 && (
+                        <BaseDataGrid height={250} cols={poCols} rows={itemPOs || []} onRowSelected={() => { }} />
+                    )}
                 </Box>
             </BasePaper>
         </Box>
