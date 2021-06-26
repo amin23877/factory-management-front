@@ -38,6 +38,10 @@ export interface ISO {
     ProjectId?: string;
 }
 
+export interface ISOComplete extends ISO {
+    lines: ILineItem[];
+}
+
 export const getSO = async () => {
     try {
         const resp = await Axios.get(`/so`);
@@ -54,6 +58,14 @@ export const createSO = async (data: ISO) => {
             estShipDate: data.estShipDate === "" ? null : new Date(data.estShipDate).toISOString(),
             actShipDate: data.actShipDate === "" ? null : new Date(data.actShipDate).toISOString(),
         });
+        return resp.data;
+    } catch (error) {
+        throw error;
+    }
+};
+export const createSOComplete = async (data: ISOComplete) => {
+    try {
+        const resp = await Axios.post("/so", data);
         return resp.data;
     } catch (error) {
         throw error;

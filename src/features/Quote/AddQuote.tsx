@@ -7,7 +7,7 @@ import General from "./General";
 import { FinalForm } from "./EditForm";
 import { DocumentForm } from "./Forms";
 
-import { IPurchasePO, IPurchasePOComplete } from "../../api/purchasePO";
+import { IQuote, IQuoteComplete } from "../../api/quote";
 
 export default function AddQuote({
     open,
@@ -15,14 +15,14 @@ export default function AddQuote({
     onDone,
     initialData,
 }: {
-    initialData?: IPurchasePOComplete;
+    initialData?: IQuoteComplete;
     open: boolean;
     onClose: () => void;
     onDone: () => void;
 }) {
     const [step, setStep] = useState(0);
     const [quote, setQuote] = useState(initialData);
-    const [createdQuote, setCreatedQuote] = useState<IPurchasePO>();
+    const [createdQuote, setCreatedQuote] = useState<IQuote>();
 
     useEffect(() => {
         if (initialData) {

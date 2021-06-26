@@ -1,11 +1,10 @@
-import React, { useEffect, useRef } from "react";
-import { Typography, Box, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio } from "@material-ui/core";
+import React, { useEffect, useRef, useState } from "react";
+import { LinearProgress, Typography, Box, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 
 import TextField from "../../app/TextField";
 import Button from "../../app/Button";
 import { FieldSelect, ArraySelect } from "../../app/Inputs";
-
 import { getAllEmployees } from "../../api/employee";
 import { getContacts } from "../../api/contact";
 import { getClients } from "../../api/client";
@@ -14,13 +13,40 @@ import { getItems } from "../../api/items";
 import { exportPdf } from "../../logic/pdf";
 import { getJobs } from "../../api/job";
 import QuotePDF from "../../PDFTemplates/Quote";
+import { createAModelDocument } from "../../api/document";
+
+
 
 export const DocumentForm = ({ onDone, createdQoute, data }: { onDone: () => void, createdQoute: any, data: any }) => {
     const divToPrint = useRef<HTMLElement | null>(null);
 
+
+    const [canSave, setCanSave] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
+
     const handleSaveDocument = async () => {
-        if (divToPrint.current) {
-            await exportPdf(divToPrint.current);
+        try {
+            setCanSave(false);
+            setIsUploading(true);
+            if (divToPrint.current && createdQoute.id) {
+                const generatedPdf = await exportPdf(divToPrint.current);
+                console.log(generatedPdf);
+                const resp = await createAModelDocument(
+                    "quote",
+                    createdQoute.id,
+                    generatedPdf,
+                    `${new Date().toJSON().slice(0, 19)} - ${createdQoute.number}`,
+                    `PO_${createdQoute.number}.pdf`
+                );
+                if (resp) {
+                    onDone();
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setCanSave(true);
+            setIsUploading(false);
         }
     };
     return (
@@ -44,10 +70,10 @@ export const DocumentForm = ({ onDone, createdQoute, data }: { onDone: () => voi
                 </div>
             </div>
             <Box textAlign="right">
-                <Button kind="add" onClick={handleSaveDocument}>
+                <Button disabled={false} kind="add" onClick={handleSaveDocument}>
                     Save
                 </Button>
-                {/* {isUploading && <LinearProgress />} */}
+                {isUploading && <LinearProgress />}
             </Box>
         </Box>
     );

@@ -37,6 +37,8 @@ import { LinearProgress } from "@material-ui/core";
 import { exportPdf } from "../../logic/pdf";
 
 import "../../styles/splash.css";
+import { ISOComplete } from "../../api/so";
+import { IQuoteComplete } from "../../api/quote";
 
 export const DocumentForm = ({
     createdPO,
@@ -91,6 +93,7 @@ export const DocumentForm = ({
             setIsUploading(true);
             if (divToPrint.current && createdPO.id) {
                 const generatedPdf = await exportPdf(divToPrint.current);
+
 
                 console.log(generatedPdf);
                 const resp = await createAModelDocument(
@@ -405,7 +408,7 @@ export const LinesForm = ({
     onBack,
     data,
 }: {
-    data?: IPurchasePOComplete;
+    data?: IPurchasePOComplete | ISOComplete | IQuoteComplete;
     onDone: (items: ILineItem[]) => void;
     onBack: () => void;
 }) => {

@@ -6,7 +6,7 @@ import { Form, Formik } from "formik";
 import Snack from "../../app/Snack";
 import Button from "../../app/Button";
 import { BillingTab, GeneralForm, ShippingForm, TermsTab } from "./Forms";
-import { ISO, editSO } from "../../api/so";
+import { ISO, editSO, createSOComplete, ISOComplete } from "../../api/so";
 import { BasePaper } from "../../app/Paper";
 
 export default function EditForm({ selectedSo, onDone }: { selectedSo: ISO; onDone: () => void }) {
@@ -88,42 +88,26 @@ export default function EditForm({ selectedSo, onDone }: { selectedSo: ISO; onDo
 }
 
 
-export const FinalForm = ({ onDone, onBack, data }: { onDone: (a: any) => void; onBack: () => void; data: any }) => {
+export const FinalForm = ({ onDone, onBack, data }: { onDone: (a: any) => void; onBack: () => void; data: ISOComplete }) => {
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async () => {
-        onDone(data);
-        //     try {
-        //         const { ContactId, requester, status, VendorId, lines } = data;
-        //         let newLines = [...lines];
-        //         newLines.forEach(function (v: any) {
-        //             delete v.createdAt;
-        //             delete v.id;
-        //             delete v.PurchasePOId;
-        //             delete v.PurchaseSOId;
-        //             delete v.QuoteId;
-        //             delete v.SOId;
-        //             delete v.updatedAt;
-        //         });
-        //         const resp = await createPurchasePOComplete({
-        //             ContactId,
-        //             requester,
-        //             status,
-        //             VendorId,
-        //             lines: newLines,
-        //         } as IPurchasePOComplete);
-        //         if (resp) {
-        //             console.log(resp);
-        //             onDone(resp);
-        //         }
-        //     } catch (error) {
-        //         console.log(error);
-        //         console.log(error.response.data.error);
-        //     } finally {
-        //         setLoading(false);
-        //     }
-        // };
+        // onDone(data);
+        console.log(data)
+        setLoading(true)
+        try {
+            const resp = await createSOComplete(data);
+            if (resp) {
+                console.log(resp);
+                onDone(resp);
+            }
+        } catch (error) {
+            console.log(error.response.data);
+        } finally {
+            setLoading(false);
+        }
     }
+
     return (
         <>
             <Box height="85%" display="flex" flexDirection="column">
@@ -138,7 +122,7 @@ export const FinalForm = ({ onDone, onBack, data }: { onDone: (a: any) => void; 
                     <Button disabled={loading} onClick={onBack} color="secondary" variant="contained">
                         Back to lines
                     </Button>
-                    <Button disabled={loading} onClick={handleSubmit} color="primary" variant="contained">
+                    <Button onClick={handleSubmit} color="primary" variant="contained">
                         Finilize
                     </Button>
                 </Box>
