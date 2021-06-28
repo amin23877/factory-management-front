@@ -58,7 +58,7 @@ function ItemsDetails({
     const { data: itemQuotes } = useSWR(activeTab === 5 ? `/item/${selectedRow.id}/quote` : null);
     const { data: itemSOs } = useSWR(activeTab === 6 ? `/item/${selectedRow.id}/so` : null);
     const { data: itemPOs } = useSWR(activeTab === 7 ? `/item/${selectedRow.id}/purchasepo` : null);
-    // const { data: itemUsage } = useSWR(activeTab === 9 ? `/item/${selectedRow.id}/usage` : null);
+    const { data: itemUsage } = useSWR(activeTab === 9 ? `/item/${selectedRow.id}/uses` : null);
 
     const [showSnack, setShowSnack] = useState(false);
     const [snackMsg, setSnackMsg] = useState("");
@@ -119,6 +119,15 @@ function ItemsDetails({
             { field: "name", headerName: "Name" },
             { field: "note", headerName: "note", flex: 1 },
             { field: "current", headerName: "current", type: "boolean" },
+        ],
+        []
+    );
+    const usageCols = useMemo<GridColDef[]>(
+        () => [
+            { field: "number", headerName: "Serial No." },
+            { field: "laborCost", headerName: "Labor Cost" },
+            { field: "dueDate", headerName: "Due Date", flex: 1 },
+            { field: "status", headerName: "Status" },
         ],
         []
     );
@@ -321,9 +330,8 @@ function ItemsDetails({
                         <BaseDataGrid height={250} cols={poCols} rows={itemPOs || []} onRowSelected={() => { }} />
                     )}
                     {activeTab === 8 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
-                    //list of units
                     {activeTab === 9 && (
-                        <BaseDataGrid height={250} cols={poCols} rows={itemPOs || []} onRowSelected={() => { }} />
+                        <BaseDataGrid height={250} cols={usageCols} rows={itemUsage || []} onRowSelected={() => { }} />
                     )}
                 </Box>
             </BasePaper>

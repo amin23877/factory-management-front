@@ -67,6 +67,7 @@ export interface IItem {
     engineeringApproval: boolean;
     no: string;
     name: string;
+    device: boolean;
     usedInLastQuarter: number;
     filters: {
         [key: string]: string | number;

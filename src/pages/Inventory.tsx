@@ -41,7 +41,7 @@ const Inventory = () => {
     const [sorts, setSort] = useState<GridSortModelParams>();
 
     const { data: items, mutate: mutateItems } = useSWR<{ items: IItem[]; total: number }>(
-        generateURL(filters, sorts, page)
+        generateURL('/item', filters, sorts, page)
     );
 
     const [selectedItem, setSelectedItem] = useState<IItem | null>(null);

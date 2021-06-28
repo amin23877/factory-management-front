@@ -48,11 +48,12 @@ const generateSorts = (sorts?: GridSortModelParams) => {
 };
 
 export const generateURL = (
+    url: string,
     filters?: GridFilterModelParams,
     sorts?: GridSortModelParams,
-    page?: GridPageChangeParams
+    page?: GridPageChangeParams,
 ) => {
-    let url = "/item";
+    // let url = "/item";
     let params: string[] = [];
 
     if (!filters && !sorts && !page) return url;
@@ -62,7 +63,7 @@ export const generateURL = (
     // params.push(generatePage(page));
     const generatedFilters = generateFilter(filters);
     const generatedSorts = generateSorts(sorts);
-    
+
     if (generatedFilters) {
         params.push(generatedFilters);
     }
