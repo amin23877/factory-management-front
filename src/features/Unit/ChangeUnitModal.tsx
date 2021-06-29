@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { Box, TextField } from "@material-ui/core";
+import { Autocomplete } from "@material-ui/lab";
+import { DateTimePicker } from "@material-ui/pickers";
 import { Formik, Form } from "formik";
 
 import Button from "../../app/Button";
 import Dialog from "../../app/Dialog";
+import { ArraySelect, FieldSelect } from "../../app/Inputs";
 
 import { IUnit, updateUnit } from "../../api/units";
 
-import { DateTimePicker } from "@material-ui/pickers";
-import { Autocomplete } from "@material-ui/lab";
-
-import { ArraySelect } from "../../app/Inputs";
 import { mutate } from "swr";
+import { getAllEmployees } from "../../api/employee";
 
 export const ChangeUnitModal = ({
     open,
@@ -93,20 +93,14 @@ export const ChangeUnitModal = ({
                                             placeholder="dueDate"
                                             label="Due Date"
                                         />
-                                        <Autocomplete
-                                            value={values.assignee}
-                                            options={[]}
-                                            getOptionLabel={(option: any) => option.description}
-                                            onChange={(e, nv) => {}}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    label="Employee"
-                                                    placeholder="Employee"
-                                                    size="small"
-                                                    variant="outlined"
-                                                />
-                                            )}
+                                        <FieldSelect
+                                            request={getAllEmployees}
+                                            itemTitleField="username"
+                                            itemValueField="id"
+                                            name="assignee"
+                                            onChange={handleChange}
+                                            label="Employee"
+                                            placeholder="Employee"
                                         />
                                     </Box>
                                     <Box>

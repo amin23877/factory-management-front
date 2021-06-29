@@ -8,21 +8,16 @@ import {
     GridSortModelParams,
     GridToolbar,
 } from "@material-ui/data-grid";
-import { SearchBar } from "../app/TextField";
 import useSWR from "swr";
 
-import BaseDataGrid from "../app/BaseDataGrid";
-import { generateURL } from "../logic/filterSortPage";
-<<<<<<< HEAD
-import { IUnit } from "../api/units";
 import { ChangeUnitModal } from "../features/Unit/ChangeUnitModal";
-=======
-import { IUnit } from '../api/units';
-import { ChangeUnitModal } from '../features/Unit/ChangeUnitModal'
-import UBomModal from '../features/UBOM/UBomModal'
-import MyDialog from "../app/Dialog";
+import UBomModal from "../features/UBOM/UBomModal";
 
->>>>>>> origin/amin
+import { SearchBar } from "../app/TextField";
+import BaseDataGrid from "../app/BaseDataGrid";
+
+import { IUnit } from "../api/units";
+import { generateURL } from "../logic/filterSortPage";
 
 export default function Unit() {
     const [filters, setFilters] = useState<GridFilterModelParams>();
@@ -35,10 +30,6 @@ export default function Unit() {
 
     const { data: units, mutate: mutateItems } = useSWR(generateURL("/unit", filters, sorts, page));
 
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/amin
     const unitCols = useMemo<GridColDef[]>(
         () => [
             { field: "number", headerName: "Serial No." },
@@ -54,7 +45,14 @@ export default function Unit() {
                 {bOpen ? bOpen : null}
             </MyDialog> */}
             <UBomModal open={bOpen} onClose={() => setBOpen(false)} unitId={bOpen} />
-            <ChangeUnitModal open={open} onClose={() => setOpen(false)} unit={selected ? selected : {} as IUnit} openBom={(id) => { setBOpen(id) }} />
+            <ChangeUnitModal
+                open={open}
+                onClose={() => setOpen(false)}
+                unit={selected ? selected : ({} as IUnit)}
+                openBom={(id) => {
+                    setBOpen(id);
+                }}
+            />
             <Box display="flex" alignItems="center" my={2}>
                 <SearchBar />
                 <div style={{ flexGrow: 1 }} />
