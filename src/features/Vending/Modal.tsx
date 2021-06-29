@@ -26,6 +26,7 @@ export default function VendingModal({
     onDone: () => void;
 }) {
     const schema = Yup.object().shape({
+        serialNo: Yup.string().required(),
         ItemId: Yup.string().required(),
         leadTime: Yup.number().required(),
         lastCheckedPrice: Yup.number().required(),
@@ -80,6 +81,15 @@ export default function VendingModal({
                     {({ values, errors, handleChange, handleBlur }: any) => (
                         <Form>
                             <Box display="grid" gridTemplateColumns="auto auto" gridColumnGap="0.5em" gridRowGap={8}>
+                                <TextField
+                                    style={{ width: "100%" }}
+                                    name="serialNo"
+                                    label="serial number"
+                                    value={values.serialNo}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors.serialNo)}
+                                />
                                 <TextField
                                     style={{ width: "100%" }}
                                     name="leadTime"

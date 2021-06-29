@@ -203,6 +203,20 @@ const drawerItems = [
         ),
     },
     {
+        name: "Units",
+        link: "/panel/unit",
+        icon: (
+            <svg xmlns="http://www.w3.org/2000/svg" fill="inherit" width="15.34" height="15.34" viewBox="0 0 15.34 15.34">
+                <path
+                    id="Path_13712"
+                    data-name="Path 13712"
+                    d="M16.635,3H4.7A1.7,1.7,0,0,0,3,4.7V16.635a1.7,1.7,0,0,0,1.7,1.7H16.635a1.709,1.709,0,0,0,1.7-1.7V4.7A1.7,1.7,0,0,0,16.635,3Zm0,13.635H4.7V6.409H16.635Zm-1.7-5.965H6.409v-1.7h8.522Zm-3.409,3.409H6.409v-1.7h5.113Z"
+                    transform="translate(-3 -3)"
+                />
+            </svg>
+        ),
+    },
+    {
         name: "Activity",
         link: "/panel/activity",
         icon: (

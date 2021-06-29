@@ -7,7 +7,7 @@ import General from "./MainForm";
 import { FinalForm } from "./EditForm";
 import { DocumentForm } from "./Forms";
 
-import { IPurchasePO, IPurchasePOComplete } from "../../api/purchasePO";
+import { ISO, ISOComplete } from "../../api/so";
 
 export default function AddQuote({
     open,
@@ -15,18 +15,18 @@ export default function AddQuote({
     onDone,
     initialData,
 }: {
-    initialData?: IPurchasePOComplete;
+    initialData?: ISOComplete;
     open: boolean;
     onClose: () => void;
     onDone: () => void;
 }) {
     const [step, setStep] = useState(0);
-    const [po, setPO] = useState(initialData);
-    const [createdPO, setCreatedPO] = useState<IPurchasePO>();
+    const [so, setSO] = useState(initialData);
+    const [createdSO, setCreatedSO] = useState<ISO>();
 
     useEffect(() => {
         if (initialData) {
-            setPO(initialData);
+            setSO(initialData);
         }
     }, [initialData]);
 
@@ -57,8 +57,9 @@ export default function AddQuote({
                 {step === 0 && (
                     <Box my={1}>
                         <General
-                            data={po}
-                            onDone={(d:any) => {
+                            data={so}
+                            onDone={(d) => {
+                                setSO((prev) => ({ ...prev, ...d }));
                                 setStep(1);
                             }}
                         />
@@ -66,23 +67,23 @@ export default function AddQuote({
                 )}
                 {step === 1 && (
                     <LinesForm
-                        data={po}
+                        data={so}
                         onBack={() => setStep(0)}
                         onDone={(items: any) => {
-                            setPO((d: any) => ({ ...d, lines: items }));
+                            setSO((prev: any) => ({ ...prev, lines: items }));
                             setStep(2);
                         }}
                     />
                 )}
-                {step === 2 && po && (
+                {step === 2 && so && (
                     <FinalForm
-                        data={po}
+                        data={so}
                         onBack={() => setStep(1)}
                         onDone={(data) => {
                             // onClose();
                             setStep(3);
-                            // onDone();
-                            // setCreatedPO(data);
+                            onDone();
+                            setCreatedSO(data);
                         }}
                     />
                 )}
@@ -92,6 +93,8 @@ export default function AddQuote({
                             onClose();
                             onDone();
                         }}
+                        createdSO={createdSO}
+                        data={so}
                     />
                 )}
             </Box>

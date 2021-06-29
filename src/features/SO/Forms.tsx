@@ -8,7 +8,7 @@ import {
     Checkbox,
     RadioGroup,
     Radio,
-    Divider,
+    LinearProgress,
 } from "@material-ui/core";
 
 import TextField from "../../app/TextField";
@@ -31,6 +31,8 @@ import SOCus from "../../PDFTemplates/SOCus";
 import SORep from "../../PDFTemplates/SORep";
 import SOAcc from "../../PDFTemplates/SOAcc";
 import { exportPdf } from "../../logic/pdf";
+import { ISO, ISOComplete } from "../../api/so";
+import { createAModelDocument } from "../../api/document";
 
 export const GeneralForm = ({
     handleChange,
@@ -412,12 +414,72 @@ export const TermsTab = ({
     );
 };
 
-export const DocumentForm = ({ onDone }: { onDone: () => void }) => {
-    const divToPrint = useRef<HTMLElement | null>(null);
+export const DocumentForm = ({
+    onDone,
+    createdSO,
+    data,
+}: {
+    onDone: () => void;
+    createdSO?: ISO;
+    data?: ISOComplete;
+}) => {
+    const divToPrintAcc = useRef<HTMLElement | null>(null);
+    const divToPrintRep = useRef<HTMLElement | null>(null);
+    const divToPrintCus = useRef<HTMLElement | null>(null);
+
+    // const classes = useStyles();
+    const [canSave, setCanSave] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
 
     const handleSaveDocument = async () => {
-        if (divToPrint.current) {
-            await exportPdf(divToPrint.current);
+        try {
+            setCanSave(false);
+            setIsUploading(true);
+            if (divToPrintAcc.current && createdSO?.id) {
+                const generatedPdf = await exportPdf(divToPrintAcc.current);
+                console.log(generatedPdf);
+                const resp = await createAModelDocument(
+                    "so",
+                    createdSO.id,
+                    generatedPdf,
+                    `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
+                    `SO_ACC_${createdSO.number}.pdf`
+                );
+                if (resp) {
+                    if (divToPrintRep.current) {
+                        const generatedPdf = await exportPdf(divToPrintRep.current);
+                        console.log(generatedPdf);
+                        const resp = await createAModelDocument(
+                            "so",
+                            createdSO.id,
+                            generatedPdf,
+                            `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
+                            `SO_REP_${createdSO.number}.pdf`
+                        );
+                        if (resp) {
+                            if (divToPrintCus.current) {
+                                const generatedPdf = await exportPdf(divToPrintCus.current);
+                                console.log(generatedPdf);
+                                const resp = await createAModelDocument(
+                                    "so",
+                                    createdSO.id,
+                                    generatedPdf,
+                                    `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
+                                    `SO_CUS_${createdSO.number}.pdf`
+                                );
+                                if (resp) {
+                                    onDone();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setCanSave(true);
+            setIsUploading(false);
         }
     };
 
@@ -426,9 +488,10 @@ export const DocumentForm = ({ onDone }: { onDone: () => void }) => {
             <Typography>We made a pdf from your Sales Order, now you can save it</Typography>
             <div style={{ height: 400, overflowY: "auto" }}>
                 <div id="myMm" style={{ height: "1mm" }} />
+                <h1>Accounting doc :</h1>
                 <div
                     id="divToPrint"
-                    ref={(e) => (divToPrint.current = e)}
+                    ref={(e) => (divToPrintAcc.current = e)}
                     style={{
                         backgroundColor: "#fff",
                         color: "black",
@@ -438,11 +501,37 @@ export const DocumentForm = ({ onDone }: { onDone: () => void }) => {
                         minHeight: "1200px",
                     }}
                 >
-                    <SOAcc data="amin" />
-                    <hr />
-                    <SORep data="amin" />
-                    <hr />
-                    <SOCus data="amin" />
+                    <SOAcc data={data} />
+                </div>
+                <h1>Representative doc :</h1>
+                <div
+                    id="divToPrint1"
+                    ref={(e) => (divToPrintRep.current = e)}
+                    style={{
+                        backgroundColor: "#fff",
+                        color: "black",
+                        width: "835px",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        minHeight: "1200px",
+                    }}
+                >
+                    <SORep data={data} />
+                </div>
+                <h1>Customer doc :</h1>
+                <div
+                    id="divToPrint2"
+                    ref={(e) => (divToPrintCus.current = e)}
+                    style={{
+                        backgroundColor: "#fff",
+                        color: "black",
+                        width: "835px",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        minHeight: "1200px",
+                    }}
+                >
+                    <SOCus data={data} />
                 </div>
             </div>
 
@@ -450,7 +539,7 @@ export const DocumentForm = ({ onDone }: { onDone: () => void }) => {
                 <Button kind="add" onClick={handleSaveDocument}>
                     Save
                 </Button>
-                {/* {isUploading && <LinearProgress />} */}
+                {isUploading && <LinearProgress />}
             </Box>
         </Box>
     );

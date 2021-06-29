@@ -33,6 +33,10 @@ export interface IQuote {
     ProjectId: string | null;
 }
 
+export interface IQuoteComplete extends IQuote {
+    lines: ILineItem[];
+}
+
 export const createQuoteLineService = async (quoteId: string, data: ILineService) => {
     try {
         const resp = await Axios.post(`/quote/${quoteId}/lineservice`, data);
