@@ -162,3 +162,20 @@ export const addManualCount = async (ItemId: string, count: number, date: string
         throw error;
     }
 };
+
+export interface IQuantity {
+    qtyOnHand: string;
+    qtyAvailable: string;
+    qtyOnOrder: string;
+    qtyAllocated: string;
+    qtyRemain: string;
+}
+
+export const updateItemQuantity = async (ItemId: string, data: IQuantity) => {
+    try {
+        const resp = await Axios.patch(`/item/${ItemId}/qty`, data);
+        return resp.data;
+    } catch (error) {
+        throw error;
+    }
+};

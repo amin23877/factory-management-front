@@ -1,5 +1,6 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useRef } from "react";
 import { Box, Grid, Tabs, Tab } from "@material-ui/core";
+import { GridColDef } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR from "swr";
 
@@ -15,12 +16,12 @@ import { SalesReport } from "./Reports";
 
 import ManualCountModal from "./ManualCountModal";
 import SOTable from "./SOTable";
+import UpdateQuantityModal from "./Quantity";
+
 import { INote } from "../../api/note";
 import { IDocument } from "../../api/document";
 import { AddItemSchema, updateAnItem, addImage } from "../../api/items";
 import { IBom } from "../../api/bom";
-import { GridColDef } from "@material-ui/data-grid";
-import { useRef } from "react";
 
 function ItemsDetails({
     selectedRow,
@@ -64,6 +65,7 @@ function ItemsDetails({
     const [snackMsg, setSnackMsg] = useState("");
 
     const [manualCountModal, setManualCountModal] = useState(false);
+    const [quantityModal, setQuantityModal] = useState(false);
 
     const quoteCols = useMemo(
         () => [
@@ -138,7 +140,7 @@ function ItemsDetails({
             if (resp) {
                 setSubmitting(false);
                 setShowSnack(true);
-                setSnackMsg(`Updated item ${data.id}...`);
+                setSnackMsg("Item updated !");
                 onDone && onDone();
             }
         } catch (error) {
@@ -158,6 +160,7 @@ function ItemsDetails({
                     setShowSnack(true);
                 }}
             />
+            <UpdateQuantityModal open={quantityModal} onClose={() => setQuantityModal(false)} itemId={selectedRow.id} />
 
             <Snackbar onClose={() => setShowSnack(false)} open={showSnack}>
                 {snackMsg}
@@ -217,13 +220,15 @@ function ItemsDetails({
                                     )}
                                     {moreInfoTab === 1 && (
                                         <Quantity
-                                            handleManualCount={() => setManualCountModal(true)}
                                             values={values}
                                             handleChange={handleChange}
                                             handleBlur={handleBlur}
                                             setFieldValue={setFieldValue}
                                             errors={errors}
                                             touched={touched}
+                                            itemId={selectedRow.id}
+                                            handleManualCount={() => setManualCountModal(true)}
+                                            handleUpdateQuantity={() => setQuantityModal(true)}
                                         />
                                     )}
                                     {moreInfoTab === 2 && (
@@ -314,24 +319,24 @@ function ItemsDetails({
                         <BaseDataGrid height={250} cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />
                     )}
                     {activeTab === 2 && (
-                        <BaseDataGrid height={250} cols={usesCols} rows={uses || []} onRowSelected={() => { }} />
+                        <BaseDataGrid height={250} cols={usesCols} rows={uses || []} onRowSelected={() => {}} />
                     )}
                     {activeTab === 3 && (
-                        <BaseDataGrid height={250} cols={bomCols} rows={boms || []} onRowSelected={() => { }} />
+                        <BaseDataGrid height={250} cols={bomCols} rows={boms || []} onRowSelected={() => {}} />
                     )}
                     {activeTab === 4 && (
-                        <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => { }} />
+                        <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => {}} />
                     )}
                     {activeTab === 5 && (
-                        <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes || []} onRowSelected={() => { }} />
+                        <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes || []} onRowSelected={() => {}} />
                     )}
                     {activeTab === 6 && <SOTable rows={itemSOs || []} />}
                     {activeTab === 7 && (
-                        <BaseDataGrid height={250} cols={poCols} rows={itemPOs || []} onRowSelected={() => { }} />
+                        <BaseDataGrid height={250} cols={poCols} rows={itemPOs || []} onRowSelected={() => {}} />
                     )}
                     {activeTab === 8 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
                     {activeTab === 9 && (
-                        <BaseDataGrid height={250} cols={usageCols} rows={itemUsage || []} onRowSelected={() => { }} />
+                        <BaseDataGrid height={250} cols={usageCols} rows={itemUsage || []} onRowSelected={() => {}} />
                     )}
                 </Box>
             </BasePaper>

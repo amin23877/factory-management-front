@@ -1,12 +1,16 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import { Box, FormControlLabel, Typography, Checkbox, LinearProgress, Divider } from "@material-ui/core";
+import { Box, FormControlLabel, Checkbox, LinearProgress, Divider } from "@material-ui/core";
+import { Formik, Form } from "formik";
 import useSWR from "swr";
+
+import Snack from "../../app/Snack";
 import TextField from "../../app/TextField";
 import { ArraySelect } from "../../app/Inputs";
 import Button from "../../app/Button";
 
 import { IFilter } from "../../api/filter";
 import { IField } from "../../api/field";
+import { updateItemQuantity } from "../../api/items";
 
 interface IForm {
     values: any;
@@ -19,7 +23,9 @@ interface IForm {
 }
 
 interface IQForm extends IForm {
+    itemId: string;
     handleManualCount?: () => void;
+    handleUpdateQuantity?: () => void;
 }
 
 export const General = ({ isSubmitting, values, errors, handleChange, handleBlur, touched, setFieldValue }: IForm) => {
@@ -46,7 +52,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     <FormControlLabel
                         style={{ fontSize: "0.7rem" }}
                         checked={values.rndOnly}
-                        label="rndOnly"
+                        label="R&D only"
                         name="rndOnly"
                         onChange={handleChange}
                         control={<Checkbox />}
@@ -70,7 +76,7 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     <FormControlLabel
                         style={{ fontSize: "0.7rem" }}
                         checked={values.device}
-                        label="device"
+                        label="Device"
                         name="device"
                         onChange={handleChange}
                         control={<Checkbox />}
@@ -223,77 +229,59 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
     );
 };
 
-export const Quantity = ({ values, errors, handleChange, handleBlur, handleManualCount }: IQForm) => {
-    // Quantity on hand : Toye anbaar
-    // Allocated quantity : gharare toye so masraf beshe
-    // Available quantity : menhaye so
-    // Total quantity : on hand + onayi ke to raahe
+export const Quantity = ({ itemId, handleManualCount, values, handleUpdateQuantity }: IQForm) => {
+    // qtyOnHand -> ,
+    // qtyAvailable -> ,
+    // qtyOnOrder -> ,
+    // qtyAllocated -> ,
+    // qtyRemain -> ,
 
     return (
         <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10}>
-            <Typography style={{ gridColumnEnd: "span 2" }}>Total Quantity on hand</Typography>
             <TextField
-                label="total quantity"
-                name="totalQoh"
-                placeholder="Total quantity"
-                value={values.totalQoh}
-                onBlur={handleBlur}
-                onChange={handleChange}
+                label="Quantity on hand"
+                placeholder="Quantity on hand"
+                name="qtyOnHand"
+                value={values.qtyOnHand}
+                disabled
             />
             <TextField
-                label="Reorder Quantity"
-                name="reorderQty"
-                value={values.reorderQty}
-                onBlur={handleBlur}
-                onChange={handleChange}
-            />
-            <TextField label="Lead time" name="lead" value={values.lead} onBlur={handleBlur} onChange={handleChange} />
-            <TextField
-                label="Last count"
-                name="lastCount"
-                value={values.lastCount}
-                onBlur={handleBlur}
-                onChange={handleChange}
+                label="Quantity availabe"
+                placeholder="Quantity availabe"
+                name="qtyAvailable"
+                value={values.qtyAvailable}
+                disabled
             />
             <TextField
-                label="Recent purchase price"
-                name="recentPurchasePrice"
-                value={values.recentPurchasePrice}
-                onBlur={handleBlur}
-                onChange={handleChange}
+                label="Quantity on order"
+                placeholder="Quantity on order"
+                name="qtyOnOrder"
+                value={values.qtyOnOrder}
+                disabled
             />
             <TextField
-                label="allocated quantity"
-                name="allocatedQoh"
-                value={values.allocatedQoh}
-                onBlur={handleBlur}
-                onChange={handleChange}
-            />
-            <Typography style={{ gridColumnEnd: "span 2" }}>Available qoh</Typography>
-            <TextField
-                label="Available QOH"
-                name="availableQoh"
-                placeholder="availableQoh"
-                value={values.availableQoh}
-                onBlur={handleBlur}
-                onChange={handleChange}
+                label="Quantity on order"
+                placeholder="Quantity on order"
+                name="qtyAllocated"
+                value={values.qtyAllocated}
+                disabled
             />
             <TextField
-                label="Trriger QOH"
-                name="triggerQoh"
-                placeholder="triggerQoh"
-                value={values.triggerQoh}
-                onBlur={handleBlur}
-                onChange={handleChange}
+                label="Quantity remain"
+                placeholder="Quantity remain"
+                name="qtyRemain"
+                value={values.qtyRemain}
+                style={{ gridColumnEnd: "span 2" }}
+                disabled
             />
+            {handleUpdateQuantity && (
+                <Button kind="edit" onClick={handleUpdateQuantity}>
+                    Update quantity
+                </Button>
+            )}
             {handleManualCount && (
-                <Button
-                    kind="add"
-                    fullWidth
-                    style={{ marginTop: 10, gridColumnEnd: "span 2" }}
-                    onClick={handleManualCount}
-                >
-                    Adjust
+                <Button kind="add" onClick={handleManualCount}>
+                    Adjust manual count
                 </Button>
             )}
         </Box>
@@ -434,7 +422,6 @@ export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlu
         </Box>
     );
 };
-
 
 export const LastUsed = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
     return (

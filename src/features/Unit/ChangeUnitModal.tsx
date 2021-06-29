@@ -1,31 +1,25 @@
 import React from "react";
-import { Box, Typography, TextField } from "@material-ui/core";
+import { Box, TextField } from "@material-ui/core";
 import { Formik, Form } from "formik";
 
 import Button from "../../app/Button";
 import Dialog from "../../app/Dialog";
 
 import { IUnit, updateUnit } from "../../api/units";
-import { useEffect } from "react";
-import { useState } from "react";
-
 
 import { DateTimePicker } from "@material-ui/pickers";
 import { Autocomplete } from "@material-ui/lab";
 
-import { ArraySelect, FieldSelect } from "../../app/Inputs";
-import { getContacts } from "../../api/contact";
-import { getSO } from "../../api/so";
+import { ArraySelect } from "../../app/Inputs";
+import { mutate } from "swr";
 
 export const ChangeUnitModal = ({ open, onClose, unit }: { open: boolean; onClose: () => void; unit?: IUnit }) => {
-    const [refresh, setRefresh] = useState<any>();
-
     const handleSubmit = async (data: any, { setSubmitting }: any) => {
         try {
             if (unit?.id) {
                 const resp = await updateUnit(unit.id, data);
                 if (resp) {
-                    console.log(resp)
+                    mutate("/unit");
                     onClose();
                 }
             }
@@ -34,9 +28,6 @@ export const ChangeUnitModal = ({ open, onClose, unit }: { open: boolean; onClos
         }
     };
 
-    useEffect(() => {
-        setRefresh(unit);
-    }, [unit])
     return (
         <Dialog open={open} onClose={onClose} maxWidth="lg" title="Change Unit Details">
             <Box p={1}>
@@ -81,17 +72,27 @@ export const ChangeUnitModal = ({ open, onClose, unit }: { open: boolean; onClos
                                         value={values.assignee}
                                         options={[]}
                                         getOptionLabel={(option: any) => option.description}
-                                        onChange={(e, nv) => {
-                                        }}
+                                        onChange={(e, nv) => {}}
                                         renderInput={(params) => (
-                                            <TextField {...params} label="Employee" placeholder="Employee" size="small" variant="outlined" />
+                                            <TextField
+                                                {...params}
+                                                label="Employee"
+                                                placeholder="Employee"
+                                                size="small"
+                                                variant="outlined"
+                                            />
                                         )}
                                     />
                                     {/* BOM */}
-
                                 </Box>
-                                <Box >
-                                    <Button fullWidth disabled={isSubmitting} style={{ marginTop: "1.3em" }} kind="add" type="submit">
+                                <Box>
+                                    <Button
+                                        fullWidth
+                                        disabled={isSubmitting}
+                                        style={{ marginTop: "1.3em" }}
+                                        kind="add"
+                                        type="submit"
+                                    >
                                         Save
                                     </Button>
                                 </Box>

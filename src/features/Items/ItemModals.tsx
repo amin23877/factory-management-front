@@ -48,14 +48,19 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
                                         setFieldValue={setFieldValue}
                                         isSubmitting={isSubmitting}
                                     />
-                                    <Button disabled={isSubmitting} style={{ marginTop: "1.3em" }} kind="add" type="submit">
+                                    <Button
+                                        disabled={isSubmitting}
+                                        style={{ marginTop: "1.3em" }}
+                                        kind="add"
+                                        type="submit"
+                                    >
                                         Save
                                     </Button>
                                 </Box>
                                 <Box flex={1} ml={1}>
                                     <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="primary">
                                         <Tab label="More info" />
-                                        <Tab label="Quantity" />
+                                        {/* <Tab label="Quantity" /> */}
                                         <Tab label="Shipping" />
                                         <Tab label="Field and filters" />
                                     </Tabs>
@@ -70,7 +75,7 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
                                             isSubmitting={isSubmitting}
                                         />
                                     )}
-                                    {activeTab === 1 && (
+                                    {/* {activeTab === 1 && (
                                         <Quantity
                                             errors={errors}
                                             handleBlur={handleBlur}
@@ -80,7 +85,7 @@ export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => 
                                             values={values}
                                             isSubmitting={isSubmitting}
                                         />
-                                    )}
+                                    )} */}
                                     {activeTab === 2 && (
                                         <Shipping
                                             errors={errors}

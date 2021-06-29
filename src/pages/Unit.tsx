@@ -13,23 +13,19 @@ import useSWR from "swr";
 
 import BaseDataGrid from "../app/BaseDataGrid";
 import { generateURL } from "../logic/filterSortPage";
-import { IUnit } from '../api/units';
-import { ChangeUnitModal } from '../features/Unit/ChangeUnitModal'
+import { IUnit } from "../api/units";
+import { ChangeUnitModal } from "../features/Unit/ChangeUnitModal";
 
 export default function Unit() {
-
     const [filters, setFilters] = useState<GridFilterModelParams>();
     const [page, setPage] = useState<GridPageChangeParams>();
     const [sorts, setSort] = useState<GridSortModelParams>();
     const [open, setOpen] = useState<boolean>(false);
 
-    const [selected, setSelected] = useState<IUnit>()
+    const [selected, setSelected] = useState<IUnit>();
 
-    const { data: units, mutate: mutateItems } = useSWR(
-        generateURL('/unit', filters, sorts, page)
-    );
+    const { data: units, mutate: mutateItems } = useSWR(generateURL("/unit", filters, sorts, page));
 
-    
     const unitCols = useMemo<GridColDef[]>(
         () => [
             { field: "number", headerName: "Serial No." },
@@ -48,10 +44,10 @@ export default function Unit() {
             </Box>
             <Box flex={11} ml={2}>
                 <Paper>
-                    <Box >
+                    <Box>
                         <BaseDataGrid
                             cols={unitCols}
-                            rows={units ? units : []}
+                            rows={units || []}
                             onRowSelected={(i) => {
                                 setSelected(i);
                                 setOpen(true);
