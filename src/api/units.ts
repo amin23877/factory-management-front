@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 export interface IUnit {
-    id?: string;
+    id: string;
     number: string | number;
     LineItemRecordId: string;
     laborCost: number;
