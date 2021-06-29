@@ -15,7 +15,7 @@ import { exportPdf } from "../../logic/pdf";
 import { getJobs } from "../../api/job";
 import QuotePDF from "../../PDFTemplates/Quote";
 
-export const DocumentForm = ({ onDone, createdQoute, data }: { onDone: () => void, createdQoute: any, data: any }) => {
+export const DocumentForm = ({ onDone, createdQoute, data }: { onDone: () => void; createdQoute: any; data: any }) => {
     const divToPrint = useRef<HTMLElement | null>(null);
 
     const handleSaveDocument = async () => {
@@ -170,6 +170,16 @@ export const GeneralForm = ({
             <Typography variant="h6">General</Typography>
             <Box my={1} display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10}>
                 {edit && <TextField label="number" value={values.number} style={{ width: "100%" }} disabled />}
+                <FieldSelect
+                    value={values.salesperson}
+                    request={getAllEmployees}
+                    itemTitleField="username"
+                    itemValueField="id"
+                    keyField="id"
+                    name="salesperson"
+                    label="Sales person"
+                    onChange={handleChange}
+                />
                 <DateTimePicker
                     value={values.entryDate}
                     name="entryDate"
@@ -183,16 +193,6 @@ export const GeneralForm = ({
                     label="Expire Date"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                />
-                <FieldSelect
-                    value={values.salesperson}
-                    request={getAllEmployees}
-                    itemTitleField="username"
-                    itemValueField="id"
-                    keyField="id"
-                    name="salesperson"
-                    label="Sales person"
-                    onChange={handleChange}
                 />
                 <FieldSelect
                     value={values.requester}

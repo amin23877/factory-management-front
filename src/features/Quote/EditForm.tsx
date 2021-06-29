@@ -36,72 +36,53 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
             <Formik initialValues={selectedQuote} onSubmit={handleSubmit}>
                 {({ handleChange, handleBlur, values, isSubmitting }) => (
                     <Form>
-                        <Box display="flex" justifyContent="space-evenly">
-                            <Box flex={3} mr={2}>
-                                <BasePaper
-                                    style={{
-                                        boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
-                                        border: "none",
-                                        margin: "0 1em ",
-                                    }}
+                        <Box display="grid" gridTemplateColumns="3fr 1fr" gridGap={10}>
+                            <BasePaper>
+                                <GeneralForm edit values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                <Box display="flex" justifyContent="flex-end" mt={1}>
+                                    <Button disabled={isSubmitting} type="submit" kind="edit">
+                                        Save
+                                    </Button>
+                                </Box>
+                            </BasePaper>
+                            <BasePaper
+                                style={{
+                                    boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
+                                    border: "none",
+                                    margin: "0 1em ",
+                                }}
+                            >
+                                <Tabs
+                                    value={activeTab}
+                                    textColor="primary"
+                                    onChange={(e, nv) => setActiveTab(nv)}
+                                    variant="scrollable"
+                                    style={{ maxWidth: 700 }}
                                 >
-                                    <GeneralForm
-                                        edit
-                                        values={values}
-                                        handleBlur={handleBlur}
-                                        handleChange={handleChange}
-                                    />
-                                    <Box display="flex" justifyContent="flex-end" mt={1}>
-                                        <Button disabled={isSubmitting} type="submit" kind="edit">
-                                            Save
-                                        </Button>
-                                    </Box>
-                                </BasePaper>
-                            </Box>
-                            <Box flex={1}>
-                                <BasePaper
-                                    style={{
-                                        boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
-                                        border: "none",
-                                        margin: "0 1em ",
-                                    }}
-                                >
-                                    <Tabs
-                                        value={activeTab}
-                                        textColor="primary"
-                                        onChange={(e, nv) => setActiveTab(nv)}
-                                        variant="scrollable"
-                                        style={{ maxWidth: 700 }}
-                                    >
-                                        <Tab label="Terms" />
-                                        <Tab label="Deposit" />
-                                        <Tab label="Commission" />
-                                    </Tabs>
-                                    <Box style={{ minHeight: "600", overflowY: "auto", marginBottom: "auto" }}>
-                                        {activeTab === 0 && (
-                                            <TermsTab
-                                                values={values}
-                                                handleBlur={handleBlur}
-                                                handleChange={handleChange}
-                                            />
-                                        )}
-                                        {activeTab === 1 && (
-                                            <DepositTab
-                                                values={values}
-                                                handleBlur={handleBlur}
-                                                handleChange={handleChange}
-                                            />
-                                        )}
-                                        {activeTab === 2 && (
-                                            <CommissionTab
-                                                values={values}
-                                                handleBlur={handleBlur}
-                                                handleChange={handleChange}
-                                            />
-                                        )}
-                                    </Box>
-                                </BasePaper>
-                            </Box>
+                                    <Tab label="Terms" />
+                                    <Tab label="Deposit" />
+                                    <Tab label="Commission" />
+                                </Tabs>
+                                <Box style={{ minHeight: "600", overflowY: "auto", marginBottom: "auto" }}>
+                                    {activeTab === 0 && (
+                                        <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                    )}
+                                    {activeTab === 1 && (
+                                        <DepositTab
+                                            values={values}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                        />
+                                    )}
+                                    {activeTab === 2 && (
+                                        <CommissionTab
+                                            values={values}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                        />
+                                    )}
+                                </Box>
+                            </BasePaper>
                         </Box>
                     </Form>
                 )}

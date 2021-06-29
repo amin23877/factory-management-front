@@ -21,6 +21,7 @@ import AddQuote from "./AddQuote";
 import AddLineServiceModal from "../LineService";
 import { ILineService } from "../../api/lineService";
 import useSWR from "swr";
+import { BasePaper } from "../../app/Paper";
 
 const useStyles = makeStyles({
     TabContainer: {
@@ -95,19 +96,15 @@ export default function QuotePanel() {
     };
 
     return (
-        <div>
-            <Confirm
-                open={confirm}
-                onClose={() => setConfirm(false)}
-                onConfirm={handleDelete}
-            />
+        <Box>
+            <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
 
             <AddQuote
                 open={addQ}
                 onClose={() => setAddQ(false)}
                 initialData={compQ}
                 onDone={() => {
-                    console.log('done')
+                    console.log("done");
                 }}
             />
 
@@ -161,7 +158,7 @@ export default function QuotePanel() {
                 />
             )}
 
-            <Box display="flex" alignItems="center" style={{ marginBottom: "5px" }}>
+            <Box mb={2} display="flex" alignItems="center">
                 <Button onClick={() => setAddQ(true)}>Add Quote</Button>
                 {selectedQuote ? (
                     <div>
@@ -202,11 +199,11 @@ export default function QuotePanel() {
                 <div style={{ flexGrow: 1 }} />
             </Box>
 
-            <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-                <Tab label="List" />
-                <Tab label="Details" disabled={!selectedQuote} />
-            </Tabs>
-            <Box className={classes.TabContainer}>
+            <BasePaper>
+                <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                    <Tab label="List" />
+                    <Tab label="Details" disabled={!selectedQuote} />
+                </Tabs>
                 {!quotes && <LinearProgress />}
                 {activeTab === 0 && quotes && (
                     <BaseDataGrid
@@ -244,7 +241,7 @@ export default function QuotePanel() {
                         selectedQuote={selectedQuote}
                     />
                 )}
-            </Box>
-        </div>
+            </BasePaper>
+        </Box>
     );
 }

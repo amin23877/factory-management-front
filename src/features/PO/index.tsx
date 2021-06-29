@@ -93,7 +93,7 @@ export default function POPanel() {
     const handleDelete = async () => {
         try {
             if (selectedPO && selectedPO.id) {
-                const resp = deletePO(selectedPO.id as any);
+                const resp = await deletePO(selectedPO.id as any);
                 if (resp) {
                     refreshPOs();
                     setActiveTab(0);
@@ -107,7 +107,7 @@ export default function POPanel() {
     };
 
     return (
-        <Box m={1}>
+        <Box>
             {selectedPO && selectedPO.id && (
                 <NoteModal
                     open={noteModal}
@@ -147,23 +147,18 @@ export default function POPanel() {
                     <Button
                         style={{ backgroundColor: "#1a73e8", color: "#fff", marginLeft: "5px" }}
                         onClick={() => setDocModal(true)}
+                        startIcon={<AddRoundedIcon />}
                     >
-                        {" "}
-                        <AddRoundedIcon /> Add document
+                        Add document
                     </Button>
                 )}
             </Box>
-            <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
-                <Tabs
-                    value={activeTab}
-                    textColor="primary"
-                    onChange={(e, nv) => setActiveTab(nv)}
-                    style={{ marginBottom: "10px" }}
-                >
-                    <Tab label="Overview" />
+            <BasePaper>
+                <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                    <Tab label="List" />
                     <Tab label="Details" disabled={!selectedPO} />
                 </Tabs>
-                {activeTab === 0 && (
+                {activeTab === 0 && pos && (
                     <BaseDataGrid
                         rows={pos}
                         cols={poCols}

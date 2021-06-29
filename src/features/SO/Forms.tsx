@@ -8,8 +8,8 @@ import {
     Checkbox,
     RadioGroup,
     Radio,
+    Divider,
 } from "@material-ui/core";
-
 
 import TextField from "../../app/TextField";
 import { FieldSelect, ArraySelect } from "../../app/Inputs";
@@ -27,12 +27,10 @@ import { getAllDivison } from "../../api/division";
 import { DateTimePicker } from "@material-ui/pickers";
 import { getJobs } from "../../api/job";
 import Button from "../../app/Button";
-import SOCus from '../../PDFTemplates/SOCus';
-import SORep from '../../PDFTemplates/SORep';
-import SOAcc from '../../PDFTemplates/SOAcc';
+import SOCus from "../../PDFTemplates/SOCus";
+import SORep from "../../PDFTemplates/SORep";
+import SOAcc from "../../PDFTemplates/SOAcc";
 import { exportPdf } from "../../logic/pdf";
-
-
 
 export const GeneralForm = ({
     handleChange,
@@ -414,12 +412,8 @@ export const TermsTab = ({
     );
 };
 
-
-
 export const DocumentForm = ({ onDone }: { onDone: () => void }) => {
     const divToPrint = useRef<HTMLElement | null>(null);
-
-    // const classes = useStyles();
 
     const handleSaveDocument = async () => {
         if (divToPrint.current) {
@@ -444,9 +438,11 @@ export const DocumentForm = ({ onDone }: { onDone: () => void }) => {
                         minHeight: "1200px",
                     }}
                 >
-                    <SOAcc data='amin'/>
-                    <SORep data='amin' />
-                    <SOCus data='amin' />
+                    <SOAcc data="amin" />
+                    <hr />
+                    <SORep data="amin" />
+                    <hr />
+                    <SOCus data="amin" />
                 </div>
             </div>
 
@@ -456,6 +452,6 @@ export const DocumentForm = ({ onDone }: { onDone: () => void }) => {
                 </Button>
                 {/* {isUploading && <LinearProgress />} */}
             </Box>
-        </Box >
+        </Box>
     );
 };
