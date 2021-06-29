@@ -1,10 +1,10 @@
 import Axios from "axios";
 
-export interface IBom {
+export interface IUBom {
     no: string,
     name: string,
     note: string,
-    current: boolean
+    date: number
 }
 
 export interface IBomRecord {
@@ -15,52 +15,53 @@ export interface IBomRecord {
     ItemId: string
 }
 
-export const getBom = async (ItemId: string) => {
+export const getUBom = async (UnitId: string) => {
     try {
-        const resp = await Axios.get(`/bom`, { params: { ItemId } });
+        const resp = await Axios.get(`/ubom`, { params: { UnitId } });
         return resp.data;
     } catch (e) {
         console.log(e)
     }
 }
 
-export const addBom = async (ItemId: string, { no, name, note, current }: IBom) => {
+export const getUBomRecord = async (UBOMId: string) => {
     try {
-        const resp = await Axios.post(`/bom`, { ItemId, no, name, note, current });
+        const resp = await Axios.get(`/bomrecord`, { params: { UBOMId } });
         return resp.data;
     } catch (e) {
         console.log(e)
     }
 }
 
-export const updateBom = async (itemId: string, { no, name, note, current }: IBom) => {
+export const addUBom = async (UnitId: string, { no, name, note, date }: IUBom) => {
     try {
-        const resp = await Axios.patch(`/bom/${itemId}`, { no, name, note, current });
+        const resp = await Axios.post(`/ubom`, { UnitId, no, name, note, date });
+        return resp.data;
+    } catch (e) {
+        console.log(e.response)
+    }
+}
+
+export const updateUBom = async (UnitId: string, { no, name, note, date }: IUBom) => {
+    try {
+        const resp = await Axios.patch(`/ubom/${UnitId}`, { no, name, note, date });
         return resp.data;
     } catch (e) {
         console.log(e)
     }
 }
 
-export const deleteBom = async (itemId: string) => {
+export const deleteUBom = async (UnitId: string) => {
     try {
-        const resp = await Axios.delete(`/bom/${itemId}`);
+        const resp = await Axios.delete(`/ubom/${UnitId}`);
         return resp.data;
     } catch (e) {
         console.log(e)
     }
 }
 
-export const getBomRecord = async (BOMId: string) => {
-    try {
-        const resp = await Axios.get(`/bomrecord`, { params: { BOMId } });
-        return resp.data;
-    } catch (e) {
-        console.log(e)
-    }
-}
 
-export const addBomRecord = async (bomId: string, { revision, usage, fixedQty, index, ItemId }: IBomRecord) => {
+export const addUBomRecord = async (bomId: string, { revision, usage, fixedQty, index, ItemId }: IBomRecord) => {
     try {
         const resp = await Axios.post(`/bom/${bomId}/record`, { revision, usage, fixedQty, index, ItemId, BOMId: bomId });
         return resp.data;
@@ -69,7 +70,7 @@ export const addBomRecord = async (bomId: string, { revision, usage, fixedQty, i
     }
 }
 
-export const updateBomRecord = async (id: string, { revision, usage, fixedQty, index }: IBomRecord) => {
+export const updateUBomRecord = async (id: string, { revision, usage, fixedQty, index }: IBomRecord) => {
     try {
         const resp = await Axios.patch(`/bomrecord/${id}`, { revision, usage, fixedQty, index });
         return resp.data;
@@ -78,7 +79,7 @@ export const updateBomRecord = async (id: string, { revision, usage, fixedQty, i
     }
 }
 
-export const deleteBomRecord = async (BRId: string) => {
+export const deleteUBomRecord = async (BRId: string) => {
     try {
         const resp = await Axios.delete(`/bomrecord/${BRId}`);
         return resp.data;
