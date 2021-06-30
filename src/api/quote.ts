@@ -1,5 +1,5 @@
 import Axios from "axios";
- 
+
 import { ILineItem } from './lineItem';
 import { ILineService } from "./lineService";
 
@@ -9,6 +9,8 @@ export interface IQuote {
 
     entryDate: string;
     expireDate: string;
+
+    leadTime: string;
 
     salesperson: number | null;
     requester: number | null;
