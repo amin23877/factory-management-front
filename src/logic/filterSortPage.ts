@@ -51,7 +51,7 @@ export const generateURL = (
     url: string,
     filters?: GridFilterModelParams,
     sorts?: GridSortModelParams,
-    page?: GridPageChangeParams,
+    page?: GridPageChangeParams
 ) => {
     // let url = "/item";
     let params: string[] = [];
@@ -72,6 +72,5 @@ export const generateURL = (
     }
     url += params.join("&");
 
-    console.log(url);
     return url;
 };
