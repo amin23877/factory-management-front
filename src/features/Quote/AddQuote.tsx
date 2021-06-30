@@ -15,13 +15,13 @@ export default function AddQuote({
     onDone,
     initialData,
 }: {
-    initialData?: IQuoteComplete;
+    initialData: IQuoteComplete;
     open: boolean;
     onClose: () => void;
     onDone: () => void;
 }) {
     const [step, setStep] = useState(0);
-    const [quote, setQuote] = useState(initialData);
+    const [quote, setQuote] = useState<IQuoteComplete>(initialData);
     const [createdQuote, setCreatedQuote] = useState<IQuote>();
 
     useEffect(() => {
@@ -85,9 +85,9 @@ export default function AddQuote({
                         onBack={() => setStep(1)}
                         onDone={(data) => {
                             // onClose();
-                            setStep(3);
                             onDone();
                             setCreatedQuote(data);
+                            setStep(3);
                         }}
                     />
                 )}

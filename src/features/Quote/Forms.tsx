@@ -14,10 +14,11 @@ import { exportPdf } from "../../logic/pdf";
 import { getJobs } from "../../api/job";
 import QuotePDF from "../../PDFTemplates/Quote";
 import { createAModelDocument } from "../../api/document";
+import { IQuoteComplete } from "../../api/quote";
 
 
 
-export const DocumentForm = ({ onDone, createdQoute, data }: { onDone: () => void; createdQoute: any; data: any }) => {
+export const DocumentForm = ({ onDone, createdQoute, data }: { onDone: () => void; createdQoute: any; data: IQuoteComplete }) => {
     const divToPrint = useRef<HTMLElement | null>(null);
 
 
@@ -66,7 +67,7 @@ export const DocumentForm = ({ onDone, createdQoute, data }: { onDone: () => voi
                         minHeight: "1200px",
                     }}
                 >
-                    <QuotePDF data={data} />
+                    <QuotePDF data={data} createdQuote={createdQoute} />
                 </div>
             </div>
             <Box textAlign="right">
@@ -206,20 +207,6 @@ export const GeneralForm = ({
                     label="Sales person"
                     onChange={handleChange}
                 />
-                <DateTimePicker
-                    value={values.entryDate}
-                    name="entryDate"
-                    label="Entry Date"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
-                <DateTimePicker
-                    value={values.expireDate}
-                    name="expireDate"
-                    label="Expire Date"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
                 <FieldSelect
                     value={values.requester}
                     request={getContacts}
@@ -249,6 +236,27 @@ export const GeneralForm = ({
                     label="Project"
                     onChange={handleChange}
                 />
+                <TextField
+                    value={values.leadTime}
+                    name="leadTime"
+                    label="Lead Time"
+                    onChange={handleChange}
+                />
+                <DateTimePicker
+                    value={values.entryDate}
+                    name="entryDate"
+                    label="Entry Date"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <DateTimePicker
+                    value={values.expireDate}
+                    name="expireDate"
+                    label="Expire Date"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+
                 <DateTimePicker
                     value={values.estimatedShipDate}
                     name="estimatedShipDate"
@@ -256,6 +264,7 @@ export const GeneralForm = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
+
             </Box>
         </>
     );

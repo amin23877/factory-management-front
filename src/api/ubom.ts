@@ -63,7 +63,7 @@ export const deleteUBom = async (UnitId: string) => {
 
 export const addUBomRecord = async (bomId: string, { revision, usage, fixedQty, index, ItemId }: IBomRecord) => {
     try {
-        const resp = await Axios.post(`/bom/${bomId}/record`, { revision, usage, fixedQty, index, ItemId, BOMId: bomId });
+        const resp = await Axios.post(`/ubom/${bomId}/record`, { revision, usage, fixedQty, index, ItemId, BOMId: bomId });
         return resp.data;
     } catch (e) {
         console.log(e)

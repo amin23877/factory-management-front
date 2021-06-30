@@ -13,11 +13,12 @@ import useSWR from "swr";
 import { ChangeUnitModal } from "../features/Unit/ChangeUnitModal";
 import UBomModal from "../features/UBOM/UBomModal";
 
-import { SearchBar } from "../app/TextField";
 import BaseDataGrid from "../app/BaseDataGrid";
 
 import { IUnit } from "../api/units";
 import { generateURL } from "../logic/filterSortPage";
+// import { DateTimePicker } from "@material-ui/pickers";
+
 
 export default function Unit() {
     const [filters, setFilters] = useState<GridFilterModelParams>();
@@ -25,7 +26,7 @@ export default function Unit() {
     const [sorts, setSort] = useState<GridSortModelParams>();
     const [open, setOpen] = useState<boolean>(false);
     const [bOpen, setBOpen] = useState<any>();
-
+    // const [finish, setFinish] = useState<Date>()
     const [selected, setSelected] = useState<IUnit>();
 
     const { data: units, mutate: mutateItems } = useSWR(generateURL("/unit", filters, sorts, page));
@@ -54,7 +55,14 @@ export default function Unit() {
                 }}
             />
             <Box display="flex" alignItems="center" my={2}>
-                <SearchBar />
+                {/* <DateTimePicker
+                    name="finish"
+                    value={finish || null}
+                    onChange={(d) => setFinish(d.toString())}
+                    size="small"
+                    placeholder="finish"
+                    label="finish"
+                /> */}
                 <div style={{ flexGrow: 1 }} />
             </Box>
             <Box flex={11} ml={2}>

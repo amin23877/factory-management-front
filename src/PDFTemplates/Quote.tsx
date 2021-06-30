@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
+import { IQuoteComplete } from "../api/quote";
 
 const useStyles = makeStyles({
     header: {
@@ -96,9 +97,11 @@ const useStyles = makeStyles({
         margin: "0px 5px",
     },
 });
-export default function QuotePDF({ data }: { data: any }) {
+export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete; createdQuote: IQuoteComplete }) {
     const classes = useStyles();
-
+    useEffect(() => {
+        console.log(data, createdQuote)
+    }, [])
     return (
         <div>
             <div className={classes.exact}>
@@ -205,19 +208,19 @@ export default function QuotePDF({ data }: { data: any }) {
                     <div className={classes.headContain}>
                         <div className={classes.header}>
                             <span className={classes.title}>Quote # : </span>
-                            <span className={classes.info}></span>
+                            <span className={classes.info}>{createdQuote.number}</span>
                         </div>
                         <div className={classes.header}>
                             <span className={classes.title}>Prepaired On : </span>
-                            <span className={classes.info}></span>
+                            <span className={classes.info}>{createdQuote.entryDate.slice(0, createdQuote.entryDate.indexOf('T'))}</span>
                         </div>
                         <div className={classes.header}>
                             <span className={classes.title}>Expires : </span>
-                            <span className={classes.info}></span>
+                            <span className={classes.info}>{createdQuote.expireDate?.slice(0, createdQuote.expireDate.indexOf('T'))}</span>
                         </div>
                         <div className={classes.header}>
                             <span className={classes.title}>Lead Time :</span>
-                            <span className={classes.info}></span>
+                            <span className={classes.info}>{createdQuote.leadTime}</span>
                         </div>
                         <div className={classes.header} style={{ marginTop: "15px" }}>
                             <span className={classes.title}>Ship Via: </span>
@@ -225,11 +228,11 @@ export default function QuotePDF({ data }: { data: any }) {
                         </div>
                         <div className={classes.header}>
                             <span className={classes.title}>Freight Terms: </span>
-                            <span className={classes.info}></span>
+                            <span className={classes.info}>{createdQuote.frieghtTerms}</span>
                         </div>
                         <div className={classes.header}>
                             <span className={classes.title}>Payment Terms:</span>
-                            <span className={classes.info}></span>
+                            <span className={classes.info}>{createdQuote.paymentTerms}</span>
                         </div>
                     </div>
                 </div>

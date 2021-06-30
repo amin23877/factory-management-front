@@ -39,7 +39,7 @@ const BomRecordForm = ({
                 if (itemId) {
 
                     console.log(bomId, values);
-                    const resp = await addBomRecord(bomId, values);
+                    const resp = await addUBomRecord(bomId, values);
                     console.log(resp);
                     onDone();
                     setSubmitting(false);
