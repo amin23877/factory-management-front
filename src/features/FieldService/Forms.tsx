@@ -166,6 +166,7 @@ export default function FieldServiceForm({
         <>
             <FieldSelect
                 request={getItems}
+                getOptionList={(list) => list.items}
                 itemTitleField="name"
                 itemValueField="id"
                 label="Item"

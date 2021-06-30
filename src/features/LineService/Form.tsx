@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Formik, Form } from "formik";
+import useSWR from "swr";
 import * as Yup from "yup";
 
 import { Box } from "@material-ui/core";
@@ -8,19 +9,13 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-import BootstrapTextField from "../../app/TextField";
 import Button from "../../app/Button";
 import { FieldSelect } from "../../app/Inputs";
 
 import { ILineService } from "../../api/lineService";
-import { getItems } from "../../api/items";
-import { createSOLineService, deleteSOLineService, editSOLineService, getLineItems as getSOLineItems } from "../../api/so";
-import { createQuoteLineService, deleteQuoteLineService, editQuoteLineService, getLineItems as getQuoteLineItems } from "../../api/quote";
-import { getServers } from "dns";
+import { createSOLineService, deleteSOLineService, editSOLineService } from "../../api/so";
+import { createQuoteLineService, deleteQuoteLineService, editQuoteLineService } from "../../api/quote";
 import { getFieldServices } from "../../api/fieldService";
-import useSWR from "swr";
-import { RemoveFromQueueOutlined } from "@material-ui/icons";
-import { fetcher } from "../../api";
 
 export default function MainForm({
     initialValues,
@@ -35,20 +30,16 @@ export default function MainForm({
     recordId: string;
     readOnly?: boolean;
 }) {
-    const { data: lineItems } = useSWR(
-        () => {
-            switch (record) {
-                case "Quote":
-                    return `/lineitem?QuoteId=${recordId}`;
-                case "SO":
-                    return `/lineitem?SOId=${recordId}`;
-                default:
-                    return null;
-            }
-        },
-        { initialData: [] }
-    );
-    // const [lineItems, setLineItems] = useState([]);
+    const { data: lineItems } = useSWR(() => {
+        switch (record) {
+            case "Quote":
+                return `/lineitem?QuoteId=${recordId}`;
+            case "SO":
+                return `/lineitem?SOId=${recordId}`;
+            default:
+                return null;
+        }
+    });
 
     const schema = Yup.object().shape({
         ServiceId: Yup.string().required(),
@@ -56,23 +47,6 @@ export default function MainForm({
         quantity: Yup.number().required().min(1),
         price: Yup.number().required().min(0.1),
     });
-
-    // useEffect(() => {
-    //     switch (record) {
-    //         case "Quote":
-    //             getQuoteLineItems(recordId)
-    //                 .then((d) => d && setLineItems(d))
-    //                 .catch((e) => console.log(e));
-    //             break;
-    //         case "SO":
-    //             getSOLineItems(recordId)
-    //                 .then((d) => d && setLineItems(d))
-    //                 .catch((e) => console.log(e));
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }, []);
 
     const handleSubmit = async (d: ILineService) => {
         try {
@@ -130,7 +104,11 @@ export default function MainForm({
     };
 
     return (
-        <Formik initialValues={initialValues ? initialValues : ({} as ILineService)} validationSchema={schema} onSubmit={handleSubmit}>
+        <Formik
+            initialValues={initialValues ? initialValues : ({} as ILineService)}
+            validationSchema={schema}
+            onSubmit={handleSubmit}
+        >
             {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
                 <Form>
                     <Box display="grid" gridRowGap={16}>
@@ -150,14 +128,20 @@ export default function MainForm({
                         {lineItems && (
                             <Autocomplete
                                 disabled={!lineItems}
-                                value={values?.LineItemRecordId}
+                                // value={values?.LineItemRecordId}
                                 options={lineItems ? lineItems : []}
-                                getOptionLabel={(item: any) => item.description}
+                                getOptionLabel={(item: any) => item.ItemId.name}
                                 onChange={(e, nv: any) => setFieldValue("LineItemRecordId", nv?.id)}
                                 onBlur={handleBlur}
                                 fullWidth
                                 renderInput={(params) => (
-                                    <TextField {...params} size="small" label="Line Item" name="LineItemRecordId" variant="outlined" />
+                                    <TextField
+                                        {...params}
+                                        size="small"
+                                        label="Line Item"
+                                        name="LineItemRecordId"
+                                        variant="outlined"
+                                    />
                                 )}
                             />
                         )}

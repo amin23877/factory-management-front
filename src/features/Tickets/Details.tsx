@@ -75,7 +75,7 @@ export default function Details({
                 {msg}
             </Snack>
 
-            <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10}>
+            <Box display="grid" gridTemplateColumns="1fr 2fr" gridColumnGap={10}>
                 <Box my={1}>
                     <Formik initialValues={initialValue} validationSchema={schema} onSubmit={handleSubmit}>
                         {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
@@ -117,8 +117,16 @@ export default function Details({
                     </Tabs>
                     {activeTab === 0 && <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />}
                     {activeTab === 1 && <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />}
-                    {activeTab === 2 && <BaseDataGrid cols={noteCols} rows={itemNotes ? itemNotes : []} onRowSelected={() => {}} />}
-                    {activeTab === 3 && <BaseDataGrid cols={docCols} rows={itemDocuments ? itemDocuments : []} onRowSelected={() => {}} />}
+                    {activeTab === 2 && (
+                        <BaseDataGrid cols={noteCols} rows={itemNotes ? itemNotes : []} onRowSelected={() => {}} />
+                    )}
+                    {activeTab === 3 && (
+                        <BaseDataGrid
+                            cols={docCols}
+                            rows={itemDocuments ? itemDocuments : []}
+                            onRowSelected={() => {}}
+                        />
+                    )}
                     {activeTab === 4 && (
                         <BaseDataGrid
                             cols={noteCols}

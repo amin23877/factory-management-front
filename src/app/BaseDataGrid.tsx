@@ -72,7 +72,8 @@ export default function BaseDataGrid({ onRowSelected, rows, cols, height }: IBas
             <div
                 style={{
                     flexGrow: 1,
-                    height: height ? height : 450,
+                    height: "100%",
+                    maxHeight: height ? height : 450,
                 }}
             >
                 <DataGrid

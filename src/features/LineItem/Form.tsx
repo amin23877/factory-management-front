@@ -94,21 +94,22 @@ export default function MainForm({
         >
             {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
                 <Form>
-                    <FieldSelect
-                        request={getItems}
-                        getOptionList={(data) => data.items}
-                        itemTitleField="name"
-                        itemValueField="id"
-                        value={values?.ItemId as any}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.ItemId)}
-                        name="ItemId"
-                        label="Item"
-                        fullWidth
-                        disabled={Boolean(readOnly)}
-                    />
-                    {/* <Autocomplete
+                    <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                        <FieldSelect
+                            request={getItems}
+                            getOptionList={(data) => data.items}
+                            itemTitleField="name"
+                            itemValueField="id"
+                            value={values?.ItemId as any}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.ItemId)}
+                            name="ItemId"
+                            label="Item"
+                            fullWidth
+                            disabled={Boolean(readOnly)}
+                        />
+                        {/* <Autocomplete
                         value={values?.ItemId as any}
                         options={items}
                         getOptionLabel={(item: any) => item.name}
@@ -117,63 +118,64 @@ export default function MainForm({
                         renderInput={(params) => <TextField {...params} label="Item" name="ItemId" variant="outlined" />}
                         fullWidth
                     /> */}
-                    <BootstrapTextField
-                        style={{ width: "100%" }}
-                        name="description"
-                        label="Description"
-                        value={values.description}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.description)}
-                        disabled={Boolean(readOnly)}
-                    />
-                    <BootstrapTextField
-                        style={{ width: "100%" }}
-                        name="quantity"
-                        label="Quantity"
-                        value={values.quantity}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.quantity)}
-                        disabled={Boolean(readOnly)}
-                    />
-                    <BootstrapTextField
-                        style={{ width: "100%" }}
-                        name="price"
-                        label="Price"
-                        value={values.price}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.price)}
-                        disabled={Boolean(readOnly)}
-                    />
-                    <FormControlLabel
-                        style={{ width: "100%" }}
-                        checked={values.tax}
-                        label="Tax"
-                        name="tax"
-                        onChange={handleChange}
-                        control={<CheckBox />}
-                        disabled={Boolean(readOnly)}
-                    />
-                    {!Boolean(readOnly) && (
-                        <Box display="flex">
-                            <Button
-                                style={{ flex: 3 }}
-                                type="submit"
-                                // onClick={() => console.log(errors, values)}
-                                kind={initialValues && initialValues.id ? "edit" : "add"}
-                                fullWidth
-                            >
-                                Submit
-                            </Button>
-                            {initialValues && initialValues.id && (
-                                <Button style={{ flex: 1, margin: "0 0.5em" }} kind="delete" onClick={handleDelete}>
-                                    Delete
+                        <BootstrapTextField
+                            style={{ width: "100%" }}
+                            name="description"
+                            label="Description"
+                            value={values.description}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.description)}
+                            disabled={Boolean(readOnly)}
+                        />
+                        <BootstrapTextField
+                            style={{ width: "100%" }}
+                            name="quantity"
+                            label="Quantity"
+                            value={values.quantity}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.quantity)}
+                            disabled={Boolean(readOnly)}
+                        />
+                        <BootstrapTextField
+                            style={{ width: "100%" }}
+                            name="price"
+                            label="Price"
+                            value={values.price}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.price)}
+                            disabled={Boolean(readOnly)}
+                        />
+                        <FormControlLabel
+                            style={{ width: "100%" }}
+                            checked={values.tax}
+                            label="Tax"
+                            name="tax"
+                            onChange={handleChange}
+                            control={<CheckBox />}
+                            disabled={Boolean(readOnly)}
+                        />
+                        {!Boolean(readOnly) && (
+                            <Box display="flex">
+                                <Button
+                                    style={{ flex: 3 }}
+                                    type="submit"
+                                    // onClick={() => console.log(errors, values)}
+                                    kind={initialValues && initialValues.id ? "edit" : "add"}
+                                    fullWidth
+                                >
+                                    Submit
                                 </Button>
-                            )}
-                        </Box>
-                    )}
+                                {initialValues && initialValues.id && (
+                                    <Button style={{ flex: 1, margin: "0 0.5em" }} kind="delete" onClick={handleDelete}>
+                                        Delete
+                                    </Button>
+                                )}
+                            </Box>
+                        )}
+                    </Box>
                 </Form>
             )}
         </Formik>

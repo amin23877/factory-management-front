@@ -6,10 +6,9 @@ import { Form } from "formik";
 import useSWR from "swr";
 
 import Button from "../../app/Button";
-import { ArraySelect, MaterialFieldSelect, FieldSelect } from "../../app/Inputs";
+import { ArraySelect, FieldSelect } from "../../app/Inputs";
 import { getContacts } from "../../api/contact";
 import { getSO } from "../../api/so";
-import { fetcher } from "../../api";
 import { ILineService } from "../../api/lineService";
 
 export default function JobForm({
@@ -91,7 +90,7 @@ export default function JobForm({
                     label="SO"
                     value={SOId ? SOId : undefined}
                     request={getSO}
-                    itemTitleField="id"
+                    itemTitleField="number"
                     itemValueField="id"
                     onChange={(e) => {
                         setSOId(e.target.value);
@@ -102,13 +101,21 @@ export default function JobForm({
                     value={selectedLineService}
                     style={{ gridColumnEnd: "span 2" }}
                     options={services ? services : []}
-                    getOptionLabel={(option: any) => option.description}
+                    getOptionLabel={(option: any) => option?.ServiceId?.name}
                     onChange={(e, nv) => {
                         nv && setSelectedLineService(nv);
-                        setFieldValue("LineServiceRecordId", nv?.id);
+                        nv && nv.id && setFieldValue("LineServiceRecordId", nv.id);
                     }}
                     renderInput={(params) => (
-                        <TextField {...params} label="Line service" placeholder="Line service" size="small" variant="outlined" />
+                        <TextField
+                            {...params}
+                            label="Line service"
+                            placeholder="Line service"
+                            size="small"
+                            variant="outlined"
+                            error={Boolean(errors.LineServiceRecordId)}
+                            helperText={errors.LineServiceRecordId}
+                        />
                     )}
                 />
                 <ArraySelect

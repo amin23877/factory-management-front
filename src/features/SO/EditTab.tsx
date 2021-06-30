@@ -69,7 +69,7 @@ export default function EditTab({
     const LSCols: GridColDef[] = useMemo(
         () => [
             { field: "ServiceId", valueFormatter: (r) => r.row.ServiceId.name },
-            { field: "LineItemRecordId", width: 200 },
+            // { field: "LineItemRecordId",  width: 200 },
             { field: "quantity" },
             { field: "price" },
             { field: "tax" },
