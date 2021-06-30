@@ -9,7 +9,15 @@ import UBomTab from "./UBomTab";
 import BomRecordTab from "./UBomRecordTab";
 import { getUBom, getUBomRecord, IUBom } from "../../api/ubom";
 
-export default function BOMModal({ open, onClose, unitId }: { unitId: string; open: boolean; onClose: () => void }) {
+export default function UnitBOMModal({
+    open,
+    onClose,
+    unitId,
+}: {
+    unitId: string;
+    open: boolean;
+    onClose: () => void;
+}) {
     const [activeTab, setActiveTab] = useState(0);
     const [rows, setRows] = useState<IUBom[]>([]);
     const [bomRecords, setBomRecords] = useState([]);
@@ -66,7 +74,6 @@ export default function BOMModal({ open, onClose, unitId }: { unitId: string; op
 
     return (
         <Dialog open={open} onClose={onClose} title="BOM" maxWidth="lg" fullWidth>
-
             <Box m={1}>
                 <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="BOM" />
@@ -107,7 +114,6 @@ export default function BOMModal({ open, onClose, unitId }: { unitId: string; op
                     />
                 )}
             </Box>
-
         </Dialog>
     );
 }
