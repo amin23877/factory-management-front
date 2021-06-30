@@ -260,8 +260,8 @@ export const Quantity = ({ itemId, handleManualCount, values, handleUpdateQuanti
                 disabled
             />
             <TextField
-                label="Quantity on order"
-                placeholder="Quantity on order"
+                label="Quantity allocated"
+                placeholder="Quantity allocated"
                 name="qtyAllocated"
                 value={values.qtyAllocated}
                 disabled

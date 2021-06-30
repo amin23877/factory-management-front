@@ -21,7 +21,7 @@ export const GeneralForm = ({
     handleChange: any;
 }) => {
     return (
-        <Box mb={1} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="auto auto auto">
+        <Box mb={1} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr 1fr 1fr 1fr">
             <TextField
                 name="name"
                 value={values.name}
@@ -64,7 +64,11 @@ export const GeneralForm = ({
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(errors.defaultBillingContact && touched.defaultBillingContact)}
-                helperText={touched.defaultBillingContact && errors.defaultBillingContact && String(errors.defaultBillingContact)}
+                helperText={
+                    touched.defaultBillingContact &&
+                    errors.defaultBillingContact &&
+                    String(errors.defaultBillingContact)
+                }
                 label="Default billing contact"
             />
             <TextField
@@ -100,7 +104,9 @@ export const GeneralForm = ({
                 onBlur={handleBlur}
                 onChange={handleChange}
                 error={Boolean(errors.specialInstructions && touched.specialInstructions)}
-                helperText={touched.specialInstructions && errors.specialInstructions && String(errors.specialInstructions)}
+                helperText={
+                    touched.specialInstructions && errors.specialInstructions && String(errors.specialInstructions)
+                }
                 label="special instructions"
             />
             <TextField
@@ -171,7 +177,6 @@ export const GeneralForm = ({
                 onChange={handleChange}
                 value={values.parent}
                 error={Boolean(errors.parent)}
-                style={{ gridColumnEnd: "span 2" }}
             />
             <FieldSelect
                 request={getClientTypes}
@@ -185,7 +190,7 @@ export const GeneralForm = ({
                 error={Boolean(errors.ClientTypeId)}
             />
 
-            <FormControl style={{ gridColumnEnd: "span 3", display: "flex" }}>
+            <FormControl style={{ display: "flex", gridColumnEnd: "span 2" }}>
                 <FormLabel style={{ display: "inline" }}>Size</FormLabel>
                 <RadioGroup row name="size" value={values.size} onChange={handleChange}>
                     <FormControlLabel value="small" control={<Radio />} label="Small" />
@@ -195,7 +200,6 @@ export const GeneralForm = ({
             </FormControl>
 
             <FormControlLabel
-                style={{ gridColumnEnd: "span 3" }}
                 checked={values.prospect}
                 label="prospect"
                 name="prospect"

@@ -65,8 +65,7 @@ export default function VendorDetails({
     }, [activeTab]);
 
     const cols: GridColDef[] = [
-        { field: "VendorId" },
-        { field: "ItemId" },
+        { field: "ItemId", valueFormatter: (data) => data.row?.ItemId.name },
         { field: "leadTime" },
         { field: "lastCheckedPrice" },
         { field: "comment" },
@@ -93,7 +92,13 @@ export default function VendorDetails({
         { field: "createdAt", headerName: "Date", width: 300 },
     ];
 
-    const addrCols: GridColDef[] = [{ field: "address" }, { field: "city" }, { field: "state" }, { field: "zip" }, { field: "main" }];
+    const addrCols: GridColDef[] = [
+        { field: "address" },
+        { field: "city" },
+        { field: "state" },
+        { field: "zip" },
+        { field: "main" },
+    ];
 
     const phoneCols: GridColDef[] = [{ field: "ext" }, { field: "phone" }, { field: "main" }, { field: "PhoneTypeId" }];
 
@@ -126,14 +131,28 @@ export default function VendorDetails({
                     <Tab label="Phones" />
                     <Tab label="Contacts" />
                 </Tabs>
-                {activeTab === 0 && <BaseDataGrid cols={cols} rows={vendings} onRowSelected={onVendingSelected} height={450} />}
+                {activeTab === 0 && (
+                    <BaseDataGrid cols={cols} rows={vendings} onRowSelected={onVendingSelected} height={450} />
+                )}
                 {activeTab === 1 && <BaseDataGrid cols={itemCols} rows={items} onRowSelected={() => {}} height={450} />}
-                {activeTab === 2 && <BaseDataGrid cols={noteCols} rows={notes} onRowSelected={onNoteSelected} height={450} />}
-                {activeTab === 3 && <BaseDataGrid cols={docCols} rows={docs} onRowSelected={onDocSelected} height={450} />}
-                {activeTab === 4 && <BaseDataGrid cols={addrCols} rows={addresses} onRowSelected={onAddressSelected} height={450} />}
-                {activeTab === 5 && <BaseDataGrid cols={emailCols} rows={emails} onRowSelected={onEmailSelected} height={450} />}
-                {activeTab === 6 && <BaseDataGrid cols={phoneCols} rows={phones} onRowSelected={onPhoneSelected} height={450} />}
-                {activeTab === 7 && <BaseDataGrid cols={contactsCols} rows={contacts} onRowSelected={onContactSelected} height={450} />}
+                {activeTab === 2 && (
+                    <BaseDataGrid cols={noteCols} rows={notes} onRowSelected={onNoteSelected} height={450} />
+                )}
+                {activeTab === 3 && (
+                    <BaseDataGrid cols={docCols} rows={docs} onRowSelected={onDocSelected} height={450} />
+                )}
+                {activeTab === 4 && (
+                    <BaseDataGrid cols={addrCols} rows={addresses} onRowSelected={onAddressSelected} height={450} />
+                )}
+                {activeTab === 5 && (
+                    <BaseDataGrid cols={emailCols} rows={emails} onRowSelected={onEmailSelected} height={450} />
+                )}
+                {activeTab === 6 && (
+                    <BaseDataGrid cols={phoneCols} rows={phones} onRowSelected={onPhoneSelected} height={450} />
+                )}
+                {activeTab === 7 && (
+                    <BaseDataGrid cols={contactsCols} rows={contacts} onRowSelected={onContactSelected} height={450} />
+                )}
             </BasePaper>
         </Box>
     );
