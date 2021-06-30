@@ -60,6 +60,7 @@ function ItemsDetails({
     const { data: itemSOs } = useSWR(activeTab === 6 ? `/item/${selectedRow.id}/so` : null);
     const { data: itemPOs } = useSWR(activeTab === 7 ? `/item/${selectedRow.id}/purchasepo` : null);
     const { data: itemUsage } = useSWR(activeTab === 9 ? `/item/${selectedRow.id}/uses` : null);
+    const { data: itemQtyHistory } = useSWR(activeTab === 10 ? `/item/${selectedRow.id}/qty` : null);
 
     const [showSnack, setShowSnack] = useState(false);
     const [snackMsg, setSnackMsg] = useState("");
@@ -124,12 +125,23 @@ function ItemsDetails({
         ],
         []
     );
+
     const usageCols = useMemo<GridColDef[]>(
         () => [
             { field: "number", headerName: "Serial No." },
             { field: "laborCost", headerName: "Labor Cost" },
             { field: "dueDate", headerName: "Due Date", flex: 1 },
             { field: "status", headerName: "Status" },
+        ],
+        []
+    );
+
+    const qtyHistoryCols = useMemo<GridColDef[]>(
+        () => [
+            { field: "before", headerName: "Before" },
+            { field: "after", headerName: "After" },
+            { field: "fieldName", headerName: "Field name" },
+            { field: "description", headerName: "description", flex: 1 },
         ],
         []
     );
@@ -310,33 +322,29 @@ function ItemsDetails({
                     <Tab label="Purchase order History" />
                     <Tab label="Sales Report" />
                     <Tab label="Usage" />
+                    <Tab label="Quantity history" />
                 </Tabs>
                 <Box p={3}>
                     {activeTab === 0 && (
-                        <BaseDataGrid height={250} cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
+                        <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
                     )}
-                    {activeTab === 1 && (
-                        <BaseDataGrid height={250} cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />
-                    )}
-                    {activeTab === 2 && (
-                        <BaseDataGrid height={250} cols={usesCols} rows={uses || []} onRowSelected={() => {}} />
-                    )}
-                    {activeTab === 3 && (
-                        <BaseDataGrid height={250} cols={bomCols} rows={boms || []} onRowSelected={() => {}} />
-                    )}
+                    {activeTab === 1 && <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />}
+                    {activeTab === 2 && <BaseDataGrid cols={usesCols} rows={uses || []} onRowSelected={() => {}} />}
+                    {activeTab === 3 && <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={() => {}} />}
                     {activeTab === 4 && (
                         <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => {}} />
                     )}
                     {activeTab === 5 && (
-                        <BaseDataGrid height={250} cols={quoteCols} rows={itemQuotes || []} onRowSelected={() => {}} />
+                        <BaseDataGrid cols={quoteCols} rows={itemQuotes || []} onRowSelected={() => {}} />
                     )}
                     {activeTab === 6 && <SOTable rows={itemSOs || []} />}
-                    {activeTab === 7 && (
-                        <BaseDataGrid height={250} cols={poCols} rows={itemPOs || []} onRowSelected={() => {}} />
-                    )}
+                    {activeTab === 7 && <BaseDataGrid cols={poCols} rows={itemPOs || []} onRowSelected={() => {}} />}
                     {activeTab === 8 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
                     {activeTab === 9 && (
-                        <BaseDataGrid height={250} cols={usageCols} rows={itemUsage || []} onRowSelected={() => {}} />
+                        <BaseDataGrid cols={usageCols} rows={itemUsage || []} onRowSelected={() => {}} />
+                    )}
+                    {activeTab === 10 && (
+                        <BaseDataGrid cols={qtyHistoryCols} rows={itemQtyHistory || []} onRowSelected={() => {}} />
                     )}
                 </Box>
             </BasePaper>
