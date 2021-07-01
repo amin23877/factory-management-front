@@ -31,7 +31,7 @@ export default function MainForm({ onDone, data }: { data?: any; onDone: (data: 
     return (
         <Box m={2}>
             <Formik initialValues={{} as ISO} onSubmit={handleSubmit}>
-                {({ values, handleChange, handleBlur, setValues }) => (
+                {({ values, handleChange, handleBlur, setValues, setFieldValue }) => (
                     <Form>
                         <Box display="grid" gridTemplateColumns="3fr 2fr" gridGap={10}>
                             <Box>
@@ -57,7 +57,12 @@ export default function MainForm({ onDone, data }: { data?: any; onDone: (data: 
                                     <Tab label="Terms" />
                                 </Tabs>
                                 {activeTab === 0 && (
-                                    <ShippingForm values={values} handleChange={handleChange} handleBlur={handleBlur} />
+                                    <ShippingForm
+                                        setFieldValue={setFieldValue}
+                                        values={values}
+                                        handleChange={handleChange}
+                                        handleBlur={handleBlur}
+                                    />
                                 )}
                                 {activeTab === 1 && (
                                     <BillingTab values={values} handleChange={handleChange} handleBlur={handleBlur} />

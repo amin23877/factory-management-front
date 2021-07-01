@@ -35,7 +35,7 @@ export default function EditForm({ selectedSo, onDone }: { selectedSo: ISO; onDo
                 {msg}
             </Snack>
             <Formik initialValues={selectedSo} onSubmit={handleSubmit}>
-                {({ handleChange, handleBlur, values, setValues, isSubmitting }) => (
+                {({ handleChange, handleBlur, values, setValues, isSubmitting, setFieldValue }) => (
                     <Form>
                         <Box display="flex" style={{ justifyContent: "space-evenly" }}>
                             <Box flex={2}>
@@ -68,13 +68,26 @@ export default function EditForm({ selectedSo, onDone }: { selectedSo: ISO; onDo
                                     </Tabs>
                                     <Box>
                                         {activeTab === 0 && (
-                                            <ShippingForm values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                            <ShippingForm
+                                                setFieldValue={setFieldValue}
+                                                values={values}
+                                                handleBlur={handleBlur}
+                                                handleChange={handleChange}
+                                            />
                                         )}
                                         {activeTab === 1 && (
-                                            <BillingTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                            <BillingTab
+                                                values={values}
+                                                handleBlur={handleBlur}
+                                                handleChange={handleChange}
+                                            />
                                         )}
                                         {activeTab === 2 && (
-                                            <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                            <TermsTab
+                                                values={values}
+                                                handleBlur={handleBlur}
+                                                handleChange={handleChange}
+                                            />
                                         )}
                                     </Box>
                                 </BasePaper>
@@ -87,14 +100,21 @@ export default function EditForm({ selectedSo, onDone }: { selectedSo: ISO; onDo
     );
 }
 
-
-export const FinalForm = ({ onDone, onBack, data }: { onDone: (a: any) => void; onBack: () => void; data: ISOComplete }) => {
+export const FinalForm = ({
+    onDone,
+    onBack,
+    data,
+}: {
+    onDone: (a: any) => void;
+    onBack: () => void;
+    data: ISOComplete;
+}) => {
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async () => {
         // onDone(data);
-        console.log(data)
-        setLoading(true)
+        console.log(data);
+        setLoading(true);
         try {
             const resp = await createSOComplete(data);
             if (resp) {
@@ -106,15 +126,15 @@ export const FinalForm = ({ onDone, onBack, data }: { onDone: (a: any) => void; 
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     return (
         <>
             <Box height="85%" display="flex" flexDirection="column">
                 <Typography variant="h5">Are you sure?</Typography>
                 <Typography variant="subtitle1" style={{ margin: "1em 0" }}>
-                    If you finilize your Purchase order, You can't update it, So if you want to update it you should make new version or add new
-                    one
+                    If you finilize your Purchase order, You can't update it, So if you want to update it you should
+                    make new version or add new one
                 </Typography>
                 {loading && <LinearProgress />}
                 <div style={{ flexGrow: 1 }} />

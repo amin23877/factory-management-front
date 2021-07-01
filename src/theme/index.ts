@@ -39,22 +39,22 @@ export const theme = createMuiTheme({
             main: "#373a4d",
             contrastText: "#fff",
         },
-        warning: {
-            main: "#ffdb2e",
-            contrastText: "#545454",
-        },
-        error: {
-            main: "#ff0000",
-            contrastText: "#ff0000",
-        },
-        success: {
-            main: "#4da851",
-            contrastText: "#fff",
-        },
-        info: {
-            main: "#ebefff",
-            contrastText: "#545454",
-        },
+        // warning: {
+        //     main: "#ffdb2e",
+        //     contrastText: "#545454",
+        // },
+        // error: {
+        //     main: "#ff0000",
+        //     contrastText: "#ff0000",
+        // },
+        // success: {
+        //     main: "#4da851",
+        //     contrastText: "#fff",
+        // },
+        // info: {
+        //     main: "#ebefff",
+        //     contrastText: "#545454",
+        // },
         background: {
             default: "#f9f9f9",
         },

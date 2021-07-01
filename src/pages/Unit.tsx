@@ -48,7 +48,7 @@ export default function Unit() {
 
         cols[dateColIndex] = { ...dateColumn, filterOperators: dateOperators };
         return cols;
-    }, []);
+    }, [finish]);
 
     const dateStringToUnix = (date: Date) => {
         return String(Math.round(new Date(date).getTime() / 1000));

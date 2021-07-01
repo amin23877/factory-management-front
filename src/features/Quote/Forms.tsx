@@ -1,5 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
-import { LinearProgress, Typography, Box, FormControl, FormLabel, FormControlLabel, RadioGroup, Radio } from "@material-ui/core";
+import {
+    LinearProgress,
+    Typography,
+    Box,
+    FormControl,
+    FormLabel,
+    FormControlLabel,
+    RadioGroup,
+    Radio,
+} from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 
 import TextField from "../../app/TextField";
@@ -16,11 +25,16 @@ import QuotePDF from "../../PDFTemplates/Quote";
 import { createAModelDocument } from "../../api/document";
 import { IQuoteComplete } from "../../api/quote";
 
-
-
-export const DocumentForm = ({ onDone, createdQoute, data }: { onDone: () => void; createdQoute: any; data: IQuoteComplete }) => {
+export const DocumentForm = ({
+    onDone,
+    createdQoute,
+    data,
+}: {
+    onDone: () => void;
+    createdQoute: any;
+    data: IQuoteComplete;
+}) => {
     const divToPrint = useRef<HTMLElement | null>(null);
-
 
     const [canSave, setCanSave] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
@@ -186,11 +200,13 @@ export const GeneralForm = ({
     handleBlur,
     values,
     edit,
+    setFieldValue,
 }: {
     edit?: boolean;
     values: any;
     handleChange: (a: any) => void;
     handleBlur: (a: any) => void;
+    setFieldValue: any;
 }) => {
     return (
         <>
@@ -236,24 +252,19 @@ export const GeneralForm = ({
                     label="Project"
                     onChange={handleChange}
                 />
-                <TextField
-                    value={values.leadTime}
-                    name="leadTime"
-                    label="Lead Time"
-                    onChange={handleChange}
-                />
+                <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} />
                 <DateTimePicker
                     value={values.entryDate}
                     name="entryDate"
                     label="Entry Date"
-                    onChange={handleChange}
+                    onChange={(date) => setFieldValue("entryDate", date)}
                     onBlur={handleBlur}
                 />
                 <DateTimePicker
                     value={values.expireDate}
                     name="expireDate"
                     label="Expire Date"
-                    onChange={handleChange}
+                    onChange={(date) => setFieldValue("expireDate", date)}
                     onBlur={handleBlur}
                 />
 
@@ -261,10 +272,9 @@ export const GeneralForm = ({
                     value={values.estimatedShipDate}
                     name="estimatedShipDate"
                     label="Estimated Ship Date"
-                    onChange={handleChange}
+                    onChange={(date) => setFieldValue("estimatedShipDate", date)}
                     onBlur={handleBlur}
                 />
-
             </Box>
         </>
     );

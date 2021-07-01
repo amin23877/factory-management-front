@@ -17,11 +17,16 @@ export default function GeneralQuote({ onDone, data }: { data?: any; onDone: (da
     return (
         <Box m={1} style={{ height: 600, overflowY: "auto" }}>
             <Formik initialValues={{} as IQuote} onSubmit={handleSubmit}>
-                {({ handleChange, handleBlur, values, isSubmitting }) => (
+                {({ handleChange, handleBlur, values, isSubmitting, setFieldValue }) => (
                     <Form>
                         <Box display="flex" m={1}>
                             <Box flex={1} mx={2}>
-                                <GeneralForm values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                <GeneralForm
+                                    setFieldValue={setFieldValue}
+                                    values={values}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                />
                             </Box>
                             <Box flex={1} m={1} style={{ maxWidth: "403px" }}>
                                 <Tabs
@@ -35,9 +40,19 @@ export default function GeneralQuote({ onDone, data }: { data?: any; onDone: (da
                                     <Tab label="Deposit" />
                                     <Tab label="Commission" />
                                 </Tabs>
-                                {activeTab === 0 && <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                {activeTab === 1 && <DepositTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
-                                {activeTab === 2 && <CommissionTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
+                                {activeTab === 0 && (
+                                    <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                )}
+                                {activeTab === 1 && (
+                                    <DepositTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                )}
+                                {activeTab === 2 && (
+                                    <CommissionTab
+                                        values={values}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                    />
+                                )}
                             </Box>
                         </Box>
                         <Box display="flex" justifyContent="center" my={2} py={2}>
