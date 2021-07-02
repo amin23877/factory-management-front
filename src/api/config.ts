@@ -2,7 +2,7 @@ import Axios from "axios";
 
 import { getToken } from "./";
 
-export const BaseUrl = "http://zarph.ir:3100/api/";
+export const BaseUrl = "http://digitalphocus.ir/api/";
 
 Axios.defaults.baseURL = BaseUrl;
 
