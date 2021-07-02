@@ -11,7 +11,7 @@ import { DynamicFilterAndFields, General, MoreInfo, Quantity, Shipping } from ".
 import { createItem, AddItemSchema, IItem } from "../../api/items";
 import { IFilter } from "../../api/filter";
 
-export const AddItemModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+export const AddItemModal = ({ open, onClose, device }: { open: boolean; onClose: () => void; device?: boolean }) => {
     const [activeTab, setActiveTab] = useState(0);
     // const {data:filters} = useSWR<IFilter[]>('/filter');
 

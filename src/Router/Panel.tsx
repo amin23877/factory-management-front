@@ -29,6 +29,7 @@ const Service = React.lazy(() => import("../pages/FieldService"));
 const Vendros = React.lazy(() => import("../pages/Vendors"));
 const Purchase = React.lazy(() => import("../pages/Purchase"));
 const Unit = React.lazy(() => import("../pages/Unit"));
+const Engineering = React.lazy(() => import("../pages/Engineering"));
 const Page404 = React.lazy(() => import("../pages/404"));
 
 const drawerWidth = 220;
@@ -197,7 +198,8 @@ export default function PanelRouter() {
                             <Route exact path="/panel/vendor" component={Vendros} />
                             <Route exact path="/panel/fieldservice" component={Service} />
                             <Route exact path="/panel/purchase" component={Purchase} />
-                            <Route exact path="/panel/unit" component={Unit} />
+                            <Route exact path="/panel/production" component={Unit} />
+                            <Route exact path="/panel/engineering" component={Engineering} />
 
                             <Route exact path="*" component={Page404} />
                         </Switch>

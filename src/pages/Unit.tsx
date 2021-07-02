@@ -9,10 +9,15 @@ import UnitBomModal from "../features/UBOM/UBomModal";
 
 import Button from "../app/Button";
 import { DateInput } from "../components/Filters/Date";
+import { MyTabs, MyTab } from "../app/Tabs";
 
 import { IUnit } from "../api/units";
 
 export default function Unit() {
+
+    const [selectedUnit, setSelectedUnit] = useState<any>(null);
+    const [activeTab, setActiveTab] = useState(0);
+
     const [open, setOpen] = useState<boolean>(false);
     const [bOpen, setBOpen] = useState<any>();
     const [selected, setSelected] = useState<IUnit>();
@@ -65,60 +70,73 @@ export default function Unit() {
                     setBOpen(id);
                 }}
             />
-
-            <Box display="flex" alignItems="center" my={1}>
-                <Button
-                    color={topDateFilter === "week" ? "primary" : "default"}
-                    variant="contained"
-                    onClick={() => {
-                        setTopDateFilter("week");
-                        setFinish(dateStringToUnix(endOfWeek(new Date())));
-                    }}
-                >
-                    This week
-                </Button>
-                <Button
-                    color={topDateFilter === "month" ? "primary" : "default"}
-                    variant="contained"
-                    style={{ margin: "0 0.5em" }}
-                    onClick={() => {
-                        setTopDateFilter("month");
-                        setFinish(dateStringToUnix(endOfMonth(new Date())));
-                    }}
-                >
-                    This month
-                </Button>
-                <Button
-                    onClick={() => {
-                        setTopDateFilter(undefined);
-                        setFinish(undefined);
-                    }}
-                >
-                    clear
-                </Button>
-                <div style={{ marginLeft: "auto" }} />
+            <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
+                <div style={{ flexGrow: 1 }} />
+                <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="secondary">
+                    <MyTab color="primary" label="Overview" />
+                    <MyTab label="Details" disabled={!selectedUnit} />
+                </MyTabs>
             </Box>
-            <Paper>
-                <Box height={550}>
-                    <DataGrid
-                        columns={unitCols}
-                        rows={units || []}
-                        filterMode="server"
-                        components={{ Toolbar: GridToolbar }}
-                        onFilterModelChange={(f) => {
-                            const date = f.filterModel.items[0].value;
-                            if (date) {
-                                const finishUnix = Math.round(new Date(date).getTime() / 1000);
-                                setFinish(String(finishUnix));
-                            }
-                        }}
-                        onRowSelected={(i) => {
-                            setSelected(i.data as any);
-                            setOpen(true);
-                        }}
-                    />
+            {activeTab === 0 &&
+                <Box>
+                    <Box display="flex" alignItems="center" my={1}>
+                        <Button
+                            color={topDateFilter === "week" ? "primary" : "default"}
+                            variant="contained"
+                            onClick={() => {
+                                setTopDateFilter("week");
+                                setFinish(dateStringToUnix(endOfWeek(new Date())));
+                            }}
+                        >
+                            This week
+                        </Button>
+                        <Button
+                            color={topDateFilter === "month" ? "primary" : "default"}
+                            variant="contained"
+                            style={{ margin: "0 0.5em" }}
+                            onClick={() => {
+                                setTopDateFilter("month");
+                                setFinish(dateStringToUnix(endOfMonth(new Date())));
+                            }}
+                        >
+                            This month
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                setTopDateFilter(undefined);
+                                setFinish(undefined);
+                            }}
+                        >
+                            clear
+                        </Button>
+                        <div style={{ marginLeft: "auto" }} />
+                    </Box>
+                    <Paper>
+                        <Box height={350}>
+                            <DataGrid
+                                columns={unitCols}
+                                rows={units || []}
+                                filterMode="server"
+                                components={{ Toolbar: GridToolbar }}
+                                onFilterModelChange={(f) => {
+                                    const date = f.filterModel.items[0].value;
+                                    if (date) {
+                                        const finishUnix = Math.round(new Date(date).getTime() / 1000);
+                                        setFinish(String(finishUnix));
+                                    }
+                                }}
+                                onRowSelected={(i) => {
+                                    // setSelected(i.data as any);
+                                    // setOpen(true);
+                                    setSelectedUnit(i.data as any)
+                                    setActiveTab(1);
+                                }}
+                            />
+                        </Box>
+                    </Paper>
                 </Box>
-            </Paper>
+            }
+            {activeTab === 1 && <div>2</div>}
         </Container>
     );
 }
