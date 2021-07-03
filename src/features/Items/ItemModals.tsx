@@ -47,6 +47,7 @@ export const AddItemModal = ({ open, onClose, device }: { open: boolean; onClose
                                         values={values}
                                         setFieldValue={setFieldValue}
                                         isSubmitting={isSubmitting}
+                                        device={device}
                                     />
                                     <Button
                                         disabled={isSubmitting}
