@@ -188,7 +188,10 @@ const Inventory = () => {
                         </IconButton>
                     </ListItem>
                     <ListItem>
-                        <IconButton title="Add Step" onClick={() => setAddStepModal(true)}>
+                        <IconButton
+                            disabled={activeTab === 0}
+                            title="Add Step"
+                            onClick={() => setAddStepModal(true)}>
                             <FormatListNumberedRounded />
                         </IconButton>
                     </ListItem>
