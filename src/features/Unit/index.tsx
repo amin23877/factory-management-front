@@ -5,6 +5,8 @@ import { GridColDef } from "@material-ui/data-grid";
 import UnitInfo from "./UnitInfo";
 import { BasePaper } from "../../app/Paper";
 import BaseDataGrid from "../../app/BaseDataGrid";
+import { General as ItemGeneral } from "../Items/Forms";
+import { GeneralForm as SOGeneral } from "../SO/Forms";
 
 import { IUnit } from "../../api/units";
 import useSWR from "swr";
@@ -37,6 +39,24 @@ function Details({ unit }: { unit: IUnit }) {
                         <Tab label="Item" />
                         <Tab label="SO" />
                     </Tabs>
+                    {infoActiveTab === 0 && (
+                        <ItemGeneral
+                            values={unit.item}
+                            errors={{}}
+                            touched={{}}
+                            handleBlur={() => {}}
+                            handleChange={() => {}}
+                            setFieldValue={() => {}}
+                        />
+                    )}
+                    {infoActiveTab === 1 && (
+                        <SOGeneral
+                            values={unit.so}
+                            onChangeInit={() => {}}
+                            handleBlur={() => {}}
+                            handleChange={() => {}}
+                        />
+                    )}
                 </BasePaper>
             </Box>
             <BasePaper>

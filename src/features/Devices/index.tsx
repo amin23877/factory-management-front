@@ -7,7 +7,7 @@ import {
     DeleteRounded,
     PostAddRounded,
     DescriptionRounded,
-    FormatListNumberedRounded
+    FormatListNumberedRounded,
 } from "@material-ui/icons";
 import useSWR from "swr";
 import Confirm from "../../features/Modals/Confirm";
@@ -18,7 +18,7 @@ import BOMModal from "../../features/BOM/BomModal";
 
 import { AddItemModal } from "../../features/Items/ItemModals";
 // import ItemsDetails from "../../features/Items";
-import DetailTab from './DetailTab'
+import DetailTab from "./DetailTab";
 import { deleteAnItem, IItem } from "../../api/items";
 
 import List from "../../app/SideUtilityList";
@@ -34,15 +34,14 @@ import {
     GridToolbar,
 } from "@material-ui/data-grid";
 import { generateURL } from "../../logic/filterSortPage";
-import AddStepModal from './AddStepModal'
+import AddStepModal from "./AddStepModal";
+
 const Inventory = () => {
     const [filters, setFilters] = useState<GridFilterModelParams>();
     const [page, setPage] = useState<GridPageChangeParams>();
     const [sorts, setSort] = useState<GridSortModelParams>();
 
-    const { data: items, mutate: mutateItems } = useSWR(
-        generateURL('/item?device=true', filters, sorts, page)
-    );
+    const { data: items, mutate: mutateItems } = useSWR(generateURL("/item?device=true", filters, sorts, page));
     // const { data: items, mutate: mutateItems } = useSWR('/item?device=true');
     const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
 
@@ -161,7 +160,8 @@ const Inventory = () => {
                 <AddStepModal
                     open={addStepModal}
                     itemId={selectedItem.id as any}
-                    onClose={() => setAddStepModal(false)} />
+                    onClose={() => setAddStepModal(false)}
+                />
             )}
             <AddItemModal open={addItemModal} onClose={() => setAddItemModal(false)} device={true} />
             <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
@@ -169,10 +169,6 @@ const Inventory = () => {
             <FieldNFilter open={FieldNFilterModal} onClose={() => setFieldNFilterModal(false)} />
 
             <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
-                {/* <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="secondary">
-                    <MyTab color="primary" label="Overview" />
-                    <MyTab label="Details" disabled={!selectedItem} />
-                </MyTabs> */}
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="List" />
                     <Tab label="Details" disabled={!selectedItem} />
@@ -188,7 +184,7 @@ const Inventory = () => {
                         </IconButton>
                     </ListItem>
                     <ListItem>
-                        <IconButton title="Add Step" onClick={() => setAddStepModal(true)}>
+                        <IconButton disabled={activeTab === 0} title="Add Step" onClick={() => setAddStepModal(true)}>
                             <FormatListNumberedRounded />
                         </IconButton>
                     </ListItem>
