@@ -20,6 +20,7 @@ interface IForm {
     handleBlur: (e: any) => void;
     setFieldValue: any;
     isSubmitting?: boolean;
+    device?: boolean
 }
 
 interface IQForm extends IForm {
@@ -28,7 +29,7 @@ interface IQForm extends IForm {
     handleUpdateQuantity?: () => void;
 }
 
-export const General = ({ isSubmitting, values, errors, handleChange, handleBlur, touched, setFieldValue }: IForm) => {
+export const General = ({ isSubmitting, values, errors, handleChange, handleBlur, touched, setFieldValue, device }: IForm) => {
     return (
         <>
             <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
@@ -75,10 +76,11 @@ export const General = ({ isSubmitting, values, errors, handleChange, handleBlur
                     />
                     <FormControlLabel
                         style={{ fontSize: "0.7rem" }}
-                        checked={values.device}
+                        checked={device ? true : values.device}
                         label="Device"
                         name="device"
                         onChange={handleChange}
+                        disabled={device}
                         control={<Checkbox />}
                     />
                 </Box>

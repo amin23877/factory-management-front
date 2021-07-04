@@ -7,6 +7,7 @@ import {
     DeleteRounded,
     PostAddRounded,
     DescriptionRounded,
+    FormatListNumberedRounded
 } from "@material-ui/icons";
 import useSWR from "swr";
 import Confirm from "../../features/Modals/Confirm";
@@ -16,8 +17,8 @@ import DocumentModal from "../../features/Modals/DocumentModals";
 import BOMModal from "../../features/BOM/BomModal";
 
 import { AddItemModal } from "../../features/Items/ItemModals";
-import ItemsDetails from "../../features/Items";
-
+// import ItemsDetails from "../../features/Items";
+import DetailTab from './DetailTab'
 import { deleteAnItem, IItem } from "../../api/items";
 
 import List from "../../app/SideUtilityList";
@@ -33,26 +34,29 @@ import {
     GridToolbar,
 } from "@material-ui/data-grid";
 import { generateURL } from "../../logic/filterSortPage";
-
+import AddStepModal from './AddStepModal'
 const Inventory = () => {
     const [filters, setFilters] = useState<GridFilterModelParams>();
     const [page, setPage] = useState<GridPageChangeParams>();
     const [sorts, setSort] = useState<GridSortModelParams>();
 
-    // const { data: items, mutate: mutateItems } = useSWR<{ items: IItem[]; total: number }>(
-    //     generateURL('/item?device=true', filters, sorts, page)
-    // );
-    const { data: items, mutate: mutateItems } = useSWR('/item?device=true');
+    const { data: items, mutate: mutateItems } = useSWR(
+        generateURL('/item?device=true', filters, sorts, page)
+    );
+    // const { data: items, mutate: mutateItems } = useSWR('/item?device=true');
     const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
 
     const [activeTab, setActiveTab] = useState(0);
     const [selectedNote, setSelectedNote] = useState<any>();
     const [selectedDoc, setSelectedDoc] = useState<any>();
+    const [selectedStep, setSelectedStep] = useState<any>();
 
     const [addItemModal, setAddItemModal] = useState(false);
+    const [addStepModal, setAddStepModal] = useState(false);
     const [deleteItemModal, setDeleteItemModal] = useState(false);
     const [editNoteModal, setEditNoteModal] = useState(false);
     const [editDocModal, setEditDocModal] = useState(false);
+    const [editStepModal, setEditStepModal] = useState(false);
     const [addNoteModal, setAddNoteModal] = useState(false);
     const [addDocModal, setAddDocModal] = useState(false);
 
@@ -107,6 +111,14 @@ const Inventory = () => {
 
     return (
         <Box>
+            {selectedStep && selectedItem && selectedItem.id && (
+                <AddStepModal
+                    step={selectedStep}
+                    itemId={selectedItem.id as any}
+                    open={editStepModal}
+                    onClose={() => setEditStepModal(false)}
+                />
+            )}
             {selectedNote && selectedItem && selectedItem.id && (
                 <NoteModal
                     noteData={selectedNote}
@@ -145,7 +157,12 @@ const Inventory = () => {
             {selectedItem && selectedItem.id && (
                 <BOMModal itemId={selectedItem.id} open={bomModal} onClose={() => setBomModal(false)} />
             )}
-
+            {selectedItem && selectedItem.id && (
+                <AddStepModal
+                    open={addStepModal}
+                    itemId={selectedItem.id as any}
+                    onClose={() => setAddStepModal(false)} />
+            )}
             <AddItemModal open={addItemModal} onClose={() => setAddItemModal(false)} device={true} />
             <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
 
@@ -168,6 +185,11 @@ const Inventory = () => {
                     <ListItem>
                         <IconButton title="Add Device" onClick={() => setAddItemModal(true)}>
                             <AddRounded />
+                        </IconButton>
+                    </ListItem>
+                    <ListItem>
+                        <IconButton title="Add Step" onClick={() => setAddStepModal(true)}>
+                            <FormatListNumberedRounded />
                         </IconButton>
                     </ListItem>
                     <ListItem>
@@ -238,7 +260,7 @@ const Inventory = () => {
                         </Paper>
                     )}
                     {activeTab === 1 && (
-                        <ItemsDetails
+                        <DetailTab
                             onDone={mutateItems}
                             selectedRow={selectedItem}
                             onDocSelected={(d) => {
@@ -248,6 +270,10 @@ const Inventory = () => {
                             onNoteSelected={(d) => {
                                 setSelectedNote(d);
                                 setEditNoteModal(true);
+                            }}
+                            onStepSelected={(d) => {
+                                setSelectedStep(d);
+                                setEditStepModal(true);
                             }}
                         />
                     )}
