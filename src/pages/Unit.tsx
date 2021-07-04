@@ -14,7 +14,6 @@ import { MyTabs, MyTab } from "../app/Tabs";
 import { IUnit } from "../api/units";
 
 export default function Unit() {
-
     const [selectedUnit, setSelectedUnit] = useState<any>(null);
     const [activeTab, setActiveTab] = useState(0);
 
@@ -77,7 +76,7 @@ export default function Unit() {
                     <MyTab label="Details" disabled={!selectedUnit} />
                 </MyTabs>
             </Box>
-            {activeTab === 0 &&
+            {activeTab === 0 && (
                 <Box>
                     <Box display="flex" alignItems="center" my={1}>
                         <Button
@@ -128,14 +127,14 @@ export default function Unit() {
                                 onRowSelected={(i) => {
                                     // setSelected(i.data as any);
                                     // setOpen(true);
-                                    setSelectedUnit(i.data as any)
+                                    setSelectedUnit(i.data as any);
                                     setActiveTab(1);
                                 }}
                             />
                         </Box>
                     </Paper>
                 </Box>
-            }
+            )}
             {activeTab === 1 && <div>2</div>}
         </Container>
     );

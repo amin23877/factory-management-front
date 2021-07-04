@@ -538,7 +538,7 @@ export const DocumentForm = ({
             </div>
 
             <Box textAlign="right">
-                <Button disabled={!canSave} kind="add" onClick={handleSaveDocument}>
+                <Button kind="add" onClick={handleSaveDocument}>
                     Save
                 </Button>
                 {isUploading && <LinearProgress />}

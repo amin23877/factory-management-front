@@ -1,22 +1,29 @@
 import React, { useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import { Formik, Form } from "formik";
+import * as Yup from "yup";
 
 import Button from "../../app/Button";
 import { CommissionTab, DepositTab, TermsTab, GeneralForm } from "./Forms";
 
 import { IQuote } from "../../api/quote";
 
+const schema = Yup.object().shape({
+    requester: Yup.string().required(),
+    ClientId: Yup.string().required(),
+    salesperson: Yup.string().required(),
+});
+
 export default function GeneralQuote({ onDone, data }: { data?: any; onDone: (data: any) => void }) {
     const [activeTab, setActiveTab] = useState(0);
 
-    const handleSubmit = async (data: IQuote, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
+    const handleSubmit = async (data: IQuote) => {
         onDone(data);
     };
 
     return (
         <Box m={1} style={{ height: 600, overflowY: "auto" }}>
-            <Formik initialValues={{} as IQuote} onSubmit={handleSubmit}>
+            <Formik initialValues={{} as IQuote} validationSchema={schema} onSubmit={handleSubmit}>
                 {({ handleChange, handleBlur, values, isSubmitting, setFieldValue }) => (
                     <Form>
                         <Box display="flex" m={1}>
