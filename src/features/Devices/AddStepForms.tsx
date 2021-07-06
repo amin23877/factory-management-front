@@ -5,7 +5,20 @@ import { Formik, Form } from "formik";
 import Button from "../../app/Button";
 
 import PhotoSizeSelectActualOutlinedIcon from "@material-ui/icons/PhotoSizeSelectActualOutlined";
-
+import {
+    createAManStep,
+    createAEvalStep,
+    createAFieldStep,
+    createATestStep,
+    updateAEvalStep,
+    updateAFieldStep,
+    updateAManStep,
+    updateATestStep,
+    deleteAEvalStep,
+    deleteAFieldStep,
+    deleteAManStep,
+    deleteATestStep,
+} from '../../api/steps'
 
 interface IStepModal {
     open: boolean;
@@ -21,37 +34,37 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
     const fileUploader = useRef<HTMLInputElement | null>();
 
     const deleteDocument = useCallback(async () => {
-        // try {
-        //     if (step && step.id) {
-        //         await deleteAModelDocument(step.id);
-        //         onDone && onDone();
-        //         onClose();
-        //     }
-        // } catch (error) {
-        //     console.log(error);
-        // }
+        try {
+            if (step && step.id) {
+                await deleteAManStep(step.id);
+                onDone && onDone();
+                onClose();
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }, []);
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
-        // if (step && step.id) {
-        //     updateAModelDocument(step.id, values.file, values.description)
-        //         .then((d) => {
-        //             console.log(d);
-        //             onDone && onDone();
-        //             onClose();
-        //         })
-        //         .catch((e) => console.log(e))
-        //         .finally(() => setSubmitting(false));
-        // } else {
-        //     createAModelDocument( itemId as any, values.file, values.description)
-        //         .then((d) => {
-        //             console.log(d);
-        //             setSubmitting(false);
-        //             onDone && onDone();
-        //             onClose();
-        //         })
-        //         .catch((e) => console.log(e));
-        // }
+        if (step && step.id) {
+            updateAManStep(step.id, values.name, values.file, values.description, values.number, values.hours)
+                .then((d) => {
+                    console.log(d);
+                    onDone && onDone();
+                    onClose();
+                })
+                .catch((e) => console.log(e))
+                .finally(() => setSubmitting(false));
+        } else {
+            createAManStep(itemId, values.name, values.file, values.description, values.number, values.hours)
+                .then((d) => {
+                    console.log(d);
+                    setSubmitting(false);
+                    onDone && onDone();
+                    onClose();
+                })
+                .catch((e) => console.log(e));
+        }
     }, []);
 
 
@@ -60,7 +73,8 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
     return (
         <Formik initialValues={step ? step : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
-                <Form>
+                <Form style={{ marginBottom: '20px' }}>
+                    <h3 style={{ marginLeft: '20px' }}>Manufacturing</h3>
                     <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
                         <TextField
                             style={{ gridColumnEnd: 'span 2' }}
@@ -114,7 +128,7 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
                                 ref={(e) => (fileUploader.current = e)}
                                 hidden
                                 onChange={(e) =>
-                                    e.target.files !== null && setFieldValue("file", e.target.files[0])
+                                    e.target.files !== null && setFieldValue("file", e.target.files)
                                 }
                             />
                             <Button
@@ -135,7 +149,7 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
                             <div style={{ margin: "1em 0" }}>
                                 {values.file ? (
                                     // String((values.file as any).name)
-                                    <p>ads</p>
+                                    <p>files selected</p>
                                 ) : step ? (
                                     <Link download href={step.path}>
                                         Download previous file
@@ -186,38 +200,40 @@ export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) 
     const fileUploader = useRef<HTMLInputElement | null>();
 
     const deleteDocument = useCallback(async () => {
-        // try {
-        //     if (step && step.id) {
-        //         await deleteAModelDocument(step.id);
-        //         onDone && onDone();
-        //         onClose();
-        //     }
-        // } catch (error) {
-        //     console.log(error);
-        // }
+        try {
+            if (step && step.id) {
+                await deleteAEvalStep(step.id);
+                onDone && onDone();
+                onClose();
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }, []);
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
-        // if (step && step.id) {
-        //     updateAModelDocument(step.id, values.file, values.description)
-        //         .then((d) => {
-        //             console.log(d);
-        //             onDone && onDone();
-        //             onClose();
-        //         })
-        //         .catch((e) => console.log(e))
-        //         .finally(() => setSubmitting(false));
-        // } else {
-        //     createAModelDocument( itemId as any, values.file, values.description)
-        //         .then((d) => {
-        //             console.log(d);
-        //             setSubmitting(false);
-        //             onDone && onDone();
-        //             onClose();
-        //         })
-        //         .catch((e) => console.log(e));
-        // }
+        if (step && step.id) {
+            console.log(step);
+            updateAEvalStep(step.id, values.name, values.file, values.description, values.number, values.hours)
+                .then((d) => {
+                    console.log(d);
+                    onDone && onDone();
+                    onClose();
+                })
+                .catch((e) => console.log(e))
+                .finally(() => setSubmitting(false));
+        } else {
+            createAEvalStep(itemId, values.name, values.file, values.description, values.number, values.hours)
+                .then((d) => {
+                    console.log(d);
+                    setSubmitting(false);
+                    onDone && onDone();
+                    onClose();
+                })
+                .catch((e) => console.log(e));
+        }
     }, []);
+
 
 
 
@@ -225,7 +241,8 @@ export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) 
     return (
         <Formik initialValues={step ? step : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
-                <Form>
+                <Form style={{ marginBottom: '20px' }}>
+                    <h3 style={{ marginLeft: '20px' }}>Evaluation</h3>
                     <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
                         <TextField
                             style={{ gridColumnEnd: 'span 2' }}
@@ -300,7 +317,7 @@ export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) 
                             <div style={{ margin: "1em 0" }}>
                                 {values.file ? (
                                     // String((values.file as any).name)
-                                    <p>ads</p>
+                                    <p>files selected</p>
                                 ) : step ? (
                                     <Link download href={step.path}>
                                         Download previous file
@@ -351,37 +368,37 @@ export const Test = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
     const fileUploader = useRef<HTMLInputElement | null>();
 
     const deleteDocument = useCallback(async () => {
-        // try {
-        //     if (step && step.id) {
-        //         await deleteAModelDocument(step.id);
-        //         onDone && onDone();
-        //         onClose();
-        //     }
-        // } catch (error) {
-        //     console.log(error);
-        // }
+        try {
+            if (step && step.id) {
+                await deleteATestStep(step.id);
+                onDone && onDone();
+                onClose();
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }, []);
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
-        // if (step && step.id) {
-        //     updateAModelDocument(step.id, values.file, values.description)
-        //         .then((d) => {
-        //             console.log(d);
-        //             onDone && onDone();
-        //             onClose();
-        //         })
-        //         .catch((e) => console.log(e))
-        //         .finally(() => setSubmitting(false));
-        // } else {
-        //     createAModelDocument( itemId as any, values.file, values.description)
-        //         .then((d) => {
-        //             console.log(d);
-        //             setSubmitting(false);
-        //             onDone && onDone();
-        //             onClose();
-        //         })
-        //         .catch((e) => console.log(e));
-        // }
+        if (step && step.id) {
+            updateATestStep(step.id, values.name, values.file, values.description, values.number, values.hours)
+                .then((d) => {
+                    console.log(d);
+                    onDone && onDone();
+                    onClose();
+                })
+                .catch((e) => console.log(e))
+                .finally(() => setSubmitting(false));
+        } else {
+            createATestStep(itemId, values.name, values.file, values.description, values.number, values.hours)
+                .then((d) => {
+                    console.log(d);
+                    setSubmitting(false);
+                    onDone && onDone();
+                    onClose();
+                })
+                .catch((e) => console.log(e));
+        }
     }, []);
 
 
@@ -390,7 +407,8 @@ export const Test = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
     return (
         <Formik initialValues={step ? step : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
-                <Form>
+                <Form style={{ marginBottom: '20px' }}>
+                    <h3 style={{ marginLeft: '20px' }}>Test</h3>
                     <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
                         <TextField
                             style={{ gridColumnEnd: 'span 2' }}
@@ -465,7 +483,7 @@ export const Test = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                             <div style={{ margin: "1em 0" }}>
                                 {values.file ? (
                                     // String((values.file as any).name)
-                                    <p>ads</p>
+                                    <p>files selected</p>
                                 ) : step ? (
                                     <Link download href={step.path}>
                                         Download previous file
@@ -512,37 +530,37 @@ export const Field = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
     const fileUploader = useRef<HTMLInputElement | null>();
 
     const deleteDocument = useCallback(async () => {
-        // try {
-        //     if (step && step.id) {
-        //         await deleteAModelDocument(step.id);
-        //         onDone && onDone();
-        //         onClose();
-        //     }
-        // } catch (error) {
-        //     console.log(error);
-        // }
+        try {
+            if (step && step.id) {
+                await deleteAFieldStep(step.id);
+                onDone && onDone();
+                onClose();
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }, []);
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
-        // if (step && step.id) {
-        //     updateAModelDocument(step.id, values.file, values.description)
-        //         .then((d) => {
-        //             console.log(d);
-        //             onDone && onDone();
-        //             onClose();
-        //         })
-        //         .catch((e) => console.log(e))
-        //         .finally(() => setSubmitting(false));
-        // } else {
-        //     createAModelDocument( itemId as any, values.file, values.description)
-        //         .then((d) => {
-        //             console.log(d);
-        //             setSubmitting(false);
-        //             onDone && onDone();
-        //             onClose();
-        //         })
-        //         .catch((e) => console.log(e));
-        // }
+        if (step && step.id) {
+            updateAFieldStep(step.id, values.name, values.file, values.description, values.number, values.hours)
+                .then((d) => {
+                    console.log(d);
+                    onDone && onDone();
+                    onClose();
+                })
+                .catch((e) => console.log(e))
+                .finally(() => setSubmitting(false));
+        } else {
+            createAFieldStep(itemId, values.name, values.file, values.description, values.number, values.hours)
+                .then((d) => {
+                    console.log(d);
+                    setSubmitting(false);
+                    onDone && onDone();
+                    onClose();
+                })
+                .catch((e) => console.log(e));
+        }
     }, []);
 
 
@@ -551,7 +569,8 @@ export const Field = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
     return (
         <Formik initialValues={step ? step : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
-                <Form>
+                <Form style={{ marginBottom: '20px' }}>
+                    <h3 style={{ marginLeft: '20px' }}>Field StartUp</h3>
                     <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
                         <TextField
                             style={{ gridColumnEnd: 'span 2' }}
@@ -626,7 +645,7 @@ export const Field = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                             <div style={{ margin: "1em 0" }}>
                                 {values.file ? (
                                     // String((values.file as any).name)
-                                    <p>ads</p>
+                                    <p>files selected</p>
                                 ) : step ? (
                                     <Link download href={step.path}>
                                         Download previous file

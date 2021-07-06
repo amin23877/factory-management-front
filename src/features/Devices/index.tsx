@@ -34,7 +34,7 @@ import {
     GridToolbar,
 } from "@material-ui/data-grid";
 import { generateURL } from "../../logic/filterSortPage";
-import AddStepModal from "./AddStepModal";
+import AddStepModal, { EditStepModal } from "./AddStepModal";
 
 const Inventory = () => {
     const [filters, setFilters] = useState<GridFilterModelParams>();
@@ -46,6 +46,7 @@ const Inventory = () => {
     const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
 
     const [activeTab, setActiveTab] = useState(0);
+    const [tab, setTab] = useState<number>();
     const [selectedNote, setSelectedNote] = useState<any>();
     const [selectedDoc, setSelectedDoc] = useState<any>();
     const [selectedStep, setSelectedStep] = useState<any>();
@@ -111,7 +112,8 @@ const Inventory = () => {
     return (
         <Box>
             {selectedStep && selectedItem && selectedItem.id && (
-                <AddStepModal
+                <EditStepModal
+                    tab={selectedStep.tab}
                     step={selectedStep}
                     itemId={selectedItem.id as any}
                     open={editStepModal}
