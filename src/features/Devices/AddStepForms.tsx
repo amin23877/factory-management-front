@@ -149,7 +149,7 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
                             <div style={{ margin: "1em 0" }}>
                                 {values.file ? (
                                     // String((values.file as any).name)
-                                    <p>ads</p>
+                                    <p>files selected</p>
                                 ) : step ? (
                                     <Link download href={step.path}>
                                         Download previous file
@@ -317,7 +317,7 @@ export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) 
                             <div style={{ margin: "1em 0" }}>
                                 {values.file ? (
                                     // String((values.file as any).name)
-                                    <p>ads</p>
+                                    <p>files selected</p>
                                 ) : step ? (
                                     <Link download href={step.path}>
                                         Download previous file
@@ -483,7 +483,7 @@ export const Test = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                             <div style={{ margin: "1em 0" }}>
                                 {values.file ? (
                                     // String((values.file as any).name)
-                                    <p>ads</p>
+                                    <p>files selected</p>
                                 ) : step ? (
                                     <Link download href={step.path}>
                                         Download previous file
@@ -645,7 +645,7 @@ export const Field = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                             <div style={{ margin: "1em 0" }}>
                                 {values.file ? (
                                     // String((values.file as any).name)
-                                    <p>ads</p>
+                                    <p>files selected</p>
                                 ) : step ? (
                                     <Link download href={step.path}>
                                         Download previous file
