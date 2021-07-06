@@ -178,7 +178,7 @@ function ItemsDetails({
     };
 
     return (
-        <Box >
+        <Box>
             {/* <ManualCountModal
                 open={manualCountModal}
                 onClose={() => setManualCountModal(false)}
@@ -328,9 +328,13 @@ function ItemsDetails({
             </Formik>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-
-                    <BasePaper style={{ maxWidth: '71.5vw' }}>
-                        <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} textColor="primary" variant="scrollable">
+                    <BasePaper style={{ maxWidth: "71.5vw" }}>
+                        <Tabs
+                            value={activeTab}
+                            onChange={(e, v) => setActiveTab(v)}
+                            textColor="primary"
+                            variant="scrollable"
+                        >
                             <Tab label="Documents" />
                             {/* <Tab label="BOM allocated" /> */}
                             <Tab label="BOM" />
@@ -354,38 +358,49 @@ function ItemsDetails({
                             {/* <Tab label="Quantity history" /> */}
                         </Tabs>
                         <Box p={3}>
-
-                            {activeTab === 0 && <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />}
+                            {activeTab === 0 && (
+                                <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />
+                            )}
                             {/* {activeTab === 2 && <BaseDataGrid cols={usesCols} rows={uses || []} onRowSelected={() => { }} />} */}
-                            {activeTab === 1 && <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={() => { }} />}
-                            {activeTab === 3 &&
+                            {activeTab === 1 && (
+                                <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={() => {}} />
+                            )}
+                            {activeTab === 3 && (
                                 <BaseDataGrid
                                     cols={manCols}
                                     rows={manSteps || []}
                                     onRowSelected={(d) => {
                                         onStepSelected({ ...d, tab: 0 });
-                                    }} />}
-                            {activeTab === 4 &&
+                                    }}
+                                />
+                            )}
+                            {activeTab === 4 && (
                                 <BaseDataGrid
                                     cols={manCols}
                                     rows={evalSteps || []}
                                     onRowSelected={(d) => {
-                                        onStepSelected({ ...d, tab: 1 })
-                                    }} />}
-                            {activeTab === 5 &&
+                                        onStepSelected({ ...d, tab: 1 });
+                                    }}
+                                />
+                            )}
+                            {activeTab === 5 && (
                                 <BaseDataGrid
                                     cols={manCols}
                                     rows={testSteps || []}
                                     onRowSelected={(d) => {
-                                        onStepSelected({ ...d, tab: 2 })
-                                    }} />}
-                            {activeTab === 6 &&
+                                        onStepSelected({ ...d, tab: 2 });
+                                    }}
+                                />
+                            )}
+                            {activeTab === 6 && (
                                 <BaseDataGrid
                                     cols={manCols}
                                     rows={fieldSteps || []}
                                     onRowSelected={(d) => {
-                                        onStepSelected({ ...d, tab: 3 })
-                                    }} />}
+                                        onStepSelected({ ...d, tab: 3 });
+                                    }}
+                                />
+                            )}
                             {/* {activeTab === 4 && (
                                 <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => { }} />
                             )} */}
@@ -395,7 +410,7 @@ function ItemsDetails({
                             {/* {activeTab === 6 && <SOTable rows={itemSOs || []} />} */}
                             {/* {activeTab === 7 && <BaseDataGrid cols={poCols} rows={itemPOs || []} onRowSelected={() => { }} />} */}
                             {activeTab === 8 && (
-                                <BaseDataGrid cols={usageCols} rows={itemUsage || []} onRowSelected={() => { }} />
+                                <BaseDataGrid cols={usageCols} rows={itemUsage || []} onRowSelected={() => {}} />
                             )}
                             {activeTab === 9 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
                             {activeTab === 12 && (

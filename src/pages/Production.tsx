@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Container, Box } from "@material-ui/core";
 
+import Overview from "../features/Production/Overview";
 import UnitBomModal from "../features/UBOM/UBomModal";
-import Details from "../features/Unit";
+import Details from "../features/Production";
 
 import { MyTabs, MyTab } from "../app/Tabs";
 
 import { IUnit } from "../api/units";
-import Table from "../features/Unit/Table";
 
 export default function Unit() {
     const [selectedUnit, setSelectedUnit] = useState<IUnit | null>(null);
@@ -26,7 +26,7 @@ export default function Unit() {
                     <MyTab label="Details" disabled={!selectedUnit} />
                 </MyTabs>
             </Box>
-            {activeTab === 0 && <Table setActiveTab={setActiveTab} setSelectedUnit={setSelectedUnit} />}
+            {activeTab === 0 && <Overview setActiveTab={setActiveTab} setSelectedUnit={setSelectedUnit} />}
             {activeTab === 1 && selectedUnit && <Details unit={selectedUnit} />}
         </Container>
     );

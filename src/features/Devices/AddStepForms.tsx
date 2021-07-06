@@ -18,7 +18,8 @@ import {
     deleteAFieldStep,
     deleteAManStep,
     deleteATestStep,
-} from '../../api/steps'
+} from "../../api/steps";
+import { mutate } from "swr";
 
 interface IStepModal {
     open: boolean;
@@ -29,8 +30,6 @@ interface IStepModal {
 }
 
 export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
-
-
     const fileUploader = useRef<HTMLInputElement | null>();
 
     const deleteDocument = useCallback(async () => {
@@ -50,6 +49,7 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
             updateAManStep(step.id, values.name, values.file, values.description, values.number, values.hours)
                 .then((d) => {
                     console.log(d);
+                    mutate(`/manStep?ItemId=${itemId}`)
                     onDone && onDone();
                     onClose();
                 })
@@ -60,6 +60,7 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
                 .then((d) => {
                     console.log(d);
                     setSubmitting(false);
+                    mutate(`/manStep?ItemId=${itemId}`)
                     onDone && onDone();
                     onClose();
                 })
@@ -67,17 +68,14 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
         }
     }, []);
 
-
-
-
     return (
         <Formik initialValues={step ? step : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
-                <Form style={{ marginBottom: '20px' }}>
-                    <h3 style={{ marginLeft: '20px' }}>Manufacturing</h3>
+                <Form style={{ marginBottom: "20px" }}>
+                    <h3 style={{ marginLeft: "20px" }}>Manufacturing</h3>
                     <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
                         <TextField
-                            style={{ gridColumnEnd: 'span 2' }}
+                            style={{ gridColumnEnd: "span 2" }}
                             value={values.name}
                             name="name"
                             label="Name"
@@ -86,7 +84,7 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
                             onBlur={handleBlur}
                         />
                         <TextField
-                            style={{ gridColumnEnd: 'span 2' }}
+                            style={{ gridColumnEnd: "span 2" }}
                             fullWidth
                             value={values.description}
                             name="description"
@@ -97,7 +95,6 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
                             onChange={handleChange}
                             onBlur={handleBlur}
                         />
-
 
                         <TextField
                             fullWidth
@@ -120,16 +117,13 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
                             onBlur={handleBlur}
                         />
 
-                        <Box style={{ gridColumnEnd: 'span 2', margin: '0px 25%' }}>
-
+                        <Box style={{ gridColumnEnd: "span 2", margin: "0px 25%" }}>
                             <input
                                 multiple
                                 type="file"
                                 ref={(e) => (fileUploader.current = e)}
                                 hidden
-                                onChange={(e) =>
-                                    e.target.files !== null && setFieldValue("file", e.target.files)
-                                }
+                                onChange={(e) => e.target.files !== null && setFieldValue("file", e.target.files)}
                             />
                             <Button
                                 color="primary"
@@ -158,18 +152,10 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
                                     ""
                                 )}
                             </div>
-
-
-
                         </Box>
                     </Box>
-                    <Box style={{ display: "flex", width: "50%", margin: '0px 25%' }}>
-                        <Button
-                            type="submit"
-                            kind={step ? "edit" : "add"}
-                            disabled={isSubmitting}
-                            style={{ flex: 1 }}
-                        >
+                    <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
+                        <Button type="submit" kind={step ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
                             Save
                         </Button>
                         {step && (
@@ -184,19 +170,12 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
                         )}
                     </Box>
                 </Form>
-            )
-            }
-        </Formik >
-    )
-}
-
-
-
-
+            )}
+        </Formik>
+    );
+};
 
 export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
-
-
     const fileUploader = useRef<HTMLInputElement | null>();
 
     const deleteDocument = useCallback(async () => {
@@ -234,18 +213,14 @@ export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) 
         }
     }, []);
 
-
-
-
-
     return (
         <Formik initialValues={step ? step : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
-                <Form style={{ marginBottom: '20px' }}>
-                    <h3 style={{ marginLeft: '20px' }}>Evaluation</h3>
+                <Form style={{ marginBottom: "20px" }}>
+                    <h3 style={{ marginLeft: "20px" }}>Evaluation</h3>
                     <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
                         <TextField
-                            style={{ gridColumnEnd: 'span 2' }}
+                            style={{ gridColumnEnd: "span 2" }}
                             value={values.name}
                             name="name"
                             label="Name"
@@ -254,7 +229,7 @@ export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) 
                             onBlur={handleBlur}
                         />
                         <TextField
-                            style={{ gridColumnEnd: 'span 2' }}
+                            style={{ gridColumnEnd: "span 2" }}
                             fullWidth
                             value={values.description}
                             name="description"
@@ -265,7 +240,6 @@ export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) 
                             onChange={handleChange}
                             onBlur={handleBlur}
                         />
-
 
                         <TextField
                             fullWidth
@@ -288,16 +262,13 @@ export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) 
                             onBlur={handleBlur}
                         />
 
-                        <Box style={{ gridColumnEnd: 'span 2', margin: '0px 25%' }}>
-
+                        <Box style={{ gridColumnEnd: "span 2", margin: "0px 25%" }}>
                             <input
                                 multiple
                                 type="file"
                                 ref={(e) => (fileUploader.current = e)}
                                 hidden
-                                onChange={(e) =>
-                                    e.target.files !== null && setFieldValue("file", e.target.files[0])
-                                }
+                                onChange={(e) => e.target.files !== null && setFieldValue("file", e.target.files[0])}
                             />
                             <Button
                                 color="primary"
@@ -326,18 +297,10 @@ export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) 
                                     ""
                                 )}
                             </div>
-
-
-
                         </Box>
                     </Box>
-                    <Box style={{ display: "flex", width: "50%", margin: '0px 25%' }}>
-                        <Button
-                            type="submit"
-                            kind={step ? "edit" : "add"}
-                            disabled={isSubmitting}
-                            style={{ flex: 1 }}
-                        >
+                    <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
+                        <Button type="submit" kind={step ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
                             Save
                         </Button>
                         {step && (
@@ -352,19 +315,12 @@ export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) 
                         )}
                     </Box>
                 </Form>
-            )
-            }
-        </Formik >
-    )
-}
-
-
-
-
+            )}
+        </Formik>
+    );
+};
 
 export const Test = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
-
-
     const fileUploader = useRef<HTMLInputElement | null>();
 
     const deleteDocument = useCallback(async () => {
@@ -401,17 +357,14 @@ export const Test = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
         }
     }, []);
 
-
-
-
     return (
         <Formik initialValues={step ? step : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
-                <Form style={{ marginBottom: '20px' }}>
-                    <h3 style={{ marginLeft: '20px' }}>Test</h3>
+                <Form style={{ marginBottom: "20px" }}>
+                    <h3 style={{ marginLeft: "20px" }}>Test</h3>
                     <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
                         <TextField
-                            style={{ gridColumnEnd: 'span 2' }}
+                            style={{ gridColumnEnd: "span 2" }}
                             value={values.name}
                             name="name"
                             label="Name"
@@ -420,7 +373,7 @@ export const Test = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                             onBlur={handleBlur}
                         />
                         <TextField
-                            style={{ gridColumnEnd: 'span 2' }}
+                            style={{ gridColumnEnd: "span 2" }}
                             fullWidth
                             value={values.description}
                             name="description"
@@ -431,7 +384,6 @@ export const Test = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                             onChange={handleChange}
                             onBlur={handleBlur}
                         />
-
 
                         <TextField
                             fullWidth
@@ -454,16 +406,13 @@ export const Test = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                             onBlur={handleBlur}
                         />
 
-                        <Box style={{ gridColumnEnd: 'span 2', margin: '0px 25%' }}>
-
+                        <Box style={{ gridColumnEnd: "span 2", margin: "0px 25%" }}>
                             <input
                                 multiple
                                 type="file"
                                 ref={(e) => (fileUploader.current = e)}
                                 hidden
-                                onChange={(e) =>
-                                    e.target.files !== null && setFieldValue("file", e.target.files[0])
-                                }
+                                onChange={(e) => e.target.files !== null && setFieldValue("file", e.target.files[0])}
                             />
                             <Button
                                 color="primary"
@@ -492,18 +441,10 @@ export const Test = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                                     ""
                                 )}
                             </div>
-
-
-
                         </Box>
                     </Box>
-                    <Box style={{ display: "flex", width: "50%", margin: '0px 25%' }}>
-                        <Button
-                            type="submit"
-                            kind={step ? "edit" : "add"}
-                            disabled={isSubmitting}
-                            style={{ flex: 1 }}
-                        >
+                    <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
+                        <Button type="submit" kind={step ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
                             Save
                         </Button>
                         {step && (
@@ -520,13 +461,10 @@ export const Test = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                 </Form>
             )}
         </Formik>
-    )
-}
-
+    );
+};
 
 export const Field = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
-
-
     const fileUploader = useRef<HTMLInputElement | null>();
 
     const deleteDocument = useCallback(async () => {
@@ -563,17 +501,14 @@ export const Field = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
         }
     }, []);
 
-
-
-
     return (
         <Formik initialValues={step ? step : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
-                <Form style={{ marginBottom: '20px' }}>
-                    <h3 style={{ marginLeft: '20px' }}>Field StartUp</h3>
+                <Form style={{ marginBottom: "20px" }}>
+                    <h3 style={{ marginLeft: "20px" }}>Field StartUp</h3>
                     <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
                         <TextField
-                            style={{ gridColumnEnd: 'span 2' }}
+                            style={{ gridColumnEnd: "span 2" }}
                             value={values.name}
                             name="name"
                             label="Name"
@@ -582,7 +517,7 @@ export const Field = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                             onBlur={handleBlur}
                         />
                         <TextField
-                            style={{ gridColumnEnd: 'span 2' }}
+                            style={{ gridColumnEnd: "span 2" }}
                             fullWidth
                             value={values.description}
                             name="description"
@@ -593,7 +528,6 @@ export const Field = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                             onChange={handleChange}
                             onBlur={handleBlur}
                         />
-
 
                         <TextField
                             fullWidth
@@ -616,16 +550,13 @@ export const Field = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                             onBlur={handleBlur}
                         />
 
-                        <Box style={{ gridColumnEnd: 'span 2', margin: '0px 25%' }}>
-
+                        <Box style={{ gridColumnEnd: "span 2", margin: "0px 25%" }}>
                             <input
                                 multiple
                                 type="file"
                                 ref={(e) => (fileUploader.current = e)}
                                 hidden
-                                onChange={(e) =>
-                                    e.target.files !== null && setFieldValue("file", e.target.files[0])
-                                }
+                                onChange={(e) => e.target.files !== null && setFieldValue("file", e.target.files[0])}
                             />
                             <Button
                                 color="primary"
@@ -654,18 +585,10 @@ export const Field = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                                     ""
                                 )}
                             </div>
-
-
-
                         </Box>
                     </Box>
-                    <Box style={{ display: "flex", width: "50%", margin: '0px 25%' }}>
-                        <Button
-                            type="submit"
-                            kind={step ? "edit" : "add"}
-                            disabled={isSubmitting}
-                            style={{ flex: 1 }}
-                        >
+                    <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
+                        <Button type="submit" kind={step ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
                             Save
                         </Button>
                         {step && (
@@ -680,8 +603,7 @@ export const Field = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                         )}
                     </Box>
                 </Form>
-            )
-            }
-        </Formik >
-    )
-}
+            )}
+        </Formik>
+    );
+};
