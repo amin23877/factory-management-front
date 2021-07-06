@@ -73,7 +73,8 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
     return (
         <Formik initialValues={step ? step : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
-                <Form>
+                <Form style={{ marginBottom: '20px' }}>
+                    <h3 style={{ marginLeft: '20px' }}>Manufacturing</h3>
                     <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
                         <TextField
                             style={{ gridColumnEnd: 'span 2' }}
@@ -212,6 +213,7 @@ export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) 
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
         if (step && step.id) {
+            console.log(step);
             updateAEvalStep(step.id, values.name, values.file, values.description, values.number, values.hours)
                 .then((d) => {
                     console.log(d);
@@ -239,7 +241,8 @@ export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) 
     return (
         <Formik initialValues={step ? step : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
-                <Form>
+                <Form style={{ marginBottom: '20px' }}>
+                    <h3 style={{ marginLeft: '20px' }}>Evaluation</h3>
                     <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
                         <TextField
                             style={{ gridColumnEnd: 'span 2' }}
@@ -404,7 +407,8 @@ export const Test = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
     return (
         <Formik initialValues={step ? step : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
-                <Form>
+                <Form style={{ marginBottom: '20px' }}>
+                    <h3 style={{ marginLeft: '20px' }}>Test</h3>
                     <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
                         <TextField
                             style={{ gridColumnEnd: 'span 2' }}
