@@ -58,6 +58,10 @@ function ItemsDetails({
     const { data: docs } = useSWR<IDocument[]>(activeTab === 0 ? `/document/item/${selectedRow.id}` : null);
     const { data: uses } = useSWR(activeTab === 2 ? `/item/${selectedRow.id}/uses` : null);
     const { data: boms } = useSWR<IBom[]>(activeTab === 1 ? `/bom?ItemId=${selectedRow.id}` : null);
+    const { data: manSteps } = useSWR(activeTab === 3 ? `/manStep?ItemId=${selectedRow.id}` : null);
+    const { data: evalSteps } = useSWR(activeTab === 4 ? `/evalStep?ItemId=${selectedRow.id}` : null);
+    const { data: testSteps } = useSWR(activeTab === 5 ? `/testStep?ItemId=${selectedRow.id}` : null);
+    const { data: fieldSteps } = useSWR(activeTab === 6 ? `/fieldStartUpStep?ItemId=${selectedRow.id}` : null);
     const { data: vendors } = useSWR(activeTab === 4 ? `/item/${selectedRow.id}/vendors` : null);
     const { data: itemQuotes } = useSWR(activeTab === 5 ? `/item/${selectedRow.id}/quote` : null);
     const { data: itemSOs } = useSWR(activeTab === 6 ? `/item/${selectedRow.id}/so` : null);
@@ -115,6 +119,15 @@ function ItemsDetails({
             { field: "name", headerName: "Name" },
             { field: "note", headerName: "note", flex: 1 },
             { field: "current", headerName: "current", type: "boolean" },
+        ],
+        []
+    );
+    const manCols = useMemo<GridColDef[]>(
+        () => [
+            { field: "number", headerName: "step number" },
+            { field: "name", headerName: "Name" },
+            { field: "description", headerName: "description", flex: 1 },
+            { field: "hours", headerName: "Hours" },
         ],
         []
     );
@@ -345,6 +358,34 @@ function ItemsDetails({
                             {activeTab === 0 && <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />}
                             {/* {activeTab === 2 && <BaseDataGrid cols={usesCols} rows={uses || []} onRowSelected={() => { }} />} */}
                             {activeTab === 1 && <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={() => { }} />}
+                            {activeTab === 3 &&
+                                <BaseDataGrid
+                                    cols={manCols}
+                                    rows={manSteps || []}
+                                    onRowSelected={(d) => {
+                                        onStepSelected({ ...d, tab: 0 });
+                                    }} />}
+                            {activeTab === 4 &&
+                                <BaseDataGrid
+                                    cols={manCols}
+                                    rows={evalSteps || []}
+                                    onRowSelected={(d) => {
+                                        onStepSelected({ ...d, tab: 1 })
+                                    }} />}
+                            {activeTab === 5 &&
+                                <BaseDataGrid
+                                    cols={manCols}
+                                    rows={testSteps || []}
+                                    onRowSelected={(d) => {
+                                        onStepSelected({ ...d, tab: 2 })
+                                    }} />}
+                            {activeTab === 6 &&
+                                <BaseDataGrid
+                                    cols={manCols}
+                                    rows={fieldSteps || []}
+                                    onRowSelected={(d) => {
+                                        onStepSelected({ ...d, tab: 3 })
+                                    }} />}
                             {/* {activeTab === 4 && (
                                 <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => { }} />
                             )} */}

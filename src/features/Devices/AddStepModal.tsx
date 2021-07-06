@@ -11,11 +11,20 @@ interface IStepModal {
     step?: any;
     onDone?: () => void;
     onClose: () => void;
+    tab?: number
+}
+interface IEditStepModal {
+    open: boolean;
+    itemId: string;
+    step: any;
+    onDone?: () => void;
+    onClose: () => void;
+    tab: number
 }
 
-export default function StepModal({ open, onClose, itemId, onDone, step }: IStepModal) {
+export default function StepModal({ open, onClose, itemId, onDone, step, tab }: IStepModal) {
 
-    const [activeTab, setActiveTab] = useState(0);
+    const [activeTab, setActiveTab] = useState(tab ? tab : 0);
 
 
     return (
@@ -30,7 +39,18 @@ export default function StepModal({ open, onClose, itemId, onDone, step }: IStep
             {activeTab === 1 && <Evaluation open={open} onClose={onClose} itemId={itemId} onDone={onDone} step={step} />}
             {activeTab === 2 && <Test open={open} onClose={onClose} itemId={itemId} onDone={onDone} step={step} />}
             {activeTab === 3 && <Field open={open} onClose={onClose} itemId={itemId} onDone={onDone} step={step} />}
+        </Dialog>
+    );
+}
 
+
+export function EditStepModal({ open, onClose, itemId, onDone, step, tab }: IEditStepModal) {
+    return (
+        <Dialog open={open} onClose={onClose} >
+            {tab === 0 && <Manufacturing open={open} onClose={onClose} itemId={itemId} onDone={onDone} step={step} />}
+            {tab === 1 && <Evaluation open={open} onClose={onClose} itemId={itemId} onDone={onDone} step={step} />}
+            {tab === 2 && <Test open={open} onClose={onClose} itemId={itemId} onDone={onDone} step={step} />}
+            {tab === 3 && <Field open={open} onClose={onClose} itemId={itemId} onDone={onDone} step={step} />}
         </Dialog>
     );
 }
