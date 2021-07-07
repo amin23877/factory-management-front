@@ -16,7 +16,7 @@ export default function BOMTable({
     const rows = useMemo<GridRowsProp>(() => {
         const res: any = {};
         res.id = Math.floor(Math.random() * 100);
-        res[cluster] = randomTraderName();
+        res[cluster] = "Micro";
         levels.map((l) => (res[l] = "-level-"));
         for (let index = 0; index < partnumbers; index++) {
             res[`part${index}`] = randomPhoneNumber();
