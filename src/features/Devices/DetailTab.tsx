@@ -67,7 +67,7 @@ function ItemsDetails({
     const { data: itemSOs } = useSWR(activeTab === 6 ? `/item/${selectedRow.id}/so` : null);
     const { data: itemPOs } = useSWR(activeTab === 7 ? `/item/${selectedRow.id}/purchasepo` : null);
     const { data: itemUsage } = useSWR(activeTab === 8 ? `/unit?ItemId=${selectedRow.id}` : null);
-    const { data: itemQtyHistory } = useSWR(activeTab === 10 ? `/item/${selectedRow.id}/qty` : null);
+    const { data: services } = useSWR(activeTab === 10 ? `/service?ItemId=${selectedRow.id}` : null);
 
     const [showSnack, setShowSnack] = useState(false);
     const [snackMsg, setSnackMsg] = useState("");
@@ -86,10 +86,11 @@ function ItemsDetails({
         []
     );
 
-    const poCols = useMemo(
+    const serviceCols = useMemo(
         () => [
-            { field: "number", headerName: "Number" },
-            { field: "status", headerName: "Status", width: 180 },
+            { field: "name", headerName: "Name" },
+            { field: "price", headerName: "Price" },
+            { field: "length", headerName: "length" },
         ],
         []
     );
@@ -398,6 +399,9 @@ function ItemsDetails({
                                 <BaseDataGrid cols={usageCols} rows={itemUsage || []} onRowSelected={() => { }} />
                             )}
                             {activeTab === 9 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
+                            {activeTab === 10 && (
+                                <BaseDataGrid cols={serviceCols} rows={services || []} onRowSelected={() => { }} />
+                            )}
                             {activeTab === 12 && (
                                 <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
                             )}
