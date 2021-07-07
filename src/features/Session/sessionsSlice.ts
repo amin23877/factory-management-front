@@ -47,7 +47,7 @@ const sessionSlice = createSlice({
             }
         })
         builder.addCase(loginThunk.rejected, (state, action:any) => {
-            state.status = 'login failed';
+            state.status = 'Unauthorized';
             state.error = action.payload?.error;
         })
     }

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { CssBaseline, ThemeProvider } from "@material-ui/core";
 import { BrowserRouter } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { theme } from "./theme";
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
@@ -9,7 +8,7 @@ import { SWRConfig } from "swr";
 
 import { useAppDispatch } from "./store";
 
-import { selectSession, getCurrentSession } from "./features/Session/sessionsSlice";
+import { getCurrentSession } from "./features/Session/sessionsSlice";
 
 import "./styles/main.css";
 import BaseRouter from "./Router";
@@ -30,11 +29,7 @@ function App() {
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <SWRConfig
-                value={{
-                    fetcher,
-                }}
-            >
+            <SWRConfig value={{ fetcher }}>
                 <BrowserRouter>
                     <ThemeProvider theme={theme}>
                         <CssBaseline />

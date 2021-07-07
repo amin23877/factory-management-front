@@ -200,10 +200,12 @@ export const ShippingForm = ({
     handleChange,
     handleBlur,
     values,
+    setFieldValue,
 }: {
     values: any;
     handleChange: (a: any) => void;
     handleBlur: (a: any) => void;
+    setFieldValue: any;
 }) => {
     return (
         <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10}>
@@ -213,7 +215,7 @@ export const ShippingForm = ({
                 value={values.estShipDate}
                 name="estShipDate"
                 label="Estimated ship date"
-                onChange={handleChange}
+                onChange={(date) => setFieldValue("estShipDate", date)}
                 onBlur={handleBlur}
             />
             <DateTimePicker
@@ -222,7 +224,7 @@ export const ShippingForm = ({
                 value={values.actShipDate}
                 name="actShipDate"
                 label="Actual ship date"
-                onChange={handleChange}
+                onChange={(date) => setFieldValue("actShipDate", date)}
                 onBlur={handleBlur}
             />
             <FieldSelect

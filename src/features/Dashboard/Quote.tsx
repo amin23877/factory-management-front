@@ -13,7 +13,7 @@ import { ArraySelect } from "../../app/Inputs";
 import { BaseTable } from "../../app/Table";
 import { BasePaper } from "../../app/Paper";
 
-const UnitsDueDateList = () => {
+export const UnitsDueDateList = () => {
     return (
         <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" alignItems="center">
@@ -38,7 +38,7 @@ const UnitsDueDateList = () => {
     );
 };
 
-const SearchForSO = () => {
+export const SearchForSO = () => {
     return (
         <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" alignItems="center" mb={1}>
@@ -57,7 +57,7 @@ const SearchForSO = () => {
     );
 };
 
-const OverDueServices = () => {
+export const OverDueServices = () => {
     return (
         <BasePaper style={{ justifyContent: "space-between", boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" justifyContent="space-between" alignItems="center">
@@ -86,7 +86,7 @@ const OverDueServices = () => {
     );
 };
 
-const Manufacturing = () => {
+export const Manufacturing = () => {
     return (
         <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" alignItems="center">
@@ -112,7 +112,7 @@ const Manufacturing = () => {
     );
 };
 
-const Servicing = () => {
+export const Servicing = () => {
     return (
         <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" alignItems="center">

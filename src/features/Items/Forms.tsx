@@ -20,7 +20,7 @@ interface IForm {
     handleBlur: (e: any) => void;
     setFieldValue: any;
     isSubmitting?: boolean;
-    device?: boolean
+    device?: boolean;
 }
 
 interface IQForm extends IForm {
@@ -29,7 +29,16 @@ interface IQForm extends IForm {
     handleUpdateQuantity?: () => void;
 }
 
-export const General = ({ isSubmitting, values, errors, handleChange, handleBlur, touched, setFieldValue, device }: IForm) => {
+export const General = ({
+    isSubmitting,
+    values,
+    errors,
+    handleChange,
+    handleBlur,
+    touched,
+    setFieldValue,
+    device,
+}: IForm) => {
     return (
         <>
             <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
@@ -415,6 +424,7 @@ export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlu
                     name={filter.name}
                     label={filter.name}
                     items={filter.valid}
+                    value={values[filter as any]}
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />

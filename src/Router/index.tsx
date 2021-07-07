@@ -1,12 +1,15 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { getToken } from "../api";
+import { selectSession } from "../features/Session/sessionsSlice";
 
 import LoginPage from "../pages/Login";
 import PanelRouter from "./Panel";
 
 export default function BaseRouter() {
-    const isAuthenticated = Boolean(getToken());
+    const session = useSelector(selectSession);
+    const isAuthenticated = Boolean(getToken() || session.status === "Authorized");
 
     return (
         <Switch>

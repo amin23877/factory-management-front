@@ -28,15 +28,24 @@ export default function SplashScreen() {
 
     return (
         <div className="splash-bg">
-            <Drawer PaperProps={{ style: { border: "none" }, elevation: 4 }} open={open} variant="persistent" anchor="right">
+            <Drawer
+                PaperProps={{ style: { border: "none" }, elevation: 4 }}
+                open={open}
+                variant="persistent"
+                anchor="right"
+            >
                 <div style={{ margin: "1em 2em", width: 400 }}>
                     <h1>Login</h1>
-                    <Formik initialValues={{ username: "", password: "" }} validationSchema={schema} onSubmit={handleSubmit}>
+                    <Formik
+                        initialValues={{ username: "", password: "" }}
+                        validationSchema={schema}
+                        onSubmit={handleSubmit}
+                    >
                         {({ values, errors, touched, handleChange, handleBlur, isSubmitting }) => (
                             <Form>
                                 <TextField
                                     fullWidth
-                                    style={{ width: "100%" }}
+                                    style={{ width: "100%", margin: "0.5em 0" }}
                                     placeholder="username"
                                     name="username"
                                     value={values.username}

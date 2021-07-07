@@ -13,14 +13,22 @@ import Dialog from "../../app/Dialog";
 import { FieldSelect, ArraySelect } from "../../app/Inputs";
 import Button from "../../app/Button";
 
-export default function AddPOModal({ open, onClose, onDone }: { open: boolean; onClose: () => void; onDone: () => void }) {
-    const uploader = useRef<HTMLInputElement | null>();
+const schema = Yup.object().shape({
+    requester: Yup.string().required(),
+    VendorId: Yup.string().required(),
+    ContactId: Yup.string().required(),
+});
 
-    const schema = Yup.object().shape({
-        requester: Yup.number().required(),
-        VendorId: Yup.number().required(),
-        ContactId: Yup.number().required(),
-    });
+export default function AddPOModal({
+    open,
+    onClose,
+    onDone,
+}: {
+    open: boolean;
+    onClose: () => void;
+    onDone: () => void;
+}) {
+    const uploader = useRef<HTMLInputElement | null>();
 
     const handleSubmit = async (d: IPurchaseSO) => {
         try {
@@ -48,7 +56,11 @@ export default function AddPOModal({ open, onClose, onDone }: { open: boolean; o
                                     ref={(e) => (uploader.current = e)}
                                     onChange={(e) => setFieldValue("file", e.target.files ? e.target.files[0] : null)}
                                 />
-                                <Button fullWidth variant="outlined" onClick={() => uploader.current && uploader.current.click()}>
+                                <Button
+                                    fullWidth
+                                    variant="outlined"
+                                    onClick={() => uploader.current && uploader.current.click()}
+                                >
                                     File
                                 </Button>
                                 <Box my={1}>

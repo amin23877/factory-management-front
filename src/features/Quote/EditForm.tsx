@@ -34,11 +34,17 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
                 {msg}
             </Snack>
             <Formik initialValues={selectedQuote} onSubmit={handleSubmit}>
-                {({ handleChange, handleBlur, values, isSubmitting }) => (
+                {({ handleChange, handleBlur, values, isSubmitting, setFieldValue }) => (
                     <Form>
                         <Box display="grid" gridTemplateColumns="3fr 1fr" gridGap={10}>
                             <BasePaper>
-                                <GeneralForm edit values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                <GeneralForm
+                                    edit
+                                    setFieldValue={setFieldValue}
+                                    values={values}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                />
                                 <Box display="flex" justifyContent="flex-end" mt={1}>
                                     <Button disabled={isSubmitting} type="submit" kind="edit">
                                         Save
