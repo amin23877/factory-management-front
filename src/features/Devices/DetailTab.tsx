@@ -9,15 +9,12 @@ import Snackbar from "../../app/Snack";
 import Button from "../../app/Button";
 import BaseDataGrid from "../../app/BaseDataGrid";
 import { BasePaper } from "../../app/Paper";
-// import VendorsTable from "./VandorsTable";
 
 import { DynamicFilterAndFields } from "../Items/Forms";
 import { General } from "./Forms";
 import { SalesReport } from "../Items/Reports";
 
-// import ManualCountModal from "./ManualCountModal";
-// import SOTable from "./SOTable";
-// import UpdateQuantityModal from "./Quantity";
+
 
 import { INote } from "../../api/note";
 import { IDocument } from "../../api/document";
@@ -56,35 +53,20 @@ function ItemsDetails({
 
     const { data: notes } = useSWR<INote[]>(activeTab === 12 ? `/note/item/${selectedRow.id}` : null);
     const { data: docs } = useSWR<IDocument[]>(activeTab === 0 ? `/document/item/${selectedRow.id}` : null);
-    const { data: uses } = useSWR(activeTab === 2 ? `/item/${selectedRow.id}/uses` : null);
     const { data: boms } = useSWR<IBom[]>(activeTab === 1 ? `/bom?ItemId=${selectedRow.id}` : null);
     const { data: manSteps } = useSWR(activeTab === 3 ? `/manStep?ItemId=${selectedRow.id}` : null);
     const { data: evalSteps } = useSWR(activeTab === 4 ? `/evalStep?ItemId=${selectedRow.id}` : null);
     const { data: testSteps } = useSWR(activeTab === 5 ? `/testStep?ItemId=${selectedRow.id}` : null);
     const { data: fieldSteps } = useSWR(activeTab === 6 ? `/fieldStartUpStep?ItemId=${selectedRow.id}` : null);
-    const { data: vendors } = useSWR(activeTab === 4 ? `/item/${selectedRow.id}/vendors` : null);
     const { data: itemQuotes } = useSWR(activeTab === 5 ? `/item/${selectedRow.id}/quote` : null);
     const { data: itemSOs } = useSWR(activeTab === 6 ? `/item/${selectedRow.id}/so` : null);
-    const { data: itemPOs } = useSWR(activeTab === 7 ? `/item/${selectedRow.id}/purchasepo` : null);
     const { data: itemUsage } = useSWR(activeTab === 8 ? `/unit?ItemId=${selectedRow.id}` : null);
     const { data: services } = useSWR(activeTab === 10 ? `/service?ItemId=${selectedRow.id}` : null);
 
     const [showSnack, setShowSnack] = useState(false);
     const [snackMsg, setSnackMsg] = useState("");
 
-    // const [manualCountModal, setManualCountModal] = useState(false);
-    // const [quantityModal, setQuantityModal] = useState(false);
 
-    const quoteCols = useMemo(
-        () => [
-            { field: "number", headerName: "Number" },
-            { field: "location", headerName: "Location", width: 180 },
-            { field: "department", headerName: "Department" },
-            { field: "entryDate", headerName: "Entry date", width: 180 },
-            { field: "expireDate", headerName: "Expire date", width: 180 },
-        ],
-        []
-    );
 
     const serviceCols = useMemo(
         () => [
@@ -133,15 +115,7 @@ function ItemsDetails({
         []
     );
 
-    const usesCols = useMemo<GridColDef[]>(
-        () => [
-            { field: "no", headerName: "no." },
-            { field: "name", headerName: "Name" },
-            { field: "note", headerName: "note", flex: 1 },
-            { field: "current", headerName: "current", type: "boolean" },
-        ],
-        []
-    );
+
 
     const usageCols = useMemo<GridColDef[]>(
         () => [
@@ -153,15 +127,7 @@ function ItemsDetails({
         []
     );
 
-    const qtyHistoryCols = useMemo<GridColDef[]>(
-        () => [
-            { field: "before", headerName: "Before" },
-            { field: "after", headerName: "After" },
-            { field: "fieldName", headerName: "Field name" },
-            { field: "description", headerName: "description", flex: 1 },
-        ],
-        []
-    );
+
 
     const handleSubmit = async (data: any, { setSubmitting }: any) => {
         try {
@@ -180,17 +146,6 @@ function ItemsDetails({
 
     return (
         <Box>
-            {/* <ManualCountModal
-                open={manualCountModal}
-                onClose={() => setManualCountModal(false)}
-                itemId={selectedRow.id}
-                onDone={() => {
-                    setSnackMsg("Record added");
-                    setShowSnack(true);
-                }}
-                /> */}
-            {/* <UpdateQuantityModal open={quantityModal} onClose={() => setQuantityModal(false)} itemId={selectedRow.id} /> */}
-
             <Snackbar onClose={() => setShowSnack(false)} open={showSnack}>
                 {snackMsg}
             </Snackbar>
@@ -223,14 +178,59 @@ function ItemsDetails({
                                         flexDirection: "column",
                                     }}
                                 >
-                                    <DynamicFilterAndFields
-                                        values={values}
-                                        handleChange={handleChange}
-                                        handleBlur={handleBlur}
-                                        setFieldValue={setFieldValue}
-                                        errors={errors}
-                                        touched={touched}
-                                    />
+                                    <Tabs
+                                        style={{ marginBottom: 16 }}
+                                        value={moreInfoTab}
+                                        variant="scrollable"
+                                        textColor="primary"
+                                        onChange={(e, v) => setMoreInfoTab(v)}
+                                    >
+                                        <Tab label="Clusters and Levels" />
+                                        <Tab label="Image" />
+                                    </Tabs>
+                                    {moreInfoTab === 0 && (
+                                        <DynamicFilterAndFields
+                                            values={values}
+                                            handleChange={handleChange}
+                                            handleBlur={handleBlur}
+                                            setFieldValue={setFieldValue}
+                                            errors={errors}
+                                            touched={touched}
+                                        />
+                                    )}
+                                    {moreInfoTab === 1 && (
+                                        <Box mt={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                                            {selectedRow?.photo && (
+                                                <img
+                                                    style={{ maxWidth: "100%", height: "auto", maxHeight: '135px', margin: '10px auto' }}
+                                                    alt={selectedRow?.photo}
+                                                    src={img ? img : `http://zarph.ir:3100${selectedRow?.photo}`}
+                                                />
+                                            )}
+                                            <div>
+                                                <Box textAlign="center">
+                                                    <Button
+                                                        onClick={() =>
+                                                            imageUploader.current && imageUploader.current.click()
+                                                        }
+                                                    >
+                                                        Upload Image
+                                                    </Button>
+                                                </Box>
+                                                <input
+                                                    id="file"
+                                                    name="file"
+                                                    style={{ display: "none" }}
+                                                    type="file"
+                                                    ref={(e) => (imageUploader.current = e)}
+                                                    onChange={handleFileChange}
+                                                    accept="image/*"
+                                                />
+                                            </div>
+                                        </Box>
+                                    )}
+
+
                                 </BasePaper>
                             </Grid>
                         </Grid>
@@ -256,25 +256,18 @@ function ItemsDetails({
                             <Tab label="Field Start-up" />
                             <Tab label="Label" />
                             <Tab label="Unit History" />
-                            {/* <Tab label="Vendors" /> */}
-                            {/* <Tab label="Quote History" /> */}
-                            {/* <Tab label="Sales order History" /> */}
-                            {/* <Tab label="Purchase order History" /> */}
                             <Tab label="Sales Report" />
                             <Tab label="Field Service" />
                             <Tab label="Quality Control" />
-                            {/* <Tab label="Usage" /> */}
                             <Tab label="Notes" />
                             <Tab label="Auditing" />
-                            {/* <Tab label="Quantity history" /> */}
                         </Tabs>
                         <Box p={3}>
                             {activeTab === 0 && (
                                 <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />
                             )}
-                            {/* {activeTab === 2 && <BaseDataGrid cols={usesCols} rows={uses || []} onRowSelected={() => { }} />} */}
                             {activeTab === 1 && (
-                                <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={() => {}} />
+                                <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={() => { }} />
                             )}
                             {activeTab === 3 && (
                                 <BaseDataGrid
@@ -312,16 +305,8 @@ function ItemsDetails({
                                     }}
                                 />
                             )}
-                            {/* {activeTab === 4 && (
-                                <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => { }} />
-                            )} */}
-                            {/* {activeTab === 5 && (
-                                <BaseDataGrid cols={quoteCols} rows={itemQuotes || []} onRowSelected={() => { }} />
-                            )} */}
-                            {/* {activeTab === 6 && <SOTable rows={itemSOs || []} />} */}
-                            {/* {activeTab === 7 && <BaseDataGrid cols={poCols} rows={itemPOs || []} onRowSelected={() => { }} />} */}
                             {activeTab === 8 && (
-                                <BaseDataGrid cols={usageCols} rows={itemUsage || []} onRowSelected={() => {}} />
+                                <BaseDataGrid cols={usageCols} rows={itemUsage || []} onRowSelected={() => { }} />
                             )}
                             {activeTab === 9 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
                             {activeTab === 10 && (
@@ -330,9 +315,6 @@ function ItemsDetails({
                             {activeTab === 12 && (
                                 <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
                             )}
-                            {/* {activeTab === 10 && (
-                                <BaseDataGrid cols={qtyHistoryCols} rows={itemQtyHistory || []} onRowSelected={() => { }} />
-                            )} */}
                         </Box>
                     </BasePaper>
                 </Grid>

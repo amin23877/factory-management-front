@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Checkbox, FormControlLabel, TextField, Box } from "@material-ui/core";
 import useSWR from "swr";
 
@@ -25,7 +25,7 @@ const schema = Yup.object().shape({
     valid: Yup.string(),
 });
 
-export default function FieldForm({ initial }: { initial?: IField }) {
+export default function FieldForm({ initial, setActive }: { initial?: IField; setActive: () => void }) {
     const { data: filters } = useSWR<IFilter[]>("/filter");
     const { data: fields } = useSWR<IField[]>("/field");
 
@@ -37,11 +37,16 @@ export default function FieldForm({ initial }: { initial?: IField }) {
             if (resp) {
                 mutate("/field");
                 setSubmitting(false);
+                setActive();
             }
         } catch (e) {
             console.log(e);
         }
     };
+
+    useEffect(() => {
+        console.log(filters);
+    }, [])
 
     return (
         <>
@@ -114,7 +119,7 @@ export default function FieldForm({ initial }: { initial?: IField }) {
                                         options={
                                             initial
                                                 ? initial.filterValue
-                                                : filters?.find((f) => f.name === values.filterName)?.valid || []
+                                                : (filters?.find((f) => f.name === values.filterName)?.valid)?.concat(['all']) || []
                                         }
                                         getOptionLabel={(option) => option}
                                         filterSelectedOptions
@@ -156,7 +161,7 @@ export default function FieldForm({ initial }: { initial?: IField }) {
                                 style={{ fontSize: "0.7rem" }}
                                 checked={values.all}
                                 name="all"
-                                label="Add this Level for all Clusters"
+                                label="Add this Level for all items in this Clusters"
                                 onChange={handleChange}
                                 control={<Checkbox />}
                             />

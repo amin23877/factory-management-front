@@ -48,7 +48,7 @@ export const AddFieldModal = () => {
                     />
                 </div>
             ) : (
-                <FieldForm initial={selectedField} />
+                <FieldForm initial={selectedField} setActive={() => { setActiveTab(0) }} />
             )}
         </Box>
     );
