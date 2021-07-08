@@ -48,7 +48,6 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
         if (step && step.id) {
             updateAManStep(step.id, values.name, values.file, values.description, values.number, values.hours)
                 .then((d) => {
-                    console.log(d);
                     mutate(`/manStep?ItemId=${itemId}`)
                     onDone && onDone();
                     onClose();
@@ -58,7 +57,6 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
         } else {
             createAManStep(itemId, values.name, values.file, values.description, values.number, values.hours)
                 .then((d) => {
-                    console.log(d);
                     setSubmitting(false);
                     mutate(`/manStep?ItemId=${itemId}`)
                     onDone && onDone();
@@ -192,7 +190,6 @@ export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) 
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
         if (step && step.id) {
-            console.log(step);
             updateAEvalStep(step.id, values.name, values.file, values.description, values.number, values.hours)
                 .then((d) => {
                     console.log(d);

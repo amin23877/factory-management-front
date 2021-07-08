@@ -32,7 +32,6 @@ export default function FieldForm({ initial, setActive }: { initial?: IField; se
     const handleSubmit = async (values: any, { setSubmitting }: any) => {
         setSubmitting(true);
         try {
-            // console.log(values);
             const resp = await basePost("/field", values);
             if (resp) {
                 mutate("/field");
@@ -44,9 +43,6 @@ export default function FieldForm({ initial, setActive }: { initial?: IField; se
         }
     };
 
-    useEffect(() => {
-        console.log(filters);
-    }, [])
 
     return (
         <>

@@ -9,6 +9,7 @@ import Snackbar from "../../app/Snack";
 import Button from "../../app/Button";
 import BaseDataGrid from "../../app/BaseDataGrid";
 import { BasePaper } from "../../app/Paper";
+import Dialog from '../../app/Dialog'
 
 import { DynamicFilterAndFields } from "../Items/Forms";
 import { General } from "./Forms";
@@ -50,10 +51,12 @@ function ItemsDetails({
     };
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
+    const [bom, setBom] = useState<any>();
 
     const { data: notes } = useSWR<INote[]>(activeTab === 12 ? `/note/item/${selectedRow.id}` : null);
     const { data: docs } = useSWR<IDocument[]>(activeTab === 0 ? `/document/item/${selectedRow.id}` : null);
     const { data: boms } = useSWR<IBom[]>(activeTab === 1 ? `/bom?ItemId=${selectedRow.id}` : null);
+    const { data: bomRecords } = useSWR(bom ? `/bomrecord?BOMId=${bom.id}` : null);
     const { data: manSteps } = useSWR(activeTab === 3 ? `/manStep?ItemId=${selectedRow.id}` : null);
     const { data: evalSteps } = useSWR(activeTab === 4 ? `/evalStep?ItemId=${selectedRow.id}` : null);
     const { data: testSteps } = useSWR(activeTab === 5 ? `/testStep?ItemId=${selectedRow.id}` : null);
@@ -65,6 +68,7 @@ function ItemsDetails({
 
     const [showSnack, setShowSnack] = useState(false);
     const [snackMsg, setSnackMsg] = useState("");
+    const [open, setOpen] = useState(false);
 
 
 
@@ -96,6 +100,16 @@ function ItemsDetails({
         []
     );
 
+    const bomRecordCols = useMemo<GridColDef[]>(
+        () => [
+            { field: "no", headerName: "No.", valueFormatter: (params) => params.row?.ItemId?.no },
+            { field: "name", headerName: "Name", valueFormatter: (params) => params.row?.ItemId?.name },
+            { field: "revision", headerName: "Revision" },
+            { field: "usage", headerName: "Usage" },
+            { field: "fixedQty", headerName: "fixed Qty", type: "boolean" },
+        ],
+        []
+    );
     const bomCols = useMemo<GridColDef[]>(
         () => [
             { field: "no", headerName: "no." },
@@ -149,6 +163,11 @@ function ItemsDetails({
             <Snackbar onClose={() => setShowSnack(false)} open={showSnack}>
                 {snackMsg}
             </Snackbar>
+            {bom &&
+                <Dialog open={open} onClose={() => { setOpen(false) }} title="Parts" maxWidth="lg" fullWidth>
+                    <BaseDataGrid cols={bomRecordCols} rows={bomRecords || []} onRowSelected={() => { }} />
+                </Dialog>
+            }
 
             <Formik initialValues={selectedRow} validationSchema={AddItemSchema} onSubmit={handleSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
@@ -204,7 +223,7 @@ function ItemsDetails({
                                                 <img
                                                     style={{ maxWidth: "100%", height: "auto", maxHeight: '135px', margin: '10px auto' }}
                                                     alt={selectedRow?.photo}
-                                                    src={img ? img : `http://zarph.ir:3100${selectedRow?.photo}`}
+                                                    src={img ? img : `http://digitalphocus.ir${selectedRow?.photo}`}
                                                 />
                                             )}
                                             <div>
@@ -267,7 +286,10 @@ function ItemsDetails({
                                 <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />
                             )}
                             {activeTab === 1 && (
-                                <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={() => { }} />
+                                <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={(d) => {
+                                    setBom(d);
+                                    setOpen(true)
+                                }} />
                             )}
                             {activeTab === 3 && (
                                 <BaseDataGrid

@@ -248,7 +248,6 @@ const Inventory = () => {
                                     onPageSizeChange={(ps) => setPage(ps)}
                                     onFilterModelChange={(f) => {
                                         setFilters(f);
-                                        console.log(f);
                                     }}
                                     rows={items ? items.items : []}
                                     columns={gridColumns}
