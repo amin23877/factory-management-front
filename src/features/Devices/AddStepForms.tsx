@@ -70,102 +70,113 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
         <Formik initialValues={step ? step : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                 <Form style={{ marginBottom: "20px" }}>
-                    <h3 style={{ marginLeft: "20px" }}>Manufacturing</h3>
-                    <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
-                        <TextField
-                            style={{ gridColumnEnd: "span 2" }}
-                            value={values.name}
-                            name="name"
-                            label="Name"
-                            variant="outlined"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                        <TextField
-                            style={{ gridColumnEnd: "span 2" }}
-                            fullWidth
-                            value={values.description}
-                            name="description"
-                            label="Description"
-                            variant="outlined"
-                            multiline
-                            rows={4}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
+                    {step ?
+                        <h3 style={{ marginLeft: "20px" }}>Manufacturing</h3>
+                        : null}
+                    <Box m={3} display="flex" >
+                        <Box style={{ flex: 1 }} >
+                            <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
+                                <TextField
+                                    style={{ gridColumnEnd: "span 2" }}
+                                    value={values.name}
+                                    name="name"
+                                    label="Name"
+                                    variant="outlined"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                <TextField
+                                    style={{ gridColumnEnd: "span 2" }}
+                                    fullWidth
+                                    value={values.description}
+                                    name="description"
+                                    label="Description"
+                                    variant="outlined"
+                                    multiline
+                                    rows={4}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
 
-                        <TextField
-                            fullWidth
-                            style={{ marginBottom: "10px" }}
-                            value={values.number}
-                            name="number"
-                            label="Step Number"
-                            variant="outlined"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
+                                <TextField
+                                    fullWidth
+                                    style={{ marginBottom: "10px" }}
+                                    value={values.number}
+                                    name="number"
+                                    label="Step Number"
+                                    variant="outlined"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
 
-                        <TextField
-                            fullWidth
-                            value={values.hours}
-                            name="hours"
-                            label="Hours"
-                            variant="outlined"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
+                                <TextField
+                                    fullWidth
+                                    value={values.hours}
+                                    name="hours"
+                                    label="Hours"
+                                    variant="outlined"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
 
-                        <Box style={{ gridColumnEnd: "span 2", margin: "0px 25%" }}>
-                            <input
-                                multiple
-                                type="file"
-                                ref={(e) => (fileUploader.current = e)}
-                                hidden
-                                onChange={(e) => e.target.files !== null && setFieldValue("file", e.target.files)}
-                            />
-                            <Button
-                                color="primary"
-                                style={{
-                                    backgroundColor: "#fff",
-                                    color: " rgb(43,140,255) ",
-                                    border: "1px solid rgb(43,140,255) ",
-                                    width: "100%",
-                                }}
-                                variant="contained"
-                                onClick={() => fileUploader.current?.click()}
-                            >
-                                <PhotoSizeSelectActualOutlinedIcon style={{ marginRight: "7px" }} />
-                                illustration files
-                            </Button>
+                                <Box style={{ gridColumnEnd: "span 2", margin: "0px 25%" }}>
+                                    <input
+                                        multiple
+                                        type="file"
+                                        ref={(e) => (fileUploader.current = e)}
+                                        hidden
+                                        onChange={(e) => e.target.files !== null && setFieldValue("file", e.target.files)}
+                                    />
+                                    <Button
+                                        color="primary"
+                                        style={{
+                                            backgroundColor: "#fff",
+                                            color: " rgb(43,140,255) ",
+                                            border: "1px solid rgb(43,140,255) ",
+                                            width: "100%",
+                                        }}
+                                        variant="contained"
+                                        onClick={() => fileUploader.current?.click()}
+                                    >
+                                        <PhotoSizeSelectActualOutlinedIcon style={{ marginRight: "7px" }} />
+                                        illustration files
+                                    </Button>
 
-                            <div style={{ margin: "1em 0" }}>
-                                {values.file ? (
-                                    // String((values.file as any).name)
-                                    <p>files selected</p>
-                                ) : step ? (
-                                    <Link download href={step.path}>
-                                        Download previous file
-                                    </Link>
-                                ) : (
-                                    ""
+                                    <div style={{ margin: "1em 0" }}>
+                                        {values.file ? (
+                                            // String((values.file as any).name)
+                                            <p>files selected</p>
+                                        ) : step ? (
+                                            <Link download href={step.path}>
+                                                Download previous file
+                                            </Link>
+                                        ) : (
+                                            ""
+                                        )}
+                                    </div>
+                                </Box>
+                            </Box>
+                            <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
+                                <Button type="submit" kind={step ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
+                                    Save
+                                </Button>
+                                {step && (
+                                    <Button
+                                        style={{ marginLeft: "1em" }}
+                                        onClick={deleteDocument}
+                                        kind="delete"
+                                        disabled={isSubmitting}
+                                    >
+                                        Delete
+                                    </Button>
                                 )}
-                            </div>
+                            </Box>
                         </Box>
-                    </Box>
-                    <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
-                        <Button type="submit" kind={step ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
-                            Save
-                        </Button>
-                        {step && (
-                            <Button
-                                style={{ marginLeft: "1em" }}
-                                onClick={deleteDocument}
-                                kind="delete"
-                                disabled={isSubmitting}
-                            >
-                                Delete
-                            </Button>
-                        )}
+                        {step ?
+                            <Box m={3} display="grid" gridTemplateColumns="1fr" gridGap={10} gridColumnGap={10} style={{ flex: 1 }}>
+                                <div>{step.illustration[0]}</div>
+                            </Box>
+                            : null}
                     </Box>
                 </Form>
             )}

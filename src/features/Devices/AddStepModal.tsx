@@ -46,7 +46,7 @@ export default function StepModal({ open, onClose, itemId, onDone, step, tab }: 
 
 export function EditStepModal({ open, onClose, itemId, onDone, step, tab }: IEditStepModal) {
     return (
-        <Dialog open={open} onClose={onClose} >
+        <Dialog open={open} onClose={onClose} maxWidth='lg' fullWidth >
             {tab === 0 && <Manufacturing open={open} onClose={onClose} itemId={itemId} onDone={onDone} step={step} />}
             {tab === 1 && <Evaluation open={open} onClose={onClose} itemId={itemId} onDone={onDone} step={step} />}
             {tab === 2 && <Test open={open} onClose={onClose} itemId={itemId} onDone={onDone} step={step} />}
