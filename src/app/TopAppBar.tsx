@@ -40,9 +40,9 @@ export const TopAppBar = ({ drawerWidth }: { drawerWidth?: number }) => {
         >
             <Toolbar className={classes.toolbar}>
                 <Button className={classes.btn}>
-                    <Avatar>{session?.employee.username[0]}</Avatar>
+                    <Avatar>{session?.username[0]}</Avatar>
                     <span style={{ textAlign: "left", marginLeft: 10 }}>
-                        <span style={{ fontSize: 12, fontWeight: 400, marginBottom: "auto" }}>{session?.employee.username}</span>
+                        <span style={{ fontSize: 12, fontWeight: 400, marginBottom: "auto" }}>{session?.username}</span>
                     </span>
                 </Button>
                 <div style={{ flexGrow: 1 }} />

@@ -7,8 +7,7 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { SWRConfig } from "swr";
 
 import { useAppDispatch } from "./store";
-
-import { getCurrentSession } from "./features/Session/sessionsSlice";
+import { getCurrentEmployee } from "./features/Session/sessionsSlice";
 
 import "./styles/main.css";
 import BaseRouter from "./Router";
@@ -24,7 +23,7 @@ function App() {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(getCurrentSession());
+        dispatch(getCurrentEmployee());
     }, []);
 
     return (

@@ -11,6 +11,15 @@ export interface IEmployee {
     password: string;
 }
 
+export const getMe = async () => {
+    try {
+        const resp = await Axios.get('/employee/me');
+        return resp.data;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export const login = async (data:IEmployee) => {
     try {
         const resp = await Axios.post('/employee/login', data)
