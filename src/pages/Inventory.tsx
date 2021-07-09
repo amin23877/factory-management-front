@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo, useState } from "react";
-import { Box, IconButton, ListItem, Paper } from "@material-ui/core";
+import React, { useCallback, useState } from "react";
+import { Box, IconButton, ListItem } from "@material-ui/core";
 import {
     NoteRounded,
     FileCopyRounded,
@@ -8,7 +8,6 @@ import {
     PostAddRounded,
     DescriptionRounded,
 } from "@material-ui/icons";
-import useSWR from "swr";
 import Confirm from "../features/Modals/Confirm";
 
 import NoteModal from "../features/Modals/NoteModals";
@@ -25,25 +24,10 @@ import { MyTabs, MyTab } from "../app/Tabs";
 
 import FieldNFilter from "../features/FieldAndFilter/Modal";
 
-import {
-    DataGrid,
-    GridColDef,
-    GridFilterModelParams,
-    GridPageChangeParams,
-    GridSortModelParams,
-    GridToolbar,
-} from "@material-ui/data-grid";
-import { generateURL } from "../logic/filterSortPage";
+import ItemTable from "../features/Items/Table";
+import { mutate } from "swr";
 
 const Inventory = () => {
-    const [filters, setFilters] = useState<GridFilterModelParams>();
-    const [page, setPage] = useState<GridPageChangeParams>();
-    const [sorts, setSort] = useState<GridSortModelParams>();
-
-    const { data: items, mutate: mutateItems } = useSWR<{ items: IItem[]; total: number }>(
-        generateURL('/item', filters, sorts, page)
-    );
-
     const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
 
     const [activeTab, setActiveTab] = useState(0);
@@ -60,57 +44,18 @@ const Inventory = () => {
     const [bomModal, setBomModal] = useState(false);
     const [FieldNFilterModal, setFieldNFilterModal] = useState(false);
 
-    const gridColumns = useMemo<GridColDef[]>(() => {
-        const res: GridColDef[] = [
-            { field: "no", headerName: "Item no.", flex: 1 },
-            { field: "name", headerName: "Name", flex: 2 },
-            { field: "description", headerName: "Description", flex: 2 },
-            { field: "cost", headerName: "cost" },
-            { field: "salesApproved", headerName: "salesApproved", type: "boolean" },
-            { field: "engineeringApproved", headerName: "engineeringApproved", type: "boolean" },
-            { field: "totalQoh", headerName: "totalQoh" },
-            { field: "usedInLastQuarter", headerName: "usedInLastQuarter" },
-            { field: "resellCost", headerName: "resellCost" },
-        ];
-
-        const exceptions = [
-            "__v",
-            "id",
-            "no",
-            "name",
-            "description",
-            "cost",
-            "salesApproved",
-            "engineeringApproved",
-            "totalQog",
-            "usedInLastQuarter",
-            "resellCost",
-            "filters",
-            "fields",
-        ];
-        if (items && items.items && items.items.length > 0) {
-            for (let f of Object.keys(items.items[0])) {
-                if (!exceptions.includes(f)) {
-                    res.push({ field: f, headerName: f, hide: true });
-                }
-            }
-        }
-
-        return res;
-    }, [items]);
-
     const handleDelete = useCallback(async () => {
         try {
             if (selectedItem && selectedItem.id) {
                 await deleteAnItem(selectedItem.id);
-                mutateItems();
+                mutate("/item");
                 setActiveTab(0);
                 setDeleteItemModal(false);
             }
         } catch (error) {
             console.log(error);
         }
-    }, [selectedItem, mutateItems]);
+    }, [selectedItem]);
 
     return (
         <Box>
@@ -213,35 +158,16 @@ const Inventory = () => {
                 </List>
                 <Box flex={11} ml={2}>
                     {activeTab === 0 && (
-                        <Paper>
-                            <Box height={550}>
-                                <DataGrid
-                                    onRowSelected={(r) => {
-                                        setSelectedItem(r.data as any);
-                                        setActiveTab(1);
-                                    }}
-                                    pagination
-                                    pageSize={25}
-                                    rowCount={items ? items.total : 0}
-                                    filterMode="server"
-                                    paginationMode="server"
-                                    sortingMode="server"
-                                    onSortModelChange={(s) => setSort(s)}
-                                    onPageChange={(p) => setPage(p)}
-                                    onPageSizeChange={(ps) => setPage(ps)}
-                                    onFilterModelChange={(f) => {
-                                        setFilters(f);
-                                    }}
-                                    rows={items ? items.items : []}
-                                    columns={gridColumns}
-                                    components={{ Toolbar: GridToolbar }}
-                                />
-                            </Box>
-                        </Paper>
+                        <ItemTable
+                            onRowSelected={(r) => {
+                                setSelectedItem(r.data as any);
+                                setActiveTab(1);
+                            }}
+                        />
                     )}
                     {activeTab === 1 && (
                         <ItemsDetails
-                            onDone={mutateItems}
+                            onDone={() => mutate("/item")}
                             selectedRow={selectedItem}
                             onDocSelected={(d) => {
                                 setSelectedDoc(d);

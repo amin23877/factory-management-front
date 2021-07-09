@@ -8,7 +8,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
-import { useStyles } from "./Table";
+import { useStyles } from "../../app/Table";
 
 export default function SOTable({ rows }: { rows: any[] }) {
     const classes = useStyles();

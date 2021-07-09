@@ -9,22 +9,6 @@ import {
     DescriptionRounded,
     FormatListNumberedRounded,
 } from "@material-ui/icons";
-import useSWR from "swr";
-import Confirm from "../../features/Modals/Confirm";
-
-import NoteModal from "../../features/Modals/NoteModals";
-import DocumentModal from "../../features/Modals/DocumentModals";
-import BOMModal from "../../features/BOM/BomModal";
-
-import { AddItemModal } from "../../features/Items/ItemModals";
-// import ItemsDetails from "../../features/Items";
-import DetailTab from "./DetailTab";
-import { deleteAnItem, IItem } from "../../api/items";
-
-import List from "../../app/SideUtilityList";
-
-import FieldNFilter from "../../features/FieldAndFilter/Modal";
-
 import {
     DataGrid,
     GridColDef,
@@ -33,8 +17,23 @@ import {
     GridSortModelParams,
     GridToolbar,
 } from "@material-ui/data-grid";
-import { generateURL } from "../../logic/filterSortPage";
+import useSWR from "swr";
+
+import Confirm from "../../features/Modals/Confirm";
+import NoteModal from "../../features/Modals/NoteModals";
+import DocumentModal from "../../features/Modals/DocumentModals";
+import BOMModal from "../../features/BOM/BomModal";
+import FieldNFilter from "../../features/FieldAndFilter/Modal";
+import { AddItemModal } from "../../features/Items/ItemModals";
+
+import DetailTab from "./Details";
 import AddStepModal, { EditStepModal } from "./AddStepModal";
+
+import List from "../../app/SideUtilityList";
+
+import { deleteAnItem, IItem } from "../../api/items";
+
+import { generateURL } from "../../logic/filterSortPage";
 
 const Inventory = () => {
     const [filters, setFilters] = useState<GridFilterModelParams>();
@@ -69,29 +68,6 @@ const Inventory = () => {
             { field: "name", headerName: "Name", flex: 2 },
             { field: "description", headerName: "Description", flex: 2 },
         ];
-
-        // const exceptions = [
-        //     "__v",
-        //     "id",
-        //     "no",
-        //     "name",
-        //     "description",
-        //     "cost",
-        //     "salesApproved",
-        //     "engineeringApproved",
-        //     "totalQog",
-        //     "usedInLastQuarter",
-        //     "resellCost",
-        //     "filters",
-        //     "fields",
-        // ];
-        // if (items && items.items && items.items.length > 0) {
-        //     for (let f of Object.keys(items.items[0])) {
-        //         if (!exceptions.includes(f)) {
-        //             res.push({ field: f, headerName: f, hide: true });
-        //         }
-        //     }
-        // }
 
         return res;
     }, []);

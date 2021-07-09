@@ -15,13 +15,15 @@ import { MoreInfo, Quantity, Shipping, General, DynamicFilterAndFields, LastUsed
 import { SalesReport } from "./Reports";
 
 import ManualCountModal from "./ManualCountModal";
-import SOTable from "./SOTable";
 import UpdateQuantityModal from "./Quantity";
 
 import { INote } from "../../api/note";
 import { IDocument } from "../../api/document";
 import { AddItemSchema, updateAnItem, addImage } from "../../api/items";
 import { IBom } from "../../api/bom";
+import SODatagrid from "../SO/Datagrid";
+import QuoteDatagrid from "../Quote/Datagrid";
+import SOTable from "./SOTable";
 
 function ItemsDetails({
     selectedRow,
@@ -56,8 +58,10 @@ function ItemsDetails({
     const { data: uses } = useSWR(activeTab === 2 ? `/item/${selectedRow.id}/uses` : null);
     const { data: boms } = useSWR<IBom[]>(activeTab === 3 ? `/bom?ItemId=${selectedRow.id}` : null);
     const { data: vendors } = useSWR(activeTab === 4 ? `/item/${selectedRow.id}/vendors` : null);
+
     const { data: itemQuotes } = useSWR(activeTab === 5 ? `/item/${selectedRow.id}/quote` : null);
     const { data: itemSOs } = useSWR(activeTab === 6 ? `/item/${selectedRow.id}/so` : null);
+
     const { data: itemPOs } = useSWR(activeTab === 7 ? `/item/${selectedRow.id}/purchasepo` : null);
     const { data: itemUsage } = useSWR(activeTab === 9 ? `/item/${selectedRow.id}/uses` : null);
     const { data: itemQtyHistory } = useSWR(activeTab === 10 ? `/item/${selectedRow.id}/qty` : null);
@@ -67,17 +71,6 @@ function ItemsDetails({
 
     const [manualCountModal, setManualCountModal] = useState(false);
     const [quantityModal, setQuantityModal] = useState(false);
-
-    const quoteCols = useMemo(
-        () => [
-            { field: "number", headerName: "Number" },
-            { field: "location", headerName: "Location", width: 180 },
-            { field: "department", headerName: "Department" },
-            { field: "entryDate", headerName: "Entry date", width: 180 },
-            { field: "expireDate", headerName: "Expire date", width: 180 },
-        ],
-        []
-    );
 
     const poCols = useMemo(
         () => [
@@ -277,7 +270,12 @@ function ItemsDetails({
                                         <Box mt={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
                                             {selectedRow?.photo && (
                                                 <img
-                                                    style={{ maxWidth: "100%", height: "auto", maxHeight: 400 ,  margin: '0px auto' }}
+                                                    style={{
+                                                        maxWidth: "100%",
+                                                        height: "auto",
+                                                        maxHeight: 400,
+                                                        margin: "0px auto",
+                                                    }}
                                                     alt={selectedRow?.photo}
                                                     src={img ? img : `http://digitalphocus.ir${selectedRow?.photo}`}
                                                 />
@@ -329,22 +327,22 @@ function ItemsDetails({
                         <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
                     )}
                     {activeTab === 1 && <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />}
-                    {activeTab === 2 && <BaseDataGrid cols={usesCols} rows={uses || []} onRowSelected={() => { }} />}
-                    {activeTab === 3 && <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={() => { }} />}
+                    {activeTab === 2 && <BaseDataGrid cols={usesCols} rows={uses || []} onRowSelected={() => {}} />}
+                    {activeTab === 3 && <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={() => {}} />}
                     {activeTab === 4 && (
-                        <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => { }} />
+                        <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => {}} />
                     )}
                     {activeTab === 5 && (
-                        <BaseDataGrid cols={quoteCols} rows={itemQuotes || []} onRowSelected={() => { }} />
+                        <QuoteDatagrid url={`/item/${selectedRow.id}/quote`} onRowSelected={() => {}} />
                     )}
-                    {activeTab === 6 && <SOTable rows={itemSOs || []} />}
-                    {activeTab === 7 && <BaseDataGrid cols={poCols} rows={itemPOs || []} onRowSelected={() => { }} />}
+                    {activeTab === 6 && <SOTable rows={itemSOs} />}
+                    {activeTab === 7 && <BaseDataGrid cols={poCols} rows={itemPOs || []} onRowSelected={() => {}} />}
                     {activeTab === 8 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
                     {activeTab === 9 && (
-                        <BaseDataGrid cols={usageCols} rows={itemUsage || []} onRowSelected={() => { }} />
+                        <BaseDataGrid cols={usageCols} rows={itemUsage || []} onRowSelected={() => {}} />
                     )}
                     {activeTab === 10 && (
-                        <BaseDataGrid cols={qtyHistoryCols} rows={itemQtyHistory || []} onRowSelected={() => { }} />
+                        <BaseDataGrid cols={qtyHistoryCols} rows={itemQtyHistory || []} onRowSelected={() => {}} />
                     )}
                 </Box>
             </BasePaper>

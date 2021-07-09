@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef } from "react";
+import React, { useMemo, useState } from "react";
 import { Box, Grid, Tabs, Tab } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
@@ -9,18 +9,16 @@ import Snackbar from "../../app/Snack";
 import Button from "../../app/Button";
 import BaseDataGrid from "../../app/BaseDataGrid";
 import { BasePaper } from "../../app/Paper";
-import Dialog from '../../app/Dialog'
 
 import { DynamicFilterAndFields } from "../Items/Forms";
-import { General } from "./Forms";
+import { General, Photo } from "./Forms";
 import { SalesReport } from "../Items/Reports";
-
-
 
 import { INote } from "../../api/note";
 import { IDocument } from "../../api/document";
-import { AddItemSchema, updateAnItem, addImage } from "../../api/items";
+import { AddItemSchema, updateAnItem } from "../../api/items";
 import { IBom } from "../../api/bom";
+import Parts from "../BOM/Parts";
 
 function ItemsDetails({
     selectedRow,
@@ -35,20 +33,6 @@ function ItemsDetails({
     onDocSelected: (a: any) => void;
     onStepSelected: (a: any) => void;
 }) {
-    const imageUploader = useRef<HTMLElement | null>(null);
-    const [img, setImg] = useState<any>();
-
-    const handleFileChange = async (e: any) => {
-        if (!e.target.files) {
-            return;
-        }
-        let file = e.target.files[0];
-        let url = URL.createObjectURL(file);
-        const resp = await addImage(selectedRow.id, file);
-        if (resp) {
-            setImg(url);
-        }
-    };
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
     const [bom, setBom] = useState<any>();
@@ -56,7 +40,6 @@ function ItemsDetails({
     const { data: notes } = useSWR<INote[]>(activeTab === 12 ? `/note/item/${selectedRow.id}` : null);
     const { data: docs } = useSWR<IDocument[]>(activeTab === 0 ? `/document/item/${selectedRow.id}` : null);
     const { data: boms } = useSWR<IBom[]>(activeTab === 1 ? `/bom?ItemId=${selectedRow.id}` : null);
-    const { data: bomRecords } = useSWR(bom ? `/bomrecord?BOMId=${bom.id}` : null);
     const { data: manSteps } = useSWR(activeTab === 3 ? `/manStep?ItemId=${selectedRow.id}` : null);
     const { data: evalSteps } = useSWR(activeTab === 4 ? `/evalStep?ItemId=${selectedRow.id}` : null);
     const { data: testSteps } = useSWR(activeTab === 5 ? `/testStep?ItemId=${selectedRow.id}` : null);
@@ -68,9 +51,7 @@ function ItemsDetails({
 
     const [showSnack, setShowSnack] = useState(false);
     const [snackMsg, setSnackMsg] = useState("");
-    const [open, setOpen] = useState(false);
-
-
+    const [bomPartsModal, setBomPartsModal] = useState(false);
 
     const serviceCols = useMemo(
         () => [
@@ -100,16 +81,6 @@ function ItemsDetails({
         []
     );
 
-    const bomRecordCols = useMemo<GridColDef[]>(
-        () => [
-            { field: "no", headerName: "No.", valueFormatter: (params) => params.row?.ItemId?.no },
-            { field: "name", headerName: "Name", valueFormatter: (params) => params.row?.ItemId?.name },
-            { field: "revision", headerName: "Revision" },
-            { field: "usage", headerName: "Usage" },
-            { field: "fixedQty", headerName: "fixed Qty", type: "boolean" },
-        ],
-        []
-    );
     const bomCols = useMemo<GridColDef[]>(
         () => [
             { field: "no", headerName: "no." },
@@ -129,8 +100,6 @@ function ItemsDetails({
         []
     );
 
-
-
     const usageCols = useMemo<GridColDef[]>(
         () => [
             { field: "number", headerName: "Serial No." },
@@ -140,8 +109,6 @@ function ItemsDetails({
         ],
         []
     );
-
-
 
     const handleSubmit = async (data: any, { setSubmitting }: any) => {
         try {
@@ -163,11 +130,7 @@ function ItemsDetails({
             <Snackbar onClose={() => setShowSnack(false)} open={showSnack}>
                 {snackMsg}
             </Snackbar>
-            {bom &&
-                <Dialog open={open} onClose={() => { setOpen(false) }} title="Parts" maxWidth="lg" fullWidth>
-                    <BaseDataGrid cols={bomRecordCols} rows={bomRecords || []} onRowSelected={() => { }} />
-                </Dialog>
-            }
+            {bom && <Parts open={bomPartsModal} onClose={() => setBomPartsModal(false)} bom={bom} />}
 
             <Formik initialValues={selectedRow} validationSchema={AddItemSchema} onSubmit={handleSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
@@ -217,39 +180,7 @@ function ItemsDetails({
                                             touched={touched}
                                         />
                                     )}
-                                    {moreInfoTab === 1 && (
-                                        <Box mt={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
-                                            {selectedRow?.photo && (
-                                                <img
-                                                    style={{ maxWidth: "100%", height: "auto", maxHeight: '135px', margin: '10px auto' }}
-                                                    alt={selectedRow?.photo}
-                                                    src={img ? img : `http://digitalphocus.ir${selectedRow?.photo}`}
-                                                />
-                                            )}
-                                            <div>
-                                                <Box textAlign="center">
-                                                    <Button
-                                                        onClick={() =>
-                                                            imageUploader.current && imageUploader.current.click()
-                                                        }
-                                                    >
-                                                        Upload Image
-                                                    </Button>
-                                                </Box>
-                                                <input
-                                                    id="file"
-                                                    name="file"
-                                                    style={{ display: "none" }}
-                                                    type="file"
-                                                    ref={(e) => (imageUploader.current = e)}
-                                                    onChange={handleFileChange}
-                                                    accept="image/*"
-                                                />
-                                            </div>
-                                        </Box>
-                                    )}
-
-
+                                    {moreInfoTab === 1 && <Photo device={selectedRow} />}
                                 </BasePaper>
                             </Grid>
                         </Grid>
@@ -265,7 +196,7 @@ function ItemsDetails({
                             textColor="primary"
                             variant="scrollable"
                         >
-                            <Tab label="Documents" />
+                            <Tab label="Design documents" />
                             {/* <Tab label="BOM allocated" /> */}
                             <Tab label="BOM" />
                             <Tab label="Warranties" />
@@ -286,10 +217,14 @@ function ItemsDetails({
                                 <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />
                             )}
                             {activeTab === 1 && (
-                                <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={(d) => {
-                                    setBom(d);
-                                    setOpen(true)
-                                }} />
+                                <BaseDataGrid
+                                    cols={bomCols}
+                                    rows={boms || []}
+                                    onRowSelected={(d) => {
+                                        setBom(d);
+                                        setBomPartsModal(true);
+                                    }}
+                                />
                             )}
                             {activeTab === 3 && (
                                 <BaseDataGrid
@@ -328,11 +263,11 @@ function ItemsDetails({
                                 />
                             )}
                             {activeTab === 8 && (
-                                <BaseDataGrid cols={usageCols} rows={itemUsage || []} onRowSelected={() => { }} />
+                                <BaseDataGrid cols={usageCols} rows={itemUsage || []} onRowSelected={() => {}} />
                             )}
                             {activeTab === 9 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
                             {activeTab === 10 && (
-                                <BaseDataGrid cols={serviceCols} rows={services || []} onRowSelected={() => { }} />
+                                <BaseDataGrid cols={serviceCols} rows={services || []} onRowSelected={() => {}} />
                             )}
                             {activeTab === 12 && (
                                 <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />

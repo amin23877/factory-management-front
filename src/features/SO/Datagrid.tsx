@@ -4,8 +4,16 @@ import React, { useMemo } from "react";
 import useSWR from "swr";
 import BaseDataGrid from "../../app/BaseDataGrid";
 
-function SODatagrid({ onRowSelected, params }: { onRowSelected: (row: any) => void; params?: string }) {
-    const { data: sos } = useSWR(params ? `/so?${params}` : "/so");
+function SODatagrid({
+    onRowSelected,
+    params,
+    url,
+}: {
+    onRowSelected: (row: any) => void;
+    params?: string;
+    url?: string;
+}) {
+    const { data: sos } = useSWR(url ? url : params ? `/so?${params}` : "/so");
 
     const cols = useMemo<GridColumns>(
         () => [
@@ -20,7 +28,7 @@ function SODatagrid({ onRowSelected, params }: { onRowSelected: (row: any) => vo
         return <LinearProgress />;
     }
 
-    return <BaseDataGrid cols={cols} rows={sos} onRowSelected={onRowSelected} />;
+    return <BaseDataGrid cols={cols} rows={sos.data} onRowSelected={onRowSelected} />;
 }
 
 export default SODatagrid;

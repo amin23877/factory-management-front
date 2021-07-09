@@ -3,6 +3,9 @@ import { withStyles } from "@material-ui/core";
 
 export default withStyles((theme) => ({
     root: {
+        position: "sticky",
+        top: 70,
+
         display: "inline-flex",
         flexDirection: "column",
         backgroundColor: "#ffff",

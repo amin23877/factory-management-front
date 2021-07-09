@@ -1,6 +1,7 @@
 import Axios from "axios";
 
 export interface IBom {
+    id?:string,
     no: string,
     name: string,
     note: string,
