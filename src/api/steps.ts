@@ -4,7 +4,10 @@ import Axios from "axios";
 export const createAManStep = async (ItemId: string, name: string, file: any, description: string, number: any, hours: any) => {
     try {
         const formData = new FormData();
-        formData.append("illustration", file);
+        console.log(file);
+        for (const f of file) {
+            formData.append("illustration", f);
+        };
         formData.append("name", name);
         formData.append("ItemId", ItemId);
         formData.append("number", number);
@@ -19,7 +22,9 @@ export const createAManStep = async (ItemId: string, name: string, file: any, de
 export const createAEvalStep = async (ItemId: string, name: string, file: any, description: string, number: any, hours: any) => {
     try {
         const formData = new FormData();
-        formData.append("illustration", file);
+        for (const f of file) {
+            formData.append("illustration", f);
+        };
         formData.append("name", name);
         formData.append("ItemId", ItemId);
         formData.append("number", number);
@@ -34,7 +39,9 @@ export const createAEvalStep = async (ItemId: string, name: string, file: any, d
 export const createATestStep = async (ItemId: string, name: string, file: any, description: string, number: any, hours: any) => {
     try {
         const formData = new FormData();
-        formData.append("illustration", file);
+        for (const f of file) {
+            formData.append("illustration", f);
+        };
         formData.append("name", name);
         formData.append("ItemId", ItemId);
         formData.append("number", number);
@@ -49,7 +56,9 @@ export const createATestStep = async (ItemId: string, name: string, file: any, d
 export const createAFieldStep = async (ItemId: string, name: string, file: any, description: string, number: any, hours: any) => {
     try {
         const formData = new FormData();
-        formData.append("illustration", file);
+        for (const f of file) {
+            formData.append("illustration", f);
+        };
         formData.append("name", name);
         formData.append("ItemId", ItemId);
         formData.append("number", number);
@@ -66,7 +75,9 @@ export const createAFieldStep = async (ItemId: string, name: string, file: any, 
 export const updateAManStep = async (stepid: string, name: string, file: any, description: string, number: any, hours: any) => {
     try {
         const formData = new FormData();
-        formData.append("illustration", file);
+        for (const f of file) {
+            formData.append("illustration", f);
+        };
         formData.append("name", name);
         formData.append("number", number);
         formData.append("hours", hours);
@@ -81,7 +92,9 @@ export const updateAManStep = async (stepid: string, name: string, file: any, de
 export const updateAEvalStep = async (stepid: string, name: string, file: any, description: string, number: any, hours: any) => {
     try {
         const formData = new FormData();
-        formData.append("illustration", file);
+        for (const f of file) {
+            formData.append("illustration", f);
+        };
         formData.append("name", name);
         formData.append("number", number);
         formData.append("hours", hours);
@@ -96,7 +109,9 @@ export const updateAEvalStep = async (stepid: string, name: string, file: any, d
 export const updateATestStep = async (stepid: string, name: string, file: any, description: string, number: any, hours: any) => {
     try {
         const formData = new FormData();
-        formData.append("illustration", file);
+        for (const f of file) {
+            formData.append("illustration", f);
+        };
         formData.append("name", name);
         formData.append("number", number);
         formData.append("hours", hours);
@@ -111,7 +126,9 @@ export const updateATestStep = async (stepid: string, name: string, file: any, d
 export const updateAFieldStep = async (stepid: string, name: string, file: any, description: string, number: any, hours: any) => {
     try {
         const formData = new FormData();
-        formData.append("illustration", file);
+        for (const f of file) {
+            formData.append("illustration", f);
+        };
         formData.append("name", name);
         formData.append("number", number);
         formData.append("hours", hours);
