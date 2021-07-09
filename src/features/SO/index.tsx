@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { mutate } from "swr";
 
 import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Button from "@material-ui/core/Button";
-import { GridColDef } from "@material-ui/data-grid";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 
 import Confirm from "../Modals/Confirm";
@@ -14,7 +14,6 @@ import LineItemModal from "../LineItem";
 import LineServiceModal from "../LineService";
 import EditTab from "./EditTab";
 import AddSOModal from "./AddSoModal";
-import BaseDataGrid from "../../app/BaseDataGrid";
 
 import { deleteSO, getSO, getLineItems, ISO } from "../../api/so";
 import { getAllModelNotes } from "../../api/note";
@@ -22,6 +21,7 @@ import { getAllModelDocuments } from "../../api/document";
 import { ILineItem } from "../../api/lineItem";
 import { getSOLineServices, ILineService } from "../../api/lineService";
 import { BasePaper } from "../../app/Paper";
+import Datagrid from "./Datagrid";
 
 export default function SalesOrderPanel() {
     const [activeTab, setActiveTab] = useState(0);
@@ -39,24 +39,8 @@ export default function SalesOrderPanel() {
 
     const [notes, setNotes] = useState([]);
     const [docs, setDocs] = useState([]);
-    const [sos, setSos] = useState([]);
     const [lineItems, setLineIitems] = useState([]);
     const [lineServices, setLineServices] = useState([]);
-
-    const cols: GridColDef[] = [
-        { field: "number" },
-        { field: "Client", valueGetter: (data) => (data.row.ClientId ? data.row.ClientId.name : "") },
-        { field: "Project", valueGetter: (data) => (data.row.ProjectId ? data.row.ProjectId.name : "") },
-    ];
-
-    const refreshSo = async () => {
-        try {
-            const resp = await getSO();
-            setSos(resp);
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
     const refreshNotes = async () => {
         try {
@@ -109,7 +93,7 @@ export default function SalesOrderPanel() {
                 if (resp) {
                     setActiveTab(0);
                     setSelectedSO(undefined);
-                    refreshSo();
+                    mutate("/so");
                     setConfirm(false);
                 }
             }
@@ -117,10 +101,6 @@ export default function SalesOrderPanel() {
             console.log(error);
         }
     };
-
-    useEffect(() => {
-        refreshSo();
-    }, []);
 
     useEffect(() => {
         if (activeTab === 1) {
@@ -174,7 +154,7 @@ export default function SalesOrderPanel() {
                 />
             )}
 
-            <AddSOModal open={addSo} onClose={() => setAddSo(false)} onDone={refreshSo} />
+            <AddSOModal open={addSo} onClose={() => setAddSo(false)} onDone={() => mutate("/so")} />
             <Confirm
                 open={confirm}
                 onClose={() => setConfirm(false)}
@@ -233,12 +213,9 @@ export default function SalesOrderPanel() {
                     <Tab label="Overview" />
                     <Tab label="Details" disabled={!selectedSO} />
                 </Tabs>
-                {activeTab === 0 && sos && (
-                    <BaseDataGrid
-                        cols={cols}
-                        rows={sos}
+                {activeTab === 0 && (
+                    <Datagrid
                         onRowSelected={(d) => {
-                            console.log(d);
                             setSelectedSO(d);
                             setActiveTab(1);
                         }}
@@ -247,7 +224,7 @@ export default function SalesOrderPanel() {
                 {activeTab === 1 && selectedSO && (
                     <EditTab
                         selectedSo={selectedSO}
-                        onDone={refreshSo}
+                        onDone={() => mutate("/so")}
                         notes={notes}
                         docs={docs}
                         lineItems={lineItems}

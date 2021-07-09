@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Container, Box, Tabs, Tab, ListItem, IconButton } from "@material-ui/core";
-import { AddRounded, NoteAddRounded, FileCopyRounded } from "@material-ui/icons";
+import { AddRounded, NoteAddRounded, FileCopyRounded, ShoppingCartRounded, PostAddRounded } from "@material-ui/icons";
 import { mutate } from "swr";
 
 import Table from "./Table";
@@ -14,11 +14,15 @@ import NoteModal from "../Modals/NoteModals";
 import DocumentModal from "../Modals/DocumentModals";
 import { INote } from "../../api/note";
 import { IDocument } from "../../api/document";
+import AddSOModal from "../SO/AddSoModal";
+import AddQuote from "../Quote/AddQuote";
 
 export default function Tickets() {
     const [jobModal, setJobModal] = useState(false);
     const [noteModal, setNoteModal] = useState(false);
     const [documentModal, setDocumentModal] = useState(false);
+    const [soModal, setSoModal] = useState(false);
+    const [quoteModal, setQuoteModal] = useState(false);
 
     const [selectedJob, setSelectedJob] = useState<IJob>();
     const [selectedNote, setSelectedNote] = useState<INote>();
@@ -45,6 +49,22 @@ export default function Tickets() {
                     itemId={selectedJob.id}
                     docData={selectedDocument}
                     onDone={() => mutate(`/document/job/${selectedJob.id}`)}
+                />
+            )}
+            {selectedJob && (
+                <AddSOModal
+                    open={soModal}
+                    onClose={() => setSoModal(false)}
+                    initialData={{ JobId: selectedJob.id } as any}
+                    onDone={() => {}}
+                />
+            )}
+            {selectedJob && (
+                <AddQuote
+                    open={quoteModal}
+                    onClose={() => setQuoteModal(false)}
+                    initialData={{ JobId: selectedJob.id } as any}
+                    onDone={() => {}}
                 />
             )}
             <JobModal open={jobModal} onClose={() => setJobModal(false)} />
@@ -85,6 +105,20 @@ export default function Tickets() {
                                 }}
                             >
                                 <FileCopyRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton disabled={activeTab !== 1} title="Add new SO" onClick={() => setSoModal(true)}>
+                                <ShoppingCartRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton
+                                disabled={activeTab !== 1}
+                                title="Add new Quote"
+                                onClick={() => setQuoteModal(true)}
+                            >
+                                <PostAddRounded />
                             </IconButton>
                         </ListItem>
                     </List>

@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { Box, Button, Tabs, Tab, makeStyles, LinearProgress } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
+import useSWR from "swr";
 
-import { INote, getAllModelNotes } from "../../api/note";
-import { IDocument, getAllModelDocuments } from "../../api/document";
-import { deleteQuote, getLineItems, IQuote } from "../../api/quote";
-import { getQuoteActivities, IActivity } from "../../api/activity";
+import { INote } from "../../api/note";
+import { IDocument } from "../../api/document";
+import { deleteQuote, IQuote } from "../../api/quote";
+import { IActivity } from "../../api/activity";
 import { ILineItem } from "../../api/lineItem";
 
 import BaseDataGrid from "../../app/BaseDataGrid";
@@ -20,17 +21,8 @@ import LineItemModal from "./LineItemModals";
 import AddQuote from "./AddQuote";
 import AddLineServiceModal from "../LineService";
 import { ILineService } from "../../api/lineService";
-import useSWR from "swr";
 import { BasePaper } from "../../app/Paper";
-
-const useStyles = makeStyles({
-    TabContainer: {
-        backgroundColor: "#fff",
-        borderRadius: 15,
-        margin: "0.5em",
-        padding: "0.5em",
-    },
-});
+import QuoteDatagrid from "./Datagrid";
 
 export default function QuotePanel() {
     const [selectedQuote, setSelectedQuote] = useState<IQuote>();
@@ -68,8 +60,6 @@ export default function QuotePanel() {
     const [confirm, setConfirm] = useState(false);
     const [lineServiceModal, setLineServiceModal] = useState(false);
     const [compQ, setCompQ] = useState<any>();
-
-    const classes = useStyles();
 
     const quoteCols: GridColDef[] = useMemo(
         () => [
@@ -204,11 +194,8 @@ export default function QuotePanel() {
                     <Tab label="List" />
                     <Tab label="Details" disabled={!selectedQuote} />
                 </Tabs>
-                {!quotes && <LinearProgress />}
-                {activeTab === 0 && quotes && (
-                    <BaseDataGrid
-                        cols={quoteCols}
-                        rows={quotes}
+                {activeTab === 0 && (
+                    <QuoteDatagrid
                         onRowSelected={(d) => {
                             setSelectedQuote(d);
                             setActiveTab(1);

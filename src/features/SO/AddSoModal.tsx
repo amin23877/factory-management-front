@@ -9,7 +9,7 @@ import { DocumentForm } from "./Forms";
 
 import { ISO, ISOComplete } from "../../api/so";
 
-export default function AddQuote({
+export default function AddSOModal({
     open,
     onClose,
     onDone,

@@ -1,20 +1,18 @@
 import React, { useState } from "react";
-import { Box, IconButton, Tab, Tabs, Typography } from "@material-ui/core";
+import { Box, Tab, Tabs } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
-import { SearchRounded } from "@material-ui/icons";
 import useSWR, { mutate } from "swr";
 import { Formik } from "formik";
 
+import BaseDataGrid from "../../app/BaseDataGrid";
 import { BasePaper } from "../../app/Paper";
-import TextField from "../../app/TextField";
-import Button from "../../app/Button";
 import Snack from "../../app/Snack";
-
 import JobForm from "./Forms";
+import SODatagrid from "../SO/Datagrid";
 
 import { IJob, schema, updateJob } from "../../api/job";
-import BaseDataGrid from "../../app/BaseDataGrid";
 import { fetcher } from "../../api";
+import QuoteDatagrid from "../Quote/Datagrid";
 
 export default function Details({
     initialValue,
@@ -81,17 +79,6 @@ export default function Details({
                         {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
                             <BasePaper>
                                 <Box display="grid" gridTemplateColumns="1fr" gridColumnGap={24}>
-                                    {/* <div>
-                                    <Typography>Client search</Typography>
-                                    <Box mt={1} mb={1} display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-                                        <TextField size="small" placeholder="Name" label="Name" />
-                                        <TextField size="small" placeholder="Phone" label="Phone" />
-                                        <TextField size="small" placeholder="Street" label="Street" />
-                                        <Button color="primary" variant="contained" fullWidth>
-                                            <SearchRounded />
-                                        </Button>
-                                    </Box>
-                                </div> */}
                                     <JobForm
                                         errors={errors}
                                         values={values}
@@ -115,8 +102,8 @@ export default function Details({
                         <Tab label="RMAs" />
                         <Tab label="Forms" />
                     </Tabs>
-                    {activeTab === 0 && <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />}
-                    {activeTab === 1 && <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />}
+                    {activeTab === 0 && <SODatagrid params={`JobId=${initialValue.id}`} onRowSelected={() => {}} />}
+                    {activeTab === 1 && <QuoteDatagrid params={`JobId=${initialValue.id}`} onRowSelected={() => {}} />}
                     {activeTab === 2 && (
                         <BaseDataGrid cols={noteCols} rows={itemNotes ? itemNotes : []} onRowSelected={() => {}} />
                     )}
