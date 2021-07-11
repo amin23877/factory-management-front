@@ -9,7 +9,7 @@ import PanelRouter from "./Panel";
 
 export default function BaseRouter() {
     const session = useSelector(selectSession);
-    const isAuthenticated = Boolean(getToken() || session.status === "Authorized");
+    const isAuthenticated = Boolean(getToken() && session.status === "Authorized");
 
     return (
         <Switch>
