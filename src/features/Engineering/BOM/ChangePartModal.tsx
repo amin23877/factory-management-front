@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import Dialog from "../../../app/Dialog";
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
-import { IMatriceRow, IPart } from "../../../api/bomMatrice";
+import { IPart } from "../../../api/bomMatrice";
 import { FieldSelect } from "../../../app/Inputs";
 import { getItems } from "../../../api/items";
 
