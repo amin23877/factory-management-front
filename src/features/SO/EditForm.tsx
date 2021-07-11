@@ -112,8 +112,6 @@ export const FinalForm = ({
     const [loading, setLoading] = useState(false);
 
     const handleSubmit = async () => {
-        // onDone(data);
-        console.log(data);
         setLoading(true);
         try {
             const resp = await createSOComplete(data);
