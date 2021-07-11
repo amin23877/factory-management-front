@@ -7,7 +7,7 @@ import BOMTable from "./Table";
 
 function BOM() {
     const [addBomModal, setAddBomModal] = useState(false);
-    const [productFamily, setProductFamily] = useState<string>("DE3");
+    const [productFamily, setProductFamily] = useState<string>();
 
     return (
         <Box display="flex" justifyContent="center" alignItems="flex-top" height="70vh">
@@ -21,7 +21,7 @@ function BOM() {
             />
             {productFamily && <BOMTable productFamily={productFamily} />}
             {!productFamily && (
-                <Button variant="outlined" onClick={() => setAddBomModal(true)}>
+                <Button style={{ alignSelf: "center" }} variant="outlined" onClick={() => setAddBomModal(true)}>
                     Create new BOM matrice
                 </Button>
             )}

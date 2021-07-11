@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import Dialog from "../../../app/Dialog";
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
-import { IMatriceRow, IPart } from "../../../api/BomMatrice";
+import { IMatriceRow, IPart } from "../../../api/bomMatrice";
 import { FieldSelect } from "../../../app/Inputs";
 import { getItems } from "../../../api/items";
 
@@ -21,14 +21,14 @@ function ChangePartModal({
     onClose,
     onDone,
 }: {
-    row: IMatriceRow;
+    row: any;
     partName: string;
     open: boolean;
     onClose: () => void;
     onDone: (data: any) => void;
 }) {
     const handleSubmit = (d: any) => {
-        const res = { row: row.row, data: [{ ...d, name: partName }] };
+        const res = { row, data: [{ ...d, name: partName }] };
         onDone(res);
     };
 

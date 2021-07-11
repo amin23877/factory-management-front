@@ -34,3 +34,12 @@ export const postMatriceData = async (productFamily: string, lines: any) => {
         throw error;
     }
 };
+
+export const renameMatricePart = async (formerName:string, newName:string) => {
+    try {
+        const resp = await Axios.patch('/matrice/rename', {formerName, newName});
+        return resp.data;
+    } catch (error) {
+        throw error;
+    }
+}
