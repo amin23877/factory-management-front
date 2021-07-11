@@ -1,48 +1,26 @@
 import React from "react";
 import { Box } from "@material-ui/core";
 import { Formik, Form } from "formik";
+import useSWR from "swr";
 
 import Dialog from "../../../app/Dialog";
-import { FieldSelect } from "../../../app/Inputs";
-import TextField from "../../../app/TextField";
+import { ArraySelect } from "../../../app/Inputs";
 import Button from "../../../app/Button";
-import { fetcher } from "../../../api";
 
-interface IData {
-    cluster: string;
-    level: string;
-    partnumbers: number;
-}
+function BOMModal({ open, onClose, onDone }: { open: boolean; onClose: () => void; onDone: (data: string) => void }) {
+    const { data: filters } = useSWR("/filter");
+    const validValues = filters ? filters.find((f: any) => f.name === "Product Family").valid : [];
 
-function BOMModal({ open, onClose, onDone }: { open: boolean; onClose: () => void; onDone: (data: IData) => void }) {
     return (
         <Dialog open={open} onClose={onClose} title="Select Cluster, Levels and Parts">
-            <Formik onSubmit={(data) => onDone(data)} initialValues={{} as IData}>
+            <Formik onSubmit={(data) => onDone(data["Product family"])} initialValues={{} as any}>
                 {({ values, errors, handleChange, handleBlur }) => (
                     <Form>
                         <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
-                            <FieldSelect
-                                name="cluster"
-                                label="Cluster"
-                                request={() => fetcher("/filter")}
-                                itemTitleField="name"
-                                itemValueField="name"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            <FieldSelect
-                                name="level"
-                                label="Level"
-                                request={() => fetcher("/field")}
-                                itemTitleField="name"
-                                itemValueField="name"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            <TextField
-                                name="partnumbers"
-                                label="Number of parts"
-                                type="number"
+                            <ArraySelect
+                                name="Product family"
+                                label="Product family"
+                                items={validValues}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />

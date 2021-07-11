@@ -7,30 +7,22 @@ import BOMTable from "./Table";
 
 function BOM() {
     const [addBomModal, setAddBomModal] = useState(false);
-    const [cluster, setCluster] = useState<string>();
-    const [levels, setLevels] = useState<string[]>();
-    const [parts, setParts] = useState<number>();
-
-    const canShowTable = cluster && levels && parts;
+    const [productFamily, setProductFamily] = useState<string>("DE3");
 
     return (
-        <Box display="flex" justifyContent="center" alignItems="center" height="70vh">
+        <Box display="flex" justifyContent="center" alignItems="flex-top" height="70vh">
             <BOMModal
                 open={addBomModal}
                 onClose={() => setAddBomModal(false)}
                 onDone={(d) => {
-                    setCluster(d.cluster);
-                    setLevels(["1 " + d.level, "2 " + d.level]);
-                    setParts(d.partnumbers);
+                    setProductFamily(d);
                     setAddBomModal(false);
                 }}
             />
-            {canShowTable && cluster && levels && parts && (
-                <BOMTable cluster={cluster} levels={levels} partnumbers={parts} />
-            )}
-            {!canShowTable && (
+            {productFamily && <BOMTable productFamily={productFamily} />}
+            {!productFamily && (
                 <Button variant="outlined" onClick={() => setAddBomModal(true)}>
-                    Add new BOM matrice
+                    Create new BOM matrice
                 </Button>
             )}
         </Box>

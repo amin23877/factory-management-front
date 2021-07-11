@@ -404,7 +404,11 @@ export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlu
         };
 
         fields?.map((field) => {
-            if (field.all || field.filterValue.includes(values[field.filterName])) {
+            if (
+                field.all ||
+                field.filterValue.includes(values[field.filterName]) ||
+                field.filterValue.includes("all")
+            ) {
                 addInputToArray(field);
             }
         });
@@ -420,11 +424,11 @@ export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlu
         <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
             {filters.map((filter) => (
                 <ArraySelect
-                    defaultValue="Default"
+                    defaultValue={values[filter.name as any] || ""}
                     name={filter.name}
                     label={filter.name}
                     items={filter.valid}
-                    value={values[filter as any]}
+                    value={values[filter.name as any]}
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />

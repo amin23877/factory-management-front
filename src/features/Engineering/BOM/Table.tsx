@@ -1,45 +1,150 @@
-import React, { useMemo } from "react";
+import React, { useState, useEffect } from "react";
+import {
+    TableContainer,
+    Table,
+    TableHead,
+    TableBody,
+    TableRow,
+    TableCell,
+    Paper,
+    IconButton,
+    LinearProgress,
+    Box,
+} from "@material-ui/core";
+import { DataGrid } from "@material-ui/data-grid";
+import useSWR from "swr";
 
-import { DataGrid, GridColumns, GridRowsProp } from "@material-ui/data-grid";
-import { randomPhoneNumber, randomTraderName } from "@material-ui/x-grid-data-generator";
-import { BasePaper } from "../../../app/Paper";
+import { IMatrice, postMatriceData } from "../../../api/BomMatrice";
+import AddPartModal from "./AddPartModal";
+import ChangePartModal from "./ChangePartModal";
+import { Toast } from "../../../app/Toast";
 
-export default function BOMTable({
-    cluster,
-    levels,
-    partnumbers,
-}: {
-    cluster: string;
-    levels: string[];
-    partnumbers: number;
-}) {
-    const rows = useMemo<GridRowsProp>(() => {
-        const res: any = {};
-        res.id = Math.floor(Math.random() * 100);
-        res[cluster] = "Micro";
-        levels.map((l) => (res[l] = "-level-"));
-        for (let index = 0; index < partnumbers; index++) {
-            res[`part${index}`] = randomPhoneNumber();
+export default function NewBomTable({ productFamily }: { productFamily: string }) {
+    const { data: tableData, mutate: mutateTableData } = useSWR<IMatrice>(`/matrice?productfamily=${productFamily}`);
+
+    const [addPart, setAddPart] = useState(false);
+    const [changePart, setChangePart] = useState(false);
+
+    const [selectedRow, setSelectedRow] = useState<any>();
+    const [selectedRowName, setSelectedRowName] = useState<string>();
+    const [columns, setColumns] = useState(tableData ? Object.keys(tableData[0].row) : []);
+    const [newColumns, setNewColumns] = useState<string[]>([]);
+
+    const [table, setTable] = useState<{ columns: any; rows: any[] }>({ columns: [], rows: [] });
+
+    useEffect(() => {
+        if (tableData) {
+            const cols = new Set();
+
+            const rows = tableData.map((item, i) => {
+                const levels = item.row;
+
+                const parts = item.data.reduce((obj, part) => {
+                    return { ...obj, [part.name || ""]: part.partNumber } as any;
+                }, {});
+
+                return { id: i, ...levels, ...parts };
+            });
+
+            rows.map((r) => Object.keys(r).map((k) => cols.add(k)));
+            const dtCols: any[] = [];
+            cols.forEach((c) => dtCols.push({ field: c, flex: 1 }));
+            console.log(rows, cols);
+
+            setTable({ columns: dtCols, rows });
+            console.log(table);
         }
+    }, [tableData]);
 
-        console.log([res]);
-        return [res];
-    }, [cluster, levels, partnumbers]);
+    const handleAddPart = (name: string) => {
+        setColumns((prev) => [...prev, name]);
+        setNewColumns((prev) => [...prev, name]);
+        setAddPart(false);
+    };
 
-    const columns = useMemo<GridColumns>(() => {
-        const res = [];
-        res.push({ field: cluster, headerName: cluster, type: "string", editable: false, width: 100 });
-        levels.map((l) => res.push({ field: l, headerName: l, type: "string", editable: false }));
-        for (let index = 0; index < partnumbers; index++) {
-            res.push({ field: `part${index}`, headerName: `Part${index}`, type: "string", editable: true, flex: 1 });
+    const handleChangePart = async (d: any) => {
+        try {
+            // console.log({ lines: [d] });
+            await postMatriceData(productFamily, { lines: [d] });
+            mutateTableData();
+
+            Toast.fire({ icon: "success", title: "Record changed." });
+            setChangePart(false);
+        } catch (error) {
+            console.log(JSON.stringify(error.response));
+            Toast.fire({ icon: "error", title: JSON.stringify(error) });
         }
+    };
 
-        return res;
-    }, [cluster, levels, partnumbers]);
+    if (!tableData) {
+        return <LinearProgress />;
+    }
 
     return (
-        <BasePaper style={{ height: 500, width: "100%" }}>
-            <DataGrid rows={rows} columns={columns} />
-        </BasePaper>
+        <>
+            <AddPartModal open={addPart} onClose={() => setAddPart(false)} onDone={handleAddPart} />
+            {selectedRowName && (
+                <ChangePartModal
+                    open={changePart}
+                    onClose={() => setChangePart(false)}
+                    partName={selectedRowName}
+                    row={selectedRow}
+                    onDone={handleChangePart}
+                />
+            )}
+
+            <Box height={500} width="100%">
+                <DataGrid columns={table.columns} rows={table.rows} />
+            </Box>
+            {/* <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Product Family</TableCell>
+                            {table.columns.map((c: any) => (
+                                <TableCell key={c}>{c}</TableCell>
+                            ))}
+                            <TableCell>
+                                <IconButton onClick={() => setAddPart(true)}>
+                                    <AddRounded />
+                                </IconButton>
+                            </TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {tableData.map((row, i) => (
+                            <TableRow key={i}>
+                                <TableCell>{productFamily}</TableCell>
+                                {Object.keys(row.row).map((r) => (
+                                    <TableCell key={r}>{row.row[r]}</TableCell>
+                                ))}
+                                {row.data.map((data) => (
+                                    <TableCell
+                                        key={data.id}
+                                        onClick={() => {
+                                            setSelectedRow(row);
+                                            setSelectedRowName(data.name);
+                                            setChangePart(true);
+                                        }}
+                                    >
+                                        {data.partNumber}
+                                    </TableCell>
+                                ))}
+                                {newColumns.map((c, i) => (
+                                    <TableCell
+                                        key={i}
+                                        onClick={() => {
+                                            setSelectedRow(row);
+                                            setSelectedRowName(c);
+                                            setChangePart(true);
+                                        }}
+                                    ></TableCell>
+                                ))}
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer> */}
+        </>
     );
 }
