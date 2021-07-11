@@ -10,7 +10,7 @@ import RenamePart from "./RenamePart";
 import Button from "../../../app/Button";
 import { Toast } from "../../../app/Toast";
 
-import { IMatrice, postMatriceData } from "../../../api/bomMatrice";
+import { IMatrice, postMatriceData } from "../../../api/matrice";
 
 export default function NewBomTable({ productFamily }: { productFamily: string }) {
     const { data: tableData, mutate: mutateTableData } = useSWR<IMatrice>(`/matrice?productfamily=${productFamily}`);

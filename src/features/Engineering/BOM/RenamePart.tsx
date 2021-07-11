@@ -7,7 +7,7 @@ import Dialog from "../../../app/Dialog";
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
 import { Toast } from "../../../app/Toast";
-import { renameMatricePart } from "../../../api/bomMatrice";
+import { renameMatricePart } from "../../../api/matrice";
 
 const schema = Yup.object().shape({
     newName: Yup.string().required(),
