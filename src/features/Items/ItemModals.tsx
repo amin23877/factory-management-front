@@ -63,7 +63,7 @@ export const AddItemModal = ({ open, onClose, device }: { open: boolean; onClose
                                         <Tab label="More info" />
                                         {/* <Tab label="Quantity" /> */}
                                         <Tab label="Shipping" />
-                                        <Tab label="Field and filters" />
+                                        <Tab label="Cluster and Levels" />
                                     </Tabs>
                                     {activeTab === 0 && (
                                         <MoreInfo
@@ -87,7 +87,7 @@ export const AddItemModal = ({ open, onClose, device }: { open: boolean; onClose
                                             isSubmitting={isSubmitting}
                                         />
                                     )} */}
-                                    {activeTab === 2 && (
+                                    {activeTab === 1 && (
                                         <Shipping
                                             errors={errors}
                                             handleBlur={handleBlur}
@@ -98,7 +98,7 @@ export const AddItemModal = ({ open, onClose, device }: { open: boolean; onClose
                                             isSubmitting={isSubmitting}
                                         />
                                     )}
-                                    {activeTab === 3 && (
+                                    {activeTab === 2 && (
                                         <CustomScrollbars style={{ height: 290 }} thumbColor="#555">
                                             <DynamicFilterAndFields
                                                 errors={errors}
@@ -108,6 +108,7 @@ export const AddItemModal = ({ open, onClose, device }: { open: boolean; onClose
                                                 touched={touched}
                                                 values={values}
                                                 isSubmitting={isSubmitting}
+                                                device={device}
                                             />
                                         </CustomScrollbars>
                                     )}

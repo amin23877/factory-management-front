@@ -83,15 +83,17 @@ export const General = ({
                         onChange={handleChange}
                         control={<Checkbox />}
                     />
-                    <FormControlLabel
-                        style={{ fontSize: "0.7rem" }}
-                        checked={device ? true : values.device}
-                        label="Device"
-                        name="device"
-                        onChange={handleChange}
-                        disabled={device}
-                        control={<Checkbox />}
-                    />
+                    {device ?
+                        <FormControlLabel
+                            style={{ fontSize: "0.7rem" }}
+                            checked={device ? true : values.device}
+                            label="Device"
+                            name="device"
+                            onChange={handleChange}
+                            disabled={device}
+                            control={<Checkbox />}
+                        />
+                        : null}
                 </Box>
                 <TextField
                     style={{ gridColumnEnd: "span 4" }}
@@ -358,10 +360,13 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
     );
 };
 
-export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
+export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlur, touched, selectedItem, device }: any) => {
     const [dynamicFields, setDynamicFields] = useState<ReactNode[]>([]);
     const { data: filters } = useSWR<IFilter[]>("/filter");
     const { data: fields } = useSWR<IField[]>("/field");
+    const { data: filterNFields } = useSWR("/filter/field");
+    // const filters: IFilter[] = selectedItem.filters;
+    // const fields: IField[] = selectedItem.fields;
 
     useEffect(() => {
         let validFields: ReactNode[] = [];
@@ -402,14 +407,24 @@ export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlu
                 );
             }
         };
-
         fields?.map((field) => {
-            if (
-                field.all ||
-                field.filterValue.includes(values[field.filterName]) ||
-                field.filterValue.includes("all")
-            ) {
-                addInputToArray(field);
+            console.log(field)
+            if (selectedItem?.device || device) {
+                if (
+                    field.all ||
+                    field.filterValue.includes(values[field.filterName]) ||
+                    field.filterValue.includes("all")
+                ) {
+                    addInputToArray(field);
+                }
+            } else if (field.filterName[0] !== 'Product Family') {
+                if (
+                    field.all ||
+                    field.filterValue.includes(values[field.filterName]) ||
+                    field.filterValue.includes("all")
+                ) {
+                    addInputToArray(field);
+                }
             }
         });
 
@@ -422,17 +437,35 @@ export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlu
 
     return (
         <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
-            {filters.map((filter) => (
-                <ArraySelect
-                    defaultValue={values[filter.name as any] || ""}
-                    name={filter.name}
-                    label={filter.name}
-                    items={filter.valid}
-                    value={values[filter.name as any]}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
-            ))}
+            {filters?.map((filter) => {
+                if (selectedItem?.device || device) {
+                    return (
+                        <ArraySelect
+                            defaultValue={values[filter.name as any] || ""}
+                            name={filter.name}
+                            label={filter.name}
+                            items={filter.valid}
+                            value={values[filter.name as any]}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                    )
+                } else if (filter.name !== 'Product Family') {
+                    return (
+                        <ArraySelect
+                            defaultValue={values[filter.name as any] || ""}
+                            name={filter.name}
+                            label={filter.name}
+                            items={filter.valid}
+                            value={values[filter.name as any]}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                    )
+                }
+
+            }
+            )}
             <Divider style={{ gridColumnEnd: "span 2" }} />
             {dynamicFields}
         </Box>
