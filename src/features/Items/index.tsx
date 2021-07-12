@@ -264,6 +264,7 @@ function ItemsDetails({
                                             setFieldValue={setFieldValue}
                                             errors={errors}
                                             touched={touched}
+                                            selectedItem={selectedRow}
                                         />
                                     )}
                                     {moreInfoTab === 4 && (
@@ -327,22 +328,22 @@ function ItemsDetails({
                         <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
                     )}
                     {activeTab === 1 && <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />}
-                    {activeTab === 2 && <BaseDataGrid cols={usesCols} rows={uses || []} onRowSelected={() => {}} />}
-                    {activeTab === 3 && <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={() => {}} />}
+                    {activeTab === 2 && <BaseDataGrid cols={usesCols} rows={uses || []} onRowSelected={() => { }} />}
+                    {activeTab === 3 && <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={() => { }} />}
                     {activeTab === 4 && (
-                        <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => {}} />
+                        <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => { }} />
                     )}
                     {activeTab === 5 && (
-                        <QuoteDatagrid url={`/item/${selectedRow.id}/quote`} onRowSelected={() => {}} />
+                        <QuoteDatagrid url={`/item/${selectedRow.id}/quote`} onRowSelected={() => { }} />
                     )}
                     {activeTab === 6 && <SOTable rows={itemSOs} />}
-                    {activeTab === 7 && <BaseDataGrid cols={poCols} rows={itemPOs || []} onRowSelected={() => {}} />}
+                    {activeTab === 7 && <BaseDataGrid cols={poCols} rows={itemPOs || []} onRowSelected={() => { }} />}
                     {activeTab === 8 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
                     {activeTab === 9 && (
-                        <BaseDataGrid cols={usageCols} rows={itemUsage || []} onRowSelected={() => {}} />
+                        <BaseDataGrid cols={usageCols} rows={itemUsage || []} onRowSelected={() => { }} />
                     )}
                     {activeTab === 10 && (
-                        <BaseDataGrid cols={qtyHistoryCols} rows={itemQtyHistory || []} onRowSelected={() => {}} />
+                        <BaseDataGrid cols={qtyHistoryCols} rows={itemQtyHistory || []} onRowSelected={() => { }} />
                     )}
                 </Box>
             </BasePaper>

@@ -21,7 +21,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     const [sorts, setSort] = useState<GridSortModelParams>();
 
     const { data: items, mutate: mutateItems } = useSWR<{ items: IItem[]; total: number }>(
-        generateURL("/item", filters, sorts, page)
+        generateURL("/item?device=false", filters, sorts, page)
     );
 
     const gridColumns = useMemo<GridColumns>(() => {

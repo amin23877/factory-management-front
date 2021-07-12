@@ -167,7 +167,7 @@ const Inventory = () => {
                     )}
                     {activeTab === 1 && (
                         <ItemsDetails
-                            onDone={() => mutate("/item")}
+                            onDone={() => mutate("/item?device=false")}
                             selectedRow={selectedItem}
                             onDocSelected={(d) => {
                                 setSelectedDoc(d);
