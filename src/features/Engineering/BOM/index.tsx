@@ -21,7 +21,12 @@ function BOM() {
             />
             {productFamily && <BOMTable productFamily={productFamily} />}
             {!productFamily && (
-                <Button style={{ alignSelf: "center" }} variant="outlined" onClick={() => setAddBomModal(true)}>
+                <Button
+                    style={{ alignSelf: "center" }}
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setAddBomModal(true)}
+                >
                     Create new BOM matrice
                 </Button>
             )}

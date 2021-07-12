@@ -1,8 +1,8 @@
-import { Dialog } from "@material-ui/core";
 import React, { useMemo } from "react";
 import { GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
 
+import Dialog from "../../app/Dialog";
 import BaseDataGrid from "../../app/BaseDataGrid";
 
 import { IBom } from "../../api/bom";

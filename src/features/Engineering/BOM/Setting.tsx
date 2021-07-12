@@ -12,7 +12,7 @@ function BOMModal({ open, onClose, onDone }: { open: boolean; onClose: () => voi
     const validValues = filters ? filters.find((f: any) => f.name === "Product Family").valid : [];
 
     return (
-        <Dialog open={open} onClose={onClose} title="Select Cluster, Levels and Parts">
+        <Dialog open={open} onClose={onClose} title="Select Product family">
             <Formik onSubmit={(data) => onDone(data["Product family"])} initialValues={{} as any}>
                 {({ values, errors, handleChange, handleBlur }) => (
                     <Form>

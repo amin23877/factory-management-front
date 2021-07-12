@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { LinearProgress, Box } from "@material-ui/core";
+import { LinearProgress, Box, Paper } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import useSWR from "swr";
 
@@ -11,6 +11,7 @@ import Button from "../../../app/Button";
 import { Toast } from "../../../app/Toast";
 
 import { IMatrice, postMatriceData } from "../../../api/matrice";
+import { BasePaper } from "../../../app/Paper";
 
 export default function NewBomTable({ productFamily }: { productFamily: string }) {
     const { data: tableData, mutate: mutateTableData } = useSWR<IMatrice>(`/matrice?productfamily=${productFamily}`);
@@ -114,23 +115,27 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
                 />
             )}
 
-            <Box height={500} width="100%">
-                <Button variant="outlined" style={{ margin: "0.5em 0" }} onClick={() => setAddPart(true)}>
-                    Add part
-                </Button>
-                <DataGrid
-                    columns={table.columns}
-                    rows={table.rows}
-                    onColumnHeaderClick={(params) => {
-                        setSelectedPart({ formerName: params.field, newName: "" });
-                        setRenamePart(true);
-                    }}
-                    onCellClick={(params) => {
-                        setSelectedRow(params.row);
-                        setSelectedRowName(params.field);
-                        setChangePart(true);
-                    }}
-                />
+            <Box width="100%">
+                <BasePaper>
+                    <Button variant="outlined" style={{ margin: "0.5em 0" }} onClick={() => setAddPart(true)}>
+                        Add part
+                    </Button>
+                    <Box height={450}>
+                        <DataGrid
+                            columns={table.columns}
+                            rows={table.rows}
+                            onColumnHeaderClick={(params) => {
+                                setSelectedPart({ formerName: params.field, newName: "" });
+                                setRenamePart(true);
+                            }}
+                            onCellClick={(params) => {
+                                setSelectedRow(params.row);
+                                setSelectedRowName(params.field);
+                                setChangePart(true);
+                            }}
+                        />
+                    </Box>
+                </BasePaper>
             </Box>
         </>
     );
