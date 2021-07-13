@@ -72,9 +72,11 @@ export const createAFieldStep = async (ItemId: string, name: string, file: any, 
 export const updateAManStep = async (stepid: string, name: string, file: any, description: string, number: any) => {
     try {
         const formData = new FormData();
-        for (const f of file) {
-            formData.append("illustration", f);
-        };
+        if (file) {
+            for (const f of file) {
+                formData.append("illustration", f);
+            };
+        }
         formData.append("name", name);
         formData.append("number", number);
         formData.append("description", description);

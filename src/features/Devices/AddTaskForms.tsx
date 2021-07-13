@@ -95,8 +95,8 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
             {Task?.id ? <Dialog open={AddStep} onClose={() => setAddStep(false)} >
                 <ManufacturingStep TaskId={Task.id} onClose={() => setAddStep(false)} />
             </Dialog> : null}
-            {Task?.id ? <Dialog open={step} onClose={() => setStep(false)} >
-                <ManufacturingStep TaskId={Task.id} onClose={() => setAddStep(false)} step={step} />
+            {Task?.id ? <Dialog open={step} onClose={() => setStep(false)} maxWidth='lg' fullWidth>
+                <ManufacturingStep TaskId={Task.id} onClose={() => setStep(false)} step={step} />
             </Dialog> : null}
 
             <Formik initialValues={Task ? Task : ({} as any)} onSubmit={handleSubmit}>
