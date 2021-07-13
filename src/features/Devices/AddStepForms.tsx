@@ -23,14 +23,13 @@ import { mutate } from "swr";
 import { Tab } from "@material-ui/icons";
 
 interface IStepModal {
-    open: boolean;
-    itemId: string;
+    TaskId: string;
     step?: any;
     onDone?: () => void;
     onClose: () => void;
 }
 
-export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
+export const ManufacturingStep = ({ onClose, TaskId, onDone, step }: IStepModal) => {
     const fileUploader = useRef<HTMLInputElement | null>();
     const [activeTab, setActiveTab] = useState(0);
 
@@ -38,6 +37,7 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
         try {
             if (step && step.id) {
                 await deleteAManStep(step.id);
+                mutate(`/engineering/manufacturing/step?TaskId=${TaskId}`)
                 onDone && onDone();
                 onClose();
             }
@@ -48,19 +48,19 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
         if (step && step.id) {
-            updateAManStep(step.id, values.name, values.file, values.description, values.number, values.hours)
+            updateAManStep(step.id, values.name, values.file, values.description, values.number)
                 .then((d) => {
-                    mutate(`/manStep?ItemId=${itemId}`)
+                    mutate(`/engineering/manufacturing/step?TaskId=${TaskId}`)
                     onDone && onDone();
                     onClose();
                 })
                 .catch((e) => console.log(e))
                 .finally(() => setSubmitting(false));
         } else {
-            createAManStep(itemId, values.name, values.file, values.description, values.number, values.hours)
+            createAManStep(TaskId, values.name, values.file, values.description, values.number)
                 .then((d) => {
                     setSubmitting(false);
-                    mutate(`/manStep?ItemId=${itemId}`)
+                    mutate(`/engineering/manufacturing/step?TaskId=${TaskId}`)
                     onDone && onDone();
                     onClose();
                 })
@@ -111,7 +111,7 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
                                     onBlur={handleBlur}
                                 />
 
-                                <TextField
+                                {/* <TextField
                                     fullWidth
                                     value={values.hours}
                                     name="hours"
@@ -119,9 +119,9 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
                                     variant="outlined"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                />
+                                /> */}
 
-                                <Box style={{ gridColumnEnd: "span 2", margin: "0px 25%" }}>
+                                <Box >
                                     <input
                                         multiple
                                         type="file"
@@ -194,7 +194,7 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, step }: IStepModa
     );
 };
 
-export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
+export const EvaluationStep = ({ onClose, TaskId, onDone, step }: IStepModal) => {
     const fileUploader = useRef<HTMLInputElement | null>();
 
     const deleteDocument = useCallback(async () => {
@@ -211,7 +211,7 @@ export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) 
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
         if (step && step.id) {
-            updateAEvalStep(step.id, values.name, values.file, values.description, values.number, values.hours)
+            updateAEvalStep(step.id, values.name, values.file, values.description, values.number)
                 .then((d) => {
                     console.log(d);
                     onDone && onDone();
@@ -220,7 +220,7 @@ export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) 
                 .catch((e) => console.log(e))
                 .finally(() => setSubmitting(false));
         } else {
-            createAEvalStep(itemId, values.name, values.file, values.description, values.number, values.hours)
+            createAEvalStep(TaskId, values.name, values.file, values.description, values.number)
                 .then((d) => {
                     console.log(d);
                     setSubmitting(false);
@@ -272,7 +272,7 @@ export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) 
                                     onBlur={handleBlur}
                                 />
 
-                                <TextField
+                                {/* <TextField
                                     fullWidth
                                     value={values.hours}
                                     name="hours"
@@ -280,7 +280,7 @@ export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) 
                                     variant="outlined"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                />
+                                /> */}
 
                                 <Box style={{ gridColumnEnd: "span 2", margin: "0px 25%" }}>
                                     <input
@@ -355,7 +355,7 @@ export const Evaluation = ({ open, onClose, itemId, onDone, step }: IStepModal) 
     );
 };
 
-export const Test = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
+export const TestStep = ({ onClose, TaskId, onDone, step }: IStepModal) => {
     const fileUploader = useRef<HTMLInputElement | null>();
 
     const deleteDocument = useCallback(async () => {
@@ -372,7 +372,7 @@ export const Test = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
         if (step && step.id) {
-            updateATestStep(step.id, values.name, values.file, values.description, values.number, values.hours)
+            updateATestStep(step.id, values.name, values.file, values.description, values.number)
                 .then((d) => {
                     console.log(d);
                     onDone && onDone();
@@ -381,7 +381,7 @@ export const Test = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                 .catch((e) => console.log(e))
                 .finally(() => setSubmitting(false));
         } else {
-            createATestStep(itemId, values.name, values.file, values.description, values.number, values.hours)
+            createATestStep(TaskId, values.name, values.file, values.description, values.number)
                 .then((d) => {
                     console.log(d);
                     setSubmitting(false);
@@ -433,7 +433,7 @@ export const Test = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                                     onBlur={handleBlur}
                                 />
 
-                                <TextField
+                                {/* <TextField
                                     fullWidth
                                     value={values.hours}
                                     name="hours"
@@ -441,7 +441,7 @@ export const Test = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                                     variant="outlined"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                />
+                                /> */}
 
                                 <Box style={{ gridColumnEnd: "span 2", margin: "0px 25%" }}>
                                     <input
@@ -516,7 +516,7 @@ export const Test = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
     );
 };
 
-export const Field = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
+export const FieldStep = ({ onClose, TaskId, onDone, step }: IStepModal) => {
     const fileUploader = useRef<HTMLInputElement | null>();
 
     const deleteDocument = useCallback(async () => {
@@ -533,7 +533,7 @@ export const Field = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
         if (step && step.id) {
-            updateAFieldStep(step.id, values.name, values.file, values.description, values.number, values.hours)
+            updateAFieldStep(step.id, values.name, values.file, values.description, values.number)
                 .then((d) => {
                     console.log(d);
                     onDone && onDone();
@@ -542,7 +542,7 @@ export const Field = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                 .catch((e) => console.log(e))
                 .finally(() => setSubmitting(false));
         } else {
-            createAFieldStep(itemId, values.name, values.file, values.description, values.number, values.hours)
+            createAFieldStep(TaskId, values.name, values.file, values.description, values.number)
                 .then((d) => {
                     console.log(d);
                     setSubmitting(false);
@@ -594,7 +594,7 @@ export const Field = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                                     onBlur={handleBlur}
                                 />
 
-                                <TextField
+                                {/* <TextField
                                     fullWidth
                                     value={values.hours}
                                     name="hours"
@@ -602,7 +602,7 @@ export const Field = ({ open, onClose, itemId, onDone, step }: IStepModal) => {
                                     variant="outlined"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                />
+                                /> */}
 
                                 <Box style={{ gridColumnEnd: "span 2", margin: "0px 25%" }}>
                                     <input

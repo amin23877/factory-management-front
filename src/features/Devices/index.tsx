@@ -27,7 +27,8 @@ import FieldNFilter from "../../features/FieldAndFilter/Modal";
 import { AddItemModal } from "../../features/Items/ItemModals";
 
 import DetailTab from "./Details";
-import AddStepModal, { EditStepModal } from "./AddStepModal";
+// import AddStepModal, { EditStepModal } from "./AddStepModal";
+import AddTaskModal, { EditTaskModal } from "./AddTaskModal";
 
 import List from "../../app/SideUtilityList";
 
@@ -41,11 +42,9 @@ const Inventory = () => {
     const [sorts, setSort] = useState<GridSortModelParams>();
 
     const { data: items, mutate: mutateItems } = useSWR(generateURL("/item?device=true", filters, sorts, page));
-    // const { data: items, mutate: mutateItems } = useSWR('/item?device=true');
     const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
 
     const [activeTab, setActiveTab] = useState(0);
-    const [tab, setTab] = useState<number>();
     const [selectedNote, setSelectedNote] = useState<any>();
     const [selectedDoc, setSelectedDoc] = useState<any>();
     const [selectedStep, setSelectedStep] = useState<any>();
@@ -88,13 +87,20 @@ const Inventory = () => {
     return (
         <Box>
             {selectedStep && selectedItem && selectedItem.id && (
-                <EditStepModal
+                <EditTaskModal
                     tab={selectedStep.tab}
-                    step={selectedStep}
+                    task={selectedStep}
                     itemId={selectedItem.id as any}
                     open={editStepModal}
                     onClose={() => setEditStepModal(false)}
                 />
+                // <EditStepModal
+                //     tab={selectedStep.tab}
+                //     step={selectedStep}
+                //     itemId={selectedItem.id as any}
+                //     open={editStepModal}
+                //     onClose={() => setEditStepModal(false)}
+                // />
             )}
             {selectedNote && selectedItem && selectedItem.id && (
                 <NoteModal
@@ -135,11 +141,16 @@ const Inventory = () => {
                 <BOMModal itemId={selectedItem.id} open={bomModal} onClose={() => setBomModal(false)} />
             )}
             {selectedItem && selectedItem.id && (
-                <AddStepModal
+                <AddTaskModal
                     open={addStepModal}
                     itemId={selectedItem.id as any}
                     onClose={() => setAddStepModal(false)}
                 />
+                // <AddStepModal
+                //     open={addStepModal}
+                //     itemId={selectedItem.id as any}
+                //     onClose={() => setAddStepModal(false)}
+                // />
             )}
             <AddItemModal open={addItemModal} onClose={() => setAddItemModal(false)} device={true} />
             <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
@@ -162,7 +173,7 @@ const Inventory = () => {
                         </IconButton>
                     </ListItem>
                     <ListItem>
-                        <IconButton disabled={activeTab === 0} title="Add Step" onClick={() => setAddStepModal(true)}>
+                        <IconButton disabled={activeTab === 0} title="Add Task" onClick={() => setAddStepModal(true)}>
                             <FormatListNumberedRounded />
                         </IconButton>
                     </ListItem>
