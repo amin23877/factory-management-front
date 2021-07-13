@@ -408,7 +408,6 @@ export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlu
             }
         };
         fields?.map((field) => {
-            console.log(field)
             if (selectedItem?.device || device) {
                 if (
                     field.all ||

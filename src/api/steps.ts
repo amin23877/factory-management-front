@@ -1,25 +1,25 @@
 import Axios from "axios";
 
 
-export const createAManStep = async (ItemId: string, name: string, file: any, description: string, number: any, hours: any) => {
+export const createAManStep = async (TaskId: string, name: string, file: any, description: string, number: any) => {
     try {
         const formData = new FormData();
-        console.log(file);
-        for (const f of file) {
-            formData.append("illustration", f);
-        };
+        if (file) {
+            for (const f of file) {
+                formData.append("illustration", f);
+            };
+        }
         formData.append("name", name);
-        formData.append("ItemId", ItemId);
+        formData.append("TaskId", TaskId);
         formData.append("number", number);
-        formData.append("hours", hours);
         formData.append("description", description);
-        const resp = await Axios.post(`/manstep`, formData);
+        const resp = await Axios.post(`/engineering/manufacturing/step`, formData);
         return resp.data;
     } catch (error) {
         console.log(error);
     }
 };
-export const createAEvalStep = async (ItemId: string, name: string, file: any, description: string, number: any, hours: any) => {
+export const createAEvalStep = async (ItemId: string, name: string, file: any, description: string, number: any) => {
     try {
         const formData = new FormData();
         for (const f of file) {
@@ -28,7 +28,6 @@ export const createAEvalStep = async (ItemId: string, name: string, file: any, d
         formData.append("name", name);
         formData.append("ItemId", ItemId);
         formData.append("number", number);
-        formData.append("hours", hours);
         formData.append("description", description);
         const resp = await Axios.post(`/evalStep`, formData);
         return resp.data;
@@ -36,7 +35,7 @@ export const createAEvalStep = async (ItemId: string, name: string, file: any, d
         console.log(error);
     }
 };
-export const createATestStep = async (ItemId: string, name: string, file: any, description: string, number: any, hours: any) => {
+export const createATestStep = async (ItemId: string, name: string, file: any, description: string, number: any) => {
     try {
         const formData = new FormData();
         for (const f of file) {
@@ -45,7 +44,6 @@ export const createATestStep = async (ItemId: string, name: string, file: any, d
         formData.append("name", name);
         formData.append("ItemId", ItemId);
         formData.append("number", number);
-        formData.append("hours", hours);
         formData.append("description", description);
         const resp = await Axios.post(`/teststep`, formData);
         return resp.data;
@@ -53,7 +51,7 @@ export const createATestStep = async (ItemId: string, name: string, file: any, d
         console.log(error);
     }
 };
-export const createAFieldStep = async (ItemId: string, name: string, file: any, description: string, number: any, hours: any) => {
+export const createAFieldStep = async (ItemId: string, name: string, file: any, description: string, number: any) => {
     try {
         const formData = new FormData();
         for (const f of file) {
@@ -62,7 +60,6 @@ export const createAFieldStep = async (ItemId: string, name: string, file: any, 
         formData.append("name", name);
         formData.append("ItemId", ItemId);
         formData.append("number", number);
-        formData.append("hours", hours);
         formData.append("description", description);
         const resp = await Axios.post(`/fieldStartUpStep`, formData);
         return resp.data;
@@ -72,7 +69,7 @@ export const createAFieldStep = async (ItemId: string, name: string, file: any, 
 };
 
 
-export const updateAManStep = async (stepid: string, name: string, file: any, description: string, number: any, hours: any) => {
+export const updateAManStep = async (stepid: string, name: string, file: any, description: string, number: any) => {
     try {
         const formData = new FormData();
         for (const f of file) {
@@ -80,16 +77,15 @@ export const updateAManStep = async (stepid: string, name: string, file: any, de
         };
         formData.append("name", name);
         formData.append("number", number);
-        formData.append("hours", hours);
         formData.append("description", description);
-        const resp = await Axios.patch(`/manStep/${stepid}`, formData);
+        const resp = await Axios.patch(`/engineering/manufacturing/step/${stepid}`, formData);
         return resp.data;
     } catch (error) {
         console.log(error);
     }
 };
 
-export const updateAEvalStep = async (stepid: string, name: string, file: any, description: string, number: any, hours: any) => {
+export const updateAEvalStep = async (stepid: string, name: string, file: any, description: string, number: any) => {
     try {
         const formData = new FormData();
         for (const f of file) {
@@ -97,7 +93,6 @@ export const updateAEvalStep = async (stepid: string, name: string, file: any, d
         };
         formData.append("name", name);
         formData.append("number", number);
-        formData.append("hours", hours);
         formData.append("description", description);
         const resp = await Axios.patch(`/evalStep/${stepid}`, formData);
         return resp.data;
@@ -106,7 +101,7 @@ export const updateAEvalStep = async (stepid: string, name: string, file: any, d
     }
 };
 
-export const updateATestStep = async (stepid: string, name: string, file: any, description: string, number: any, hours: any) => {
+export const updateATestStep = async (stepid: string, name: string, file: any, description: string, number: any) => {
     try {
         const formData = new FormData();
         for (const f of file) {
@@ -114,7 +109,6 @@ export const updateATestStep = async (stepid: string, name: string, file: any, d
         };
         formData.append("name", name);
         formData.append("number", number);
-        formData.append("hours", hours);
         formData.append("description", description);
         const resp = await Axios.patch(`/testStep/${stepid}`, formData);
         return resp.data;
@@ -123,7 +117,7 @@ export const updateATestStep = async (stepid: string, name: string, file: any, d
     }
 };
 
-export const updateAFieldStep = async (stepid: string, name: string, file: any, description: string, number: any, hours: any) => {
+export const updateAFieldStep = async (stepid: string, name: string, file: any, description: string, number: any) => {
     try {
         const formData = new FormData();
         for (const f of file) {
@@ -131,7 +125,6 @@ export const updateAFieldStep = async (stepid: string, name: string, file: any, 
         };
         formData.append("name", name);
         formData.append("number", number);
-        formData.append("hours", hours);
         formData.append("description", description);
         const resp = await Axios.patch(`/fieldStartUpStep/${stepid}`, formData);
         return resp.data;
@@ -142,7 +135,7 @@ export const updateAFieldStep = async (stepid: string, name: string, file: any, 
 
 export const deleteAManStep = async (stepid: string) => {
     try {
-        const resp = await Axios.delete(`/manStep/${stepid}`);
+        const resp = await Axios.delete(`/engineering/manufacturing/step/${stepid}`);
         return resp.data;
     } catch (error) {
         console.log(error);

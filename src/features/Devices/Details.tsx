@@ -40,7 +40,7 @@ function ItemsDetails({
     const { data: notes } = useSWR<INote[]>(activeTab === 12 ? `/note/item/${selectedRow.id}` : null);
     const { data: docs } = useSWR<IDocument[]>(activeTab === 0 ? `/document/item/${selectedRow.id}` : null);
     const { data: boms } = useSWR<IBom[]>(activeTab === 1 ? `/bom?ItemId=${selectedRow.id}` : null);
-    const { data: manSteps } = useSWR(activeTab === 3 ? `/manStep?ItemId=${selectedRow.id}` : null);
+    const { data: manSteps } = useSWR(activeTab === 3 ? `/engineering/manufacturing/task?ItemId=${selectedRow.id}` : null);
     const { data: evalSteps } = useSWR(activeTab === 4 ? `/evalStep?ItemId=${selectedRow.id}` : null);
     const { data: testSteps } = useSWR(activeTab === 5 ? `/testStep?ItemId=${selectedRow.id}` : null);
     const { data: fieldSteps } = useSWR(activeTab === 6 ? `/fieldStartUpStep?ItemId=${selectedRow.id}` : null);
@@ -92,10 +92,11 @@ function ItemsDetails({
     );
     const manCols = useMemo<GridColDef[]>(
         () => [
-            { field: "number", headerName: "step number" },
+            { field: "priority", headerName: "Priority" },
             { field: "name", headerName: "Name" },
             { field: "description", headerName: "description", flex: 1 },
             { field: "hours", headerName: "Hours" },
+            { field: "buildToStock", headerName: "B.T.S", type: "boolean" },
         ],
         []
     );
