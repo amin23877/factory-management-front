@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { LinearProgress, Box, Paper } from "@material-ui/core";
+import { LinearProgress, Box } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import useSWR from "swr";
 
@@ -9,9 +9,10 @@ import RenamePart from "./RenamePart";
 
 import Button from "../../../app/Button";
 import { Toast } from "../../../app/Toast";
-
-import { IMatrice, postMatriceData } from "../../../api/matrice";
 import { BasePaper } from "../../../app/Paper";
+
+import { extractLevels, generateDatagridColumns, generateRows, IMatrice, postMatriceData } from "../../../api/matrice";
+import { CustomFooterStatusComponent } from "../../../components/Datagrid/FooterStatus";
 
 export default function NewBomTable({ productFamily }: { productFamily: string }) {
     const { data: tableData, mutate: mutateTableData } = useSWR<IMatrice>(`/matrice?productfamily=${productFamily}`);
@@ -25,44 +26,19 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
     const [selectedRowName, setSelectedRowName] = useState<string>();
 
     const [levels, setLevels] = useState<string[]>();
+    const [lines, setLines] = useState<any[]>();
 
     const [table, setTable] = useState<{ columns: any; rows: any[] }>({ columns: [], rows: [] });
 
-    // Generate Levels
+    // Generate table COLUMNS, ROWS and LEVELS
     useEffect(() => {
         if (tableData) {
-            const levels = new Set<string>();
+            const levels = extractLevels(tableData);
+            const rows = generateRows(tableData, productFamily);
+            const columns = generateDatagridColumns(tableData, productFamily);
 
-            const rows = tableData.map((item) => ({ ...item.row }));
-
-            rows.map((r) => Object.keys(r).map((k) => levels.add(k)));
-            setLevels(Array.from(levels));
-        }
-    }, [tableData]);
-
-    // Generate table COLUMNS and ROWS
-    useEffect(() => {
-        if (tableData) {
-            const cols = new Set();
-
-            const rows = tableData.map((item, i) => {
-                const levels = item.row;
-
-                const parts = item.data.reduce((obj, part) => {
-                    return { ...obj, [part.name || ""]: part.partNumber } as any;
-                }, {});
-
-                return { id: i, ...levels, ...parts, "Product family": productFamily };
-            });
-
-            rows.map((r) => Object.keys(r).map((k) => cols.add(k)));
-
-            const dtCols: any[] = [];
-            cols.forEach((c: any) => c !== "Product family" && dtCols.push({ field: c, flex: 1, sortable: false }));
-            dtCols[0].hide = true;
-            dtCols.unshift({ field: "Product family", flex: 1, sortable: false });
-
-            setTable({ columns: dtCols, rows });
+            setTable({ columns, rows });
+            setLevels(levels);
         }
     }, [tableData]);
 
@@ -71,22 +47,39 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
         setAddPart(false);
     };
 
-    const handleChangePart = async (d: any) => {
-        try {
-            Object.keys(d.row).map((r) => {
-                if (!levels?.includes(r)) {
-                    delete d.row[r];
-                }
-            });
-            // console.log(d);
+    const handleChangePart = (d: any) => {
+        setTable((prev) => {
+            const res = { ...prev };
+            const index = res.rows.findIndex((r: any) => r.id === d.row.id);
+            const header = d.data[0].name;
+            res.rows[index][header] = d.data[0].partNumber;
 
-            await postMatriceData(productFamily, { lines: [d] });
+            return res;
+        });
+
+        const row = JSON.parse(JSON.stringify(d));
+
+        Object.keys(row.row).map((r) => {
+            if (!levels?.includes(r)) {
+                delete row.row[r];
+            }
+        });
+
+        setLines((prev) => (prev ? [...prev, row] : [row]));
+        setChangePart(false);
+    };
+
+    const submitChanges = async () => {
+        try {
+            console.log(lines);
+
+            await postMatriceData(productFamily, { lines });
             mutateTableData();
 
             Toast.fire({ icon: "success", title: "Record changed." });
-            setChangePart(false);
+            setLines(undefined);
         } catch (error) {
-            Toast.fire({ icon: "error", title: JSON.stringify(error) });
+            Toast.fire({ icon: "error", title: error });
         }
     };
 
@@ -120,10 +113,16 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
                     <Button variant="outlined" style={{ margin: "0.5em 0" }} onClick={() => setAddPart(true)}>
                         Add part
                     </Button>
+                    <Button kind="add" disabled={!lines} style={{ margin: "0.5em" }} onClick={submitChanges}>
+                        Submit changes
+                    </Button>
+
                     <Box height={450}>
                         <DataGrid
                             columns={table.columns}
                             rows={table.rows}
+                            components={{ Footer: CustomFooterStatusComponent }}
+                            componentsProps={{ footer: { submited: Boolean(lines) } }}
                             onColumnHeaderClick={(params) => {
                                 setSelectedPart({ formerName: params.field, newName: "" });
                                 setRenamePart(true);

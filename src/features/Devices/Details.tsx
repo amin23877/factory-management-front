@@ -73,6 +73,8 @@ function ItemsDetails({
 
     const docCols = useMemo(
         () => [
+            { field: "file", headerName: "File" },
+            { field: "type", headerName: "Type" },
             { field: "name", headerName: "Name" },
             { field: "EmployeeId", headerName: "Creator" },
             { field: "description", headerName: "Description", width: 250 },
@@ -83,7 +85,8 @@ function ItemsDetails({
 
     const bomCols = useMemo<GridColDef[]>(
         () => [
-            { field: "no", headerName: "no." },
+            { field: "revision", headerName: "Revision" },
+            { field: "date", headerName: "Date", type: "date" },
             { field: "name", headerName: "Name" },
             { field: "note", headerName: "note", flex: 1 },
             { field: "current", headerName: "current", type: "boolean" },
@@ -265,11 +268,11 @@ function ItemsDetails({
                                 />
                             )}
                             {activeTab === 8 && (
-                                <BaseDataGrid cols={usageCols} rows={itemUsage || []} onRowSelected={() => { }} />
+                                <BaseDataGrid cols={usageCols} rows={itemUsage || []} onRowSelected={() => {}} />
                             )}
                             {activeTab === 9 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
                             {activeTab === 10 && (
-                                <BaseDataGrid cols={serviceCols} rows={services || []} onRowSelected={() => { }} />
+                                <BaseDataGrid cols={serviceCols} rows={services || []} onRowSelected={() => {}} />
                             )}
                             {activeTab === 12 && (
                                 <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />

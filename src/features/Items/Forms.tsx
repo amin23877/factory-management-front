@@ -83,7 +83,7 @@ export const General = ({
                         onChange={handleChange}
                         control={<Checkbox />}
                     />
-                    {device ?
+                    {device ? (
                         <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
                             checked={device ? true : values.device}
@@ -93,7 +93,7 @@ export const General = ({
                             disabled={device}
                             control={<Checkbox />}
                         />
-                        : null}
+                    ) : null}
                 </Box>
                 <TextField
                     style={{ gridColumnEnd: "span 4" }}
@@ -360,7 +360,15 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
     );
 };
 
-export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlur, touched, selectedItem, device }: any) => {
+export const DynamicFilterAndFields = ({
+    values,
+    errors,
+    handleChange,
+    handleBlur,
+    touched,
+    selectedItem,
+    device,
+}: any) => {
     const [dynamicFields, setDynamicFields] = useState<ReactNode[]>([]);
     const { data: filters } = useSWR<IFilter[]>("/filter");
     const { data: fields } = useSWR<IField[]>("/field");
@@ -408,7 +416,6 @@ export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlu
             }
         };
         fields?.map((field) => {
-            console.log(field)
             if (selectedItem?.device || device) {
                 if (
                     field.all ||
@@ -417,7 +424,7 @@ export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlu
                 ) {
                     addInputToArray(field);
                 }
-            } else if (field.filterName[0] !== 'Product Family') {
+            } else if (field.filterName[0] !== "Product Family") {
                 if (
                     field.all ||
                     field.filterValue.includes(values[field.filterName]) ||
@@ -449,8 +456,8 @@ export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlu
                             onChange={handleChange}
                             onBlur={handleBlur}
                         />
-                    )
-                } else if (filter.name !== 'Product Family') {
+                    );
+                } else if (filter.name !== "Product Family") {
                     return (
                         <ArraySelect
                             defaultValue={values[filter.name as any] || ""}
@@ -461,11 +468,9 @@ export const DynamicFilterAndFields = ({ values, errors, handleChange, handleBlu
                             onChange={handleChange}
                             onBlur={handleBlur}
                         />
-                    )
+                    );
                 }
-
-            }
-            )}
+            })}
             <Divider style={{ gridColumnEnd: "span 2" }} />
             {dynamicFields}
         </Box>
