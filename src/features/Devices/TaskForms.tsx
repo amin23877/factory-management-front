@@ -96,7 +96,7 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, task }: ITaskModa
                         <Box display="flex" >
                             <Box style={{ flex: 1 }} >
                                 <Box m={3} mt={0} display="grid" gridTemplateColumns={task ? "1fr 1fr 1fr 1fr" : "1fr 1fr"} gridGap={10} gridColumnGap={10}>
-                                    <Box mb={3} style={task ? { gridColumnEnd: "span 4" } : {gridColumnEnd:"span 2"}}>
+                                    <Box my={1} style={task ? { gridColumnEnd: "span 4" } : {gridColumnEnd:"span 2"}}>
                                         <FormControlLabel
                                             name="buildToStock"
                                             value={values.buildToStock}
