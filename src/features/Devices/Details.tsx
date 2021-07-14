@@ -168,10 +168,11 @@ function ItemsDetails({
                                         textColor="primary"
                                         onChange={(e, v) => setMoreInfoTab(v)}
                                     >
-                                        <Tab label="Clusters and Levels" />
                                         <Tab label="Image" />
+                                        <Tab label="Clusters and Levels" />
                                     </Tabs>
-                                    {moreInfoTab === 0 && (
+                                    {moreInfoTab === 0 && <Photo device={selectedRow} />}
+                                    {moreInfoTab === 1 && (
                                         <DynamicFilterAndFields
                                             values={values}
                                             handleChange={handleChange}
@@ -183,7 +184,6 @@ function ItemsDetails({
                                             device={true}
                                         />
                                     )}
-                                    {moreInfoTab === 1 && <Photo device={selectedRow} />}
                                 </BasePaper>
                             </Grid>
                         </Grid>

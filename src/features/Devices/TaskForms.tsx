@@ -38,7 +38,7 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, task }: ITaskModa
 
     const [AddStep, setAddStep] = useState(false);
     const [step, setStep] = useState(false);
-    const { data: manSteps } = useSWR(task ? `/engineering/manufacturing/step?taskId=${task.id}` : null);
+    const { data: manSteps } = useSWR(task ? `/engineering/manufacturing/step?TaskId=${task.id}` : null);
 
     const manCols = useMemo<GridColDef[]>(
         () => [
@@ -93,12 +93,27 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, task }: ITaskModa
             <Formik initialValues={task ? task : ({} as any)} onSubmit={handleSubmit}>
                 {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                     <Form style={{ marginBottom: "20px" }}>
-                        {task ?
-                            <h3 style={{ marginLeft: "20px" }}>Manufacturing</h3>
-                            : null}
-                        <Box m={3} display="flex" >
+                        <Box display="flex" >
                             <Box style={{ flex: 1 }} >
-                                <Box m={3} display="grid" gridTemplateColumns={task ? "1fr 1fr 1fr 1fr" : "1fr 1fr"} gridGap={10} gridColumnGap={10}>
+                                <Box m={3} mt={0} display="grid" gridTemplateColumns={task ? "1fr 1fr 1fr 1fr" : "1fr 1fr"} gridGap={10} gridColumnGap={10}>
+                                    <Box mb={3} style={task ? { gridColumnEnd: "span 4" } : {gridColumnEnd:"span 2"}}>
+                                        <FormControlLabel
+                                            name="buildToStock"
+                                            value={values.buildToStock}
+                                            control={<Checkbox checked={Boolean(values.buildToStock)} />}
+                                            label="Build to Stock"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                        <FormControlLabel
+                                            name="engAP"
+                                            value={values.engAP}
+                                            control={<Checkbox checked={Boolean(values.engAP)} />}
+                                            label="Engineering Approved"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                    </Box>
                                     <TextField
                                         style={!task ? { gridColumnEnd: "span 2" } : {}}
                                         value={values.name}
@@ -108,7 +123,6 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, task }: ITaskModa
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
-
                                     <TextField
                                         fullWidth
                                         style={{ marginBottom: "10px" }}
@@ -119,7 +133,6 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, task }: ITaskModa
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
-
                                     <TextField
                                         fullWidth
                                         style={{ marginBottom: "10px" }}
@@ -139,30 +152,14 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, task }: ITaskModa
                                         onBlur={handleBlur}
                                     />
                                     <TextField
-                                        style={{ gridColumnEnd: "span 2" }}
+                                        style={!task ? { gridColumnEnd: "span 2" } : { gridColumnEnd: 'span 4' }}
                                         fullWidth
                                         value={values.description}
                                         name="description"
                                         label="Description"
                                         variant="outlined"
                                         multiline
-                                        rows={task ? 1 : 4}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />
-                                    <FormControlLabel
-                                        name="buildToStock"
-                                        value={values.buildToStock}
-                                        control={<Checkbox checked={Boolean(values.buildToStock)} />}
-                                        label="Build to Stock"
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />
-                                    <FormControlLabel
-                                        name="engAP"
-                                        value={values.engAP}
-                                        control={<Checkbox checked={Boolean(values.engAP)} />}
-                                        label="Engineering Approved"
+                                        rows={4}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
