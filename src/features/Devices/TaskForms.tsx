@@ -3,12 +3,11 @@ import { Box, TextField, FormControlLabel, Checkbox } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import { GridColDef } from "@material-ui/data-grid";
 import useSWR from "swr";
-import { ManufacturingStep, EvaluationStep, TestStep, FieldStep } from './AddStepForms'
+import AddStepModal, { EditStepModal } from './StepModal'
 
 import Button from "../../app/Button";
 import { DateTimePicker } from "@material-ui/pickers";
 import BaseDataGrid from "../../app/BaseDataGrid";
-import Dialog from '../../app/Dialog'
 import {
     createAManTask,
     createAEvalTask,
@@ -22,27 +21,24 @@ import {
     deleteAFieldTask,
     deleteAManTask,
     deleteATestTask,
-} from "./task";
+} from "../../api/engTask";
 import { mutate } from "swr";
 
 interface ITaskModal {
     open: boolean;
     itemId: string;
-    Task?: any;
+    task?: any;
     onDone?: () => void;
     onClose: () => void;
 }
 
 
-// ItemId, name, date, hours, description, priority, buildToStock, engAP 
-
-
-export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
+export const Manufacturing = ({ open, onClose, itemId, onDone, task }: ITaskModal) => {
 
 
     const [AddStep, setAddStep] = useState(false);
     const [step, setStep] = useState(false);
-    const { data: manSteps } = useSWR(Task ? `/engineering/manufacturing/step?TaskId=${Task.id}` : null);
+    const { data: manSteps } = useSWR(task ? `/engineering/manufacturing/step?taskId=${task.id}` : null);
 
     const manCols = useMemo<GridColDef[]>(
         () => [
@@ -55,8 +51,8 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
 
     const deleteDocument = useCallback(async () => {
         try {
-            if (Task && Task.id) {
-                await deleteAManTask(Task.id);
+            if (task && task.id) {
+                await deleteAManTask(task.id);
                 mutate(`/engineering/manufacturing/task?ItemId=${itemId}`)
                 onDone && onDone();
                 onClose();
@@ -69,8 +65,8 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
     const handleSubmit = useCallback((values, { setSubmitting }) => {
         const newDate = new Date(values.date)
         const date = newDate.getTime()
-        if (Task && Task.id) {
-            updateAManTask(Task.id, values.name, date, values.hours, values.description, values.priority, values.buildToStock, values.engAP)
+        if (task && task.id) {
+            updateAManTask(task.id, values.name, date, values.hours, values.description, values.priority, values.buildToStock, values.engAP)
                 .then((d) => {
                     mutate(`/engineering/manufacturing/task?ItemId=${itemId}`)
                     onDone && onDone();
@@ -92,24 +88,19 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
 
     return (
         <Fragment>
-            {Task?.id ? <Dialog open={AddStep} onClose={() => setAddStep(false)} >
-                <ManufacturingStep TaskId={Task.id} onClose={() => setAddStep(false)} />
-            </Dialog> : null}
-            {Task?.id ? <Dialog open={step} onClose={() => setStep(false)} maxWidth='lg' fullWidth>
-                <ManufacturingStep TaskId={Task.id} onClose={() => setStep(false)} step={step} />
-            </Dialog> : null}
-
-            <Formik initialValues={Task ? Task : ({} as any)} onSubmit={handleSubmit}>
+            {task?.id && <AddStepModal open={AddStep} onClose={() => setAddStep(false)} taskId={task.id} tab={0} />}
+            {task?.id && <EditStepModal open={step} onClose={() => setStep(false)} step={step} taskId={task.id} tab={0} />}
+            <Formik initialValues={task ? task : ({} as any)} onSubmit={handleSubmit}>
                 {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                     <Form style={{ marginBottom: "20px" }}>
-                        {Task ?
+                        {task ?
                             <h3 style={{ marginLeft: "20px" }}>Manufacturing</h3>
                             : null}
                         <Box m={3} display="flex" >
                             <Box style={{ flex: 1 }} >
-                                <Box m={3} display="grid" gridTemplateColumns={Task ? "1fr 1fr 1fr 1fr" : "1fr 1fr"} gridGap={10} gridColumnGap={10}>
+                                <Box m={3} display="grid" gridTemplateColumns={task ? "1fr 1fr 1fr 1fr" : "1fr 1fr"} gridGap={10} gridColumnGap={10}>
                                     <TextField
-                                        style={!Task ? { gridColumnEnd: "span 2" } : {}}
+                                        style={!task ? { gridColumnEnd: "span 2" } : {}}
                                         value={values.name}
                                         name="name"
                                         label="Name"
@@ -140,7 +131,7 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
                                         onBlur={handleBlur}
                                     />
                                     <DateTimePicker
-                                        style={!Task ? { gridColumnEnd: "span 2" } : {}}
+                                        style={!task ? { gridColumnEnd: "span 2" } : {}}
                                         value={values.date}
                                         name="date"
                                         label="date"
@@ -155,7 +146,7 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
                                         label="Description"
                                         variant="outlined"
                                         multiline
-                                        rows={Task ? 1 : 4}
+                                        rows={task ? 1 : 4}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
@@ -177,10 +168,10 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
                                     />
                                 </Box>
                                 <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
-                                    <Button type="submit" disabled={isSubmitting} kind={Task ? "edit" : "add"} style={{ flex: 1 }}>
+                                    <Button type="submit" disabled={isSubmitting} kind={task ? "edit" : "add"} style={{ flex: 1 }}>
                                         Save
                                     </Button>
-                                    {Task && (
+                                    {task && (
                                         <Fragment>
 
                                             <Button
@@ -200,7 +191,7 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
                                         </Fragment>
                                     )}
                                 </Box>
-                                {Task ? <Box style={{ width: "100" }}>
+                                {task ? <Box style={{ width: "100" }}>
                                     <BaseDataGrid
                                         cols={manCols}
                                         rows={manSteps || []}
@@ -219,13 +210,13 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
     );
 };
 
-export const Evaluation = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
+export const Evaluation = ({ open, onClose, itemId, onDone, task }: ITaskModal) => {
     const fileUploader = useRef<HTMLInputElement | null>();
 
     const deleteDocument = useCallback(async () => {
         try {
-            if (Task && Task.id) {
-                await deleteAEvalTask(Task.id);
+            if (task && task.id) {
+                await deleteAEvalTask(task.id);
                 onDone && onDone();
                 onClose();
             }
@@ -235,8 +226,8 @@ export const Evaluation = ({ open, onClose, itemId, onDone, Task }: ITaskModal) 
     }, []);
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
-        if (Task && Task.id) {
-            updateAEvalTask(Task.id, values.name, values.date, values.hours, values.description, values.priority, values.buildToStock, values.engAP)
+        if (task && task.id) {
+            updateAEvalTask(task.id, values.name, values.date, values.hours, values.description, values.priority, values.buildToStock, values.engAP)
                 .then((d) => {
                     console.log(d);
                     onDone && onDone();
@@ -257,7 +248,7 @@ export const Evaluation = ({ open, onClose, itemId, onDone, Task }: ITaskModal) 
     }, []);
 
     return (
-        <Formik initialValues={Task ? Task : ({} as any)} onSubmit={handleSubmit}>
+        <Formik initialValues={task ? task : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                 <Form style={{ marginBottom: "20px" }}>
                     <h3 style={{ marginLeft: "20px" }}>Evaluation</h3>
@@ -333,10 +324,10 @@ export const Evaluation = ({ open, onClose, itemId, onDone, Task }: ITaskModal) 
                                 />
                             </Box>
                             <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
-                                <Button type="submit" kind={Task ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
+                                <Button type="submit" kind={task ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
                                     Save
                                 </Button>
-                                {Task && (
+                                {task && (
                                     <Button
                                         style={{ marginLeft: "1em" }}
                                         onClick={deleteDocument}
@@ -355,13 +346,13 @@ export const Evaluation = ({ open, onClose, itemId, onDone, Task }: ITaskModal) 
     );
 };
 
-export const Test = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
+export const Test = ({ open, onClose, itemId, onDone, task }: ITaskModal) => {
     const fileUploader = useRef<HTMLInputElement | null>();
 
     const deleteDocument = useCallback(async () => {
         try {
-            if (Task && Task.id) {
-                await deleteATestTask(Task.id);
+            if (task && task.id) {
+                await deleteATestTask(task.id);
                 onDone && onDone();
                 onClose();
             }
@@ -371,8 +362,8 @@ export const Test = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
     }, []);
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
-        if (Task && Task.id) {
-            updateATestTask(Task.id, values.name, values.date, values.hours, values.description, values.priority, values.buildToStock, values.engAP)
+        if (task && task.id) {
+            updateATestTask(task.id, values.name, values.date, values.hours, values.description, values.priority, values.buildToStock, values.engAP)
                 .then((d) => {
                     console.log(d);
                     onDone && onDone();
@@ -393,7 +384,7 @@ export const Test = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
     }, []);
 
     return (
-        <Formik initialValues={Task ? Task : ({} as any)} onSubmit={handleSubmit}>
+        <Formik initialValues={task ? task : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                 <Form style={{ marginBottom: "20px" }}>
                     <h3 style={{ marginLeft: "20px" }}>Test</h3>
@@ -469,10 +460,10 @@ export const Test = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
                                 />
                             </Box>
                             <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
-                                <Button type="submit" kind={Task ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
+                                <Button type="submit" kind={task ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
                                     Save
                                 </Button>
-                                {Task && (
+                                {task && (
                                     <Button
                                         style={{ marginLeft: "1em" }}
                                         onClick={deleteDocument}
@@ -491,13 +482,13 @@ export const Test = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
     );
 };
 
-export const Field = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
+export const Field = ({ open, onClose, itemId, onDone, task }: ITaskModal) => {
     const fileUploader = useRef<HTMLInputElement | null>();
 
     const deleteDocument = useCallback(async () => {
         try {
-            if (Task && Task.id) {
-                await deleteAFieldTask(Task.id);
+            if (task && task.id) {
+                await deleteAFieldTask(task.id);
                 onDone && onDone();
                 onClose();
             }
@@ -507,8 +498,8 @@ export const Field = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
     }, []);
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
-        if (Task && Task.id) {
-            updateAFieldTask(Task.id, values.name, values.date, values.hours, values.description, values.priority, values.buildToStock, values.engAP)
+        if (task && task.id) {
+            updateAFieldTask(task.id, values.name, values.date, values.hours, values.description, values.priority, values.buildToStock, values.engAP)
                 .then((d) => {
                     console.log(d);
                     onDone && onDone();
@@ -529,7 +520,7 @@ export const Field = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
     }, []);
 
     return (
-        <Formik initialValues={Task ? Task : ({} as any)} onSubmit={handleSubmit}>
+        <Formik initialValues={task ? task : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                 <Form style={{ marginBottom: "20px" }}>
                     <h3 style={{ marginLeft: "20px" }}>Field StartUp</h3>
@@ -605,10 +596,10 @@ export const Field = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
                                 />
                             </Box>
                             <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
-                                <Button type="submit" kind={Task ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
+                                <Button type="submit" kind={task ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
                                     Save
                                 </Button>
-                                {Task && (
+                                {task && (
                                     <Button
                                         style={{ marginLeft: "1em" }}
                                         onClick={deleteDocument}

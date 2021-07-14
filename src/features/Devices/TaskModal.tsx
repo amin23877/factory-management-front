@@ -3,7 +3,7 @@ import { Tabs, Tab } from "@material-ui/core";
 import { Formik, Form } from "formik";
 
 import Dialog from "../../app/Dialog";
-import { Manufacturing, Evaluation, Test, Field } from './AddTaskForms'
+import { Manufacturing, Evaluation, Test, Field } from './TaskForms'
 
 interface ITaskModal {
     open: boolean;
@@ -35,10 +35,10 @@ export default function TaskModal({ open, onClose, itemId, onDone, task, tab }: 
                 <Tab label="Test" />
                 <Tab label="Field Start-up" />
             </Tabs>
-            {activeTab === 0 && <Manufacturing open={open} onClose={onClose} itemId={itemId} onDone={onDone} Task={task} />}
-            {activeTab === 1 && <Evaluation open={open} onClose={onClose} itemId={itemId} onDone={onDone} Task={task} />}
-            {activeTab === 2 && <Test open={open} onClose={onClose} itemId={itemId} onDone={onDone} Task={task} />}
-            {activeTab === 3 && <Field open={open} onClose={onClose} itemId={itemId} onDone={onDone} Task={task} />}
+            {activeTab === 0 && <Manufacturing open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />}
+            {activeTab === 1 && <Evaluation open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />}
+            {activeTab === 2 && <Test open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />}
+            {activeTab === 3 && <Field open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />}
         </Dialog>
     );
 }
@@ -47,10 +47,10 @@ export default function TaskModal({ open, onClose, itemId, onDone, task, tab }: 
 export function EditTaskModal({ open, onClose, itemId, onDone, task, tab }: IEditTaskModal) {
     return (
         <Dialog open={open} onClose={onClose} maxWidth='lg' fullWidth >
-            {tab === 0 && <Manufacturing open={open} onClose={onClose} itemId={itemId} onDone={onDone} Task={task} />}
-            {tab === 1 && <Evaluation open={open} onClose={onClose} itemId={itemId} onDone={onDone} Task={task} />}
-            {tab === 2 && <Test open={open} onClose={onClose} itemId={itemId} onDone={onDone} Task={task} />}
-            {tab === 3 && <Field open={open} onClose={onClose} itemId={itemId} onDone={onDone} Task={task} />}
+            {tab === 0 && <Manufacturing open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />}
+            {tab === 1 && <Evaluation open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />}
+            {tab === 2 && <Test open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />}
+            {tab === 3 && <Field open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />}
         </Dialog>
     );
 }
