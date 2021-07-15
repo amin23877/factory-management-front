@@ -5,7 +5,7 @@ import { CloseRounded } from "@material-ui/icons";
 interface IDialog extends DialogProps {
     open: boolean;
     onClose: () => void;
-    title?: string;
+    title: string;
 }
 
 export default function MyDialog({ open, title, onClose, ...props }: IDialog) {

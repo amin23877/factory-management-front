@@ -26,7 +26,7 @@ export default function TaskModal({ open, onClose, itemId, onDone, task, tab }: 
     const [activeTab, setActiveTab] = useState(tab ? tab : 0);
 
     return (
-        <Dialog open={open} onClose={onClose}>
+        <Dialog title="Task" open={open} onClose={onClose}>
             <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} textColor="primary">
                 <Tab label="Manufacturing" />
                 <Tab label="Evaluation" />
@@ -46,8 +46,10 @@ export default function TaskModal({ open, onClose, itemId, onDone, task, tab }: 
 }
 
 export function EditTaskModal({ open, onClose, itemId, onDone, task, tab }: IEditTaskModal) {
+    const titles = ["Manufaturing", "Evaluation", "Test", "Field startup"];
+
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
+        <Dialog title={titles[tab]} open={open} onClose={onClose} maxWidth="lg" fullWidth>
             {tab === 0 && <Manufacturing open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />}
             {tab === 1 && <Evaluation open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />}
             {tab === 2 && <Test open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />}

@@ -341,7 +341,8 @@ export const Evaluation = ({ open, onClose, itemId, onDone, task }: ITaskModal) 
                                 >
                                     <Box
                                         my={1}
-                                        style={task ? { gridColumnEnd: "span 5" } : { gridColumnEnd: "span 2" }}
+                                        px={1}
+                                        style={{ gridColumnEnd: task ? "span 5" : "span 2", border: "1px dashed gray" }}
                                     >
                                         <FormControlLabel
                                             name="buildToStock"
