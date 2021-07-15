@@ -1,14 +1,15 @@
-import React, { Fragment, useCallback, useRef, useState, useMemo } from "react";
-import { Box, TextField, FormControlLabel, Checkbox } from "@material-ui/core";
+import React, { useCallback, useRef, useState, useMemo } from "react";
+import { Box, FormControlLabel, Checkbox } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import { GridColDef } from "@material-ui/data-grid";
 import useSWR from "swr";
-import { ManufacturingStep, EvaluationStep, TestStep, FieldStep } from './AddStepForms'
+import { ManufacturingStep } from "./AddStepForms";
 
+import TextField from "../../app/TextField";
 import Button from "../../app/Button";
 import { DateTimePicker } from "@material-ui/pickers";
 import BaseDataGrid from "../../app/BaseDataGrid";
-import Dialog from '../../app/Dialog'
+import Dialog from "../../app/Dialog";
 import {
     createAManTask,
     createAEvalTask,
@@ -33,13 +34,9 @@ interface ITaskModal {
     onClose: () => void;
 }
 
-
-// ItemId, name, date, hours, description, priority, buildToStock, engAP 
-
+// ItemId, name, date, hours, description, priority, buildToStock, engAP
 
 export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
-
-
     const [AddStep, setAddStep] = useState(false);
     const [step, setStep] = useState(false);
     const { data: manSteps } = useSWR(Task ? `/engineering/manufacturing/step?TaskId=${Task.id}` : null);
@@ -57,7 +54,7 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
         try {
             if (Task && Task.id) {
                 await deleteAManTask(Task.id);
-                mutate(`/engineering/manufacturing/task?ItemId=${itemId}`)
+                mutate(`/engineering/manufacturing/task?ItemId=${itemId}`);
                 onDone && onDone();
                 onClose();
             }
@@ -67,22 +64,40 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
     }, []);
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
-        const newDate = new Date(values.date)
-        const date = newDate.getTime()
+        const newDate = new Date(values.date);
+        const date = newDate.getTime();
         if (Task && Task.id) {
-            updateAManTask(Task.id, values.name, date, values.hours, values.description, values.priority, values.buildToStock, values.engAP)
+            updateAManTask(
+                Task.id,
+                values.name,
+                date,
+                values.hours,
+                values.description,
+                values.priority,
+                values.buildToStock,
+                values.engAP
+            )
                 .then((d) => {
-                    mutate(`/engineering/manufacturing/task?ItemId=${itemId}`)
+                    mutate(`/engineering/manufacturing/task?ItemId=${itemId}`);
                     onDone && onDone();
                     onClose();
                 })
                 .catch((e) => console.log(e))
                 .finally(() => setSubmitting(false));
         } else {
-            createAManTask(itemId, values.name, date, values.hours, values.description, values.priority, values.buildToStock, values.engAP)
+            createAManTask(
+                itemId,
+                values.name,
+                date,
+                values.hours,
+                values.description,
+                values.priority,
+                values.buildToStock,
+                values.engAP
+            )
                 .then((d) => {
                     setSubmitting(false);
-                    mutate(`/engineering/manufacturing/task?ItemId=${itemId}`)
+                    mutate(`/engineering/manufacturing/task?ItemId=${itemId}`);
                     onDone && onDone();
                     onClose();
                 })
@@ -91,29 +106,36 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
     }, []);
 
     return (
-        <Fragment>
-            {Task?.id ? <Dialog open={AddStep} onClose={() => setAddStep(false)} >
-                <ManufacturingStep TaskId={Task.id} onClose={() => setAddStep(false)} />
-            </Dialog> : null}
-            {Task?.id ? <Dialog open={step} onClose={() => setStep(false)} maxWidth='lg' fullWidth>
-                <ManufacturingStep TaskId={Task.id} onClose={() => setStep(false)} step={step} />
-            </Dialog> : null}
+        <>
+            {Task?.id ? (
+                <Dialog title="Step" open={AddStep} onClose={() => setAddStep(false)}>
+                    <ManufacturingStep TaskId={Task.id} onClose={() => setAddStep(false)} />
+                </Dialog>
+            ) : null}
+            {Task?.id ? (
+                <Dialog title="Step" open={step} onClose={() => setStep(false)} maxWidth="lg" fullWidth>
+                    <ManufacturingStep TaskId={Task.id} onClose={() => setStep(false)} step={step} />
+                </Dialog>
+            ) : null}
 
             <Formik initialValues={Task ? Task : ({} as any)} onSubmit={handleSubmit}>
                 {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                     <Form style={{ marginBottom: "20px" }}>
-                        {Task ?
-                            <h3 style={{ marginLeft: "20px" }}>Manufacturing</h3>
-                            : null}
-                        <Box m={3} display="flex" >
-                            <Box style={{ flex: 1 }} >
-                                <Box m={3} display="grid" gridTemplateColumns={Task ? "1fr 1fr 1fr 1fr" : "1fr 1fr"} gridGap={10} gridColumnGap={10}>
+                        {/* {Task ? <h3 style={{ marginLeft: "20px" }}>Manufacturing</h3> : null} */}
+                        <Box m={2} display="flex">
+                            <Box style={{ flex: 1 }}>
+                                <Box
+                                    m={1}
+                                    display="grid"
+                                    gridTemplateColumns={Task ? "1fr 1fr 1fr 1fr" : "1fr 1fr"}
+                                    gridGap={10}
+                                    gridColumnGap={10}
+                                >
                                     <TextField
                                         style={!Task ? { gridColumnEnd: "span 2" } : {}}
                                         value={values.name}
                                         name="name"
                                         label="Name"
-                                        variant="outlined"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
@@ -124,7 +146,6 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
                                         value={values.priority}
                                         name="priority"
                                         label="Priority"
-                                        variant="outlined"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
@@ -135,7 +156,6 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
                                         value={values.hours}
                                         name="hours"
                                         label="hours"
-                                        variant="outlined"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
@@ -153,7 +173,6 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
                                         value={values.description}
                                         name="description"
                                         label="Description"
-                                        variant="outlined"
                                         multiline
                                         rows={Task ? 1 : 4}
                                         onChange={handleChange}
@@ -177,12 +196,16 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
                                     />
                                 </Box>
                                 <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
-                                    <Button type="submit" disabled={isSubmitting} kind={Task ? "edit" : "add"} style={{ flex: 1 }}>
+                                    <Button
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        kind={Task ? "edit" : "add"}
+                                        style={{ flex: 1 }}
+                                    >
                                         Save
                                     </Button>
                                     {Task && (
-                                        <Fragment>
-
+                                        <>
                                             <Button
                                                 style={{ marginLeft: "1em" }}
                                                 onClick={deleteDocument}
@@ -194,28 +217,30 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
                                             <Button
                                                 onClick={() => setAddStep(true)}
                                                 kind="add"
-                                                style={{ marginLeft: "1em" }}>
+                                                style={{ marginLeft: "1em" }}
+                                            >
                                                 Add Step
                                             </Button>
-                                        </Fragment>
+                                        </>
                                     )}
                                 </Box>
-                                {Task ? <Box style={{ width: "100" }}>
-                                    <BaseDataGrid
-                                        cols={manCols}
-                                        rows={manSteps || []}
-                                        onRowSelected={(d) => {
-                                            setStep(d);
-                                        }}
-                                    />
-                                </Box> : null}
+                                {Task ? (
+                                    <Box style={{ width: "100" }} mt={3}>
+                                        <BaseDataGrid
+                                            cols={manCols}
+                                            rows={manSteps || []}
+                                            onRowSelected={(d) => {
+                                                setStep(d);
+                                            }}
+                                        />
+                                    </Box>
+                                ) : null}
                             </Box>
                         </Box>
                     </Form>
-                )
-                }
-            </Formik >
-        </Fragment>
+                )}
+            </Formik>
+        </>
     );
 };
 
@@ -236,7 +261,16 @@ export const Evaluation = ({ open, onClose, itemId, onDone, Task }: ITaskModal) 
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
         if (Task && Task.id) {
-            updateAEvalTask(Task.id, values.name, values.date, values.hours, values.description, values.priority, values.buildToStock, values.engAP)
+            updateAEvalTask(
+                Task.id,
+                values.name,
+                values.date,
+                values.hours,
+                values.description,
+                values.priority,
+                values.buildToStock,
+                values.engAP
+            )
                 .then((d) => {
                     console.log(d);
                     onDone && onDone();
@@ -245,7 +279,16 @@ export const Evaluation = ({ open, onClose, itemId, onDone, Task }: ITaskModal) 
                 .catch((e) => console.log(e))
                 .finally(() => setSubmitting(false));
         } else {
-            createAEvalTask(itemId, values.name, values.date, values.hours, values.description, values.priority, values.buildToStock, values.engAP)
+            createAEvalTask(
+                itemId,
+                values.name,
+                values.date,
+                values.hours,
+                values.description,
+                values.priority,
+                values.buildToStock,
+                values.engAP
+            )
                 .then((d) => {
                     console.log(d);
                     setSubmitting(false);
@@ -261,15 +304,14 @@ export const Evaluation = ({ open, onClose, itemId, onDone, Task }: ITaskModal) 
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                 <Form style={{ marginBottom: "20px" }}>
                     <h3 style={{ marginLeft: "20px" }}>Evaluation</h3>
-                    <Box m={3} display="flex" >
-                        <Box style={{ flex: 1 }} >
+                    <Box m={3} display="flex">
+                        <Box style={{ flex: 1 }}>
                             <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
                                 <TextField
                                     style={{ gridColumnEnd: "span 2" }}
                                     value={values.name}
                                     name="name"
                                     label="Name"
-                                    variant="outlined"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
@@ -333,7 +375,12 @@ export const Evaluation = ({ open, onClose, itemId, onDone, Task }: ITaskModal) 
                                 />
                             </Box>
                             <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
-                                <Button type="submit" kind={Task ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
+                                <Button
+                                    type="submit"
+                                    kind={Task ? "edit" : "add"}
+                                    disabled={isSubmitting}
+                                    style={{ flex: 1 }}
+                                >
                                     Save
                                 </Button>
                                 {Task && (
@@ -372,7 +419,16 @@ export const Test = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
         if (Task && Task.id) {
-            updateATestTask(Task.id, values.name, values.date, values.hours, values.description, values.priority, values.buildToStock, values.engAP)
+            updateATestTask(
+                Task.id,
+                values.name,
+                values.date,
+                values.hours,
+                values.description,
+                values.priority,
+                values.buildToStock,
+                values.engAP
+            )
                 .then((d) => {
                     console.log(d);
                     onDone && onDone();
@@ -381,7 +437,16 @@ export const Test = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
                 .catch((e) => console.log(e))
                 .finally(() => setSubmitting(false));
         } else {
-            createATestTask(itemId, values.name, values.date, values.hours, values.description, values.priority, values.buildToStock, values.engAP)
+            createATestTask(
+                itemId,
+                values.name,
+                values.date,
+                values.hours,
+                values.description,
+                values.priority,
+                values.buildToStock,
+                values.engAP
+            )
                 .then((d) => {
                     console.log(d);
                     setSubmitting(false);
@@ -397,8 +462,8 @@ export const Test = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                 <Form style={{ marginBottom: "20px" }}>
                     <h3 style={{ marginLeft: "20px" }}>Test</h3>
-                    <Box m={3} display="flex" >
-                        <Box style={{ flex: 1 }} >
+                    <Box m={3} display="flex">
+                        <Box style={{ flex: 1 }}>
                             <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
                                 <TextField
                                     style={{ gridColumnEnd: "span 2" }}
@@ -469,7 +534,12 @@ export const Test = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
                                 />
                             </Box>
                             <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
-                                <Button type="submit" kind={Task ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
+                                <Button
+                                    type="submit"
+                                    kind={Task ? "edit" : "add"}
+                                    disabled={isSubmitting}
+                                    style={{ flex: 1 }}
+                                >
                                     Save
                                 </Button>
                                 {Task && (
@@ -508,7 +578,16 @@ export const Field = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
         if (Task && Task.id) {
-            updateAFieldTask(Task.id, values.name, values.date, values.hours, values.description, values.priority, values.buildToStock, values.engAP)
+            updateAFieldTask(
+                Task.id,
+                values.name,
+                values.date,
+                values.hours,
+                values.description,
+                values.priority,
+                values.buildToStock,
+                values.engAP
+            )
                 .then((d) => {
                     console.log(d);
                     onDone && onDone();
@@ -517,7 +596,16 @@ export const Field = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
                 .catch((e) => console.log(e))
                 .finally(() => setSubmitting(false));
         } else {
-            createAFieldTask(itemId, values.name, values.date, values.hours, values.description, values.priority, values.buildToStock, values.engAP)
+            createAFieldTask(
+                itemId,
+                values.name,
+                values.date,
+                values.hours,
+                values.description,
+                values.priority,
+                values.buildToStock,
+                values.engAP
+            )
                 .then((d) => {
                     console.log(d);
                     setSubmitting(false);
@@ -533,8 +621,8 @@ export const Field = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                 <Form style={{ marginBottom: "20px" }}>
                     <h3 style={{ marginLeft: "20px" }}>Field StartUp</h3>
-                    <Box m={3} display="flex" >
-                        <Box style={{ flex: 1 }} >
+                    <Box m={3} display="flex">
+                        <Box style={{ flex: 1 }}>
                             <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
                                 <TextField
                                     style={{ gridColumnEnd: "span 2" }}
@@ -605,7 +693,12 @@ export const Field = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
                                 />
                             </Box>
                             <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
-                                <Button type="submit" kind={Task ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
+                                <Button
+                                    type="submit"
+                                    kind={Task ? "edit" : "add"}
+                                    disabled={isSubmitting}
+                                    style={{ flex: 1 }}
+                                >
                                     Save
                                 </Button>
                                 {Task && (
