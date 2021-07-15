@@ -40,8 +40,9 @@ function ItemsDetails({
     const { data: notes } = useSWR<INote[]>(activeTab === 12 ? `/note/item/${selectedRow.id}` : null);
     const { data: docs } = useSWR<IDocument[]>(activeTab === 0 ? `/document/item/${selectedRow.id}` : null);
     const { data: boms } = useSWR<IBom[]>(activeTab === 1 ? `/bom?ItemId=${selectedRow.id}` : null);
+    const { data: warranties } = useSWR(activeTab === 2 ? `/service?ItemId=${selectedRow.id}&ServiceFamilyId=60efd0bcca0feadc84be6618` : null);
     const { data: manSteps } = useSWR(activeTab === 3 ? `/engineering/manufacturing/task?ItemId=${selectedRow.id}` : null);
-    const { data: evalSteps } = useSWR(activeTab === 4 ? `/evalStep?ItemId=${selectedRow.id}` : null);
+    const { data: evalSteps } = useSWR(activeTab === 4 ? `/engineering/eval/task?ItemId=${selectedRow.id}` : null);
     const { data: testSteps } = useSWR(activeTab === 5 ? `/testStep?ItemId=${selectedRow.id}` : null);
     const { data: fieldSteps } = useSWR(activeTab === 6 ? `/fieldStartUpStep?ItemId=${selectedRow.id}` : null);
     const { data: itemQuotes } = useSWR(activeTab === 5 ? `/item/${selectedRow.id}/quote` : null);
@@ -53,11 +54,21 @@ function ItemsDetails({
     const [snackMsg, setSnackMsg] = useState("");
     const [bomPartsModal, setBomPartsModal] = useState(false);
 
+    const warCols = useMemo(
+        () => [
+            { field: "name", headerName: "Name" },
+            { field: "price", headerName: "Price" },
+            { field: "period", headerName: "length" },
+            { field: "description", headerName: "Description" },
+        ],
+        []
+    );
     const serviceCols = useMemo(
         () => [
             { field: "name", headerName: "Name" },
             { field: "price", headerName: "Price" },
-            { field: "length", headerName: "length" },
+            { field: "period", headerName: "length" },
+            { field: "description", headerName: "Description" },
         ],
         []
     );
@@ -171,10 +182,11 @@ function ItemsDetails({
                                         textColor="primary"
                                         onChange={(e, v) => setMoreInfoTab(v)}
                                     >
-                                        <Tab label="Clusters and Levels" />
                                         <Tab label="Image" />
+                                        <Tab label="Clusters and Levels" />
                                     </Tabs>
-                                    {moreInfoTab === 0 && (
+                                    {moreInfoTab === 0 && <Photo device={selectedRow} />}
+                                    {moreInfoTab === 1 && (
                                         <DynamicFilterAndFields
                                             values={values}
                                             handleChange={handleChange}
@@ -186,7 +198,6 @@ function ItemsDetails({
                                             device={true}
                                         />
                                     )}
-                                    {moreInfoTab === 1 && <Photo device={selectedRow} />}
                                 </BasePaper>
                             </Grid>
                         </Grid>
@@ -229,6 +240,15 @@ function ItemsDetails({
                                     onRowSelected={(d) => {
                                         setBom(d);
                                         setBomPartsModal(true);
+                                    }}
+                                />
+                            )}
+                            {activeTab === 2 && (
+                                <BaseDataGrid
+                                    cols={warCols}
+                                    rows={warranties || []}
+                                    onRowSelected={(d) => {
+
                                     }}
                                 />
                             )}

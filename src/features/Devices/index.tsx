@@ -28,7 +28,7 @@ import { AddItemModal } from "../../features/Items/ItemModals";
 
 import DetailTab from "./Details";
 // import AddStepModal, { EditStepModal } from "./AddStepModal";
-import AddTaskModal, { EditTaskModal } from "./AddTaskModal";
+import AddTaskModal, { EditTaskModal } from "./TaskModal";
 
 import List from "../../app/SideUtilityList";
 

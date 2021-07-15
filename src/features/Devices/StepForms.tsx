@@ -48,7 +48,7 @@ export const ManufacturingStep = ({ onClose, TaskId, onDone, step }: IStepModal)
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
         if (step && step.id) {
-            updateAManStep(step.id, values.name, values.file, values.description, values.number)
+            updateAManStep(step.id, values.name, values.file, values.description, values.number, values.relatedPartNumber)
                 .then((d) => {
                     mutate(`/engineering/manufacturing/step?TaskId=${TaskId}`)
                     onDone && onDone();
@@ -57,7 +57,7 @@ export const ManufacturingStep = ({ onClose, TaskId, onDone, step }: IStepModal)
                 .catch((e) => console.log(e))
                 .finally(() => setSubmitting(false));
         } else {
-            createAManStep(TaskId, values.name, values.file, values.description, values.number)
+            createAManStep(TaskId, values.name, values.file, values.description, values.number, values.relatedPartNumber)
                 .then((d) => {
                     setSubmitting(false);
                     mutate(`/engineering/manufacturing/step?TaskId=${TaskId}`)
@@ -110,17 +110,15 @@ export const ManufacturingStep = ({ onClose, TaskId, onDone, step }: IStepModal)
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-
-                                {/* <TextField
+                                <TextField
                                     fullWidth
-                                    value={values.hours}
-                                    name="hours"
-                                    label="Hours"
-                                    variant="outlined"
+                                    style={{ marginBottom: "10px" }}
+                                    value={values.relatedPartNumber}
+                                    name="relatedPartNumber"
+                                    label="Part NO."
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                /> */}
-
+                                />
                                 <Box >
                                     <input
                                         multiple
@@ -201,6 +199,7 @@ export const EvaluationStep = ({ onClose, TaskId, onDone, step }: IStepModal) =>
         try {
             if (step && step.id) {
                 await deleteAEvalStep(step.id);
+                mutate(`/engineering/eval/step?TaskId=${TaskId}`)
                 onDone && onDone();
                 onClose();
             }
@@ -211,18 +210,18 @@ export const EvaluationStep = ({ onClose, TaskId, onDone, step }: IStepModal) =>
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
         if (step && step.id) {
-            updateAEvalStep(step.id, values.name, values.file, values.description, values.number)
+            updateAEvalStep(step.id, values.name, values.file, values.description, values.number, values.relatedPartNumber)
                 .then((d) => {
-                    console.log(d);
+                    mutate(`/engineering/eval/step?TaskId=${TaskId}`)
                     onDone && onDone();
                     onClose();
                 })
                 .catch((e) => console.log(e))
                 .finally(() => setSubmitting(false));
         } else {
-            createAEvalStep(TaskId, values.name, values.file, values.description, values.number)
+            createAEvalStep(TaskId, values.name, values.file, values.description, values.number, values.relatedPartNumber)
                 .then((d) => {
-                    console.log(d);
+                    mutate(`/engineering/eval/step?TaskId=${TaskId}`)
                     setSubmitting(false);
                     onDone && onDone();
                     onClose();
@@ -272,15 +271,15 @@ export const EvaluationStep = ({ onClose, TaskId, onDone, step }: IStepModal) =>
                                     onBlur={handleBlur}
                                 />
 
-                                {/* <TextField
+                                <TextField
                                     fullWidth
-                                    value={values.hours}
-                                    name="hours"
-                                    label="Hours"
-                                    variant="outlined"
+                                    style={{ marginBottom: "10px" }}
+                                    value={values.relatedPartNumber}
+                                    name="relatedPartNumber"
+                                    label="Part NO."
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                /> */}
+                                />
 
                                 <Box style={{ gridColumnEnd: "span 2", margin: "0px 25%" }}>
                                     <input
@@ -372,18 +371,16 @@ export const TestStep = ({ onClose, TaskId, onDone, step }: IStepModal) => {
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
         if (step && step.id) {
-            updateATestStep(step.id, values.name, values.file, values.description, values.number)
+            updateATestStep(step.id, values.name, values.file, values.description, values.number, values.relatedPartNumber)
                 .then((d) => {
-                    console.log(d);
                     onDone && onDone();
                     onClose();
                 })
                 .catch((e) => console.log(e))
                 .finally(() => setSubmitting(false));
         } else {
-            createATestStep(TaskId, values.name, values.file, values.description, values.number)
+            createATestStep(TaskId, values.name, values.file, values.description, values.number, values.relatedPartNumber)
                 .then((d) => {
-                    console.log(d);
                     setSubmitting(false);
                     onDone && onDone();
                     onClose();
@@ -432,17 +429,6 @@ export const TestStep = ({ onClose, TaskId, onDone, step }: IStepModal) => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-
-                                {/* <TextField
-                                    fullWidth
-                                    value={values.hours}
-                                    name="hours"
-                                    label="Hours"
-                                    variant="outlined"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                /> */}
-
                                 <Box style={{ gridColumnEnd: "span 2", margin: "0px 25%" }}>
                                     <input
                                         multiple
@@ -533,18 +519,16 @@ export const FieldStep = ({ onClose, TaskId, onDone, step }: IStepModal) => {
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
         if (step && step.id) {
-            updateAFieldStep(step.id, values.name, values.file, values.description, values.number)
+            updateAFieldStep(step.id, values.name, values.file, values.description, values.number, values.relatedPartNumber)
                 .then((d) => {
-                    console.log(d);
                     onDone && onDone();
                     onClose();
                 })
                 .catch((e) => console.log(e))
                 .finally(() => setSubmitting(false));
         } else {
-            createAFieldStep(TaskId, values.name, values.file, values.description, values.number)
+            createAFieldStep(TaskId, values.name, values.file, values.description, values.number, values.relatedPartNumber)
                 .then((d) => {
-                    console.log(d);
                     setSubmitting(false);
                     onDone && onDone();
                     onClose();

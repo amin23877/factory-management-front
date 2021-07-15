@@ -3,13 +3,12 @@ import { Box, FormControlLabel, Checkbox } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import { GridColDef } from "@material-ui/data-grid";
 import useSWR from "swr";
-import { ManufacturingStep } from "./AddStepForms";
+import AddStepModal, { EditStepModal } from "./StepModal";
 
 import TextField from "../../app/TextField";
 import Button from "../../app/Button";
 import { DateTimePicker } from "@material-ui/pickers";
 import BaseDataGrid from "../../app/BaseDataGrid";
-import Dialog from "../../app/Dialog";
 import {
     createAManTask,
     createAEvalTask,
@@ -23,37 +22,36 @@ import {
     deleteAFieldTask,
     deleteAManTask,
     deleteATestTask,
-} from "./task";
+} from "../../api/engTask";
 import { mutate } from "swr";
 
 interface ITaskModal {
     open: boolean;
     itemId: string;
-    Task?: any;
+    task?: any;
     onDone?: () => void;
     onClose: () => void;
 }
 
-// ItemId, name, date, hours, description, priority, buildToStock, engAP
-
-export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
+export const Manufacturing = ({ open, onClose, itemId, onDone, task }: ITaskModal) => {
     const [AddStep, setAddStep] = useState(false);
     const [step, setStep] = useState(false);
-    const { data: manSteps } = useSWR(Task ? `/engineering/manufacturing/step?TaskId=${Task.id}` : null);
+    const { data: manSteps } = useSWR(task ? `/engineering/manufacturing/step?TaskId=${task.id}` : null);
 
     const manCols = useMemo<GridColDef[]>(
         () => [
             { field: "number", headerName: "NO." },
             { field: "name", headerName: "Name" },
             { field: "description", headerName: "description", flex: 1 },
+            { field: "relatedPartNumber", headerName: "Part NO." },
         ],
         []
     );
 
     const deleteDocument = useCallback(async () => {
         try {
-            if (Task && Task.id) {
-                await deleteAManTask(Task.id);
+            if (task && task.id) {
+                await deleteAManTask(task.id);
                 mutate(`/engineering/manufacturing/task?ItemId=${itemId}`);
                 onDone && onDone();
                 onClose();
@@ -66,16 +64,17 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
     const handleSubmit = useCallback((values, { setSubmitting }) => {
         const newDate = new Date(values.date);
         const date = newDate.getTime();
-        if (Task && Task.id) {
+        if (task && task.id) {
             updateAManTask(
-                Task.id,
+                task.id,
                 values.name,
                 date,
                 values.hours,
                 values.description,
                 values.priority,
                 values.buildToStock,
-                values.engAP
+                values.engAP,
+                values.relatedPartNumber
             )
                 .then((d) => {
                     mutate(`/engineering/manufacturing/task?ItemId=${itemId}`);
@@ -93,7 +92,8 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
                 values.description,
                 values.priority,
                 values.buildToStock,
-                values.engAP
+                values.engAP,
+                values.relatedPartNumber
             )
                 .then((d) => {
                     setSubmitting(false);
@@ -107,39 +107,52 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
 
     return (
         <>
-            {Task?.id ? (
-                <Dialog title="Step" open={AddStep} onClose={() => setAddStep(false)}>
-                    <ManufacturingStep TaskId={Task.id} onClose={() => setAddStep(false)} />
-                </Dialog>
-            ) : null}
-            {Task?.id ? (
-                <Dialog title="Step" open={step} onClose={() => setStep(false)} maxWidth="lg" fullWidth>
-                    <ManufacturingStep TaskId={Task.id} onClose={() => setStep(false)} step={step} />
-                </Dialog>
-            ) : null}
-
-            <Formik initialValues={Task ? Task : ({} as any)} onSubmit={handleSubmit}>
+            {task?.id && <AddStepModal open={AddStep} onClose={() => setAddStep(false)} taskId={task.id} tab={0} />}
+            {task?.id && (
+                <EditStepModal open={step} onClose={() => setStep(false)} step={step} taskId={task.id} tab={0} />
+            )}
+            <Formik initialValues={task ? task : ({} as any)} onSubmit={handleSubmit}>
                 {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                     <Form style={{ marginBottom: "20px" }}>
-                        {/* {Task ? <h3 style={{ marginLeft: "20px" }}>Manufacturing</h3> : null} */}
-                        <Box m={2} display="flex">
+                        <Box display="flex">
                             <Box style={{ flex: 1 }}>
                                 <Box
-                                    m={1}
+                                    m={3}
+                                    mt={0}
                                     display="grid"
-                                    gridTemplateColumns={Task ? "1fr 1fr 1fr 1fr" : "1fr 1fr"}
+                                    gridTemplateColumns={task ? "1fr 1fr 1fr 1fr 1fr" : "1fr 1fr"}
                                     gridGap={10}
                                     gridColumnGap={10}
                                 >
+                                    <Box
+                                        my={1}
+                                        style={task ? { gridColumnEnd: "span 5" } : { gridColumnEnd: "span 2" }}
+                                    >
+                                        <FormControlLabel
+                                            name="buildToStock"
+                                            value={values.buildToStock}
+                                            control={<Checkbox checked={Boolean(values.buildToStock)} />}
+                                            label="Build to Stock"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                        <FormControlLabel
+                                            name="engAP"
+                                            value={values.engAP}
+                                            control={<Checkbox checked={Boolean(values.engAP)} />}
+                                            label="Engineering Approved"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                    </Box>
                                     <TextField
-                                        style={!Task ? { gridColumnEnd: "span 2" } : {}}
+                                        style={!task ? { gridColumnEnd: "span 2" } : {}}
                                         value={values.name}
                                         name="name"
                                         label="Name"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
-
                                     <TextField
                                         fullWidth
                                         style={{ marginBottom: "10px" }}
@@ -149,7 +162,15 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
-
+                                    <TextField
+                                        fullWidth
+                                        style={{ marginBottom: "10px" }}
+                                        value={values.relatedPartNumber}
+                                        name="relatedPartNumber"
+                                        label="Part NO."
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
                                     <TextField
                                         fullWidth
                                         style={{ marginBottom: "10px" }}
@@ -160,7 +181,6 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
                                         onBlur={handleBlur}
                                     />
                                     <DateTimePicker
-                                        style={!Task ? { gridColumnEnd: "span 2" } : {}}
                                         value={values.date}
                                         name="date"
                                         label="date"
@@ -168,29 +188,13 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
                                         onBlur={handleBlur}
                                     />
                                     <TextField
-                                        style={{ gridColumnEnd: "span 2" }}
+                                        style={!task ? { gridColumnEnd: "span 2" } : { gridColumnEnd: "span 5" }}
                                         fullWidth
                                         value={values.description}
                                         name="description"
                                         label="Description"
                                         multiline
-                                        rows={Task ? 1 : 4}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />
-                                    <FormControlLabel
-                                        name="buildToStock"
-                                        value={values.buildToStock}
-                                        control={<Checkbox checked={Boolean(values.buildToStock)} />}
-                                        label="Build to Stock"
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />
-                                    <FormControlLabel
-                                        name="engAP"
-                                        value={values.engAP}
-                                        control={<Checkbox checked={Boolean(values.engAP)} />}
-                                        label="Engineering Approved"
+                                        rows={4}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
@@ -199,12 +203,12 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
                                     <Button
                                         type="submit"
                                         disabled={isSubmitting}
-                                        kind={Task ? "edit" : "add"}
+                                        kind={task ? "edit" : "add"}
                                         style={{ flex: 1 }}
                                     >
                                         Save
                                     </Button>
-                                    {Task && (
+                                    {task && (
                                         <>
                                             <Button
                                                 style={{ marginLeft: "1em" }}
@@ -224,8 +228,8 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
                                         </>
                                     )}
                                 </Box>
-                                {Task ? (
-                                    <Box style={{ width: "100" }} mt={3}>
+                                {task ? (
+                                    <Box style={{ width: "100" }}>
                                         <BaseDataGrid
                                             cols={manCols}
                                             rows={manSteps || []}
@@ -244,13 +248,26 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, Task }: ITaskModa
     );
 };
 
-export const Evaluation = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
-    const fileUploader = useRef<HTMLInputElement | null>();
+export const Evaluation = ({ open, onClose, itemId, onDone, task }: ITaskModal) => {
+    const [AddStep, setAddStep] = useState(false);
+    const [step, setStep] = useState(false);
+    const { data: evalSteps } = useSWR(task ? `/engineering/eval/step?TaskId=${task.id}` : null);
+
+    const manCols = useMemo<GridColDef[]>(
+        () => [
+            { field: "number", headerName: "NO." },
+            { field: "name", headerName: "Name" },
+            { field: "description", headerName: "description", flex: 1 },
+            { field: "relatedPartNumber", headerName: "Part NO." },
+        ],
+        []
+    );
 
     const deleteDocument = useCallback(async () => {
         try {
-            if (Task && Task.id) {
-                await deleteAEvalTask(Task.id);
+            if (task && task.id) {
+                await deleteAEvalTask(task.id);
+                mutate(`/engineering/eval/task?ItemId=${itemId}`);
                 onDone && onDone();
                 onClose();
             }
@@ -260,19 +277,22 @@ export const Evaluation = ({ open, onClose, itemId, onDone, Task }: ITaskModal) 
     }, []);
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
-        if (Task && Task.id) {
+        const newDate = new Date(values.date);
+        const date = newDate.getTime();
+        if (task && task.id) {
             updateAEvalTask(
-                Task.id,
+                task.id,
                 values.name,
-                values.date,
+                date,
                 values.hours,
                 values.description,
                 values.priority,
                 values.buildToStock,
-                values.engAP
+                values.engAP,
+                values.relatedPartNumber
             )
                 .then((d) => {
-                    console.log(d);
+                    mutate(`/engineering/eval/task?ItemId=${itemId}`);
                     onDone && onDone();
                     onClose();
                 })
@@ -282,15 +302,16 @@ export const Evaluation = ({ open, onClose, itemId, onDone, Task }: ITaskModal) 
             createAEvalTask(
                 itemId,
                 values.name,
-                values.date,
+                date,
                 values.hours,
                 values.description,
                 values.priority,
                 values.buildToStock,
-                values.engAP
+                values.engAP,
+                values.relatedPartNumber
             )
                 .then((d) => {
-                    console.log(d);
+                    mutate(`/engineering/eval/task?ItemId=${itemId}`);
                     setSubmitting(false);
                     onDone && onDone();
                     onClose();
@@ -300,112 +321,155 @@ export const Evaluation = ({ open, onClose, itemId, onDone, Task }: ITaskModal) 
     }, []);
 
     return (
-        <Formik initialValues={Task ? Task : ({} as any)} onSubmit={handleSubmit}>
-            {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
-                <Form style={{ marginBottom: "20px" }}>
-                    <h3 style={{ marginLeft: "20px" }}>Evaluation</h3>
-                    <Box m={3} display="flex">
-                        <Box style={{ flex: 1 }}>
-                            <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
-                                <TextField
-                                    style={{ gridColumnEnd: "span 2" }}
-                                    value={values.name}
-                                    name="name"
-                                    label="Name"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                <TextField
-                                    style={{ gridColumnEnd: "span 2" }}
-                                    fullWidth
-                                    value={values.description}
-                                    name="description"
-                                    label="Description"
-                                    multiline
-                                    rows={4}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-
-                                <TextField
-                                    fullWidth
-                                    style={{ marginBottom: "10px" }}
-                                    value={values.priority}
-                                    name="priority"
-                                    label="Priority"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-
-                                <TextField
-                                    fullWidth
-                                    style={{ marginBottom: "10px" }}
-                                    value={values.hours}
-                                    name="hours"
-                                    label="hours"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                <DateTimePicker
-                                    style={{ gridColumnEnd: "span 2" }}
-                                    value={values.date}
-                                    name="date"
-                                    label="date"
-                                    onChange={(date) => setFieldValue("estShipDate", date)}
-                                    onBlur={handleBlur}
-                                />
-                                <FormControlLabel
-                                    name="buildToStock"
-                                    value={values.buildToStock}
-                                    control={<Checkbox checked={Boolean(values.buildToStock)} />}
-                                    label="Build to Stock"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                <FormControlLabel
-                                    name="engAP"
-                                    value={values.engAP}
-                                    control={<Checkbox checked={Boolean(values.engAP)} />}
-                                    label="Engineering Approved"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                            </Box>
-                            <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
-                                <Button
-                                    type="submit"
-                                    kind={Task ? "edit" : "add"}
-                                    disabled={isSubmitting}
-                                    style={{ flex: 1 }}
+        <>
+            {task?.id && <AddStepModal open={AddStep} onClose={() => setAddStep(false)} taskId={task.id} tab={1} />}
+            {task?.id && (
+                <EditStepModal open={step} onClose={() => setStep(false)} step={step} taskId={task.id} tab={1} />
+            )}
+            <Formik initialValues={task ? task : ({} as any)} onSubmit={handleSubmit}>
+                {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
+                    <Form style={{ marginBottom: "20px" }}>
+                        <Box display="flex">
+                            <Box style={{ flex: 1 }}>
+                                <Box
+                                    m={3}
+                                    mt={0}
+                                    display="grid"
+                                    gridTemplateColumns={task ? "1fr 1fr 1fr 1fr 1fr" : "1fr 1fr"}
+                                    gridGap={10}
+                                    gridColumnGap={10}
                                 >
-                                    Save
-                                </Button>
-                                {Task && (
-                                    <Button
-                                        style={{ marginLeft: "1em" }}
-                                        onClick={deleteDocument}
-                                        kind="delete"
-                                        disabled={isSubmitting}
+                                    <Box
+                                        my={1}
+                                        style={task ? { gridColumnEnd: "span 5" } : { gridColumnEnd: "span 2" }}
                                     >
-                                        Delete
+                                        <FormControlLabel
+                                            name="buildToStock"
+                                            value={values.buildToStock}
+                                            control={<Checkbox checked={Boolean(values.buildToStock)} />}
+                                            label="Build to Stock"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                        <FormControlLabel
+                                            name="engAP"
+                                            value={values.engAP}
+                                            control={<Checkbox checked={Boolean(values.engAP)} />}
+                                            label="Engineering Approved"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                        />
+                                    </Box>
+                                    <TextField
+                                        style={!task ? { gridColumnEnd: "span 2" } : {}}
+                                        value={values.name}
+                                        name="name"
+                                        label="Name"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        style={{ marginBottom: "10px" }}
+                                        value={values.priority}
+                                        name="priority"
+                                        label="Priority"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        style={{ marginBottom: "10px" }}
+                                        value={values.relatedPartNumber}
+                                        name="relatedPartNumber"
+                                        label="Part NO."
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    <TextField
+                                        fullWidth
+                                        style={{ marginBottom: "10px" }}
+                                        value={values.hours}
+                                        name="hours"
+                                        label="hours"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    <DateTimePicker
+                                        value={values.date}
+                                        name="date"
+                                        label="date"
+                                        onChange={(date) => setFieldValue("date", date)}
+                                        onBlur={handleBlur}
+                                    />
+                                    <TextField
+                                        style={!task ? { gridColumnEnd: "span 2" } : { gridColumnEnd: "span 5" }}
+                                        fullWidth
+                                        value={values.description}
+                                        name="description"
+                                        label="Description"
+                                        multiline
+                                        rows={4}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                </Box>
+                                <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
+                                    <Button
+                                        type="submit"
+                                        disabled={isSubmitting}
+                                        kind={task ? "edit" : "add"}
+                                        style={{ flex: 1 }}
+                                    >
+                                        Save
                                     </Button>
-                                )}
+                                    {task && (
+                                        <>
+                                            <Button
+                                                style={{ marginLeft: "1em" }}
+                                                onClick={deleteDocument}
+                                                kind="delete"
+                                                disabled={isSubmitting}
+                                            >
+                                                Delete
+                                            </Button>
+                                            <Button
+                                                onClick={() => setAddStep(true)}
+                                                kind="add"
+                                                style={{ marginLeft: "1em" }}
+                                            >
+                                                Add Step
+                                            </Button>
+                                        </>
+                                    )}
+                                </Box>
+                                {task ? (
+                                    <Box style={{ width: "100" }}>
+                                        <BaseDataGrid
+                                            cols={manCols}
+                                            rows={evalSteps || []}
+                                            onRowSelected={(d) => {
+                                                setStep(d);
+                                            }}
+                                        />
+                                    </Box>
+                                ) : null}
                             </Box>
                         </Box>
-                    </Box>
-                </Form>
-            )}
-        </Formik>
+                    </Form>
+                )}
+            </Formik>
+        </>
     );
 };
 
-export const Test = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
+export const Test = ({ open, onClose, itemId, onDone, task }: ITaskModal) => {
     const fileUploader = useRef<HTMLInputElement | null>();
 
     const deleteDocument = useCallback(async () => {
         try {
-            if (Task && Task.id) {
-                await deleteATestTask(Task.id);
+            if (task && task.id) {
+                await deleteATestTask(task.id);
                 onDone && onDone();
                 onClose();
             }
@@ -415,19 +479,19 @@ export const Test = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
     }, []);
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
-        if (Task && Task.id) {
+        if (task && task.id) {
             updateATestTask(
-                Task.id,
+                task.id,
                 values.name,
                 values.date,
                 values.hours,
                 values.description,
                 values.priority,
                 values.buildToStock,
-                values.engAP
+                values.engAP,
+                values.relatedPartNumber
             )
                 .then((d) => {
-                    console.log(d);
                     onDone && onDone();
                     onClose();
                 })
@@ -442,10 +506,10 @@ export const Test = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
                 values.description,
                 values.priority,
                 values.buildToStock,
-                values.engAP
+                values.engAP,
+                values.relatedPartNumber
             )
                 .then((d) => {
-                    console.log(d);
                     setSubmitting(false);
                     onDone && onDone();
                     onClose();
@@ -455,7 +519,7 @@ export const Test = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
     }, []);
 
     return (
-        <Formik initialValues={Task ? Task : ({} as any)} onSubmit={handleSubmit}>
+        <Formik initialValues={task ? task : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                 <Form style={{ marginBottom: "20px" }}>
                     <h3 style={{ marginLeft: "20px" }}>Test</h3>
@@ -529,13 +593,13 @@ export const Test = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
                             <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
                                 <Button
                                     type="submit"
-                                    kind={Task ? "edit" : "add"}
+                                    kind={task ? "edit" : "add"}
                                     disabled={isSubmitting}
                                     style={{ flex: 1 }}
                                 >
                                     Save
                                 </Button>
-                                {Task && (
+                                {task && (
                                     <Button
                                         style={{ marginLeft: "1em" }}
                                         onClick={deleteDocument}
@@ -554,13 +618,13 @@ export const Test = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
     );
 };
 
-export const Field = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
+export const Field = ({ open, onClose, itemId, onDone, task }: ITaskModal) => {
     const fileUploader = useRef<HTMLInputElement | null>();
 
     const deleteDocument = useCallback(async () => {
         try {
-            if (Task && Task.id) {
-                await deleteAFieldTask(Task.id);
+            if (task && task.id) {
+                await deleteAFieldTask(task.id);
                 onDone && onDone();
                 onClose();
             }
@@ -570,19 +634,19 @@ export const Field = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
     }, []);
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
-        if (Task && Task.id) {
+        if (task && task.id) {
             updateAFieldTask(
-                Task.id,
+                task.id,
                 values.name,
                 values.date,
                 values.hours,
                 values.description,
                 values.priority,
                 values.buildToStock,
-                values.engAP
+                values.engAP,
+                values.relatedPartNumber
             )
                 .then((d) => {
-                    console.log(d);
                     onDone && onDone();
                     onClose();
                 })
@@ -597,10 +661,10 @@ export const Field = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
                 values.description,
                 values.priority,
                 values.buildToStock,
-                values.engAP
+                values.engAP,
+                values.relatedPartNumber
             )
                 .then((d) => {
-                    console.log(d);
                     setSubmitting(false);
                     onDone && onDone();
                     onClose();
@@ -610,7 +674,7 @@ export const Field = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
     }, []);
 
     return (
-        <Formik initialValues={Task ? Task : ({} as any)} onSubmit={handleSubmit}>
+        <Formik initialValues={task ? task : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                 <Form style={{ marginBottom: "20px" }}>
                     <h3 style={{ marginLeft: "20px" }}>Field StartUp</h3>
@@ -684,13 +748,13 @@ export const Field = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
                             <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
                                 <Button
                                     type="submit"
-                                    kind={Task ? "edit" : "add"}
+                                    kind={task ? "edit" : "add"}
                                     disabled={isSubmitting}
                                     style={{ flex: 1 }}
                                 >
                                     Save
                                 </Button>
-                                {Task && (
+                                {task && (
                                     <Button
                                         style={{ marginLeft: "1em" }}
                                         onClick={deleteDocument}
