@@ -108,8 +108,8 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
                 />
             )}
 
-            <Box width="100%">
-                <BasePaper>
+            <Box display="flex" alignItems="flex-top" height="75vh" width="100%">
+                <BasePaper style={{ width: "100%" }}>
                     <Button variant="outlined" style={{ margin: "0.5em 0" }} onClick={() => setAddPart(true)}>
                         Add part
                     </Button>

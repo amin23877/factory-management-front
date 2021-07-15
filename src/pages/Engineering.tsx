@@ -19,7 +19,7 @@ export default function Sales() {
                     <MyTab label="Devices" />
                     <MyTab label="Projects" />
                     <MyTab label="Dashboard" />
-                    <MyTab label="BOM" />
+                    <MyTab label="Devices BOM" />
                 </MyTabs>
             </Box>
             {activeTab === 0 && <DevicesPanel />}

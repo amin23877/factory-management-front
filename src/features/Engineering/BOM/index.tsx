@@ -1,35 +1,28 @@
 import React, { useState } from "react";
-import { Box } from "@material-ui/core";
+import { Box, Tab, Tabs } from "@material-ui/core";
 
-import Button from "../../../app/Button";
-import BOMModal from "./Setting";
 import BOMTable from "./Table";
+import DevicesList from "./DevicesList";
 
 function BOM() {
-    const [addBomModal, setAddBomModal] = useState(false);
+    const [activeTab, setActiveTab] = useState(0);
     const [productFamily, setProductFamily] = useState<string>();
 
+    const handleSelectDevice = (device: any) => {
+        setProductFamily(device["Product Family"]);
+        setActiveTab(1);
+    };
+
     return (
-        <Box display="flex" justifyContent="center" alignItems="flex-top" height="70vh">
-            <BOMModal
-                open={addBomModal}
-                onClose={() => setAddBomModal(false)}
-                onDone={(d) => {
-                    setProductFamily(d);
-                    setAddBomModal(false);
-                }}
-            />
-            {productFamily && <BOMTable productFamily={productFamily} />}
-            {!productFamily && (
-                <Button
-                    style={{ alignSelf: "center" }}
-                    variant="contained"
-                    color="primary"
-                    onClick={() => setAddBomModal(true)}
-                >
-                    Create new BOM matrice
-                </Button>
-            )}
+        <Box>
+            <Box mb={1}>
+                <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                    <Tab label="List" />
+                    <Tab label="Details" disabled={!productFamily} />
+                </Tabs>
+            </Box>
+            {activeTab === 0 && <DevicesList onDeviceSelected={handleSelectDevice} />}
+            {activeTab === 1 && productFamily && <BOMTable productFamily={productFamily} />}
         </Box>
     );
 }

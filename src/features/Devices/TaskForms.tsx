@@ -1,14 +1,16 @@
 import React, { useCallback, useRef, useState, useMemo } from "react";
 import { Box, FormControlLabel, Checkbox } from "@material-ui/core";
-import { Formik, Form } from "formik";
 import { GridColDef } from "@material-ui/data-grid";
+import { Formik, Form } from "formik";
 import useSWR from "swr";
+
 import AddStepModal, { EditStepModal } from "./StepModal";
 
+import DateTimePicker from "../../app/DateTimePicker";
 import TextField from "../../app/TextField";
 import Button from "../../app/Button";
-import { DateTimePicker } from "@material-ui/pickers";
 import BaseDataGrid from "../../app/BaseDataGrid";
+
 import {
     createAManTask,
     createAEvalTask,
@@ -126,7 +128,7 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, task }: ITaskModa
                                 >
                                     <Box
                                         my={1}
-                                        style={task ? { gridColumnEnd: "span 5" } : { gridColumnEnd: "span 2" }}
+                                        style={{ gridColumnEnd: task ? "span 5" : "span 2", border: "1px dashed gray" }}
                                     >
                                         <FormControlLabel
                                             name="buildToStock"
