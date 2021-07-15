@@ -321,7 +321,6 @@ export const Evaluation = ({ open, onClose, itemId, onDone, Task }: ITaskModal) 
                                     value={values.description}
                                     name="description"
                                     label="Description"
-                                    variant="outlined"
                                     multiline
                                     rows={4}
                                     onChange={handleChange}
@@ -334,7 +333,6 @@ export const Evaluation = ({ open, onClose, itemId, onDone, Task }: ITaskModal) 
                                     value={values.priority}
                                     name="priority"
                                     label="Priority"
-                                    variant="outlined"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
@@ -345,7 +343,6 @@ export const Evaluation = ({ open, onClose, itemId, onDone, Task }: ITaskModal) 
                                     value={values.hours}
                                     name="hours"
                                     label="hours"
-                                    variant="outlined"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
@@ -470,7 +467,6 @@ export const Test = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
                                     value={values.name}
                                     name="name"
                                     label="Name"
-                                    variant="outlined"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
@@ -480,7 +476,6 @@ export const Test = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
                                     value={values.description}
                                     name="description"
                                     label="Description"
-                                    variant="outlined"
                                     multiline
                                     rows={4}
                                     onChange={handleChange}
@@ -493,7 +488,6 @@ export const Test = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
                                     value={values.priority}
                                     name="priority"
                                     label="Priority"
-                                    variant="outlined"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
@@ -504,7 +498,6 @@ export const Test = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
                                     value={values.hours}
                                     name="hours"
                                     label="hours"
-                                    variant="outlined"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
@@ -629,7 +622,6 @@ export const Field = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
                                     value={values.name}
                                     name="name"
                                     label="Name"
-                                    variant="outlined"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
@@ -639,7 +631,6 @@ export const Field = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
                                     value={values.description}
                                     name="description"
                                     label="Description"
-                                    variant="outlined"
                                     multiline
                                     rows={4}
                                     onChange={handleChange}
@@ -652,7 +643,6 @@ export const Field = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
                                     value={values.priority}
                                     name="priority"
                                     label="Priority"
-                                    variant="outlined"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
@@ -663,7 +653,6 @@ export const Field = ({ open, onClose, itemId, onDone, Task }: ITaskModal) => {
                                     value={values.hours}
                                     name="hours"
                                     label="hours"
-                                    variant="outlined"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
