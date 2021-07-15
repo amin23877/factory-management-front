@@ -9,15 +9,27 @@ import Dialog from "../../app/Dialog";
 import { createFieldService, IFieldService } from "../../api/fieldService";
 import FieldServiceForm from "./Forms";
 
-export default function AddServiceModal({ open, onClose, onDone }: { open: boolean; onClose: () => void; onDone: () => void }) {
-    const schema = Yup.object().shape({
+export default function AddServiceModal({ open, onClose, onDone, device }: { open: boolean; onClose: () => void; onDone: () => void; device?: string }) {
+    let schema = Yup.object().shape({
         name: Yup.string().required(),
         price: Yup.string().required(),
         ItemId: Yup.string().required(),
     });
+    if (device) {
+        schema = Yup.object().shape({
+            name: Yup.string().required(),
+            price: Yup.string().required(),
+            ItemId: Yup.string(),
+        });
+    }
+
 
     const handleSubmit = async (data: any) => {
         try {
+            if (device) {
+                data.ItemId = device
+                data.ServiceFamilyId = '60efd0bcca0feadc84be6618'
+            }
             const resp = await createFieldService(data);
             if (resp) {
                 onDone();
@@ -35,7 +47,7 @@ export default function AddServiceModal({ open, onClose, onDone }: { open: boole
                     {({ values, errors, handleChange, handleBlur }) => (
                         <Form>
                             <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-                                <FieldServiceForm values={values} handleChange={handleChange} handleBlur={handleBlur} errors={errors} />
+                                <FieldServiceForm values={values} handleChange={handleChange} handleBlur={handleBlur} errors={errors} device={device} />
                                 <Button style={{ margin: "0.5em 0" }} type="submit" kind="add">
                                     Save
                                 </Button>

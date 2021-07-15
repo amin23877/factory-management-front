@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { Box, Grid, Tabs, Tab } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 
 import Snackbar from "../../app/Snack";
 
@@ -13,6 +13,7 @@ import { BasePaper } from "../../app/Paper";
 import { DynamicFilterAndFields } from "../Items/Forms";
 import { General, Photo } from "./Forms";
 import { SalesReport } from "../Items/Reports";
+import AddServiceModal from "../FieldService/AddServiceModal";
 
 import { INote } from "../../api/note";
 import { IDocument } from "../../api/document";
@@ -36,6 +37,7 @@ function ItemsDetails({
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
     const [bom, setBom] = useState<any>();
+    const [AddService, setAddService] = useState(false);
 
     const { data: notes } = useSWR<INote[]>(activeTab === 12 ? `/note/item/${selectedRow.id}` : null);
     const { data: docs } = useSWR<IDocument[]>(activeTab === 0 ? `/document/item/${selectedRow.id}` : null);
@@ -146,7 +148,11 @@ function ItemsDetails({
                 {snackMsg}
             </Snackbar>
             {bom && <Parts open={bomPartsModal} onClose={() => setBomPartsModal(false)} bom={bom} />}
-
+            <AddServiceModal
+                device={selectedRow.id}
+                open={AddService}
+                onClose={() => setAddService(false)}
+                onDone={() => { mutate(`/service?ItemId=${selectedRow.id}&ServiceFamilyId=60efd0bcca0feadc84be6618`) }} />
             <Formik initialValues={selectedRow} validationSchema={AddItemSchema} onSubmit={handleSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
                     <Form>
@@ -244,13 +250,18 @@ function ItemsDetails({
                                 />
                             )}
                             {activeTab === 2 && (
-                                <BaseDataGrid
-                                    cols={warCols}
-                                    rows={warranties || []}
-                                    onRowSelected={(d) => {
+                                <Box >
+                                    <Button onClick={() => setAddService(true)}>
+                                        Add Warranty
+                                    </Button>
+                                    <BaseDataGrid
+                                        cols={warCols}
+                                        rows={warranties || []}
+                                        onRowSelected={(d) => {
 
-                                    }}
-                                />
+                                        }}
+                                    />
+                                </Box>
                             )}
                             {activeTab === 3 && (
                                 <BaseDataGrid
@@ -289,11 +300,11 @@ function ItemsDetails({
                                 />
                             )}
                             {activeTab === 8 && (
-                                <BaseDataGrid cols={usageCols} rows={itemUsage || []} onRowSelected={() => {}} />
+                                <BaseDataGrid cols={usageCols} rows={itemUsage || []} onRowSelected={() => { }} />
                             )}
                             {activeTab === 9 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
                             {activeTab === 10 && (
-                                <BaseDataGrid cols={serviceCols} rows={services || []} onRowSelected={() => {}} />
+                                <BaseDataGrid cols={serviceCols} rows={services || []} onRowSelected={() => { }} />
                             )}
                             {activeTab === 12 && (
                                 <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />

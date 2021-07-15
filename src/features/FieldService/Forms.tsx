@@ -156,11 +156,13 @@ export default function FieldServiceForm({
     handleBlur,
     handleChange,
     values,
+    device,
 }: {
     values: IFieldService;
     handleChange: any;
     handleBlur: any;
     errors: any;
+    device?: string;
 }) {
     return (
         <>
@@ -171,11 +173,12 @@ export default function FieldServiceForm({
                 itemValueField="id"
                 label="Item"
                 name="ItemId"
-                value={values.ItemId}
+                value={device ? device : values.ItemId}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={Boolean(errors.ItemId)}
+                error={device ? false : Boolean(errors.ItemId)}
                 fullWidth
+                disabled={Boolean(device)}
             />
             <FieldSelect
                 request={getServiceFamilies}
@@ -183,11 +186,12 @@ export default function FieldServiceForm({
                 itemValueField="id"
                 label="Service family"
                 name="ServiceFamilyId"
-                value={values.ServiceFamilyId}
+                value={device ? '60efd0bcca0feadc84be6618' : values.ServiceFamilyId}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={Boolean(errors.ServiceFamilyId)}
                 fullWidth
+                disabled={Boolean(device)}
             />
             <TextField
                 label="Name"
