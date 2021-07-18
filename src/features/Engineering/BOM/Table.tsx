@@ -11,8 +11,9 @@ import Button from "../../../app/Button";
 import { Toast } from "../../../app/Toast";
 import { BasePaper } from "../../../app/Paper";
 
-import { extractLevels, generateDatagridColumns, generateRows, IMatrice, postMatriceData } from "../../../api/matrice";
+import { IMatrice, postMatriceData } from "../../../api/matrice";
 import { CustomFooterStatusComponent } from "../../../components/Datagrid/FooterStatus";
+import { splitColumnNames, extractLevels, generateDatagridColumns, generateRows } from "../../../logic/matrice";
 
 export default function NewBomTable({ productFamily }: { productFamily: string }) {
     const { data: tableData, mutate: mutateTableData } = useSWR<IMatrice>(`/matrice?productfamily=${productFamily}`);
@@ -35,7 +36,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
         if (tableData) {
             const levels = extractLevels(tableData);
             const rows = generateRows(tableData, productFamily);
-            const columns = generateDatagridColumns(tableData, productFamily);
+            const columns = splitColumnNames(generateDatagridColumns(tableData, productFamily));
 
             setTable({ columns, rows });
             setLevels(levels);

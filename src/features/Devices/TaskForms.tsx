@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState, useMemo } from "react";
 import { Box, FormControlLabel, Checkbox } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 
 import AddStepModal, { EditStepModal } from "./StepModal";
 
@@ -25,7 +25,7 @@ import {
     deleteAManTask,
     deleteATestTask,
 } from "../../api/engTask";
-import { mutate } from "swr";
+import StepTable from "./StepTable";
 
 interface ITaskModal {
     open: boolean;
@@ -115,133 +115,93 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, task }: ITaskModa
             )}
             <Formik initialValues={task ? task : ({} as any)} onSubmit={handleSubmit}>
                 {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
-                    <Form style={{ marginBottom: "20px" }}>
-                        <Box display="flex">
-                            <Box style={{ flex: 1 }}>
-                                <Box
-                                    m={3}
-                                    mt={0}
-                                    display="grid"
-                                    gridTemplateColumns={task ? "1fr 1fr 1fr 1fr 1fr" : "1fr 1fr"}
-                                    gridGap={10}
-                                    gridColumnGap={10}
+                    <Form>
+                        <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
+                            <Box m={2} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
+                                <Box my={1} px={1} style={{ gridColumnEnd: "span 2", border: "1px dashed gray" }}>
+                                    <FormControlLabel
+                                        name="buildToStock"
+                                        value={values.buildToStock}
+                                        control={<Checkbox checked={Boolean(values.buildToStock)} />}
+                                        label="Build to Stock"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                    <FormControlLabel
+                                        name="engAP"
+                                        value={values.engAP}
+                                        control={<Checkbox checked={Boolean(values.engAP)} />}
+                                        label="Engineering Approved"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                </Box>
+                                <TextField
+                                    style={{ gridColumnEnd: "span 2" }}
+                                    value={values.name}
+                                    name="name"
+                                    label="Name"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                <TextField
+                                    value={values.priority}
+                                    name="priority"
+                                    label="Priority"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                <TextField
+                                    value={values.relatedPartNumber}
+                                    name="relatedPartNumber"
+                                    label="Part NO."
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                <TextField
+                                    value={values.hours}
+                                    name="hours"
+                                    label="hours"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                <DateTimePicker
+                                    value={values.date}
+                                    name="date"
+                                    label="date"
+                                    onChange={(date) => setFieldValue("date", date)}
+                                    onBlur={handleBlur}
+                                />
+                                <TextField
+                                    style={{ gridColumnEnd: "span 2" }}
+                                    value={values.description}
+                                    name="description"
+                                    label="Description"
+                                    multiline
+                                    rows={4}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                <Button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    kind={task ? "edit" : "add"}
+                                    style={{ alignSelf: "center" }}
                                 >
-                                    <Box
-                                        my={1}
-                                        style={{ gridColumnEnd: task ? "span 5" : "span 2", border: "1px dashed gray" }}
-                                    >
-                                        <FormControlLabel
-                                            name="buildToStock"
-                                            value={values.buildToStock}
-                                            control={<Checkbox checked={Boolean(values.buildToStock)} />}
-                                            label="Build to Stock"
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                        />
-                                        <FormControlLabel
-                                            name="engAP"
-                                            value={values.engAP}
-                                            control={<Checkbox checked={Boolean(values.engAP)} />}
-                                            label="Engineering Approved"
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                        />
-                                    </Box>
-                                    <TextField
-                                        style={!task ? { gridColumnEnd: "span 2" } : {}}
-                                        value={values.name}
-                                        name="name"
-                                        label="Name"
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />
-                                    <TextField
-                                        fullWidth
-                                        style={{ marginBottom: "10px" }}
-                                        value={values.priority}
-                                        name="priority"
-                                        label="Priority"
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />
-                                    <TextField
-                                        fullWidth
-                                        style={{ marginBottom: "10px" }}
-                                        value={values.relatedPartNumber}
-                                        name="relatedPartNumber"
-                                        label="Part NO."
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />
-                                    <TextField
-                                        fullWidth
-                                        style={{ marginBottom: "10px" }}
-                                        value={values.hours}
-                                        name="hours"
-                                        label="hours"
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />
-                                    <DateTimePicker
-                                        value={values.date}
-                                        name="date"
-                                        label="date"
-                                        onChange={(date) => setFieldValue("date", date)}
-                                        onBlur={handleBlur}
-                                    />
-                                    <TextField
-                                        style={!task ? { gridColumnEnd: "span 2" } : { gridColumnEnd: "span 5" }}
-                                        fullWidth
-                                        value={values.description}
-                                        name="description"
-                                        label="Description"
-                                        multiline
-                                        rows={4}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                    />
-                                </Box>
-                                <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
+                                    Save
+                                </Button>
+                                {task && (
                                     <Button
-                                        type="submit"
+                                        onClick={deleteDocument}
+                                        kind="delete"
                                         disabled={isSubmitting}
-                                        kind={task ? "edit" : "add"}
-                                        style={{ flex: 1 }}
+                                        style={{ alignSelf: "center" }}
                                     >
-                                        Save
+                                        Delete
                                     </Button>
-                                    {task && (
-                                        <>
-                                            <Button
-                                                style={{ marginLeft: "1em" }}
-                                                onClick={deleteDocument}
-                                                kind="delete"
-                                                disabled={isSubmitting}
-                                            >
-                                                Delete
-                                            </Button>
-                                            <Button
-                                                onClick={() => setAddStep(true)}
-                                                kind="add"
-                                                style={{ marginLeft: "1em" }}
-                                            >
-                                                Add Step
-                                            </Button>
-                                        </>
-                                    )}
-                                </Box>
-                                {task ? (
-                                    <Box style={{ width: "100" }}>
-                                        <BaseDataGrid
-                                            cols={manCols}
-                                            rows={manSteps || []}
-                                            onRowSelected={(d) => {
-                                                setStep(d);
-                                            }}
-                                        />
-                                    </Box>
-                                ) : null}
+                                )}
                             </Box>
+                            {task && task.id && <StepTable taskId={task.id} />}
                         </Box>
                     </Form>
                 )}
@@ -346,14 +306,6 @@ export const Evaluation = ({ open, onClose, itemId, onDone, task }: ITaskModal) 
                                         px={1}
                                         style={{ gridColumnEnd: task ? "span 5" : "span 2", border: "1px dashed gray" }}
                                     >
-                                        <FormControlLabel
-                                            name="buildToStock"
-                                            value={values.buildToStock}
-                                            control={<Checkbox checked={Boolean(values.buildToStock)} />}
-                                            label="Build to Stock"
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                        />
                                         <FormControlLabel
                                             name="engAP"
                                             value={values.engAP}

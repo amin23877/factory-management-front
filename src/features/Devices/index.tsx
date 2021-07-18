@@ -146,13 +146,13 @@ const Inventory = () => {
                     itemId={selectedItem.id as any}
                     onClose={() => setAddStepModal(false)}
                 />
-                // <AddStepModal
-                //     open={addStepModal}
-                //     itemId={selectedItem.id as any}
-                //     onClose={() => setAddStepModal(false)}
-                // />
             )}
-            <AddItemModal open={addItemModal} onClose={() => setAddItemModal(false)} device={true} />
+            <AddItemModal
+                open={addItemModal}
+                onClose={() => setAddItemModal(false)}
+                device={true}
+                initialValues={{ device: true } as IItem}
+            />
             <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
 
             <FieldNFilter open={FieldNFilterModal} onClose={() => setFieldNFilterModal(false)} />

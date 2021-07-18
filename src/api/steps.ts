@@ -1,13 +1,33 @@
 import Axios from "axios";
 
+export interface IManufacturingStep {
+    number: number;
+    [key: string]: string | number;
+}
 
-export const createAManStep = async (TaskId: string, name: string, file: any, description: string, number: any, relatedPartNumber: string) => {
+export const createAManStep = async (data: { TaskId: string; steps: IManufacturingStep[] }) => {
+    try {
+        const resp = await Axios.post(`/engineering/manufacturing/step`, data);
+        return resp.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const OLDcreateAManStep = async (
+    TaskId: string,
+    name: string,
+    file: any,
+    description: string,
+    number: any,
+    relatedPartNumber: string
+) => {
     try {
         const formData = new FormData();
         if (file) {
             for (const f of file) {
                 formData.append("illustration", f);
-            };
+            }
         }
         formData.append("name", name);
         formData.append("relatedPartNumber", relatedPartNumber);
@@ -20,13 +40,20 @@ export const createAManStep = async (TaskId: string, name: string, file: any, de
         console.log(error);
     }
 };
-export const createAEvalStep = async (TaskId: string, name: string, file: any, description: string, number: any, relatedPartNumber: string) => {
+export const createAEvalStep = async (
+    TaskId: string,
+    name: string,
+    file: any,
+    description: string,
+    number: any,
+    relatedPartNumber: string
+) => {
     try {
         const formData = new FormData();
         if (file) {
             for (const f of file) {
                 formData.append("illustration", f);
-            };
+            }
         }
         formData.append("name", name);
         formData.append("relatedPartNumber", relatedPartNumber);
@@ -39,13 +66,20 @@ export const createAEvalStep = async (TaskId: string, name: string, file: any, d
         console.log(error);
     }
 };
-export const createATestStep = async (TaskId: string, name: string, file: any, description: string, number: any, relatedPartNumber: string) => {
+export const createATestStep = async (
+    TaskId: string,
+    name: string,
+    file: any,
+    description: string,
+    number: any,
+    relatedPartNumber: string
+) => {
     try {
         const formData = new FormData();
         if (file) {
             for (const f of file) {
                 formData.append("illustration", f);
-            };
+            }
         }
         formData.append("name", name);
         formData.append("relatedPartNumber", relatedPartNumber);
@@ -58,13 +92,20 @@ export const createATestStep = async (TaskId: string, name: string, file: any, d
         console.log(error);
     }
 };
-export const createAFieldStep = async (TaskId: string, name: string, file: any, description: string, number: any, relatedPartNumber: string) => {
+export const createAFieldStep = async (
+    TaskId: string,
+    name: string,
+    file: any,
+    description: string,
+    number: any,
+    relatedPartNumber: string
+) => {
     try {
         const formData = new FormData();
         if (file) {
             for (const f of file) {
                 formData.append("illustration", f);
-            };
+            }
         }
         formData.append("name", name);
         formData.append("relatedPartNumber", relatedPartNumber);
@@ -78,14 +119,20 @@ export const createAFieldStep = async (TaskId: string, name: string, file: any, 
     }
 };
 
-
-export const updateAManStep = async (stepid: string, name: string, file: any, description: string, number: any, relatedPartNumber: string) => {
+export const updateAManStep = async (
+    stepid: string,
+    name: string,
+    file: any,
+    description: string,
+    number: any,
+    relatedPartNumber: string
+) => {
     try {
         const formData = new FormData();
         if (file) {
             for (const f of file) {
                 formData.append("illustration", f);
-            };
+            }
         }
         formData.append("name", name);
         formData.append("relatedPartNumber", relatedPartNumber);
@@ -98,13 +145,20 @@ export const updateAManStep = async (stepid: string, name: string, file: any, de
     }
 };
 
-export const updateAEvalStep = async (stepid: string, name: string, file: any, description: string, number: any, relatedPartNumber: string) => {
+export const updateAEvalStep = async (
+    stepid: string,
+    name: string,
+    file: any,
+    description: string,
+    number: any,
+    relatedPartNumber: string
+) => {
     try {
         const formData = new FormData();
         if (file) {
             for (const f of file) {
                 formData.append("illustration", f);
-            };
+            }
         }
         formData.append("name", name);
         formData.append("relatedPartNumber", relatedPartNumber);
@@ -117,13 +171,20 @@ export const updateAEvalStep = async (stepid: string, name: string, file: any, d
     }
 };
 
-export const updateATestStep = async (stepid: string, name: string, file: any, description: string, number: any, relatedPartNumber: string) => {
+export const updateATestStep = async (
+    stepid: string,
+    name: string,
+    file: any,
+    description: string,
+    number: any,
+    relatedPartNumber: string
+) => {
     try {
         const formData = new FormData();
         if (file) {
             for (const f of file) {
                 formData.append("illustration", f);
-            };
+            }
         }
         formData.append("name", name);
         formData.append("relatedPartNumber", relatedPartNumber);
@@ -136,13 +197,20 @@ export const updateATestStep = async (stepid: string, name: string, file: any, d
     }
 };
 
-export const updateAFieldStep = async (stepid: string, name: string, file: any, description: string, number: any, relatedPartNumber: string) => {
+export const updateAFieldStep = async (
+    stepid: string,
+    name: string,
+    file: any,
+    description: string,
+    number: any,
+    relatedPartNumber: string
+) => {
     try {
         const formData = new FormData();
         if (file) {
             for (const f of file) {
                 formData.append("illustration", f);
-            };
+            }
         }
         formData.append("name", name);
         formData.append("relatedPartNumber", relatedPartNumber);

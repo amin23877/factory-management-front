@@ -1,10 +1,11 @@
 import React, { useCallback, useRef, useState } from "react";
-import { Box, TextField, Link, Tabs } from "@material-ui/core";
+import { Box, TextField, Link } from "@material-ui/core";
 import { Formik, Form } from "formik";
+import { mutate } from "swr";
+import PhotoSizeSelectActualOutlinedIcon from "@material-ui/icons/PhotoSizeSelectActualOutlined";
 
 import Button from "../../app/Button";
 
-import PhotoSizeSelectActualOutlinedIcon from "@material-ui/icons/PhotoSizeSelectActualOutlined";
 import {
     createAManStep,
     createAEvalStep,
@@ -19,8 +20,6 @@ import {
     deleteAManStep,
     deleteATestStep,
 } from "../../api/steps";
-import { mutate } from "swr";
-import { Tab } from "@material-ui/icons";
 
 interface IStepModal {
     TaskId: string;
@@ -37,7 +36,7 @@ export const ManufacturingStep = ({ onClose, TaskId, onDone, step }: IStepModal)
         try {
             if (step && step.id) {
                 await deleteAManStep(step.id);
-                mutate(`/engineering/manufacturing/step?TaskId=${TaskId}`)
+                mutate(`/engineering/manufacturing/step?TaskId=${TaskId}`);
                 onDone && onDone();
                 onClose();
             }
@@ -48,23 +47,30 @@ export const ManufacturingStep = ({ onClose, TaskId, onDone, step }: IStepModal)
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
         if (step && step.id) {
-            updateAManStep(step.id, values.name, values.file, values.description, values.number, values.relatedPartNumber)
+            updateAManStep(
+                step.id,
+                values.name,
+                values.file,
+                values.description,
+                values.number,
+                values.relatedPartNumber
+            )
                 .then((d) => {
-                    mutate(`/engineering/manufacturing/step?TaskId=${TaskId}`)
+                    mutate(`/engineering/manufacturing/step?TaskId=${TaskId}`);
                     onDone && onDone();
                     onClose();
                 })
                 .catch((e) => console.log(e))
                 .finally(() => setSubmitting(false));
         } else {
-            createAManStep(TaskId, values.name, values.file, values.description, values.number, values.relatedPartNumber)
-                .then((d) => {
-                    setSubmitting(false);
-                    mutate(`/engineering/manufacturing/step?TaskId=${TaskId}`)
-                    onDone && onDone();
-                    onClose();
-                })
-                .catch((e) => console.log(e));
+            // createAManStep(TaskId, values.name, values.file, values.description, values.number, values.relatedPartNumber)
+            //     .then((d) => {
+            //         setSubmitting(false);
+            //         mutate(`/engineering/manufacturing/step?TaskId=${TaskId}`)
+            //         onDone && onDone();
+            //         onClose();
+            //     })
+            //     .catch((e) => console.log(e));
         }
     }, []);
 
@@ -72,11 +78,9 @@ export const ManufacturingStep = ({ onClose, TaskId, onDone, step }: IStepModal)
         <Formik initialValues={step ? step : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                 <Form style={{ marginBottom: "20px" }}>
-                    {step ?
-                        <h3 style={{ marginLeft: "20px" }}>Manufacturing</h3>
-                        : null}
-                    <Box m={3} display="flex" >
-                        <Box style={{ flex: 1 }} >
+                    {step ? <h3 style={{ marginLeft: "20px" }}>Manufacturing</h3> : null}
+                    <Box m={3} display="flex">
+                        <Box style={{ flex: 1 }}>
                             <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
                                 <TextField
                                     style={{ gridColumnEnd: "span 2" }}
@@ -119,13 +123,15 @@ export const ManufacturingStep = ({ onClose, TaskId, onDone, step }: IStepModal)
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <Box >
+                                <Box>
                                     <input
                                         multiple
                                         type="file"
                                         ref={(e) => (fileUploader.current = e)}
                                         hidden
-                                        onChange={(e) => e.target.files !== null && setFieldValue("file", e.target.files)}
+                                        onChange={(e) =>
+                                            e.target.files !== null && setFieldValue("file", e.target.files)
+                                        }
                                     />
                                     <Button
                                         color="primary"
@@ -157,7 +163,12 @@ export const ManufacturingStep = ({ onClose, TaskId, onDone, step }: IStepModal)
                                 </Box>
                             </Box>
                             <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
-                                <Button type="submit" kind={step ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
+                                <Button
+                                    type="submit"
+                                    kind={step ? "edit" : "add"}
+                                    disabled={isSubmitting}
+                                    style={{ flex: 1 }}
+                                >
                                     Save
                                 </Button>
                                 {step && (
@@ -172,19 +183,26 @@ export const ManufacturingStep = ({ onClose, TaskId, onDone, step }: IStepModal)
                                 )}
                             </Box>
                         </Box>
-                        {step ?
-                            <Box m={3} display="grid" gridTemplateColumns="1fr" gridGap={10} gridColumnGap={10} style={{ flex: 1 }}>
+                        {step ? (
+                            <Box
+                                m={3}
+                                display="grid"
+                                gridTemplateColumns="1fr"
+                                gridGap={10}
+                                gridColumnGap={10}
+                                style={{ flex: 1 }}
+                            >
                                 {step.illustration.map((i: any, index: number) => {
                                     return (
-                                        <object width="auto" height='150px' data={`http://digitalphocus.ir${i}`} >
+                                        <object width="auto" height="150px" data={`http://digitalphocus.ir${i}`}>
                                             <embed src={`http://digitalphocus.ir${i}`} />
-                                            Can't load pdf :(, If you have IDM extention please desable it or download the file
+                                            Can't load pdf :(, If you have IDM extention please desable it or download
+                                            the file
                                         </object>
-                                    )
-                                }
-                                )}
+                                    );
+                                })}
                             </Box>
-                            : null}
+                        ) : null}
                     </Box>
                 </Form>
             )}
@@ -199,7 +217,7 @@ export const EvaluationStep = ({ onClose, TaskId, onDone, step }: IStepModal) =>
         try {
             if (step && step.id) {
                 await deleteAEvalStep(step.id);
-                mutate(`/engineering/eval/step?TaskId=${TaskId}`)
+                mutate(`/engineering/eval/step?TaskId=${TaskId}`);
                 onDone && onDone();
                 onClose();
             }
@@ -210,18 +228,32 @@ export const EvaluationStep = ({ onClose, TaskId, onDone, step }: IStepModal) =>
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
         if (step && step.id) {
-            updateAEvalStep(step.id, values.name, values.file, values.description, values.number, values.relatedPartNumber)
+            updateAEvalStep(
+                step.id,
+                values.name,
+                values.file,
+                values.description,
+                values.number,
+                values.relatedPartNumber
+            )
                 .then((d) => {
-                    mutate(`/engineering/eval/step?TaskId=${TaskId}`)
+                    mutate(`/engineering/eval/step?TaskId=${TaskId}`);
                     onDone && onDone();
                     onClose();
                 })
                 .catch((e) => console.log(e))
                 .finally(() => setSubmitting(false));
         } else {
-            createAEvalStep(TaskId, values.name, values.file, values.description, values.number, values.relatedPartNumber)
+            createAEvalStep(
+                TaskId,
+                values.name,
+                values.file,
+                values.description,
+                values.number,
+                values.relatedPartNumber
+            )
                 .then((d) => {
-                    mutate(`/engineering/eval/step?TaskId=${TaskId}`)
+                    mutate(`/engineering/eval/step?TaskId=${TaskId}`);
                     setSubmitting(false);
                     onDone && onDone();
                     onClose();
@@ -235,8 +267,8 @@ export const EvaluationStep = ({ onClose, TaskId, onDone, step }: IStepModal) =>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                 <Form style={{ marginBottom: "20px" }}>
                     <h3 style={{ marginLeft: "20px" }}>Evaluation</h3>
-                    <Box m={3} display="flex" >
-                        <Box style={{ flex: 1 }} >
+                    <Box m={3} display="flex">
+                        <Box style={{ flex: 1 }}>
                             <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
                                 <TextField
                                     style={{ gridColumnEnd: "span 2" }}
@@ -287,7 +319,9 @@ export const EvaluationStep = ({ onClose, TaskId, onDone, step }: IStepModal) =>
                                         type="file"
                                         ref={(e) => (fileUploader.current = e)}
                                         hidden
-                                        onChange={(e) => e.target.files !== null && setFieldValue("file", e.target.files)}
+                                        onChange={(e) =>
+                                            e.target.files !== null && setFieldValue("file", e.target.files)
+                                        }
                                     />
                                     <Button
                                         color="primary"
@@ -319,7 +353,12 @@ export const EvaluationStep = ({ onClose, TaskId, onDone, step }: IStepModal) =>
                                 </Box>
                             </Box>
                             <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
-                                <Button type="submit" kind={step ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
+                                <Button
+                                    type="submit"
+                                    kind={step ? "edit" : "add"}
+                                    disabled={isSubmitting}
+                                    style={{ flex: 1 }}
+                                >
                                     Save
                                 </Button>
                                 {step && (
@@ -334,19 +373,26 @@ export const EvaluationStep = ({ onClose, TaskId, onDone, step }: IStepModal) =>
                                 )}
                             </Box>
                         </Box>
-                        {step ?
-                            <Box m={3} display="grid" gridTemplateColumns="1fr" gridGap={10} gridColumnGap={10} style={{ flex: 1 }}>
+                        {step ? (
+                            <Box
+                                m={3}
+                                display="grid"
+                                gridTemplateColumns="1fr"
+                                gridGap={10}
+                                gridColumnGap={10}
+                                style={{ flex: 1 }}
+                            >
                                 {step.illustration.map((i: any, index: number) => {
                                     return (
-                                        <object width="auto" height='150px' data={`http://digitalphocus.ir${i}`} >
+                                        <object width="auto" height="150px" data={`http://digitalphocus.ir${i}`}>
                                             <embed src={`http://digitalphocus.ir${i}`} />
-                                            Can't load pdf :(, If you have IDM extention please desable it or download the file
+                                            Can't load pdf :(, If you have IDM extention please desable it or download
+                                            the file
                                         </object>
-                                    )
-                                }
-                                )}
+                                    );
+                                })}
                             </Box>
-                            : null}
+                        ) : null}
                     </Box>
                 </Form>
             )}
@@ -371,7 +417,14 @@ export const TestStep = ({ onClose, TaskId, onDone, step }: IStepModal) => {
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
         if (step && step.id) {
-            updateATestStep(step.id, values.name, values.file, values.description, values.number, values.relatedPartNumber)
+            updateATestStep(
+                step.id,
+                values.name,
+                values.file,
+                values.description,
+                values.number,
+                values.relatedPartNumber
+            )
                 .then((d) => {
                     onDone && onDone();
                     onClose();
@@ -379,7 +432,14 @@ export const TestStep = ({ onClose, TaskId, onDone, step }: IStepModal) => {
                 .catch((e) => console.log(e))
                 .finally(() => setSubmitting(false));
         } else {
-            createATestStep(TaskId, values.name, values.file, values.description, values.number, values.relatedPartNumber)
+            createATestStep(
+                TaskId,
+                values.name,
+                values.file,
+                values.description,
+                values.number,
+                values.relatedPartNumber
+            )
                 .then((d) => {
                     setSubmitting(false);
                     onDone && onDone();
@@ -394,8 +454,8 @@ export const TestStep = ({ onClose, TaskId, onDone, step }: IStepModal) => {
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                 <Form style={{ marginBottom: "20px" }}>
                     <h3 style={{ marginLeft: "20px" }}>Test</h3>
-                    <Box m={3} display="flex" >
-                        <Box style={{ flex: 1 }} >
+                    <Box m={3} display="flex">
+                        <Box style={{ flex: 1 }}>
                             <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
                                 <TextField
                                     style={{ gridColumnEnd: "span 2" }}
@@ -435,7 +495,9 @@ export const TestStep = ({ onClose, TaskId, onDone, step }: IStepModal) => {
                                         type="file"
                                         ref={(e) => (fileUploader.current = e)}
                                         hidden
-                                        onChange={(e) => e.target.files !== null && setFieldValue("file", e.target.files)}
+                                        onChange={(e) =>
+                                            e.target.files !== null && setFieldValue("file", e.target.files)
+                                        }
                                     />
                                     <Button
                                         color="primary"
@@ -467,7 +529,12 @@ export const TestStep = ({ onClose, TaskId, onDone, step }: IStepModal) => {
                                 </Box>
                             </Box>
                             <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
-                                <Button type="submit" kind={step ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
+                                <Button
+                                    type="submit"
+                                    kind={step ? "edit" : "add"}
+                                    disabled={isSubmitting}
+                                    style={{ flex: 1 }}
+                                >
                                     Save
                                 </Button>
                                 {step && (
@@ -482,19 +549,26 @@ export const TestStep = ({ onClose, TaskId, onDone, step }: IStepModal) => {
                                 )}
                             </Box>
                         </Box>
-                        {step ?
-                            <Box m={3} display="grid" gridTemplateColumns="1fr" gridGap={10} gridColumnGap={10} style={{ flex: 1 }}>
+                        {step ? (
+                            <Box
+                                m={3}
+                                display="grid"
+                                gridTemplateColumns="1fr"
+                                gridGap={10}
+                                gridColumnGap={10}
+                                style={{ flex: 1 }}
+                            >
                                 {step.illustration.map((i: any, index: number) => {
                                     return (
-                                        <object width="auto" height='150px' data={`http://digitalphocus.ir${i}`} >
+                                        <object width="auto" height="150px" data={`http://digitalphocus.ir${i}`}>
                                             <embed src={`http://digitalphocus.ir${i}`} />
-                                            Can't load pdf :(, If you have IDM extention please desable it or download the file
+                                            Can't load pdf :(, If you have IDM extention please desable it or download
+                                            the file
                                         </object>
-                                    )
-                                }
-                                )}
+                                    );
+                                })}
                             </Box>
-                            : null}
+                        ) : null}
                     </Box>
                 </Form>
             )}
@@ -519,7 +593,14 @@ export const FieldStep = ({ onClose, TaskId, onDone, step }: IStepModal) => {
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
         if (step && step.id) {
-            updateAFieldStep(step.id, values.name, values.file, values.description, values.number, values.relatedPartNumber)
+            updateAFieldStep(
+                step.id,
+                values.name,
+                values.file,
+                values.description,
+                values.number,
+                values.relatedPartNumber
+            )
                 .then((d) => {
                     onDone && onDone();
                     onClose();
@@ -527,7 +608,14 @@ export const FieldStep = ({ onClose, TaskId, onDone, step }: IStepModal) => {
                 .catch((e) => console.log(e))
                 .finally(() => setSubmitting(false));
         } else {
-            createAFieldStep(TaskId, values.name, values.file, values.description, values.number, values.relatedPartNumber)
+            createAFieldStep(
+                TaskId,
+                values.name,
+                values.file,
+                values.description,
+                values.number,
+                values.relatedPartNumber
+            )
                 .then((d) => {
                     setSubmitting(false);
                     onDone && onDone();
@@ -542,8 +630,8 @@ export const FieldStep = ({ onClose, TaskId, onDone, step }: IStepModal) => {
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                 <Form style={{ marginBottom: "20px" }}>
                     <h3 style={{ marginLeft: "20px" }}>Field StartUp</h3>
-                    <Box m={3} display="flex" >
-                        <Box style={{ flex: 1 }} >
+                    <Box m={3} display="flex">
+                        <Box style={{ flex: 1 }}>
                             <Box m={3} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridColumnGap={10}>
                                 <TextField
                                     style={{ gridColumnEnd: "span 2" }}
@@ -594,7 +682,9 @@ export const FieldStep = ({ onClose, TaskId, onDone, step }: IStepModal) => {
                                         type="file"
                                         ref={(e) => (fileUploader.current = e)}
                                         hidden
-                                        onChange={(e) => e.target.files !== null && setFieldValue("file", e.target.files)}
+                                        onChange={(e) =>
+                                            e.target.files !== null && setFieldValue("file", e.target.files)
+                                        }
                                     />
                                     <Button
                                         color="primary"
@@ -626,7 +716,12 @@ export const FieldStep = ({ onClose, TaskId, onDone, step }: IStepModal) => {
                                 </Box>
                             </Box>
                             <Box style={{ display: "flex", width: "50%", margin: "0px 25%" }}>
-                                <Button type="submit" kind={step ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
+                                <Button
+                                    type="submit"
+                                    kind={step ? "edit" : "add"}
+                                    disabled={isSubmitting}
+                                    style={{ flex: 1 }}
+                                >
                                     Save
                                 </Button>
                                 {step && (
@@ -641,19 +736,26 @@ export const FieldStep = ({ onClose, TaskId, onDone, step }: IStepModal) => {
                                 )}
                             </Box>
                         </Box>
-                        {step ?
-                            <Box m={3} display="grid" gridTemplateColumns="1fr" gridGap={10} gridColumnGap={10} style={{ flex: 1 }}>
+                        {step ? (
+                            <Box
+                                m={3}
+                                display="grid"
+                                gridTemplateColumns="1fr"
+                                gridGap={10}
+                                gridColumnGap={10}
+                                style={{ flex: 1 }}
+                            >
                                 {step.illustration.map((i: any, index: number) => {
                                     return (
-                                        <object width="auto" height='150px' data={`http://digitalphocus.ir${i}`} >
+                                        <object width="auto" height="150px" data={`http://digitalphocus.ir${i}`}>
                                             <embed src={`http://digitalphocus.ir${i}`} />
-                                            Can't load pdf :(, If you have IDM extention please desable it or download the file
+                                            Can't load pdf :(, If you have IDM extention please desable it or download
+                                            the file
                                         </object>
-                                    )
-                                }
-                                )}
+                                    );
+                                })}
                             </Box>
-                            : null}
+                        ) : null}
                     </Box>
                 </Form>
             )}

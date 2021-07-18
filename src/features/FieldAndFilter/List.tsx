@@ -7,6 +7,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { splitLevelName } from "../../logic/levels";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -53,7 +54,7 @@ export default function List() {
                                         {j.value}
                                         <ul>
                                             {j.fields.map((k: any) => (
-                                                <li>{k.name}</li>
+                                                <li>{splitLevelName(k.name)}</li>
                                             ))}
                                         </ul>
                                     </li>
