@@ -13,6 +13,36 @@ export const createAManStep = async (data: { TaskId: string; steps: IManufacturi
         throw error;
     }
 };
+export const deleteAManStep = async (taskId: string, stepNumber: string) => {
+    try {
+        const resp = await Axios.delete(`engineering/manufacturering/step/${stepNumber}`, {
+            params: { TaskId: taskId },
+        });
+        return resp.data;
+    } catch (error) {
+        console.log(error);
+    }
+};
+export const addFileToManufacturingStep = async (taskId: string, stepNumber: string, files: File) => {
+    try {
+        console.log("addFileToManufacturingStep", files);
+        const formData = new FormData();
+        formData.append(stepNumber, files);
+
+        const resp = await Axios.post(`engineering/manufacturing/step/${taskId}/file`, formData);
+        return resp.data;
+    } catch (error) {
+        throw error;
+    }
+};
+export const deleteFileFromManufacturingStep = async (taskId: string, url: string) => {
+    try {
+        const resp = await Axios.delete(`engineering/manufacturing/step/${taskId}/file`, { data: { url } });
+        return resp.data;
+    } catch (error) {
+        throw error;
+    }
+};
 
 export const OLDcreateAManStep = async (
     TaskId: string,
@@ -217,15 +247,6 @@ export const updateAFieldStep = async (
         formData.append("number", number);
         formData.append("description", description);
         const resp = await Axios.patch(`/fieldStartUpStep/${stepid}`, formData);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-};
-
-export const deleteAManStep = async (stepid: string) => {
-    try {
-        const resp = await Axios.delete(`/engineering/manufacturing/step/${stepid}`);
         return resp.data;
     } catch (error) {
         console.log(error);

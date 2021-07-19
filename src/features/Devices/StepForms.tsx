@@ -35,7 +35,7 @@ export const ManufacturingStep = ({ onClose, TaskId, onDone, step }: IStepModal)
     const deleteDocument = useCallback(async () => {
         try {
             if (step && step.id) {
-                await deleteAManStep(step.id);
+                // await deleteAManStep(step.id);
                 mutate(`/engineering/manufacturing/step?TaskId=${TaskId}`);
                 onDone && onDone();
                 onClose();

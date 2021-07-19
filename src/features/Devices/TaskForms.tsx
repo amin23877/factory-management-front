@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useState, useMemo } from "react";
-import { Box, FormControlLabel, Checkbox } from "@material-ui/core";
+import { Box, FormControlLabel, Checkbox, Paper } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
@@ -38,17 +38,6 @@ interface ITaskModal {
 export const Manufacturing = ({ open, onClose, itemId, onDone, task }: ITaskModal) => {
     const [AddStep, setAddStep] = useState(false);
     const [step, setStep] = useState(false);
-    const { data: manSteps } = useSWR(task ? `/engineering/manufacturing/step?TaskId=${task.id}` : null);
-
-    const manCols = useMemo<GridColDef[]>(
-        () => [
-            { field: "number", headerName: "NO." },
-            { field: "name", headerName: "Name" },
-            { field: "description", headerName: "description", flex: 1 },
-            { field: "relatedPartNumber", headerName: "Part NO." },
-        ],
-        []
-    );
 
     const deleteDocument = useCallback(async () => {
         try {
@@ -116,9 +105,16 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, task }: ITaskModa
             <Formik initialValues={task ? task : ({} as any)} onSubmit={handleSubmit}>
                 {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                     <Form>
-                        <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
+                        <Box display="grid" gridTemplateColumns={task ? "1fr 1fr" : "1fr"} gridGap={10}>
                             <Box m={2} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
-                                <Box my={1} px={1} style={{ gridColumnEnd: "span 2", border: "1px dashed gray" }}>
+                                <Paper
+                                    style={{
+                                        margin: "0.5em 0",
+                                        padding: "0 0.5em",
+                                        backgroundColor: "#eee",
+                                        gridColumnEnd: "span 2",
+                                    }}
+                                >
                                     <FormControlLabel
                                         name="buildToStock"
                                         value={values.buildToStock}
@@ -135,7 +131,7 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, task }: ITaskModa
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
-                                </Box>
+                                </Paper>
                                 <TextField
                                     style={{ gridColumnEnd: "span 2" }}
                                     value={values.name}
