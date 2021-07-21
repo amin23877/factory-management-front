@@ -2,31 +2,28 @@ import React, { useState, useMemo, useEffect } from "react";
 import { Box, Button, Tabs, Tab } from "@material-ui/core";
 import { GridColDef, DataGrid } from "@material-ui/data-grid";
 import useSWR from "swr";
-import Timeline from 'react-calendar-timeline'
-import 'react-calendar-timeline/lib/Timeline.css'
-import moment from 'moment'
-import AddProjectModal from './Modals'
+import Timeline from "react-calendar-timeline";
+import "react-calendar-timeline/lib/Timeline.css";
+import moment from "moment";
+import AddProjectModal from "./Modals";
 
-import Table from '../../app/CollapsableTable'
+import Table from "../../app/CollapsableTable";
 
 import { BasePaper } from "../../app/Paper";
 
 import { TaskModal } from "./Modals";
 
-
 export default function QuotePanel() {
-
     const [addProject, setAddProject] = useState(false);
     const [selectedProject, setSelectedProject] = useState<any>(false);
     const [selectedTask, setSelectedTask] = useState<any>(false);
-    const [tasks, setTasks] = useState<any[]>([])
-    const [bars, setBars] = useState<any[]>([])
-    const [formatProject, setFormatProject] = useState<any[]>([])
+    const [tasks, setTasks] = useState<any[]>([]);
+    const [bars, setBars] = useState<any[]>([]);
+    const [formatProject, setFormatProject] = useState<any[]>([]);
     const [activeTab, setActiveTab] = useState(0);
 
-
     const { data: projects, mutate: mutate } = useSWR("/engineering/project");
-    const { data: calenderData, mutate: mutates } = useSWR("/engineering/project/linear")
+    const { data: calenderData, mutate: mutates } = useSWR("/engineering/project/linear");
 
     const projectCols: GridColDef[] = useMemo(
         () => [
@@ -59,110 +56,121 @@ export default function QuotePanel() {
         []
     );
 
-
     useEffect(() => {
         setFormatProject([]);
         setTasks([]);
         setBars([]);
         projects?.map((i: any, index: number) => {
-
-            setFormatProject(prev => [...prev, { ...i, employee: i?.EmployeeId?.username }])
-        })
+            setFormatProject((prev) => [...prev, { ...i, employee: i?.EmployeeId?.username }]);
+        });
         calenderData?.map((i: any, index: number) => {
             // , subs: [...i.subs, i.subs.map((s: any) => { })]
             if (i.ProjectId) {
-                setTasks(prev => [...prev, { id: index, title: i.name }]);
-                setBars(prev => [...prev, {
-                    id: 2 * index - 1,
-                    group: index,
-                    title: '',
-                    start_time: i.start,
-                    end_time: i.start + i.days * i.done / 100 * 86400000,
-                    canMove: false,
-                    canResize: false,
-                    canChangeGroup: false,
-                    itemProps: {
-                        // these optional attributes are passed to the root <div /> of each item as <div {...itemProps} />
-                        'data-custom-attribute': 'Random content',
-                        'aria-hidden': false,
-                        onDoubleClick: () => { setSelectedProject(i) },
-                        style: {
-                            background: '#bbb',
-                            color: 'black'
-                        }
-                    }
-                }, {
-                    id: 2 * index,
-                    group: index,
-                    title: i.name,
-                    start_time: i.start + i.days * i.done / 100 * 86400000,
-                    end_time: i.start + i.days * 86400000,
-                    itemProps: {
-                        // these optional attributes are passed to the root <div /> of each item as <div {...itemProps} />
-                        'data-custom-attribute': 'Random content',
-                        'aria-hidden': false,
-                        onDoubleClick: () => { setSelectedProject(i) },
-                        style: {
-                            color: 'black'
-                        }
-                    }
-                }])
+                setTasks((prev) => [...prev, { id: index, title: i.name }]);
+                setBars((prev) => [
+                    ...prev,
+                    {
+                        id: 2 * index - 1,
+                        group: index,
+                        title: "",
+                        start_time: i.start,
+                        end_time: i.start + ((i.days * i.done) / 100) * 86400000,
+                        canMove: false,
+                        canResize: false,
+                        canChangeGroup: false,
+                        itemProps: {
+                            // these optional attributes are passed to the root <div /> of each item as <div {...itemProps} />
+                            "data-custom-attribute": "Random content",
+                            "aria-hidden": false,
+                            onDoubleClick: () => {
+                                setSelectedProject(i);
+                            },
+                            style: {
+                                background: "#bbb",
+                                color: "black",
+                            },
+                        },
+                    },
+                    {
+                        id: 2 * index,
+                        group: index,
+                        title: i.name,
+                        start_time: i.start + ((i.days * i.done) / 100) * 86400000,
+                        end_time: i.start + i.days * 86400000,
+                        itemProps: {
+                            // these optional attributes are passed to the root <div /> of each item as <div {...itemProps} />
+                            "data-custom-attribute": "Random content",
+                            "aria-hidden": false,
+                            onDoubleClick: () => {
+                                setSelectedProject(i);
+                            },
+                            style: {
+                                color: "black",
+                            },
+                        },
+                    },
+                ]);
             } else {
-                setTasks(prev => [...prev, { id: index, title: i.name }]);
-                setBars(prev => [...prev, {
-                    id: 2 * index - 1,
-                    group: index,
-                    title: '',
-                    start_time: i.start,
-                    end_time: i.start + i.days * i.done / 100 * 86400000,
-                    canMove: false,
-                    canResize: false,
-                    canChangeGroup: false,
-                    itemProps: {
-                        // these optional attributes are passed to the root <div /> of each item as <div {...itemProps} />
-                        'data-custom-attribute': 'Random content',
-                        'aria-hidden': false,
-                        onDoubleClick: () => { setSelectedProject(i) },
-                        style: {
-                            background: '#bbb',
-                            color: 'black'
-                        }
-                    }
-                }, {
-                    id: 2 * index,
-                    group: index,
-                    title: i.name,
-                    start_time: i.start + i.days * i.done / 100 * 86400000,
-                    end_time: i.start + i.days * 86400000,
-                    itemProps: {
-                        // these optional attributes are passed to the root <div /> of each item as <div {...itemProps} />
-                        'data-custom-attribute': 'Random content',
-                        'aria-hidden': false,
-                        onDoubleClick: () => { setSelectedProject(i) },
-                        style: {
-                            background: '#32CD32',
-                            color: 'black'
-                        }
-
-                    }
-                }])
+                setTasks((prev) => [...prev, { id: index, title: i.name }]);
+                setBars((prev) => [
+                    ...prev,
+                    {
+                        id: 2 * index - 1,
+                        group: index,
+                        title: "",
+                        start_time: i.start,
+                        end_time: i.start + ((i.days * i.done) / 100) * 86400000,
+                        canMove: false,
+                        canResize: false,
+                        canChangeGroup: false,
+                        itemProps: {
+                            // these optional attributes are passed to the root <div /> of each item as <div {...itemProps} />
+                            "data-custom-attribute": "Random content",
+                            "aria-hidden": false,
+                            onDoubleClick: () => {
+                                setSelectedProject(i);
+                            },
+                            style: {
+                                background: "#bbb",
+                                color: "black",
+                            },
+                        },
+                    },
+                    {
+                        id: 2 * index,
+                        group: index,
+                        title: i.name,
+                        start_time: i.start + ((i.days * i.done) / 100) * 86400000,
+                        end_time: i.start + i.days * 86400000,
+                        itemProps: {
+                            // these optional attributes are passed to the root <div /> of each item as <div {...itemProps} />
+                            "data-custom-attribute": "Random content",
+                            "aria-hidden": false,
+                            onDoubleClick: () => {
+                                setSelectedProject(i);
+                            },
+                            style: {
+                                background: "#32CD32",
+                                color: "black",
+                            },
+                        },
+                    },
+                ]);
             }
+        });
+    }, [projects, calenderData]);
 
-        })
-    }, [projects, calenderData])
-
-    const keys =
-    {
-        groupIdKey: 'id',
-        groupTitleKey: 'title',
-        groupRightTitleKey: 'rightTitle',
-        itemIdKey: 'id',
-        itemTitleKey: 'title',    // key for item div content
-        itemDivTitleKey: 'title', // key for item div title (<div title="text"/>)
-        itemGroupKey: 'group',
-        itemTimeStartKey: 'start_time',
-        itemTimeEndKey: 'end_time',
-    }
+    const keys = {
+        groupIdKey: "id",
+        groupTitleKey: "title",
+        groupRightTitleKey: "rightTitle",
+        itemIdKey: "id",
+        itemTitleKey: "title", // key for item div content
+        itemDivTitleKey: "title", // key for item div title (<div title="text"/>)
+        itemGroupKey: "group",
+        itemTimeStartKey: "start_time",
+        itemTimeEndKey: "end_time",
+    };
 
     const s = {
         second: 0,
@@ -170,22 +178,27 @@ export default function QuotePanel() {
         hour: 0,
         day: 1,
         month: 1,
-        year: 1
-    }
+        year: 1,
+    };
 
     return (
         <Box>
             <AddProjectModal open={addProject} onClose={() => setAddProject(false)} />
-            {selectedProject && selectedProject.id &&
-                <AddProjectModal open={selectedProject} onClose={() => setSelectedProject(false)} project={selectedProject} />}
-            {selectedTask && selectedTask.id &&
+            {selectedProject && selectedProject.id && (
+                <AddProjectModal
+                    open={selectedProject}
+                    onClose={() => setSelectedProject(false)}
+                    project={selectedProject}
+                />
+            )}
+            {selectedTask && selectedTask.id && (
                 <TaskModal open={selectedTask} onClose={() => setSelectedTask(false)} task={selectedTask} />
-            }
+            )}
             <Box mb={2} display="flex" alignItems="center">
                 <Button onClick={() => setAddProject(true)}>Add project</Button>
                 <div style={{ flexGrow: 1 }} />
             </Box>
-            <BasePaper >
+            <BasePaper>
                 <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
                     <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                         <Tab label="List" />
@@ -193,36 +206,38 @@ export default function QuotePanel() {
                     </Tabs>
                     <div style={{ flexGrow: 1 }} />
                 </Box>
-                {activeTab === 0 &&
+                {activeTab === 0 && (
                     <Box flex={1}>
-                        
-                        {
-                            < Table
-                                rows={formatProject || []}
-                                cols={projectCols}
-                                subCols={projectSubCols}
-                                onRowSelected={(a) => { setSelectedProject(a) }}
-                                onSubRowSelected={(d) => { setSelectedTask(d); console.log(d) }}
-                            />
-                        }
+                        <Table
+                            rows={formatProject || []}
+                            cols={projectCols}
+                            subCols={projectSubCols}
+                            onRowSelected={(a) => {
+                                setSelectedProject(a);
+                            }}
+                            onSubRowSelected={(d) => {
+                                setSelectedTask(d);
+                                console.log(d);
+                            }}
+                        />
                     </Box>
-                }
-                {bars[0] && tasks[0] && activeTab === 1 &&
-                    <Box display="flex" alignItems="center" >
-                        <Box width="75vw" style={{ margin: ' 1px auto' }}>
+                )}
+                {bars[0] && tasks[0] && activeTab === 1 && (
+                    <Box display="flex" alignItems="center">
+                        <Box width="75vw" style={{ margin: " 1px auto" }}>
                             <Timeline
                                 groups={tasks}
                                 items={bars}
-                                defaultTimeStart={moment().add(-20, 'day')}
-                                defaultTimeEnd={moment().add(15, 'day')}
+                                defaultTimeStart={moment().add(-20, "day")}
+                                defaultTimeEnd={moment().add(15, "day")}
                                 timeSteps={s}
                                 minZoom={60 * 60 * 1000 * 24 * 7}
                                 keys={keys}
                             />
                         </Box>
                     </Box>
-                }
+                )}
             </BasePaper>
-        </Box >
+        </Box>
     );
 }

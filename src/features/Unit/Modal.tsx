@@ -20,6 +20,7 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
     const { data: warranties } = useSWR(
         footerActiveTab === 1 ? `/service?ItemId=${unit.item.id}&ServiceFamilyId=60efd0bcca0feadc84be6618` : null
     );
+    const { data: soLineItems } = useSWR(footerActiveTab === 5 ? `/lineitem?SOId=${unit.SOId}` : null);
 
     const warCols = useMemo(
         () => [
@@ -30,6 +31,41 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
         ],
         []
     );
+
+    const LICols = useMemo(
+        () => [
+            { field: "index" },
+            { field: "ItemId", valueFormatter: (r: any) => r.row.ItemId.name },
+            { field: "description", width: 200 },
+            { field: "quantity" },
+            { field: "price" },
+            { field: "tax" },
+        ],
+        []
+    );
+
+    const bomRecordCols = useMemo(
+        () => [
+            { field: "no", headerName: "No.", valueFormatter: (params: any) => params.row?.ItemId?.no },
+            { field: "name", headerName: "Name", valueFormatter: (params: any) => params.row?.ItemId?.name },
+            { field: "revision", headerName: "Revision" },
+            { field: "usage", headerName: "Usage" },
+            { field: "fixedQty", headerName: "fixed Qty", type: "boolean" },
+        ],
+        []
+    );
+
+    const docCols = [
+        { field: "name", headerName: "Name" },
+        { field: "description", headerName: "Description", width: 250 },
+        { field: "createdAt", headerName: "Created at", width: 300 },
+    ];
+
+    const noteCols = [
+        { field: "subject", headerName: "Subject" },
+        { field: "url", headerName: "URL" },
+        { field: "note", headerName: "Note", width: 300 },
+    ];
 
     return (
         <Dialog open={open} onClose={onClose} title="Unit history" fullWidth maxWidth="md">
@@ -64,7 +100,7 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
                             </Tabs>
                             {activeTab === 0 && <h3>Image</h3>}
                             {activeTab === 1 && <Status unit={unit} />}
-                            {activeTab === 2 && <Expense />}
+                            {activeTab === 2 && <Expense unit={unit} />}
                             {activeTab === 3 && <Shipping />}
                             {activeTab === 4 && <DynamicFilterAndFields />}
                         </Box>
@@ -72,7 +108,7 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
                 </Box>
                 <Box>
                     <Paper>
-                        <Box m={1} height={260}>
+                        <Box m={1} height={550}>
                             <Tabs
                                 variant="scrollable"
                                 value={footerActiveTab}
@@ -84,13 +120,27 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
                                 <Tab label="Job" />
                                 <Tab label="Documents" />
                                 <Tab label="Quality control" />
-                                <Tab label="Sales order history" />
+                                <Tab label="Sales order items" />
                                 <Tab label="Field service history" />
                                 <Tab label="Note" />
                                 <Tab label="Auditing" />
                             </Tabs>
                             {footerActiveTab === 1 && (
                                 <BaseDataGrid cols={warCols} rows={warranties || []} onRowSelected={() => {}} />
+                            )}
+                            {footerActiveTab === 2 && (
+                                <BaseDataGrid cols={bomRecordCols} rows={[]} onRowSelected={() => {}} />
+                            )}
+                            {footerActiveTab === 3 && (
+                                <BaseDataGrid cols={docCols} rows={[]} onRowSelected={() => {}} />
+                            )}
+                            {footerActiveTab === 4 && <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />}
+                            {footerActiveTab === 5 && (
+                                <BaseDataGrid cols={LICols} rows={soLineItems || []} onRowSelected={() => {}} />
+                            )}
+                            {footerActiveTab === 6 && <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />}
+                            {footerActiveTab === 7 && (
+                                <BaseDataGrid cols={noteCols} rows={[]} onRowSelected={() => {}} />
                             )}
                         </Box>
                     </Paper>

@@ -19,13 +19,13 @@ export const Status = ({ unit }: { unit: IUnitHistory }) => {
     );
 };
 
-export const Expense = () => {
+export const Expense = ({ unit }: { unit: IUnitHistory }) => {
     return (
         <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
-            <TextField label="Item labor time" disabled />
-            <TextField label="Item labor cost" disabled />
-            <TextField label="Item bom cost" disabled />
-            <TextField label="Item total cost" disabled />
+            <TextField label="Item labor time" value={unit.unit.laborTime} disabled />
+            <TextField label="Item labor cost" value={unit.unit.laborCost} disabled />
+            <TextField label="Item bom cost" value={unit.unit.bomCost} disabled />
+            <TextField label="Item total cost" value={unit.unit.totalCost} disabled />
         </Box>
     );
 };
