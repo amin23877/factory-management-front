@@ -45,7 +45,7 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, task }: ITaskModa
             { field: "number", headerName: "NO." },
             { field: "name", headerName: "Name" },
             { field: "description", headerName: "description", flex: 1 },
-            { field: "relatedPartNumber", headerName: "Part NO." },
+            { field: "relatedPartNumber", headerName: "Part Name" },
         ],
         []
     );
@@ -169,7 +169,7 @@ export const Manufacturing = ({ open, onClose, itemId, onDone, task }: ITaskModa
                                         style={{ marginBottom: "10px" }}
                                         value={values.relatedPartNumber}
                                         name="relatedPartNumber"
-                                        label="Part NO."
+                                        label="Part Name"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
@@ -260,7 +260,7 @@ export const Evaluation = ({ open, onClose, itemId, onDone, task }: ITaskModal) 
             { field: "number", headerName: "NO." },
             { field: "name", headerName: "Name" },
             { field: "description", headerName: "description", flex: 1 },
-            { field: "relatedPartNumber", headerName: "Part NO." },
+            { field: "relatedPartNumber", headerName: "Part Name" },
         ],
         []
     );
@@ -385,7 +385,7 @@ export const Evaluation = ({ open, onClose, itemId, onDone, task }: ITaskModal) 
                                         style={{ marginBottom: "10px" }}
                                         value={values.relatedPartNumber}
                                         name="relatedPartNumber"
-                                        label="Part NO."
+                                        label="Part Name"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />

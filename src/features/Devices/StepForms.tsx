@@ -20,7 +20,6 @@ import {
     deleteATestStep,
 } from "../../api/steps";
 import { mutate } from "swr";
-import { Tab } from "@material-ui/icons";
 
 interface IStepModal {
     TaskId: string;
@@ -107,15 +106,6 @@ export const ManufacturingStep = ({ onClose, TaskId, onDone, step }: IStepModal)
                                     name="number"
                                     label="Step Number"
                                     variant="outlined"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                                <TextField
-                                    fullWidth
-                                    style={{ marginBottom: "10px" }}
-                                    value={values.relatedPartNumber}
-                                    name="relatedPartNumber"
-                                    label="Part NO."
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
@@ -259,7 +249,6 @@ export const EvaluationStep = ({ onClose, TaskId, onDone, step }: IStepModal) =>
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-
                                 <TextField
                                     fullWidth
                                     style={{ marginBottom: "10px" }}
@@ -270,17 +259,6 @@ export const EvaluationStep = ({ onClose, TaskId, onDone, step }: IStepModal) =>
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-
-                                <TextField
-                                    fullWidth
-                                    style={{ marginBottom: "10px" }}
-                                    value={values.relatedPartNumber}
-                                    name="relatedPartNumber"
-                                    label="Part NO."
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-
                                 <Box style={{ gridColumnEnd: "span 2", margin: "0px 25%" }}>
                                     <input
                                         multiple
