@@ -13,7 +13,7 @@ export default function Calender() {
     const [tasks, setTasks] = useState<any[]>([])
     const [bars, setBars] = useState<any[]>([])
 
-    const { data: calenderData, mutate: mutates } = useSWR("/engineering/project/linear")
+    const { data: calenderData, mutate: mutates } = useSWR("/engineering/project")
 
     useEffect(() => {
 

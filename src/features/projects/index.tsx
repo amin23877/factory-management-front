@@ -1,17 +1,20 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect, Fragment } from "react";
 import { Box, Button, Tabs, Tab } from "@material-ui/core";
 import { GridColDef, DataGrid } from "@material-ui/data-grid";
 import useSWR from "swr";
+
 import Timeline from 'react-calendar-timeline'
 import 'react-calendar-timeline/lib/Timeline.css'
 import moment from 'moment'
+
 import AddProjectModal from './Modals'
+import Calender from './calender'
+import { TaskModal } from "./Modals";
+
 
 import Table from '../../app/CollapsableTable'
-
 import { BasePaper } from "../../app/Paper";
 
-import { TaskModal } from "./Modals";
 
 
 export default function QuotePanel() {
@@ -19,6 +22,7 @@ export default function QuotePanel() {
     const [addProject, setAddProject] = useState(false);
     const [selectedProject, setSelectedProject] = useState<any>(false);
     const [selectedTask, setSelectedTask] = useState<any>(false);
+    const [selectedCalender, setSelectedCalender] = useState<any>(false);
     const [tasks, setTasks] = useState<any[]>([])
     const [bars, setBars] = useState<any[]>([])
     const [formatProject, setFormatProject] = useState<any[]>([])
@@ -65,10 +69,9 @@ export default function QuotePanel() {
         setTasks([]);
         setBars([]);
         projects?.map((i: any, index: number) => {
-
             setFormatProject(prev => [...prev, { ...i, employee: i?.EmployeeId?.username }])
         })
-        calenderData?.map((i: any, index: number) => {
+        selectedCalender?.subs?.map((i: any, index: number) => {
             // , subs: [...i.subs, i.subs.map((s: any) => { })]
             if (i.ProjectId) {
                 setTasks(prev => [...prev, { id: index, title: i.name }]);
@@ -149,7 +152,7 @@ export default function QuotePanel() {
             }
 
         })
-    }, [projects, calenderData])
+    }, [projects, selectedCalender])
 
     const keys =
     {
@@ -189,36 +192,53 @@ export default function QuotePanel() {
                 <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
                     <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                         <Tab label="List" />
-                        <Tab label="calender" />
+                        <Tab label="calender" onClick={() => { setSelectedCalender(false) }} />
                     </Tabs>
                     <div style={{ flexGrow: 1 }} />
                 </Box>
                 {activeTab === 0 &&
                     <Box flex={1}>
-                        
+
                         {
                             < Table
                                 rows={formatProject || []}
                                 cols={projectCols}
                                 subCols={projectSubCols}
                                 onRowSelected={(a) => { setSelectedProject(a) }}
-                                onSubRowSelected={(d) => { setSelectedTask(d); console.log(d) }}
+                                onSubRowSelected={(d) => { setSelectedTask(d) }}
+                                onCalenderClicked={
+                                    (c) => {
+                                        setActiveTab(1);
+                                        setSelectedCalender(c);
+                                    }}
                             />
                         }
                     </Box>
                 }
-                {bars[0] && tasks[0] && activeTab === 1 &&
+                {activeTab === 1 &&
                     <Box display="flex" alignItems="center" >
                         <Box width="75vw" style={{ margin: ' 1px auto' }}>
-                            <Timeline
-                                groups={tasks}
-                                items={bars}
-                                defaultTimeStart={moment().add(-20, 'day')}
-                                defaultTimeEnd={moment().add(15, 'day')}
-                                timeSteps={s}
-                                minZoom={60 * 60 * 1000 * 24 * 7}
-                                keys={keys}
-                            />
+                            {selectedCalender ?
+                                <Fragment>
+                                    <h3> Project : {selectedCalender.name} </h3>
+                                    {bars && tasks &&
+                                        <Timeline
+                                            groups={tasks}
+                                            items={bars}
+                                            defaultTimeStart={moment().add(-20, 'day')}
+                                            defaultTimeEnd={moment().add(15, 'day')}
+                                            timeSteps={s}
+                                            minZoom={60 * 60 * 1000 * 24 * 7}
+                                            keys={keys}
+                                        />}
+                                </Fragment>
+                                :
+                                <Fragment>
+                                    <h3>All Projects TimeLine</h3>
+                                    <Calender />
+                                </Fragment>
+                            }
+
                         </Box>
                     </Box>
                 }
