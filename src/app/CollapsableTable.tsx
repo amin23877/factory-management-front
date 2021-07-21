@@ -12,6 +12,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import EventNoteRoundedIcon from "@material-ui/icons/EventNoteRounded";
 
 const useRowStyles = makeStyles({
     root: {
@@ -27,12 +28,14 @@ function Row(props: {
     subCols: any[];
     onRowSelected: (a: any) => void;
     onSubRowSelected: (a: any) => void;
+    onCalenderClicked: (a: any) => void;
 }) {
     const { row } = props;
     const { cols } = props;
     const { subCols } = props;
     const { onRowSelected } = props;
     const { onSubRowSelected } = props;
+    const { onCalenderClicked } = props;
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
 
@@ -78,6 +81,9 @@ function Row(props: {
                         );
                     }
                 })}
+                <TableCell onClick={() => onCalenderClicked(row)}>
+                    <EventNoteRoundedIcon />
+                </TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -140,12 +146,14 @@ export default function CollapsibleTable({
     subCols,
     onRowSelected,
     onSubRowSelected,
+    onCalenderClicked,
 }: {
     rows: any[];
     cols: any[];
     subCols: any[];
     onRowSelected: (a: any) => void;
     onSubRowSelected: (a: any) => void;
+    onCalenderClicked: (a: any) => void;
 }) {
     return (
         <TableContainer component={Paper}>
@@ -156,6 +164,7 @@ export default function CollapsibleTable({
                         {cols.map((col, i) => (
                             <TableCell>{col.headerName ? col.headerName : col.field}</TableCell>
                         ))}
+                        <TableCell />
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -167,6 +176,7 @@ export default function CollapsibleTable({
                             subCols={subCols}
                             onRowSelected={onRowSelected}
                             onSubRowSelected={onSubRowSelected}
+                            onCalenderClicked={onCalenderClicked}
                         />
                     ))}
                 </TableBody>
