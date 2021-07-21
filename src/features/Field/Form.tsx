@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Checkbox, FormControlLabel, TextField, Box } from "@material-ui/core";
 import useSWR from "swr";
 
@@ -11,9 +11,10 @@ import { Formik, Form } from "formik";
 
 import Button from "../../app/Button";
 import * as Yup from "yup";
-import { basePost } from "../../api";
+import { post } from "../../api";
 import { mutate } from "swr";
 import { Autocomplete } from "@material-ui/lab";
+import { generateLevelName } from "../../logic/levels";
 
 const schema = Yup.object().shape({
     filterName: Yup.string().required(),
@@ -32,7 +33,8 @@ export default function FieldForm({ initial, setActive }: { initial?: IField; se
     const handleSubmit = async (values: any, { setSubmitting }: any) => {
         setSubmitting(true);
         try {
-            const resp = await basePost("/field", values);
+            // console.log({ ...values, name: `${values.name}__${nanoid()}` });
+            const resp = await post("/field", { ...values, name: generateLevelName(values.name) });
             if (resp) {
                 mutate("/field");
                 setSubmitting(false);
@@ -42,7 +44,6 @@ export default function FieldForm({ initial, setActive }: { initial?: IField; se
             console.log(e);
         }
     };
-
 
     return (
         <>
@@ -115,7 +116,9 @@ export default function FieldForm({ initial, setActive }: { initial?: IField; se
                                         options={
                                             initial
                                                 ? initial.filterValue
-                                                : (filters?.find((f) => f.name === values.filterName)?.valid)?.concat(['all']) || []
+                                                : filters
+                                                      ?.find((f) => f.name === values.filterName)
+                                                      ?.valid?.concat(["all"]) || []
                                         }
                                         getOptionLabel={(option) => option}
                                         filterSelectedOptions

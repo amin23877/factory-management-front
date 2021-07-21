@@ -11,6 +11,7 @@ import Button from "../../app/Button";
 import { IFilter } from "../../api/filter";
 import { IField } from "../../api/field";
 import { updateItemQuantity } from "../../api/items";
+import { splitLevelName } from "../../logic/levels";
 
 interface IForm {
     values: any;
@@ -86,7 +87,7 @@ export const General = ({
                     {device ? (
                         <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
-                            checked={device ? true : values.device}
+                            checked={values.device}
                             label="Device"
                             name="device"
                             onChange={handleChange}
@@ -384,7 +385,7 @@ export const DynamicFilterAndFields = ({
                     <TextField
                         required={field.required}
                         name={field.name}
-                        label={field.name}
+                        label={splitLevelName(field.name)}
                         onChange={handleChange}
                         onBlur={handleBlur}
                         value={values[field.name]}
@@ -395,7 +396,7 @@ export const DynamicFilterAndFields = ({
                     <ArraySelect
                         required={field.required}
                         name={field.name}
-                        label={field.name}
+                        label={splitLevelName(field.name)}
                         items={field.valid}
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -408,7 +409,7 @@ export const DynamicFilterAndFields = ({
                         checked={values[field.name]}
                         control={<Checkbox required={field.required} />}
                         name={field.name}
-                        label={field.name}
+                        label={splitLevelName(field.name)}
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />

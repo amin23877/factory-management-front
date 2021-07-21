@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { LinearProgress, Box } from "@material-ui/core";
-import { DataGrid } from "@material-ui/data-grid";
+import { LinearProgress, Box, makeStyles } from "@material-ui/core";
+import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 import useSWR from "swr";
 
 import AddPartModal from "./AddPartModal";
@@ -11,11 +11,22 @@ import Button from "../../../app/Button";
 import { Toast } from "../../../app/Toast";
 import { BasePaper } from "../../../app/Paper";
 
-import { extractLevels, generateDatagridColumns, generateRows, IMatrice, postMatriceData } from "../../../api/matrice";
+import { IMatrice, postMatriceData } from "../../../api/matrice";
 import { CustomFooterStatusComponent } from "../../../components/Datagrid/FooterStatus";
+import { splitColumnNames, extractLevels, generateDatagridColumns, generateRows } from "../../../logic/matrice";
+
+const useStyles = makeStyles({
+    root: {
+        "& .MuiDataGrid-colCellWrapper": {
+            backgroundColor: "#c8c8c8",
+        },
+    },
+});
 
 export default function NewBomTable({ productFamily }: { productFamily: string }) {
     const { data: tableData, mutate: mutateTableData } = useSWR<IMatrice>(`/matrice?productfamily=${productFamily}`);
+
+    const classes = useStyles();
 
     const [addPart, setAddPart] = useState(false);
     const [changePart, setChangePart] = useState(false);
@@ -35,7 +46,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
         if (tableData) {
             const levels = extractLevels(tableData);
             const rows = generateRows(tableData, productFamily);
-            const columns = generateDatagridColumns(tableData, productFamily);
+            const columns = splitColumnNames(generateDatagridColumns(tableData, productFamily));
 
             setTable({ columns, rows });
             setLevels(levels);
@@ -119,9 +130,10 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
 
                     <Box height={450}>
                         <DataGrid
+                            className={classes.root}
                             columns={table.columns}
                             rows={table.rows}
-                            components={{ Footer: CustomFooterStatusComponent }}
+                            components={{ Toolbar: GridToolbar, Footer: CustomFooterStatusComponent }}
                             componentsProps={{ footer: { submited: Boolean(lines) } }}
                             onColumnHeaderClick={(params) => {
                                 setSelectedPart({ formerName: params.field, newName: "" });

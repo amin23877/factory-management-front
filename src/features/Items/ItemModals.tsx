@@ -11,11 +11,18 @@ import { DynamicFilterAndFields, General, MoreInfo, Quantity, Shipping } from ".
 import { createItem, AddItemSchema, IItem } from "../../api/items";
 import { IFilter } from "../../api/filter";
 
-export const AddItemModal = ({ open, onClose, device }: { open: boolean; onClose: () => void; device?: boolean }) => {
+export const AddItemModal = ({
+    open,
+    onClose,
+    device,
+    initialValues,
+}: {
+    open: boolean;
+    onClose: () => void;
+    device?: boolean;
+    initialValues?: IItem;
+}) => {
     const [activeTab, setActiveTab] = useState(0);
-    // const {data:filters} = useSWR<IFilter[]>('/filter');
-
-    // const initialFilterValues = filters.map(filter => ({filter.name}))
 
     const handleSubmit = async (data: any, { setSubmitting }: any) => {
         // console.log(data);
@@ -34,7 +41,11 @@ export const AddItemModal = ({ open, onClose, device }: { open: boolean; onClose
     return (
         <Dialog open={open} onClose={onClose} maxWidth="lg" title="Add new item">
             <Box p={1}>
-                <Formik initialValues={{} as IItem} validationSchema={AddItemSchema} onSubmit={handleSubmit}>
+                <Formik
+                    initialValues={initialValues ? initialValues : ({} as IItem)}
+                    validationSchema={AddItemSchema}
+                    onSubmit={handleSubmit}
+                >
                     {({ values, errors, handleChange, handleBlur, touched, isSubmitting, setFieldValue }) => (
                         <Form>
                             <Box display="flex">

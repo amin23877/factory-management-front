@@ -12,6 +12,7 @@ interface ITaskModal {
     onDone?: () => void;
     onClose: () => void;
     tab?: number;
+    device: any;
 }
 interface IEditTaskModal {
     open: boolean;
@@ -20,9 +21,10 @@ interface IEditTaskModal {
     onDone?: () => void;
     onClose: () => void;
     tab: number;
+    device: any;
 }
 
-export default function TaskModal({ open, onClose, itemId, onDone, task, tab }: ITaskModal) {
+export default function TaskModal({ open, onClose, itemId, device, onDone, task, tab }: ITaskModal) {
     const [activeTab, setActiveTab] = useState(tab ? tab : 0);
 
     return (
@@ -34,26 +36,52 @@ export default function TaskModal({ open, onClose, itemId, onDone, task, tab }: 
                 <Tab label="Field Start-up" />
             </Tabs>
             {activeTab === 0 && (
-                <Manufacturing open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />
+                <Manufacturing
+                    device={device}
+                    open={open}
+                    onClose={onClose}
+                    itemId={itemId}
+                    onDone={onDone}
+                    task={task}
+                />
             )}
             {activeTab === 1 && (
-                <Evaluation open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />
+                <Evaluation device={device} open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />
             )}
-            {activeTab === 2 && <Test open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />}
-            {activeTab === 3 && <Field open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />}
+            {activeTab === 2 && (
+                <Test device={device} open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />
+            )}
+            {activeTab === 3 && (
+                <Field device={device} open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />
+            )}
         </Dialog>
     );
 }
 
-export function EditTaskModal({ open, onClose, itemId, onDone, task, tab }: IEditTaskModal) {
+export function EditTaskModal({ open, onClose, device, itemId, onDone, task, tab }: IEditTaskModal) {
     const titles = ["Manufaturing", "Evaluation", "Test", "Field startup"];
 
     return (
         <Dialog title={titles[tab]} open={open} onClose={onClose} maxWidth="lg" fullWidth>
-            {tab === 0 && <Manufacturing open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />}
-            {tab === 1 && <Evaluation open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />}
-            {tab === 2 && <Test open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />}
-            {tab === 3 && <Field open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />}
+            {tab === 0 && (
+                <Manufacturing
+                    device={device}
+                    open={open}
+                    onClose={onClose}
+                    itemId={itemId}
+                    onDone={onDone}
+                    task={task}
+                />
+            )}
+            {tab === 1 && (
+                <Evaluation device={device} open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />
+            )}
+            {tab === 2 && (
+                <Test device={device} open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />
+            )}
+            {tab === 3 && (
+                <Field device={device} open={open} onClose={onClose} itemId={itemId} onDone={onDone} task={task} />
+            )}
         </Dialog>
     );
 }

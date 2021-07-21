@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { Drawer, List, ListItem, Divider, Hidden, ListItemIcon, makeStyles, ListItemText, useMediaQuery } from "@material-ui/core";
+import {
+    Drawer,
+    List,
+    ListItem,
+    Divider,
+    Hidden,
+    ListItemIcon,
+    makeStyles,
+    ListItemText,
+    useMediaQuery,
+} from "@material-ui/core";
 import ShopRounded from "@material-ui/icons/ShopRounded";
 import ShoppingCartRounded from "@material-ui/icons/ShoppingCartRounded";
 import { Link, useLocation } from "react-router-dom";
@@ -13,6 +23,7 @@ import Confirm from "../features/Modals/Confirm";
 import phazifyLogo from "../assets/phazify.png";
 import phocusLogo from "../assets/logo.png";
 import drawerBg from "../assets/sidebar.png";
+import { SettingsRounded } from "@material-ui/icons";
 
 const drawerItems = [
     {
@@ -22,7 +33,13 @@ const drawerItems = [
             <svg xmlns="http://www.w3.org/2000/svg" fill="inherit" width="17" height="18" viewBox="0 0 17 18">
                 <defs>
                     <clipPath id="clip-path">
-                        <rect id="Rectangle_6434" data-name="Rectangle 6434" width="17" height="18" transform="translate(0.784 0.249)" />
+                        <rect
+                            id="Rectangle_6434"
+                            data-name="Rectangle 6434"
+                            width="17"
+                            height="18"
+                            transform="translate(0.784 0.249)"
+                        />
                     </clipPath>
                 </defs>
                 <g id="home" transform="translate(-0.784 -0.249)" clip-path="url(#clip-path)">
@@ -52,10 +69,22 @@ const drawerItems = [
         name: "Dashboard",
         link: "/panel/dashboard",
         icon: (
-            <svg xmlns="http://www.w3.org/2000/svg" width="18.327" height="18.327" viewBox="0 0 18.327 18.327" fill="inherit">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="18.327"
+                height="18.327"
+                viewBox="0 0 18.327 18.327"
+                fill="inherit"
+            >
                 <defs>
                     <clipPath id="clip-path">
-                        <rect id="Rectangle_6471" data-name="Rectangle 6471" width="18.327" height="18.327" transform="translate(0 0)" />
+                        <rect
+                            id="Rectangle_6471"
+                            data-name="Rectangle 6471"
+                            width="18.327"
+                            height="18.327"
+                            transform="translate(0 0)"
+                        />
                     </clipPath>
                 </defs>
                 <g id="pie-chart" clip-path="url(#clip-path)">
@@ -125,7 +154,13 @@ const drawerItems = [
         name: "Sales",
         link: "/panel/sales",
         icon: (
-            <svg xmlns="http://www.w3.org/2000/svg" fill="inherit" width="19.037" height="16.414" viewBox="0 0 19.037 16.414">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="inherit"
+                width="19.037"
+                height="16.414"
+                viewBox="0 0 19.037 16.414"
+            >
                 <path
                     id="Path_13046"
                     data-name="Path 13046"
@@ -149,10 +184,22 @@ const drawerItems = [
         name: "Inventory",
         link: "/panel/inventory",
         icon: (
-            <svg xmlns="http://www.w3.org/2000/svg" fill="inherit" width="15.733" height="16.978" viewBox="0 0 15.733 16.978">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="inherit"
+                width="15.733"
+                height="16.978"
+                viewBox="0 0 15.733 16.978"
+            >
                 <defs>
                     <clipPath id="clip-path">
-                        <rect id="Rectangle_6519" data-name="Rectangle 6519" width="15.733" height="16.978" transform="translate(0 0)" />
+                        <rect
+                            id="Rectangle_6519"
+                            data-name="Rectangle 6519"
+                            width="15.733"
+                            height="16.978"
+                            transform="translate(0 0)"
+                        />
                     </clipPath>
                 </defs>
                 <g id="user-check" clip-path="url(#clip-path)">
@@ -202,7 +249,13 @@ const drawerItems = [
         name: "Roles",
         link: "/panel/roles",
         icon: (
-            <svg xmlns="http://www.w3.org/2000/svg" fill="inherit" width="15.34" height="15.34" viewBox="0 0 15.34 15.34">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="inherit"
+                width="15.34"
+                height="15.34"
+                viewBox="0 0 15.34 15.34"
+            >
                 <path
                     id="Path_13712"
                     data-name="Path 13712"
@@ -216,7 +269,13 @@ const drawerItems = [
         name: "Production",
         link: "/panel/production",
         icon: (
-            <svg xmlns="http://www.w3.org/2000/svg" fill="inherit" width="15.34" height="15.34" viewBox="0 0 15.34 15.34">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="inherit"
+                width="15.34"
+                height="15.34"
+                viewBox="0 0 15.34 15.34"
+            >
                 <path
                     id="Path_13712"
                     data-name="Path 13712"
@@ -306,6 +365,11 @@ const drawerItems = [
             </svg>
         ),
     },
+    {
+        name: "Settings",
+        link: "/panel/Settings",
+        icon: <SettingsRounded />,
+    },
 ];
 
 const MainDrawer = ({
@@ -369,7 +433,13 @@ const MainDrawer = ({
                     <div className={classes.toolbar} style={{ backgroundColor: "transparent" }}>
                         <img src={phocusLogo} alt="Phocus" style={{ width: "80%", height: "auto" }} />
                         <div
-                            style={{ color: "white", position: "absolute", top: "25px", right: "15px", cursor: "pointer" }}
+                            style={{
+                                color: "white",
+                                position: "absolute",
+                                top: "25px",
+                                right: "15px",
+                                cursor: "pointer",
+                            }}
                             onClick={closeThis}
                         >
                             <ChevronLeftIcon />
@@ -380,7 +450,11 @@ const MainDrawer = ({
                         <List style={{ marginBottom: "auto", paddingTop: "2px" }}>
                             {drawerItems.map((item, i) => (
                                 <div style={location.pathname === item.link ? adstyle : dstyle}>
-                                    <Link key={i} to={item.link} style={{ textDecoration: "none", border: "none", outline: "none" }}>
+                                    <Link
+                                        key={i}
+                                        to={item.link}
+                                        style={{ textDecoration: "none", border: "none", outline: "none" }}
+                                    >
                                         <ListItem
                                             style={{
                                                 padding: "5px 12px",
@@ -441,7 +515,11 @@ const MainDrawer = ({
                                     height="15.34"
                                 >
                                     <g id="Group_40297" transform="translate(4038.43 136.486)" data-name="Group 40297">
-                                        <g id="Group_40296" transform="translate(-4038.43 -136.486)" data-name="Group 40296">
+                                        <g
+                                            id="Group_40296"
+                                            transform="translate(-4038.43 -136.486)"
+                                            data-name="Group 40296"
+                                        >
                                             <path
                                                 id="Path_13746"
                                                 transform="translate(4008.62 136.486)"

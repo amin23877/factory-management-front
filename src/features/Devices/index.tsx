@@ -88,29 +88,23 @@ const Inventory = () => {
         <Box>
             {selectedStep && selectedItem && selectedItem.id && (
                 <EditTaskModal
+                    device={selectedItem}
                     tab={selectedStep.tab}
                     task={selectedStep}
                     itemId={selectedItem.id as any}
                     open={editStepModal}
                     onClose={() => setEditStepModal(false)}
                 />
-                // <EditStepModal
-                //     tab={selectedStep.tab}
-                //     step={selectedStep}
-                //     itemId={selectedItem.id as any}
-                //     open={editStepModal}
-                //     onClose={() => setEditStepModal(false)}
-                // />
             )}
-            {selectedNote && selectedItem && selectedItem.id && (
-                <NoteModal
-                    noteData={selectedNote}
+            {selectedItem && selectedItem.id && (
+                <AddTaskModal
+                    device={selectedItem}
+                    open={addStepModal}
                     itemId={selectedItem.id as any}
-                    model="item"
-                    open={editNoteModal}
-                    onClose={() => setEditNoteModal(false)}
+                    onClose={() => setAddStepModal(false)}
                 />
             )}
+
             {selectedDoc && selectedItem && selectedItem.id && (
                 <DocumentModal
                     open={editDocModal}
@@ -118,15 +112,6 @@ const Inventory = () => {
                     model="item"
                     onClose={() => setEditDocModal(false)}
                     docData={selectedDoc}
-                />
-            )}
-
-            {selectedItem && selectedItem.id && (
-                <NoteModal
-                    itemId={selectedItem.id as any}
-                    model="item"
-                    open={addNoteModal}
-                    onClose={() => setAddNoteModal(false)}
                 />
             )}
             {selectedItem && selectedItem.id && (
@@ -138,21 +123,28 @@ const Inventory = () => {
                 />
             )}
             {selectedItem && selectedItem.id && (
-                <BOMModal itemId={selectedItem.id} open={bomModal} onClose={() => setBomModal(false)} />
-            )}
-            {selectedItem && selectedItem.id && (
-                <AddTaskModal
-                    open={addStepModal}
+                <NoteModal
                     itemId={selectedItem.id as any}
-                    onClose={() => setAddStepModal(false)}
+                    model="item"
+                    open={addNoteModal}
+                    onClose={() => setAddNoteModal(false)}
                 />
-                // <AddStepModal
-                //     open={addStepModal}
-                //     itemId={selectedItem.id as any}
-                //     onClose={() => setAddStepModal(false)}
-                // />
             )}
-            <AddItemModal open={addItemModal} onClose={() => setAddItemModal(false)} device={true} />
+            {selectedNote && selectedItem && selectedItem.id && (
+                <NoteModal
+                    noteData={selectedNote}
+                    itemId={selectedItem.id as any}
+                    model="item"
+                    open={editNoteModal}
+                    onClose={() => setEditNoteModal(false)}
+                />
+            )}
+            <AddItemModal
+                open={addItemModal}
+                onClose={() => setAddItemModal(false)}
+                device={true}
+                initialValues={{ device: true } as IItem}
+            />
             <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
 
             <FieldNFilter open={FieldNFilterModal} onClose={() => setFieldNFilterModal(false)} />

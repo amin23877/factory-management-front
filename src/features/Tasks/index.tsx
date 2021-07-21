@@ -90,7 +90,12 @@ export default function Tasks() {
 
     return (
         <Container>
-            <TaskModal open={taskModal} onClose={() => setTaskModal(false)} onDone={() => refreshTasks(true)} selectedTask={selectedTask} />
+            <TaskModal
+                open={taskModal}
+                onClose={() => setTaskModal(false)}
+                onDone={() => refreshTasks(true)}
+                selectedTask={selectedTask}
+            />
 
             <Grid container spacing={2}>
                 <Grid item xs={12} md={2}>

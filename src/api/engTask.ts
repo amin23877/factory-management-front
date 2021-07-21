@@ -1,109 +1,61 @@
-import Axios from "axios";
+import { delete_, patch, post } from ".";
 
+export interface IManufaturingTask {
+    ItemId: string;
+    name: string;
+    date: any;
+    hours?: number;
+    description?: string;
+    priority?: string;
+    buildToStock?: boolean;
+    engAP?: boolean;
+    relatedPartName?: string;
+}
 
-export const createAManTask = async (ItemId: string, name: string, date: any, hours: number, description: string, priority: any, buildToStock: any, engAP: any, relatedPartNumber: string) => {
-    try {
-        const newDate = new Date(date)
-        const resp = await Axios.post(`/engineering/manufacturing/task`, { ItemId, name, date, hours, description, priority, buildToStock, engAP, relatedPartNumber });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-};
-export const createAEvalTask = async (ItemId: string, name: string, date: any, hours: number, description: string, priority: any, buildToStock: any, engAP: any, relatedPartNumber: string) => {
-    try {
-        const resp = await Axios.post(`/engineering/eval/task`, { ItemId, name, date, hours, description, priority, buildToStock, engAP, relatedPartNumber });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-};
-export const createATestTask = async (ItemId: string, name: string, date: any, hours: number, description: string, priority: any, buildToStock: any, engAP: boolean, relatedPartNumber: string) => {
-    try {
-        const resp = await Axios.post(`/testTask`, { ItemId, name, date, hours, description, priority, buildToStock, engAP, relatedPartNumber });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-};
-export const createAFieldTask = async (ItemId: string, name: string, date: any, hours: number, description: string, priority: any, buildToStock: any, engAP: any, relatedPartNumber: string) => {
-    try {
-        const resp = await Axios.post(`/fieldStartUpTask`, { ItemId, name, date, hours, description, priority, buildToStock, engAP, relatedPartNumber });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const createAManTask = (data: IManufaturingTask) => {
+    return post(`/engineering/manufacturing/task`, data);
 };
 
-
-export const updateAManTask = async (Taskid: string, name: string, date: any, hours: number, description: string, priority: any, buildToStock: any, engAP: any, relatedPartNumber: string) => {
-    try {
-        const resp = await Axios.patch(`/engineering/manufacturing/task/${Taskid}`, { name, date, hours, description, priority, buildToStock, engAP, relatedPartNumber });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const createAEvalTask = (data: IManufaturingTask) => {
+    return post(`/engineering/eval/task`, data);
 };
 
-export const updateAEvalTask = async (Taskid: string, name: string, date: any, hours: number, description: string, priority: any, buildToStock: any, engAP: any, relatedPartNumber: string) => {
-    try {
-        const resp = await Axios.patch(`/engineering/eval/task/${Taskid}`, { name, date, hours, description, priority, buildToStock, engAP, relatedPartNumber });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const createATestTask = (data: IManufaturingTask) => {
+    return post(`/engineering/test/task`, data);
 };
 
-export const updateATestTask = async (Taskid: string, name: string, date: any, hours: number, description: string, priority: any, buildToStock: any, engAP: any, relatedPartNumber: string) => {
-    try {
-        const resp = await Axios.patch(`/testTask/${Taskid}`, { name, date, hours, description, priority, buildToStock, engAP, relatedPartNumber });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const createAFieldTask = (data: IManufaturingTask) => {
+    return post(`/engineering/fieldstartup/task`, data);
 };
 
-export const updateAFieldTask = async (Taskid: string, name: string, date: any, hours: number, description: string, priority: any, buildToStock: any, engAP: any, relatedPartNumber: string) => {
-    try {
-        const resp = await Axios.patch(`/fieldStartUpTask/${Taskid}`, { name, date, hours, description, priority, buildToStock, engAP, relatedPartNumber });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const updateAManTask = (taskId:string, data: IManufaturingTask) => {
+    return patch(`/engineering/manufacturing/task/${taskId}`, data);
 };
 
-export const deleteAManTask = async (Taskid: string) => {
-    try {
-        const resp = await Axios.delete(`/engineering/manufacturing/task/${Taskid}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const updateAEvalTask = (taskId:string, data: IManufaturingTask) => {
+    return patch(`/engineering/eval/task/${taskId}`, data);
 };
 
-export const deleteAEvalTask = async (Taskid: string) => {
-    try {
-        const resp = await Axios.delete(`/engineering/eval/task/${Taskid}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const updateATestTask = (taskId:string, data: IManufaturingTask) => {
+    return patch(`/engineering/test/task/${taskId}`, data);
 };
 
-export const deleteATestTask = async (Taskid: string) => {
-    try {
-        const resp = await Axios.delete(`/testTask/${Taskid}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const updateAFieldTask = (taskId:string, data: IManufaturingTask) => {
+    return patch(`/engineering/fieldstartup/task/${taskId}`, data);
 };
 
-export const deleteAFieldTask = async (Taskid: string) => {
-    try {
-        const resp = await Axios.delete(`/fieldStartUpTask/${Taskid}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const deleteAManTask = (taskId: string) => {
+    return delete_(`/engineering/manufacturing/task/${taskId}`);
+};
+
+export const deleteAEvalTask = (taskId: string) => {
+    return delete_(`/engineering/eval/task/${taskId}`);
+};
+
+export const deleteATestTask = (taskId: string) => {
+    return delete_(`/engineering/test/task/${taskId}`);
+};
+
+export const deleteAFieldTask = (taskId: string) => {
+    return delete_(`/engineering/fieldstartup/task/${taskId}`);
 };
