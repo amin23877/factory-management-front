@@ -1,13 +1,10 @@
 import React, { useState } from "react";
-import { Box, Divider, Tab, Tabs } from "@material-ui/core";
+import { Box, Tab, Tabs } from "@material-ui/core";
 
 import Button from "../../app/Button";
-import Dialog from "../../app/Dialog";
 import FieldForm from "./Form";
 import FieldTable from "./Table";
 
-import { basePost } from "../../api";
-import { mutate } from "swr";
 import { IField } from "../../api/field";
 
 export const AddFieldModal = () => {
@@ -48,7 +45,12 @@ export const AddFieldModal = () => {
                     />
                 </div>
             ) : (
-                <FieldForm initial={selectedField} setActive={() => { setActiveTab(0) }} />
+                <FieldForm
+                    initial={selectedField}
+                    setActive={() => {
+                        setActiveTab(0);
+                    }}
+                />
             )}
         </Box>
     );

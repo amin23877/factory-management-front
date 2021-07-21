@@ -5,7 +5,6 @@ import { ISO } from "./so";
 
 export interface IUnit {
     id: string;
-    laborCost: number;
     assignee: string[];
     status: string;
     seen: boolean;
@@ -15,6 +14,24 @@ export interface IUnit {
     dueDate: number;
     item: IItem;
     so: ISO;
+    laborTime:string,
+    laborCost:number,
+    totalCost:number,
+    bomCost:number,
+}
+
+export interface IUnitHistory {
+    id:string,
+    serialNumber: string,
+    status: string,
+    warrantyStatus: string,
+    warrantyEndDate: string,
+    SOId: string,
+    SODate: number,
+    unit:IUnit,
+    item:IItem,
+    estimatedShipDate:string,
+    actualShipDate:string,
 }
 
 export const updateUnit = async (id: string, data: any) => {

@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Paper } from "@material-ui/core";
 import { DataGrid, GridColumns, GridRowsProp } from "@material-ui/data-grid";
+import { AddCircleOutline } from "@material-ui/icons";
 import useSWR from "swr";
 
 import ColumnModal from "./ColumnModal";
 import RowModal from "./RowModal";
 
 import Button from "../../../app/Button";
-import { createAManStep } from "../../../api/steps";
 import { Toast } from "../../../app/Toast";
-import { useEffect } from "react";
 
-function StepTable({ taskId }: { taskId: string }) {
+import { createStep, deleteStep, addFileToStep, deleteFileFromStep, stepType } from "../../../api/steps";
+
+function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
     const { data: rows } = useSWR<GridRowsProp>(`/engineering/manufacturing/step?TaskId=${taskId}`);
 
     const [columnModal, setColumnModal] = useState(false);
@@ -44,10 +45,11 @@ function StepTable({ taskId }: { taskId: string }) {
     };
 
     const handleAddRow = (row: any) => {
-        let refactoredRows = rows ? rows.concat(row) : [row];
+        let refactoredRows = table.rows ? table.rows.slice() : [];
+        refactoredRows.push(row);
         refactoredRows = refactoredRows.map((r, i) => ({ ...r, id: i }));
 
-        setTable((prev) => ({ ...prev, refactoredRows }));
+        setTable((prev) => ({ ...prev, rows: refactoredRows }));
         setChangedRows((prev) => [...prev, refactoredRows]);
         setRowModal(false);
     };
@@ -67,8 +69,7 @@ function StepTable({ taskId }: { taskId: string }) {
             const requestRows = changedRows.slice();
             requestRows.map((r) => delete r.id);
 
-            // console.log(requestRows);
-            await createAManStep({ TaskId: taskId, steps: requestRows });
+            await createStep(type, { TaskId: taskId, steps: requestRows });
             setChangedRows([]);
 
             Toast.fire({ icon: "success", title: "Changes submited" });
@@ -81,6 +82,7 @@ function StepTable({ taskId }: { taskId: string }) {
         <>
             <ColumnModal open={columnModal} onClose={() => setColumnModal(false)} onDone={handleAddColumn} />
             <RowModal
+                type={type}
                 taskId={taskId}
                 initialValues={selectedRow}
                 open={rowModal}
@@ -91,20 +93,27 @@ function StepTable({ taskId }: { taskId: string }) {
             />
 
             <Paper style={{ padding: "1em" }}>
-                <Button onClick={() => setColumnModal(true)}>Add Column</Button>
-                <Button
-                    onClick={() => {
-                        setRowModal(true);
-                        setSelectedRow(undefined);
-                    }}
-                >
-                    Add Row
-                </Button>
-                <Button kind="add" disabled={changedRows.length == 0} onClick={handleSubmit}>
-                    Submit
-                </Button>
+                <Box my={1}>
+                    <Button onClick={() => setColumnModal(true)} variant="outlined" startIcon={<AddCircleOutline />}>
+                        Add Column
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            setRowModal(true);
+                            setSelectedRow(undefined);
+                        }}
+                        variant="outlined"
+                        startIcon={<AddCircleOutline />}
+                        style={{ margin: "0 0.5em" }}
+                    >
+                        Add Row
+                    </Button>
+                    <Button kind="add" disabled={changedRows.length == 0} onClick={handleSubmit}>
+                        Submit
+                    </Button>
+                </Box>
 
-                <Box height={500}>
+                <Box height={470}>
                     <DataGrid
                         columns={table.columns}
                         rows={table.rows || []}

@@ -4,15 +4,17 @@ import React, { useMemo } from "react";
 import useSWR from "swr";
 import { IFilter } from "../../../api/filter";
 
+import { ArraySelect } from "../../../app/Inputs";
 import BaseDataGrid from "../../../app/BaseDataGrid";
-import { ArraySelect, FieldSelect } from "../../../app/Inputs";
+import { splitLevelName } from "../../../logic/levels";
 
 export default function DevicesList({ onDeviceSelected }: { onDeviceSelected: (row: any) => void }) {
     const { data: filters } = useSWR("/filter");
     const { data: devices } = useSWR("/item?device=true");
     const cols = useMemo<GridColumns>(() => {
         const res: GridColumns = [
-            { field: "name", flex: 1 },
+            { field: "name", flex: 1, headerName: "Name" },
+            { field: "description", flex: 1, headerName: "Description" },
             { field: "Product Family", flex: 1 },
         ];
 
@@ -23,7 +25,7 @@ export default function DevicesList({ onDeviceSelected }: { onDeviceSelected: (r
                 Object.keys(device.fields).forEach((f) => colsSet.add(f));
             });
 
-            colsSet.forEach((col) => res.push({ field: col, flex: 1 }));
+            colsSet.forEach((col) => res.push({ field: col, flex: 1, headerName: splitLevelName(col) }));
         }
 
         return res;
@@ -39,7 +41,7 @@ export default function DevicesList({ onDeviceSelected }: { onDeviceSelected: (r
                 label="Product Family"
                 onChange={(e) => onDeviceSelected({ "Product Family": e.target.value })}
             />
-            <BaseDataGrid cols={cols} rows={devices.items || []} onRowSelected={onDeviceSelected} />
+            <BaseDataGrid cols={cols} rows={devices ? devices.items : []} onRowSelected={onDeviceSelected} />
         </Box>
     );
 }

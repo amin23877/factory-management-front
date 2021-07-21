@@ -28,7 +28,7 @@ function SODatagrid({
         return <LinearProgress />;
     }
 
-    return <BaseDataGrid cols={cols} rows={sos.data} onRowSelected={onRowSelected} />;
+    return <BaseDataGrid cols={cols} rows={sos || []} onRowSelected={onRowSelected} />;
 }
 
 export default SODatagrid;

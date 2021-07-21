@@ -4,7 +4,7 @@ import { Box, Tabs, Tab } from "@material-ui/core";
 import Dialog from "../../app/Dialog";
 
 import { GeneralForm } from "../../app/Forms";
-import { baseDelete, fetcher, basePatch, basePost } from "../../api";
+import { delete_, fetcher, patch, post } from "../../api";
 
 export default function CatTypeFamilyModal({ open, onClose }: { open: boolean; onClose: () => void }) {
     const [activeTab, setActiveTab] = useState(0);
@@ -20,28 +20,28 @@ export default function CatTypeFamilyModal({ open, onClose }: { open: boolean; o
                 {activeTab === 0 && (
                     <GeneralForm
                         type="Category"
-                        addRecord={(data) => basePost("/activitycategory", { name: data })}
-                        deleteRecord={(data) => baseDelete("/activitycategory/" + data)}
+                        addRecord={(data) => post("/activitycategory", { name: data })}
+                        deleteRecord={(data) => delete_("/activitycategory/" + data)}
                         getRecord={() => fetcher("/activitycategory")}
-                        updateRecord={(id, data) => basePatch("/activitycategory/" + id, { name: data })}
+                        updateRecord={(id, data) => patch("/activitycategory/" + id, { name: data })}
                     />
                 )}
                 {activeTab === 1 && (
                     <GeneralForm
                         type="Status"
-                        addRecord={(data) => basePost("/activitystatus", { name: data })}
-                        deleteRecord={(data) => baseDelete("/activitystatus/" + data)}
+                        addRecord={(data) => post("/activitystatus", { name: data })}
+                        deleteRecord={(data) => delete_("/activitystatus/" + data)}
                         getRecord={() => fetcher("/activitystatus")}
-                        updateRecord={(id, data) => basePatch("/activitystatus/" + id, { name: data })}
+                        updateRecord={(id, data) => patch("/activitystatus/" + id, { name: data })}
                     />
                 )}
                 {activeTab === 2 && (
                     <GeneralForm
                         type="Priority"
-                        addRecord={(data) => basePost("/activitypriority", { name: data })}
-                        deleteRecord={(data) => baseDelete("/activitypriority/" + data)}
+                        addRecord={(data) => post("/activitypriority", { name: data })}
+                        deleteRecord={(data) => delete_("/activitypriority/" + data)}
                         getRecord={() => fetcher("/activitypriority")}
-                        updateRecord={(id, data) => basePatch("/activitypriority/" + id, { name: data })}
+                        updateRecord={(id, data) => patch("/activitypriority/" + id, { name: data })}
                     />
                 )}
             </Box>
