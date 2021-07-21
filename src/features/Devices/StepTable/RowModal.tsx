@@ -1,24 +1,25 @@
 import React, { ChangeEvent, useState } from "react";
 import { Box, Tab, Tabs } from "@material-ui/core";
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
 
 import Dialog from "../../../app/Dialog";
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
-import { addFileToManufacturingStep, deleteAManStep } from "../../../api/steps";
 import FileUploader from "../../../app/FileUploader";
-import { BaseUrl } from "../../../api/config";
+
+import { addFileToStep, deleteStep, stepType } from "../../../api/steps";
 
 function RowModal({
-    initialValues,
     open,
+    type,
+    initialValues,
     onClose,
     handleChangeRow,
     handleAddRow,
     columns,
     taskId,
 }: {
+    type: stepType;
     open: boolean;
     onClose: () => void;
     handleChangeRow: (row: any) => void;
@@ -40,7 +41,7 @@ function RowModal({
     const handleUploadFile = async (e: ChangeEvent<HTMLInputElement>) => {
         try {
             if (e.target.files) {
-                await addFileToManufacturingStep(taskId, initialValues.number, e.target.files[0]);
+                await addFileToStep(type, taskId, initialValues.number, e.target.files[0]);
             }
         } catch (error) {
             console.log(error);
@@ -49,7 +50,7 @@ function RowModal({
 
     const handleDelete = async () => {
         try {
-            await deleteAManStep(taskId, initialValues.number);
+            await deleteStep(type, taskId, initialValues.number);
             onClose();
         } catch (error) {
             console.log(error);
@@ -68,31 +69,41 @@ function RowModal({
                     <Formik initialValues={initialValues || ({} as any)} onSubmit={handleSubmit}>
                         {({ values, errors, handleChange, handleBlur }) => (
                             <Form>
-                                <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
-                                    {columns.map(
-                                        (column) =>
-                                            column.field !== "files" && (
-                                                <TextField
-                                                    key={column.field}
-                                                    name={column.field}
-                                                    label={column.field}
-                                                    value={values[column.field]}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    error={Boolean(errors[column.field])}
-                                                    helperText={errors[column.field]}
-                                                    required={column.field === "number"}
-                                                />
-                                            )
-                                    )}
-                                    <Button kind="add" type="submit">
-                                        Save
-                                    </Button>
-                                    {initialValues?.number && (
-                                        <Button kind="delete" onClick={handleDelete}>
-                                            Delete
+                                <Box height={440} display="flex" flexDirection="column">
+                                    <Box
+                                        display="grid"
+                                        gridTemplateColumns="1fr 1fr"
+                                        gridGap={10}
+                                        flex={1}
+                                        overflow="auto"
+                                    >
+                                        {columns.map(
+                                            (column) =>
+                                                column.field !== "files" && (
+                                                    <TextField
+                                                        key={column.field}
+                                                        name={column.field}
+                                                        label={column.field}
+                                                        value={values[column.field]}
+                                                        onChange={handleChange}
+                                                        onBlur={handleBlur}
+                                                        error={Boolean(errors[column.field])}
+                                                        helperText={errors[column.field]}
+                                                        required={column.field === "number"}
+                                                    />
+                                                )
+                                        )}
+                                    </Box>
+                                    <Box>
+                                        <Button kind="add" type="submit">
+                                            Save
                                         </Button>
-                                    )}
+                                        {initialValues?.number && (
+                                            <Button kind="delete" onClick={handleDelete}>
+                                                Delete
+                                            </Button>
+                                        )}
+                                    </Box>
                                 </Box>
                             </Form>
                         )}

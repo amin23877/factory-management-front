@@ -48,3 +48,12 @@ export const extractLevels = (tableData: any[]) => {
     rows.map((r) => Object.keys(r).map((k) => levels.add(k)));
     return Array.from(levels);
 };
+
+export const extractPartNames = (tableData: any[]) => {
+    const parts = new Set<string>();
+
+    const datas = tableData.map((item) => ({ ...item.data }));
+    
+    datas.map((r) => Object.keys(r).map((k) => parts.add(k)));
+    return Array.from(parts);    
+}

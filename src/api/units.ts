@@ -17,6 +17,20 @@ export interface IUnit {
     so: ISO;
 }
 
+export interface IUnitHistory {
+    id:string,
+    serialNumber: string,
+    status: string,
+    warrantyStatus: string,
+    warrantyEndDate: string,
+    SOId: string,
+    SODate: number,
+    unit:IUnit,
+    item:IItem,
+    estimatedShipDate:string,
+    actualShipDate:string,
+}
+
 export const updateUnit = async (id: string, data: any) => {
     try {
         if (data.dueDate) {

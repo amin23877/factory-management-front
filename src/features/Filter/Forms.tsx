@@ -10,7 +10,7 @@ import { BaseSelect } from "../../app/Inputs/index";
 import Snack from "../../app/Snack";
 
 import { IFilter } from "../../api/filter";
-import { baseDelete, basePatch, basePost } from "../../api";
+import { delete_, patch, post } from "../../api";
 
 export default function FilterForm({ initialValues }: { initialValues?: IFilter }) {
     const schema = Yup.object().shape({
@@ -20,7 +20,7 @@ export default function FilterForm({ initialValues }: { initialValues?: IFilter 
 
     const handleDelete = async (id: string) => {
         try {
-            await baseDelete(`/filter/${id}`);
+            await delete_(`/filter/${id}`);
             mutate("/filter");
         } catch (error) {
             console.log(error);
@@ -30,9 +30,9 @@ export default function FilterForm({ initialValues }: { initialValues?: IFilter 
     const handleSubmit = async (d: any) => {
         try {
             if (initialValues) {
-                await basePatch(`/filter/${initialValues.id}`, d);
+                await patch(`/filter/${initialValues.id}`, d);
             } else {
-                await basePost("/filter", d);
+                await post("/filter", d);
             }
         } catch (error) {
             console.log(error);
@@ -43,7 +43,11 @@ export default function FilterForm({ initialValues }: { initialValues?: IFilter 
 
     return (
         <>
-            <Formik initialValues={initialValues ? initialValues : ({} as IFilter)} validationSchema={schema} onSubmit={handleSubmit}>
+            <Formik
+                initialValues={initialValues ? initialValues : ({} as IFilter)}
+                validationSchema={schema}
+                onSubmit={handleSubmit}
+            >
                 {({ values, errors, handleChange, handleBlur }) => (
                     <Form>
                         <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>

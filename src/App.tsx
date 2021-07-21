@@ -9,12 +9,14 @@ import { SWRConfig } from "swr";
 import { useAppDispatch } from "./store";
 import { getCurrentEmployee } from "./features/Session/sessionsSlice";
 
+import "react-toastify/dist/ReactToastify.css";
 import "./styles/main.css";
 import BaseRouter from "./Router";
 
 // Delete this after useing baseurl somewhere
 import * as config from "./api/config";
 import { fetcher } from "./api";
+import { ToastContainer } from "react-toastify";
 console.log(config.BaseUrl);
 // ---------------------------
 
@@ -32,6 +34,8 @@ function App() {
                 <BrowserRouter>
                     <ThemeProvider theme={theme}>
                         <CssBaseline />
+                        <ToastContainer position="bottom-left" />
+
                         <BaseRouter />
                     </ThemeProvider>
                 </BrowserRouter>
