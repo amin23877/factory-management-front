@@ -244,7 +244,6 @@ function ItemsDetails({
                             variant="scrollable"
                         >
                             <Tab label="Design documents" />
-                            {/* <Tab label="BOM allocated" /> */}
                             <Tab label="BOM" />
                             <Tab label="Warranties" />
                             <Tab label="Manufacturing" />
