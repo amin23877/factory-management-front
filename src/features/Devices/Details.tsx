@@ -55,8 +55,10 @@ function ItemsDetails({
         activeTab === 3 ? `/engineering/manufacturing/task?ItemId=${selectedRow.id}` : null
     );
     const { data: evalSteps } = useSWR(activeTab === 4 ? `/engineering/eval/task?ItemId=${selectedRow.id}` : null);
-    const { data: testSteps } = useSWR(activeTab === 5 ? `/testStep?ItemId=${selectedRow.id}` : null);
-    const { data: fieldSteps } = useSWR(activeTab === 6 ? `/fieldStartUpStep?ItemId=${selectedRow.id}` : null);
+    const { data: testSteps } = useSWR(activeTab === 5 ? `/engineering/test/task?ItemId=${selectedRow.id}` : null);
+    const { data: fieldSteps } = useSWR(
+        activeTab === 6 ? `/engineering/fieldstartup/task?ItemId=${selectedRow.id}` : null
+    );
     const { data: itemQuotes } = useSWR(activeTab === 5 ? `/item/${selectedRow.id}/quote` : null);
     const { data: itemSOs } = useSWR(activeTab === 6 ? `/item/${selectedRow.id}/so` : null);
 

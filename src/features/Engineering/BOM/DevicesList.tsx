@@ -22,7 +22,7 @@ export default function DevicesList({ onDeviceSelected }: { onDeviceSelected: (r
             const colsSet = new Set<string>();
 
             devices.items.forEach((device: any) => {
-                Object.keys(device.fields).forEach((f) => colsSet.add(f));
+                device.fields && Object.keys(device.fields).forEach((f) => colsSet.add(f));
             });
 
             colsSet.forEach((col) => res.push({ field: col, flex: 1, headerName: splitLevelName(col) }));
