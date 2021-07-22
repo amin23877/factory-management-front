@@ -87,7 +87,7 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
                             />
                             <TextField label="Serial number" value={unit.serialNumber} disabled />
                             <TextField label="Status" value={unit.status} disabled />
-                            <TextField label="ID" value={unit.id} disabled />
+                            <TextField label="ID" value={unit.item.no} disabled />
                             <TextField label="SO" value={unit.SOId} disabled />
                         </Box>
                     </Paper>

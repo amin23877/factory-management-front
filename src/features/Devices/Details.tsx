@@ -71,10 +71,12 @@ function ItemsDetails({
 
     const warCols = useMemo(
         () => [
+            { field: "date", headerName: "Date", type: "date" },
+            { field: "number", headerName: "Warranty number" },
             { field: "name", headerName: "Name" },
-            { field: "price", headerName: "Price" },
-            { field: "period", headerName: "length" },
-            { field: "description", headerName: "Description" },
+            { field: "description", headerName: "Note" },
+            { field: "term", headerName: "Term" },
+            { field: "status", headerName: "Status" },
         ],
         []
     );
@@ -100,20 +102,22 @@ function ItemsDetails({
     const docCols = useMemo(
         () => [
             { field: "file", headerName: "File" },
-            { field: "type", headerName: "Type" },
-            { field: "name", headerName: "Name" },
-            { field: "EmployeeId", headerName: "Creator" },
-            { field: "description", headerName: "Description", width: 250 },
             { field: "createdAt", headerName: "Date", width: 300 },
+            { field: "EmployeeId", headerName: "Creator" },
+            { field: "name", headerName: "File name" },
+            { field: "id", headerName: "File id" },
+            { field: "description", headerName: "Description", width: 250 },
+            { field: "type", headerName: "File type" },
         ],
         []
     );
 
     const bomCols = useMemo<GridColDef[]>(
         () => [
+            { field: "items", headerName: "Items" },
             { field: "revision", headerName: "Revision" },
-            { field: "date", headerName: "Date", type: "date" },
-            { field: "name", headerName: "Name" },
+            { field: "date", headerName: "Revision date", type: "date" },
+            { field: "name", headerName: "BOM name" },
             { field: "note", headerName: "note", flex: 1 },
             { field: "current", headerName: "current", type: "boolean" },
         ],
@@ -122,10 +126,14 @@ function ItemsDetails({
     const manCols = useMemo<GridColDef[]>(
         () => [
             { field: "priority", headerName: "Priority" },
-            { field: "name", headerName: "Name" },
-            { field: "description", headerName: "description", flex: 1 },
-            { field: "hours", headerName: "Hours" },
-            { field: "buildToStock", headerName: "B.T.S", type: "boolean" },
+            { field: "name", headerName: "Task name" },
+            { field: "id", headerName: "Task id" },
+            { field: "description", headerName: "Task description", flex: 1 },
+            { field: "document", headerName: "Document" },
+            { field: "hours", headerName: "Task Hours" },
+            { field: "buildToStock", headerName: "Build to stock", type: "boolean" },
+            { field: "engAP", headerName: "Eng ap.", type: "boolean" },
+            { field: "note", headerName: "Note" },
         ],
         []
     );
