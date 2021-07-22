@@ -3,7 +3,7 @@ import { Box, Button, Tabs, Tab } from "@material-ui/core";
 import { GridColDef, DataGrid } from "@material-ui/data-grid";
 import useSWR from "swr";
 
-import Timeline from "react-calendar-timeline";
+import Timeline, { TimelineHeaders, SidebarHeader, DateHeader } from "react-calendar-timeline";
 import "react-calendar-timeline/lib/Timeline.css";
 import moment from "moment";
 
@@ -85,7 +85,7 @@ export default function QuotePanel() {
                             "data-custom-attribute": "Random content",
                             "aria-hidden": false,
                             onDoubleClick: () => {
-                                setSelectedProject(i);
+                                setSelectedTask(i);
                             },
                             style: {
                                 background: "#bbb",
@@ -104,7 +104,7 @@ export default function QuotePanel() {
                             "data-custom-attribute": "Random content",
                             "aria-hidden": false,
                             onDoubleClick: () => {
-                                setSelectedProject(i);
+                                setSelectedTask(i);
                             },
                             style: {
                                 color: "black",
@@ -215,29 +215,30 @@ export default function QuotePanel() {
                 </Box>
                 {activeTab === 0 && (
                     <Box flex={1}>
-                        <Table
-                            rows={formatProject || []}
-                            cols={projectCols}
-                            subCols={projectSubCols}
-                            onRowSelected={(a) => {
-                                setSelectedProject(a);
-                            }}
-                            onSubRowSelected={(d) => {
-                                setSelectedTask(d);
-                            }}
-                            onCalenderClicked={(c) => {
-                                setActiveTab(1);
-                                setSelectedCalender(c);
-                            }}
-                        />
+                        {
+                            <Table
+                                rows={formatProject || []}
+                                cols={projectCols}
+                                subCols={projectSubCols}
+                                onRowSelected={(a) => {
+                                    setSelectedProject(a);
+                                }}
+                                onSubRowSelected={(d) => {
+                                    setSelectedTask(d);
+                                }}
+                                onCalenderClicked={(c) => {
+                                    setActiveTab(1);
+                                    setSelectedCalender(c);
+                                }}
+                            />
+                        }
                     </Box>
                 )}
-
                 {activeTab === 1 && (
                     <Box display="flex" alignItems="center">
                         <Box width="75vw" style={{ margin: " 1px auto" }}>
                             {selectedCalender ? (
-                                <>
+                                <Fragment>
                                     <h3> Project : {selectedCalender.name} </h3>
                                     {bars && tasks && (
                                         <Timeline
@@ -248,14 +249,32 @@ export default function QuotePanel() {
                                             timeSteps={s}
                                             minZoom={60 * 60 * 1000 * 24 * 7}
                                             keys={keys}
-                                        />
+                                        >
+                                            <TimelineHeaders>
+                                                <SidebarHeader>
+                                                    {({ getRootProps }) => {
+                                                        const rootProps = getRootProps();
+                                                        rootProps.style = {
+                                                            ...rootProps.style,
+                                                            backgroundColor: "#202731",
+                                                        };
+                                                        return <div {...rootProps}></div>;
+                                                    }}
+                                                </SidebarHeader>
+                                                <DateHeader
+                                                    unit="primaryHeader"
+                                                    style={{ backgroundColor: "#202731" }}
+                                                />
+                                                <DateHeader />
+                                            </TimelineHeaders>
+                                        </Timeline>
                                     )}
-                                </>
+                                </Fragment>
                             ) : (
-                                <>
+                                <Fragment>
                                     <h3>All Projects TimeLine</h3>
                                     <Calender />
-                                </>
+                                </Fragment>
                             )}
                         </Box>
                     </Box>

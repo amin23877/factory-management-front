@@ -4,7 +4,7 @@ import { Box } from "@material-ui/core";
 import useSWR from "swr";
 
 
-import Timeline from 'react-calendar-timeline'
+import Timeline, { TimelineHeaders, SidebarHeader, DateHeader } from 'react-calendar-timeline'
 import 'react-calendar-timeline/lib/Timeline.css'
 import moment from 'moment'
 
@@ -136,7 +136,22 @@ export default function Calender() {
                 timeSteps={s}
                 minZoom={60 * 60 * 1000 * 24 * 7}
                 keys={keys}
-            />
+            >
+                <TimelineHeaders>
+                    <SidebarHeader>
+                        {({ getRootProps }) => {
+                            const rootProps = getRootProps();
+                            rootProps.style = {
+                                ...rootProps.style,
+                                backgroundColor: '#202731'
+                            };
+                            return <div {...rootProps}></div>;
+                        }}
+                    </SidebarHeader>
+                    <DateHeader unit="primaryHeader" style={{ backgroundColor: '#202731' }} />
+                    <DateHeader />
+                </TimelineHeaders>
+            </Timeline>
         </Box>
     )
 }
