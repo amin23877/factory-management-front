@@ -76,11 +76,18 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
                             General
                         </Typography>
                         <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} m={1}>
-                            <TextField label="Name" value={item?.name} disabled />
-                            <TextField label="Description" value={item?.description} disabled />
+                            <TextField label="Name" value={item?.name} disabled style={{ gridColumnEnd: "span 2" }} />
+                            <TextField
+                                label="Description"
+                                value={item?.description}
+                                disabled
+                                multiline
+                                rows={2}
+                                style={{ gridColumnEnd: "span 2" }}
+                            />
                             <TextField label="Serial number" value={unit.serialNumber} disabled />
                             <TextField label="Status" value={unit.status} disabled />
-                            {/* <TextField label="ID" value={unit.id} disabled /> */}
+                            <TextField label="ID" value={unit.id} disabled />
                             <TextField label="SO" value={unit.SOId} disabled />
                         </Box>
                     </Paper>

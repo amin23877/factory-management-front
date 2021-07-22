@@ -69,7 +69,7 @@ const Inventory = () => {
         ];
 
         return res;
-    }, []);
+    }, [items]);
 
     const handleDelete = useCallback(async () => {
         try {
