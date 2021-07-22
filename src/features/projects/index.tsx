@@ -3,7 +3,7 @@ import { Box, Button, Tabs, Tab } from "@material-ui/core";
 import { GridColDef, DataGrid } from "@material-ui/data-grid";
 import useSWR from "swr";
 
-import Timeline from "react-calendar-timeline";
+import Timeline, { TimelineHeaders, SidebarHeader, DateHeader } from "react-calendar-timeline";
 import "react-calendar-timeline/lib/Timeline.css";
 import moment from "moment";
 
@@ -85,7 +85,7 @@ export default function QuotePanel() {
                             "data-custom-attribute": "Random content",
                             "aria-hidden": false,
                             onDoubleClick: () => {
-                                setSelectedProject(i);
+                                setSelectedTask(i);
                             },
                             style: {
                                 background: "#bbb",
@@ -104,7 +104,7 @@ export default function QuotePanel() {
                             "data-custom-attribute": "Random content",
                             "aria-hidden": false,
                             onDoubleClick: () => {
-                                setSelectedProject(i);
+                                setSelectedTask(i);
                             },
                             style: {
                                 color: "black",
@@ -234,7 +234,6 @@ export default function QuotePanel() {
                         }
                     </Box>
                 )}
-
                 {activeTab === 1 && (
                     <Box display="flex" alignItems="center">
                         <Box width="75vw" style={{ margin: " 1px auto" }}>
@@ -250,7 +249,25 @@ export default function QuotePanel() {
                                             timeSteps={s}
                                             minZoom={60 * 60 * 1000 * 24 * 7}
                                             keys={keys}
-                                        />
+                                        >
+                                            <TimelineHeaders>
+                                                <SidebarHeader>
+                                                    {({ getRootProps }) => {
+                                                        const rootProps = getRootProps();
+                                                        rootProps.style = {
+                                                            ...rootProps.style,
+                                                            backgroundColor: "#202731",
+                                                        };
+                                                        return <div {...rootProps}></div>;
+                                                    }}
+                                                </SidebarHeader>
+                                                <DateHeader
+                                                    unit="primaryHeader"
+                                                    style={{ backgroundColor: "#202731" }}
+                                                />
+                                                <DateHeader />
+                                            </TimelineHeaders>
+                                        </Timeline>
                                     )}
                                 </Fragment>
                             ) : (

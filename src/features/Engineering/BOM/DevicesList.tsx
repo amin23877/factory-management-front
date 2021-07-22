@@ -1,16 +1,20 @@
+import React, { useMemo, useState } from "react";
 import { Box } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
-import React, { useMemo } from "react";
 import useSWR from "swr";
-import { IFilter } from "../../../api/filter";
 
 import { ArraySelect } from "../../../app/Inputs";
 import BaseDataGrid from "../../../app/BaseDataGrid";
+
 import { splitLevelName } from "../../../logic/levels";
 
 export default function DevicesList({ onDeviceSelected }: { onDeviceSelected: (row: any) => void }) {
+    const [selectedProductFamily, setSelectedProductFamily] = useState<string>();
     const { data: filters } = useSWR("/filter");
-    const { data: devices } = useSWR("/item?device=true");
+    const { data: devices } = useSWR(
+        selectedProductFamily ? `/item?device=true&Product Family=${selectedProductFamily}` : "/item?device=true"
+    );
+
     const cols = useMemo<GridColumns>(() => {
         const res: GridColumns = [
             { field: "name", flex: 1, headerName: "Name" },
@@ -39,7 +43,9 @@ export default function DevicesList({ onDeviceSelected }: { onDeviceSelected: (r
                 style={{ width: 250 }}
                 items={productFamily}
                 label="Product Family"
-                onChange={(e) => onDeviceSelected({ "Product Family": e.target.value })}
+                onChange={(e) => {
+                    setSelectedProductFamily(e.target.value);
+                }}
             />
             <BaseDataGrid cols={cols} rows={devices ? devices.items : []} onRowSelected={onDeviceSelected} />
         </Box>

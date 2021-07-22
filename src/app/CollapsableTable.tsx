@@ -89,13 +89,25 @@ function Row(props: {
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box margin={1} width="100%">
+                            <h3>Sub Tasks</h3>
                             <Paper>
-                                <Table aria-label="purchases">
-                                    <TableHead>
-                                        <h3 style={{ margin: 10 }}>Sub Tasks</h3>
-                                        <TableRow>
+                                <Table style={{ borderRadius: "10px" }}>
+                                    <TableHead
+                                        style={{
+                                            backgroundColor: "#202731",
+                                            borderRadius: "10px 10px 0px 0px",
+                                        }}
+                                    >
+                                        <TableRow
+                                            style={{
+                                                backgroundColor: "#202731",
+                                                borderRadius: "10px 10px 0px 0px",
+                                            }}
+                                        >
                                             {subCols.map((col, i) => (
-                                                <TableCell>{col.headerName ? col.headerName : col.field}</TableCell>
+                                                <TableCell style={{ color: "white" }}>
+                                                    {col.headerName ? col.headerName : col.field}
+                                                </TableCell>
                                             ))}
                                         </TableRow>
                                     </TableHead>
@@ -159,10 +171,12 @@ export default function CollapsibleTable({
         <TableContainer component={Paper}>
             <Table aria-label="collapsible table">
                 <TableHead>
-                    <TableRow>
+                    <TableRow style={{ backgroundColor: "#202731", color: "white" }}>
                         <TableCell />
                         {cols.map((col, i) => (
-                            <TableCell>{col.headerName ? col.headerName : col.field}</TableCell>
+                            <TableCell style={{ color: "white" }}>
+                                {col.headerName ? col.headerName : col.field}
+                            </TableCell>
                         ))}
                         <TableCell />
                     </TableRow>
