@@ -23,13 +23,14 @@ export const fetcher = async (url: string) => {
     }
 };
 
-export const get = (path: string, withPagination: boolean) => {
+export const get = (path: string, withPagination: boolean = false) => {
     const headers = {};
 
     const onSuccess = (response: AxiosResponse<any>) => {
-        console.info("Get Request Successful!", response);
+        // console.info("Get Request Successful!", response);
         if (withPagination) {
-            return response;
+            // with patgination
+            return response.data;
         } else {
             return response.data;
         }
@@ -41,7 +42,7 @@ export const get = (path: string, withPagination: boolean) => {
         if (error.response) {
             console.error("Status:", error.response.status);
             console.error("Data:", error.response.data);
-            toast.error(error.response.data.Message);
+            toast.error(error.response.data.error);
             console.error("Headers:", error.response.headers);
         } else {
             console.error("Error Message ---------------:", error.message);
@@ -62,7 +63,7 @@ export const delete_ = (path: string, params: AxiosRequestConfig["params"] = nul
     let headers = {};
 
     const onSuccess = (response: AxiosResponse<any>) => {
-        console.error("Get Request Successful!", response);
+        // console.error("Get Request Successful!", response);
         return response.data;
     };
 
@@ -96,7 +97,7 @@ export function post(path: string, data: any, params?: any) {
     };
 
     const onSuccess = (response: AxiosResponse<any>) => {
-        console.error("Post Request Successful!", response);
+        // console.error("Post Request Successful!", response);
         return response.data;
     };
 
@@ -125,7 +126,7 @@ export function post(path: string, data: any, params?: any) {
 
 export function put(path: string, data: any, headers = { "Content-Type": "application/json" }, params?: any) {
     const onSuccess = (response: AxiosResponse<any>) => {
-        console.error("Post Request Successful!", response);
+        // console.error("Post Request Successful!", response);
         return response.data;
     };
 
@@ -154,7 +155,7 @@ export function put(path: string, data: any, headers = { "Content-Type": "applic
 
 export function patch(path: string, data: any, headers = { "Content-Type": "application/json" }, params?: any) {
     const onSuccess = (response: AxiosResponse<any>) => {
-        console.error("Post Request Successful!", response);
+        // console.error("Post Request Successful!", response);
         return response.data;
     };
 
@@ -192,7 +193,7 @@ export function get_2(
     let data = JSON.stringify(urlData);
 
     const onSuccess = (response: AxiosResponse<any>) => {
-        console.error("Post Request Successful!", response);
+        // console.error("Post Request Successful!", response);
         return response.data;
     };
 

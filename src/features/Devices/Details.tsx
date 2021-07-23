@@ -118,8 +118,8 @@ function ItemsDetails({
             { field: "revision", headerName: "Revision" },
             { field: "date", headerName: "Revision date", type: "date" },
             { field: "name", headerName: "BOM name" },
-            { field: "note", headerName: "note", flex: 1 },
-            { field: "current", headerName: "current", type: "boolean" },
+            { field: "note", headerName: "Note", flex: 1 },
+            { field: "current", headerName: "Current", type: "boolean" },
         ],
         []
     );
@@ -140,9 +140,11 @@ function ItemsDetails({
 
     const unitHistoryCols = useMemo<GridColDef[]>(
         () => [
-            { field: "serialNumber", headerName: "Serial No." },
+            { field: "estimatedShipDate", headerName: "Estimated Ship Date" },
+            { field: "actualShipDate", headerName: "Actual Ship Date" },
+            { field: "serialNumber", headerName: "Device serial No." },
             { field: "status", headerName: "Status" },
-            { field: "warrantyStatus", headerName: "Warranty status" },
+            { field: "warrantyStatus", headerName: "Warranty status", type: "boolean" },
             { field: "warrantyEndDate", headerName: "Warranty end date" },
             { field: "SOId", headerName: "SO Id" },
             { field: "SODate", headerName: "SO date", valueFormatter: (r) => formatTimestampToDate(r.row.SODate) },
