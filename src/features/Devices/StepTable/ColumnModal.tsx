@@ -12,13 +12,15 @@ const schema = Yup.object().shape({
 });
 
 function ColumnModal({
+    columnName,
     open,
     onClose,
     onDone,
 }: {
+    columnName?: string;
     open: boolean;
     onClose: () => void;
-    onDone: (columnName: string) => void;
+    onDone: (data: { name: string; formerName?: string }) => void;
 }) {
     return (
         <Dialog title="Add column" open={open} onClose={onClose}>
@@ -26,22 +28,34 @@ function ColumnModal({
                 <Formik
                     initialValues={{} as { name: string }}
                     validationSchema={schema}
-                    onSubmit={(d) => onDone(d.name)}
+                    onSubmit={(d) => onDone({ formerName: columnName, name: d.name })}
                 >
                     {({ values, errors, handleChange, handleBlur }) => (
                         <Form>
-                            <TextField
-                                name="name"
-                                label="Name"
-                                value={values.name}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={Boolean(errors.name)}
-                                helperText={errors.name}
-                            />
-                            <Button kind="add" type="submit">
-                                Add
-                            </Button>
+                            <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                                {columnName && (
+                                    <TextField
+                                        name="formerName"
+                                        label="Former name"
+                                        value={columnName}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        disabled
+                                    />
+                                )}
+                                <TextField
+                                    name="name"
+                                    label={columnName ? "New name" : "Name"}
+                                    value={values.name}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors.name)}
+                                    helperText={errors.name}
+                                />
+                                <Button kind="add" type="submit">
+                                    Add
+                                </Button>
+                            </Box>
                         </Form>
                     )}
                 </Formik>
