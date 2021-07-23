@@ -2,28 +2,30 @@ import React, { useState, useEffect } from "react";
 import { Box, Paper } from "@material-ui/core";
 import { DataGrid, GridColumns, GridRowsProp } from "@material-ui/data-grid";
 import { AddCircleOutline } from "@material-ui/icons";
+import { toast } from "react-toastify";
 import useSWR from "swr";
 
 import ColumnModal from "./ColumnModal";
 import RowModal from "./RowModal";
 
 import Button from "../../../app/Button";
-import { Toast } from "../../../app/Toast";
 
-import { createStep, deleteStep, addFileToStep, deleteFileFromStep, stepType } from "../../../api/steps";
+import { createStep, stepType } from "../../../api/steps";
 
 function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
-    const { data: rows } = useSWR<GridRowsProp>(`/engineering/manufacturing/step?TaskId=${taskId}`);
+    const { data: rows, mutate: mutateRows } = useSWR<GridRowsProp>(`/engineering/manufacturing/step?TaskId=${taskId}`);
 
     const [columnModal, setColumnModal] = useState(false);
     const [rowModal, setRowModal] = useState(false);
     const [selectedRow, setSelectedRow] = useState<any>();
+    const [selectedColumn, setSelectedColumn] = useState<string>();
 
     const [table, setTable] = useState<{ columns: GridColumns; rows: GridRowsProp }>({
         columns: [],
         rows: [],
     });
     const [changedRows, setChangedRows] = useState<any[]>([]);
+    const [renamedColumns, setRenamedColumns] = useState<any[]>([]);
 
     useEffect(() => {
         if (rows) {
@@ -37,11 +39,34 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
         }
     }, [rows]);
 
-    const handleAddColumn = (cn: string) => {
-        const columnToAdd = { field: cn };
+    const handleAddColumn = ({ name, formerName }: { name: string; formerName?: string }) => {
+        if (selectedColumn && formerName) {
+            const changedColumn = { [formerName]: name };
+            setRenamedColumns((prev) => [...prev, changedColumn]);
 
-        setTable((prev) => ({ ...prev, columns: prev.columns.concat(columnToAdd) }));
-        setColumnModal(false);
+            setTable((prev) => {
+                const refactoredColumns = prev.columns.slice();
+                const index = refactoredColumns.findIndex((c) => c.field === formerName);
+                refactoredColumns[index] = { field: name, flex: 1 };
+
+                let refactoredRows = prev.rows.slice();
+                refactoredRows = refactoredRows.map((row) => {
+                    const prev = row[formerName];
+                    delete row[formerName];
+
+                    return { ...row, [name]: prev };
+                });
+
+                return { columns: refactoredColumns, rows: refactoredRows };
+            });
+
+            setColumnModal(false);
+        } else {
+            const columnToAdd = { field: name };
+
+            setTable((prev) => ({ ...prev, columns: prev.columns.concat(columnToAdd) }));
+            setColumnModal(false);
+        }
     };
 
     const handleAddRow = (row: any) => {
@@ -50,7 +75,7 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
         refactoredRows = refactoredRows.map((r, i) => ({ ...r, id: i }));
 
         setTable((prev) => ({ ...prev, rows: refactoredRows }));
-        setChangedRows((prev) => [...prev, refactoredRows]);
+        setChangedRows(refactoredRows);
         setRowModal(false);
     };
 
@@ -67,12 +92,16 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
     const handleSubmit = async () => {
         try {
             const requestRows = changedRows.slice();
-            requestRows.map((r) => delete r.id);
+            requestRows.forEach((r) => delete r.id);
 
-            await createStep(type, { TaskId: taskId, steps: requestRows });
+            // console.log({ TaskId: taskId, steps: requestRows, rename: renamedColumns });
+            await createStep(type, { TaskId: taskId, steps: requestRows, rename: renamedColumns });
             setChangedRows([]);
+            setRenamedColumns([]);
 
-            Toast.fire({ icon: "success", title: "Changes submited" });
+            mutateRows();
+
+            toast.success("Changes submited");
         } catch (error) {
             console.log(error);
         }
@@ -80,7 +109,12 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
 
     return (
         <>
-            <ColumnModal open={columnModal} onClose={() => setColumnModal(false)} onDone={handleAddColumn} />
+            <ColumnModal
+                open={columnModal}
+                columnName={selectedColumn}
+                onClose={() => setColumnModal(false)}
+                onDone={handleAddColumn}
+            />
             <RowModal
                 type={type}
                 taskId={taskId}
@@ -94,7 +128,14 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
 
             <Paper style={{ padding: "1em" }}>
                 <Box my={1}>
-                    <Button onClick={() => setColumnModal(true)} variant="outlined" startIcon={<AddCircleOutline />}>
+                    <Button
+                        onClick={() => {
+                            setSelectedColumn(undefined);
+                            setColumnModal(true);
+                        }}
+                        variant="outlined"
+                        startIcon={<AddCircleOutline />}
+                    >
                         Add Column
                     </Button>
                     <Button
@@ -108,13 +149,21 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
                     >
                         Add Row
                     </Button>
-                    <Button kind="add" disabled={changedRows.length == 0} onClick={handleSubmit}>
+                    <Button
+                        kind="add"
+                        disabled={!(changedRows.length > 0) && !(renamedColumns.length > 0)}
+                        onClick={handleSubmit}
+                    >
                         Submit
                     </Button>
                 </Box>
 
                 <Box height={470}>
                     <DataGrid
+                        onColumnHeaderClick={(th) => {
+                            setSelectedColumn(th.field);
+                            setColumnModal(true);
+                        }}
                         columns={table.columns}
                         rows={table.rows || []}
                         onRowSelected={(d) => {
