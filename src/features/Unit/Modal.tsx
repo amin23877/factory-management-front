@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Box, Paper, Tab, Tabs, Typography } from "@material-ui/core";
+import { GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
 
 import TextField from "../../app/TextField";
@@ -20,45 +21,55 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
     const { data: warranties } = useSWR(
         footerActiveTab === 1 ? `/service?ItemId=${unit.item.id}&ServiceFamilyId=60efd0bcca0feadc84be6618` : null
     );
-    const { data: soLineItems } = useSWR(footerActiveTab === 5 ? `/lineitem?SOId=${unit.SOId}` : null);
+    const { data: soLineItems } = useSWR(footerActiveTab === 5 ? `/lineitem?SOId=${unit.soid}` : null);
 
     const warCols = useMemo(
         () => [
+            { field: "date", headerName: "Date", type: "date" },
+            { field: "number", headerName: "Warranty number" },
             { field: "name", headerName: "Name" },
-            { field: "price", headerName: "Price" },
-            { field: "period", headerName: "length" },
-            { field: "description", headerName: "Description" },
+            { field: "description", headerName: "Note" },
+            { field: "term", headerName: "Term" },
+            { field: "status", headerName: "Status" },
         ],
         []
     );
 
-    const LICols = useMemo(
+    const LICols = useMemo<GridColumns>(
         () => [
-            { field: "index" },
-            { field: "ItemId", valueFormatter: (r: any) => r.row.ItemId.name },
-            { field: "description", width: 200 },
-            { field: "quantity" },
-            { field: "price" },
-            { field: "tax" },
+            { field: "no", headerName: "Part no.", valueFormatter: (params) => params.row.ItemId.no },
+            {
+                field: "description",
+                headerName: "Description",
+                flex: 1,
+                valueFormatter: (params) => params.row.ItemId.description,
+            },
+            { field: "quantity", headerName: "QTY" },
         ],
         []
     );
 
     const bomRecordCols = useMemo(
         () => [
-            { field: "no", headerName: "No.", valueFormatter: (params: any) => params.row?.ItemId?.no },
-            { field: "name", headerName: "Name", valueFormatter: (params: any) => params.row?.ItemId?.name },
-            { field: "revision", headerName: "Revision" },
-            { field: "usage", headerName: "Usage" },
-            { field: "fixedQty", headerName: "fixed Qty", type: "boolean" },
+            { field: "line", headerName: "Line" },
+            { field: "Component", headerName: "Component" },
+            { field: "name", headerName: "Component name" },
+            { field: "location", headerName: "Component location" },
+            { field: "um", headerName: "UM" },
+            { field: "usage", headerName: "QTY" },
+            { field: "description", headerName: "Note" },
         ],
         []
     );
 
     const docCols = [
-        { field: "name", headerName: "Name" },
+        { field: "file", headerName: "File" },
+        { field: "createdAt", headerName: "Date", width: 300 },
+        { field: "EmployeeId", headerName: "Creator" },
+        { field: "name", headerName: "File name" },
+        { field: "id", headerName: "File id" },
         { field: "description", headerName: "Description", width: 250 },
-        { field: "createdAt", headerName: "Created at", width: 300 },
+        { field: "type", headerName: "File type" },
     ];
 
     const noteCols = [
@@ -87,8 +98,8 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
                             />
                             <TextField label="Serial number" value={unit.serialNumber} disabled />
                             <TextField label="Status" value={unit.status} disabled />
-                            <TextField label="ID" value={unit.item.no} disabled />
-                            <TextField label="SO" value={unit.SOId} disabled />
+                            <TextField label="ID" value={unit.item.no} disabled style={{ gridColumnEnd: "span 2" }} />
+                            <TextField label="SO" value={unit.soid} disabled style={{ gridColumnEnd: "span 2" }} />
                         </Box>
                     </Paper>
                     <Paper>
@@ -99,13 +110,13 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
                                 onChange={(e, nv) => setActiveTab(nv)}
                                 style={{ marginBottom: 8 }}
                             >
-                                <Tab label="Image" />
+                                <Tab label="Picture" />
                                 <Tab label="Status" />
                                 <Tab label="Expense" />
                                 <Tab label="Shipping" />
                                 <Tab label="Cluster & level" />
                             </Tabs>
-                            {activeTab === 0 && <h3>Image</h3>}
+                            {activeTab === 0 && <h3>Picture</h3>}
                             {activeTab === 1 && <Status unit={unit} />}
                             {activeTab === 2 && <Expense unit={unit} />}
                             {activeTab === 3 && <Shipping />}

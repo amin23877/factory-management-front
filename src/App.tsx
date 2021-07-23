@@ -15,8 +15,7 @@ import BaseRouter from "./Router";
 
 // Delete this after useing baseurl somewhere
 import * as config from "./api/config";
-import { fetcher } from "./api";
-import { ToastContainer } from "react-toastify";
+import { get } from "./api";
 console.log(config.BaseUrl);
 // ---------------------------
 
@@ -30,11 +29,10 @@ function App() {
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <SWRConfig value={{ fetcher }}>
+            <SWRConfig value={{ fetcher: get }}>
                 <BrowserRouter>
                     <ThemeProvider theme={theme}>
                         <CssBaseline />
-                        <ToastContainer position="bottom-left" />
 
                         <BaseRouter />
                     </ThemeProvider>

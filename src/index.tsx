@@ -5,10 +5,13 @@ import reportWebVitals from "./reportWebVitals";
 
 import { store } from "./store";
 import { Provider } from "react-redux";
+import { ToastContainer } from "react-toastify";
 
 ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
+            <ToastContainer position="bottom-left" />
+
             <App />
         </Provider>
     </React.StrictMode>,

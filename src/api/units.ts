@@ -21,17 +21,20 @@ export interface IUnit {
 }
 
 export interface IUnitHistory {
+    itemno:string,
+    item:IItem,
+    unit:IUnit,
     id:string,
+    estimatedShipDate:string,
+    actualShipDate:string,
     serialNumber: string,
     status: string,
     warrantyStatus: string,
     warrantyEndDate: string,
-    SOId: string,
+    sonumber: string,
+    soid: string,
+    so: ISO,
     SODate: number,
-    unit:IUnit,
-    item:IItem,
-    estimatedShipDate:string,
-    actualShipDate:string,
 }
 
 export const updateUnit = async (id: string, data: any) => {

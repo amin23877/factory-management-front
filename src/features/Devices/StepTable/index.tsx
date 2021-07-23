@@ -25,7 +25,7 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
         rows: [],
     });
     const [changedRows, setChangedRows] = useState<any[]>([]);
-    const [renamedColumns, setRenamedColumns] = useState<any[]>([]);
+    const [renamedColumns, setRenamedColumns] = useState<{ [key: string]: string }>();
 
     useEffect(() => {
         if (rows) {
@@ -41,8 +41,12 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
 
     const handleAddColumn = ({ name, formerName }: { name: string; formerName?: string }) => {
         if (selectedColumn && formerName) {
-            const changedColumn = { [formerName]: name };
-            setRenamedColumns((prev) => [...prev, changedColumn]);
+            setRenamedColumns((prev) => {
+                const temp = { ...prev };
+                temp[formerName] = name;
+
+                return temp;
+            });
 
             setTable((prev) => {
                 const refactoredColumns = prev.columns.slice();
@@ -97,7 +101,7 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
             // console.log({ TaskId: taskId, steps: requestRows, rename: renamedColumns });
             await createStep(type, { TaskId: taskId, steps: requestRows, rename: renamedColumns });
             setChangedRows([]);
-            setRenamedColumns([]);
+            setRenamedColumns(undefined);
 
             mutateRows();
 
@@ -149,11 +153,7 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
                     >
                         Add Row
                     </Button>
-                    <Button
-                        kind="add"
-                        disabled={!(changedRows.length > 0) && !(renamedColumns.length > 0)}
-                        onClick={handleSubmit}
-                    >
+                    <Button kind="add" disabled={!(changedRows.length > 0) && !renamedColumns} onClick={handleSubmit}>
                         Submit
                     </Button>
                 </Box>
