@@ -10,7 +10,7 @@ import RowModal from "./RowModal";
 
 import Button from "../../../app/Button";
 
-import { createStep, stepType } from "../../../api/steps";
+import { createStep, deleteStep, stepType } from "../../../api/steps";
 
 function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
     const { data: rows, mutate: mutateRows } = useSWR<GridRowsProp>(`/engineering/manufacturing/step?TaskId=${taskId}`);
@@ -98,7 +98,6 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
             const requestRows = changedRows.slice();
             requestRows.forEach((r) => delete r.id);
 
-            // console.log({ TaskId: taskId, steps: requestRows, rename: renamedColumns });
             await createStep(type, { TaskId: taskId, steps: requestRows, rename: renamedColumns });
             setChangedRows([]);
             setRenamedColumns(undefined);
@@ -106,6 +105,24 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
             mutateRows();
 
             toast.success("Changes submited");
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleDeleteRow = async (row: any) => {
+        try {
+            const refactoredRows = table.rows.slice();
+            const index = refactoredRows.findIndex((r) => r.id === row.id);
+            if (index > -1) {
+                refactoredRows.splice(index, 1);
+            }
+
+            setTable((prev) => ({ ...prev, rows: refactoredRows }));
+            await deleteStep(type, taskId, row.number);
+            mutateRows();
+
+            setRowModal(false);
         } catch (error) {
             console.log(error);
         }
@@ -128,6 +145,7 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
                 columns={table.columns}
                 handleAddRow={handleAddRow}
                 handleChangeRow={handleChangeRow}
+                handleDelete={handleDeleteRow}
             />
 
             <Paper style={{ padding: "1em" }}>

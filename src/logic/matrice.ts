@@ -15,19 +15,28 @@ export const generateRows = (tableData: any[], productFamily: string) => {
             return { ...obj, [part.name || ""]: part.partNumber } as any;
         }, {});
 
-        return { id: i, ...levels, ...parts, "Product family": productFamily };
+        const usages = item.data.reduce((obj: any, part: any) => {
+            return { ...obj, [part.name || ""]: part.usage } as any;
+        }, {});
+
+        return { id: i, ...levels, ...parts, "Product family": productFamily, usages };
     });
 };
 
 export const generateDatagridColumns = (tableData: any[], productFamily: string) => {
-    const dtCols: any[] = [];
+    const dtCols: GridColumns = [];
     const cols = extractColumns(tableData, productFamily);
 
-    cols.forEach((c: any) => c !== "Product family" && dtCols.push({ field: c, flex: 1, sortable: false }));
+    cols.forEach(
+        (c: any) =>
+            c !== "Product family" &&
+            c !== "usages" &&
+            dtCols.push({ field: c, flex: 1, sortable: false, editable: false })
+    );
 
     dtCols[0].hide = true;
-    dtCols.unshift({ field: "Product family", flex: 1, sortable: false });
-    dtCols.unshift({ field: "name", flex: 1, sortable: false });
+    dtCols.unshift({ field: "Product family", flex: 1, sortable: false, editable: false });
+    dtCols.unshift({ field: "name", flex: 1, headerName: "Name", sortable: false, editable: false });
 
     return dtCols;
 };
@@ -54,7 +63,7 @@ export const extractPartNames = (tableData: any[]) => {
     const parts = new Set<string>();
 
     const datas = tableData.map((item) => ({ ...item.data }));
-    
+
     datas.map((r) => Object.keys(r).map((k) => parts.add(k)));
-    return Array.from(parts);    
-}
+    return Array.from(parts);
+};

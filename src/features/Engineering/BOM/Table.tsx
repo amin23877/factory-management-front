@@ -14,6 +14,7 @@ import { BasePaper } from "../../../app/Paper";
 import { IMatrice, postMatriceData } from "../../../api/matrice";
 import { CustomFooterStatusComponent } from "../../../components/Datagrid/FooterStatus";
 import { splitColumnNames, extractLevels, generateDatagridColumns, generateRows } from "../../../logic/matrice";
+import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
     root: {
@@ -76,18 +77,37 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
             }
         });
 
-        setLines((prev) => (prev ? [...prev, row] : [row]));
+        setLines((prev) => {
+            if (prev) {
+                let res = prev.slice();
+                const index = res.findIndex((r) => JSON.stringify(r.row) === JSON.stringify(row.row));
+                if (index > -1) {
+                    const dataIndex = res[index].data.findIndex((d: any) => d.name === row.data[0].name);
+
+                    if (dataIndex > -1) {
+                        res[index].data[dataIndex] = row.data[0];
+                    } else {
+                        res[index].data.push(row.data[0]);
+                    }
+                } else {
+                    res = [...prev, row];
+                }
+
+                return res;
+            } else {
+                return [row];
+            }
+        });
         setChangePart(false);
     };
 
     const submitChanges = async () => {
         try {
-            console.log(lines);
-
+            // console.log(lines);
             await postMatriceData(productFamily, { lines });
             mutateTableData();
 
-            Toast.fire({ icon: "success", title: "Record changed." });
+            toast.success("Submited");
             setLines(undefined);
         } catch (error) {
             Toast.fire({ icon: "error", title: error });
