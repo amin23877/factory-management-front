@@ -10,7 +10,7 @@ import { FieldSelect } from "../../app/Inputs";
 import { getAllEmployees } from "../../api/employee";
 import { mutate } from "swr";
 
-import { createProject, IProject, updateProject, deleteProject } from "../../api/engProject";
+import { createProject, IProject, updateProject, deleteProject } from "../../api/engineeringProject";
 import { TaskModal } from "./Modals";
 
 interface IprojectModal {
