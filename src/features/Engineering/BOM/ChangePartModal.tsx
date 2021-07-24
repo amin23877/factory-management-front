@@ -34,7 +34,16 @@ function ChangePartModal({
 
     return (
         <Dialog open={open} onClose={onClose} title="Add part">
-            <Formik initialValues={{} as IPart} validationSchema={schema} onSubmit={handleSubmit}>
+            <Formik
+                initialValues={
+                    {
+                        partNumber: row && row[partName] ? row[partName] : "",
+                        usage: row && row.usages && row.usages[partName],
+                    } as IPart
+                }
+                validationSchema={schema}
+                onSubmit={handleSubmit}
+            >
                 {({ values, errors, handleChange, handleBlur }) => (
                     <Form>
                         <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>

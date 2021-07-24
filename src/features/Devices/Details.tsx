@@ -125,15 +125,15 @@ function ItemsDetails({
     );
     const manCols = useMemo<GridColDef[]>(
         () => [
-            { field: "priority", headerName: "Priority", flex: 1 },
+            { field: "priority", headerName: "Priority", width: 100 },
             { field: "name", headerName: "Name", flex: 2 },
             { field: "id", headerName: "ID", width: 180 },
             { field: "description", headerName: "Description", flex: 2 },
             { field: "document", headerName: "Document", flex: 2 },
-            { field: "hours", headerName: " Hours", flex: 1 },
-            { field: "buildToStock", headerName: "Build To Stock", type: "boolean", flex: 1 },
-            { field: "engAP", headerName: "Eng AP.", type: "boolean", flex: 1 },
-            { field: "note", headerName: "Note", flex: 2 },
+            { field: "hours", headerName: " Hours", width: 100 },
+            { field: "buildToStock", headerName: "Build To Stock", type: "boolean", width: 150 },
+            { field: "engAP", headerName: "Eng AP.", type: "boolean", width: 100 },
+            { field: "desc", headerName: "Note", width: 100 },
         ],
         []
     );
