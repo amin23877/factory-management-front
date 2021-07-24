@@ -27,10 +27,10 @@ const Inventory = () => {
       {
         field: "engineeringApproved",
         headerName: "E.A.",
-        flex: 1,
+        flex: 2,
         type: "boolean",
       },
-      { field: "enable", headerName: "Enable", flex: 1, type: "boolean" },
+      { field: "enable", headerName: "Enable", flex: 2, type: "boolean" },
     ];
     return res;
   }, [items]);

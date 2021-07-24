@@ -12,17 +12,18 @@ import { General } from "./Forms";
 
 function ItemsDetails({ selectedRow }: { selectedRow: any }) {
   const [activeTab, setActiveTab] = useState(0);
+  const [moreInfoTab, setMoreInfoTab] = useState(0);
   const { data: rules, mutate: mutateItems } = useSWR("/quote");
 
   const gridColumns = useMemo<GridColDef[]>(() => {
     const res: GridColDef[] = [
       { field: "date", headerName: "Date", flex: 2 },
       { field: "name", headerName: "Name", flex: 4 },
-      { field: "number", headerName: "Number", flex: 3 },
-      { field: "unit", headerName: "Unit Serial No.", flex: 3 },
-      { field: "description", headerName: "SO", flex: 3 },
-      { field: "section", headerName: "PO", flex: 3 },
-      { field: "enable", headerName: "Pass/Fail", flex: 1, type: "boolean" },
+      { field: "number", headerName: "Number", flex: 2 },
+      { field: "unit", headerName: "Unit Serial No.", flex: 2 },
+      { field: "description", headerName: "SO", flex: 2 },
+      { field: "section", headerName: "PO", flex: 2 },
+      { field: "enable", headerName: "Pass/Fail", flex: 2, type: "boolean" },
     ];
     return res;
   }, [rules]);
@@ -45,9 +46,33 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
 
   return (
     <Box>
-      <BasePaper>
-        <General />
-      </BasePaper>
+      <Grid container spacing={2}>
+        <Grid item md={5} xs={12}>
+          <BasePaper>
+            <General />
+          </BasePaper>
+        </Grid>
+        <Grid item md={7} xs={12}>
+          <BasePaper
+            style={{
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <Tabs
+              style={{ marginBottom: 16 }}
+              value={moreInfoTab}
+              variant="scrollable"
+              textColor="primary"
+              onChange={(e, v) => setMoreInfoTab(v)}
+            >
+              <Tab label="Equation factors modifications" />
+            </Tabs>
+            {moreInfoTab === 0 && <div></div>}
+          </BasePaper>
+        </Grid>
+      </Grid>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <BasePaper>
