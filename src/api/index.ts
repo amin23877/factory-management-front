@@ -136,7 +136,7 @@ export function put(path: string, data: any, headers = { "Content-Type": "applic
         if (error.response) {
             console.error("Status:", error.response.status);
             console.error("Data:", error.response.data);
-            toast.error(error.response.data.Message);
+            toast.error(error.response.data.error);
             console.error("Headers:", error.response.headers);
         } else {
             console.error("Error Message:", error.message);

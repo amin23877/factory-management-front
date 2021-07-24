@@ -14,6 +14,7 @@ import { BasePaper } from "../../../app/Paper";
 import { IMatrice, postMatriceData } from "../../../api/matrice";
 import { CustomFooterStatusComponent } from "../../../components/Datagrid/FooterStatus";
 import { splitColumnNames, extractLevels, generateDatagridColumns, generateRows } from "../../../logic/matrice";
+import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
     root: {
@@ -82,12 +83,12 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
 
     const submitChanges = async () => {
         try {
-            console.log(lines);
+            // console.log(lines);
 
             await postMatriceData(productFamily, { lines });
             mutateTableData();
 
-            Toast.fire({ icon: "success", title: "Record changed." });
+            toast.success("Submited");
             setLines(undefined);
         } catch (error) {
             Toast.fire({ icon: "error", title: error });

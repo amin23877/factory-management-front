@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Box, Grid, Tabs, Tab } from "@material-ui/core";
-import { GridColDef } from "@material-ui/data-grid";
+import { DataGrid, GridColDef, GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 
@@ -69,32 +69,32 @@ function ItemsDetails({
     const [snackMsg, setSnackMsg] = useState("");
     const [bomPartsModal, setBomPartsModal] = useState(false);
 
-    const warCols = useMemo(
+    const warCols = useMemo<GridColumns>(
         () => [
-            { field: "date", headerName: "Date", type: "date" },
-            { field: "number", headerName: "Warranty number" },
-            { field: "name", headerName: "Name" },
-            { field: "description", headerName: "Note" },
-            { field: "term", headerName: "Term" },
-            { field: "status", headerName: "Status" },
+            { field: "date", headerName: "Date", type: "date", width: 120 },
+            { field: "number", headerName: "Warranty Number", width: 160 },
+            { field: "name", headerName: "Name", width: 160 },
+            { field: "description", headerName: "Note", flex: 1 },
+            { field: "term", headerName: "Term", flex: 1 },
+            { field: "status", headerName: "Status", width: 150 },
         ],
         []
     );
     const serviceCols = useMemo(
         () => [
-            { field: "name", headerName: "Name" },
-            { field: "price", headerName: "Price" },
-            { field: "period", headerName: "length" },
-            { field: "description", headerName: "Description" },
+            { field: "name", headerName: "Name", flex: 1 },
+            { field: "price", headerName: "Price", flex: 1 },
+            { field: "period", headerName: "Length", flex: 1 },
+            { field: "description", headerName: "Description", flex: 1 },
         ],
         []
     );
 
     const noteCols = useMemo(
         () => [
-            { field: "subject", headerName: "Subject" },
-            { field: "url", headerName: "URL" },
-            { field: "note", headerName: "Note", width: 300 },
+            { field: "subject", headerName: "Subject", flex: 1 },
+            { field: "url", headerName: "URL", flex: 1 },
+            { field: "note", headerName: "Note", flex: 2 },
         ],
         []
     );
@@ -102,22 +102,22 @@ function ItemsDetails({
     const docCols = useMemo(
         () => [
             { field: "file", headerName: "File" },
-            { field: "createdAt", headerName: "Date", width: 300 },
-            { field: "EmployeeId", headerName: "Creator" },
-            { field: "name", headerName: "File name" },
-            { field: "id", headerName: "File id" },
-            { field: "description", headerName: "Description", width: 250 },
-            { field: "type", headerName: "File type" },
+            { field: "createdAt", headerName: "Date", flex: 1 },
+            { field: "EmployeeId", headerName: "Creator", flex: 1 },
+            { field: "name", headerName: "File Name", flex: 1 },
+            { field: "id", headerName: "File ID", flex: 1 },
+            { field: "description", headerName: "Description", flex: 1 },
+            { field: "type", headerName: "File Type" },
         ],
         []
     );
 
     const bomCols = useMemo<GridColDef[]>(
         () => [
-            { field: "items", headerName: "Items" },
+            { field: "items", headerName: "Items", width: 80 },
             { field: "revision", headerName: "Revision" },
-            { field: "date", headerName: "Revision date", type: "date" },
-            { field: "name", headerName: "BOM name" },
+            { field: "date", headerName: "Revision Date", type: "date", width: 180 },
+            { field: "name", headerName: "BOM Name", width: 180 },
             { field: "note", headerName: "Note", flex: 1 },
             { field: "current", headerName: "Current", type: "boolean" },
         ],
@@ -125,29 +125,48 @@ function ItemsDetails({
     );
     const manCols = useMemo<GridColDef[]>(
         () => [
-            { field: "priority", headerName: "Priority" },
-            { field: "name", headerName: "Task name" },
-            { field: "id", headerName: "Task id" },
-            { field: "description", headerName: "Task description", flex: 1 },
-            { field: "document", headerName: "Document" },
-            { field: "hours", headerName: "Task Hours" },
-            { field: "buildToStock", headerName: "Build to stock", type: "boolean" },
-            { field: "engAP", headerName: "Eng ap.", type: "boolean" },
-            { field: "note", headerName: "Note" },
+            { field: "priority", headerName: "Priority", flex: 1 },
+            { field: "name", headerName: "Name", flex: 2 },
+            { field: "id", headerName: "ID", width: 180 },
+            { field: "description", headerName: "Description", flex: 2 },
+            { field: "document", headerName: "Document", flex: 2 },
+            { field: "hours", headerName: " Hours", flex: 1 },
+            { field: "buildToStock", headerName: "Build To Stock", type: "boolean", flex: 1 },
+            { field: "engAP", headerName: "Eng AP.", type: "boolean", flex: 1 },
+            { field: "note", headerName: "Note", flex: 2 },
+        ],
+        []
+    );
+
+    const evalCols = useMemo<GridColDef[]>(
+        () => [
+            { field: "priority", headerName: "Priority", flex: 1 },
+            { field: "name", headerName: "Name", flex: 2 },
+            { field: "id", headerName: "ID", width: 180 },
+            { field: "description", headerName: "Description", flex: 2 },
+            { field: "document", headerName: "Document", flex: 2 },
+            { field: "hours", headerName: " Hours", flex: 1 },
+            { field: "engAP", headerName: "Eng AP.", type: "boolean", flex: 1 },
+            { field: "note", headerName: "Note", flex: 2 },
         ],
         []
     );
 
     const unitHistoryCols = useMemo<GridColDef[]>(
         () => [
-            { field: "estimatedShipDate", headerName: "Estimated Ship Date" },
-            { field: "actualShipDate", headerName: "Actual Ship Date" },
-            { field: "serialNumber", headerName: "Device serial No." },
-            { field: "status", headerName: "Status" },
-            { field: "warrantyStatus", headerName: "Warranty status", type: "boolean" },
-            { field: "warrantyEndDate", headerName: "Warranty end date" },
-            { field: "SOId", headerName: "SO Id" },
-            { field: "SODate", headerName: "SO date", valueFormatter: (r) => formatTimestampToDate(r.row.SODate) },
+            { field: "estimatedShipDate", headerName: "Estimated Ship Date", flex: 1 },
+            { field: "actualShipDate", headerName: "Actual Ship Date", flex: 1 },
+            { field: "serialNumber", headerName: "Device Serial No.", flex: 1 },
+            { field: "status", headerName: "Status", flex: 1 },
+            { field: "warrantyStatus", headerName: "Warranty Status", type: "boolean", flex: 1 },
+            { field: "warrantyEndDate", headerName: "Warranty End Date", flex: 1 },
+            { field: "SOId", headerName: "SO ID", flex: 1 },
+            {
+                field: "SODate",
+                headerName: "SO Date",
+                valueFormatter: (r) => formatTimestampToDate(r.row.SODate),
+                flex: 1,
+            },
         ],
         []
     );
@@ -204,7 +223,7 @@ function ItemsDetails({
                                         touched={touched}
                                     />
 
-                                    <Button style={{ margin: "1.3em 43% 0.5em 43%" }} kind="edit" type="submit">
+                                    <Button style={{ margin: "0.5em auto" }} kind="edit" type="submit">
                                         Save
                                     </Button>
                                 </BasePaper>
@@ -248,28 +267,30 @@ function ItemsDetails({
             </Formik>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
-                    <BasePaper style={{ maxWidth: "71.5vw" }}>
-                        <Tabs
-                            value={activeTab}
-                            onChange={(e, v) => setActiveTab(v)}
-                            textColor="primary"
-                            variant="scrollable"
-                        >
-                            <Tab label="Design documents" />
-                            <Tab label="BOM" />
-                            <Tab label="Warranties" />
-                            <Tab label="Manufacturing" />
-                            <Tab label="Evaluation" />
-                            <Tab label="Test" />
-                            <Tab label="Field Start-up" />
-                            <Tab label="Label" />
-                            <Tab label="Unit History" />
-                            <Tab label="Sales Report" />
-                            <Tab label="Field Service" />
-                            <Tab label="Quality Control" />
-                            <Tab label="Notes" />
-                            <Tab label="Auditing" />
-                        </Tabs>
+                    <BasePaper>
+                        <Box display="flex" maxWidth="850px">
+                            <Tabs
+                                value={activeTab}
+                                onChange={(e, v) => setActiveTab(v)}
+                                textColor="primary"
+                                variant="scrollable"
+                            >
+                                <Tab label="Design documents" />
+                                <Tab label="BOM" />
+                                <Tab label="Warranties" />
+                                <Tab label="Manufacturing" />
+                                <Tab label="Evaluation" />
+                                <Tab label="Test" />
+                                <Tab label="Field Start-up" />
+                                <Tab label="Label" />
+                                <Tab label="Unit History" />
+                                <Tab label="Sales Report" />
+                                <Tab label="Field Service" />
+                                <Tab label="Quality Control" />
+                                <Tab label="Notes" />
+                                <Tab label="Auditing" />
+                            </Tabs>
+                        </Box>
                         <Box p={3}>
                             {activeTab === 0 && (
                                 <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />
@@ -301,7 +322,7 @@ function ItemsDetails({
                             )}
                             {activeTab === 4 && (
                                 <BaseDataGrid
-                                    cols={manCols}
+                                    cols={evalCols}
                                     rows={evalSteps || []}
                                     onRowSelected={(d) => {
                                         onStepSelected({ ...d, tab: 1 });
@@ -310,7 +331,7 @@ function ItemsDetails({
                             )}
                             {activeTab === 5 && (
                                 <BaseDataGrid
-                                    cols={manCols}
+                                    cols={evalCols}
                                     rows={testSteps || []}
                                     onRowSelected={(d) => {
                                         onStepSelected({ ...d, tab: 2 });
@@ -319,7 +340,7 @@ function ItemsDetails({
                             )}
                             {activeTab === 6 && (
                                 <BaseDataGrid
-                                    cols={manCols}
+                                    cols={evalCols}
                                     rows={fieldSteps || []}
                                     onRowSelected={(d) => {
                                         onStepSelected({ ...d, tab: 3 });
