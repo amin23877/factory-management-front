@@ -1,3 +1,7 @@
+* {
+    font-size: 0.800rem;
+}
+
 .MuiToolbar-root {
     height: 54px !important;
     padding: 0px;

@@ -5,7 +5,6 @@ import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbar } from "
 const useStyles = makeStyles({
     dataGridCont: {
         width: "100%",
-        borderRadius: 8,
     },
     root: {
         backgroundColor: "#f9f9f9",
@@ -14,10 +13,7 @@ const useStyles = makeStyles({
         "& .MuiDataGrid-columnsContainer": {
             backgroundColor: "#202731",
             color: "#fff",
-            borderRadius: " 10px 10px 0 0",
-        },
-        "& .MuiDataGrid-cell": {
-            border: "1px solid #f0f1f5",
+            // borderRadius: " 10px 10px 0 0",
         },
         "& .MuiDataGrid-iconSeparator": {
             display: "none",
@@ -53,38 +49,39 @@ interface IBaseDataGrid {
 export default function BaseDataGrid({ onRowSelected, rows, cols, height }: IBaseDataGrid) {
     const classes = useStyles();
 
-    const updatedCols = cols.map((x) => {
-        let obj = Object.keys(x);
-        let check = false;
-        for (let o in obj) {
-            if (o == "flex") {
-                check = true;
-            }
-        }
-        if (!check) {
-            x = { ...x, flex: 1 };
-        }
-        return x;
-    });
+    // const updatedCols = cols.map((x) => {
+    //     let obj = Object.keys(x);
+    //     let check = false;
+    //     for (let o in obj) {
+    //         if (o == "flex") {
+    //             check = true;
+    //         }
+    //     }
+    //     if (!check) {
+    //         x = { ...x, flex: 1 };
+    //     }
+    //     return x;
+    // });
 
     return (
-        <Box display="flex" boxShadow="rgba(0, 0, 0, 0.08) 0px 4px 12px" border="none" height="100%">
-            <div
-                style={{
-                    flexGrow: 1,
-                    height: height || 450,
+        // <Box display="flex" boxShadow="rgba(0, 0, 0, 0.08) 0px 4px 12px" border="none" height="100%">
+        <div
+            style={{
+                flexGrow: 1,
+                height: height || 450,
+            }}
+        >
+            <DataGrid
+                density="compact"
+                components={{ Toolbar: GridToolbar }}
+                className={classes.root}
+                onRowSelected={(r) => {
+                    onRowSelected && onRowSelected(r.data);
                 }}
-            >
-                <DataGrid
-                    components={{ Toolbar: GridToolbar }}
-                    className={classes.root}
-                    onRowSelected={(r) => {
-                        onRowSelected && onRowSelected(r.data);
-                    }}
-                    columns={updatedCols}
-                    rows={rows}
-                />
-            </div>
-        </Box>
+                columns={cols}
+                rows={rows}
+            />
+        </div>
+        // </Box>
     );
 }

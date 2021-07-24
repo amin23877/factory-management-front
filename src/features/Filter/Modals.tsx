@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, makeStyles, Tab, Tabs } from "@material-ui/core";
+import { Box, Tab, Tabs } from "@material-ui/core";
 
 import Dialog from "../../app/Dialog";
 import Button from "../../app/Button";
@@ -7,13 +7,11 @@ import FilterForm, { ApplyFilterForm } from "./Forms";
 import { IFilter } from "../../api/filter";
 import FilterTable from "./Table";
 
-// { open, onClose }: { open: boolean; onClose: () => void }
 export default function FiltersModal() {
     const [activeTab, setActiveTab] = useState(0);
     const [selectedFilter, setSelectedFilter] = useState<IFilter>();
 
     return (
-        // <Dialog open={open} onClose={onClose} title="Filters" maxWidth="sm" fullWidth>
         <Box p={1} display="flex" flexDirection="column">
             <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                 <Tab label="List" />
@@ -30,7 +28,7 @@ export default function FiltersModal() {
                         }}
                     >
                         Add new
-                        </Button>
+                    </Button>
                     <FilterTable
                         onFilterSelected={(f) => {
                             setSelectedFilter(f);
@@ -41,11 +39,18 @@ export default function FiltersModal() {
             )}
             {activeTab === 1 && <FilterForm initialValues={selectedFilter} />}
         </Box>
-        // </Dialog>
     );
 }
 
-export const ApplyFilterModal = ({ open, onClose, setter }: { open: boolean; onClose: () => void; setter: (a: any) => void }) => {
+export const ApplyFilterModal = ({
+    open,
+    onClose,
+    setter,
+}: {
+    open: boolean;
+    onClose: () => void;
+    setter: (a: any) => void;
+}) => {
     return (
         <Dialog open={open} onClose={onClose} title="Filters" maxWidth="sm">
             <Box p={2} display="flex" alignItems="flex-start">

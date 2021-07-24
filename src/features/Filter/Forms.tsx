@@ -14,7 +14,13 @@ import { delete_, patch, post } from "../../api";
 
 export default function FilterForm({ initialValues }: { initialValues?: IFilter }) {
     const schema = Yup.object().shape({
-        name: Yup.string().required(),
+        name: Yup.string()
+            .required()
+            .test(
+                "Does not have underline",
+                "Name should not have underline (_)",
+                (value) => !value?.includes("_") || false
+            ),
         valid: Yup.string().required(),
     });
 

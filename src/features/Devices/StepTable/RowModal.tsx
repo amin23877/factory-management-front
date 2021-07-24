@@ -7,7 +7,7 @@ import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
 import FileUploader from "../../../app/FileUploader";
 
-import { addFileToStep, deleteStep, stepType } from "../../../api/steps";
+import { addFileToStep, stepType } from "../../../api/steps";
 
 function RowModal({
     open,
@@ -16,6 +16,7 @@ function RowModal({
     onClose,
     handleChangeRow,
     handleAddRow,
+    handleDelete,
     columns,
     taskId,
 }: {
@@ -24,6 +25,7 @@ function RowModal({
     onClose: () => void;
     handleChangeRow: (row: any) => void;
     handleAddRow: (row: any) => void;
+    handleDelete: (row: any) => void;
     initialValues?: any;
     columns: any[];
     taskId: string;
@@ -48,15 +50,6 @@ function RowModal({
         }
     };
 
-    const handleDelete = async () => {
-        try {
-            await deleteStep(type, taskId, initialValues.number);
-            onClose();
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     return (
         <Dialog title="Add/Change step" open={open} onClose={onClose} fullWidth maxWidth="sm">
             <Box m={1} height={500}>
@@ -69,37 +62,45 @@ function RowModal({
                     <Formik initialValues={initialValues || ({} as any)} onSubmit={handleSubmit}>
                         {({ values, errors, handleChange, handleBlur }) => (
                             <Form>
-                                <Box height={440} display="flex" flexDirection="column">
-                                    <Box
-                                        display="grid"
-                                        gridTemplateColumns="1fr 1fr"
-                                        gridGap={10}
-                                        flex={1}
-                                        overflow="auto"
-                                    >
-                                        {columns.map(
-                                            (column) =>
-                                                column.field !== "files" && (
-                                                    <TextField
-                                                        key={column.field}
-                                                        name={column.field}
-                                                        label={column.field}
-                                                        value={values[column.field]}
-                                                        onChange={handleChange}
-                                                        onBlur={handleBlur}
-                                                        error={Boolean(errors[column.field])}
-                                                        helperText={errors[column.field]}
-                                                        required={column.field === "number"}
-                                                    />
-                                                )
-                                        )}
+                                <Box height="440px" display="flex" flexDirection="column">
+                                    <Box display="flex" flexDirection="column">
+                                        <Box
+                                            py={1}
+                                            display="grid"
+                                            gridTemplateColumns="1fr 1fr"
+                                            overflow="auto"
+                                            gridGap={10}
+                                        >
+                                            {columns.map(
+                                                (column) =>
+                                                    column.field !== "files" && (
+                                                        <TextField
+                                                            style={{ alignSelf: "center" }}
+                                                            key={column.field}
+                                                            name={column.field}
+                                                            label={column.field}
+                                                            value={values[column.field]}
+                                                            onChange={handleChange}
+                                                            onBlur={handleBlur}
+                                                            error={Boolean(errors[column.field])}
+                                                            helperText={errors[column.field]}
+                                                            required={column.field === "number"}
+                                                        />
+                                                    )
+                                            )}
+                                        </Box>
+                                        <div style={{ flex: "1 1 200px" }} />
                                     </Box>
-                                    <Box>
+                                    <Box mt="auto">
                                         <Button kind="add" type="submit">
                                             Save
                                         </Button>
                                         {initialValues?.number && (
-                                            <Button kind="delete" onClick={handleDelete}>
+                                            <Button
+                                                style={{ marginLeft: 10 }}
+                                                kind="delete"
+                                                onClick={() => handleDelete(initialValues)}
+                                            >
                                                 Delete
                                             </Button>
                                         )}
