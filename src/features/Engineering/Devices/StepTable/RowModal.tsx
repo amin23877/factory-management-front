@@ -73,7 +73,7 @@ function RowModal({
                                         >
                                             {columns.map(
                                                 (column) =>
-                                                    column.field !== "files" && (
+                                                    column.field !== "files" && column.field !== "number" && (
                                                         <TextField
                                                             style={{ alignSelf: "center" }}
                                                             key={column.field}

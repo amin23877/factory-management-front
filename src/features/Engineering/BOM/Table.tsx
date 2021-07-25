@@ -13,7 +13,13 @@ import { BasePaper } from "../../../app/Paper";
 
 import { IMatrice, postMatriceData } from "../../../api/matrice";
 import { CustomFooterStatusComponent } from "../../../components/Datagrid/FooterStatus";
-import { splitColumnNames, extractLevels, generateDatagridColumns, generateRows } from "../../../logic/matrice";
+import {
+    splitColumnNames,
+    extractLevels,
+    generateDatagridColumns,
+    generateRows,
+    extractPartNames
+} from "../../../logic/matrice";
 import { toast } from "react-toastify";
 
 const useStyles = makeStyles({
@@ -26,7 +32,6 @@ const useStyles = makeStyles({
 
 export default function NewBomTable({ productFamily }: { productFamily: string }) {
     const { data: tableData, mutate: mutateTableData } = useSWR<IMatrice>(`/matrice?productfamily=${productFamily}`);
-    console.log()
 
     const classes = useStyles();
 
@@ -42,7 +47,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
     const [lines, setLines] = useState<any[]>();
 
     const [table, setTable] = useState<{ columns: any; rows: any[] }>({ columns: [], rows: [] });
-
+    console.log(table)
     // Generate table COLUMNS, ROWS and LEVELS
     useEffect(() => {
         if (tableData) {

@@ -16,11 +16,13 @@ function ColumnModal({
     open,
     onClose,
     onDone,
+    onDelete,
 }: {
     columnName?: string;
     open: boolean;
     onClose: () => void;
     onDone: (data: { name: string; formerName?: string }) => void;
+    onDelete: (columnName: string) => void;
 }) {
     return (
         <Dialog title="Add column" open={open} onClose={onClose}>
@@ -55,6 +57,11 @@ function ColumnModal({
                                 <Button kind="add" type="submit">
                                     Add
                                 </Button>
+                                {columnName && (
+                                    <Button kind="delete" onClick={() => onDelete(columnName)}>
+                                        Delete
+                                    </Button>
+                                )}
                             </Box>
                         </Form>
                     )}

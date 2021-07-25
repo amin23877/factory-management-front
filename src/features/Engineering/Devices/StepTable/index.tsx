@@ -26,6 +26,7 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
     });
     const [changedRows, setChangedRows] = useState<any[]>([]);
     const [renamedColumns, setRenamedColumns] = useState<{ [key: string]: string }>();
+    const [unsetColumns, setUnsetColumns] = useState<{ [key: string]: string }>();
 
     useEffect(() => {
         if (rows) {
@@ -74,8 +75,12 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
     };
 
     const handleAddRow = (row: any) => {
+        const numbers: any = table.rows.length > 0 ? table.rows.map((row) => row.number) : [-1, 0];
+        const number = Math.max(...numbers) + 1;
+        console.log(numbers, number);
+
         let refactoredRows = table.rows ? table.rows.slice() : [];
-        refactoredRows.push(row);
+        refactoredRows.push({ ...row, number });
         refactoredRows = refactoredRows.map((r, i) => ({ ...r, id: i }));
 
         setTable((prev) => ({ ...prev, rows: refactoredRows }));
@@ -98,13 +103,14 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
             const requestRows = changedRows.slice();
             requestRows.forEach((r) => delete r.id);
 
-            await createStep(type, { TaskId: taskId, steps: requestRows, rename: renamedColumns });
+            // console.log(type, { TaskId: taskId, steps: requestRows, rename: renamedColumns, unset: unsetColumns });
+            await createStep(type, { TaskId: taskId, steps: requestRows, rename: renamedColumns, unset: unsetColumns });
             setChangedRows([]);
             setRenamedColumns(undefined);
 
-            mutateRows();
+            await mutateRows();
 
-            toast.success("Changes submited");
+            toast.success("Changes submitted");
         } catch (error) {
             console.log(error);
         }
@@ -128,6 +134,14 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
         }
     };
 
+    const handleDeleteColumn = (columnName: string) => {
+        setUnsetColumns((prev) => ({ ...prev, [columnName]: columnName }));
+        setTable((prev) => ({ ...prev, columns: prev.columns.filter((c) => c.field !== columnName) }));
+
+        setSelectedColumn(undefined);
+        setColumnModal(false);
+    };
+
     return (
         <>
             <ColumnModal
@@ -135,6 +149,7 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
                 columnName={selectedColumn}
                 onClose={() => setColumnModal(false)}
                 onDone={handleAddColumn}
+                onDelete={handleDeleteColumn}
             />
             <RowModal
                 type={type}
@@ -171,7 +186,11 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
                     >
                         Add Row
                     </Button>
-                    <Button kind="add" disabled={!(changedRows.length > 0) && !renamedColumns} onClick={handleSubmit}>
+                    <Button
+                        kind="add"
+                        disabled={!(changedRows.length > 0) && !renamedColumns && !unsetColumns}
+                        onClick={handleSubmit}
+                    >
                         Submit
                     </Button>
                 </Box>

@@ -39,7 +39,7 @@ interface ITaskModal {
 
 export const Manufacturing = ({ open, onClose, itemId, device, onDone, task }: ITaskModal) => {
     const { data: tableData } = useSWR(
-        device.name.split("-")[0] ? `/matrice?productfamily=${device.name.split("-")[0]}` : null
+        device['Product Family'] ? `/matrice?productfamily=${device["Product Family"]}` : null
     );
 
     const [parts, setParts] = useState<string[]>();
@@ -48,13 +48,13 @@ export const Manufacturing = ({ open, onClose, itemId, device, onDone, task }: I
         if (tableData) {
             setParts(extractPartNames(tableData));
         }
-    }, [open]);
+    }, [open, tableData]);
 
     const deleteDocument = useCallback(async () => {
         try {
             if (task && task.id) {
                 await deleteAManTask(task.id);
-                mutate(`/engineering/manufacturing/task?ItemId=${itemId}`);
+                await mutate(`/engineering/manufacturing/task?ItemId=${itemId}`);
                 onDone && onDone();
                 onClose();
             }
