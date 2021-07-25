@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, Box } from "@material-ui/core";
 
 import Overview from "../features/Production/Overview";
-import UnitBomModal from "../features/UBOM/UBomModal";
+import UnitBomModal from "../features/UBOM/Modal";
 import Details from "../features/Production";
 
 import { MyTabs, MyTab } from "../app/Tabs";

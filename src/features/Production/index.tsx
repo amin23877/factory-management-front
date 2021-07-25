@@ -6,7 +6,7 @@ import UnitInfo from "./UnitInfo";
 import { BasePaper } from "../../app/Paper";
 import BaseDataGrid from "../../app/BaseDataGrid";
 import { General as ItemGeneral } from "../Items/Forms";
-import { GeneralForm as SOGeneral } from "../SO/Forms";
+import { GeneralForm as SOGeneral } from "../Sales/SO/Forms";
 
 import { IUnit } from "../../api/units";
 import useSWR from "swr";

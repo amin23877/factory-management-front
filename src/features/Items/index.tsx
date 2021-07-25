@@ -21,8 +21,8 @@ import { INote } from "../../api/note";
 import { IDocument } from "../../api/document";
 import { AddItemSchema, updateAnItem, addImage } from "../../api/items";
 import { IBom } from "../../api/bom";
-import SODatagrid from "../SO/Datagrid";
-import QuoteDatagrid from "../Quote/Datagrid";
+import SODatagrid from "../Sales/SO/Datagrid";
+import QuoteDatagrid from "../Sales/Quote/Datagrid";
 import SOTable from "./SOTable";
 
 function ItemsDetails({
@@ -133,7 +133,7 @@ function ItemsDetails({
         () => [
             { field: "before", headerName: "Before" },
             { field: "after", headerName: "After" },
-            { field: "fieldName", headerName: "Field name" },
+            { field: "fieldName", headerName: "Level name" },
             { field: "description", headerName: "description", flex: 1 },
         ],
         []

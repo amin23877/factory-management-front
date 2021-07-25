@@ -8,11 +8,11 @@ import BaseDataGrid from "../../app/BaseDataGrid";
 import { BasePaper } from "../../app/Paper";
 import Snack from "../../app/Snack";
 import JobForm from "./Forms";
-import SODatagrid from "../SO/Datagrid";
+import SODatagrid from "../Sales/SO/Datagrid";
 
 import { IJob, schema, updateJob } from "../../api/job";
 import { fetcher } from "../../api";
-import QuoteDatagrid from "../Quote/Datagrid";
+import QuoteDatagrid from "../Sales/Quote/Datagrid";
 
 export default function Details({
     initialValue,

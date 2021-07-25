@@ -26,6 +26,7 @@ const useStyles = makeStyles({
 
 export default function NewBomTable({ productFamily }: { productFamily: string }) {
     const { data: tableData, mutate: mutateTableData } = useSWR<IMatrice>(`/matrice?productfamily=${productFamily}`);
+    console.log()
 
     const classes = useStyles();
 

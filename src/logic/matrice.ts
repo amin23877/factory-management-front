@@ -7,6 +7,7 @@ export const splitColumnNames = (columns: GridColumns) => {
     temp.map((c) => (c.headerName = splitLevelName(c.headerName ? c.headerName : c.field)));
     return temp;
 };
+
 export const generateRows = (tableData: any[], productFamily: string) => {
     return tableData.map((item, i) => {
         const levels = item.row;

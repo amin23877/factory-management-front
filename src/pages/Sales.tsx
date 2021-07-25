@@ -4,9 +4,9 @@ import { Container, Box } from "@material-ui/core";
 import { SearchBar } from "../app/TextField";
 import { MyTabs, MyTab } from "../app/Tabs";
 
-import QuotePanel from "../features/Quote";
-import SalesOrderPanel from "../features/SO";
-import PurchaseOrderPanel from "../features/PO";
+import QuotePanel from "../features/Sales/Quote";
+import SalesOrderPanel from "../features/Sales/SO";
+import PurchaseOrderPanel from "../features/Sales/PO";
 
 export default function Sales() {
     const [activeTab, setActiveTab] = useState(0);

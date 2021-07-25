@@ -22,7 +22,7 @@ import { deleteAnItem, IItem } from "../api/items";
 import List from "../app/SideUtilityList";
 import { MyTabs, MyTab } from "../app/Tabs";
 
-import FieldNFilter from "../features/FieldAndFilter/Modal";
+import FieldNFilter from "../features/ClusterAndLevel/Modal";
 
 import ItemTable from "../features/Items/Table";
 import { mutate } from "swr";
