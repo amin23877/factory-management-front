@@ -6,7 +6,7 @@ export interface IManufacturingStep {
 }
 
 export type stepType = "manufacturing" | "eval" | "test" | "fieldstartup";
-type stepRequestType = { TaskId: string; steps: IManufacturingStep[]; rename?: any };
+type stepRequestType = { TaskId: string; steps: IManufacturingStep[]; rename?: any; unset?: any };
 
 export const createStep = (type: stepType, data: stepRequestType) => {
     return post(`/engineering/${type}/step`, data);

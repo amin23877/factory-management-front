@@ -14,8 +14,8 @@ import NoteModal from "../Modals/NoteModals";
 import DocumentModal from "../Modals/DocumentModals";
 import { INote } from "../../api/note";
 import { IDocument } from "../../api/document";
-import AddSOModal from "../SO/AddSoModal";
-import AddQuote from "../Quote/AddQuote";
+import AddSOModal from "../Sales/SO/AddSoModal";
+import AddQuote from "../Sales/Quote/AddQuote";
 
 export default function Tickets() {
     const [jobModal, setJobModal] = useState(false);

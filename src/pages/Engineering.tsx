@@ -4,8 +4,8 @@ import { Container, Box } from "@material-ui/core";
 import { SearchBar } from "../app/TextField";
 import { MyTabs, MyTab } from "../app/Tabs";
 
-import DevicesPanel from "../features/Devices";
-import Project from "../features/projects";
+import DevicesPanel from "../features/Engineering/Devices";
+import Project from "../features/Engineering/Projects";
 
 import BOM from "../features/Engineering/BOM";
 import Monitoring from "../features/Engineering/Monitoring";

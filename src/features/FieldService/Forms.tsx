@@ -61,7 +61,7 @@ export const LineItemFSForm = ({ LineItem }: { LineItem: ILineItem }) => {
                 const resp = await removeServiceFromLineitem(LineItem.id, id);
                 if (resp) {
                     setSnack(true);
-                    setMsg("Field service deleted from line item");
+                    setMsg("Level service deleted from line item");
                     refreshServices();
                 }
             }
@@ -76,7 +76,7 @@ export const LineItemFSForm = ({ LineItem }: { LineItem: ILineItem }) => {
                 const resp = await addServiceToLineitem(LineItem.id, d.serviceId, d.count);
                 if (resp) {
                     setSnack(true);
-                    setMsg("Field service added to line item");
+                    setMsg("Level service added to line item");
                     refreshServices();
                 }
             }

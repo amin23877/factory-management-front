@@ -4,8 +4,8 @@ import { Container, Box } from "@material-ui/core";
 import { SearchBar } from "../app/TextField";
 import { MyTabs, MyTab } from "../app/Tabs";
 
-import PurchaseQuote from "../features/PurchaseQuote";
-import PurchasePO from "../features/PurchasePO";
+import PurchaseQuote from "../features/Purchase/Quote";
+import PurchasePO from "../features/Purchase/PO";
 
 export default function Purchase() {
     const [activeTab, setActiveTab] = useState(0);

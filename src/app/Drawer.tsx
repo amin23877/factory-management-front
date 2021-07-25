@@ -321,7 +321,7 @@ const drawerItems = [
     },
     {
         name: "Projects",
-        link: "/panel/projects",
+        link: "/panel/Projects",
         icon: (
             <svg
                 id="Group_40203"

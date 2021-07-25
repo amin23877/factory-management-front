@@ -8,13 +8,18 @@ import ChangePartModal from "./ChangePartModal";
 import RenamePart from "./RenamePart";
 
 import Button from "../../../app/Button";
-import { Toast } from "../../../app/Toast";
+import Toast from "../../../app/Toast";
 import { BasePaper } from "../../../app/Paper";
 
 import { IMatrice, postMatriceData } from "../../../api/matrice";
 import { CustomFooterStatusComponent } from "../../../components/Datagrid/FooterStatus";
-import { splitColumnNames, extractLevels, generateDatagridColumns, generateRows } from "../../../logic/matrice";
-import { toast } from "react-toastify";
+import {
+    splitColumnNames,
+    extractLevels,
+    generateDatagridColumns,
+    generateRows,
+    extractPartNames,
+} from "../../../logic/matrice";
 
 const useStyles = makeStyles({
     root: {
@@ -41,7 +46,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
     const [lines, setLines] = useState<any[]>();
 
     const [table, setTable] = useState<{ columns: any; rows: any[] }>({ columns: [], rows: [] });
-
+    console.log(table);
     // Generate table COLUMNS, ROWS and LEVELS
     useEffect(() => {
         if (tableData) {
@@ -103,14 +108,13 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
 
     const submitChanges = async () => {
         try {
-            // console.log(lines);
             await postMatriceData(productFamily, { lines });
             mutateTableData();
 
-            toast.success("Submited");
+            Toast("Submited", "success");
             setLines(undefined);
         } catch (error) {
-            Toast.fire({ icon: "error", title: error });
+            console.log(error);
         }
     };
 

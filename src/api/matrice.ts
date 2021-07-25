@@ -1,4 +1,4 @@
-import Axios from "axios";
+import { get, patch, post } from ".";
 
 export interface IRow {
     [key: string]: string;
@@ -17,29 +17,16 @@ export type IMatriceRow = { row: IRow; data: IPart[] };
 
 export type IMatrice = IMatriceRow[];
 
-export const getMatrice = async (productFamily: string, levels?: string[]) => {
-    try {
-        const resp = await Axios.get(`/matrice?productfamily=${productFamily}`);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const getMatrice = (productFamily: string, levels?: string[]) => {
+      return get(`/matrice?productfamily=${productFamily}`);
+       
 };
 
-export const postMatriceData = async (productFamily: string, lines: any) => {
-    try {
-        const resp = await Axios.post(`/matrice?productfamily=${productFamily}`, lines);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const postMatriceData =  (productFamily: string, lines: any) => {
+    return post(`/matrice?productfamily=${productFamily}`, lines);
+        
 };
 
-export const renameMatricePart = async (formerName: string, newName: string) => {
-    try {
-        const resp = await Axios.patch("/matrice/rename", { formerName, newName });
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const renameMatricePart = (formerName: string, newName: string) => {
+    return patch("/matrice/rename", { formerName, newName });
 };

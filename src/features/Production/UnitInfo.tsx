@@ -10,7 +10,7 @@ import { ArraySelect, FieldSelect } from "../../app/Inputs";
 
 import { IUnit, updateUnit } from "../../api/units";
 import { getAllEmployees } from "../../api/employee";
-import { Toast } from "../../app/Toast";
+import Toast from "../../app/Toast";
 
 const schema = Yup.object().shape({
     laborCost: Yup.number().required(),
@@ -23,14 +23,13 @@ export default function UnitInfo({ unit }: { unit: IUnit }) {
     const handleSubmit = async (data: any) => {
         try {
             if (unit?.id) {
-                const resp = await updateUnit(unit.id, data);
-                mutate("/unit");
-                if (resp) {
-                    Toast.fire({ text: "Unit updated", icon: "success" });
-                }
+                await updateUnit(unit.id, data);
+                await mutate("/unit");
+
+                Toast("Unit updated", "success");
             }
         } catch (e) {
-            Toast.fire("Error", "An error hppened", "error");
+            console.log(e);
         }
     };
 
