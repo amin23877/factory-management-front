@@ -4,15 +4,28 @@ import { Formik, Form } from "formik";
 
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
+import { getModifiedValues } from "../../../logic/utils";
+import { DatePicker } from "@material-ui/pickers";
+import { formatTimestampToDate } from "../../../logic/date";
+import { updateRule } from "../../../api/monitor";
+import Toast from "../../../app/Toast";
+import { mutate } from "swr";
 
 export const General = ({ rule }: { rule?: any }) => {
-    const deleteDocument = useCallback(async () => {}, []);
+    const handleSubmit = useCallback(async (values, { setSubmitting }) => {
+        try {
+            await updateRule(rule.id, getModifiedValues(values, rule));
+            mutate("/monitor");
 
-    const handleSubmit = useCallback((values, { setSubmitting }) => {}, []);
+            Toast("Record updated", "success");
+        } catch (error) {
+            console.log(error);
+        }
+    }, []);
 
     return (
         <Formik initialValues={rule ? rule : ({} as any)} onSubmit={handleSubmit}>
-            {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
+            {({ values, handleChange, getFieldProps, setFieldValue }) => (
                 <Form>
                     <Box display="grid" gridTemplateColumns={"1fr"} gridGap={10}>
                         <Box m={2} display="grid" gridTemplateColumns="1fr 1fr " gridGap={10}>
@@ -26,79 +39,39 @@ export const General = ({ rule }: { rule?: any }) => {
                             >
                                 <FormControlLabel
                                     name="enable"
-                                    value={values.enable}
-                                    control={<Checkbox checked={Boolean(values.enable)} />}
+                                    checked={values.enable}
+                                    control={<Checkbox />}
                                     label="Enable / Disable"
                                     onChange={handleChange}
-                                    onBlur={handleBlur}
                                 />
                                 <FormControlLabel
                                     name="engAP"
-                                    value={values.engAP}
-                                    control={<Checkbox checked={Boolean(values.engAP)} />}
+                                    checked={values.engAP}
+                                    control={<Checkbox />}
                                     label="Engineering Approved"
                                     onChange={handleChange}
-                                    onBlur={handleBlur}
                                 />
                             </Paper>
-                            <TextField
-                                // style={{ gridColumnEnd: "span 2" }}
-                                value={values.name}
-                                name="name"
-                                label="Name"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
+                            <TextField disabled label="ID" {...getFieldProps("id")} />
+                            <TextField label="Name" {...getFieldProps("name")} />
+                            <DatePicker
+                                size="small"
+                                label="Date"
+                                name="date"
+                                value={formatTimestampToDate(values.date)}
+                                onChange={(date) => setFieldValue("date", date)}
                             />
-                            <TextField
-                                value={values.priority}
-                                name="priority"
-                                label="ID"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
+                            <TextField label="Section" {...getFieldProps("section")} />
                             <TextField
                                 style={{ gridColumnEnd: "span 2" }}
-                                value={values.description}
-                                name="description"
                                 label="Description"
                                 multiline
                                 rows={4}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
+                                {...getFieldProps("description")}
                             />
-                            <TextField
-                                value={values.hours}
-                                name="date"
-                                label="Date"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            <TextField
-                                value={values.hours}
-                                name="setion"
-                                label="Section"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-
-                            <Button
-                                type="submit"
-                                disabled={isSubmitting}
-                                kind={rule ? "edit" : "add"}
-                                style={{ alignSelf: "center" }}
-                            >
+                            <Button kind="edit" type="submit">
                                 Save
                             </Button>
-                            {rule && (
-                                <Button
-                                    onClick={deleteDocument}
-                                    kind="delete"
-                                    disabled={isSubmitting}
-                                    style={{ alignSelf: "center" }}
-                                >
-                                    Delete
-                                </Button>
-                            )}
                         </Box>
                     </Box>
                 </Form>

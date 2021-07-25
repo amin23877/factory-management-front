@@ -25,12 +25,14 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
 
     const warCols = useMemo(
         () => [
-            { field: "date", headerName: "Date", type: "date" },
-            { field: "number", headerName: "Warranty number" },
-            { field: "name", headerName: "Name" },
-            { field: "description", headerName: "Note" },
-            { field: "term", headerName: "Term" },
-            { field: "status", headerName: "Status" },
+            { field: "priority", headerName: "Priority", width: 70, disableColumnMenu: true },
+            { field: "name", headerName: "Name", flex: 2 },
+            { field: "id", headerName: "ID", width: 150, disableColumnMenu: true },
+            { field: "description", headerName: "Description", flex: 2 },
+            { field: "document", headerName: "Document", flex: 2 },
+            { field: "hours", headerName: " Hours", width: 70, disableColumnMenu: true },
+            { field: "engAP", headerName: "Eng AP.", type: "boolean", width: 70, disableColumnMenu: true },
+            { field: "desc", headerName: "Note", width: 100 },
         ],
         []
     );
@@ -49,15 +51,15 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
         []
     );
 
-    const bomRecordCols = useMemo(
+    const bomRecordCols = useMemo<GridColumns>(
         () => [
-            { field: "line", headerName: "Line" },
-            { field: "Component", headerName: "Component" },
-            { field: "name", headerName: "Component name" },
-            { field: "location", headerName: "Component location" },
-            { field: "um", headerName: "UM" },
-            { field: "usage", headerName: "QTY" },
-            { field: "description", headerName: "Note" },
+            { field: "line", headerName: "Line", width: 100, disableColumnMenu: true },
+            { field: "Component", headerName: "Component", flex: 1 },
+            { field: "name", headerName: "Component name", flex: 1 },
+            { field: "location", headerName: "Component location", flex: 1 },
+            { field: "um", headerName: "UM", width: 100, disableColumnMenu: true },
+            { field: "usage", headerName: "QTY", width: 100, disableColumnMenu: true },
+            { field: "description", headerName: "Note", flex: 1 },
         ],
         []
     );
@@ -120,7 +122,7 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
                             {activeTab === 1 && <Status unit={unit} />}
                             {activeTab === 2 && <Expense unit={unit} />}
                             {activeTab === 3 && <Shipping />}
-                            {activeTab === 4 && <DynamicFilterAndFields />}
+                            {activeTab === 4 && <DynamicFilterAndFields values={unit.item} />}
                         </Box>
                     </Paper>
                 </Box>

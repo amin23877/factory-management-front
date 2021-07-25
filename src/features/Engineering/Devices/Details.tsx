@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Box, Grid, Tabs, Tab } from "@material-ui/core";
-import { DataGrid, GridColDef, GridColumns } from "@material-ui/data-grid";
+import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 
@@ -125,14 +125,20 @@ function ItemsDetails({
     );
     const manCols = useMemo<GridColDef[]>(
         () => [
-            { field: "priority", headerName: "Priority", width: 100 },
+            { field: "priority", headerName: "Priority", width: 70, disableColumnMenu: true },
             { field: "name", headerName: "Name", flex: 2 },
-            { field: "id", headerName: "ID", width: 180 },
+            { field: "id", headerName: "ID", width: 160, disableColumnMenu: true },
             { field: "description", headerName: "Description", flex: 2 },
             { field: "document", headerName: "Document", flex: 2 },
-            { field: "hours", headerName: " Hours", width: 100 },
-            { field: "buildToStock", headerName: "Build To Stock", type: "boolean", width: 150 },
-            { field: "engAP", headerName: "Eng AP.", type: "boolean", width: 100 },
+            { field: "hours", headerName: " Hours", width: 70, disableColumnMenu: true },
+            {
+                field: "buildToStock",
+                headerName: "Build To Stock",
+                type: "boolean",
+                width: 100,
+                disableColumnMenu: true,
+            },
+            { field: "engAP", headerName: "Eng AP.", type: "boolean", width: 70, disableColumnMenu: true },
             { field: "desc", headerName: "Note", width: 100 },
         ],
         []
@@ -140,21 +146,21 @@ function ItemsDetails({
 
     const evalCols = useMemo<GridColDef[]>(
         () => [
-            { field: "priority", headerName: "Priority", flex: 1 },
+            { field: "priority", headerName: "Priority", width: 70, disableColumnMenu: true },
             { field: "name", headerName: "Name", flex: 2 },
-            { field: "id", headerName: "ID", width: 180 },
+            { field: "id", headerName: "ID", width: 150, disableColumnMenu: true },
             { field: "description", headerName: "Description", flex: 2 },
             { field: "document", headerName: "Document", flex: 2 },
-            { field: "hours", headerName: " Hours", flex: 1 },
-            { field: "engAP", headerName: "Eng AP.", type: "boolean", flex: 1 },
-            { field: "note", headerName: "Note", flex: 2 },
+            { field: "hours", headerName: " Hours", width: 70, disableColumnMenu: true },
+            { field: "engAP", headerName: "Eng AP.", type: "boolean", width: 70, disableColumnMenu: true },
+            { field: "desc", headerName: "Note", width: 100 },
         ],
         []
     );
 
     const unitHistoryCols = useMemo<GridColDef[]>(
         () => [
-            { field: "estimatedShipDate", headerName: "Estimated Ship Date", flex: 1 },
+            { field: "estimatedShipDate", headerName: "Estimated Ship Date", flex: 1, disableColumnMenu: true },
             { field: "actualShipDate", headerName: "Actual Ship Date", flex: 1 },
             { field: "serialNumber", headerName: "Device Serial No.", flex: 1 },
             { field: "status", headerName: "Status", flex: 1 },
@@ -181,8 +187,7 @@ function ItemsDetails({
                 onDone && onDone();
             }
         } catch (error) {
-            setShowSnack(true);
-            setSnackMsg(`Error: ${error.error}`);
+            console.log(error);
         }
     };
 

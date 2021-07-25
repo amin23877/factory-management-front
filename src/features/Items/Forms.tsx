@@ -361,19 +361,11 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
     );
 };
 
-export const DynamicFilterAndFields = ({
-    values,
-    errors,
-    handleChange,
-    handleBlur,
-    touched,
-    selectedItem,
-    device,
-}: any) => {
+export const DynamicFilterAndFields = ({ values = "", handleChange, handleBlur, selectedItem, device }: any) => {
     const [dynamicFields, setDynamicFields] = useState<ReactNode[]>([]);
     const { data: filters } = useSWR<IFilter[]>("/filter");
     const { data: fields } = useSWR<IField[]>("/field");
-    const { data: filterNFields } = useSWR("/filter/field");
+    // const { data: filterNFields } = useSWR("/filter/field");
     // const filters: IFilter[] = selectedItem.filters;
     // const fields: IField[] = selectedItem.fields;
 
@@ -446,31 +438,31 @@ export const DynamicFilterAndFields = ({
     return (
         <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
             {filters?.map((filter) => {
-                if (selectedItem?.device || device) {
-                    return (
-                        <ArraySelect
-                            defaultValue={values[filter.name as any] || ""}
-                            name={filter.name}
-                            label={filter.name}
-                            items={filter.valid}
-                            value={values[filter.name as any]}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                    );
-                } else if (filter.name !== "Product Family") {
-                    return (
-                        <ArraySelect
-                            defaultValue={values[filter.name as any] || ""}
-                            name={filter.name}
-                            label={filter.name}
-                            items={filter.valid}
-                            value={values[filter.name as any]}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                    );
-                }
+                // if (selectedItem?.device || device) {
+                //     return (
+                //         <ArraySelect
+                //             defaultValue={values[filter.name as any] || ""}
+                //             name={filter.name}
+                //             label={filter.name}
+                //             items={filter.valid}
+                //             value={values[filter.name as any]}
+                //             onChange={handleChange}
+                //             onBlur={handleBlur}
+                //         />
+                //     );
+                // } else if (filter.name !== "Product Family") {
+                return (
+                    <ArraySelect
+                        defaultValue={values ? values[filter.name as any] : ""}
+                        name={filter.name}
+                        label={filter.name}
+                        items={filter.valid}
+                        value={values ? values[filter.name as any] : ""}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                );
+                // }
             })}
             <Divider style={{ gridColumnEnd: "span 2" }} />
             {dynamicFields}

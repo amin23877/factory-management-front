@@ -1,5 +1,6 @@
 import Axios from "axios";
 import * as Yup from "yup";
+import { delete_, patch, post } from ".";
 
 export const AddItemSchema = Yup.object().shape({
     name: Yup.string().min(4, "Too short!").max(60, "Too long").required("Required !!"),
@@ -79,43 +80,22 @@ export interface IItem {
 
 export const AddItemInitialValues = {};
 
-export const createItem = async (itemData: any) => {
-    try {
-        // console.table(itemData);
-        const resp = await Axios.post("/item", itemData);
-        return resp.data;
-    } catch (error) {
-        console.error(error);
-    }
+export const createItem = (itemData: any) => {
+    return post("/item", itemData);
 };
-export const addImage = async (itemId: string, file: any) => {
+export const addImage = (itemId: string, file: any) => {
     const data = new FormData();
     data.append("photo", file);
-    try {
-        // console.table(itemData);
-        const resp = await Axios.patch(`/item/${itemId}`, data);
-        return resp.data;
-    } catch (error) {
-        console.error(error);
-    }
+
+    return patch(`/item/${itemId}`, data);
 };
 
-export const updateAnItem = async (itemId: string, itemData: any) => {
-    try {
-        const resp = await Axios.patch(`/item/${itemId}`, itemData);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const updateAnItem = (itemId: string, itemData: any) => {
+    return patch(`/item/${itemId}`, itemData);
 };
 
-export const deleteAnItem = async (itemId: string) => {
-    try {
-        const resp = await Axios.delete(`/item/${itemId}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const deleteAnItem = (itemId: string) => {
+    return delete_(`/item/${itemId}`);
 };
 
 export const getItems = async () => {

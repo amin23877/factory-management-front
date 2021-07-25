@@ -1,5 +1,18 @@
 import React, { useMemo, useState } from "react";
-import { Box, Grid, Tabs, Tab } from "@material-ui/core";
+import {
+    Box,
+    Grid,
+    Tabs,
+    Tab,
+    Typography,
+    TableContainer,
+    Table,
+    TableRow,
+    TableHead,
+    TableBody,
+    TableCell,
+    useTheme,
+} from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
 import useSWR from "swr";
 
@@ -7,31 +20,63 @@ import BaseDataGrid from "../../../app/BaseDataGrid";
 import { BasePaper } from "../../../app/Paper";
 
 import { General } from "./Forms";
+import { IMonitorRule } from "../../../api/monitor";
+import { useEffect } from "react";
 
-function ItemsDetails({ selectedRow }: { selectedRow: any }) {
+function ItemsDetails({ selectedRow }: { selectedRow: IMonitorRule }) {
+    const { data: historyItems } = useSWR(`/monitor/${selectedRow.id}/history`);
+
     const [activeTab, setActiveTab] = useState(0);
     const [moreInfoTab, setMoreInfoTab] = useState(0);
-    const { data: rules, mutate: mutateItems } = useSWR("/quote");
+    const [assertions, setAssertions] = useState<string[][]>();
+    const [table, setTable] = useState<{ columns: number }>({ columns: 0 });
+
+    const theme = useTheme();
+
+    useEffect(() => {
+        setAssertions((prev) => {
+            let res: any = selectedRow.assertion;
+            res = res
+                .replaceAll("||", " OR ")
+                .replaceAll("&&", " AND ")
+                .replaceAll("(", "")
+                .replaceAll(")", "")
+                .replaceAll("'", "")
+                .replaceAll("==", "=");
+
+            selectedRow.vars.forEach((v) => {
+                res = res?.replaceAll(v.name + "=", `${v.target}'s ${v.lname} = `);
+            });
+
+            res = res.split(" OR ");
+            res = res.map((r: any) => r.split(" AND "));
+
+            const lengths = res.map((r: any) => r.length);
+            setTable({ columns: Math.max(...lengths) });
+
+            return res;
+        });
+    }, [selectedRow]);
 
     const gridColumns = useMemo<GridColDef[]>(() => {
         const res: GridColDef[] = [
-            { field: "date", headerName: "Date", width: 150 },
-            { field: "name", headerName: "Name", flex: 3 },
-            { field: "number", headerName: "Number", flex: 2 },
-            { field: "unit", headerName: "Unit Serial No.", flex: 2 },
-            { field: "description", headerName: "SO", flex: 2 },
-            { field: "section", headerName: "PO", flex: 2 },
+            { field: "date", headerName: "Date", width: 130 },
+            { field: "itemName", headerName: "Item Name", flex: 3 },
+            { field: "itemNumber", headerName: "Item Number", flex: 2 },
+            { field: "number", headerName: "Unit Serial NO.", flex: 2 },
+            { field: "description", headerName: "SO", width: 100 },
+            { field: "section", headerName: "PO", width: 100 },
             { field: "enable", headerName: "Pass/Fail", type: "boolean", width: 100 },
         ];
         return res;
-    }, [rules]);
+    }, []);
 
     return (
         <Box>
             <Grid container spacing={2}>
                 <Grid item md={5} xs={12}>
                     <BasePaper>
-                        <General />
+                        <General rule={selectedRow} />
                     </BasePaper>
                 </Grid>
                 <Grid item md={7} xs={12}>
@@ -51,7 +96,28 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
                         >
                             <Tab label="Equation factors modifications" />
                         </Tabs>
-                        {moreInfoTab === 0 && <div></div>}
+                        {moreInfoTab === 0 && (
+                            <TableContainer style={{ maxHeight: 250 }}>
+                                <Table>
+                                    <TableHead style={{ backgroundColor: theme.palette.secondary.main }}>
+                                        <TableRow>
+                                            {Array.from({ length: table.columns }, (_, i) => i + 1).map((c: any) => (
+                                                <TableCell key={c}></TableCell>
+                                            ))}
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {assertions?.map((row, i) => (
+                                            <TableRow key={i}>
+                                                {row.map((cell, i) => (
+                                                    <TableCell key={i}>{cell}</TableCell>
+                                                ))}
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        )}
                     </BasePaper>
                 </Grid>
             </Grid>
@@ -66,7 +132,9 @@ function ItemsDetails({ selectedRow }: { selectedRow: any }) {
                         >
                             <Tab label="Rule History" />
                         </Tabs>
-                        <Box p={3}>{activeTab === 0 && <BaseDataGrid cols={gridColumns} rows={rules || []} />}</Box>
+                        <Box p={3}>
+                            {activeTab === 0 && <BaseDataGrid cols={gridColumns} rows={historyItems || []} />}
+                        </Box>
                     </BasePaper>
                 </Grid>
             </Grid>

@@ -1,35 +1,41 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Box, Paper, Tabs, Tab } from "@material-ui/core";
-import { GridColDef, GridFilterModelParams, GridPageChangeParams, GridSortModelParams } from "@material-ui/data-grid";
+import { GridColDef } from "@material-ui/data-grid";
 import useSWR from "swr";
 
 import BaseDataGrid from "../../../app/BaseDataGrid";
 import Details from "./Details";
+import { formatTimestampToDate } from "../../../logic/date";
 
 const Inventory = () => {
-    const { data: items, mutate: mutateItems } = useSWR("/quote");
+    const { data: items, mutate: mutateItems } = useSWR("/monitor");
     const [selectedItem, setSelectedItem] = useState<any>(null);
 
     const [activeTab, setActiveTab] = useState(0);
 
-    const gridColumns = useMemo<GridColDef[]>(() => {
-        const res: GridColDef[] = [
-            { field: "id", headerName: "ID", flex: 3 },
-            { field: "date", headerName: "Date", flex: 2 },
+    const gridColumns = useMemo<GridColDef[]>(
+        () => [
+            { field: "id", headerName: "Rule ID", flex: 3 },
+            {
+                field: "date",
+                headerName: "Date",
+                flex: 2,
+                valueFormatter: (params) => formatTimestampToDate(params.row.date),
+            },
             { field: "name", headerName: "Name", flex: 3 },
             { field: "description", headerName: "Description", flex: 3 },
             { field: "section", headerName: "Section", flex: 2 },
             {
-                field: "engineeringApproved",
+                field: "engAP",
                 headerName: "E.A.",
                 description: "Engineering Approved",
                 type: "boolean",
                 width: 100,
             },
             { field: "enable", headerName: "Enable", type: "boolean", width: 100 },
-        ];
-        return res;
-    }, [items]);
+        ],
+        []
+    );
 
     return (
         <Box>
