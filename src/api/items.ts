@@ -70,6 +70,7 @@ export interface IItem {
     name: string;
     device: boolean;
     usedInLastQuarter: number;
+    photo?:string;
     filters: {
         [key: string]: string | number;
     };

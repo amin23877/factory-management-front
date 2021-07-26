@@ -438,31 +438,31 @@ export const DynamicFilterAndFields = ({ values = "", handleChange, handleBlur, 
     return (
         <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
             {filters?.map((filter) => {
-                // if (selectedItem?.device || device) {
-                //     return (
-                //         <ArraySelect
-                //             defaultValue={values[filter.name as any] || ""}
-                //             name={filter.name}
-                //             label={filter.name}
-                //             items={filter.valid}
-                //             value={values[filter.name as any]}
-                //             onChange={handleChange}
-                //             onBlur={handleBlur}
-                //         />
-                //     );
-                // } else if (filter.name !== "Product Family") {
-                return (
-                    <ArraySelect
-                        defaultValue={values ? values[filter.name as any] : ""}
-                        name={filter.name}
-                        label={filter.name}
-                        items={filter.valid}
-                        value={values ? values[filter.name as any] : ""}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                );
-                // }
+                if (selectedItem?.device || device) {
+                    return (
+                        <ArraySelect
+                            defaultValue={values[filter.name as any] || ""}
+                            name={filter.name}
+                            label={filter.name}
+                            items={filter.valid}
+                            value={values[filter.name as any]}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                    );
+                } else if (filter.name !== "Product Family") {
+                    return (
+                        <ArraySelect
+                            defaultValue={values ? values[filter.name as any] : ""}
+                            name={filter.name}
+                            label={filter.name}
+                            items={filter.valid}
+                            value={values ? values[filter.name as any] : ""}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                    );
+                }
             })}
             <Divider style={{ gridColumnEnd: "span 2" }} />
             {dynamicFields}
