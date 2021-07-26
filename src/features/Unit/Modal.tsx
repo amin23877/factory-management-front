@@ -12,6 +12,7 @@ import { DynamicFilterAndFields } from "../Items/Forms";
 import { IUnitHistory } from "../../api/units";
 import { IItem } from "../../api/items";
 import BaseDataGrid from "../../app/BaseDataGrid";
+import { Form, Formik } from "formik";
 
 function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; unit: IUnitHistory }) {
     const [activeTab, setActiveTab] = useState(0);
@@ -83,49 +84,55 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
     return (
         <Dialog open={open} onClose={onClose} title="Unit history" fullWidth maxWidth="md">
             <Box m={2} height={500}>
-                <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} mb={2}>
-                    <Paper>
-                        <Typography style={{ margin: 8 }} variant="h6">
-                            General
-                        </Typography>
-                        <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} m={1}>
-                            <TextField label="Name" value={item?.name} disabled style={{ gridColumnEnd: "span 2" }} />
-                            <TextField
-                                label="Description"
-                                value={item?.description}
-                                disabled
-                                multiline
-                                rows={2}
-                                style={{ gridColumnEnd: "span 2" }}
-                            />
-                            <TextField label="Serial number" value={unit.serialNumber} disabled />
-                            <TextField label="Status" value={unit.status} disabled />
-                            <TextField label="ID" value={unit.item.no} disabled style={{ gridColumnEnd: "span 2" }} />
-                            <TextField label="SO" value={unit.soid} disabled style={{ gridColumnEnd: "span 2" }} />
-                        </Box>
-                    </Paper>
-                    <Paper>
-                        <Box m={1} height={200}>
-                            <Tabs
-                                variant="scrollable"
-                                value={activeTab}
-                                onChange={(e, nv) => setActiveTab(nv)}
-                                style={{ marginBottom: 8 }}
-                            >
-                                <Tab label="Picture" />
-                                <Tab label="Status" />
-                                <Tab label="Expense" />
-                                <Tab label="Shipping" />
-                                <Tab label="Cluster & level" />
-                            </Tabs>
-                            {activeTab === 0 && <h3>Picture</h3>}
-                            {activeTab === 1 && <Status unit={unit} />}
-                            {activeTab === 2 && <Expense unit={unit} />}
-                            {activeTab === 3 && <Shipping />}
-                            {activeTab === 4 && <DynamicFilterAndFields values={unit.item} />}
-                        </Box>
-                    </Paper>
-                </Box>
+                <Formik initialValues={unit.item} onSubmit={() => {}}>
+                    {({ values, handleChange }) => (
+                        <Form>
+                            <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} mb={2}>
+                                <Paper>
+                                    <Typography style={{ margin: 8 }} variant="h6">
+                                        General
+                                    </Typography>
+                                    <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} m={1}>
+                                        <TextField label="Name" value={item?.name} disabled style={{ gridColumnEnd: "span 2" }} />
+                                        <TextField
+                                            label="Description"
+                                            value={item?.description}
+                                            disabled
+                                            multiline
+                                            rows={2}
+                                            style={{ gridColumnEnd: "span 2" }}
+                                        />
+                                        <TextField label="Serial number" value={unit.serialNumber} disabled />
+                                        <TextField label="Status" value={unit.status} disabled />
+                                        <TextField label="ID" value={unit.item.no} disabled style={{ gridColumnEnd: "span 2" }} />
+                                        <TextField label="SO" value={unit.soid} disabled style={{ gridColumnEnd: "span 2" }} />
+                                    </Box>
+                                </Paper>
+                                <Paper>
+                                    <Box m={1} height={200}>
+                                        <Tabs
+                                            variant="scrollable"
+                                            value={activeTab}
+                                            onChange={(e, nv) => setActiveTab(nv)}
+                                            style={{ marginBottom: 8 }}
+                                        >
+                                            <Tab label="Picture" />
+                                            <Tab label="Status" />
+                                            <Tab label="Expense" />
+                                            <Tab label="Shipping" />
+                                            <Tab label="Cluster & level" />
+                                        </Tabs>
+                                        {activeTab === 0 && <h3>Picture</h3>}
+                                        {activeTab === 1 && <Status unit={unit} />}
+                                        {activeTab === 2 && <Expense unit={unit} />}
+                                        {activeTab === 3 && <Shipping />}
+                                        {activeTab === 4 && <DynamicFilterAndFields values={values} handleChange={handleChange} />}
+                                    </Box>
+                                </Paper>
+                            </Box>
+                        </Form>
+                    )}
+                </Formik>
                 <Box>
                     <Paper>
                         <Box m={1} height={550}>
@@ -145,23 +152,13 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
                                 <Tab label="Note" />
                                 <Tab label="Auditing" />
                             </Tabs>
-                            {footerActiveTab === 1 && (
-                                <BaseDataGrid cols={warCols} rows={warranties || []} onRowSelected={() => {}} />
-                            )}
-                            {footerActiveTab === 2 && (
-                                <BaseDataGrid cols={bomRecordCols} rows={[]} onRowSelected={() => {}} />
-                            )}
-                            {footerActiveTab === 3 && (
-                                <BaseDataGrid cols={docCols} rows={[]} onRowSelected={() => {}} />
-                            )}
+                            {footerActiveTab === 1 && <BaseDataGrid cols={warCols} rows={warranties || []} onRowSelected={() => {}} />}
+                            {footerActiveTab === 2 && <BaseDataGrid cols={bomRecordCols} rows={[]} onRowSelected={() => {}} />}
+                            {footerActiveTab === 3 && <BaseDataGrid cols={docCols} rows={[]} onRowSelected={() => {}} />}
                             {footerActiveTab === 4 && <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />}
-                            {footerActiveTab === 5 && (
-                                <BaseDataGrid cols={LICols} rows={soLineItems || []} onRowSelected={() => {}} />
-                            )}
+                            {footerActiveTab === 5 && <BaseDataGrid cols={LICols} rows={soLineItems || []} onRowSelected={() => {}} />}
                             {footerActiveTab === 6 && <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />}
-                            {footerActiveTab === 7 && (
-                                <BaseDataGrid cols={noteCols} rows={[]} onRowSelected={() => {}} />
-                            )}
+                            {footerActiveTab === 7 && <BaseDataGrid cols={noteCols} rows={[]} onRowSelected={() => {}} />}
                         </Box>
                     </Paper>
                 </Box>

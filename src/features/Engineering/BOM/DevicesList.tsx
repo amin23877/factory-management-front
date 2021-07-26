@@ -1,18 +1,16 @@
 import React, { useMemo, useState } from "react";
-import { Box } from "@material-ui/core";
-import { GridColumns } from "@material-ui/data-grid";
+import { Box, Paper } from "@material-ui/core";
+import { DataGrid, GridColumns, GridFilterItem, GridToolbar } from "@material-ui/data-grid";
 import useSWR from "swr";
-
-import { ArraySelect } from "../../../app/Inputs";
-import BaseDataGrid from "../../../app/BaseDataGrid";
 
 import { splitLevelName } from "../../../logic/levels";
 
 export default function DevicesList({ onDeviceSelected }: { onDeviceSelected: (row: any) => void }) {
-    const [selectedProductFamily, setSelectedProductFamily] = useState<string>();
-    const { data: filters } = useSWR("/filter");
+    const [selectedFilter, setSelectedFilter] = useState<GridFilterItem>();
     const { data: devices } = useSWR(
-        selectedProductFamily ? `/item?device=true&Product Family=${selectedProductFamily}` : "/item?device=true"
+        selectedFilter && selectedFilter.value
+            ? `/item?device=true&${selectedFilter.columnField}=${selectedFilter.value}`
+            : "/item?device=true"
     );
 
     const cols = useMemo<GridColumns>(() => {
@@ -33,21 +31,23 @@ export default function DevicesList({ onDeviceSelected }: { onDeviceSelected: (r
         }
 
         return res;
-    }, []);
-
-    const productFamily: string[] = filters ? filters.find((f: any) => f.name === "Product Family")?.valid : [];
+    }, [devices]);
 
     return (
-        <Box>
-            <ArraySelect
-                style={{ width: 250 }}
-                items={productFamily}
-                label="Product Family"
-                onChange={(e) => {
-                    setSelectedProductFamily(e.target.value);
-                }}
-            />
-            <BaseDataGrid cols={cols} rows={devices ? devices.items : []} onRowSelected={onDeviceSelected} />
-        </Box>
+        <Paper>
+            <Box height={450}>
+                <DataGrid
+                    filterMode="server"
+                    onFilterModelChange={(filters) => {
+                        console.log(filters.filterModel.items[0]);
+                        setSelectedFilter(filters.filterModel.items[0]);
+                    }}
+                    columns={cols}
+                    rows={devices ? devices.items : []}
+                    onRowSelected={(params) => onDeviceSelected(params.data)}
+                    components={{ Toolbar: GridToolbar }}
+                />
+            </Box>
+        </Paper>
     );
 }

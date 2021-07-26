@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Box, Paper, Tabs, Tab } from "@material-ui/core";
+import { Box, Paper, Tabs, Tab, LinearProgress } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
 import useSWR from "swr";
 
@@ -48,7 +48,7 @@ const Inventory = () => {
             </Box>
             <Box display="flex" alignItems="flex-start" mt={1}>
                 <Box flex={11} ml={2}>
-                    {activeTab === 0 && items && (
+                    {activeTab === 0 && (
                         <Paper>
                             <BaseDataGrid
                                 rows={items || []}
