@@ -9,7 +9,7 @@ import Button from "../../../app/Button";
 
 import { GeneralForm, ShippingForm, BillingTab, TermsTab } from "./Forms";
 
-import { ISO, createSO } from "../../../api/so";
+import { ISO } from "../../../api/so";
 
 const schema = Yup.object().shape({
     ClientId: Yup.string().required(),

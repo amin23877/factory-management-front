@@ -1,4 +1,4 @@
-import React, { useMemo, useEffect, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { GridColumns } from "@material-ui/data-grid";
 import { Box } from "@material-ui/core";
 
@@ -7,16 +7,8 @@ import BaseDataGrid from "../../../app/BaseDataGrid";
 import Suggestions from "./Suggestions";
 
 function HistoryInfo({ open, data, onClose }: { open: boolean; onClose: () => void; data: any }) {
-    const [rows, setRows] = useState<any[]>([]);
     const [suggestionsModal, setSuggestionsModal] = useState(false);
     const [suggestions, setSuggestions] = useState<any[]>();
-
-    // useEffect(() => {
-    //     const res = [];
-    //     data.map((row: any) => {
-    //         const rules = row.data.map((params: any) => ({ JOBid: params.UBOMId, ItemNo: params.ItemId }));
-    //     });
-    // }, [data]);
 
     const cols = useMemo<GridColumns>(
         () => [

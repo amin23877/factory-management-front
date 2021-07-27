@@ -8,7 +8,10 @@ import { IFilter } from "../../../api/filter";
 
 export default function FilterTable({ onFilterSelected }: { onFilterSelected: (row: IFilter) => void }) {
     const { data: filters } = useSWR<IFilter[]>("/filter");
-    const cols: GridColDef[] = [{ field: "name" }, { field: "valid" }];
+    const cols: GridColDef[] = [
+        { field: "name", headerName: "Name", flex: 1 },
+        { field: "valid", headerName: "Valid", flex: 1 },
+    ];
 
     if (!filters) {
         return <LinearProgress />;

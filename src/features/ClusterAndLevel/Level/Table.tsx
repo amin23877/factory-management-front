@@ -13,12 +13,12 @@ export default function FieldTable({ onRowSelected }: { onRowSelected?: (row: IF
     const rows = fields ? fields.map((f) => ({ ...f, headerName: splitLevelName(f.name) })) : [];
 
     const cols: GridColDef[] = [
-        { field: "name" },
-        { field: "valid" },
-        { field: "type" },
-        { field: "default" },
-        { field: "filterName" },
-        { field: "filterValue" },
+        { field: "name", headerName: "Name", flex: 1 },
+        { field: "valid", headerName: "Valid", flex: 1 },
+        { field: "type", headerName: "Type", flex: 1 },
+        { field: "default", headerName: "Default", flex: 1 },
+        { field: "filterName", headerName: "Filter Name", flex: 1 },
+        { field: "filterValue", headerName: "Filter Value", flex: 1 },
     ];
 
     if (!fields) {

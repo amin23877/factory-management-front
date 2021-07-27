@@ -4,7 +4,6 @@ import {
     Grid,
     Tabs,
     Tab,
-    Typography,
     TableContainer,
     Table,
     TableRow,

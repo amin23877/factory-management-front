@@ -15,7 +15,7 @@ import LineServiceModal from "../../LineService";
 import EditTab from "./EditTab";
 import AddSOModal from "./AddSoModal";
 
-import { deleteSO, getSO, getLineItems, ISO } from "../../../api/so";
+import { deleteSO, getLineItems, ISO } from "../../../api/so";
 import { getAllModelNotes } from "../../../api/note";
 import { getAllModelDocuments } from "../../../api/document";
 import { ILineItem } from "../../../api/lineItem";

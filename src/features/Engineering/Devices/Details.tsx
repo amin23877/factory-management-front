@@ -4,6 +4,7 @@ import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 
+import SalesReport from "./SalesReport";
 import Snackbar from "../../../app/Snack";
 
 import Button from "../../../app/Button";
@@ -12,7 +13,6 @@ import { BasePaper } from "../../../app/Paper";
 
 import { DynamicFilterAndFields } from "../../Items/Forms";
 import { General, Photo } from "./Forms";
-import { SalesReport } from "../../Items/Reports";
 import AddServiceModal from "../../FieldService/AddServiceModal";
 import UnitHistoryModal from "../../Unit/Modal";
 
@@ -29,6 +29,7 @@ function ItemsDetails({
     onNoteSelected,
     onDocSelected,
     onStepSelected,
+    onFlagSelected,
     onDone,
 }: {
     selectedRow: any;
@@ -36,6 +37,7 @@ function ItemsDetails({
     onNoteSelected: (a: any) => void;
     onDocSelected: (a: any) => void;
     onStepSelected: (a: any) => void;
+    onFlagSelected: (a: any) => void;
 }) {
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
@@ -45,7 +47,6 @@ function ItemsDetails({
 
     const [selectedUnit, setSelectedUnit] = useState<IUnitHistory>();
 
-    const { data: notes } = useSWR<INote[]>(activeTab === 12 ? `/note/item/${selectedRow.id}` : null);
     const { data: docs } = useSWR<IDocument[]>(activeTab === 0 ? `/document/item/${selectedRow.id}` : null);
     const { data: boms } = useSWR<IBom[]>(activeTab === 1 ? `/bom?ItemId=${selectedRow.id}` : null);
     const { data: warranties } = useSWR(
@@ -59,12 +60,15 @@ function ItemsDetails({
     const { data: fieldSteps } = useSWR(
         activeTab === 6 ? `/engineering/fieldstartup/task?ItemId=${selectedRow.id}` : null
     );
-    const { data: itemQuotes } = useSWR(activeTab === 5 ? `/item/${selectedRow.id}/quote` : null);
-    const { data: itemSOs } = useSWR(activeTab === 6 ? `/item/${selectedRow.id}/so` : null);
+    // const { data: itemQuotes } = useSWR(activeTab === 5 ? `/item/${selectedRow.id}/quote` : null);
+    // const { data: itemSOs } = useSWR(activeTab === 6 ? `/item/${selectedRow.id}/so` : null);
 
     const { data: uniteHistory } = useSWR(activeTab === 8 ? `/unitehistory` : null);
     const { data: services } = useSWR(activeTab === 10 ? `/service?ItemId=${selectedRow.id}` : null);
-
+    const { data: flags } = useSWR(
+        activeTab === 11 ? `/engineering/manufacturing/task?ItemId=${selectedRow.id}` : null
+    );
+    const { data: notes } = useSWR<INote[]>(activeTab === 12 ? `/note/item/${selectedRow.id}` : null);
     const [showSnack, setShowSnack] = useState(false);
     const [snackMsg, setSnackMsg] = useState("");
     const [bomPartsModal, setBomPartsModal] = useState(false);
@@ -98,6 +102,19 @@ function ItemsDetails({
         ],
         []
     );
+    const flagCols = useMemo(
+        () => [
+            { field: "date", headerName: "Date", flex: 2 },
+            { field: "number", headerName: "Flag ID", flex: 2 },
+            { field: "name", headerName: "Name", flex: 4 },
+            { field: "serial", headerName: "Serial", flex: 2 },
+            { field: "section", headerName: "Section", flex: 2 },
+            { field: "id", headerName: "ID", flex: 2 },
+            { field: "note", headerName: "Note", flex: 4 },
+            { field: "auditing", headerName: "Auditing", flex: 2 },
+        ],
+        []
+    );
 
     const docCols = useMemo(
         () => [
@@ -125,12 +142,22 @@ function ItemsDetails({
     );
     const manCols = useMemo<GridColDef[]>(
         () => [
-            { field: "priority", headerName: "Priority", width: 70, disableColumnMenu: true },
+            {
+                field: "priority",
+                headerName: "Priority",
+                width: 70,
+                disableColumnMenu: true,
+            },
             { field: "name", headerName: "Name", flex: 2 },
             { field: "id", headerName: "ID", width: 160, disableColumnMenu: true },
             { field: "description", headerName: "Description", flex: 2 },
             { field: "document", headerName: "Document", flex: 2 },
-            { field: "hours", headerName: " Hours", width: 70, disableColumnMenu: true },
+            {
+                field: "hours",
+                headerName: " Hours",
+                width: 70,
+                disableColumnMenu: true,
+            },
             {
                 field: "buildToStock",
                 headerName: "Build To Stock",
@@ -138,7 +165,13 @@ function ItemsDetails({
                 width: 100,
                 disableColumnMenu: true,
             },
-            { field: "engAP", headerName: "Eng AP.", type: "boolean", width: 70, disableColumnMenu: true },
+            {
+                field: "engAP",
+                headerName: "Eng AP.",
+                type: "boolean",
+                width: 70,
+                disableColumnMenu: true,
+            },
             { field: "desc", headerName: "Note", width: 100 },
         ],
         []
@@ -146,13 +179,29 @@ function ItemsDetails({
 
     const evalCols = useMemo<GridColDef[]>(
         () => [
-            { field: "priority", headerName: "Priority", width: 70, disableColumnMenu: true },
+            {
+                field: "priority",
+                headerName: "Priority",
+                width: 70,
+                disableColumnMenu: true,
+            },
             { field: "name", headerName: "Name", flex: 2 },
             { field: "id", headerName: "ID", width: 150, disableColumnMenu: true },
             { field: "description", headerName: "Description", flex: 2 },
             { field: "document", headerName: "Document", flex: 2 },
-            { field: "hours", headerName: " Hours", width: 70, disableColumnMenu: true },
-            { field: "engAP", headerName: "Eng AP.", type: "boolean", width: 70, disableColumnMenu: true },
+            {
+                field: "hours",
+                headerName: " Hours",
+                width: 70,
+                disableColumnMenu: true,
+            },
+            {
+                field: "engAP",
+                headerName: "Eng AP.",
+                type: "boolean",
+                width: 70,
+                disableColumnMenu: true,
+            },
             { field: "desc", headerName: "Note", width: 100 },
         ],
         []
@@ -160,11 +209,21 @@ function ItemsDetails({
 
     const unitHistoryCols = useMemo<GridColDef[]>(
         () => [
-            { field: "estimatedShipDate", headerName: "Estimated Ship Date", flex: 1, disableColumnMenu: true },
+            {
+                field: "estimatedShipDate",
+                headerName: "Estimated Ship Date",
+                flex: 1,
+                disableColumnMenu: true,
+            },
             { field: "actualShipDate", headerName: "Actual Ship Date", flex: 1 },
             { field: "serialNumber", headerName: "Device Serial No.", flex: 1 },
             { field: "status", headerName: "Status", flex: 1 },
-            { field: "warrantyStatus", headerName: "Warranty Status", type: "boolean", flex: 1 },
+            {
+                field: "warrantyStatus",
+                headerName: "Warranty Status",
+                type: "boolean",
+                flex: 1,
+            },
             { field: "warrantyEndDate", headerName: "Warranty End Date", flex: 1 },
             { field: "SOId", headerName: "SO ID", flex: 1 },
             {
@@ -357,7 +416,10 @@ function ItemsDetails({
                                     cols={unitHistoryCols}
                                     rows={
                                         uniteHistory
-                                            ? uniteHistory.map((item: any, i: any) => ({ id: i, ...item }))
+                                            ? uniteHistory.map((item: any, i: any) => ({
+                                                  id: i,
+                                                  ...item,
+                                              }))
                                             : []
                                     }
                                     onRowSelected={(d) => {
@@ -366,9 +428,12 @@ function ItemsDetails({
                                     }}
                                 />
                             )}
-                            {activeTab === 9 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
+                            {activeTab === 9 && <SalesReport />}
                             {activeTab === 10 && (
                                 <BaseDataGrid cols={serviceCols} rows={services || []} onRowSelected={() => {}} />
+                            )}
+                            {activeTab === 11 && (
+                                <BaseDataGrid cols={flagCols} rows={flags || []} onRowSelected={onFlagSelected} />
                             )}
                             {activeTab === 12 && (
                                 <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
