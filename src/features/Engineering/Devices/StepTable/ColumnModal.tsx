@@ -8,67 +8,67 @@ import TextField from "../../../../app/TextField";
 import Button from "../../../../app/Button";
 
 const schema = Yup.object().shape({
-    name: Yup.string().required(),
+  name: Yup.string().required(),
 });
 
 function ColumnModal({
-    columnName,
-    open,
-    onClose,
-    onDone,
-    onDelete,
+  columnName,
+  open,
+  onClose,
+  onDone,
+  onDelete,
 }: {
-    columnName?: string;
-    open: boolean;
-    onClose: () => void;
-    onDone: (data: { name: string; formerName?: string }) => void;
-    onDelete: (columnName: string) => void;
+  columnName?: string;
+  open: boolean;
+  onClose: () => void;
+  onDone: (data: { name: string; formerName?: string }) => void;
+  onDelete: (columnName: string) => void;
 }) {
-    return (
-        <Dialog title="Add column" open={open} onClose={onClose}>
-            <Box m={1}>
-                <Formik
-                    initialValues={{} as { name: string }}
-                    validationSchema={schema}
-                    onSubmit={(d) => onDone({ formerName: columnName, name: d.name })}
-                >
-                    {({ values, errors, handleChange, handleBlur }) => (
-                        <Form>
-                            <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
-                                {columnName && (
-                                    <TextField
-                                        name="formerName"
-                                        label="Former name"
-                                        value={columnName}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        disabled
-                                    />
-                                )}
-                                <TextField
-                                    name="name"
-                                    label={columnName ? "New name" : "Name"}
-                                    value={values.name}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.name)}
-                                    helperText={errors.name}
-                                />
-                                <Button kind="add" type="submit">
-                                    Add
-                                </Button>
-                                {columnName && (
-                                    <Button kind="delete" onClick={() => onDelete(columnName)}>
-                                        Delete
-                                    </Button>
-                                )}
-                            </Box>
-                        </Form>
-                    )}
-                </Formik>
-            </Box>
-        </Dialog>
-    );
+  return (
+    <Dialog title="Add column" open={open} onClose={onClose}>
+      <Box m={1}>
+        <Formik
+          initialValues={{} as { name: string }}
+          validationSchema={schema}
+          onSubmit={(d) => onDone({ formerName: columnName, name: d.name })}
+        >
+          {({ values, errors, handleChange, handleBlur }) => (
+            <Form>
+              <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                {columnName && (
+                  <TextField
+                    name="formerName"
+                    label="Former name"
+                    value={columnName}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled
+                  />
+                )}
+                <TextField
+                  name="name"
+                  label={columnName ? "New name" : "Name"}
+                  value={values.name}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={Boolean(errors.name)}
+                  helperText={errors.name}
+                />
+                <Button kind={columnName ? "edit" : "add"} type="submit">
+                  {columnName ? "Save" : "Add"}
+                </Button>
+                {columnName && (
+                  <Button kind="delete" onClick={() => onDelete(columnName)}>
+                    Delete
+                  </Button>
+                )}
+              </Box>
+            </Form>
+          )}
+        </Formik>
+      </Box>
+    </Dialog>
+  );
 }
 
 export default ColumnModal;
