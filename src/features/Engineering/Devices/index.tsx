@@ -6,8 +6,8 @@ import {
   AddRounded,
   DeleteRounded,
   PostAddRounded,
-  DescriptionRounded,
   FormatListNumberedRounded,
+  OutlinedFlagRounded,
 } from "@material-ui/icons";
 import {
   DataGrid,
@@ -22,13 +22,12 @@ import useSWR from "swr";
 import Confirm from "../../Modals/Confirm";
 import NoteModal from "../../Modals/NoteModals";
 import DocumentModal from "../../Modals/DocumentModals";
-import BOMModal from "../../BOM/BomModal";
 import FieldNFilter from "../../ClusterAndLevel/Modal";
 import { AddItemModal } from "../../Items/ItemModals";
 
 import DetailTab from "./Details";
-// import AddStepModal, { EditStepModal } from "./AddStepModal";
 import AddTaskModal, { EditTaskModal } from "./TaskModal";
+import FlagModal from "./FlagModal";
 
 import List from "../../../app/SideUtilityList";
 
@@ -50,6 +49,7 @@ const Inventory = () => {
   const [selectedNote, setSelectedNote] = useState<any>();
   const [selectedDoc, setSelectedDoc] = useState<any>();
   const [selectedStep, setSelectedStep] = useState<any>();
+  const [selectedFlag, setSelectedFlag] = useState<any>();
 
   const [addItemModal, setAddItemModal] = useState(false);
   const [addStepModal, setAddStepModal] = useState(false);
@@ -57,10 +57,11 @@ const Inventory = () => {
   const [editNoteModal, setEditNoteModal] = useState(false);
   const [editDocModal, setEditDocModal] = useState(false);
   const [editStepModal, setEditStepModal] = useState(false);
+  const [editFlagModal, setEditFlagModal] = useState(false);
   const [addNoteModal, setAddNoteModal] = useState(false);
   const [addDocModal, setAddDocModal] = useState(false);
 
-  const [bomModal, setBomModal] = useState(false);
+  const [flagModalOpen, setFlagModalOpen] = useState(false);
   const [FieldNFilterModal, setFieldNFilterModal] = useState(false);
 
   const gridColumns = useMemo<GridColDef[]>(() => {
@@ -116,12 +117,27 @@ const Inventory = () => {
           docData={selectedDoc}
         />
       )}
+      {selectedFlag && selectedItem && selectedItem.id && (
+        <FlagModal
+          open={editFlagModal}
+          itemId={selectedItem.id as any}
+          onClose={() => setEditFlagModal(false)}
+          flag={selectedFlag}
+        />
+      )}
       {selectedItem && selectedItem.id && (
         <DocumentModal
           open={addDocModal}
           onClose={() => setAddDocModal(false)}
           itemId={selectedItem.id as any}
           model="item"
+        />
+      )}
+      {selectedItem && selectedItem.id && (
+        <FlagModal
+          open={flagModalOpen}
+          onClose={() => setFlagModalOpen(false)}
+          itemId={selectedItem.id as any}
         />
       )}
       {selectedItem && selectedItem.id && (
@@ -208,15 +224,15 @@ const Inventory = () => {
               <PostAddRounded />
             </IconButton>
           </ListItem>
-          {/* <ListItem>
-                        <IconButton
-                            disabled={activeTab === 0}
-                            title="Bill of Material"
-                            onClick={() => setBomModal(true)}
-                        >
-                            <DescriptionRounded />
-                        </IconButton>
-                    </ListItem> */}
+          <ListItem>
+            <IconButton
+              disabled={activeTab === 0}
+              title="Add Flag"
+              onClick={() => setFlagModalOpen(true)}
+            >
+              <OutlinedFlagRounded />
+            </IconButton>
+          </ListItem>
           <ListItem>
             <IconButton
               disabled={activeTab === 0}
@@ -279,6 +295,10 @@ const Inventory = () => {
               onStepSelected={(d) => {
                 setSelectedStep(d);
                 setEditStepModal(true);
+              }}
+              onFlagSelected={(d) => {
+                setSelectedFlag(d);
+                setEditFlagModal(true);
               }}
             />
           )}
