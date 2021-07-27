@@ -4,6 +4,7 @@ import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 
+import SalesReport from "./SalesReport";
 import Snackbar from "../../../app/Snack";
 
 import Button from "../../../app/Button";
@@ -12,7 +13,6 @@ import { BasePaper } from "../../../app/Paper";
 
 import { DynamicFilterAndFields } from "../../Items/Forms";
 import { General, Photo } from "./Forms";
-import { SalesReport } from "../../Items/Reports";
 import AddServiceModal from "../../FieldService/AddServiceModal";
 import UnitHistoryModal from "../../Unit/Modal";
 
@@ -366,7 +366,7 @@ function ItemsDetails({
                                     }}
                                 />
                             )}
-                            {activeTab === 9 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
+                            {activeTab === 9 && <SalesReport />}
                             {activeTab === 10 && (
                                 <BaseDataGrid cols={serviceCols} rows={services || []} onRowSelected={() => {}} />
                             )}
