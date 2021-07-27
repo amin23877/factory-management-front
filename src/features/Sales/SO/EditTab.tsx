@@ -4,7 +4,6 @@ import { GridColDef } from "@material-ui/data-grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
-import { BasePaper } from "../../../app/Paper";
 import BaseDataGrid from "../../../app/BaseDataGrid";
 
 import EditForm from "./EditForm";

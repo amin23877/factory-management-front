@@ -178,7 +178,6 @@ export const GeneralForm = ({
             />
             <FormControlLabel
                 name="expodate"
-                value={String(values.expodate)}
                 control={<Checkbox checked={Boolean(values.expodate)} />}
                 label="Expodate"
                 onChange={handleChange}
@@ -186,7 +185,6 @@ export const GeneralForm = ({
             />
             <FormControlLabel
                 name="noTaxClient"
-                value={String(values.noTaxClient)}
                 control={<Checkbox checked={Boolean(values.noTaxClient)} />}
                 label="No tax client"
                 onChange={handleChange}
