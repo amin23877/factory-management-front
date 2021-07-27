@@ -4,7 +4,6 @@ import {
     Grid,
     Tabs,
     Tab,
-    Typography,
     TableContainer,
     Table,
     TableRow,
@@ -22,6 +21,7 @@ import { BasePaper } from "../../../app/Paper";
 import { General } from "./Forms";
 import { IMonitorRule } from "../../../api/monitor";
 import { useEffect } from "react";
+import HistoryInfo from "./HistoryInfo";
 
 function ItemsDetails({ selectedRow }: { selectedRow: IMonitorRule }) {
     const { data: historyItems } = useSWR(`/monitor/${selectedRow.id}/history`);
@@ -30,6 +30,8 @@ function ItemsDetails({ selectedRow }: { selectedRow: IMonitorRule }) {
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [assertions, setAssertions] = useState<string[][]>();
     const [table, setTable] = useState<{ columns: number }>({ columns: 0 });
+    const [historyInfo, setHistoryInfo] = useState(false);
+    const [selectedHistory, setSelectedHistory] = useState<any>();
 
     const theme = useTheme();
 
@@ -61,18 +63,22 @@ function ItemsDetails({ selectedRow }: { selectedRow: IMonitorRule }) {
     const gridColumns = useMemo<GridColDef[]>(() => {
         const res: GridColDef[] = [
             { field: "date", headerName: "Date", width: 130 },
-            { field: "itemName", headerName: "Item Name", flex: 3 },
-            { field: "itemNumber", headerName: "Item Number", flex: 2 },
+            { field: "itemName", headerName: "Unit Name", flex: 3 },
+            { field: "itemNumber", headerName: "Unit Number", flex: 2 },
             { field: "number", headerName: "Unit Serial NO.", flex: 2 },
-            { field: "description", headerName: "SO", width: 100 },
-            { field: "section", headerName: "PO", width: 100 },
-            { field: "enable", headerName: "Pass/Fail", type: "boolean", width: 100 },
+            { field: "so", headerName: "SO", width: 100, valueFormatter: (params) => params.row.so?.number },
+            { field: "po", headerName: "PO", width: 100, valueFormatter: (params) => params.row.po?.number },
+            // { field: "enable", headerName: "Pass/Fail", type: "boolean", width: 100 },
         ];
         return res;
     }, []);
 
     return (
         <Box>
+            {selectedHistory && (
+                <HistoryInfo open={historyInfo} onClose={() => setHistoryInfo(false)} data={selectedHistory} />
+            )}
+
             <Grid container spacing={2}>
                 <Grid item md={5} xs={12}>
                     <BasePaper>
@@ -133,7 +139,16 @@ function ItemsDetails({ selectedRow }: { selectedRow: IMonitorRule }) {
                             <Tab label="Rule History" />
                         </Tabs>
                         <Box p={3}>
-                            {activeTab === 0 && <BaseDataGrid cols={gridColumns} rows={historyItems || []} />}
+                            {activeTab === 0 && (
+                                <BaseDataGrid
+                                    cols={gridColumns}
+                                    rows={historyItems || []}
+                                    onRowSelected={(d) => {
+                                        setSelectedHistory(d);
+                                        setHistoryInfo(true);
+                                    }}
+                                />
+                            )}
                         </Box>
                     </BasePaper>
                 </Grid>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Box, Paper } from "@material-ui/core";
-import { DataGrid, GridColumns, GridRowsProp } from "@material-ui/data-grid";
+import { DataGrid, GridColumns, GridRowsProp, GridToolbar } from "@material-ui/data-grid";
 import { AddCircleOutline } from "@material-ui/icons";
 import { toast } from "react-toastify";
 import useSWR from "swr";
@@ -11,6 +11,7 @@ import RowModal from "./RowModal";
 import Button from "../../../../app/Button";
 
 import { createStep, deleteStep, stepType } from "../../../../api/steps";
+import { CustomFooterStatusComponent } from "../../../../components/Datagrid/FooterStatus";
 
 function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
     const { data: rows, mutate: mutateRows } = useSWR<GridRowsProp>(`/engineering/manufacturing/step?TaskId=${taskId}`);
@@ -107,6 +108,7 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
             await createStep(type, { TaskId: taskId, steps: requestRows, rename: renamedColumns, unset: unsetColumns });
             setChangedRows([]);
             setRenamedColumns(undefined);
+            setUnsetColumns(undefined);
 
             await mutateRows();
 
@@ -161,6 +163,7 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
                 handleAddRow={handleAddRow}
                 handleChangeRow={handleChangeRow}
                 handleDelete={handleDeleteRow}
+                mutateRows={mutateRows}
             />
 
             <Paper style={{ padding: "1em" }}>
@@ -197,6 +200,10 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
 
                 <Box height={470}>
                     <DataGrid
+                        components={{ Toolbar: GridToolbar, Footer: CustomFooterStatusComponent }}
+                        componentsProps={{
+                            footer: { submited: Boolean(changedRows.length > 0 || renamedColumns || unsetColumns) },
+                        }}
                         onColumnHeaderClick={(th) => {
                             setSelectedColumn(th.field);
                             setColumnModal(true);
