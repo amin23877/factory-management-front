@@ -29,39 +29,39 @@ const mutateNotes = (type: string, id: string) => {
 };
 
 export default function NoteModal({ open, onClose, model, itemId, noteData, onDone }: INoteModal) {
-    const handleSubmit = (values: any, { setSubmitting }: any) => {
-        if (noteData && noteData?.id) {
-            updateAModelNote(noteData?.id, values)
-                .then((d) => {
-                    console.log(d);
-                    onDone && onDone();
-                    mutateNotes(model, itemId);
-                    onClose();
-                })
-                .catch((e) => console.log(e))
-                .finally(() => setSubmitting(false));
-        } else {
-            createAModelNote(model, itemId as any, values)
-                .then((d) => {
-                    console.log(d);
-                    onDone && onDone();
-                    mutateNotes(model, itemId);
-                    onClose();
-                })
-                .catch((e) => console.log(e))
-                .finally(() => setSubmitting(false));
+    const handleSubmit = async (values: any, { setSubmitting }: any) => {
+        try {
+            if (noteData && noteData?.id) {
+                await updateAModelNote(noteData?.id, values);
+
+                onDone && onDone();
+                mutateNotes(model, itemId);
+                onClose();
+            } else {
+                await createAModelNote(model, itemId as any, values);
+
+                onDone && onDone();
+                mutateNotes(model, itemId);
+                onClose();
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setSubmitting(false);
         }
     };
 
-    const handleDelete = () => {
-        if (noteData && noteData.id) {
-            deleteAModelNote(noteData.id)
-                .then((d) => console.log(d))
-                .catch((e) => console.log(e))
-                .finally(() => {
-                    onDone && onDone();
-                    onClose();
-                });
+    const handleDelete = async () => {
+        try {
+            if (noteData && noteData.id) {
+                await deleteAModelNote(noteData.id);
+
+                onDone && onDone();
+                mutateNotes(model, itemId);
+                onClose();
+            }
+        } catch (error) {
+            console.log(error);
         }
     };
 
