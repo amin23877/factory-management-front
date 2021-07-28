@@ -5,11 +5,11 @@ import Box from "@material-ui/core/Box";
 import Dialog from "../../app/Dialog";
 import Form from "./Form";
 import { ILineService } from "../../api/lineService";
+import { mutate } from "swr";
 
 export default function AddLineServiceModal({
     open,
     onClose,
-    onDone,
     record,
     recordId,
     selectedLine,
@@ -18,7 +18,6 @@ export default function AddLineServiceModal({
     selectedLine?: ILineService;
     open: boolean;
     onClose: () => void;
-    onDone: () => void;
     record: "Quote" | "SO";
     recordId: string;
     readOnly?: boolean;
@@ -32,7 +31,7 @@ export default function AddLineServiceModal({
                     record={record}
                     readOnly={readOnly}
                     onDone={() => {
-                        onDone();
+                        mutate(`/lineservice?${record}=${recordId}`);
                         onClose();
                     }}
                 />
