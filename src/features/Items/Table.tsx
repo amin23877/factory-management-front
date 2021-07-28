@@ -26,15 +26,27 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
 
     const gridColumns = useMemo<GridColumns>(() => {
         const res: GridColumns = [
-            { field: "no", headerName: "Item no.", flex: 1 },
-            { field: "name", headerName: "Name", flex: 2 },
+            { field: "no", headerName: "Item NO.", width: 100 },
+            { field: "name", headerName: "Name", flex: 1 },
             { field: "description", headerName: "Description", flex: 2 },
-            { field: "cost", headerName: "cost" },
-            { field: "salesApproved", headerName: "salesApproved", type: "boolean" },
-            { field: "engineeringApproved", headerName: "engineeringApproved", type: "boolean" },
-            { field: "totalQoh", headerName: "totalQoh" },
-            { field: "usedInLastQuarter", headerName: "usedInLastQuarter" },
-            { field: "resellCost", headerName: "resellCost" },
+            { field: "cost", headerName: "Cost", width: 80 },
+            {
+                field: "salesApproved",
+                headerName: "Sales Approved",
+                type: "boolean",
+                width: 120,
+                disableColumnMenu: true,
+            },
+            {
+                field: "engineeringApproved",
+                headerName: "Engineering Approved",
+                type: "boolean",
+                width: 150,
+                disableColumnMenu: true,
+            },
+            { field: "totalQoh", headerName: "Total QOH.", width: 100, disableColumnMenu: true },
+            { field: "usedInLastQuarter", headerName: "Used In Last Quarter", width: 150, disableColumnMenu: true },
+            { field: "resellCost", headerName: "Resell Cost", width: 120 },
         ];
 
         const exceptions = [
