@@ -2,9 +2,13 @@ import React, { useCallback } from "react";
 import { Box, FormControlLabel, Checkbox, Paper } from "@material-ui/core";
 import { Formik, Form } from "formik";
 
+import useSWR, { mutate } from "swr";
+
 import DateTimePicker from "../../../app/DateTimePicker";
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
+import { createFlag, updateFlag, deleteFlag } from "../../../api/qcFlag";
+import { useEffect } from "react";
 
 interface IFlag {
     flag?: any;
@@ -13,43 +17,41 @@ interface IFlag {
 }
 
 export const General = ({ onClose, flag, itemId }: IFlag) => {
+    useEffect(() => {
+        console.log(flag);
+    }, [flag]);
+
     const deleteDocument = useCallback(async () => {
-        onClose();
-        // try {
-        //   if (flag && flag.id) {
-        //     await deleteAManflag(flag.id);
-        //     await mutate(`/engineering/manufacturing/flag?ItemId=${itemId}`);
-        //     onDone && onDone();
-        //     onClose();
-        //   }
-        // } catch (error) {
-        //   console.log(error);
-        // }
+        try {
+            if (flag && flag.id) {
+                await deleteFlag(flag.id);
+                await mutate(`/qcflag?ItemId=${itemId}`);
+                onClose();
+            }
+        } catch (error) {
+            console.log(error);
+        }
     }, []);
 
     const handleSubmit = useCallback((values, { setSubmitting }) => {
-        onClose();
-        // const newDate = new Date(values.date);
-        // const date = newDate.getTime();
-        // if (flag && flag.id) {
-        //   updateAManflag(flag.id, { date, ...values })
-        //     .then((d) => {
-        //       mutate(`/engineering/manufacturing/flag?ItemId=${itemId}`);
-        //       onDone && onDone();
-        //       onClose();
-        //     })
-        //     .catch((e) => console.log(e))
-        //     .finally(() => setSubmitting(false));
-        // } else {
-        //   createAManflag({ ItemId: itemId, ...values })
-        //     .then((d) => {
-        //       setSubmitting(false);
-        //       mutate(`/engineering/manufacturing/flag?ItemId=${itemId}`);
-        //       onDone && onDone();
-        //       onClose();
-        //     })
-        //     .catch((e) => console.log(e));
-        // }
+        const newDate = new Date(values.date);
+        const date = newDate.getTime();
+        if (flag && flag.id) {
+            updateFlag(flag.id, { date, ...values, ItemId: itemId })
+                .then((d) => {
+                    mutate(`/qcflag?ItemId=${itemId}`);
+                    onClose();
+                })
+                .catch((e) => console.log(e))
+                .finally(() => setSubmitting(false));
+        } else {
+            createFlag({ ItemId: itemId, ...values })
+                .then((d) => {
+                    setSubmitting(false);
+                    mutate(`/qcflag?ItemId=${itemId}`);
+                })
+                .catch((e) => console.log(e));
+        }
     }, []);
 
     return (
@@ -57,7 +59,7 @@ export const General = ({ onClose, flag, itemId }: IFlag) => {
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                 <Form>
                     <Box display="grid" gridTemplateColumns={"1fr"} gridGap={10}>
-                        <Box m={2} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
+                        <Box m={2} display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridGap={10}>
                             <TextField
                                 style={{ gridColumnEnd: "span 2" }}
                                 value={values.name}
@@ -67,8 +69,8 @@ export const General = ({ onClose, flag, itemId }: IFlag) => {
                                 onBlur={handleBlur}
                             />
                             <TextField
-                                value={values.flagID}
-                                name="flagID"
+                                value={values.number}
+                                name="number"
                                 label="Flag ID"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
@@ -82,7 +84,7 @@ export const General = ({ onClose, flag, itemId }: IFlag) => {
                             />
 
                             <TextField
-                                style={{ gridColumnEnd: "span 2" }}
+                                style={{ gridColumnEnd: "span 4" }}
                                 value={values.description}
                                 name="description"
                                 label="Description"
@@ -91,7 +93,7 @@ export const General = ({ onClose, flag, itemId }: IFlag) => {
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
-                            <Box style={{ gridColumnEnd: "span 2", margin: "1px auto" }}>
+                            <Box style={{ gridColumnEnd: "span 4", margin: "1px auto" }}>
                                 <Button
                                     type="submit"
                                     disabled={isSubmitting}
