@@ -1,10 +1,9 @@
-import React, { useCallback } from "react";
-import { Box, FormControlLabel, Checkbox, Paper } from "@material-ui/core";
+import React from "react";
+import { Box } from "@material-ui/core";
 import { Formik, Form } from "formik";
 
-import useSWR, { mutate } from "swr";
+import { mutate } from "swr";
 
-import DateTimePicker from "../../../app/DateTimePicker";
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
 import { createFlag, updateFlag, deleteFlag } from "../../../api/qcFlag";
@@ -21,7 +20,7 @@ export const General = ({ onClose, flag, itemId }: IFlag) => {
         console.log(flag);
     }, [flag]);
 
-    const deleteDocument = useCallback(async () => {
+    const deleteDocument = async () => {
         try {
             if (flag && flag.id) {
                 await deleteFlag(flag.id);
@@ -31,13 +30,11 @@ export const General = ({ onClose, flag, itemId }: IFlag) => {
         } catch (error) {
             console.log(error);
         }
-    }, []);
+    };
 
-    const handleSubmit = useCallback((values, { setSubmitting }) => {
-        const newDate = new Date(values.date);
-        const date = newDate.getTime();
+    const handleSubmit = (values: any, { setSubmitting }: any) => {
         if (flag && flag.id) {
-            updateFlag(flag.id, { date, ...values, ItemId: itemId })
+            updateFlag(flag.id, { ...values, ItemId: itemId })
                 .then((d) => {
                     mutate(`/qcflag?ItemId=${itemId}`);
                     onClose();
@@ -52,7 +49,7 @@ export const General = ({ onClose, flag, itemId }: IFlag) => {
                 })
                 .catch((e) => console.log(e));
         }
-    }, []);
+    };
 
     return (
         <Formik initialValues={flag ? flag : ({} as any)} onSubmit={handleSubmit}>
