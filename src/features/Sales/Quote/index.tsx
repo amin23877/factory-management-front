@@ -1,6 +1,5 @@
-import React, { useState, useMemo } from "react";
-import { Box, Button, Tabs, Tab, makeStyles, LinearProgress } from "@material-ui/core";
-import { GridColDef } from "@material-ui/data-grid";
+import React, { useState } from "react";
+import { Box, Button, Tabs, Tab } from "@material-ui/core";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import useSWR from "swr";
 
@@ -10,7 +9,6 @@ import { deleteQuote, IQuote } from "../../../api/quote";
 import { IActivity } from "../../../api/activity";
 import { ILineItem } from "../../../api/lineItem";
 
-import BaseDataGrid from "../../../app/BaseDataGrid";
 import EditTab from "./EditTab";
 
 import Confirm from "../../Modals/Confirm";
@@ -31,7 +29,7 @@ export default function QuotePanel() {
     const [selectedNote, setSelectedNote] = useState<INote>();
     const [selectedDoc, setSelectedDocs] = useState<IDocument>();
 
-    const { data: quotes, mutate: mutateQuotes } = useSWR("/quote");
+    const { mutate: mutateQuotes } = useSWR("/quote");
 
     const { data: activities } = useSWR<IActivity[]>(
         selectedQuote && selectedQuote.id ? `/activity/quote/${selectedQuote.id}` : null
@@ -43,7 +41,7 @@ export default function QuotePanel() {
     const { data: lineItems, mutate: mutateLineItems } = useSWR(
         selectedQuote && selectedQuote.id ? `/lineitem?QuoteId=${selectedQuote.id}` : null
     );
-    const { data: lineServices, mutate: mutateLineServices } = useSWR(
+    const { data: lineServices } = useSWR(
         selectedQuote && selectedQuote.id ? `/lineservice?QuoteId=${selectedQuote.id}` : null
     );
 
@@ -59,16 +57,7 @@ export default function QuotePanel() {
     const [editDoc, setEditDoc] = useState(false);
     const [confirm, setConfirm] = useState(false);
     const [lineServiceModal, setLineServiceModal] = useState(false);
-    const [compQ, setCompQ] = useState<any>();
-
-    const quoteCols: GridColDef[] = useMemo(
-        () => [
-            { field: "entryDate", width: 150 },
-            { field: "expireDate", width: 150 },
-            { field: "quoteStatus", width: 150 },
-        ],
-        []
-    );
+    const [compQ] = useState<any>();
 
     const handleDelete = async () => {
         try {
@@ -143,7 +132,6 @@ export default function QuotePanel() {
                     onClose={() => setLineServiceModal(false)}
                     record="Quote"
                     recordId={selectedQuote.id}
-                    onDone={mutateQuotes}
                     selectedLine={selectedLS}
                 />
             )}

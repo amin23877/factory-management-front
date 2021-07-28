@@ -8,8 +8,9 @@ import { BillingTab, GeneralForm, ShippingForm, TermsTab } from "./Forms";
 import { ISO, editSO, createSOComplete, ISOComplete } from "../../../api/so";
 import { BasePaper } from "../../../app/Paper";
 import Toast from "../../../app/Toast";
+import { mutate } from "swr";
 
-export default function EditForm({ selectedSo, onDone }: { selectedSo: ISO; onDone: () => void }) {
+export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
     const [activeTab, setActiveTab] = useState(0);
 
     const handleSubmit = async (data: ISO, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
@@ -18,9 +19,9 @@ export default function EditForm({ selectedSo, onDone }: { selectedSo: ISO; onDo
                 await editSO(selectedSo.id, data);
 
                 setSubmitting(false);
-                onDone();
+                mutate("/so");
 
-                Toast("Record updated successfuly", "success");
+                Toast("Record updated successfully", "success");
             }
         } catch (error) {
             console.log(error);
@@ -77,7 +78,11 @@ export default function EditForm({ selectedSo, onDone }: { selectedSo: ISO; onDo
                                         />
                                     )}
                                     {activeTab === 2 && (
-                                        <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                        <TermsTab
+                                            values={{ ...values, ClientId: (values?.ClientId as any)?.id }}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                        />
                                     )}
                                 </Box>
                             </BasePaper>

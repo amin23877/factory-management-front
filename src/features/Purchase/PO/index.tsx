@@ -5,7 +5,14 @@ import ListItem from "@material-ui/core/ListItem";
 import IconButton from "@material-ui/core/IconButton";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { AddRounded, DeleteRounded, PrintRounded, PostAddRounded, NoteAddRounded, FileCopyRounded } from "@material-ui/icons";
+import {
+    AddRounded,
+    DeleteRounded,
+    PrintRounded,
+    PostAddRounded,
+    NoteAddRounded,
+    FileCopyRounded,
+} from "@material-ui/icons";
 
 import List from "../../../app/SideUtilityList";
 import BaseDataGrid from "../../../app/BaseDataGrid";
@@ -139,7 +146,6 @@ function Index() {
                     selectedLine={selectedLine}
                     open={addLineItem}
                     onClose={() => setAddLineItem(false)}
-                    onDone={refreshLines}
                     record="purchasePO"
                     recordId={selPO.id}
                 />

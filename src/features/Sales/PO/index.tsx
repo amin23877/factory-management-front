@@ -35,16 +35,17 @@ export default function POPanel() {
     const [selectedDoc, setSelectedDoc] = useState<any>();
 
     const poCols: GridColDef[] = [
-        { field: "number" },
+        { field: "number", headerName: "Number" },
         {
             field: "Contact",
             valueFormatter: (r) => r.row?.ContactId?.name,
-            width: 180,
+            flex: 1,
         },
-        { field: "Client", valueFormatter: (r) => r.row?.ClientId?.name },
+        { field: "Client", valueFormatter: (r) => r.row?.ClientId?.name, flex: 1 },
         {
             field: "Project",
             valueFormatter: (r) => r.row?.ProjectId?.name,
+            flex: 1,
         },
     ];
 

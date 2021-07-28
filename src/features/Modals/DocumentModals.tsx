@@ -8,6 +8,7 @@ import Button from "../../app/Button";
 import { createAModelDocument, updateAModelDocument, deleteAModelDocument, IDocument } from "../../api/document";
 import PhotoSizeSelectActualOutlinedIcon from "@material-ui/icons/PhotoSizeSelectActualOutlined";
 import PDFPreview from "../../components/PDFPreview";
+import { mutate } from "swr";
 
 interface IDocumentModal {
     open: boolean;
@@ -18,6 +19,10 @@ interface IDocumentModal {
     onClose: () => void;
 }
 
+const mutateDocuments = (type: string, id: string) => {
+    return mutate(`/document/${type}/${id}`);
+};
+
 export default function DocumentModal({ open, onClose, model, itemId, onDone, docData }: IDocumentModal) {
     const fileUploader = useRef<HTMLInputElement | null>();
 
@@ -26,6 +31,7 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
             if (docData && docData.id) {
                 await deleteAModelDocument(docData.id);
                 onDone && onDone();
+                mutateDocuments(model, itemId);
                 onClose();
             }
         } catch (error) {
@@ -39,6 +45,7 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
                 .then((d) => {
                     console.log(d);
                     onDone && onDone();
+                    mutateDocuments(model, itemId);
                     onClose();
                 })
                 .catch((e) => console.log(e))
@@ -49,6 +56,7 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
                     console.log(d);
                     setSubmitting(false);
                     onDone && onDone();
+                    mutateDocuments(model, itemId);
                     onClose();
                 })
                 .catch((e) => console.log(e));

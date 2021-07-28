@@ -254,6 +254,7 @@ export const GeneralForm = ({
                 />
                 <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} />
                 <DateTimePicker
+                    size="small"
                     value={values.entryDate}
                     name="entryDate"
                     label="Entry Date"
@@ -261,6 +262,7 @@ export const GeneralForm = ({
                     onBlur={handleBlur}
                 />
                 <DateTimePicker
+                    size="small"
                     value={values.expireDate}
                     name="expireDate"
                     label="Expire Date"
@@ -269,6 +271,7 @@ export const GeneralForm = ({
                 />
 
                 <DateTimePicker
+                    size="small"
                     value={values.estimatedShipDate}
                     name="estimatedShipDate"
                     label="Estimated Ship Date"

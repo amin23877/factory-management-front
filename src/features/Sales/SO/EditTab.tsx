@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Box } from "@material-ui/core";
-import { GridColDef } from "@material-ui/data-grid";
+import { GridColumns } from "@material-ui/data-grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
@@ -9,69 +9,65 @@ import BaseDataGrid from "../../../app/BaseDataGrid";
 import EditForm from "./EditForm";
 
 import { ISO } from "../../../api/so";
+import useSWR from "swr";
 
 export default function EditTab({
     selectedSo,
-    onDone,
-    notes,
-    docs,
-    lineItems,
-    lineServices,
     onLineItemSelected,
     onLineServiceSelected,
     onNoteSelected,
     onDocSelected,
 }: {
     selectedSo: ISO;
-    onDone: () => void;
-    notes: any;
-    docs: any;
-    lineItems: any;
-    lineServices: any;
     onLineItemSelected: (a: any) => void;
     onLineServiceSelected: (a: any) => void;
     onNoteSelected: (a: any) => void;
     onDocSelected: (a: any) => void;
 }) {
+    const { data: notes } = useSWR(selectedSo && selectedSo.id ? `/note/so/${selectedSo.id}` : null);
+    const { data: documents } = useSWR(selectedSo && selectedSo.id ? `/document/so/${selectedSo.id}` : null);
+    const { data: lineItems } = useSWR(selectedSo && selectedSo.id ? `/lineitem?SOId=${selectedSo.id}` : null);
+    const { data: lineServices } = useSWR(selectedSo && selectedSo.id ? `/lineservice?SOId=${selectedSo.id}` : null);
+
     const [activeTab, setActiveTab] = useState(0);
 
-    const noteCols: GridColDef[] = useMemo(
+    const noteCols = useMemo<GridColumns>(
         () => [
-            { field: "subject", headerName: "Subject" },
-            { field: "url", headerName: "URL" },
-            { field: "note", headerName: "Note", width: 300 },
+            { field: "subject", headerName: "Subject", width: 300 },
+            { field: "url", headerName: "URL", width: 180 },
+            { field: "note", headerName: "Note", flex: 1 },
         ],
         []
     );
 
-    const docCols: GridColDef[] = useMemo(
+    const docCols = useMemo<GridColumns>(
         () => [
-            { field: "name", headerName: "Name" },
-            { field: "description", headerName: "Description", width: 250 },
-            { field: "createdAt", headerName: "Created at", width: 300 },
+            { field: "name", headerName: "Name", width: 200 },
+            { field: "description", headerName: "Description", flex: 1 },
+            { field: "createdAt", headerName: "Created At", type: "date", width: 300 },
         ],
         []
     );
 
-    const LICols: GridColDef[] = useMemo(
+    const LICols = useMemo<GridColumns>(
         () => [
-            { field: "index" },
-            { field: "ItemId", valueFormatter: (r) => r.row.ItemId.name },
-            { field: "description", width: 200 },
-            { field: "quantity" },
-            { field: "price" },
-            { field: "tax" },
+            { field: "index", headerName: "Index" },
+            { field: "ItemId", headerName: "Item", valueFormatter: (r) => r.row.ItemId.name, width: 200 },
+            { field: "description", headerName: "Description", flex: 1 },
+            { field: "quantity", headerName: "Quantity", width: 90 },
+            { field: "price", headerName: "Price", width: 100 },
+            { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
         ],
         []
     );
 
-    const LSCols: GridColDef[] = useMemo(
+    const LSCols: GridColumns = useMemo(
         () => [
-            { field: "ServiceId", valueFormatter: (r) => r.row.ServiceId.name },
+            { field: "ServiceId", headerName: "Service", valueFormatter: (r) => r.row.ServiceId.name, flex: 1 },
             // { field: "LineItemRecordId",  width: 200 },
-            { field: "quantity" },
-            { field: "price" },
-            { field: "tax" },
+            { field: "quantity", headerName: "Quantity", width: 100 },
+            { field: "price", headerName: "Price", width: 100 },
+            { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
         ],
         []
     );
@@ -79,7 +75,7 @@ export default function EditTab({
     return (
         <div>
             <Box>
-                <EditForm selectedSo={selectedSo} onDone={onDone} />
+                <EditForm selectedSo={selectedSo} />
             </Box>
             <Tabs
                 style={{ margin: "1em 0" }}
@@ -93,15 +89,22 @@ export default function EditTab({
                 <Tab label="Documents" />
             </Tabs>
             {activeTab === 0 && (
-                <BaseDataGrid cols={LICols} rows={lineItems} onRowSelected={onLineItemSelected} height={300} />
+                <BaseDataGrid cols={LICols} rows={lineItems || []} onRowSelected={onLineItemSelected} height={300} />
             )}
             {activeTab === 1 && (
-                <BaseDataGrid cols={LSCols} rows={lineServices} onRowSelected={onLineServiceSelected} height={300} />
+                <BaseDataGrid
+                    cols={LSCols}
+                    rows={lineServices || []}
+                    onRowSelected={onLineServiceSelected}
+                    height={300}
+                />
             )}
             {activeTab === 2 && (
-                <BaseDataGrid cols={noteCols} rows={notes} onRowSelected={onNoteSelected} height={300} />
+                <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} height={300} />
             )}
-            {activeTab === 3 && <BaseDataGrid cols={docCols} rows={docs} onRowSelected={onDocSelected} height={300} />}
+            {activeTab === 3 && (
+                <BaseDataGrid cols={docCols} rows={documents || []} onRowSelected={onDocSelected} height={300} />
+            )}
         </div>
     );
 }

@@ -7,16 +7,18 @@ import Link from "@material-ui/core/Link";
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
 import { FieldSelect } from "../../../app/Inputs";
+import Toast from "../../../app/Toast";
 
 import { IPO, updatePO } from "../../../api/po";
 import { getContacts } from "../../../api/contact";
 import { getClients } from "../../../api/client";
 import { getAllEmployees } from "../../../api/employee";
 import { getProjects } from "../../../api/project";
+
 import "../../../styles/main.css";
+
 import uploadpng from "../../../assets/bx-cloud-upload.png";
 import downloadpng from "../../../assets/bx-cloud-download.png";
-import Toast from "../../../app/Toast";
 
 export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () => void }) {
     const uploader = useRef<HTMLInputElement | null>();
@@ -31,7 +33,7 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                 await updatePO(poData.id, data);
                 onDone();
 
-                Toast("Record updated successfuly", "success");
+                Toast("Record updated successfully", "success");
             }
         } catch (error) {
             console.log(error);
@@ -44,7 +46,16 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
         <Box>
             <Formik
                 validationSchema={schema}
-                initialValues={{ number, file, ContactId, ClientId, EmployeeId, ProjectId, reciever, senderNumber }}
+                initialValues={{
+                    number,
+                    file,
+                    ContactId: (ContactId as any)?.id,
+                    ClientId: (ClientId as any)?.id,
+                    EmployeeId,
+                    ProjectId,
+                    reciever,
+                    senderNumber,
+                }}
                 onSubmit={handleSubmit}
             >
                 {({ values, handleChange, handleBlur, errors, touched, setFieldValue }) => (
@@ -55,7 +66,7 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                                     <TextField
                                         disabled
                                         name="senderNumber"
-                                        label="senderNumber"
+                                        label="Sender Number"
                                         value={values.senderNumber}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
@@ -143,7 +154,7 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                                     paddingBottom: "20px",
                                 }}
                             >
-                                <div style={{}} className="UpDownPNG"></div>
+                                <div className="UpDownPNG"></div>
                                 <Box
                                     display="flex"
                                     style={{ width: "100%" }}
@@ -169,12 +180,13 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                                             cursor: "pointer",
                                         }}
                                     >
-                                        <img src={uploadpng} style={{ width: "14px", height: "12px" }} />
+                                        <img alt="upload" src={uploadpng} style={{ width: "14px", height: "12px" }} />
                                         upload
                                     </Link>
                                     <Link download href={poData.path} style={{}}>
                                         <img
                                             src={downloadpng}
+                                            alt="download"
                                             style={{ width: "14px", height: "12px", display: "inline" }}
                                         />
                                         Download
