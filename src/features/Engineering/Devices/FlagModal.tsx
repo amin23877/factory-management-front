@@ -19,6 +19,7 @@ export default function FlagModal({ open, onClose, itemId, flag }: IFlagModal) {
     const [sFlag, setSFlag] = useState(flag);
     const [eOpen, setEOpen] = useState(false);
     const { data: qcflags } = useSWR(`/qcflag?ItemId=${itemId}`);
+
     const qcFlagCols = useMemo<GridColumns>(
         () => [
             { field: "number", headerName: "ID", width: 160 },
@@ -28,6 +29,7 @@ export default function FlagModal({ open, onClose, itemId, flag }: IFlagModal) {
         ],
         []
     );
+
     return (
         <Dialog title="Flag" open={open} onClose={onClose} maxWidth="lg" fullWidth>
             {sFlag && <EditFlagModal open={eOpen} onClose={() => setEOpen(false)} flag={sFlag} itemId={itemId} />}
