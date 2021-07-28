@@ -31,12 +31,13 @@ export default function FlagModal({ open, onClose, itemId, flag }: IFlagModal) {
     );
 
     return (
-        <Dialog title="Flag" open={open} onClose={onClose} maxWidth="lg" fullWidth>
+        <Dialog title="Flag" open={open} onClose={onClose} maxWidth="md" fullWidth>
             {sFlag && <EditFlagModal open={eOpen} onClose={() => setEOpen(false)} flag={sFlag} itemId={itemId} />}
             <General onClose={onClose} itemId={itemId} />
             <BaseDataGrid
                 rows={qcflags || []}
                 cols={qcFlagCols}
+                height={350}
                 onRowSelected={(d) => {
                     setEOpen(true);
                     setSFlag(d);

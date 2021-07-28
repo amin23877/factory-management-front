@@ -227,7 +227,7 @@ function ItemsDetails({
             {
                 field: "SODate",
                 headerName: "SO Date",
-                valueFormatter: (r) => formatTimestampToDate(r.row.SODate),
+                valueFormatter: (r) => formatTimestampToDate(r.row.so.createdAt),
                 flex: 1,
             },
         ],
