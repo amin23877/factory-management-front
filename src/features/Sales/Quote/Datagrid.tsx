@@ -17,9 +17,9 @@ function QuoteDatagrid({
 
     const quoteCols = useMemo<GridColumns>(
         () => [
-            { field: "entryDate", width: 150 },
-            { field: "expireDate", width: 150 },
-            { field: "quoteStatus", width: 150 },
+            { field: "entryDate", headerName: "Entry Date", flex: 1 },
+            { field: "expireDate", headerName: "Expire Date", flex: 1 },
+            { field: "quoteStatus", headerName: "Status", flex: 1 },
         ],
         []
     );

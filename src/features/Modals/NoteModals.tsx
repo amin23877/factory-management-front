@@ -8,6 +8,7 @@ import Button from "../../app/Button";
 import TextField from "../../app/TextField";
 
 import { createAModelNote, updateAModelNote, deleteAModelNote, INote } from "../../api/note";
+import { mutate } from "swr";
 
 const AddModelNoteSchema = Yup.object().shape({
     subject: Yup.string().min(1, "Too short!").required(),
@@ -23,46 +24,55 @@ interface INoteModal {
     onDone?: () => void;
 }
 
+const mutateNotes = (type: string, id: string) => {
+    return mutate(`/note/${type}/${id}`);
+};
+
 export default function NoteModal({ open, onClose, model, itemId, noteData, onDone }: INoteModal) {
-    const handleSubmit = (values: any, { setSubmitting }: any) => {
-        if (noteData && noteData?.id) {
-            updateAModelNote(noteData?.id, values)
-                .then((d) => {
-                    console.log(d);
-                    onClose();
-                    onDone && onDone();
-                })
-                .catch((e) => console.log(e))
-                .finally(() => setSubmitting(false));
-        } else {
-            // console.log(values);
-            createAModelNote(model, itemId as any, values)
-                .then((d) => {
-                    console.log(d);
-                    onDone && onDone();
-                    onClose();
-                })
-                .catch((e) => console.log(e))
-                .finally(() => setSubmitting(false));
+    const handleSubmit = async (values: any, { setSubmitting }: any) => {
+        try {
+            if (noteData && noteData?.id) {
+                await updateAModelNote(noteData?.id, values);
+
+                onDone && onDone();
+                mutateNotes(model, itemId);
+                onClose();
+            } else {
+                await createAModelNote(model, itemId as any, values);
+
+                onDone && onDone();
+                mutateNotes(model, itemId);
+                onClose();
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setSubmitting(false);
         }
     };
 
-    const handleDelete = () => {
-        if (noteData && noteData.id) {
-            deleteAModelNote(noteData.id)
-                .then((d) => console.log(d))
-                .catch((e) => console.log(e))
-                .finally(() => {
-                    onDone && onDone();
-                    onClose();
-                });
+    const handleDelete = async () => {
+        try {
+            if (noteData && noteData.id) {
+                await deleteAModelNote(noteData.id);
+
+                onDone && onDone();
+                mutateNotes(model, itemId);
+                onClose();
+            }
+        } catch (error) {
+            console.log(error);
         }
     };
 
     return (
         <Dialog open={open} onClose={onClose} title={`${noteData?.id ? "Edit" : "Add"} a note to ${model}`}>
             <Box m={3}>
-                <Formik initialValues={noteData ? noteData : ({} as INote)} validationSchema={AddModelNoteSchema} onSubmit={handleSubmit}>
+                <Formik
+                    initialValues={noteData ? noteData : ({} as INote)}
+                    validationSchema={AddModelNoteSchema}
+                    onSubmit={handleSubmit}
+                >
                     {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
                         <Form>
                             <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10}>
@@ -98,7 +108,12 @@ export default function NoteModal({ open, onClose, model, itemId, noteData, onDo
                                 />
                             </Box>
                             <Box my={2} textAlign="center" display="flex" alignItems="center">
-                                <Button type="submit" style={{ flex: 1 }} disabled={isSubmitting} kind={noteData ? "edit" : "add"}>
+                                <Button
+                                    type="submit"
+                                    style={{ flex: 1 }}
+                                    disabled={isSubmitting}
+                                    kind={noteData ? "edit" : "add"}
+                                >
                                     Save
                                 </Button>
                                 {noteData && (

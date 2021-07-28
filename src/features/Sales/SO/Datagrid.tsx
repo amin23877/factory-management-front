@@ -17,9 +17,13 @@ function SODatagrid({
 
     const cols = useMemo<GridColumns>(
         () => [
-            { field: "number" },
-            { field: "Client", valueGetter: (data) => (data.row.ClientId ? data.row.ClientId.name : "") },
-            { field: "Project", valueGetter: (data) => (data.row.ProjectId ? data.row.ProjectId.name : "") },
+            { field: "number", headerName: "Number", width: 100 },
+            { field: "Client", width: 180, valueGetter: (data) => (data.row.ClientId ? data.row.ClientId.name : "") },
+            {
+                field: "Project",
+                width: 180,
+                valueGetter: (data) => (data.row.ProjectId ? data.row.ProjectId.name : ""),
+            },
         ],
         []
     );

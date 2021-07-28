@@ -16,8 +16,6 @@ import EditTab from "./EditTab";
 import AddSOModal from "./AddSoModal";
 
 import { deleteSO, getLineItems, ISO } from "../../../api/so";
-import { getAllModelNotes } from "../../../api/note";
-import { getAllModelDocuments } from "../../../api/document";
 import { ILineItem } from "../../../api/lineItem";
 import { getSOLineServices, ILineService } from "../../../api/lineService";
 import { BasePaper } from "../../../app/Paper";
@@ -25,66 +23,19 @@ import Datagrid from "./Datagrid";
 
 export default function SalesOrderPanel() {
     const [activeTab, setActiveTab] = useState(0);
+
     const [confirm, setConfirm] = useState(false);
     const [addSo, setAddSo] = useState(false);
     const [noteModal, setNoteModal] = useState(false);
     const [docModal, setDocModal] = useState(false);
     const [lineItemModal, setLineItemModal] = useState(false);
     const [lineServiceModal, setLineServiceModal] = useState(false);
+
     const [selectedNote, setSelectedNote] = useState<any>();
     const [selectedDoc, setSelectedDoc] = useState<any>();
     const [selectedLI, setSelectedLI] = useState<ILineItem>();
     const [selectedLS, setSelectedLS] = useState<ILineService>();
     const [selectedSO, setSelectedSO] = useState<ISO>();
-
-    const [notes, setNotes] = useState([]);
-    const [docs, setDocs] = useState([]);
-    const [lineItems, setLineIitems] = useState([]);
-    const [lineServices, setLineServices] = useState([]);
-
-    const refreshNotes = async () => {
-        try {
-            if (selectedSO && selectedSO.id) {
-                const resp = await getAllModelNotes("so", selectedSO.id);
-                setNotes(resp);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const refreshLineItems = async () => {
-        try {
-            if (selectedSO && selectedSO.id) {
-                const resp = await getLineItems(selectedSO.id);
-                resp && setLineIitems(resp);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const refreshLineServices = async () => {
-        try {
-            if (selectedSO && selectedSO.id) {
-                const resp = await getSOLineServices(selectedSO.id);
-                resp && setLineServices(resp);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    const refreshDocs = async () => {
-        try {
-            if (selectedSO && selectedSO.id) {
-                const resp = await getAllModelDocuments("so", selectedSO.id);
-                setDocs(resp);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
 
     const handleDelete = async () => {
         try {
@@ -102,15 +53,6 @@ export default function SalesOrderPanel() {
         }
     };
 
-    useEffect(() => {
-        if (activeTab === 1) {
-            refreshLineItems();
-            refreshLineServices();
-            refreshNotes();
-            refreshDocs();
-        }
-    }, [activeTab]);
-
     return (
         <Box>
             {selectedSO && selectedSO.id && (
@@ -120,7 +62,6 @@ export default function SalesOrderPanel() {
                     record="SO"
                     recordId={selectedSO.id}
                     selectedLine={selectedLI}
-                    onDone={refreshLineItems}
                 />
             )}
             {selectedSO && selectedSO.id && (
@@ -130,7 +71,6 @@ export default function SalesOrderPanel() {
                     record="SO"
                     recordId={selectedSO.id}
                     selectedLine={selectedLS}
-                    onDone={refreshLineServices}
                 />
             )}
             {selectedSO && selectedSO.id && (
@@ -140,7 +80,6 @@ export default function SalesOrderPanel() {
                     itemId={selectedSO.id}
                     model="so"
                     noteData={selectedNote}
-                    onDone={refreshNotes}
                 />
             )}
             {selectedSO && selectedSO.id && (
@@ -150,7 +89,6 @@ export default function SalesOrderPanel() {
                     itemId={selectedSO.id}
                     model="so"
                     docData={selectedDoc}
-                    onDone={refreshDocs}
                 />
             )}
 
@@ -224,11 +162,6 @@ export default function SalesOrderPanel() {
                 {activeTab === 1 && selectedSO && (
                     <EditTab
                         selectedSo={selectedSO}
-                        onDone={() => mutate("/so")}
-                        notes={notes}
-                        docs={docs}
-                        lineItems={lineItems}
-                        lineServices={lineServices}
                         onLineServiceSelected={(d) => {
                             setSelectedLS(d);
                             setLineServiceModal(true);

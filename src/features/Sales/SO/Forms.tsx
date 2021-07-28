@@ -10,6 +10,7 @@ import {
     Radio,
     LinearProgress,
 } from "@material-ui/core";
+import { DateTimePicker } from "@material-ui/pickers";
 
 import TextField from "../../../app/TextField";
 import { FieldSelect, ArraySelect } from "../../../app/Inputs";
@@ -24,7 +25,6 @@ import { getProjects } from "../../../api/project";
 import { getAllAgencies } from "../../../api/agency";
 import { getQuoteById, getQuotes } from "../../../api/quote";
 import { getAllDivison } from "../../../api/division";
-import { DateTimePicker } from "@material-ui/pickers";
 import { getJobs } from "../../../api/job";
 import Button from "../../../app/Button";
 import SOCus from "../../../PDFTemplates/SOCus";
@@ -116,28 +116,28 @@ export const GeneralForm = ({
             <TextField
                 value={values.freightTerms}
                 name="freightTerms"
-                label="freightTerms"
+                label="Freight Terms"
                 onChange={handleChange}
                 onBlur={handleBlur}
             />
             <TextField
                 value={values.paymentTerms}
                 name="paymentTerms"
-                label="paymentTerms"
+                label="Payment Terms"
                 onChange={handleChange}
                 onBlur={handleBlur}
             />
             <TextField
                 value={values.carrier}
                 name="carrier"
-                label="carrier"
+                label="Carrier"
                 onChange={handleChange}
                 onBlur={handleBlur}
             />
             <FieldSelect
                 value={values.QuoteId}
                 name="QuoteId"
-                label="QuoteId"
+                label="Quote"
                 request={getQuotes}
                 itemTitleField="number"
                 itemValueField="id"
@@ -150,7 +150,7 @@ export const GeneralForm = ({
             <FieldSelect
                 value={values.issuedBy}
                 name="issuedBy"
-                label="issuedBy"
+                label="Issued By"
                 request={getAllEmployees}
                 itemTitleField="username"
                 itemValueField="id"
@@ -160,7 +160,7 @@ export const GeneralForm = ({
             <FieldSelect
                 value={values.DivisionId}
                 name="DivisionId"
-                label="DivisionId"
+                label="Division"
                 request={getAllDivison}
                 itemTitleField="name"
                 itemValueField="id"
@@ -209,7 +209,7 @@ export const ShippingForm = ({
         <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10}>
             <DateTimePicker
                 style={{ gridColumnEnd: "span 2" }}
-                // value={values.estShipDate ? values.estShipDate.substr(0, 10) : ""}
+                size="small"
                 value={values.estShipDate}
                 name="estShipDate"
                 label="Estimated ship date"
@@ -218,7 +218,7 @@ export const ShippingForm = ({
             />
             <DateTimePicker
                 style={{ gridColumnEnd: "span 2" }}
-                // value={values.actShipDate ? values.actShipDate.substr(0, 10) : ""}
+                size="small"
                 value={values.actShipDate}
                 name="actShipDate"
                 label="Actual ship date"
@@ -267,7 +267,7 @@ export const ShippingForm = ({
                 onChange={handleChange}
             />
             <FormControl style={{ gridColumnEnd: "span 2" }}>
-                <FormLabel>Client or Agency</FormLabel>
+                <FormLabel>Shipping Client or Agency</FormLabel>
                 <RadioGroup
                     style={{ flexDirection: "row" }}
                     name="shippingEntitiy"
@@ -300,7 +300,7 @@ export const BillingTab = ({
                 itemValueField="id"
                 keyField="id"
                 name="billingAddress"
-                label="billing Address"
+                label="Billing Address"
                 onChange={handleChange}
             />
             <FieldSelect
@@ -310,7 +310,7 @@ export const BillingTab = ({
                 itemValueField="id"
                 keyField="id"
                 name="billingContact"
-                label="billing Contact"
+                label="Billing Contact"
                 onChange={handleChange}
             />
             <FieldSelect
@@ -320,7 +320,7 @@ export const BillingTab = ({
                 itemValueField="id"
                 keyField="id"
                 name="billingPhone"
-                label="billing Phone"
+                label="Billing Phone"
                 onChange={handleChange}
             />
             <FieldSelect
@@ -330,11 +330,11 @@ export const BillingTab = ({
                 itemValueField="id"
                 keyField="id"
                 name="billingEmail"
-                label="billing Email"
+                label="Billing Email"
                 onChange={handleChange}
             />
             <FormControl>
-                <FormLabel>Client or Agency</FormLabel>
+                <FormLabel>Billing Client or Agency</FormLabel>
                 <RadioGroup
                     name="billingEntitiy"
                     onChange={handleChange}
@@ -377,7 +377,7 @@ export const TermsTab = ({
                 itemValueField="id"
                 keyField="id"
                 name="requester"
-                label="requester"
+                label="Requester"
                 onChange={handleChange}
             />
             <FieldSelect

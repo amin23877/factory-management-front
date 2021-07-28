@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from "react";
+import React, { useRef } from "react";
 import { Box, TextField, Link } from "@material-ui/core";
 import { Formik, Form } from "formik";
 
@@ -8,6 +8,7 @@ import Button from "../../app/Button";
 import { createAModelDocument, updateAModelDocument, deleteAModelDocument, IDocument } from "../../api/document";
 import PhotoSizeSelectActualOutlinedIcon from "@material-ui/icons/PhotoSizeSelectActualOutlined";
 import PDFPreview from "../../components/PDFPreview";
+import { mutate } from "swr";
 
 interface IDocumentModal {
     open: boolean;
@@ -18,42 +19,47 @@ interface IDocumentModal {
     onClose: () => void;
 }
 
+const mutateDocuments = (type: string, id: string) => {
+    return mutate(`/document/${type}/${id}`);
+};
+
 export default function DocumentModal({ open, onClose, model, itemId, onDone, docData }: IDocumentModal) {
     const fileUploader = useRef<HTMLInputElement | null>();
 
-    const deleteDocument = useCallback(async () => {
+    const deleteDocument = async () => {
         try {
             if (docData && docData.id) {
                 await deleteAModelDocument(docData.id);
                 onDone && onDone();
+                mutateDocuments(model, itemId);
                 onClose();
             }
         } catch (error) {
             console.log(error);
         }
-    }, []);
+    };
 
-    const handleSubmit = useCallback((values, { setSubmitting }) => {
-        if (docData && docData.id) {
-            updateAModelDocument(docData.id, values.file, values.description)
-                .then((d) => {
-                    console.log(d);
-                    onDone && onDone();
-                    onClose();
-                })
-                .catch((e) => console.log(e))
-                .finally(() => setSubmitting(false));
-        } else {
-            createAModelDocument(model, itemId as any, values.file, values.description)
-                .then((d) => {
-                    console.log(d);
-                    setSubmitting(false);
-                    onDone && onDone();
-                    onClose();
-                })
-                .catch((e) => console.log(e));
+    const handleSubmit = async (values: any, { setSubmitting }: any) => {
+        try {
+            if (docData && docData.id) {
+                await updateAModelDocument(docData.id, values.file, values.description);
+
+                onDone && onDone();
+                mutateDocuments(model, itemId);
+                onClose();
+            } else {
+                await createAModelDocument(model, itemId as any, values.file, values.description);
+
+                onDone && onDone();
+                mutateDocuments(model, itemId);
+                onClose();
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setSubmitting(false);
         }
-    }, []);
+    };
 
     return (
         <Dialog open={open} onClose={onClose} fullScreen title={`${docData ? "Edit" : "Add"} Document to ${model}`}>

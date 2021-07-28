@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Tabs, Tab, Box } from "@material-ui/core";
-import { GridColDef } from "@material-ui/data-grid";
+import { GridColDef, GridColumns } from "@material-ui/data-grid";
 
 import BaseDataGrid from "../../../app/BaseDataGrid";
 import EditForm from "./EditForm";
@@ -37,67 +37,56 @@ export default function EditTab({
 }) {
     const [activeTab, setActiveTab] = useState(0);
 
-    const LICols: GridColDef[] = useMemo(
+    const LICols = useMemo<GridColumns>(
         () => [
-            { field: "index" },
-            {
-                field: "Item",
-                valueFormatter: (r) => r.row.ItemId.name,
-            },
-            { field: "description", width: 200 },
-            { field: "quantity" },
-            { field: "price" },
-            { field: "tax" },
+            { field: "index", headerName: "Index" },
+            { field: "ItemId", headerName: "Item", valueFormatter: (r) => r.row.ItemId.name, width: 200 },
+            { field: "description", headerName: "Description", flex: 1 },
+            { field: "quantity", headerName: "Quantity", width: 90 },
+            { field: "price", headerName: "Price", width: 100 },
+            { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
         ],
         []
     );
 
-    const LSCols: GridColDef[] = useMemo(
+    const LSCols: GridColumns = useMemo(
         () => [
-            { field: "ServiceId" },
-            { field: "LineItemRecordId", width: 200 },
-            { field: "quantity" },
-            { field: "price" },
-            { field: "tax" },
+            { field: "ServiceId", headerName: "Service", valueFormatter: (r) => r.row.ServiceId.name, flex: 1 },
+            // { field: "LineItemRecordId",  width: 200 },
+            { field: "quantity", headerName: "Quantity", width: 100 },
+            { field: "price", headerName: "Price", width: 100 },
+            { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
         ],
         []
     );
 
-    const noteCols: GridColDef[] = useMemo(
+    const noteCols = useMemo<GridColumns>(
         () => [
-            { field: "subject", headerName: "Subject" },
-            { field: "url", headerName: "URL" },
-            { field: "note", headerName: "Note", width: 300 },
+            { field: "subject", headerName: "Subject", width: 300 },
+            { field: "url", headerName: "URL", width: 180 },
+            { field: "note", headerName: "Note", flex: 1 },
         ],
         []
     );
 
-    const docCols: GridColDef[] = useMemo(
+    const docCols = useMemo<GridColumns>(
         () => [
-            { field: "name", headerName: "Name" },
-            { field: "description", headerName: "Description", width: 250 },
-            { field: "createdAt", headerName: "Created at", width: 300 },
+            { field: "name", headerName: "Name", width: 200 },
+            { field: "description", headerName: "Description", flex: 1 },
+            { field: "createdAt", headerName: "Created At", type: "date", width: 300 },
         ],
         []
     );
 
-    const activityCols: GridColDef[] = useMemo(
+    const activityCols = useMemo<GridColumns>(
         () => [
-            { field: "name" },
-            { field: "subject" },
-            { field: "location" },
-            { field: "startTime", width: 180 },
-            { field: "endTime", width: 180 },
-            // {
-            //     field: "ActivityPriority",
-            //     valueFormatter: (data) => {
-            //         console.log(data);
-            //         return data;
-            //     },
-            //     width: 180,
-            // },
-            { field: "ActivityStatus", valueFormatter: (data) => data.row.ActivityStatus?.name, width: 180 },
-            { field: "notes" },
+            { field: "name", headerName: "Name", flex: 1 },
+            { field: "subject", headerName: "Subject", flex: 1 },
+            { field: "location", headerName: "Location", width: 150 },
+            { field: "startTime", headerName: "Start Time", width: 150, type: "date" },
+            { field: "endTime", headerName: "End Time", width: 150, type: "date" },
+            { field: "Activity Status", valueFormatter: (data) => data.row.ActivityStatus?.name, width: 180 },
+            { field: "notes", headerName: "Notes" },
         ],
         []
     );

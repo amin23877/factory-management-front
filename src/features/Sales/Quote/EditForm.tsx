@@ -19,7 +19,7 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
                 await updateQuote(selectedQuote.id, data);
                 mutate("/quote");
 
-                Toast("Record updated successfuly", "success");
+                Toast("Record updated successfully", "success");
             }
         } catch (error) {
             console.log(error);

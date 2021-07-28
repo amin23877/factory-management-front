@@ -65,9 +65,7 @@ function ItemsDetails({
 
     const { data: uniteHistory } = useSWR(activeTab === 8 ? `/unitehistory` : null);
     const { data: services } = useSWR(activeTab === 10 ? `/service?ItemId=${selectedRow.id}` : null);
-    const { data: flags } = useSWR(
-        activeTab === 11 ? `/engineering/manufacturing/task?ItemId=${selectedRow.id}` : null
-    );
+    const { data: flags } = useSWR(activeTab === 11 ? `/qccase/item/${selectedRow.id}` : null);
     const { data: notes } = useSWR<INote[]>(activeTab === 12 ? `/note/item/${selectedRow.id}` : null);
     const [showSnack, setShowSnack] = useState(false);
     const [snackMsg, setSnackMsg] = useState("");
@@ -229,7 +227,7 @@ function ItemsDetails({
             {
                 field: "SODate",
                 headerName: "SO Date",
-                valueFormatter: (r) => formatTimestampToDate(r.row.SODate),
+                valueFormatter: (r) => formatTimestampToDate(r.row.so.createdAt),
                 flex: 1,
             },
         ],
