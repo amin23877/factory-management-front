@@ -214,7 +214,7 @@ function ItemsDetails({
                 disableColumnMenu: true,
             },
             { field: "actualShipDate", headerName: "Actual Ship Date", flex: 1 },
-            { field: "serialNumber", headerName: "Device Serial No.", flex: 1 },
+            { field: "serialNumber", headerName: "Device Serial NO.", flex: 1 },
             { field: "status", headerName: "Status", flex: 1 },
             {
                 field: "warrantyStatus",

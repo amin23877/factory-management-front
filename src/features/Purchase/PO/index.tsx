@@ -50,11 +50,11 @@ function Index() {
     const [compPo, setCompPo] = useState<any>();
 
     const cols = [
-        { field: "number", headerName: "Number" },
+        { field: "number", headerName: "Number", width: 250 },
         { field: "requester", headerName: "Requester" },
-        { field: "VendorId" },
-        { field: "ContactId" },
-        { field: "EmployeeId" },
+        { field: "VendorId", headerName: "Vendor" },
+        { field: "ContactId", headerName: "Contact", width: 180 },
+        { field: "EmployeeId", headerName: "Employee", width: 250 },
     ];
 
     const refreshNotes = async () => {

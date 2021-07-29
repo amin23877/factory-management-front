@@ -31,7 +31,7 @@ function Details({ unit }: { unit: IUnit }) {
         <Box>
             <Box mb={2} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
                 <BasePaper>
-                    <Typography variant="h5">Unit info</Typography>
+                    <Typography variant="h5">Unit Info</Typography>
                     <UnitInfo unit={unit} />
                 </BasePaper>
                 <BasePaper>
