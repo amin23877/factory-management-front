@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box } from "@material-ui/core";
 
 import TextField from "../../app/TextField";
@@ -10,7 +10,7 @@ export const Status = ({ unit }: { unit: IUnitHistory }) => {
     return (
         <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
             <TextField label="Warranty exp date" disabled />
-            <TextField label="Purchase date" value={formatTimestampToDate(unit.SODate)} disabled />
+            <TextField label="Purchase date" value={formatTimestampToDate(unit.so.createdAt)} disabled />
             <TextField label="Estimated ship date" value={unit.estimatedShipDate} disabled />
             <TextField label="Actual ship date" value={unit.actualShipDate} disabled />
             <TextField label="Estimated lead time" disabled />

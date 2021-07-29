@@ -20,7 +20,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     const [page, setPage] = useState<GridPageChangeParams>();
     const [sorts, setSort] = useState<GridSortModelParams>();
 
-    const { data: items, mutate: mutateItems } = useSWR<{ items: IItem[]; total: number }>(
+    const { data: items } = useSWR<{ items: IItem[]; total: number }>(
         generateURL("/item?device=false", filters, sorts, page)
     );
 
@@ -90,7 +90,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
                     onPageChange={(p) => setPage(p)}
                     onPageSizeChange={(ps) => setPage(ps)}
                     onFilterModelChange={(f) => {
-                        setFilters(f);
+                        f.filterModel.items[0].value && setFilters(f);
                     }}
                     rows={items ? items.items : []}
                     columns={gridColumns}

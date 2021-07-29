@@ -12,6 +12,7 @@ export interface ISO {
     QuoteId: string;
     issuedBy?: string;
     status: string;
+    createdAt:number;
 
     estShipDate: string;
     actShipDate: string;
