@@ -35,13 +35,14 @@ export default function ManagementForm() {
             validationSchema={schema}
             onSubmit={handleSubmit}
         >
-            {({ getFieldProps, errors, touched }) => (
+            {({ getFieldProps, errors, touched, values }) => (
                 <Form>
                     <Box display="grid" gridTemplateColumns="1fr" gridGap={10} mt={2}>
                         <TextField
                             label="Test Per Hour"
                             placeholder="Test Per Hour"
                             {...getFieldProps("TPH")}
+                            value={values.TPH}
                             type="number"
                             error={Boolean(errors.TPH && touched.TPH)}
                             helperText={errors.TPH}
@@ -50,6 +51,7 @@ export default function ManagementForm() {
                             label="Evaluation Per Hour"
                             placeholder="Evaluation Per Hour"
                             {...getFieldProps("EPH")}
+                            value={values.EPH}
                             type="number"
                             error={Boolean(errors.EPH && touched.EPH)}
                             helperText={errors.EPH}
@@ -58,6 +60,7 @@ export default function ManagementForm() {
                             label="Manufacturing Per Hour"
                             placeholder="Manufacturing Per Hour"
                             {...getFieldProps("MPH")}
+                            value={values.MPH}
                             type="number"
                             error={Boolean(errors.MPH && touched.MPH)}
                             helperText={errors.MPH}

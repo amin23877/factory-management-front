@@ -40,7 +40,7 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
 
     const LICols = useMemo<GridColumns>(
         () => [
-            { field: "no", headerName: "Part no.", valueFormatter: (params) => params.row.ItemId.no },
+            { field: "no", headerName: "Part NO.", valueFormatter: (params) => params.row.ItemId.no },
             {
                 field: "description",
                 headerName: "Description",
@@ -56,8 +56,8 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
         () => [
             { field: "line", headerName: "Line", width: 100, disableColumnMenu: true },
             { field: "Component", headerName: "Component", flex: 1 },
-            { field: "name", headerName: "Component name", flex: 1 },
-            { field: "location", headerName: "Component location", flex: 1 },
+            { field: "name", headerName: "Component Name", flex: 1 },
+            { field: "location", headerName: "Component Location", width: 200 },
             { field: "um", headerName: "UM", width: 100, disableColumnMenu: true },
             { field: "usage", headerName: "QTY", width: 100, disableColumnMenu: true },
             { field: "description", headerName: "Note", flex: 1 },
@@ -66,13 +66,13 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
     );
 
     const docCols = [
-        { field: "file", headerName: "File" },
-        { field: "createdAt", headerName: "Date", width: 300 },
-        { field: "EmployeeId", headerName: "Creator" },
-        { field: "name", headerName: "File name" },
-        { field: "id", headerName: "File id" },
+        { field: "file", headerName: "File", flex: 1 },
+        { field: "createdAt", headerName: "Date", width: 150 },
+        { field: "EmployeeId", headerName: "Creator", flex: 1 },
+        { field: "name", headerName: "File Name", flex: 1 },
+        { field: "id", headerName: "File ID" },
         { field: "description", headerName: "Description", width: 250 },
-        { field: "type", headerName: "File type" },
+        { field: "type", headerName: "File Type" },
     ];
 
     const noteCols = [
@@ -82,7 +82,7 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
     ];
 
     return (
-        <Dialog open={open} onClose={onClose} title="Unit history" fullWidth maxWidth="md">
+        <Dialog open={open} onClose={onClose} title="Unit history" fullScreen>
             <Box m={2} height={500}>
                 <Formik initialValues={unit.item} onSubmit={() => {}}>
                     {({ values, handleChange }) => (
@@ -93,7 +93,12 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
                                         General
                                     </Typography>
                                     <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} m={1}>
-                                        <TextField label="Name" value={item?.name} disabled style={{ gridColumnEnd: "span 2" }} />
+                                        <TextField
+                                            // label="Name"
+                                            value={item?.name}
+                                            disabled
+                                            style={{ gridColumnEnd: "span 2" }}
+                                        />
                                         <TextField
                                             label="Description"
                                             value={item?.description}
@@ -104,8 +109,18 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
                                         />
                                         <TextField label="Serial number" value={unit.serialNumber} disabled />
                                         <TextField label="Status" value={unit.status} disabled />
-                                        <TextField label="ID" value={unit.item.no} disabled style={{ gridColumnEnd: "span 2" }} />
-                                        <TextField label="SO" value={unit.soid} disabled style={{ gridColumnEnd: "span 2" }} />
+                                        <TextField
+                                            label="ID"
+                                            value={unit.item.no}
+                                            disabled
+                                            style={{ gridColumnEnd: "span 2" }}
+                                        />
+                                        <TextField
+                                            label="SO"
+                                            value={unit.soid}
+                                            disabled
+                                            style={{ gridColumnEnd: "span 2" }}
+                                        />
                                     </Box>
                                 </Paper>
                                 <Paper>
@@ -126,7 +141,9 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
                                         {activeTab === 1 && <Status unit={unit} />}
                                         {activeTab === 2 && <Expense unit={unit} />}
                                         {activeTab === 3 && <Shipping />}
-                                        {activeTab === 4 && <DynamicFilterAndFields values={values} handleChange={handleChange} />}
+                                        {activeTab === 4 && (
+                                            <DynamicFilterAndFields values={values} handleChange={handleChange} />
+                                        )}
                                     </Box>
                                 </Paper>
                             </Box>
@@ -152,13 +169,23 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
                                 <Tab label="Note" />
                                 <Tab label="Auditing" />
                             </Tabs>
-                            {footerActiveTab === 1 && <BaseDataGrid cols={warCols} rows={warranties || []} onRowSelected={() => {}} />}
-                            {footerActiveTab === 2 && <BaseDataGrid cols={bomRecordCols} rows={[]} onRowSelected={() => {}} />}
-                            {footerActiveTab === 3 && <BaseDataGrid cols={docCols} rows={[]} onRowSelected={() => {}} />}
+                            {footerActiveTab === 1 && (
+                                <BaseDataGrid cols={warCols} rows={warranties || []} onRowSelected={() => {}} />
+                            )}
+                            {footerActiveTab === 2 && (
+                                <BaseDataGrid cols={bomRecordCols} rows={[]} onRowSelected={() => {}} />
+                            )}
+                            {footerActiveTab === 3 && (
+                                <BaseDataGrid cols={docCols} rows={[]} onRowSelected={() => {}} />
+                            )}
                             {footerActiveTab === 4 && <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />}
-                            {footerActiveTab === 5 && <BaseDataGrid cols={LICols} rows={soLineItems || []} onRowSelected={() => {}} />}
+                            {footerActiveTab === 5 && (
+                                <BaseDataGrid cols={LICols} rows={soLineItems || []} onRowSelected={() => {}} />
+                            )}
                             {footerActiveTab === 6 && <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />}
-                            {footerActiveTab === 7 && <BaseDataGrid cols={noteCols} rows={[]} onRowSelected={() => {}} />}
+                            {footerActiveTab === 7 && (
+                                <BaseDataGrid cols={noteCols} rows={[]} onRowSelected={() => {}} />
+                            )}
                         </Box>
                     </Paper>
                 </Box>

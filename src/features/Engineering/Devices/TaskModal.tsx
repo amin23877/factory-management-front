@@ -58,7 +58,7 @@ export default function TaskModal({ open, onClose, itemId, device, onDone, task,
 }
 
 export function EditTaskModal({ open, onClose, device, itemId, onDone, task, tab }: IEditTaskModal) {
-    const titles = ["Manufaturing", "Evaluation", "Test", "Level startup"];
+    const titles = ["Manufacturing", "Evaluation", "Test", "Level startup"];
 
     return (
         <Dialog title={titles[tab]} open={open} onClose={onClose} maxWidth="lg" fullWidth>

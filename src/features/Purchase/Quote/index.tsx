@@ -36,12 +36,12 @@ function Index() {
     const [selDoc, setSelDoc] = useState<any>();
     const [selPQ, setSelPQ] = useState<IPurchaseQuote>();
 
-    const cols: GridColDef[] = [
-        { field: "number", headerName: "Number" },
+    const cols = [
+        { field: "number", headerName: "Number", width: 250 },
         { field: "requester", headerName: "Requester" },
-        { field: "VendorId" },
-        { field: "ContactId" },
-        { field: "EmployeeId" },
+        { field: "VendorId", headerName: "Vendor" },
+        { field: "ContactId", headerName: "Contact", width: 180 },
+        { field: "EmployeeId", headerName: "Employee", width: 250 },
     ];
 
     const refreshPQs = async () => {
@@ -172,7 +172,12 @@ function Index() {
                 </List>
             </Box>
             <Box>
-                <Tabs style={{ marginBottom: "1em" }} textColor="primary" value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                <Tabs
+                    style={{ marginBottom: "1em" }}
+                    textColor="primary"
+                    value={activeTab}
+                    onChange={(e, nv) => setActiveTab(nv)}
+                >
                     <Tab label="List" />
                     <Tab label="Details" disabled={!selPQ} />
                 </Tabs>

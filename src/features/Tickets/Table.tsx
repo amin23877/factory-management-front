@@ -9,8 +9,13 @@ import { fetcher } from "../../api";
 import { IJob } from "../../api/job";
 
 export default function Table({ onRowSelected }: { onRowSelected: (d: IJob) => void }) {
-    const { data: jobs, mutate: mutateJobs } = useSWR<IJob[]>("/job", fetcher);
-    const cols: GridColDef[] = [{ field: "description" }, { field: "deadline" }, { field: "callTime" }, { field: "status" }];
+    const { data: jobs } = useSWR<IJob[]>("/job", fetcher);
+    const cols: GridColDef[] = [
+        { field: "description", headerName: "Description", flex: 1 },
+        { field: "deadline", headerName: "Deadline", width: 180 },
+        { field: "callTime", headerName: "Call time", width: 180 },
+        { field: "status", headerName: "Status", width: 180 },
+    ];
 
     if (!jobs) {
         return <LinearProgress />;
