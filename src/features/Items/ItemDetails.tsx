@@ -1,6 +1,7 @@
 import React, { useMemo, useState, useRef } from "react";
 import { Box, Grid, Tabs, Tab, LinearProgress, Typography } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
+import { useParams } from "react-router-dom";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 
@@ -17,28 +18,21 @@ import UpdateQuantityModal from "./Quantity";
 
 import { INote } from "../../api/note";
 import { IDocument } from "../../api/document";
-import { AddItemSchema, updateAnItem, addImage } from "../../api/items";
+import { AddItemSchema, updateAnItem, addImage, IItem } from "../../api/items";
 import { IBom } from "../../api/bom";
 // import SODatagrid from "../Sales/SO/Datagrid";
 import QuoteDatagrid from "../Sales/Quote/Datagrid";
 import SOTable from "./SOTable";
 import Toast from "../../app/Toast";
+import MyQRCode from "../../app/QRCode";
 import UploadButton from "../../app/FileUploader";
 import { exportPdf } from "../../logic/pdf";
 import QRCode from "./QRCode";
 
-function ItemsDetails({
-    selectedRow,
-    onNoteSelected,
-    onDocSelected,
-    onDone,
-}: {
-    selectedRow: any;
-    onDone?: () => void;
-    onNoteSelected: (a: any) => void;
-    onDocSelected: (a: any) => void;
-}) {
+function ItemsDetails() {
     const qrCode = useRef<HTMLElement | null>(null);
+    const { itemId } = useParams<{ itemId: string }>();
+    const { data: selectedRow } = useSWR<IItem>(itemId ? `/item/${itemId}` : null);
 
     const [img, setImg] = useState<any>();
 
@@ -55,6 +49,8 @@ function ItemsDetails({
             }
         }
     };
+    // TODO: Add Note and Document modal
+
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
 
@@ -361,10 +357,8 @@ function ItemsDetails({
                     <Tab label="Quantity history" />
                 </Tabs>
                 <Box p={3}>
-                    {activeTab === 0 && (
-                        <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
-                    )}
-                    {activeTab === 1 && <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />}
+                    {activeTab === 0 && <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={() => {}} />}
+                    {activeTab === 1 && <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={() => {}} />}
                     {activeTab === 2 && <BaseDataGrid cols={usesCols} rows={uses || []} onRowSelected={() => {}} />}
                     {activeTab === 3 && <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={() => {}} />}
                     {activeTab === 4 && (

@@ -25,7 +25,7 @@ export const Purchasing = ({ onClose, help }: IHelpForm) => {
         }
     };
 
-    const handleSubmit = (values, { setSubmitting }) => {
+    const handleSubmit = (values: any, { setSubmitting }: any) => {
         if (help && help.id) {
             // updateAManhelp(help.id, {  ...values })
             //     .then((d) => {
@@ -152,7 +152,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
         }
     };
 
-    const handleSubmit = (values, { setSubmitting }) => {
+    const handleSubmit = (values: any, { setSubmitting }: any) => {
         if (help && help.id) {
             // updateAManhelp(help.id, {  ...values })
             //     .then((d) => {

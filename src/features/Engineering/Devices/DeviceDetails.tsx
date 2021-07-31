@@ -17,34 +17,21 @@ import UnitHistoryModal from "../../Unit/Modal";
 
 import { INote } from "../../../api/note";
 import { IDocument } from "../../../api/document";
-import { AddItemSchema, updateAnItem } from "../../../api/items";
+import { AddItemSchema, IItem, updateAnItem } from "../../../api/items";
 import { IBom } from "../../../api/bom";
 import Parts from "../../BOM/Parts";
 import { formatTimestampToDate } from "../../../logic/date";
 import { IUnitHistory } from "../../../api/units";
-
+import { useParams } from "react-router-dom";
 import Toast from "../../../app/Toast";
-import MyQRCode from "../../../app/QRCode";
 import { exportPdf } from "../../../logic/pdf";
 import { EditTaskModal } from "./TaskModal";
 import DeviceQRCode from "./QRCode";
 
-function ItemsDetails({
-    selectedRow,
-    onNoteSelected,
-    onDocSelected,
-    onStepSelected,
-    onFlagSelected,
-    onDone,
-}: {
-    selectedRow: any;
-    onDone?: () => void;
-    onNoteSelected: (a: any) => void;
-    onDocSelected: (a: any) => void;
-    onStepSelected: (a: any) => void;
-    onFlagSelected: (a: any) => void;
-}) {
+function DeviceDetails() {
     const qrCode = useRef<HTMLElement | null>(null);
+    const { deviceId } = useParams<{ deviceId: string }>();
+    const { data: selectedRow } = useSWR<IItem>(deviceId ? `/item/${deviceId}` : null);
 
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
@@ -54,8 +41,8 @@ function ItemsDetails({
 
     const [selectedNote, setSelectedNote] = useState<any>();
     const [selectedDoc, setSelectedDoc] = useState<any>();
-    const [selectedStep, setSelectedStep] = useState<any>();
     const [selectedFlag, setSelectedFlag] = useState<any>();
+    const [selectedStep, setSelectedStep] = useState<any>();
 
     const [selectedUnit, setSelectedUnit] = useState<IUnitHistory>();
 
@@ -287,8 +274,6 @@ function ItemsDetails({
                 if (resp) {
                     setSubmitting(false);
                     Toast("Record updated successfully", "success");
-
-                    onDone && onDone();
                 }
             }
         } catch (error) {
@@ -461,7 +446,8 @@ function ItemsDetails({
                                     cols={manCols}
                                     rows={manSteps || []}
                                     onRowSelected={(d) => {
-                                        onStepSelected({ ...d, tab: 0 });
+                                        setSelectedStep({ ...d, tab: 0 });
+                                        setStepModal(true);
                                     }}
                                 />
                             )}
@@ -470,7 +456,8 @@ function ItemsDetails({
                                     cols={evalCols}
                                     rows={evalSteps || []}
                                     onRowSelected={(d) => {
-                                        onStepSelected({ ...d, tab: 1 });
+                                        setSelectedStep({ ...d, tab: 1 });
+                                        setStepModal(true);
                                     }}
                                 />
                             )}
@@ -479,7 +466,8 @@ function ItemsDetails({
                                     cols={evalCols}
                                     rows={testSteps || []}
                                     onRowSelected={(d) => {
-                                        onStepSelected({ ...d, tab: 2 });
+                                        setSelectedStep({ ...d, tab: 2 });
+                                        setStepModal(true);
                                     }}
                                 />
                             )}
@@ -488,7 +476,8 @@ function ItemsDetails({
                                     cols={evalCols}
                                     rows={fieldSteps || []}
                                     onRowSelected={(d) => {
-                                        onStepSelected({ ...d, tab: 3 });
+                                        setSelectedStep({ ...d, tab: 3 });
+                                        setStepModal(true);
                                     }}
                                 />
                             )}
@@ -514,10 +503,12 @@ function ItemsDetails({
                                 <BaseDataGrid cols={serviceCols} rows={services || []} onRowSelected={() => {}} />
                             )}
                             {activeTab === 11 && (
-                                <BaseDataGrid cols={flagCols} rows={flags || []} onRowSelected={onFlagSelected} />
+                                // TODO: Add Flag Modal
+                                <BaseDataGrid cols={flagCols} rows={flags || []} onRowSelected={() => {}} />
                             )}
                             {activeTab === 12 && (
-                                <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
+                                // TODO: Add Note Modal
+                                <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={() => {}} />
                             )}
                         </Box>
                     </BasePaper>
@@ -526,4 +517,4 @@ function ItemsDetails({
         </Box>
     );
 }
-export default ItemsDetails;
+export default DeviceDetails;

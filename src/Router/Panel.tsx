@@ -32,6 +32,9 @@ const Production = React.lazy(() => import("../pages/Production"));
 const Engineering = React.lazy(() => import("../pages/Engineering"));
 const Page404 = React.lazy(() => import("../pages/404"));
 
+const ItemDetails = React.lazy(() => import("../features/Items/ItemDetails"));
+const DeviceDetails = React.lazy(() => import("../features/Engineering/Devices/DeviceDetails"));
+
 const drawerWidth = 220;
 
 const useStyles = makeStyles((theme) => ({
@@ -131,9 +134,6 @@ export default function PanelRouter() {
                             <MenuIcon />
                         </div>
                     </IconButton>
-                    {/* <Typography variant="h6" noWrap>
-                        Persistent drawer
-                    </Typography> */}
                     <TopAppBar drawerWidth={drawerWidth} />
                 </Toolbar>
             </AppBar>
@@ -156,8 +156,7 @@ export default function PanelRouter() {
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === "ltr" ? (
                             <div style={{ color: "white" }}>
-                                {" "}
-                                <ChevronLeftIcon />{" "}
+                                <ChevronLeftIcon />
                             </div>
                         ) : (
                             <ChevronRightIcon />
@@ -200,6 +199,9 @@ export default function PanelRouter() {
                             <Route exact path="/panel/purchase" component={Purchase} />
                             <Route exact path="/panel/production" component={Production} />
                             <Route exact path="/panel/engineering" component={Engineering} />
+
+                            <Route exact path="/panel/inventory/:itemId" component={ItemDetails} />
+                            <Route exact path="/panel/engineering/:deviceId" component={DeviceDetails} />
 
                             <Route exact path="*" component={Page404} />
                         </Switch>

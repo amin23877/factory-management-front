@@ -7,32 +7,29 @@ import Button from "../../app/Button";
 import TextField from "../../app/TextField";
 import { Box } from "@material-ui/core";
 import { addManualCount } from "../../api/items";
+import Toast from "../../app/Toast";
 
 export default function ManualCountModal({
     open,
     itemId,
     onClose,
-    onDone,
 }: {
     itemId: string;
     open: boolean;
     onClose: () => void;
-    onDone: () => void;
 }) {
+    const handleSubmit = (d: any) => {
+        addManualCount(itemId, d.count, d.date)
+            .then((d) => {
+                Toast("Record updated successfully", "success");
+            })
+            .catch((e) => console.log(e));
+    };
+
     return (
         <Dialog open={open} onClose={onClose} title="Adjust last manual count">
             <Box m={2}>
-                <Formik
-                    initialValues={{} as any}
-                    onSubmit={(d) => {
-                        addManualCount(itemId, d.count, d.date)
-                            .then((d) => {
-                                console.log(d);
-                                onDone();
-                            })
-                            .catch((e) => console.log(e));
-                    }}
-                >
+                <Formik initialValues={{} as any} onSubmit={handleSubmit}>
                     {({ values, handleChange, handleBlur, errors }) => (
                         <Form>
                             <Box display="flex" justifyContent="space-between" alignItems="center">
