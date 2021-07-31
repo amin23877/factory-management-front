@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Box, FormControlLabel, Checkbox, Paper } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
@@ -25,7 +25,7 @@ export const Purchasing = ({ onClose, help }: IHelpForm) => {
         }
     };
 
-    const handleSubmit = (values, { setSubmitting }) => {
+    const handleSubmit = (values: any, { setSubmitting }: { setSubmitting: any }) => {
         if (help && help.id) {
             // updateAManhelp(help.id, {  ...values })
             //     .then((d) => {
@@ -51,67 +51,106 @@ export const Purchasing = ({ onClose, help }: IHelpForm) => {
         <Formik initialValues={help ? help : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                 <Form>
-                    <Box display="grid" gridTemplateColumns={help ? "1fr 1fr" : "1fr"} gridGap={10}>
-                        <Box m={2} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
+                    <Box display="grid" gridTemplateColumns={"1fr"} gridGap={10}>
+                        <Box m={2} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridGap={10}>
                             <Paper
                                 style={{
                                     margin: "0.5em 0",
                                     padding: "0 0.5em",
                                     backgroundColor: "#eee",
-                                    gridColumnEnd: "span 2",
+                                    gridColumnEnd: "span 3",
                                 }}
                             >
                                 <FormControlLabel
-                                    name="buildToStock"
-                                    value={values.buildToStock}
-                                    control={<Checkbox checked={Boolean(values.buildToStock)} />}
-                                    label="Build to Stock"
+                                    name="done"
+                                    value={values.done}
+                                    control={<Checkbox checked={Boolean(values.done)} />}
+                                    label="Done"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <FormControlLabel
-                                    name="engAP"
-                                    value={values.engAP}
-                                    control={<Checkbox checked={Boolean(values.engAP)} />}
-                                    label="Engineering Approved"
+                                <TextField
+                                    value={values.priority}
+                                    name="priority"
+                                    label="Priority"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
+                                    type="number"
                                 />
                             </Paper>
+                            <TextField
+                                value={values.date}
+                                name="date"
+                                label="Date"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                disabled
+                            />
+                            <TextField
+                                value={values.SO}
+                                name="SO"
+                                label="SO"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            <TextField
+                                value={values.number}
+                                name="number"
+                                label="Serial"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
                             <TextField
                                 style={{ gridColumnEnd: "span 2" }}
                                 value={values.name}
                                 name="name"
-                                label="Name"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            <TextField
-                                value={values.priority}
-                                name="priority"
-                                label="Priority"
+                                label="Device Name"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
 
                             <TextField
-                                value={values.hours}
-                                name="hours"
-                                label="hours"
+                                value={values.DeviceID}
+                                name="deviceId"
+                                label="Device ID"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
-
                             <TextField
-                                style={{ gridColumnEnd: "span 2" }}
+                                style={{ gridColumnEnd: "span 3" }}
                                 value={values.description}
                                 name="description"
-                                label="Description"
+                                label="Device Description"
                                 multiline
                                 rows={4}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
+                            <TextField
+                                style={{ gridColumnEnd: "span 2" }}
+                                value={values.note}
+                                name="note"
+                                label="Note"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            <TextField
+                                value={values.flaggedItem}
+                                name="flaggedItem"
+                                label="Flagged Item"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                        </Box>
+                        <Box
+                            style={{
+                                width: "50%",
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr",
+                                columnGap: "15px",
+                                margin: "5px auto",
+                            }}
+                        >
                             <Button
                                 type="submit"
                                 disabled={isSubmitting}
@@ -152,7 +191,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
         }
     };
 
-    const handleSubmit = (values, { setSubmitting }) => {
+    const handleSubmit = (values: any, { setSubmitting }: { setSubmitting: any }) => {
         if (help && help.id) {
             // updateAManhelp(help.id, {  ...values })
             //     .then((d) => {
@@ -178,67 +217,99 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
         <Formik initialValues={help ? help : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                 <Form>
-                    <Box display="grid" gridTemplateColumns={help ? "1fr 1fr" : "1fr"} gridGap={10}>
-                        <Box m={2} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
+                    <Box display="grid" gridTemplateColumns={"1fr"} gridGap={10}>
+                        <Box m={2} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridGap={10}>
                             <Paper
                                 style={{
                                     margin: "0.5em 0",
                                     padding: "0 0.5em",
                                     backgroundColor: "#eee",
-                                    gridColumnEnd: "span 2",
+                                    gridColumnEnd: "span 3",
                                 }}
                             >
                                 <FormControlLabel
-                                    name="buildToStock"
-                                    value={values.buildToStock}
-                                    control={<Checkbox checked={Boolean(values.buildToStock)} />}
-                                    label="Build to Stock"
+                                    name="done"
+                                    value={values.done}
+                                    control={<Checkbox checked={Boolean(values.done)} />}
+                                    label="Done"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <FormControlLabel
-                                    name="engAP"
-                                    value={values.engAP}
-                                    control={<Checkbox checked={Boolean(values.engAP)} />}
-                                    label="Engineering Approved"
+                                <TextField
+                                    value={values.priority}
+                                    name="priority"
+                                    label="Priority"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
+                                    type="number"
                                 />
                             </Paper>
+                            <TextField
+                                value={values.date}
+                                name="date"
+                                label="Date"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                disabled
+                            />
+                            <TextField
+                                value={values.SO}
+                                name="SO"
+                                label="SO"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            <TextField
+                                value={values.number}
+                                name="number"
+                                label="Serial"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
                             <TextField
                                 style={{ gridColumnEnd: "span 2" }}
                                 value={values.name}
                                 name="name"
-                                label="Name"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-                            <TextField
-                                value={values.priority}
-                                name="priority"
-                                label="Priority"
+                                label="Device Name"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
 
                             <TextField
-                                value={values.hours}
-                                name="hours"
-                                label="hours"
+                                value={values.DeviceID}
+                                name="deviceId"
+                                label="Device ID"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
-
                             <TextField
-                                style={{ gridColumnEnd: "span 2" }}
+                                style={{ gridColumnEnd: "span 3" }}
                                 value={values.description}
                                 name="description"
-                                label="Description"
+                                label="Device Description"
                                 multiline
                                 rows={4}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                             />
+                            <TextField
+                                style={{ gridColumnEnd: "span 3" }}
+                                value={values.note}
+                                name="note"
+                                label="Note"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                        </Box>
+                        <Box
+                            style={{
+                                width: "50%",
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr",
+                                columnGap: "15px",
+                                margin: "5px auto",
+                            }}
+                        >
                             <Button
                                 type="submit"
                                 disabled={isSubmitting}

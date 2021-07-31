@@ -2,12 +2,19 @@ import React, { useState, useMemo } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
 import useSWR from "swr";
-import Reports from "./Report";
+
 import { BasePaper } from "../../../app/Paper";
 import BaseDataGrid from "../../../app/BaseDataGrid";
 
+import Reports from "./Report";
+import { FieldModal, PurchaseModal } from "./Modals";
+
 export default function ENDashboard() {
     const [activeTab, setActiveTab] = useState(0);
+    const [fieldOpen, setFieldOpen] = useState(false);
+    const [purchaseOpen, setPurchaseOpen] = useState(false);
+    const [selectedField, setSelectedField] = useState();
+    const [selectedPurchase, setSelectedPurchase] = useState();
 
     const EACols: GridColDef[] = useMemo(
         () => [
@@ -57,6 +64,10 @@ export default function ENDashboard() {
 
     return (
         <Box>
+            {selectedField && <FieldModal open={fieldOpen} onClose={() => setFieldOpen(false)} help={selectedField} />}
+            {selectedPurchase && (
+                <PurchaseModal open={purchaseOpen} onClose={() => setPurchaseOpen(false)} help={selectedPurchase} />
+            )}
             <BasePaper>
                 <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
                     <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
@@ -71,8 +82,26 @@ export default function ENDashboard() {
                 </Box>
                 {activeTab === 0 && <Reports />}
                 {activeTab === 1 && <BaseDataGrid rows={[] || []} cols={EACols} onRowSelected={() => {}} />}
-                {activeTab === 2 && <BaseDataGrid rows={[] || []} cols={HelpCols} onRowSelected={() => {}} />}
-                {activeTab === 3 && <BaseDataGrid rows={[] || []} cols={HelpCols} onRowSelected={() => {}} />}
+                {activeTab === 2 && (
+                    <BaseDataGrid
+                        rows={[{ id: 256412 }] || []}
+                        cols={HelpCols}
+                        onRowSelected={(d) => {
+                            setSelectedField(d);
+                            setFieldOpen(true);
+                        }}
+                    />
+                )}
+                {activeTab === 3 && (
+                    <BaseDataGrid
+                        rows={[{ id: 256412 }] || []}
+                        cols={HelpCols}
+                        onRowSelected={(d) => {
+                            setSelectedPurchase(d);
+                            setPurchaseOpen(true);
+                        }}
+                    />
+                )}
                 {activeTab === 4 && <BaseDataGrid rows={[] || []} cols={QuestionCols} onRowSelected={() => {}} />}
                 {activeTab === 5 && <BaseDataGrid rows={[] || []} cols={QCCols} onRowSelected={() => {}} />}
             </BasePaper>
