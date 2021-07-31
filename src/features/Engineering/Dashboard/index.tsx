@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
-import { GridColDef } from "@material-ui/data-grid";
+import { GridColDef, GridColumns } from "@material-ui/data-grid";
+
 import useSWR from "swr";
 
 import { BasePaper } from "../../../app/Paper";
@@ -8,6 +9,7 @@ import BaseDataGrid from "../../../app/BaseDataGrid";
 
 import Reports from "./Report";
 import { FieldModal, PurchaseModal } from "./Modals";
+import { formatTimestampToDate } from "../../../logic/date";
 
 export default function ENDashboard() {
     const [activeTab, setActiveTab] = useState(0);
@@ -16,19 +18,50 @@ export default function ENDashboard() {
     const [selectedField, setSelectedField] = useState();
     const [selectedPurchase, setSelectedPurchase] = useState();
 
-    const EACols: GridColDef[] = useMemo(
+    const { data: engAp } = useSWR("/engapp");
+    const { data: FSH } = useSWR("/fsh");
+
+    const EACols = useMemo<GridColumns>(
         () => [
-            { field: "date", headerName: "Date", flex: 2 },
-            { field: "so", headerName: "SO", flex: 1 },
-            { field: "unit", headerName: "Unit", flex: 1 },
-            { field: "device", headerName: "Device ID", flex: 3 },
+            // { field: "date", headerName: "Date", flex: 2 },
+            // { field: "so", headerName: "SO", flex: 1 },
+            // { field: "unit", headerName: "Unit", flex: 1 },
+            { field: "no", headerName: "Device ID", flex: 2, valueFormatter: (params) => params.row?.ItemId?.no },
             { field: "note", headerName: "Note", flex: 1 },
-            { field: "EA", headerName: "E.A.", flex: 1 },
+            {
+                field: "EA",
+                headerName: "E.A.",
+                flex: 1,
+                type: "boolean",
+                valueFormatter: (params) => params.row?.ItemId?.engineeringApproved,
+            },
             { field: "priority", headerName: "Priority", flex: 1 },
         ],
         []
     );
-    const HelpCols: GridColDef[] = useMemo(
+    const FSCols = useMemo<GridColumns>(
+        () => [
+            {
+                field: "date",
+                headerName: "Date",
+                flex: 2,
+                valueFormatter: (params) => formatTimestampToDate(params.row?.ticket?.createdAt),
+            },
+            { field: "so", headerName: "SO", flex: 1, valueFormatter: (params) => params.row?.so?.number },
+            { field: "unit", headerName: "Unit", flex: 1, valueFormatter: (params) => params.row?.unit?.number },
+            { field: "device", headerName: "Device ID", flex: 3, valueFormatter: (params) => params.row?.item?.no },
+            { field: "note", headerName: "Note", flex: 1, valueFormatter: (params) => params.row?.ticket?.note },
+            { field: "done", headerName: "Done", flex: 1, valueFormatter: (params) => params.row?.fsh?.done },
+            {
+                field: "priority",
+                headerName: "Priority",
+                flex: 1,
+                valueFormatter: (params) => params.row?.fsh?.priority,
+            },
+        ],
+        []
+    );
+    const PCols = useMemo<GridColumns>(
         () => [
             { field: "date", headerName: "Date", flex: 2 },
             { field: "so", headerName: "SO", flex: 1 },
@@ -81,11 +114,11 @@ export default function ENDashboard() {
                     <div style={{ flexGrow: 1 }} />
                 </Box>
                 {activeTab === 0 && <Reports />}
-                {activeTab === 1 && <BaseDataGrid rows={[] || []} cols={EACols} onRowSelected={() => {}} />}
+                {activeTab === 1 && <BaseDataGrid rows={engAp || []} cols={EACols} onRowSelected={() => {}} />}
                 {activeTab === 2 && (
                     <BaseDataGrid
-                        rows={[{ id: 256412 }] || []}
-                        cols={HelpCols}
+                        rows={FSH || []}
+                        cols={FSCols}
                         onRowSelected={(d) => {
                             setSelectedField(d);
                             setFieldOpen(true);
@@ -95,7 +128,7 @@ export default function ENDashboard() {
                 {activeTab === 3 && (
                     <BaseDataGrid
                         rows={[{ id: 256412 }] || []}
-                        cols={HelpCols}
+                        cols={PCols}
                         onRowSelected={(d) => {
                             setSelectedPurchase(d);
                             setPurchaseOpen(true);
