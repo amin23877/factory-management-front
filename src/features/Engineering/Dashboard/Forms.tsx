@@ -1,11 +1,13 @@
 import React from "react";
 import { Box, FormControlLabel, Checkbox, Paper } from "@material-ui/core";
 import { Formik, Form } from "formik";
-import useSWR, { mutate } from "swr";
+import { mutate } from "swr";
 
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
-
+import { updateFSQ, deleteFSQ } from "../../../api/fieldServiceQuestion";
+import { updatePQ, deletePQ } from "../../../api/purchaseQuestion";
+import { ArraySelect } from "../../../app/Inputs";
 interface IHelpForm {
     help?: any;
     onClose: () => void;
@@ -14,27 +16,29 @@ interface IHelpForm {
 export const Purchasing = ({ onClose, help }: IHelpForm) => {
     const deleteDocument = async () => {
         try {
-            // if (help && help.id) {
-            //     await deleteAManhelp(help.id);
-            //     await mutate(`/engineering/manufacturing/help?ItemId=${itemId}`);
-            //     onDone && onDone();
-            //     onClose();
-            // }
+            if (help && help.id) {
+                await deletePQ(help.id);
+                await mutate(`/pq`);
+                onClose();
+            }
         } catch (error) {
             console.log(error);
         }
     };
 
+<<<<<<< HEAD
     const handleSubmit = (values: any, { setSubmitting }: any) => {
+=======
+    const handleSubmit = (values: any, { setSubmitting }: { setSubmitting: any }) => {
+>>>>>>> origin/amin
         if (help && help.id) {
-            // updateAManhelp(help.id, {  ...values })
-            //     .then((d) => {
-            //         mutate(`/engineering/manufacturing/help?ItemId=${itemId}`);
-            //         onDone && onDone();
-            //         onClose();
-            //     })
-            //     .catch((e) => console.log(e))
-            //     .finally(() => setSubmitting(false));
+            updatePQ(help.id, { ...values })
+                .then((d) => {
+                    mutate(`/pq`);
+                    onClose();
+                })
+                .catch((e) => console.log(e))
+                .finally(() => setSubmitting(false));
         } else {
             // createAManhelp({ ItemId: itemId, ...values })
             //     .then((d) => {
@@ -51,67 +55,117 @@ export const Purchasing = ({ onClose, help }: IHelpForm) => {
         <Formik initialValues={help ? help : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                 <Form>
-                    <Box display="grid" gridTemplateColumns={help ? "1fr 1fr" : "1fr"} gridGap={10}>
-                        <Box m={2} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
+                    <Box display="grid" gridTemplateColumns={"1fr"} gridGap={10}>
+                        <Box m={2} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridGap={10}>
                             <Paper
                                 style={{
                                     margin: "0.5em 0",
-                                    padding: "0 0.5em",
+                                    padding: "0.5em",
                                     backgroundColor: "#eee",
-                                    gridColumnEnd: "span 2",
+                                    gridColumnEnd: "span 3",
+                                    display: "grid",
+                                    gridTemplateColumns: "1fr 1fr 1fr",
+                                    columnGap: "15px",
                                 }}
                             >
                                 <FormControlLabel
-                                    name="buildToStock"
-                                    value={values.buildToStock}
-                                    control={<Checkbox checked={Boolean(values.buildToStock)} />}
-                                    label="Build to Stock"
+                                    name="done"
+                                    value={values.done}
+                                    control={<Checkbox checked={Boolean(values.done)} />}
+                                    label="Done"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <FormControlLabel
-                                    name="engAP"
-                                    value={values.engAP}
-                                    control={<Checkbox checked={Boolean(values.engAP)} />}
-                                    label="Engineering Approved"
+                                <ArraySelect
+                                    items={["high", "normal", "low"]}
+                                    defaultValue="normal"
+                                    value={values.priority}
+                                    name="priority"
+                                    label="Priority"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
                             </Paper>
                             <TextField
+                                value={values.date}
+                                name="date"
+                                label="Date"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                disabled
+                            />
+                            <TextField
+                                value={values.SO}
+                                name="SO"
+                                label="SO"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                disabled
+                            />
+                            <TextField
+                                value={values.number}
+                                name="number"
+                                label="Serial"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                disabled
+                            />
+                            <TextField
                                 style={{ gridColumnEnd: "span 2" }}
                                 value={values.name}
                                 name="name"
-                                label="Name"
+                                label="Device Name"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                            />
-                            <TextField
-                                value={values.priority}
-                                name="priority"
-                                label="Priority"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
+                                disabled
                             />
 
                             <TextField
-                                value={values.hours}
-                                name="hours"
-                                label="hours"
+                                value={values.DeviceID}
+                                name="deviceId"
+                                label="Device ID"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                disabled
                             />
-
                             <TextField
-                                style={{ gridColumnEnd: "span 2" }}
+                                style={{ gridColumnEnd: "span 3" }}
                                 value={values.description}
                                 name="description"
-                                label="Description"
+                                label="Device Description"
                                 multiline
                                 rows={4}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                disabled
                             />
+                            <TextField
+                                style={{ gridColumnEnd: "span 2" }}
+                                value={values.note}
+                                name="note"
+                                label="Note"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                disabled
+                            />
+                            <TextField
+                                value={values.flaggedItem}
+                                name="flaggedItem"
+                                label="Flagged Item"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                disabled
+                            />
+                        </Box>
+                        <Box
+                            style={{
+                                width: "50%",
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr",
+                                columnGap: "15px",
+                                margin: "5px auto",
+                            }}
+                        >
                             <Button
                                 type="submit"
                                 disabled={isSubmitting}
@@ -141,27 +195,29 @@ export const Purchasing = ({ onClose, help }: IHelpForm) => {
 export const FieldService = ({ onClose, help }: IHelpForm) => {
     const deleteDocument = async () => {
         try {
-            // if (help && help.id) {
-            //     await deleteAManhelp(help.id);
-            //     await mutate(`/engineering/manufacturing/help?ItemId=${itemId}`);
-            //     onDone && onDone();
-            //     onClose();
-            // }
+            if (help && help.id) {
+                await deleteFSQ(help.id);
+                await mutate(`/fsh`);
+                onClose();
+            }
         } catch (error) {
             console.log(error);
         }
     };
 
+<<<<<<< HEAD
     const handleSubmit = (values: any, { setSubmitting }: any) => {
+=======
+    const handleSubmit = (values: any, { setSubmitting }: { setSubmitting: any }) => {
+>>>>>>> origin/amin
         if (help && help.id) {
-            // updateAManhelp(help.id, {  ...values })
-            //     .then((d) => {
-            //         mutate(`/engineering/manufacturing/help?ItemId=${itemId}`);
-            //         onDone && onDone();
-            //         onClose();
-            //     })
-            //     .catch((e) => console.log(e))
-            //     .finally(() => setSubmitting(false));
+            updateFSQ(help.id, { ...values })
+                .then((d) => {
+                    mutate(`/fsh`);
+                    onClose();
+                })
+                .catch((e) => console.log(e))
+                .finally(() => setSubmitting(false));
         } else {
             // createAManhelp({ ItemId: itemId, ...values })
             //     .then((d) => {
@@ -178,67 +234,108 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
         <Formik initialValues={help ? help : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                 <Form>
-                    <Box display="grid" gridTemplateColumns={help ? "1fr 1fr" : "1fr"} gridGap={10}>
-                        <Box m={2} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
+                    <Box display="grid" gridTemplateColumns={"1fr"} gridGap={10}>
+                        <Box m={2} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridGap={10}>
                             <Paper
                                 style={{
                                     margin: "0.5em 0",
-                                    padding: "0 0.5em",
+                                    padding: "0.5em",
                                     backgroundColor: "#eee",
-                                    gridColumnEnd: "span 2",
+                                    gridColumnEnd: "span 3",
+                                    display: "grid",
+                                    gridTemplateColumns: "1fr 1fr 1fr",
+                                    columnGap: "15px",
                                 }}
                             >
                                 <FormControlLabel
-                                    name="buildToStock"
-                                    value={values.buildToStock}
-                                    control={<Checkbox checked={Boolean(values.buildToStock)} />}
-                                    label="Build to Stock"
+                                    name="done"
+                                    value={values.done}
+                                    control={<Checkbox checked={Boolean(values.done)} />}
+                                    label="Done"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <FormControlLabel
-                                    name="engAP"
-                                    value={values.engAP}
-                                    control={<Checkbox checked={Boolean(values.engAP)} />}
-                                    label="Engineering Approved"
+
+                                <ArraySelect
+                                    items={["high", "normal", "low"]}
+                                    defaultValue="normal"
+                                    value={values.priority}
+                                    name="priority"
+                                    label="Priority"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
                             </Paper>
                             <TextField
+                                value={values.date}
+                                name="date"
+                                label="Date"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                disabled
+                            />
+                            <TextField
+                                value={values.SO}
+                                name="SO"
+                                label="SO"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                disabled
+                            />
+                            <TextField
+                                value={values.number}
+                                name="number"
+                                label="Serial"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                disabled
+                            />
+                            <TextField
                                 style={{ gridColumnEnd: "span 2" }}
                                 value={values.name}
                                 name="name"
-                                label="Name"
+                                label="Device Name"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                disabled
                             />
                             <TextField
-                                value={values.priority}
-                                name="priority"
-                                label="Priority"
+                                value={values.DeviceID}
+                                name="deviceId"
+                                label="Device ID"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                disabled
                             />
-
                             <TextField
-                                value={values.hours}
-                                name="hours"
-                                label="hours"
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                            />
-
-                            <TextField
-                                style={{ gridColumnEnd: "span 2" }}
+                                style={{ gridColumnEnd: "span 3" }}
                                 value={values.description}
                                 name="description"
-                                label="Description"
+                                label="Device Description"
                                 multiline
                                 rows={4}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                disabled
                             />
+                            <TextField
+                                style={{ gridColumnEnd: "span 3" }}
+                                value={values.note}
+                                name="note"
+                                label="Note"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                        </Box>
+                        <Box
+                            style={{
+                                width: "50%",
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr",
+                                columnGap: "15px",
+                                margin: "5px auto",
+                            }}
+                        >
                             <Button
                                 type="submit"
                                 disabled={isSubmitting}

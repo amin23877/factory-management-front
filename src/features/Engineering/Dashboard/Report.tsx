@@ -17,6 +17,7 @@ export default function Report() {
                         <Tab label="Report 3" />
                         <Tab label="Report 4" />
                         <Tab label="Report 5" />
+                        <Tab label="Report 6" />
                     </Tabs>
                     <div style={{ flexGrow: 1 }} />
                 </Box>
@@ -25,6 +26,7 @@ export default function Report() {
                 {activeTab === 2 && <Box flex={1}></Box>}
                 {activeTab === 3 && <Box flex={1}></Box>}
                 {activeTab === 4 && <Box flex={1}></Box>}
+                {activeTab === 5 && <Box flex={1}></Box>}
             </BasePaper>
         </Box>
     );
