@@ -67,7 +67,7 @@ function Details({ unit }: { unit: IUnit }) {
                     {infoActiveTab === 2 && (
                         <Box mt={1} display="flex" justifyContent="space-around" alignItems="center">
                             <div ref={(e) => (qrCode.current = e)} style={{ flex: 1 }}>
-                                <MyQRCode value={window.location.hostname + `/panel/production/${unit.id}`} />
+                                <MyQRCode value={unit.item.no} />
                                 <Typography variant="subtitle1">Unit Number: {unit.item.no}</Typography>
                                 <Typography variant="subtitle1">Unit Name: {unit.item.name}</Typography>
                                 <Typography variant="subtitle1">Sales Order NO.: {unit.number}</Typography>

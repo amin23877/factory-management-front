@@ -34,6 +34,7 @@ import List from "../../../app/SideUtilityList";
 import { deleteAnItem, IItem } from "../../../api/items";
 
 import { generateURL } from "../../../logic/filterSortPage";
+import SearchBox from "../../../app/SearchBox";
 
 const Inventory = () => {
     const [filters, setFilters] = useState<GridFilterModelParams>();
@@ -221,31 +222,34 @@ const Inventory = () => {
                 </List>
                 <Box flex={11} ml={2}>
                     {activeTab === 0 && (
-                        <Paper>
-                            <Box height={550}>
-                                <DataGrid
-                                    onRowSelected={(r) => {
-                                        setSelectedItem(r.data as any);
-                                        setActiveTab(1);
-                                    }}
-                                    pagination
-                                    pageSize={25}
-                                    rowCount={items ? items.total : 0}
-                                    filterMode="server"
-                                    paginationMode="server"
-                                    sortingMode="server"
-                                    onSortModelChange={(s) => setSort(s)}
-                                    onPageChange={(p) => setPage(p)}
-                                    onPageSizeChange={(ps) => setPage(ps)}
-                                    onFilterModelChange={(f) => {
-                                        setFilters(f);
-                                    }}
-                                    rows={items ? items.items : []}
-                                    columns={gridColumns}
-                                    components={{ Toolbar: GridToolbar }}
-                                />
-                            </Box>
-                        </Paper>
+                        <>
+                            <SearchBox panel="engineering" />
+                            <Paper>
+                                <Box height={550}>
+                                    <DataGrid
+                                        onRowSelected={(r) => {
+                                            setSelectedItem(r.data as any);
+                                            setActiveTab(1);
+                                        }}
+                                        pagination
+                                        pageSize={25}
+                                        rowCount={items ? items.total : 0}
+                                        filterMode="server"
+                                        paginationMode="server"
+                                        sortingMode="server"
+                                        onSortModelChange={(s) => setSort(s)}
+                                        onPageChange={(p) => setPage(p)}
+                                        onPageSizeChange={(ps) => setPage(ps)}
+                                        onFilterModelChange={(f) => {
+                                            setFilters(f);
+                                        }}
+                                        rows={items ? items.items : []}
+                                        columns={gridColumns}
+                                        components={{ Toolbar: GridToolbar }}
+                                    />
+                                </Box>
+                            </Paper>
+                        </>
                     )}
                     {activeTab === 1 && (
                         <DetailTab
