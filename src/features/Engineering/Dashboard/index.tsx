@@ -25,7 +25,12 @@ export default function ENDashboard() {
 
     const EACols = useMemo<GridColumns>(
         () => [
-            // { field: "date", headerName: "Date", flex: 2 },
+            {
+                field: "date",
+                headerName: "Date",
+                flex: 2,
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+            },
             // { field: "so", headerName: "SO", flex: 1 },
             // { field: "unit", headerName: "Unit", flex: 1 },
             { field: "no", headerName: "Device ID", flex: 2, valueFormatter: (params) => params.row?.ItemId?.no },
