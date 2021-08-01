@@ -52,7 +52,7 @@ export default function ENDashboard() {
                 field: "date",
                 headerName: "Date",
                 flex: 2,
-                valueFormatter: (params) => formatTimestampToDate(params.row?.ticket?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.fsh?.createdAt),
             },
             { field: "so", headerName: "SO", flex: 1, valueFormatter: (params) => params.row?.so?.number },
             { field: "unit", headerName: "Unit", flex: 1, valueFormatter: (params) => params.row?.unit?.number },
