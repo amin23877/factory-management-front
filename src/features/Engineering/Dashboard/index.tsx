@@ -19,7 +19,9 @@ export default function ENDashboard() {
     const [selectedPurchase, setSelectedPurchase] = useState();
 
     const { data: engAp } = useSWR("/engapp");
-    const { data: FSH } = useSWR("/fsh");
+    const { data: FSH } = useSWR("/fsh"); // Field Service Help
+    const { data: PQ } = useSWR("/pq"); // purchasing question
+    const { data: GQ } = useSWR("/gq"); //general question
 
     const EACols = useMemo<GridColumns>(
         () => [
@@ -63,13 +65,23 @@ export default function ENDashboard() {
     );
     const PCols = useMemo<GridColumns>(
         () => [
-            { field: "date", headerName: "Date", flex: 2 },
-            { field: "so", headerName: "SO", flex: 1 },
-            { field: "unit", headerName: "Unit", flex: 1 },
-            { field: "device", headerName: "Device ID", flex: 3 },
-            { field: "note", headerName: "Note", flex: 1 },
-            { field: "done", headerName: "Done", flex: 1 },
-            { field: "priority", headerName: "Priority", flex: 1 },
+            {
+                field: "date",
+                headerName: "Date",
+                flex: 2,
+                valueFormatter: (params) => formatTimestampToDate(params.row?.pq?.createdAt),
+            },
+            { field: "so", headerName: "SO", flex: 1, valueFormatter: (params) => params.row?.so?.number },
+            { field: "unit", headerName: "Unit", flex: 1, valueFormatter: (params) => params.row?.unit?.number },
+            { field: "device", headerName: "Device ID", flex: 3, valueFormatter: (params) => params.row?.item?.no },
+            { field: "note", headerName: "Note", flex: 1, valueFormatter: (params) => params.row?.pq?.note },
+            { field: "done", headerName: "Done", flex: 1, valueFormatter: (params) => params.row?.pq?.done },
+            {
+                field: "priority",
+                headerName: "Priority",
+                flex: 1,
+                valueFormatter: (params) => params.row?.pq?.priority,
+            },
         ],
         []
     );
@@ -85,12 +97,22 @@ export default function ENDashboard() {
     );
     const QCCols: GridColDef[] = useMemo(
         () => [
-            { field: "date", headerName: "Date", flex: 2 },
-            { field: "FlagId", headerName: "Flag ID", flex: 2 },
-            { field: "section", headerName: "Section", flex: 2 },
-            { field: "so", headerName: "SO", flex: 1 },
-            { field: "unit", headerName: "Unit", flex: 1 },
-            { field: "note", headerName: "Note", flex: 3 },
+            {
+                field: "date",
+                headerName: "Date",
+                flex: 2,
+                valueFormatter: (params) => formatTimestampToDate(params.row?.qcCase?.createdAt),
+            },
+            { field: "FlagId", headerName: "Flag ID", flex: 2, valueFormatter: (params) => params.row?.qcFlag?.number },
+            {
+                field: "section",
+                headerName: "Section",
+                flex: 2,
+                valueFormatter: (params) => params.row?.qcFlag?.section,
+            },
+            { field: "so", headerName: "SO", flex: 1, valueFormatter: (params) => params.row?.so?.number },
+            { field: "unit", headerName: "Unit", flex: 1, valueFormatter: (params) => params.row?.unit?.number },
+            { field: "note", headerName: "Note", flex: 3, valueFormatter: (params) => params.row?.qcCase?.note },
         ],
         []
     );
@@ -117,7 +139,7 @@ export default function ENDashboard() {
                 {activeTab === 1 && <BaseDataGrid rows={engAp || []} cols={EACols} onRowSelected={() => {}} />}
                 {activeTab === 2 && (
                     <BaseDataGrid
-                        rows={FSH || []}
+                        rows={[...FSH, { id: "03211548" }] || []}
                         cols={FSCols}
                         onRowSelected={(d) => {
                             setSelectedField(d);
@@ -127,7 +149,7 @@ export default function ENDashboard() {
                 )}
                 {activeTab === 3 && (
                     <BaseDataGrid
-                        rows={[{ id: 256412 }] || []}
+                        rows={[...PQ, { id: "03211548" }] || []}
                         cols={PCols}
                         onRowSelected={(d) => {
                             setSelectedPurchase(d);
@@ -135,7 +157,7 @@ export default function ENDashboard() {
                         }}
                     />
                 )}
-                {activeTab === 4 && <BaseDataGrid rows={[] || []} cols={QuestionCols} onRowSelected={() => {}} />}
+                {activeTab === 4 && <BaseDataGrid rows={GQ || []} cols={QuestionCols} onRowSelected={() => {}} />}
                 {activeTab === 5 && <BaseDataGrid rows={[] || []} cols={QCCols} onRowSelected={() => {}} />}
             </BasePaper>
         </Box>

@@ -43,7 +43,7 @@ export const FieldModal = ({ open, onClose, help }: IModal) => {
 };
 export const PurchaseModal = ({ open, onClose, help }: IModal) => {
     return (
-        <Dialog title="Edit Field Service Help" open={open} onClose={onClose} maxWidth="md" fullWidth>
+        <Dialog title="Edit Purchase Help" open={open} onClose={onClose} maxWidth="md" fullWidth>
             <Purchasing help={help} onClose={onClose} />
         </Dialog>
     );

@@ -1,11 +1,13 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Box, FormControlLabel, Checkbox, Paper } from "@material-ui/core";
 import { Formik, Form } from "formik";
-import useSWR, { mutate } from "swr";
+import { mutate } from "swr";
 
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
-
+import { updateFSQ, deleteFSQ } from "../../../api/fieldServiceQuestion";
+import { updatePQ, deletePQ } from "../../../api/purchaseQuestion";
+import { ArraySelect } from "../../../app/Inputs";
 interface IHelpForm {
     help?: any;
     onClose: () => void;
@@ -14,12 +16,11 @@ interface IHelpForm {
 export const Purchasing = ({ onClose, help }: IHelpForm) => {
     const deleteDocument = async () => {
         try {
-            // if (help && help.id) {
-            //     await deleteAManhelp(help.id);
-            //     await mutate(`/engineering/manufacturing/help?ItemId=${itemId}`);
-            //     onDone && onDone();
-            //     onClose();
-            // }
+            if (help && help.id) {
+                await deletePQ(help.id);
+                await mutate(`/pq`);
+                onClose();
+            }
         } catch (error) {
             console.log(error);
         }
@@ -27,14 +28,13 @@ export const Purchasing = ({ onClose, help }: IHelpForm) => {
 
     const handleSubmit = (values: any, { setSubmitting }: { setSubmitting: any }) => {
         if (help && help.id) {
-            // updateAManhelp(help.id, {  ...values })
-            //     .then((d) => {
-            //         mutate(`/engineering/manufacturing/help?ItemId=${itemId}`);
-            //         onDone && onDone();
-            //         onClose();
-            //     })
-            //     .catch((e) => console.log(e))
-            //     .finally(() => setSubmitting(false));
+            updatePQ(help.id, { ...values })
+                .then((d) => {
+                    mutate(`/pq`);
+                    onClose();
+                })
+                .catch((e) => console.log(e))
+                .finally(() => setSubmitting(false));
         } else {
             // createAManhelp({ ItemId: itemId, ...values })
             //     .then((d) => {
@@ -56,9 +56,12 @@ export const Purchasing = ({ onClose, help }: IHelpForm) => {
                             <Paper
                                 style={{
                                     margin: "0.5em 0",
-                                    padding: "0 0.5em",
+                                    padding: "0.5em",
                                     backgroundColor: "#eee",
                                     gridColumnEnd: "span 3",
+                                    display: "grid",
+                                    gridTemplateColumns: "1fr 1fr 1fr",
+                                    columnGap: "15px",
                                 }}
                             >
                                 <FormControlLabel
@@ -69,13 +72,14 @@ export const Purchasing = ({ onClose, help }: IHelpForm) => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <TextField
+                                <ArraySelect
+                                    items={["high", "normal", "low"]}
+                                    defaultValue="normal"
                                     value={values.priority}
                                     name="priority"
                                     label="Priority"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    type="number"
                                 />
                             </Paper>
                             <TextField
@@ -92,6 +96,7 @@ export const Purchasing = ({ onClose, help }: IHelpForm) => {
                                 label="SO"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                disabled
                             />
                             <TextField
                                 value={values.number}
@@ -99,6 +104,7 @@ export const Purchasing = ({ onClose, help }: IHelpForm) => {
                                 label="Serial"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                disabled
                             />
                             <TextField
                                 style={{ gridColumnEnd: "span 2" }}
@@ -107,6 +113,7 @@ export const Purchasing = ({ onClose, help }: IHelpForm) => {
                                 label="Device Name"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                disabled
                             />
 
                             <TextField
@@ -115,6 +122,7 @@ export const Purchasing = ({ onClose, help }: IHelpForm) => {
                                 label="Device ID"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                disabled
                             />
                             <TextField
                                 style={{ gridColumnEnd: "span 3" }}
@@ -125,6 +133,7 @@ export const Purchasing = ({ onClose, help }: IHelpForm) => {
                                 rows={4}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                disabled
                             />
                             <TextField
                                 style={{ gridColumnEnd: "span 2" }}
@@ -133,6 +142,7 @@ export const Purchasing = ({ onClose, help }: IHelpForm) => {
                                 label="Note"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                disabled
                             />
                             <TextField
                                 value={values.flaggedItem}
@@ -140,6 +150,7 @@ export const Purchasing = ({ onClose, help }: IHelpForm) => {
                                 label="Flagged Item"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                disabled
                             />
                         </Box>
                         <Box
@@ -180,12 +191,11 @@ export const Purchasing = ({ onClose, help }: IHelpForm) => {
 export const FieldService = ({ onClose, help }: IHelpForm) => {
     const deleteDocument = async () => {
         try {
-            // if (help && help.id) {
-            //     await deleteAManhelp(help.id);
-            //     await mutate(`/engineering/manufacturing/help?ItemId=${itemId}`);
-            //     onDone && onDone();
-            //     onClose();
-            // }
+            if (help && help.id) {
+                await deleteFSQ(help.id);
+                await mutate(`/fsh`);
+                onClose();
+            }
         } catch (error) {
             console.log(error);
         }
@@ -193,14 +203,13 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
 
     const handleSubmit = (values: any, { setSubmitting }: { setSubmitting: any }) => {
         if (help && help.id) {
-            // updateAManhelp(help.id, {  ...values })
-            //     .then((d) => {
-            //         mutate(`/engineering/manufacturing/help?ItemId=${itemId}`);
-            //         onDone && onDone();
-            //         onClose();
-            //     })
-            //     .catch((e) => console.log(e))
-            //     .finally(() => setSubmitting(false));
+            updateFSQ(help.id, { ...values })
+                .then((d) => {
+                    mutate(`/fsh`);
+                    onClose();
+                })
+                .catch((e) => console.log(e))
+                .finally(() => setSubmitting(false));
         } else {
             // createAManhelp({ ItemId: itemId, ...values })
             //     .then((d) => {
@@ -222,9 +231,12 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                             <Paper
                                 style={{
                                     margin: "0.5em 0",
-                                    padding: "0 0.5em",
+                                    padding: "0.5em",
                                     backgroundColor: "#eee",
                                     gridColumnEnd: "span 3",
+                                    display: "grid",
+                                    gridTemplateColumns: "1fr 1fr 1fr",
+                                    columnGap: "15px",
                                 }}
                             >
                                 <FormControlLabel
@@ -235,13 +247,15 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <TextField
+
+                                <ArraySelect
+                                    items={["high", "normal", "low"]}
+                                    defaultValue="normal"
                                     value={values.priority}
                                     name="priority"
                                     label="Priority"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    type="number"
                                 />
                             </Paper>
                             <TextField
@@ -258,6 +272,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                                 label="SO"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                disabled
                             />
                             <TextField
                                 value={values.number}
@@ -265,6 +280,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                                 label="Serial"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                disabled
                             />
                             <TextField
                                 style={{ gridColumnEnd: "span 2" }}
@@ -273,14 +289,15 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                                 label="Device Name"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                disabled
                             />
-
                             <TextField
                                 value={values.DeviceID}
                                 name="deviceId"
                                 label="Device ID"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                disabled
                             />
                             <TextField
                                 style={{ gridColumnEnd: "span 3" }}
@@ -291,6 +308,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                                 rows={4}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
+                                disabled
                             />
                             <TextField
                                 style={{ gridColumnEnd: "span 3" }}
