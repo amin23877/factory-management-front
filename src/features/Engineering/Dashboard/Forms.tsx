@@ -26,11 +26,7 @@ export const Purchasing = ({ onClose, help }: IHelpForm) => {
         }
     };
 
-<<<<<<< HEAD
     const handleSubmit = (values: any, { setSubmitting }: any) => {
-=======
-    const handleSubmit = (values: any, { setSubmitting }: { setSubmitting: any }) => {
->>>>>>> origin/amin
         if (help && help.id) {
             updatePQ(help.id, { ...values })
                 .then((d) => {
@@ -205,11 +201,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
         }
     };
 
-<<<<<<< HEAD
     const handleSubmit = (values: any, { setSubmitting }: any) => {
-=======
-    const handleSubmit = (values: any, { setSubmitting }: { setSubmitting: any }) => {
->>>>>>> origin/amin
         if (help && help.id) {
             updateFSQ(help.id, { ...values })
                 .then((d) => {

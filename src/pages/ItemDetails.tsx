@@ -5,29 +5,28 @@ import { useParams } from "react-router-dom";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 
-import Button from "../../app/Button";
-import BaseDataGrid from "../../app/BaseDataGrid";
-import { BasePaper } from "../../app/Paper";
-import VendorsTable from "./VandorsTable";
+import Button from "../app/Button";
+import BaseDataGrid from "../app/BaseDataGrid";
+import { BasePaper } from "../app/Paper";
+import VendorsTable from "../features/Items/VandorsTable";
 
-import { MoreInfo, Quantity, Shipping, General, DynamicFilterAndFields, LastUsed } from "./Forms";
-import { SalesReport } from "./Reports";
+import { MoreInfo, Quantity, Shipping, General, DynamicFilterAndFields, LastUsed } from "../features/Items/Forms";
+import { SalesReport } from "../features/Items/Reports";
 
-import ManualCountModal from "./ManualCountModal";
-import UpdateQuantityModal from "./Quantity";
+import ManualCountModal from "../features/Items/ManualCountModal";
+import UpdateQuantityModal from "../features/Items/Quantity";
 
-import { INote } from "../../api/note";
-import { IDocument } from "../../api/document";
-import { AddItemSchema, updateAnItem, addImage, IItem } from "../../api/items";
-import { IBom } from "../../api/bom";
+import { INote } from "../api/note";
+import { IDocument } from "../api/document";
+import { AddItemSchema, updateAnItem, addImage, IItem } from "../api/items";
+import { IBom } from "../api/bom";
 // import SODatagrid from "../Sales/SO/Datagrid";
-import QuoteDatagrid from "../Sales/Quote/Datagrid";
-import SOTable from "./SOTable";
-import Toast from "../../app/Toast";
-import MyQRCode from "../../app/QRCode";
-import UploadButton from "../../app/FileUploader";
-import { exportPdf } from "../../logic/pdf";
-import QRCode from "./QRCode";
+import QuoteDatagrid from "../features/Sales/Quote/Datagrid";
+import SOTable from "../features/Items/SOTable";
+import Toast from "../app/Toast";
+import UploadButton from "../app/FileUploader";
+import { exportPdf } from "../logic/pdf";
+import QRCode from "../features/Items/QRCode";
 
 function ItemsDetails() {
     const qrCode = useRef<HTMLElement | null>(null);

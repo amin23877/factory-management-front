@@ -4,29 +4,29 @@ import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 
-import SalesReport from "./SalesReport";
+import SalesReport from "../features/Engineering/Devices/SalesReport";
 
-import Button from "../../../app/Button";
-import BaseDataGrid from "../../../app/BaseDataGrid";
-import { BasePaper } from "../../../app/Paper";
+import Button from "../app/Button";
+import BaseDataGrid from "../app/BaseDataGrid";
+import { BasePaper } from "../app/Paper";
 
-import { DynamicFilterAndFields } from "../../Items/Forms";
-import { General, Photo } from "./Forms";
-import AddServiceModal from "../../FieldService/AddServiceModal";
-import UnitHistoryModal from "../../Unit/Modal";
+import { DynamicFilterAndFields } from "../features/Items/Forms";
+import { General, Photo } from "../features/Engineering/Devices/Forms";
+import AddServiceModal from "../features/FieldService/AddServiceModal";
+import UnitHistoryModal from "../features/Unit/Modal";
 
-import { INote } from "../../../api/note";
-import { IDocument } from "../../../api/document";
-import { AddItemSchema, IItem, updateAnItem } from "../../../api/items";
-import { IBom } from "../../../api/bom";
-import Parts from "../../BOM/Parts";
-import { formatTimestampToDate } from "../../../logic/date";
-import { IUnitHistory } from "../../../api/units";
+import { INote } from "../api/note";
+import { IDocument } from "../api/document";
+import { AddItemSchema, IItem, updateAnItem } from "../api/items";
+import { IBom } from "../api/bom";
+import Parts from "../features/BOM/Parts";
+import { formatTimestampToDate } from "../logic/date";
+import { IUnitHistory } from "../api/units";
 import { useParams } from "react-router-dom";
-import Toast from "../../../app/Toast";
-import { exportPdf } from "../../../logic/pdf";
-import { EditTaskModal } from "./TaskModal";
-import DeviceQRCode from "./QRCode";
+import Toast from "../app/Toast";
+import { exportPdf } from "../logic/pdf";
+import { EditTaskModal } from "../features/Engineering/Devices/TaskModal";
+import DeviceQRCode from "../features/Engineering/Devices/QRCode";
 
 function DeviceDetails() {
     const qrCode = useRef<HTMLElement | null>(null);

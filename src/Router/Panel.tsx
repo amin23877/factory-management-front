@@ -1,12 +1,8 @@
 import React, { Suspense, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import { Box, CssBaseline, useTheme } from "@material-ui/core";
-
 import { makeStyles } from "@material-ui/core/styles";
 
-import { TopAppBar } from "../app/TopAppBar";
-import MainNav from "../app/Drawer";
-import MyBackdrop from "../app/Backdrop";
 import clsx from "clsx";
 import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
@@ -15,6 +11,10 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+
+import { TopAppBar } from "../app/TopAppBar";
+import MainNav from "../app/Drawer";
+import MyBackdrop from "../app/Backdrop";
 
 const Home = React.lazy(() => import("../pages/home"));
 const Dashboard = React.lazy(() => import("../pages/dashboard"));
@@ -32,8 +32,9 @@ const Production = React.lazy(() => import("../pages/Production"));
 const Engineering = React.lazy(() => import("../pages/Engineering"));
 const Page404 = React.lazy(() => import("../pages/404"));
 
-const ItemDetails = React.lazy(() => import("../features/Items/ItemDetails"));
-const DeviceDetails = React.lazy(() => import("../features/Engineering/Devices/DeviceDetails"));
+const ItemDetails = React.lazy(() => import("../pages/ItemDetails"));
+const DeviceDetails = React.lazy(() => import("../pages/DeviceDetails"));
+const UnitDetails = React.lazy(() => import("../pages/UnitDetails"));
 
 const drawerWidth = 220;
 
@@ -202,6 +203,7 @@ export default function PanelRouter() {
 
                             <Route exact path="/panel/inventory/:itemId" component={ItemDetails} />
                             <Route exact path="/panel/engineering/:deviceId" component={DeviceDetails} />
+                            <Route exact path="/panel/production/:unitNumber" component={UnitDetails} />
 
                             <Route exact path="*" component={Page404} />
                         </Switch>
