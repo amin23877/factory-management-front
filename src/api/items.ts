@@ -7,7 +7,8 @@ export const AddItemSchema = Yup.object().shape({
 });
 
 export interface IItem {
-    id?: string;
+    id: string;
+    
     approvedForSales: boolean;
     obsolete: boolean;
     rndOnly: boolean;

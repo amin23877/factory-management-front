@@ -1,24 +1,25 @@
 import React, { useMemo, useRef, useState } from "react";
 import { Box, Typography, Tabs, Tab } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
+import { useParams } from "react-router-dom";
 import useSWR from "swr";
 
-import UnitInfo from "./UnitInfo";
-import { General as ItemGeneral } from "../Items/Forms";
-import { GeneralForm as SOGeneral } from "../Sales/SO/Forms";
+import UnitInfo from "../features/Production/UnitInfo";
+import { General as ItemGeneral } from "../features/Items/Forms";
+import { GeneralForm as SOGeneral } from "../features/Sales/SO/Forms";
 
-import Button from "../../app/Button";
-import { BasePaper } from "../../app/Paper";
-import BaseDataGrid from "../../app/BaseDataGrid";
-import MyQRCode from "../../app/QRCode";
+import Button from "../app/Button";
+import { BasePaper } from "../app/Paper";
+import BaseDataGrid from "../app/BaseDataGrid";
+import MyQRCode from "../app/QRCode";
 
-import { IUnit } from "../../api/units";
+import { exportPdf } from "../logic/pdf";
 
-import { exportPdf } from "../../logic/pdf";
+export default function UnitDetails() {
+    const { unitNumber } = useParams<{ unitNumber: string }>();
 
-function Details({ unit }: { unit: IUnit }) {
     const qrCode = useRef<HTMLElement | null>(null);
-    const { data: unitBoms } = useSWR(`/ubom?UnitId=${unit.id}`);
+    // const { data: unitBoms } = useSWR(`/ubom?UnitId=${unit.id}`);
 
     const [infoActiveTab, setInfoActiveTab] = useState(0);
     const [gridActiveTab, setGridActiveTab] = useState(0);
@@ -38,7 +39,7 @@ function Details({ unit }: { unit: IUnit }) {
             <Box mb={2} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
                 <BasePaper>
                     <Typography variant="h5">Unit Info</Typography>
-                    <UnitInfo unit={unit} />
+                    {/* <UnitInfo unit={unit} /> */}
                 </BasePaper>
                 <BasePaper>
                     <Tabs value={infoActiveTab} onChange={(e, nv) => setInfoActiveTab(nv)}>
@@ -46,31 +47,31 @@ function Details({ unit }: { unit: IUnit }) {
                         <Tab label="SO" />
                         <Tab label="QR Code" />
                     </Tabs>
-                    {infoActiveTab === 0 && (
-                        <ItemGeneral
-                            values={unit.item}
-                            errors={{}}
-                            touched={{}}
-                            handleBlur={() => {}}
-                            handleChange={() => {}}
-                            setFieldValue={() => {}}
-                        />
+                    {/* {infoActiveTab === 0 && (
+                        // <ItemGeneral
+                        //     values={unit.item}
+                        //     errors={{}}
+                        //     touched={{}}
+                        //     handleBlur={() => {}}
+                        //     handleChange={() => {}}
+                        //     setFieldValue={() => {}}
+                        // />
                     )}
                     {infoActiveTab === 1 && (
-                        <SOGeneral
-                            values={unit.so}
-                            onChangeInit={() => {}}
-                            handleBlur={() => {}}
-                            handleChange={() => {}}
-                        />
-                    )}
+                        // <SOGeneral
+                        //     values={unit.so}
+                        //     onChangeInit={() => {}}
+                        //     handleBlur={() => {}}
+                        //     handleChange={() => {}}
+                        // />
+                    )} */}
                     {infoActiveTab === 2 && (
                         <Box mt={1} display="flex" justifyContent="space-around" alignItems="center">
                             <div ref={(e) => (qrCode.current = e)} style={{ flex: 1 }}>
-                                <MyQRCode value={unit.item.no} />
-                                <Typography variant="subtitle1">Unit Number: {unit.item.no}</Typography>
+                                {/* <MyQRCode value={unit.item.no} /> */}
+                                {/* <Typography variant="subtitle1">Unit Number: {unit.item.no}</Typography>
                                 <Typography variant="subtitle1">Unit Name: {unit.item.name}</Typography>
-                                <Typography variant="subtitle1">Sales Order NO.: {unit.number}</Typography>
+                                <Typography variant="subtitle1">Sales Order NO.: {unit.number}</Typography> */}
                             </div>
                             <Button
                                 variant="contained"
@@ -97,10 +98,8 @@ function Details({ unit }: { unit: IUnit }) {
                     <Tab label="Time logs" />
                     <Tab label="Auditing" />
                 </Tabs>
-                {gridActiveTab === 3 && <BaseDataGrid cols={bomCols} rows={unitBoms || []} onRowSelected={() => {}} />}
+                {/* {gridActiveTab === 3 && <BaseDataGrid cols={bomCols} rows={unitBoms || []} onRowSelected={() => {}} />} */}
             </BasePaper>
         </Box>
     );
 }
-
-export default Details;

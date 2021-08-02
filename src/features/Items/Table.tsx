@@ -14,6 +14,7 @@ import { BasePaper } from "../../app/Paper";
 
 import { IItem } from "../../api/items";
 import { generateURL } from "../../logic/filterSortPage";
+import SearchBox from "../../app/SearchBox";
 
 function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     const [filters, setFilters] = useState<GridFilterModelParams>();
@@ -76,28 +77,31 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     }, [items]);
 
     return (
-        <BasePaper>
-            <Box height={550}>
-                <DataGrid
-                    onRowSelected={onRowSelected}
-                    pagination
-                    pageSize={25}
-                    rowCount={items ? items.total : 0}
-                    filterMode="server"
-                    paginationMode="server"
-                    sortingMode="server"
-                    onSortModelChange={(s) => setSort(s)}
-                    onPageChange={(p) => setPage(p)}
-                    onPageSizeChange={(ps) => setPage(ps)}
-                    onFilterModelChange={(f) => {
-                        f.filterModel.items[0].value && setFilters(f);
-                    }}
-                    rows={items ? items.items : []}
-                    columns={gridColumns}
-                    components={{ Toolbar: GridToolbar }}
-                />
-            </Box>
-        </BasePaper>
+        <>
+            <SearchBox panel="inventory" />
+            <BasePaper>
+                <Box height={550}>
+                    <DataGrid
+                        onRowSelected={onRowSelected}
+                        pagination
+                        pageSize={25}
+                        rowCount={items ? items.total : 0}
+                        filterMode="server"
+                        paginationMode="server"
+                        sortingMode="server"
+                        onSortModelChange={(s) => setSort(s)}
+                        onPageChange={(p) => setPage(p)}
+                        onPageSizeChange={(ps) => setPage(ps)}
+                        onFilterModelChange={(f) => {
+                            f.filterModel.items[0].value && setFilters(f);
+                        }}
+                        rows={items ? items.items : []}
+                        columns={gridColumns}
+                        components={{ Toolbar: GridToolbar }}
+                    />
+                </Box>
+            </BasePaper>
+        </>
     );
 }
 
