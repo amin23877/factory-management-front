@@ -10,8 +10,11 @@ import BaseDataGrid from "../../../app/BaseDataGrid";
 import Reports from "./Report";
 import { FieldModal, PurchaseModal } from "./Modals";
 import { formatTimestampToDate } from "../../../logic/date";
+import { useHistory } from "react-router-dom";
 
 export default function ENDashboard() {
+    const history = useHistory();
+
     const [activeTab, setActiveTab] = useState(0);
     const [fieldOpen, setFieldOpen] = useState(false);
     const [purchaseOpen, setPurchaseOpen] = useState(false);
@@ -22,6 +25,7 @@ export default function ENDashboard() {
     const { data: FSH } = useSWR("/fsh"); // Field Service Help
     const { data: PQ } = useSWR("/pq"); // purchasing question
     const { data: GQ } = useSWR("/gq"); //general question
+    const { data: QCCase } = useSWR("/qccase"); //general question
 
     const EACols = useMemo<GridColumns>(
         () => [
@@ -141,10 +145,19 @@ export default function ENDashboard() {
                     <div style={{ flexGrow: 1 }} />
                 </Box>
                 {activeTab === 0 && <Reports />}
-                {activeTab === 1 && <BaseDataGrid rows={engAp || []} cols={EACols} onRowSelected={() => {}} />}
+                {/* /panel/engineering/:deviceId */}
+                {activeTab === 1 && (
+                    <BaseDataGrid
+                        rows={engAp || []}
+                        cols={EACols}
+                        onRowSelected={(d) => {
+                            history.push(`/panel/engineering/${d.ItemId.id}`);
+                        }}
+                    />
+                )}
                 {activeTab === 2 && (
                     <BaseDataGrid
-                        rows={[...FSH, { id: "03211548" }] || []}
+                        rows={FSH || []}
                         cols={FSCols}
                         onRowSelected={(d) => {
                             setSelectedField(d);
@@ -154,7 +167,7 @@ export default function ENDashboard() {
                 )}
                 {activeTab === 3 && (
                     <BaseDataGrid
-                        rows={[...PQ, { id: "03211548" }] || []}
+                        rows={PQ || []}
                         cols={PCols}
                         onRowSelected={(d) => {
                             setSelectedPurchase(d);
@@ -163,7 +176,7 @@ export default function ENDashboard() {
                     />
                 )}
                 {activeTab === 4 && <BaseDataGrid rows={GQ || []} cols={QuestionCols} onRowSelected={() => {}} />}
-                {activeTab === 5 && <BaseDataGrid rows={[] || []} cols={QCCols} onRowSelected={() => {}} />}
+                {activeTab === 5 && <BaseDataGrid rows={QCCase || []} cols={QCCols} onRowSelected={() => {}} />}
             </BasePaper>
         </Box>
     );

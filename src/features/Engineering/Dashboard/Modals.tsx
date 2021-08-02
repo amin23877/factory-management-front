@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { GridColDef } from "@material-ui/data-grid";
 import { Box, Tabs, Tab } from "@material-ui/core";
+import useSWR from "swr";
 
 import BaseDataGrid from "../../../app/BaseDataGrid";
 import Dialog from "../../../app/Dialog";
@@ -14,7 +15,7 @@ interface IModal {
 }
 
 export const FieldModal = ({ open, onClose, help }: IModal) => {
-    // Date	Ticket ID	Subject	Staff	Category	Contact	Status
+    const { data: tickets } = useSWR(`/ticket?ItemId=${help.ItemId.id}`);
 
     const THCols: GridColDef[] = useMemo(
         () => [
@@ -37,7 +38,7 @@ export const FieldModal = ({ open, onClose, help }: IModal) => {
                 </Tabs>
                 <div style={{ flexGrow: 1 }} />
             </Box>
-            <BaseDataGrid rows={[] || []} cols={THCols} />
+            <BaseDataGrid rows={tickets || []} cols={THCols} />
         </Dialog>
     );
 };
