@@ -32,11 +32,12 @@ export default function ENDashboard() {
             {
                 field: "date",
                 headerName: "Date",
-                flex: 2,
+                type: "date",
+                width: 180,
                 valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
             },
-            // { field: "so", headerName: "SO", flex: 1 },
-            // { field: "unit", headerName: "Unit", flex: 1 },
+            { field: "so", headerName: "SO", flex: 1 },
+            { field: "unit", headerName: "Unit", flex: 1 },
             { field: "no", headerName: "Device ID", flex: 2, valueFormatter: (params) => params.row?.ItemId?.no },
             { field: "note", headerName: "Note", flex: 1 },
             {
@@ -55,7 +56,8 @@ export default function ENDashboard() {
             {
                 field: "date",
                 headerName: "Date",
-                flex: 2,
+                type: "date",
+                width: 180,
                 valueFormatter: (params) => formatTimestampToDate(params.row?.fsh?.createdAt),
             },
             { field: "so", headerName: "SO", flex: 1, valueFormatter: (params) => params.row?.so?.number },
@@ -83,7 +85,8 @@ export default function ENDashboard() {
             {
                 field: "date",
                 headerName: "Date",
-                flex: 2,
+                type: "date",
+                width: 180,
                 valueFormatter: (params) => formatTimestampToDate(params.row?.pq?.createdAt),
             },
             { field: "so", headerName: "SO", flex: 1, valueFormatter: (params) => params.row?.so?.number },
@@ -108,7 +111,7 @@ export default function ENDashboard() {
     );
     const QuestionCols: GridColDef[] = useMemo(
         () => [
-            { field: "date", headerName: "Date", flex: 2 },
+            { field: "date", headerName: "Date", type: "date", width: 180 },
             { field: "department", headerName: "Department", flex: 2 },
             { field: "question", headerName: "Question", flex: 4 },
             { field: "note", headerName: "Note", flex: 2 },
@@ -121,7 +124,8 @@ export default function ENDashboard() {
             {
                 field: "date",
                 headerName: "Date",
-                flex: 2,
+                type: "date",
+                width: 180,
                 valueFormatter: (params) => formatTimestampToDate(params.row?.qcCase?.createdAt),
             },
             { field: "FlagId", headerName: "Flag ID", flex: 2, valueFormatter: (params) => params.row?.qcFlag?.number },

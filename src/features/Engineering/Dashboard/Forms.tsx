@@ -8,6 +8,7 @@ import Button from "../../../app/Button";
 import { updateFSQ, deleteFSQ } from "../../../api/fieldServiceQuestion";
 import { updatePQ, deletePQ } from "../../../api/purchaseQuestion";
 import { ArraySelect } from "../../../app/Inputs";
+import { getModifiedValues } from "../../../logic/utils";
 interface IHelpForm {
     help?: any;
     onClose: () => void;
@@ -191,8 +192,8 @@ export const Purchasing = ({ onClose, help }: IHelpForm) => {
 export const FieldService = ({ onClose, help }: IHelpForm) => {
     const deleteDocument = async () => {
         try {
-            if (help && help.id) {
-                await deleteFSQ(help.id);
+            if (help && help.fsh.id) {
+                await deleteFSQ(help.fsh.id);
                 await mutate(`/fsh`);
                 onClose();
             }
@@ -202,8 +203,10 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
     };
 
     const handleSubmit = (values: any, { setSubmitting }: any) => {
-        if (help && help.id) {
-            updateFSQ(help.id, { ...values })
+        if (help) {
+            const data = getModifiedValues(values, help);
+            // console.log(help);
+            updateFSQ(help.fsh.id, data)
                 .then((d) => {
                     mutate(`/fsh`);
                     onClose();
@@ -214,7 +217,10 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
     };
 
     return (
-        <Formik initialValues={help ? help : ({} as any)} onSubmit={handleSubmit}>
+        <Formik
+            initialValues={help ? { done: help.fsh.done, priority: help.fsh.priority } : ({} as any)}
+            onSubmit={handleSubmit}
+        >
             {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                 <Form>
                     <Box display="grid" gridTemplateColumns={"1fr"} gridGap={10}>
@@ -231,8 +237,8 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                                 }}
                             >
                                 <FormControlLabel
-                                    name="fsh.done"
-                                    control={<Checkbox checked={Boolean(values.fsh.done)} />}
+                                    name="done"
+                                    control={<Checkbox checked={Boolean(values.done)} />}
                                     label="Done"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
@@ -240,7 +246,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                                 <ArraySelect
                                     items={["High", "Normal", "Low"]}
                                     defaultValue="normal"
-                                    value={values.fsh.priority}
+                                    value={values.priority}
                                     name="priority"
                                     label="Priority"
                                     onChange={handleChange}
@@ -248,7 +254,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                                 />
                             </Paper>
                             <TextField
-                                value={values.fsh.createdAt}
+                                value={help.fsh.createdAt}
                                 name="date"
                                 label="Date"
                                 onChange={handleChange}
@@ -256,7 +262,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                                 disabled
                             />
                             <TextField
-                                value={values.so.number}
+                                value={help.so.number}
                                 name="SO"
                                 label="SO"
                                 onChange={handleChange}
@@ -264,7 +270,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                                 disabled
                             />
                             <TextField
-                                value={values.unit.number}
+                                value={help.unit.number}
                                 name="number"
                                 label="Serial"
                                 onChange={handleChange}
@@ -273,7 +279,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                             />
                             <TextField
                                 style={{ gridColumnEnd: "span 2" }}
-                                value={values.item.name}
+                                value={help.item.name}
                                 name="name"
                                 label="Device Name"
                                 onChange={handleChange}
@@ -281,7 +287,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                                 disabled
                             />
                             <TextField
-                                value={values.item.no}
+                                value={help.item.no}
                                 name="deviceId"
                                 label="Device ID"
                                 onChange={handleChange}
@@ -290,7 +296,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                             />
                             <TextField
                                 style={{ gridColumnEnd: "span 3" }}
-                                value={values.item.description}
+                                value={help.item.description}
                                 name="description"
                                 label="Device Description"
                                 multiline
@@ -301,7 +307,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                             />
                             <TextField
                                 style={{ gridColumnEnd: "span 3" }}
-                                value={values.ticket.note}
+                                value={help.ticket.note}
                                 name="note"
                                 label="Note"
                                 onChange={handleChange}
@@ -319,7 +325,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                         >
                             <Button
                                 type="submit"
-                                disabled={isSubmitting}
+                                // disabled={isSubmitting}
                                 kind={help ? "edit" : "add"}
                                 style={{ alignSelf: "center" }}
                             >

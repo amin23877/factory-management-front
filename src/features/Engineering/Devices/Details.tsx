@@ -163,7 +163,7 @@ function ItemsDetails({
     const docCols = useMemo(
         () => [
             { field: "file", headerName: "File" },
-            { field: "createdAt", headerName: "Date", flex: 1 },
+            { field: "createdAt", headerName: "Date", width: 180, type: "date" },
             { field: "EmployeeId", headerName: "Creator", flex: 1 },
             { field: "name", headerName: "File Name", flex: 1 },
             { field: "id", headerName: "File ID", flex: 1 },

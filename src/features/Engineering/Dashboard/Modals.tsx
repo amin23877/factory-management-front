@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { GridColDef } from "@material-ui/data-grid";
+import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import useSWR from "swr";
 
@@ -7,6 +7,7 @@ import BaseDataGrid from "../../../app/BaseDataGrid";
 import Dialog from "../../../app/Dialog";
 
 import { FieldService, Purchasing } from "./Forms";
+import { formatTimestampToDate } from "../../../logic/date";
 
 interface IModal {
     open: boolean;
@@ -17,15 +18,30 @@ interface IModal {
 export const FieldModal = ({ open, onClose, help }: IModal) => {
     const { data: tickets } = useSWR(`/ticket?ItemId=${help.item.id}`);
 
-    const THCols: GridColDef[] = useMemo(
+    const ticketHistoryCols = useMemo<GridColumns>(
         () => [
-            { field: "date", headerName: "Date", flex: 2 },
-            { field: "so", headerName: "Ticket ID", flex: 1 },
-            { field: "unit", headerName: "Subject", flex: 1 },
-            { field: "device", headerName: "Staff", flex: 3 },
+            {
+                field: "date",
+                headerName: "Date",
+                width: 180,
+                type: "date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+            },
+            {
+                field: "id",
+                headerName: "Ticket ID",
+                width: 180,
+            },
+            { field: "subject", headerName: "Subject", flex: 1 },
+            { field: "device", headerName: "Staff", flex: 2 },
             { field: "note", headerName: "Category", flex: 1 },
-            { field: "EA", headerName: "Contact", flex: 1 },
-            { field: "priority", headerName: "Status", flex: 1 },
+            {
+                field: "EA",
+                headerName: "Contact",
+                flex: 1,
+                valueFormatter: (params) => params.row?.ContactId?.name,
+            },
+            { field: "status", headerName: "Status", flex: 1 },
         ],
         []
     );
@@ -38,7 +54,7 @@ export const FieldModal = ({ open, onClose, help }: IModal) => {
                 </Tabs>
                 <div style={{ flexGrow: 1 }} />
             </Box>
-            <BaseDataGrid rows={tickets || []} cols={THCols} />
+            <BaseDataGrid rows={tickets || []} cols={ticketHistoryCols} />
         </Dialog>
     );
 };

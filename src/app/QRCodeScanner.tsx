@@ -20,17 +20,21 @@ export default function QRCodeScanner({
     };
 
     const handleScan = (data: string | null): void => {
-        data && setNumber(data);
+        // data && setNumber(data);
+        data && onScan(data);
     };
 
     return (
-        <Dialog title="QR Code Scanner" open={open} onClose={onClose}>
-            <Box m={1} display="grid" gridTemplateRows="3fr 1fr 1fr" gridGap={10}>
+        <Dialog title="QR Code Scanner" open={open} onClose={onClose} maxWidth="sm" fullWidth>
+            {/* <Box m={1} display="grid" gridTemplateColumns="3fr 1fr" gridGap={10}> */}
+            <Box m={1} display="flex">
                 <QrReader delay={300} onError={handleError} onScan={handleScan} style={{ width: "100%" }} />
-                <Typography>Number: {number}</Typography>
-                <Button disabled={!number} kind="add" onClick={() => onScan(number)}>
-                    Submit
-                </Button>
+                {/* <Box>
+                    <Typography>Number: {number}</Typography>
+                    <Button disabled={!number} kind="add" onClick={() => onScan(number)}>
+                        Submit
+                    </Button>
+                </Box> */}
             </Box>
         </Dialog>
     );

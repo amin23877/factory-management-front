@@ -8,7 +8,7 @@ export const StorageKey = "phocus_session";
 export const getToken = () => {
     const emp = localStorage.getItem(StorageKey);
     if (emp) {
-        return JSON.parse(emp);
+        return emp;
     } else {
         return null;
     }
