@@ -25,7 +25,7 @@ import { getProjects } from "../../../api/project";
 import { getAllAgencies } from "../../../api/agency";
 import { getQuoteById, getQuotes } from "../../../api/quote";
 import { getAllDivison } from "../../../api/division";
-import { getJobs } from "../../../api/job";
+import { getTickets } from "../../../api/ticket";
 import Button from "../../../app/Button";
 import SOCus from "../../../PDFTemplates/SOCus";
 import SORep from "../../../PDFTemplates/SORep";
@@ -402,7 +402,7 @@ export const TermsTab = ({
             />
             <FieldSelect
                 value={values.JobId ? values.JobId : ""}
-                request={getJobs}
+                request={getTickets}
                 itemTitleField="description"
                 itemValueField="id"
                 keyField="id"

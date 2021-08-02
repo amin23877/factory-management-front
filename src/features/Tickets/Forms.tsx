@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Typography, Box, TextField } from "@material-ui/core";
+import { Typography, Box, TextField, FormControlLabel, Checkbox } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 import { Autocomplete } from "@material-ui/lab";
 import { Form } from "formik";
@@ -11,7 +11,7 @@ import { getContacts } from "../../api/contact";
 import { getSO } from "../../api/so";
 import { ILineService } from "../../api/lineService";
 
-export default function JobForm({
+export default function TicketForm({
     values,
     errors,
     handleChange,
@@ -33,7 +33,6 @@ export default function JobForm({
 
     return (
         <Form>
-            <Typography>Job details</Typography>
             <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
                 <ArraySelect
                     fullWidth
@@ -141,7 +140,12 @@ export default function JobForm({
                     label="Description"
                     fullWidth
                     multiline
-                    rows={2}
+                    rows={4}
+                />
+                <FormControlLabel
+                    name="fsh"
+                    label="Help"
+                    control={<Checkbox checked={values.fsh} onChange={handleChange} />}
                 />
             </Box>
             <Box display="flex" alignItems="center" mt={1}>

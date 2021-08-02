@@ -137,7 +137,7 @@ export default function ENDashboard() {
                     <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                         <Tab label="Report" />
                         <Tab label="EN. Approval" />
-                        <Tab label="F.S. Help" />
+                        <Tab label="Field Service Help" />
                         <Tab label="Purchasing Help" />
                         <Tab label="Questions" />
                         <Tab label="Quality Control" />

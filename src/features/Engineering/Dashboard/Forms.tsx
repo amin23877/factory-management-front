@@ -210,15 +210,6 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                 })
                 .catch((e) => console.log(e))
                 .finally(() => setSubmitting(false));
-        } else {
-            // createAManhelp({ ItemId: itemId, ...values })
-            //     .then((d) => {
-            //         setSubmitting(false);
-            //         mutate(`/engineering/manufacturing/help?ItemId=${itemId}`);
-            //         onDone && onDone();
-            //         onClose();
-            //     })
-            //     .catch((e) => console.log(e));
         }
     };
 
@@ -240,18 +231,16 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                                 }}
                             >
                                 <FormControlLabel
-                                    name="done"
-                                    value={values.done}
-                                    control={<Checkbox checked={Boolean(values.done)} />}
+                                    name="fsh.done"
+                                    control={<Checkbox checked={Boolean(values.fsh.done)} />}
                                     label="Done"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-
                                 <ArraySelect
-                                    items={["high", "normal", "low"]}
+                                    items={["High", "Normal", "Low"]}
                                     defaultValue="normal"
-                                    value={values.priority}
+                                    value={values.fsh.priority}
                                     name="priority"
                                     label="Priority"
                                     onChange={handleChange}
@@ -259,7 +248,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                                 />
                             </Paper>
                             <TextField
-                                value={values.date}
+                                value={values.fsh.createdAt}
                                 name="date"
                                 label="Date"
                                 onChange={handleChange}
@@ -267,7 +256,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                                 disabled
                             />
                             <TextField
-                                value={values.SO}
+                                value={values.so.number}
                                 name="SO"
                                 label="SO"
                                 onChange={handleChange}
@@ -275,7 +264,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                                 disabled
                             />
                             <TextField
-                                value={values.number}
+                                value={values.unit.number}
                                 name="number"
                                 label="Serial"
                                 onChange={handleChange}
@@ -284,7 +273,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                             />
                             <TextField
                                 style={{ gridColumnEnd: "span 2" }}
-                                value={values.name}
+                                value={values.item.name}
                                 name="name"
                                 label="Device Name"
                                 onChange={handleChange}
@@ -292,7 +281,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                                 disabled
                             />
                             <TextField
-                                value={values.DeviceID}
+                                value={values.item.no}
                                 name="deviceId"
                                 label="Device ID"
                                 onChange={handleChange}
@@ -301,7 +290,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                             />
                             <TextField
                                 style={{ gridColumnEnd: "span 3" }}
-                                value={values.description}
+                                value={values.item.description}
                                 name="description"
                                 label="Device Description"
                                 multiline
@@ -312,7 +301,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                             />
                             <TextField
                                 style={{ gridColumnEnd: "span 3" }}
-                                value={values.note}
+                                value={values.ticket.note}
                                 name="note"
                                 label="Note"
                                 onChange={handleChange}

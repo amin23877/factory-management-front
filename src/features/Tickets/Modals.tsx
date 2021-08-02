@@ -1,16 +1,16 @@
 import { Formik } from "formik";
 import React from "react";
 import { mutate } from "swr";
-import { createJob, IJob, schema } from "../../api/job";
+import { createTicket, ITicket, schema } from "../../api/ticket";
 
 import Dialog from "../../app/Dialog";
-import JobForm from "./Forms";
+import TicketForm from "./Forms";
 
-export default function JobModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+export default function Modal({ open, onClose }: { open: boolean; onClose: () => void }) {
     const handleSubmit = async (d: any) => {
-        // console.log(selectedJob.id, d);
+        // console.log(d);
         try {
-            const resp = await createJob(d);
+            const resp = await createTicket(d);
             if (resp) {
                 mutate("/job");
                 onClose();
@@ -22,9 +22,9 @@ export default function JobModal({ open, onClose }: { open: boolean; onClose: ()
 
     return (
         <Dialog open={open} onClose={onClose} title="Job details">
-            <Formik initialValues={{} as IJob} validationSchema={schema} onSubmit={handleSubmit}>
+            <Formik initialValues={{} as ITicket} validationSchema={schema} onSubmit={handleSubmit}>
                 {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
-                    <JobForm
+                    <TicketForm
                         errors={errors}
                         values={values}
                         handleBlur={handleBlur}
