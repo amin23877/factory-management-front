@@ -1,7 +1,7 @@
 import Axios from "axios";
 import * as Yup from 'yup';
 
-export interface IJob {
+export interface ITicket {
     id: string;
     name: string;
     ContactId: string;
@@ -17,36 +17,36 @@ export const schema = Yup.object().shape({
     LineServiceRecordId: Yup.string().required()
 });
 
-export const getJobs = async () => {
+export const getTickets = async () => {
     try {
-        const resp = await Axios.get("/job");
+        const resp = await Axios.get("/ticket");
         return resp.data;
     } catch (error) {
         throw error;
     }
 };
 
-export const createJob = async (data: IJob) => {
+export const createTicket = async (data: ITicket) => {
     try {
-        const resp = await Axios.post("/job", data);
+        const resp = await Axios.post("/ticket", data);
         return resp.data;
     } catch (error) {
         throw error;
     }
 };
 
-export const updateJob = async (id: string, data: IJob) => {
+export const updateTicket = async (id: string, data: ITicket) => {
     try {
-        const resp = await Axios.patch(`/job/${id}`, data);
+        const resp = await Axios.patch(`/ticket/${id}`, data);
         return resp.data;
     } catch (error) {
         throw error;
     }
 };
 
-export const deleteJob = async (id: string) => {
+export const deleteTicket = async (id: string) => {
     try {
-        const resp = await Axios.delete(`/job/${id}`);
+        const resp = await Axios.delete(`/ticket/${id}`);
         return resp.data;
     } catch (error) {
         throw error;

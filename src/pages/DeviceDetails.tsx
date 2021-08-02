@@ -4,47 +4,34 @@ import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 
-import SalesReport from "./SalesReport";
+import SalesReport from "../features/Engineering/Devices/SalesReport";
 
-import Button from "../../../app/Button";
-import BaseDataGrid from "../../../app/BaseDataGrid";
-import { BasePaper } from "../../../app/Paper";
+import Button from "../app/Button";
+import BaseDataGrid from "../app/BaseDataGrid";
+import { BasePaper } from "../app/Paper";
 
-import { DynamicFilterAndFields } from "../../Items/Forms";
-import { General, Photo } from "./Forms";
-import AddServiceModal from "../../FieldService/AddServiceModal";
-import UnitHistoryModal from "../../Unit/Modal";
+import { DynamicFilterAndFields } from "../features/Items/Forms";
+import { General, Photo } from "../features/Engineering/Devices/Forms";
+import AddServiceModal from "../features/FieldService/AddServiceModal";
+import UnitHistoryModal from "../features/Unit/Modal";
 
-import { INote } from "../../../api/note";
-import { IDocument } from "../../../api/document";
-import { AddItemSchema, updateAnItem } from "../../../api/items";
-import { IBom } from "../../../api/bom";
-import Parts from "../../BOM/Parts";
-import { formatTimestampToDate } from "../../../logic/date";
-import { IUnitHistory } from "../../../api/units";
+import { INote } from "../api/note";
+import { IDocument } from "../api/document";
+import { AddItemSchema, IItem, updateAnItem } from "../api/items";
+import { IBom } from "../api/bom";
+import Parts from "../features/BOM/Parts";
+import { formatTimestampToDate } from "../logic/date";
+import { IUnitHistory } from "../api/units";
+import { useParams } from "react-router-dom";
+import Toast from "../app/Toast";
+import { exportPdf } from "../logic/pdf";
+import { EditTaskModal } from "../features/Engineering/Devices/TaskModal";
+import DeviceQRCode from "../features/Engineering/Devices/QRCode";
 
-import Toast from "../../../app/Toast";
-import MyQRCode from "../../../app/QRCode";
-import { exportPdf } from "../../../logic/pdf";
-import { EditTaskModal } from "./TaskModal";
-import DeviceQRCode from "./QRCode";
-
-function ItemsDetails({
-    selectedRow,
-    onNoteSelected,
-    onDocSelected,
-    onStepSelected,
-    onFlagSelected,
-    onDone,
-}: {
-    selectedRow: any;
-    onDone?: () => void;
-    onNoteSelected: (a: any) => void;
-    onDocSelected: (a: any) => void;
-    onStepSelected: (a: any) => void;
-    onFlagSelected: (a: any) => void;
-}) {
+function DeviceDetails() {
     const qrCode = useRef<HTMLElement | null>(null);
+    const { deviceId } = useParams<{ deviceId: string }>();
+    const { data: selectedRow } = useSWR<IItem>(deviceId ? `/item/${deviceId}` : null);
 
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
@@ -54,8 +41,8 @@ function ItemsDetails({
 
     const [selectedNote, setSelectedNote] = useState<any>();
     const [selectedDoc, setSelectedDoc] = useState<any>();
-    const [selectedStep, setSelectedStep] = useState<any>();
     const [selectedFlag, setSelectedFlag] = useState<any>();
+    const [selectedStep, setSelectedStep] = useState<any>();
 
     const [selectedUnit, setSelectedUnit] = useState<IUnitHistory>();
 
@@ -163,7 +150,7 @@ function ItemsDetails({
     const docCols = useMemo(
         () => [
             { field: "file", headerName: "File" },
-            { field: "createdAt", headerName: "Date", width: 180, type: "date" },
+            { field: "createdAt", headerName: "Date", flex: 1 },
             { field: "EmployeeId", headerName: "Creator", flex: 1 },
             { field: "name", headerName: "File Name", flex: 1 },
             { field: "id", headerName: "File ID", flex: 1 },
@@ -287,8 +274,6 @@ function ItemsDetails({
                 if (resp) {
                     setSubmitting(false);
                     Toast("Record updated successfully", "success");
-
-                    onDone && onDone();
                 }
             }
         } catch (error) {
@@ -461,7 +446,8 @@ function ItemsDetails({
                                     cols={manCols}
                                     rows={manSteps || []}
                                     onRowSelected={(d) => {
-                                        onStepSelected({ ...d, tab: 0 });
+                                        setSelectedStep({ ...d, tab: 0 });
+                                        setStepModal(true);
                                     }}
                                 />
                             )}
@@ -470,7 +456,8 @@ function ItemsDetails({
                                     cols={evalCols}
                                     rows={evalSteps || []}
                                     onRowSelected={(d) => {
-                                        onStepSelected({ ...d, tab: 1 });
+                                        setSelectedStep({ ...d, tab: 1 });
+                                        setStepModal(true);
                                     }}
                                 />
                             )}
@@ -479,7 +466,8 @@ function ItemsDetails({
                                     cols={evalCols}
                                     rows={testSteps || []}
                                     onRowSelected={(d) => {
-                                        onStepSelected({ ...d, tab: 2 });
+                                        setSelectedStep({ ...d, tab: 2 });
+                                        setStepModal(true);
                                     }}
                                 />
                             )}
@@ -488,7 +476,8 @@ function ItemsDetails({
                                     cols={evalCols}
                                     rows={fieldSteps || []}
                                     onRowSelected={(d) => {
-                                        onStepSelected({ ...d, tab: 3 });
+                                        setSelectedStep({ ...d, tab: 3 });
+                                        setStepModal(true);
                                     }}
                                 />
                             )}
@@ -514,10 +503,12 @@ function ItemsDetails({
                                 <BaseDataGrid cols={serviceCols} rows={services || []} onRowSelected={() => {}} />
                             )}
                             {activeTab === 11 && (
-                                <BaseDataGrid cols={flagCols} rows={flags || []} onRowSelected={onFlagSelected} />
+                                // TODO: Add Flag Modal
+                                <BaseDataGrid cols={flagCols} rows={flags || []} onRowSelected={() => {}} />
                             )}
                             {activeTab === 12 && (
-                                <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
+                                // TODO: Add Note Modal
+                                <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={() => {}} />
                             )}
                         </Box>
                     </BasePaper>
@@ -526,4 +517,4 @@ function ItemsDetails({
         </Box>
     );
 }
-export default ItemsDetails;
+export default DeviceDetails;

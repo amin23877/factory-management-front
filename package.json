@@ -37,11 +37,13 @@
     "jspdf": "^2.3.1",
     "moment": "^2.29.1",
     "nanoid": "^3.1.23",
+    "qrcode.react": "^1.0.1",
     "react": "^17.0.1",
     "react-calendar-timeline": "^0.27.0",
     "react-custom-scrollbars": "^4.2.1",
     "react-dom": "^17.0.1",
     "react-pdf": "^5.3.0",
+    "react-qr-reader": "^2.2.1",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
@@ -77,8 +79,10 @@
     ]
   },
   "devDependencies": {
+    "@types/qrcode.react": "^1.0.2",
     "@types/react": "^16.14.2",
     "@types/react-calendar-timeline": "^0.26.4",
+    "@types/react-qr-reader": "^2.1.4",
     "msw": "^0.33.0"
   }
 }

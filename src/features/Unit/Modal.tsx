@@ -66,13 +66,13 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
     );
 
     const docCols = [
-        { field: "file", headerName: "File", flex: 1 },
+        { field: "file", headerName: "File", width: 100 },
         { field: "createdAt", headerName: "Date", width: 150 },
-        { field: "EmployeeId", headerName: "Creator", flex: 1 },
         { field: "name", headerName: "File Name", flex: 1 },
-        { field: "id", headerName: "File ID" },
-        { field: "description", headerName: "Description", width: 250 },
-        { field: "type", headerName: "File Type" },
+        { field: "id", headerName: "File ID", flex: 1 },
+        { field: "description", headerName: "Description", flex: 1 },
+        { field: "EmployeeId", headerName: "Creator", width: 150 },
+        { field: "type", headerName: "File Type", width: 140 },
     ];
 
     const noteCols = [

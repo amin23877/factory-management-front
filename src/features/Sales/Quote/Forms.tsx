@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import {
     LinearProgress,
     Typography,
@@ -20,7 +20,7 @@ import { getClients } from "../../../api/client";
 import { getProjects } from "../../../api/project";
 import { getItems } from "../../../api/items";
 import { exportPdf } from "../../../logic/pdf";
-import { getJobs } from "../../../api/job";
+import { getTickets } from "../../../api/ticket";
 import QuotePDF from "../../../PDFTemplates/Quote";
 import { createAModelDocument } from "../../../api/document";
 import { IQuoteComplete } from "../../../api/quote";
@@ -321,7 +321,7 @@ export const TermsTab = ({
             />
             <FieldSelect
                 value={values.JobId ? values.JobId : ""}
-                request={getJobs}
+                request={getTickets}
                 itemTitleField="description"
                 itemValueField="id"
                 keyField="id"

@@ -1,13 +1,13 @@
 import React from "react";
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 
 import Dialog from "../../app/Dialog";
 import Button from "../../app/Button";
 import { Box, TextField } from "@material-ui/core";
 import { createTask, deleteTasks, ITask, updateTask } from "../../api/task";
 import { ArraySelect, MaterialFieldSelect } from "../../app/Inputs";
-import { getJobs } from "../../api/job";
+import { getTickets } from "../../api/ticket";
 import { getAllEmployees } from "../../api/employee";
 import TPCAutocomplete from "../TPC/autocomplete";
 import { DateTimePicker } from "@material-ui/pickers";
@@ -102,7 +102,7 @@ export default function TaskModal({
                                 )}
                                 <MaterialFieldSelect
                                     value={values.JobId}
-                                    request={getJobs}
+                                    request={getTickets}
                                     getOptionLabel={(job) => job.description}
                                     getOptionValue={(job) => job.id}
                                     onChange={(e, nv) => setFieldValue("JobId", nv.id)}

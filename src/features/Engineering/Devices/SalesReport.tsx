@@ -6,7 +6,7 @@ import BaseDataGrid from "../../../app/BaseDataGrid";
 import { useMemo } from "react";
 import { GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
-import { extractChartData } from "../../../logic/salesReport";
+import { extractChartData } from "../../../logic/reports/sales";
 import { formatDate } from "../../../logic/utils";
 
 const Chart = ({ data }: { data: { string: number }[] }) => {

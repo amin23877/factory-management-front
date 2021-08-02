@@ -10,16 +10,17 @@ import Snack from "../../app/Snack";
 import JobForm from "./Forms";
 import SODatagrid from "../Sales/SO/Datagrid";
 
-import { IJob, schema, updateJob } from "../../api/job";
+import { ITicket, schema, updateTicket } from "../../api/ticket";
 import { fetcher } from "../../api";
 import QuoteDatagrid from "../Sales/Quote/Datagrid";
+import { getModifiedValues } from "../../logic/utils";
 
 export default function Details({
     initialValue,
     onDocumentSelected,
     onNoteSelected,
 }: {
-    initialValue: IJob;
+    initialValue: ITicket;
     onNoteSelected: (a: any) => void;
     onDocumentSelected: (a: any) => void;
 }) {
@@ -50,7 +51,8 @@ export default function Details({
     const handleSubmit = async (d: any) => {
         try {
             // console.log(d);
-            const resp = await updateJob(initialValue.id, d);
+            const data = getModifiedValues(d, initialValue);
+            const resp = await updateTicket(initialValue.id, data);
             if (resp) {
                 setMsg("Job updated!");
                 setSeverity("success");

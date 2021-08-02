@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Box } from "@material-ui/core";
+import { Box, Checkbox, FormControlLabel, Paper } from "@material-ui/core";
 
 import Button from "../../../app/Button";
 import TextField from "../../../app/TextField";
@@ -42,7 +42,7 @@ export const Photo = ({ device }: { device: any }) => {
                         maxHeight: "135px",
                         margin: "10px auto",
                     }}
-                    alt={device?.photo}
+                    alt=""
                     src={img ? img : `http://digitalphocus.ir${device?.photo}`}
                 />
             )}
@@ -67,6 +67,55 @@ export const Photo = ({ device }: { device: any }) => {
 export const General = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
     return (
         <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
+            <Paper
+                style={{
+                    margin: "0.5em 0",
+                    padding: "0 0.5em",
+                    backgroundColor: "#eee",
+                    gridColumnEnd: "span 4",
+                }}
+            >
+                <FormControlLabel
+                    style={{ fontSize: "0.7rem" }}
+                    checked={values.active}
+                    label="Active"
+                    name="active"
+                    onChange={handleChange}
+                    control={<Checkbox />}
+                />
+                <FormControlLabel
+                    style={{ fontSize: "0.7rem" }}
+                    checked={values.obsolete}
+                    label="Obsolete"
+                    name="obsolete"
+                    onChange={handleChange}
+                    control={<Checkbox />}
+                />
+                <FormControlLabel
+                    style={{ fontSize: "0.7rem" }}
+                    checked={values.rndOnly}
+                    label="R&D only"
+                    name="rndOnly"
+                    onChange={handleChange}
+                    control={<Checkbox />}
+                />
+                <FormControlLabel
+                    style={{ fontSize: "0.7rem" }}
+                    checked={values.salesApproved}
+                    label="S. Ap."
+                    name="salesApproved"
+                    onChange={handleChange}
+                    control={<Checkbox />}
+                />
+                <FormControlLabel
+                    style={{ fontSize: "0.7rem" }}
+                    checked={values.engineeringApproved}
+                    label="En. Ap."
+                    name="engineeringApproved"
+                    onChange={handleChange}
+                    control={<Checkbox />}
+                />
+            </Paper>
             <TextField
                 style={{ gridColumnEnd: "span 4" }}
                 label="Device Name"

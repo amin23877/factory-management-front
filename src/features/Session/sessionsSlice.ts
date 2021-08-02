@@ -52,7 +52,7 @@ const sessionSlice = createSlice({
         builder.addCase(loginThunk.fulfilled, (state, action) => {
             if (action.payload) {
                 state.status = "Authorized";
-                localStorage.setItem(StorageKey, JSON.stringify(action.payload.token));
+                localStorage.setItem(StorageKey, action.payload.token);
                 state.session = action.payload.employee;
             } else {
                 state.status = "Unauthorized";
