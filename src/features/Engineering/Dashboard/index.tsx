@@ -62,7 +62,13 @@ export default function ENDashboard() {
             { field: "unit", headerName: "Unit", flex: 1, valueFormatter: (params) => params.row?.unit?.number },
             { field: "device", headerName: "Device ID", flex: 3, valueFormatter: (params) => params.row?.item?.no },
             { field: "note", headerName: "Note", flex: 1, valueFormatter: (params) => params.row?.ticket?.note },
-            { field: "done", headerName: "Done", flex: 1, valueFormatter: (params) => params.row?.fsh?.done },
+            {
+                field: "done",
+                headerName: "Done",
+                flex: 1,
+                type: "boolean",
+                valueFormatter: (params) => params.row?.fsh?.done,
+            },
             {
                 field: "priority",
                 headerName: "Priority",
@@ -84,7 +90,13 @@ export default function ENDashboard() {
             { field: "unit", headerName: "Unit", flex: 1, valueFormatter: (params) => params.row?.unit?.number },
             { field: "device", headerName: "Device ID", flex: 3, valueFormatter: (params) => params.row?.item?.no },
             { field: "note", headerName: "Note", flex: 1, valueFormatter: (params) => params.row?.pq?.note },
-            { field: "done", headerName: "Done", flex: 1, valueFormatter: (params) => params.row?.pq?.done },
+            {
+                field: "done",
+                headerName: "Done",
+                flex: 1,
+                type: "boolean",
+                valueFormatter: (params) => params.row?.pq?.done,
+            },
             {
                 field: "priority",
                 headerName: "Priority",
@@ -157,7 +169,7 @@ export default function ENDashboard() {
                 )}
                 {activeTab === 2 && (
                     <BaseDataGrid
-                        rows={FSH || []}
+                        rows={FSH ? FSH.map((item: any, i: any) => ({ ...item, id: i })) : []}
                         cols={FSCols}
                         onRowSelected={(d) => {
                             setSelectedField(d);

@@ -15,7 +15,7 @@ interface IModal {
 }
 
 export const FieldModal = ({ open, onClose, help }: IModal) => {
-    const { data: tickets } = useSWR(`/ticket?ItemId=${help.ItemId.id}`);
+    const { data: tickets } = useSWR(`/ticket?ItemId=${help.item.id}`);
 
     const THCols: GridColDef[] = useMemo(
         () => [
