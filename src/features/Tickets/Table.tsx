@@ -6,10 +6,10 @@ import useSWR from "swr";
 import BaseDataGrid from "../../app/BaseDataGrid";
 
 import { fetcher } from "../../api";
-import { IJob } from "../../api/job";
+import { ITicket } from "../../api/ticket";
 
-export default function Table({ onRowSelected }: { onRowSelected: (d: IJob) => void }) {
-    const { data: jobs } = useSWR<IJob[]>("/job", fetcher);
+export default function Table({ onRowSelected }: { onRowSelected: (d: ITicket) => void }) {
+    const { data: tickets } = useSWR<ITicket[]>("/ticket", fetcher);
     const cols: GridColDef[] = [
         { field: "description", headerName: "Description", flex: 1 },
         { field: "deadline", headerName: "Deadline", width: 180 },
@@ -17,9 +17,9 @@ export default function Table({ onRowSelected }: { onRowSelected: (d: IJob) => v
         { field: "status", headerName: "Status", width: 180 },
     ];
 
-    if (!jobs) {
+    if (!tickets) {
         return <LinearProgress />;
     }
 
-    return <BaseDataGrid cols={cols} rows={jobs} onRowSelected={onRowSelected} />;
+    return <BaseDataGrid cols={cols} rows={tickets} onRowSelected={onRowSelected} />;
 }

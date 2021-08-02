@@ -128,7 +128,7 @@ export default function ENDashboard() {
                     <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                         <Tab label="Report" />
                         <Tab label="EN. Approval" />
-                        <Tab label="F.S. Help" />
+                        <Tab label="Field Service Help" />
                         <Tab label="Purchasing Help" />
                         <Tab label="Questions" />
                         <Tab label="Quality Control" />
@@ -139,7 +139,7 @@ export default function ENDashboard() {
                 {activeTab === 1 && <BaseDataGrid rows={engAp || []} cols={EACols} onRowSelected={() => {}} />}
                 {activeTab === 2 && (
                     <BaseDataGrid
-                        rows={[...FSH, { id: "03211548" }] || []}
+                        rows={FSH ? FSH.map((item: any, i: any) => ({ ...item, id: i })) : []}
                         cols={FSCols}
                         onRowSelected={(d) => {
                             setSelectedField(d);

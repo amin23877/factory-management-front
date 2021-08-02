@@ -37,7 +37,7 @@ export const FieldModal = ({ open, onClose, help }: IModal) => {
                 </Tabs>
                 <div style={{ flexGrow: 1 }} />
             </Box>
-            <BaseDataGrid rows={[] || []} cols={THCols} />
+            <BaseDataGrid rows={[] || []} cols={THCols} height={300} />
         </Dialog>
     );
 };

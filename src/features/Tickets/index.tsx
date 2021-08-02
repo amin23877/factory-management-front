@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Container, Box, Tabs, Tab, ListItem, IconButton } from "@material-ui/core";
+import { Box, Tabs, Tab, ListItem, IconButton } from "@material-ui/core";
 import { AddRounded, NoteAddRounded, FileCopyRounded, ShoppingCartRounded, PostAddRounded } from "@material-ui/icons";
 import { mutate } from "swr";
 
@@ -7,9 +7,9 @@ import Table from "./Table";
 import Details from "./Details";
 
 import List from "../../app/SideUtilityList";
-import JobModal from "../../features/Tickets/Modals";
+import TicketModal from "../../features/Tickets/Modals";
 
-import { IJob } from "../../api/job";
+import { ITicket } from "../../api/ticket";
 import NoteModal from "../Modals/NoteModals";
 import DocumentModal from "../Modals/DocumentModals";
 import { INote } from "../../api/note";
@@ -18,13 +18,13 @@ import AddSOModal from "../Sales/SO/AddSoModal";
 import AddQuote from "../Sales/Quote/AddQuote";
 
 export default function Tickets() {
-    const [jobModal, setJobModal] = useState(false);
+    const [ticketModal, setTicketModal] = useState(false);
     const [noteModal, setNoteModal] = useState(false);
     const [documentModal, setDocumentModal] = useState(false);
     const [soModal, setSoModal] = useState(false);
     const [quoteModal, setQuoteModal] = useState(false);
 
-    const [selectedJob, setSelectedJob] = useState<IJob>();
+    const [selectedJob, setSelectedJob] = useState<ITicket>();
     const [selectedNote, setSelectedNote] = useState<INote>();
     const [selectedDocument, setSelectedDocument] = useState<IDocument>();
     const [activeTab, setActiveTab] = useState(0);
@@ -35,20 +35,20 @@ export default function Tickets() {
                 <NoteModal
                     open={noteModal}
                     onClose={() => setNoteModal(false)}
-                    model="job"
+                    model="ticket"
                     itemId={selectedJob.id}
                     noteData={selectedNote}
-                    onDone={() => mutate(`/note/job/${selectedJob.id}`)}
+                    onDone={() => mutate(`/note/ticket/${selectedJob.id}`)}
                 />
             )}
             {selectedJob && (
                 <DocumentModal
                     open={documentModal}
                     onClose={() => setDocumentModal(false)}
-                    model="job"
+                    model="ticket"
                     itemId={selectedJob.id}
                     docData={selectedDocument}
-                    onDone={() => mutate(`/document/job/${selectedJob.id}`)}
+                    onDone={() => mutate(`/document/ticket/${selectedJob.id}`)}
                 />
             )}
             {selectedJob && (
@@ -67,7 +67,7 @@ export default function Tickets() {
                     onDone={() => {}}
                 />
             )}
-            <JobModal open={jobModal} onClose={() => setJobModal(false)} />
+            <TicketModal open={ticketModal} onClose={() => setTicketModal(false)} />
 
             <Box display="flex">
                 <div style={{ flexGrow: 1 }} />
@@ -81,7 +81,7 @@ export default function Tickets() {
                 <Box>
                     <List>
                         <ListItem>
-                            <IconButton onClick={() => setJobModal(true)}>
+                            <IconButton onClick={() => setTicketModal(true)}>
                                 <AddRounded />
                             </IconButton>
                         </ListItem>
