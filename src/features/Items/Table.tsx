@@ -24,30 +24,74 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     const { data: items } = useSWR<{ items: IItem[]; total: number }>(
         generateURL("/item?device=false", filters, sorts, page)
     );
+    //		FIFO Value	QOH Value	UOM	Obsolite	Non-Inventory Item	R & D
 
     const gridColumns = useMemo<GridColumns>(() => {
         const res: GridColumns = [
             { field: "no", headerName: "Item NO.", width: 100 },
             { field: "name", headerName: "Name", width: 250 },
             { field: "description", headerName: "Description", width: 200 },
-            { field: "cost", headerName: "Cost", width: 80 },
+            //filter ha dynamic hast
             {
                 field: "salesApproved",
-                headerName: "Sales Approved",
+                headerName: "Sales Ap.",
                 type: "boolean",
-                width: 120,
+                width: 80,
                 disableColumnMenu: true,
             },
             {
                 field: "engineeringApproved",
-                headerName: "Engineering Approved",
+                headerName: "Eng. Ap.",
                 type: "boolean",
-                width: 150,
+                width: 80,
                 disableColumnMenu: true,
             },
-            { field: "totalQoh", headerName: "Total QOH.", width: 100, disableColumnMenu: true },
-            { field: "usedInLastQuarter", headerName: "Used In Last Quarter", width: 150, disableColumnMenu: true },
-            { field: "resellCost", headerName: "Resell Cost", width: 120 },
+            {
+                field: "shippingApproved",
+                headerName: "Ship Ap.",
+                type: "boolean",
+                width: 80,
+                disableColumnMenu: true,
+            },
+            { field: "prefVendor", headerName: "Preferred Vendor", width: 150, disableColumnMenu: true },
+            // { field: "vendorNo", headerName: "V. Part NO.", width: 100, disableColumnMenu: true }, koodoom vendor
+            { field: "cost", headerName: "Cost", width: 80 },
+            { field: "location", headerName: "Location", width: 100 },
+            { field: "qtyOnHand", headerName: "QOH.", width: 80, disableColumnMenu: true },
+            { field: "qtyRemain", headerName: " Remain", width: 80, disableColumnMenu: true },
+            { field: "qtyOnOrder", headerName: "on Order", width: 80, disableColumnMenu: true },
+            { field: "qtyAllocated", headerName: "Allocated", width: 80, disableColumnMenu: true },
+            { field: "usedInLastQuarter", headerName: "Used 90", width: 80, disableColumnMenu: true },
+            { field: "fifo", headerName: "FIFO Val.", width: 80, disableColumnMenu: true },
+            {
+                field: "qohVal",
+                headerName: "QOH Val.",
+                width: 80,
+                valueFormatter: (params) => params.row?.cost * params.row?.qtyOnHand,
+                disableColumnMenu: true,
+            },
+            { field: "uom", headerName: "UOM", width: 100, disableColumnMenu: true },
+            {
+                field: "obsolete",
+                headerName: "Obsolete",
+                type: "boolean",
+                width: 80,
+                disableColumnMenu: true,
+            },
+            {
+                field: "nonInventoryItem",
+                headerName: "NON Inv.",
+                type: "boolean",
+                width: 80,
+                disableColumnMenu: true,
+            },
+            {
+                field: "rndOnly",
+                headerName: "R&D",
+                type: "boolean",
+                width: 80,
+                disableColumnMenu: true,
+            },
         ];
 
         const exceptions = [
@@ -59,11 +103,22 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
             "cost",
             "salesApproved",
             "engineeringApproved",
-            "totalQog",
+            "totalQoh",
             "usedInLastQuarter",
             "resellCost",
             "filters",
             "fields",
+            "prefVendor",
+            "location",
+            "rndOnly",
+            "nonInventoryItem",
+            "obsolete",
+            "uom",
+            "qohVal",
+            "fifo",
+            "qtyAllocated",
+            "qtyRemain",
+            "qtyOnOrder",
         ];
         if (items && items.items && items.items.length > 0) {
             for (let f of Object.keys(items.items[0])) {
