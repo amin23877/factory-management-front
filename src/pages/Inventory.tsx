@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from "react";
-import { Box, IconButton, ListItem } from "@material-ui/core";
+import React, { Fragment, useCallback, useState } from "react";
+import { Box, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
 import { NoteRounded, FileCopyRounded, AddRounded, DeleteRounded, PostAddRounded } from "@material-ui/icons";
 import Confirm from "../features/Modals/Confirm";
 
@@ -8,7 +8,7 @@ import DocumentModal from "../features/Modals/DocumentModals";
 import BOMModal from "../features/BOM/BomModal";
 
 import { AddItemModal } from "../features/Items/ItemModals";
-import ItemsDetails from "../features/Items";
+import ItemsDetails from "../features/Items/datails";
 
 import { deleteAnItem, IItem } from "../api/items";
 
@@ -24,6 +24,7 @@ const Inventory = () => {
     const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
 
     const [activeTab, setActiveTab] = useState(0);
+    const [mainTab, setMainTab] = useState(0);
     const [selectedNote, setSelectedNote] = useState<any>();
     const [selectedDoc, setSelectedDoc] = useState<any>();
 
@@ -98,72 +99,98 @@ const Inventory = () => {
 
             <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
                 <div style={{ flexGrow: 1 }} />
-
-                <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="secondary">
-                    <MyTab color="primary" label="Overview" />
-                    <MyTab label="Details" disabled={!selectedItem} />
+                <MyTabs value={mainTab} onChange={(e, nv) => setMainTab(nv)} textColor="secondary">
+                    <MyTab color="primary" label="Dashboard" />
+                    <MyTab label="items" />
                 </MyTabs>
             </Box>
+            {mainTab === 0 && (
+                <Fragment>
+                    <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
+                        <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                            <Tab label="Recently Added Items" />
+                            <Tab label="Items On Order" />
+                            <Tab label="Low Quantity Items" />
+                        </Tabs>
+                        <div style={{ flexGrow: 1 }} />
+                    </Box>
+                </Fragment>
+            )}
+            {mainTab === 1 && (
+                <Fragment>
+                    <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
+                        <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                            <Tab label="List" />
+                            <Tab disabled={!selectedItem} label="Details" />
+                        </Tabs>
+                        <div style={{ flexGrow: 1 }} />
+                    </Box>
 
-            <Box display="flex" alignItems="flex-start" mt={1}>
-                <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
-                    <ListItem>
-                        <IconButton title="Add item" onClick={() => setAddItemModal(true)}>
-                            <AddRounded />
-                        </IconButton>
-                    </ListItem>
-                    <ListItem>
-                        <IconButton
-                            title="Delete item"
-                            onClick={() => selectedItem && selectedItem?.id && setDeleteItemModal(true)}
-                        >
-                            <DeleteRounded />
-                        </IconButton>
-                    </ListItem>
-                    <ListItem>
-                        <IconButton title="Cluster and level" onClick={() => setFieldNFilterModal(true)}>
-                            <PostAddRounded />
-                        </IconButton>
-                    </ListItem>
-                    <ListItem>
-                        <IconButton disabled={activeTab === 0} title="Add note" onClick={() => setAddNoteModal(true)}>
-                            <NoteRounded />
-                        </IconButton>
-                    </ListItem>
-                    <ListItem>
-                        <IconButton
-                            disabled={activeTab === 0}
-                            title="Add document"
-                            onClick={() => setAddDocModal(true)}
-                        >
-                            <FileCopyRounded />
-                        </IconButton>
-                    </ListItem>
-                </List>
-                <Box flex={11} ml={2}>
-                    {activeTab === 0 && (
-                        <ItemTable
-                            onRowSelected={(r) => {
-                                setSelectedItem(r.data as any);
-                                setActiveTab(1);
-                            }}
-                        />
-                    )}
-                    {activeTab === 1 && (
-                        <ItemsDetails
-                            selectedRow={selectedItem}
-                            onDocSelected={(d) => {
-                                setSelectedDoc(d);
-                                setEditDocModal(true);
-                            }}
-                            onNoteSelected={(d) => {
-                                setSelectedNote(d);
-                                setEditNoteModal(true);
-                            }}
-                        />
-                    )}
-                </Box>
-            </Box>
+                    <Box display="flex" alignItems="flex-start" mt={1}>
+                        <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
+                            <ListItem>
+                                <IconButton title="Add item" onClick={() => setAddItemModal(true)}>
+                                    <AddRounded />
+                                </IconButton>
+                            </ListItem>
+                            <ListItem>
+                                <IconButton
+                                    title="Delete item"
+                                    onClick={() => selectedItem && selectedItem?.id && setDeleteItemModal(true)}
+                                >
+                                    <DeleteRounded />
+                                </IconButton>
+                            </ListItem>
+                            <ListItem>
+                                <IconButton title="Cluster and level" onClick={() => setFieldNFilterModal(true)}>
+                                    <PostAddRounded />
+                                </IconButton>
+                            </ListItem>
+                            <ListItem>
+                                <IconButton
+                                    disabled={activeTab === 0}
+                                    title="Add note"
+                                    onClick={() => setAddNoteModal(true)}
+                                >
+                                    <NoteRounded />
+                                </IconButton>
+                            </ListItem>
+                            <ListItem>
+                                <IconButton
+                                    disabled={activeTab === 0}
+                                    title="Add document"
+                                    onClick={() => setAddDocModal(true)}
+                                >
+                                    <FileCopyRounded />
+                                </IconButton>
+                            </ListItem>
+                        </List>
+                        <Box flex={11} ml={2}>
+                            {activeTab === 0 && (
+                                <ItemTable
+                                    onRowSelected={(r) => {
+                                        setSelectedItem(r.data as any);
+                                        setActiveTab(1);
+                                    }}
+                                />
+                            )}
+                            {activeTab === 1 && (
+                                <ItemsDetails
+                                    selectedRow={selectedItem}
+                                    onDocSelected={(d) => {
+                                        setSelectedDoc(d);
+                                        setEditDocModal(true);
+                                    }}
+                                    onNoteSelected={(d) => {
+                                        setSelectedNote(d);
+                                        setEditNoteModal(true);
+                                    }}
+                                />
+                            )}
+                        </Box>
+                    </Box>
+                </Fragment>
+            )}
         </Box>
     );
 };
