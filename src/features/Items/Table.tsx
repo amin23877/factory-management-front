@@ -26,28 +26,46 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     );
 
     const gridColumns = useMemo<GridColumns>(() => {
-        const res: GridColumns = [
-            { field: "no", headerName: "Item NO.", width: 100 },
-            { field: "name", headerName: "Name", flex: 1 },
-            { field: "description", headerName: "Description", flex: 2 },
-            { field: "cost", headerName: "Cost", width: 80 },
+        let res: GridColumns = [
+            { field: "no", headerName: "Number", width: 100 },
+            { field: "name", headerName: "Name", width: 180 },
+            { field: "description", headerName: "Description", width: 200 },
+            { field: "category", headerName: "Category", width: 100 },
+            { field: "family", headerName: "family", width: 100 },
+            { field: "inductance", headerName: "Inductance", width: 100 },
             {
                 field: "salesApproved",
-                headerName: "Sales Approved",
+                headerName: "Sales.AP",
                 type: "boolean",
-                width: 120,
-                disableColumnMenu: true,
+                width: 80,
             },
             {
                 field: "engineeringApproved",
-                headerName: "Engineering Approved",
+                headerName: "Eng.AP",
                 type: "boolean",
-                width: 150,
-                disableColumnMenu: true,
+                width: 80,
             },
-            { field: "totalQoh", headerName: "Total QOH.", width: 100, disableColumnMenu: true },
-            { field: "usedInLastQuarter", headerName: "Used In Last Quarter", width: 150, disableColumnMenu: true },
-            { field: "resellCost", headerName: "Resell Cost", width: 120 },
+            {
+                field: "shipApproved",
+                headerName: "Ship.AP",
+                type: "boolean",
+                width: 80,
+            },
+            { field: "preferredVendor", headerName: "Preferred Vendor", width: 120 },
+            { field: "vendorPartNumber", headerName: "Vendor Part Number", width: 140 },
+            { field: "cost", headerName: "Cost", type: "number", width: 100 },
+            { field: "location", headerName: "Location", width: 200 },
+            { field: "totalQoh", headerName: "Qty On Hand", width: 100 },
+            { field: "remainQoh", headerName: "Qty Remain", width: 100 },
+            { field: "onOrderQoh", headerName: "Qty On Order", width: 100 },
+            { field: "atyAllocated", headerName: "Aty Allocated", width: 100 },
+            { field: "usedInLastQuarter", headerName: "Last 90", width: 100 },
+            { field: "FIFO Value", headerName: "FIFO Value", width: 100 },
+            { field: "QOH Value", headerName: "QOH Value", width: 100 },
+            { field: "UOM", headerName: "UOM", width: 120 },
+            { field: "obsolite", headerName: "Obsolite", type: "boolean", width: 80 },
+            { field: "noneInventory", headerName: "None-Inventory", type: "boolean", width: 110 },
+            { field: "rand", headerName: "R & D", type: "boolean", width: 80 },
         ];
 
         const exceptions = [
@@ -72,6 +90,8 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
                 }
             }
         }
+
+        res = res.map((r) => ({ ...r, disableColumnMenu: true }));
 
         return res;
     }, [items]);

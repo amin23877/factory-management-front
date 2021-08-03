@@ -192,7 +192,7 @@ export default function PanelRouter() {
                     <Fab
                         onClick={() => setChatModal(true)}
                         color="primary"
-                        style={{ position: "absolute", bottom: 15, right: 15 }}
+                        style={{ position: "fixed", bottom: 15, right: 15, zIndex: 1000 }}
                     >
                         <ChatRounded />
                     </Fab>
