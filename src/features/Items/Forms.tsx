@@ -1,16 +1,14 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import { Box, FormControlLabel, Checkbox, LinearProgress, Divider } from "@material-ui/core";
+import { Box, FormControlLabel, Checkbox, LinearProgress, Divider, Paper } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import useSWR from "swr";
 
-import Snack from "../../app/Snack";
 import TextField from "../../app/TextField";
 import { ArraySelect } from "../../app/Inputs";
 import Button from "../../app/Button";
 
 import { IFilter } from "../../api/filter";
 import { IField } from "../../api/field";
-import { updateItemQuantity } from "../../api/items";
 import { splitLevelName } from "../../logic/levels";
 
 interface IForm {
@@ -43,59 +41,110 @@ export const General = ({
     return (
         <>
             <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
-                <Box style={{ gridColumnEnd: "span 4" }} display="flex" justifyContent="space-between" flexWrap="wrap">
-                    <FormControlLabel
-                        style={{ fontSize: "0.7rem" }}
-                        checked={values.active}
-                        label="Active"
-                        name="active"
-                        onChange={handleChange}
-                        control={<Checkbox />}
-                    />
-                    <FormControlLabel
-                        style={{ fontSize: "0.7rem" }}
-                        checked={values.obsolete}
-                        label="Obsolete"
-                        name="obsolete"
-                        onChange={handleChange}
-                        control={<Checkbox />}
-                    />
-                    <FormControlLabel
-                        style={{ fontSize: "0.7rem" }}
-                        checked={values.rndOnly}
-                        label="R&D only"
-                        name="rndOnly"
-                        onChange={handleChange}
-                        control={<Checkbox />}
-                    />
-                    <FormControlLabel
-                        style={{ fontSize: "0.7rem" }}
-                        checked={values.salesApproved}
-                        label="S. Ap."
-                        name="salesApproved"
-                        onChange={handleChange}
-                        control={<Checkbox />}
-                    />
-                    <FormControlLabel
-                        style={{ fontSize: "0.7rem" }}
-                        checked={values.engineeringApproved}
-                        label="En. Ap."
-                        name="engineeringApproved"
-                        onChange={handleChange}
-                        control={<Checkbox />}
-                    />
-                    {device ? (
+                <Paper
+                    style={{
+                        margin: "0.5em 0",
+                        padding: "0 0.5em",
+                        backgroundColor: "#eee",
+                        gridColumnEnd: "span 4",
+                    }}
+                >
+                    <Box display="flex" justifyContent="space-between" flexWrap="wrap">
                         <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
-                            checked={values.device}
-                            label="Device"
-                            name="device"
+                            checked={values.shippingApproved}
+                            label="Ship. Ap."
+                            name="shippingApproved"
                             onChange={handleChange}
-                            disabled={device}
                             control={<Checkbox />}
                         />
-                    ) : null}
-                </Box>
+                        <FormControlLabel
+                            style={{ fontSize: "0.7rem" }}
+                            checked={values.salesApproved}
+                            label="Sales Ap."
+                            name="salesApproved"
+                            onChange={handleChange}
+                            control={<Checkbox />}
+                        />
+                        <FormControlLabel
+                            style={{ fontSize: "0.7rem" }}
+                            checked={values.engineeringApproved}
+                            label="En. Ap."
+                            name="engineeringApproved"
+                            onChange={handleChange}
+                            control={<Checkbox />}
+                        />
+                        <FormControlLabel
+                            style={{ fontSize: "0.7rem" }}
+                            checked={values.obsolete}
+                            label="Obsolete"
+                            name="obsolete"
+                            onChange={handleChange}
+                            control={<Checkbox />}
+                        />
+                        <FormControlLabel
+                            style={{ fontSize: "0.7rem" }}
+                            checked={values.nonInventoryItem}
+                            label="Non-Inventory Item"
+                            name="nonInventoryItem"
+                            onChange={handleChange}
+                            control={<Checkbox />}
+                        />
+                    </Box>
+                    <Box display="flex" justifyContent="space-between" flexWrap="wrap">
+                        <FormControlLabel
+                            style={{ fontSize: "0.7rem" }}
+                            checked={values.rndOnly}
+                            label="R&D"
+                            name="rndOnly"
+                            onChange={handleChange}
+                            control={<Checkbox />}
+                        />
+                        <FormControlLabel
+                            style={{ fontSize: "0.7rem" }}
+                            checked={values.dontTrackQoh}
+                            label="Do not Track QOH"
+                            name="dontTrackQoh"
+                            onChange={handleChange}
+                            control={<Checkbox />}
+                        />
+                        <FormControlLabel
+                            style={{ fontSize: "0.7rem" }}
+                            checked={values.dontOrderPO}
+                            label="Do not order on POs"
+                            name="dontOrderPO"
+                            onChange={handleChange}
+                            control={<Checkbox />}
+                        />
+                        <FormControlLabel
+                            style={{ fontSize: "0.7rem" }}
+                            checked={values.archived}
+                            label="Archive"
+                            name="archived"
+                            onChange={handleChange}
+                            control={<Checkbox />}
+                        />
+                        <TextField
+                            label="Archive Date"
+                            value={values.archiveDate}
+                            name="archiveDate"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.archiveDate && touched.archiveDate)}
+                            placeholder="archiveDate"
+                        />
+                    </Box>
+                </Paper>
+                <TextField
+                    style={{ gridColumnEnd: "span 4" }}
+                    label="no"
+                    value={values.no}
+                    name="no"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.no && touched.no)}
+                    placeholder="no"
+                />
                 <TextField
                     style={{ gridColumnEnd: "span 4" }}
                     label="Item name"
@@ -106,41 +155,6 @@ export const General = ({
                     error={Boolean(errors.name && touched.name)}
                     value={values.name}
                 />
-                <Box
-                    style={{ gridColumnEnd: "span 4" }}
-                    display="grid"
-                    gridTemplateColumns="1fr 1fr 1fr"
-                    gridRowGap={10}
-                    gridColumnGap={10}
-                >
-                    <TextField
-                        label="no"
-                        value={values.no}
-                        name="no"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.no && touched.no)}
-                        placeholder="no"
-                    />
-                    <TextField
-                        label="mfgr"
-                        placeholder="mfgr"
-                        name="mfgr"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.mfgr && touched.mfgr)}
-                        value={values.mfgr}
-                    />
-                    <TextField
-                        label="color"
-                        placeholder="color"
-                        name="color"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.color && touched.color)}
-                        value={values.color}
-                    />
-                </Box>
                 <TextField
                     multiline
                     style={{ gridColumnEnd: "span 4" }}
@@ -151,15 +165,6 @@ export const General = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                     value={values.description}
-                />
-                <TextField
-                    style={{ gridColumnEnd: "span 4" }}
-                    label="Special notes"
-                    value={values.specialNote}
-                    name="specialNote"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.specialNote && touched.specialNote)}
                 />
             </Box>
         </>

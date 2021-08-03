@@ -58,38 +58,38 @@ function ItemsDetails({
     const [moreInfoTab, setMoreInfoTab] = useState(0);
     const [activeTab, setActiveTab] = useState(0);
 
-    const { data: notes } = useSWR<INote[]>(
-        activeTab === 0 ? (selectedRow && selectedRow.id ? `/note/item/${selectedRow.id}` : null) : null
-    );
     const { data: docs } = useSWR<IDocument[]>(
-        activeTab === 1 ? (selectedRow && selectedRow.id ? `/document/item/${selectedRow.id}` : null) : null
+        activeTab === 0 ? (selectedRow && selectedRow.id ? `/document/item/${selectedRow.id}` : null) : null
     );
-    const { data: uses } = useSWR(
-        activeTab === 2 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/uses` : null) : null
-    );
+    // const { data: uses } = useSWR(
+    //     activeTab === 2 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/uses` : null) : null
+    // );
     const { data: boms } = useSWR<IBom[]>(
-        activeTab === 3 ? (selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null) : null
+        activeTab === 1 ? (selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null) : null
     );
     const { data: vendors } = useSWR(
-        activeTab === 4 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/vendors` : null) : null
+        activeTab === 2 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/vendors` : null) : null
     );
 
-    const { data: itemQuotes } = useSWR(
-        activeTab === 5 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/quote` : null) : null
-    );
+    // const { data: itemQuotes } = useSWR(
+    //     activeTab === 3 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/quote` : null) : null
+    // );
     const { data: itemSOs } = useSWR(
-        activeTab === 6 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/so` : null) : null
+        activeTab === 4 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/so` : null) : null
     );
 
     const { data: itemPOs } = useSWR(
-        activeTab === 7 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/purchasepo` : null) : null
+        activeTab === 5 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/purchasepo` : null) : null
     );
     const { data: itemUsage } = useSWR(
-        activeTab === 9 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/uses` : null) : null
+        activeTab === 6 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/uses` : null) : null
     );
-    const { data: itemQtyHistory } = useSWR(
-        activeTab === 10 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/qty` : null) : null
+    const { data: notes } = useSWR<INote[]>(
+        activeTab === 7 ? (selectedRow && selectedRow.id ? `/note/item/${selectedRow.id}` : null) : null
     );
+    // const { data: itemQtyHistory } = useSWR(
+    //     activeTab === 10 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/qty` : null) : null
+    // );
 
     const [manualCountModal, setManualCountModal] = useState(false);
     const [quantityModal, setQuantityModal] = useState(false);
@@ -238,58 +238,16 @@ function ItemsDetails({
                                         textColor="primary"
                                         onChange={(e, v) => setMoreInfoTab(v)}
                                     >
-                                        <Tab label="More Info." />
-                                        <Tab label="Quantity" />
-                                        <Tab label="Shipping" />
-                                        <Tab label="Last Used" />
                                         <Tab label="Image" />
                                         <Tab label="QR Code" />
+                                        <Tab label="More Info." />
+                                        <Tab label="Quantity" />
+                                        <Tab label="Pricing" />
+                                        <Tab label="Shipping" />
+                                        {/* <Tab label="Last Used" /> */}
                                         <Tab label="Clusters and Levels" />
                                     </Tabs>
                                     {moreInfoTab === 0 && (
-                                        <MoreInfo
-                                            values={values}
-                                            handleChange={handleChange}
-                                            handleBlur={handleBlur}
-                                            setFieldValue={setFieldValue}
-                                            errors={errors}
-                                            touched={touched}
-                                        />
-                                    )}
-                                    {moreInfoTab === 1 && (
-                                        <Quantity
-                                            values={values}
-                                            handleChange={handleChange}
-                                            handleBlur={handleBlur}
-                                            setFieldValue={setFieldValue}
-                                            errors={errors}
-                                            touched={touched}
-                                            itemId={selectedRow.id}
-                                            handleManualCount={() => setManualCountModal(true)}
-                                            handleUpdateQuantity={() => setQuantityModal(true)}
-                                        />
-                                    )}
-                                    {moreInfoTab === 2 && (
-                                        <Shipping
-                                            values={values}
-                                            handleChange={handleChange}
-                                            handleBlur={handleBlur}
-                                            setFieldValue={setFieldValue}
-                                            errors={errors}
-                                            touched={touched}
-                                        />
-                                    )}
-                                    {moreInfoTab === 3 && (
-                                        <LastUsed
-                                            values={values}
-                                            handleChange={handleChange}
-                                            handleBlur={handleBlur}
-                                            setFieldValue={setFieldValue}
-                                            errors={errors}
-                                            touched={touched}
-                                        />
-                                    )}
-                                    {moreInfoTab === 4 && (
                                         <Box mt={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
                                             {selectedRow?.photo && (
                                                 <img
@@ -306,7 +264,7 @@ function ItemsDetails({
                                             <UploadButton onChange={handleFileChange} accept="image/*" />
                                         </Box>
                                     )}
-                                    {moreInfoTab === 5 && (
+                                    {moreInfoTab === 1 && (
                                         <Box display="flex" justifyContent="space-around" alignItems="center">
                                             <div ref={(e) => (qrCode.current = e)}>
                                                 <QRCode number={selectedRow.no} />
@@ -329,6 +287,65 @@ function ItemsDetails({
                                             </Button>
                                         </Box>
                                     )}
+
+                                    {moreInfoTab === 2 && (
+                                        <MoreInfo
+                                            values={values}
+                                            handleChange={handleChange}
+                                            handleBlur={handleBlur}
+                                            setFieldValue={setFieldValue}
+                                            errors={errors}
+                                            touched={touched}
+                                        />
+                                    )}
+                                    {moreInfoTab === 3 && (
+                                        <Quantity
+                                            values={values}
+                                            handleChange={handleChange}
+                                            handleBlur={handleBlur}
+                                            setFieldValue={setFieldValue}
+                                            errors={errors}
+                                            touched={touched}
+                                            itemId={selectedRow.id}
+                                            handleManualCount={() => setManualCountModal(true)}
+                                            handleUpdateQuantity={() => setQuantityModal(true)}
+                                        />
+                                    )}
+                                    {moreInfoTab === 4 && (
+                                        //pricing
+                                        <Quantity
+                                            values={values}
+                                            handleChange={handleChange}
+                                            handleBlur={handleBlur}
+                                            setFieldValue={setFieldValue}
+                                            errors={errors}
+                                            touched={touched}
+                                            itemId={selectedRow.id}
+                                            handleManualCount={() => setManualCountModal(true)}
+                                            handleUpdateQuantity={() => setQuantityModal(true)}
+                                        />
+                                    )}
+                                    {moreInfoTab === 5 && (
+                                        <Shipping
+                                            values={values}
+                                            handleChange={handleChange}
+                                            handleBlur={handleBlur}
+                                            setFieldValue={setFieldValue}
+                                            errors={errors}
+                                            touched={touched}
+                                        />
+                                    )}
+                                    {/* {moreInfoTab === 3 && (
+                                        <LastUsed
+                                            values={values}
+                                            handleChange={handleChange}
+                                            handleBlur={handleBlur}
+                                            setFieldValue={setFieldValue}
+                                            errors={errors}
+                                            touched={touched}
+                                        />
+                                    )}
+                                     */}
                                     {moreInfoTab === 6 && (
                                         <DynamicFilterAndFields
                                             values={values}
@@ -348,40 +365,42 @@ function ItemsDetails({
             </Formik>
             <BasePaper style={{ margin: "1em 0" }}>
                 <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} textColor="primary" variant="scrollable">
-                    <Tab label="Notes" />
-                    <Tab label="Documents" />
-                    <Tab label="BOM allocated" />
+                    <Tab label="Document" />
+                    {/* <Tab label="BOM allocated" /> */}
                     <Tab label="BOM" />
-                    <Tab label="Vendors" />
+                    <Tab label="Vendor" />
                     <Tab label="Quote History" />
                     <Tab label="Sales order History" />
-                    <Tab label="Purchase order History" />
-                    <Tab label="Sales Report" />
+                    <Tab label="PO History" />
+                    {/* <Tab label="Sales Report" /> */}
                     <Tab label="Usage" />
-                    <Tab label="Quantity history" />
+                    <Tab label="Note" />
+                    {/* <Tab label="Quantity history" /> */}
+                    <Tab label="Auditing" />
                 </Tabs>
                 <Box p={3}>
-                    {activeTab === 0 && (
-                        <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
-                    )}
-                    {activeTab === 1 && <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />}
-                    {activeTab === 2 && <BaseDataGrid cols={usesCols} rows={uses || []} onRowSelected={() => {}} />}
-                    {activeTab === 3 && <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={() => {}} />}
-                    {activeTab === 4 && (
+                    {activeTab === 0 && <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />}
+                    {/* {activeTab === 2 && <BaseDataGrid cols={usesCols} rows={uses || []} onRowSelected={() => {}} />} */}
+                    {activeTab === 1 && <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={() => {}} />}
+                    {activeTab === 2 && (
                         <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => {}} />
                     )}
-                    {activeTab === 5 && (
+                    {activeTab === 3 && (
                         <QuoteDatagrid url={`/item/${selectedRow.id}/quote`} onRowSelected={() => {}} />
                     )}
-                    {activeTab === 6 && <SOTable rows={itemSOs} />}
-                    {activeTab === 7 && <BaseDataGrid cols={poCols} rows={itemPOs || []} onRowSelected={() => {}} />}
-                    {activeTab === 8 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />}
-                    {activeTab === 9 && (
+                    {activeTab === 4 && <SOTable rows={itemSOs} />}
+                    {activeTab === 5 && <BaseDataGrid cols={poCols} rows={itemPOs || []} onRowSelected={() => {}} />}
+                    {/* {activeTab === 8 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />} */}
+                    {activeTab === 6 && (
                         <BaseDataGrid cols={usageCols} rows={itemUsage || []} onRowSelected={() => {}} />
                     )}
-                    {activeTab === 10 && (
-                        <BaseDataGrid cols={qtyHistoryCols} rows={itemQtyHistory || []} onRowSelected={() => {}} />
+                    {activeTab === 7 && (
+                        <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
                     )}
+                    {activeTab === 8 && <div>Auditing</div>}
+                    {/* {activeTab === 10 && (
+                        <BaseDataGrid cols={qtyHistoryCols} rows={itemQtyHistory || []} onRowSelected={() => {}} />
+                    )} */}
                 </Box>
             </BasePaper>
         </Box>
