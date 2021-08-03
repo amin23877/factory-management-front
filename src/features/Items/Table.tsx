@@ -28,8 +28,8 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     const gridColumns = useMemo<GridColumns>(() => {
         const res: GridColumns = [
             { field: "no", headerName: "Item NO.", width: 100 },
-            { field: "name", headerName: "Name", flex: 1 },
-            { field: "description", headerName: "Description", flex: 2 },
+            { field: "name", headerName: "Name", width: 250 },
+            { field: "description", headerName: "Description", width: 200 },
             { field: "cost", headerName: "Cost", width: 80 },
             {
                 field: "salesApproved",

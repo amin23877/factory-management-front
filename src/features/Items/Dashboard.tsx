@@ -1,7 +1,7 @@
 import { Box, Tabs, Tab } from "@material-ui/core";
 import React, { Fragment, useState } from "react";
 
-const Dashboard = ({}: {}) => {
+const Dashboard = () => {
     const [activeTab, setActiveTab] = useState(0);
 
     return (
