@@ -1,46 +1,37 @@
 import React from "react";
-import { Divider, makeStyles, Typography } from "@material-ui/core";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
+import { Box, List, ListItem, ListItemText, Paper, Typography } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        backgroundColor: theme.palette.background.paper,
-        display: "flex",
-        height: 224,
-    },
-    tabs: {
-        borderRight: `1px solid ${theme.palette.divider}`,
-        height: "95%",
-    },
-}));
+import ChatAdapter, { userType } from "../../logic/Chat";
 
-export default function EmployeeList({ value, onChange }: { value: number; onChange: (e: any, nv: number) => void }) {
-    const classes = useStyles();
+export default function EmployeeList({
+    value,
+    onChange,
+    users,
+    socket,
+}: {
+    socket: ChatAdapter;
+    users: userType[];
+    value: string;
+    onChange: (e: any, nv: number) => void;
+}) {
+    const { username } = socket.getSocketAuth() as any;
+    // console.log(users);
 
     return (
-        <div>
-            <Typography style={{ textAlign: "center" }} variant="h6">
-                Employee List
-            </Typography>
-            <Divider style={{ margin: "10px 0" }} />
-            <Tabs
-                orientation="vertical"
-                variant="scrollable"
-                value={value}
-                onChange={onChange}
-                aria-label="Employee list"
-                className={classes.tabs}
-            >
-                <Tab label="Item One" />
-                <Tab label="Item Two" />
-                <Tab label="Item Three" />
-                <Tab label="Item Four" />
-                <Tab label="Item Five" />
-                <Tab label="Item Six" />
-                <Tab label="Item Seven" />
-            </Tabs>
-        </div>
+        <Paper>
+            <Box m={1}>
+                <Typography>Employee List</Typography>
+                <List>
+                    {users.map(
+                        (user) =>
+                            user.username !== username && (
+                                <ListItem key={user.userID} button selected={user.username === value}>
+                                    <ListItemText>{user.username}</ListItemText>
+                                </ListItem>
+                            )
+                    )}
+                </List>
+            </Box>
+        </Paper>
     );
 }
