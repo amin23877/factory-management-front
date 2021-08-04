@@ -1,6 +1,5 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import { Box, FormControlLabel, Checkbox, LinearProgress, Divider, Paper } from "@material-ui/core";
-import { Formik, Form } from "formik";
 import useSWR from "swr";
 
 import TextField from "../../app/TextField";
@@ -243,6 +242,47 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                 onBlur={handleBlur}
                 error={Boolean(errors.sku && touched.sku)}
                 value={values.sku}
+            />
+        </Box>
+    );
+};
+export const Pricing = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
+    return (
+        <Box mt={1} display="grid" gridTemplateColumns="auto auto" gridColumnGap={10} gridRowGap={10}>
+            <TextField
+                label="Recent cost"
+                name="recentCost"
+                placeholder="recentCost"
+                value={values.recentCost}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                style={{ marginBottom: 3 }}
+            />
+            <TextField
+                label="Labor Cost"
+                name="laborCost"
+                placeholder="Labor Cost"
+                value={values.laborCost}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                style={{ marginBottom: 3 }}
+            />
+            <TextField
+                label="retail price"
+                name="retailPrice"
+                placeholder="Retail Price"
+                value={values.retailPrice}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                style={{ marginBottom: 3 }}
+            />
+            <TextField
+                label="Resell Cost"
+                value={values.resellCost}
+                name="resellCost"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.resellCost && touched.resellCost)}
             />
         </Box>
     );
