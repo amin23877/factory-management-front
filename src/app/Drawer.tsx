@@ -1,15 +1,5 @@
 import React, { useState } from "react";
-import {
-    Drawer,
-    List,
-    ListItem,
-    Divider,
-    Hidden,
-    ListItemIcon,
-    makeStyles,
-    ListItemText,
-    useMediaQuery,
-} from "@material-ui/core";
+import { Drawer, List, ListItem, Divider, ListItemIcon, makeStyles, ListItemText } from "@material-ui/core";
 import ShopRounded from "@material-ui/icons/ShopRounded";
 import ShoppingCartRounded from "@material-ui/icons/ShoppingCartRounded";
 import { Link, useLocation } from "react-router-dom";
