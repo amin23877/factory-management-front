@@ -48,7 +48,7 @@ export const General = ({
                         gridColumnEnd: "span 4",
                     }}
                 >
-                    <Box display="flex" justifyContent="space-between" flexWrap="wrap">
+                    <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
                         <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
                             checked={values.shippingApproved}
@@ -81,6 +81,7 @@ export const General = ({
                             onChange={handleChange}
                             control={<Checkbox />}
                         />
+
                         <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
                             checked={values.nonInventoryItem}
@@ -89,8 +90,6 @@ export const General = ({
                             onChange={handleChange}
                             control={<Checkbox />}
                         />
-                    </Box>
-                    <Box display="flex" justifyContent="space-between" flexWrap="wrap">
                         <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
                             checked={values.rndOnly}
@@ -115,6 +114,7 @@ export const General = ({
                             onChange={handleChange}
                             control={<Checkbox />}
                         />
+
                         <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
                             checked={values.archived}
@@ -131,6 +131,7 @@ export const General = ({
                             onBlur={handleBlur}
                             error={Boolean(errors.archiveDate && touched.archiveDate)}
                             placeholder="archiveDate"
+                            disabled
                         />
                     </Box>
                 </Paper>
@@ -174,14 +175,14 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
     return (
         <Box mt={1} display="grid" gridTemplateColumns="auto auto" gridColumnGap={10} gridRowGap={10}>
             <TextField
-                label="version"
+                label="Version"
                 name="version"
-                placeholder="version"
+                placeholder="Version"
                 value={values.version}
                 onBlur={handleBlur}
                 onChange={handleChange}
             />
-            <TextField
+            {/* <TextField
                 label="keywords"
                 name="keywords"
                 placeholder="keywords"
@@ -189,59 +190,52 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                 onBlur={handleBlur}
                 onChange={handleChange}
                 style={{ marginBottom: 3 }}
-            />
+            /> */}
             <TextField
-                label="url"
+                label="Url"
                 name="url"
-                placeholder="url"
+                placeholder="Url"
                 value={values.url}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 style={{ marginBottom: 3 }}
             />
             <TextField
-                label="cost"
-                name="cost"
-                placeholder="cost"
-                value={values.cost}
+                label="Manufacturer Product Number"
+                name="manufacturerProductNumber"
+                placeholder="Manufacturer Product Number"
+                value={values.manufacturerProductNumber}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 style={{ marginBottom: 3 }}
             />
             <TextField
-                label="retail price"
-                name="retailPrice"
-                placeholder="Retail Price"
-                value={values.retailPrice}
+                label="Manufacturer"
+                name="manufacturer"
+                placeholder="Manufacturer"
+                value={values.manufacturer}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 style={{ marginBottom: 3 }}
             />
             <TextField
-                label="Resell Cost"
-                value={values.resellCost}
-                name="resellCost"
-                onChange={handleChange}
+                label="Lead Time"
+                name="leadTime"
+                placeholder="Lead Time"
+                value={values.leadTime}
                 onBlur={handleBlur}
-                error={Boolean(errors.resellCost && touched.resellCost)}
+                onChange={handleChange}
+                style={{ marginBottom: 3 }}
             />
+
             <TextField
-                label="upc"
-                placeholder="upc"
-                name="upc"
-                onChange={handleChange}
+                label="Quickbook ID"
+                name="qbid"
+                placeholder="Quickbook ID"
+                value={values.qbid}
                 onBlur={handleBlur}
-                error={Boolean(errors.upc && touched.upc)}
-                value={values.upc}
-            />
-            <TextField
-                label="sku"
-                placeholder="sku"
-                name="sku"
                 onChange={handleChange}
-                onBlur={handleBlur}
-                error={Boolean(errors.sku && touched.sku)}
-                value={values.sku}
+                style={{ marginBottom: 3 }}
             />
         </Box>
     );
@@ -266,6 +260,25 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched }: I
                 onBlur={handleBlur}
                 onChange={handleChange}
                 style={{ marginBottom: 3 }}
+            />
+            <TextField
+                label="FIFO Value"
+                name="fifo"
+                placeholder="FIFO Value"
+                value={values.fifo}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                style={{ marginBottom: 3 }}
+            />
+            <TextField
+                label="QOH Value"
+                name="qohVal"
+                placeholder="QOH Value"
+                value={values.cost * values.qtyOnHand}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                style={{ marginBottom: 3 }}
+                disabled
             />
             <TextField
                 label="retail price"
@@ -333,6 +346,7 @@ export const Quantity = ({ itemId, handleManualCount, values, handleUpdateQuanti
                 style={{ gridColumnEnd: "span 2" }}
                 disabled
             />
+
             {handleUpdateQuantity && (
                 <Button kind="edit" onClick={handleUpdateQuantity}>
                     Update quantity
@@ -352,10 +366,10 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
         <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10} mt={1}>
             <TextField
                 style={{ gridColumnEnd: "span 2" }}
-                label="Additional shipping fee"
-                name="additionalShippingFee"
-                placeholder="Additional shipping fee"
-                value={values.additionalShippingFee}
+                label="Last shipping fee"
+                name="lastShippingFee"
+                placeholder="Last shipping fee"
+                value={values.lastShippingFee}
                 onBlur={handleBlur}
                 onChange={handleChange}
             />
@@ -401,6 +415,17 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                 onBlur={handleBlur}
                 error={Boolean(errors.size && touched.size)}
                 value={values.size}
+            />
+            <TextField
+                style={{ gridColumnEnd: "span 2" }}
+                fullWidth
+                label="Last Ordered Qty"
+                placeholder="Last Ordered Qty"
+                name="lastOrderedQty"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.lastOrderedQty && touched.lastOrderedQty)}
+                value={values.lastOrderedQty}
             />
         </Box>
     );

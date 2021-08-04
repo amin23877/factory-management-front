@@ -305,9 +305,9 @@ export const TermsTab = ({
             />
             <TextField
                 style={{ width: "100%" }}
-                value={values.frieghtTerms}
-                name="frieghtTerms"
-                label="Frieght Terms"
+                value={values.freightTerms}
+                name="freightTerms"
+                label="Freight Terms"
                 onChange={handleChange}
                 onBlur={handleBlur}
             />

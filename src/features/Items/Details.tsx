@@ -9,7 +9,7 @@ import BaseDataGrid from "../../app/BaseDataGrid";
 import { BasePaper } from "../../app/Paper";
 import VendorsTable from "./VandorsTable";
 
-import { MoreInfo, Quantity, Shipping, General, DynamicFilterAndFields, LastUsed } from "./Forms";
+import { MoreInfo, Quantity, Shipping, General, DynamicFilterAndFields, LastUsed, Pricing } from "./Forms";
 import { SalesReport } from "./Reports";
 
 import ManualCountModal from "./ManualCountModal";
@@ -26,7 +26,8 @@ import Toast from "../../app/Toast";
 import UploadButton from "../../app/FileUploader";
 import { exportPdf } from "../../logic/pdf";
 import QRCode from "./QRCode";
-
+import { fileType } from "../../logic/fileType";
+import { formatTimestampToDate } from "../../logic/date";
 function ItemsDetails({
     selectedRow,
     onNoteSelected,
@@ -110,23 +111,48 @@ function ItemsDetails({
         ],
         []
     );
+    // File 	Date	Creator	File Name 	File ID	File Description	File Type
 
-    const docCols = useMemo(
+    const docCols = useMemo<GridColDef[]>(
         () => [
-            { field: "name", headerName: "Name" },
-            { field: "EmployeeId", headerName: "Employee" },
-            { field: "description", headerName: "Description", width: 250 },
-            { field: "createdAt", headerName: "Date", width: 300 },
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            {
+                field: "EmployeeId",
+                headerName: "Creator",
+                valueFormatter: (params) => params.row?.employee?.username,
+                width: 120,
+            },
+            { field: "name", headerName: "Name", flex: 1 },
+            { field: "id", headerName: "ID", width: 200 },
+            { field: "description", headerName: "Description", flex: 1 },
+            {
+                field: "type",
+                headerName: "File Type",
+                valueFormatter: (params) => fileType(params.row?.path),
+                width: 120,
+            },
         ],
         []
     );
-
+    // Items	Revision	Revision Date	BOM Name	Note	Current
     const bomCols = useMemo<GridColDef[]>(
         () => [
-            { field: "no", headerName: "no." },
-            { field: "name", headerName: "Name" },
+            { field: "items", headerName: "items", width: 100 },
+            { field: "revision", headerName: "Revision", width: 100 },
+            {
+                field: "date",
+                headerName: "Revision Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            { field: "name", headerName: "Name", flex: 1 },
             { field: "note", headerName: "note", flex: 1 },
-            { field: "current", headerName: "current", type: "boolean" },
+            { field: "current", headerName: "current", type: "boolean", width: 100 },
         ],
         []
     );
@@ -143,23 +169,61 @@ function ItemsDetails({
 
     const usageCols = useMemo<GridColDef[]>(
         () => [
-            { field: "number", headerName: "Serial No." },
-            { field: "laborCost", headerName: "Labor Cost" },
-            { field: "dueDate", headerName: "Due Date", flex: 1 },
-            { field: "status", headerName: "Status" },
+            {
+                field: "soDate",
+                headerName: "SO Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.so.createdAt),
+                flex: 1,
+            },
+            {
+                field: "unit",
+                headerName: "Unit",
+                valueFormatter: (params) => params.row?.unit.number,
+                flex: 1,
+            },
+            {
+                field: "deviceNumber",
+                headerName: "Device Number",
+                valueFormatter: (params) => params.row?.item.no,
+                flex: 1,
+            },
+            {
+                field: "so",
+                headerName: "SO",
+                valueFormatter: (params) => params.row?.so.number,
+                flex: 1,
+            },
+            {
+                field: "estShipDate",
+                headerName: "Est Shipping Date",
+                valueFormatter: (params) => params.row?.so.estimatedShipDate,
+                flex: 1,
+            },
+            {
+                field: "qty",
+                headerName: "QTY",
+                valueFormatter: (params) => params.row?.lir.quantity,
+                flex: 1,
+            },
+            {
+                field: "client",
+                headerName: "Client",
+                valueFormatter: (params) => params.row?.client.name,
+                flex: 1,
+            },
         ],
         []
     );
 
-    const qtyHistoryCols = useMemo<GridColDef[]>(
-        () => [
-            { field: "before", headerName: "Before" },
-            { field: "after", headerName: "After" },
-            { field: "fieldName", headerName: "Level name" },
-            { field: "description", headerName: "description", flex: 1 },
-        ],
-        []
-    );
+    // const qtyHistoryCols = useMemo<GridColDef[]>(
+    //     () => [
+    //         { field: "before", headerName: "Before" },
+    //         { field: "after", headerName: "After" },
+    //         { field: "fieldName", headerName: "Level name" },
+    //         { field: "description", headerName: "description", flex: 1 },
+    //     ],
+    //     []
+    // );
 
     const handleSubmit = async (data: any, { setSubmitting }: any) => {
         try {
@@ -312,17 +376,13 @@ function ItemsDetails({
                                         />
                                     )}
                                     {moreInfoTab === 4 && (
-                                        //pricing
-                                        <Quantity
+                                        <Pricing
                                             values={values}
                                             handleChange={handleChange}
                                             handleBlur={handleBlur}
                                             setFieldValue={setFieldValue}
                                             errors={errors}
                                             touched={touched}
-                                            itemId={selectedRow.id}
-                                            handleManualCount={() => setManualCountModal(true)}
-                                            handleUpdateQuantity={() => setQuantityModal(true)}
                                         />
                                     )}
                                     {moreInfoTab === 5 && (

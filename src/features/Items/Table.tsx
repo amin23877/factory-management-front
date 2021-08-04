@@ -24,7 +24,6 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     const { data: items } = useSWR<{ result: IItem[]; total: number }>(
         generateURL("/item?device=false", filters, sorts, page)
     );
-    //		FIFO Value	QOH Value	UOM	Obsolite	Non-Inventory Item	R & D
 
     const gridColumns = useMemo<GridColumns>(() => {
         let res: GridColumns = [

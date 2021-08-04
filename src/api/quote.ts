@@ -1,6 +1,6 @@
 import Axios from "axios";
 
-import { ILineItem } from './lineItem';
+import { ILineItem } from "./lineItem";
 import { ILineService } from "./lineService";
 
 export interface IQuote {
@@ -18,7 +18,7 @@ export interface IQuote {
 
     status: string;
 
-    frieghtTerms: string;
+    freightTerms: string;
     paymentTerms: string;
 
     depositRequired: boolean;
