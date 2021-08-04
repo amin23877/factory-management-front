@@ -6,13 +6,13 @@ import { ILineService } from "./lineService";
 export interface ISO {
     id?: string;
     number: string;
-    frieghtTerms: string;
+    freightTerms: string;
     paymentTerms: string;
     carrier: string;
     QuoteId: string;
     issuedBy?: string;
     status: string;
-    createdAt:number;
+    createdAt: number;
 
     estShipDate: string;
     actShipDate: string;

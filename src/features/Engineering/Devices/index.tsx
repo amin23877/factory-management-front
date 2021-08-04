@@ -243,7 +243,7 @@ const Inventory = () => {
                                         onFilterModelChange={(f) => {
                                             setFilters(f);
                                         }}
-                                        rows={items ? items.items : []}
+                                        rows={items ? items.result : []}
                                         columns={gridColumns}
                                         components={{ Toolbar: GridToolbar }}
                                     />

@@ -52,7 +52,7 @@ export const GeneralForm = ({
             getQuoteById(selectedQuote)
                 .then((d) => {
                     const {
-                        frieghtTerms,
+                        freightTerms,
                         paymentTerms,
                         carrier,
                         issuedBy,
@@ -80,7 +80,7 @@ export const GeneralForm = ({
                     } = d;
                     onChangeInit({
                         ...values,
-                        frieghtTerms,
+                        freightTerms,
                         paymentTerms,
                         carrier,
                         issuedBy,
