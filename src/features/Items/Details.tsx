@@ -142,7 +142,7 @@ function ItemsDetails({
     // Items	Revision	Revision Date	BOM Name	Note	Current
     const bomCols = useMemo<GridColDef[]>(
         () => [
-            { field: "items", headerName: "items", width: 100 },
+            { field: "items", headerName: "Items", width: 100 },
             { field: "revision", headerName: "Revision", width: 100 },
             {
                 field: "date",
@@ -151,18 +151,18 @@ function ItemsDetails({
                 width: 120,
             },
             { field: "name", headerName: "Name", flex: 1 },
-            { field: "note", headerName: "note", flex: 1 },
-            { field: "current", headerName: "current", type: "boolean", width: 100 },
+            { field: "note", headerName: "Note", flex: 1 },
+            { field: "current", headerName: "Current", type: "boolean", width: 100 },
         ],
         []
     );
 
     const usesCols = useMemo<GridColDef[]>(
         () => [
-            { field: "no", headerName: "no." },
-            { field: "name", headerName: "Name" },
-            { field: "note", headerName: "note", flex: 1 },
-            { field: "current", headerName: "current", type: "boolean" },
+            { field: "no", headerName: "NO.", width: 120 },
+            { field: "name", headerName: "Name", width: 180 },
+            { field: "note", headerName: "Note", flex: 1 },
+            { field: "current", headerName: "Current", type: "boolean" },
         ],
         []
     );
