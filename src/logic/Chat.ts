@@ -2,9 +2,11 @@ import { io } from "socket.io-client";
 import { getToken } from "../api";
 
 export type messageType = {
+    _id:string;
     content: string;
-    from: any;
-    to: any;
+    from: string;
+    to: string;
+    fromSelf?: boolean;
 };
 
 export type userType = {
@@ -13,6 +15,7 @@ export type userType = {
     status: "online" | "offline";
     userID: string;
     username: string;
+    hasNewMessages?: boolean;
 };
 
 // Adapter for chat socket
@@ -25,14 +28,14 @@ export default class ChatAdapter {
         onUsers: (users: userType[]) => void,
         onUserConnected: (user: userType) => void,
         onUserDisconnected: (id: string) => void,
-        onPrivateMessage: (msg: { content: string; from: any; to: any }) => void
+        onPrivateMessage: (msg: { content: string; from: string; to: string }) => void
     ) {
         if (!this.token) {
             return;
         }
         this.socket = io(this.socketURL, { autoConnect: false, transports: ["websocket"] });
         this.socket.auth = { token: this.token };
-        this.socket.onAny((event, ...args) => {
+        this.socket.onAny((event, args) => {
             console.log("ChatAdapter", event, args);
         });
 
@@ -76,14 +79,6 @@ export default class ChatAdapter {
 
     public disconnect() {
         if (this.socket) {
-            this.socket.off("connect_error");
-            this.socket.off("connect");
-            this.socket.off("disconnect");
-            this.socket.off("users");
-            this.socket.off("user connected");
-            this.socket.off("user disconnected");
-            this.socket.off("private message");
-
             this.socket.disconnect();
         }
     }

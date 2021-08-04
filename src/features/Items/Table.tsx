@@ -21,7 +21,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     const [page, setPage] = useState<GridPageChangeParams>();
     const [sorts, setSort] = useState<GridSortModelParams>();
 
-    const { data: items } = useSWR<{ items: IItem[]; total: number }>(
+    const { data: items } = useSWR<{ result: IItem[]; total: number }>(
         generateURL("/item?device=false", filters, sorts, page)
     );
     //		FIFO Value	QOH Value	UOM	Obsolite	Non-Inventory Item	R & D
@@ -120,8 +120,8 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
             "qtyRemain",
             "qtyOnOrder",
         ];
-        if (items && items.items && items.items.length > 0) {
-            for (let f of Object.keys(items.items[0])) {
+        if (items && items.result && items.result.length > 0) {
+            for (let f of Object.keys(items.result[0])) {
                 if (!exceptions.includes(f)) {
                     res.push({ field: f, headerName: f, hide: true });
                 }
@@ -152,7 +152,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
                         onFilterModelChange={(f) => {
                             f.filterModel.items[0].value && setFilters(f);
                         }}
-                        rows={items ? items.items : []}
+                        rows={items ? items.result : []}
                         columns={gridColumns}
                         components={{ Toolbar: GridToolbar }}
                     />
