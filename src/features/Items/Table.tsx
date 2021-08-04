@@ -27,9 +27,9 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     //		FIFO Value	QOH Value	UOM	Obsolite	Non-Inventory Item	R & D
 
     const gridColumns = useMemo<GridColumns>(() => {
-        const res: GridColumns = [
-            { field: "no", headerName: "Item NO.", width: 100 },
-            { field: "name", headerName: "Name", width: 250 },
+        let res: GridColumns = [
+            { field: "no", headerName: "Number", width: 100 },
+            { field: "name", headerName: "Name", width: 180 },
             { field: "description", headerName: "Description", width: 200 },
             //filter ha dynamic hast
             {
@@ -127,6 +127,8 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
                 }
             }
         }
+
+        res = res.map((r) => ({ ...r, disableColumnMenu: true }));
 
         return res;
     }, [items]);
