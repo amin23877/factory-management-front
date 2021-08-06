@@ -1,11 +1,10 @@
 import React from "react";
-import { Box, IconButton, Paper } from "@material-ui/core";
+import { Box, IconButton, InputBase } from "@material-ui/core";
 import SendRounded from "@material-ui/icons/SendRounded";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
-import TextField from "../../app/TextField";
-import { colors } from "./Modal";
+import { colors } from "./Drawer";
 
 const schema = Yup.object().shape({
     content: Yup.string().required(),
@@ -13,7 +12,7 @@ const schema = Yup.object().shape({
 
 export default function ChatForm({ onPrivateMessage }: { onPrivateMessage: (content: string) => void }) {
     return (
-        <Box>
+        <Box style={{ backgroundColor: "#f9fafc" }} p="7px">
             <Formik
                 initialValues={{ content: "" }}
                 validationSchema={schema}
@@ -24,27 +23,31 @@ export default function ChatForm({ onPrivateMessage }: { onPrivateMessage: (cont
             >
                 {({ getFieldProps, errors, touched }) => (
                     <Form>
-                        <Paper style={{ background: colors.secondary, color: "white" }}>
-                            <Box p={2} display="flex" alignItems="center">
-                                <TextField
-                                    style={{
-                                        flexGrow: 1,
-                                        marginRight: 10,
-                                    }}
-                                    inputProps={{
-                                        style: {
-                                            color: "#ddd",
-                                        },
-                                    }}
-                                    {...getFieldProps("content")}
-                                    error={Boolean(errors.content && touched.content)}
-                                    placeholder="Text..."
-                                />
-                                <IconButton type="submit">
-                                    <SendRounded htmlColor={colors.light} />
-                                </IconButton>
-                            </Box>
-                        </Paper>
+                        <Box
+                            borderRadius={25}
+                            style={{ background: colors.main, color: colors.textColor, border: "2px solid #eaedf1" }}
+                            display="flex"
+                            alignItems="center"
+                        >
+                            <InputBase
+                                style={{
+                                    paddingLeft: 10,
+                                    flexGrow: 1,
+                                    marginRight: 10,
+                                }}
+                                inputProps={{
+                                    style: {
+                                        color: colors.textColor,
+                                    },
+                                }}
+                                {...getFieldProps("content")}
+                                error={Boolean(errors.content && touched.content)}
+                                placeholder="Text..."
+                            />
+                            <IconButton type="submit">
+                                <SendRounded htmlColor={colors.light} />
+                            </IconButton>
+                        </Box>
                     </Form>
                 )}
             </Formik>

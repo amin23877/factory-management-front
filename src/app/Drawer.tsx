@@ -362,17 +362,7 @@ const drawerItems = [
     },
 ];
 
-const MainDrawer = ({
-    width,
-    isOpen,
-    onToggle,
-    closeThis,
-}: {
-    width?: number;
-    isOpen: boolean;
-    onToggle: () => void;
-    closeThis: () => void;
-}) => {
+const MainDrawer = ({ width, closeThis }: { width?: number; closeThis: () => void }) => {
     const useStyles = makeStyles((theme) => ({
         toolbar: {
             ...theme.mixins.toolbar,
@@ -543,23 +533,6 @@ const MainDrawer = ({
     );
 };
 
-export default function MainNavbar({
-    width,
-    isOpen,
-    onToggle,
-    children,
-    closeIt,
-}: {
-    width?: number;
-    isOpen: boolean;
-    onToggle: () => void;
-    children: any;
-    closeIt: () => void;
-}) {
-    return (
-        <>
-            <MainDrawer onToggle={onToggle} width={width} isOpen={isOpen} closeThis={closeIt} />
-            {children}
-        </>
-    );
+export default function MainNavbar({ width, closeIt }: { width?: number; closeIt: () => void }) {
+    return <MainDrawer width={width} closeThis={closeIt} />;
 }
