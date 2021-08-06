@@ -117,6 +117,14 @@ export const General = ({
 
                         <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
+                            checked={values.buildToStock}
+                            label="Build To Stock"
+                            name="buildToStock"
+                            onChange={handleChange}
+                            control={<Checkbox />}
+                        />
+                        <FormControlLabel
+                            style={{ fontSize: "0.7rem" }}
                             checked={values.archived}
                             label="Archive"
                             name="archived"
@@ -542,15 +550,40 @@ export const DynamicFilterAndFields = ({ values = "", handleChange, handleBlur, 
 
 export const LastUsed = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
     return (
-        <Box mt={1} display="grid" gridTemplateColumns="auto" gridColumnGap={10} gridRowGap={10}>
+        <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10}>
             <TextField
-                label="lastUsedInBom"
+                name="uom"
+                label="Unit Of Measure"
+                placeholder="Unit Of Measure"
+                value={values.uom}
+                onBlur={handleBlur}
+                onChange={handleChange}
+            />
+            <TextField
                 name="lastUsedInBom"
-                placeholder="lastUsedInBom"
+                placeholder="last Used In Bom"
+                label="last Used In Bom"
                 value={values.lastUsedInBom}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                disabled
+            />
+
+            <TextField
+                name="minOrder"
+                label="Minimum Order Quantity Per Purchase"
+                placeholder="Minimum Order Quantity Per Purchase"
+                value={values.minOrder}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                style={{ gridColumnEnd: "span 2" }}
+            />
+            <TextField
+                name="lastCount"
+                label="Last Count"
+                placeholder="Last Count"
+                value={values.lastCount}
+                onBlur={handleBlur}
+                onChange={handleChange}
             />
             <TextField
                 label="last used in 90 days"
@@ -558,7 +591,6 @@ export const LastUsed = ({ values, errors, handleChange, handleBlur, touched }: 
                 name="usedInLastQuarter"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                disabled
                 error={Boolean(errors.usedInLastQuarter && touched.usedInLastQuarter)}
             />
             <TextField
@@ -568,11 +600,9 @@ export const LastUsed = ({ values, errors, handleChange, handleBlur, touched }: 
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={Boolean(errors.usedInLastSixty && touched.usedInLastSixty)}
-                disabled
             />
             <TextField
                 label="last used in 30 days"
-                disabled
                 value={values.usedInLastThirty}
                 name="usedInLastThirty"
                 onChange={handleChange}
