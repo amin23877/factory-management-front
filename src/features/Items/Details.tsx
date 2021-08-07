@@ -34,6 +34,14 @@ import QRCode from "./QRCode";
 import { fileType } from "../../logic/fileType";
 import { formatTimestampToDate } from "../../logic/date";
 import { getModifiedValues } from "../../logic/utils";
+
+const style = {
+    border: "1px solid gray ",
+    borderRadius: "4px",
+    padding: "5px 10px",
+    margin: "3px 0px 10px 5px ",
+};
+
 function ItemsDetails({
     selectedRow,
     onNoteSelected,
@@ -493,6 +501,7 @@ function ItemsDetails({
                                 onClick={() => {
                                     setAddDocModal(true);
                                 }}
+                                style={style}
                             >
                                 + Add Document
                             </Button>
@@ -506,6 +515,7 @@ function ItemsDetails({
                                 onClick={() => {
                                     setBomModal(true);
                                 }}
+                                style={style}
                             >
                                 + Add Bill of Material
                             </Button>
@@ -518,6 +528,7 @@ function ItemsDetails({
                                 onClick={() => {
                                     setAddVendorModal(true);
                                 }}
+                                style={style}
                             >
                                 + Add Vendor
                             </Button>
@@ -537,6 +548,7 @@ function ItemsDetails({
                                 onClick={() => {
                                     setAddNoteModal(true);
                                 }}
+                                style={style}
                             >
                                 + Add Note
                             </Button>
