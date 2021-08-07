@@ -38,12 +38,12 @@ export default function Details({
     const [msg, setMsg] = useState("");
 
     const lineCols = [
-        { field: "ItemId", headerName: "Item" },
-        { field: "description", headerName: "Description" },
+        { field: "index", headerName: "Index", width: 80 },
+        { field: "ItemId", headerName: "Item", valueFormatter: (params: any) => params.row?.ItemId?.no },
+        { field: "description", headerName: "Description", width: 180 },
         { field: "quantity", headerName: "Quantity" },
-        { field: "price", headerName: "Price" },
-        { field: "tax", headerName: "Tax" },
-        { field: "index", headerName: "Index" },
+        { field: "price", headerName: "Price", width: 80 },
+        { field: "tax", headerName: "Tax", type: "boolean" },
     ];
 
     const handleSubmit = async (d: any) => {
@@ -71,7 +71,12 @@ export default function Details({
                 <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                     {({ values, handleChange, handleBlur, errors }) => (
                         <Form>
-                            <UpdateForm values={values} errors={errors} handleBlur={handleBlur} handleChange={handleChange} />
+                            <UpdateForm
+                                values={values}
+                                errors={errors}
+                                handleBlur={handleBlur}
+                                handleChange={handleChange}
+                            />
                             <Box textAlign="left" display="flex">
                                 <Button style={{ margin: "0.5em 1em", flex: 1 }} type="submit" kind="edit">
                                     Save status
@@ -87,7 +92,9 @@ export default function Details({
                     <Tab label="Notes" />
                     <Tab label="Documents" />
                 </Tabs>
-                {activeTab === 0 && <BaseDataGrid rows={lines} cols={lineCols} onRowSelected={(d) => onLineSelected(d)} height={300} />}
+                {activeTab === 0 && (
+                    <BaseDataGrid rows={lines} cols={lineCols} onRowSelected={(d) => onLineSelected(d)} height={300} />
+                )}
                 {activeTab === 1 && <NotesDataGrid notes={notes} onNoteSelected={onNoteSelected} />}
                 {activeTab === 2 && <DocumentsDataGrid documents={docs} onDocumentSelected={onDocumentSelected} />}
             </BasePaper>
