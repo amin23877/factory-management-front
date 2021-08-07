@@ -7,7 +7,7 @@ import { splitLevelName } from "../../../logic/levels";
 
 export default function DevicesList({ onDeviceSelected }: { onDeviceSelected: (row: any) => void }) {
     const [selectedFilter, setSelectedFilter] = useState<GridFilterItem>();
-    const { data: devices } = useSWR(
+    const { data: devices } = useSWR<{ total: number; result: any[] }>(
         selectedFilter && selectedFilter.value
             ? `/item?device=true&${selectedFilter.columnField}=${selectedFilter.value}`
             : "/item?device=true"
@@ -20,10 +20,10 @@ export default function DevicesList({ onDeviceSelected }: { onDeviceSelected: (r
             { field: "Product Family", flex: 1 },
         ];
 
-        if (devices) {
+        if (devices && devices.result) {
             const colsSet = new Set<string>();
 
-            devices.items.forEach((device: any) => {
+            devices.result.forEach((device: any) => {
                 device.fields && Object.keys(device.fields).forEach((f) => colsSet.add(f));
             });
 
@@ -43,7 +43,7 @@ export default function DevicesList({ onDeviceSelected }: { onDeviceSelected: (r
                         setSelectedFilter(filters.filterModel.items[0]);
                     }}
                     columns={cols}
-                    rows={devices ? devices.items : []}
+                    rows={devices ? devices.result : []}
                     onRowSelected={(params) => onDeviceSelected(params.data)}
                     components={{ Toolbar: GridToolbar }}
                 />

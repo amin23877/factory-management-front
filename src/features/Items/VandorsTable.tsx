@@ -111,8 +111,13 @@ export default function VendorsTable({
                 <Table stickyHeader size="small" aria-label="Items table" className={classes.root}>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Id</TableCell>
-                            <TableCell>Vendor name</TableCell>
+                            <TableCell>Vendor </TableCell>
+                            <TableCell>Vendor Item Number </TableCell>
+                            <TableCell>Vendor Description </TableCell>
+                            <TableCell>Last Replenish Time</TableCell>
+                            <TableCell>Cost</TableCell>
+                            <TableCell>Last Quantity Ordered</TableCell>
+                            <TableCell>Note</TableCell>
                             <TableCell>Preferred</TableCell>
                         </TableRow>
                     </TableHead>
@@ -120,10 +125,13 @@ export default function VendorsTable({
                         {vendors &&
                             vendors.map((item) => (
                                 <TableRow key={item.id} onClick={() => onRowSelected(item)}>
-                                    <TableCell component="th" scope="row">
-                                        {item.id}
-                                    </TableCell>
                                     <TableCell>{item.name}</TableCell>
+                                    <TableCell>{item.number}</TableCell>
+                                    <TableCell>{item.description}</TableCell>
+                                    <TableCell>{item.lastReplenishTime}</TableCell>
+                                    <TableCell>{item.cost}</TableCell>
+                                    <TableCell>{item.lastQuantityOrdered}</TableCell>
+                                    <TableCell>{item.note}</TableCell>
                                     <TableCell>
                                         <Checkbox
                                             value={prefVendor === item.id}

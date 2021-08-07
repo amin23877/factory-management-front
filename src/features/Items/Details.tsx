@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef } from "react";
+import React, { useMemo, useState, useRef, Fragment } from "react";
 import { Box, Grid, Tabs, Tab, LinearProgress, Typography } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
@@ -10,17 +10,22 @@ import { BasePaper } from "../../app/Paper";
 import VendorsTable from "./VandorsTable";
 
 import { MoreInfo, Quantity, Shipping, General, DynamicFilterAndFields, LastUsed, Pricing } from "./Forms";
-import { SalesReport } from "./Reports";
+// import { SalesReport } from "./Reports";
 
 import ManualCountModal from "./ManualCountModal";
 import UpdateQuantityModal from "./Quantity";
+
+import NoteModal from "../Modals/NoteModals";
+import DocumentModal from "../Modals/DocumentModals";
+import { VendorModal } from "../Modals/AddVendor";
+import BOMModal from "../BOM/BomModal";
 
 import { INote } from "../../api/note";
 import { IDocument } from "../../api/document";
 import { AddItemSchema, updateAnItem, addImage } from "../../api/items";
 import { IBom } from "../../api/bom";
 // import SODatagrid from "../Sales/SO/Datagrid";
-import QuoteDatagrid from "../Sales/Quote/Datagrid";
+// import QuoteDatagrid from "../Sales/Quote/Datagrid";
 import SOTable from "./SOTable";
 import Toast from "../../app/Toast";
 import UploadButton from "../../app/FileUploader";
@@ -28,6 +33,15 @@ import { exportPdf } from "../../logic/pdf";
 import QRCode from "./QRCode";
 import { fileType } from "../../logic/fileType";
 import { formatTimestampToDate } from "../../logic/date";
+import { getModifiedValues } from "../../logic/utils";
+
+const style = {
+    border: "1px solid gray ",
+    borderRadius: "4px",
+    padding: "5px 10px",
+    margin: "3px 0px 10px 5px ",
+};
+
 function ItemsDetails({
     selectedRow,
     onNoteSelected,
@@ -62,9 +76,7 @@ function ItemsDetails({
     const { data: docs } = useSWR<IDocument[]>(
         activeTab === 0 ? (selectedRow && selectedRow.id ? `/document/item/${selectedRow.id}` : null) : null
     );
-    // const { data: uses } = useSWR(
-    //     activeTab === 2 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/uses` : null) : null
-    // );
+
     const { data: boms } = useSWR<IBom[]>(
         activeTab === 1 ? (selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null) : null
     );
@@ -72,21 +84,18 @@ function ItemsDetails({
         activeTab === 2 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/vendors` : null) : null
     );
 
-    // const { data: itemQuotes } = useSWR(
-    //     activeTab === 3 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/quote` : null) : null
-    // );
     const { data: itemSOs } = useSWR(
-        activeTab === 4 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/so` : null) : null
+        activeTab === 3 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/so` : null) : null
     );
 
     const { data: itemPOs } = useSWR(
-        activeTab === 5 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/purchasepo` : null) : null
+        activeTab === 4 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/purchasepo` : null) : null
     );
     const { data: itemUsage } = useSWR(
-        activeTab === 6 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/uses` : null) : null
+        activeTab === 5 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/uses` : null) : null
     );
     const { data: notes } = useSWR<INote[]>(
-        activeTab === 7 ? (selectedRow && selectedRow.id ? `/note/item/${selectedRow.id}` : null) : null
+        activeTab === 6 ? (selectedRow && selectedRow.id ? `/note/item/${selectedRow.id}` : null) : null
     );
     // const { data: itemQtyHistory } = useSWR(
     //     activeTab === 10 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/qty` : null) : null
@@ -94,20 +103,48 @@ function ItemsDetails({
 
     const [manualCountModal, setManualCountModal] = useState(false);
     const [quantityModal, setQuantityModal] = useState(false);
+    const [addNoteModal, setAddNoteModal] = useState(false);
+    const [addDocModal, setAddDocModal] = useState(false);
+    const [addVendorModal, setAddVendorModal] = useState(false);
+    const [bomModal, setBomModal] = useState(false);
 
-    const poCols = useMemo(
+    const poCols = useMemo<GridColDef[]>(
         () => [
-            { field: "number", headerName: "Number" },
-            { field: "status", headerName: "Status", width: 180 },
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 100,
+            },
+            { field: "number", headerName: "Number", flex: 1 },
+            { field: "vendor", headerName: "Vendor", width: 100 },
+            { field: "ordered", headerName: "QTY Ordered", width: 120 },
+            { field: "received", headerName: "QTY Received", width: 120 },
+            { field: "sold", headerName: "QTY Sold", width: 100 },
+            { field: "uom", headerName: "PO UOM", width: 100 },
+            {
+                field: "dateReceived",
+                headerName: "Date Received",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            { field: "cost", headerName: "Cost", width: 80 },
+            {
+                field: "totalCost",
+                headerName: "Total Cost",
+                width: 100,
+                valueFormatter: (params) => params.row?.cost * params.row?.ordered,
+            },
+            { field: "status", headerName: "Status", width: 80 },
         ],
         []
     );
 
     const noteCols = useMemo(
         () => [
-            { field: "subject", headerName: "Subject" },
-            { field: "url", headerName: "URL" },
-            { field: "note", headerName: "Note", width: 300 },
+            { field: "subject", headerName: "Subject", flex: 1 },
+            { field: "url", headerName: "URL", flex: 1 },
+            { field: "note", headerName: "Note", flex: 1 },
         ],
         []
     );
@@ -157,15 +194,15 @@ function ItemsDetails({
         []
     );
 
-    const usesCols = useMemo<GridColDef[]>(
-        () => [
-            { field: "no", headerName: "NO.", width: 120 },
-            { field: "name", headerName: "Name", width: 180 },
-            { field: "note", headerName: "Note", flex: 1 },
-            { field: "current", headerName: "Current", type: "boolean" },
-        ],
-        []
-    );
+    // const usesCols = useMemo<GridColDef[]>(
+    //     () => [
+    //         { field: "no", headerName: "NO.", width: 120 },
+    //         { field: "name", headerName: "Name", width: 180 },
+    //         { field: "note", headerName: "Note", flex: 1 },
+    //         { field: "current", headerName: "Current", type: "boolean" },
+    //     ],
+    //     []
+    // );
 
     const usageCols = useMemo<GridColDef[]>(
         () => [
@@ -228,7 +265,9 @@ function ItemsDetails({
     const handleSubmit = async (data: any, { setSubmitting }: any) => {
         try {
             if (selectedRow && selectedRow.id) {
-                const resp = await updateAnItem(selectedRow.id, data);
+                const reqData = getModifiedValues(data, selectedRow);
+                // console.log(reqData);
+                const resp = await updateAnItem(selectedRow.id, reqData);
                 if (resp) {
                     setSubmitting(false);
                     mutate("/item?device=false");
@@ -247,8 +286,8 @@ function ItemsDetails({
 
     return (
         <Box>
-            {/* <NoteModal
-                itemId={selectedItem.id as any}
+            <NoteModal
+                itemId={selectedRow.id as any}
                 model="item"
                 open={addNoteModal}
                 onClose={() => setAddNoteModal(false)}
@@ -256,9 +295,16 @@ function ItemsDetails({
             <DocumentModal
                 open={addDocModal}
                 onClose={() => setAddDocModal(false)}
-                itemId={selectedItem.id as any}
+                itemId={selectedRow.id as any}
                 model="item"
-            /> */}
+            />
+            <VendorModal
+                open={addVendorModal}
+                onClose={() => setAddVendorModal(false)}
+                itemId={selectedRow.id as any}
+            />
+
+            <BOMModal itemId={selectedRow.id} open={bomModal} onClose={() => setBomModal(false)} />
 
             <ManualCountModal
                 open={manualCountModal}
@@ -303,7 +349,7 @@ function ItemsDetails({
                                         onChange={(e, v) => setMoreInfoTab(v)}
                                     >
                                         <Tab label="Image" />
-                                        <Tab label="QR Code" />
+                                        <Tab label="UPC" />
                                         <Tab label="More Info." />
                                         <Tab label="Quantity" />
                                         <Tab label="Pricing" />
@@ -363,17 +409,28 @@ function ItemsDetails({
                                         />
                                     )}
                                     {moreInfoTab === 3 && (
-                                        <Quantity
-                                            values={values}
-                                            handleChange={handleChange}
-                                            handleBlur={handleBlur}
-                                            setFieldValue={setFieldValue}
-                                            errors={errors}
-                                            touched={touched}
-                                            itemId={selectedRow.id}
-                                            handleManualCount={() => setManualCountModal(true)}
-                                            handleUpdateQuantity={() => setQuantityModal(true)}
-                                        />
+                                        <Fragment>
+                                            <LastUsed
+                                                values={values}
+                                                handleChange={handleChange}
+                                                handleBlur={handleBlur}
+                                                setFieldValue={setFieldValue}
+                                                errors={errors}
+                                                touched={touched}
+                                            />
+                                            <hr style={{ width: "100%" }} />
+                                            <Quantity
+                                                values={values}
+                                                handleChange={handleChange}
+                                                handleBlur={handleBlur}
+                                                setFieldValue={setFieldValue}
+                                                errors={errors}
+                                                touched={touched}
+                                                itemId={selectedRow.id}
+                                                handleManualCount={() => setManualCountModal(true)}
+                                                handleUpdateQuantity={() => setQuantityModal(true)}
+                                            />
+                                        </Fragment>
                                     )}
                                     {moreInfoTab === 4 && (
                                         <Pricing
@@ -429,7 +486,6 @@ function ItemsDetails({
                     {/* <Tab label="BOM allocated" /> */}
                     <Tab label="BOM" />
                     <Tab label="Vendor" />
-                    <Tab label="Quote History" />
                     <Tab label="Sales order History" />
                     <Tab label="PO History" />
                     {/* <Tab label="Sales Report" /> */}
@@ -439,25 +495,67 @@ function ItemsDetails({
                     <Tab label="Auditing" />
                 </Tabs>
                 <Box p={3}>
-                    {activeTab === 0 && <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />}
+                    {activeTab === 0 && (
+                        <Fragment>
+                            <Button
+                                onClick={() => {
+                                    setAddDocModal(true);
+                                }}
+                                style={style}
+                            >
+                                + Add Document
+                            </Button>
+                            <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={onDocSelected} />
+                        </Fragment>
+                    )}
                     {/* {activeTab === 2 && <BaseDataGrid cols={usesCols} rows={uses || []} onRowSelected={() => {}} />} */}
-                    {activeTab === 1 && <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={() => {}} />}
+                    {activeTab === 1 && (
+                        <Fragment>
+                            <Button
+                                onClick={() => {
+                                    setBomModal(true);
+                                }}
+                                style={style}
+                            >
+                                + Add Bill of Material
+                            </Button>
+                            <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={() => {}} />
+                        </Fragment>
+                    )}
                     {activeTab === 2 && (
-                        <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => {}} />
+                        <Fragment>
+                            <Button
+                                onClick={() => {
+                                    setAddVendorModal(true);
+                                }}
+                                style={style}
+                            >
+                                + Add Vendor
+                            </Button>
+                            <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => {}} />
+                        </Fragment>
                     )}
-                    {activeTab === 3 && (
-                        <QuoteDatagrid url={`/item/${selectedRow.id}/quote`} onRowSelected={() => {}} />
-                    )}
-                    {activeTab === 4 && <SOTable rows={itemSOs} />}
-                    {activeTab === 5 && <BaseDataGrid cols={poCols} rows={itemPOs || []} onRowSelected={() => {}} />}
+
+                    {activeTab === 3 && <SOTable rows={itemSOs} />}
+                    {activeTab === 4 && <BaseDataGrid cols={poCols} rows={itemPOs || []} onRowSelected={() => {}} />}
                     {/* {activeTab === 8 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />} */}
-                    {activeTab === 6 && (
+                    {activeTab === 5 && (
                         <BaseDataGrid cols={usageCols} rows={itemUsage || []} onRowSelected={() => {}} />
                     )}
-                    {activeTab === 7 && (
-                        <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
+                    {activeTab === 6 && (
+                        <Fragment>
+                            <Button
+                                onClick={() => {
+                                    setAddNoteModal(true);
+                                }}
+                                style={style}
+                            >
+                                + Add Note
+                            </Button>
+                            <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
+                        </Fragment>
                     )}
-                    {activeTab === 8 && <div>Auditing</div>}
+                    {activeTab === 7 && <div>Auditing</div>}
                     {/* {activeTab === 10 && (
                         <BaseDataGrid cols={qtyHistoryCols} rows={itemQtyHistory || []} onRowSelected={() => {}} />
                     )} */}

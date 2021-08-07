@@ -1,40 +1,48 @@
-import React, { useState, useMemo, useEffect } from "react";
-import { Box, LinearProgress, makeStyles } from "@material-ui/core";
+import React, { useCallback, useState, useMemo, useEffect } from "react";
 
-import Dialog from "../../app/Dialog";
+import Drawer from "@material-ui/core/Drawer";
+import Box from "@material-ui/core/Box";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import makeStyles from "@material-ui/styles/makeStyles";
 
 import EmployeeList from "./List";
-import ChatForm from "./Form";
 import ChatList from "./ChatList";
 
 import ChatAdapter, { messageType, userType } from "../../logic/Chat";
-import { useCallback } from "react";
+import ProfileInfo from "./ProfileInfo";
+import { chatDrawerWidth } from "../../Router/Panel";
 
 export const colors = {
-    main: "#222831",
-    secondary: "#393E46",
-    light: "#00ADB5",
-    highlight: "#EEEEEE",
+    textColor: "#484848",
+    main: "#ffff",
+    secondary: "#f9fafc",
+    light: "#afbbc7",
+    highlight: "#fff",
 };
 
-const useStyles = makeStyles({
-    modalRoot: {
-        "& .MuiDialog-paper": {
-            color: "white",
-            backgroundColor: colors.main,
-        },
-        "& .MuiButtonBase-root": {
-            color: "white",
-        },
+const useStyles = makeStyles((theme: any) => ({
+    drawer: {
+        width: chatDrawerWidth,
+        flexShrink: 0,
     },
-});
+    drawerPaper: {
+        width: chatDrawerWidth + 20,
+    },
+    drawerHeader: {
+        display: "flex",
+        alignItems: "center",
+        padding: theme.spacing(0, 1),
+        // necessary for content to be below app bar
+        ...theme.mixins.toolbar,
+        justifyContent: "flex-end",
+    },
+}));
 
-export default function ChatModal({ onClose, open }: { open: boolean; onClose: () => void }) {
+export default function ChatDrawer({ onClose, open }: { open: boolean; onClose: () => void }) {
+    const classes = useStyles();
     const [selectedUser, setSelectedUser] = useState<userType>();
     const [users, setUsers] = useState<userType[]>([]);
     const [messages, setMessages] = useState<messageType[]>([]);
-
-    const classes = useStyles();
 
     const handleUsers = useCallback((usersList: any[]) => {
         setUsers(usersList);
@@ -123,33 +131,47 @@ export default function ChatModal({ onClose, open }: { open: boolean; onClose: (
     };
 
     return (
-        <Dialog className={classes.modalRoot} title="Chat" open={open} onClose={onClose} fullWidth maxWidth="lg">
-            <Box m={2} height={530} display="grid" gridTemplateColumns="220px 1fr">
-                <EmployeeList
-                    users={users}
-                    socket={ChatSocket}
-                    value={selectedUser?.username}
-                    onChange={(nu) => {
-                        setSelectedUser(nu);
-                        setUsers((prev) => {
-                            let res = prev.slice();
-                            const index = res.findIndex((u) => u.userID === nu.userID);
-                            res[index].hasNewMessages = false;
+        <Drawer
+            anchor="right"
+            variant="persistent"
+            open={open}
+            className={classes.drawer}
+            classes={{
+                paper: classes.drawerPaper,
+            }}
+        >
+            <Box m={1} display="flex" flexDirection="column">
+                <ProfileInfo onClose={onClose} />
+                {!selectedUser ? (
+                    <EmployeeList
+                        users={users}
+                        socket={ChatSocket}
+                        // value={selectedUser?.username || undefined}
+                        onChange={(nu) => {
+                            setSelectedUser(nu);
+                            setUsers((prev) => {
+                                let res = prev.slice();
+                                const index = res.findIndex((u) => u.userID === nu.userID);
+                                res[index].hasNewMessages = false;
 
-                            return res;
-                        });
-                        setMessages(nu.messages);
-                    }}
-                />
-                {selectedUser && (
-                    <Box ml={1} display="flex" flexDirection="column">
+                                return res;
+                            });
+                            setMessages(nu.messages);
+                        }}
+                    />
+                ) : (
+                    <Box display="flex" flexDirection="column" height={670}>
                         <div style={{ flexGrow: 1 }}>
-                            <ChatList messages={messages} user={selectedUser} />
+                            <ChatList
+                                messages={messages}
+                                user={selectedUser}
+                                handleSendMessage={handleSendMessage}
+                                handleBack={() => setSelectedUser(undefined)}
+                            />
                         </div>
-                        <ChatForm onPrivateMessage={handleSendMessage} />
                     </Box>
                 )}
             </Box>
-        </Dialog>
+        </Drawer>
     );
 }

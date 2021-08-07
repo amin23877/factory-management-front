@@ -15,8 +15,6 @@ import { getClients } from "../../../api/client";
 import { getAllEmployees } from "../../../api/employee";
 import { getProjects } from "../../../api/project";
 
-import "../../../styles/main.css";
-
 import uploadpng from "../../../assets/bx-cloud-upload.png";
 import downloadpng from "../../../assets/bx-cloud-download.png";
 

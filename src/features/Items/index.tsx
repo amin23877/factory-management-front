@@ -123,7 +123,7 @@ const Items = () => {
                             <PostAddRounded />
                         </IconButton>
                     </ListItem>
-                    <ListItem>
+                    {/* <ListItem>
                         <IconButton disabled={activeTab === 0} title="Add note" onClick={() => setAddNoteModal(true)}>
                             <NoteRounded />
                         </IconButton>
@@ -136,7 +136,7 @@ const Items = () => {
                         >
                             <FileCopyRounded />
                         </IconButton>
-                    </ListItem>
+                    </ListItem> */}
                 </List>
                 <Box flex={11} ml={2}>
                     {activeTab === 0 && (

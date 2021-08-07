@@ -53,7 +53,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
                 // disableColumnMenu: true,
             },
             { field: "prefVendor", headerName: "Preferred Vendor", width: 150 },
-            // { field: "vendorNo", headerName: "V. Part NO.", width: 100 }, koodoom vendor
+            { field: "vendorPartNumber", headerName: "V. Part NO.", width: 100 },
             { field: "cost", headerName: "Cost", width: 80 },
             { field: "location", headerName: "Location", width: 100 },
             { field: "qtyOnHand", headerName: "QOH.", width: 80 },

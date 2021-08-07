@@ -6,7 +6,7 @@ import useSWR from "swr";
 import Button from "../../app/Button";
 import Dialog from "../../app/Dialog";
 import CustomScrollbars from "../../app/CustomScroll";
-import { DynamicFilterAndFields, General, MoreInfo, Quantity, Shipping } from "./Forms";
+import { DynamicFilterAndFields, General, MoreInfo, Pricing, Quantity, Shipping } from "./Forms";
 
 import { createItem, AddItemSchema, IItem } from "../../api/items";
 import { IFilter } from "../../api/filter";
@@ -39,7 +39,7 @@ export const AddItemModal = ({
     };
 
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="lg" title="Add new item">
+        <Dialog open={open} onClose={onClose} maxWidth="lg" title="Add new item" fullScreen>
             <Box p={1}>
                 <Formik
                     initialValues={initialValues ? initialValues : ({} as IItem)}
@@ -73,8 +73,9 @@ export const AddItemModal = ({
                                     <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="primary">
                                         <Tab label="More info" />
                                         {/* <Tab label="Quantity" /> */}
+                                        <Tab label="Pricing" />
                                         <Tab label="Shipping" />
-                                        <Tab label="Cluster and Levels" />
+                                        {/* <Tab label="Cluster and Levels" /> */}
                                     </Tabs>
                                     {activeTab === 0 && (
                                         <MoreInfo
@@ -99,7 +100,7 @@ export const AddItemModal = ({
                                         />
                                     )} */}
                                     {activeTab === 1 && (
-                                        <Shipping
+                                        <Pricing
                                             errors={errors}
                                             handleBlur={handleBlur}
                                             handleChange={handleChange}
@@ -110,18 +111,15 @@ export const AddItemModal = ({
                                         />
                                     )}
                                     {activeTab === 2 && (
-                                        <CustomScrollbars style={{ height: 290 }} thumbColor="#555">
-                                            <DynamicFilterAndFields
-                                                errors={errors}
-                                                handleBlur={handleBlur}
-                                                handleChange={handleChange}
-                                                setFieldValue={setFieldValue}
-                                                touched={touched}
-                                                values={values}
-                                                isSubmitting={isSubmitting}
-                                                device={device}
-                                            />
-                                        </CustomScrollbars>
+                                        <Shipping
+                                            errors={errors}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            setFieldValue={setFieldValue}
+                                            touched={touched}
+                                            values={values}
+                                            isSubmitting={isSubmitting}
+                                        />
                                     )}
                                 </Box>
                             </Box>
