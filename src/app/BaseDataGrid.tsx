@@ -1,11 +1,8 @@
 import React from "react";
-import { Box, makeStyles } from "@material-ui/core";
-import { DataGrid, GridToolbarContainer, GridToolbarExport, GridToolbar } from "@material-ui/data-grid";
+import { makeStyles } from "@material-ui/core";
+import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 
 const useStyles = makeStyles({
-    dataGridCont: {
-        width: "100%",
-    },
     root: {
         backgroundColor: "#f9f9f9",
         border: "none",
@@ -30,14 +27,6 @@ const useStyles = makeStyles({
         },
     },
 });
-
-function CustomToolbar() {
-    return (
-        <GridToolbarContainer>
-            <GridToolbarExport />
-        </GridToolbarContainer>
-    );
-}
 
 interface IBaseDataGrid {
     onRowSelected?: (row: any) => void;
@@ -85,3 +74,26 @@ export default function BaseDataGrid({ onRowSelected, rows, cols, height }: IBas
         // </Box>
     );
 }
+
+export const ScrollDataGrid = ({ onRowSelected, rows, cols, height }: IBaseDataGrid) => {
+    const classes = useStyles();
+
+    return (
+        // <div
+        //     style={{
+        //         height: height || 450,
+        //     }}
+        // >
+        <DataGrid
+            density="compact"
+            components={{ Toolbar: GridToolbar }}
+            className={classes.root}
+            onRowSelected={(r) => {
+                onRowSelected && onRowSelected(r.data);
+            }}
+            columns={cols}
+            rows={rows}
+        />
+        // </div>
+    );
+};

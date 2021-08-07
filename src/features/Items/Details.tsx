@@ -33,6 +33,7 @@ import { exportPdf } from "../../logic/pdf";
 import QRCode from "./QRCode";
 import { fileType } from "../../logic/fileType";
 import { formatTimestampToDate } from "../../logic/date";
+import { getModifiedValues } from "../../logic/utils";
 function ItemsDetails({
     selectedRow,
     onNoteSelected,
@@ -256,7 +257,9 @@ function ItemsDetails({
     const handleSubmit = async (data: any, { setSubmitting }: any) => {
         try {
             if (selectedRow && selectedRow.id) {
-                const resp = await updateAnItem(selectedRow.id, data);
+                const reqData = getModifiedValues(data, selectedRow);
+                // console.log(reqData);
+                const resp = await updateAnItem(selectedRow.id, reqData);
                 if (resp) {
                     setSubmitting(false);
                     mutate("/item?device=false");
@@ -338,7 +341,7 @@ function ItemsDetails({
                                         onChange={(e, v) => setMoreInfoTab(v)}
                                     >
                                         <Tab label="Image" />
-                                        <Tab label="QR Code" />
+                                        <Tab label="UPC" />
                                         <Tab label="More Info." />
                                         <Tab label="Quantity" />
                                         <Tab label="Pricing" />
