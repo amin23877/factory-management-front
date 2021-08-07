@@ -41,7 +41,9 @@ const Inventory = () => {
     const [page, setPage] = useState<GridPageChangeParams>();
     const [sorts, setSort] = useState<GridSortModelParams>();
 
-    const { data: items, mutate: mutateItems } = useSWR(generateURL("/item?device=true", filters, sorts, page));
+    const { data: items, mutate: mutateItems } = useSWR<{ result: IItem[]; total: number }>(
+        generateURL("/item?device=true", filters, sorts, page)
+    );
     const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
 
     const [activeTab, setActiveTab] = useState(0);

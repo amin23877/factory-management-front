@@ -18,7 +18,8 @@ import Fab from "@material-ui/core/Fab";
 import { TopAppBar } from "../app/TopAppBar";
 import MainNav from "../app/Drawer";
 import MyBackdrop from "../app/Backdrop";
-import ChatModal from "../features/Chat/Modal";
+
+import ChatDrawer from "../features/Chat/Drawer";
 
 const Home = React.lazy(() => import("../pages/home"));
 const Dashboard = React.lazy(() => import("../pages/dashboard"));
@@ -41,6 +42,7 @@ const DeviceDetails = React.lazy(() => import("../pages/DeviceDetails"));
 const UnitDetails = React.lazy(() => import("../pages/UnitDetails"));
 
 const drawerWidth = 220;
+export const chatDrawerWidth = 340;
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -53,10 +55,18 @@ const useStyles = makeStyles((theme) => ({
         }),
         height: "54px",
         BorderBottom: "1px solid gray",
-        boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
+        boxShadow: "rgba(207, 171, 171, 0.08) 0px 4px 12px",
         backgroundColor: "#fefefe",
     },
-    appBarShift: {
+    appBarShiftRight: {
+        width: `calc(100% - ${chatDrawerWidth}px)`,
+        marginRight: chatDrawerWidth,
+        transition: theme.transitions.create(["margin", "width"], {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    },
+    appBarShiftLeft: {
         width: `calc(100% - ${drawerWidth}px)`,
         marginLeft: drawerWidth,
         transition: theme.transitions.create(["margin", "width"], {
@@ -93,8 +103,16 @@ const useStyles = makeStyles((theme) => ({
             duration: theme.transitions.duration.leavingScreen,
         }),
         marginLeft: -drawerWidth,
+        marginRight: -chatDrawerWidth,
     },
-    contentShift: {
+    contentShiftRight: {
+        transition: theme.transitions.create("margin", {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+        marginRight: 0,
+    },
+    contentShiftLeft: {
         transition: theme.transitions.create("margin", {
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen,
@@ -104,129 +122,118 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PanelRouter() {
-    const [isOpen, setIsOpen] = useState(true);
-    const [drawerWidth, setDrawerWidth] = useState(220);
     const theme = useTheme();
     const classes = useStyles();
-    const [open, setOpen] = React.useState(false);
-    const [chatModal, setChatModal] = useState(false);
+
+    const [mainDrawerOpen, setMainDrawerOpen] = useState(false);
+    const [chatDrawerOpen, setChatDrawerOpen] = useState(false);
 
     const handleDrawerOpen = () => {
-        setOpen(true);
+        setMainDrawerOpen(true);
     };
 
     const handleDrawerClose = () => {
-        setOpen(false);
+        setMainDrawerOpen(false);
     };
 
     return (
-        <>
-            <ChatModal open={chatModal} onClose={() => setChatModal(false)} />
+        <div style={{ display: "flex" }} className={classes.root}>
+            <CssBaseline />
+            <AppBar
+                position="fixed"
+                className={clsx(classes.appBar, {
+                    [classes.appBarShiftLeft]: mainDrawerOpen,
+                    [classes.appBarShiftRight]: chatDrawerOpen,
+                })}
+            >
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        edge="start"
+                        className={clsx(classes.menuButton, mainDrawerOpen && classes.hide)}
+                    >
+                        <div style={{ color: "#202731" }}>
+                            <MenuIcon />
+                        </div>
+                    </IconButton>
+                    <TopAppBar chatDrawerWidth={chatDrawerWidth} drawerWidth={drawerWidth} />
+                </Toolbar>
+            </AppBar>
 
-            <div style={{ display: "flex" }} className={classes.root}>
-                <CssBaseline />
-                <AppBar
-                    position="fixed"
-                    className={clsx(classes.appBar, {
-                        [classes.appBarShift]: open,
-                    })}
-                >
-                    <Toolbar>
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            edge="start"
-                            className={clsx(classes.menuButton, open && classes.hide)}
-                        >
-                            <div style={{ color: "#202731" }}>
-                                <MenuIcon />
-                            </div>
-                        </IconButton>
-                        <TopAppBar drawerWidth={drawerWidth} />
-                    </Toolbar>
-                </AppBar>
-
-                <Drawer
-                    className={classes.drawer}
-                    variant="persistent"
-                    anchor="left"
-                    open={open}
-                    classes={{
-                        paper: classes.drawerPaper,
+            <Drawer
+                className={classes.drawer}
+                variant="persistent"
+                anchor="left"
+                open={mainDrawerOpen}
+                classes={{
+                    paper: classes.drawerPaper,
+                }}
+            >
+                <div
+                    className={classes.drawerHeader}
+                    style={{
+                        backgroundColor: "#202731",
                     }}
                 >
-                    <div
-                        className={classes.drawerHeader}
-                        style={{
-                            backgroundColor: "#202731",
-                        }}
-                    >
-                        <IconButton onClick={handleDrawerClose}>
-                            {theme.direction === "ltr" ? (
-                                <div style={{ color: "white" }}>
-                                    <ChevronLeftIcon />
-                                </div>
-                            ) : (
-                                <ChevronRightIcon />
-                            )}
-                        </IconButton>
-                    </div>
-                    <MainNav
-                        isOpen={isOpen}
-                        onToggle={() => {
-                            setIsOpen((prev) => !prev);
-                            setDrawerWidth((prev) => (prev === 240 ? 60 : 240));
-                        }}
-                        width={drawerWidth}
-                        closeIt={handleDrawerClose}
-                    >
-                        <div></div>
-                    </MainNav>
-                </Drawer>
-                <main
-                    className={clsx(classes.content, {
-                        [classes.contentShift]: open,
-                    })}
+                    <IconButton onClick={handleDrawerClose}>
+                        {theme.direction === "ltr" ? (
+                            <div style={{ color: "white" }}>
+                                <ChevronLeftIcon />
+                            </div>
+                        ) : (
+                            <ChevronRightIcon />
+                        )}
+                    </IconButton>
+                </div>
+                <MainNav width={drawerWidth} closeIt={handleDrawerClose} />
+            </Drawer>
+            <main
+                className={clsx(classes.content, {
+                    [classes.contentShiftLeft]: mainDrawerOpen,
+                    [classes.contentShiftRight]: chatDrawerOpen,
+                })}
+            >
+                <Fab
+                    // onClick={() => setChatModal(true)}
+                    onClick={() => setChatDrawerOpen(true)}
+                    color="primary"
+                    style={{ position: "fixed", bottom: 15, right: 15, zIndex: 1000 }}
                 >
-                    <Fab
-                        onClick={() => setChatModal(true)}
-                        color="primary"
-                        style={{ position: "fixed", bottom: 15, right: 15, zIndex: 1000 }}
-                    >
-                        <ChatRounded />
-                    </Fab>
-                    {/* <div className={classes.drawerHeader} /> */}
-                    <Box style={{ flexGrow: 1, padding: "1em" }}>
-                        <div style={theme.mixins.toolbar as any} />
-                        <Suspense fallback={<MyBackdrop />}>
-                            <Switch>
-                                <Route exact path="/panel" component={Home} />
-                                <Route exact path="/panel/dashboard" component={Dashboard} />
-                                <Route exact path="/panel/clients" component={Clients} />
-                                <Route exact path="/panel/sales" component={Sales} />
-                                <Route exact path="/panel/inventory" component={Inventory} />
-                                <Route exact path="/panel/settings" component={Settings} />
-                                <Route exact path="/panel/roles" component={Roles} />
-                                <Route exact path="/panel/projects" component={Projects} />
-                                <Route exact path="/panel/activity" component={Activity} />
-                                <Route exact path="/panel/vendor" component={Vendros} />
-                                <Route exact path="/panel/fieldservice" component={Service} />
-                                <Route exact path="/panel/purchase" component={Purchase} />
-                                <Route exact path="/panel/production" component={Production} />
-                                <Route exact path="/panel/engineering" component={Engineering} />
+                    <ChatRounded />
+                </Fab>
 
-                                <Route exact path="/panel/inventory/:itemId" component={ItemDetails} />
-                                <Route exact path="/panel/engineering/:deviceId" component={DeviceDetails} />
-                                <Route exact path="/panel/production/:unitNumber" component={UnitDetails} />
+                <Box style={{ flexGrow: 1, padding: "1em" }}>
+                    <div style={theme.mixins.toolbar as any} />
+                    <Suspense fallback={<MyBackdrop />}>
+                        <Switch>
+                            <Route exact path="/panel" component={Home} />
+                            <Route exact path="/panel/dashboard" component={Dashboard} />
+                            <Route exact path="/panel/clients" component={Clients} />
+                            <Route exact path="/panel/sales" component={Sales} />
+                            <Route exact path="/panel/inventory" component={Inventory} />
+                            <Route exact path="/panel/settings" component={Settings} />
+                            <Route exact path="/panel/roles" component={Roles} />
+                            <Route exact path="/panel/projects" component={Projects} />
+                            <Route exact path="/panel/activity" component={Activity} />
+                            <Route exact path="/panel/vendor" component={Vendros} />
+                            <Route exact path="/panel/fieldservice" component={Service} />
+                            <Route exact path="/panel/purchase" component={Purchase} />
+                            <Route exact path="/panel/production" component={Production} />
+                            <Route exact path="/panel/engineering" component={Engineering} />
 
-                                <Route exact path="*" component={Page404} />
-                            </Switch>
-                        </Suspense>
-                    </Box>
-                </main>
-                {/* </MainNav> */}
-            </div>
-        </>
+                            <Route exact path="/panel/inventory/:itemId" component={ItemDetails} />
+                            <Route exact path="/panel/engineering/:deviceId" component={DeviceDetails} />
+                            <Route exact path="/panel/production/:unitNumber" component={UnitDetails} />
+
+                            <Route exact path="*" component={Page404} />
+                        </Switch>
+                    </Suspense>
+                </Box>
+            </main>
+
+            <ChatDrawer open={chatDrawerOpen} onClose={() => setChatDrawerOpen(false)} />
+        </div>
     );
 }
