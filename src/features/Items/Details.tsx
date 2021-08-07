@@ -17,6 +17,7 @@ import UpdateQuantityModal from "./Quantity";
 
 import NoteModal from "../Modals/NoteModals";
 import DocumentModal from "../Modals/DocumentModals";
+import { VendorModal } from "../Modals/AddVendor";
 import BOMModal from "../BOM/BomModal";
 
 import { INote } from "../../api/note";
@@ -95,6 +96,7 @@ function ItemsDetails({
     const [quantityModal, setQuantityModal] = useState(false);
     const [addNoteModal, setAddNoteModal] = useState(false);
     const [addDocModal, setAddDocModal] = useState(false);
+    const [addVendorModal, setAddVendorModal] = useState(false);
     const [bomModal, setBomModal] = useState(false);
 
     const poCols = useMemo<GridColDef[]>(
@@ -284,6 +286,11 @@ function ItemsDetails({
                 onClose={() => setAddDocModal(false)}
                 itemId={selectedRow.id as any}
                 model="item"
+            />
+            <VendorModal
+                open={addVendorModal}
+                onClose={() => setAddVendorModal(false)}
+                itemId={selectedRow.id as any}
             />
 
             <BOMModal itemId={selectedRow.id} open={bomModal} onClose={() => setBomModal(false)} />
@@ -503,7 +510,16 @@ function ItemsDetails({
                         </Fragment>
                     )}
                     {activeTab === 2 && (
-                        <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => {}} />
+                        <Fragment>
+                            <Button
+                                onClick={() => {
+                                    setAddVendorModal(true);
+                                }}
+                            >
+                                + Add Vendor
+                            </Button>
+                            <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => {}} />
+                        </Fragment>
                     )}
 
                     {activeTab === 3 && <SOTable rows={itemSOs} />}

@@ -19,7 +19,7 @@ export default function VendingModal({
     vendor,
     initialValues,
 }: {
-    initialValues?: IVending;
+    initialValues?: any;
     open: boolean;
     vendor?: IVendor;
     onClose: () => void;
