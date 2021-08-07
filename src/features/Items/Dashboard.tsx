@@ -3,7 +3,7 @@ import { Box, Tabs, Tab } from "@material-ui/core";
 import BaseDataGrid, { ScrollDataGrid } from "../../app/BaseDataGrid";
 import useSWR from "swr";
 
-import { DataGrid, GridColumns } from "@material-ui/data-grid";
+import { GridColumns } from "@material-ui/data-grid";
 import { BasePaper } from "../../app/Paper";
 
 const Dashboard = () => {
