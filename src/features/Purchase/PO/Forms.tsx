@@ -28,12 +28,11 @@ import { getAllEmployees, IEmployee } from "../../../api/employee";
 import { IPurchasePOComplete, createPurchasePOComplete, IPurchasePO } from "../../../api/purchasePO";
 import { getVendors, IVendor } from "../../../api/vendor";
 import { ILineItem } from "../../../api/lineItem";
-import { getItems } from "../../../api/items";
 import { createAModelDocument } from "../../../api/document";
 
 import { FieldSelect, ArraySelect } from "../../../app/Inputs";
 import Button from "../../../app/Button";
-import { LinearProgress } from "@material-ui/core";
+import { FormLabel, LinearProgress } from "@material-ui/core";
 
 import { exportPdf } from "../../../logic/pdf";
 
@@ -42,6 +41,7 @@ import { ISOComplete } from "../../../api/so";
 import { IQuoteComplete } from "../../../api/quote";
 
 import PurchasePO from "../../../PDFTemplates/PurchasePO";
+import useSWR from "swr";
 
 export const DocumentForm = ({
     createdPO,
@@ -223,7 +223,7 @@ export const LinesForm = ({
     onDone: (items: ILineItem[]) => void;
     onBack: () => void;
 }) => {
-    const [items, setItems] = useState([]);
+    const { data: items } = useSWR<{ total: number; result: any[] }>("/item");
     const [createdItems, setCreatedItems] = useState<ILineItem[]>(data && data.lines ? data.lines : []);
 
     const schema = Yup.object().shape({
@@ -231,12 +231,6 @@ export const LinesForm = ({
         quantity: Yup.number().required().min(1),
         price: Yup.number().required().min(0.1),
     });
-
-    useEffect(() => {
-        getItems()
-            .then((d) => d && setItems(d.items))
-            .catch((e) => console.log(e));
-    }, []);
 
     const handleSubmit = (d: ILineItem) => {
         if (d) {
@@ -256,7 +250,7 @@ export const LinesForm = ({
                         <Form>
                             <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
                                 <Autocomplete
-                                    options={items}
+                                    options={items ? items.result : []}
                                     getOptionLabel={(item: any) => item.name}
                                     onChange={(e, nv) => setFieldValue("ItemId", nv.id)}
                                     onBlur={handleBlur}
@@ -525,6 +519,37 @@ export const UpdateForm = ({
                     error={Boolean(errors.status)}
                     fullWidth
                 />
+                <TextField
+                    size="small"
+                    name="acknowledgeDate"
+                    label="Acknowledge Date"
+                    value={values.acknowledgeDate === -1 ? "" : values.acknowledgeDate}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.acknowledgeDate)}
+                    fullWidth
+                    disabled
+                />
+                <div>
+                    <FormControlLabel
+                        style={{ width: "100%" }}
+                        checked={values.acknowledged}
+                        label="Acknowledged"
+                        name="acknowledged"
+                        onChange={handleChange}
+                        control={<CheckBox />}
+                        disabled
+                    />
+                    <FormControlLabel
+                        style={{ width: "100%" }}
+                        checked={values.fullyReceived}
+                        name="fullyReceived"
+                        label="Fully Received"
+                        onChange={handleChange}
+                        control={<CheckBox />}
+                        disabled
+                    />
+                </div>
             </Box>
         </>
     );

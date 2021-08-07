@@ -3,6 +3,7 @@ import Axios from "axios";
 export type IVendor = {
     id?: string;
     name: string;
+    description: string;
 };
 
 export const createVendor = async (data: IVendor) => {

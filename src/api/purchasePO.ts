@@ -1,4 +1,5 @@
 import Axios from "axios";
+import { post } from ".";
 
 import {ILineItem} from './lineItem'
 
@@ -80,6 +81,10 @@ export const createPurchasePOLine = async (id: string, data: ILineItem) => {
         throw error;
     }
 };
+
+export const acknowledgePurchasePO = (poId:string) => {
+    return post(`/purchasepo/${poId}/acknowledge`, {})
+}
 
 export const updatePurchasePOLine = async (id: string, data: ILineItem) => {
     try {

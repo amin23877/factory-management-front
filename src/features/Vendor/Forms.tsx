@@ -14,7 +14,7 @@ export const AddVendorForm = ({ onDone }: { initialValues?: IVendor; onDone: () 
 
     return (
         <Formik
-            initialValues={{ name: "" }}
+            initialValues={{ name: "", description: "" }}
             validationSchema={schema}
             onSubmit={async (d, { setSubmitting }) => {
                 try {
@@ -40,6 +40,17 @@ export const AddVendorForm = ({ onDone }: { initialValues?: IVendor; onDone: () 
                             onBlur={handleBlur}
                             error={Boolean(errors.name)}
                             style={{ margin: "1em 0" }}
+                        />
+                        <TextField
+                            name="description"
+                            label="Description"
+                            value={values.description}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.description)}
+                            style={{ margin: "1em 0" }}
+                            multiline
+                            rows={3}
                         />
                         <Button type="submit" kind="add">
                             Submit

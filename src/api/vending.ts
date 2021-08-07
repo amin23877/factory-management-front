@@ -4,10 +4,12 @@ export type IVending = {
     id?: string,
     VendorId: string,
     ItemId: string,
-    leadTime: number,
-    lastCheckedPrice: number,
+    leadTime: number,    
     comment: string,
     serialNo: string,
+    lastReplenishTime:number,
+    lastQuantityOrdered:number,
+    cost:number
 }
 
 export const createVending = async (data: IVending) => {

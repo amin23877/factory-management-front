@@ -120,15 +120,15 @@ const Dashboard = () => {
                     {activeTab === 0 && (
                         <BaseDataGrid
                             cols={recentlyAddedCols}
-                            // rows={recentlyAddedItems ? recentlyAddedItems.map((r: any, i: any) => ({ ...r, id: i })) : []}
-                            rows={[{ id: 1 }]}
+                            rows={
+                                recentlyAddedItems ? recentlyAddedItems.map((r: any, i: any) => ({ ...r, id: i })) : []
+                            }
                         />
                     )}
                     {activeTab === 1 && (
                         <ScrollDataGrid
                             cols={onOrderCols}
-                            // rows={onOrderItems ? onOrderItems.map((r: any, i: any) => ({ ...r, id: i })) : []}
-                            rows={[{ id: 1 }]}
+                            rows={onOrderItems ? onOrderItems.map((r: any, i: any) => ({ ...r, id: i })) : []}
                         />
                     )}
                     {activeTab === 2 && <ScrollDataGrid cols={lowQuantityCols} rows={[{ id: 1 }]} />}
