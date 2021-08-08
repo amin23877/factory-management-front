@@ -14,12 +14,21 @@ function QuoteDatagrid({
     onRowSelected: (row: any) => void;
 }) {
     const { data: quotes } = useSWR(url ? url : params ? `/quote?${params}` : "/quote");
+    // Date	Quote ID	Client	Rep	State	Requestor	Project Name	Quoted By	SO	Status	Total Amount
 
     const quoteCols = useMemo<GridColumns>(
         () => [
-            { field: "entryDate", headerName: "Entry Date", flex: 1 },
-            { field: "expireDate", headerName: "Expire Date", flex: 1 },
-            { field: "quoteStatus", headerName: "Status", flex: 1 },
+            { field: "date", headerName: "Date", width: 100 },
+            { field: "number", headerName: "Quote ID", width: 100 },
+            { field: "client", headerName: "Client", width: 100 },
+            { field: "rep", headerName: "Rep", width: 100 },
+            { field: "state", headerName: "State", width: 100 },
+            { field: "requester", headerName: "Requester", width: 100 },
+            { field: "project", headerName: "Project Name", flex: 1 },
+            { field: "quotedBy", headerName: "Quoted By", width: 100 },
+            { field: "so", headerName: "SO", width: 100 },
+            { field: "status", headerName: "Status", width: 100 },
+            { field: "total", headerName: "Total Amount", flex: 1 },
         ],
         []
     );
