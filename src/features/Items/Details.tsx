@@ -140,10 +140,16 @@ function ItemsDetails({
         []
     );
 
-    const noteCols = useMemo(
+    const noteCols = useMemo<GridColDef[]>(
         () => [
-            { field: "subject", headerName: "Subject", flex: 1 },
-            { field: "url", headerName: "URL", flex: 1 },
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            { field: "creator", headerName: "Creator", width: 180 },
+            { field: "subject", headerName: "Subject", width: 300 },
             { field: "note", headerName: "Note", flex: 1 },
         ],
         []
