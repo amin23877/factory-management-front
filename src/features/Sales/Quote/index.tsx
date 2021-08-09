@@ -140,7 +140,7 @@ export default function QuotePanel() {
 
             <Box mb={2} display="flex" alignItems="center">
                 <Button
-                    style={{ backgroundColor: "#1a73e8", color: "#fff", marginLeft: "5px" }}
+                    style={{ backgroundColor: "#1a73e8", color: "#fff", margin: "0px 5px" }}
                     onClick={() => setAddQ(true)}
                 >
                     <AddRoundedIcon />

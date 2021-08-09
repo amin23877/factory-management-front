@@ -121,6 +121,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
             "qtyAllocated",
             "qtyRemain",
             "qtyOnOrder",
+            "vendorPartNumber",
         ];
         if (items && items.result && items.result.length > 0) {
             const fieldNames = fields ? fields.map((f: any) => f.name) : [];
