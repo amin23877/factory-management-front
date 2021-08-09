@@ -10,7 +10,7 @@ import { BasePaper } from "../../app/Paper";
 import VendorsTable from "./VandorsTable";
 
 import { MoreInfo, Quantity, Shipping, General, DynamicFilterAndFields, LastUsed, Pricing } from "./Forms";
-import { SalesReport } from "./Reports";
+// import { SalesReport } from "./Reports";
 
 import ManualCountModal from "./ManualCountModal";
 import UpdateQuantityModal from "./Quantity";
@@ -25,7 +25,7 @@ import { IDocument } from "../../api/document";
 import { AddItemSchema, updateAnItem, addImage } from "../../api/items";
 import { IBom } from "../../api/bom";
 // import SODatagrid from "../Sales/SO/Datagrid";
-import QuoteDatagrid from "../Sales/Quote/Datagrid";
+// import QuoteDatagrid from "../Sales/Quote/Datagrid";
 import SOTable from "./SOTable";
 import Toast from "../../app/Toast";
 import UploadButton from "../../app/FileUploader";
@@ -200,15 +200,15 @@ function ItemsDetails({
         []
     );
 
-    const usesCols = useMemo<GridColDef[]>(
-        () => [
-            { field: "no", headerName: "NO.", width: 120 },
-            { field: "name", headerName: "Name", width: 180 },
-            { field: "note", headerName: "Note", flex: 1 },
-            { field: "current", headerName: "Current", type: "boolean" },
-        ],
-        []
-    );
+    // const usesCols = useMemo<GridColDef[]>(
+    //     () => [
+    //         { field: "no", headerName: "NO.", width: 120 },
+    //         { field: "name", headerName: "Name", width: 180 },
+    //         { field: "note", headerName: "Note", flex: 1 },
+    //         { field: "current", headerName: "Current", type: "boolean" },
+    //     ],
+    //     []
+    // );
 
     const usageCols = useMemo<GridColDef[]>(
         () => [
@@ -364,7 +364,15 @@ function ItemsDetails({
                                         <Tab label="Clusters and Levels" />
                                     </Tabs>
                                     {moreInfoTab === 0 && (
-                                        <Box mt={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                                        <Box
+                                            mt={1}
+                                            height="100%"
+                                            display="flex"
+                                            justifyContent="center"
+                                            alignItems="center"
+                                            flexDirection="column"
+                                            gridGap={10}
+                                        >
                                             {selectedRow?.photo && (
                                                 <img
                                                     style={{

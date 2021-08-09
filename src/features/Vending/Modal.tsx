@@ -8,7 +8,7 @@ import TextField from "../../app/TextField";
 import Button from "../../app/Button";
 import { FieldSelect } from "../../app/Inputs";
 
-import { IVendor, getVendors } from "../../api/vendor";
+import { IVendor } from "../../api/vendor";
 import { createVending, deleteVending, IVending, updateVending } from "../../api/vending";
 import { getItems } from "../../api/items";
 
@@ -101,12 +101,12 @@ export default function VendingModal({
                                 />
                                 <TextField
                                     style={{ width: "100%" }}
-                                    name="lastCheckedPrice"
-                                    label="Last checked price"
-                                    value={values.lastCheckedPrice}
+                                    name="cost"
+                                    label="Cost"
+                                    value={values.cost}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    error={Boolean(errors.lastCheckedPrice)}
+                                    error={Boolean(errors.cost)}
                                 />
                                 <TextField
                                     style={{ width: "100%" }}

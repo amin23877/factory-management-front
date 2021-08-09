@@ -48,7 +48,7 @@ export const General = ({
                         gridColumnEnd: "span 4",
                     }}
                 >
-                    <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
+                    <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
                         <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
                             checked={values.shippingApproved}
@@ -131,16 +131,19 @@ export const General = ({
                             onChange={handleChange}
                             control={<Checkbox />}
                         />
-                        <TextField
-                            label="Archive Date"
-                            value={values.archiveDate}
-                            name="archiveDate"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={Boolean(errors.archiveDate && touched.archiveDate)}
-                            placeholder="archiveDate"
-                            disabled
-                        />
+                        {values.archived && (
+                            <TextField
+                                label="Archive Date"
+                                value={values.archiveDate}
+                                name="archiveDate"
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(errors.archiveDate && touched.archiveDate)}
+                                placeholder="archiveDate"
+                                disabled
+                                style={{ gridColumnEnd: "span 2", marginBottom: 10 }}
+                            />
+                        )}
                     </Box>
                 </Paper>
                 <TextField

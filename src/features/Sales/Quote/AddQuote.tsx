@@ -55,18 +55,14 @@ export default function AddQuote({
                     </Step>
                 </Stepper>
                 {step === 0 && (
-                    <Box display="flex" justifyContent="center">
-                        <Box flex={1}>
-                            <Box my={2}>
-                                <General
-                                    data={quote}
-                                    onDone={(d) => {
-                                        setQuote((prev) => ({ ...prev, ...d }));
-                                        setStep(1);
-                                    }}
-                                />
-                            </Box>
-                        </Box>
+                    <Box display="flex" justifyContent="center" flexGrow={1} my={2}>
+                        <General
+                            data={quote}
+                            onDone={(d) => {
+                                setQuote((prev) => ({ ...prev, ...d }));
+                                setStep(1);
+                            }}
+                        />
                     </Box>
                 )}
                 {step === 1 && (

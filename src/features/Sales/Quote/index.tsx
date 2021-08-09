@@ -1,7 +1,9 @@
 import React, { useState } from "react";
-import { Box, Button, Tabs, Tab } from "@material-ui/core";
+import { Box, Tabs, Tab } from "@material-ui/core";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import useSWR from "swr";
+
+import Button from "../../../app/Button";
 
 import { INote } from "../../../api/note";
 import { IDocument } from "../../../api/document";
@@ -146,10 +148,11 @@ export default function QuotePanel() {
                 </Button>
                 {selectedQuote ? (
                     <div>
-                        <Button onClick={() => setConfirm(true)} disabled={!selectedQuote}>
+                        <Button kind="delete" onClick={() => setConfirm(true)} disabled={!selectedQuote}>
                             Delete Quote
                         </Button>
                         <Button
+                            kind="add"
                             onClick={() => setAddLineItem(true)}
                             disabled={!selectedQuote}
                             style={{ margin: "0 0.5em" }}
@@ -157,6 +160,7 @@ export default function QuotePanel() {
                             Add Line item
                         </Button>
                         <Button
+                            kind="add"
                             onClick={() => setLineServiceModal(true)}
                             disabled={!selectedQuote}
                             style={{ margin: "0 0.5em" }}
@@ -164,6 +168,7 @@ export default function QuotePanel() {
                             Add Line Service
                         </Button>
                         <Button
+                            kind="add"
                             onClick={() => setAddNote(true)}
                             disabled={!selectedQuote}
                             style={{ marginRight: "0.5em" }}
