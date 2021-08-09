@@ -139,7 +139,11 @@ export default function QuotePanel() {
             )}
 
             <Box mb={2} display="flex" alignItems="center">
-                <Button onClick={() => setAddQ(true)} variant="outlined" style={{ marginRight: 8 }}>
+                <Button
+                    style={{ backgroundColor: "#1a73e8", color: "#fff", marginLeft: "5px" }}
+                    onClick={() => setAddQ(true)}
+                >
+                    <AddRoundedIcon />
                     Add Quote
                 </Button>
                 {selectedQuote ? (
@@ -171,12 +175,7 @@ export default function QuotePanel() {
                         >
                             Add Note
                         </Button>
-                        <Button
-                            style={{ backgroundColor: "#1a73e8", color: "#fff", marginLeft: "5px" }}
-                            onClick={() => setAddDoc(true)}
-                            disabled={!selectedQuote}
-                        >
-                            <AddRoundedIcon />
+                        <Button onClick={() => setAddDoc(true)} disabled={!selectedQuote}>
                             Add Document
                         </Button>
                     </div>
