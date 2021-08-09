@@ -15,8 +15,6 @@ import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
 import { FieldSelect, ArraySelect } from "../../../app/Inputs";
 import { getAllEmployees } from "../../../api/employee";
-import { getContacts } from "../../../api/contact";
-import { getClients } from "../../../api/client";
 import { getProjects } from "../../../api/project";
 import { getItems } from "../../../api/items";
 import { exportPdf } from "../../../logic/pdf";
@@ -24,6 +22,7 @@ import { getTickets } from "../../../api/ticket";
 import QuotePDF from "../../../PDFTemplates/Quote";
 import { createAModelDocument } from "../../../api/document";
 import { IQuoteComplete } from "../../../api/quote";
+import { getContacts } from "../../../api/contact";
 
 export const DocumentForm = ({
     onDone,
@@ -36,12 +35,10 @@ export const DocumentForm = ({
 }) => {
     const divToPrint = useRef<HTMLElement | null>(null);
 
-    const [canSave, setCanSave] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
 
     const handleSaveDocument = async () => {
         try {
-            setCanSave(false);
             setIsUploading(true);
             if (divToPrint.current && createdQoute.id) {
                 const generatedPdf = await exportPdf(divToPrint.current);
@@ -60,7 +57,6 @@ export const DocumentForm = ({
         } catch (error) {
             console.log(error);
         } finally {
-            setCanSave(true);
             setIsUploading(false);
         }
     };
@@ -210,49 +206,11 @@ export const GeneralForm = ({
 }) => {
     return (
         <>
-            <Typography variant="h6">General</Typography>
             <Box my={1} display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10}>
-                {edit && <TextField label="number" value={values.number} style={{ width: "100%" }} disabled />}
-                <FieldSelect
-                    value={values.salesperson}
-                    request={getAllEmployees}
-                    itemTitleField="username"
-                    itemValueField="id"
-                    keyField="id"
-                    name="salesperson"
-                    label="Sales person"
-                    onChange={handleChange}
-                />
-                <FieldSelect
-                    value={values.requester}
-                    request={getContacts}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    keyField="id"
-                    name="requester"
-                    label="Requester"
-                    onChange={handleChange}
-                />
-                <FieldSelect
-                    value={values.ClientId}
-                    request={getClients}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    name="ClientId"
-                    label="Client"
-                    onChange={handleChange}
-                />
-                <FieldSelect
-                    value={values.ProjectId}
-                    request={getProjects}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    keyField="id"
-                    name="ProjectId"
-                    label="Project"
-                    onChange={handleChange}
-                />
-                <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} />
+                {edit && (
+                    <TextField label="Quote ID" value={values.number} style={{ gridColumnEnd: "span 2" }} disabled />
+                )}
+                {edit && <TextField label="SO ID" value={values.number} style={{ width: "100%" }} disabled />}
                 <DateTimePicker
                     size="small"
                     value={values.entryDate}
@@ -269,14 +227,38 @@ export const GeneralForm = ({
                     onChange={(date) => setFieldValue("expireDate", date)}
                     onBlur={handleBlur}
                 />
+                <FieldSelect
+                    value={values.ProjectId}
+                    request={getProjects}
+                    itemTitleField="name"
+                    itemValueField="id"
+                    keyField="id"
+                    name="ProjectId"
+                    label="Project Name"
+                    onChange={handleChange}
+                />
+                <TextField value={values.location} name="location" label="Location" onChange={handleChange} />
 
-                <DateTimePicker
-                    size="small"
-                    value={values.estimatedShipDate}
-                    name="estimatedShipDate"
-                    label="Estimated Ship Date"
-                    onChange={(date) => setFieldValue("estimatedShipDate", date)}
-                    onBlur={handleBlur}
+                <FieldSelect
+                    value={values.salesperson}
+                    request={getAllEmployees}
+                    itemTitleField="username"
+                    itemValueField="id"
+                    keyField="id"
+                    name="salesperson"
+                    label="Sales person"
+                    onChange={handleChange}
+                />
+                <TextField value={values.createdBy} name="createdBy" label="Created By" onChange={handleChange} />
+                <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} />
+                <TextField
+                    value={values.note}
+                    style={{ gridColumnEnd: "span 2" }}
+                    name="note"
+                    label="Note"
+                    onChange={handleChange}
+                    multiline
+                    rows={3}
                 />
             </Box>
         </>
@@ -333,7 +315,7 @@ export const TermsTab = ({
     );
 };
 
-export const DepositTab = ({
+export const EntitiesTab = ({
     handleChange,
     handleBlur,
     values,
@@ -343,35 +325,135 @@ export const DepositTab = ({
     handleBlur: (a: any) => void;
 }) => {
     return (
-        <Box my={1} display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-            <TextField
-                value={values.deposit}
-                name="deposit"
-                label="Deposit"
-                type="number"
-                onChange={handleChange}
-                onBlur={handleBlur}
-            />
-            <TextField
-                value={values.depositAmount}
-                name="depositAmount"
-                label="Deposit Amount"
-                type="number"
-                onChange={handleChange}
-                onBlur={handleBlur}
-            />
-            <FormControl>
-                <FormLabel>Deposit</FormLabel>
-                <RadioGroup
-                    name="depositRequired"
-                    value={String(values.depositRequired)}
+        // Rep/Agency
+        // Address
+        // City
+        // State
+        // Zip Code
+
+        // Requester
+        // Email
+        // Phone
+
+        // Client
+        // Contact Name
+        // Phone
+        // Email
+        // Unite Pricing Level
+
+        <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr " gridColumnGap={10}>
+            <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
+                <TextField
+                    value={values.rep}
+                    name="rep"
+                    label="Rep / Agency"
                     onChange={handleChange}
-                    style={{ flexDirection: "row" }}
-                >
-                    <FormControlLabel control={<Radio />} label="Yes" value="true" />
-                    <FormControlLabel control={<Radio />} label="No" value="false" />
-                </RadioGroup>
-            </FormControl>
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.address}
+                    name="address"
+                    label="Address"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField value={values.city} name="city" label="City" onChange={handleChange} onBlur={handleBlur} />
+                <TextField
+                    value={values.state}
+                    name="state"
+                    label="State"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.zipCode}
+                    name="zipCode"
+                    label="Zip Code"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+            </Box>
+            <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
+                <FieldSelect
+                    value={values.requester}
+                    request={getContacts}
+                    itemTitleField="name"
+                    itemValueField="id"
+                    keyField="id"
+                    name="requester"
+                    label="Requester"
+                    onChange={handleChange}
+                />
+                <TextField
+                    value={values.email}
+                    name="email"
+                    label="Email"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.phone}
+                    name="phone"
+                    label="Phone"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.phone}
+                    name="phone"
+                    label="Phone"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled
+                    style={{ opacity: 0 }}
+                />
+                <TextField
+                    value={values.phone}
+                    name="phone"
+                    label="Phone"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled
+                    style={{ opacity: 0 }}
+                />
+            </Box>
+            <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
+                <TextField
+                    value={values.client}
+                    name="client"
+                    label="Client"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.contactName}
+                    name="contactName"
+                    label="Contact Name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.email}
+                    name="email"
+                    label="Email"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.phone}
+                    name="phone"
+                    label="Phone"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.unitPricingLevel}
+                    name="Unit Pricing Level"
+                    label="Unit Pricing Level"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+            </Box>
         </Box>
     );
 };
@@ -386,23 +468,35 @@ export const CommissionTab = ({
     handleBlur: (a: any) => void;
 }) => {
     return (
-        <Box my={1} display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
+        <Box my={1} display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridGap={10}>
             <TextField
+                style={{ gridColumnEnd: "span 2" }}
                 value={values.commissionLabel}
                 name="commissionLabel"
-                label="Commission Label"
+                label="Commission Rate"
                 onChange={handleChange}
                 onBlur={handleBlur}
             />
             <TextField
                 value={values.regularCommission}
                 name="regularCommission"
-                label="Regular Commission"
+                label="Regular Commission %"
                 type="number"
+                placeholder="0.00%"
                 onChange={handleChange}
                 onBlur={handleBlur}
             />
             <TextField
+                value={values.regularCommission * values.price * values.quantity}
+                name="regularCommission"
+                label="Regular Commission $"
+                placeholder="0.00$"
+                // onChange={handleChange}
+                // onBlur={handleBlur}
+                disabled
+            />
+            <TextField
+                style={{ gridColumnEnd: "span 2" }}
                 value={values.overageCommission}
                 name="overageCommission"
                 label="Overage Commission"

@@ -4,7 +4,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
 import Button from "../../../app/Button";
-import { CommissionTab, DepositTab, TermsTab, GeneralForm } from "./Forms";
+import { CommissionTab, EntitiesTab, GeneralForm } from "./Forms";
 
 import { IQuote } from "../../../api/quote";
 
@@ -22,7 +22,7 @@ export default function GeneralQuote({ onDone, data }: { data?: any; onDone: (da
     };
 
     return (
-        <Box m={1} style={{ height: 600, overflowY: "auto" }}>
+        <Box m={1} style={{ overflowY: "auto" }}>
             <Formik initialValues={{} as IQuote} validationSchema={schema} onSubmit={handleSubmit}>
                 {({ handleChange, handleBlur, values, isSubmitting, setFieldValue }) => (
                     <Form>
@@ -43,17 +43,17 @@ export default function GeneralQuote({ onDone, data }: { data?: any; onDone: (da
                                     style={{ maxWidth: 500 }}
                                     textColor="primary"
                                 >
-                                    <Tab label="Terms" />
-                                    <Tab label="Deposit" />
+                                    {/* <Tab label="Terms" /> */}
+                                    <Tab label="Entities" />
                                     <Tab label="Commission" />
                                 </Tabs>
-                                {activeTab === 0 && (
+                                {/* {activeTab === 0 && (
                                     <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                )} */}
+                                {activeTab === 0 && (
+                                    <EntitiesTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
                                 )}
                                 {activeTab === 1 && (
-                                    <DepositTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
-                                )}
-                                {activeTab === 2 && (
                                     <CommissionTab
                                         values={values}
                                         handleBlur={handleBlur}

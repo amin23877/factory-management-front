@@ -5,7 +5,7 @@ import { mutate } from "swr";
 
 import Button from "../../../app/Button";
 import { BasePaper } from "../../../app/Paper";
-import { CommissionTab, DepositTab, GeneralForm, TermsTab } from "./Forms";
+import { CommissionTab, EntitiesTab, GeneralForm } from "./Forms";
 
 import { createQuoteComplete, IQuote, updateQuote } from "../../../api/quote";
 import Toast from "../../../app/Toast";
@@ -30,7 +30,7 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
         <Formik initialValues={selectedQuote} onSubmit={handleSubmit}>
             {({ handleChange, handleBlur, values, isSubmitting, setFieldValue }) => (
                 <Form>
-                    <Box display="grid" gridTemplateColumns="3fr 1fr" gridGap={10}>
+                    <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
                         <BasePaper>
                             <GeneralForm
                                 edit
@@ -59,18 +59,15 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
                                 variant="scrollable"
                                 style={{ maxWidth: 700 }}
                             >
-                                <Tab label="Terms" />
-                                <Tab label="Deposit" />
+                                {/* <Tab label="Terms" /> */}
+                                <Tab label="Entities" />
                                 <Tab label="Commission" />
                             </Tabs>
                             <Box style={{ minHeight: "600", overflowY: "auto", marginBottom: "auto" }}>
                                 {activeTab === 0 && (
-                                    <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                    <EntitiesTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
                                 )}
                                 {activeTab === 1 && (
-                                    <DepositTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
-                                )}
-                                {activeTab === 2 && (
                                     <CommissionTab
                                         values={values}
                                         handleBlur={handleBlur}

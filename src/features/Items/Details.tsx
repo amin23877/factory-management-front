@@ -140,10 +140,16 @@ function ItemsDetails({
         []
     );
 
-    const noteCols = useMemo(
+    const noteCols = useMemo<GridColDef[]>(
         () => [
-            { field: "subject", headerName: "Subject", flex: 1 },
-            { field: "url", headerName: "URL", flex: 1 },
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            { field: "creator", headerName: "Creator", width: 180 },
+            { field: "subject", headerName: "Subject", width: 300 },
             { field: "note", headerName: "Note", flex: 1 },
         ],
         []
@@ -358,7 +364,15 @@ function ItemsDetails({
                                         <Tab label="Clusters and Levels" />
                                     </Tabs>
                                     {moreInfoTab === 0 && (
-                                        <Box mt={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                                        <Box
+                                            mt={1}
+                                            height="100%"
+                                            display="flex"
+                                            justifyContent="center"
+                                            alignItems="center"
+                                            flexDirection="column"
+                                            gridGap={10}
+                                        >
                                             {selectedRow?.photo && (
                                                 <img
                                                     style={{
