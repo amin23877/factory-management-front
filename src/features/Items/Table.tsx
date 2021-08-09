@@ -128,9 +128,9 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
             for (let f of Object.keys(items.result[0])) {
                 if (!exceptions.includes(f)) {
                     if (filterNames.includes(f)) {
-                        res.splice(2, 0, { field: f, headerName: f, width: 120 });
+                        res.splice(3, 0, { field: f, headerName: f, width: 120 });
                     } else if (fieldNames.includes(f)) {
-                        res.splice(2, 0, { field: f, headerName: splitLevelName(f), width: 120 });
+                        res.splice(3, 0, { field: f, headerName: splitLevelName(f), width: 120 });
                     } else {
                         res.push({ field: f, headerName: f, hide: true });
                     }
