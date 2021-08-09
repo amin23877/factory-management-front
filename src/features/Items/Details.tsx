@@ -364,7 +364,15 @@ function ItemsDetails({
                                         <Tab label="Clusters and Levels" />
                                     </Tabs>
                                     {moreInfoTab === 0 && (
-                                        <Box mt={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                                        <Box
+                                            mt={1}
+                                            height="100%"
+                                            display="flex"
+                                            justifyContent="center"
+                                            alignItems="center"
+                                            flexDirection="column"
+                                            gridGap={10}
+                                        >
                                             {selectedRow?.photo && (
                                                 <img
                                                     style={{

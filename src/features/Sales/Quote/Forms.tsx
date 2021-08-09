@@ -15,8 +15,6 @@ import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
 import { FieldSelect, ArraySelect } from "../../../app/Inputs";
 import { getAllEmployees } from "../../../api/employee";
-import { getContacts } from "../../../api/contact";
-import { getClients } from "../../../api/client";
 import { getProjects } from "../../../api/project";
 import { getItems } from "../../../api/items";
 import { exportPdf } from "../../../logic/pdf";
@@ -24,6 +22,7 @@ import { getTickets } from "../../../api/ticket";
 import QuotePDF from "../../../PDFTemplates/Quote";
 import { createAModelDocument } from "../../../api/document";
 import { IQuoteComplete } from "../../../api/quote";
+import { getContacts } from "../../../api/contact";
 
 export const DocumentForm = ({
     onDone,
@@ -36,12 +35,10 @@ export const DocumentForm = ({
 }) => {
     const divToPrint = useRef<HTMLElement | null>(null);
 
-    const [canSave, setCanSave] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
 
     const handleSaveDocument = async () => {
         try {
-            setCanSave(false);
             setIsUploading(true);
             if (divToPrint.current && createdQoute.id) {
                 const generatedPdf = await exportPdf(divToPrint.current);
@@ -60,7 +57,6 @@ export const DocumentForm = ({
         } catch (error) {
             console.log(error);
         } finally {
-            setCanSave(true);
             setIsUploading(false);
         }
     };
@@ -253,26 +249,6 @@ export const GeneralForm = ({
                     label="Sales person"
                     onChange={handleChange}
                 />
-
-                {/* <FieldSelect
-                    value={values.requester}
-                    request={getContacts}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    keyField="id"
-                    name="requester"
-                    label="Requester"
-                    onChange={handleChange}
-                />
-                <FieldSelect
-                    value={values.ClientId}
-                    request={getClients}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    name="ClientId"
-                    label="Client"
-                    onChange={handleChange}
-                /> */}
                 <TextField value={values.createdBy} name="createdBy" label="Created By" onChange={handleChange} />
                 <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} />
                 <TextField
@@ -281,16 +257,9 @@ export const GeneralForm = ({
                     name="note"
                     label="Note"
                     onChange={handleChange}
+                    multiline
+                    rows={3}
                 />
-
-                {/* <DateTimePicker
-                    size="small"
-                    value={values.estimatedShipDate}
-                    name="estimatedShipDate"
-                    label="Estimated Ship Date"
-                    onChange={(date) => setFieldValue("estimatedShipDate", date)}
-                    onBlur={handleBlur}
-                /> */}
             </Box>
         </>
     );
@@ -356,7 +325,7 @@ export const EntitiesTab = ({
     handleBlur: (a: any) => void;
 }) => {
     return (
-        //         Rep/Agency
+        // Rep/Agency
         // Address
         // City
         // State
@@ -405,12 +374,15 @@ export const EntitiesTab = ({
                 />
             </Box>
             <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
-                <TextField
+                <FieldSelect
                     value={values.requester}
+                    request={getContacts}
+                    itemTitleField="name"
+                    itemValueField="id"
+                    keyField="id"
                     name="requester"
                     label="Requester"
                     onChange={handleChange}
-                    onBlur={handleBlur}
                 />
                 <TextField
                     value={values.email}
@@ -482,35 +454,6 @@ export const EntitiesTab = ({
                     onBlur={handleBlur}
                 />
             </Box>
-            {/* 
-            <TextField
-                value={values.deposit}
-                name="deposit"
-                label="Deposit"
-                type="number"
-                onChange={handleChange}
-                onBlur={handleBlur}
-            />
-            <TextField
-                value={values.depositAmount}
-                name="depositAmount"
-                label="Deposit Amount"
-                type="number"
-                onChange={handleChange}
-                onBlur={handleBlur}
-            />
-            <FormControl>
-                <FormLabel>Deposit</FormLabel>
-                <RadioGroup
-                    name="depositRequired"
-                    value={String(values.depositRequired)}
-                    onChange={handleChange}
-                    style={{ flexDirection: "row" }}
-                >
-                    <FormControlLabel control={<Radio />} label="Yes" value="true" />
-                    <FormControlLabel control={<Radio />} label="No" value="false" />
-                </RadioGroup>
-            </FormControl> */}
         </Box>
     );
 };
@@ -525,7 +468,7 @@ export const CommissionTab = ({
     handleBlur: (a: any) => void;
 }) => {
     return (
-        <Box my={1} display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10}>
+        <Box my={1} display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridGap={10}>
             <TextField
                 style={{ gridColumnEnd: "span 2" }}
                 value={values.commissionLabel}

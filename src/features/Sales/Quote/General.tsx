@@ -4,7 +4,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
 import Button from "../../../app/Button";
-import { CommissionTab, EntitiesTab, TermsTab, GeneralForm } from "./Forms";
+import { CommissionTab, EntitiesTab, GeneralForm } from "./Forms";
 
 import { IQuote } from "../../../api/quote";
 
@@ -22,7 +22,7 @@ export default function GeneralQuote({ onDone, data }: { data?: any; onDone: (da
     };
 
     return (
-        <Box m={1} style={{ height: 600, overflowY: "auto" }}>
+        <Box m={1} style={{ overflowY: "auto" }}>
             <Formik initialValues={{} as IQuote} validationSchema={schema} onSubmit={handleSubmit}>
                 {({ handleChange, handleBlur, values, isSubmitting, setFieldValue }) => (
                     <Form>

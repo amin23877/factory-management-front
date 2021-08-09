@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { Box, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
-import { NoteRounded, FileCopyRounded, AddRounded, DeleteRounded, PostAddRounded } from "@material-ui/icons";
+import { AddRounded, DeleteRounded, PostAddRounded } from "@material-ui/icons";
 import Confirm from "../Modals/Confirm";
 
 import NoteModal from "../Modals/NoteModals";
@@ -123,20 +123,6 @@ const Items = () => {
                             <PostAddRounded />
                         </IconButton>
                     </ListItem>
-                    {/* <ListItem>
-                        <IconButton disabled={activeTab === 0} title="Add note" onClick={() => setAddNoteModal(true)}>
-                            <NoteRounded />
-                        </IconButton>
-                    </ListItem>
-                    <ListItem>
-                        <IconButton
-                            disabled={activeTab === 0}
-                            title="Add document"
-                            onClick={() => setAddDocModal(true)}
-                        >
-                            <FileCopyRounded />
-                        </IconButton>
-                    </ListItem> */}
                 </List>
                 <Box flex={11} ml={2}>
                     {activeTab === 0 && (
