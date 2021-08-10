@@ -12,18 +12,24 @@ import TextField from "../app/TextField";
 import logo from "../assets/splogo.png";
 
 import "../styles/splash.css";
+import { useChat } from "../logic/Chat/ChatContext";
 
 export default function SplashScreen() {
     const [open] = useState(true);
     const dispatch = useDispatch();
+    const chatContext = useChat();
 
     const schema = Yup.object().shape({
         username: Yup.string().required(),
         password: Yup.string().required().min(4),
     });
 
-    const handleSubmit = (data: any) => {
-        dispatch(loginThunk(data));
+    const handleSubmit = async (data: any) => {
+        await dispatch(loginThunk(data));
+
+        if (chatContext) {
+            chatContext.ChatSocket.connect();
+        }
     };
 
     return (

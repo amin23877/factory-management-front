@@ -31,7 +31,7 @@ const Roles = React.lazy(() => import("../pages/Roles"));
 const Projects = React.lazy(() => import("../pages/Project"));
 const Activity = React.lazy(() => import("../pages/Activity"));
 const Service = React.lazy(() => import("../pages/FieldService"));
-const Vendros = React.lazy(() => import("../pages/Vendors"));
+const Vendors = React.lazy(() => import("../pages/Vendors"));
 const Purchase = React.lazy(() => import("../pages/Purchase"));
 const Production = React.lazy(() => import("../pages/Production"));
 const Engineering = React.lazy(() => import("../pages/Engineering"));
@@ -217,7 +217,7 @@ export default function PanelRouter() {
                             <Route exact path="/panel/roles" component={Roles} />
                             <Route exact path="/panel/projects" component={Projects} />
                             <Route exact path="/panel/activity" component={Activity} />
-                            <Route exact path="/panel/vendor" component={Vendros} />
+                            <Route exact path="/panel/vendor" component={Vendors} />
                             <Route exact path="/panel/fieldservice" component={Service} />
                             <Route exact path="/panel/purchase" component={Purchase} />
                             <Route exact path="/panel/production" component={Production} />
