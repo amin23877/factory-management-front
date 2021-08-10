@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export const useQuery = async (request: (arg?: any) => Promise<any>) => {
     const [data, setData] = useState<any>();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const refreshData = async () => {
+    const refreshData = useCallback(async () => {
         setIsLoading(true);
         try {
             const resp = await request();
@@ -18,11 +18,11 @@ export const useQuery = async (request: (arg?: any) => Promise<any>) => {
             setData(null);
             setIsLoading(false);
         }
-    };
+    }, [request]);
 
     useEffect(() => {
         refreshData();
-    }, []);
+    }, [refreshData]);
 
     return { data, isLoading, error, refreshData };
 };
