@@ -118,16 +118,6 @@ export const General = ({ values, errors, handleChange, handleBlur, touched }: I
             </Paper>
             <TextField
                 style={{ gridColumnEnd: "span 4" }}
-                label="Device Name"
-                placeholder="Device name"
-                name="name"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={Boolean(errors.name && touched.name)}
-                value={values.name}
-            />
-            <TextField
-                style={{ gridColumnEnd: "span 4" }}
                 label="Device ID"
                 placeholder="Device ID"
                 name="no"
@@ -136,6 +126,16 @@ export const General = ({ values, errors, handleChange, handleBlur, touched }: I
                 error={Boolean(errors.no && touched.no)}
                 value={values.no}
                 disabled
+            />
+            <TextField
+                style={{ gridColumnEnd: "span 4" }}
+                label="Device Name"
+                placeholder="Device name"
+                name="name"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.name && touched.name)}
+                value={values.name}
             />
             <TextField
                 multiline
@@ -147,6 +147,16 @@ export const General = ({ values, errors, handleChange, handleBlur, touched }: I
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.description}
+            />
+            <TextField
+                style={{ gridColumnEnd: "span 4" }}
+                label="Lead Time"
+                placeholder="Lead Time"
+                name="leadTime"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.leadTime && touched.leadTime)}
+                value={values.leadTime}
             />
         </Box>
     );

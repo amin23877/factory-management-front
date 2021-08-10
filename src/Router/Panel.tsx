@@ -23,7 +23,7 @@ import ChatDrawer from "../features/Chat/Drawer";
 
 const Home = React.lazy(() => import("../pages/home"));
 const Dashboard = React.lazy(() => import("../pages/dashboard"));
-const Clients = React.lazy(() => import("../pages/Clients"));
+// const Clients = React.lazy(() => import("../pages/Clients"));
 const Sales = React.lazy(() => import("../pages/Sales"));
 const Inventory = React.lazy(() => import("../pages/Inventory"));
 const Settings = React.lazy(() => import("../pages/Settings"));
@@ -210,7 +210,7 @@ export default function PanelRouter() {
                         <Switch>
                             <Route exact path="/panel" component={Home} />
                             <Route exact path="/panel/dashboard" component={Dashboard} />
-                            <Route exact path="/panel/clients" component={Clients} />
+                            {/* <Route exact path="/panel/clients" component={Clients} /> */}
                             <Route exact path="/panel/sales" component={Sales} />
                             <Route exact path="/panel/inventory" component={Inventory} />
                             <Route exact path="/panel/settings" component={Settings} />

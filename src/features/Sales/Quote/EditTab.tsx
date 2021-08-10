@@ -1,9 +1,14 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, Fragment } from "react";
 import { Tabs, Tab, Box } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 
 import BaseDataGrid from "../../../app/BaseDataGrid";
+import Button from "../../../app/Button";
+
 import EditForm from "./EditForm";
+
+import NoteModal from "../../Modals/NoteModals";
+import DocumentModal from "../../Modals/DocumentModals";
 
 import { IQuote } from "../../../api/quote";
 import { IActivity } from "../../../api/activity";
@@ -13,6 +18,13 @@ import { ILineItem } from "../../../api/lineItem";
 import { ILineService } from "../../../api/lineService";
 import { formatTimestampToDate } from "../../../logic/date";
 import { fileType } from "../../../logic/fileType";
+
+const style = {
+    border: "1px solid gray ",
+    borderRadius: "4px",
+    padding: "5px 10px",
+    margin: "3px 0px 10px 5px ",
+};
 
 export default function EditTab({
     selectedQuote,
@@ -38,6 +50,8 @@ export default function EditTab({
     onDocSelected: (d: any) => void;
 }) {
     const [activeTab, setActiveTab] = useState(0);
+    const [addNote, setAddNote] = useState(false);
+    const [addDoc, setAddDoc] = useState(false);
 
     const LICols = useMemo<GridColumns>(
         () => [
@@ -110,9 +124,16 @@ export default function EditTab({
 
     return (
         <Box>
+            {selectedQuote && selectedQuote.id && (
+                <NoteModal itemId={selectedQuote.id} model="quote" open={addNote} onClose={() => setAddNote(false)} />
+            )}
+            {selectedQuote && selectedQuote.id && (
+                <DocumentModal itemId={selectedQuote.id} model="quote" open={addDoc} onClose={() => setAddDoc(false)} />
+            )}
             <EditForm selectedQuote={selectedQuote} />
             <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                 <Tab label="Line Item" />
+                <Tab label="Line Services" />
                 <Tab label="Document" />
                 <Tab label="Quote history" />
                 <Tab label="Note" />
@@ -123,18 +144,41 @@ export default function EditTab({
                     <BaseDataGrid cols={LICols} rows={lineItems} onRowSelected={onLISelected} height={300} />
                 )}
                 {activeTab === 1 && (
-                    <BaseDataGrid cols={docCols} rows={docs} onRowSelected={onDocSelected} height={300} />
+                    <BaseDataGrid cols={LICols} rows={lineServices} onRowSelected={onLSSelected} height={300} />
                 )}
                 {activeTab === 2 && (
-                    <BaseDataGrid cols={activityCols} rows={activities} onRowSelected={() => {}} height={300} />
+                    <Fragment>
+                        <Button
+                            onClick={() => {
+                                setAddDoc(true);
+                            }}
+                            style={style}
+                        >
+                            + Add Document
+                        </Button>
+                        <BaseDataGrid cols={docCols} rows={docs} onRowSelected={onDocSelected} height={300} />
+                    </Fragment>
                 )}
                 {activeTab === 3 && (
-                    <BaseDataGrid cols={noteCols} rows={notes} onRowSelected={onNoteSelected} height={300} />
+                    <BaseDataGrid cols={activityCols} rows={activities} onRowSelected={() => {}} height={300} />
+                )}
+                {activeTab === 4 && (
+                    <Fragment>
+                        <Button
+                            onClick={() => {
+                                setAddNote(true);
+                            }}
+                            style={style}
+                        >
+                            + Add Note
+                        </Button>
+                        <BaseDataGrid cols={noteCols} rows={notes} onRowSelected={onNoteSelected} height={300} />
+                    </Fragment>
                 )}
                 {/* {activeTab === 2 && (
                     <BaseDataGrid cols={LSCols} rows={lineServices} onRowSelected={onLSSelected} height={300} />
                 )} */}
-                {activeTab === 4 && <div>Auditing</div>}
+                {activeTab === 5 && <div>Auditing</div>}
             </Box>
         </Box>
     );
