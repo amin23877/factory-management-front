@@ -142,7 +142,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
         res = res.map((r) => ({ ...r, disableColumnMenu: true }));
 
         return res;
-    }, [items, fields]);
+    }, [items, fields, clusters]);
 
     return (
         <>

@@ -14,6 +14,7 @@ import phazifyLogo from "../assets/phazify.png";
 import phocusLogo from "../assets/logo.png";
 import drawerBg from "../assets/sidebar.png";
 import { SettingsRounded } from "@material-ui/icons";
+import { useChat } from "../logic/Chat/ChatContext";
 
 const drawerItems = [
     {
@@ -397,12 +398,18 @@ const MainDrawer = ({ width, closeThis }: { width?: number; closeThis: () => voi
     };
 
     const [confirm, setConfirm] = useState(false);
+    const chatContext = useChat();
+
     const classes = useStyles();
     const location = useLocation();
     const dispatch = useDispatch();
 
     const handleLogout = () => {
         dispatch(logout());
+
+        if (chatContext) {
+            chatContext.ChatSocket.disconnect();
+        }
     };
 
     return (

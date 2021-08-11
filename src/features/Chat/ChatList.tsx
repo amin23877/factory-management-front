@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { Avatar, Box, IconButton, List, ListItem, ListItemAvatar, ListItemText, Typography } from "@material-ui/core";
-import { messageType, userType } from "../../logic/Chat";
+import { messageType, userType } from "../../logic/Chat/ChatAdapter";
 import { ChevronLeft } from "@material-ui/icons";
 
 import CustomScrollbars from "../../app/CustomScroll";
