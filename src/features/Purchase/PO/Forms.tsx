@@ -32,7 +32,7 @@ import { createAModelDocument } from "../../../api/document";
 
 import { FieldSelect, ArraySelect } from "../../../app/Inputs";
 import Button from "../../../app/Button";
-import { FormLabel, LinearProgress } from "@material-ui/core";
+import { LinearProgress } from "@material-ui/core";
 
 import { exportPdf } from "../../../logic/pdf";
 
@@ -42,6 +42,8 @@ import { IQuoteComplete } from "../../../api/quote";
 
 import PurchasePO from "../../../PDFTemplates/PurchasePO";
 import useSWR from "swr";
+import { getFieldServices } from "../../../api/fieldService";
+import { ILineService } from "../../../api/lineService";
 
 export const DocumentForm = ({
     createdPO,
@@ -352,6 +354,157 @@ export const LinesForm = ({
                                 <TableRow>
                                     <TableCell>{item.id}</TableCell>
                                     {/* <TableCell>{item.name}</TableCell> */}
+                                    <TableCell>{item.description}</TableCell>
+                                    <TableCell>{item.quantity}</TableCell>
+                                    <TableCell>{item.price}</TableCell>
+                                    <TableCell>{item.tax}</TableCell>
+                                    <TableCell>
+                                        <IconButton onClick={() => handleDelete(i)}>
+                                            <DeleteRounded htmlColor="red" />
+                                        </IconButton>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Box>
+        </Box>
+    );
+};
+
+export const LineServicesForm = ({
+    onDone,
+    onBack,
+    data,
+}: {
+    data?: IPurchasePOComplete | ISOComplete | IQuoteComplete;
+    onDone: (items: ILineItem[]) => void;
+    onBack: () => void;
+}) => {
+    const { data: lineItems } = useSWR(data ? `/lineitem?QuoteId=${data?.id}` : null);
+    const [createdItems, setCreatedItems] = useState<ILineService[]>(
+        data && data.lineServices ? data.lineServices : []
+    );
+
+    const schema = Yup.object().shape({
+        ServiceId: Yup.string().required(),
+        quantity: Yup.number().required().min(1),
+        price: Yup.number().required().min(0.1),
+    });
+
+    const handleSubmit = (d: ILineService) => {
+        if (d) {
+            setCreatedItems((prev) => prev.concat(d));
+        }
+    };
+
+    const handleDelete = async (index: number) => {
+        setCreatedItems((prev) => prev.filter((item: any, ind) => ind !== index));
+    };
+
+    return (
+        <Box display="flex">
+            <Box flex={1} mr={2}>
+                <Formik initialValues={{} as ILineService} validationSchema={schema} onSubmit={handleSubmit}>
+                    {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
+                        <Form>
+                            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
+                                <FieldSelect
+                                    request={getFieldServices}
+                                    itemTitleField="name"
+                                    itemValueField="id"
+                                    value={values?.ServiceId as any}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors.ServiceId)}
+                                    name="ServiceId"
+                                    label="Service"
+                                    fullWidth
+                                />
+                                {lineItems && (
+                                    <Autocomplete
+                                        disabled={!lineItems}
+                                        // value={values?.LineItemRecordId}
+                                        options={lineItems ? lineItems : []}
+                                        getOptionLabel={(item: any) => item.ItemId.name}
+                                        onChange={(e, nv: any) => setFieldValue("LineItemRecordId", nv?.id)}
+                                        onBlur={handleBlur}
+                                        fullWidth
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                size="small"
+                                                label="Line Item"
+                                                name="LineItemRecordId"
+                                                variant="outlined"
+                                            />
+                                        )}
+                                    />
+                                )}
+                                <TextField
+                                    size="small"
+                                    name="description"
+                                    label="Description"
+                                    value={values.description}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors.description)}
+                                />
+                                <TextField
+                                    size="small"
+                                    name="quantity"
+                                    label="Quantity"
+                                    value={values.quantity}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors.quantity)}
+                                />
+                                <TextField
+                                    size="small"
+                                    name="price"
+                                    label="Price"
+                                    value={values.price}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors.price)}
+                                />
+                                <FormControlLabel
+                                    checked={values.tax}
+                                    label="Tax"
+                                    name="tax"
+                                    onChange={handleChange}
+                                    control={<CheckBox />}
+                                />
+                                <Button type="submit" kind={"add"} fullWidth>
+                                    Submit
+                                </Button>
+                            </Box>
+                        </Form>
+                    )}
+                </Formik>
+            </Box>
+            <Box flex={1}>
+                <TableContainer component={Paper} style={{ maxHeight: 500, overflowY: "auto" }}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Index</TableCell>
+                                <TableCell>Service Name</TableCell>
+                                <TableCell>Line Item</TableCell>
+                                <TableCell>Description</TableCell>
+                                <TableCell>Quantity</TableCell>
+                                <TableCell>Price</TableCell>
+                                <TableCell>Tax</TableCell>
+                                <TableCell></TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {createdItems.map((item: any, i: number) => (
+                                <TableRow>
+                                    <TableCell>{i}</TableCell>
+                                    <TableCell>{item.ServiceId}</TableCell>
+                                    <TableCell>{item.LineItemRecordId}</TableCell>
                                     <TableCell>{item.description}</TableCell>
                                     <TableCell>{item.quantity}</TableCell>
                                     <TableCell>{item.price}</TableCell>

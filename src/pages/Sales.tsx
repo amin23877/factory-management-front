@@ -7,24 +7,33 @@ import { MyTabs, MyTab } from "../app/Tabs";
 import QuotePanel from "../features/Sales/Quote";
 import SalesOrderPanel from "../features/Sales/SO";
 import PurchaseOrderPanel from "../features/Sales/PO";
+import DevicesPanel from "../features/Engineering/Devices";
+import Clients from "../pages/Clients";
 
 export default function Sales() {
     const [activeTab, setActiveTab] = useState(0);
 
     return (
         <Container>
+            {/* Calls	Dashboard	Devices	Quote	Customer Pos	Sales Order	Client */}
             <Box display="flex" alignItems="center" my={2}>
                 <SearchBar />
                 <div style={{ flexGrow: 1 }} />
                 <MyTabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                    <MyTab label="Calls" />
+                    <MyTab label="Dashboard" />
+                    <MyTab label="Devices" />
                     <MyTab label="Quote" />
-                    <MyTab label="Purchase" />
-                    <MyTab label="Sales" />
+                    <MyTab label="Customer Pos" />
+                    <MyTab label="Sales Order" />
+                    <MyTab label="Client" />
                 </MyTabs>
             </Box>
-            {activeTab === 0 && <QuotePanel />}
-            {activeTab === 1 && <PurchaseOrderPanel />}
-            {activeTab === 2 && <SalesOrderPanel />}
+            {activeTab === 2 && <DevicesPanel />}
+            {activeTab === 3 && <QuotePanel />}
+            {activeTab === 4 && <PurchaseOrderPanel />}
+            {activeTab === 5 && <SalesOrderPanel />}
+            {activeTab === 6 && <Clients />}
         </Container>
     );
 }

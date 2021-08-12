@@ -15,7 +15,7 @@ import {
 } from "@material-ui/core";
 import { SearchRounded } from "@material-ui/icons";
 
-import ChatAdapter, { userType } from "../../logic/Chat";
+import ChatAdapter, { userType } from "../../logic/Chat/ChatAdapter";
 // import CustomScrollbars from "../../app/CustomScroll";
 const colors = {
     textColor: "#484848",

@@ -15,8 +15,12 @@ import { BasePaper } from "../../app/Paper";
 import { IItem } from "../../api/items";
 import { generateURL } from "../../logic/filterSortPage";
 import SearchBox from "../../app/SearchBox";
+import { splitLevelName } from "../../logic/levels";
+import { useDataGridStyles } from "../../app/BaseDataGrid";
 
 function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
+    const classes = useDataGridStyles();
+
     const [filters, setFilters] = useState<GridFilterModelParams>();
     const [page, setPage] = useState<GridPageChangeParams>();
     const [sorts, setSort] = useState<GridSortModelParams>();
@@ -24,6 +28,8 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     const { data: items } = useSWR<{ result: IItem[]; total: number }>(
         generateURL("/item?device=false", filters, sorts, page)
     );
+    const { data: fields } = useSWR("/field");
+    const { data: clusters } = useSWR("/filter");
 
     const gridColumns = useMemo<GridColumns>(() => {
         let res: GridColumns = [
@@ -118,11 +124,20 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
             "qtyAllocated",
             "qtyRemain",
             "qtyOnOrder",
+            "vendorPartNumber",
         ];
         if (items && items.result && items.result.length > 0) {
+            const fieldNames = fields ? fields.map((f: any) => f.name) : [];
+            const filterNames = clusters ? clusters.map((f: any) => f.name) : [];
             for (let f of Object.keys(items.result[0])) {
                 if (!exceptions.includes(f)) {
-                    res.push({ field: f, headerName: f, hide: true });
+                    if (filterNames.includes(f)) {
+                        res.splice(3, 0, { field: f, headerName: f, width: 120 });
+                    } else if (fieldNames.includes(f)) {
+                        res.splice(3, 0, { field: f, headerName: splitLevelName(f), width: 120 });
+                    } else {
+                        res.push({ field: f, headerName: f, hide: true });
+                    }
                 }
             }
         }
@@ -130,7 +145,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
         res = res.map((r) => ({ ...r, disableColumnMenu: true }));
 
         return res;
-    }, [items]);
+    }, [items, fields, clusters]);
 
     return (
         <>
@@ -138,6 +153,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
             <BasePaper>
                 <Box height={550}>
                     <DataGrid
+                        className={classes.root}
                         onRowSelected={onRowSelected}
                         pagination
                         pageSize={25}

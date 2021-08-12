@@ -1,8 +1,10 @@
 import { io } from "socket.io-client";
-import { getToken } from "../api";
+import { getToken } from "../../api";
 
 export type messageType = {
-    _id:string;
+    _id: string;
+    hasFile: boolean;
+    fileAddress?: string | null;
     content: string;
     from: string;
     to: string;
@@ -71,9 +73,9 @@ export default class ChatAdapter {
         }
     }
 
-    public sendPrivateMessage(content: string, to: string) {
+    public sendPrivateMessage(content: string, to: string, file?: string) {
         if (this.socket) {
-            this.socket.emit("private message", { content, to });
+            this.socket.emit("private message", { content, to, file: file ? file : null });
         }
     }
 

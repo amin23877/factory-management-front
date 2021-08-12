@@ -23,7 +23,7 @@ import ChatDrawer from "../features/Chat/Drawer";
 
 const Home = React.lazy(() => import("../pages/home"));
 const Dashboard = React.lazy(() => import("../pages/dashboard"));
-const Clients = React.lazy(() => import("../pages/Clients"));
+// const Clients = React.lazy(() => import("../pages/Clients"));
 const Sales = React.lazy(() => import("../pages/Sales"));
 const Inventory = React.lazy(() => import("../pages/Inventory"));
 const Settings = React.lazy(() => import("../pages/Settings"));
@@ -31,7 +31,7 @@ const Roles = React.lazy(() => import("../pages/Roles"));
 const Projects = React.lazy(() => import("../pages/Project"));
 const Activity = React.lazy(() => import("../pages/Activity"));
 const Service = React.lazy(() => import("../pages/FieldService"));
-const Vendros = React.lazy(() => import("../pages/Vendors"));
+const Vendors = React.lazy(() => import("../pages/Vendors"));
 const Purchase = React.lazy(() => import("../pages/Purchase"));
 const Production = React.lazy(() => import("../pages/Production"));
 const Engineering = React.lazy(() => import("../pages/Engineering"));
@@ -210,14 +210,14 @@ export default function PanelRouter() {
                         <Switch>
                             <Route exact path="/panel" component={Home} />
                             <Route exact path="/panel/dashboard" component={Dashboard} />
-                            <Route exact path="/panel/clients" component={Clients} />
+                            {/* <Route exact path="/panel/clients" component={Clients} /> */}
                             <Route exact path="/panel/sales" component={Sales} />
                             <Route exact path="/panel/inventory" component={Inventory} />
                             <Route exact path="/panel/settings" component={Settings} />
                             <Route exact path="/panel/roles" component={Roles} />
                             <Route exact path="/panel/projects" component={Projects} />
                             <Route exact path="/panel/activity" component={Activity} />
-                            <Route exact path="/panel/vendor" component={Vendros} />
+                            <Route exact path="/panel/vendor" component={Vendors} />
                             <Route exact path="/panel/fieldservice" component={Service} />
                             <Route exact path="/panel/purchase" component={Purchase} />
                             <Route exact path="/panel/production" component={Production} />

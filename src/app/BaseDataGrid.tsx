@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { DataGrid, GridToolbar } from "@material-ui/data-grid";
 
-const useStyles = makeStyles({
+export const useDataGridStyles = makeStyles({
     root: {
         backgroundColor: "#f9f9f9",
         border: "none",
@@ -36,7 +36,7 @@ interface IBaseDataGrid {
 }
 
 export default function BaseDataGrid({ onRowSelected, rows, cols, height }: IBaseDataGrid) {
-    const classes = useStyles();
+    const classes = useDataGridStyles();
 
     // const updatedCols = cols.map((x) => {
     //     let obj = Object.keys(x);
@@ -76,7 +76,7 @@ export default function BaseDataGrid({ onRowSelected, rows, cols, height }: IBas
 }
 
 export const ScrollDataGrid = ({ onRowSelected, rows, cols, height }: IBaseDataGrid) => {
-    const classes = useStyles();
+    const classes = useDataGridStyles();
 
     return (
         // <div

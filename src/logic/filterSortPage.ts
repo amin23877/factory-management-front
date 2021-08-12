@@ -60,10 +60,13 @@ export const generateURL = (
 
     if (filters || sorts || page) url += "?";
 
-    // params.push(generatePage(page));
+    const generatedPage = generatePage(page)
     const generatedFilters = generateFilter(filters);
     const generatedSorts = generateSorts(sorts);
 
+    if(generatedPage){
+        params.push(generatedPage);
+    }
     if (generatedFilters) {
         params.push(generatedFilters);
     }

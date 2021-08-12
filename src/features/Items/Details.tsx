@@ -385,7 +385,15 @@ function ItemsDetails({
                                                     src={img ? img : `http://digitalphocus.ir${selectedRow?.photo}`}
                                                 />
                                             )}
-                                            <UploadButton onChange={handleFileChange} accept="image/*" />
+                                            <div
+                                                style={{
+                                                    display: "flex",
+                                                    width: "100%",
+                                                    justifyContent: "center",
+                                                }}
+                                            >
+                                                <UploadButton onChange={handleFileChange} accept="image/*" />
+                                            </div>
                                         </Box>
                                     )}
                                     {moreInfoTab === 1 && (

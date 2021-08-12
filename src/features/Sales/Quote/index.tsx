@@ -139,7 +139,17 @@ export default function QuotePanel() {
             )}
 
             <Box mb={2} display="flex" alignItems="center">
-                <Button onClick={() => setAddQ(true)} variant="outlined" style={{ marginRight: 8 }}>
+                <Button
+                    style={{
+                        backgroundColor: "#1a73e8",
+                        color: "#fff",
+                        margin: "0 0.5em",
+                        padding: " 6px 15px",
+                        boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+                    }}
+                    onClick={() => setAddQ(true)}
+                >
+                    <AddRoundedIcon />
                     Add Quote
                 </Button>
                 {selectedQuote ? (
@@ -159,26 +169,22 @@ export default function QuotePanel() {
                             kind="add"
                             onClick={() => setLineServiceModal(true)}
                             disabled={!selectedQuote}
-                            style={{ margin: "0 0.5em" }}
+                            // style={{ margin: "0 0.5em" }}
                         >
                             Add Line Service
                         </Button>
-                        <Button
+                        {/* <Button
                             kind="add"
                             onClick={() => setAddNote(true)}
                             disabled={!selectedQuote}
-                            style={{ marginRight: "0.5em" }}
+                            style={{ margin: "0 0.5em" }}
                         >
                             Add Note
                         </Button>
-                        <Button
-                            style={{ backgroundColor: "#1a73e8", color: "#fff", marginLeft: "5px" }}
-                            onClick={() => setAddDoc(true)}
-                            disabled={!selectedQuote}
-                        >
-                            <AddRoundedIcon />
+
+                        <Button style={{ margin: "0 0.5em" }} onClick={() => setAddDoc(true)} disabled={!selectedQuote}>
                             Add Document
-                        </Button>
+                        </Button> */}
                     </div>
                 ) : null}
                 <div style={{ flexGrow: 1 }} />

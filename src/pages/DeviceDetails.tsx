@@ -39,9 +39,9 @@ function DeviceDetails() {
     const [AddService, setAddService] = useState(false);
     const [unitHistoryModal, setUnitHistoryModal] = useState(false);
 
-    const [selectedNote, setSelectedNote] = useState<any>();
-    const [selectedDoc, setSelectedDoc] = useState<any>();
-    const [selectedFlag, setSelectedFlag] = useState<any>();
+    // const [selectedNote, setSelectedNote] = useState<any>();
+    // const [selectedDoc, setSelectedDoc] = useState<any>();
+    // const [selectedFlag, setSelectedFlag] = useState<any>();
     const [selectedStep, setSelectedStep] = useState<any>();
 
     const [selectedUnit, setSelectedUnit] = useState<IUnitHistory>();

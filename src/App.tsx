@@ -16,6 +16,7 @@ import BaseRouter from "./Router";
 // Delete this after useing baseurl somewhere
 import * as config from "./api/config";
 import { get } from "./api";
+import { ChatSocketProvider } from "./logic/Chat/ChatContext";
 console.log(config.BaseUrl);
 // ---------------------------
 
@@ -34,7 +35,9 @@ function App() {
                     <ThemeProvider theme={theme}>
                         <CssBaseline />
 
-                        <BaseRouter />
+                        <ChatSocketProvider>
+                            <BaseRouter />
+                        </ChatSocketProvider>
                     </ThemeProvider>
                 </BrowserRouter>
             </SWRConfig>
