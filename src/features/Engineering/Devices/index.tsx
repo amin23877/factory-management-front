@@ -36,7 +36,7 @@ import { deleteAnItem, IItem } from "../../../api/items";
 import { generateURL } from "../../../logic/filterSortPage";
 import SearchBox from "../../../app/SearchBox";
 
-const Inventory = () => {
+const Devices = ({ sales }: { sales?: boolean }) => {
     const [filters, setFilters] = useState<GridFilterModelParams>();
     const [page, setPage] = useState<GridPageChangeParams>();
     const [sorts, setSort] = useState<GridSortModelParams>();
@@ -177,51 +177,65 @@ const Inventory = () => {
             </Box>
 
             <Box display="flex" alignItems="flex-start" mt={1}>
-                <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
-                    <ListItem>
-                        <IconButton title="Add Device" onClick={() => setAddItemModal(true)}>
-                            <AddRounded />
-                        </IconButton>
-                    </ListItem>
-                    <ListItem>
-                        <IconButton disabled={activeTab === 0} title="Add Task" onClick={() => setAddStepModal(true)}>
-                            <FormatListNumberedRounded />
-                        </IconButton>
-                    </ListItem>
-                    <ListItem>
-                        <IconButton
-                            disabled={activeTab === 0}
-                            title="Delete Device"
-                            onClick={() => selectedItem && selectedItem?.id && setDeleteItemModal(true)}
-                        >
-                            <DeleteRounded />
-                        </IconButton>
-                    </ListItem>
-                    <ListItem>
-                        <IconButton title="Cluster and level" onClick={() => setFieldNFilterModal(true)}>
-                            <PostAddRounded />
-                        </IconButton>
-                    </ListItem>
-                    <ListItem>
-                        <IconButton disabled={activeTab === 0} title="Add Flag" onClick={() => setFlagModalOpen(true)}>
-                            <OutlinedFlagRounded />
-                        </IconButton>
-                    </ListItem>
-                    <ListItem>
-                        <IconButton disabled={activeTab === 0} title="Add note" onClick={() => setAddNoteModal(true)}>
-                            <NoteRounded />
-                        </IconButton>
-                    </ListItem>
-                    <ListItem>
-                        <IconButton
-                            disabled={activeTab === 0}
-                            title="Add document"
-                            onClick={() => setAddDocModal(true)}
-                        >
-                            <FileCopyRounded />
-                        </IconButton>
-                    </ListItem>
-                </List>
+                {!sales && (
+                    <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
+                        <ListItem>
+                            <IconButton title="Add Device" onClick={() => setAddItemModal(true)}>
+                                <AddRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton
+                                disabled={activeTab === 0}
+                                title="Add Task"
+                                onClick={() => setAddStepModal(true)}
+                            >
+                                <FormatListNumberedRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton
+                                disabled={activeTab === 0}
+                                title="Delete Device"
+                                onClick={() => selectedItem && selectedItem?.id && setDeleteItemModal(true)}
+                            >
+                                <DeleteRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton title="Cluster and level" onClick={() => setFieldNFilterModal(true)}>
+                                <PostAddRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton
+                                disabled={activeTab === 0}
+                                title="Add Flag"
+                                onClick={() => setFlagModalOpen(true)}
+                            >
+                                <OutlinedFlagRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton
+                                disabled={activeTab === 0}
+                                title="Add note"
+                                onClick={() => setAddNoteModal(true)}
+                            >
+                                <NoteRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton
+                                disabled={activeTab === 0}
+                                title="Add document"
+                                onClick={() => setAddDocModal(true)}
+                            >
+                                <FileCopyRounded />
+                            </IconButton>
+                        </ListItem>
+                    </List>
+                )}
                 <Box flex={11} ml={2}>
                     {activeTab === 0 && (
                         <>
@@ -255,6 +269,7 @@ const Inventory = () => {
                     )}
                     {activeTab === 1 && (
                         <DetailTab
+                            sales={sales}
                             onDone={mutateItems}
                             selectedRow={selectedItem}
                             onDocSelected={(d) => {
@@ -281,4 +296,4 @@ const Inventory = () => {
     );
 };
 
-export default Inventory;
+export default Devices;

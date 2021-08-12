@@ -28,7 +28,7 @@ export default function Sales() {
                     <MyTab label="Client" />
                 </MyTabs>
             </Box>
-            {activeTab === 2 && <DevicesPanel />}
+            {activeTab === 2 && <DevicesPanel sales={true} />}
             {activeTab === 3 && <QuotePanel />}
             {activeTab === 4 && <PurchaseOrderPanel />}
             {activeTab === 5 && <SalesOrderPanel />}

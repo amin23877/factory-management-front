@@ -4,7 +4,7 @@ import { mutate } from "swr";
 import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Button from "@material-ui/core/Button";
+import Button from "../../../app/Button";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 
 import Confirm from "../../Modals/Confirm";
@@ -101,17 +101,32 @@ export default function SalesOrderPanel() {
             />
 
             <Box mb={2} display="flex" alignItems="center">
-                <Button onClick={() => setAddSo(true)}>Add SO</Button>
-                <Button disabled={!selectedSO} onClick={() => setConfirm(true)}>
-                    Delete SO
+                <Button
+                    onClick={() => setAddSo(true)}
+                    style={{
+                        backgroundColor: "#1a73e8",
+                        color: "#fff",
+                        margin: "0 0.5em",
+                        padding: " 6px 15px",
+                        boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+                    }}
+                >
+                    <AddRoundedIcon />
+                    Add SO
                 </Button>
+
                 {activeTab === 1 && (
                     <>
+                        <Button disabled={!selectedSO} onClick={() => setConfirm(true)} kind="delete">
+                            Delete SO
+                        </Button>
                         <Button
+                            kind="add"
                             onClick={() => {
                                 setSelectedLI(undefined);
                                 setLineItemModal(true);
                             }}
+                            style={{ margin: "0 0.5em" }}
                         >
                             Add Line item
                         </Button>
@@ -120,10 +135,11 @@ export default function SalesOrderPanel() {
                                 setSelectedLS(undefined);
                                 setLineServiceModal(true);
                             }}
+                            kind="add"
                         >
                             Add Line service
                         </Button>
-                        <Button
+                        {/* <Button
                             onClick={() => {
                                 setSelectedNote(undefined);
                                 setNoteModal(true);
@@ -140,7 +156,7 @@ export default function SalesOrderPanel() {
                         >
                             <AddRoundedIcon />
                             Add Document
-                        </Button>
+                        </Button> */}
                     </>
                 )}
                 <div style={{ flexGrow: 1 }} />

@@ -1,9 +1,10 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, Fragment } from "react";
 import { Box } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
+import Button from "../../../app/Button";
 import BaseDataGrid from "../../../app/BaseDataGrid";
 
 import EditForm from "./EditForm";
@@ -12,6 +13,16 @@ import { ISO } from "../../../api/so";
 import useSWR from "swr";
 import { formatTimestampToDate } from "../../../logic/date";
 import { fileType } from "../../../logic/fileType";
+
+import NoteModal from "../../Modals/NoteModals";
+import DocumentModal from "../../Modals/DocumentModals";
+
+const style = {
+    border: "1px solid gray ",
+    borderRadius: "4px",
+    padding: "5px 10px",
+    margin: "3px 0px 10px 5px ",
+};
 
 export default function EditTab({
     selectedSo,
@@ -32,6 +43,8 @@ export default function EditTab({
     const { data: lineServices } = useSWR(selectedSo && selectedSo.id ? `/lineservice?SOId=${selectedSo.id}` : null);
 
     const [activeTab, setActiveTab] = useState(0);
+    const [addNote, setAddNote] = useState(false);
+    const [addDoc, setAddDoc] = useState(false);
 
     const noteCols = useMemo<GridColumns>(
         () => [
@@ -175,6 +188,12 @@ export default function EditTab({
     );
     return (
         <div>
+            {selectedSo && selectedSo.id && (
+                <NoteModal open={addNote} onClose={() => setAddNote(false)} itemId={selectedSo.id} model="so" />
+            )}
+            {selectedSo && selectedSo.id && (
+                <DocumentModal open={addDoc} onClose={() => setAddDoc(false)} itemId={selectedSo.id} model="so" />
+            )}
             <Box>
                 <EditForm selectedSo={selectedSo} />
             </Box>
@@ -200,7 +219,17 @@ export default function EditTab({
                 <BaseDataGrid cols={unitCols} rows={lineItems || []} onRowSelected={onLineItemSelected} height={300} />
             )}
             {activeTab === 2 && (
-                <BaseDataGrid cols={docCols} rows={documents || []} onRowSelected={onDocSelected} height={300} />
+                <Fragment>
+                    <Button
+                        onClick={() => {
+                            setAddDoc(true);
+                        }}
+                        style={style}
+                    >
+                        + Add Document
+                    </Button>
+                    <BaseDataGrid cols={docCols} rows={documents || []} onRowSelected={onDocSelected} height={300} />
+                </Fragment>
             )}
             {activeTab === 3 && (
                 <BaseDataGrid cols={activityCols} rows={documents || []} onRowSelected={() => {}} height={300} />
@@ -217,7 +246,17 @@ export default function EditTab({
                 />
             )}
             {activeTab === 6 && (
-                <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} height={300} />
+                <Fragment>
+                    <Button
+                        onClick={() => {
+                            setAddNote(true);
+                        }}
+                        style={style}
+                    >
+                        + Add Note
+                    </Button>
+                    <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} height={300} />
+                </Fragment>
             )}
         </div>
     );
