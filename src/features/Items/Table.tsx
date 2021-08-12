@@ -16,8 +16,11 @@ import { IItem } from "../../api/items";
 import { generateURL } from "../../logic/filterSortPage";
 import SearchBox from "../../app/SearchBox";
 import { splitLevelName } from "../../logic/levels";
+import { useDataGridStyles } from "../../app/BaseDataGrid";
 
 function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
+    const classes = useDataGridStyles();
+
     const [filters, setFilters] = useState<GridFilterModelParams>();
     const [page, setPage] = useState<GridPageChangeParams>();
     const [sorts, setSort] = useState<GridSortModelParams>();
@@ -150,6 +153,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
             <BasePaper>
                 <Box height={550}>
                     <DataGrid
+                        className={classes.root}
                         onRowSelected={onRowSelected}
                         pagination
                         pageSize={25}

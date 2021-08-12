@@ -1,8 +1,9 @@
 import React, { useCallback, useState } from "react";
 import { Box, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
 import { AddRounded, DeleteRounded, PostAddRounded } from "@material-ui/icons";
-import Confirm from "../Modals/Confirm";
+import { mutate } from "swr";
 
+import Confirm from "../Modals/Confirm";
 import NoteModal from "../Modals/NoteModals";
 import DocumentModal from "../Modals/DocumentModals";
 import BOMModal from "../BOM/BomModal";
@@ -17,7 +18,6 @@ import List from "../../app/SideUtilityList";
 import FieldNFilter from "../ClusterAndLevel/Modal";
 
 import ItemTable from "./Table";
-import { mutate } from "swr";
 
 const Items = () => {
     const [selectedItem, setSelectedItem] = useState<IItem | null>(null);

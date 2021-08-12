@@ -2,6 +2,7 @@ import Axios from "axios";
 import { post } from ".";
 
 import {ILineItem} from './lineItem'
+import { ILineService } from "./lineService";
 
 export type IPurchasePO = {
     id?: string;
@@ -14,9 +15,9 @@ export type IPurchasePO = {
     createdAt?: string;
 };
 
-
 export interface IPurchasePOComplete extends IPurchasePO {
     lines: ILineItem[];
+    lineServices: ILineService[]
 }
 
 export const getPurchasePOs = async () => {

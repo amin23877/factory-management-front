@@ -41,6 +41,7 @@ export interface ISO {
 
 export interface ISOComplete extends ISO {
     lines: ILineItem[];
+    lineServices: ILineService[]
 }
 
 export const getSO = async () => {

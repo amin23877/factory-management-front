@@ -120,7 +120,7 @@ export const LineItemForm = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                     request={getItems}
-                    getOptionList={(data) => data.items}
+                    getOptionList={(data) => data.result}
                     itemTitleField="name"
                     itemValueField="id"
                     error={Boolean(errors.ItemId && touched.ItemId)}

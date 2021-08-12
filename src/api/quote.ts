@@ -37,6 +37,7 @@ export interface IQuote {
 
 export interface IQuoteComplete extends IQuote {
     lines: ILineItem[];
+    lineServices: ILineService[]
 }
 
 export const createQuoteLineService = async (quoteId: string, data: ILineService) => {
