@@ -227,6 +227,14 @@ export const GeneralForm = ({
                     onChange={(date) => setFieldValue("expireDate", date)}
                     onBlur={handleBlur}
                 />
+                <TextField
+                    value={values.location}
+                    style={edit ? {} : { gridColumnEnd: "span 2" }}
+                    name="location"
+                    label="Location"
+                    onChange={handleChange}
+                />
+
                 <FieldSelect
                     value={values.ProjectId}
                     request={getProjects}
@@ -237,8 +245,6 @@ export const GeneralForm = ({
                     label="Project Name"
                     onChange={handleChange}
                 />
-                <TextField value={values.location} name="location" label="Location" onChange={handleChange} />
-
                 <FieldSelect
                     value={values.salesperson}
                     request={getAllEmployees}
@@ -374,15 +380,12 @@ export const EntitiesTab = ({
                 />
             </Box>
             <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
-                <FieldSelect
+                <TextField
                     value={values.requester}
-                    request={getContacts}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    keyField="id"
                     name="requester"
                     label="Requester"
                     onChange={handleChange}
+                    onBlur={handleBlur}
                 />
                 <TextField
                     value={values.email}

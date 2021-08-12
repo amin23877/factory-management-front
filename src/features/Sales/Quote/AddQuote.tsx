@@ -31,9 +31,8 @@ export default function AddQuote({
     }, [initialData]);
 
     return (
-        <Dialog open={open} title="Add new purchase order" fullWidth maxWidth="md">
+        <Dialog open={open} title="Add New Quote" fullScreen maxWidth="md">
             <Box display="flex" justifyContent="space-between" alignItems="center" mx={1}>
-                <DialogTitle>Add new purchase order</DialogTitle>
                 <div style={{ flexGrow: 1 }} />
                 <IconButton onClick={onClose}>
                     <CloseRounded />

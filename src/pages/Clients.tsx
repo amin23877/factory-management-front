@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Box, Grid, IconButton, ListItem } from "@material-ui/core";
+import { Container, Box, Grid, IconButton, ListItem, Tabs, Tab, Paper } from "@material-ui/core";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import {
     AddRounded,
@@ -47,6 +47,7 @@ import { ContactModal } from "../features/Modals/ContactModal";
 import ClientDetails from "../features/Client/ClientDetails";
 import ClientOverview from "../features/Client/ClientOverview";
 import { GridRowData } from "@material-ui/data-grid";
+import { BasePaper } from "../app/Paper";
 
 export default function Clients() {
     const [activeTab, setActiveTab] = useState(0);
@@ -309,7 +310,7 @@ export default function Clients() {
                 onDone={refreshDocs}
             />
 
-            <Box my={2} display="flex">
+            <Box display="flex">
                 <Box display="flex" flex={1} justifyContent="space-around">
                     {activeTab === 1 && (
                         <IconButton
@@ -329,11 +330,6 @@ export default function Clients() {
                         + Add Document
                     </Button>
                 </Box>
-
-                <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
-                    <MyTab label="Overview" />
-                    <MyTab label="Details" disabled={Boolean(selectedRow === null)} />
-                </MyTabs>
             </Box>
 
             <Grid container style={{ marginRight: "1px" }}>
@@ -439,63 +435,72 @@ export default function Clients() {
                     </List>
                 </Grid>
                 <Grid item xs={11}>
-                    {activeTab === 0 && (
-                        <ClientOverview
-                            rows={clients}
-                            onRowSelected={(v) => {
-                                setSelectedRow(v);
-                                setActiveTab(1);
-                            }}
-                        />
-                    )}
-                    {activeTab === 1 && (
-                        <ClientDetails
-                            clientTypes={clientTypes}
-                            onDone={refreshClients}
-                            activities={activities}
-                            notes={notes}
-                            docs={docs}
-                            addrs={addrs}
-                            agencies={agencies}
-                            divisions={divisions}
-                            phones={phones}
-                            emails={emails}
-                            contacts={contacts}
-                            onAgencySelected={(d) => {
-                                setSelectedAgency(d);
-                                setAddAgency(true);
-                            }}
-                            onAddrSelected={(d) => {
-                                setSelectedAddr(d);
-                                setAddAddress(true);
-                            }}
-                            onNoteSelected={(d) => {
-                                setSelectedNote(d);
-                                setEditNoteModal(true);
-                            }}
-                            onDocSelected={(d) => {
-                                setSelectedDoc(d);
-                                setEditDocModal(true);
-                            }}
-                            onDivSelected={(d) => {
-                                setSelectedDiv(d);
-                                setAddDivision(true);
-                            }}
-                            onPhoneSelected={(d) => {
-                                setSelectedPhone(d);
-                                setAddPhone(true);
-                            }}
-                            onEmailSelected={(d) => {
-                                setSelectedEmail(d);
-                                setAddEmail(true);
-                            }}
-                            onContactSelected={(d) => {
-                                setSelectedContact(d);
-                                setAddContact(true);
-                            }}
-                            selectedRow={selectedRow}
-                        />
-                    )}
+                    <BasePaper>
+                        <Box mb={2} display="flex">
+                            <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                                <Tab label="List" />
+                                <Tab label="Details" disabled={Boolean(selectedRow === null)} />
+                            </Tabs>
+                            <div style={{ flex: 1 }}></div>
+                        </Box>
+                        {activeTab === 0 && (
+                            <ClientOverview
+                                rows={clients}
+                                onRowSelected={(v) => {
+                                    setSelectedRow(v);
+                                    setActiveTab(1);
+                                }}
+                            />
+                        )}
+                        {activeTab === 1 && (
+                            <ClientDetails
+                                clientTypes={clientTypes}
+                                onDone={refreshClients}
+                                activities={activities}
+                                notes={notes}
+                                docs={docs}
+                                addrs={addrs}
+                                agencies={agencies}
+                                divisions={divisions}
+                                phones={phones}
+                                emails={emails}
+                                contacts={contacts}
+                                onAgencySelected={(d) => {
+                                    setSelectedAgency(d);
+                                    setAddAgency(true);
+                                }}
+                                onAddrSelected={(d) => {
+                                    setSelectedAddr(d);
+                                    setAddAddress(true);
+                                }}
+                                onNoteSelected={(d) => {
+                                    setSelectedNote(d);
+                                    setEditNoteModal(true);
+                                }}
+                                onDocSelected={(d) => {
+                                    setSelectedDoc(d);
+                                    setEditDocModal(true);
+                                }}
+                                onDivSelected={(d) => {
+                                    setSelectedDiv(d);
+                                    setAddDivision(true);
+                                }}
+                                onPhoneSelected={(d) => {
+                                    setSelectedPhone(d);
+                                    setAddPhone(true);
+                                }}
+                                onEmailSelected={(d) => {
+                                    setSelectedEmail(d);
+                                    setAddEmail(true);
+                                }}
+                                onContactSelected={(d) => {
+                                    setSelectedContact(d);
+                                    setAddContact(true);
+                                }}
+                                selectedRow={selectedRow}
+                            />
+                        )}
+                    </BasePaper>
                 </Grid>
             </Grid>
         </Container>

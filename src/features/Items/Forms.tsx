@@ -43,7 +43,7 @@ export const General = ({
                 <Paper
                     style={{
                         margin: "0.5em 0",
-                        padding: "0 0.5em",
+                        padding: "0 0.5em 0 1em",
                         backgroundColor: "#eee",
                         gridColumnEnd: "span 4",
                     }}
