@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Box, Step, StepLabel, Stepper, Dialog, DialogTitle, IconButton } from "@material-ui/core";
+import { Box, Step, StepLabel, Stepper, IconButton } from "@material-ui/core";
 import { CloseRounded } from "@material-ui/icons";
+
+import Dialog from "../../../app/Dialog";
 
 import { LinesForm } from "../../Purchase/PO/Forms";
 import General from "./MainForm";
@@ -31,14 +33,27 @@ export default function AddSOModal({
     }, [initialData]);
 
     return (
-        <Dialog open={open} title="Add new Sales order" fullWidth maxWidth="md">
-            <Box display="flex" justifyContent="space-between" alignItems="center" mx={1}>
+        <Dialog
+            closeOnClickOut={false}
+            onClose={onClose}
+            open={open}
+            title="Add new Sales order"
+            fullWidth
+            maxWidth="md"
+        >
+            {/* <Box
+                style={{ backgroundColor: "#ccc" }}
+                display="flex"
+                justifyContent="space-between"
+                alignItems="center"
+                px={1}
+            >
                 <DialogTitle>Add new Sales order</DialogTitle>
                 <div style={{ flexGrow: 1 }} />
                 <IconButton onClick={onClose}>
                     <CloseRounded />
                 </IconButton>
-            </Box>
+            </Box> */}
             <Box p={2} height={600}>
                 <Stepper activeStep={step}>
                     <Step>

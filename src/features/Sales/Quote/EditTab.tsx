@@ -66,6 +66,17 @@ export default function EditTab({
         []
     );
 
+    const LSCols = useMemo<GridColumns>(
+        () => [
+            { field: "ServiceId", headerName: "Service", valueFormatter: (r) => r.row.ServiceId.name, flex: 1 },
+            // { field: "LineItemRecordId",  width: 200 },
+            { field: "quantity", headerName: "Quantity", width: 100 },
+            { field: "price", headerName: "Price", width: 100 },
+            { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
+        ],
+        []
+    );
+
     const noteCols = useMemo<GridColumns>(
         () => [
             {
@@ -144,7 +155,7 @@ export default function EditTab({
                     <BaseDataGrid cols={LICols} rows={lineItems} onRowSelected={onLISelected} height={300} />
                 )}
                 {activeTab === 1 && (
-                    <BaseDataGrid cols={LICols} rows={lineServices} onRowSelected={onLSSelected} height={300} />
+                    <BaseDataGrid cols={LSCols} rows={lineServices} onRowSelected={onLSSelected} height={300} />
                 )}
                 {activeTab === 2 && (
                     <Fragment>
