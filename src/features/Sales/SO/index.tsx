@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { mutate } from "swr";
 
 import Box from "@material-ui/core/Box";
@@ -15,9 +15,9 @@ import LineServiceModal from "../../LineService";
 import EditTab from "./EditTab";
 import AddSOModal from "./AddSoModal";
 
-import { deleteSO, getLineItems, ISO } from "../../../api/so";
+import { deleteSO, ISO } from "../../../api/so";
 import { ILineItem } from "../../../api/lineItem";
-import { getSOLineServices, ILineService } from "../../../api/lineService";
+import { ILineService } from "../../../api/lineService";
 import { BasePaper } from "../../../app/Paper";
 import Datagrid from "./Datagrid";
 

@@ -9,6 +9,7 @@ import { ISO, editSO, createSOComplete, ISOComplete } from "../../../api/so";
 import { BasePaper } from "../../../app/Paper";
 import Toast from "../../../app/Toast";
 import { mutate } from "swr";
+import { getModifiedValues } from "../../../logic/utils";
 
 export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
     const [activeTab, setActiveTab] = useState(0);
@@ -16,7 +17,8 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
     const handleSubmit = async (data: ISO, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
         try {
             if (selectedSo.id) {
-                await editSO(selectedSo.id, data);
+                const reqData = getModifiedValues(data, selectedSo);
+                await editSO(selectedSo.id, reqData);
 
                 setSubmitting(false);
                 mutate("/so");

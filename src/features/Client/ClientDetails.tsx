@@ -115,14 +115,14 @@ export default function ClientDetails({
     const [activeTab, setActiveTab] = useState(0);
 
     const activityCols = [
-        { field: "name" },
-        { field: "subject" },
-        { field: "location" },
-        { field: "startTime", width: 180 },
-        { field: "endTime", width: 180 },
-        { field: "ActivityPriority", valueGetter: ({ data }: any) => data.ActivityPriority.name, width: 180 },
-        { field: "ActivityStatus", valueGetter: ({ data }: any) => data.ActivityStatus.name, width: 180 },
-        { field: "notes" },
+        { field: "name", headerName: "Name" },
+        { field: "subject", headerName: "Subject" },
+        { field: "location", headerName: "Location" },
+        { field: "startTime", headerName: "Start Time", width: 180 },
+        { field: "endTime", headerName: "End Time", width: 180 },
+        { field: "Activity Priority", valueGetter: ({ data }: any) => data.ActivityPriority.name, width: 180 },
+        { field: "Activity Status", valueGetter: ({ data }: any) => data.ActivityStatus.name, width: 180 },
+        { field: "notes", headerName: "Notes" },
     ];
 
     const noteCols = [
@@ -137,23 +137,37 @@ export default function ClientDetails({
         { field: "createdAt", headerName: "Created at", width: 300 },
     ];
 
-    const addrCols = [{ field: "address" }, { field: "city" }, { field: "state" }, { field: "zip" }, { field: "main" }];
+    const addrCols = [
+        { field: "address", headerName: "Address" },
+        { field: "city", headerName: "City" },
+        { field: "state", headerName: "State" },
+        { field: "zip", headerName: "Zip" },
+        { field: "main", headerName: "Main" },
+    ];
 
-    const agencyCols = [{ field: "name", width: 220 }];
+    const agencyCols = [{ field: "name", headerName: "Name", width: 220 }];
 
-    const phoneCols = [{ field: "ext" }, { field: "phone" }, { field: "main" }, { field: "PhoneTypeId" }];
+    const phoneCols = [
+        { field: "ext", headerName: "Extension" },
+        { field: "phone", headerName: "Phone NO." },
+        { field: "main", headerName: "Main" },
+        { field: "PhoneTypeId", headerName: "Phone Type", width: 120 },
+    ];
 
-    const emailCols = [{ field: "email" }, { field: "main" }];
+    const emailCols = [
+        { field: "email", headerName: "Email" },
+        { field: "main", headerName: "Main", type: "boolean" },
+    ];
 
     const contactsCols = [
-        { field: "firstName" },
-        { field: "lastName" },
-        { field: "title" },
-        { field: "department" },
-        { field: "instagram" },
-        { field: "website" },
-        { field: "active" },
-        { field: "main" },
+        { field: "firstName", headerName: "First Name" },
+        { field: "lastName", headerName: "Last Name" },
+        { field: "title", headerName: "Title" },
+        { field: "department", headerName: "Department", width: 120 },
+        { field: "instagram", headerName: "Instagram" },
+        { field: "website", headerName: "Website" },
+        { field: "active", headerName: "Active", type: "boolean" },
+        { field: "main", headerName: "Main", type: "boolean" },
     ];
 
     return (

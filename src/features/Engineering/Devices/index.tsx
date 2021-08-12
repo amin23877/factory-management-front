@@ -35,8 +35,10 @@ import { deleteAnItem, IItem } from "../../../api/items";
 
 import { generateURL } from "../../../logic/filterSortPage";
 import SearchBox from "../../../app/SearchBox";
+import { useDataGridStyles } from "../../../app/BaseDataGrid";
 
 const Devices = ({ sales }: { sales?: boolean }) => {
+    const classes = useDataGridStyles();
     const [filters, setFilters] = useState<GridFilterModelParams>();
     const [page, setPage] = useState<GridPageChangeParams>();
     const [sorts, setSort] = useState<GridSortModelParams>();
@@ -243,6 +245,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                             <Paper>
                                 <Box height={550}>
                                     <DataGrid
+                                        className={classes.root}
                                         onRowSelected={(r) => {
                                             setSelectedItem(r.data as any);
                                             setActiveTab(1);
