@@ -4,7 +4,7 @@ import { Tabs, Tab, Box, Typography, LinearProgress } from "@material-ui/core";
 import { Form, Formik } from "formik";
 
 import Button from "../../../app/Button";
-import { BillingTab, GeneralForm, ShippingForm, TermsTab } from "./Forms";
+import { AccountingForm, AddressesForm, ApprovalForm, EntitiesForm, GeneralForm, ShippingForm } from "./Forms";
 import { ISO, editSO, createSOComplete, ISOComplete } from "../../../api/so";
 import { BasePaper } from "../../../app/Paper";
 import Toast from "../../../app/Toast";
@@ -48,7 +48,7 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                                 </Box>
                             </BasePaper>
                         </Box>
-                        <Box flex={1}>
+                        <Box flex={3}>
                             <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", margin: "0 1em " }}>
                                 <Tabs
                                     textColor="primary"
@@ -57,13 +57,15 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                                     variant="scrollable"
                                     style={{ maxWidth: 700 }}
                                 >
+                                    <Tab label="Approvals" />
+                                    <Tab label="Accounting" />
                                     <Tab label="Shipping" />
-                                    <Tab label="Billing" />
-                                    <Tab label="Terms" />
+                                    <Tab label="Entities" />
+                                    <Tab label="Addresses" />
                                 </Tabs>
                                 <Box>
                                     {activeTab === 0 && (
-                                        <ShippingForm
+                                        <ApprovalForm
                                             setFieldValue={setFieldValue}
                                             values={values}
                                             handleBlur={handleBlur}
@@ -71,15 +73,33 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                                         />
                                     )}
                                     {activeTab === 1 && (
-                                        <BillingTab
+                                        <AccountingForm
+                                            setFieldValue={setFieldValue}
                                             values={values}
                                             handleBlur={handleBlur}
                                             handleChange={handleChange}
                                         />
                                     )}
                                     {activeTab === 2 && (
-                                        <TermsTab
-                                            values={{ ...values, ClientId: (values?.ClientId as any)?.id }}
+                                        <ShippingForm
+                                            setFieldValue={setFieldValue}
+                                            values={values}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                        />
+                                    )}
+                                    {activeTab === 3 && (
+                                        <EntitiesForm
+                                            setFieldValue={setFieldValue}
+                                            values={values}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                        />
+                                    )}
+                                    {activeTab === 4 && (
+                                        <AddressesForm
+                                            setFieldValue={setFieldValue}
+                                            values={values}
                                             handleBlur={handleBlur}
                                             handleChange={handleChange}
                                         />

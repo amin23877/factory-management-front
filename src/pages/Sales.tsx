@@ -15,7 +15,6 @@ export default function Sales() {
 
     return (
         <Container>
-            {/* Calls	Dashboard	Devices	Quote	Customer Pos	Sales Order	Client */}
             <Box display="flex" alignItems="center" my={2}>
                 <SearchBar />
                 <div style={{ flexGrow: 1 }} />
@@ -29,8 +28,8 @@ export default function Sales() {
                     <MyTab label="Client" />
                 </MyTabs>
             </Box>
-            {activeTab === 1 && <QuotePanel />}
-            {activeTab === 3 && <DevicesPanel />}
+            {activeTab === 2 && <DevicesPanel />}
+            {activeTab === 3 && <QuotePanel />}
             {activeTab === 4 && <PurchaseOrderPanel />}
             {activeTab === 5 && <SalesOrderPanel />}
             {activeTab === 6 && <Clients />}

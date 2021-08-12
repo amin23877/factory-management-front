@@ -331,22 +331,6 @@ export const EntitiesTab = ({
     handleBlur: (a: any) => void;
 }) => {
     return (
-        // Rep/Agency
-        // Address
-        // City
-        // State
-        // Zip Code
-
-        // Requester
-        // Email
-        // Phone
-
-        // Client
-        // Contact Name
-        // Phone
-        // Email
-        // Unite Pricing Level
-
         <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr " gridColumnGap={10}>
             <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
                 <TextField
