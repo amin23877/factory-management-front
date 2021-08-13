@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Container, Box, Grid, IconButton, ListItem, Tabs, Tab, Paper } from "@material-ui/core";
+import { Container, Box, Grid, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import {
     AddRounded,
     DeleteRounded,
     DescriptionRounded,
-    ChevronLeftRounded,
     PrintRounded,
     MapOutlined,
     EqualizerOutlined,
@@ -33,7 +32,7 @@ import { AddClientModal } from "../features/Client/ClientModals";
 import { AllClientTypesModal } from "../features/Modals/ClientType";
 import Confirm from "../features/Modals/Confirm";
 
-import { MyTab, MyTabs } from "../app/Tabs";
+// import { MyTab, MyTabs } from "../app/Tabs";
 
 import NoteModal from "../features/Modals/NoteModals";
 import DocumentModal from "../features/Modals/DocumentModals";
@@ -310,26 +309,21 @@ export default function Clients() {
                 onDone={refreshDocs}
             />
 
-            <Box display="flex">
-                <Box display="flex" flex={1} justifyContent="space-around">
-                    {activeTab === 1 && (
-                        <IconButton
-                            onClick={() => {
-                                setActiveTab(0);
-                                setSelectedRow(false);
-                            }}
-                        >
-                            <ChevronLeftRounded />
-                        </IconButton>
-                    )}
-                    <Button onClick={() => setCTypeModal(true)}>All Types</Button>
-                    <Button onClick={() => setAddNoteModal(true)} disabled={!selectedRow}>
-                        + Add new Note
-                    </Button>
-                    <Button onClick={() => setAddDocModal(true)} disabled={!selectedRow}>
-                        + Add Document
-                    </Button>
-                </Box>
+            <Box display="flex" alignItems="center" mb={1}>
+                <Button kind="add" onClick={() => setCTypeModal(true)}>
+                    All Types
+                </Button>
+                <Button
+                    style={{ margin: "0 0.5em" }}
+                    kind="add"
+                    onClick={() => setAddNoteModal(true)}
+                    disabled={!selectedRow}
+                >
+                    Add Note
+                </Button>
+                <Button kind="add" onClick={() => setAddDocModal(true)} disabled={!selectedRow}>
+                    Add Document
+                </Button>
             </Box>
 
             <Grid container style={{ marginRight: "1px" }}>

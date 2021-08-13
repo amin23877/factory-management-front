@@ -14,6 +14,7 @@ interface IForm {
     setFieldValue: any;
     isSubmitting?: boolean;
     device?: boolean;
+    sales?: boolean;
 }
 
 export const Photo = ({ device }: { device: any }) => {
@@ -64,7 +65,7 @@ export const Photo = ({ device }: { device: any }) => {
     );
 };
 
-export const General = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
+export const General = ({ values, errors, handleChange, handleBlur, touched, sales }: IForm) => {
     return (
         <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
             <Paper
@@ -82,6 +83,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched }: I
                     name="active"
                     onChange={handleChange}
                     control={<Checkbox />}
+                    disabled={sales}
                 />
                 <FormControlLabel
                     style={{ fontSize: "0.7rem" }}
@@ -90,6 +92,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched }: I
                     name="obsolete"
                     onChange={handleChange}
                     control={<Checkbox />}
+                    disabled={sales}
                 />
                 <FormControlLabel
                     style={{ fontSize: "0.7rem" }}
@@ -98,6 +101,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched }: I
                     name="rndOnly"
                     onChange={handleChange}
                     control={<Checkbox />}
+                    disabled={sales}
                 />
                 <FormControlLabel
                     style={{ fontSize: "0.7rem" }}
@@ -114,6 +118,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched }: I
                     name="engineeringApproved"
                     onChange={handleChange}
                     control={<Checkbox />}
+                    disabled={sales}
                 />
             </Paper>
             <TextField
@@ -136,6 +141,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched }: I
                 onBlur={handleBlur}
                 error={Boolean(errors.name && touched.name)}
                 value={values.name}
+                disabled={sales}
             />
             <TextField
                 multiline
@@ -147,6 +153,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched }: I
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.description}
+                disabled={sales}
             />
             <TextField
                 style={{ gridColumnEnd: "span 4" }}
@@ -157,6 +164,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched }: I
                 onBlur={handleBlur}
                 error={Boolean(errors.leadTime && touched.leadTime)}
                 value={values.leadTime}
+                disabled={sales}
             />
         </Box>
     );

@@ -139,11 +139,22 @@ export default function POPanel() {
             />
 
             <Box mb={2} display="flex" alignItems="center">
-                <Button onClick={() => setAddPo(true)}>Add PO</Button>
-                <Button disabled={!selectedPO} onClick={() => setConfirm(true)}>
+                <Button kind="add" onClick={() => setAddPo(true)}>
+                    Add PO
+                </Button>
+                <Button
+                    kind="delete"
+                    disabled={!selectedPO}
+                    onClick={() => setConfirm(true)}
+                    style={{ margin: "0 0.5em" }}
+                >
                     Delete PO
                 </Button>
-                {activeTab === 1 && <Button onClick={() => setNoteModal(true)}>Add note</Button>}
+                {activeTab === 1 && (
+                    <Button kind="add" onClick={() => setNoteModal(true)}>
+                        Add note
+                    </Button>
+                )}
                 {activeTab === 1 && (
                     <Button
                         style={{ backgroundColor: "#1a73e8", color: "#fff", marginLeft: "5px" }}

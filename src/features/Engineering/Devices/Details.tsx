@@ -30,6 +30,7 @@ import { EditTaskModal } from "./TaskModal";
 import DeviceQRCode from "./QRCode";
 
 function ItemsDetails({
+    sales,
     selectedRow,
     onNoteSelected,
     onDocSelected,
@@ -37,6 +38,7 @@ function ItemsDetails({
     onFlagSelected,
     onDone,
 }: {
+    sales?: boolean;
     selectedRow: any;
     onDone?: () => void;
     onNoteSelected: (a: any) => void;
@@ -336,6 +338,7 @@ function ItemsDetails({
                             <Grid item md={5} xs={12}>
                                 <BasePaper>
                                     <General
+                                        sales={sales}
                                         values={values}
                                         handleChange={handleChange}
                                         handleBlur={handleBlur}
@@ -343,10 +346,11 @@ function ItemsDetails({
                                         errors={errors}
                                         touched={touched}
                                     />
-
-                                    <Button style={{ margin: "0.5em auto" }} kind="edit" type="submit">
-                                        Save
-                                    </Button>
+                                    {!sales && (
+                                        <Button style={{ margin: "0.5em auto" }} kind="edit" type="submit">
+                                            Save
+                                        </Button>
+                                    )}
                                 </BasePaper>
                             </Grid>
                             <Grid item md={7} xs={12}>
@@ -366,7 +370,7 @@ function ItemsDetails({
                                     >
                                         <Tab label="Image" />
                                         <Tab label="QR Code" />
-                                        <Tab label="Clusters and Levels" />
+                                        {!sales && <Tab label="Clusters and Levels" />}
                                     </Tabs>
                                     {moreInfoTab === 0 && <Photo device={selectedRow} />}
                                     {moreInfoTab === 1 && (
@@ -392,7 +396,7 @@ function ItemsDetails({
                                             </Button>
                                         </Box>
                                     )}
-                                    {moreInfoTab === 2 && (
+                                    {moreInfoTab === 2 && !sales && (
                                         <DynamicFilterAndFields
                                             values={values}
                                             handleChange={handleChange}
@@ -414,112 +418,165 @@ function ItemsDetails({
                 <Grid item xs={12}>
                     <BasePaper>
                         <Box display="flex" maxWidth="850px">
-                            <Tabs
-                                value={activeTab}
-                                onChange={(e, v) => setActiveTab(v)}
-                                textColor="primary"
-                                variant="scrollable"
-                            >
-                                <Tab label="Design documents" />
-                                <Tab label="BOM" />
-                                <Tab label="Warranties" />
-                                <Tab label="Manufacturing" />
-                                <Tab label="Evaluation" />
-                                <Tab label="Test" />
-                                <Tab label="Field Start-up" />
-                                <Tab label="Label" />
-                                <Tab label="Unit History" />
-                                <Tab label="Sales Report" />
-                                <Tab label="Field Service" />
-                                <Tab label="Quality Control" />
-                                <Tab label="Notes" />
-                                <Tab label="Auditing" />
-                            </Tabs>
-                        </Box>
-                        <Box p={3}>
-                            {activeTab === 0 && (
-                                <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={() => {}} />
-                            )}
-                            {activeTab === 1 && (
-                                <BaseDataGrid
-                                    cols={bomCols}
-                                    rows={boms || []}
-                                    onRowSelected={(d) => {
-                                        setBom(d);
-                                        setBomPartsModal(true);
-                                    }}
-                                />
-                            )}
-                            {activeTab === 2 && (
-                                <Box>
-                                    <Button onClick={() => setAddService(true)}>Add Warranty</Button>
-                                    <BaseDataGrid cols={warCols} rows={warranties || []} onRowSelected={(d) => {}} />
-                                </Box>
-                            )}
-                            {activeTab === 3 && (
-                                <BaseDataGrid
-                                    cols={manCols}
-                                    rows={manSteps || []}
-                                    onRowSelected={(d) => {
-                                        onStepSelected({ ...d, tab: 0 });
-                                    }}
-                                />
-                            )}
-                            {activeTab === 4 && (
-                                <BaseDataGrid
-                                    cols={evalCols}
-                                    rows={evalSteps || []}
-                                    onRowSelected={(d) => {
-                                        onStepSelected({ ...d, tab: 1 });
-                                    }}
-                                />
-                            )}
-                            {activeTab === 5 && (
-                                <BaseDataGrid
-                                    cols={evalCols}
-                                    rows={testSteps || []}
-                                    onRowSelected={(d) => {
-                                        onStepSelected({ ...d, tab: 2 });
-                                    }}
-                                />
-                            )}
-                            {activeTab === 6 && (
-                                <BaseDataGrid
-                                    cols={evalCols}
-                                    rows={fieldSteps || []}
-                                    onRowSelected={(d) => {
-                                        onStepSelected({ ...d, tab: 3 });
-                                    }}
-                                />
-                            )}
-                            {activeTab === 8 && (
-                                <BaseDataGrid
-                                    cols={unitHistoryCols}
-                                    rows={
-                                        uniteHistory
-                                            ? uniteHistory.map((item: any, i: any) => ({
-                                                  id: i,
-                                                  ...item,
-                                              }))
-                                            : []
-                                    }
-                                    onRowSelected={(d) => {
-                                        setSelectedUnit(d);
-                                        setUnitHistoryModal(true);
-                                    }}
-                                />
-                            )}
-                            {activeTab === 9 && <SalesReport />}
-                            {activeTab === 10 && (
-                                <BaseDataGrid cols={serviceCols} rows={services || []} onRowSelected={() => {}} />
-                            )}
-                            {activeTab === 11 && (
-                                <BaseDataGrid cols={flagCols} rows={flags || []} onRowSelected={onFlagSelected} />
-                            )}
-                            {activeTab === 12 && (
-                                <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
+                            {!sales ? (
+                                <Tabs
+                                    value={activeTab}
+                                    onChange={(e, v) => setActiveTab(v)}
+                                    textColor="primary"
+                                    variant="scrollable"
+                                >
+                                    <Tab label="Design documents" />
+                                    <Tab label="BOM" />
+                                    <Tab label="Warranties" />
+                                    <Tab label="Manufacturing" />
+                                    <Tab label="Evaluation" />
+                                    <Tab label="Test" />
+                                    <Tab label="Field Start-up" />
+                                    <Tab label="Label" />
+                                    <Tab label="Unit History" />
+                                    <Tab label="Sales Report" />
+                                    <Tab label="Field Service" />
+                                    <Tab label="Quality Control" />
+                                    <Tab label="Notes" />
+                                    <Tab label="Auditing" />
+                                </Tabs>
+                            ) : (
+                                <Tabs
+                                    value={activeTab}
+                                    onChange={(e, v) => setActiveTab(v)}
+                                    textColor="primary"
+                                    variant="scrollable"
+                                >
+                                    <Tab label="Design documents" />
+                                    {/* <Tab label="BOM" /> */}
+                                    <Tab label="Warranties" />
+                                    {/* <Tab label="Manufacturing" /> */}
+                                    {/* <Tab label="Evaluation" /> */}
+                                    {/* <Tab label="Test" /> */}
+                                    {/* <Tab label="Field Start-up" /> */}
+                                    {/* <Tab label="Label" /> */}
+                                    {/* <Tab label="Unit History" /> */}
+                                    <Tab label="Sales Report" />
+                                    {/* <Tab label="Field Service" /> */}
+                                    {/* <Tab label="Quality Control" /> */}
+                                    <Tab label="Notes" />
+                                    <Tab label="Auditing" />
+                                </Tabs>
                             )}
                         </Box>
+                        {!sales ? (
+                            <Box p={3}>
+                                {activeTab === 0 && (
+                                    <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={() => {}} />
+                                )}
+                                {activeTab === 1 && (
+                                    <BaseDataGrid
+                                        cols={bomCols}
+                                        rows={boms || []}
+                                        onRowSelected={(d) => {
+                                            setBom(d);
+                                            setBomPartsModal(true);
+                                        }}
+                                    />
+                                )}
+                                {activeTab === 2 && (
+                                    <Box>
+                                        <Button onClick={() => setAddService(true)}>Add Warranty</Button>
+                                        <BaseDataGrid
+                                            cols={warCols}
+                                            rows={warranties || []}
+                                            onRowSelected={(d) => {}}
+                                        />
+                                    </Box>
+                                )}
+                                {activeTab === 3 && (
+                                    <BaseDataGrid
+                                        cols={manCols}
+                                        rows={manSteps || []}
+                                        onRowSelected={(d) => {
+                                            onStepSelected({ ...d, tab: 0 });
+                                        }}
+                                    />
+                                )}
+                                {activeTab === 4 && (
+                                    <BaseDataGrid
+                                        cols={evalCols}
+                                        rows={evalSteps || []}
+                                        onRowSelected={(d) => {
+                                            onStepSelected({ ...d, tab: 1 });
+                                        }}
+                                    />
+                                )}
+                                {activeTab === 5 && (
+                                    <BaseDataGrid
+                                        cols={evalCols}
+                                        rows={testSteps || []}
+                                        onRowSelected={(d) => {
+                                            onStepSelected({ ...d, tab: 2 });
+                                        }}
+                                    />
+                                )}
+                                {activeTab === 6 && (
+                                    <BaseDataGrid
+                                        cols={evalCols}
+                                        rows={fieldSteps || []}
+                                        onRowSelected={(d) => {
+                                            onStepSelected({ ...d, tab: 3 });
+                                        }}
+                                    />
+                                )}
+                                {activeTab === 8 && (
+                                    <BaseDataGrid
+                                        cols={unitHistoryCols}
+                                        rows={
+                                            uniteHistory
+                                                ? uniteHistory.map((item: any, i: any) => ({
+                                                      id: i,
+                                                      ...item,
+                                                  }))
+                                                : []
+                                        }
+                                        onRowSelected={(d) => {
+                                            setSelectedUnit(d);
+                                            setUnitHistoryModal(true);
+                                        }}
+                                    />
+                                )}
+                                {activeTab === 9 && <SalesReport />}
+                                {activeTab === 10 && (
+                                    <BaseDataGrid cols={serviceCols} rows={services || []} onRowSelected={() => {}} />
+                                )}
+                                {activeTab === 11 && (
+                                    <BaseDataGrid cols={flagCols} rows={flags || []} onRowSelected={onFlagSelected} />
+                                )}
+                                {activeTab === 12 && (
+                                    <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
+                                )}
+                            </Box>
+                        ) : (
+                            <Box p={3}>
+                                {activeTab === 0 && (
+                                    <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={() => {}} />
+                                )}
+
+                                {activeTab === 1 && (
+                                    <Box>
+                                        <Button onClick={() => setAddService(true)}>Add Warranty</Button>
+                                        <BaseDataGrid
+                                            cols={warCols}
+                                            rows={warranties || []}
+                                            onRowSelected={(d) => {}}
+                                        />
+                                    </Box>
+                                )}
+
+                                {activeTab === 2 && <SalesReport />}
+
+                                {activeTab === 3 && (
+                                    <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
+                                )}
+                            </Box>
+                        )}
                     </BasePaper>
                 </Grid>
             </Grid>
