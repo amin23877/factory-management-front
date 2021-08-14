@@ -96,7 +96,7 @@ export default function Details({
         []
     );
     return (
-        <BasePaper>
+        <Fragment>
             {poData && poData.id && (
                 <NoteModal open={addNote} onClose={() => setAddNote(false)} itemId={poData.id as any} model="po" />
             )}
@@ -142,6 +142,6 @@ export default function Details({
                     <BaseDataGrid cols={noteCols} rows={notes} onRowSelected={onNoteSelected} height={300} />
                 </Fragment>
             )}
-        </BasePaper>
+        </Fragment>
     );
 }

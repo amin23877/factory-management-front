@@ -1,28 +1,20 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import Box from "@material-ui/core/Box";
-import Link from "@material-ui/core/Link";
+import { Box, Tabs, Tab } from "@material-ui/core";
+import { AddressesForm, EntitiesForm, GeneralForm } from "./Forms";
 
-import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
-import { FieldSelect } from "../../../app/Inputs";
+import { BasePaper } from "../../../app/Paper";
 import Toast from "../../../app/Toast";
 
 import { IPO, updatePO } from "../../../api/po";
-import { getContacts } from "../../../api/contact";
-import { getClients } from "../../../api/client";
-import { getAllEmployees } from "../../../api/employee";
-import { getProjects } from "../../../api/project";
-
-import uploadpng from "../../../assets/bx-cloud-upload.png";
-import downloadpng from "../../../assets/bx-cloud-download.png";
 
 export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () => void }) {
-    const uploader = useRef<HTMLInputElement | null>();
     const schema = Yup.object().shape({
         // name: Yup.string().required(),
     });
+    const [activeTab, setActiveTab] = useState(0);
     const { number, file, ContactId, ClientId, EmployeeId, ProjectId, reciever, senderNumber } = poData;
 
     const handleSubmit = async (data: any, { setSubmitting }: any) => {
@@ -56,9 +48,58 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                 }}
                 onSubmit={handleSubmit}
             >
-                {({ values, handleChange, handleBlur, errors, touched, setFieldValue }) => (
+                {({ values, handleChange, handleBlur, setValues, setFieldValue, isSubmitting }) => (
                     <Form>
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                        <Box display="flex" style={{ justifyContent: "space-evenly" }}>
+                            <Box flex={1}>
+                                <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", margin: "0 1em " }}>
+                                    <GeneralForm
+                                        onChangeInit={setValues}
+                                        values={values}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                    />
+                                    <Box display="flex" justifyContent="flex-end" my={2}>
+                                        <Button disabled={isSubmitting} type="submit" kind="edit">
+                                            Save
+                                        </Button>
+                                    </Box>
+                                </BasePaper>
+                            </Box>
+                            <Box flex={3}>
+                                <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", margin: "0 1em " }}>
+                                    <Tabs
+                                        textColor="primary"
+                                        value={activeTab}
+                                        onChange={(e, nv) => setActiveTab(nv)}
+                                        variant="scrollable"
+                                        style={{ maxWidth: 700 }}
+                                    >
+                                        <Tab label="Entities" />
+                                        <Tab label="Addresses" />
+                                    </Tabs>
+                                    <Box>
+                                        {activeTab === 0 && (
+                                            <EntitiesForm
+                                                setFieldValue={setFieldValue}
+                                                values={values}
+                                                handleBlur={handleBlur}
+                                                handleChange={handleChange}
+                                            />
+                                        )}
+                                        {activeTab === 1 && (
+                                            <AddressesForm
+                                                setFieldValue={setFieldValue}
+                                                values={values}
+                                                handleBlur={handleBlur}
+                                                handleChange={handleChange}
+                                            />
+                                        )}
+                                    </Box>
+                                </BasePaper>
+                            </Box>
+                        </Box>
+                        {/* <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                             <div style={{ width: "79%" }}>
                                 <Box display="flex" justifyContent="space-between">
                                     <TextField
@@ -191,7 +232,7 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                                     </Link>
                                 </Box>
                             </div>
-                        </div>
+                        </div> */}
                     </Form>
                 )}
             </Formik>
