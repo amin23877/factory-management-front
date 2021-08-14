@@ -1,13 +1,26 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, Fragment } from "react";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { GridColumns } from "@material-ui/data-grid";
+import { GridColumns, GridColDef } from "@material-ui/data-grid";
 
 import EditForm from "./EditForm";
+import NoteModal from "../../Modals/NoteModals";
+import DocModal from "../../Modals/DocumentModals";
+
 import BaseDataGrid from "../../../app/BaseDataGrid";
 import { BasePaper } from "../../../app/Paper";
+import Button from "../../../app/Button";
 
 import { IPO } from "../../../api/po";
+import { formatTimestampToDate } from "../../../logic/date";
+import { fileType } from "../../../logic/fileType";
+
+const style = {
+    border: "1px solid gray ",
+    borderRadius: "4px",
+    padding: "5px 10px",
+    margin: "3px 0px 10px 5px ",
+};
 
 export default function Details({
     poData,
@@ -25,26 +38,71 @@ export default function Details({
     docs: any;
 }) {
     const [activeTab, setActiveTab] = useState(0);
+    const [addNote, setAddNote] = useState(false);
+    const [addDoc, setAddDoc] = useState(false);
+
+    const LICols = useMemo<GridColumns>(
+        () => [
+            { field: "index", headerName: "Sort" },
+            { field: "ItemId", headerName: "Part Number", valueFormatter: (r) => r.row.ItemId.name, width: 200 },
+            { field: "description", headerName: "Description", flex: 1 },
+            { field: "quantity", headerName: "QTY", width: 90 },
+            { field: "price", headerName: "Price", width: 100 },
+            { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
+            { field: "total", headerName: "Total", valueFormatter: (r) => r.row?.price * r.row.quantity, width: 200 },
+        ],
+        []
+    );
 
     const noteCols = useMemo<GridColumns>(
         () => [
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            { field: "creator", headerName: "Creator", width: 180 },
             { field: "subject", headerName: "Subject", width: 300 },
-            { field: "url", headerName: "URL", width: 180 },
             { field: "note", headerName: "Note", flex: 1 },
         ],
         []
     );
 
-    const docCols = useMemo<GridColumns>(
+    const docCols = useMemo<GridColDef[]>(
         () => [
-            { field: "name", headerName: "Name", width: 200 },
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            {
+                field: "EmployeeId",
+                headerName: "Creator",
+                valueFormatter: (params) => params.row?.employee?.username,
+                width: 120,
+            },
+            { field: "name", headerName: "Name", flex: 1 },
+            { field: "id", headerName: "ID", width: 200 },
             { field: "description", headerName: "Description", flex: 1 },
-            { field: "createdAt", headerName: "Created At", type: "date", width: 300 },
+            {
+                field: "type",
+                headerName: "File Type",
+                valueFormatter: (params) => fileType(params.row?.path),
+                width: 120,
+            },
         ],
         []
     );
     return (
         <BasePaper>
+            {poData && poData.id && (
+                <NoteModal open={addNote} onClose={() => setAddNote(false)} itemId={poData.id as any} model="po" />
+            )}
+            {poData && poData.id && (
+                <DocModal open={addDoc} onClose={() => setAddDoc(false)} itemId={poData.id} model="po" />
+            )}
             <EditForm poData={poData} onDone={onDone} />
             <Tabs
                 style={{ margin: "1em 0" }}
@@ -52,13 +110,38 @@ export default function Details({
                 value={activeTab}
                 onChange={(e, nv) => setActiveTab(nv)}
             >
-                <Tab label="Notes" />
+                <Tab label="Line Items" />
                 <Tab label="Documents" />
+                <Tab label="Notes" />
+                <Tab label="Auditing" />
             </Tabs>
-            {activeTab === 0 && (
-                <BaseDataGrid cols={noteCols} rows={notes} onRowSelected={onNoteSelected} height={300} />
+            {activeTab === 0 && <BaseDataGrid cols={LICols} rows={docs} onRowSelected={onDocSelected} height={300} />}
+            {activeTab === 1 && (
+                <Fragment>
+                    <Button
+                        onClick={() => {
+                            setAddDoc(true);
+                        }}
+                        style={style}
+                    >
+                        + Add Document
+                    </Button>
+                    <BaseDataGrid cols={docCols} rows={docs} onRowSelected={onDocSelected} height={300} />
+                </Fragment>
             )}
-            {activeTab === 1 && <BaseDataGrid cols={docCols} rows={docs} onRowSelected={onDocSelected} height={300} />}
+            {activeTab === 2 && (
+                <Fragment>
+                    <Button
+                        onClick={() => {
+                            setAddNote(true);
+                        }}
+                        style={style}
+                    >
+                        + Add Note
+                    </Button>
+                    <BaseDataGrid cols={noteCols} rows={notes} onRowSelected={onNoteSelected} height={300} />
+                </Fragment>
+            )}
         </BasePaper>
     );
 }
