@@ -25,7 +25,7 @@ export const GeneralForm = ({
         <Fragment>
             <Paper
                 style={{
-                    margin: "0.5em 0",
+                    margin: "0.5em 0 2em 0",
                     padding: "0.5em",
                     backgroundColor: "#eee",
                     gridColumnEnd: "span 3",

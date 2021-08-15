@@ -17,7 +17,18 @@ import { formatTimestampToDate } from "../../logic/date";
 import { fileType } from "../../logic/fileType";
 import SOTable from "../Items/SOTable";
 
-const EditClientForm = ({ clientTypes, data, onDone }: { clientTypes: any; data: any; onDone: () => void }) => {
+import NoteModal from "../../features/Modals/NoteModals";
+import DocumentModal from "../../features/Modals/DocumentModals";
+import { ContactModal } from "../../features/Modals/ContactModal";
+
+const style = {
+    border: "1px solid gray ",
+    borderRadius: "4px",
+    padding: "5px 10px",
+    margin: "3px 0px 10px 5px ",
+};
+
+export const EditClientForm = ({ clientTypes, data, onDone }: { clientTypes: any; data: any; onDone: () => void }) => {
     const [showSnack, setShowSnack] = useState(false);
     const [msg, setMsg] = useState("");
     const [activeTab, setActiveTab] = useState(0);
@@ -168,6 +179,10 @@ export default function ClientDetails({
 }) {
     const [activeTab, setActiveTab] = useState(0);
 
+    const [addNoteModal, setAddNoteModal] = useState(false);
+    const [addDocModal, setAddDocModal] = useState(false);
+    const [addContact, setAddContact] = useState(false);
+
     const activityCols = useMemo<GridColumns>(
         () => [
             { field: "startTime", headerName: "Entry Date", width: 150, type: "date" },
@@ -236,6 +251,24 @@ export default function ClientDetails({
 
     return (
         <Fragment>
+            <ContactModal
+                itemId={selectedRow?.id}
+                model="client"
+                open={addContact}
+                onClose={() => setAddContact(false)}
+            />
+            <NoteModal
+                itemId={selectedRow?.id}
+                model="client"
+                open={addNoteModal}
+                onClose={() => setAddNoteModal(false)}
+            />
+            <DocumentModal
+                open={addDocModal}
+                onClose={() => setAddDocModal(false)}
+                itemId={selectedRow?.id}
+                model="client"
+            />
             <EditClientForm onDone={onDone} data={selectedRow} clientTypes={clientTypes} />
 
             <Tabs value={activeTab} textColor="primary" onChange={(e, v) => setActiveTab(v)} variant="scrollable">
@@ -249,17 +282,57 @@ export default function ClientDetails({
             </Tabs>
             <Box p={3}>
                 {activeTab === 0 && (
-                    <BaseDataGrid height={250} cols={contactsCols} rows={contacts} onRowSelected={onContactSelected} />
+                    <Fragment>
+                        <Button
+                            onClick={() => {
+                                setAddContact(true);
+                            }}
+                            style={style}
+                        >
+                            + Add Contact
+                        </Button>
+                        <BaseDataGrid
+                            height={250}
+                            cols={contactsCols}
+                            rows={contacts}
+                            onRowSelected={onContactSelected}
+                        />
+                    </Fragment>
                 )}
                 {activeTab === 1 && (
-                    <BaseDataGrid height={250} cols={docCols} rows={docs} onRowSelected={(v) => onDocSelected(v)} />
+                    <Fragment>
+                        <Button
+                            onClick={() => {
+                                setAddDocModal(true);
+                            }}
+                            style={style}
+                        >
+                            + Add Document
+                        </Button>
+                        <BaseDataGrid height={250} cols={docCols} rows={docs} onRowSelected={(v) => onDocSelected(v)} />
+                    </Fragment>
                 )}
                 {activeTab === 2 && (
                     <BaseDataGrid height={250} cols={activityCols} rows={activities} onRowSelected={() => {}} />
                 )}
                 {activeTab === 3 && <SOTable rows={[]} />}
                 {activeTab === 5 && (
-                    <BaseDataGrid height={250} cols={noteCols} rows={notes} onRowSelected={(v) => onNoteSelected(v)} />
+                    <Fragment>
+                        <Button
+                            onClick={() => {
+                                setAddNoteModal(true);
+                            }}
+                            style={style}
+                        >
+                            + Add Note
+                        </Button>
+                        <BaseDataGrid
+                            height={250}
+                            cols={noteCols}
+                            rows={notes}
+                            onRowSelected={(v) => onNoteSelected(v)}
+                        />
+                    </Fragment>
                 )}
 
                 {/* {activeTab === 3 && (

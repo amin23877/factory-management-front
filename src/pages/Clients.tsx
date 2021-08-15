@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { Container, Box, Grid, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
 import EditRoundedIcon from "@material-ui/icons/EditRounded";
 import {
@@ -36,12 +36,12 @@ import Confirm from "../features/Modals/Confirm";
 
 import NoteModal from "../features/Modals/NoteModals";
 import DocumentModal from "../features/Modals/DocumentModals";
+import { ContactModal } from "../features/Modals/ContactModal";
 import { AddressModal } from "../features/Modals/AddressModal";
 import { AgencyModal } from "../features/Modals/AgencyModal";
 import { DivisionModal } from "../features/Modals/DivisionModal";
 import { PhoneModal } from "../features/Modals/PhoneModal";
 import { EmailModal } from "../features/Modals/EmailModal";
-import { ContactModal } from "../features/Modals/ContactModal";
 
 import ClientDetails from "../features/Client/ClientDetails";
 import ClientOverview from "../features/Client/ClientOverview";
@@ -81,12 +81,12 @@ export default function Clients() {
 
     const [addNoteModal, setAddNoteModal] = useState(false);
     const [addDocModal, setAddDocModal] = useState(false);
+    const [addContact, setAddContact] = useState(false);
     const [addAddress, setAddAddress] = useState(false);
     const [addAgency, setAddAgency] = useState(false);
     const [addDivision, setAddDivision] = useState(false);
     const [addPhone, setAddPhone] = useState(false);
     const [addEmail, setAddEmail] = useState(false);
-    const [addContact, setAddContact] = useState(false);
 
     const [conf, setConf] = useState(false);
 
@@ -221,7 +221,7 @@ export default function Clients() {
     }, []);
 
     return (
-        <Container>
+        <Fragment>
             <Confirm open={conf} onClose={() => setConf(false)} onConfirm={handleDelete} />
 
             <AddClientModal open={addClientModal} onClose={() => setAddClientModal(false)} onDone={refreshClients} />
@@ -276,7 +276,20 @@ export default function Clients() {
                 onClose={() => setAddContact(false)}
                 onDone={refreshContacts}
             />
-
+            <NoteModal
+                itemId={selectedRow?.id}
+                model="client"
+                open={addNoteModal}
+                onClose={() => setAddNoteModal(false)}
+                onDone={refreshNotes}
+            />
+            <DocumentModal
+                open={addDocModal}
+                onClose={() => setAddDocModal(false)}
+                itemId={selectedRow?.id}
+                model="client"
+                onDone={refreshDocs}
+            />
             <NoteModal
                 noteData={selectedNote === null ? "" : selectedNote}
                 itemId={selectedRow?.id}
@@ -294,26 +307,29 @@ export default function Clients() {
                 onDone={refreshDocs}
             />
 
-            <NoteModal
-                itemId={selectedRow?.id}
-                model="client"
-                open={addNoteModal}
-                onClose={() => setAddNoteModal(false)}
-                onDone={refreshNotes}
-            />
-            <DocumentModal
-                open={addDocModal}
-                onClose={() => setAddDocModal(false)}
-                itemId={selectedRow?.id}
-                model="client"
-                onDone={refreshDocs}
-            />
-
             <Box display="flex" alignItems="center" mb={1}>
-                <Button kind="add" onClick={() => setCTypeModal(true)}>
-                    All Types
-                </Button>
                 <Button
+                    onClick={() => setAddClientModal(true)}
+                    style={{
+                        backgroundColor: "#1a73e8",
+                        color: "#fff",
+                        margin: "0 0.5em",
+                        padding: " 6px 15px",
+                        boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+                    }}
+                >
+                    <AddRounded />
+                    Add Customer
+                </Button>
+                {selectedRow && (
+                    <Button onClick={() => setConf(true)} kind="delete">
+                        Delete Customer
+                    </Button>
+                )}
+                <Button kind="add" onClick={() => setCTypeModal(true)} style={{ margin: "0 0.5em" }}>
+                    Add Types
+                </Button>
+                {/* <Button
                     style={{ margin: "0 0.5em" }}
                     kind="add"
                     onClick={() => setAddNoteModal(true)}
@@ -323,11 +339,11 @@ export default function Clients() {
                 </Button>
                 <Button kind="add" onClick={() => setAddDocModal(true)} disabled={!selectedRow}>
                     Add Document
-                </Button>
+                </Button> */}
             </Box>
 
             <Grid container style={{ marginRight: "1px" }}>
-                <Grid item xs={1}>
+                {/* <Grid item xs={1}>
                     <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
                         <ListItem>
                             <IconButton onClick={() => setAddClientModal(true)} title="Add item">
@@ -356,7 +372,7 @@ export default function Clients() {
                                 <PrintRounded />
                             </IconButton>
                         </ListItem>
-                        {/* {activeTab === 1 && (
+                        {activeTab === 1 && (
                             <>
                                 <ListItem>
                                     <IconButton
@@ -425,10 +441,10 @@ export default function Clients() {
                                     </IconButton>
                                 </ListItem>
                             </>
-                        )} */}
+                        )}
                     </List>
-                </Grid>
-                <Grid item xs={11}>
+                </Grid> */}
+                <Grid item xs={12}>
                     <BasePaper>
                         <Box mb={2} display="flex">
                             <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
@@ -497,6 +513,6 @@ export default function Clients() {
                     </BasePaper>
                 </Grid>
             </Grid>
-        </Container>
+        </Fragment>
     );
 }
