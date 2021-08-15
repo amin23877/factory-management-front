@@ -1,5 +1,5 @@
 import Axios from "axios";
-
+import { IClient } from "./client";
 import { ILineItem } from "./lineItem";
 import { ILineService } from "./lineService";
 
@@ -35,7 +35,7 @@ export interface ISO {
 
     agency?: string;
     requester?: string;
-    ClientId?: string;
+    ClientId?: IClient;
     ProjectId?: string;
 }
 

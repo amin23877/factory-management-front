@@ -5,13 +5,15 @@ export default function BaseLineChart({
     data,
     xDataKey,
     barDataKey,
+    height,
 }: {
     data: any[];
     xDataKey: string;
     barDataKey: string;
+    height?: string | number;
 }) {
     return (
-        <div style={{ width: "100%", height: 400, display: "flex", justifyContent: "center" }}>
+        <div style={{ width: "100%", height: height ? height : 400, display: "flex", justifyContent: "center" }}>
             <ResponsiveContainer width="100%" height="100%">
                 <LineChart width={300} height={100} data={data}>
                     <XAxis dataKey={xDataKey} />

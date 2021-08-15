@@ -139,7 +139,7 @@ export default function FieldForm({ initial, setActive }: { initial?: IField; se
                             style={{ fontSize: "0.7rem" }}
                             checked={values.all}
                             name="all"
-                            label="Add this Level for all items in this Clusters"
+                            label="Add this Level for all items in these Clusters"
                             onChange={handleChange}
                             control={<Checkbox />}
                         />

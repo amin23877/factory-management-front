@@ -8,6 +8,8 @@ import QuotePanel from "../features/Sales/Quote";
 import SalesOrderPanel from "../features/Sales/SO";
 import PurchaseOrderPanel from "../features/Sales/PO";
 import DevicesPanel from "../features/Engineering/Devices";
+import Dashboard from "../features/Sales/Dashboard";
+
 import Clients from "../pages/Clients";
 
 export default function Sales() {
@@ -28,6 +30,7 @@ export default function Sales() {
                     <MyTab label="Client" />
                 </MyTabs>
             </Box>
+            {activeTab === 1 && <Dashboard />}
             {activeTab === 2 && <DevicesPanel sales={true} />}
             {activeTab === 3 && <QuotePanel />}
             {activeTab === 4 && <PurchaseOrderPanel />}
