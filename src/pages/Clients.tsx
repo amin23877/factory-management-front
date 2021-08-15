@@ -356,7 +356,7 @@ export default function Clients() {
                                 <PrintRounded />
                             </IconButton>
                         </ListItem>
-                        {activeTab === 1 && (
+                        {/* {activeTab === 1 && (
                             <>
                                 <ListItem>
                                     <IconButton
@@ -425,7 +425,7 @@ export default function Clients() {
                                     </IconButton>
                                 </ListItem>
                             </>
-                        )}
+                        )} */}
                     </List>
                 </Grid>
                 <Grid item xs={11}>
