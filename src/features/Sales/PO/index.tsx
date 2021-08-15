@@ -19,6 +19,7 @@ import Details from "./Details";
 import AddPOModal from "./AddPoModal";
 import { BasePaper } from "../../../app/Paper";
 import { GridColDef } from "@material-ui/data-grid";
+import { formatTimestampToDate } from "../../../logic/date";
 
 export default function POPanel() {
     const [activeTab, setActiveTab] = useState(0);
@@ -35,18 +36,28 @@ export default function POPanel() {
     const [selectedDoc, setSelectedDoc] = useState<any>();
 
     const poCols: GridColDef[] = [
-        { field: "number", headerName: "Number" },
+        // Date	Customer PO Number	SO Number	Client	Rep	State	Project	Status
+
         {
-            field: "Contact",
+            field: "Date",
+            valueFormatter: (r) => formatTimestampToDate(r.row?.createdAt),
+            width: 110,
+        },
+        { field: "number", headerName: "Customer PO Number", flex: 1 },
+        { field: "SoID", headerName: "SO Number", flex: 1 },
+        { field: "Client", valueFormatter: (r) => r.row?.ClientId?.name, flex: 1 },
+        {
+            field: "Rep",
             valueFormatter: (r) => r.row?.ContactId?.name,
             flex: 1,
         },
-        { field: "Client", valueFormatter: (r) => r.row?.ClientId?.name, flex: 1 },
+        { field: "state", headerName: "State", width: 110 },
         {
             field: "Project",
             valueFormatter: (r) => r.row?.ProjectId?.name,
             flex: 1,
         },
+        { field: "status", headerName: "Status", width: 110 },
     ];
 
     const refreshPOs = async () => {
@@ -139,7 +150,17 @@ export default function POPanel() {
             />
 
             <Box mb={2} display="flex" alignItems="center">
-                <Button kind="add" onClick={() => setAddPo(true)}>
+                <Button
+                    onClick={() => setAddPo(true)}
+                    style={{
+                        backgroundColor: "#1a73e8",
+                        color: "#fff",
+                        margin: "0 0.5em",
+                        padding: " 6px 15px",
+                        boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+                    }}
+                >
+                    <AddRoundedIcon />
                     Add PO
                 </Button>
                 <Button
@@ -150,7 +171,7 @@ export default function POPanel() {
                 >
                     Delete PO
                 </Button>
-                {activeTab === 1 && (
+                {/* {activeTab === 1 && (
                     <Button kind="add" onClick={() => setNoteModal(true)}>
                         Add note
                     </Button>
@@ -163,7 +184,7 @@ export default function POPanel() {
                     >
                         Add document
                     </Button>
-                )}
+                )} */}
             </Box>
             <BasePaper>
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>

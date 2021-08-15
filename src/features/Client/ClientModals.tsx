@@ -1,18 +1,30 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box, Tabs, Tab } from "@material-ui/core";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
 import Dialog from "../../app/Dialog";
 import Button from "../../app/Button";
-import { GeneralForm } from "./Forms";
+import { BasePaper } from "../../app/Paper";
+import { CommissionForm, GeneralForm, MainContactForm, MoreInfoForm } from "./Forms";
 
 import { addClient, AddClientInit } from "../../api/client";
+import { useState } from "react";
 
-export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClose: () => void; onDone: () => void }) => {
+export const AddClientModal = ({
+    open,
+    onClose,
+    onDone,
+}: {
+    open: boolean;
+    onClose: () => void;
+    onDone: () => void;
+}) => {
     const schema = Yup.object().shape({
         ClientTypeId: Yup.string().required().notOneOf([0]),
     });
+
+    const [activeTab, setActiveTab] = useState(0);
 
     const { errors, touched, values, handleChange, handleBlur, isSubmitting, handleSubmit } = useFormik({
         initialValues: AddClientInit,
@@ -36,18 +48,69 @@ export const AddClientModal = ({ open, onClose, onDone }: { open: boolean; onClo
     });
 
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="sm" title="Add new client">
-            <Box p={2} display="flex" alignItems="center">
-                <form onSubmit={handleSubmit}>
-                    <GeneralForm values={values} errors={errors} touched={touched} handleBlur={handleBlur} handleChange={handleChange} />
-
-                    <Box textAlign="center" my={2}>
-                        <Button disabled={isSubmitting} kind="add" type="submit" fullWidth={true}>
-                            save
-                        </Button>
+        <Dialog open={open} onClose={onClose} fullScreen title="Add new client">
+            <form onSubmit={handleSubmit}>
+                <Box display="flex" style={{ justifyContent: "space-between" }}>
+                    <Box flex={3}>
+                        <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", margin: "0 1em " }}>
+                            <GeneralForm
+                                values={values}
+                                errors={errors}
+                                handleBlur={handleBlur}
+                                handleChange={handleChange}
+                                touched={touched}
+                            />
+                            <Button type="submit" kind="edit">
+                                Save
+                            </Button>
+                        </BasePaper>
                     </Box>
-                </form>
-            </Box>
+                    <Box flex={2}>
+                        <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", margin: "0 1em " }}>
+                            <Tabs
+                                textColor="primary"
+                                value={activeTab}
+                                onChange={(e, nv) => setActiveTab(nv)}
+                                variant="scrollable"
+                                style={{ maxWidth: 700 }}
+                            >
+                                <Tab label="More Info" />
+                                <Tab label="Main Contact" />
+                                <Tab label="Commission" />
+                            </Tabs>
+                            <Box>
+                                {activeTab === 0 && (
+                                    <MoreInfoForm
+                                        values={values}
+                                        errors={errors}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        touched={touched}
+                                    />
+                                )}
+                                {activeTab === 1 && (
+                                    <MainContactForm
+                                        values={values}
+                                        errors={errors}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        touched={touched}
+                                    />
+                                )}
+                                {activeTab === 2 && (
+                                    <CommissionForm
+                                        values={values}
+                                        errors={errors}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        touched={touched}
+                                    />
+                                )}
+                            </Box>
+                        </BasePaper>
+                    </Box>
+                </Box>
+            </form>
         </Dialog>
     );
 };

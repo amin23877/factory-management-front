@@ -16,6 +16,10 @@ export interface IContact {
     active: boolean;
     main: boolean;
     ContactTypeId: string;
+    lastName: string;
+    phone: string;
+    ext: string;
+    email: string;
 }
 
 export const getContacts = async () => {

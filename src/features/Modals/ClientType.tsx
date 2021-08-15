@@ -5,35 +5,47 @@ import Dialog from "../../app/Dialog";
 import { GeneralForm } from "../../app/Forms";
 
 import { addClientType, deleteClientType, editClientType, getClientTypes } from "../../api/clientType";
-import { addEmailAddressType, deleteEmailAddressType, editEmailAddressType, getEmailAddressTypes } from "../../api/emailAddressType";
+import {
+    addEmailAddressType,
+    deleteEmailAddressType,
+    editEmailAddressType,
+    getEmailAddressTypes,
+} from "../../api/emailAddressType";
 import { addContactType, deleteContactType, editContactType, getContactTypes } from "../../api/contactType";
 import { addPhoneType, deletePhoneType, editPhoneType, getPhoneTypes } from "../../api/phoneType";
 import { addAddressType, deleteAddressType, editAddressType, getAddressTypes } from "../../api/addressType";
 
-export const AllClientTypesModal = ({ open, onClose, onCTDone }: { onCTDone: () => void; open: boolean; onClose: () => void }) => {
+export const AllClientTypesModal = ({
+    open,
+    onClose,
+    onCTDone,
+}: {
+    onCTDone: () => void;
+    open: boolean;
+    onClose: () => void;
+}) => {
     const [activeTab, setActiveTab] = useState(0);
 
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="lg" title="Add client types">
+        <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth title="Add client types">
             <Box m={1}>
-                <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                {/* <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="Client Type" />
                     <Tab label="Email Type" />
                     <Tab label="Contact Type" />
                     <Tab label="Phone Type" />
                     <Tab label="Address Type" />
-                </Tabs>
-                {activeTab === 0 && (
-                    <GeneralForm
-                        type="Client Type"
-                        addRecord={addClientType}
-                        deleteRecord={deleteClientType}
-                        getRecord={getClientTypes}
-                        updateRecord={editClientType}
-                        onDone={onCTDone}
-                    />
-                )}
-                {activeTab === 1 && (
+                </Tabs> */}
+
+                <GeneralForm
+                    type="Client Type"
+                    addRecord={addClientType}
+                    deleteRecord={deleteClientType}
+                    getRecord={getClientTypes}
+                    updateRecord={editClientType}
+                    onDone={onCTDone}
+                />
+                {/* {activeTab === 1 && (
                     <GeneralForm
                         type="Email address type"
                         addRecord={addEmailAddressType}
@@ -68,7 +80,7 @@ export const AllClientTypesModal = ({ open, onClose, onCTDone }: { onCTDone: () 
                         getRecord={getAddressTypes}
                         updateRecord={editAddressType}
                     />
-                )}
+                )} */}
             </Box>
         </Dialog>
     );

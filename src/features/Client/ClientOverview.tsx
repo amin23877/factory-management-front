@@ -2,47 +2,82 @@ import React from "react";
 import { GridColDef, GridRowData } from "@material-ui/data-grid";
 
 import BaseDataGrid from "../../app/BaseDataGrid";
+//	Status
 
-export default function ClientOverview({ rows, onRowSelected }: { rows: GridRowData[]; onRowSelected: (row: any) => void }) {
+export default function ClientOverview({
+    rows,
+    onRowSelected,
+}: {
+    rows: GridRowData[];
+    onRowSelected: (row: any) => void;
+}) {
     const cols: GridColDef[] = [
         {
-            field: "name",
-            flex: 1,
-            headerName: "name",
+            field: "number",
+            width: 120,
+            headerName: "Customer ID",
             editable: true,
         },
         {
-            field: "size",
-            flex: 1,
-            headerName: "size",
+            field: "name",
+            width: 120,
+            headerName: "Name",
+            editable: true,
         },
         {
-            field: "address",
-            headerName: "address",
-            width: 170,
-            flex: 1,
-            valueFormatter: (d) => {
-                return d.row.address?.city;
-            },
+            field: "state",
+            width: 120,
+            headerName: "State",
+            editable: true,
+        },
+        {
+            field: "city",
+            width: 120,
+            headerName: "City",
+        },
+        {
+            field: "zipCode",
+            headerName: "Zip Code",
+            width: 120,
+        },
+        {
+            field: "productLine",
+            width: 120,
+            headerName: "Product Line",
+        },
+        {
+            field: "supportStaff",
+            width: 120,
+            headerName: "Support Staff",
         },
         {
             field: "contact",
-            headerName: "contact",
-            flex: 1,
-            width: 170,
+            headerName: "Main Contact",
+            width: 130,
             valueFormatter: (data) => data.row?.contact?.name,
         },
+
         {
             field: "phone",
-            headerName: "phone",
-            width: 170,
-            flex: 1,
+            headerName: "Phone",
+            width: 150,
+            valueFormatter: (data) => (data.row.phone ? data.row?.phone?.ext + " " + data.row?.phone?.phone : ""),
+        },
+        {
+            field: "email",
+            headerName: "Email",
+            width: 150,
             valueFormatter: (data) => (data.row.phone ? data.row?.phone?.ext + " " + data.row?.phone?.phone : ""),
         },
         {
             field: "Type",
-            flex: 1,
+            width: 100,
             valueFormatter: (data) => data.row?.ClientType?.name,
+        },
+        {
+            field: "status",
+            width: 100,
+            headerName: "Status",
         },
     ];
 
