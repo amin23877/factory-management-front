@@ -1,19 +1,7 @@
 import React, { useState, useEffect, Fragment } from "react";
-import { Container, Box, Grid, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
-import EditRoundedIcon from "@material-ui/icons/EditRounded";
-import {
-    AddRounded,
-    DeleteRounded,
-    DescriptionRounded,
-    PrintRounded,
-    MapOutlined,
-    EqualizerOutlined,
-    MailOutline,
-    ContactMailOutlined,
-    PhoneOutlined,
-} from "@material-ui/icons";
+import { Box, Grid, Tabs, Tab } from "@material-ui/core";
+import { AddRounded } from "@material-ui/icons";
 
-import List from "../app/SideUtilityList";
 import Button from "../app/Button";
 
 import { getClients, deleteClient } from "../api/client";

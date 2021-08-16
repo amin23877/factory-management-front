@@ -24,10 +24,10 @@ export default function Sales() {
                     <MyTab label="Calls" />
                     <MyTab label="Dashboard" />
                     <MyTab label="Devices" />
-                    <MyTab label="Quote" />
-                    <MyTab label="Customer Pos" />
-                    <MyTab label="Sales Order" />
-                    <MyTab label="Client" />
+                    <MyTab label="Quotes" />
+                    <MyTab label="Customer POs" />
+                    <MyTab label="Sales Orders" />
+                    <MyTab label="Customers" />
                 </MyTabs>
             </Box>
             {activeTab === 1 && <Dashboard />}
