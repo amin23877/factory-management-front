@@ -13,7 +13,7 @@ import { ISO } from "../../../api/so";
 
 const schema = Yup.object().shape({
     ClientId: Yup.string().required(),
-    issuedBy: Yup.string().required(),
+    // issuedBy: Yup.string().required(),
 });
 
 export default function MainForm({ onDone, data }: { data?: any; onDone: (data: any) => void }) {

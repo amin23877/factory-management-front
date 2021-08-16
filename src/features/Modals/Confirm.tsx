@@ -30,7 +30,12 @@ export default function Confirm({
                     >
                         NO
                     </Button>
-                    <Button color="primary" variant="contained" style={{ background: Gradients.error }} onClick={onConfirm}>
+                    <Button
+                        color="primary"
+                        variant="contained"
+                        style={{ background: Gradients.error }}
+                        onClick={onConfirm}
+                    >
                         Yes
                     </Button>
                 </Box>

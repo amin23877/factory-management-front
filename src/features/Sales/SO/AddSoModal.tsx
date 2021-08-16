@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Step, StepLabel, Stepper, IconButton } from "@material-ui/core";
-import { CloseRounded } from "@material-ui/icons";
+import { Box, Step, StepLabel, Stepper } from "@material-ui/core";
 
 import Dialog from "../../../app/Dialog";
 
@@ -41,19 +40,6 @@ export default function AddSOModal({
             fullWidth
             maxWidth="md"
         >
-            {/* <Box
-                style={{ backgroundColor: "#ccc" }}
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-                px={1}
-            >
-                <DialogTitle>Add new Sales order</DialogTitle>
-                <div style={{ flexGrow: 1 }} />
-                <IconButton onClick={onClose}>
-                    <CloseRounded />
-                </IconButton>
-            </Box> */}
             <Box p={2} height={600}>
                 <Stepper activeStep={step}>
                     <Step>

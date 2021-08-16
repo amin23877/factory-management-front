@@ -1,6 +1,5 @@
 import Axios from 'axios';
-
-interface IClient {
+export interface IClient {
     name:string,
     abbr:string,
     location:string,

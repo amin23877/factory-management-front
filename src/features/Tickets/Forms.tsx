@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Typography, Box, TextField, FormControlLabel, Checkbox } from "@material-ui/core";
+import { Box, TextField, FormControlLabel, Checkbox } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 import { Autocomplete } from "@material-ui/lab";
 import { Form } from "formik";
@@ -154,7 +154,7 @@ export default function TicketForm({
                         <Button type="submit" kind="add" style={{ marginRight: "0.5em" }}>
                             Book a job
                         </Button>
-                        <Button>Show calendar</Button>
+                        {/* <Button>Show calendar</Button> */}
                     </>
                 ) : (
                     <>

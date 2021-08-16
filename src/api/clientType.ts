@@ -1,6 +1,7 @@
 import Axios from "axios";
 
 export interface IClientType {
+    id?:string;
     inputValue?: string;
     name: string;
 }

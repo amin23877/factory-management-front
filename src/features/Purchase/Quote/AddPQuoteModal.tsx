@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
 
 import Box from "@material-ui/core/Box";
 
@@ -14,12 +13,20 @@ import { getContacts } from "../../../api/contact";
 import { Typography } from "@material-ui/core";
 import { createPurchaseQuote } from "../../../api/purchaseQuote";
 
-export default function AddPQModal({ open, onClose, onDone }: { open: boolean; onClose: () => void; onDone: () => void }) {
+export default function AddPQModal({
+    open,
+    onClose,
+    onDone,
+}: {
+    open: boolean;
+    onClose: () => void;
+    onDone: () => void;
+}) {
     const uploader = useRef<HTMLInputElement | null>();
     const [file, setFile] = useState<File | null>(null);
 
     return (
-        <Dialog open={open} onClose={onClose} title="Add new purchase quote">
+        <Dialog open={open} onClose={onClose} title="Add new quote">
             <Box p={2}>
                 <Formik
                     initialValues={{}}
@@ -44,13 +51,17 @@ export default function AddPQModal({ open, onClose, onDone }: { open: boolean; o
                                 ref={(e) => (uploader.current = e)}
                                 onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
                             />
-                            <Button fullWidth variant="outlined" onClick={() => uploader.current && uploader.current.click()}>
+                            <Button
+                                fullWidth
+                                variant="outlined"
+                                onClick={() => uploader.current && uploader.current.click()}
+                            >
                                 File
                             </Button>
                             <Box my={1}>
                                 <Typography variant="caption">{file?.name}</Typography>
                             </Box>
-                            <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10} my={2} >
+                            <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10} my={2}>
                                 <TextField
                                     name="senderNumber"
                                     label="Sender number"
@@ -94,9 +105,7 @@ export default function AddPQModal({ open, onClose, onDone }: { open: boolean; o
                                     value={values.ContactId}
                                     error={Boolean(errors.ContactId)}
                                 />
-                            </Box>
-                            <Box textAlign="center">
-                                <Button type="submit" kind="add" style={{ width: "31%" }}>
+                                <Button type="submit" kind="add" style={{ gridColumnEnd: "span 2" }}>
                                     Add
                                 </Button>
                             </Box>

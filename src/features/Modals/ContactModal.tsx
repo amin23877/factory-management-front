@@ -77,33 +77,53 @@ export const ContactModal = ({
                         <Form>
                             <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={8} gridColumnGap={8}>
                                 <TextField
-                                    name="title"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    error={Boolean(errors.title && touched.title)}
-                                    helperText={errors.title && touched.title}
-                                    value={values.title}
-                                    label="title"
-                                />
-                                <TextField
                                     name="name"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
                                     error={Boolean(errors.name && touched.name)}
                                     helperText={errors.name && touched.name}
                                     value={values.name}
-                                    label="name"
+                                    label="Name"
                                 />
                                 <TextField
-                                    name="department"
+                                    name="lastName"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
-                                    error={Boolean(errors.department && touched.department)}
-                                    helperText={errors.department && touched.department}
-                                    value={values.department}
-                                    label="department"
+                                    error={Boolean(errors.lastName && touched.lastName)}
+                                    helperText={errors.lastName && touched.lastName}
+                                    value={values.lastName}
+                                    label="Last Name"
                                 />
                                 <TextField
+                                    name="phone"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.phone && touched.phone)}
+                                    helperText={errors.phone && touched.phone}
+                                    value={values.phone}
+                                    label="Phone"
+                                />
+                                <TextField
+                                    name="ext"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.ext && touched.ext)}
+                                    helperText={errors.ext && touched.ext}
+                                    value={values.ext}
+                                    label="Ext"
+                                />
+                                <TextField
+                                    style={{ gridColumnEnd: "span 2" }}
+                                    name="email"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.email && touched.email)}
+                                    helperText={errors.email && touched.email}
+                                    value={values.email}
+                                    label="Email"
+                                />
+
+                                {/* <TextField
                                     name="refferedBy"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
@@ -176,18 +196,24 @@ export const ContactModal = ({
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     error={Boolean(errors.ContactTypeId && touched.ContactTypeId)}
-                                />
-                                <FormControlLabel
-                                    name="active"
+                                /> */}
+                                <TextField
+                                    name="title"
+                                    onBlur={handleBlur}
                                     onChange={handleChange}
-                                    label="Active"
-                                    control={<Checkbox checked={values.active} />}
+                                    error={Boolean(errors.title && touched.title)}
+                                    helperText={errors.title && touched.title}
+                                    value={values.title}
+                                    label="Title"
                                 />
-                                <FormControlLabel
-                                    name="optout"
+                                <TextField
+                                    name="department"
+                                    onBlur={handleBlur}
                                     onChange={handleChange}
-                                    label="Optout"
-                                    control={<Checkbox checked={values.optout} />}
+                                    error={Boolean(errors.department && touched.department)}
+                                    helperText={errors.department && touched.department}
+                                    value={values.department}
+                                    label="Department"
                                 />
                                 <FormControlLabel
                                     name="main"
@@ -195,6 +221,18 @@ export const ContactModal = ({
                                     label="Main"
                                     control={<Checkbox checked={values.main} />}
                                 />
+                                <FormControlLabel
+                                    name="active"
+                                    onChange={handleChange}
+                                    label="Active"
+                                    control={<Checkbox checked={values.active} />}
+                                />
+                                {/* <FormControlLabel
+                                    name="optout"
+                                    onChange={handleChange}
+                                    label="Optout"
+                                    control={<Checkbox checked={values.optout} />}
+                                /> */}
                                 <Button type="submit" disabled={isSubmitting} kind={data ? "edit" : "add"}>
                                     Save
                                 </Button>

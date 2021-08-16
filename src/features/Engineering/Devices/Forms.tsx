@@ -110,6 +110,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
                     name="salesApproved"
                     onChange={handleChange}
                     control={<Checkbox />}
+                    disabled={sales}
                 />
                 <FormControlLabel
                     style={{ fontSize: "0.7rem" }}
@@ -159,11 +160,11 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
                 style={{ gridColumnEnd: "span 4" }}
                 label="Lead Time"
                 placeholder="Lead Time"
-                name="leadTime"
+                name="lead"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={Boolean(errors.leadTime && touched.leadTime)}
-                value={values.leadTime}
+                error={Boolean(errors.lead && touched.lead)}
+                value={values.lead}
                 disabled={sales}
             />
         </Box>
