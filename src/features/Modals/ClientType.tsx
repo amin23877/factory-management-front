@@ -1,19 +1,21 @@
 import React, { useState } from "react";
-import { Box, Tabs, Tab } from "@material-ui/core";
+import { Box, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText } from "@material-ui/core";
+import { DeleteRounded, EditRounded } from "@material-ui/icons";
+import { Form, Formik } from "formik";
+import * as Yup from "yup";
+import useSWR from "swr";
 
 import Dialog from "../../app/Dialog";
-import { GeneralForm } from "../../app/Forms";
+import TextField from "../../app/TextField";
+import Button from "../../app/Button";
+import Toast from "../../app/Toast";
 
-import { addClientType, deleteClientType, editClientType, getClientTypes } from "../../api/clientType";
-import {
-    addEmailAddressType,
-    deleteEmailAddressType,
-    editEmailAddressType,
-    getEmailAddressTypes,
-} from "../../api/emailAddressType";
-import { addContactType, deleteContactType, editContactType, getContactTypes } from "../../api/contactType";
-import { addPhoneType, deletePhoneType, editPhoneType, getPhoneTypes } from "../../api/phoneType";
-import { addAddressType, deleteAddressType, editAddressType, getAddressTypes } from "../../api/addressType";
+import { addClientType, deleteClientType, editClientType, IClientType } from "../../api/clientType";
+import Confirm from "./Confirm";
+
+const schema = Yup.object().shape({
+    name: Yup.string().required(),
+});
 
 export const AllClientTypesModal = ({
     open,
@@ -24,64 +26,98 @@ export const AllClientTypesModal = ({
     open: boolean;
     onClose: () => void;
 }) => {
-    const [activeTab, setActiveTab] = useState(0);
+    const [confirm, setConfirm] = useState(false);
+    const [selectedCT, setSelectedCT] = useState<string>();
+    const { data: clientTypes, mutate } = useSWR("/clientType");
+
+    const handleSubmit = async (d: IClientType, { resetForm }: any) => {
+        try {
+            if (d.id) {
+                await editClientType(d.id, d.name);
+                Toast("Record updated", "success");
+                resetForm({ values: { name: "" } as IClientType });
+            } else {
+                await addClientType(d.name);
+                Toast("Record added", "success");
+                resetForm({ values: { name: "" } as IClientType });
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            mutate();
+        }
+    };
+
+    const handleDelete = async () => {
+        try {
+            if (selectedCT) {
+                await deleteClientType(selectedCT);
+                Toast("Record deleted", "success");
+                setConfirm(false);
+                mutate();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
-        <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth title="Add client types">
-            <Box m={1}>
-                {/* <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-                    <Tab label="Client Type" />
-                    <Tab label="Email Type" />
-                    <Tab label="Contact Type" />
-                    <Tab label="Phone Type" />
-                    <Tab label="Address Type" />
-                </Tabs> */}
-
-                <GeneralForm
-                    type="Client Type"
-                    addRecord={addClientType}
-                    deleteRecord={deleteClientType}
-                    getRecord={getClientTypes}
-                    updateRecord={editClientType}
-                    onDone={onCTDone}
-                />
-                {/* {activeTab === 1 && (
-                    <GeneralForm
-                        type="Email address type"
-                        addRecord={addEmailAddressType}
-                        deleteRecord={deleteEmailAddressType}
-                        getRecord={getEmailAddressTypes}
-                        updateRecord={editEmailAddressType}
-                    />
-                )}
-                {activeTab === 2 && (
-                    <GeneralForm
-                        type="Contact Type"
-                        addRecord={addContactType}
-                        deleteRecord={deleteContactType}
-                        getRecord={getContactTypes}
-                        updateRecord={editContactType}
-                    />
-                )}
-                {activeTab === 3 && (
-                    <GeneralForm
-                        type="Phone Type"
-                        addRecord={addPhoneType}
-                        deleteRecord={deletePhoneType}
-                        getRecord={getPhoneTypes}
-                        updateRecord={editPhoneType}
-                    />
-                )}
-                {activeTab === 4 && (
-                    <GeneralForm
-                        type="Address Type"
-                        addRecord={addAddressType}
-                        deleteRecord={deleteAddressType}
-                        getRecord={getAddressTypes}
-                        updateRecord={editAddressType}
-                    />
-                )} */}
-            </Box>
-        </Dialog>
+        <>
+            <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
+            <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth title="Add client types">
+                <Box m={1}>
+                    <Formik
+                        initialValues={{} as { name: string; id?: string }}
+                        validationSchema={schema}
+                        onSubmit={handleSubmit}
+                    >
+                        {({ getFieldProps, errors, touched, setValues, values, resetForm }) => (
+                            <Form>
+                                <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                                    <Box display="grid" gridTemplateColumns="3fr 1fr 1fr" gridGap={10}>
+                                        <TextField
+                                            {...getFieldProps("name")}
+                                            placeholder="Name"
+                                            error={Boolean(errors.name && touched.name)}
+                                            helperText={errors.name}
+                                        />
+                                        <Button type="submit" kind="add">
+                                            Save
+                                        </Button>
+                                        <Button
+                                            variant="outlined"
+                                            onClick={() => resetForm({ values: { name: "" } as IClientType })}
+                                        >
+                                            clear
+                                        </Button>
+                                    </Box>
+                                    <List>
+                                        {clientTypes &&
+                                            clientTypes.map((ct: any) => (
+                                                <ListItem key={ct.id}>
+                                                    <ListItemText>{ct.name}</ListItemText>
+                                                    <ListItemSecondaryAction>
+                                                        <IconButton onClick={() => setValues(ct)}>
+                                                            <EditRounded />
+                                                        </IconButton>
+                                                        <IconButton
+                                                            onClick={() => {
+                                                                setSelectedCT(ct.id);
+                                                                setConfirm(true);
+                                                            }}
+                                                        >
+                                                            <DeleteRounded color="error" />
+                                                        </IconButton>
+                                                    </ListItemSecondaryAction>
+                                                </ListItem>
+                                            ))}
+                                    </List>
+                                </Box>
+                            </Form>
+                        )}
+                    </Formik>
+                </Box>
+            </Dialog>
+        </>
     );
 };
