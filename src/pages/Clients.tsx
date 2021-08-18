@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Grid, Tabs, Tab } from "@material-ui/core";
 import { AddRounded } from "@material-ui/icons";
 
@@ -209,7 +209,7 @@ export default function Clients() {
     }, []);
 
     return (
-        <Fragment>
+        <>
             <Confirm open={conf} onClose={() => setConf(false)} onConfirm={handleDelete} />
 
             <AddClientModal open={addClientModal} onClose={() => setAddClientModal(false)} onDone={refreshClients} />
@@ -501,6 +501,6 @@ export default function Clients() {
                     </BasePaper>
                 </Grid>
             </Grid>
-        </Fragment>
+        </>
     );
 }

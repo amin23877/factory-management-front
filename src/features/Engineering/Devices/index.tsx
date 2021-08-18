@@ -73,6 +73,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
             { field: "name", headerName: "Name", flex: 2 },
             { field: "description", headerName: "Description", flex: 2 },
             { field: "lead", headerName: "Lead Time", width: 120 },
+            { field: "retailPrice", headerName: "Price", width: 120 },
         ];
 
         return res;

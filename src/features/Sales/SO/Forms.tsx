@@ -273,125 +273,102 @@ export const EntitiesForm = ({
     setFieldValue: any;
 }) => {
     return (
-        <Fragment>
-            <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr " gridColumnGap={10}>
-                <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
-                    <TextField
-                        value={values.rep}
-                        name="rep"
-                        label="Rep / Agency"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.address}
-                        name="address"
-                        label="Address"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.city}
-                        name="city"
-                        label="City"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.state}
-                        name="state"
-                        label="State"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.zipCode}
-                        name="zipCode"
-                        label="Zip Code"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                </Box>
-                <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
-                    <TextField
-                        value={values.requester}
-                        name="requester"
-                        label="Requester"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.email}
-                        name="email"
-                        label="Email"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.phone}
-                        name="phone"
-                        label="Phone"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.phone}
-                        name="phone"
-                        label="Phone"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        disabled
-                        style={{ opacity: 0 }}
-                    />
-                    <TextField
-                        value={values.phone}
-                        name="phone"
-                        label="Phone"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        disabled
-                        style={{ opacity: 0 }}
-                    />
-                </Box>
-                <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
-                    <TextField
-                        value={values.client}
-                        name="client"
-                        label="Client"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.contactName}
-                        name="contactName"
-                        label="Contact Name"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.email}
-                        name="email"
-                        label="Email"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.phone}
-                        name="phone"
-                        label="Phone"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.unitPricingLevel}
-                        name="Unit Pricing Level"
-                        label="Unit Pricing Level"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                </Box>
+        <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={10}>
+            <Box my={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                <TextField
+                    value={values.rep}
+                    name="rep"
+                    label="Rep / Agency"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.address}
+                    name="address"
+                    label="Address"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField value={values.city} name="city" label="City" onChange={handleChange} onBlur={handleBlur} />
+                <TextField
+                    value={values.state}
+                    name="state"
+                    label="State"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.zipCode}
+                    name="zipCode"
+                    label="Zip Code"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
             </Box>
-            <Box my={2} display="grid" gridTemplateColumns="1fr  1fr " gridColumnGap={10}>
+            <Box my={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                <TextField
+                    value={values.requester}
+                    name="requester"
+                    label="Requester"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.email}
+                    name="email"
+                    label="Email"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.phone}
+                    name="phone"
+                    label="Phone"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <div />
+                <div />
+                <div />
+            </Box>
+            <Box my={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                <TextField
+                    value={values.client}
+                    name="client"
+                    label="Client"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.contactName}
+                    name="contactName"
+                    label="Contact Name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.email}
+                    name="email"
+                    label="Email"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.phone}
+                    name="phone"
+                    label="Phone"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.unitPricingLevel}
+                    name="Unit Pricing Level"
+                    label="Unit Pricing Level"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+            </Box>
+            <Box my={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
                 <TextField
                     value={values.fullTimeContact}
                     name="fullTimeContact"
@@ -407,15 +384,17 @@ export const EntitiesForm = ({
                     onBlur={handleBlur}
                 />
                 <TextField
-                    style={{ gridColumnEnd: "span 2", marginTop: "10px" }}
                     value={values.email}
                     name="email"
                     label="Email"
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
+                <div />
+                <div />
+                <div />
             </Box>
-        </Fragment>
+        </Box>
     );
 };
 
@@ -433,7 +412,7 @@ export const AddressesForm = ({
     const [activeTab, setActiveTab] = useState(0);
 
     return (
-        <Fragment>
+        <>
             {/* Company Attn Address City State Zip Code Country Phone Email
              Company Attn Address City State Zip Code Country Phone Email */}
             <Tabs
@@ -447,7 +426,7 @@ export const AddressesForm = ({
                 <Tab label="Shipping Address" />
             </Tabs>
             {activeTab === 0 && (
-                <Box my={1} display="grid" gridTemplateColumns=" 1fr 1fr " gridGap={10} gridRowGap={10}>
+                <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridGap={10} gridRowGap={10}>
                     <FieldSelect
                         value={values.billingCompany ? values.billingCompany : ""}
                         request={getAddresses}
@@ -552,7 +531,7 @@ export const AddressesForm = ({
                 </Box>
             )}
             {activeTab === 1 && (
-                <Fragment>
+                <>
                     <Paper
                         style={{
                             margin: "0.5em 0",
@@ -572,7 +551,7 @@ export const AddressesForm = ({
                     <Box
                         my={1}
                         display="grid"
-                        gridTemplateColumns=" 1fr 1fr "
+                        gridTemplateColumns="1fr 1fr 1fr"
                         gridGap={10}
                         gridRowGap={10}
                         gridColumnGap={10}
@@ -688,9 +667,9 @@ export const AddressesForm = ({
                             disabled={Boolean(values.willCall)}
                         />
                     </Box>
-                </Fragment>
+                </>
             )}
-        </Fragment>
+        </>
     );
 };
 

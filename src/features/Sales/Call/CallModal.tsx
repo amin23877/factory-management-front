@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Box, Step, StepLabel, Stepper } from "@material-ui/core";
 import { useFormik } from "formik";
+import { mutate } from "swr";
 
 import Dialog from "../../../app/Dialog";
 import Button from "../../../app/Button";
 import { GeneralForm, MainContactForm, MoreInfoForm } from "./Forms";
 
 import { addCall } from "../../../api/calls";
-import { mutate } from "swr";
 
 const AddCallModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
     const [activeStep, setActiveStep] = useState(0);
@@ -19,27 +19,25 @@ const AddCallModal = ({ open, onClose }: { open: boolean; onClose: () => void })
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
+
     const { errors, touched, values, handleChange, handleBlur, handleSubmit } = useFormik({
         initialValues: {},
         onSubmit: async (data: any, { setSubmitting }) => {
             try {
-                const resp = await addCall({ ...data, tags: [values.tags] });
-                if (resp.id) {
-                    console.log(resp);
-                    mutate("/calls");
-                    onClose();
-                } else {
-                    console.log(resp);
-                }
+                await addCall({ ...data, tags: [values.tags] });
+
+                mutate("/calls");
+                onClose();
             } catch (error) {
                 console.log(error);
+            } finally {
+                setSubmitting(false);
             }
-            setSubmitting(false);
         },
     });
 
     return (
-        <Dialog open={open} onClose={onClose} fullScreen title="Add New Customer">
+        <Dialog open={open} onClose={onClose} fullWidth maxWidth="md" title="Add New Ticket">
             <form onSubmit={handleSubmit}>
                 <Stepper activeStep={activeStep}>
                     <Step>
@@ -61,7 +59,7 @@ const AddCallModal = ({ open, onClose }: { open: boolean; onClose: () => void })
                             handleBlur={handleBlur}
                             handleChange={handleChange}
                             touched={touched}
-                            add={true}
+                            add
                         />
                     )}
                     {activeStep === 1 && (
@@ -83,22 +81,14 @@ const AddCallModal = ({ open, onClose }: { open: boolean; onClose: () => void })
                         />
                     )}
                 </Box>
-                <Box
-                    style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        width: "50%",
-                        margin: "10px auto",
-                    }}
-                >
+                <Box display="flex" alignItems="center" justifyContent="space-between" margin="10px auto" width="50%">
                     <Button variant="contained" disabled={activeStep === 0} onClick={handleBack}>
                         Back
                     </Button>
-                    <Button type="submit" kind="edit">
+                    <Button type="submit" kind="add">
                         Save
                     </Button>
-                    <Button variant="contained" color="primary" onClick={handleNext} disabled={activeStep === 4}>
+                    <Button variant="contained" color="primary" onClick={handleNext} disabled={activeStep === 2}>
                         Next
                     </Button>
                 </Box>

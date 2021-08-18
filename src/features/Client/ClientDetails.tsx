@@ -2,20 +2,20 @@ import React, { useState, useMemo, Fragment } from "react";
 import { GridColumns } from "@material-ui/data-grid";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import { Formik, Form } from "formik";
-import * as Yup from "yup";
+// import * as Yup from "yup";
 
 import { CommissionForm, GeneralForm, MainContactForm, MoreInfoForm } from "./Forms";
 import Button from "../../app/Button";
+import Snack from "../../app/Snack";
+import { BasePaper } from "../../app/Paper";
+import BaseDataGrid from "../../app/BaseDataGrid";
 
 import { editClient } from "../../api/client";
 
-import Snack from "../../app/Snack";
-import { BasePaper } from "../../app/Paper";
+import SOTable from "../Items/SOTable";
 
-import BaseDataGrid from "../../app/BaseDataGrid";
 import { formatTimestampToDate } from "../../logic/date";
 import { fileType } from "../../logic/fileType";
-import SOTable from "../Items/SOTable";
 
 import NoteModal from "../../features/Modals/NoteModals";
 import DocumentModal from "../../features/Modals/DocumentModals";
@@ -28,14 +28,14 @@ const style = {
     margin: "3px 0px 10px 5px ",
 };
 
+// const schema = Yup.object().shape({
+//     ClientTypeId: Yup.string().required(),
+// });
+
 export const EditClientForm = ({ clientTypes, data, onDone }: { clientTypes: any; data: any; onDone: () => void }) => {
     const [showSnack, setShowSnack] = useState(false);
     const [msg, setMsg] = useState("");
     const [activeTab, setActiveTab] = useState(0);
-
-    const schema = Yup.object().shape({
-        ClientTypeId: Yup.string().required(),
-    });
 
     const handleSubmit = async (values: any, { setSubmitting }: any) => {
         try {
@@ -77,13 +77,21 @@ export const EditClientForm = ({ clientTypes, data, onDone }: { clientTypes: any
                                         handleChange={handleChange}
                                         touched={touched}
                                     />
-                                    <Button type="submit" kind="edit">
-                                        Save
-                                    </Button>
+                                    <Box textAlign="center">
+                                        <Button type="submit" kind="edit">
+                                            Save
+                                        </Button>
+                                    </Box>
                                 </BasePaper>
                             </Box>
                             <Box flex={2}>
-                                <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", margin: "0 1em " }}>
+                                <BasePaper
+                                    style={{
+                                        boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
+                                        margin: "0 1em",
+                                        height: "100%",
+                                    }}
+                                >
                                     <Tabs
                                         textColor="primary"
                                         value={activeTab}
@@ -138,20 +146,10 @@ export default function ClientDetails({
     selectedRow,
     onNoteSelected,
     onDocSelected,
-    onAddrSelected,
-    onAgencySelected,
     onContactSelected,
-    onDivSelected,
-    onEmailSelected,
-    onPhoneSelected,
-    agencies,
     activities,
-    addrs,
     notes,
     docs,
-    divisions,
-    phones,
-    emails,
     contacts,
     clientTypes,
     onDone,

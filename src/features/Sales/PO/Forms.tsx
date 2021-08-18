@@ -1,4 +1,4 @@
-import React, { useEffect, useState, Fragment } from "react";
+import React, { useState } from "react";
 import { Box, FormControlLabel, Checkbox, Paper, Tabs, Tab } from "@material-ui/core";
 
 import TextField from "../../../app/TextField";
@@ -25,7 +25,7 @@ export const GeneralForm = ({
     const [selectedSO, setSelectedSO] = useState<string>();
 
     return (
-        <Fragment>
+        <>
             <Box display="grid" gridTemplateColumns="1fr" gridColumnGap={10} gridRowGap={10} my={5}>
                 <TextField
                     value={values.number}
@@ -58,15 +58,13 @@ export const GeneralForm = ({
                     name="employeeId"
                     label="SO Issued By"
                     request={getAllEmployees}
-                    itemTitleField="EmployeeId"
+                    itemTitleField="username"
                     itemValueField="id"
-                    onChange={(e) => {
-                        handleChange(e);
-                    }}
+                    onChange={handleChange}
                     onBlur={handleBlur}
                 />
             </Box>
-        </Fragment>
+        </>
     );
 };
 
@@ -82,9 +80,9 @@ export const EntitiesForm = ({
     setFieldValue: any;
 }) => {
     return (
-        <Fragment>
-            <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr " gridColumnGap={10}>
-                <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
+        <>
+            <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={10}>
+                <Box my={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
                     <TextField
                         value={values.rep}
                         name="rep"
@@ -121,7 +119,7 @@ export const EntitiesForm = ({
                         onBlur={handleBlur}
                     />
                 </Box>
-                <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
+                <Box my={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
                     <TextField
                         value={values.requester}
                         name="requester"
@@ -162,7 +160,7 @@ export const EntitiesForm = ({
                         style={{ opacity: 0 }}
                     />
                 </Box>
-                <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
+                <Box my={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
                     <TextField
                         value={values.client}
                         name="client"
@@ -199,32 +197,31 @@ export const EntitiesForm = ({
                         onBlur={handleBlur}
                     />
                 </Box>
+                <Box my={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                    <TextField
+                        value={values.fullTimeContact}
+                        name="fullTimeContact"
+                        label="24 Hour Contact"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.phone}
+                        name="phone"
+                        label="Phone"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.email}
+                        name="email"
+                        label="Email"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                </Box>
             </Box>
-            <Box my={2} display="grid" gridTemplateColumns="1fr  1fr " gridColumnGap={10}>
-                <TextField
-                    value={values.fullTimeContact}
-                    name="fullTimeContact"
-                    label="24 Hour Contact"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
-                <TextField
-                    value={values.phone}
-                    name="phone"
-                    label="Phone"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
-                <TextField
-                    style={{ gridColumnEnd: "span 2", marginTop: "10px" }}
-                    value={values.email}
-                    name="email"
-                    label="Email"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
-            </Box>
-        </Fragment>
+        </>
     );
 };
 
@@ -242,7 +239,7 @@ export const AddressesForm = ({
     const [activeTab, setActiveTab] = useState(0);
 
     return (
-        <Fragment>
+        <>
             {/* Company Attn Address City State Zip Code Country Phone Email
              Company Attn Address City State Zip Code Country Phone Email */}
             <Tabs
@@ -256,7 +253,7 @@ export const AddressesForm = ({
                 <Tab label="Shipping Address" />
             </Tabs>
             {activeTab === 0 && (
-                <Box my={1} display="grid" gridTemplateColumns=" 1fr 1fr " gridGap={10} gridRowGap={10}>
+                <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridGap={10} gridRowGap={10}>
                     <FieldSelect
                         value={values.billingCompany ? values.billingCompany : ""}
                         request={getAddresses}
@@ -361,7 +358,7 @@ export const AddressesForm = ({
                 </Box>
             )}
             {activeTab === 1 && (
-                <Fragment>
+                <>
                     <Paper
                         style={{
                             margin: "0.5em 0",
@@ -381,7 +378,7 @@ export const AddressesForm = ({
                     <Box
                         my={1}
                         display="grid"
-                        gridTemplateColumns=" 1fr 1fr "
+                        gridTemplateColumns="1fr 1fr 1fr"
                         gridGap={10}
                         gridRowGap={10}
                         gridColumnGap={10}
@@ -497,8 +494,8 @@ export const AddressesForm = ({
                             disabled={Boolean(values.willCall)}
                         />
                     </Box>
-                </Fragment>
+                </>
             )}
-        </Fragment>
+        </>
     );
 };

@@ -107,7 +107,12 @@ export default function Calls() {
                 </Button>
             </Box>
             <BasePaper>
-                <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                <Tabs
+                    value={activeTab}
+                    textColor="primary"
+                    onChange={(e, nv) => setActiveTab(nv)}
+                    style={{ marginBottom: 10 }}
+                >
                     <Tab label="List" />
                     <Tab label="Details" disabled={!selectedCall} />
                 </Tabs>
@@ -118,7 +123,6 @@ export default function Calls() {
                         onRowSelected={(d) => {
                             setSelectedCall(d);
                             setActiveTab(1);
-                            console.log(d);
                         }}
                     />
                 )}

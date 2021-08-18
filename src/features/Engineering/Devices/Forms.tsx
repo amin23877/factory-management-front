@@ -167,6 +167,16 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
                 value={values.lead}
                 disabled={sales}
             />
+            <TextField
+                style={{ gridColumnEnd: "span 4" }}
+                label="Retail Price"
+                name="retailPrice"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.retailPrice && touched.retailPrice)}
+                value={values.retailPrice}
+                disabled={sales}
+            />
         </Box>
     );
 };

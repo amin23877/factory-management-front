@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Box } from "@material-ui/core";
 
 import { FieldSelect } from "../../../app/Inputs";
@@ -7,6 +7,7 @@ import TextField from "../../../app/TextField";
 import { getAllEmployees } from "../../../api/employee";
 import { formatTimestampToDate } from "../../../logic/date";
 import { getQuotes } from "../../../api/quote";
+import { getSO } from "../../../api/so";
 
 export const GeneralForm = ({
     add,
@@ -24,7 +25,7 @@ export const GeneralForm = ({
     handleChange: any;
 }) => {
     return (
-        <Fragment>
+        <>
             <Box
                 mb={1}
                 display="grid"
@@ -34,24 +35,11 @@ export const GeneralForm = ({
             >
                 <TextField
                     name="date"
-                    value={formatTimestampToDate(values.createdAt)}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    error={Boolean(errors.date && touched.date)}
-                    helperText={touched.date && errors.date && String(errors.date)}
                     label="Date"
                     disabled
+                    value={values.createdAt ? formatTimestampToDate(values.createdAt) : new Date()}
                 />
-                <TextField
-                    name="number"
-                    value={values.number}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    error={Boolean(errors.number && touched.number)}
-                    helperText={touched.number && errors.number && String(errors.number)}
-                    label="Ticket ID"
-                    disabled
-                />
+                <TextField name="number" label="Ticket ID" disabled value={values.number} />
                 <TextField
                     name="company"
                     value={values.company}
@@ -121,17 +109,20 @@ export const GeneralForm = ({
                     request={getQuotes}
                     itemTitleField="number"
                     itemValueField="id"
-                    value={values.QuoteId}
+                    value={typeof values.QuoteId === "string" ? values.QuoteId : values.QuoteId?.id}
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
-                <TextField
-                    name="SoId"
-                    value={values.SoId}
+                <FieldSelect
+                    itemValueField="id"
+                    itemTitleField="number"
+                    request={getSO}
+                    name="soId"
+                    value={typeof values.soId === "string" ? values.soId : values.soId?.id}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    error={Boolean(errors.SoId && touched.SoId)}
-                    helperText={touched.SoId && errors.SoId && String(errors.SoId)}
+                    error={Boolean(errors.soId && touched.soId)}
+                    helperText={touched.soId && errors.soId && String(errors.soId)}
                     label="SO ID"
                 />
                 <TextField
@@ -144,9 +135,9 @@ export const GeneralForm = ({
                     label="Tag"
                 />
                 {!add && (
-                    <Fragment>
+                    <>
                         <FieldSelect
-                            value={values.assignedTo}
+                            value={typeof values.assignedTo === "string" ? values.assignedTo : values.assignedTo?.id}
                             request={getAllEmployees}
                             itemTitleField="username"
                             itemValueField="id"
@@ -156,7 +147,7 @@ export const GeneralForm = ({
                             onChange={handleChange}
                         />
                         <FieldSelect
-                            value={values.createdBy}
+                            value={typeof values.createdBy === "string" ? values.createdBy : values.createdBy?.id}
                             request={getAllEmployees}
                             itemTitleField="username"
                             itemValueField="id"
@@ -175,12 +166,13 @@ export const GeneralForm = ({
                             helperText={touched.subject && errors.subject && String(errors.subject)}
                             label="Subject"
                         />
-                    </Fragment>
+                    </>
                 )}
             </Box>
-        </Fragment>
+        </>
     );
 };
+
 export const MoreInfoForm = ({
     values,
     touched,
@@ -218,6 +210,7 @@ export const MoreInfoForm = ({
         </Box>
     );
 };
+
 export const MainContactForm = ({
     values,
     touched,
@@ -234,7 +227,7 @@ export const MainContactForm = ({
     return (
         <Box my={2} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr 1fr">
             <FieldSelect
-                value={values.assignedTo}
+                value={typeof values.assignedTo === "string" ? values.assignedTo : values.assignedTo?.id}
                 request={getAllEmployees}
                 itemTitleField="username"
                 itemValueField="id"
@@ -244,7 +237,7 @@ export const MainContactForm = ({
                 onChange={handleChange}
             />
             <FieldSelect
-                value={values.createdBy}
+                value={typeof values.createdBy === "string" ? values.createdBy : values.createdBy?.id}
                 request={getAllEmployees}
                 itemTitleField="username"
                 itemValueField="id"

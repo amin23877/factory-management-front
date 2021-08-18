@@ -165,26 +165,9 @@ export default function QuotePanel() {
                         >
                             Add Line item
                         </Button>
-                        <Button
-                            kind="add"
-                            onClick={() => setLineServiceModal(true)}
-                            disabled={!selectedQuote}
-                            // style={{ margin: "0 0.5em" }}
-                        >
+                        <Button kind="add" onClick={() => setLineServiceModal(true)} disabled={!selectedQuote}>
                             Add Line Service
                         </Button>
-                        {/* <Button
-                            kind="add"
-                            onClick={() => setAddNote(true)}
-                            disabled={!selectedQuote}
-                            style={{ margin: "0 0.5em" }}
-                        >
-                            Add Note
-                        </Button>
-
-                        <Button style={{ margin: "0 0.5em" }} onClick={() => setAddDoc(true)} disabled={!selectedQuote}>
-                            Add Document
-                        </Button> */}
                     </div>
                 ) : null}
                 <div style={{ flexGrow: 1 }} />

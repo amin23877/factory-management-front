@@ -28,6 +28,7 @@ import MyQRCode from "../../../app/QRCode";
 import { exportPdf } from "../../../logic/pdf";
 import { EditTaskModal } from "./TaskModal";
 import DeviceQRCode from "./QRCode";
+import { getModifiedValues } from "../../../logic/utils";
 
 function ItemsDetails({
     sales,
@@ -285,7 +286,7 @@ function ItemsDetails({
     const handleSubmit = async (data: any, { setSubmitting }: any) => {
         try {
             if (selectedRow) {
-                const resp = await updateAnItem(selectedRow.id, data);
+                const resp = await updateAnItem(selectedRow.id, getModifiedValues(data, selectedRow));
                 if (resp) {
                     setSubmitting(false);
                     Toast("Record updated successfully", "success");

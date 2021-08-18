@@ -1,7 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
+import { Box, Tabs, Tab } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import { Box, Tabs, Tab } from "@material-ui/core";
+
 import { AddressesForm, EntitiesForm, GeneralForm } from "./Forms";
 
 import Button from "../../../app/Button";
@@ -10,10 +11,11 @@ import Toast from "../../../app/Toast";
 
 import { IPO, updatePO } from "../../../api/po";
 
+const schema = Yup.object().shape({
+    // name: Yup.string().required(),
+});
+
 export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () => void }) {
-    const schema = Yup.object().shape({
-        // name: Yup.string().required(),
-    });
     const [activeTab, setActiveTab] = useState(0);
     const { number, file, ContactId, ClientId, EmployeeId, ProjectId, reciever, senderNumber } = poData;
 
@@ -59,7 +61,7 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                                         handleBlur={handleBlur}
                                         handleChange={handleChange}
                                     />
-                                    <Box display="flex" justifyContent="flex-end" my={2}>
+                                    <Box display="flex" justifyContent="center" my={2}>
                                         <Button disabled={isSubmitting} type="submit" kind="edit">
                                             Save
                                         </Button>
@@ -67,7 +69,13 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                                 </BasePaper>
                             </Box>
                             <Box flex={3}>
-                                <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", margin: "0 1em " }}>
+                                <BasePaper
+                                    style={{
+                                        boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
+                                        margin: "0 1em",
+                                        height: "100%",
+                                    }}
+                                >
                                     <Tabs
                                         textColor="primary"
                                         value={activeTab}
