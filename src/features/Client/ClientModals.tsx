@@ -5,7 +5,6 @@ import * as Yup from "yup";
 
 import Dialog from "../../app/Dialog";
 import Button from "../../app/Button";
-import { BasePaper } from "../../app/Paper";
 import { CommissionForm, GeneralForm, MainContactForm, MoreInfoForm } from "./Forms";
 
 import { addClient, AddClientInit } from "../../api/client";

@@ -36,14 +36,14 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                 <Form>
                     <Box display="flex" style={{ justifyContent: "space-evenly" }}>
                         <Box flex={2}>
-                            <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", margin: "0 1em " }}>
+                            <BasePaper style={{ margin: "0 1em" }}>
                                 <GeneralForm
                                     onChangeInit={setValues}
                                     values={values}
                                     handleBlur={handleBlur}
                                     handleChange={handleChange}
                                 />
-                                <Box display="flex" justifyContent="flex-end" my={2}>
+                                <Box display="flex" justifyContent="center" my={2}>
                                     <Button disabled={isSubmitting} type="submit" kind="edit">
                                         Save
                                     </Button>
@@ -51,7 +51,7 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                             </BasePaper>
                         </Box>
                         <Box flex={3}>
-                            <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", margin: "0 1em " }}>
+                            <BasePaper style={{ margin: "0 1em", height: "100%" }}>
                                 <Tabs
                                     textColor="primary"
                                     value={activeTab}

@@ -39,7 +39,7 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
                                 handleBlur={handleBlur}
                                 handleChange={handleChange}
                             />
-                            <Box display="flex" justifyContent="flex-end" mt={1}>
+                            <Box display="flex" justifyContent="center" mt={1}>
                                 <Button disabled={isSubmitting} type="submit" kind="edit">
                                     Save
                                 </Button>
@@ -47,9 +47,8 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
                         </BasePaper>
                         <BasePaper
                             style={{
-                                boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
-                                border: "none",
-                                margin: "0 1em ",
+                                margin: "0 1em",
+                                height: "100%",
                             }}
                         >
                             <Tabs
