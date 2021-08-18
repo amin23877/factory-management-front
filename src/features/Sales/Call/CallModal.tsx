@@ -1,27 +1,15 @@
 import React, { useState } from "react";
-import { Box, Tabs, Tab, Step, StepLabel, Stepper, IconButton } from "@material-ui/core";
+import { Box, Step, StepLabel, Stepper } from "@material-ui/core";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 
-import Dialog from "../../app/Dialog";
-import Button from "../../app/Button";
-import { CommissionForm, GeneralForm, MainContactForm, MoreInfoForm } from "./Forms";
+import Dialog from "../../../app/Dialog";
+import Button from "../../../app/Button";
+import { GeneralForm, MainContactForm, MoreInfoForm } from "./Forms";
 
-import { addClient, AddClientInit } from "../../api/client";
+import { addCall } from "../../../api/calls";
+import { mutate } from "swr";
 
-export const AddClientModal = ({
-    open,
-    onClose,
-    onDone,
-}: {
-    open: boolean;
-    onClose: () => void;
-    onDone: () => void;
-}) => {
-    const schema = Yup.object().shape({
-        ClientTypeId: Yup.string().required().notOneOf([0]),
-    });
-
+const AddCallModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
     const [activeStep, setActiveStep] = useState(0);
 
     const handleNext = () => {
@@ -31,16 +19,14 @@ export const AddClientModal = ({
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
-    const { errors, touched, values, handleChange, handleBlur, isSubmitting, handleSubmit } = useFormik({
-        initialValues: AddClientInit,
-        validationSchema: schema,
+    const { errors, touched, values, handleChange, handleBlur, handleSubmit } = useFormik({
+        initialValues: {},
         onSubmit: async (data: any, { setSubmitting }) => {
-            // console.log(data);
             try {
-                const resp = await addClient(data);
+                const resp = await addCall({ ...data, tags: [values.tags] });
                 if (resp.id) {
                     console.log(resp);
-                    onDone();
+                    mutate("/calls");
                     onClose();
                 } else {
                     console.log(resp);
@@ -60,32 +46,14 @@ export const AddClientModal = ({
                         <StepLabel>General information</StepLabel>
                     </Step>
                     <Step>
-                        <StepLabel>More Information</StepLabel>
+                        <StepLabel>Customer Problem</StepLabel>
                     </Step>
                     <Step>
-                        <StepLabel>Main Contact </StepLabel>
+                        <StepLabel>Our Response</StepLabel>
                     </Step>
-                    <Step>
-                        <StepLabel>Commissions</StepLabel>
-                    </Step>
-                    {/* <Step>
-                        <StepLabel>Add Contact</StepLabel>
-                    </Step> */}
                 </Stepper>
 
-                {/* 
-                            <Tabs
-                                textColor="primary"
-                                value={activeStep}
-                                onChange={(e, nv) => setActiveTab(nv)}
-                                variant="scrollable"
-                                style={{ maxWidth: 700 }}
-                            >
-                                <Tab label="More Info" />
-                                <Tab label="Main Contact" />
-                                <Tab label="Commission" />
-                            </Tabs> */}
-                <Box p={5}>
+                <Box p={5} style={{ padding: "30px 15%" }}>
                     {activeStep === 0 && (
                         <GeneralForm
                             values={values}
@@ -93,6 +61,7 @@ export const AddClientModal = ({
                             handleBlur={handleBlur}
                             handleChange={handleChange}
                             touched={touched}
+                            add={true}
                         />
                     )}
                     {activeStep === 1 && (
@@ -113,24 +82,6 @@ export const AddClientModal = ({
                             touched={touched}
                         />
                     )}
-                    {activeStep === 3 && (
-                        <CommissionForm
-                            values={values}
-                            errors={errors}
-                            handleBlur={handleBlur}
-                            handleChange={handleChange}
-                            touched={touched}
-                        />
-                    )}
-                    {/* {activeStep === 4 && (
-                        <CommissionForm
-                            values={values}
-                            errors={errors}
-                            handleBlur={handleBlur}
-                            handleChange={handleChange}
-                            touched={touched}
-                        />
-                    )} */}
                 </Box>
                 <Box
                     style={{
@@ -155,3 +106,5 @@ export const AddClientModal = ({
         </Dialog>
     );
 };
+
+export default AddCallModal;
