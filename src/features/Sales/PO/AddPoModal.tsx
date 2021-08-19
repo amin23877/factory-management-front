@@ -1,8 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
+import { Typography } from "@material-ui/core";
+import Box from "@material-ui/core/Box";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import Box from "@material-ui/core/Box";
-import PhotoSizeSelectActualOutlinedIcon from "@material-ui/icons/PhotoSizeSelectActualOutlined";
 
 import Dialog from "../../../app/Dialog";
 import TextField from "../../../app/TextField";
@@ -11,17 +11,24 @@ import { FieldSelect } from "../../../app/Inputs";
 
 import { createPO, IPO } from "../../../api/po";
 import { getContacts } from "../../../api/contact";
-import { getClients } from "../../../api/client";
+import { getCustomers } from "../../../api/customer";
 import { getAllEmployees } from "../../../api/employee";
 import { getProjects } from "../../../api/project";
-import { Typography } from "@material-ui/core";
+import FileUploader from "../../../app/FileUploader";
 
-export default function AddPOModal({ open, onClose, onDone }: { open: boolean; onClose: () => void; onDone: () => void }) {
+const schema = Yup.object().shape({
+    // name: Yup.string().required(),
+});
+export default function AddPOModal({
+    open,
+    onClose,
+    onDone,
+}: {
+    open: boolean;
+    onClose: () => void;
+    onDone: () => void;
+}) {
     const [fileName, setFileName] = useState("");
-    const uploader = useRef<HTMLInputElement | null>();
-    const schema = Yup.object().shape({
-        // name: Yup.string().required(),
-    });
 
     const handleSubmit = async (data: any, { setSubmitting }: any) => {
         try {
@@ -44,11 +51,7 @@ export default function AddPOModal({ open, onClose, onDone }: { open: boolean; o
                     {({ values, handleChange, handleBlur, errors, touched, setFieldValue }) => (
                         <Form>
                             <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-                                <input
-                                    hidden
-                                    type="file"
-                                    name="file"
-                                    ref={(e) => (uploader.current = e)}
+                                <FileUploader
                                     onChange={(e: any) => {
                                         if (e.target.files) {
                                             setFieldValue("file", e.target.files[0]);
@@ -57,20 +60,6 @@ export default function AddPOModal({ open, onClose, onDone }: { open: boolean; o
                                         }
                                     }}
                                 />
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    onClick={() => uploader.current?.click()}
-                                    fullWidth
-                                    style={{
-                                        backgroundColor: "#fff",
-                                        color: " rgb(43,140,255) ",
-                                        border: "1px solid rgb(43,140,255) ",
-                                    }}
-                                >
-                                    <PhotoSizeSelectActualOutlinedIcon style={{ marginRight: "7px" }} />
-                                    upload
-                                </Button>
                                 {fileName && <Typography variant="caption">{fileName}</Typography>}
                                 <TextField
                                     name="senderNumber"
@@ -95,7 +84,7 @@ export default function AddPOModal({ open, onClose, onDone }: { open: boolean; o
                                 <FieldSelect
                                     label="Client"
                                     name="ClientId"
-                                    request={getClients}
+                                    request={getCustomers}
                                     itemTitleField="name"
                                     itemValueField="id"
                                     value={values.ClientId}

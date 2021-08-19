@@ -10,36 +10,28 @@ import TextField from "../../app/TextField";
 import Button from "../../app/Button";
 import Toast from "../../app/Toast";
 
-import { addClientType, deleteClientType, editClientType, IClientType } from "../../api/clientType";
-import Confirm from "./Confirm";
+import { ICustomerType, addCustomerType, deleteCustomerType, editCustomerType } from "../../api/customerType";
+import Confirm from "../Modals/Confirm";
 
 const schema = Yup.object().shape({
     name: Yup.string().required(),
 });
 
-export const AllClientTypesModal = ({
-    open,
-    onClose,
-    onCTDone,
-}: {
-    onCTDone: () => void;
-    open: boolean;
-    onClose: () => void;
-}) => {
+export default function CustomerTypeModal({ open, onClose }: { open: boolean; onClose: () => void }) {
     const [confirm, setConfirm] = useState(false);
     const [selectedCT, setSelectedCT] = useState<string>();
-    const { data: clientTypes, mutate } = useSWR("/clientType");
+    const { data: customerTypes, mutate } = useSWR("/customerType");
 
-    const handleSubmit = async (d: IClientType, { resetForm }: any) => {
+    const handleSubmit = async (d: ICustomerType, { resetForm }: any) => {
         try {
             if (d.id) {
-                await editClientType(d.id, d.name);
+                await editCustomerType(d.id, d.name);
                 Toast("Record updated", "success");
-                resetForm({ values: { name: "" } as IClientType });
+                resetForm({ values: { name: "" } as ICustomerType });
             } else {
-                await addClientType(d.name);
+                await addCustomerType(d.name);
                 Toast("Record added", "success");
-                resetForm({ values: { name: "" } as IClientType });
+                resetForm({ values: { name: "" } as ICustomerType });
             }
         } catch (error) {
             console.log(error);
@@ -51,7 +43,7 @@ export const AllClientTypesModal = ({
     const handleDelete = async () => {
         try {
             if (selectedCT) {
-                await deleteClientType(selectedCT);
+                await deleteCustomerType(selectedCT);
                 Toast("Record deleted", "success");
                 setConfirm(false);
                 mutate();
@@ -64,7 +56,7 @@ export const AllClientTypesModal = ({
     return (
         <>
             <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
-            <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth title="Add client types">
+            <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth title="Add customer types">
                 <Box m={1}>
                     <Formik
                         initialValues={{} as { name: string; id?: string }}
@@ -86,14 +78,14 @@ export const AllClientTypesModal = ({
                                         </Button>
                                         <Button
                                             variant="outlined"
-                                            onClick={() => resetForm({ values: { name: "" } as IClientType })}
+                                            onClick={() => resetForm({ values: { name: "" } as ICustomerType })}
                                         >
                                             clear
                                         </Button>
                                     </Box>
                                     <List>
-                                        {clientTypes &&
-                                            clientTypes.map((ct: any) => (
+                                        {customerTypes &&
+                                            customerTypes.map((ct: any) => (
                                                 <ListItem key={ct.id}>
                                                     <ListItemText>{ct.name}</ListItemText>
                                                     <ListItemSecondaryAction>
@@ -120,4 +112,4 @@ export const AllClientTypesModal = ({
             </Dialog>
         </>
     );
-};
+}

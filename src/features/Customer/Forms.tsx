@@ -1,12 +1,13 @@
-import React, { Fragment } from "react";
+import React from "react";
 import { Box, FormControlLabel, FormLabel, RadioGroup, Radio, Checkbox, FormControl, Paper } from "@material-ui/core";
 
 import { FieldSelect } from "../../app/Inputs";
 import TextField from "../../app/TextField";
 
-import { getClients } from "../../api/client";
-import { getClientTypes } from "../../api/clientType";
+import { getCustomers } from "../../api/customer";
+import { getCustomerTypes } from "../../api/customerType";
 import { getAllEmployees } from "../../api/employee";
+// import CustomerTypeAutocomplete from "./ClientTypeAutocomplete";
 
 export const GeneralForm = ({
     values,
@@ -22,7 +23,7 @@ export const GeneralForm = ({
     handleChange: any;
 }) => {
     return (
-        <Fragment>
+        <>
             <Paper
                 style={{
                     margin: "0.5em 0 2em 0",
@@ -44,18 +45,19 @@ export const GeneralForm = ({
                 />
             </Paper>
             <Box mb={1} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr 1fr 1fr">
+                {/* TODO: Add customer type autocomplete later with good props */}
+                {/* <CustomerTypeAutocomplete /> */}
                 <FieldSelect
-                    request={getClientTypes}
+                    request={getCustomerTypes}
                     itemTitleField="name"
                     itemValueField="id"
-                    name="ClientTypeId"
+                    name="CustomerTypeId"
                     label="Customer Type"
                     fullWidth
                     onChange={handleChange}
-                    value={values.ClientTypeId}
-                    error={Boolean(errors.ClientTypeId)}
+                    value={values.CustomerTypeId}
+                    error={Boolean(errors.CustomerTypeId)}
                 />
-
                 <TextField
                     name="number"
                     value={values.number}
@@ -148,81 +150,6 @@ export const GeneralForm = ({
                     helperText={touched.productLine && errors.productLine && String(errors.productLine)}
                     label="Product Line"
                 />
-                {/* <TextField
-                name="location"
-                value={values.location}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={Boolean(errors.location && touched.location)}
-                helperText={touched.location && errors.location && String(errors.location)}
-                label="Location"
-            />
-
-            <TextField
-                name="defaultBillingContact"
-                value={values.defaultBillingContact}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={Boolean(errors.defaultBillingContact && touched.defaultBillingContact)}
-                helperText={
-                    touched.defaultBillingContact &&
-                    errors.defaultBillingContact &&
-                    String(errors.defaultBillingContact)
-                }
-                label="Default billing contact"
-            />
-            <TextField
-                name="preferredCompany"
-                value={values.preferredCompany}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={Boolean(errors.preferredCompany && touched.preferredCompany)}
-                helperText={touched.preferredCompany && errors.preferredCompany && String(errors.preferredCompany)}
-                label="Preferred company"
-            />
-            <TextField
-                name="preferredService"
-                value={values.preferredService}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={Boolean(errors.preferredService && touched.preferredService)}
-                helperText={touched.preferredService && errors.preferredService && String(errors.preferredService)}
-                label="Preferred service"
-            />
-            <TextField
-                name="account"
-                value={values.account}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={Boolean(errors.account && touched.account)}
-                helperText={touched.account && errors.account && String(errors.account)}
-                label="Account"
-            />
-            <TextField
-                name="specialInstructions"
-                value={values.specialInstructions}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={Boolean(errors.specialInstructions && touched.specialInstructions)}
-                helperText={
-                    touched.specialInstructions && errors.specialInstructions && String(errors.specialInstructions)
-                }
-                label="special instructions"
-            />
-            <TextField
-                name="allowedShippingPercentOverUnder"
-                value={values.allowedShippingPercentOverUnder}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={Boolean(errors.allowedShippingPercentOverUnder && touched.allowedShippingPercentOverUnder)}
-                helperText={
-                    touched.allowedShippingPercentOverUnder &&
-                    errors.allowedShippingPercentOverUnder &&
-                    String(errors.allowedShippingPercentOverUnder)
-                }
-                label="Shipping percent"
-            /> */}
-
                 <FormControl style={{ display: "flex", gridColumnEnd: "span 2" }}>
                     <FormLabel style={{ display: "inline" }}>Size</FormLabel>
                     <RadioGroup row name="size" value={values.size} onChange={handleChange}>
@@ -232,7 +159,7 @@ export const GeneralForm = ({
                     </RadioGroup>
                 </FormControl>
             </Box>
-        </Fragment>
+        </>
     );
 };
 export const MoreInfoForm = ({
@@ -296,7 +223,7 @@ export const MoreInfoForm = ({
                 label="fax"
             />
             <FieldSelect
-                request={getClients}
+                request={getCustomers}
                 itemTitleField="name"
                 itemValueField="id"
                 name="parent"

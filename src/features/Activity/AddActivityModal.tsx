@@ -1,5 +1,4 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
@@ -15,27 +14,26 @@ import { ActivityInit as init } from "../../api/activity";
 
 import Dialog from "../../app/Dialog";
 
-import { getClients } from "../../api/client";
+import { getCustomers } from "../../api/customer";
 import { getContacts } from "../../api/contact";
 import { getProjects } from "../../api/project";
 import { getAllEmployees } from "../../api/employee";
 import { getQuotes } from "../../api/quote";
-import { IActivity, createActivity, updateActivity } from "../../api/activity";
-import { fetcher } from "../../api";
+import { createActivity, updateActivity } from "../../api/activity";
+import { get } from "../../api";
 
-const useStyles = makeStyles({
-    fieldCont: (props: any) => ({
-        display: props.open ? "flex" : "inline",
-        justifyContent: "space-between",
-        margin: "0 0.5em",
-    }),
+const schema = Yup.object().shape({
+    name: Yup.string().required(),
 });
-
-export default function AddActivityModal({ open, onClose, onDone }: { open: boolean; onClose: () => void; onDone: () => void }) {
-    const schema = Yup.object().shape({
-        name: Yup.string().required(),
-    });
-
+export default function AddActivityModal({
+    open,
+    onClose,
+    onDone,
+}: {
+    open: boolean;
+    onClose: () => void;
+    onDone: () => void;
+}) {
     const handleSubmit = async (data: any, { setSubmitting }: { setSubmitting: any }) => {
         try {
             if (init && init?.id) {
@@ -61,7 +59,12 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                     {({ values, errors, touched, handleChange, handleBlur }) => (
                         <Form>
                             <Box>
-                                <Box display="grid" gridTemplateColumns="auto auto auto" gridColumnGap={10} gridRowGap={10}>
+                                <Box
+                                    display="grid"
+                                    gridTemplateColumns="auto auto auto"
+                                    gridColumnGap={10}
+                                    gridRowGap={10}
+                                >
                                     <TextField
                                         error={Boolean(errors.name && touched.name)}
                                         name="name"
@@ -109,7 +112,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                     />
                                     <FieldSelect
                                         style={{ width: "100%" }}
-                                        request={getClients}
+                                        request={getCustomers}
                                         itemTitleField="name"
                                         itemValueField="id"
                                         label="Client"
@@ -167,7 +170,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                         style={{ width: "100%" }}
                                         label="ActivityCategoryId"
                                         name="ActivityCategoryId"
-                                        request={() => fetcher("/activitycategory")}
+                                        request={() => get("/activitycategory")}
                                         itemTitleField="name"
                                         itemValueField="id"
                                         value={values.ActivityCategoryId}
@@ -179,7 +182,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                     <FieldSelect
                                         label="ActivityStatusId"
                                         name="ActivityStatusId"
-                                        request={() => fetcher("/activitystatus")}
+                                        request={() => get("/activitystatus")}
                                         itemTitleField="name"
                                         itemValueField="id"
                                         value={values.ActivityStatusId}
@@ -190,7 +193,7 @@ export default function AddActivityModal({ open, onClose, onDone }: { open: bool
                                     <FieldSelect
                                         label="ActivityPriorityId"
                                         name="ActivityPriorityId"
-                                        request={() => fetcher("/activitypriority")}
+                                        request={() => get("/activitypriority")}
                                         itemTitleField="name"
                                         itemValueField="id"
                                         value={values.ActivityPriorityId}
