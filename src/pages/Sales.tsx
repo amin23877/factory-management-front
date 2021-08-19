@@ -11,7 +11,7 @@ import DevicesPanel from "../features/Engineering/Devices";
 import Dashboard from "../features/Sales/Dashboard";
 import Calls from "../features/Sales/Call";
 
-import Clients from "../pages/Clients";
+import Customers from "./Customer";
 
 export default function Sales() {
     const [activeTab, setActiveTab] = useState(0);
@@ -37,7 +37,7 @@ export default function Sales() {
             {activeTab === 3 && <QuotePanel />}
             {activeTab === 4 && <PurchaseOrderPanel />}
             {activeTab === 5 && <SalesOrderPanel />}
-            {activeTab === 6 && <Clients />}
+            {activeTab === 6 && <Customers />}
         </Container>
     );
 }

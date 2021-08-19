@@ -10,7 +10,7 @@ import TextField from "../../app/TextField";
 import { FieldSelect } from "../../app/Inputs";
 import Button from "../../app/Button";
 
-import { getClients } from "../../api/client";
+import { getCustomers } from "../../api/customer";
 import { getContacts } from "../../api/contact";
 import { getProjects } from "../../api/project";
 import { getAllEmployees } from "../../api/employee";
@@ -19,11 +19,19 @@ import { IActivity, createActivity, updateActivity } from "../../api/activity";
 import { fetcher } from "../../api";
 import { BasePaper } from "../../app/Paper";
 
-export default function EditActivityForm({ open, init, onDone }: { open?: boolean; init: IActivity; onDone: () => void }) {
-    const schema = Yup.object().shape({
-        name: Yup.string().required(),
-    });
+const schema = Yup.object().shape({
+    name: Yup.string().required(),
+});
 
+export default function EditActivityForm({
+    open,
+    init,
+    onDone,
+}: {
+    open?: boolean;
+    init: IActivity;
+    onDone: () => void;
+}) {
     const handleSubmit = async (data: IActivity, { setSubmitting }: { setSubmitting: any }) => {
         try {
             if (init && init?.id) {
@@ -105,7 +113,7 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                     />
                                     <FieldSelect
                                         style={{ flex: "1 1 25%", marginRight: 5 }}
-                                        request={getClients}
+                                        request={getCustomers}
                                         itemTitleField="name"
                                         itemValueField="id"
                                         label="Client"
@@ -255,7 +263,14 @@ export default function EditActivityForm({ open, init, onDone }: { open?: boolea
                                     />
                                 </Box>
                                 <Box my={4}>
-                                    <div style={{ display: "flex", width: "100%", alignItems: "flex-end", marginTop: "auto" }}>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            width: "100%",
+                                            alignItems: "flex-end",
+                                            marginTop: "auto",
+                                        }}
+                                    >
                                         <Button kind="add" type="submit" style={{ flex: 1 }}>
                                             {open ? "Add" : "Save"}
                                         </Button>

@@ -20,14 +20,13 @@ import { FieldSelect, ArraySelect } from "../../../app/Inputs";
 
 import { getAllEmployees } from "../../../api/employee";
 import { getContacts } from "../../../api/contact";
-import { getClients } from "../../../api/client";
+import { getCustomers } from "../../../api/customer";
 import { getAddresses } from "../../../api/address";
 import { getPhones } from "../../../api/phone";
 import { getEmails } from "../../../api/emailAddress";
 import { getProjects } from "../../../api/project";
 import { getAllAgencies } from "../../../api/agency";
 import { getQuoteById, getQuotes } from "../../../api/quote";
-import { getAllDivison } from "../../../api/division";
 import { getTickets } from "../../../api/ticket";
 import Button from "../../../app/Button";
 import SOCus from "../../../PDFTemplates/SOCus";
@@ -1084,7 +1083,7 @@ export const TermsTab = ({
             />
             <FieldSelect
                 value={values.ClientId ? values.ClientId : ""}
-                request={getClients}
+                request={getCustomers}
                 itemTitleField="name"
                 itemValueField="id"
                 keyField="id"

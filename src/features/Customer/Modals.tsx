@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Tabs, Tab, Step, StepLabel, Stepper, IconButton } from "@material-ui/core";
+import { Box, Step, StepLabel, Stepper } from "@material-ui/core";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -7,9 +7,12 @@ import Dialog from "../../app/Dialog";
 import Button from "../../app/Button";
 import { CommissionForm, GeneralForm, MainContactForm, MoreInfoForm } from "./Forms";
 
-import { addClient, AddClientInit } from "../../api/client";
+import { addCustomer, ICustomer } from "../../api/customer";
 
-export const AddClientModal = ({
+const schema = Yup.object().shape({
+    CustomerTypeId: Yup.string().required().notOneOf([0]),
+});
+export default function AddCustomerModal({
     open,
     onClose,
     onDone,
@@ -17,11 +20,7 @@ export const AddClientModal = ({
     open: boolean;
     onClose: () => void;
     onDone: () => void;
-}) => {
-    const schema = Yup.object().shape({
-        ClientTypeId: Yup.string().required().notOneOf([0]),
-    });
-
+}) {
     const [activeStep, setActiveStep] = useState(0);
 
     const handleNext = () => {
@@ -31,13 +30,13 @@ export const AddClientModal = ({
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
-    const { errors, touched, values, handleChange, handleBlur, isSubmitting, handleSubmit } = useFormik({
-        initialValues: AddClientInit,
+    const { errors, touched, values, handleChange, handleBlur, handleSubmit } = useFormik({
+        initialValues: {} as ICustomer,
         validationSchema: schema,
         onSubmit: async (data: any, { setSubmitting }) => {
             // console.log(data);
             try {
-                const resp = await addClient(data);
+                const resp = await addCustomer(data);
                 if (resp.id) {
                     console.log(resp);
                     onDone();
@@ -72,19 +71,6 @@ export const AddClientModal = ({
                         <StepLabel>Add Contact</StepLabel>
                     </Step> */}
                 </Stepper>
-
-                {/* 
-                            <Tabs
-                                textColor="primary"
-                                value={activeStep}
-                                onChange={(e, nv) => setActiveTab(nv)}
-                                variant="scrollable"
-                                style={{ maxWidth: 700 }}
-                            >
-                                <Tab label="More Info" />
-                                <Tab label="Main Contact" />
-                                <Tab label="Commission" />
-                            </Tabs> */}
                 <Box p={5}>
                     {activeStep === 0 && (
                         <GeneralForm
@@ -154,4 +140,4 @@ export const AddClientModal = ({
             </form>
         </Dialog>
     );
-};
+}

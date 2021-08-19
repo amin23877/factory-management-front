@@ -11,7 +11,7 @@ import CheckBox from "@material-ui/core/Checkbox";
 import TextField from "../../app/TextField";
 import { FieldSelect } from "../../app/Inputs";
 
-import { getClients } from "../../api/client";
+import { getCustomers } from "../../api/customer";
 import { getContacts } from "../../api/contact";
 import { getProjects } from "../../api/project";
 import { getAllEmployees } from "../../api/employee";
@@ -19,11 +19,18 @@ import { getQuotes } from "../../api/quote";
 import { IActivity } from "../../api/activity";
 import { fetcher } from "../../api";
 
-export default function ActivityModal({ open, onClose, activity }: { open: boolean; onClose: () => void; activity: IActivity }) {
-    const schema = Yup.object().shape({
-        name: Yup.string().required(),
-    });
-
+const schema = Yup.object().shape({
+    name: Yup.string().required(),
+});
+export default function ActivityModal({
+    open,
+    onClose,
+    activity,
+}: {
+    open: boolean;
+    onClose: () => void;
+    activity: IActivity;
+}) {
     const handleSubmit = async (data: IActivity, { setSubmitting }: { setSubmitting: any }) => {
         console.log(data);
     };
@@ -57,7 +64,13 @@ export default function ActivityModal({ open, onClose, activity }: { open: boole
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
-                                <TextField name="notes" label="notes" value={values.notes} onChange={handleChange} onBlur={handleBlur} />
+                                <TextField
+                                    name="notes"
+                                    label="notes"
+                                    value={values.notes}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
                                 <TextField
                                     type="date"
                                     name="startTime"
@@ -75,7 +88,7 @@ export default function ActivityModal({ open, onClose, activity }: { open: boole
                                     onBlur={handleBlur}
                                 />
                                 <FieldSelect
-                                    request={getClients}
+                                    request={getCustomers}
                                     itemTitleField="name"
                                     itemValueField="id"
                                     label="Client"
