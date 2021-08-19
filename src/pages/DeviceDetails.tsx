@@ -125,11 +125,22 @@ function DeviceDetails() {
         []
     );
 
-    const noteCols = useMemo(
+    const noteCols = useMemo<GridColumns>(
         () => [
-            { field: "subject", headerName: "Subject", flex: 1 },
-            { field: "url", headerName: "URL", flex: 1 },
-            { field: "note", headerName: "Note", flex: 2 },
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            {
+                field: "creator",
+                headerName: "Creator",
+                width: 180,
+                valueFormatter: (params) => params.row?.EmployeeId?.username,
+            },
+            { field: "subject", headerName: "Subject", width: 300 },
+            { field: "note", headerName: "Note", flex: 1 },
         ],
         []
     );

@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useRef } from "react";
 import { Box, Grid, Tabs, Tab, LinearProgress, Typography } from "@material-ui/core";
-import { GridColDef } from "@material-ui/data-grid";
+import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { useParams } from "react-router-dom";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
@@ -27,6 +27,7 @@ import Toast from "../app/Toast";
 import UploadButton from "../app/FileUploader";
 import { exportPdf } from "../logic/pdf";
 import QRCode from "../features/Items/QRCode";
+import { formatTimestampToDate } from "../logic/date";
 
 function ItemsDetails() {
     const qrCode = useRef<HTMLElement | null>(null);
@@ -96,12 +97,22 @@ function ItemsDetails() {
         ],
         []
     );
-
-    const noteCols = useMemo(
+    const noteCols = useMemo<GridColumns>(
         () => [
-            { field: "subject", headerName: "Subject" },
-            { field: "url", headerName: "URL" },
-            { field: "note", headerName: "Note", width: 300 },
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            {
+                field: "creator",
+                headerName: "Creator",
+                width: 180,
+                valueFormatter: (params) => params.row?.EmployeeId?.username,
+            },
+            { field: "subject", headerName: "Subject", width: 300 },
+            { field: "note", headerName: "Note", flex: 1 },
         ],
         []
     );

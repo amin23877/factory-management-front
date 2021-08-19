@@ -1,6 +1,6 @@
 import React, { useMemo, useState, useRef, Fragment } from "react";
 import { Box, Grid, Tabs, Tab, LinearProgress, Typography } from "@material-ui/core";
-import { GridColDef } from "@material-ui/data-grid";
+import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 
@@ -140,7 +140,7 @@ function ItemsDetails({
         []
     );
 
-    const noteCols = useMemo<GridColDef[]>(
+    const noteCols = useMemo<GridColumns>(
         () => [
             {
                 field: "date",
@@ -148,13 +148,17 @@ function ItemsDetails({
                 valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
                 width: 120,
             },
-            { field: "creator", headerName: "Creator", width: 180 },
+            {
+                field: "creator",
+                headerName: "Creator",
+                width: 180,
+                valueFormatter: (params) => params.row?.EmployeeId?.username,
+            },
             { field: "subject", headerName: "Subject", width: 300 },
             { field: "note", headerName: "Note", flex: 1 },
         ],
         []
     );
-    // File 	Date	Creator	File Name 	File ID	File Description	File Type
 
     const docCols = useMemo<GridColDef[]>(
         () => [
