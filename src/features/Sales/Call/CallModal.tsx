@@ -25,7 +25,6 @@ const AddCallModal = ({ open, onClose }: { open: boolean; onClose: () => void })
         onSubmit: async (data: any, { setSubmitting }) => {
             try {
                 await addCall({ ...data, tags: [values.tags] });
-
                 mutate("/calls");
                 onClose();
             } catch (error) {

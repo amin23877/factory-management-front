@@ -147,7 +147,7 @@ export const FinalForm = ({
             <Box height="85%" display="flex" flexDirection="column">
                 <Typography variant="h5">Are you sure?</Typography>
                 <Typography variant="subtitle1" style={{ margin: "1em 0" }}>
-                    If you finilize your Purchase order, You can't update it, So if you want to update it you should
+                    If you finalize your Purchase order, You can't update it, So if you want to update it you should
                     make new version or add new one
                 </Typography>
                 {loading && <LinearProgress />}
@@ -157,7 +157,7 @@ export const FinalForm = ({
                         Back to lines
                     </Button>
                     <Button onClick={handleSubmit} color="primary" variant="contained">
-                        Finilize
+                        Finalize
                     </Button>
                 </Box>
             </Box>

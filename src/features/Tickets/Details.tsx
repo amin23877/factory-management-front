@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Box, Tab, Tabs } from "@material-ui/core";
-import { GridColDef } from "@material-ui/data-grid";
+import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import useSWR, { mutate } from "swr";
 import { Formik } from "formik";
 
@@ -14,6 +14,7 @@ import { ITicket, schema, updateTicket } from "../../api/ticket";
 import { fetcher } from "../../api";
 import QuoteDatagrid from "../Sales/Quote/Datagrid";
 import { getModifiedValues } from "../../logic/utils";
+import { formatTimestampToDate } from "../../logic/date";
 
 export default function Details({
     initialValue,
@@ -36,11 +37,25 @@ export default function Details({
     const [msg, setMsg] = useState("");
     const [severity, setSeverity] = useState<"success" | "info" | "warning" | "error">("info");
 
-    const noteCols: GridColDef[] = [
-        { field: "subject", headerName: "Subject" },
-        { field: "url", headerName: "URL" },
-        { field: "note", headerName: "Note", width: 300 },
-    ];
+    const noteCols = useMemo<GridColumns>(
+        () => [
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            {
+                field: "creator",
+                headerName: "Creator",
+                width: 180,
+                valueFormatter: (params) => params.row?.EmployeeId?.username,
+            },
+            { field: "subject", headerName: "Subject", width: 300 },
+            { field: "note", headerName: "Note", flex: 1 },
+        ],
+        []
+    );
 
     const docCols: GridColDef[] = [
         { field: "name", headerName: "Name" },

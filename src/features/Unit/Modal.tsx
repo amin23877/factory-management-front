@@ -13,6 +13,7 @@ import { IUnitHistory } from "../../api/units";
 import { IItem } from "../../api/items";
 import BaseDataGrid from "../../app/BaseDataGrid";
 import { Form, Formik } from "formik";
+import { formatTimestampToDate } from "../../logic/date";
 
 function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; unit: IUnitHistory }) {
     const [activeTab, setActiveTab] = useState(0);
@@ -75,12 +76,25 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
         { field: "type", headerName: "File Type", width: 140 },
     ];
 
-    const noteCols = [
-        { field: "subject", headerName: "Subject" },
-        { field: "url", headerName: "URL" },
-        { field: "note", headerName: "Note", width: 300 },
-    ];
-
+    const noteCols = useMemo<GridColumns>(
+        () => [
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            {
+                field: "creator",
+                headerName: "Creator",
+                width: 180,
+                valueFormatter: (params) => params.row?.EmployeeId?.username,
+            },
+            { field: "subject", headerName: "Subject", width: 300 },
+            { field: "note", headerName: "Note", flex: 1 },
+        ],
+        []
+    );
     return (
         <Dialog open={open} onClose={onClose} title="Unit history" fullScreen>
             <Box m={2} height={500}>

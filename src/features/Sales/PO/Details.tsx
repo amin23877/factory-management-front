@@ -62,7 +62,12 @@ export default function Details({
                 valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
                 width: 120,
             },
-            { field: "creator", headerName: "Creator", width: 180 },
+            {
+                field: "creator",
+                headerName: "Creator",
+                width: 180,
+                valueFormatter: (params) => params.row?.EmployeeId?.username,
+            },
             { field: "subject", headerName: "Subject", width: 300 },
             { field: "note", headerName: "Note", flex: 1 },
         ],

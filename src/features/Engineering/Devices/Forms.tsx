@@ -157,7 +157,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
                 disabled={sales}
             />
             <TextField
-                style={{ gridColumnEnd: "span 4" }}
+                style={{ gridColumnEnd: "span 2" }}
                 label="Lead Time"
                 placeholder="Lead Time"
                 name="lead"
@@ -168,8 +168,8 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
                 disabled={sales}
             />
             <TextField
-                style={{ gridColumnEnd: "span 4" }}
-                label="Retail Price"
+                style={{ gridColumnEnd: "span 2" }}
+                label="Price"
                 name="retailPrice"
                 onChange={handleChange}
                 onBlur={handleBlur}
