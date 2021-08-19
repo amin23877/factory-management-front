@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { Box, Tab, Tabs } from "@material-ui/core";
 import { getVendorItems, IVendor } from "../../api/vendor";
@@ -6,8 +6,9 @@ import { BasePaper } from "../../app/Paper";
 
 import { UpdateVendorForm } from "./Forms";
 import { IVending } from "../../api/vending";
-import { GridColDef } from "@material-ui/data-grid";
+import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import BaseDataGrid from "../../app/BaseDataGrid";
+import { formatTimestampToDate } from "../../logic/date";
 
 export default function VendorDetails({
     vendor,
@@ -79,11 +80,25 @@ export default function VendorDetails({
         { field: "availableQoh" },
         { field: "allocatedQoh" },
     ];
-    const noteCols: GridColDef[] = [
-        { field: "subject", headerName: "Subject" },
-        { field: "url", headerName: "URL" },
-        { field: "note", headerName: "Note", width: 300 },
-    ];
+    const noteCols = useMemo<GridColumns>(
+        () => [
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            {
+                field: "creator",
+                headerName: "Creator",
+                width: 180,
+                valueFormatter: (params) => params.row?.EmployeeId?.username,
+            },
+            { field: "subject", headerName: "Subject", width: 300 },
+            { field: "note", headerName: "Note", flex: 1 },
+        ],
+        []
+    );
 
     const docCols: GridColDef[] = [
         { field: "name", headerName: "Name" },
