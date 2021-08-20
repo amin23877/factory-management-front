@@ -9,7 +9,13 @@ import Dialog from "../../app/Dialog";
 import { FieldSelect } from "../../app/Inputs";
 
 import { getEmailAddressTypes } from "../../api/emailAddressType";
-import { createAModelEmailAddr, deleteAModelEmailAddr, updateAModelEmailAddr, IEmailAddress } from "../../api/emailAddress";
+import {
+    createAModelEmailAddr,
+    deleteAModelEmailAddr,
+    updateAModelEmailAddr,
+    IEmailAddress,
+} from "../../api/emailAddress";
+import { mutate } from "swr";
 
 const schema = Yup.object().shape({
     email: Yup.string().required(),
@@ -37,6 +43,7 @@ export const EmailModal = ({
                 .then(() => {
                     onClose();
                     onDone && onDone();
+                    mutate(`/email/vendor/${itemId}`);
                 })
                 .catch((e) => console.log(e));
         }
@@ -45,10 +52,10 @@ export const EmailModal = ({
         if (data?.id) {
             updateAModelEmailAddr(data?.id, values)
                 .then((d: any) => {
-                    console.log(d);
                     onDone && onDone();
                     setSubmitting(false);
                     onClose();
+                    mutate(`/email/vendor/${itemId}`);
                 })
                 .catch((e) => console.log(e));
         } else {
@@ -66,7 +73,11 @@ export const EmailModal = ({
     return (
         <Dialog open={open} onClose={onClose} maxWidth="xs" title={`${data?.id ? "Edit" : "Add"} an Email to ${model}`}>
             <Box m={3}>
-                <Formik initialValues={data?.id ? data : ({} as IEmailAddress)} validationSchema={schema} onSubmit={handleSubmit}>
+                <Formik
+                    initialValues={data?.id ? data : ({} as IEmailAddress)}
+                    validationSchema={schema}
+                    onSubmit={handleSubmit}
+                >
                     {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
                         <Form>
                             <Box display="grid" gridTemplateColumns="1fr" gridRowGap={8}>

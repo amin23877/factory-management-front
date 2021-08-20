@@ -10,6 +10,7 @@ import { FieldSelect } from "../../app/Inputs";
 
 import { createAModelAddress, deleteAModelAddress, updateAModelAddress, IAddress } from "../../api/address";
 import { getAddressTypes } from "../../api/addressType";
+import { mutate } from "swr";
 
 const schema = Yup.object().shape({
     AddressTypeId: Yup.number().required().notOneOf([0]),
@@ -29,19 +30,19 @@ export const AddressModal = ({ open, onClose, model, itemId, data, onDone }: add
         if (data?.id) {
             updateAModelAddress(data?.id, values)
                 .then((d) => {
-                    console.log(d);
                     onDone && onDone();
                     setSubmitting(false);
                     onClose();
+                    mutate(`/address/vendor/${itemId}`);
                 })
                 .catch((e) => console.log(e));
         } else {
             createAModelAddress(model, itemId, values)
                 .then((d) => {
-                    console.log(d);
                     onDone && onDone();
                     setSubmitting(false);
                     onClose();
+                    mutate(`/address/vendor/${itemId}`);
                 })
                 .catch((e) => console.log(e));
         }

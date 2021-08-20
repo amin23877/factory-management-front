@@ -1,15 +1,13 @@
 import React from "react";
 import { Box, FormControlLabel, Checkbox } from "@material-ui/core";
-
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import { mutate } from "swr";
 
 import Dialog from "../../app/Dialog";
 import TextField from "../../app/TextField";
 import Button from "../../app/Button";
-import { FieldSelect } from "../../app/Inputs";
 
-import { getContactTypes } from "../../api/contactType";
 import { createAModelContact, deleteAModelContact, updateAModelContact, IContact } from "../../api/contact";
 
 const schema = Yup.object().shape({
@@ -38,6 +36,7 @@ export const ContactModal = ({
                 .then(() => {
                     onClose();
                     onDone && onDone();
+                    mutate(`/contact/${model}/${itemId}`);
                 })
                 .catch((e) => console.log(e));
         }
@@ -47,19 +46,19 @@ export const ContactModal = ({
         if (data?.id) {
             updateAModelContact(data?.id, values)
                 .then((d: any) => {
-                    console.log(d);
                     onDone && onDone();
                     setSubmitting(false);
                     onClose();
+                    mutate(`/contact/${model}/${itemId}`);
                 })
                 .catch((e) => console.log(e));
         } else {
             createAModelContact("client", itemId, values)
                 .then((d: any) => {
-                    console.log(d);
                     onDone && onDone();
                     setSubmitting(false);
                     onClose();
+                    mutate(`/contact/${model}/${itemId}`);
                 })
                 .catch((e) => console.log(e));
         }

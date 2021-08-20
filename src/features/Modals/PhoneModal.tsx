@@ -10,6 +10,7 @@ import { FieldSelect } from "../../app/Inputs";
 
 import { getPhoneTypes } from "../../api/phoneType";
 import { createAModelPhone, deleteAModelPhone, updateAModelPhone, IPhone } from "../../api/phone";
+import { mutate } from "swr";
 
 const schema = Yup.object().shape({
     ext: Yup.string().required(),
@@ -36,19 +37,19 @@ export const PhoneModal = ({
         if (data?.id) {
             updateAModelPhone(data?.id, values)
                 .then((d: any) => {
-                    console.log(d);
                     onDone && onDone();
                     setSubmitting(false);
                     onClose();
+                    mutate(`/phone/vendor/${itemId}`);
                 })
                 .catch((e) => console.log(e));
         } else {
             createAModelPhone(model, itemId, values)
                 .then((d: any) => {
-                    console.log(d);
                     onDone && onDone();
                     setSubmitting(false);
                     onClose();
+                    mutate(`/phone/vendor/${itemId}`);
                 })
                 .catch((e) => console.log(e));
         }
@@ -68,7 +69,11 @@ export const PhoneModal = ({
     return (
         <Dialog open={open} onClose={onClose} title={`${data?.id ? "Edit" : "Add"} a Phone to ${model}`}>
             <Box m={3}>
-                <Formik initialValues={data?.id ? data : ({} as IPhone)} validationSchema={schema} onSubmit={handleSubmit}>
+                <Formik
+                    initialValues={data?.id ? data : ({} as IPhone)}
+                    validationSchema={schema}
+                    onSubmit={handleSubmit}
+                >
                     {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
                         <Form>
                             <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={8} gridColumnGap={8}>
@@ -115,7 +120,12 @@ export const PhoneModal = ({
                                     control={<Checkbox />}
                                 />
 
-                                <Button type="submit" style={{ flex: 1 }} disabled={isSubmitting} kind={data ? "edit" : "add"}>
+                                <Button
+                                    type="submit"
+                                    style={{ flex: 1 }}
+                                    disabled={isSubmitting}
+                                    kind={data ? "edit" : "add"}
+                                >
                                     Save
                                 </Button>
                                 {data?.id && (

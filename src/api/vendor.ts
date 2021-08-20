@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 export type IVendor = {
-    id?: string;
+    id: string;
     name: string;
     description: string;
 };
@@ -42,9 +42,9 @@ export const deleteVendor = async (id: string) => {
     }
 };
 
-export const getVendorItems = async (VendorId: string) => {
+export const getVendorItems = async (vendorId: string) => {
     try {
-        const resp = await Axios.get(`/vendor/${VendorId}/items`);
+        const resp = await Axios.get(`/vendor/${vendorId}/items`);
         return resp.data;
     } catch (error) {
         throw error;
@@ -60,9 +60,9 @@ export const getItemVendors = async (itemId: string) => {
     }
 };
 
-export const getVendorVendings = async (VendorId: string) => {
+export const getVendorVendings = async (vendorId: string) => {
     try {
-        const resp = await Axios.get(`/vending`, { params: { VendorId } });
+        const resp = await Axios.get(`/vending`, { params: { vendorId } });
         return resp.data;
     } catch (error) {
         throw error;

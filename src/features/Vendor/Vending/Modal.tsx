@@ -2,15 +2,23 @@ import React from "react";
 import { Box } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import { mutate } from "swr";
 
-import Dialog from "../../app/Dialog";
-import TextField from "../../app/TextField";
-import Button from "../../app/Button";
-import { FieldSelect } from "../../app/Inputs";
+import Dialog from "../../../app/Dialog";
+import TextField from "../../../app/TextField";
+import Button from "../../../app/Button";
+import { FieldSelect } from "../../../app/Inputs";
 
-import { IVendor } from "../../api/vendor";
-import { createVending, deleteVending, IVending, updateVending } from "../../api/vending";
-import { getItems } from "../../api/items";
+import { IVendor } from "../../../api/vendor";
+import { createVending, deleteVending, updateVending } from "../../../api/vending";
+import { getItems } from "../../../api/items";
+
+const schema = Yup.object().shape({
+    serialNo: Yup.string().required(),
+    ItemId: Yup.string().required(),
+    leadTime: Yup.number().required(),
+    // lastCheckedPrice: Yup.number().required(),
+});
 
 export default function VendingModal({
     open,
@@ -21,25 +29,39 @@ export default function VendingModal({
 }: {
     initialValues?: any;
     open: boolean;
-    vendor?: IVendor;
+    vendor: IVendor;
     onClose: () => void;
-    onDone: () => void;
+    onDone?: () => void;
 }) {
-    const schema = Yup.object().shape({
-        serialNo: Yup.string().required(),
-        ItemId: Yup.string().required(),
-        leadTime: Yup.number().required(),
-        lastCheckedPrice: Yup.number().required(),
-    });
-
     const handleDelete = async () => {
         try {
             if (initialValues && initialValues.id) {
                 const resp = await deleteVending(initialValues?.id);
                 if (resp) {
-                    onDone();
+                    onDone && onDone();
                     onClose();
+                    mutate(`/vendings?VendorId=${vendor.id}`);
                 }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleSubmit = async (d: any) => {
+        try {
+            if (initialValues && initialValues.id) {
+                const resp = await updateVending(initialValues.id, d);
+                if (resp) {
+                    onDone && onDone();
+                    onClose();
+                    mutate(`/vendings?VendorId=${vendor.id}`);
+                }
+            } else {
+                await createVending({ ...d, VendorId: vendor.id });
+                onDone && onDone();
+                onClose();
+                mutate(`/vendings?VendorId=${vendor.id}`);
             }
         } catch (error) {
             console.log(error);
@@ -48,41 +70,16 @@ export default function VendingModal({
 
     return (
         <Dialog
-            title={initialValues?.id ? "Edit Vending" : `Add new vending to ${vendor?.name}`}
+            title={initialValues?.id ? "Edit Vending" : `Add New Vending to ${vendor?.name}`}
             open={open}
             onClose={onClose}
         >
             <Box p={2}>
-                <Formik
-                    initialValues={initialValues || {}}
-                    validationSchema={schema}
-                    onSubmit={async (d: any) => {
-                        try {
-                            if (initialValues && initialValues.id) {
-                                const resp = await updateVending(initialValues.id, d);
-                                if (resp) {
-                                    onDone();
-                                    onClose();
-                                }
-                            } else {
-                                if (vendor && vendor.id) {
-                                    const resp = await createVending({ ...d, VendorId: vendor.id });
-                                    if (resp) {
-                                        onDone();
-                                        onClose();
-                                    }
-                                }
-                            }
-                        } catch (error) {
-                            console.log(error);
-                        }
-                    }}
-                >
+                <Formik initialValues={initialValues || {}} validationSchema={schema} onSubmit={handleSubmit}>
                     {({ values, errors, handleChange, handleBlur }: any) => (
                         <Form>
                             <Box display="grid" gridTemplateColumns="auto auto" gridColumnGap="0.5em" gridRowGap={8}>
                                 <TextField
-                                    style={{ width: "100%" }}
                                     name="serialNo"
                                     label="serial number"
                                     value={values.serialNo}
@@ -91,7 +88,6 @@ export default function VendingModal({
                                     error={Boolean(errors.serialNo)}
                                 />
                                 <TextField
-                                    style={{ width: "100%" }}
                                     name="leadTime"
                                     label="Lead time"
                                     value={values.leadTime}
@@ -100,7 +96,6 @@ export default function VendingModal({
                                     error={Boolean(errors.leadTime)}
                                 />
                                 <TextField
-                                    style={{ width: "100%" }}
                                     name="cost"
                                     label="Cost"
                                     value={values.cost}
@@ -109,7 +104,6 @@ export default function VendingModal({
                                     error={Boolean(errors.cost)}
                                 />
                                 <TextField
-                                    style={{ width: "100%" }}
                                     name="comment"
                                     label="Comment"
                                     value={values.comment}
@@ -118,9 +112,9 @@ export default function VendingModal({
                                     error={Boolean(errors.comment)}
                                 />
                                 <FieldSelect
-                                    style={{ width: "100%", justifyContent: "space-around" }}
+                                    style={{ gridColumnEnd: "span 2" }}
                                     request={getItems}
-                                    getOptionList={(data) => data.items}
+                                    getOptionList={(data) => data.result}
                                     itemTitleField="name"
                                     itemValueField="id"
                                     name="ItemId"
@@ -130,8 +124,6 @@ export default function VendingModal({
                                     onBlur={handleBlur}
                                     error={Boolean(errors.ItemId)}
                                 />
-                                <div />
-                                <div />
                             </Box>
                             <Box display="flex" alignItems="center">
                                 <Button

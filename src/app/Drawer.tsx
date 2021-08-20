@@ -1,20 +1,22 @@
 import React, { useState } from "react";
 import { Drawer, List, ListItem, Divider, ListItemIcon, makeStyles, ListItemText } from "@material-ui/core";
-import ShopRounded from "@material-ui/icons/ShopRounded";
-import ShoppingCartRounded from "@material-ui/icons/ShoppingCartRounded";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
+
+import ShoppingCartRounded from "@material-ui/icons/ShoppingCartRounded";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import { SettingsRounded } from "@material-ui/icons";
 
 import CustomScrollbars from "./CustomScroll";
+
+import { useChat } from "../logic/Chat/ChatContext";
+
 import { logout } from "../features/Session/sessionsSlice";
 import Confirm from "../features/Modals/Confirm";
 
 import phazifyLogo from "../assets/phazify.png";
 import phocusLogo from "../assets/logo.png";
 import drawerBg from "../assets/sidebar.png";
-import { SettingsRounded } from "@material-ui/icons";
-import { useChat } from "../logic/Chat/ChatContext";
 
 const drawerItems = [
     {
@@ -95,52 +97,6 @@ const drawerItems = [
             </svg>
         ),
     },
-    // {
-    //     name: "Clients",
-    //     link: "/panel/clients",
-    //     icon: (
-    //         <svg
-    //             id="file-text"
-    //             fill="inherit"
-    //             xmlns="http://www.w3.org/2000/svg"
-    //             width="15.439"
-    //             height="17.877"
-    //             viewBox="0 0 15.439 17.877"
-    //         >
-    //             <defs></defs>
-    //             <path
-    //                 id="Path_470"
-    //                 data-name="Path 470"
-    //                 d="M16.538,18.877H2.9a.881.881,0,0,1-.9-.892V1.892A.881.881,0,0,1,2.9,1h7.569a.881.881,0,0,1,.9.892V7.009h5.166a.881.881,0,0,1,.9.892V17.985A.9.9,0,0,1,16.538,18.877ZM3.8,17.092H15.637v-8.3H10.471a.881.881,0,0,1-.9-.892V2.785H3.8Z"
-    //                 transform="translate(-2 -1)"
-    //             />
-    //             <path
-    //                 id="Path_471"
-    //                 data-name="Path 471"
-    //                 d="M18.284,8.793a.868.868,0,0,1-.631-.268L11.586,2.517a.857.857,0,0,1,0-1.249.877.877,0,0,1,1.262,0l6.068,5.979a.857.857,0,0,1,0,1.249A.8.8,0,0,1,18.284,8.793Z"
-    //                 transform="translate(-3.746 -1)"
-    //             />
-    //             <path
-    //                 id="Path_472"
-    //                 data-name="Path 472"
-    //                 d="M14.181,18.122H6.672a.892.892,0,1,1,0-1.785h7.479a.892.892,0,0,1,.03,1.785Z"
-    //                 transform="translate(-2.707 -3.874)"
-    //             />
-    //             <path
-    //                 id="Path_473"
-    //                 data-name="Path 473"
-    //                 d="M14.181,14.132H6.672a.892.892,0,1,1,0-1.785h7.479a.892.892,0,0,1,.03,1.785Z"
-    //                 transform="translate(-2.707 -3.127)"
-    //             />
-    //             <path
-    //                 id="Path_474"
-    //                 data-name="Path 474"
-    //                 d="M8.564,10.179H6.672a.892.892,0,1,1,0-1.785H8.564a.892.892,0,1,1,0,1.785Z"
-    //                 transform="translate(-2.707 -2.386)"
-    //             />
-    //         </svg>
-    //     ),
-    // },
     {
         name: "Sales",
         link: "/panel/sales",
@@ -165,11 +121,6 @@ const drawerItems = [
         name: "Purchase",
         link: "/panel/purchase",
         icon: <ShoppingCartRounded />,
-    },
-    {
-        name: "Vendors",
-        link: "/panel/vendor",
-        icon: <ShopRounded />,
     },
     {
         name: "Inventory",
