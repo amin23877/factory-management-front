@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { IQuoteComplete } from "../api/quote";
 
@@ -99,9 +99,7 @@ const useStyles = makeStyles({
 });
 export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete; createdQuote: IQuoteComplete }) {
     const classes = useStyles();
-    useEffect(() => {
-        console.log(data, createdQuote);
-    }, []);
+
     return (
         <div>
             <div className={classes.exact}>
@@ -213,13 +211,13 @@ export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete;
                         <div className={classes.header}>
                             <span className={classes.title}>Prepaired On : </span>
                             <span className={classes.info}>
-                                {createdQuote.entryDate.slice(0, createdQuote.entryDate.indexOf("T"))}
+                                {createdQuote?.entryDate?.slice(0, createdQuote.entryDate.indexOf("T"))}
                             </span>
                         </div>
                         <div className={classes.header}>
                             <span className={classes.title}>Expires : </span>
                             <span className={classes.info}>
-                                {createdQuote.expireDate?.slice(0, createdQuote.expireDate.indexOf("T"))}
+                                {createdQuote?.expireDate?.slice(0, createdQuote.expireDate.indexOf("T"))}
                             </span>
                         </div>
                         <div className={classes.header}>

@@ -56,19 +56,19 @@ export default function EditTab({
     const LICols = useMemo<GridColumns>(
         () => [
             { field: "index", headerName: "Sort" },
-            { field: "ItemId", headerName: "Part Number", valueFormatter: (r) => r.row.ItemId.name, width: 200 },
+            { field: "ItemId", headerName: "Part Number", valueFormatter: (r) => r.row?.ItemId?.name, width: 200 },
             { field: "description", headerName: "Description", flex: 1 },
             { field: "quantity", headerName: "QTY", width: 90 },
             { field: "price", headerName: "Price", width: 100 },
             { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
-            { field: "total", headerName: "Total", valueFormatter: (r) => r.row?.price * r.row.quantity, width: 200 },
+            { field: "total", headerName: "Total", valueFormatter: (r) => r.row?.price * r.row?.quantity, width: 200 },
         ],
         []
     );
 
     const LSCols = useMemo<GridColumns>(
         () => [
-            { field: "ServiceId", headerName: "Service", valueFormatter: (r) => r.row.ServiceId.name, flex: 1 },
+            { field: "ServiceId", headerName: "Service", valueFormatter: (r) => r.row?.ServiceId.name, flex: 1 },
             // { field: "LineItemRecordId",  width: 200 },
             { field: "quantity", headerName: "Quantity", width: 100 },
             { field: "price", headerName: "Price", width: 100 },

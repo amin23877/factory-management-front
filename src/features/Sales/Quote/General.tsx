@@ -11,7 +11,7 @@ import { BasePaper } from "../../../app/Paper";
 
 const schema = Yup.object().shape({
     requester: Yup.string().required(),
-    ClientId: Yup.string().required(),
+    CustomerId: Yup.string().required(),
     salesperson: Yup.string().required(),
 });
 

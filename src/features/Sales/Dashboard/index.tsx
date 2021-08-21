@@ -9,6 +9,7 @@ import PieChart from "../../../app/Chart/PieChart";
 
 import { ClientPie } from "./Charts";
 import { formatTimestampToDate } from "../../../logic/date";
+import useSWR from "swr";
 
 const data02 = [
     { name: "Group A", value: 2400 },
@@ -20,6 +21,8 @@ const data02 = [
 ];
 
 export default function Dashboard() {
+    const { data: inProgressSOs } = useSWR(`/so?progress=true`);
+
     const cols = useMemo<GridColumns>(
         () => [
             {
@@ -99,7 +102,7 @@ export default function Dashboard() {
             <Grid item xs={12} sm={12}>
                 <BasePaper>
                     <Typography variant="h6">In progress SOs</Typography>
-                    <BaseDataGrid cols={cols} rows={[]} height={250} />
+                    <BaseDataGrid cols={cols} rows={inProgressSOs || []} height={250} />
                 </BasePaper>
             </Grid>
         </Grid>

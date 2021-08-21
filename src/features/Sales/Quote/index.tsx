@@ -69,6 +69,7 @@ export default function QuotePanel() {
                     mutateQuotes();
                 }
                 setConfirm(false);
+                setSelectedQuote(undefined);
                 setActiveTab(0);
             }
         } catch (error) {
@@ -79,16 +80,7 @@ export default function QuotePanel() {
     return (
         <Box>
             <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
-
-            <AddQuote
-                open={addQ}
-                onClose={() => setAddQ(false)}
-                initialData={compQ}
-                onDone={() => {
-                    console.log("done");
-                }}
-            />
-
+            <AddQuote open={addQ} onClose={() => setAddQ(false)} initialData={compQ} onDone={() => {}} />
             {selectedQuote && selectedQuote.id && (
                 <NoteModal itemId={selectedQuote.id} model="quote" open={addNote} onClose={() => setAddNote(false)} />
             )}

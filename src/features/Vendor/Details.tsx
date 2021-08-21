@@ -30,8 +30,6 @@ import { IVendor } from "../../api/vendor";
 export default function VendorDetails({ vendor }: { vendor: IVendor }) {
     const [activeTab, setActiveTab] = useState(0);
 
-    // TODO: onRowSelected must open modal for updating model
-
     const { data: vendings } = useSWR(activeTab === 0 ? `/vending?VendorId=${vendor.id}` : null);
     const { data: items } = useSWR(activeTab === 1 ? `/vendor/${vendor.id}/items` : null);
     const { data: notes } = useSWR(activeTab === 2 ? `/note/vendor/${vendor.id}` : null);
@@ -202,7 +200,10 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                             <BaseDataGrid
                                 cols={cols}
                                 rows={vendings || []}
-                                onRowSelected={(r) => setSelectedVending(r)}
+                                onRowSelected={(r) => {
+                                    setSelectedVending(r);
+                                    setVendingModal(true);
+                                }}
                             />
                         </>
                     )}
@@ -221,7 +222,10 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                             <BaseDataGrid
                                 cols={noteCols}
                                 rows={notes || []}
-                                onRowSelected={(r) => setSelectedNote(r)}
+                                onRowSelected={(r) => {
+                                    setSelectedNote(r);
+                                    setNoteModal(true);
+                                }}
                             />
                         </>
                     )}
@@ -239,7 +243,10 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                             <BaseDataGrid
                                 cols={docCols}
                                 rows={documents || []}
-                                onRowSelected={(r) => setSelectedDocument(r)}
+                                onRowSelected={(r) => {
+                                    setSelectedDocument(r);
+                                    setDocumentModal(true);
+                                }}
                             />
                         </>
                     )}
@@ -257,7 +264,10 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                             <BaseDataGrid
                                 cols={addrCols}
                                 rows={addresses || []}
-                                onRowSelected={(r) => setSelectedAddress(r)}
+                                onRowSelected={(r) => {
+                                    setSelectedAddress(r);
+                                    setAddressModal(true);
+                                }}
                             />
                         </>
                     )}
@@ -275,7 +285,10 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                             <BaseDataGrid
                                 cols={emailCols}
                                 rows={emails || []}
-                                onRowSelected={(r) => setSelectedEmail(r)}
+                                onRowSelected={(r) => {
+                                    setSelectedEmail(r);
+                                    setEmailModal(true);
+                                }}
                             />
                         </>
                     )}
@@ -293,7 +306,10 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                             <BaseDataGrid
                                 cols={phoneCols}
                                 rows={phones || []}
-                                onRowSelected={(r) => setSelectedPhone(r)}
+                                onRowSelected={(r) => {
+                                    setSelectedPhone(r);
+                                    setPhoneModal(true);
+                                }}
                             />
                         </>
                     )}
@@ -311,7 +327,10 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                             <BaseDataGrid
                                 cols={contactsCols}
                                 rows={contacts}
-                                onRowSelected={(r) => setSelectedContact(r)}
+                                onRowSelected={(r) => {
+                                    setSelectedContact(r);
+                                    setContactModal(true);
+                                }}
                             />
                         </>
                     )}

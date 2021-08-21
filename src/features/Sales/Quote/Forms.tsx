@@ -23,6 +23,7 @@ import QuotePDF from "../../../PDFTemplates/Quote";
 import { createAModelDocument } from "../../../api/document";
 import { IQuoteComplete } from "../../../api/quote";
 import { getContacts } from "../../../api/contact";
+import { getCustomers } from "../../../api/customer";
 
 export const DocumentForm = ({
     onDone,
@@ -234,7 +235,6 @@ export const GeneralForm = ({
                     label="Location"
                     onChange={handleChange}
                 />
-
                 <FieldSelect
                     value={values.ProjectId}
                     request={getProjects}
@@ -255,8 +255,13 @@ export const GeneralForm = ({
                     label="Sales person"
                     onChange={handleChange}
                 />
-                <TextField value={values.createdBy} name="createdBy" label="Created By" onChange={handleChange} />
-                <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} />
+                <TextField
+                    value={values.leadTime}
+                    name="leadTime"
+                    label="Lead Time"
+                    onChange={handleChange}
+                    style={{ gridColumnEnd: "span 2" }}
+                />
                 <TextField
                     value={values.note}
                     style={{ gridColumnEnd: "span 2" }}
@@ -385,32 +390,25 @@ export const EntitiesTab = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
-                <TextField
-                    value={values.phone}
-                    name="phone"
-                    label="Phone"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    disabled
-                    style={{ opacity: 0 }}
-                />
-                <TextField
-                    value={values.phone}
-                    name="phone"
-                    label="Phone"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    disabled
-                    style={{ opacity: 0 }}
-                />
+                <div />
+                <div />
             </Box>
             <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
-                <TextField
+                {/* <TextField
                     value={values.client}
                     name="client"
                     label="Client"
                     onChange={handleChange}
                     onBlur={handleBlur}
+                /> */}
+                <FieldSelect
+                    value={values.CustomerId ? values.CustomerId : ""}
+                    request={getCustomers}
+                    itemTitleField="name"
+                    itemValueField="id"
+                    name="CustomerId"
+                    label="Customer"
+                    onChange={handleChange}
                 />
                 <TextField
                     value={values.contactName}

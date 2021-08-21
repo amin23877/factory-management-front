@@ -1,21 +1,21 @@
 import React, { useState } from "react";
-
+import { GridColDef } from "@material-ui/data-grid";
 import { Box, Tabs, Tab } from "@material-ui/core";
+import useSwr, { mutate } from "swr";
 
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 
-import { deleteCall } from "../../../api/calls";
-
 import Confirm from "../../Modals/Confirm";
+
 import BaseDataGrid from "../../../app/BaseDataGrid";
+import { BasePaper } from "../../../app/Paper";
 import Button from "../../../app/Button";
 
 import Details from "./Details";
 import AddCallModal from "./CallModal";
-import { BasePaper } from "../../../app/Paper";
-import { GridColDef } from "@material-ui/data-grid";
+
 import { formatTimestampToDate } from "../../../logic/date";
-import useSwr, { mutate } from "swr";
+import { deleteCall } from "../../../api/calls";
 
 export default function Calls() {
     const [activeTab, setActiveTab] = useState(0);
@@ -26,10 +26,9 @@ export default function Calls() {
     const { data: calls } = useSwr("/calls");
 
     const callCols: GridColDef[] = [
-        // State	Zip Code	Assigned to 	Created By	Tag
-
         {
-            field: "Date",
+            field: "createdAt",
+            headerName: "Date",
             valueFormatter: (r) => formatTimestampToDate(r.row?.createdAt),
             width: 110,
         },
