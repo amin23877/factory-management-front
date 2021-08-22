@@ -10,6 +10,7 @@ import Confirm from "../../Modals/Confirm";
 import BaseDataGrid from "../../../app/BaseDataGrid";
 import Button from "../../../app/Button";
 
+import CallsTagsModal from "./CallsTags";
 import Details from "./Details";
 import AddCallModal from "./CallModal";
 import { BasePaper } from "../../../app/Paper";
@@ -22,6 +23,7 @@ export default function Calls() {
     const [selectedCall, setSelectedCall] = useState<any>();
     const [addCall, setAddCall] = useState(false);
     const [confirm, setConfirm] = useState(false);
+    const [CTagModal, setCTagModal] = useState(false);
 
     const { data: calls } = useSwr("/calls");
 
@@ -76,6 +78,7 @@ export default function Calls() {
 
     return (
         <Box>
+            <CallsTagsModal open={CTagModal} onClose={() => setCTagModal(false)} />
             <AddCallModal open={addCall} onClose={() => setAddCall(false)} />
             <Confirm
                 open={confirm}
@@ -104,6 +107,9 @@ export default function Calls() {
                     style={{ margin: "0 0.5em" }}
                 >
                     Delete Ticket
+                </Button>
+                <Button kind="add" onClick={() => setCTagModal(true)} style={{ margin: "0 0.5em" }}>
+                    Add Call Tags
                 </Button>
             </Box>
             <BasePaper>

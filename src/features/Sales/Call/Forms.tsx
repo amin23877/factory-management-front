@@ -8,6 +8,7 @@ import { getAllEmployees } from "../../../api/employee";
 import { formatTimestampToDate } from "../../../logic/date";
 import { getQuotes } from "../../../api/quote";
 import { getSO } from "../../../api/so";
+import { getCallsTags } from "../../../api/callsTags";
 
 export const GeneralForm = ({
     add,
@@ -117,42 +118,46 @@ export const GeneralForm = ({
                     itemValueField="id"
                     itemTitleField="number"
                     request={getSO}
-                    name="soId"
-                    value={typeof values.soId === "string" ? values.soId : values.soId?.id}
+                    name="SOId"
+                    value={typeof values.SOId === "string" ? values.SOId : values.SOId?.id}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    error={Boolean(errors.soId && touched.soId)}
-                    helperText={touched.soId && errors.soId && String(errors.soId)}
+                    error={Boolean(errors.SOId && touched.SOId)}
+                    helperText={touched.SOId && errors.SOId && String(errors.SOId)}
                     label="SO ID"
                 />
-                <TextField
-                    name="tags"
-                    value={values.tags}
+                <FieldSelect
+                    itemValueField="id"
+                    itemTitleField="name"
+                    request={getCallsTags}
+                    name="Tags"
+                    value={typeof values.Tags === "string" ? values.Tags : values.Tags?.id}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    error={Boolean(errors.tags && touched.tags)}
-                    helperText={touched.tags && errors.tags && String(errors.tags)}
-                    label="Tag"
+                    error={Boolean(errors.Tags && touched.Tags)}
+                    helperText={touched.Tags && errors.Tags && String(errors.Tags)}
+                    label="Tags"
                 />
+
                 {!add && (
                     <>
                         <FieldSelect
-                            value={typeof values.assignedTo === "string" ? values.assignedTo : values.assignedTo?.id}
+                            value={typeof values.AssignedTo === "string" ? values.AssignedTo : values.AssignedTo?.id}
                             request={getAllEmployees}
                             itemTitleField="username"
                             itemValueField="id"
                             keyField="id"
-                            name="assignedTo"
+                            name="AssignedTo"
                             label="Assigned To"
                             onChange={handleChange}
                         />
                         <FieldSelect
-                            value={typeof values.createdBy === "string" ? values.createdBy : values.createdBy?.id}
+                            value={typeof values.CreatedBy === "string" ? values.CreatedBy : values.CreatedBy?.id}
                             request={getAllEmployees}
                             itemTitleField="username"
                             itemValueField="id"
                             keyField="id"
-                            name="createdBy"
+                            name="CreatedBy"
                             label="Created By"
                             onChange={handleChange}
                         />
@@ -227,22 +232,22 @@ export const MainContactForm = ({
     return (
         <Box my={2} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr 1fr">
             <FieldSelect
-                value={typeof values.assignedTo === "string" ? values.assignedTo : values.assignedTo?.id}
+                value={typeof values.AssignedTo === "string" ? values.AssignedTo : values.AssignedTo?.id}
                 request={getAllEmployees}
                 itemTitleField="username"
                 itemValueField="id"
                 keyField="id"
-                name="assignedTo"
+                name="AssignedTo"
                 label="Assigned To"
                 onChange={handleChange}
             />
             <FieldSelect
-                value={typeof values.createdBy === "string" ? values.createdBy : values.createdBy?.id}
+                value={typeof values.CreatedBy === "string" ? values.CreatedBy : values.CreatedBy?.id}
                 request={getAllEmployees}
                 itemTitleField="username"
                 itemValueField="id"
                 keyField="id"
-                name="createdBy"
+                name="CreatedBy"
                 label="Created By"
                 onChange={handleChange}
             />
