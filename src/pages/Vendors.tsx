@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { GridColDef } from "@material-ui/data-grid";
-import { Box, Button, IconButton, ListItem } from "@material-ui/core";
+import { Box, Button, IconButton, ListItem, Tab, Tabs } from "@material-ui/core";
 import {
     AddRounded,
     DeleteRounded,
@@ -304,11 +304,8 @@ export default function Vendros() {
                     Add document
                 </Button>
                 <div style={{ flexGrow: 1 }} />
-                <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
-                    <MyTab label="List" />
-                    <MyTab label="Details" disabled={!selectedVendor} />
-                </MyTabs>
             </Box>
+
             <Box display="flex">
                 <Box flex={1} m={1}>
                     <List>
@@ -350,6 +347,13 @@ export default function Vendros() {
                     </List>
                 </Box>
                 <Box flex={11} mt={1}>
+                    <Box my={1}>
+                        <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                            <Tab label="List" />
+                            <Tab label="Details" disabled={!selectedVendor} />
+                        </Tabs>
+                        <div style={{ flexGrow: 1 }} />
+                    </Box>
                     {activeTab === 0 && (
                         <BaseDataGrid
                             rows={vendors}
