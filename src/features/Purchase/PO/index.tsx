@@ -5,7 +5,7 @@ import ListItem from "@material-ui/core/ListItem";
 import IconButton from "@material-ui/core/IconButton";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { AddRounded, DeleteRounded, PrintRounded, PostAddRounded } from "@material-ui/icons";
+import { AddRounded, DeleteRounded, PrintRounded, LocalOfferRounded, PostAddRounded } from "@material-ui/icons";
 
 import List from "../../../app/SideUtilityList";
 import BaseDataGrid from "../../../app/BaseDataGrid";
@@ -18,7 +18,7 @@ import Details from "./Details";
 import Confirm from "../../Modals/Confirm";
 import NoteModal from "../../Modals/NoteModals";
 import DocumentModal from "../../Modals/DocumentModals";
-
+import PurchasePOTypeModal from "./PurchasePoType";
 import { getPurchasePOs, deletePurchasePO, IPurchasePO, getPurchasePOLines } from "../../../api/purchasePO";
 import { getAllModelNotes } from "../../../api/note";
 import { getAllModelDocuments } from "../../../api/document";
@@ -29,6 +29,7 @@ function Index() {
     const [activeTab, setActiveTab] = useState(0);
     const [addPO, setAddPO] = useState(false);
     const [addLineItem, setAddLineItem] = useState(false);
+    const [addType, setAddType] = useState(false);
     const [confirm, setConfirm] = useState(false);
     const [pos, setPOs] = useState([]);
     const [lines, setLines] = useState([]);
@@ -156,7 +157,7 @@ function Index() {
                     setLines([]);
                 }}
             />
-
+            <PurchasePOTypeModal open={addType} onClose={() => setAddType(false)} />
             {selPO && selPO.id && (
                 <AddLineItem
                     selectedLine={selectedLine}
@@ -210,6 +211,11 @@ function Index() {
                     <ListItem>
                         <IconButton onClick={() => setConfirm(true)}>
                             <DeleteRounded />
+                        </IconButton>
+                    </ListItem>
+                    <ListItem>
+                        <IconButton onClick={() => setAddType(true)} title="Add PO Types">
+                            <LocalOfferRounded />
                         </IconButton>
                     </ListItem>
                     {activeTab === 1 && (

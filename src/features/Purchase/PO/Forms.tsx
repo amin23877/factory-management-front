@@ -13,7 +13,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
-import { Tabs, Tab, Checkbox } from "@material-ui/core";
+import { Tabs, Tab } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import Alert from "@material-ui/lab/Alert";
@@ -21,9 +21,8 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import DeleteRounded from "@material-ui/icons/DeleteRounded";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
-import { getAddresses } from "../../../api/address";
-import { getEmails } from "../../../api/emailAddress";
-import { getPhones } from "../../../api/phone";
+
+import { getPPOTypes } from "../../../api/purchasePoType";
 
 import BootstrapTextField from "../../../app/TextField";
 
@@ -653,50 +652,25 @@ export const UpdateForm = ({
                     style={{ gridColumnEnd: "span 2" }}
                     disabled
                 />
-                <TextField name="PoType" label="PO Type" value={values.PoType} fullWidth disabled />
+                <FieldSelect
+                    request={getPPOTypes}
+                    itemTitleField="name"
+                    itemValueField="id"
+                    name="purchasePOTypeId"
+                    label="PO Type"
+                    fullWidth
+                    onChange={handleChange}
+                    value={
+                        typeof values.purchasePOTypeId === "string"
+                            ? values.purchasePOTypeId
+                            : values.purchasePOTypeId?.id
+                    }
+                    error={Boolean(errors.purchasePOTypeId)}
+                />
                 <TextField label="So Number" value={values.SoId?.number} fullWidth disabled />
                 <TextField label="Vendor" value={values.Vendor?.name} fullWidth disabled />
                 <TextField label="Approved By" value={values.approvedBy?.username} fullWidth disabled />
-                {/* <FieldSelect
-                    disabled
-                    style={{ width: "100%" }}
-                    request={getVendors}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    name="VendorId"
-                    label="Vendor"
-                    value={values.VendorId}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.VendorId)}
-                /> */}
-                {/* <FieldSelect
-                    disabled
-                    style={{ width: "100%" }}
-                    request={getAllEmployees}
-                    itemTitleField="username"
-                    itemValueField="id"
-                    name="approvedBy"
-                    label="Approved By"
-                    value={values.approvedBy}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.approvedBy)}
-                /> */}
 
-                {/* <FieldSelect
-                    disabled
-                    style={{ width: "100%" }}
-                    request={getContacts}
-                    itemTitleField="lastName"
-                    itemValueField="id"
-                    name="ContactId"
-                    label="Contact"
-                    value={values.ContactId}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.ContactId)}
-                /> */}
                 <ArraySelect
                     items={[
                         "Quoted",
