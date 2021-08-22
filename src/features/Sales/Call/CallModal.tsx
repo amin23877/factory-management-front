@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Box, Step, StepLabel, Stepper } from "@material-ui/core";
 import { useFormik } from "formik";
+import * as Yup from "yup";
 import { mutate } from "swr";
 
 import Dialog from "../../../app/Dialog";
@@ -8,6 +9,18 @@ import Button from "../../../app/Button";
 import { GeneralForm, MainContactForm, MoreInfoForm } from "./Forms";
 
 import { addCall } from "../../../api/calls";
+
+const schema = Yup.object().shape({
+    name: Yup.string().required(),
+    address: Yup.string().required(),
+    zip: Yup.string().required(),
+    state: Yup.string().required(),
+    subject: Yup.string().required(),
+    description: Yup.string().required(),
+    response: Yup.string().required(),
+
+    //  tags :Yup.string().required(),
+});
 
 const AddCallModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
     const [activeStep, setActiveStep] = useState(0);
@@ -20,9 +33,12 @@ const AddCallModal = ({ open, onClose }: { open: boolean; onClose: () => void })
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    const { errors, touched, values, handleChange, handleBlur, handleSubmit } = useFormik({
+    const { errors, touched, values, handleChange, handleBlur, handleSubmit, setFieldValue } = useFormik({
         initialValues: {},
+        validationSchema: schema,
         onSubmit: async (data: any, { setSubmitting }) => {
+            // console.log(data);
+
             try {
                 await addCall({ ...data, tags: [values.tags] });
                 mutate("/calls");
@@ -53,6 +69,7 @@ const AddCallModal = ({ open, onClose }: { open: boolean; onClose: () => void })
                 <Box p={5} style={{ padding: "30px 15%" }}>
                     {activeStep === 0 && (
                         <GeneralForm
+                            setFieldValue={setFieldValue}
                             values={values}
                             errors={errors}
                             handleBlur={handleBlur}

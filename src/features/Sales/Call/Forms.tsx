@@ -8,6 +8,7 @@ import { getAllEmployees } from "../../../api/employee";
 import { formatTimestampToDate } from "../../../logic/date";
 import { getQuotes } from "../../../api/quote";
 import { getSO } from "../../../api/so";
+// import TagsAutocomplete from "./TagsAutocomplete";
 
 export const GeneralForm = ({
     add,
@@ -16,6 +17,7 @@ export const GeneralForm = ({
     errors,
     handleBlur,
     handleChange,
+    setFieldValue,
 }: {
     add?: boolean;
     values: any;
@@ -23,6 +25,7 @@ export const GeneralForm = ({
     touched: any;
     handleBlur: any;
     handleChange: any;
+    setFieldValue: any;
 }) => {
     return (
         <>
@@ -125,6 +128,7 @@ export const GeneralForm = ({
                     helperText={touched.soId && errors.soId && String(errors.soId)}
                     label="SO ID"
                 />
+                {/* <TagsAutocomplete value={values.tags} setFieldValue={setFieldValue} /> */}
                 <TextField
                     name="tags"
                     value={values.tags}

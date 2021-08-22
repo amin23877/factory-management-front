@@ -28,11 +28,12 @@ export default function Details({ callsData }: { callsData: any }) {
 
     return (
         <Formik initialValues={callsData} onSubmit={handleSubmit}>
-            {({ values, errors, touched, handleChange, handleBlur }) => (
+            {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
                 <Form>
                     <Box display="flex" style={{ justifyContent: "space-between" }}>
                         <Box flex={3}>
                             <GeneralForm
+                                setFieldValue={setFieldValue}
                                 values={values}
                                 errors={errors}
                                 handleBlur={handleBlur}

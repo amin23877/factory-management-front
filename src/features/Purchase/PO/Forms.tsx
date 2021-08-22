@@ -602,7 +602,7 @@ export const CreateForm = ({
                         <FieldSelect
                             style={{ width: "100%" }}
                             request={getContacts}
-                            itemTitleField="name"
+                            itemTitleField="lastName"
                             itemValueField="id"
                             name="ContactId"
                             label="Contact"

@@ -6,21 +6,31 @@ import { ILineService } from "./lineService";
 export interface IQuote {
     id?: string;
     number?: string;
+    relatedNumber: string;
 
+    SOId:string;
     entryDate: string;
-    expireDate: string;
+    expireDate: string;        
+    location: string;
 
     leadTime: string;
+    note: string;
+    repOrAgency: string;
+    requesterName: string;
+    requesterMail: string;
+    requesterPhone: string;
 
-    salesperson: number | null;
-    requester: number | null;
-    client: number | null;
+    salesperson: string;
+    requester: string;
+    client: string;
+    unitPricingLevel: string;
 
     status: string;
 
     freightTerms: string;
     paymentTerms: string;
 
+    depositTerms: string;
     depositRequired: boolean;
     deposit: number | null;
     depositAmount: number | null;
@@ -31,8 +41,9 @@ export interface IQuote {
     regularCommission: number | null;
     overageCommission: number | null;
 
-    EmployeeId: string | null;
-    ProjectId: string | null;
+    TicketId?: string;
+    EmployeeId?: string;
+    ProjectId?: string;
 }
 
 export interface IQuoteComplete extends IQuote {

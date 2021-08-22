@@ -76,13 +76,13 @@ export const ContactModal = ({
                         <Form>
                             <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={8} gridColumnGap={8}>
                                 <TextField
-                                    name="name"
+                                    name="firstName"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
-                                    error={Boolean(errors.name && touched.name)}
-                                    helperText={errors.name && touched.name}
-                                    value={values.name}
-                                    label="Name"
+                                    error={Boolean(errors.firstName && touched.firstName)}
+                                    helperText={errors.firstName && touched.firstName}
+                                    value={values.firstName}
+                                    label="First Name"
                                 />
                                 <TextField
                                     name="lastName"

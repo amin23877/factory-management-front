@@ -49,7 +49,7 @@ export default function TicketForm({
                     label="Contact"
                     value={values.ContactId}
                     request={getContacts}
-                    itemTitleField="name"
+                    itemTitleField="lastName"
                     itemValueField="id"
                     onChange={handleChange}
                 />
