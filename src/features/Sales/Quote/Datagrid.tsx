@@ -3,6 +3,7 @@ import { GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
 
 import BaseDataGrid from "../../../app/BaseDataGrid";
+import { formatTimestampToDate } from "../../../logic/date";
 
 function QuoteDatagrid({
     onRowSelected,
@@ -18,7 +19,11 @@ function QuoteDatagrid({
 
     const quoteCols = useMemo<GridColumns>(
         () => [
-            { field: "date", headerName: "Date", width: 100 },
+            {
+                field: "Date",
+                // valueFormatter: (r) => formatTimestampToDate(r.row?.createdAt),
+                width: 100,
+            },
             { field: "number", headerName: "Quote ID", width: 100 },
             { field: "client", headerName: "Client", width: 100 },
             { field: "rep", headerName: "Rep", width: 100 },

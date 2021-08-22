@@ -19,11 +19,10 @@ export default function Purchase() {
                 <MyTabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <MyTab label="Dashboard" />
                     <MyTab label="Quote" />
-                    <MyTab label="PO" />
-                    <MyTab label="Vendors" />
+                    <MyTab label="Purchase Order" />
+                    <MyTab label="vendor" />
                 </MyTabs>
             </Box>
-            {activeTab === 0 && <h1>Dashboard</h1>}
             {activeTab === 1 && <PurchaseQuote />}
             {activeTab === 2 && <PurchasePO />}
             {activeTab === 3 && <Vendors />}

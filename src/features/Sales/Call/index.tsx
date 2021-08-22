@@ -33,12 +33,12 @@ export default function Calls() {
             width: 110,
         },
         { field: "number", headerName: "Ticket ID", width: 100 },
-        { field: "subject", headerName: "Subject", flex: 1 },
-        { field: "company", headerName: "Company", flex: 1 },
-        { field: "contactName", headerName: "Name", flex: 1 },
+        { field: "subject", headerName: "Subject", width: 100 },
+        { field: "company", headerName: "Company", width: 100 },
+        { field: "contactName", headerName: "Name", width: 100 },
         { field: "contactNumber", headerName: "Contact No.", width: 110 },
-        { field: "contactEmail", headerName: "Email", flex: 1 },
-        { field: "state", headerName: "State", flex: 1 },
+        { field: "contactEmail", headerName: "Email", width: 150 },
+        { field: "state", headerName: "State", width: 100 },
         { field: "zip", headerName: "Zip Code", width: 100 },
         {
             field: "Assigned To",
@@ -53,7 +53,7 @@ export default function Calls() {
         {
             field: "Tag",
             valueFormatter: (r) => r.row?.tags[0],
-            flex: 1,
+            width: 100,
         },
     ];
 

@@ -10,9 +10,9 @@ import { IQuote } from "../../../api/quote";
 import { BasePaper } from "../../../app/Paper";
 
 const schema = Yup.object().shape({
-    requester: Yup.string().required(),
-    CustomerId: Yup.string().required(),
-    salesperson: Yup.string().required(),
+    // requester: Yup.string().required(),
+    // ClientId: Yup.string().required(),
+    // salesperson: Yup.string().required(),
 });
 
 export default function GeneralQuote({ onDone, data }: { data?: any; onDone: (data: any) => void }) {

@@ -5,7 +5,7 @@ import useSWR from "swr";
 
 import CheckBox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import TextField from "@material-ui/core/TextField";
+import TextField from "../../../app/TextField";
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
 import TableRow from "@material-ui/core/TableRow";
@@ -14,6 +14,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
+import { Tabs, Tab } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import Alert from "@material-ui/lab/Alert";
@@ -21,6 +22,8 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import DeleteRounded from "@material-ui/icons/DeleteRounded";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
+
+import { getPPOTypes } from "../../../api/purchasePoType";
 
 import BootstrapTextField from "../../../app/TextField";
 
@@ -44,6 +47,8 @@ import { IQuoteComplete } from "../../../api/quote";
 import PurchasePO from "../../../PDFTemplates/PurchasePO";
 import { getFieldServices } from "../../../api/fieldService";
 import { ILineService } from "../../../api/lineService";
+import { formatTimestampToDate } from "../../../logic/date";
+import { DateTimePicker } from "@material-ui/pickers";
 
 export const DocumentForm = ({
     createdPO,
@@ -256,9 +261,7 @@ export const LinesForm = ({
                                     getOptionLabel={(item: any) => item.name}
                                     onChange={(e, nv) => setFieldValue("ItemId", nv.id)}
                                     onBlur={handleBlur}
-                                    renderInput={(params) => (
-                                        <TextField {...params} label="Item" name="ItemId" variant="outlined" />
-                                    )}
+                                    renderInput={(params) => <TextField {...params} label="Item" name="ItemId" />}
                                     fullWidth
                                 />
                                 {errors.ItemId && <Typography variant="caption">{errors.ItemId}</Typography>}
@@ -422,6 +425,14 @@ export const LineServicesForm = ({
                                         name="ServiceId"
                                         label="Service"
                                         fullWidth
+                                        // renderInput={(params) => (
+                                        //     <TextField
+                                        //         {...params}
+                                        //         size="small"
+                                        //         label="Line Item"
+                                        //         name="LineItemRecordId"
+                                        //     />
+                                        // )}
                                     />
                                     {lineItems && (
                                         <Autocomplete
@@ -438,7 +449,6 @@ export const LineServicesForm = ({
                                                     size="small"
                                                     label="Line Item"
                                                     name="LineItemRecordId"
-                                                    variant="outlined"
                                                 />
                                             )}
                                         />
@@ -645,50 +655,67 @@ export const UpdateForm = ({
 }) => {
     return (
         <>
-            <Box mb={2} display="grid" gridTemplateColumns=" 1fr" gridRowGap={20}>
-                <FieldSelect
-                    disabled
+            <Paper
+                style={{
+                    margin: "0.5em 0 2em 0",
+                    padding: "0.5em",
+                    backgroundColor: "#eee",
+                    gridColumnEnd: "span 3",
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr 1fr",
+                    columnGap: "15px",
+                }}
+            >
+                <FormControlLabel
                     style={{ width: "100%" }}
-                    request={getAllEmployees}
-                    itemTitleField="username"
-                    itemValueField="id"
-                    name="requester"
-                    label="Requester"
-                    value={values.requester}
+                    checked={values.approved}
+                    label="Approved"
+                    name="approved"
                     onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.requester)}
+                    control={<CheckBox />}
+                />
+            </Paper>
+            <Box my={2} display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10}>
+                <TextField
+                    name="number"
+                    label="PO ID"
+                    value={values.number}
+                    style={{ gridColumnEnd: "span 2" }}
+                    disabled
                 />
                 <FieldSelect
-                    disabled
-                    style={{ width: "100%" }}
-                    request={getVendors}
+                    request={getPPOTypes}
                     itemTitleField="name"
                     itemValueField="id"
-                    name="VendorId"
-                    label="Vendor"
-                    value={values.VendorId}
+                    name="purchasePOTypeId"
+                    label="PO Type"
+                    fullWidth
                     onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.VendorId)}
+                    value={
+                        typeof values.purchasePOTypeId === "string"
+                            ? values.purchasePOTypeId
+                            : values.purchasePOTypeId?.id
+                    }
+                    error={Boolean(errors.purchasePOTypeId)}
                 />
-                <FieldSelect
-                    disabled
-                    style={{ width: "100%" }}
-                    request={getContacts}
-                    itemTitleField="lastName"
-                    itemValueField="id"
-                    name="ContactId"
-                    label="Contact"
-                    value={values.ContactId}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.ContactId)}
-                />
+                <TextField label="So Number" value={values.SoId?.number} fullWidth disabled />
+                <TextField label="Vendor" value={values.Vendor?.name} fullWidth disabled />
+                <TextField label="Approved By" value={values.approvedBy?.username} fullWidth disabled />
+
                 <ArraySelect
-                    items={["completed", "shipped", "pending"]}
+                    items={[
+                        "Quoted",
+                        "Pending",
+                        "Printed",
+                        "Closed",
+                        "Acknowledged",
+                        "Shipped",
+                        "Received",
+                        "Canceled",
+                        "On Hold",
+                    ]}
                     name="status"
-                    label="Status"
+                    label="PO Status"
                     value={values.status}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -696,36 +723,284 @@ export const UpdateForm = ({
                     fullWidth
                 />
                 <TextField
-                    size="small"
-                    name="acknowledgeDate"
-                    label="Acknowledge Date"
-                    value={values.acknowledgeDate === -1 ? "" : values.acknowledgeDate}
+                    name="terms"
+                    label="Terms"
+                    value={values.terms}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={Boolean(errors.acknowledgeDate)}
+                    error={Boolean(errors.terms)}
+                    fullWidth
+                />
+                <TextField
+                    style={{ gridColumnEnd: "span 2" }}
+                    value={values.note}
+                    name="note"
+                    label="PO note"
+                    multiline
+                    rows={4}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+            </Box>
+        </>
+    );
+};
+export const MoreInfoForm = ({
+    values,
+    errors,
+    handleBlur,
+    handleChange,
+    setFieldValue,
+}: {
+    values: any;
+    handleChange: any;
+    handleBlur: any;
+    errors: any;
+    setFieldValue: any;
+}) => {
+    return (
+        <>
+            <Box my={2} display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10}>
+                <TextField label="PO Date" value={formatTimestampToDate(values.createdAt)} disabled />
+                <DateTimePicker
+                    size="small"
+                    value={values.acknowledgeDate}
+                    name="acknowledgeDate"
+                    label="Vendor Acknowledged Date"
+                    onChange={(date) => setFieldValue(" acknowledgeDate", date)}
+                    onBlur={handleBlur}
+                />
+                <DateTimePicker
+                    size="small"
+                    value={values.estShipDate}
+                    name="estShipDate"
+                    label="Estimated ship date"
+                    onChange={(date) => setFieldValue("estShipDate", date)}
+                    onBlur={handleBlur}
+                />
+                <DateTimePicker
+                    size="small"
+                    value={values.actShipDate}
+                    name="actShipDate"
+                    label="Actual ship date"
+                    onChange={(date) => setFieldValue("actShipDate", date)}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    label="Approved Date"
+                    value={formatTimestampToDate(values.approvedDate)}
                     fullWidth
                     disabled
                 />
-                <div>
-                    <FormControlLabel
-                        style={{ width: "100%" }}
-                        checked={values.acknowledged}
-                        label="Acknowledged"
-                        name="acknowledged"
+
+                <TextField
+                    name="requiredBy"
+                    label="Required By"
+                    value={values.requiredBy}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.requiredBy)}
+                    fullWidth
+                    type="number"
+                />
+            </Box>
+        </>
+    );
+};
+
+export const AddressesForm = ({
+    handleChange,
+    handleBlur,
+    values,
+}: {
+    values: any;
+    handleChange: (a: any) => void;
+    handleBlur: (a: any) => void;
+}) => {
+    const [activeTab, setActiveTab] = useState(0);
+
+    return (
+        <>
+            <Tabs
+                textColor="primary"
+                value={activeTab}
+                onChange={(e, nv) => setActiveTab(nv)}
+                variant="scrollable"
+                style={{ maxWidth: 600 }}
+            >
+                <Tab label="Billing Address" />
+                <Tab label="Shipping Address" />
+            </Tabs>
+            {activeTab === 0 && (
+                <Box my={1} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridRowGap={10}>
+                    <TextField
+                        value={values.billingAddressCompany}
+                        name="billingAddressCompany"
+                        label="Company"
                         onChange={handleChange}
-                        control={<CheckBox />}
-                        disabled
+                        onBlur={handleBlur}
                     />
-                    <FormControlLabel
-                        style={{ width: "100%" }}
-                        checked={values.fullyReceived}
-                        name="fullyReceived"
-                        label="Fully Received"
+                    <TextField
+                        value={values.billingAddressAttn}
+                        name="billingAddressAttn"
+                        label="Attn"
                         onChange={handleChange}
-                        control={<CheckBox />}
-                        disabled
+                        onBlur={handleBlur}
                     />
-                </div>
+
+                    <TextField
+                        value={values.billingAddressAddress}
+                        name="billingAddressAddress"
+                        label="Billing Address"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.billingAddressCity}
+                        name="billingAddressCity"
+                        label="City"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.billingAddressState}
+                        name="billingAddressState"
+                        label="State"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.billingAddressZipCode}
+                        name="billingAddressZipCode"
+                        label="Zip Code"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.billingAddressCountry}
+                        name="billingAddressCountry"
+                        label="Country"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.billingAddressPhone}
+                        name="billingAddressPhone"
+                        label="Billing Phone"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.billingAddressEmail}
+                        name="billingAddressEmail"
+                        label="Billing Email"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        style={{ gridColumnEnd: "span 2" }}
+                    />
+                </Box>
+            )}
+            {activeTab === 1 && (
+                <>
+                    <Box
+                        my={1}
+                        display="grid"
+                        gridTemplateColumns="1fr 1fr"
+                        gridGap={10}
+                        gridRowGap={10}
+                        gridColumnGap={10}
+                    >
+                        <TextField
+                            value={values.shippingAddressCompany}
+                            name="shippingAddressCompany"
+                            label="Company"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        <TextField
+                            value={values.shippingAddressAttn}
+                            name="shippingAddressAttn"
+                            label="Attn"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        <TextField
+                            value={values.shippingAddressAddress}
+                            label="Shipping Address"
+                            name="shippingAddressAddress"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        <TextField
+                            value={values.shippingAddressCity}
+                            name="shippingAddressCity"
+                            label="City"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        <TextField
+                            value={values.shippingAddressState}
+                            name="shippingAddressState"
+                            label="State"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        <TextField
+                            value={values.shippingAddressZipCode}
+                            name="shippingAddressZipCode"
+                            label="Zip Code"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        <TextField
+                            value={values.shippingAddressCountry}
+                            name="shippingAddressCountry"
+                            label="Country"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        <TextField
+                            value={values.shippingAddressPhone}
+                            name="shippingAddressPhone"
+                            label="Shipping Phone"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                        />
+                        <TextField
+                            value={values.shippingAddressEmail}
+                            name="shippingAddressEmail"
+                            label="Shipping Email"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            style={{ gridColumnEnd: "span 2" }}
+                        />
+                    </Box>
+                </>
+            )}
+        </>
+    );
+};
+export const VendorForm = ({
+    handleChange,
+    handleBlur,
+    values,
+}: {
+    values: any;
+    handleChange: (a: any) => void;
+    handleBlur: (a: any) => void;
+}) => {
+    return (
+        <>
+            <Box my={1} display="grid" gridTemplateColumns=" 1fr 1fr" gridGap={10} gridRowGap={10}>
+                <TextField label="Vendor ID" value={values.Vendor?.number} fullWidth disabled />
+                <TextField label="Vendor Name" value={values.Vendor?.name} fullWidth disabled />
+                <TextField value={values.Vendor?.address} name="Address" label="Address" disabled />
+                <TextField value={values.Vendor?.state} name="State" label="State" disabled />
+                <TextField value={values.Vendor?.zipCode} name="ZipCode" label="Zip Code" disabled />
+                <TextField value={values.Vendor?.website} name="website" label="website" disabled />
+                <TextField value={values.Vendor?.contactPerson} name="contactPerson" label="Contact Person" disabled />
+                <TextField value={values.Vendor?.email} name="email" label="Email" disabled />
+                <TextField value={values.Vendor?.phone} name="phone" label="Phone" disabled />
             </Box>
         </>
     );
