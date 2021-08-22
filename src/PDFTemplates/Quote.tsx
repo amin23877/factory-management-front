@@ -165,7 +165,7 @@ export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete;
                     <div>LOGO</div>
                     <div>
                         <div>Quoted By :</div>
-                        <div>{data.requester}</div>
+                        {/* <div>{data.requester}</div> */}
                     </div>
                     <div className={classes.pfe}>
                         <div style={{ fontSize: "x-large", fontWeight: "bold", color: "teal" }}>Quote</div>
@@ -210,15 +210,11 @@ export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete;
                         </div>
                         <div className={classes.header}>
                             <span className={classes.title}>Prepaired On : </span>
-                            <span className={classes.info}>
-                                {createdQuote?.entryDate?.slice(0, createdQuote.entryDate.indexOf("T"))}
-                            </span>
+                            <span className={classes.info}>{createdQuote?.entryDate}</span>
                         </div>
                         <div className={classes.header}>
                             <span className={classes.title}>Expires : </span>
-                            <span className={classes.info}>
-                                {createdQuote?.expireDate?.slice(0, createdQuote.expireDate.indexOf("T"))}
-                            </span>
+                            <span className={classes.info}>{createdQuote?.expireDate}</span>
                         </div>
                         <div className={classes.header}>
                             <span className={classes.title}>Lead Time :</span>

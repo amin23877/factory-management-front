@@ -1,33 +1,31 @@
 import React from "react";
-
 import Box from "@material-ui/core/Box";
+import { mutate } from "swr";
 
 import Dialog from "../../app/Dialog";
 import Form from "./Form";
-import { ILineItem } from "../../api/lineItem";
-import { mutate } from "swr";
 
-export default function AddLineItemModal({
+import { ILineItem, records } from "../../api/lineItem";
+
+export default function LineItemModal({
     open,
     onClose,
     record,
     recordId,
     selectedLine,
     readOnly,
+    mutateField,
 }: {
     selectedLine?: ILineItem;
     open: boolean;
     onClose: () => void;
-    record: "purchaseSO" | "purchasePO" | "SO";
+    record: records;
     recordId: string;
+    mutateField: "QuoteId" | "SOId" | "POId" | "PurchasePOId" | "PurchaseSOId";
     readOnly?: boolean;
 }) {
     return (
-        <Dialog
-            open={open}
-            onClose={onClose}
-            title={`Add new line item to ${record === "purchasePO" ? "purchase order" : "sales order"}`}
-        >
+        <Dialog open={open} onClose={onClose} title={`Add new line item`}>
             <Box p={2}>
                 <Form
                     initialValues={selectedLine}
@@ -35,7 +33,7 @@ export default function AddLineItemModal({
                     record={record}
                     readOnly={readOnly}
                     onDone={() => {
-                        mutate(`/lineitem?${record}=${recordId}`);
+                        mutate(`/lineitem?${mutateField}=${recordId}`);
                         onClose();
                     }}
                 />

@@ -92,7 +92,7 @@ function Table({
                 <Box height={350}>
                     <DataGrid
                         columns={unitCols}
-                        rows={units || []}
+                        rows={units ? units.result : []}
                         filterMode="server"
                         components={{ Toolbar: GridToolbar }}
                         onFilterModelChange={(f) => {

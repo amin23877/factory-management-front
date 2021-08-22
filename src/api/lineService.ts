@@ -1,4 +1,4 @@
-import Axios from "axios";
+import { delete_, get, get_withParams, patch, post } from ".";
 
 export interface ILineService {
     id?: string;
@@ -10,20 +10,17 @@ export interface ILineService {
     LineItemRecordId: string;
 }
 
-export const getSOLineServices = async (SOId: string) => {
-    try {
-        const resp = await Axios.get("/lineservice", { params: { SOId } });
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
-};
+export type records = "purchaseSo" | "purchasePo" | "so" | "quote" | "po";
 
-export const getQuoteLineServices = async (QuoteId: string) => {
-    try {
-        const resp = await Axios.get("/lineservice", { params: { QuoteId } });
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
-};
+export const getALineService = (id: string) => get(`/lineservice/${id}`);
+
+export const createLineService = (record: records, recordId: string, data: ILineService) =>
+    post(`/${record}/${recordId}/lineservice`, data);
+
+export const editLineService = (id: string, data: ILineService) => patch(`/lineservice/${id}`, data);
+
+export const deleteLineService = (id: string) => delete_(`/lineservice/${id}`);
+
+export const getSOLineServices = (SOId: string) => get_withParams("/lineservice", { SOId });
+
+export const getQuoteLineServices = (QuoteId: string) => get_withParams("/lineservice", { QuoteId });

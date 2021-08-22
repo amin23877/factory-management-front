@@ -12,10 +12,15 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import Button from "../../app/Button";
 import { FieldSelect } from "../../app/Inputs";
 
-import { ILineService } from "../../api/lineService";
-import { createSOLineService, deleteSOLineService, editSOLineService } from "../../api/so";
-import { createQuoteLineService, deleteQuoteLineService, editQuoteLineService } from "../../api/quote";
+import { ILineService, records, createLineService, deleteLineService, editLineService } from "../../api/lineService";
 import { getFieldServices } from "../../api/fieldService";
+
+const schema = Yup.object().shape({
+    ServiceId: Yup.string().required(),
+    LineItemRecordId: Yup.string().required(),
+    quantity: Yup.number().required().min(1),
+    price: Yup.number().required().min(0.1),
+});
 
 export default function MainForm({
     initialValues,
@@ -26,54 +31,29 @@ export default function MainForm({
 }: {
     initialValues?: ILineService;
     onDone: () => void;
-    record: "Quote" | "SO";
+    record: records;
     recordId: string;
     readOnly?: boolean;
 }) {
     const { data: lineItems } = useSWR(() => {
         switch (record) {
-            case "Quote":
+            case "quote":
                 return `/lineitem?QuoteId=${recordId}`;
-            case "SO":
+            case "so":
                 return `/lineitem?SOId=${recordId}`;
             default:
                 return null;
         }
     });
 
-    const schema = Yup.object().shape({
-        ServiceId: Yup.string().required(),
-        LineItemRecordId: Yup.string().required(),
-        quantity: Yup.number().required().min(1),
-        price: Yup.number().required().min(0.1),
-    });
-
     const handleSubmit = async (d: ILineService) => {
         try {
-            let createLine: any, updateLine: any;
-            switch (record) {
-                case "Quote":
-                    createLine = createQuoteLineService;
-                    updateLine = editQuoteLineService;
-                    break;
-                case "SO":
-                    createLine = createSOLineService;
-                    updateLine = editSOLineService;
-                    break;
-                default:
-                    break;
-            }
-
             if (initialValues && initialValues.id) {
-                const resp = await updateLine(initialValues.id, d);
-                if (resp) {
-                    onDone();
-                }
+                await editLineService(initialValues.id, d);
+                onDone && onDone();
             } else {
-                const resp = await createLine(recordId, d);
-                if (resp) {
-                    onDone();
-                }
+                await createLineService(record, recordId, d);
+                onDone && onDone();
             }
         } catch (error) {
             console.log(error);
@@ -81,22 +61,10 @@ export default function MainForm({
     };
 
     const handleDelete = async () => {
-        let deleteLine: any;
-        switch (record) {
-            case "Quote":
-                deleteLine = deleteQuoteLineService;
-                break;
-            case "SO":
-                deleteLine = deleteSOLineService;
-                break;
-            default:
-                break;
-        }
-
         try {
             if (initialValues && initialValues.id) {
-                const resp = await deleteLine(initialValues.id);
-                resp && onDone();
+                await deleteLineService(initialValues.id);
+                onDone && onDone();
             }
         } catch (error) {
             console.log(error);
@@ -104,11 +72,7 @@ export default function MainForm({
     };
 
     return (
-        <Formik
-            initialValues={initialValues ? initialValues : ({} as ILineService)}
-            validationSchema={schema}
-            onSubmit={handleSubmit}
-        >
+        <Formik initialValues={initialValues || ({} as ILineService)} validationSchema={schema} onSubmit={handleSubmit}>
             {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
                 <Form>
                     <Box display="grid" gridRowGap={16}>

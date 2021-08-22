@@ -59,18 +59,20 @@ export default function SalesOrderPanel() {
                 <LineItemModal
                     open={lineItemModal}
                     onClose={() => setLineItemModal(false)}
-                    record="SO"
+                    record="so"
                     recordId={selectedSO.id}
                     selectedLine={selectedLI}
+                    mutateField="SOId"
                 />
             )}
             {selectedSO && selectedSO.id && (
                 <LineServiceModal
                     open={lineServiceModal}
                     onClose={() => setLineServiceModal(false)}
-                    record="SO"
+                    record="so"
                     recordId={selectedSO.id}
                     selectedLine={selectedLS}
+                    mutateField="SOId"
                 />
             )}
             {selectedSO && selectedSO.id && (

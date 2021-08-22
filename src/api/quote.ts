@@ -1,54 +1,53 @@
 import Axios from "axios";
+import { ICustomer } from "./customer";
+import { IEmployee } from "./employee";
 
 import { ILineItem } from "./lineItem";
 import { ILineService } from "./lineService";
 
 export interface IQuote {
-    id?: string;
-    number?: string;
+    id: string;
+    number: string;
     relatedNumber: string;
-
-    SOId:string;
-    entryDate: string;
-    expireDate: string;        
+    SOId: string;
+    entryDate: number;
+    expireDate: number;
+    ProjectId: string;
     location: string;
-
     leadTime: string;
     note: string;
-    repOrAgency: string;
+    status: string;
+    repOrAgency: ICustomer;
     requesterName: string;
     requesterMail: string;
     requesterPhone: string;
-
-    salesperson: string;
-    requester: string;
     client: string;
     unitPricingLevel: string;
-
-    status: string;
+    estimatedShipDate: number;
+    TicketId: number;
 
     freightTerms: string;
     paymentTerms: string;
-
-    depositTerms: string;
     depositRequired: boolean;
-    deposit: number | null;
-    depositAmount: number | null;
+    deposit: number;
+    depositAmount: number;
+    commissionRate: string;
+    regularCommission: number;
+    overageCommission: number;
+    salesperson: IEmployee;
 
-    estimatedShipDate: string;
-    commissionLabel: string;
-
-    regularCommission: number | null;
-    overageCommission: number | null;
-
-    TicketId?: string;
-    EmployeeId?: string;
-    ProjectId?: string;
+    EmployeeId: IEmployee;
+    createdAt: number;
+    updatedAt: number;
+    totalAmount: number;
+    lineItemRecords: ILineItem[];
+    lineServiceRecords: ILineService[];
+    __v: number;
 }
 
 export interface IQuoteComplete extends IQuote {
     lines: ILineItem[];
-    lineServices: ILineService[]
+    lineServices: ILineService[];
 }
 
 export const createQuoteLineService = async (quoteId: string, data: ILineService) => {
@@ -143,12 +142,7 @@ export const getQuoteById = async (id: string) => {
 
 export const createQuote = async (data: IQuote) => {
     try {
-        const resp = await Axios.post("/quote", {
-            ...data,
-            entryDate: data.entryDate === "" ? null : new Date(data.entryDate).toISOString(),
-            expireDate: data.expireDate === "" ? null : new Date(data.expireDate).toISOString(),
-            estimatedShipDate: data.estimatedShipDate === "" ? null : new Date(data.estimatedShipDate).toISOString(),
-        });
+        const resp = await Axios.post("/quote", data);
         return resp.data;
     } catch (error) {
         console.log(error);
@@ -165,12 +159,7 @@ export const createQuoteComplete = async (data: any) => {
 
 export const updateQuote = async (id: string, data: IQuote) => {
     try {
-        const resp = await Axios.patch(`/quote/${id}`, {
-            ...data,
-            entryDate: data.entryDate === "" ? null : new Date(data.entryDate).toISOString(),
-            expireDate: data.expireDate === "" ? null : new Date(data.expireDate).toISOString(),
-            estimatedShipDate: data.estimatedShipDate === "" ? null : new Date(data.estimatedShipDate).toISOString(),
-        });
+        const resp = await Axios.patch(`/quote/${id}`, data);
         return resp.data;
     } catch (error) {
         console.log(error);
