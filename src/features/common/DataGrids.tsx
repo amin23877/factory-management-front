@@ -3,6 +3,7 @@ import { GridColumns } from "@material-ui/data-grid";
 
 import BaseDataGrid from "../../app/BaseDataGrid";
 import { formatTimestampToDate } from "../../logic/date";
+import { fileType } from "../../logic/fileType";
 
 export const NotesDataGrid = ({ notes, onNoteSelected }: { notes: any[]; onNoteSelected: (a: any) => void }) => {
     const noteCols = useMemo<GridColumns>(
@@ -35,11 +36,32 @@ export const DocumentsDataGrid = ({
     documents: any[];
     onDocumentSelected: (a: any) => void;
 }) => {
-    const docCols = [
-        { field: "name", headerName: "Name" },
-        { field: "description", headerName: "Description", width: 250 },
-        // { field: "createdAt", headerName: "Created at", width: 300 },
-    ];
+    const docCols = useMemo<GridColumns>(
+        () => [
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            {
+                field: "EmployeeId",
+                headerName: "Creator",
+                valueFormatter: (params) => params.row?.employee?.username,
+                width: 120,
+            },
+            { field: "name", headerName: "Name", flex: 1 },
+            { field: "id", headerName: "ID", width: 200 },
+            { field: "description", headerName: "Description", flex: 1 },
+            {
+                field: "type",
+                headerName: "File Type",
+                valueFormatter: (params) => fileType(params.row?.path),
+                width: 120,
+            },
+        ],
+        []
+    );
 
     return <BaseDataGrid cols={docCols} rows={documents} onRowSelected={onDocumentSelected} height={300} />;
 };

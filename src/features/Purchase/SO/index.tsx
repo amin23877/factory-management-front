@@ -137,7 +137,8 @@ function Index() {
                     selectedLine={selectedLine}
                     open={addLineItem}
                     onClose={() => setAddLineItem(false)}
-                    record="purchaseSO"
+                    record="purchaseSo"
+                    mutateField="PurchaseSOId"
                     recordId={selSO.id}
                 />
             )}

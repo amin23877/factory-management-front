@@ -55,7 +55,9 @@ export const GeneralForm = ({
                     label="Customer Type"
                     fullWidth
                     onChange={handleChange}
-                    value={values.CustomerTypeId}
+                    value={
+                        typeof values.CustomerTypeId === "string" ? values.CustomerTypeId : values.CustomerTypeId?.id
+                    }
                     error={Boolean(errors.CustomerTypeId)}
                 />
                 <TextField
@@ -96,12 +98,21 @@ export const GeneralForm = ({
                     label="State"
                 />
                 <TextField
-                    name="zipCode"
-                    value={values.zipCode}
+                    name="city"
+                    value={values.city}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    error={Boolean(errors.zipCode && touched.zipCode)}
-                    helperText={touched.zipCode && errors.zipCode && String(errors.zipCode)}
+                    error={Boolean(errors.city && touched.city)}
+                    helperText={touched.city && errors.city && String(errors.city)}
+                    label="City"
+                />
+                <TextField
+                    name="zipcode"
+                    value={values.zipcode}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    error={Boolean(errors.zipcode && touched.zipcode)}
+                    helperText={touched.zipcode && errors.zipcode && String(errors.zipcode)}
                     label="Zip Code"
                 />
                 <TextField
@@ -114,30 +125,30 @@ export const GeneralForm = ({
                     label="Country"
                 />
                 <TextField
-                    name="mainPhone"
-                    value={values.mainPhone}
+                    name="phone"
+                    value={values.phone}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    error={Boolean(errors.mainPhone && touched.mainPhone)}
-                    helperText={touched.mainPhone && errors.mainPhone && String(errors.mainPhone)}
+                    error={Boolean(errors.phone && touched.phone)}
+                    helperText={touched.phone && errors.phone && String(errors.phone)}
                     label="Main Phone"
                 />
                 <TextField
-                    name="mainEmail"
-                    value={values.mainEmail}
+                    name="email"
+                    value={values.email}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    error={Boolean(errors.mainEmail && touched.mainEmail)}
-                    helperText={touched.mainEmail && errors.mainEmail && String(errors.mainEmail)}
+                    error={Boolean(errors.email && touched.email)}
+                    helperText={touched.email && errors.email && String(errors.email)}
                     label="Main Email"
                 />
                 <FieldSelect
-                    value={values.salesperson}
+                    value={values.supportStaff}
                     request={getAllEmployees}
                     itemTitleField="username"
                     itemValueField="id"
                     keyField="id"
-                    name="salesperson"
+                    name="supportStaff"
                     label="Sales person"
                     onChange={handleChange}
                 />
@@ -262,35 +273,12 @@ export const MainContactForm = ({
         <Box my={2} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr">
             {/* // مقادیرش باید تصحیح شه */}
             <TextField
-                name="website"
-                value={values.website}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={Boolean(errors.website && touched.website)}
-                helperText={touched.website && errors.website && String(errors.website)}
+                value={`${values.contact?.firstName} ${values.contact?.lastName}`}
                 label=" Main Contact Name"
                 disabled
             />
-            <TextField
-                name="website"
-                value={values.website}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={Boolean(errors.website && touched.website)}
-                helperText={touched.website && errors.website && String(errors.website)}
-                label="Main Contact Phone"
-                disabled
-            />
-            <TextField
-                name="website"
-                value={values.website}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={Boolean(errors.website && touched.website)}
-                helperText={touched.website && errors.website && String(errors.website)}
-                label="Main Contact Email"
-                disabled
-            />
+            <TextField value={values.contact?.phone} label="Main Contact Phone" disabled />
+            <TextField value={values.contact?.email} label="Main Contact Email" disabled />
         </Box>
     );
 };
@@ -310,22 +298,32 @@ export const CommissionForm = ({
     return (
         <Box my={2} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr">
             <TextField
-                name="website"
-                value={values.website}
+                name="regularCommisionPercentage"
+                value={values.regularCommisionPercentage}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                error={Boolean(errors.website && touched.website)}
-                helperText={touched.website && errors.website && String(errors.website)}
+                error={Boolean(errors.regularCommisionPercentage && touched.regularCommisionPercentage)}
+                helperText={
+                    touched.regularCommisionPercentage &&
+                    errors.regularCommisionPercentage &&
+                    String(errors.regularCommisionPercentage)
+                }
                 label=" Regular Commision Percentage"
+                type="number"
             />
             <TextField
-                name="website"
-                value={values.website}
+                name="overageCommissionPercentage"
+                value={values.overageCommissionPercentage}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                error={Boolean(errors.website && touched.website)}
-                helperText={touched.website && errors.website && String(errors.website)}
+                error={Boolean(errors.overageCommissionPercentage && touched.overageCommissionPercentage)}
+                helperText={
+                    touched.overageCommissionPercentage &&
+                    errors.overageCommissionPercentage &&
+                    String(errors.overageCommissionPercentage)
+                }
                 label="Overage Commission Percentage"
+                type="number"
             />
         </Box>
     );

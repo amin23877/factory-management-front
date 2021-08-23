@@ -1,60 +1,61 @@
 import React, { useState } from "react";
-
+import { GridColDef } from "@material-ui/data-grid";
 import { Box, Tabs, Tab } from "@material-ui/core";
+import useSwr, { mutate } from "swr";
 
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 
-import { deleteCall } from "../../../api/calls";
-
 import Confirm from "../../Modals/Confirm";
+
 import BaseDataGrid from "../../../app/BaseDataGrid";
+import { BasePaper } from "../../../app/Paper";
 import Button from "../../../app/Button";
 
+import CallsTagsModal from "./CallsTags";
 import Details from "./Details";
 import AddCallModal from "./CallModal";
-import { BasePaper } from "../../../app/Paper";
-import { GridColDef } from "@material-ui/data-grid";
+
 import { formatTimestampToDate } from "../../../logic/date";
-import useSwr, { mutate } from "swr";
+import { deleteCall } from "../../../api/calls";
 
 export default function Calls() {
     const [activeTab, setActiveTab] = useState(0);
     const [selectedCall, setSelectedCall] = useState<any>();
     const [addCall, setAddCall] = useState(false);
     const [confirm, setConfirm] = useState(false);
+    const [CTagModal, setCTagModal] = useState(false);
 
     const { data: calls } = useSwr("/calls");
 
     const callCols: GridColDef[] = [
-        // State	Zip Code	Assigned to 	Created By	Tag
-
         {
-            field: "Date",
+            field: "createdAt",
+            headerName: "Date",
             valueFormatter: (r) => formatTimestampToDate(r.row?.createdAt),
             width: 110,
         },
         { field: "number", headerName: "Ticket ID", width: 100 },
-        { field: "subject", headerName: "Subject", flex: 1 },
-        { field: "company", headerName: "Company", flex: 1 },
-        { field: "contactName", headerName: "Name", flex: 1 },
+        { field: "subject", headerName: "Subject", width: 100 },
+        { field: "company", headerName: "Company", width: 100 },
+        { field: "contactName", headerName: "Name", width: 100 },
         { field: "contactNumber", headerName: "Contact No.", width: 110 },
-        { field: "contactEmail", headerName: "Email", flex: 1 },
-        { field: "state", headerName: "State", flex: 1 },
+        { field: "contactEmail", headerName: "Email", width: 150 },
+        { field: "state", headerName: "State", width: 100 },
         { field: "zip", headerName: "Zip Code", width: 100 },
         {
             field: "Assigned To",
-            valueFormatter: (r) => r.row?.assignedTo?.username,
+            valueFormatter: (r) => r.row?.AssignedTo?.username,
             width: 110,
         },
         {
             field: "Created By",
-            valueFormatter: (r) => r.row?.createdBy?.username,
+            valueFormatter: (r) => r.row?.CreatedBy?.username,
             width: 110,
         },
         {
             field: "Tag",
-            valueFormatter: (r) => r.row?.tags[0],
-            flex: 1,
+            valueFormatter: (r) => r.row?.Tags[0]?.name,
+            width: 100,
         },
     ];
 
@@ -76,6 +77,7 @@ export default function Calls() {
 
     return (
         <Box>
+            <CallsTagsModal open={CTagModal} onClose={() => setCTagModal(false)} />
             <AddCallModal open={addCall} onClose={() => setAddCall(false)} />
             <Confirm
                 open={confirm}
@@ -104,6 +106,9 @@ export default function Calls() {
                     style={{ margin: "0 0.5em" }}
                 >
                     Delete Ticket
+                </Button>
+                <Button kind="add" onClick={() => setCTagModal(true)} style={{ margin: "0 0.5em" }}>
+                    Add Call Tags
                 </Button>
             </Box>
             <BasePaper>

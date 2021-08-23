@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import { Formik, Form } from "formik";
-import useSWR from "swr";
+import { mutate } from "swr";
 
 import Button from "../../app/Button";
 import Dialog from "../../app/Dialog";
-import CustomScrollbars from "../../app/CustomScroll";
-import { DynamicFilterAndFields, General, MoreInfo, Pricing, Quantity, Shipping } from "./Forms";
+// import CustomScrollbars from "../../app/CustomScroll";
+import { General, MoreInfo, Pricing, Shipping } from "./Forms";
 
 import { createItem, AddItemSchema, IItem } from "../../api/items";
-import { IFilter } from "../../api/filter";
+// import { IFilter } from "../../api/filter";
 
 export const AddItemModal = ({
     open,
@@ -28,11 +28,12 @@ export const AddItemModal = ({
         // console.log(data);
         setSubmitting(true);
         try {
-            const resp = await createItem(data);
+            await createItem(data);
             setSubmitting(false);
-            if (resp) {
-                onClose();
-            }
+            mutate("/item?device=true");
+            mutate("/item");
+
+            onClose();
         } catch (error) {
             console.log(error);
         }

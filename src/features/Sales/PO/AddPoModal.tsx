@@ -74,7 +74,7 @@ export default function AddPOModal({
                                     label="Contact"
                                     name="ContactId"
                                     request={getContacts}
-                                    itemTitleField="name"
+                                    itemTitleField="lastName"
                                     itemValueField="id"
                                     value={values.ContactId}
                                     onChange={handleChange}

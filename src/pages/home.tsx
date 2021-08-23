@@ -72,7 +72,7 @@ export default function Home() {
                         <ItemCard icon={<PaymentRounded />} title="Dashboard" href="/panel/dashboard" />
                     </Grid>
                     <Grid item xs={12} sm={6} md={4} lg={3}>
-                        <ItemCard icon={<PersonRounded />} title="Clients" href="/panel/clients" />
+                        <ItemCard icon={<PersonRounded />} title="Production" href="/panel/production" />
                     </Grid>
                     <Grid item xs={12} sm={6} md={4} lg={3}>
                         <ItemCard icon={<AssessmentRounded />} title="Sales" href="/panel/sales" />
@@ -84,13 +84,13 @@ export default function Home() {
                         <ItemCard icon={<AccountBoxRounded />} title="Roles" href="/panel/roles" />
                     </Grid>
                     <Grid item xs={12} sm={6} md={4} lg={3}>
+                        <ItemCard icon={<AlternateEmailRounded />} title="Engineering" href="/panel/engineering" />
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={4} lg={3}>
                         <ItemCard icon={<LocalActivityRounded />} title="Activity" href="/panel/activity" />
                     </Grid>
                     <Grid item xs={12} sm={6} md={4} lg={3}>
                         <ItemCard icon={<AccountTreeRounded />} title="Projects" href="/panel/projects" />
-                    </Grid>
-                    <Grid item xs={12} sm={6} md={4} lg={3}>
-                        <ItemCard icon={<AlternateEmailRounded />} title="Engineering" href="/panel/engineering" />
                     </Grid>
                 </Grid>
             </Container>

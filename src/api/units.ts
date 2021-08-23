@@ -10,7 +10,7 @@ export interface IUnit {
     seen: boolean;
     number: string | number;
     LineItemRecordId: string;
-    ItemId: string;
+    ItemId: IItem;
     dueDate: number;
     item: IItem;
     so: ISO;

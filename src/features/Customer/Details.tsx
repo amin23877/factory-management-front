@@ -175,7 +175,7 @@ export default function ClientDetails({ selectedRow }: { selectedRow: ICustomer 
                                         <Tab label="Commission" />
                                     </Tabs>
                                     <Box>
-                                        {activeTab === 0 && (
+                                        {activeSubTab === 0 && (
                                             <MoreInfoForm
                                                 values={values}
                                                 errors={errors}
@@ -184,7 +184,7 @@ export default function ClientDetails({ selectedRow }: { selectedRow: ICustomer 
                                                 touched={touched}
                                             />
                                         )}
-                                        {activeTab === 1 && (
+                                        {activeSubTab === 1 && (
                                             <MainContactForm
                                                 values={values}
                                                 errors={errors}
@@ -193,7 +193,7 @@ export default function ClientDetails({ selectedRow }: { selectedRow: ICustomer 
                                                 touched={touched}
                                             />
                                         )}
-                                        {activeTab === 2 && (
+                                        {activeSubTab === 2 && (
                                             <CommissionForm
                                                 values={values}
                                                 errors={errors}

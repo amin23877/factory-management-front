@@ -4,23 +4,25 @@ export interface ICustomer {
     id: string;
 
     name: string;
-    abbr: string;
-    location: string;
+    address: string;
+    state: string;
+    city: string;
+    zipcode: string;
+    phone: string;
+    email: string;
+    productLine: string;
+    supportStaff: string;
     refferedBy: string;
-    linkedIn: string;
+    linkedId: string;
     facebook: string;
     instagram: string;
     website: string;
-    prospect: boolean;
-    size: "small" | "medium" | "large";
+    size: string;
     fax: string;
-    parent: number | null;
-    defaultBillingContact?: string;
-    preferredCompany: string;
-    preferredService: string;
-    account: string;
-    specialInstructions: string;
-    allowedShippingPercentOverUnder: number;
+    parent: string;
+    status: string;
+    regularCommissionPercentage: number;
+    overageCommissionPercentage: number;
     CustomerTypeId: string;
 }
 

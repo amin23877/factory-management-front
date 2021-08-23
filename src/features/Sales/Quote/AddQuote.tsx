@@ -33,7 +33,7 @@ export default function AddQuote({
 
     return (
         <Dialog onClose={onClose} closeOnClickOut={false} open={open} title="Add New Quote" fullScreen maxWidth="md">
-            <Box p={2} height={600}>
+            <Box p={2} height={600} display="flex" flexDirection="column">
                 <Stepper activeStep={step}>
                     <Step>
                         <StepLabel>General Information</StepLabel>

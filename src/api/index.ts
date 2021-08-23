@@ -182,13 +182,13 @@ export function patch(path: string, data: any, headers = { "Content-Type": "appl
         .catch(onError);
 }
 
-export function get_2(
+export function get_withParams(
     path: string,
-    urlData: any,
+    params: any = undefined,
     headers = {
         "Content-Type": "application/json",
     },
-    params: any
+    urlData: any = undefined,
 ) {
     let data = JSON.stringify(urlData);
 

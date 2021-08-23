@@ -1,7 +1,6 @@
 import Axios from "axios";
-
 export interface ICustomerType {
-    id?:string;
+    id?: string;
     inputValue?: string;
     name: string;
 }

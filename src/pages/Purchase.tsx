@@ -6,6 +6,7 @@ import { MyTabs, MyTab } from "../app/Tabs";
 
 import PurchaseQuote from "../features/Purchase/Quote";
 import PurchasePO from "../features/Purchase/PO";
+import Vendors from "../features/Vendor";
 
 export default function Purchase() {
     const [activeTab, setActiveTab] = useState(0);
@@ -16,12 +17,15 @@ export default function Purchase() {
                 <SearchBar />
                 <div style={{ flexGrow: 1 }} />
                 <MyTabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                    <MyTab label="Dashboard" />
                     <MyTab label="Quote" />
-                    <MyTab label="PO" />
+                    <MyTab label="Purchase Order" />
+                    <MyTab label="Vendor" />
                 </MyTabs>
             </Box>
-            {activeTab === 0 && <PurchaseQuote />}
-            {activeTab === 1 && <PurchasePO />}
+            {activeTab === 1 && <PurchaseQuote />}
+            {activeTab === 2 && <PurchasePO />}
+            {activeTab === 3 && <Vendors />}
         </Container>
     );
 }

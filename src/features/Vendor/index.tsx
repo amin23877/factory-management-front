@@ -1,174 +1,119 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useState } from "react";
+import { Box, IconButton, ListItem } from "@material-ui/core";
+import { GridColDef } from "@material-ui/data-grid";
+import useSWR from "swr";
 
-import { Box, Tab, Tabs } from "@material-ui/core";
-import { getVendorItems, IVendor } from "../../api/vendor";
-import { BasePaper } from "../../app/Paper";
+import { AddRounded, DeleteRounded, PrintRounded } from "@material-ui/icons";
 
-import { UpdateVendorForm } from "./Forms";
-import { IVending } from "../../api/vending";
-import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import BaseDataGrid from "../../app/BaseDataGrid";
-import { formatTimestampToDate } from "../../logic/date";
+import List from "../../app/SideUtilityList";
+import { MyTab, MyTabs } from "../../app/Tabs";
+import Toast from "../../app/Toast";
 
-export default function VendorDetails({
-    vendor,
-    onDone,
-    vendings,
-    notes,
-    docs,
-    addresses,
-    contacts,
-    emails,
-    phones,
-    onAddressSelected,
-    onContactSelected,
-    onEmailSelected,
-    onPhoneSelected,
-    onNoteSelected,
-    onDocSelected,
-    onVendingSelected,
-}: {
-    vendor: IVendor;
-    vendings: any[];
-    notes: any[];
-    docs: any[];
-    addresses: any[];
-    emails: any[];
-    contacts: any[];
-    phones: any[];
-    onNoteSelected: (v: any) => void;
-    onDocSelected: (v: any) => void;
-    onEmailSelected: (v: any) => void;
-    onPhoneSelected: (v: any) => void;
-    onContactSelected: (v: any) => void;
-    onAddressSelected: (v: any) => void;
-    onVendingSelected: (v: IVending) => void;
-    onDone: () => void;
-}) {
+import Details from "./Details";
+import VendorModal from "./AddVendor";
+
+import Confirm from "../Modals/Confirm";
+
+import { deleteVendor, IVendor } from "../../api/vendor";
+
+export default function Vendors() {
     const [activeTab, setActiveTab] = useState(0);
-    const [items, setItems] = useState([]);
+    const [selectedVendor, setSelectedVendor] = useState<IVendor>();
 
-    const refreshItems = async () => {
+    const { data: vendors, mutate: mutateVendors } = useSWR<IVendor[]>("/vendor");
+
+    const [addVendor, setAddVendor] = useState(false);
+    const [confirm, setConfirm] = useState(false);
+
+    const handleDelete = async () => {
         try {
-            if (vendor.id) {
-                const resp = await getVendorItems(vendor.id);
-                resp && setItems(resp);
+            if (selectedVendor && selectedVendor.id) {
+                await deleteVendor(selectedVendor.id);
+
+                mutateVendors();
+                setConfirm(false);
+                setActiveTab(0);
+                Toast("Record deleted");
             }
         } catch (error) {
             console.log(error);
         }
     };
 
-    useEffect(() => {
-        if (activeTab === 1) {
-            refreshItems();
-        }
-    }, [activeTab]);
-
-    const cols: GridColDef[] = [
-        { field: "ItemId", valueFormatter: (data) => data.row?.ItemId.name },
-        { field: "leadTime" },
-        { field: "lastCheckedPrice" },
-        { field: "comment" },
-    ];
-
-    const itemCols: GridColDef[] = [
-        { field: "no" },
-        { field: "name" },
-        { field: "cost" },
-        { field: "retailPrice" },
-        { field: "availableQoh" },
-        { field: "allocatedQoh" },
-    ];
-    const noteCols = useMemo<GridColumns>(
-        () => [
-            {
-                field: "date",
-                headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
-                width: 120,
-            },
-            {
-                field: "creator",
-                headerName: "Creator",
-                width: 180,
-                valueFormatter: (params) => params.row?.EmployeeId?.username,
-            },
-            { field: "subject", headerName: "Subject", width: 300 },
-            { field: "note", headerName: "Note", flex: 1 },
-        ],
-        []
-    );
-
-    const docCols: GridColDef[] = [
-        { field: "name", headerName: "Name" },
-        { field: "EmployeeId", headerName: "Employee" },
-        { field: "description", headerName: "Description", width: 250 },
-        { field: "createdAt", headerName: "Date", width: 300 },
-    ];
-
-    const addrCols: GridColDef[] = [
-        { field: "address" },
-        { field: "city" },
-        { field: "state" },
-        { field: "zip" },
-        { field: "main" },
-    ];
-
-    const phoneCols: GridColDef[] = [{ field: "ext" }, { field: "phone" }, { field: "main" }, { field: "PhoneTypeId" }];
-
-    const emailCols: GridColDef[] = [{ field: "email" }, { field: "main" }];
-
-    const contactsCols: GridColDef[] = [
-        { field: "firstName" },
-        { field: "lastName" },
-        { field: "title" },
-        { field: "department" },
-        { field: "instagram" },
-        { field: "website" },
-        { field: "active" },
-        { field: "main" },
-    ];
+    const cols: GridColDef[] = [{ field: "name", headerName: "Name" }];
 
     return (
-        <Box p={2}>
-            <BasePaper>
-                <UpdateVendorForm initialValues={vendor} onDone={onDone} />
-            </BasePaper>
-            <BasePaper style={{ marginTop: "1em" }}>
-                <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} style={{ margin: "0.5em 0" }}>
-                    <Tab label="Vendings" />
-                    <Tab label="Items" />
-                    <Tab label="Notes" />
-                    <Tab label="Documents" />
-                    <Tab label="Addresses" />
-                    <Tab label="Emails" />
-                    <Tab label="Phones" />
-                    <Tab label="Contacts" />
-                </Tabs>
-                {activeTab === 0 && (
-                    <BaseDataGrid cols={cols} rows={vendings} onRowSelected={onVendingSelected} height={450} />
-                )}
-                {activeTab === 1 && <BaseDataGrid cols={itemCols} rows={items} onRowSelected={() => {}} height={450} />}
-                {activeTab === 2 && (
-                    <BaseDataGrid cols={noteCols} rows={notes} onRowSelected={onNoteSelected} height={450} />
-                )}
-                {activeTab === 3 && (
-                    <BaseDataGrid cols={docCols} rows={docs} onRowSelected={onDocSelected} height={450} />
-                )}
-                {activeTab === 4 && (
-                    <BaseDataGrid cols={addrCols} rows={addresses} onRowSelected={onAddressSelected} height={450} />
-                )}
-                {activeTab === 5 && (
-                    <BaseDataGrid cols={emailCols} rows={emails} onRowSelected={onEmailSelected} height={450} />
-                )}
-                {activeTab === 6 && (
-                    <BaseDataGrid cols={phoneCols} rows={phones} onRowSelected={onPhoneSelected} height={450} />
-                )}
-                {activeTab === 7 && (
-                    <BaseDataGrid cols={contactsCols} rows={contacts} onRowSelected={onContactSelected} height={450} />
-                )}
-            </BasePaper>
+        <Box>
+            <VendorModal open={addVendor} onClose={() => setAddVendor(false)} onDone={mutateVendors} />
+            <Confirm
+                text={`Are you sure? You are going to delete vendor ${selectedVendor?.name}`}
+                open={confirm}
+                onClose={() => setConfirm(false)}
+                onConfirm={handleDelete}
+            />
+
+            <Box display="flex">
+                <div style={{ flexGrow: 1 }} />
+                <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                    <MyTab label="List" />
+                    <MyTab label="Details" disabled={!selectedVendor} />
+                </MyTabs>
+            </Box>
+            <Box display="flex">
+                <Box flex={1} m={1}>
+                    <List>
+                        <ListItem>
+                            <IconButton onClick={() => setAddVendor(true)}>
+                                <AddRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton disabled={!selectedVendor} onClick={() => setConfirm(true)}>
+                                <DeleteRounded />
+                            </IconButton>
+                        </ListItem>
+                        {/* <ListItem>
+                            <IconButton disabled={!selectedVendor} onClick={() => setAddressModal(true)}>
+                                <MapOutlined />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton disabled={!selectedVendor} onClick={() => setPhoneModal(true)}>
+                                <PhoneOutlined />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton disabled={!selectedVendor} onClick={() => setContactModal(true)}>
+                                <ContactsOutlined />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton disabled={!selectedVendor} onClick={() => setEmailModal(true)}>
+                                <MailOutline />
+                            </IconButton>
+                        </ListItem> */}
+                        <ListItem>
+                            <IconButton>
+                                <PrintRounded />
+                            </IconButton>
+                        </ListItem>
+                    </List>
+                </Box>
+                <Box flex={11} mt={1}>
+                    {activeTab === 0 && (
+                        <BaseDataGrid
+                            rows={vendors || []}
+                            cols={cols}
+                            onRowSelected={(d) => {
+                                setSelectedVendor(d);
+                                setActiveTab(1);
+                            }}
+                        />
+                    )}
+                    {activeTab === 1 && selectedVendor && <Details vendor={selectedVendor} />}
+                </Box>
+            </Box>
         </Box>
     );
 }

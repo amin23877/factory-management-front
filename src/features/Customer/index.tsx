@@ -3,17 +3,17 @@ import { Box, Grid, Tabs, Tab } from "@material-ui/core";
 import { AddRounded } from "@material-ui/icons";
 import useSWR from "swr";
 
-import Button from "../app/Button";
-import { BasePaper } from "../app/Paper";
-import Toast from "../app/Toast";
+import Button from "../../app/Button";
+import { BasePaper } from "../../app/Paper";
+import Toast from "../../app/Toast";
 
-import { deleteCustomer, ICustomer } from "../api/customer";
+import { deleteCustomer, ICustomer } from "../../api/customer";
 
-import AddCustomerModal from "../features/Customer/Modals";
-import CustomerTypeModal from "../features/Customer/CustomerType";
-import Confirm from "../features/Modals/Confirm";
-import Details from "../features/Customer/Details";
-import Overview from "../features/Customer/Overview";
+import AddCustomerModal from "./Modals";
+import CustomerTypeModal from "./CustomerType";
+import Confirm from "../Modals/Confirm";
+import Details from "./Details";
+import Overview from "./Overview";
 
 export default function Customers() {
     const [activeTab, setActiveTab] = useState(0);

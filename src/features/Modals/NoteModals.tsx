@@ -19,7 +19,7 @@ interface INoteModal {
     open: boolean;
     onClose: () => void;
     model: string;
-    itemId: any;
+    itemId: string;
     noteData?: INote;
     onDone?: () => void;
 }

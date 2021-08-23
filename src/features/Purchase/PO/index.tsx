@@ -5,17 +5,11 @@ import ListItem from "@material-ui/core/ListItem";
 import IconButton from "@material-ui/core/IconButton";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import {
-    AddRounded,
-    DeleteRounded,
-    PrintRounded,
-    PostAddRounded,
-    NoteAddRounded,
-    FileCopyRounded,
-} from "@material-ui/icons";
+import { AddRounded, DeleteRounded, PrintRounded, LocalOfferRounded, PostAddRounded } from "@material-ui/icons";
 
 import List from "../../../app/SideUtilityList";
 import BaseDataGrid from "../../../app/BaseDataGrid";
+import { GridColDef } from "@material-ui/data-grid";
 
 import AddPOModal from "./AddPurchasePO";
 import AddLineItem from "../../LineItem";
@@ -24,16 +18,18 @@ import Details from "./Details";
 import Confirm from "../../Modals/Confirm";
 import NoteModal from "../../Modals/NoteModals";
 import DocumentModal from "../../Modals/DocumentModals";
-
+import PurchasePOTypeModal from "./PurchasePoType";
 import { getPurchasePOs, deletePurchasePO, IPurchasePO, getPurchasePOLines } from "../../../api/purchasePO";
 import { getAllModelNotes } from "../../../api/note";
 import { getAllModelDocuments } from "../../../api/document";
 import { ILineItem } from "../../../api/lineItem";
+import { formatTimestampToDate } from "../../../logic/date";
 
 function Index() {
     const [activeTab, setActiveTab] = useState(0);
     const [addPO, setAddPO] = useState(false);
     const [addLineItem, setAddLineItem] = useState(false);
+    const [addType, setAddType] = useState(false);
     const [confirm, setConfirm] = useState(false);
     const [pos, setPOs] = useState([]);
     const [lines, setLines] = useState([]);
@@ -49,12 +45,33 @@ function Index() {
     const [selPO, setSelPO] = useState<IPurchasePO>();
     const [compPo, setCompPo] = useState<any>();
 
-    const cols = [
-        { field: "number", headerName: "Number", width: 250 },
-        { field: "requester", headerName: "Requester" },
-        { field: "VendorId", headerName: "Vendor" },
-        { field: "ContactId", headerName: "Contact", width: 180 },
-        { field: "EmployeeId", headerName: "Employee", width: 250 },
+    // Date	PO Number	Vendor	Trac. Num	Vendor Ack. Date	Est. Ship	Act. Ship	SO 	Required By	Staff	Status	Total Cost	Approved	Appr. By	QuickBooks Info
+
+    const cols: GridColDef[] = [
+        {
+            field: "Date",
+            valueFormatter: (r) => formatTimestampToDate(r.row?.createdAt),
+            width: 100,
+        },
+        { field: "number", headerName: "PO Number", width: 110 },
+        { field: "Vendor", width: 110, valueFormatter: (r) => r.row?.VendorId?.name }, // change this
+        { field: "TrackNumber", headerName: "Trac. No.", width: 120 },
+        {
+            field: "acknowledgeDate",
+            headerName: "Ack. Date",
+            width: 110,
+            valueFormatter: (r) => (r.row?.acknowledgeDate === -1 ? "-" : r.row?.acknowledgeDate),
+        },
+        { field: "estimatedShipDate", headerName: "Est. Ship", width: 110 },
+        { field: "actualShipDate", headerName: "act. Ship", width: 110 },
+        { field: "SO", width: 110, valueFormatter: (r) => r.row?.SOId?.number },
+        { field: "requiredBy", headerName: "Required By", width: 110 },
+        { field: "Staff", width: 110, valueFormatter: (r) => r.row?.EmployeeId?.username },
+        { field: "status", headerName: "Status", width: 100 },
+        { field: "totalCost", headerName: "Total Cost", width: 100 },
+        { field: "approved", headerName: "Appr.", width: 80, type: "boolean" },
+        { field: "Appr. By", width: 110, valueFormatter: (r) => r.row?.ApprovedBy?.username },
+        { field: "QuickBooks Info", headerName: "QuickBooks Info", width: 120 },
     ];
 
     const refreshNotes = async () => {
@@ -140,13 +157,14 @@ function Index() {
                     setLines([]);
                 }}
             />
-
+            <PurchasePOTypeModal open={addType} onClose={() => setAddType(false)} />
             {selPO && selPO.id && (
                 <AddLineItem
                     selectedLine={selectedLine}
                     open={addLineItem}
                     onClose={() => setAddLineItem(false)}
-                    record="purchasePO"
+                    record="purchasePo"
+                    mutateField="PurchasePOId"
                     recordId={selPO.id}
                 />
             )}
@@ -196,6 +214,11 @@ function Index() {
                             <DeleteRounded />
                         </IconButton>
                     </ListItem>
+                    <ListItem>
+                        <IconButton onClick={() => setAddType(true)} title="Add PO Types">
+                            <LocalOfferRounded />
+                        </IconButton>
+                    </ListItem>
                     {activeTab === 1 && (
                         <>
                             <ListItem>
@@ -209,16 +232,6 @@ function Index() {
                                     <PostAddRounded />
                                 </IconButton>
                             </ListItem>
-                            <ListItem>
-                                <IconButton title="Add note" onClick={() => setNoteModal(true)}>
-                                    <NoteAddRounded />
-                                </IconButton>
-                            </ListItem>
-                            <ListItem>
-                                <IconButton title="Add document" onClick={() => setDocModal(true)}>
-                                    <FileCopyRounded />
-                                </IconButton>
-                            </ListItem>
                         </>
                     )}
                     <ListItem>
@@ -229,7 +242,12 @@ function Index() {
                 </List>
             </Box>
             <Box>
-                <Tabs style={{ marginBottom: "1em" }} value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                <Tabs
+                    textColor="primary"
+                    style={{ marginBottom: "1em" }}
+                    value={activeTab}
+                    onChange={(e, nv) => setActiveTab(nv)}
+                >
                     <Tab label="List" />
                     <Tab label="Details" disabled={!selPO} />
                 </Tabs>

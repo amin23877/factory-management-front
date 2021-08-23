@@ -4,6 +4,7 @@ import { Formik, Form } from "formik";
 import { mutate } from "swr";
 
 import { GeneralForm } from "./Forms";
+import * as Yup from "yup";
 
 import Button from "../../../app/Button";
 import TextField from "../../../app/TextField";
@@ -12,13 +13,29 @@ import Toast from "../../../app/Toast";
 import { editCall } from "../../../api/calls";
 
 import { getModifiedValues } from "../../../logic/utils";
+// Name - Number - Address - Zip - State - Tag - Subject - Description - CreatedBy - AssignedTo (if nobody -> None)  - Response
+const schema = Yup.object().shape({
+    name: Yup.string().required(),
+    address: Yup.string().required(),
+    zip: Yup.string().required(),
+    state: Yup.string().required(),
+    Tags: Yup.string().required(),
+    subject: Yup.string().required(),
+    description: Yup.string().required(),
+    CreatedBy: Yup.string().required(),
+    AssignedTo: Yup.string().required(),
+    Response: Yup.string().required(),
+    contactName: Yup.string().required(),
+    contactNumber: Yup.string().required(),
+});
 
 export default function Details({ callsData }: { callsData: any }) {
     const handleSubmit = async (values: any, { setSubmitting }: any) => {
         try {
-            await editCall(callsData.id, getModifiedValues(values, callsData));
+            values.Tags[0]?.id
+                ? await editCall(callsData.id, getModifiedValues({ ...values }, callsData))
+                : await editCall(callsData.id, getModifiedValues({ ...values, Tags: [values.Tags] }, callsData));
             Toast("Record updated", "success");
-
             mutate("/calls");
             setSubmitting(false);
         } catch (error) {
@@ -27,12 +44,13 @@ export default function Details({ callsData }: { callsData: any }) {
     };
 
     return (
-        <Formik initialValues={callsData} onSubmit={handleSubmit}>
-            {({ values, errors, touched, handleChange, handleBlur }) => (
+        <Formik initialValues={callsData} onSubmit={handleSubmit} validationSchema={schema}>
+            {({ values, errors, touched, handleChange, handleBlur, setFieldValue, setSubmitting }) => (
                 <Form>
                     <Box display="flex" style={{ justifyContent: "space-between" }}>
                         <Box flex={3}>
                             <GeneralForm
+                                setFieldValue={setFieldValue}
                                 values={values}
                                 errors={errors}
                                 handleBlur={handleBlur}

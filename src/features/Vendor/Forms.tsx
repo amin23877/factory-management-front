@@ -6,29 +6,27 @@ import * as Yup from "yup";
 import TextField from "../../app/TextField";
 import Button from "../../app/Button";
 import { createVendor, IVendor, updateVendor } from "../../api/vendor";
+import { mutate } from "swr";
 
+const schema = Yup.object().shape({
+    name: Yup.string().required(),
+});
 export const AddVendorForm = ({ onDone }: { initialValues?: IVendor; onDone: () => void }) => {
-    const schema = Yup.object().shape({
-        name: Yup.string().required(),
-    });
+    const handleSubmit = async (d: IVendor, { setSubmitting }: any) => {
+        try {
+            const resp = await createVendor(d);
+            if (resp) {
+                onDone();
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
     return (
-        <Formik
-            initialValues={{ name: "", description: "" }}
-            validationSchema={schema}
-            onSubmit={async (d, { setSubmitting }) => {
-                try {
-                    const resp = await createVendor(d);
-                    if (resp) {
-                        onDone();
-                    }
-                } catch (error) {
-                    console.log(error);
-                } finally {
-                    setSubmitting(false);
-                }
-            }}
-        >
+        <Formik initialValues={{} as IVendor} validationSchema={schema} onSubmit={handleSubmit}>
             {({ values, errors, handleChange, handleBlur }) => (
                 <Form>
                     <Box display="flex" flexDirection="column" p={2}>
@@ -62,30 +60,23 @@ export const AddVendorForm = ({ onDone }: { initialValues?: IVendor; onDone: () 
     );
 };
 
-export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: IVendor; onDone: () => void }) => {
-    const schema = Yup.object().shape({
-        name: Yup.string().required(),
-    });
+export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: IVendor; onDone?: () => void }) => {
+    const handleSubmit = async (d: any, { setSubmitting }: any) => {
+        try {
+            if (initialValues.id) {
+                await updateVendor(initialValues.id, d);
+                onDone && onDone();
+                mutate(`/vendor`);
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
     return (
-        <Formik
-            initialValues={initialValues}
-            validationSchema={schema}
-            onSubmit={async (d, { setSubmitting }) => {
-                try {
-                    if (initialValues.id) {
-                        const resp = await updateVendor(initialValues.id, d);
-                        if (resp) {
-                            onDone();
-                        }
-                    }
-                } catch (error) {
-                    console.log(error);
-                } finally {
-                    setSubmitting(false);
-                }
-            }}
-        >
+        <Formik initialValues={initialValues} validationSchema={schema} onSubmit={handleSubmit}>
             {({ values, errors, handleChange, handleBlur }) => (
                 <Form>
                     <Box display="flex" flexDirection="row" alignItems="flex-end" p={2}>

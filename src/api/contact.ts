@@ -1,25 +1,16 @@
 import Axios from "axios";
 
 export interface IContact {
-    id?: string;
-    name: string;
-    title: string;
-    department: string;
-    refferedBy: string;
-    linkedIn: string;
-    facebook: string;
-    instagram: string;
-    website: string;
-    optout: boolean;
-    mi: string;
-    prefix: string;
-    active: boolean;
-    main: boolean;
-    ContactTypeId: string;
+    id: string;
+    firstName: string;
     lastName: string;
     phone: string;
     ext: string;
     email: string;
+    title: string;
+    department: string;
+    active: boolean;
+    main: boolean;
 }
 
 export const getContacts = async () => {
