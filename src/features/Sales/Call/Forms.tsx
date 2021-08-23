@@ -46,7 +46,7 @@ export const GeneralForm = ({
                     value={values.company}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    error={Boolean(errors.company && touched.company)}
+                    error={Boolean(errors.company)}
                     helperText={touched.company && errors.company && String(errors.company)}
                     label="Company"
                 />
@@ -55,7 +55,7 @@ export const GeneralForm = ({
                     value={values.contactName}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    error={Boolean(errors.contactName && touched.contactName)}
+                    error={Boolean(errors.contactName)}
                     helperText={touched.contactName && errors.contactName && String(errors.contactName)}
                     label="Contact Name"
                 />
@@ -64,7 +64,7 @@ export const GeneralForm = ({
                     value={values.contactNumber}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    error={Boolean(errors.contactNumber && touched.contactNumber)}
+                    error={Boolean(errors.contactNumber)}
                     helperText={touched.contactNumber && errors.contactNumber && String(errors.contactNumber)}
                     label="Contact Number"
                 />
@@ -73,7 +73,7 @@ export const GeneralForm = ({
                     value={values.contactEmail}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    error={Boolean(errors.contactEmail && touched.contactEmail)}
+                    error={Boolean(errors.contactEmail)}
                     helperText={touched.contactEmail && errors.contactEmail && String(errors.contactEmail)}
                     label="Contact Email"
                 />
@@ -82,7 +82,7 @@ export const GeneralForm = ({
                     value={values.address}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    error={Boolean(errors.address && touched.address)}
+                    error={Boolean(errors.address)}
                     helperText={touched.address && errors.address && String(errors.address)}
                     label="Address"
                 />
@@ -91,7 +91,7 @@ export const GeneralForm = ({
                     value={values.state}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    error={Boolean(errors.state && touched.state)}
+                    error={Boolean(errors.state)}
                     helperText={touched.state && errors.state && String(errors.state)}
                     label="State"
                 />
@@ -100,7 +100,7 @@ export const GeneralForm = ({
                     value={values.zip}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    error={Boolean(errors.zip && touched.zip)}
+                    error={Boolean(errors.zip)}
                     helperText={touched.zip && errors.zip && String(errors.zip)}
                     label="Zip Code"
                 />
@@ -113,6 +113,7 @@ export const GeneralForm = ({
                     value={typeof values.QuoteId === "string" ? values.QuoteId : values.QuoteId?.id}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    error={Boolean(errors.QuoteId)}
                 />
                 <FieldSelect
                     itemValueField="id"
@@ -122,7 +123,7 @@ export const GeneralForm = ({
                     value={typeof values.SOId === "string" ? values.SOId : values.SOId?.id}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    error={Boolean(errors.SOId && touched.SOId)}
+                    error={Boolean(errors.SOId)}
                     helperText={touched.SOId && errors.SOId && String(errors.SOId)}
                     label="SO ID"
                 />
@@ -131,10 +132,10 @@ export const GeneralForm = ({
                     itemTitleField="name"
                     request={getCallsTags}
                     name="Tags"
-                    value={typeof values.Tags === "string" ? values.Tags : values.Tags[0]?.id}
+                    value={values.Tags ? (typeof values.Tags === "string" ? values.Tags : values?.Tags[0]?.id) : ""}
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    error={Boolean(errors.Tags && touched.Tags)}
+                    error={Boolean(errors.Tags)}
                     helperText={touched.Tags && errors.Tags && String(errors.Tags)}
                     label="Tags"
                 />
@@ -150,6 +151,7 @@ export const GeneralForm = ({
                             name="AssignedTo"
                             label="Assigned To"
                             onChange={handleChange}
+                            error={Boolean(errors.AssignedTo)}
                         />
                         <FieldSelect
                             value={typeof values.CreatedBy === "string" ? values.CreatedBy : values.CreatedBy?.id}
@@ -160,6 +162,7 @@ export const GeneralForm = ({
                             name="CreatedBy"
                             label="Created By"
                             onChange={handleChange}
+                            error={Boolean(errors.CreatedBy)}
                         />
                         <TextField
                             style={{ gridColumnEnd: "span 2" }}
@@ -167,7 +170,7 @@ export const GeneralForm = ({
                             value={values.subject}
                             onBlur={handleBlur}
                             onChange={handleChange}
-                            error={Boolean(errors.subject && touched.subject)}
+                            error={Boolean(errors.subject)}
                             helperText={touched.subject && errors.subject && String(errors.subject)}
                             label="Subject"
                         />
@@ -198,7 +201,7 @@ export const MoreInfoForm = ({
                 value={values.subject}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                error={Boolean(errors.subject && touched.subject)}
+                error={Boolean(errors.subject)}
                 helperText={touched.subject && errors.subject && String(errors.subject)}
                 label="Subject"
             />
@@ -211,6 +214,7 @@ export const MoreInfoForm = ({
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.description}
+                error={Boolean(errors.description)}
             />
         </Box>
     );
@@ -240,6 +244,7 @@ export const MainContactForm = ({
                 name="AssignedTo"
                 label="Assigned To"
                 onChange={handleChange}
+                error={Boolean(errors.AssignedTo)}
             />
             <FieldSelect
                 value={typeof values.CreatedBy === "string" ? values.CreatedBy : values.CreatedBy?.id}
@@ -250,6 +255,7 @@ export const MainContactForm = ({
                 name="CreatedBy"
                 label="Created By"
                 onChange={handleChange}
+                error={Boolean(errors.CreatedBy)}
             />
             <TextField
                 multiline
@@ -261,6 +267,7 @@ export const MainContactForm = ({
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.response}
+                error={Boolean(errors.response)}
             />
         </Box>
     );
