@@ -22,6 +22,7 @@ import MyBackdrop from "../app/Backdrop";
 import ChatDrawer from "../features/Chat/Drawer";
 
 const Home = React.lazy(() => import("../pages/home"));
+
 const Dashboard = React.lazy(() => import("../pages/Dashboard"));
 const Sales = React.lazy(() => import("../pages/Sales"));
 const Inventory = React.lazy(() => import("../pages/Inventory"));
