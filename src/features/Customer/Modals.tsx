@@ -61,9 +61,9 @@ export default function AddCustomerModal({
                     <Step>
                         <StepLabel>More Information</StepLabel>
                     </Step>
-                    <Step>
+                    {/* <Step>
                         <StepLabel>Main Contact </StepLabel>
-                    </Step>
+                    </Step> */}
                     <Step>
                         <StepLabel>Commissions</StepLabel>
                     </Step>
@@ -90,7 +90,7 @@ export default function AddCustomerModal({
                             touched={touched}
                         />
                     )}
-                    {activeStep === 2 && (
+                    {/* {activeStep === 2 && (
                         <MainContactForm
                             values={values}
                             errors={errors}
@@ -98,8 +98,8 @@ export default function AddCustomerModal({
                             handleChange={handleChange}
                             touched={touched}
                         />
-                    )}
-                    {activeStep === 3 && (
+                    )} */}
+                    {activeStep === 2 && (
                         <CommissionForm
                             values={values}
                             errors={errors}

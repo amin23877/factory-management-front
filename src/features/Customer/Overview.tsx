@@ -36,7 +36,7 @@ export default function ClientOverview({
             headerName: "City",
         },
         {
-            field: "zipCode",
+            field: "zipcode",
             headerName: "Zip Code",
             width: 120,
         },
@@ -49,6 +49,7 @@ export default function ClientOverview({
             field: "supportStaff",
             width: 120,
             headerName: "Support Staff",
+            valueFormatter: (data) => data.row?.supportStaff?.username,
         },
         {
             field: "contact",
@@ -61,18 +62,18 @@ export default function ClientOverview({
             field: "phone",
             headerName: "Phone",
             width: 150,
-            valueFormatter: (data) => (data.row.phone ? data.row?.phone?.ext + " " + data.row?.phone?.phone : ""),
+            // valueFormatter: (data) => (data.row.phone ? data.row?.phone?.ext + " " + data.row?.phone?.phone : ""),
         },
         {
             field: "email",
             headerName: "Email",
             width: 150,
-            valueFormatter: (data) => (data.row.phone ? data.row?.phone?.ext + " " + data.row?.phone?.phone : ""),
+            // valueFormatter: (data) => (data.row.phone ? data.row?.phone?.ext + " " + data.row?.phone?.phone : ""),
         },
         {
             field: "Type",
             width: 100,
-            valueFormatter: (data) => data.row?.ClientType?.name,
+            valueFormatter: (data) => data.row?.CustomerTypeId?.name,
         },
         {
             field: "status",
