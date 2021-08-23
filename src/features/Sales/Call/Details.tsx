@@ -45,7 +45,7 @@ export default function Details({ callsData }: { callsData: any }) {
 
     return (
         <Formik initialValues={callsData} onSubmit={handleSubmit} validationSchema={schema}>
-            {({ values, errors, touched, handleChange, handleBlur, setSubmitting }) => (
+            {({ values, errors, touched, handleChange, handleBlur, setFieldValue, setSubmitting }) => (
                 <Form>
                     <Box display="flex" style={{ justifyContent: "space-between" }}>
                         <Box flex={3}>

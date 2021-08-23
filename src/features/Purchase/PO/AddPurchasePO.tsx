@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Box, Step, StepLabel, Stepper, DialogTitle, IconButton, Typography } from "@material-ui/core";
-import { CloseRounded } from "@material-ui/icons";
+import { Box, Step, StepLabel, Stepper, Typography } from "@material-ui/core";
+
 import Dialog from "../../../app/Dialog";
 import { CreateForm, FinalForm, LinesForm, DocumentForm } from "./Forms";
+
 import { IPurchasePO, IPurchasePOComplete } from "../../../api/purchasePO";
 
 export default function AddPOModal({
@@ -28,13 +29,6 @@ export default function AddPOModal({
 
     return (
         <Dialog open={open} title="Add new purchase order" fullScreen onClose={onClose}>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mx={1}>
-                <DialogTitle>Add new purchase order</DialogTitle>
-                <div style={{ flexGrow: 1 }} />
-                <IconButton onClick={onClose}>
-                    <CloseRounded />
-                </IconButton>
-            </Box>
             <Box p={2} height={600}>
                 <Stepper activeStep={step}>
                     <Step>

@@ -20,7 +20,7 @@ export default function Purchase() {
                     <MyTab label="Dashboard" />
                     <MyTab label="Quote" />
                     <MyTab label="Purchase Order" />
-                    <MyTab label="vendor" />
+                    <MyTab label="Vendor" />
                 </MyTabs>
             </Box>
             {activeTab === 1 && <PurchaseQuote />}

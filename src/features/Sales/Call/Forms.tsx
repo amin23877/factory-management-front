@@ -129,19 +129,12 @@ export const GeneralForm = ({
                     helperText={touched.SOId && errors.SOId && String(errors.SOId)}
                     label="SO ID"
                 />
-<<<<<<< HEAD
-                {/* <TagsAutocomplete value={values.tags} setFieldValue={setFieldValue} /> */}
-                <TextField
-                    name="tags"
-                    value={values.tags}
-=======
                 <FieldSelect
                     itemValueField="id"
                     itemTitleField="name"
                     request={getCallsTags}
                     name="Tags"
                     value={values.Tags ? (typeof values.Tags === "string" ? values.Tags : values?.Tags[0]?.id) : ""}
->>>>>>> origin/amin
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(errors.Tags)}

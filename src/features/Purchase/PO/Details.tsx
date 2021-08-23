@@ -113,6 +113,11 @@ export default function Details({
                                             handleBlur={handleBlur}
                                             handleChange={handleChange}
                                         />
+                                        <Box display="flex">
+                                            <Button style={{ margin: "1em auto" }} type="submit" kind="edit">
+                                                Save
+                                            </Button>
+                                        </Box>
                                     </BasePaper>
                                 </Box>
                                 <Box flex={3}>
@@ -161,11 +166,6 @@ export default function Details({
                                         </Box>
                                     </BasePaper>
                                 </Box>
-                            </Box>
-                            <Box textAlign="left" display="flex">
-                                <Button style={{ margin: "1em auto" }} type="submit" kind="edit">
-                                    Save
-                                </Button>
                             </Box>
                         </Form>
                     )}
