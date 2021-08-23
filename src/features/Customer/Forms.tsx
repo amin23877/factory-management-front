@@ -273,35 +273,12 @@ export const MainContactForm = ({
         <Box my={2} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr">
             {/* // مقادیرش باید تصحیح شه */}
             <TextField
-                name="website"
-                value={values.website}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={Boolean(errors.website && touched.website)}
-                helperText={touched.website && errors.website && String(errors.website)}
+                value={`${values.contact?.firstName} ${values.contact?.lastName}`}
                 label=" Main Contact Name"
                 disabled
             />
-            <TextField
-                name="website"
-                value={values.website}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={Boolean(errors.website && touched.website)}
-                helperText={touched.website && errors.website && String(errors.website)}
-                label="Main Contact Phone"
-                disabled
-            />
-            <TextField
-                name="website"
-                value={values.website}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                error={Boolean(errors.website && touched.website)}
-                helperText={touched.website && errors.website && String(errors.website)}
-                label="Main Contact Email"
-                disabled
-            />
+            <TextField value={values.contact?.phone} label="Main Contact Phone" disabled />
+            <TextField value={values.contact?.email} label="Main Contact Email" disabled />
         </Box>
     );
 };

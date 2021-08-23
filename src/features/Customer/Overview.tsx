@@ -55,7 +55,7 @@ export default function ClientOverview({
             field: "contact",
             headerName: "Main Contact",
             width: 130,
-            valueFormatter: (data) => data.row?.contact?.name,
+            valueFormatter: (data) => data.row?.contact?.firstName,
         },
 
         {
