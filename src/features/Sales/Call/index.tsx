@@ -45,17 +45,17 @@ export default function Calls() {
         { field: "zip", headerName: "Zip Code", width: 100 },
         {
             field: "Assigned To",
-            valueFormatter: (r) => r.row?.assignedTo?.username,
+            valueFormatter: (r) => r.row?.AssignedTo?.username,
             width: 110,
         },
         {
             field: "Created By",
-            valueFormatter: (r) => r.row?.createdBy?.username,
+            valueFormatter: (r) => r.row?.CreatedBy?.username,
             width: 110,
         },
         {
             field: "Tag",
-            valueFormatter: (r) => r.row?.tags[0],
+            valueFormatter: (r) => r.row?.Tags[0]?.name,
             width: 100,
         },
     ];

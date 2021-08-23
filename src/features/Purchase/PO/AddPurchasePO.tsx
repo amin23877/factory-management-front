@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Box, Step, StepLabel, Stepper, Dialog, DialogTitle, IconButton, Typography } from "@material-ui/core";
+import { Box, Step, StepLabel, Stepper, DialogTitle, IconButton, Typography } from "@material-ui/core";
 import { CloseRounded } from "@material-ui/icons";
-
+import Dialog from "../../../app/Dialog";
 import { CreateForm, FinalForm, LinesForm, DocumentForm } from "./Forms";
 import { IPurchasePO, IPurchasePOComplete } from "../../../api/purchasePO";
 
@@ -27,7 +27,7 @@ export default function AddPOModal({
     }, [initialData]);
 
     return (
-        <Dialog open={open} title="Add new purchase order" fullWidth maxWidth="md">
+        <Dialog open={open} title="Add new purchase order" fullScreen onClose={onClose}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mx={1}>
                 <DialogTitle>Add new purchase order</DialogTitle>
                 <div style={{ flexGrow: 1 }} />
@@ -51,14 +51,13 @@ export default function AddPOModal({
                     </Step>
                 </Stepper>
                 {step === 0 && (
-                    <Box display="flex" justifyContent="center">
-                        <div style={{ flexGrow: 1 }} />
+                    <Box display="flex" justifyContent="center" px={5}>
                         <Box flex={1}>
                             <Typography variant="h6">General information</Typography>
                             <Typography variant="caption">
-                                Please consider this after you finilize your po (last step) you can't edit it
+                                Please consider this after you finalize your po (last step) you can't edit it
                             </Typography>
-                            <Box my={2}>
+                            <Box my={2} flex={1}>
                                 <CreateForm
                                     data={po}
                                     onDone={(d) => {
@@ -68,7 +67,6 @@ export default function AddPOModal({
                                 />
                             </Box>
                         </Box>
-                        <div style={{ flexGrow: 1 }} />
                     </Box>
                 )}
                 {step === 1 && (

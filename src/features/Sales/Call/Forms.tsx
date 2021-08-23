@@ -131,7 +131,7 @@ export const GeneralForm = ({
                     itemTitleField="name"
                     request={getCallsTags}
                     name="Tags"
-                    value={typeof values.Tags === "string" ? values.Tags : values.Tags?.id}
+                    value={typeof values.Tags === "string" ? values.Tags : values.Tags[0]?.id}
                     onBlur={handleBlur}
                     onChange={handleChange}
                     error={Boolean(errors.Tags && touched.Tags)}

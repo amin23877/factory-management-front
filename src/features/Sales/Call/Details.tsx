@@ -16,9 +16,8 @@ import { getModifiedValues } from "../../../logic/utils";
 export default function Details({ callsData }: { callsData: any }) {
     const handleSubmit = async (values: any, { setSubmitting }: any) => {
         try {
-            await editCall(callsData.id, getModifiedValues(values, callsData));
+            await editCall(callsData.id, getModifiedValues({ ...values, Tags: [values.Tags] }, callsData));
             Toast("Record updated", "success");
-
             mutate("/calls");
             setSubmitting(false);
         } catch (error) {
