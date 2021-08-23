@@ -1,15 +1,14 @@
 import React, { useMemo } from "react";
 import { Grid, Typography } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
+import useSWR from "swr";
 
 import BaseDataGrid from "../../../app/BaseDataGrid";
 import { BasePaper } from "../../../app/Paper";
-import LineChart from "../../../app/Chart/LineChart";
 import PieChart from "../../../app/Chart/PieChart";
 
-import { ClientPie } from "./Charts";
+import { ClientPie, DevicesPie, SalesVsWeek } from "./Charts";
 import { formatTimestampToDate } from "../../../logic/date";
-import useSWR from "swr";
 
 const data02 = [
     { name: "Group A", value: 2400 },
@@ -65,37 +64,37 @@ export default function Dashboard() {
         ],
         []
     );
-    // TODO: Sales vs week, each Device, each location, each Rep, in progress chart
+    // TODO: each location, each Rep
 
     return (
         <Grid container spacing={3}>
             <Grid item xs={12} sm={12}>
                 <BasePaper>
-                    <Typography variant="h6">Sales vs Weeks</Typography>
-                    <LineChart height={250} data={data02} xDataKey="name" barDataKey="value" />
+                    <Typography variant="h6">Sales vs Weeks (This Month)</Typography>
+                    <SalesVsWeek />
                 </BasePaper>
             </Grid>
             <Grid item xs={6} sm={3}>
                 <BasePaper>
-                    <Typography variant="h6">Snapshot for each Device</Typography>
+                    <Typography variant="h6">Snapshot For Each Device</Typography>
+                    <DevicesPie />
+                </BasePaper>
+            </Grid>
+            <Grid item xs={6} sm={3}>
+                <BasePaper>
+                    <Typography variant="h6">Snapshot For Location</Typography>
                     <PieChart data={data02} dataKey="value" height={250} />
                 </BasePaper>
             </Grid>
             <Grid item xs={6} sm={3}>
                 <BasePaper>
-                    <Typography variant="h6">Snapshot for Location</Typography>
-                    <PieChart data={data02} dataKey="value" height={250} />
-                </BasePaper>
-            </Grid>
-            <Grid item xs={6} sm={3}>
-                <BasePaper>
-                    <Typography variant="subtitle1">Snapshot for each Client</Typography>
+                    <Typography variant="subtitle1">Snapshot For Each Customer</Typography>
                     <ClientPie />
                 </BasePaper>
             </Grid>
             <Grid item xs={6} sm={3}>
                 <BasePaper>
-                    <Typography variant="subtitle1">Snapshot for each Rep</Typography>
+                    <Typography variant="subtitle1">Snapshot For Each Rep</Typography>
                     <PieChart data={data02} dataKey="value" height={250} />
                 </BasePaper>
             </Grid>

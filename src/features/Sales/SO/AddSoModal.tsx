@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Box, Step, StepLabel, Stepper } from "@material-ui/core";
 
 import Dialog from "../../../app/Dialog";
+import Button from "../../../app/Button";
 
 import { LinesForm } from "../../Purchase/PO/Forms";
 import General from "./MainForm";
@@ -81,22 +82,30 @@ export default function AddSOModal({
                         data={so}
                         onBack={() => setStep(1)}
                         onDone={(data) => {
-                            // onClose();
                             setStep(3);
                             onDone();
                             setCreatedSO(data);
                         }}
                     />
                 )}
-                {step === 3 && (
+                {step === 3 && createdSO && so ? (
                     <DocumentForm
                         onDone={() => {
+                            setStep(0);
+                            setCreatedSO(undefined);
                             onClose();
                             onDone();
                         }}
                         createdSO={createdSO}
                         data={so}
                     />
+                ) : (
+                    <>
+                        <h1>Sorry there is a problem, Please go back and try again</h1>
+                        <Button variant="contained" color="primary" onClick={() => setStep((prev) => prev - 1)}>
+                            Back
+                        </Button>
+                    </>
                 )}
             </Box>
         </Dialog>

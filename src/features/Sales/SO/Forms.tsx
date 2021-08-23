@@ -17,6 +17,7 @@ import { DateTimePicker } from "@material-ui/pickers";
 
 import TextField from "../../../app/TextField";
 import { FieldSelect, ArraySelect } from "../../../app/Inputs";
+import Button from "../../../app/Button";
 
 import { getAllEmployees } from "../../../api/employee";
 import { getContacts } from "../../../api/contact";
@@ -25,17 +26,17 @@ import { getAddresses } from "../../../api/address";
 import { getPhones } from "../../../api/phone";
 import { getEmails } from "../../../api/emailAddress";
 import { getProjects } from "../../../api/project";
-import { getAllAgencies } from "../../../api/agency";
 import { getQuoteById, getQuotes } from "../../../api/quote";
 import { getTickets } from "../../../api/ticket";
-import Button from "../../../app/Button";
+import { ISO, ISOComplete } from "../../../api/so";
+import { createAModelDocument } from "../../../api/document";
+
+import { exportPdf } from "../../../logic/pdf";
+import { formatTimestampToDate } from "../../../logic/date";
+
 import SOCus from "../../../PDFTemplates/SOCus";
 import SORep from "../../../PDFTemplates/SORep";
 import SOAcc from "../../../PDFTemplates/SOAcc";
-import { exportPdf } from "../../../logic/pdf";
-import { ISO, ISOComplete } from "../../../api/so";
-import { createAModelDocument } from "../../../api/document";
-import { formatTimestampToDate } from "../../../logic/date";
 
 export const GeneralForm = ({
     handleChange,
@@ -76,7 +77,6 @@ export const GeneralForm = ({
                         billingAddress,
                         billingEntitiy,
 
-                        agency,
                         requester,
                         ClientId,
                         ProjectId,
@@ -104,9 +104,7 @@ export const GeneralForm = ({
                         billingAddress,
                         billingEntitiy,
 
-                        agency,
                         requester,
-                        ClientId,
                         ProjectId,
                     });
                 })
@@ -791,6 +789,7 @@ export const AccountingForm = ({
         </Fragment>
     );
 };
+
 export const ApprovalForm = ({
     handleChange,
     handleBlur,
@@ -1061,16 +1060,7 @@ export const TermsTab = ({
 }) => {
     return (
         <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-            <FieldSelect
-                value={values.agency ? values.agency : ""}
-                request={getAllAgencies}
-                itemTitleField="name"
-                itemValueField="id"
-                keyField="id"
-                name="agency"
-                label="Agency"
-                onChange={handleChange}
-            />
+            <TextField value={values.agency} name="agency" label="Agency" onChange={handleChange} onBlur={handleBlur} />
             <FieldSelect
                 value={values.requester ? values.requester : ""}
                 request={getAllEmployees}
@@ -1082,13 +1072,13 @@ export const TermsTab = ({
                 onChange={handleChange}
             />
             <FieldSelect
-                value={values.ClientId ? values.ClientId : ""}
+                value={values.CustomerId ? values.CustomerId : ""}
                 request={getCustomers}
                 itemTitleField="name"
                 itemValueField="id"
                 keyField="id"
-                name="ClientId"
-                label="Client"
+                name="CustomerId"
+                label="Customer"
                 onChange={handleChange}
             />
             <FieldSelect
@@ -1121,8 +1111,8 @@ export const DocumentForm = ({
     data,
 }: {
     onDone: () => void;
-    createdSO?: ISO;
-    data?: ISOComplete;
+    createdSO: ISO;
+    data: ISOComplete;
 }) => {
     const divToPrintAcc = useRef<HTMLElement | null>(null);
     const divToPrintRep = useRef<HTMLElement | null>(null);
@@ -1137,50 +1127,41 @@ export const DocumentForm = ({
             setCanSave(false);
             setIsUploading(true);
             if (divToPrintAcc.current && createdSO?.id) {
-                const generatedPdf = await exportPdf(divToPrintAcc.current);
-                console.log(generatedPdf);
-                const resp = await createAModelDocument(
+                const generatedAccPdf = await exportPdf(divToPrintAcc.current);
+                await createAModelDocument(
                     "so",
                     createdSO.id,
-                    generatedPdf,
+                    generatedAccPdf,
                     `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
                     `SO_ACC_${createdSO.number}.pdf`
                 );
-                if (resp) {
-                    if (divToPrintRep.current) {
-                        const generatedPdf = await exportPdf(divToPrintRep.current);
-                        console.log(generatedPdf);
-                        const resp = await createAModelDocument(
-                            "so",
-                            createdSO.id,
-                            generatedPdf,
-                            `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
-                            `SO_REP_${createdSO.number}.pdf`
-                        );
-                        if (resp) {
-                            if (divToPrintCus.current) {
-                                const generatedPdf = await exportPdf(divToPrintCus.current);
-                                console.log(generatedPdf);
-                                const resp = await createAModelDocument(
-                                    "so",
-                                    createdSO.id,
-                                    generatedPdf,
-                                    `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
-                                    `SO_CUS_${createdSO.number}.pdf`
-                                );
-                                if (resp) {
-                                    onDone();
-                                }
-                            }
-                        }
-                    }
-                }
+            }
+            if (divToPrintRep.current) {
+                const generatedRepPdf = await exportPdf(divToPrintRep.current);
+                await createAModelDocument(
+                    "so",
+                    createdSO.id,
+                    generatedRepPdf,
+                    `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
+                    `SO_REP_${createdSO.number}.pdf`
+                );
+            }
+            if (divToPrintCus.current) {
+                const generatedCusPdf = await exportPdf(divToPrintCus.current);
+                await createAModelDocument(
+                    "so",
+                    createdSO.id,
+                    generatedCusPdf,
+                    `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
+                    `SO_CUS_${createdSO.number}.pdf`
+                );
             }
         } catch (error) {
             console.log(error);
         } finally {
             setCanSave(true);
             setIsUploading(false);
+            onDone();
         }
     };
 
@@ -1237,7 +1218,7 @@ export const DocumentForm = ({
             </div>
 
             <Box textAlign="right">
-                <Button kind="add" onClick={handleSaveDocument}>
+                <Button disabled={isUploading} kind="add" onClick={handleSaveDocument}>
                     Save
                 </Button>
                 {isUploading && <LinearProgress />}

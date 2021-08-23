@@ -4,7 +4,8 @@ import { ILineItem } from "./lineItem";
 import { ILineService } from "./lineService";
 
 export interface ISO {
-    id?: string;
+    id: string;
+
     number: string;
     freightTerms: string;
     paymentTerms: string;
@@ -37,6 +38,8 @@ export interface ISO {
     requester?: string;
     ClientId?: ICustomer;
     ProjectId?: string;
+
+    totalAmount?:number,
 }
 
 export interface ISOComplete extends ISO {
