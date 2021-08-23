@@ -60,7 +60,7 @@ export default function PurchasePO({
                 </tr>
                 <tr className="minHeight">
                     <td>{vendor?.name}</td>
-                    <td>{contact?.name}</td>
+                    <td>{contact?.firstName}</td>
                 </tr>
             </table>
             <table

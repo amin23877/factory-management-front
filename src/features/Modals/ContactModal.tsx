@@ -7,15 +7,9 @@ import * as Yup from "yup";
 import Dialog from "../../app/Dialog";
 import TextField from "../../app/TextField";
 import Button from "../../app/Button";
-import { FieldSelect } from "../../app/Inputs";
 
-import { getContactTypes } from "../../api/contactType";
 import { createAModelContact, deleteAModelContact, updateAModelContact, IContact } from "../../api/contact";
-
-const schema = Yup.object().shape({
-    name: Yup.string().required(),
-    ContactTypeId: Yup.string().required(),
-});
+import { mutate } from "swr";
 
 export const ContactModal = ({
     open,
@@ -37,6 +31,7 @@ export const ContactModal = ({
             deleteAModelContact(data.id)
                 .then(() => {
                     onClose();
+                    mutate(`/contact/customer/${itemId}`);
                     onDone && onDone();
                 })
                 .catch((e) => console.log(e));
@@ -48,6 +43,7 @@ export const ContactModal = ({
             updateAModelContact(data?.id, values)
                 .then((d: any) => {
                     console.log(d);
+                    mutate(`/contact/customer/${itemId}`);
                     onDone && onDone();
                     setSubmitting(false);
                     onClose();
@@ -57,6 +53,7 @@ export const ContactModal = ({
             createAModelContact("client", itemId, values)
                 .then((d: any) => {
                     console.log(d);
+                    mutate(`/contact/customer/${itemId}`);
                     onDone && onDone();
                     setSubmitting(false);
                     onClose();
@@ -68,22 +65,18 @@ export const ContactModal = ({
     return (
         <Dialog open={open} onClose={onClose} title={`${data?.id ? "Edit" : "Add"} a Contact to ${model}`}>
             <Box m={3}>
-                <Formik
-                    initialValues={data?.id ? data : ({} as IContact)}
-                    validationSchema={schema}
-                    onSubmit={handleSubmit}
-                >
+                <Formik initialValues={data?.id ? data : ({} as IContact)} onSubmit={handleSubmit}>
                     {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
                         <Form>
                             <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={8} gridColumnGap={8}>
                                 <TextField
-                                    name="name"
+                                    name="firstName"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
-                                    error={Boolean(errors.name && touched.name)}
-                                    helperText={errors.name && touched.name}
-                                    value={values.name}
-                                    label="Name"
+                                    error={Boolean(errors.firstName && touched.firstName)}
+                                    helperText={errors.firstName && touched.firstName}
+                                    value={values.firstName}
+                                    label="First Name"
                                 />
                                 <TextField
                                     name="lastName"
@@ -123,80 +116,6 @@ export const ContactModal = ({
                                     label="Email"
                                 />
 
-                                {/* <TextField
-                                    name="refferedBy"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    error={Boolean(errors.refferedBy && touched.refferedBy)}
-                                    helperText={errors.refferedBy && touched.refferedBy}
-                                    value={values.refferedBy}
-                                    label="refferedBy"
-                                />
-                                <TextField
-                                    name="linkedIn"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    error={Boolean(errors.linkedIn && touched.linkedIn)}
-                                    helperText={errors.linkedIn && touched.linkedIn}
-                                    value={values.linkedIn}
-                                    label="linkedIn"
-                                />
-                                <TextField
-                                    name="facebook"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    error={Boolean(errors.facebook && touched.facebook)}
-                                    helperText={errors.facebook && touched.facebook}
-                                    value={values.facebook}
-                                    label="facebook"
-                                />
-                                <TextField
-                                    name="instagram"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    error={Boolean(errors.instagram && touched.instagram)}
-                                    helperText={errors.instagram && touched.instagram}
-                                    value={values.instagram}
-                                    label="instagram"
-                                />
-                                <TextField
-                                    name="website"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    error={Boolean(errors.website && touched.website)}
-                                    helperText={errors.website && touched.website}
-                                    value={values.website}
-                                    label="website"
-                                />
-                                <TextField
-                                    name="mi"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    error={Boolean(errors.mi && touched.mi)}
-                                    helperText={errors.mi && touched.mi}
-                                    value={values.mi}
-                                    label="mi"
-                                />
-                                <TextField
-                                    name="prefix"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    error={Boolean(errors.prefix && touched.prefix)}
-                                    helperText={errors.prefix && touched.prefix}
-                                    value={values.prefix}
-                                    label="prefix"
-                                />
-                                <FieldSelect
-                                    request={getContactTypes}
-                                    itemTitleField="name"
-                                    itemValueField="id"
-                                    name="ContactTypeId"
-                                    label="Contact Type"
-                                    value={values.ContactTypeId}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.ContactTypeId && touched.ContactTypeId)}
-                                /> */}
                                 <TextField
                                     name="title"
                                     onBlur={handleBlur}
