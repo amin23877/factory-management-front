@@ -50,7 +50,7 @@ export const ContactModal = ({
                 })
                 .catch((e) => console.log(e));
         } else {
-            createAModelContact("client", itemId, values)
+            createAModelContact("customer", itemId, values)
                 .then((d: any) => {
                     console.log(d);
                     mutate(`/contact/customer/${itemId}`);
