@@ -22,6 +22,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import DeleteRounded from "@material-ui/icons/DeleteRounded";
 import ChevronRight from "@material-ui/icons/ChevronRight";
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
+import { BasePaper } from "../../../app/Paper";
 
 import { getPPOTypes } from "../../../api/purchasePoType";
 
@@ -41,7 +42,7 @@ import { LinearProgress } from "@material-ui/core";
 import { exportPdf } from "../../../logic/pdf";
 
 import "../../../styles/splash.css";
-import { ISOComplete } from "../../../api/so";
+import { getSO, ISOComplete } from "../../../api/so";
 import { IQuoteComplete } from "../../../api/quote";
 
 import PurchasePO from "../../../PDFTemplates/PurchasePO";
@@ -557,48 +558,180 @@ export const LineServicesForm = ({
     );
 };
 
-export const CreateForm = ({
-    onDone,
-    data,
-}: {
-    data?: IPurchasePOComplete;
-    onDone: (data: IPurchasePOComplete) => void;
-}) => {
+export const CreateForm = ({ onDone, data }: { data?: any; onDone: (data: IPurchasePOComplete) => void }) => {
     const schema = Yup.object().shape({
-        requester: Yup.string().required(),
-        VendorId: Yup.string().required(),
-        ContactId: Yup.string().required(),
+        // requester: Yup.string().required(),
+        // VendorId: Yup.string().required(),
+        // ContactId: Yup.string().required(),
     });
 
-    const handleSubmit = (d: IPurchasePOComplete) => {
+    const handleSubmit = (d: any) => {
         onDone(d);
     };
+    const [activeMoreTab, setActiveMoreTab] = useState(0);
 
     return (
-        <Formik
-            initialValues={data ? data : ({} as IPurchasePOComplete)}
-            validationSchema={schema}
-            onSubmit={handleSubmit}
-        >
-            {({ values, errors, handleChange, handleBlur, isValid }) => (
+        <Formik initialValues={data ? data : ({} as any)} validationSchema={schema} onSubmit={handleSubmit}>
+            {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
                 <Form>
-                    <Box display="grid" gridTemplateColumns="auto" gridGap={8}>
+                    <Box display="flex">
+                        <BasePaper
+                            style={{
+                                boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
+                                height: "100%",
+                                flex: "2",
+                            }}
+                        >
+                            <Box
+                                display="grid"
+                                gridTemplateColumns="1fr 1fr"
+                                gridRowGap={10}
+                                gridColumnGap={10}
+                                flex={2}
+                            >
+                                <FieldSelect
+                                    request={getPPOTypes}
+                                    itemTitleField="name"
+                                    itemValueField="id"
+                                    name="purchasePOTypeId"
+                                    label="PO Type"
+                                    fullWidth
+                                    onChange={handleChange}
+                                    value={
+                                        typeof values.purchasePOTypeId === "string"
+                                            ? values.purchasePOTypeId
+                                            : values.purchasePOTypeId?.id
+                                    }
+                                    error={Boolean(errors.purchasePOTypeId)}
+                                />
+                                <FieldSelect
+                                    itemValueField="id"
+                                    itemTitleField="number"
+                                    request={getSO}
+                                    name="SOId"
+                                    value={typeof values.SOId === "string" ? values.SOId : values.SOId?.id}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.SOId)}
+                                    label="SO ID"
+                                />
+                                <FieldSelect
+                                    style={{ width: "100%" }}
+                                    request={getVendors}
+                                    itemTitleField="name"
+                                    itemValueField="id"
+                                    name="VendorId"
+                                    label="Vendor"
+                                    value={values.VendorId}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors.VendorId)}
+                                />
+                                <TextField label="Approved By" value={values.approvedBy?.username} fullWidth disabled />
+
+                                <ArraySelect
+                                    items={[
+                                        "Quoted",
+                                        "Pending",
+                                        "Printed",
+                                        "Closed",
+                                        "Acknowledged",
+                                        "Shipped",
+                                        "Received",
+                                        "Canceled",
+                                        "On Hold",
+                                    ]}
+                                    name="status"
+                                    label="PO Status"
+                                    value={values.status}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors.status)}
+                                    fullWidth
+                                />
+                                <TextField
+                                    name="terms"
+                                    label="Terms"
+                                    value={values.terms}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    error={Boolean(errors.terms)}
+                                    fullWidth
+                                />
+                                <TextField
+                                    style={{ gridColumnEnd: "span 2" }}
+                                    value={values.note}
+                                    name="note"
+                                    label="PO note"
+                                    multiline
+                                    rows={4}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                            </Box>
+                        </BasePaper>
+                        <Box flex={3}>
+                            <BasePaper
+                                style={{
+                                    boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
+                                    margin: "0 1em",
+                                    height: "100%",
+                                }}
+                            >
+                                <Tabs
+                                    textColor="primary"
+                                    value={activeMoreTab}
+                                    onChange={(e, nv) => setActiveMoreTab(nv)}
+                                    variant="scrollable"
+                                    style={{ maxWidth: 700 }}
+                                >
+                                    <Tab label="More Info" />
+                                    <Tab label="Addresses" />
+                                </Tabs>
+                                <Box>
+                                    {activeMoreTab === 0 && (
+                                        <MoreInfoForm
+                                            errors={errors}
+                                            values={values}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            setFieldValue={setFieldValue}
+                                            addForm={true}
+                                        />
+                                    )}
+                                    {activeMoreTab === 1 && (
+                                        <AddressesForm
+                                            values={values}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                        />
+                                    )}
+                                </Box>
+                            </BasePaper>
+                        </Box>
+                    </Box>
+                    <Box style={{ display: "flex", width: "100%", justifyContent: "center" }}>
+                        <Button type="submit" kind="add" style={{ margin: "0.5em auto" }}>
+                            Next
+                        </Button>
+                    </Box>
+                    {/* <Box display="grid" gridTemplateColumns="auto" gridGap={8}>
                         <FieldSelect
-                            style={{ width: "100%" }}
-                            request={getAllEmployees}
-                            itemTitleField="username"
-                            itemValueField="id"
-                            name="requester"
-                            label="Requester"
-                            value={values.requester}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={Boolean(errors.requester)}
+                        style={{ width: "100%" }}
+                        request={getAllEmployees}
+                        itemTitleField="username"
+                        itemValueField="id"
+                        name="requester"
+                        label="Requester"
+                        value={values.requester}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.requester)}
                         />
                         {errors.requester && <Typography variant="caption">{errors.requester}</Typography>}
                         <FieldSelect
-                            style={{ width: "100%" }}
-                            request={getVendors}
+                        style={{ width: "100%" }}
+                        request={getVendors}
                             itemTitleField="name"
                             itemValueField="id"
                             name="VendorId"
@@ -632,10 +765,8 @@ export const CreateForm = ({
                             error={Boolean(errors.status)}
                             fullWidth
                         />
-                        <Button type="submit" disabled={!isValid} kind="add" style={{ margin: "0.5em 0" }}>
-                            Next
-                        </Button>
-                    </Box>
+                        
+                    </Box> */}
                 </Form>
             )}
         </Formik>
@@ -751,17 +882,19 @@ export const MoreInfoForm = ({
     handleBlur,
     handleChange,
     setFieldValue,
+    addForm,
 }: {
     values: any;
     handleChange: any;
     handleBlur: any;
     errors: any;
     setFieldValue: any;
+    addForm?: boolean;
 }) => {
     return (
         <>
             <Box my={2} display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10}>
-                <TextField label="PO Date" value={formatTimestampToDate(values.createdAt)} disabled />
+                {!addForm && <TextField label="PO Date" value={formatTimestampToDate(values.createdAt)} disabled />}
                 <DateTimePicker
                     size="small"
                     value={values.acknowledgeDate}
@@ -786,12 +919,14 @@ export const MoreInfoForm = ({
                     onChange={(date) => setFieldValue("actShipDate", date)}
                     onBlur={handleBlur}
                 />
-                <TextField
-                    label="Approved Date"
-                    value={formatTimestampToDate(values.approvedDate)}
-                    fullWidth
-                    disabled
-                />
+                {!addForm && (
+                    <TextField
+                        label="Approved Date"
+                        value={formatTimestampToDate(values.approvedDate)}
+                        fullWidth
+                        disabled
+                    />
+                )}
 
                 <TextField
                     name="requiredBy"

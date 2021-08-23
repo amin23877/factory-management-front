@@ -69,7 +69,7 @@ function Index() {
         { field: "Staff", width: 110, valueFormatter: (r) => r.row?.EmployeeId?.username },
         { field: "status", headerName: "Status", width: 100 },
         { field: "totalCost", headerName: "Total Cost", width: 100 },
-        { field: "approved", headerName: "Approved", width: 80, type: "boolean" },
+        { field: "approved", headerName: "Appr.", width: 80, type: "boolean" },
         { field: "Appr. By", width: 110, valueFormatter: (r) => r.row?.ApprovedBy?.username },
         { field: "QuickBooks Info", headerName: "QuickBooks Info", width: 120 },
     ];

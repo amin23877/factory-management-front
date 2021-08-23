@@ -1,16 +1,16 @@
 import Axios from "axios";
 
 export interface IContact {
-    id:string;
-    firstName:string;
-    lastName:string;
-    phone:string;
-    ext:string;
-    email:string;
-    title:string;
-    department:string;
-    active:boolean;
-    main:boolean;
+    id: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+    ext: string;
+    email: string;
+    title: string;
+    department: string;
+    active: boolean;
+    main: boolean;
 }
 
 export const getContacts = async () => {
