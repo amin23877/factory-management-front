@@ -222,7 +222,7 @@ export default function Details({
                             style={style}
                         >
                             + Add Document
-                        </Button>{" "}
+                        </Button>
                         <DocumentsDataGrid documents={docs} onDocumentSelected={onDocumentSelected} />
                     </Fragment>
                 )}
