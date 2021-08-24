@@ -15,6 +15,7 @@ import { AddressesForm, UpdateForm, MoreInfoForm, VendorForm } from "./Forms";
 import Snack from "../../../app/Snack";
 import { DocumentsDataGrid, NotesDataGrid } from "../../common/DataGrids";
 import { GridColumns } from "@material-ui/data-grid";
+import { formatTimestampToDate } from "../../../logic/date";
 
 const style = {
     border: "1px solid gray ",
@@ -49,6 +50,21 @@ export default function Details({
     const [noteModal, setNoteModal] = useState(false);
     const [docModal, setDocModal] = useState(false);
 
+    // Date	Item Number	Item Name	Vendor Part Number		Qty Received	UOM	Note
+
+    const receivedCols = useMemo<GridColumns>(
+        () => [
+            { field: "Date", valueFormatter: (r) => formatTimestampToDate(r.row.ItemId?.date), width: 200 },
+            { field: "ItemId", headerName: "Item Number", valueFormatter: (r) => r.row.ItemId.number, width: 200 },
+            { field: "ItemId", headerName: "Item Name", valueFormatter: (r) => r.row.ItemId.name, width: 200 },
+            { field: "vendor", headerName: "Vendor P. NO.", flex: 1 },
+            { field: "quantity", headerName: "QTY", width: 90 },
+            { field: "uom", headerName: "UOM", width: 100 },
+            { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
+            { field: "note", headerName: "Note", width: 200 },
+        ],
+        []
+    );
     const LICols = useMemo<GridColumns>(
         () => [
             { field: "index", headerName: "Sort" },
