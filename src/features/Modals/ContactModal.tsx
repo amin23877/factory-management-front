@@ -30,7 +30,6 @@ export const ContactModal = ({
             deleteAModelContact(data.id)
                 .then(() => {
                     onClose();
-                    mutate(`/contact/customer/${itemId}`);
                     onDone && onDone();
                     mutate(`/contact/${model}/${itemId}`);
                 })
@@ -43,7 +42,6 @@ export const ContactModal = ({
             updateAModelContact(data?.id, values)
                 .then((d: any) => {
                     console.log(d);
-                    mutate(`/contact/customer/${itemId}`);
                     onDone && onDone();
                     setSubmitting(false);
                     onClose();
@@ -51,10 +49,9 @@ export const ContactModal = ({
                 })
                 .catch((e) => console.log(e));
         } else {
-            createAModelContact("customer", itemId, values)
+            createAModelContact(model, itemId, values)
                 .then((d: any) => {
                     console.log(d);
-                    mutate(`/contact/customer/${itemId}`);
                     onDone && onDone();
                     setSubmitting(false);
                     onClose();
@@ -148,12 +145,6 @@ export const ContactModal = ({
                                     label="Active"
                                     control={<Checkbox checked={values.active} />}
                                 />
-                                {/* <FormControlLabel
-                                    name="optout"
-                                    onChange={handleChange}
-                                    label="Optout"
-                                    control={<Checkbox checked={values.optout} />}
-                                /> */}
                                 <Button type="submit" disabled={isSubmitting} kind={data ? "edit" : "add"}>
                                     Save
                                 </Button>

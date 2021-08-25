@@ -12,32 +12,21 @@ import { formatTimestampToDate } from "../../logic/date";
 
 import NoteModal from "../Modals/NoteModals";
 import DocumentModal from "../Modals/DocumentModals";
-import VendingModal from "./Vending/Modal";
-import { AddressModal } from "../Modals/AddressModal";
-import { EmailModal } from "../Modals/EmailModal";
-import { PhoneModal } from "../Modals/PhoneModal";
+
 import { ContactModal } from "../Modals/ContactModal";
 
-import { IAddress } from "../../api/address";
-import { IEmailAddress } from "../../api/emailAddress";
-import { IPhone } from "../../api/phone";
 import { IContact } from "../../api/contact";
 import { INote } from "../../api/note";
 import { IDocument } from "../../api/document";
-import { IVending } from "../../api/vending";
 import { IVendor } from "../../api/vendor";
 
 export default function VendorDetails({ vendor }: { vendor: IVendor }) {
     const [activeTab, setActiveTab] = useState(0);
 
-    const { data: vendings } = useSWR(activeTab === 0 ? `/vending?VendorId=${vendor.id}` : null);
-    const { data: items } = useSWR(activeTab === 1 ? `/vendor/${vendor.id}/items` : null);
-    const { data: notes } = useSWR(activeTab === 2 ? `/note/vendor/${vendor.id}` : null);
-    const { data: documents } = useSWR(activeTab === 3 ? `/document/vendor/${vendor.id}` : null);
-    const { data: addresses } = useSWR(activeTab === 4 ? `/address/vendor/${vendor.id}` : null);
-    const { data: emails } = useSWR(activeTab === 5 ? `/email/vendor/${vendor.id}` : null);
-    const { data: phones } = useSWR(activeTab === 6 ? `/phone/vendor/${vendor.id}` : null);
-    const { data: contacts } = useSWR(activeTab === 7 ? `/contact/vendor/${vendor.id}` : null);
+    const { data: items } = useSWR(activeTab === 0 ? `/vendor/${vendor.id}/items` : null);
+    const { data: documents } = useSWR(activeTab === 1 ? `/document/vendor/${vendor.id}` : null);
+    const { data: contacts } = useSWR(activeTab === 2 ? `/contact/vendor/${vendor.id}` : null);
+    const { data: notes } = useSWR(activeTab === 4 ? `/note/vendor/${vendor.id}` : null);
 
     const [noteModal, setNoteModal] = useState(false);
     const [documentModal, setDocumentModal] = useState(false);
@@ -49,18 +38,7 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
 
     const [selectedNote, setSelectedNote] = useState<INote>();
     const [selectedDocument, setSelectedDocument] = useState<IDocument>();
-    const [selectedAddress, setSelectedAddress] = useState<IAddress>();
-    const [selectedEmail, setSelectedEmail] = useState<IEmailAddress>();
-    const [selectedPhone, setSelectedPhone] = useState<IPhone>();
     const [selectedContact, setSelectedContact] = useState<IContact>();
-    const [selectedVending, setSelectedVending] = useState<IVending>();
-
-    const cols: GridColDef[] = [
-        { field: "ItemId", valueFormatter: (data) => data.row?.ItemId.name },
-        { field: "leadTime" },
-        { field: "lastCheckedPrice" },
-        { field: "comment" },
-    ];
 
     const itemCols: GridColDef[] = [
         { field: "no" },
@@ -97,18 +75,6 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
         { field: "createdAt", headerName: "Date", width: 300 },
     ];
 
-    const addrCols: GridColDef[] = [
-        { field: "address" },
-        { field: "city" },
-        { field: "state" },
-        { field: "zip" },
-        { field: "main" },
-    ];
-
-    const phoneCols: GridColDef[] = [{ field: "ext" }, { field: "phone" }, { field: "main" }, { field: "PhoneTypeId" }];
-
-    const emailCols: GridColDef[] = [{ field: "email" }, { field: "main" }];
-
     const contactsCols: GridColDef[] = [
         { field: "firstName" },
         { field: "lastName" },
@@ -136,39 +102,13 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                 onClose={() => setDocumentModal(false)}
                 docData={selectedDocument}
             />
-            <AddressModal
-                itemId={String(vendor.id)}
-                model="vendor"
-                open={addressModal}
-                onClose={() => setAddressModal(false)}
-                data={selectedAddress}
-            />
-            <EmailModal
-                itemId={String(vendor.id)}
-                model="vendor"
-                open={emailModal}
-                onClose={() => setEmailModal(false)}
-                data={selectedEmail}
-            />
-            <PhoneModal
-                itemId={String(vendor.id)}
-                model="vendor"
-                open={phoneModal}
-                onClose={() => setPhoneModal(false)}
-                data={selectedPhone}
-            />
+
             <ContactModal
                 itemId={String(vendor.id)}
                 model="vendor"
                 open={contactModal}
                 onClose={() => setContactModal(false)}
                 data={selectedContact}
-            />
-            <VendingModal
-                open={vendingModal}
-                onClose={() => setVendingModal(false)}
-                initialValues={selectedVending}
-                vendor={vendor}
             />
 
             <Box p={2}>
@@ -177,59 +117,16 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                 </BasePaper>
                 <BasePaper style={{ marginTop: "1em" }}>
                     <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} style={{ margin: "0.5em 0" }}>
-                        <Tab label="Vendings" />
                         <Tab label="Items" />
-                        <Tab label="Notes" />
                         <Tab label="Documents" />
-                        <Tab label="Addresses" />
-                        <Tab label="Emails" />
-                        <Tab label="Phones" />
                         <Tab label="Contacts" />
+                        <Tab label="PO History" />
+                        <Tab label="Notes" />
+                        <Tab label="Auditing" />
                     </Tabs>
-                    {activeTab === 0 && (
-                        <>
-                            <Button
-                                variant="outlined"
-                                onClick={() => {
-                                    setSelectedVending(undefined);
-                                    setVendingModal(true);
-                                }}
-                            >
-                                Add
-                            </Button>
-                            <BaseDataGrid
-                                cols={cols}
-                                rows={vendings || []}
-                                onRowSelected={(r) => {
-                                    setSelectedVending(r);
-                                    setVendingModal(true);
-                                }}
-                            />
-                        </>
-                    )}
-                    {activeTab === 1 && <BaseDataGrid cols={itemCols} rows={items || []} onRowSelected={() => {}} />}
-                    {activeTab === 2 && (
-                        <>
-                            <Button
-                                variant="outlined"
-                                onClick={() => {
-                                    setSelectedNote(undefined);
-                                    setNoteModal(true);
-                                }}
-                            >
-                                Add
-                            </Button>
-                            <BaseDataGrid
-                                cols={noteCols}
-                                rows={notes || []}
-                                onRowSelected={(r) => {
-                                    setSelectedNote(r);
-                                    setNoteModal(true);
-                                }}
-                            />
-                        </>
-                    )}
-                    {activeTab === 3 && (
+
+                    {activeTab === 0 && <BaseDataGrid cols={itemCols} rows={items || []} onRowSelected={() => {}} />}
+                    {activeTab === 1 && (
                         <>
                             <Button
                                 variant="outlined"
@@ -238,7 +135,7 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                                     setDocumentModal(true);
                                 }}
                             >
-                                Add
+                                + Add Document
                             </Button>
                             <BaseDataGrid
                                 cols={docCols}
@@ -250,70 +147,7 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                             />
                         </>
                     )}
-                    {activeTab === 4 && (
-                        <>
-                            <Button
-                                variant="outlined"
-                                onClick={() => {
-                                    setSelectedAddress(undefined);
-                                    setAddressModal(true);
-                                }}
-                            >
-                                Add
-                            </Button>
-                            <BaseDataGrid
-                                cols={addrCols}
-                                rows={addresses || []}
-                                onRowSelected={(r) => {
-                                    setSelectedAddress(r);
-                                    setAddressModal(true);
-                                }}
-                            />
-                        </>
-                    )}
-                    {activeTab === 5 && (
-                        <>
-                            <Button
-                                variant="outlined"
-                                onClick={() => {
-                                    setSelectedEmail(undefined);
-                                    setEmailModal(true);
-                                }}
-                            >
-                                Add
-                            </Button>
-                            <BaseDataGrid
-                                cols={emailCols}
-                                rows={emails || []}
-                                onRowSelected={(r) => {
-                                    setSelectedEmail(r);
-                                    setEmailModal(true);
-                                }}
-                            />
-                        </>
-                    )}
-                    {activeTab === 6 && (
-                        <>
-                            <Button
-                                variant="outlined"
-                                onClick={() => {
-                                    setSelectedPhone(undefined);
-                                    setPhoneModal(true);
-                                }}
-                            >
-                                Add
-                            </Button>
-                            <BaseDataGrid
-                                cols={phoneCols}
-                                rows={phones || []}
-                                onRowSelected={(r) => {
-                                    setSelectedPhone(r);
-                                    setPhoneModal(true);
-                                }}
-                            />
-                        </>
-                    )}
-                    {activeTab === 7 && (
+                    {activeTab === 2 && (
                         <>
                             <Button
                                 variant="outlined"
@@ -322,14 +156,35 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                                     setContactModal(true);
                                 }}
                             >
-                                Add
+                                + Add Contact
                             </Button>
                             <BaseDataGrid
                                 cols={contactsCols}
-                                rows={contacts}
+                                rows={contacts || []}
                                 onRowSelected={(r) => {
                                     setSelectedContact(r);
                                     setContactModal(true);
+                                }}
+                            />
+                        </>
+                    )}
+                    {activeTab === 4 && (
+                        <>
+                            <Button
+                                variant="outlined"
+                                onClick={() => {
+                                    setSelectedNote(undefined);
+                                    setNoteModal(true);
+                                }}
+                            >
+                                + Add Note
+                            </Button>
+                            <BaseDataGrid
+                                cols={noteCols}
+                                rows={notes || []}
+                                onRowSelected={(r) => {
+                                    setSelectedNote(r);
+                                    setNoteModal(true);
                                 }}
                             />
                         </>

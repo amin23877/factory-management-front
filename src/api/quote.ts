@@ -12,7 +12,7 @@ export interface IQuote {
     SOId: string;
     entryDate: number;
     expireDate: number;
-    ProjectId: string;
+    ProjectId: any;
     location: string;
     leadTime: string;
     note: string;
@@ -21,7 +21,7 @@ export interface IQuote {
     requesterName: string;
     requesterMail: string;
     requesterPhone: string;
-    client: string;
+    client: ICustomer;
     unitPricingLevel: string;
     estimatedShipDate: number;
     TicketId: number;
