@@ -14,7 +14,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TextField from "../../app/TextField";
 import { FieldSelect } from "../../app/Inputs";
 import Button from "../../app/Button";
-import { BasePaper } from "../../app/Paper";
+// import { BasePaper } from "../../app/Paper";
 import Snack from "../../app/Snack";
 
 import { getItems } from "../../api/items";
@@ -24,7 +24,7 @@ import {
     getFieldServices,
     IFieldService,
     removeServiceFromLineitem,
-    updateFieldService,
+    // updateFieldService,
 } from "../../api/fieldService";
 import { getServiceFamilies } from "../../api/serviceFamily";
 
@@ -168,7 +168,7 @@ export default function FieldServiceForm({
         <>
             <FieldSelect
                 request={getItems}
-                getOptionList={(list) => list.items}
+                getOptionList={(list) => list.result}
                 itemTitleField="name"
                 itemValueField="id"
                 label="Item"
@@ -186,7 +186,7 @@ export default function FieldServiceForm({
                 itemValueField="id"
                 label="Service family"
                 name="ServiceFamilyId"
-                value={device ? '60efd0bcca0feadc84be6618' : values.ServiceFamilyId}
+                value={device ? "60efd0bcca0feadc84be6618" : values.ServiceFamilyId}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={Boolean(errors.ServiceFamilyId)}

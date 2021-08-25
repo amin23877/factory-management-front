@@ -50,6 +50,7 @@ import { getFieldServices } from "../../../api/fieldService";
 import { ILineService } from "../../../api/lineService";
 import { formatTimestampToDate } from "../../../logic/date";
 import { DateTimePicker } from "@material-ui/pickers";
+import { IItem } from "../../../api/items";
 
 export const DocumentForm = ({
     createdPO,
@@ -231,13 +232,15 @@ export const LinesForm = ({
     onDone: (items: ILineItem[]) => void;
     onBack: () => void;
 }) => {
-    const { data: items } = useSWR<{ total: number; result: any[] }>("/item");
     const [createdItems, setCreatedItems] = useState<ILineItem[]>(data && data.lines ? data.lines : []);
+    const [selectedItem, setSelectedItem] = useState<IItem>();
+    const { data: items } = useSWR<{ total: number; result: any[] }>("/item");
+    const { data: services } = useSWR(selectedItem ? `/service?ItemId=${selectedItem.id}` : "/service");
 
     const schema = Yup.object().shape({
         ItemId: Yup.string().required(),
         quantity: Yup.number().required().min(1),
-        price: Yup.number().required().min(0.1),
+        price: Yup.number().required().min(0.0001),
     });
 
     const handleSubmit = (d: ILineItem) => {
@@ -248,6 +251,18 @@ export const LinesForm = ({
 
     const handleDelete = async (index: number) => {
         setCreatedItems((prev) => prev.filter((item: any, ind) => ind !== index));
+    };
+
+    const handleNext = () => {
+        const res = [...createdItems];
+        res.forEach((_line, index) => {
+            res[index].services = res[index].services.map((s) => ({
+                ServiceId: s.id,
+                price: s.price,
+                quantity: 1,
+            }));
+        });
+        onDone(res);
     };
 
     return (
@@ -266,6 +281,20 @@ export const LinesForm = ({
                                     fullWidth
                                 />
                                 {errors.ItemId && <Typography variant="caption">{errors.ItemId}</Typography>}
+                                <Autocomplete
+                                    options={services || []}
+                                    getOptionLabel={(item: any) => item.name}
+                                    onChange={(e, nv) => {
+                                        setFieldValue("services", nv);
+                                        setSelectedItem(nv.length > 0 ? nv[nv.length - 1] : undefined);
+                                    }}
+                                    onBlur={handleBlur}
+                                    renderInput={(params) => <TextField {...params} label="Services" name="services" />}
+                                    fullWidth
+                                    freeSolo
+                                    multiple
+                                />
+                                {errors.services && <Typography variant="caption">{errors.services}</Typography>}
                                 <BootstrapTextField
                                     style={{ width: "100%" }}
                                     name="description"
@@ -324,9 +353,7 @@ export const LinesForm = ({
                                     </Button>
                                     <Button
                                         endIcon={<ChevronRight />}
-                                        onClick={() => {
-                                            onDone(createdItems);
-                                        }}
+                                        onClick={handleNext}
                                         disabled={createdItems.length === 0}
                                         variant="contained"
                                         color="primary"
@@ -876,6 +903,7 @@ export const UpdateForm = ({
         </>
     );
 };
+
 export const MoreInfoForm = ({
     values,
     errors,
@@ -1115,6 +1143,7 @@ export const AddressesForm = ({
         </>
     );
 };
+
 export const VendorForm = ({
     handleChange,
     handleBlur,

@@ -3,7 +3,7 @@ import { Box, Step, StepLabel, Stepper } from "@material-ui/core";
 
 import Dialog from "../../../app/Dialog";
 
-import { LineServicesForm, LinesForm } from "../../Purchase/PO/Forms";
+import { LinesForm } from "../../Purchase/PO/Forms";
 import General from "./General";
 import { FinalForm } from "./EditForm";
 import { DocumentForm } from "./Forms";
@@ -41,9 +41,9 @@ export default function AddQuote({
                     <Step>
                         <StepLabel>Line Items</StepLabel>
                     </Step>
-                    <Step>
+                    {/* <Step>
                         <StepLabel>Line Services</StepLabel>
-                    </Step>
+                    </Step> */}
                     <Step>
                         <StepLabel>Final</StepLabel>
                     </Step>
@@ -72,17 +72,7 @@ export default function AddQuote({
                         }}
                     />
                 )}
-                {step === 2 && (
-                    <LineServicesForm
-                        data={quote}
-                        onBack={() => setStep(0)}
-                        onDone={(items: any) => {
-                            setQuote((d: any) => ({ ...d, lines: items }));
-                            setStep((prev) => prev + 1);
-                        }}
-                    />
-                )}
-                {step === 3 && quote && (
+                {step === 2 && quote && (
                     <FinalForm
                         data={quote}
                         onBack={() => setStep(1)}
@@ -93,7 +83,7 @@ export default function AddQuote({
                         }}
                     />
                 )}
-                {step === 4 && (
+                {step === 3 && (
                     <DocumentForm
                         data={quote}
                         createdQoute={createdQuote}

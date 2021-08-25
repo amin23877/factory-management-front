@@ -11,6 +11,8 @@ export interface ILineItem {
     quantity: number;
     price: number;
     tax: boolean;
+
+    services:any[]
 }
 
 export type records = "purchaseSo" | "purchasePo" | "so" | "quote" | "po";
