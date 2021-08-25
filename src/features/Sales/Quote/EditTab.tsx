@@ -66,7 +66,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
 
     const LSCols = useMemo<GridColumns>(
         () => [
-            { field: "ServiceId", headerName: "Service", valueFormatter: (r) => r.row?.ServiceId.name, flex: 1 },
+            { field: "ServiceId", headerName: "Service", valueFormatter: (r) => r.row?.ServiceId?.name, flex: 1 },
             // { field: "LineItemRecordId",  width: 200 },
             { field: "quantity", headerName: "Quantity", width: 100 },
             { field: "price", headerName: "Price", width: 100 },

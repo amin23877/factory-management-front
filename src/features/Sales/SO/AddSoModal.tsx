@@ -88,24 +88,28 @@ export default function AddSOModal({
                         }}
                     />
                 )}
-                {step === 3 && createdSO && so ? (
-                    <DocumentForm
-                        onDone={() => {
-                            setStep(0);
-                            setCreatedSO(undefined);
-                            onClose();
-                            onDone();
-                        }}
-                        createdSO={createdSO}
-                        data={so}
-                    />
+                {step === 3 ? (
+                    createdSO && so ? (
+                        <DocumentForm
+                            onDone={() => {
+                                setStep(0);
+                                setCreatedSO(undefined);
+                                onClose();
+                                onDone();
+                            }}
+                            createdSO={createdSO}
+                            data={so}
+                        />
+                    ) : (
+                        <>
+                            <h1>Sorry there is a problem, Please go back and try again</h1>
+                            <Button variant="contained" color="primary" onClick={() => setStep((prev) => prev - 1)}>
+                                Back
+                            </Button>
+                        </>
+                    )
                 ) : (
-                    <>
-                        <h1>Sorry there is a problem, Please go back and try again</h1>
-                        <Button variant="contained" color="primary" onClick={() => setStep((prev) => prev - 1)}>
-                            Back
-                        </Button>
-                    </>
+                    <></>
                 )}
             </Box>
         </Dialog>
