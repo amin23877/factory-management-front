@@ -70,7 +70,7 @@ export default function Dashboard() {
         <Grid container spacing={3}>
             <Grid item xs={12} sm={12}>
                 <BasePaper>
-                    <Typography variant="h6">Sales vs Weeks (This Month)</Typography>
+                    <Typography variant="h6">Sales Per Week</Typography>
                     <SalesVsWeek />
                 </BasePaper>
             </Grid>
@@ -101,7 +101,7 @@ export default function Dashboard() {
             <Grid item xs={12} sm={12}>
                 <BasePaper>
                     <Typography variant="h6">In progress SOs</Typography>
-                    <BaseDataGrid cols={cols} rows={inProgressSOs || []} height={250} />
+                    <BaseDataGrid cols={cols} rows={inProgressSOs || []} height={350} />
                 </BasePaper>
             </Grid>
         </Grid>

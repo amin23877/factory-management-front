@@ -1,4 +1,4 @@
-import { getWeekOfMonth } from "date-fns";
+import { getWeekOfMonth, getWeek } from "date-fns";
 
 import { formatDate } from "../utils";
 
@@ -47,7 +47,7 @@ export const extractClientPieChartData = (data: ISO[]) => {
 };
 
 export const extractSalesVsWeek = (data: ISO[]) => {
-    return data.map((so) => ({ week: getWeekOfMonth(so.createdAt), totalAmount: so.totalAmount || 0 }));
+    return data.map((so) => ({ week: getWeek(so.createdAt), totalAmount: so.totalAmount || 0 }));
 };
 
 export const extractDevicesSales = (data: IUnit[]) => {
