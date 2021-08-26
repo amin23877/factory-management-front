@@ -5,7 +5,7 @@ import * as Yup from "yup";
 
 import TextField from "../../app/TextField";
 import Button from "../../app/Button";
-import { createVendor, IVendor, updateVendor } from "../../api/vendor";
+import { createVendor, updateVendor } from "../../api/vendor";
 import { mutate } from "swr";
 import { getVendorTypes } from "../../api/vendorType";
 import { FieldSelect } from "../../app/Inputs";
