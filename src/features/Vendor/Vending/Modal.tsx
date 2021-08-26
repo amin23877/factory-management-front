@@ -40,7 +40,7 @@ export default function VendingModal({
                 if (resp) {
                     onDone && onDone();
                     onClose();
-                    mutate(`/vendings?VendorId=${vendor.id}`);
+                    mutate(`/vendor/${vendor.id}/items`);
                 }
             }
         } catch (error) {
@@ -55,13 +55,13 @@ export default function VendingModal({
                 if (resp) {
                     onDone && onDone();
                     onClose();
-                    mutate(`/vendings?VendorId=${vendor.id}`);
+                    mutate(`/vendor/${vendor.id}/items`);
                 }
             } else {
                 await createVending({ ...d, VendorId: vendor.id });
                 onDone && onDone();
                 onClose();
-                mutate(`/vendings?VendorId=${vendor.id}`);
+                mutate(`/vendor/${vendor.id}/items`);
             }
         } catch (error) {
             console.log(error);
@@ -76,16 +76,16 @@ export default function VendingModal({
                         <Form>
                             <Box display="grid" gridTemplateColumns="auto auto" gridColumnGap="0.5em" gridRowGap={8}>
                                 <TextField
-                                    name="serialNo"
-                                    label="serial number"
-                                    value={values.serialNo}
+                                    name="number"
+                                    label="Vendor Number"
+                                    value={values.number}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    error={Boolean(errors.serialNo)}
+                                    error={Boolean(errors.number)}
                                 />
                                 <TextField
                                     name="leadTime"
-                                    label="Lead time"
+                                    label="Lead Time"
                                     value={values.leadTime}
                                     onChange={handleChange}
                                     onBlur={handleBlur}

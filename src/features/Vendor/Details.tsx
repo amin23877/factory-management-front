@@ -33,22 +33,21 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
     const [noteModal, setNoteModal] = useState(false);
     const [documentModal, setDocumentModal] = useState(false);
     const [contactModal, setContactModal] = useState(false);
-
     const [selectedNote, setSelectedNote] = useState<INote>();
     const [selectedDocument, setSelectedDocument] = useState<IDocument>();
     const [selectedContact, setSelectedContact] = useState<IContact>();
     // Item Number	Item Name	Vendor Part Number		Last Lead Time	QOH	Cost	Inventory Value	Min Order	Note
 
     const itemCols: GridColDef[] = [
-        { field: "no" },
-        // { field: "name" },
-        // { field: "vendorPartNumber" },
-        // { field: "lead" },
-        // { field: "totalQoh" },
-        // { field: "cost" },
-        // { field: "retailPrice" },
-        // { field: "availableQoh" },
-        // { field: "allocatedQoh" },
+        { field: "ItemId", headerName: "Item NO.", valueFormatter: (r) => r.row?.item?.no, width: 120 },
+        { field: "ItemName", headerName: "Item Name", valueFormatter: (r) => r.row?.item?.name, flex: 1 },
+        { field: "number", headerName: "Vendor P.NO.", width: 120, valueFormatter: (r) => r.row?.vending?.number },
+        { field: "Last Lead", width: 120, valueFormatter: (r) => r.row?.vending?.leadTime },
+        { field: "QOH", width: 100, valueFormatter: (r) => r.row?.item?.qtyOnHand },
+        { field: "Cost", width: 100, valueFormatter: (r) => r.row?.vending?.cost },
+        { field: "Inventory Val.", width: 130, valueFormatter: (r) => r.row?.item?.qtyOnHand * r.row?.vending?.cost }, // inventory value should change ?????
+        { field: "Min Order", valueFormatter: (r) => r.row?.item.minOrder, width: 100 },
+        { field: "Note", valueFormatter: (r) => r.row?.vending?.note, width: 100 },
     ];
     const noteCols = useMemo<GridColumns>(
         () => [
@@ -80,21 +79,15 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                 valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
                 width: 120,
             },
-            { field: "Number", headerName: "PO NO.", width: 120 },
-            {
-                field: "EmployeeId",
-                headerName: "Creator",
-                valueFormatter: (params) => params.row?.employee?.username,
-                width: 120,
-            },
-            { field: "id", headerName: "ID", width: 200 },
-            { field: "description", headerName: "Description", flex: 1 },
-            {
-                field: "type",
-                headerName: "File Type",
-                valueFormatter: (params) => fileType(params.row?.path),
-                width: 120,
-            },
+            { field: "Number", headerName: "PO NO.", width: 100 },
+            { field: "qtyOrdered", headerName: "Qty Ordered", width: 120 },
+            { field: "qtyReceived", headerName: "Qty Received", width: 120 },
+            { field: "qtySold", headerName: "Qty Sold", width: 120 },
+            { field: "uom", headerName: "PO UOM", width: 120 },
+            { field: "dateReceived", headerName: "Date Received", width: 120 },
+            { field: "cost", headerName: "Cost", width: 80 },
+            { field: "total", headerName: "Total Cost", width: 120 },
+            { field: "status", headerName: "Status", width: 100 },
         ],
         []
     );
@@ -128,15 +121,15 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
     // First Name	Last Name	Phone	Ext	Email	Title	Department	Main	Active
 
     const contactsCols: GridColDef[] = [
-        { field: "firstName" },
-        { field: "lastName" },
-        { field: "phone" },
-        { field: "ext" },
-        { field: "email" },
-        { field: "title" },
-        { field: "department" },
-        { field: "main" },
-        { field: "active" },
+        { field: "firstName", headerName: "First Name", flex: 1 },
+        { field: "lastName", headerName: "Last Name", flex: 1 },
+        { field: "phone", headerName: "Phone", width: 120 },
+        { field: "ext", headerName: "EXT", width: 80 },
+        { field: "email", headerName: "Email", width: 150 },
+        { field: "title", headerName: "Title", width: 110 },
+        { field: "department", headerName: "Department", width: 120 },
+        { field: "main", headerName: "Main", width: 80, type: "boolean" },
+        { field: "active", headerName: "Active", width: 80, type: "boolean" },
     ];
 
     return (
@@ -178,7 +171,13 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                         <Tab label="Auditing" />
                     </Tabs>
 
-                    {/* {activeTab === 0 && <BaseDataGrid cols={itemCols} rows={items || []} onRowSelected={() => {}} />} */}
+                    {activeTab === 0 && (
+                        <BaseDataGrid
+                            cols={itemCols}
+                            rows={(items && items.map((r: any, i: number) => ({ ...r, id: i }))) || []}
+                            onRowSelected={() => {}}
+                        />
+                    )}
                     {activeTab === 1 && (
                         <>
                             <Button
