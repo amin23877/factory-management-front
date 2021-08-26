@@ -19,6 +19,7 @@ import { IContact } from "../../api/contact";
 import { INote } from "../../api/note";
 import { IDocument } from "../../api/document";
 import { IVendor } from "../../api/vendor";
+import { fileType } from "../../logic/fileType";
 
 export default function VendorDetails({ vendor }: { vendor: IVendor }) {
     const [activeTab, setActiveTab] = useState(0);
@@ -27,26 +28,27 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
     const { data: documents } = useSWR(activeTab === 1 ? `/document/vendor/${vendor.id}` : null);
     const { data: contacts } = useSWR(activeTab === 2 ? `/contact/vendor/${vendor.id}` : null);
     const { data: notes } = useSWR(activeTab === 4 ? `/note/vendor/${vendor.id}` : null);
+    const { data: POs } = useSWR(activeTab === 3 ? `/purchasepo?VendorId=${vendor.id}` : null);
 
     const [noteModal, setNoteModal] = useState(false);
     const [documentModal, setDocumentModal] = useState(false);
-    const [addressModal, setAddressModal] = useState(false);
-    const [emailModal, setEmailModal] = useState(false);
-    const [phoneModal, setPhoneModal] = useState(false);
     const [contactModal, setContactModal] = useState(false);
-    const [vendingModal, setVendingModal] = useState(false);
 
     const [selectedNote, setSelectedNote] = useState<INote>();
     const [selectedDocument, setSelectedDocument] = useState<IDocument>();
     const [selectedContact, setSelectedContact] = useState<IContact>();
+    // Item Number	Item Name	Vendor Part Number		Last Lead Time	QOH	Cost	Inventory Value	Min Order	Note
 
     const itemCols: GridColDef[] = [
         { field: "no" },
-        { field: "name" },
-        { field: "cost" },
-        { field: "retailPrice" },
-        { field: "availableQoh" },
-        { field: "allocatedQoh" },
+        // { field: "name" },
+        // { field: "vendorPartNumber" },
+        // { field: "lead" },
+        // { field: "totalQoh" },
+        // { field: "cost" },
+        // { field: "retailPrice" },
+        // { field: "availableQoh" },
+        // { field: "allocatedQoh" },
     ];
     const noteCols = useMemo<GridColumns>(
         () => [
@@ -68,22 +70,73 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
         []
     );
 
-    const docCols: GridColDef[] = [
-        { field: "name", headerName: "Name" },
-        { field: "EmployeeId", headerName: "Employee" },
-        { field: "description", headerName: "Description", width: 250 },
-        { field: "createdAt", headerName: "Date", width: 300 },
-    ];
+    // Date	PO Number		Qty Ordered	Qty Received	Qty Sold	PO UOM	Date Received	Cost (Each)	Total Cost	Status
+
+    const POCols = useMemo<GridColumns>(
+        () => [
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            { field: "Number", headerName: "PO NO.", width: 120 },
+            {
+                field: "EmployeeId",
+                headerName: "Creator",
+                valueFormatter: (params) => params.row?.employee?.username,
+                width: 120,
+            },
+            { field: "id", headerName: "ID", width: 200 },
+            { field: "description", headerName: "Description", flex: 1 },
+            {
+                field: "type",
+                headerName: "File Type",
+                valueFormatter: (params) => fileType(params.row?.path),
+                width: 120,
+            },
+        ],
+        []
+    );
+    const docCols = useMemo<GridColumns>(
+        () => [
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            {
+                field: "EmployeeId",
+                headerName: "Creator",
+                valueFormatter: (params) => params.row?.employee?.username,
+                width: 120,
+            },
+            { field: "name", headerName: "Name", flex: 1 },
+            { field: "id", headerName: "ID", width: 200 },
+            { field: "description", headerName: "Description", flex: 1 },
+            {
+                field: "type",
+                headerName: "File Type",
+                valueFormatter: (params) => fileType(params.row?.path),
+                width: 120,
+            },
+        ],
+        []
+    );
+
+    // First Name	Last Name	Phone	Ext	Email	Title	Department	Main	Active
 
     const contactsCols: GridColDef[] = [
         { field: "firstName" },
         { field: "lastName" },
+        { field: "phone" },
+        { field: "ext" },
+        { field: "email" },
         { field: "title" },
         { field: "department" },
-        { field: "instagram" },
-        { field: "website" },
-        { field: "active" },
         { field: "main" },
+        { field: "active" },
     ];
 
     return (
@@ -125,7 +178,7 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                         <Tab label="Auditing" />
                     </Tabs>
 
-                    {activeTab === 0 && <BaseDataGrid cols={itemCols} rows={items || []} onRowSelected={() => {}} />}
+                    {/* {activeTab === 0 && <BaseDataGrid cols={itemCols} rows={items || []} onRowSelected={() => {}} />} */}
                     {activeTab === 1 && (
                         <>
                             <Button
@@ -168,6 +221,7 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                             />
                         </>
                     )}
+                    {activeTab === 3 && <BaseDataGrid cols={POCols} rows={POs || []} onRowSelected={() => {}} />}
                     {activeTab === 4 && (
                         <>
                             <Button

@@ -69,11 +69,7 @@ export default function VendingModal({
     };
 
     return (
-        <Dialog
-            title={initialValues?.id ? "Edit Vending" : `Add New Vending to ${vendor?.name}`}
-            open={open}
-            onClose={onClose}
-        >
+        <Dialog title={initialValues?.id ? "Edit Item" : `Add New Item `} open={open} onClose={onClose}>
             <Box p={2}>
                 <Formik initialValues={initialValues || {}} validationSchema={schema} onSubmit={handleSubmit}>
                     {({ values, errors, handleChange, handleBlur }: any) => (
@@ -102,6 +98,7 @@ export default function VendingModal({
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     error={Boolean(errors.cost)}
+                                    type="number"
                                 />
                                 <TextField
                                     name="comment"

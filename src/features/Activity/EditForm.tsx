@@ -12,6 +12,7 @@ import EditActivityForm from "./Forms";
 import BaseDataGrid from "../../app/BaseDataGrid";
 import { BasePaper } from "../../app/Paper";
 import { formatTimestampToDate } from "../../logic/date";
+import { fileType } from "../../logic/fileType";
 
 export default function EditForm({
     selectedActivity,
@@ -50,11 +51,32 @@ export default function EditForm({
         []
     );
 
-    const docCols = [
-        { field: "name", headerName: "Name" },
-        { field: "description", headerName: "Description", width: 250 },
-        { field: "createdAt", headerName: "Created at", width: 300 },
-    ];
+    const docCols = useMemo<GridColumns>(
+        () => [
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            {
+                field: "EmployeeId",
+                headerName: "Creator",
+                valueFormatter: (params) => params.row?.employee?.username,
+                width: 120,
+            },
+            { field: "name", headerName: "Name", flex: 1 },
+            { field: "id", headerName: "ID", width: 200 },
+            { field: "description", headerName: "Description", flex: 1 },
+            {
+                field: "type",
+                headerName: "File Type",
+                valueFormatter: (params) => fileType(params.row?.path),
+                width: 120,
+            },
+        ],
+        []
+    );
 
     return (
         <Box>

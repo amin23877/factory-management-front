@@ -3,7 +3,7 @@ import { Box, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
 import useSWR from "swr";
 
-import { AddRounded, DeleteRounded, PrintRounded } from "@material-ui/icons";
+import { AddRounded, DeleteRounded, PrintRounded, PostAdd, LocalOfferRounded } from "@material-ui/icons";
 
 import BaseDataGrid from "../../app/BaseDataGrid";
 import List from "../../app/SideUtilityList";
@@ -11,10 +11,11 @@ import Toast from "../../app/Toast";
 
 import Details from "./Details";
 import VendorModal from "./AddVendor";
-
+import Vending from "./Vending/Modal";
 import Confirm from "../Modals/Confirm";
 
 import { deleteVendor, IVendor } from "../../api/vendor";
+import VendorTypeModal from "./VendorType";
 
 export default function Vendors() {
     const [activeTab, setActiveTab] = useState(0);
@@ -23,7 +24,9 @@ export default function Vendors() {
     const { data: vendors, mutate: mutateVendors } = useSWR<IVendor[]>("/vendor");
 
     const [addVendor, setAddVendor] = useState(false);
+    const [addType, setAddType] = useState(false);
     const [confirm, setConfirm] = useState(false);
+    const [vendingModal, setVendingModal] = useState(false);
 
     const handleDelete = async () => {
         try {
@@ -42,13 +45,16 @@ export default function Vendors() {
     //	Zip Code	Contact	Contact Phone	 Contact Email	Active
 
     const cols: GridColDef[] = [
-        { field: "number", headerName: "Number", width: 110 },
+        { field: "number", headerName: "Number", width: 100 },
         { field: "name", headerName: "Name", flex: 1 },
-        { field: "address", headerName: "Address", flex: 1 },
-        { field: "city", headerName: "City", width: 110 },
-        { field: "state", headerName: "State", width: 110 },
+        { field: "address", headerName: "Address", width: 100 },
+        { field: "city", headerName: "City", width: 90 },
+        { field: "state", headerName: "State", width: 90 },
         { field: "zipcode", headerName: "Zip Code", width: 110 },
-        { field: "active", headerName: "Active", width: 110, type: "boolean" },
+        { field: "Contact", width: 110, valueFormatter: (params) => params.row?.contact?.lastName },
+        { field: "C. Phone", width: 110, valueFormatter: (params) => params.row?.contact?.phone },
+        { field: "C. Email", width: 110, valueFormatter: (params) => params.row?.contact?.email },
+        { field: "active", headerName: "Active", width: 90, type: "boolean" },
     ];
 
     return (
@@ -60,40 +66,43 @@ export default function Vendors() {
                 onClose={() => setConfirm(false)}
                 onConfirm={handleDelete}
             />
+            {selectedVendor && selectedVendor.id && (
+                <Vending open={vendingModal} onClose={() => setVendingModal(false)} vendor={selectedVendor} />
+            )}
+            <VendorTypeModal open={addType} onClose={() => setAddType(false)} />
 
             <Box display="flex">
                 <Box flex={1} m={1}>
                     <List>
                         <ListItem>
-                            <IconButton onClick={() => setAddVendor(true)}>
+                            <IconButton onClick={() => setAddVendor(true)} title="Add Vendor">
                                 <AddRounded />
                             </IconButton>
                         </ListItem>
                         <ListItem>
-                            <IconButton disabled={!selectedVendor} onClick={() => setConfirm(true)}>
+                            <IconButton
+                                disabled={!selectedVendor}
+                                onClick={() => setConfirm(true)}
+                                title="delete Vendor"
+                            >
                                 <DeleteRounded />
                             </IconButton>
                         </ListItem>
-                        {/* <ListItem>
-                            <IconButton disabled={!selectedVendor} onClick={() => setAddressModal(true)}>
-                                <MapOutlined />
+                        <ListItem>
+                            <IconButton onClick={() => setAddType(true)} title="Add VendorType">
+                                <LocalOfferRounded />
                             </IconButton>
                         </ListItem>
                         <ListItem>
-                            <IconButton disabled={!selectedVendor} onClick={() => setPhoneModal(true)}>
-                                <PhoneOutlined />
+                            <IconButton
+                                disabled={!selectedVendor}
+                                onClick={() => setVendingModal(true)}
+                                title="Add Item"
+                            >
+                                <PostAdd />
                             </IconButton>
                         </ListItem>
-                        <ListItem>
-                            <IconButton disabled={!selectedVendor} onClick={() => setContactModal(true)}>
-                                <ContactsOutlined />
-                            </IconButton>
-                        </ListItem>
-                        <ListItem>
-                            <IconButton disabled={!selectedVendor} onClick={() => setEmailModal(true)}>
-                                <MailOutline />
-                            </IconButton>
-                        </ListItem> */}
+
                         <ListItem>
                             <IconButton>
                                 <PrintRounded />

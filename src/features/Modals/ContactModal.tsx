@@ -62,7 +62,13 @@ export const ContactModal = ({
     };
 
     return (
-        <Dialog open={open} onClose={onClose} title={`${data?.id ? "Edit" : "Add"} a Contact to ${model}`}>
+        <Dialog
+            open={open}
+            onClose={onClose}
+            title={`${data?.id ? "Edit" : "Add"} a Contact to ${model}`}
+            maxWidth="md"
+            fullWidth
+        >
             <Box m={3}>
                 <Formik initialValues={data?.id ? data : ({} as IContact)} onSubmit={handleSubmit}>
                     {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
@@ -105,7 +111,6 @@ export const ContactModal = ({
                                     label="Ext"
                                 />
                                 <TextField
-                                    style={{ gridColumnEnd: "span 2" }}
                                     name="email"
                                     onBlur={handleBlur}
                                     onChange={handleChange}
@@ -113,6 +118,15 @@ export const ContactModal = ({
                                     helperText={errors.email && touched.email}
                                     value={values.email}
                                     label="Email"
+                                />
+                                <TextField
+                                    name="officeHours"
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    error={Boolean(errors.officeHours && touched.officeHours)}
+                                    helperText={errors.officeHours && touched.officeHours}
+                                    value={values.officeHours}
+                                    label="officeHours"
                                 />
 
                                 <TextField

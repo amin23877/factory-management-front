@@ -11,6 +11,7 @@ export interface IContact {
     department: string;
     active: boolean;
     main: boolean;
+    officeHours: string;
 }
 
 export const getContacts = async () => {
