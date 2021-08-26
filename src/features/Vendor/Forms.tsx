@@ -300,10 +300,15 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                                             disabled
                                         />
                                     </Box>
+                                    <Box style={{ display: "flex", justifyContent: "center" }}>
+                                        <Button type="submit" kind="edit" style={{ margin: "0.6em auto" }}>
+                                            Save
+                                        </Button>
+                                    </Box>
                                 </BasePaper>
                             </Box>
                             <Box flex={2} ml={2}>
-                                <BasePaper>
+                                <BasePaper style={{ height: "100%" }}>
                                     <Tabs value={0} style={{ margin: "0.5em 0" }} textColor="primary">
                                         <Tab label="Main Contact" />
                                     </Tabs>
@@ -320,11 +325,6 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                                     </Box>
                                 </BasePaper>
                             </Box>
-                        </Box>
-                        <Box style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-                            <Button type="submit" kind="edit" style={{ margin: "0.6em auto" }}>
-                                Save
-                            </Button>
                         </Box>
                     </Box>
                 </Form>

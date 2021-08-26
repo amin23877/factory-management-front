@@ -158,9 +158,8 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
             />
 
             <Box p={2}>
-                <BasePaper>
-                    <UpdateVendorForm initialValues={vendor} />
-                </BasePaper>
+                <UpdateVendorForm initialValues={vendor} />
+
                 <BasePaper style={{ marginTop: "1em" }}>
                     <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} style={{ margin: "0.5em 0" }}>
                         <Tab label="Items" />

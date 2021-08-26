@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo, useRef, useState } from "react";
+import React, { Fragment, useMemo, useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
@@ -10,9 +10,7 @@ import { FieldSelect } from "../../../app/Inputs";
 import Button from "../../../app/Button";
 import { BasePaper } from "../../../app/Paper";
 
-import { getAllEmployees } from "../../../api/employee";
 import { getVendors } from "../../../api/vendor";
-import { getContacts } from "../../../api/contact";
 import { IPurchaseQuote, updatePurchaseQuote } from "../../../api/purchaseQuote";
 
 import NoteModal from "../../Modals/NoteModals";
@@ -45,8 +43,6 @@ export default function Details({
     onDocumentSelected: (d: any) => void;
 }) {
     const [activeTab, setActiveTab] = useState(0);
-    const uploader = useRef<HTMLInputElement | null>();
-    const [file, setFile] = useState<File | null>(null);
     const [noteModal, setNoteModal] = useState(false);
     const [docModal, setDocModal] = useState(false);
     const schema = Yup.object().shape({
@@ -77,7 +73,7 @@ export default function Details({
     const handleSubmit = async (d: any) => {
         try {
             if (initialValues.id) {
-                const resp = await updatePurchaseQuote(initialValues.id, { ...d, file });
+                const resp = await updatePurchaseQuote(initialValues.id, { ...d });
                 if (resp) {
                     onDone && onDone();
                 }
@@ -110,33 +106,8 @@ export default function Details({
                         <Formik initialValues={initialValues} validationSchema={schema} onSubmit={handleSubmit}>
                             {({ values, errors, handleChange, handleBlur }: any) => (
                                 <Form>
-                                    {/* <input
-                                        hidden
-                                        type="file"
-                                        name="file"
-                                        ref={(e) => (uploader.current = e)}
-                                        onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
-                                    /> */}
-                                    {/* <Button
-                                        fullWidth
-                                        variant="outlined"
-                                        onClick={() => uploader.current && uploader.current.click()}
-                                    >
-                                        <CloudUploadOutlinedIcon style={{ marginRight: "3px" }} />
-                                        File
-                                    </Button> */}
-                                    {/* <Box my={1}>
-                                        <Typography variant="caption">{file?.name}</Typography>
-                                        {initialValues.path && (
-                                            <Link download rel="noopenner norefferer" href={initialValues?.path}>
-                                                Donwload file
-                                            </Link>
-                                        )}
-                                    </Box> */}
-
-                                    <Box display="grid" gridTemplateColumns="1fr 1fr" my={2} gridGap={10}>
+                                    <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" my={2} gridGap={10}>
                                         <TextField
-                                            style={{ gridColumnEnd: "span 2" }}
                                             name="senderNumber"
                                             value={values.senderNumber}
                                             label="Quote Number"
@@ -151,17 +122,6 @@ export default function Details({
                                             onBlur={handleBlur}
                                             disabled
                                         />
-                                        {/* <FieldSelect
-                                            request={getAllEmployees}
-                                            itemTitleField="username"
-                                            itemValueField="id"
-                                            name="requester"
-                                            label="Requester"
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            value={values.requester}
-                                            error={Boolean(errors.requester)}
-                                        /> */}
                                         <FieldSelect
                                             request={getVendors}
                                             itemTitleField="name"
@@ -236,18 +196,6 @@ export default function Details({
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                         />
-                                        {/* <FieldSelect
-                                            style={{ flex: 1 }}
-                                            request={getContacts}
-                                            itemTitleField="lastName"
-                                            itemValueField="id"
-                                            name="ContactId"
-                                            label="Contact"
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            value={values.ContactId}
-                                            error={Boolean(errors.ContactId)}
-                                        /> */}
                                     </Box>
                                     <Box textAlign="left" display="flex">
                                         <Button style={{ margin: "0.5em 1em", flex: 1 }} type="submit" kind="edit">
