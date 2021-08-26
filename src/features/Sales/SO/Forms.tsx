@@ -272,9 +272,12 @@ export const EntitiesForm = ({
     return (
         <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={10}>
             <Box my={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
-                <TextField
-                    value={values.rep}
-                    name="rep"
+                <FieldSelect
+                    request={getCustomers}
+                    itemTitleField="name"
+                    itemValueField="id"
+                    value={values.repOrAgency}
+                    name="repOrAgency"
                     label="Rep / Agency"
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -329,7 +332,10 @@ export const EntitiesForm = ({
                 <div />
             </Box>
             <Box my={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
-                <TextField
+                <FieldSelect
+                    request={getCustomers}
+                    itemTitleField="name"
+                    itemValueField="id"
                     value={values.client}
                     name="client"
                     label="Client"
@@ -1072,13 +1078,13 @@ export const TermsTab = ({
                 onChange={handleChange}
             />
             <FieldSelect
-                value={values.CustomerId ? values.CustomerId : ""}
+                value={values.client ? values.client : ""}
                 request={getCustomers}
                 itemTitleField="name"
                 itemValueField="id"
                 keyField="id"
-                name="CustomerId"
-                label="Customer"
+                name="client"
+                label="Client"
                 onChange={handleChange}
             />
             <FieldSelect

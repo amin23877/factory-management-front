@@ -20,3 +20,7 @@ export const getModifiedValues = (values: any, initialValues: any) => {
 
     return Object.keys(modifiedValues).length === 0 ? null : modifiedValues;
 };
+
+export const countProperty = (data: any[], value: string, propGetter: (item: any) => any) => {
+    return data.filter((item) => propGetter(item) === value).length;
+};

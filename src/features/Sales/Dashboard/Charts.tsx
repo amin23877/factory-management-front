@@ -6,7 +6,13 @@ import BaseLineChart from "../../../app/Chart/LineChart";
 
 import { ISO } from "../../../api/so";
 
-import { extractClientPieChartData, extractDevicesSales, extractSalesVsWeek } from "../../../logic/reports/sales";
+import {
+    extractClientPieChartData,
+    extractDevicesSales,
+    extractSalesLocation,
+    extractSalesRep,
+    extractSalesVsWeek,
+} from "../../../logic/reports/sales";
 
 export function ClientPie() {
     const { data: SOs } = useSWR<ISO[]>("/so");
@@ -46,6 +52,34 @@ export function DevicesPie() {
             return [];
         }
     }, [units]);
+
+    return <PieChart data={chartData} dataKey="value" height={250} />;
+}
+
+export function SalesLocationPie() {
+    const { data: salesOrders } = useSWR("/so");
+
+    const chartData = useMemo(() => {
+        if (salesOrders) {
+            return extractSalesLocation(salesOrders);
+        } else {
+            return [];
+        }
+    }, [salesOrders]);
+
+    return <PieChart data={chartData} dataKey="value" height={250} />;
+}
+
+export function SalesRepPie() {
+    const { data: salesOrders } = useSWR("/so");
+
+    const chartData = useMemo(() => {
+        if (salesOrders) {
+            return extractSalesRep(salesOrders);
+        } else {
+            return [];
+        }
+    }, [salesOrders]);
 
     return <PieChart data={chartData} dataKey="value" height={250} />;
 }

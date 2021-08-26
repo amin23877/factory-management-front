@@ -1,6 +1,6 @@
-import { getWeekOfMonth, getWeek } from "date-fns";
+import { getWeek } from "date-fns";
 
-import { formatDate } from "../utils";
+import { formatDate, countProperty } from "../utils";
 
 import { ISO } from "../../api/so";
 import { IUnit } from "../../api/units";
@@ -20,23 +20,31 @@ export const extractChartData = (data: any[]) => {
     return res;
 };
 
-const countProperty = (data: any[], value:string, propGetter: (item:any) => any) => {
-    return data.filter((item) => propGetter(item) === value).length;
-};
-const countNumberOfClientSOs = (data: ISO[], clientName: string) => {
-    return data.filter((so) => so.ClientId?.name === clientName).length;
+export const extractSalesVsWeek = (data: ISO[]) => {
+    let res: any[] = [],
+        totalAmounts: any = {};
+    const filtered = data.filter(so => Boolean(so.totalAmount));
+    filtered.forEach(so => totalAmounts[getWeek(so.createdAt).toString()] = 0)
+
+    for(const so of filtered){
+        totalAmounts[getWeek(so.createdAt).toString()] += so.totalAmount          
+    }
+
+    for(const week in totalAmounts) {
+        res.push({week, totalAmount:totalAmounts[week]})
+    }
+
+    return res
 };
 
-export const extractClientPieChartData = (data: ISO[]) => {
+export const extractClientPieChartData = (data: any[]) => {
     let res: any[] = [],
         clientName: string | undefined = "",
         soBasedOnClients: any = {};
+    const filtered =data.filter(c => Boolean(c.client)) 
 
-    for (const so of data) {
-        clientName = so.ClientId?.name;
-        if (!clientName) break;
-
-        soBasedOnClients[clientName] = countNumberOfClientSOs(data, clientName);
+    for (const so of filtered) {
+        soBasedOnClients[so.client.name] = countProperty(filtered, so.client.name, (item) => item.client.name);
     }
 
     for (clientName in soBasedOnClients) {
@@ -44,10 +52,6 @@ export const extractClientPieChartData = (data: ISO[]) => {
     }
 
     return res;
-};
-
-export const extractSalesVsWeek = (data: ISO[]) => {
-    return data.map((so) => ({ week: getWeek(so.createdAt), totalAmount: so.totalAmount || 0 }));
 };
 
 export const extractDevicesSales = (data: IUnit[]) => {
@@ -63,7 +67,39 @@ export const extractDevicesSales = (data: IUnit[]) => {
     }
 
     for (productFamily in devices) {
-        res.push({ name:productFamily, value: devices[productFamily] });
+        res.push({ name: productFamily, value: devices[productFamily] });
+    }
+
+    return res;
+};
+
+export const extractSalesLocation = (data: ISO[]) => {
+    let res: any[] = [],
+        sales: any = {};
+    const filtered = data.filter((so) => Boolean(so.location));
+
+    for (const so of filtered) {
+        sales[so.location] = countProperty(data, so.location, (item) => item.location);
+    }
+
+    for (const so in sales) {
+        res.push({ name: so, value: sales[so] });
+    }
+
+    return res;
+};
+
+export const extractSalesRep = (data: any[]) => {
+    let res: any[] = [],
+        sales: any = {};
+    const filtered = data.filter((so) => Boolean(so.repOrAgency));
+    
+    for (const so of filtered) {
+        sales[so.repOrAgency.name] = countProperty(filtered, so.repOrAgency.name, (item) => item.repOrAgency.name);
+    }
+
+    for (const so in sales) {
+        res.push({ name: so, value: sales[so] });
     }
 
     return res;

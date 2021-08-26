@@ -5,8 +5,10 @@ import { ILineService } from "./lineService";
 
 export interface ISO {
     id: string;
-
     number: string;
+
+    repOrAgency: string;
+    location: string;
     freightTerms: string;
     paymentTerms: string;
     carrier: string;
@@ -39,12 +41,12 @@ export interface ISO {
     ClientId?: ICustomer;
     ProjectId?: string;
 
-    totalAmount?:number,
+    totalAmount?: number;
 }
 
 export interface ISOComplete extends ISO {
     lines: ILineItem[];
-    lineServices: ILineService[]
+    lineServices: ILineService[];
 }
 
 export const getSO = async () => {
