@@ -36,6 +36,7 @@ import { deleteAnItem, IItem } from "../../../api/items";
 import { generateURL } from "../../../logic/filterSortPage";
 import SearchBox from "../../../app/SearchBox";
 import { useDataGridStyles } from "../../../app/BaseDataGrid";
+import { splitLevelName } from "../../../logic/levels";
 
 const Devices = ({ sales }: { sales?: boolean }) => {
     const classes = useDataGridStyles();
@@ -68,7 +69,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
     const [FieldNFilterModal, setFieldNFilterModal] = useState(false);
 
     const gridColumns = useMemo<GridColDef[]>(() => {
-        const res: GridColDef[] = [
+        let res: GridColDef[] = [
             { field: "no", headerName: "ID", flex: 1 },
             { field: "name", headerName: "Name", flex: 2 },
             { field: "description", headerName: "Description", flex: 2 },
@@ -76,8 +77,17 @@ const Devices = ({ sales }: { sales?: boolean }) => {
             { field: "retailPrice", headerName: "Price", width: 120 },
         ];
 
+        if (items && !sales) {
+            items.result.forEach((item) => {
+                res = res.concat(Object.keys(item.filters).map((f) => ({ field: f, headerName: f, width: 120 })));
+                res = res.concat(
+                    Object.keys(item.fields).map((f) => ({ field: f, headerName: splitLevelName(f), width: 120 }))
+                );
+            });
+        }
+
         return res;
-    }, []);
+    }, [items, sales]);
 
     const handleDelete = useCallback(async () => {
         try {
