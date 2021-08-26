@@ -188,19 +188,16 @@ export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete;
                         <div className={classes.header}>
                             <span className={classes.title}>Agency: </span>
                             <span className={classes.info}>
-                                {" "}
-                                Qui pariatur cupidatat elit pariatur nisi nisi pariatur incididunt minim sint.{" "}
+                                {createdQuote.repOrAgency.id ? createdQuote.repOrAgency.name : createdQuote.client.name}
                             </span>
                         </div>
                         <div className={classes.header}>
                             <span className={classes.title}>Requested By: </span>
-                            <span className={classes.info}>
-                                Aute id sit consequat ipsum est excepteur. Qui qui mollit non fugiat laboris tempor in.{" "}
-                            </span>
+                            <span className={classes.info}>{createdQuote.requesterName}</span>
                         </div>
                         <div className={classes.header}>
                             <span className={classes.title}>Project: </span>
-                            <span className={classes.info}> </span>
+                            <span className={classes.info}>{createdQuote.ProjectId?.name} </span>
                         </div>
                     </div>
                     <div className={classes.headContain}>
@@ -222,7 +219,7 @@ export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete;
                         </div>
                         <div className={classes.header} style={{ marginTop: "15px" }}>
                             <span className={classes.title}>Ship Via: </span>
-                            <span className={classes.info}></span>
+                            <span className={classes.info}>// we should fill this</span>
                         </div>
                         <div className={classes.header}>
                             <span className={classes.title}>Freight Terms: </span>
@@ -234,11 +231,12 @@ export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete;
                         </div>
                     </div>
                 </div>
+                {/* inja mire too lineItems.map() */}
+
                 <hr />
                 <div className={classes.gray} style={{ marginBottom: "15px" }}>
                     Item Name maybe i dont know{" "}
                 </div>
-                {/* inja mire too lineItems.map() */}
                 <div className={classes.header} style={{ marginBottom: "15px" }}>
                     <div className={classes.lineItemName}>
                         <div className={classes.Qty} style={{ width: "50%" }}>

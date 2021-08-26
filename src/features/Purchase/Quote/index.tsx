@@ -5,7 +5,7 @@ import ListItem from "@material-ui/core/ListItem";
 import IconButton from "@material-ui/core/IconButton";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { AddRounded, DeleteRounded, PrintRounded, NoteAddRounded, FileCopyRounded } from "@material-ui/icons";
+import { AddRounded, DeleteRounded, PrintRounded } from "@material-ui/icons";
 import { GridColDef } from "@material-ui/data-grid";
 
 import List from "../../../app/SideUtilityList";
@@ -20,6 +20,7 @@ import { deletePurchaseQuote, getPurchaseQuotes, IPurchaseQuote } from "../../..
 import Confirm from "../../Modals/Confirm";
 import { getAllModelNotes } from "../../../api/note";
 import { getAllModelDocuments } from "../../../api/document";
+import { formatTimestampToDate } from "../../../logic/date";
 
 function Index() {
     const [activeTab, setActiveTab] = useState(0);
@@ -35,13 +36,19 @@ function Index() {
     const [selNote, setSelNote] = useState<any>();
     const [selDoc, setSelDoc] = useState<any>();
     const [selPQ, setSelPQ] = useState<IPurchaseQuote>();
+    // Date	Quote Number	Vendor	SO 	Staff	Contact
 
-    const cols = [
-        { field: "number", headerName: "Number", width: 250 },
-        { field: "requester", headerName: "Requester" },
-        { field: "VendorId", headerName: "Vendor" },
-        { field: "ContactId", headerName: "Contact", width: 180 },
-        { field: "EmployeeId", headerName: "Employee", width: 250 },
+    const cols: GridColDef[] = [
+        {
+            field: "Date",
+            valueFormatter: (r) => formatTimestampToDate(r.row?.createdAt),
+            flex: 1,
+        },
+        { field: "senderNumber", headerName: "Quote NO.", flex: 1 },
+        { field: "Vendor", flex: 1, valueFormatter: (r) => r.row?.VendorId?.name },
+        { field: "SO", flex: 1, valueFormatter: (r) => r.row?.SOId?.number },
+        { field: "Staff", flex: 1, valueFormatter: (r) => r.row?.EmployeeId?.username },
+        { field: "contactName", headerName: "Contact", flex: 1 },
     ];
 
     const refreshPQs = async () => {
@@ -150,20 +157,6 @@ function Index() {
                             <DeleteRounded />
                         </IconButton>
                     </ListItem>
-                    {activeTab === 1 && (
-                        <>
-                            <ListItem>
-                                <IconButton onClick={() => setNoteModal(true)}>
-                                    <NoteAddRounded />
-                                </IconButton>
-                            </ListItem>
-                            <ListItem>
-                                <IconButton onClick={() => setDocModal(true)}>
-                                    <FileCopyRounded />
-                                </IconButton>
-                            </ListItem>
-                        </>
-                    )}
                     <ListItem>
                         <IconButton>
                             <PrintRounded />

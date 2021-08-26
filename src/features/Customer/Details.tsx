@@ -124,7 +124,7 @@ export default function ClientDetails({ selectedRow }: { selectedRow: ICustomer 
         <Box>
             <ContactModal
                 itemId={selectedRow?.id}
-                model="client"
+                model="customer"
                 open={addContact}
                 onClose={() => setAddContact(false)}
             />

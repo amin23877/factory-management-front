@@ -1,7 +1,7 @@
 import Axios from "axios";
 import { post } from ".";
 
-import {ILineItem} from './lineItem'
+import { ILineItem } from "./lineItem";
 import { ILineService } from "./lineService";
 
 export type IPurchasePO = {
@@ -13,11 +13,12 @@ export type IPurchasePO = {
     EmployeeId: string;
     status: string;
     createdAt?: string;
+    note?: string;
 };
 
 export interface IPurchasePOComplete extends IPurchasePO {
     lines: ILineItem[];
-    lineServices: ILineService[]
+    lineServices: ILineService[];
 }
 
 export const getPurchasePOs = async () => {
@@ -83,9 +84,9 @@ export const createPurchasePOLine = async (id: string, data: ILineItem) => {
     }
 };
 
-export const acknowledgePurchasePO = (poId:string) => {
-    return post(`/purchasepo/${poId}/acknowledge`, {})
-}
+export const acknowledgePurchasePO = (poId: string) => {
+    return post(`/purchasepo/${poId}/acknowledge`, {});
+};
 
 export const updatePurchasePOLine = async (id: string, data: ILineItem) => {
     try {

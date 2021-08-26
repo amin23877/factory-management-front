@@ -44,7 +44,7 @@ export default function AddPQModal({
                 >
                     {({ values, errors, handleChange, handleBlur }: any) => (
                         <Form>
-                            <input
+                            {/* <input
                                 hidden
                                 type="file"
                                 name="file"
@@ -104,11 +104,81 @@ export default function AddPQModal({
                                     onBlur={handleBlur}
                                     value={values.ContactId}
                                     error={Boolean(errors.ContactId)}
+                                /> */}
+                            <Box display="grid" gridTemplateColumns="1fr 1fr" my={2} gridGap={10}>
+                                <TextField
+                                    name="senderNumber"
+                                    value={values.senderNumber}
+                                    label="Quote Number"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
                                 />
-                                <Button type="submit" kind="add" style={{ gridColumnEnd: "span 2" }}>
-                                    Add
-                                </Button>
+                                <FieldSelect
+                                    request={getVendors}
+                                    itemTitleField="name"
+                                    itemValueField="id"
+                                    name="VendorId"
+                                    label="Vendor Name"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={typeof values.VendorId === "string" ? values.VendorId : values.VendorId?.id}
+                                    error={Boolean(errors.VendorId)}
+                                />
+                                {/* <FieldSelect
+                                    request={getVendors}
+                                    itemTitleField="number"
+                                    itemValueField="id"
+                                    name="VendorId"
+                                    label="Vendor Number"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={typeof values.VendorId === "string" ? values.VendorId : values.VendorId?.id}
+                                    error={Boolean(errors.VendorId)}
+                                /> */}
+
+                                {/* <FieldSelect
+                                    request={getVendors}
+                                    itemTitleField="website"
+                                    itemValueField="id"
+                                    name="VendorId"
+                                    label="Vendor Website"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={typeof values.VendorId === "string" ? values.VendorId : values.VendorId?.id}
+                                    error={Boolean(errors.VendorId)}
+                                /> */}
+                                <TextField
+                                    name="companyName"
+                                    value={values.companyName}
+                                    label="Company Name"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                <TextField
+                                    name="companyWebsite"
+                                    value={values.companyWebsite}
+                                    label="Company Website"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                <TextField
+                                    name="contactName"
+                                    value={values.contactName}
+                                    label="Contact Name"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                                <TextField
+                                    name="contactNumber"
+                                    value={values.contactNumber}
+                                    label="Contact Number"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
                             </Box>
+                            <Button type="submit" kind="add" style={{ gridColumnEnd: "span 2" }}>
+                                Add
+                            </Button>
                         </Form>
                     )}
                 </Formik>

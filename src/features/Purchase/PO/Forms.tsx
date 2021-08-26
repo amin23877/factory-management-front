@@ -687,8 +687,8 @@ export const CreateForm = ({ onDone, data }: { data?: any; onDone: (data: IPurch
                                 />
                                 <TextField
                                     style={{ gridColumnEnd: "span 2" }}
-                                    value={values.note}
                                     name="note"
+                                    value={values.note}
                                     label="PO note"
                                     multiline
                                     rows={4}

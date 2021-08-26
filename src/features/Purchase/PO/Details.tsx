@@ -15,6 +15,7 @@ import { AddressesForm, UpdateForm, MoreInfoForm, VendorForm } from "./Forms";
 import Snack from "../../../app/Snack";
 import { DocumentsDataGrid, NotesDataGrid } from "../../common/DataGrids";
 import { GridColumns } from "@material-ui/data-grid";
+import { formatTimestampToDate } from "../../../logic/date";
 
 const style = {
     border: "1px solid gray ",
@@ -49,15 +50,39 @@ export default function Details({
     const [noteModal, setNoteModal] = useState(false);
     const [docModal, setDocModal] = useState(false);
 
+    const receivedCols = useMemo<GridColumns>(
+        () => [
+            { field: "Date", valueFormatter: (r) => formatTimestampToDate(r.row.ItemId?.date), width: 200 },
+            { field: "ItemId", headerName: "Item Number", valueFormatter: (r) => r.row.ItemId.number, width: 200 },
+            { field: "ItemId", headerName: "Item Name", valueFormatter: (r) => r.row.ItemId.name, width: 200 },
+            { field: "vendor", headerName: "Vendor P. NO.", flex: 1 },
+            { field: "quantity", headerName: "QTY", width: 90 },
+            { field: "uom", headerName: "UOM", width: 100 },
+            { field: "note", headerName: "Note", width: 200 },
+        ],
+        []
+    );
+    // Item Number	Item Name	Vendor Part Number		Qty	UOM	Cost	Total Cost	Status	Note
+
     const LICols = useMemo<GridColumns>(
         () => [
-            { field: "index", headerName: "Sort" },
-            { field: "ItemId", headerName: "Part Number", valueFormatter: (r) => r.row.ItemId.name, width: 200 },
-            { field: "description", headerName: "Description", flex: 1 },
+            { field: "ItemId", headerName: "Item No.", valueFormatter: (r) => r.row.ItemId.no, width: 120 },
+            { field: "ItemName", headerName: "Item Name", valueFormatter: (r) => r.row.ItemId.name, flex: 1 },
+            {
+                field: "Vendor P.NO.",
+                valueFormatter: (r) => r.row.ItemId.vendorPartNumber,
+                width: 120,
+            },
             { field: "quantity", headerName: "QTY", width: 90 },
-            { field: "price", headerName: "Price", width: 100 },
-            { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
-            { field: "total", headerName: "Total", valueFormatter: (r) => r.row?.price * r.row.quantity, width: 200 },
+            {
+                field: "UOM",
+                valueFormatter: (r) => r.row.ItemId.uom,
+                width: 100,
+            },
+            { field: "price", headerName: "Cost", width: 100 }, //check
+            { field: "total", headerName: "Total", valueFormatter: (r) => r.row?.price * r.row.quantity, width: 100 },
+            { field: "Status", valueFormatter: (r) => r.row?.PurchasePOId.status, width: 100 },
+            { field: "Note", valueFormatter: (r) => r.row?.PurchasePOId.note, width: 100 },
         ],
         []
     );
@@ -197,9 +222,12 @@ export default function Details({
                             style={style}
                         >
                             + Add Document
-                        </Button>{" "}
+                        </Button>
                         <DocumentsDataGrid documents={docs} onDocumentSelected={onDocumentSelected} />
                     </Fragment>
+                )}
+                {activeTab === 2 && (
+                    <BaseDataGrid rows={[]} cols={receivedCols} onRowSelected={(d) => onLineSelected(d)} height={300} />
                 )}
                 {activeTab === 3 && (
                     <Fragment>
