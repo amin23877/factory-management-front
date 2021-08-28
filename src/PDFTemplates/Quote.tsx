@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { makeStyles } from "@material-ui/core";
 import { IQuoteComplete } from "../api/quote";
 
@@ -99,7 +99,10 @@ const useStyles = makeStyles({
 });
 export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete; createdQuote: IQuoteComplete }) {
     const classes = useStyles();
-
+    let total = 0;
+    createdQuote.lineItemRecords?.forEach((l) => {
+        total = total + l.quantity * l.price;
+    });
     return (
         <div>
             <div className={classes.exact}>
@@ -128,7 +131,7 @@ export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete;
                         <h1>Representative Quote</h1>
                     </div>
                     <div>
-                        <h3>050621-3PE</h3>
+                        <h3>{createdQuote?.number}</h3>
                     </div>
                     <div>
                         DSPM is committed to provide the highest quality products possible through our highly skilled
@@ -165,7 +168,7 @@ export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete;
                     <div>LOGO</div>
                     <div>
                         <div>Quoted By :</div>
-                        {/* <div>{data.requester}</div> */}
+                        <div>{createdQuote?.EmployeeId?.username} //check</div>
                     </div>
                     <div className={classes.pfe}>
                         <div style={{ fontSize: "x-large", fontWeight: "bold", color: "teal" }}>Quote</div>
@@ -188,7 +191,9 @@ export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete;
                         <div className={classes.header}>
                             <span className={classes.title}>Agency: </span>
                             <span className={classes.info}>
-                                {createdQuote.repOrAgency.id ? createdQuote.repOrAgency.name : createdQuote.client.name}
+                                {createdQuote.repOrAgency?.id
+                                    ? createdQuote.repOrAgency?.name
+                                    : createdQuote.client?.name}
                             </span>
                         </div>
                         <div className={classes.header}>
@@ -206,7 +211,7 @@ export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete;
                             <span className={classes.info}>{createdQuote.number}</span>
                         </div>
                         <div className={classes.header}>
-                            <span className={classes.title}>Prepaired On : </span>
+                            <span className={classes.title}>Prepared On : </span>
                             <span className={classes.info}>{createdQuote?.entryDate}</span>
                         </div>
                         <div className={classes.header}>
@@ -231,63 +236,50 @@ export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete;
                         </div>
                     </div>
                 </div>
-                {/* inja mire too lineItems.map() */}
-
-                <hr />
-                <div className={classes.gray} style={{ marginBottom: "15px" }}>
-                    Item Name maybe i dont know{" "}
-                </div>
-                <div className={classes.header} style={{ marginBottom: "15px" }}>
-                    <div className={classes.lineItemName}>
-                        <div className={classes.Qty} style={{ width: "50%" }}>
-                            <div>
-                                <div className={classes.item}>Line[group]</div>
-                                <div style={{ textAlign: "center" }}> 11 </div>
+                {createdQuote?.lineItemRecords?.map((item, index) => (
+                    <Fragment>
+                        <hr />
+                        <div className={classes.gray} style={{ marginBottom: "15px" }}>
+                            {item.ItemId?.name}
+                        </div>
+                        <div className={classes.header} style={{ marginBottom: "15px" }}>
+                            <div className={classes.lineItemName}>
+                                <div className={classes.Qty} style={{ width: "50%" }}>
+                                    <div>
+                                        <div className={classes.item}>Line[group]</div>
+                                        <div style={{ textAlign: "center" }}> {index} </div>
+                                    </div>
+                                    <div>
+                                        <div className={classes.item}>Item No./Description</div>
+                                        <div style={{ textAlign: "center" }}> {item?.ItemId?.no} </div>
+                                    </div>
+                                </div>
+                                <div style={{ paddingRight: "10px" }}>{item?.ItemId?.description}</div>
                             </div>
-                            <div>
-                                <div className={classes.item}>Item No./Description</div>
-                                <div style={{ textAlign: "center" }}> 11 </div>
+                            <div className={classes.Qty}>
+                                <div>
+                                    <div className={classes.item}>QTY</div>
+                                    <div style={{ textAlign: "center" }}> {item?.quantity} </div>
+                                </div>
+                                <div>
+                                    <div className={classes.item}>Unit Price</div>
+                                    <div style={{ textAlign: "center" }}> {item?.price} </div>
+                                </div>
+                                <div>
+                                    <div className={classes.item}>Unit Total</div>
+                                    <div style={{ textAlign: "center" }}> {item?.price * item?.quantity} </div>
+                                </div>
                             </div>
                         </div>
-                        <ul style={{ paddingRight: "10px" }}>
-                            <li>Proident proident et sunt ipsum duis commodo magna esse minim.</li>
-                            <li>Sint voluptate enim reprehenderit fugiat.</li>
-                            <li>
-                                Do cillum ut irure nostrud commodo eiusmod labore adipisicing sint proident qui non.
-                            </li>
-                            <li>
-                                Aliquip reprehenderit nisi anim do sint in enim aliqua officia pariatur id excepteur.
-                            </li>
-                            <li>
-                                Commodo aliqua do excepteur nulla eiusmod do sit ullamco ullamco qui laboris anim ea.
-                            </li>
-                            <li>Consectetur sint aute amet do eiusmod do consequat.</li>
-                            <li>Elit officia sit velit aliquip et non in ut exercitation enim.</li>
-                        </ul>
-                    </div>
-                    <div className={classes.Qty}>
-                        <div>
-                            <div className={classes.item}>QTY</div>
-                            <div style={{ textAlign: "center" }}> 11 </div>
-                        </div>
-                        <div>
-                            <div className={classes.item}>Unit Price</div>
-                            <div style={{ textAlign: "center" }}> 11 </div>
-                        </div>
-                        <div>
-                            <div className={classes.item}>Unit Total</div>
-                            <div style={{ textAlign: "center" }}> 11 </div>
-                        </div>
-                    </div>
-                </div>
+                    </Fragment>
+                ))}
             </div>
-            {/* ta inja */}
             <div className={classes.onePage}>
                 <div className={classes.header} style={{ marginBottom: "15px" }}>
                     <div>LOGO</div>
                     <div>
                         <div>Quoted By :</div>
-                        <div>felani</div>
+                        <div>{createdQuote?.EmployeeId?.username}</div>
                     </div>
                     <div className={classes.pfe}>
                         <div style={{ fontSize: "x-large", fontWeight: "bold", color: "teal" }}>Quote</div>
@@ -313,26 +305,12 @@ export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete;
                                 <div className={classes.item}>Notes : </div>
                             </div>
                         </div>
-                        <ul style={{ paddingRight: "10px", color: "red" }}>
-                            <li>Proident proident et sunt ipsum duis commodo magna esse minim.</li>
-                            <li>Sint voluptate enim reprehenderit fugiat.</li>
-                            <li>
-                                Do cillum ut irure nostrud commodo eiusmod labore adipisicing sint proident qui non.
-                            </li>
-                            <li>
-                                Aliquip reprehenderit nisi anim do sint in enim aliqua officia pariatur id excepteur.
-                            </li>
-                            <li>
-                                Commodo aliqua do excepteur nulla eiusmod do sit ullamco ullamco qui laboris anim ea.
-                            </li>
-                            <li>Consectetur sint aute amet do eiusmod do consequat.</li>
-                            <li>Elit officia sit velit aliquip et non in ut exercitation enim.</li>
-                        </ul>
+                        <div style={{ paddingRight: "10px", color: "red" }}>{createdQuote?.note}</div>
                     </div>
                     <div className={classes.Qty} style={{ justifyContent: "space-around" }}>
                         <div>
-                            <div style={{ textAlign: "right" }}> Commision Rate : </div>
-                            <div style={{ textAlign: "right" }}> Commision Total : </div>
+                            <div style={{ textAlign: "right" }}> Commission Rate : </div>
+                            <div style={{ textAlign: "right" }}> Commission Total : </div>
                             <div style={{ textAlign: "right", marginBottom: "15px" }}> Subtotal : </div>
                             <div style={{ textAlign: "right" }}> Sales Tax : </div>
                             <div style={{ textAlign: "right" }}> Total Freight : </div>
@@ -340,11 +318,11 @@ export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete;
                             <div style={{ textAlign: "right" }}> Quote Total : </div>
                         </div>
                         <div>
-                            <div style={{ textAlign: "left" }}> 15% </div>
-                            <div style={{ textAlign: "left" }}> 3.115$ </div>
-                            <div style={{ textAlign: "left", marginBottom: "15px" }}> 25.265$ </div>
-                            <div style={{ textAlign: "left" }}> 0.0$ </div>
-                            <div style={{ textAlign: "left" }}> 0.0$ </div>
+                            <div style={{ textAlign: "left" }}> {createdQuote?.regularCommission} </div>
+                            <div style={{ textAlign: "left" }}> {createdQuote?.regularCommission * total} </div>
+                            <div style={{ textAlign: "left", marginBottom: "15px" }}> {total} //check </div>
+                            <div style={{ textAlign: "left" }}> 0.0$ //fill this </div>
+                            <div style={{ textAlign: "left" }}> 0.0$ //fill this</div>
                             <br />
                             <div style={{ textAlign: "left" }}> 25.265$ </div>
                         </div>
@@ -897,7 +875,7 @@ export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete;
                                 <th className={classes.th}>Parts</th>
                                 <th className={classes.th}>Travel Expanses</th>
                                 <th className={classes.th}>Emergency Calls</th>
-                                <th className={classes.th}>Prementive Maintenance</th>
+                                <th className={classes.th}>Preventive Maintenance</th>
                             </tr>
                             <tr>
                                 <td className={classes.td}>x</td>
@@ -1031,7 +1009,7 @@ export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete;
                 <table style={{ width: "400px", margin: "5px auto", textAlign: "center" }}>
                     <tr>
                         <th>QTY</th>
-                        <th>Multipilier</th>
+                        <th>Multiplier</th>
                     </tr>
                     <tr>
                         <td>2 to 5</td>

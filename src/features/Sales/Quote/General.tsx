@@ -19,7 +19,9 @@ export default function GeneralQuote({ onDone, data }: { data?: any; onDone: (da
     const [activeTab, setActiveTab] = useState(0);
 
     const handleSubmit = async (data: IQuote) => {
-        onDone(data);
+        let entry = new Date(data.entryDate);
+        let exp = new Date(data.expireDate);
+        onDone({ ...data, entryDate: entry.getTime(), expireDate: exp.getTime() });
     };
 
     return (

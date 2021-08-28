@@ -5,14 +5,14 @@ export interface ILineItem {
     QuoteId?: string;
 
     id?: string;
-    ItemId: string;
+    ItemId: any;
     index: number;
     description: string;
     quantity: number;
     price: number;
     tax: boolean;
 
-    services:any[]
+    services: any[];
 }
 
 export type records = "purchaseSo" | "purchasePo" | "so" | "quote" | "po";

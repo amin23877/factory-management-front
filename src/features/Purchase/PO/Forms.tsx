@@ -256,7 +256,7 @@ export const LinesForm = ({
     const handleNext = () => {
         const res = [...createdItems];
         res.forEach((_line, index) => {
-            res[index].services = res[index].services.map((s) => ({
+            res[index].services = res[index].services?.map((s) => ({
                 ServiceId: s.id,
                 price: s.price,
                 quantity: 1,
