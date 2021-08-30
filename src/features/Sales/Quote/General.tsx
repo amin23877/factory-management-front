@@ -15,7 +15,15 @@ const schema = Yup.object().shape({
     // salesperson: Yup.string().required(),
 });
 
-export default function GeneralQuote({ onDone, data }: { data?: any; onDone: (data: any) => void }) {
+export default function GeneralQuote({
+    add,
+    onDone,
+    data,
+}: {
+    add?: boolean;
+    data?: any;
+    onDone: (data: any) => void;
+}) {
     const [activeTab, setActiveTab] = useState(0);
 
     const handleSubmit = async (data: IQuote) => {
@@ -68,6 +76,7 @@ export default function GeneralQuote({ onDone, data }: { data?: any; onDone: (da
                                             values={values}
                                             handleBlur={handleBlur}
                                             handleChange={handleChange}
+                                            add={add}
                                         />
                                     )}
                                 </BasePaper>

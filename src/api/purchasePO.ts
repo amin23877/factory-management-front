@@ -14,6 +14,24 @@ export type IPurchasePO = {
     status: string;
     createdAt?: string;
     note?: string;
+    billingAddressCompany?: string;
+    billingAddressAttn?: string;
+    billingAddressAddress?: string;
+    billingAddressCity?: string;
+    billingAddressState?: string;
+    billingAddressZipCode?: string;
+    billingAddressCountry?: string;
+    billingAddressPhone?: string;
+    billingAddressEmail?: string;
+    shippingAddressCompany?: string;
+    shippingAddressAttn?: string;
+    shippingAddressAddress?: string;
+    shippingAddressCity?: string;
+    shippingAddressState?: string;
+    shippingAddressZipCode?: string;
+    shippingAddressCountry?: string;
+    shippingAddressPhone?: string;
+    shippingAddressEmail?: string;
 };
 
 export interface IPurchasePOComplete extends IPurchasePO {

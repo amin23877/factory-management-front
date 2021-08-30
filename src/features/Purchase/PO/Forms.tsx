@@ -1064,81 +1064,79 @@ export const AddressesForm = ({
                 </Box>
             )}
             {activeTab === 1 && (
-                <>
-                    <Box
-                        my={1}
-                        display="grid"
-                        gridTemplateColumns="1fr 1fr"
-                        gridGap={10}
-                        gridRowGap={10}
-                        gridColumnGap={10}
-                    >
-                        <TextField
-                            value={values.shippingAddressCompany}
-                            name="shippingAddressCompany"
-                            label="Company"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                        <TextField
-                            value={values.shippingAddressAttn}
-                            name="shippingAddressAttn"
-                            label="Attn"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                        <TextField
-                            value={values.shippingAddressAddress}
-                            label="Shipping Address"
-                            name="shippingAddressAddress"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                        <TextField
-                            value={values.shippingAddressCity}
-                            name="shippingAddressCity"
-                            label="City"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                        <TextField
-                            value={values.shippingAddressState}
-                            name="shippingAddressState"
-                            label="State"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                        <TextField
-                            value={values.shippingAddressZipCode}
-                            name="shippingAddressZipCode"
-                            label="Zip Code"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                        <TextField
-                            value={values.shippingAddressCountry}
-                            name="shippingAddressCountry"
-                            label="Country"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                        <TextField
-                            value={values.shippingAddressPhone}
-                            name="shippingAddressPhone"
-                            label="Shipping Phone"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                        <TextField
-                            value={values.shippingAddressEmail}
-                            name="shippingAddressEmail"
-                            label="Shipping Email"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            style={{ gridColumnEnd: "span 2" }}
-                        />
-                    </Box>
-                </>
+                <Box
+                    my={1}
+                    display="grid"
+                    gridTemplateColumns="1fr 1fr"
+                    gridGap={10}
+                    gridRowGap={10}
+                    gridColumnGap={10}
+                >
+                    <TextField
+                        value={values.shippingAddressCompany}
+                        name="shippingAddressCompany"
+                        label="Company"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.shippingAddressAttn}
+                        name="shippingAddressAttn"
+                        label="Attn"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.shippingAddressAddress}
+                        label="Shipping Address"
+                        name="shippingAddressAddress"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.shippingAddressCity}
+                        name="shippingAddressCity"
+                        label="City"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.shippingAddressState}
+                        name="shippingAddressState"
+                        label="State"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.shippingAddressZipCode}
+                        name="shippingAddressZipCode"
+                        label="Zip Code"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.shippingAddressCountry}
+                        name="shippingAddressCountry"
+                        label="Country"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.shippingAddressPhone}
+                        name="shippingAddressPhone"
+                        label="Shipping Phone"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.shippingAddressEmail}
+                        name="shippingAddressEmail"
+                        label="Shipping Email"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        style={{ gridColumnEnd: "span 2" }}
+                    />
+                </Box>
             )}
         </>
     );

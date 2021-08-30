@@ -143,7 +143,7 @@ export const GeneralForm = ({
                     label="Main Email"
                 />
                 <FieldSelect
-                    value={values.supportStaff}
+                    value={typeof values.supportStaff === "string" ? values.supportStaff : values.supportStaff?.id}
                     request={getAllEmployees}
                     itemTitleField="username"
                     itemValueField="id"
@@ -241,7 +241,7 @@ export const MoreInfoForm = ({
                 label="Parent"
                 fullWidth
                 onChange={handleChange}
-                value={values.parent}
+                value={typeof values.parent === "string" ? values.parent : values.parent?.id}
                 error={Boolean(errors.parent)}
             />
             <TextField

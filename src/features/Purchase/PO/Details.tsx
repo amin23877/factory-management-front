@@ -90,7 +90,7 @@ export default function Details({
     const handleSubmit = async (d: any) => {
         try {
             if (initialValues.id && d.status) {
-                const resp = await updatePurchasePO(initialValues.id, { status: d.status } as any);
+                const resp = await updatePurchasePO(initialValues.id, { ...d, status: d.status } as any);
                 if (resp) {
                     setMsg("Record updated");
                     setSnack(true);

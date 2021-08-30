@@ -54,6 +54,7 @@ export default function AddQuote({
                 {step === 0 && (
                     <Box display="flex" justifyContent="center" flexGrow={1} my={2}>
                         <General
+                            add={true}
                             data={quote}
                             onDone={(d) => {
                                 setQuote((prev) => ({ ...prev, ...d }));

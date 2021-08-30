@@ -8,7 +8,6 @@ import NoteModal from "../../Modals/NoteModals";
 import DocModal from "../../Modals/DocumentModals";
 
 import BaseDataGrid from "../../../app/BaseDataGrid";
-import { BasePaper } from "../../../app/Paper";
 import Button from "../../../app/Button";
 
 import { IPO } from "../../../api/po";
