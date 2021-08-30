@@ -246,7 +246,7 @@ export const GeneralForm = ({
                     onChange={handleChange}
                 />
                 <FieldSelect
-                    value={values.salesperson}
+                    value={typeof values.salesperson === "string" ? values.salesperson : values.salesperson.id}
                     request={getAllEmployees}
                     itemTitleField="username"
                     itemValueField="id"
@@ -338,8 +338,11 @@ export const EntitiesTab = ({
     return (
         <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr " gridColumnGap={10}>
             <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
-                <TextField
-                    value={values.rep}
+                <FieldSelect
+                    value={values.rep ? values.rep : values.rep?.id}
+                    request={getCustomers}
+                    itemTitleField="name"
+                    itemValueField="id"
                     name="rep"
                     label="Rep / Agency"
                     onChange={handleChange}
@@ -444,10 +447,12 @@ export const EntitiesTab = ({
 };
 
 export const CommissionTab = ({
+    add,
     handleChange,
     handleBlur,
     values,
 }: {
+    add?: boolean;
     values: any;
     handleChange: (a: any) => void;
     handleBlur: (a: any) => void;
@@ -463,6 +468,7 @@ export const CommissionTab = ({
                 onBlur={handleBlur}
             />
             <TextField
+                style={add ? { gridColumnEnd: "span 2" } : {}}
                 value={values.regularCommission}
                 name="regularCommission"
                 label="Regular Commission %"
@@ -471,15 +477,17 @@ export const CommissionTab = ({
                 onChange={handleChange}
                 onBlur={handleBlur}
             />
-            <TextField
-                value={values.regularCommission * values.price * values.quantity}
-                name="regularCommission"
-                label="Regular Commission $"
-                placeholder="0.00$"
-                // onChange={handleChange}
-                // onBlur={handleBlur}
-                disabled
-            />
+            {!add && (
+                <TextField
+                    value={values.regularCommission * values.price * values.quantity}
+                    name="regularCommission"
+                    label="Regular Commission $"
+                    placeholder="0.00$"
+                    // onChange={handleChange}
+                    // onBlur={handleBlur}
+                    disabled
+                />
+            )}
             <TextField
                 style={{ gridColumnEnd: "span 2" }}
                 value={values.overageCommission}

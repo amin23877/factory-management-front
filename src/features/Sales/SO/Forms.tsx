@@ -416,8 +416,6 @@ export const AddressesForm = ({
 
     return (
         <>
-            {/* Company Attn Address City State Zip Code Country Phone Email
-             Company Attn Address City State Zip Code Country Phone Email */}
             <Tabs
                 textColor="primary"
                 value={activeTab}
@@ -429,248 +427,148 @@ export const AddressesForm = ({
                 <Tab label="Shipping Address" />
             </Tabs>
             {activeTab === 0 && (
-                <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridGap={10} gridRowGap={10}>
-                    <FieldSelect
-                        value={values.billingCompany ? values.billingCompany : ""}
-                        request={getAddresses}
-                        itemTitleField="Company"
-                        itemValueField="id"
-                        keyField="id"
-                        name="billingCompany"
+                <Box my={1} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridRowGap={10}>
+                    <TextField
+                        value={values.billingAddressCompany}
+                        name="billingAddressCompany"
                         label="Company"
                         onChange={handleChange}
+                        onBlur={handleBlur}
                     />
-                    <FieldSelect
-                        value={values.billingAttn ? values.billingAttn : ""}
-                        request={getAddresses}
-                        itemTitleField="Attn"
-                        itemValueField="id"
-                        keyField="id"
-                        name="billingAttn"
+                    <TextField
+                        value={values.billingAddressAttn}
+                        name="billingAddressAttn"
                         label="Attn"
                         onChange={handleChange}
+                        onBlur={handleBlur}
                     />
 
-                    <FieldSelect
-                        value={values.billingAddress ? values.billingAddress : ""}
-                        request={getAddresses}
-                        itemTitleField="address"
-                        itemValueField="id"
-                        keyField="id"
-                        name="billingAddress"
+                    <TextField
+                        value={values.billingAddressAddress}
+                        name="billingAddressAddress"
                         label="Billing Address"
                         onChange={handleChange}
+                        onBlur={handleBlur}
                     />
-                    <FieldSelect
-                        value={values.billingCity ? values.billingCity : ""}
-                        request={getAddresses}
-                        itemTitleField="city"
-                        itemValueField="id"
-                        keyField="id"
-                        name="billingCity"
+                    <TextField
+                        value={values.billingAddressCity}
+                        name="billingAddressCity"
                         label="City"
                         onChange={handleChange}
+                        onBlur={handleBlur}
                     />
-                    <FieldSelect
-                        value={values.billingState ? values.billingState : ""}
-                        request={getAddresses}
-                        itemTitleField="state"
-                        itemValueField="id"
-                        keyField="id"
-                        name="billingState"
+                    <TextField
+                        value={values.billingAddressState}
+                        name="billingAddressState"
                         label="State"
                         onChange={handleChange}
+                        onBlur={handleBlur}
                     />
-                    <FieldSelect
-                        value={values.billingZipCode ? values.billingZipCode : ""}
-                        request={getAddresses}
-                        itemTitleField="zipCode"
-                        itemValueField="id"
-                        keyField="id"
-                        name="billingZipCode"
+                    <TextField
+                        value={values.billingAddressZipCode}
+                        name="billingAddressZipCode"
                         label="Zip Code"
                         onChange={handleChange}
+                        onBlur={handleBlur}
                     />
-                    <FieldSelect
-                        value={values.billingCountry ? values.billingCountry : ""}
-                        request={getAddresses}
-                        itemTitleField="country"
-                        itemValueField="id"
-                        keyField="id"
-                        name="billingCountry"
+                    <TextField
+                        value={values.billingAddressCountry}
+                        name="billingAddressCountry"
                         label="Country"
                         onChange={handleChange}
+                        onBlur={handleBlur}
                     />
-                    {/* <FieldSelect
-                        value={values.billingContact ? values.billingContact : ""}
-                        request={getContacts}
-                        itemTitleField="lastName"
-                        itemValueField="id"
-                        keyField="id"
-                        name="billingContact"
-                        label="Billing Contact"
-                        onChange={handleChange}
-                    /> */}
-                    <FieldSelect
-                        value={values.billingPhone ? values.billingPhone : ""}
-                        request={getPhones}
-                        itemTitleField="phone"
-                        itemValueField="id"
-                        keyField="id"
-                        name="billingPhone"
+                    <TextField
+                        value={values.billingAddressPhone}
+                        name="billingAddressPhone"
                         label="Billing Phone"
                         onChange={handleChange}
+                        onBlur={handleBlur}
                     />
-                    <FieldSelect
-                        value={values.billingEmail ? values.billingEmail : ""}
-                        request={getEmails}
-                        itemTitleField="email"
-                        itemValueField="id"
-                        keyField="id"
-                        name="billingEmail"
+                    <TextField
+                        value={values.billingAddressEmail}
+                        name="billingAddressEmail"
                         label="Billing Email"
                         onChange={handleChange}
+                        onBlur={handleBlur}
+                        style={{ gridColumnEnd: "span 2" }}
                     />
                 </Box>
             )}
             {activeTab === 1 && (
-                <>
-                    <Paper
-                        style={{
-                            margin: "0.5em 0",
-                            padding: "0 0.5em 0 1em",
-                            backgroundColor: "#eee",
-                            gridColumnEnd: "span 4",
-                        }}
-                    >
-                        <FormControlLabel
-                            name="willCall"
-                            control={<Checkbox checked={Boolean(values.willCall)} />}
-                            label="Will Call"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                    </Paper>
-                    <Box
-                        my={1}
-                        display="grid"
-                        gridTemplateColumns="1fr 1fr 1fr"
-                        gridGap={10}
-                        gridRowGap={10}
-                        gridColumnGap={10}
-                    >
-                        {/* <FieldSelect
-                        value={values.shippingContact ? values.shippingContact : ""}
-                        request={getContacts}
-                        itemTitleField="lastName"
-                        itemValueField="id"
-                        keyField="id"
-                        name="shippingContact"
-                        label="Shipping Contact"
+                <Box
+                    my={1}
+                    display="grid"
+                    gridTemplateColumns="1fr 1fr"
+                    gridGap={10}
+                    gridRowGap={10}
+                    gridColumnGap={10}
+                >
+                    <TextField
+                        value={values.shippingAddressCompany}
+                        name="shippingAddressCompany"
+                        label="Company"
                         onChange={handleChange}
-                    /> */}
-                        <FieldSelect
-                            value={values.shippingCompany ? values.shippingCompany : ""}
-                            request={getAddresses}
-                            itemTitleField="Company"
-                            itemValueField="id"
-                            keyField="id"
-                            name="shippingCompany"
-                            label="Company"
-                            onChange={handleChange}
-                            disabled={Boolean(values.willCall)}
-                        />
-                        <FieldSelect
-                            value={values.shippingAttn ? values.shippingAttn : ""}
-                            request={getAddresses}
-                            itemTitleField="Attn"
-                            itemValueField="id"
-                            keyField="id"
-                            name="shippingAttn"
-                            label="Attn"
-                            onChange={handleChange}
-                            disabled={Boolean(values.willCall)}
-                        />
-                        <FieldSelect
-                            value={values.shippingAddress ? values.shippingAddress : ""}
-                            name="shippingAddress"
-                            request={getAddresses}
-                            itemTitleField="address"
-                            itemValueField="id"
-                            keyField="id"
-                            label="Shipping Address"
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            disabled={Boolean(values.willCall)}
-                        />
-                        <FieldSelect
-                            value={values.shippingCity ? values.shippingCity : ""}
-                            request={getAddresses}
-                            itemTitleField="city"
-                            itemValueField="id"
-                            keyField="id"
-                            name="shippingCity"
-                            label="City"
-                            onChange={handleChange}
-                            disabled={Boolean(values.willCall)}
-                        />
-                        <FieldSelect
-                            value={values.shippingState ? values.shippingState : ""}
-                            request={getAddresses}
-                            itemTitleField="state"
-                            itemValueField="id"
-                            keyField="id"
-                            name="shippingState"
-                            label="State"
-                            onChange={handleChange}
-                            disabled={Boolean(values.willCall)}
-                        />
-                        <FieldSelect
-                            value={values.shippingZipCode ? values.shippingZipCode : ""}
-                            request={getAddresses}
-                            itemTitleField="zipCode"
-                            itemValueField="id"
-                            keyField="id"
-                            name="shippingZipCode"
-                            label="Zip Code"
-                            onChange={handleChange}
-                            disabled={Boolean(values.willCall)}
-                        />
-                        <FieldSelect
-                            value={values.shippingCountry ? values.shippingCountry : ""}
-                            request={getAddresses}
-                            itemTitleField="country"
-                            itemValueField="id"
-                            keyField="id"
-                            name="shippingCountry"
-                            label="Country"
-                            onChange={handleChange}
-                            disabled={Boolean(values.willCall)}
-                        />
-                        <FieldSelect
-                            value={values.shippingPhone ? values.shippingPhone : ""}
-                            request={getPhones}
-                            itemTitleField="phone"
-                            itemValueField="id"
-                            keyField="id"
-                            name="shippingPhone"
-                            label="Shipping Phone"
-                            onChange={handleChange}
-                            disabled={Boolean(values.willCall)}
-                        />
-                        <FieldSelect
-                            value={values.shippingEmail ? values.shippingEmail : ""}
-                            request={getEmails}
-                            itemTitleField="email"
-                            itemValueField="id"
-                            keyField="id"
-                            name="shippingEmail"
-                            label="Shipping Email"
-                            onChange={handleChange}
-                            disabled={Boolean(values.willCall)}
-                        />
-                    </Box>
-                </>
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.shippingAddressAttn}
+                        name="shippingAddressAttn"
+                        label="Attn"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.shippingAddressAddress}
+                        label="Shipping Address"
+                        name="shippingAddressAddress"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.shippingAddressCity}
+                        name="shippingAddressCity"
+                        label="City"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.shippingAddressState}
+                        name="shippingAddressState"
+                        label="State"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.shippingAddressZipCode}
+                        name="shippingAddressZipCode"
+                        label="Zip Code"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.shippingAddressCountry}
+                        name="shippingAddressCountry"
+                        label="Country"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.shippingAddressPhone}
+                        name="shippingAddressPhone"
+                        label="Shipping Phone"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={values.shippingAddressEmail}
+                        name="shippingAddressEmail"
+                        label="Shipping Email"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        style={{ gridColumnEnd: "span 2" }}
+                    />
+                </Box>
             )}
         </>
     );

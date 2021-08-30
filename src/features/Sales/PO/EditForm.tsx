@@ -22,6 +22,7 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
     const handleSubmit = async (data: any, { setSubmitting }: any) => {
         try {
             if (poData.id) {
+                console.log(data);
                 await updatePO(poData.id, data);
                 onDone();
 
