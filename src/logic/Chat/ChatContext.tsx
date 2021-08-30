@@ -98,9 +98,9 @@ export const useChatProvider = () => {
         return socket;
     }, []);
 
-    const sendPrivateMessage = (content: string) => {
+    const sendPrivateMessage = (content: string, file?: any) => {
         if (selectedUser) {
-            ChatSocket.sendPrivateMessage(content, selectedUser.username);
+            ChatSocket.sendPrivateMessage(content, selectedUser.username, file);
             const from = (ChatSocket.getSocketAuth() as any).username;
             setMessages((prev) => [...prev, { content, to: selectedUser.username, from } as any]);
         }

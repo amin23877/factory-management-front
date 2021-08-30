@@ -1,8 +1,8 @@
-import Axios from "axios";
+import { get, patch, post, delete_, get_withParams } from ".";
+
 import { ICustomer } from "./customer";
 import { ILineItem } from "./lineItem";
 import { ILineService } from "./lineService";
-
 export interface ISO {
     id: string;
     number: string;
@@ -43,128 +43,62 @@ export interface ISO {
 
     totalAmount?: number;
 }
-
 export interface ISOComplete extends ISO {
     lines: ILineItem[];
     lineServices: ILineService[];
 }
 
-export const getSO = async () => {
-    try {
-        const resp = await Axios.get(`/so`);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const getSO = () => {
+    return get(`/so`);
 };
 
-export const createSO = async (data: ISO) => {
-    try {
-        const resp = await Axios.post("/so", {
-            ...data,
-            estShipDate: data.estShipDate === "" ? null : new Date(data.estShipDate).toISOString(),
-            actShipDate: data.actShipDate === "" ? null : new Date(data.actShipDate).toISOString(),
-        });
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const createSO = (data: ISO) => {
+    return post("/so", {
+        ...data,
+        estShipDate: data.estShipDate === "" ? null : new Date(data.estShipDate).toISOString(),
+        actShipDate: data.actShipDate === "" ? null : new Date(data.actShipDate).toISOString(),
+    });
 };
-export const createSOComplete = async (data: ISOComplete) => {
-    try {
-        const resp = await Axios.post("/so", data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const createSOComplete = (data: ISOComplete) => {
+    return post("/so", data);
 };
 
-export const editSO = async (id: string, data: ISO) => {
-    try {
-        const resp = await Axios.patch(`/so/${id}`, data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const editSO = (id: string, data: ISO) => {
+    return patch(`/so/${id}`, data);
 };
 
-export const deleteSO = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/so/${id}`);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const deleteSO = (id: string) => {
+    return delete_(`/so/${id}`);
 };
 
-export const createLineItem = async (soId: string, data: ILineItem) => {
-    try {
-        const resp = await Axios.post(`/so/${soId}/lineitem`, data);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const createLineItem = (soId: string, data: ILineItem) => {
+    return post(`/so/${soId}/lineitem`, data);
 };
 
-export const editLineItem = async (id: string, data: ILineItem) => {
-    try {
-        const resp = await Axios.patch(`/lineitem/${id}`, data);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const editLineItem = (id: string, data: ILineItem) => {
+    return patch(`/lineitem/${id}`, data);
 };
 
-export const deleteLineItem = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/lineitem/${id}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const deleteLineItem = (id: string) => {
+    return delete_(`/lineitem/${id}`);
 };
 
-export const getLineItems = async (SOId: string) => {
-    try {
-        const resp = await Axios.get(`/lineitem`, { params: { SOId } });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const getLineItems = (SOId: string) => {
+    return get_withParams(`/lineitem`, { params: { SOId } });
 };
 
-export const createSOLineService = async (soId: string, data: ILineService) => {
-    try {
-        const resp = await Axios.post(`/so/${soId}/lineservice`, data);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const createSOLineService = (soId: string, data: ILineService) => {
+    return post(`/so/${soId}/lineservice`, data);
 };
 
-export const editSOLineService = async (id: string, data: ILineService) => {
-    try {
-        const resp = await Axios.patch(`/lineservice/${id}`, data);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const editSOLineService = (id: string, data: ILineService) => {
+    return patch(`/lineservice/${id}`, data);
 };
 
-export const deleteSOLineService = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/lineservice/${id}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const deleteSOLineService = (id: string) => {
+    return delete_(`/lineservice/${id}`);
 };
 
-export const getSOLineServices = async (SOId: string) => {
-    try {
-        const resp = await Axios.get(`/lineservice`, { params: { SOId } });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const getSOLineServices = (SOId: string) => {
+    return get_withParams(`/lineservice`, { params: { SOId } });
 };

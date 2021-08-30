@@ -1,4 +1,4 @@
-import Axios from "axios";
+import { delete_, get, patch, post } from ".";
 
 export interface IPO {
     id?: string;
@@ -13,56 +13,36 @@ export interface IPO {
     ProjectId?: string;
 }
 
-export const createPO = async (data: IPO) => {
-    try {
-        const formData = new FormData();
-        formData.append("file", data.file);
-        data.number && formData.append("number", data.number);
-        data.reciever && formData.append("reciever", String(data.reciever));
-        data.ContactId && formData.append("ContactId", String(data.ContactId));
-        data.ClientId && formData.append("ClientId", String(data.ClientId));
-        data.EmployeeId && formData.append("EmployeeId", String(data.EmployeeId));
-        data.ProjectId && formData.append("ProjectId", String(data.ProjectId));
+export const createPO = (data: IPO) => {
+    const formData = new FormData();
+    formData.append("file", data.file);
+    data.number && formData.append("number", data.number);
+    data.reciever && formData.append("reciever", String(data.reciever));
+    data.ContactId && formData.append("ContactId", String(data.ContactId));
+    data.ClientId && formData.append("ClientId", String(data.ClientId));
+    data.EmployeeId && formData.append("EmployeeId", String(data.EmployeeId));
+    data.ProjectId && formData.append("ProjectId", String(data.ProjectId));
 
-        const resp = await Axios.post(`/po`, formData);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+    return post(`/po`, formData);
 };
 
-export const updatePO = async (id: string, data: IPO) => {
-    try {
-        const formData = new FormData();
-        formData.append("file", data.file);
-        data.number && formData.append("number", data.number);
-        data.reciever && formData.append("reciever", String(data.reciever));
-        data.ContactId && formData.append("ContactId", String(data.ContactId));
-        data.ClientId && formData.append("ClientId", String(data.ClientId));
-        data.EmployeeId && formData.append("EmployeeId", String(data.EmployeeId));
-        data.ProjectId && formData.append("ProjectId", String(data.ProjectId));
+export const updatePO = (id: string, data: IPO) => {
+    const formData = new FormData();
+    formData.append("file", data.file);
+    data.number && formData.append("number", data.number);
+    data.reciever && formData.append("reciever", String(data.reciever));
+    data.ContactId && formData.append("ContactId", String(data.ContactId));
+    data.ClientId && formData.append("ClientId", String(data.ClientId));
+    data.EmployeeId && formData.append("EmployeeId", String(data.EmployeeId));
+    data.ProjectId && formData.append("ProjectId", String(data.ProjectId));
 
-        const resp = await Axios.patch(`/po/${id}`, formData);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+    return patch(`/po/${id}`, formData);
 };
 
-export const getPO = async () => {
-    try {
-        const resp = await Axios.get("/po");
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const getPO = () => {
+    return get("/po");
 };
 
-export const deletePO = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/po/${id}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const deletePO = (id: string) => {
+    return delete_(`/po/${id}`);
 };

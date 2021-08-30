@@ -77,7 +77,7 @@ export default function ChatDrawer({ onClose, open }: { open: boolean; onClose: 
                         }}
                     />
                 ) : (
-                    <Box display="flex" flexDirection="column" height={670}>
+                    <Box display="flex" flexDirection="column" maxHeight="650px">
                         <div style={{ flexGrow: 1 }}>
                             <ChatList
                                 messages={messages}

@@ -107,7 +107,7 @@ export function post(path: string, data: any, params?: any) {
         if (error.response) {
             console.error("Status:", error.response.status);
             console.error("Data:", error.response.data);
-            toast.error(error.response.data.Message);
+            toast.error(error.response.data.Message || error.response.data.error);
             console.error("Headers:", error.response.headers);
         } else {
             console.error("Error Message:", error.message);
@@ -188,7 +188,7 @@ export function get_withParams(
     headers = {
         "Content-Type": "application/json",
     },
-    urlData: any = undefined,
+    urlData: any = undefined
 ) {
     let data = JSON.stringify(urlData);
 
@@ -221,4 +221,11 @@ export function get_withParams(
     };
 
     Axios(config).then(onSuccess).catch(onError);
+}
+
+export function uploadFile(file: any) {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    return post("/upload", formData);
 }

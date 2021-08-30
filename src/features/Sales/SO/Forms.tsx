@@ -1066,7 +1066,16 @@ export const TermsTab = ({
 }) => {
     return (
         <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-            <TextField value={values.agency} name="agency" label="Agency" onChange={handleChange} onBlur={handleBlur} />
+            <FieldSelect
+                request={getCustomers}
+                itemTitleField="name"
+                itemValueField="id"
+                value={values.repOrAgency}
+                name="repOrAgency"
+                label="Rep / Agency"
+                onChange={handleChange}
+                onBlur={handleBlur}
+            />
             <FieldSelect
                 value={values.requester ? values.requester : ""}
                 request={getAllEmployees}
@@ -1078,13 +1087,13 @@ export const TermsTab = ({
                 onChange={handleChange}
             />
             <FieldSelect
-                value={values.client ? values.client : ""}
+                value={values.CustomerId ? values.CustomerId : ""}
                 request={getCustomers}
                 itemTitleField="name"
                 itemValueField="id"
                 keyField="id"
-                name="client"
-                label="Client"
+                name="CustomerId"
+                label="Customer"
                 onChange={handleChange}
             />
             <FieldSelect
