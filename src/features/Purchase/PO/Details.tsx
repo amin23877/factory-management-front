@@ -16,6 +16,7 @@ import Snack from "../../../app/Snack";
 import { DocumentsDataGrid, NotesDataGrid } from "../../common/DataGrids";
 import { GridColumns } from "@material-ui/data-grid";
 import { formatTimestampToDate } from "../../../logic/date";
+import { getModifiedValues } from "../../../logic/utils";
 
 const style = {
     border: "1px solid gray ",
@@ -66,23 +67,23 @@ export default function Details({
 
     const LICols = useMemo<GridColumns>(
         () => [
-            { field: "ItemId", headerName: "Item No.", valueFormatter: (r) => r.row.ItemId.no, width: 120 },
-            { field: "ItemName", headerName: "Item Name", valueFormatter: (r) => r.row.ItemId.name, flex: 1 },
+            { field: "ItemId", headerName: "Item No.", valueFormatter: (r) => r.row.ItemId?.no, width: 120 },
+            { field: "ItemName", headerName: "Item Name", valueFormatter: (r) => r.row.ItemId?.name, flex: 1 },
             {
                 field: "Vendor P.NO.",
-                valueFormatter: (r) => r.row.ItemId.vendorPartNumber,
+                valueFormatter: (r) => r.row.ItemId?.vendorPartNumber,
                 width: 120,
             },
             { field: "quantity", headerName: "QTY", width: 90 },
             {
                 field: "UOM",
-                valueFormatter: (r) => r.row.ItemId.uom,
+                valueFormatter: (r) => r.row.ItemId?.uom,
                 width: 100,
             },
             { field: "price", headerName: "Cost", width: 100 }, //check
             { field: "total", headerName: "Total", valueFormatter: (r) => r.row?.price * r.row.quantity, width: 100 },
-            { field: "Status", valueFormatter: (r) => r.row?.PurchasePOId.status, width: 100 },
-            { field: "Note", valueFormatter: (r) => r.row?.PurchasePOId.note, width: 100 },
+            { field: "Status", valueFormatter: (r) => r.row?.PurchasePOId?.status, width: 100 },
+            { field: "Note", valueFormatter: (r) => r.row?.PurchasePOId?.note, width: 100 },
         ],
         []
     );
@@ -90,7 +91,7 @@ export default function Details({
     const handleSubmit = async (d: any) => {
         try {
             if (initialValues.id && d.status) {
-                const resp = await updatePurchasePO(initialValues.id, { ...d, status: d.status } as any);
+                const resp = await updatePurchasePO(initialValues.id, getModifiedValues(d, initialValues));
                 if (resp) {
                     setMsg("Record updated");
                     setSnack(true);

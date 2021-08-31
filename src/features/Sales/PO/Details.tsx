@@ -43,7 +43,7 @@ export default function Details({
     const LICols = useMemo<GridColumns>(
         () => [
             { field: "index", headerName: "Sort" },
-            { field: "ItemId", headerName: "Part Number", valueFormatter: (r) => r.row.ItemId.name, width: 200 },
+            { field: "ItemId", headerName: "Part Number", valueFormatter: (r) => r.row.ItemId?.name, width: 200 },
             { field: "description", headerName: "Description", flex: 1 },
             { field: "quantity", headerName: "QTY", width: 90 },
             { field: "price", headerName: "Price", width: 100 },

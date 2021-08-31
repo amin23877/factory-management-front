@@ -55,6 +55,7 @@ export default function AddPOModal({
                                 <CreateForm
                                     data={po}
                                     onDone={(d) => {
+                                        console.log(d);
                                         setPO((prev) => ({ ...prev, ...d }));
                                         setStep(1);
                                     }}

@@ -10,6 +10,7 @@ import { BasePaper } from "../../../app/Paper";
 import Toast from "../../../app/Toast";
 
 import { IPO, updatePO } from "../../../api/po";
+import { getModifiedValues } from "../../../logic/utils";
 
 const schema = Yup.object().shape({
     // name: Yup.string().required(),
@@ -22,8 +23,7 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
     const handleSubmit = async (data: any, { setSubmitting }: any) => {
         try {
             if (poData.id) {
-                console.log(data);
-                await updatePO(poData.id, data);
+                await updatePO(poData.id, getModifiedValues(data, poData));
                 onDone();
 
                 Toast("Record updated successfully", "success");
