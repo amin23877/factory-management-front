@@ -9,6 +9,7 @@ import { CommissionTab, EntitiesTab, GeneralForm } from "./Forms";
 
 import { createQuoteComplete, IQuote, updateQuote } from "../../../api/quote";
 import Toast from "../../../app/Toast";
+import { getModifiedValues } from "../../../logic/utils";
 
 export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
     const [activeTab, setActiveTab] = useState(0);
@@ -16,7 +17,7 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
     const handleSubmit = async (data: IQuote, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
         try {
             if (selectedQuote?.id) {
-                await updateQuote(selectedQuote.id, data);
+                await updateQuote(selectedQuote.id, getModifiedValues(data, selectedQuote));
                 mutate("/quote");
 
                 Toast("Record updated successfully", "success");

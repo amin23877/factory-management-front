@@ -297,7 +297,6 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                                             rows={4}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            disabled
                                         />
                                     </Box>
                                     <Box style={{ display: "flex", justifyContent: "center" }}>

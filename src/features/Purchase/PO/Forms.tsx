@@ -170,7 +170,8 @@ export const FinalForm = ({
 
     const handleSubmit = async () => {
         try {
-            const { ContactId, requester, status, VendorId, lines } = data;
+            // const { ContactId, requester, status, VendorId, lines } = data;
+            const { lines } = data;
             let newLines = [...lines];
             newLines.forEach(function (v: any) {
                 delete v.createdAt;
@@ -182,10 +183,7 @@ export const FinalForm = ({
                 delete v.updatedAt;
             });
             const resp = await createPurchasePOComplete({
-                ContactId,
-                requester,
-                status,
-                VendorId,
+                ...data,
                 lines: newLines,
             } as IPurchasePOComplete);
             if (resp) {
@@ -856,8 +854,8 @@ export const UpdateForm = ({
                     }
                     error={Boolean(errors.purchasePOTypeId)}
                 />
-                <TextField label="So Number" value={values.SoId?.number} fullWidth disabled />
-                <TextField label="Vendor" value={values.Vendor?.name} fullWidth disabled />
+                <TextField label="So Number" value={values.SOId?.number} fullWidth disabled />
+                <TextField label="Vendor" value={values.VendorId?.name} fullWidth disabled />
                 <TextField label="Approved By" value={values.approvedBy?.username} fullWidth disabled />
 
                 <ArraySelect
@@ -1033,8 +1031,8 @@ export const AddressesForm = ({
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.billingAddressZipCode}
-                        name="billingAddressZipCode"
+                        value={values.billingAddressZipcode}
+                        name="billingAddressZipcode"
                         label="Zip Code"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -1108,8 +1106,8 @@ export const AddressesForm = ({
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.shippingAddressZipCode}
-                        name="shippingAddressZipCode"
+                        value={values.shippingAddressZipcode}
+                        name="shippingAddressZipcode"
                         label="Zip Code"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -1154,15 +1152,20 @@ export const VendorForm = ({
     return (
         <>
             <Box my={1} display="grid" gridTemplateColumns=" 1fr 1fr" gridGap={10} gridRowGap={10}>
-                <TextField label="Vendor ID" value={values.Vendor?.number} fullWidth disabled />
-                <TextField label="Vendor Name" value={values.Vendor?.name} fullWidth disabled />
-                <TextField value={values.Vendor?.address} name="Address" label="Address" disabled />
-                <TextField value={values.Vendor?.state} name="State" label="State" disabled />
-                <TextField value={values.Vendor?.zipCode} name="ZipCode" label="Zip Code" disabled />
-                <TextField value={values.Vendor?.website} name="website" label="website" disabled />
-                <TextField value={values.Vendor?.contactPerson} name="contactPerson" label="Contact Person" disabled />
-                <TextField value={values.Vendor?.email} name="email" label="Email" disabled />
-                <TextField value={values.Vendor?.phone} name="phone" label="Phone" disabled />
+                <TextField label="Vendor ID" value={values.VendorId?.number} fullWidth disabled />
+                <TextField label="Vendor Name" value={values.VendorId?.name} fullWidth disabled />
+                <TextField value={values.VendorId?.address} name="Address" label="Address" disabled />
+                <TextField value={values.VendorId?.state} name="State" label="State" disabled />
+                <TextField value={values.VendorId?.zipcode} name="ZipCode" label="Zip Code" disabled />
+                <TextField value={values.VendorId?.website} name="website" label="website" disabled />
+                <TextField
+                    value={values.VendorId?.contactPerson}
+                    name="contactPerson"
+                    label="Contact Person"
+                    disabled
+                />
+                <TextField value={values.VendorId?.email} name="email" label="Email" disabled />
+                <TextField value={values.VendorId?.phone} name="phone" label="Phone" disabled />
             </Box>
         </>
     );
