@@ -151,6 +151,7 @@ export default function Details({
                                                     : values.VendorId?.id
                                             }
                                             error={Boolean(errors.VendorId)}
+                                            disabled
                                         />
 
                                         <FieldSelect
@@ -167,6 +168,7 @@ export default function Details({
                                                     : values.VendorId?.id
                                             }
                                             error={Boolean(errors.VendorId)}
+                                            disabled
                                         />
                                         <TextField
                                             name="companyName"

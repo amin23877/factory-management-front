@@ -1158,14 +1158,9 @@ export const VendorForm = ({
                 <TextField value={values.VendorId?.state} name="State" label="State" disabled />
                 <TextField value={values.VendorId?.zipcode} name="ZipCode" label="Zip Code" disabled />
                 <TextField value={values.VendorId?.website} name="website" label="website" disabled />
-                <TextField
-                    value={values.VendorId?.contactPerson}
-                    name="contactPerson"
-                    label="Contact Person"
-                    disabled
-                />
-                <TextField value={values.VendorId?.email} name="email" label="Email" disabled />
-                <TextField value={values.VendorId?.phone} name="phone" label="Phone" disabled />
+                <TextField value={values.contact?.lastName} name="contactPerson" label="Contact Person" disabled />
+                <TextField value={values.contact?.email} name="email" label="Email" disabled />
+                <TextField value={values.contact?.phone} name="phone" label="Phone" disabled />
             </Box>
         </>
     );

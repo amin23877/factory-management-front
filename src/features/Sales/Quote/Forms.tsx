@@ -236,7 +236,7 @@ export const GeneralForm = ({
                     onChange={handleChange}
                 />
                 <FieldSelect
-                    value={values.ProjectId}
+                    value={typeof values.ProjectId === "string" ? values.ProjectId : values.ProjectId?.id}
                     request={getProjects}
                     itemTitleField="name"
                     itemValueField="id"
@@ -339,57 +339,60 @@ export const EntitiesTab = ({
         <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr " gridColumnGap={10}>
             <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
                 <FieldSelect
-                    value={values.rep ? values.rep : values.rep?.id}
+                    value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
                     request={getCustomers}
                     itemTitleField="name"
                     itemValueField="id"
-                    name="rep"
-                    label="Rep / Agency"
+                    name="repOrAgency"
+                    label="repOrAgency / Agency"
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
+                <TextField value={values.repOrAgency?.address} label="Address" disabled />
                 <TextField
-                    value={values.address}
-                    name="address"
-                    label="Address"
+                    value={values.repOrAgency?.city}
+                    name="city"
+                    label="City"
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    disabled
                 />
-                <TextField value={values.city} name="city" label="City" onChange={handleChange} onBlur={handleBlur} />
                 <TextField
-                    value={values.state}
+                    value={values.repOrAgency?.state}
                     name="state"
                     label="State"
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    disabled
                 />
                 <TextField
-                    value={values.zipCode}
+                    value={values.repOrAgency?.zipcode}
                     name="zipCode"
                     label="Zip Code"
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    disabled
                 />
             </Box>
             <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
                 <TextField
-                    value={values.requester}
-                    name="requester"
-                    label="Requester"
+                    value={values.requesterName}
+                    name="requesterName"
+                    label="requesterName"
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
                 <TextField
-                    value={values.email}
-                    name="email"
-                    label="Email"
+                    value={values.requesterMail}
+                    name="requesterMail"
+                    label="requesterMail"
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
                 <TextField
-                    value={values.phone}
-                    name="phone"
-                    label="Phone"
+                    value={values.requesterPhone}
+                    name="requesterPhone"
+                    label="requesterPhone"
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
@@ -405,11 +408,11 @@ export const EntitiesTab = ({
                     onBlur={handleBlur}
                 /> */}
                 <FieldSelect
-                    value={values.CustomerId ? values.CustomerId : ""}
+                    value={typeof values.client === "string" ? values.client : values.client?.id}
                     request={getCustomers}
                     itemTitleField="name"
                     itemValueField="id"
-                    name="CustomerId"
+                    name="client"
                     label="Customer"
                     onChange={handleChange}
                 />
@@ -419,6 +422,7 @@ export const EntitiesTab = ({
                     label="Contact Name"
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    disabled
                 />
                 <TextField
                     value={values.email}
@@ -426,6 +430,7 @@ export const EntitiesTab = ({
                     label="Email"
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    disabled
                 />
                 <TextField
                     value={values.phone}
@@ -433,6 +438,7 @@ export const EntitiesTab = ({
                     label="Phone"
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    disabled
                 />
                 <TextField
                     value={values.unitPricingLevel}
@@ -440,6 +446,7 @@ export const EntitiesTab = ({
                     label="Unit Pricing Level"
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    disabled
                 />
             </Box>
         </Box>
