@@ -44,7 +44,7 @@ export default function EmployeeList({
     value?: string;
     onChange: (nu: userType) => void;
 }) {
-    const { username } = socket.getSocketAuth() as any;
+    const { username } = (socket.getSocketAuth() as any) || "";
     const classes = useStyles();
     // console.log(users);
 

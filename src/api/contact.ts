@@ -1,4 +1,4 @@
-import Axios from "axios";
+import { get, post, patch, delete_ } from ".";
 
 export interface IContact {
     id: string;
@@ -14,47 +14,22 @@ export interface IContact {
     officeHours: string;
 }
 
-export const getContacts = async () => {
-    try {
-        const resp = await Axios.get("/contact");
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const getContacts = () => {
+    return get("/contact");
 };
 
-export const getAllModelContact = async (model: string, id: string) => {
-    try {
-        const resp = await Axios.get(`/contact/${model}/${id}`);
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
+export const getAllModelContact = (model: string, id: string) => {
+    return get(`/contact/${model}/${id}`);
 };
 
-export const createAModelContact = async (model: string, id: string, data: IContact) => {
-    try {
-        const resp = await Axios.post(`/contact/${model}/${id}`, data);
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
+export const createAModelContact = (model: string, id: string, data: IContact) => {
+    return post(`/contact/${model}/${id}`, data);
 };
 
-export const updateAModelContact = async (id: string, data: IContact) => {
-    try {
-        const resp = await Axios.patch(`/contact/${id}`, data);
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
+export const updateAModelContact = (id: string, data: IContact) => {
+    return patch(`/contact/${id}`, data);
 };
 
-export const deleteAModelContact = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/contact/${id}`);
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
+export const deleteAModelContact = (id: string) => {
+    return delete_(`/contact/${id}`);
 };

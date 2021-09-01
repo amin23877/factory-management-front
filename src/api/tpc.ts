@@ -1,4 +1,4 @@
-import Axios from "axios";
+import { delete_, get, patch, post } from ".";
 
 export interface ITPC {
     id?: string;
@@ -6,38 +6,18 @@ export interface ITPC {
     name: string;
 }
 
-export const getTPCs = async () => {
-    try {
-        const resp = await Axios.get("/tpc");
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const getTPCs = () => {
+    return get("/tpc");
 };
 
-export const createTPC = async (data: ITPC) => {
-    try {
-        const resp = await Axios.post("/tpc", data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const createTPC = (data: ITPC) => {
+    return post("/tpc", data);
 };
 
-export const updateTPC = async (id: string, data: ITPC) => {
-    try {
-        const resp = await Axios.patch(`/tpc/${id}`, data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const updateTPC = (id: string, data: ITPC) => {
+    return patch(`/tpc/${id}`, data);
 };
 
-export const deleteTPC = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/tpc/${id}`);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const deleteTPC = (id: string) => {
+    return delete_(`/tpc/${id}`);
 };

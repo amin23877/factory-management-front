@@ -1,5 +1,5 @@
-import Axios from "axios";
-import * as Yup from 'yup';
+import * as Yup from "yup";
+import { delete_, get, patch, post } from ".";
 
 export interface ITicket {
     id: string;
@@ -14,41 +14,21 @@ export interface ITicket {
 }
 
 export const schema = Yup.object().shape({
-    LineServiceRecordId: Yup.string().required()
+    LineServiceRecordId: Yup.string().required(),
 });
 
-export const getTickets = async () => {
-    try {
-        const resp = await Axios.get("/ticket");
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const getTickets = () => {
+    return get("/ticket");
 };
 
-export const createTicket = async (data: ITicket) => {
-    try {
-        const resp = await Axios.post("/ticket", data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const createTicket = (data: ITicket) => {
+    return post("/ticket", data);
 };
 
-export const updateTicket = async (id: string, data: ITicket) => {
-    try {
-        const resp = await Axios.patch(`/ticket/${id}`, data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const updateTicket = (id: string, data: ITicket) => {
+    return patch(`/ticket/${id}`, data);
 };
 
-export const deleteTicket = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/ticket/${id}`);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const deleteTicket = (id: string) => {
+    return delete_(`/ticket/${id}`);
 };

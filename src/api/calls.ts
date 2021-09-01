@@ -1,28 +1,13 @@
-import Axios from "axios";
+import { delete_, patch, post } from ".";
 
-export const addCall = async (data: any) => {
-    try {
-        const resp = await Axios.post("/calls", data);
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
+export const addCall = (data: any) => {
+    return post("/calls", data);
 };
 
-export const deleteCall = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/calls/${id}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const deleteCall = (id: string) => {
+    return delete_(`/calls/${id}`);
 };
 
-export const editCall = async (id: string, data: any) => {
-    try {
-        const resp = await Axios.patch(`/calls/${id}`, data);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const editCall = (id: string, data: any) => {
+    return patch(`/calls/${id}`, data);
 };

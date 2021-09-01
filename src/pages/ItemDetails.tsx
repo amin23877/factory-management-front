@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useRef } from "react";
-import { Box, Grid, Tabs, Tab, LinearProgress, Typography } from "@material-ui/core";
+import { Box, Grid, Tabs, Tab, LinearProgress, Typography, Container } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { useParams } from "react-router-dom";
 import { Formik, Form } from "formik";
@@ -188,7 +188,7 @@ function ItemsDetails() {
     }
 
     return (
-        <Box>
+        <Container>
             {/* <NoteModal
                 itemId={selectedItem.id as any}
                 model="item"
@@ -388,7 +388,7 @@ function ItemsDetails() {
                     )}
                 </Box>
             </BasePaper>
-        </Box>
+        </Container>
     );
 }
 

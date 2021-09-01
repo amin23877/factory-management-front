@@ -1,4 +1,4 @@
-import Axios from "axios";
+import { delete_, get, patch, post } from ".";
 
 export interface IActivity {
     id?: string;
@@ -15,7 +15,7 @@ export interface IActivity {
     notifyOnDay: boolean;
 
     OpportunityId?: number | null;
-    
+
     ClientId: number | null;
     ContactId: number | null;
     ProjectId: number | null;
@@ -26,75 +26,30 @@ export interface IActivity {
     ActivityPriorityId: number | null;
 }
 
-export const ActivityInit:any = {};
-
-export const getActivities = async () => {
-    try {
-        const resp = await Axios.get("/activity");
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const getActivities = () => {
+    return get("/activity");
 };
 
-export const getClientActivities = async (clientId:string) => {
-    try {
-        const resp = await Axios.get(`/activity/client/${clientId}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error); 
-    }
-}
-
-export const getQuoteActivities = async (quoteId:string) => {
-    try {
-        const resp = await Axios.get(`/activity/quote/${quoteId}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-export const getProjectActivities = async (projectId:string) => {
-    try {
-        const resp = await Axios.get(`/activity/project/${projectId}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-export const createActivity = async (data: IActivity) => {
-    try {
-        const resp = await Axios.post("/activity", {
-            ...data,
-            startTime: data.startTime === "" ? null : new Date(data.startTime).toISOString(),
-            endTime: data.endTime === "" ? null : new Date(data.endTime).toISOString(),
-        });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const getClientActivities = (clientId: string) => {
+    return get(`/activity/client/${clientId}`);
 };
 
-export const updateActivity = async (id: string, data: IActivity) => {
-    try {
-        const resp = await Axios.patch(`/activity/${id}`, {
-            ...data,
-            startTime: data.startTime === "" ? null : new Date(data.startTime).toISOString(),
-            endTime: data.endTime === "" ? null : new Date(data.endTime).toISOString(),
-        });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const getQuoteActivities = (quoteId: string) => {
+    return get(`/activity/quote/${quoteId}`);
 };
 
-export const deleteActivity = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/activity/${id}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const getProjectActivities = (projectId: string) => {
+    return get(`/activity/project/${projectId}`);
+};
+
+export const createActivity = (data: IActivity) => {
+    return post("/activity", data);
+};
+
+export const updateActivity = (id: string, data: IActivity) => {
+    return patch(`/activity/${id}`, data);
+};
+
+export const deleteActivity = (id: string) => {
+    return delete_(`/activity/${id}`);
 };

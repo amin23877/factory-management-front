@@ -1,37 +1,17 @@
-import Axios from 'axios';
+import { get, post, patch, delete_ } from ".";
 
-export const getFamilies = async () => {
-    try {
-        const resp = await Axios.get('/itemfamily');
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
+export const getFamilies = () => {
+    return get("/itemfamily");
+};
 
-export const createFamily = async (name:string) => {
-    try {
-        const resp = await Axios.post('/itemfamily', {name});
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
+export const createFamily = (name: string) => {
+    return post("/itemfamily", { name });
+};
 
-export const updateFamily = async (familyId:string, name:string) => {
-    try {
-        const resp = await Axios.patch(`/itemfamily/${familyId}`, {name});
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
+export const updateFamily = (familyId: string, name: string) => {
+    return patch(`/itemfamily/${familyId}`, { name });
+};
 
-export const deleteFamily = async (familyId:string) => {
-    try {
-        const resp = await Axios.delete(`/itemfamily/${familyId}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
+export const deleteFamily = (familyId: string) => {
+    return delete_(`/itemfamily/${familyId}`);
+};

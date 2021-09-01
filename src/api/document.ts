@@ -1,4 +1,4 @@
-import Axios from "axios";
+import { delete_, get, patch, post } from ".";
 
 export interface IDocument {
     id?: string;
@@ -7,47 +7,28 @@ export interface IDocument {
     description: string;
 }
 
-export const getAllModelDocuments = async (model: string, id: string) => {
-    try {
-        const resp = await Axios.get(`/document/${model}/${id}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const getAllModelDocuments = (model: string, id: string) => {
+    return get(`/document/${model}/${id}`);
 };
 
-export const createAModelDocument = async (model: string, id: string, file: any, description: string, fileName?: string) => {
-    try {
-        const formData = new FormData();
+export const createAModelDocument = (model: string, id: string, file: any, description: string, fileName?: string) => {
+    const formData = new FormData();
 
-        formData.append("document", file);
-        formData.append("description", description);
-        fileName && formData.append("fileName", fileName);
+    formData.append("document", file);
+    formData.append("description", description);
+    fileName && formData.append("fileName", fileName);
 
-        const resp = await Axios.post(`/document/${model}/${id}`, formData);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+    return post(`/document/${model}/${id}`, formData);
 };
 
-export const updateAModelDocument = async (docid: string, file: any, description: string) => {
-    try {
-        const formData = new FormData();
-        formData.append("document", file);
-        formData.append("description", description);
-        const resp = await Axios.patch(`/document/${docid}`, formData);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const updateAModelDocument = (docid: string, file: any, description: string) => {
+    const formData = new FormData();
+    formData.append("document", file);
+    formData.append("description", description);
+
+    return patch(`/document/${docid}`, formData);
 };
 
-export const deleteAModelDocument = async (docid: string) => {
-    try {
-        const resp = await Axios.delete(`/document/${docid}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const deleteAModelDocument = (docid: string) => {
+    return delete_(`/document/${docid}`);
 };

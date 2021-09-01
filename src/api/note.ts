@@ -1,4 +1,4 @@
-import Axios from "axios";
+import { get, post, patch, delete_ } from ".";
 
 export interface INote {
     id?: string;
@@ -7,38 +7,18 @@ export interface INote {
     url?: string;
 }
 
-export const getAllModelNotes = async (model: string, id: string) => {
-    try {
-        const resp = await Axios.get(`/note/${model}/${id}`);
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
+export const getAllModelNotes = (model: string, id: string) => {
+    return get(`/note/${model}/${id}`);
 };
 
-export const createAModelNote = async (model: string, id: string, data: INote) => {
-    try {
-        const resp = await Axios.post(`/note/${model}/${id}`, data);
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
+export const createAModelNote = (model: string, id: string, data: INote) => {
+    return post(`/note/${model}/${id}`, data);
 };
 
-export const updateAModelNote = async (id: string, data: INote) => {
-    try {
-        const resp = await Axios.patch(`/note/${id}`, data);
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
+export const updateAModelNote = (id: string, data: INote) => {
+    return patch(`/note/${id}`, data);
 };
 
-export const deleteAModelNote = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/note/${id}`);
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
+export const deleteAModelNote = (id: string) => {
+    return delete_(`/note/${id}`);
 };

@@ -1,42 +1,22 @@
-import Axios from 'axios';
+import { delete_, get, patch, post } from ".";
 
 export interface IServiceFamily {
-    id?:string;
-    name:string
+    id?: string;
+    name: string;
 }
 
-export const getServiceFamilies = async () => {
-    try {
-        const resp = await Axios.get('/serviceFamily');
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
-}
+export const getServiceFamilies = () => {
+    return get("/serviceFamily");
+};
 
-export const createServiceFamily = async (name:string) => {
-    try {
-        const resp = await Axios.post('/serviceFamily', {name});
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
-} 
+export const createServiceFamily = (name: string) => {
+    return post("/serviceFamily", { name });
+};
 
-export const updateServiceFamily = async (id:string,name:string) => {
-    try {
-        const resp = await Axios.patch(`/serviceFamily/${id}`, {name});
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
-}
+export const updateServiceFamily = (id: string, name: string) => {
+    return patch(`/serviceFamily/${id}`, { name });
+};
 
-export const deleteServiceFamily = async (id:string) => {
-    try {
-        const resp = await Axios.delete(`/serviceFamily/${id}`);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
-}
+export const deleteServiceFamily = (id: string) => {
+    return delete_(`/serviceFamily/${id}`);
+};

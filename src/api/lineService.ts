@@ -1,4 +1,4 @@
-import { delete_, get, get_withParams, patch, post } from ".";
+import { delete_, get, patch, post } from ".";
 
 export interface ILineService {
     id?: string;
@@ -21,6 +21,6 @@ export const editLineService = (id: string, data: ILineService) => patch(`/lines
 
 export const deleteLineService = (id: string) => delete_(`/lineservice/${id}`);
 
-export const getSOLineServices = (SOId: string) => get_withParams("/lineservice", { SOId });
+export const getSOLineServices = (SOId: string) => get("/lineservice", { params: { SOId } });
 
-export const getQuoteLineServices = (QuoteId: string) => get_withParams("/lineservice", { QuoteId });
+export const getQuoteLineServices = (QuoteId: string) => get("/lineservice", { params: { QuoteId } });

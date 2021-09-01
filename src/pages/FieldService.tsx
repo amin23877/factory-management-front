@@ -1,5 +1,5 @@
 import React, { Suspense, useState } from "react";
-import { Box, LinearProgress } from "@material-ui/core";
+import { Box, Container, LinearProgress } from "@material-ui/core";
 
 import { SearchBar } from "../app/TextField";
 import { MyTabs, MyTab } from "../app/Tabs";
@@ -12,7 +12,7 @@ export default function FieldService() {
     const [activeTab, setActiveTab] = useState(0);
 
     return (
-        <Box>
+        <Container>
             <Box display="flex" alignItems="center" my={2}>
                 <SearchBar />
                 <div style={{ flexGrow: 1 }} />
@@ -29,6 +29,6 @@ export default function FieldService() {
                     {activeTab === 2 && <Tasks />}
                 </Suspense>
             </Box>
-        </Box>
+        </Container>
     );
 }

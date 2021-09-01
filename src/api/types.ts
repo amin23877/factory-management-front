@@ -1,4 +1,4 @@
-import Axios from "axios";
+import { get, post, patch, delete_ } from ".";
 
 export interface IItemType {
     id?: string;
@@ -7,38 +7,18 @@ export interface IItemType {
     updatedAt?: string;
 }
 
-export const getTypes = async () => {
-    try {
-        const resp = await Axios.get("/itemtype");
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const getTypes = () => {
+    return get("/itemtype");
 };
 
-export const createType = async (name: string) => {
-    try {
-        const resp = await Axios.post(`/itemtype`, { name });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const createType = (name: string) => {
+    return post(`/itemtype`, { name });
 };
 
-export const updateType = async (id: string, name: string) => {
-    try {
-        const resp = await Axios.patch(`/itemtype/${id}`, { name });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const updateType = (id: string, name: string) => {
+    return patch(`/itemtype/${id}`, { name });
 };
 
-export const deleteType = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/itemtype/${id}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const deleteType = (id: string) => {
+    return delete_(`/itemtype/${id}`);
 };

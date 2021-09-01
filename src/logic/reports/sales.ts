@@ -60,7 +60,7 @@ export const extractDevicesSales = (data: IUnit[]) => {
         devices: any = {};
 
     for (const unit of data) {
-        productFamily = (unit.ItemId as any)["Product Family"] || "";
+        productFamily = unit.ItemId ? (unit.ItemId as any)["Product Family"] : "";
         if (!productFamily) break;
 
         devices[productFamily] = countProperty(data, productFamily, (item) => item.ItemId["Product Family"] || "");

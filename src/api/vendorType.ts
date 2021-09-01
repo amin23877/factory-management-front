@@ -1,4 +1,4 @@
-import Axios from "axios";
+import { get, post, patch, delete_ } from ".";
 
 export interface IVendorType {
     id?: string;
@@ -6,38 +6,18 @@ export interface IVendorType {
     name: string;
 }
 
-export const getVendorTypes = async () => {
-    try {
-        const resp = await Axios.get("/vendortype");
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const getVendorTypes = () => {
+    return get("/vendortype");
 };
 
-export const addVendorType = async (name: string) => {
-    try {
-        const resp = await Axios.post("/vendortype", { name });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const addVendorType = (name: string) => {
+    return post("/vendortype", { name });
 };
 
-export const editVendorType = async (id: string, name: string) => {
-    try {
-        const resp = await Axios.patch(`/vendortype/${id}`, { name });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const editVendorType = (id: string, name: string) => {
+    return patch(`/vendortype/${id}`, { name });
 };
 
-export const deleteVendorType = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/vendortype/${id}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const deleteVendorType = (id: string) => {
+    return delete_(`/vendortype/${id}`);
 };

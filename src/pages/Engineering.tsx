@@ -1,5 +1,5 @@
-import React, { Fragment, useState } from "react";
-import { Box } from "@material-ui/core";
+import React, { useState } from "react";
+import { Box, Container } from "@material-ui/core";
 
 import { SearchBar } from "../app/TextField";
 import { MyTabs, MyTab } from "../app/Tabs";
@@ -14,7 +14,7 @@ export default function Sales() {
     const [activeTab, setActiveTab] = useState(0);
 
     return (
-        <Fragment>
+        <Container>
             <Box display="flex" alignItems="center" my={2}>
                 <SearchBar />
                 <div style={{ flexGrow: 1 }} />
@@ -31,6 +31,6 @@ export default function Sales() {
             {activeTab === 2 && <Project />}
             {activeTab === 3 && <Dashboard />}
             {activeTab === 4 && <BOM />}
-        </Fragment>
+        </Container>
     );
 }

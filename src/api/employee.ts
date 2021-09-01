@@ -1,4 +1,5 @@
-import Axios from 'axios';
+import axios from "axios";
+import { get, post, delete_ } from ".";
 
 export interface ILogedinEmployee {
     employee: IEmployee;
@@ -11,74 +12,37 @@ export interface IEmployee {
     password: string;
 }
 
-export const getMe = async () => {
-    try {
-        const resp = await Axios.get('/employee/me');
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
-}
+export const getMe = () => {
+    return axios
+        .get("/employee/me")
+        .then((d) => d.data)
+        .catch((e) => console.log(e));
+};
 
-export const login = async (data:IEmployee) => {
-    try {
-        const resp = await Axios.post('/employee/login', data)
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
+export const login = (data: IEmployee) => {
+    return post("/employee/login", data);
+};
 
-export const addEmployee = async (emp:IEmployee) => {
-    try {
-        const resp = await Axios.post('/employee', emp);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
+export const addEmployee = (emp: IEmployee) => {
+    return post("/employee", emp);
+};
 
-export const getAllEmployees = async () => {
-    try {
-        const resp = await Axios.get('/employee');
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
+export const getAllEmployees = () => {
+    return get("/employee");
+};
 
-export const getEmployeeRoles = async (id:string) => {
-    try {
-        const resp = await Axios.get(`/employee/${id}/role`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
+export const getEmployeeRoles = (id: string) => {
+    return get(`/employee/${id}/role`);
+};
 
-export const deleteEmployee = async (id:string) => {
-    try {
-        const resp = await Axios.delete(`/employee/${id}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
+export const deleteEmployee = (id: string) => {
+    return delete_(`/employee/${id}`);
+};
 
-export const addRoleToEmployee = async (empId:string, role:string) => {
-    try {
-        const resp = await Axios.post(`/employee/${empId}/${role}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
+export const addRoleToEmployee = (empId: string, role: string) => {
+    return post(`/employee/${empId}/${role}`, {});
+};
 
-export const deleteRoleFromEmployee = async (empId:string, role:string) => {
-    try {
-        const resp = await Axios.delete(`/employee/${empId}/${role}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
+export const deleteRoleFromEmployee = (empId: string, role: string) => {
+    return delete_(`/employee/${empId}/${role}`);
+};

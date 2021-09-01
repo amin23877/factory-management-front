@@ -1,4 +1,4 @@
-import Axios from "axios";
+import { get, post, patch, delete_ } from ".";
 
 export interface IFieldService {
     id?: string;
@@ -10,65 +10,30 @@ export interface IFieldService {
     description?: string;
 }
 
-export const getFieldServices = async (ItemId?: string) => {
-    try {
-        const resp = await Axios.get("/service", { params: { ItemId } });
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const getFieldServices = (ItemId?: string) => {
+    return get("/service", { params: { ItemId } });
 };
 
-export const getAFieldService = async (id: string) => {
-    try {
-        const resp = await Axios.get(`/service/${id}`);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const getAFieldService = (id: string) => {
+    return get(`/service/${id}`);
 };
 
-export const createFieldService = async (data: IFieldService) => {
-    try {
-        const resp = await Axios.post("/service", data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const createFieldService = (data: IFieldService) => {
+    return post("/service", data);
 };
 
-export const updateFieldService = async (id: string, data: IFieldService) => {
-    try {
-        const resp = await Axios.patch(`/service/${id}`, data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const updateFieldService = (id: string, data: IFieldService) => {
+    return patch(`/service/${id}`, data);
 };
 
-export const deleteFieldService = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/service/${id}`);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const deleteFieldService = (id: string) => {
+    return delete_(`/service/${id}`);
 };
 
-export const addServiceToLineitem = async (lineId: string, serviceId: string, count?: number) => {
-    try {
-        const resp = await Axios.post(`/lineitem/${lineId}/lineservice/${serviceId}`, { count });
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const addServiceToLineitem = (lineId: string, serviceId: string, count?: number) => {
+    return post(`/lineitem/${lineId}/lineservice/${serviceId}`, { count });
 };
 
-export const removeServiceFromLineitem = async (lineId: string, serviceId: string) => {
-    try {
-        const resp = await Axios.delete(`/lineitem/${lineId}/lineservice/${serviceId}`);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const removeServiceFromLineitem = (lineId: string, serviceId: string) => {
+    return delete_(`/lineitem/${lineId}/lineservice/${serviceId}`);
 };

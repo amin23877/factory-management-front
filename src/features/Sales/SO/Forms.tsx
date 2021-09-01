@@ -751,19 +751,23 @@ export const ApprovalForm = ({
                     onBlur={handleBlur}
                 />
                 <TextField
-                    value={formatTimestampToDate(values.releaseDate)}
+                    value={values.releaseDate ? formatTimestampToDate(values.releaseDate) : ""}
                     name="releaseDate"
                     label="Release Date"
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
-                <TextField
-                    value={formatTimestampToDate(values.expedite)}
+                <FormControlLabel
+                    label="Expedite"
+                    control={<Checkbox checked={values.expedite} onChange={handleChange} />}
+                />
+                {/* <TextField
+                    value={values.expedite ? formatTimestampToDate(values.expedite) : ""}
                     name="expedite"
                     label="Expedite"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                />
+                /> */}
                 <ArraySelect
                     value={values.warranty}
                     name="warranty"

@@ -1,54 +1,29 @@
-import Axios from "axios";
+import {get, post, patch, delete_ } from ".";
 
 export interface IPhone {
-    id?:string,
-    phone:string,
-    ext:string,
-    main:boolean,
-    PhoneTypeId:string
+    id?: string;
+    phone: string;
+    ext: string;
+    main: boolean;
+    PhoneTypeId: string;
 }
 
-export const getPhones = async () => {
-    try {
-        const resp = await Axios.get('/phone');
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-export const getAllModelPhone = async (model: string, id: string) => {
-    try {
-        const resp = await Axios.get(`/phone/${model}/${id}`);
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
+export const getPhones = () => {
+    return get("/phone");
 };
 
-export const createAModelPhone = async (model: string, id: string, data: IPhone) => {
-    try {
-        const resp = await Axios.post(`/phone/${model}/${id}`, data);
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
+export const getAllModelPhone = (model: string, id: string) => {
+    return get(`/phone/${model}/${id}`);
 };
 
-export const updateAModelPhone = async (id: string, data: IPhone) => {
-    try {
-        const resp = await Axios.patch(`/phone/${id}`, data);
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
+export const createAModelPhone = (model: string, id: string, data: IPhone) => {
+    return post(`/phone/${model}/${id}`, data);
 };
 
-export const deleteAModelPhone = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/phone/${id}`);
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
+export const updateAModelPhone = (id: string, data: IPhone) => {
+    return patch(`/phone/${id}`, data);
+};
+
+export const deleteAModelPhone = (id: string) => {
+    return delete_(`/phone/${id}`);
 };

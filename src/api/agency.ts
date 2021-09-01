@@ -1,42 +1,22 @@
-import Axios from "axios";
+import { delete_, get, patch, post } from ".";
 
 export interface IAgency {
-    id?:string;
-    name:string
+    id?: string;
+    name: string;
 }
 
-export const getAllAgencies = async () => {
-    try {
-        const resp = await Axios.get(`/agency`);
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
+export const getAllAgencies = () => {
+    return get(`/agency`);
 };
 
-export const createAModelAgency = async (id: string, name: string) => {
-    try {
-        const resp = await Axios.post(`/agency`, {ClientId:id, name});
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
+export const createAModelAgency = (id: string, name: string) => {
+    return post(`/agency`, { ClientId: id, name });
 };
 
-export const updateAModelAgency = async (id: string, data: IAgency) => {
-    try {
-        const resp = await Axios.patch(`/agency/${id}`, data);
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
+export const updateAModelAgency = (id: string, data: IAgency) => {
+    return patch(`/agency/${id}`, data);
 };
 
 export const deleteAModelAgency = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/agency/${id}`);
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
+    return delete_(`/agency/${id}`);
 };

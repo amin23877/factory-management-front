@@ -1,89 +1,49 @@
-import Axios from "axios";
+import { delete_, get, patch, post } from ".";
 
 export interface IBom {
-    id?:string,
-    no: string,
-    name: string,
-    note: string,
-    current: boolean
+    id?: string;
+    no: string;
+    name: string;
+    note: string;
+    current: boolean;
 }
 
 export interface IBomRecord {
-    revision: string,
-    usage: number,
-    fixedQty: boolean,
-    index: number,
-    ItemId: string
+    revision: string;
+    usage: number;
+    fixedQty: boolean;
+    index: number;
+    ItemId: string;
 }
 
-export const getBom = async (ItemId: string) => {
-    try {
-        const resp = await Axios.get(`/bom`, { params: { ItemId } });
-        return resp.data;
-    } catch (e) {
-        console.log(e)
-    }
-}
+export const getBom = (ItemId: string) => {
+    return get(`/bom`, { params:{ ItemId} });
+};
 
-export const addBom = async (ItemId: string, { no, name, note, current }: IBom) => {
-    try {
-        const resp = await Axios.post(`/bom`, { ItemId, no, name, note, current });
-        return resp.data;
-    } catch (e) {
-        console.log(e)
-    }
-}
+export const addBom = (ItemId: string, { no, name, note, current }: IBom) => {
+    return post(`/bom`, { ItemId, no, name, note, current });
+};
 
-export const updateBom = async (itemId: string, { no, name, note, current }: IBom) => {
-    try {
-        const resp = await Axios.patch(`/bom/${itemId}`, { no, name, note, current });
-        return resp.data;
-    } catch (e) {
-        console.log(e)
-    }
-}
+export const updateBom = (itemId: string, { no, name, note, current }: IBom) => {
+    return patch(`/bom/${itemId}`, { no, name, note, current });
+};
 
-export const deleteBom = async (itemId: string) => {
-    try {
-        const resp = await Axios.delete(`/bom/${itemId}`);
-        return resp.data;
-    } catch (e) {
-        console.log(e)
-    }
-}
+export const deleteBom = (itemId: string) => {
+    return delete_(`/bom/${itemId}`);
+};
 
-export const getBomRecord = async (BOMId: string) => {
-    try {
-        const resp = await Axios.get(`/bomrecord`, { params: { BOMId } });
-        return resp.data;
-    } catch (e) {
-        console.log(e)
-    }
-}
+export const getBomRecord = (BOMId: string) => {
+    return get(`/bomrecord`, { params:{ BOMId} });
+};
 
-export const addBomRecord = async (bomId: string, { revision, usage, fixedQty, index, ItemId }: IBomRecord) => {
-    try {
-        const resp = await Axios.post(`/bom/${bomId}/record`, { revision, usage, fixedQty, index, ItemId, BOMId: bomId });
-        return resp.data;
-    } catch (e) {
-        console.log(e)
-    }
-}
+export const addBomRecord = (bomId: string, { revision, usage, fixedQty, index, ItemId }: IBomRecord) => {
+    return post(`/bom/${bomId}/record`, { revision, usage, fixedQty, index, ItemId, BOMId: bomId });
+};
 
-export const updateBomRecord = async (id: string, { revision, usage, fixedQty, index }: IBomRecord) => {
-    try {
-        const resp = await Axios.patch(`/bomrecord/${id}`, { revision, usage, fixedQty, index });
-        return resp.data;
-    } catch (e) {
-        console.log(e)
-    }
-}
+export const updateBomRecord = (id: string, { revision, usage, fixedQty, index }: IBomRecord) => {
+    return patch(`/bomrecord/${id}`, { revision, usage, fixedQty, index });
+};
 
-export const deleteBomRecord = async (BRId: string) => {
-    try {
-        const resp = await Axios.delete(`/bomrecord/${BRId}`);
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
-}
+export const deleteBomRecord = (BRId: string) => {
+    return delete_(`/bomrecord/${BRId}`);
+};

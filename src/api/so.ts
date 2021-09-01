@@ -1,4 +1,4 @@
-import { get, patch, post, delete_, get_withParams } from ".";
+import { get, patch, post, delete_ } from ".";
 
 import { ICustomer } from "./customer";
 import { ILineItem } from "./lineItem";
@@ -84,7 +84,7 @@ export const deleteLineItem = (id: string) => {
 };
 
 export const getLineItems = (SOId: string) => {
-    return get_withParams(`/lineitem`, { params: { SOId } });
+    return get(`/lineitem`, { params: { SOId } });
 };
 
 export const createSOLineService = (soId: string, data: ILineService) => {
@@ -100,5 +100,5 @@ export const deleteSOLineService = (id: string) => {
 };
 
 export const getSOLineServices = (SOId: string) => {
-    return get_withParams(`/lineservice`, { params: { SOId } });
+    return get(`/lineservice`, { params: { SOId } });
 };

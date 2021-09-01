@@ -15,7 +15,6 @@ import { editCall } from "../../../api/calls";
 import { getModifiedValues } from "../../../logic/utils";
 // Name - Number - Address - Zip - State - Tag - Subject - Description - CreatedBy - AssignedTo (if nobody -> None)  - Response
 const schema = Yup.object().shape({
-    name: Yup.string().required(),
     address: Yup.string().required(),
     zip: Yup.string().required(),
     state: Yup.string().required(),
@@ -24,7 +23,7 @@ const schema = Yup.object().shape({
     description: Yup.string().required(),
     CreatedBy: Yup.string().required(),
     AssignedTo: Yup.string().required(),
-    Response: Yup.string().required(),
+    response: Yup.string().required(),
     contactName: Yup.string().required(),
     contactNumber: Yup.string().required(),
 });

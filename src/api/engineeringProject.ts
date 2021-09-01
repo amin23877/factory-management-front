@@ -1,4 +1,4 @@
-import Axios from "axios";
+import { post, patch, delete_ } from ".";
 
 export interface IProject {
     id: string;
@@ -8,32 +8,17 @@ export interface IProject {
     days?: number;
     note?: string;
     done?: number;
-    ProjectId?: string
+    ProjectId?: string;
 }
 
-export const createProject = async (data: IProject) => {
-    try {
-        const resp = await Axios.post("engineering/project", data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const createProject = (data: IProject) => {
+    return post("engineering/project", data);
 };
 
-export const updateProject = async (id: string, data: IProject) => {
-    try {
-        const resp = await Axios.patch(`engineering/project/${id}`, data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const updateProject = (id: string, data: IProject) => {
+    return patch(`engineering/project/${id}`, data);
 };
 
-export const deleteProject = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`engineering/project/${id}`);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const deleteProject = (id: string) => {
+    return delete_(`engineering/project/${id}`);
 };

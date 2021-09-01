@@ -1,37 +1,17 @@
-import Axios from 'axios';
+import {get, post, patch, delete_ } from ".";
 
-export const getCategories = async () => {
-    try {
-        const resp = await Axios.get('/itemcategory');
-        return resp.data;
-    } catch (error) {
-        console.error(error);
-    }
-}
+export const getCategories = () => {
+    return get("/itemcategory");
+};
 
-export const createCategory = async (name:string) => {
-    try {
-        const resp = await Axios.post('/itemcategory', {name});
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
+export const createCategory = (name: string) => {
+    return post("/itemcategory", { name });
+};
 
-export const updateCategory = async (catId:string, name:string) => {
-    try {
-        const resp = await Axios.patch(`/itemcategory/${catId}`, {name});
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
+export const updateCategory = (catId: string, name: string) => {
+    return patch(`/itemcategory/${catId}`, { name });
+};
 
-export const deleteCategory = async (catId:string) => {
-    try {
-        const resp = await Axios.delete(`/itemcategory/${catId}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
+export const deleteCategory = (catId: string) => {
+    return delete_(`/itemcategory/${catId}`);
+};

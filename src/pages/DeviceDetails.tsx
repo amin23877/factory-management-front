@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState } from "react";
-import { Box, Grid, Tabs, Tab, LinearProgress, Typography } from "@material-ui/core";
+import { Box, Grid, Tabs, Tab, LinearProgress, Typography, Container } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
@@ -297,7 +297,7 @@ function DeviceDetails() {
     }
 
     return (
-        <Box>
+        <Container>
             {selectedStep && selectedRow && selectedRow.id && (
                 <EditTaskModal
                     device={selectedRow}
@@ -525,7 +525,7 @@ function DeviceDetails() {
                     </BasePaper>
                 </Grid>
             </Grid>
-        </Box>
+        </Container>
     );
 }
 export default DeviceDetails;

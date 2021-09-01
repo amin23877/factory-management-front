@@ -1,4 +1,4 @@
-import Axios from "axios";
+import { get, post, patch, delete_ } from ".";
 
 export type IVendor = {
     id: string;
@@ -6,65 +6,30 @@ export type IVendor = {
     description: string;
 };
 
-export const createVendor = async (data: IVendor) => {
-    try {
-        const resp = await Axios.post("/vendor", data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const createVendor = (data: IVendor) => {
+    return post("/vendor", data);
 };
 
-export const getVendors = async () => {
-    try {
-        const resp = await Axios.get("/vendor");
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const getVendors = () => {
+    return get("/vendor");
 };
 
-export const updateVendor = async (id: string, data: IVendor) => {
-    try {
-        const resp = await Axios.patch(`/vendor/${id}`, data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const updateVendor = (id: string, data: IVendor) => {
+    return patch(`/vendor/${id}`, data);
 };
 
-export const deleteVendor = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/vendor/${id}`);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const deleteVendor = (id: string) => {
+    return delete_(`/vendor/${id}`);
 };
 
-export const getVendorItems = async (vendorId: string) => {
-    try {
-        const resp = await Axios.get(`/vendor/${vendorId}/items`);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const getVendorItems = (vendorId: string) => {
+    return get(`/vendor/${vendorId}/items`);
 };
 
-export const getItemVendors = async (itemId: string) => {
-    try {
-        const resp = await Axios.get(`/item/${itemId}/vendors`);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const getItemVendors = (itemId: string) => {
+    return get(`/item/${itemId}/vendors`);
 };
 
-export const getVendorVendings = async (vendorId: string) => {
-    try {
-        const resp = await Axios.get(`/vending`, { params: { vendorId } });
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const getVendorVendings = (vendorId: string) => {
+    return get(`/vending`, { params: { vendorId } });
 };

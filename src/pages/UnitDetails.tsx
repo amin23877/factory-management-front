@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState } from "react";
-import { Box, Typography, Tabs, Tab, LinearProgress } from "@material-ui/core";
+import { Box, Typography, Tabs, Tab, LinearProgress, Container } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
@@ -40,7 +40,7 @@ export default function UnitDetails() {
     }
 
     return (
-        <Box>
+        <Container>
             <Box mb={2} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
                 <BasePaper>
                     <Typography variant="h5">Unit Info</Typography>
@@ -105,6 +105,6 @@ export default function UnitDetails() {
                 </Tabs>
                 {gridActiveTab === 3 && <BaseDataGrid cols={bomCols} rows={unitBoms || []} onRowSelected={() => {}} />}
             </BasePaper>
-        </Box>
+        </Container>
     );
 }

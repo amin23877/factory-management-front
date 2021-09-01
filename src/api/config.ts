@@ -1,6 +1,8 @@
 import Axios from "axios";
+import { logout } from "../features/Session/sessionsSlice";
+import { store } from "../store";
 
-import { getToken } from "./";
+import { getToken, StorageKey } from "./";
 
 export const BaseUrl = "http://digitalphocus.ir/api/";
 
@@ -20,3 +22,12 @@ Axios.interceptors.request.use(
         return Promise.reject(error);
     }
 );
+
+Axios.interceptors.response.use((config) => config, (error) => {
+    if(error.response.status === 401){
+        localStorage.removeItem(StorageKey);
+        store.dispatch(logout())
+    }
+    
+    return Promise.reject(error);
+})

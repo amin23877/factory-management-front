@@ -1,4 +1,5 @@
-import Axios from "axios";
+import { get, patch, post, delete_ } from ".";
+
 import { ICustomer } from "./customer";
 import { IEmployee } from "./employee";
 
@@ -50,127 +51,57 @@ export interface IQuoteComplete extends IQuote {
     lineServices: ILineService[];
 }
 
-export const createQuoteLineService = async (quoteId: string, data: ILineService) => {
-    try {
-        const resp = await Axios.post(`/quote/${quoteId}/lineservice`, data);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const createQuoteLineService = (quoteId: string, data: ILineService) => {
+    return post(`/quote/${quoteId}/lineservice`, data);
 };
 
-export const editQuoteLineService = async (id: string, data: ILineService) => {
-    try {
-        const resp = await Axios.patch(`/lineservice/${id}`, data);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const editQuoteLineService = (id: string, data: ILineService) => {
+    return patch(`/lineservice/${id}`, data);
 };
 
-export const deleteQuoteLineService = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/lineservice/${id}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const deleteQuoteLineService = (id: string) => {
+    return delete_(`/lineservice/${id}`);
 };
 
-export const getQuoteLineServices = async (quoteId: string) => {
-    try {
-        const resp = await Axios.get(`/lineservice`, { params: { quoteId } });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const getQuoteLineServices = (quoteId: string) => {
+    return get(`/lineservice`, { params: { quoteId } });
 };
 
-export const createLineItem = async (qId: string, data: ILineItem) => {
-    try {
-        const resp = await Axios.post(`/quote/${qId}/lineitem`, data);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const createLineItem = (qId: string, data: ILineItem) => {
+    return post(`/quote/${qId}/lineitem`, data);
 };
 
-export const editLineItem = async (id: string, data: ILineItem) => {
-    try {
-        const resp = await Axios.patch(`/lineitem/${id}`, data);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const editLineItem = (id: string, data: ILineItem) => {
+    return patch(`/lineitem/${id}`, data);
 };
 
-export const deleteLineItem = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/lineitem/${id}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const deleteLineItem = (id: string) => {
+    return delete_(`/lineitem/${id}`);
 };
 
-export const getLineItems = async (quoteId: string) => {
-    try {
-        const resp = await Axios.get(`/lineitem`, { params: { QuoteId: quoteId } });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const getLineItems = (quoteId: string) => {
+    return get(`/lineitem`, { params: { QuoteId: quoteId } });
 };
 
-export const getQuotes = async () => {
-    try {
-        const resp = await Axios.get("/quote");
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const getQuotes = () => {
+    return get("/quote");
 };
 
-export const getQuoteById = async (id: string) => {
-    try {
-        const resp = await Axios.get(`/quote/${id}`);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const getQuoteById = (id: string) => {
+    return get(`/quote/${id}`);
 };
 
-export const createQuote = async (data: IQuote) => {
-    try {
-        const resp = await Axios.post("/quote", data);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const createQuote = (data: IQuote) => {
+    return post("/quote", data);
 };
-export const createQuoteComplete = async (data: any) => {
-    try {
-        const resp = await Axios.post("/quote", data);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const createQuoteComplete = (data: any) => {
+    return post("/quote", data);
 };
 
-export const updateQuote = async (id: string, data: IQuote) => {
-    try {
-        const resp = await Axios.patch(`/quote/${id}`, data);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const updateQuote = (id: string, data: IQuote) => {
+    return patch(`/quote/${id}`, data);
 };
 
-export const deleteQuote = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/quote/${id}`);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const deleteQuote = (id: string) => {
+    return delete_(`/quote/${id}`);
 };

@@ -1,41 +1,21 @@
-import Axios from 'axios';
+import { delete_, get, patch, post } from ".";
 
 export interface IAddressType {
-    name: string
+    name: string;
 }
 
-export const getAddressTypes = async () => {
-    try {
-        const resp = await Axios.get('/addressType');
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
+export const getAddressTypes = () => {
+    return get("/addressType");
+};
 
-export const addAddressType = async (name:String) => {
-    try {
-        const resp = await Axios.post('/addressType', {name});
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
+export const addAddressType = (name: String) => {
+    return post("/addressType", { name });
+};
 
-export const editAddressType = async (id:string, name:string) => {
-    try {
-        const resp = await Axios.patch(`/addressType/${id}`, {name});
-        return resp.data;
-    } catch (error) {
-        console.log(error);        
-    }
-}
+export const editAddressType = (id: string, name: string) => {
+    return patch(`/addressType/${id}`, { name });
+};
 
-export const deleteAddressType = async (id:string) => {
-    try {
-        const resp = await Axios.delete(`/addressType/${id}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
-}
+export const deleteAddressType = (id: string) => {
+    return delete_(`/addressType/${id}`);
+};

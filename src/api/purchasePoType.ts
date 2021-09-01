@@ -1,4 +1,4 @@
-import Axios from "axios";
+import { get,post, patch, delete_ } from ".";
 
 export interface IPPOType {
     id?: string;
@@ -6,38 +6,18 @@ export interface IPPOType {
     name: string;
 }
 
-export const getPPOTypes = async () => {
-    try {
-        const resp = await Axios.get("/ppot");
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const getPPOTypes = () => {
+    return get("/ppot");
 };
 
-export const addPPOType = async (name: string) => {
-    try {
-        const resp = await Axios.post("/ppot", { name });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const addPPOType = (name: string) => {
+    return post("/ppot", { name });
 };
 
-export const editPPOType = async (id: string, name: string) => {
-    try {
-        const resp = await Axios.patch(`/ppot/${id}`, { name });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const editPPOType = (id: string, name: string) => {
+    return patch(`/ppot/${id}`, { name });
 };
 
-export const deletePPOType = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/ppot/${id}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const deletePPOType = (id: string) => {
+    return delete_(`/ppot/${id}`);
 };

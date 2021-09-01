@@ -1,4 +1,4 @@
-import Axios from "axios";
+import { get, post, delete_, patch } from ".";
 
 export interface ICustomer {
     id: string;
@@ -26,38 +26,18 @@ export interface ICustomer {
     CustomerTypeId: string;
 }
 
-export const getCustomers = async () => {
-    try {
-        const resp = await Axios.get("/customer");
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const getCustomers = () => {
+    return get("/customer");
 };
 
-export const addCustomer = async (customer: ICustomer) => {
-    try {
-        const resp = await Axios.post("/customer", customer);
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
+export const addCustomer = (customer: ICustomer) => {
+    return post("/customer", customer);
 };
 
-export const deleteCustomer = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/customer/${id}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const deleteCustomer = (id: string) => {
+    return delete_(`/customer/${id}`);
 };
 
-export const editCustomer = async (id: string, data: ICustomer) => {
-    try {
-        const resp = await Axios.patch(`/customer/${id}`, data);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const editCustomer = (id: string, data: ICustomer) => {
+    return patch(`/customer/${id}`, data);
 };

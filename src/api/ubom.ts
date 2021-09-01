@@ -1,89 +1,48 @@
-import Axios from "axios";
+import {get, post, patch, delete_ } from ".";
 
 export interface IUBom {
-    no: string,
-    name: string,
-    note: string,
-    date: number
+    no: string;
+    name: string;
+    note: string;
+    date: number;
 }
 
 export interface IBomRecord {
-    revision: string,
-    usage: number,
-    fixedQty: boolean,
-    index: number,
-    ItemId: string
+    revision: string;
+    usage: number;
+    fixedQty: boolean;
+    index: number;
+    ItemId: string;
 }
 
-export const getUBom = async (UnitId: string) => {
-    try {
-        const resp = await Axios.get(`/ubom`, { params: { UnitId } });
-        return resp.data;
-    } catch (e) {
-        console.log(e)
-    }
-}
+export const getUBom = (UnitId: string) => {
+    return get(`/ubom`, { params: { UnitId } });
+};
 
-export const getUBomRecord = async (UBOMId: string) => {
-    try {
-        const resp = await Axios.get(`/bomrecord`, { params: { UBOMId } });
-        return resp.data;
-    } catch (e) {
-        console.log(e)
-    }
-}
+export const getUBomRecord = (UBOMId: string) => {
+    return get(`/bomrecord`, { params: { UBOMId } });
+};
 
-export const addUBom = async (UnitId: string, { no, name, note, date }: IUBom) => {
-    try {
-        const resp = await Axios.post(`/ubom`, { UnitId, no, name, note, date });
-        return resp.data;
-    } catch (e) {
-        console.log(e.response)
-    }
-}
+export const addUBom = (UnitId: string, { no, name, note, date }: IUBom) => {
+    return post(`/ubom`, { UnitId, no, name, note, date });
+};
 
-export const updateUBom = async (UnitId: string, { no, name, note, date }: IUBom) => {
-    try {
-        const resp = await Axios.patch(`/ubom/${UnitId}`, { no, name, note, date });
-        return resp.data;
-    } catch (e) {
-        console.log(e)
-    }
-}
+export const updateUBom = (UnitId: string, { no, name, note, date }: IUBom) => {
+    return patch(`/ubom/${UnitId}`, { no, name, note, date });
+};
 
-export const deleteUBom = async (UnitId: string) => {
-    try {
-        const resp = await Axios.delete(`/ubom/${UnitId}`);
-        return resp.data;
-    } catch (e) {
-        console.log(e)
-    }
-}
+export const deleteUBom = (UnitId: string) => {
+    return delete_(`/ubom/${UnitId}`);
+};
 
+export const addUBomRecord = (bomId: string, { revision, usage, fixedQty, index, ItemId }: IBomRecord) => {
+    return post(`/ubom/${bomId}/record`, { revision, usage, fixedQty, index, ItemId, BOMId: bomId });
+};
 
-export const addUBomRecord = async (bomId: string, { revision, usage, fixedQty, index, ItemId }: IBomRecord) => {
-    try {
-        const resp = await Axios.post(`/ubom/${bomId}/record`, { revision, usage, fixedQty, index, ItemId, BOMId: bomId });
-        return resp.data;
-    } catch (e) {
-        console.log(e)
-    }
-}
+export const updateUBomRecord = (id: string, { revision, usage, fixedQty, index }: IBomRecord) => {
+    return patch(`/bomrecord/${id}`, { revision, usage, fixedQty, index });
+};
 
-export const updateUBomRecord = async (id: string, { revision, usage, fixedQty, index }: IBomRecord) => {
-    try {
-        const resp = await Axios.patch(`/bomrecord/${id}`, { revision, usage, fixedQty, index });
-        return resp.data;
-    } catch (e) {
-        console.log(e)
-    }
-}
-
-export const deleteUBomRecord = async (BRId: string) => {
-    try {
-        const resp = await Axios.delete(`/bomrecord/${BRId}`);
-        return resp.data;
-    } catch (e) {
-        console.log(e);
-    }
-}
+export const deleteUBomRecord = (BRId: string) => {
+    return delete_(`/bomrecord/${BRId}`);
+};

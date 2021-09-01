@@ -1,5 +1,5 @@
-import Axios from "axios";
 import * as Yup from "yup";
+import { delete_, get, patch, post } from ".";
 
 export interface ITask {
     id: string;
@@ -10,7 +10,7 @@ export interface ITask {
     assigner: string;
     assignee: string;
     TPCId: string;
-    priority?:string;
+    priority?: string;
 }
 
 export const schema = Yup.object().shape({
@@ -18,47 +18,22 @@ export const schema = Yup.object().shape({
     JobId: Yup.string().required(),
 });
 
-export const getTasks = async () => {
-    try {
-        const resp = await Axios.get("/task");
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const getTasks = () => {
+    return get("/task");
 };
 
-export const createTask = async (data: ITask) => {
-    try {
-        const resp = await Axios.post("/task", data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const createTask = (data: ITask) => {
+    return post("/task", data);
 };
 
-export const changeTaskDate = async (id:string, date:string) => {
-    try {
-        const resp = await updateTask(id, { deadline: date } as any);
-        return resp;
-    } catch (error) {
-        console.log(error);
-    }
-}
-
-export const updateTask = async (id: string, data: ITask) => {
-    try {
-        const resp = await Axios.patch(`/task/${id}`, data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const changeTaskDate = (id: string, date: string) => {
+    return updateTask(id, { deadline: date } as any);
 };
 
-export const deleteTasks = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/task/${id}`);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const updateTask = (id: string, data: ITask) => {
+    return patch(`/task/${id}`, data);
+};
+
+export const deleteTasks = (id: string) => {
+    return delete_(`/task/${id}`);
 };

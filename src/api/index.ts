@@ -1,8 +1,6 @@
 import Axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import { toast } from "react-toastify";
 
-import { BaseUrl } from "./config";
-
 export const StorageKey = "phocus_session";
 
 export const getToken = () => {
@@ -16,16 +14,14 @@ export const getToken = () => {
 
 export const fetcher = async (url: string) => {
     try {
-        const resp = await Axios.get(url);
+        const resp = await get(url);
         return resp.data;
     } catch (error) {
         console.log(error);
     }
 };
 
-export const get = (path: string, withPagination: boolean = false) => {
-    const headers = {};
-
+export const get = (path: string, config?:AxiosRequestConfig, withPagination: boolean = false) => {
     const onSuccess = (response: AxiosResponse<any>) => {
         // console.info("Get Request Successful!", response);
         if (withPagination) {
@@ -51,10 +47,7 @@ export const get = (path: string, withPagination: boolean = false) => {
         return Promise.reject(error.response || error.message);
     };
 
-    return Axios.get(path, {
-        params: null,
-        headers,
-    })
+    return Axios.get(path, config)
         .then(onSuccess)
         .catch(onError);
 };
@@ -180,47 +173,6 @@ export function patch(path: string, data: any, headers = { "Content-Type": "appl
     })
         .then(onSuccess)
         .catch(onError);
-}
-
-export function get_withParams(
-    path: string,
-    params: any = undefined,
-    headers = {
-        "Content-Type": "application/json",
-    },
-    urlData: any = undefined
-) {
-    let data = JSON.stringify(urlData);
-
-    const onSuccess = (response: AxiosResponse<any>) => {
-        // console.error("Post Request Successful!", response);
-        return response.data;
-    };
-
-    const onError = (error: any) => {
-        console.error("Post Request Failed:", error.config);
-
-        if (error.response) {
-            console.error("Status:", error.response.status);
-            console.error("Data:", error.response.data);
-            toast.error(error.response.data.Message);
-            console.error("Headers:", error.response.headers);
-        } else {
-            console.error("Error Message:", error.message);
-        }
-
-        return Promise.reject(error.response || error.message);
-    };
-
-    const config: AxiosRequestConfig = {
-        method: "get",
-        url: BaseUrl + path,
-        headers,
-        data,
-        params,
-    };
-
-    Axios(config).then(onSuccess).catch(onError);
 }
 
 export function uploadFile(file: any) {

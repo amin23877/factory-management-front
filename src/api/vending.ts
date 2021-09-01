@@ -1,49 +1,29 @@
-import Axios from 'axios';
+import { get, post, patch, delete_ } from ".";
 
 export type IVending = {
-    id?: string,
-    VendorId: string,
-    ItemId: string,
-    leadTime: number,    
-    comment: string,
-    serialNo: string,
-    lastReplenishTime:number,
-    lastQuantityOrdered:number,
-    cost:number
-}
+    id?: string;
+    VendorId: string;
+    ItemId: string;
+    leadTime: number;
+    comment: string;
+    serialNo: string;
+    lastReplenishTime: number;
+    lastQuantityOrdered: number;
+    cost: number;
+};
 
-export const createVending = async (data: IVending) => {
-    try {
-        const resp = await Axios.post('/vending', data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
-}
+export const createVending = (data: IVending) => {
+    return post("/vending", data);
+};
 
-export const getVendings = async () => {
-    try {
-        const resp = await Axios.get('/vending');
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
-}
+export const getVendings = () => {
+    return get("/vending");
+};
 
-export const updateVending = async (id: string, data: IVending) => {
-    try {
-        const resp = await Axios.patch(`/vending/${id}`, data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
-}
+export const updateVending = (id: string, data: IVending) => {
+    return patch(`/vending/${id}`, data);
+};
 
-export const deleteVending = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/vending/${id}`);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
-}
+export const deleteVending = (id: string) => {
+    return delete_(`/vending/${id}`);
+};

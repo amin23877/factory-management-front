@@ -9,9 +9,6 @@ import CheckBox from "@material-ui/core/Checkbox";
 import TextField from "../../app/TextField";
 import { FieldSelect } from "../../app/Inputs";
 import Button from "../../app/Button";
-
-import { ActivityInit as init } from "../../api/activity";
-
 import Dialog from "../../app/Dialog";
 
 import { getCustomers } from "../../api/customer";
@@ -19,7 +16,7 @@ import { getContacts } from "../../api/contact";
 import { getProjects } from "../../api/project";
 import { getAllEmployees } from "../../api/employee";
 import { getQuotes } from "../../api/quote";
-import { createActivity, updateActivity } from "../../api/activity";
+import { createActivity, IActivity } from "../../api/activity";
 import { get } from "../../api";
 
 const schema = Yup.object().shape({
@@ -36,16 +33,9 @@ export default function AddActivityModal({
 }) {
     const handleSubmit = async (data: any, { setSubmitting }: { setSubmitting: any }) => {
         try {
-            if (init && init?.id) {
-                const resp = await updateActivity(init.id, data);
-                if (resp) {
-                    onDone();
-                }
-            } else {
-                const resp = await createActivity(data);
-                if (resp) {
-                    onDone();
-                }
+            const resp = await createActivity(data);
+            if (resp) {
+                onDone();
             }
         } catch (error) {
             console.log(error);
@@ -55,7 +45,7 @@ export default function AddActivityModal({
     return (
         <Dialog open={open} onClose={onClose} title="Add new activity" maxWidth="sm">
             <Box m={3}>
-                <Formik initialValues={init} validationSchema={schema} onSubmit={handleSubmit}>
+                <Formik initialValues={{} as IActivity} validationSchema={schema} onSubmit={handleSubmit}>
                     {({ values, errors, touched, handleChange, handleBlur }) => (
                         <Form>
                             <Box>

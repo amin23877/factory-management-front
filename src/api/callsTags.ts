@@ -1,4 +1,4 @@
-import Axios from "axios";
+import { delete_, get, patch, post } from ".";
 
 export interface ICallsTags {
     id?: string;
@@ -6,38 +6,18 @@ export interface ICallsTags {
     name: string;
 }
 
-export const getCallsTags = async () => {
-    try {
-        const resp = await Axios.get("/callstags");
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const getCallsTags = () => {
+    return get("/callstags");
 };
 
-export const addCallsTag = async (name: string) => {
-    try {
-        const resp = await Axios.post("/callstags", { name });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const addCallsTag = (name: string) => {
+    return post("/callstags", { name });
 };
 
-export const editCallsTag = async (id: string, name: string) => {
-    try {
-        const resp = await Axios.patch(`/callstags/${id}`, { name });
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const editCallsTag = (id: string, name: string) => {
+    return patch(`/callstags/${id}`, { name });
 };
 
-export const deleteCallsTag = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/callstags/${id}`);
-        return resp.data;
-    } catch (error) {
-        console.log(error);
-    }
+export const deleteCallsTag = (id: string) => {
+    return delete_(`/callstags/${id}`);
 };

@@ -32,7 +32,7 @@ export default function RoleManagement({ open, onClose }: { open: boolean; onClo
     useEffect(() => {
         if (open) {
             getApis()
-                .then((d) => setApis(d))
+                .then((d: any) => setApis(d))
                 .catch((e) => console.log(e));
         }
     }, [open]);

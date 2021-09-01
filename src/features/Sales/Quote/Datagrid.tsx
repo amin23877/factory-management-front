@@ -3,7 +3,7 @@ import { GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
 
 import BaseDataGrid from "../../../app/BaseDataGrid";
-import { formatTimestampToDate } from "../../../logic/date";
+// import { formatTimestampToDate } from "../../../logic/date";
 
 function QuoteDatagrid({
     onRowSelected,
@@ -25,7 +25,12 @@ function QuoteDatagrid({
                 width: 100,
             },
             { field: "number", headerName: "Quote ID", width: 100 },
-            { field: "client", headerName: "Client", width: 100 },
+            {
+                field: "client",
+                headerName: "Client",
+                width: 100,
+                valueFormatter: (params) => (params.row.client ? params.row.client.name : ""),
+            },
             { field: "rep", headerName: "Rep", width: 100 },
             { field: "state", headerName: "State", width: 100 },
             { field: "requester", headerName: "Requester", width: 100 },

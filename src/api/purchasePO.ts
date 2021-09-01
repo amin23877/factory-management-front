@@ -1,5 +1,4 @@
-import Axios from "axios";
-import { post } from ".";
+import { get, delete_, patch, post } from ".";
 
 import { ILineItem } from "./lineItem";
 import { ILineService } from "./lineService";
@@ -39,87 +38,42 @@ export interface IPurchasePOComplete extends IPurchasePO {
     lineServices: ILineService[];
 }
 
-export const getPurchasePOs = async () => {
-    try {
-        const resp = await Axios.get("/purchasePo");
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const getPurchasePOs = () => {
+    return get("/purchasePo");
 };
 
-export const createPurchasePOComplete = async (data: IPurchasePOComplete) => {
-    try {
-        const resp = await Axios.post("/purchasePO", data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const createPurchasePOComplete = (data: IPurchasePOComplete) => {
+    return post("/purchasePO", data);
 };
 
-export const createPurchasePO = async (data: IPurchasePO) => {
-    try {
-        const resp = await Axios.post(`/purchasePo`, data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const createPurchasePO = (data: IPurchasePO) => {
+    return post(`/purchasePo`, data);
 };
 
-export const updatePurchasePO = async (id: string, data: IPurchasePO) => {
-    try {
-        const resp = await Axios.patch(`/purchasePo/${id}`, data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const updatePurchasePO = (id: string, data: IPurchasePO) => {
+    return patch(`/purchasePo/${id}`, data);
 };
 
-export const deletePurchasePO = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/purchasePo/${id}`);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const deletePurchasePO = (id: string) => {
+    return delete_(`/purchasePo/${id}`);
 };
 
-export const getPurchasePOLines = async (PurchasePOId: string) => {
-    try {
-        const resp = await Axios.get(`/lineitem`, { params: { PurchasePOId } });
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const getPurchasePOLines = (PurchasePOId: string) => {
+    return get(`/lineitem`, { params: { PurchasePOId } });
 };
 
-export const createPurchasePOLine = async (id: string, data: ILineItem) => {
-    try {
-        const resp = await Axios.post(`/purchasePo/${id}/lineitem`, data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const createPurchasePOLine = (id: string, data: ILineItem) => {
+    return post(`/purchasePo/${id}/lineitem`, data);
 };
 
 export const acknowledgePurchasePO = (poId: string) => {
     return post(`/purchasepo/${poId}/acknowledge`, {});
 };
 
-export const updatePurchasePOLine = async (id: string, data: ILineItem) => {
-    try {
-        const resp = await Axios.patch(`/lineitem/${id}`, data);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const updatePurchasePOLine = (id: string, data: ILineItem) => {
+    return patch(`/lineitem/${id}`, data);
 };
 
-export const deletePurchasePOLine = async (id: string) => {
-    try {
-        const resp = await Axios.delete(`/lineitem/${id}`);
-        return resp.data;
-    } catch (error) {
-        throw error;
-    }
+export const deletePurchasePOLine = (id: string) => {
+    return delete_(`/lineitem/${id}`);
 };
