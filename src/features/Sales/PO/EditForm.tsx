@@ -18,7 +18,6 @@ const schema = Yup.object().shape({
 
 export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () => void }) {
     const [activeTab, setActiveTab] = useState(0);
-    const { number, file, ContactId, ClientId, EmployeeId, ProjectId, reciever, senderNumber } = poData;
 
     const handleSubmit = async (data: any, { setSubmitting }: any) => {
         try {
@@ -37,20 +36,7 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
 
     return (
         <Box>
-            <Formik
-                validationSchema={schema}
-                initialValues={{
-                    number,
-                    file,
-                    ContactId: (ContactId as any)?.id,
-                    ClientId: (ClientId as any)?.id,
-                    EmployeeId,
-                    ProjectId,
-                    reciever,
-                    senderNumber,
-                }}
-                onSubmit={handleSubmit}
-            >
+            <Formik validationSchema={schema} initialValues={poData} onSubmit={handleSubmit}>
                 {({ values, handleChange, handleBlur, setValues, setFieldValue, isSubmitting }) => (
                     <Form>
                         <Box display="flex" style={{ justifyContent: "space-evenly" }}>

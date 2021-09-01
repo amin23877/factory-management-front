@@ -6,6 +6,8 @@ import { FieldSelect } from "../../../app/Inputs";
 
 import { getAllEmployees } from "../../../api/employee";
 import { getSO } from "../../../api/so";
+import { getCustomers } from "../../../api/customer";
+import { getAllModelContact } from "../../../api/contact";
 
 export const GeneralForm = ({
     handleChange,
@@ -31,8 +33,8 @@ export const GeneralForm = ({
                     onBlur={handleBlur}
                 />
                 <FieldSelect
-                    value={values.SoId}
-                    name="SoId"
+                    value={typeof values.SOId === "string" ? values.SOId : values.SOId?.id}
+                    name="SOId"
                     label="SO Number"
                     request={getSO}
                     itemTitleField="number"
@@ -43,16 +45,7 @@ export const GeneralForm = ({
                     }}
                     onBlur={handleBlur}
                 />
-                <FieldSelect
-                    value={values.employeeId}
-                    name="employeeId"
-                    label="SO Issued By"
-                    request={getAllEmployees}
-                    itemTitleField="username"
-                    itemValueField="id"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
+                <TextField value={values.SOId?.issuedBy?.username} label="SO Issued By" disabled />
             </Box>
         </>
     );
@@ -72,112 +65,108 @@ export const EntitiesForm = ({
     return (
         <>
             <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={10}>
-                <Box my={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
-                    <TextField
-                        value={values.rep}
-                        name="rep"
-                        label="Rep / Agency"
+                <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
+                    <FieldSelect
+                        value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
+                        request={getCustomers}
+                        itemTitleField="name"
+                        itemValueField="id"
+                        name="repOrAgency"
+                        label="repOrAgency / Agency"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
+                    <TextField value={values.repOrAgency?.address} label="Address" disabled />
                     <TextField
-                        value={values.address}
-                        name="address"
-                        label="Address"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.city}
+                        value={values.repOrAgency?.city}
                         name="city"
                         label="City"
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        disabled
                     />
                     <TextField
-                        value={values.state}
+                        value={values.repOrAgency?.state}
                         name="state"
                         label="State"
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        disabled
                     />
                     <TextField
-                        value={values.zipCode}
+                        value={values.repOrAgency?.zipcode}
                         name="zipCode"
                         label="Zip Code"
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        disabled
                     />
                 </Box>
-                <Box my={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
                     <TextField
-                        value={values.requester}
-                        name="requester"
-                        label="Requester"
+                        value={values.requesterName}
+                        name="requesterName"
+                        label="requesterName"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.email}
-                        name="email"
-                        label="Email"
+                        value={values.requesterMail}
+                        name="requesterMail"
+                        label="requesterMail"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.phone}
-                        name="phone"
-                        label="Phone"
+                        value={values.requesterPhone}
+                        name="requesterPhone"
+                        label="requesterPhone"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
-                    <TextField
-                        value={values.phone}
-                        name="phone"
-                        label="Phone"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        disabled
-                        style={{ opacity: 0 }}
-                    />
-                    <TextField
-                        value={values.phone}
-                        name="phone"
-                        label="Phone"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        disabled
-                        style={{ opacity: 0 }}
-                    />
+                    <TextField style={{ opacity: 0 }} />
+                    <TextField style={{ opacity: 0 }} />
                 </Box>
-                <Box my={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
-                    <TextField
-                        value={values.client}
+                <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
+                    {/* <TextField
+                    value={values.client}
+                    name="client"
+                    label="Client"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                /> */}
+                    <FieldSelect
+                        value={typeof values.client === "string" ? values.client : values.client?.id}
+                        request={getCustomers}
+                        itemTitleField="name"
+                        itemValueField="id"
                         name="client"
                         label="Client"
                         onChange={handleChange}
-                        onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.contactName}
+                        value={values.contact?.lastName}
                         name="contactName"
                         label="Contact Name"
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        disabled
                     />
                     <TextField
-                        value={values.email}
+                        value={values.contact?.email}
                         name="email"
                         label="Email"
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        disabled
                     />
                     <TextField
-                        value={values.phone}
+                        value={values.contact?.lastName}
                         name="phone"
                         label="Phone"
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        disabled
                     />
                     <TextField
                         value={values.unitPricingLevel}
@@ -185,30 +174,70 @@ export const EntitiesForm = ({
                         label="Unit Pricing Level"
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        disabled
                     />
                 </Box>
                 <Box my={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
-                    <TextField
-                        value={values.fullTimeContact}
-                        name="fullTimeContact"
+                    <FieldSelect
                         label="24 Hour Contact"
+                        name="twentyFourContact"
+                        request={
+                            typeof values.client === "string"
+                                ? () => getAllModelContact("customer", values.client)
+                                : () => getAllModelContact("customer", values.client?.id)
+                        }
+                        itemTitleField="lastName"
+                        itemValueField="id"
+                        value={
+                            typeof values.twentyFourContact === "string"
+                                ? values.twentyFourContact
+                                : values.twentyFourContact?.id
+                        }
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        disabled={!values.client}
                     />
-                    <TextField
-                        value={values.phone}
-                        name="phone"
+                    <FieldSelect
                         label="Phone"
+                        name="twentyFourContact"
+                        request={
+                            typeof values.client === "string"
+                                ? () => getAllModelContact("customer", values.client)
+                                : () => getAllModelContact("customer", values.client?.id)
+                        }
+                        itemTitleField="phone"
+                        itemValueField="id"
+                        value={
+                            typeof values.twentyFourContact === "string"
+                                ? values.twentyFourContact
+                                : values.twentyFourContact?.id
+                        }
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        disabled
                     />
-                    <TextField
-                        value={values.email}
-                        name="email"
+                    <FieldSelect
                         label="Email"
+                        name="twentyFourContact"
+                        request={
+                            typeof values.client === "string"
+                                ? () => getAllModelContact("customer", values.client)
+                                : () => getAllModelContact("customer", values.client?.id)
+                        }
+                        itemTitleField="email"
+                        itemValueField="id"
+                        value={
+                            typeof values.twentyFourContact === "string"
+                                ? values.twentyFourContact
+                                : values.twentyFourContact?.id
+                        }
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        disabled
                     />
+
+                    <TextField style={{ opacity: 0 }} />
+                    <TextField style={{ opacity: 0 }} />
                 </Box>
             </Box>
         </>
@@ -279,8 +308,8 @@ export const AddressesForm = ({
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.billingAddressZipCode}
-                        name="billingAddressZipCode"
+                        value={values.billingAddressZipcode}
+                        name="billingAddressZipcode"
                         label="Zip Code"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -354,8 +383,8 @@ export const AddressesForm = ({
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.shippingAddressZipCode}
-                        name="shippingAddressZipCode"
+                        value={values.shippingAddressZipcode}
+                        name="shippingAddressZipcode"
                         label="Zip Code"
                         onChange={handleChange}
                         onBlur={handleBlur}
