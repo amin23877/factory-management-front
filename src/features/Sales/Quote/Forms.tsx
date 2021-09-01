@@ -396,8 +396,8 @@ export const EntitiesTab = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
-                <div />
-                <div />
+                <TextField style={{ opacity: 0 }} />
+                <TextField style={{ opacity: 0 }} />
             </Box>
             <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
                 {/* <TextField
@@ -413,11 +413,11 @@ export const EntitiesTab = ({
                     itemTitleField="name"
                     itemValueField="id"
                     name="client"
-                    label="Customer"
+                    label="Client"
                     onChange={handleChange}
                 />
                 <TextField
-                    value={values.contactName}
+                    value={values.contact?.lastName}
                     name="contactName"
                     label="Contact Name"
                     onChange={handleChange}
@@ -425,7 +425,7 @@ export const EntitiesTab = ({
                     disabled
                 />
                 <TextField
-                    value={values.email}
+                    value={values.contact?.email}
                     name="email"
                     label="Email"
                     onChange={handleChange}
@@ -433,7 +433,7 @@ export const EntitiesTab = ({
                     disabled
                 />
                 <TextField
-                    value={values.phone}
+                    value={values.contact?.lastName}
                     name="phone"
                     label="Phone"
                     onChange={handleChange}

@@ -7,6 +7,7 @@ import { FieldSelect } from "../../../app/Inputs";
 import { getAllEmployees } from "../../../api/employee";
 import { getSO } from "../../../api/so";
 import { getCustomers } from "../../../api/customer";
+import { getAllModelContact } from "../../../api/contact";
 
 export const GeneralForm = ({
     handleChange,
@@ -123,8 +124,8 @@ export const EntitiesForm = ({
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
-                    <div />
-                    <div />
+                    <TextField style={{ opacity: 0 }} />
+                    <TextField style={{ opacity: 0 }} />
                 </Box>
                 <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
                     {/* <TextField
@@ -140,11 +141,11 @@ export const EntitiesForm = ({
                         itemTitleField="name"
                         itemValueField="id"
                         name="client"
-                        label="Customer"
+                        label="Client"
                         onChange={handleChange}
                     />
                     <TextField
-                        value={values.contactName}
+                        value={values.contact?.lastName}
                         name="contactName"
                         label="Contact Name"
                         onChange={handleChange}
@@ -152,7 +153,7 @@ export const EntitiesForm = ({
                         disabled
                     />
                     <TextField
-                        value={values.email}
+                        value={values.contact?.email}
                         name="email"
                         label="Email"
                         onChange={handleChange}
@@ -160,7 +161,7 @@ export const EntitiesForm = ({
                         disabled
                     />
                     <TextField
-                        value={values.phone}
+                        value={values.contact?.lastName}
                         name="phone"
                         label="Phone"
                         onChange={handleChange}
@@ -177,27 +178,66 @@ export const EntitiesForm = ({
                     />
                 </Box>
                 <Box my={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
-                    <TextField
-                        value={values.fullTimeContact}
-                        name="fullTimeContact"
+                    <FieldSelect
                         label="24 Hour Contact"
+                        name="twentyFourContact"
+                        request={
+                            typeof values.client === "string"
+                                ? () => getAllModelContact("customer", values.client)
+                                : () => getAllModelContact("customer", values.client?.id)
+                        }
+                        itemTitleField="lastName"
+                        itemValueField="id"
+                        value={
+                            typeof values.twentyFourContact === "string"
+                                ? values.twentyFourContact
+                                : values.twentyFourContact?.id
+                        }
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        disabled={!values.client}
                     />
-                    <TextField
-                        value={values.phone}
-                        name="phone"
+                    <FieldSelect
                         label="Phone"
+                        name="twentyFourContact"
+                        request={
+                            typeof values.client === "string"
+                                ? () => getAllModelContact("customer", values.client)
+                                : () => getAllModelContact("customer", values.client?.id)
+                        }
+                        itemTitleField="phone"
+                        itemValueField="id"
+                        value={
+                            typeof values.twentyFourContact === "string"
+                                ? values.twentyFourContact
+                                : values.twentyFourContact?.id
+                        }
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        disabled
                     />
-                    <TextField
-                        value={values.email}
-                        name="email"
+                    <FieldSelect
                         label="Email"
+                        name="twentyFourContact"
+                        request={
+                            typeof values.client === "string"
+                                ? () => getAllModelContact("customer", values.client)
+                                : () => getAllModelContact("customer", values.client?.id)
+                        }
+                        itemTitleField="email"
+                        itemValueField="id"
+                        value={
+                            typeof values.twentyFourContact === "string"
+                                ? values.twentyFourContact
+                                : values.twentyFourContact?.id
+                        }
                         onChange={handleChange}
                         onBlur={handleBlur}
+                        disabled
                     />
+
+                    <TextField style={{ opacity: 0 }} />
+                    <TextField style={{ opacity: 0 }} />
                 </Box>
             </Box>
         </>
