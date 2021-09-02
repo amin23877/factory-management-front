@@ -17,8 +17,8 @@ export interface ISO {
     status: string;
     createdAt: number;
 
-    estShipDate: string;
-    actShipDate: string;
+    estimatedShipDate: string;
+    actualShipDate: string;
     DivisionId: string;
     noTaxClient: boolean;
     department: string;
@@ -55,16 +55,24 @@ export const getSO = () => {
 export const createSO = (data: ISO) => {
     return post("/so", {
         ...data,
-        estShipDate: data.estShipDate === "" ? null : new Date(data.estShipDate).toISOString(),
-        actShipDate: data.actShipDate === "" ? null : new Date(data.actShipDate).toISOString(),
+        estimatedShipDate: data.estimatedShipDate === "" ? null : new Date(data.estimatedShipDate).getTime(),
+        actualShipDate: data.actualShipDate === "" ? null : new Date(data.actualShipDate).getTime(),
     });
 };
 export const createSOComplete = (data: ISOComplete) => {
-    return post("/so", data);
+    return post("/so", {
+        ...data,
+        estimatedShipDate: data.estimatedShipDate === "" ? null : new Date(data.estimatedShipDate).getTime(),
+        actualShipDate: data.actualShipDate === "" ? null : new Date(data.actualShipDate).getTime(),
+    });
 };
 
 export const editSO = (id: string, data: ISO) => {
-    return patch(`/so/${id}`, data);
+    return patch(`/so/${id}`, {
+        ...data,
+        estimatedShipDate: data.estimatedShipDate === "" ? null : new Date(data.estimatedShipDate).getTime(),
+        actualShipDate: data.actualShipDate === "" ? null : new Date(data.actualShipDate).getTime(),
+    });
 };
 
 export const deleteSO = (id: string) => {

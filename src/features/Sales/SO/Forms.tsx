@@ -37,6 +37,7 @@ import { formatTimestampToDate } from "../../../logic/date";
 import SOCus from "../../../PDFTemplates/SOCus";
 import SORep from "../../../PDFTemplates/SORep";
 import SOAcc from "../../../PDFTemplates/SOAcc";
+import { getPO } from "../../../api/po";
 
 export const GeneralForm = ({
     handleChange,
@@ -172,72 +173,6 @@ export const GeneralForm = ({
                     disabled
                 />
                 <TextField value={values.csa} name="csa" label="CSA" onChange={handleChange} />
-
-                {/* <TextField
-                value={values.freightTerms}
-                name="freightTerms"
-                label="Freight Terms"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                />
-                <TextField
-                value={values.paymentTerms}
-                name="paymentTerms"
-                label="Payment Terms"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                />
-                <TextField
-                value={values.carrier}
-                name="carrier"
-                label="Carrier"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                />
-                
-                <FieldSelect
-                value={values.issuedBy}
-                name="issuedBy"
-                label="Issued By"
-                request={getAllEmployees}
-                itemTitleField="username"
-                itemValueField="id"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                />
-                <FieldSelect
-                value={values.DivisionId}
-                name="DivisionId"
-                label="Division"
-                request={getAllDivison}
-                itemTitleField="name"
-                itemValueField="id"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                />
-                <ArraySelect
-                style={{ gridColumnEnd: "span 2" }}
-                value={values.status}
-                name="status"
-                label="Status"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                items={["New", "Pending", "Fulfiled"]}
-                />
-                <FormControlLabel
-                name="expodate"
-                control={<Checkbox checked={Boolean(values.expodate)} />}
-                label="Expodate"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                />
-                <FormControlLabel
-                name="noTaxClient"
-                control={<Checkbox checked={Boolean(values.noTaxClient)} />}
-                label="No tax client"
-                onChange={handleChange}
-                onBlur={handleBlur}
-            /> */}
             </Box>
             <Paper
                 style={{
@@ -248,8 +183,8 @@ export const GeneralForm = ({
                 }}
             >
                 <FormControlLabel
-                    name="call"
-                    control={<Checkbox checked={Boolean(values.call)} />}
+                    name="callADayBeforeDelivery"
+                    control={<Checkbox checked={Boolean(values.callADayBeforeDelivery)} />}
                     label="Call 24 hours before delivery"
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -635,7 +570,6 @@ export const AccountingForm = ({
     setFieldValue: any;
 }) => {
     const [activeTab, setActiveTab] = useState(0);
-
     return (
         <Fragment>
             <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10}>
@@ -668,15 +602,15 @@ export const AccountingForm = ({
                 <Box my={1} display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridGap={10}>
                     <TextField
                         style={{ gridColumnEnd: "span 2" }}
-                        value={values.commissionBaseAmt}
-                        name="commissionBaseAmt"
+                        value={values.commisionBaseAmt}
+                        name="commisionBaseAmt"
                         label="Commission Base Amt"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.regularCommission}
-                        name="regularCommission"
+                        value={values.regularCommision}
+                        name="regularCommision"
                         label="Regular Commission %"
                         type="number"
                         placeholder="0.00%"
@@ -684,25 +618,23 @@ export const AccountingForm = ({
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.regularCommission * values.price * values.quantity}
-                        name="regularCommission"
+                        value={values.regularCommision}
+                        name="regularCommision"
                         label="Regular Commission $"
                         placeholder="0.00$"
-                        // onChange={handleChange}
-                        // onBlur={handleBlur}
                         disabled
                     />
                     <TextField
-                        value={values.overageCommission}
-                        name="overageCommission"
+                        value={values.overageCommision}
+                        name="overageCommision"
                         label="Overage Commission"
                         type="number"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.totalCommission}
-                        name="totalCommission"
+                        value={values.totalCommision}
+                        name="totalCommision"
                         label="Total Commission"
                         type="number"
                         onChange={handleChange}
@@ -714,8 +646,8 @@ export const AccountingForm = ({
                 <Box my={1} display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridGap={10}>
                     <TextField
                         style={{ gridColumnEnd: "span 2" }}
-                        value={values.cost}
-                        name="cost"
+                        value={values.soCost}
+                        name="soCost"
                         label="SO Cost"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -735,8 +667,19 @@ export const AccountingForm = ({
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
-                    <TextField value={values.margin} name="margin" label="Margin" disabled />
-                    <TextField value={values.marginPercent} name="marginPercent" label="Margin %" disabled />
+                    <TextField
+                        value={values.margin}
+                        name="margin"
+                        label="Margin"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                    <TextField
+                        value={(values.margin / values.soCost) * 100}
+                        name="marginPercent"
+                        label="Margin %"
+                        disabled
+                    />
                 </Box>
             )}
         </Fragment>
@@ -767,7 +710,6 @@ export const ApprovalForm = ({
                 }}
             >
                 <FormControlLabel
-                    // style={{ gridColumnEnd: "span 2" }}
                     name="releaseToProduction"
                     control={<Checkbox checked={Boolean(values.releaseToProduction)} />}
                     label="Release to Production"
@@ -776,7 +718,6 @@ export const ApprovalForm = ({
                     disabled={Boolean(values.releaseToProduction)}
                 />
                 <FormControlLabel
-                    // style={{ gridColumnEnd: "span 2" }}
                     name="expedite"
                     control={<Checkbox checked={Boolean(values.expedite)} />}
                     label="Expedite"
@@ -785,19 +726,23 @@ export const ApprovalForm = ({
                 />
             </Paper>
             <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10}>
-                <TextField
-                    value={values.number}
-                    name="number"
-                    label="Customer PO"
-                    onChange={handleChange}
+                <FieldSelect
+                    itemValueField="id"
+                    itemTitleField="number"
+                    request={getPO}
+                    name="POId"
+                    value={typeof values.POId === "string" ? values.POId : values.POId?.id}
                     onBlur={handleBlur}
+                    onChange={handleChange}
+                    label="Customer PO"
                 />
                 <TextField
-                    value={formatTimestampToDate(values.createdAt)}
+                    value={formatTimestampToDate(values.POId?.createdAt)}
                     name="POReceivedDate"
                     label="PO Received Date"
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    disabled
                 />
                 <FieldSelect
                     value={typeof values.issuedBy === "string" ? values.issuedBy : values.issuedBy?.id}
@@ -817,17 +762,6 @@ export const ApprovalForm = ({
                     onBlur={handleBlur}
                     disabled
                 />
-                <FormControlLabel
-                    label="Expedite"
-                    control={<Checkbox checked={values.expedite} onChange={handleChange} />}
-                />
-                {/* <TextField
-                    value={values.expedite ? formatTimestampToDate(values.expedite) : ""}
-                    name="expedite"
-                    label="Expedite"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                /> */}
                 <ArraySelect
                     value={values.warranty}
                     name="warranty"
@@ -865,10 +799,10 @@ export const ShippingForm = ({
             <DateTimePicker
                 style={{ gridColumnEnd: "span 2" }}
                 size="small"
-                value={values.estShipDate}
-                name="estShipDate"
+                value={values.estimatedShipDate}
+                name="estimatedShipDate"
                 label="Estimated ship date"
-                onChange={(date) => setFieldValue("estShipDate", date)}
+                onChange={(date) => setFieldValue("estimatedShipDate", date)}
                 onBlur={handleBlur}
             />
             <DateTimePicker
@@ -883,10 +817,10 @@ export const ShippingForm = ({
             <DateTimePicker
                 style={{ gridColumnEnd: "span 2" }}
                 size="small"
-                value={values.actShipDate}
-                name="actShipDate"
+                value={values.actualShipDate}
+                name="actualShipDate"
                 label="Actual ship date"
-                onChange={(date) => setFieldValue("actShipDate", date)}
+                onChange={(date) => setFieldValue("actualShipDate", date)}
                 onBlur={handleBlur}
             />
 
