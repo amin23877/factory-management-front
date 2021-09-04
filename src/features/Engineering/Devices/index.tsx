@@ -45,7 +45,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
     const [sorts, setSort] = useState<GridSortModelParams>();
 
     const { data: items, mutate: mutateItems } = useSWR<{ result: IItem[]; total: number }>(
-        generateURL("/item?device=true", filters, sorts, page)
+        generateURL("/item", filters, sorts, page, "device=true")
     );
     const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
 
@@ -272,9 +272,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                                         onSortModelChange={(s) => setSort(s)}
                                         onPageChange={(p) => setPage(p)}
                                         onPageSizeChange={(ps) => setPage(ps)}
-                                        onFilterModelChange={(f) => {
-                                            setFilters(f);
-                                        }}
+                                        onFilterModelChange={(f) => setFilters(f)}
                                         rows={items ? items.result : []}
                                         columns={gridColumns}
                                         components={{ Toolbar: GridToolbar }}

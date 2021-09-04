@@ -78,7 +78,7 @@ export const GeneralForm = ({
                         billingEntitiy,
 
                         requester,
-                        ClientId,
+                        // ClientId,
                         ProjectId,
                     } = d;
                     onChangeInit({
@@ -110,7 +110,7 @@ export const GeneralForm = ({
                 })
                 .catch((e) => console.log(e));
         }
-    }, [selectedQuote]);
+    }, [selectedQuote, onChangeInit, values]);
 
     return (
         <Fragment>

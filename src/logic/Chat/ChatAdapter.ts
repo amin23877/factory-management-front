@@ -75,7 +75,12 @@ export default class ChatAdapter {
 
     public sendPrivateMessage(content: string, to: string, file?: string) {
         if (this.socket) {
-            this.socket.emit("private message", { content, to, file: file ? file : null });
+            this.socket.emit("private message", {
+                content,
+                to,
+                fileAddress: file ? file : null,
+                hasFile: Boolean(file),
+            });
         }
     }
 

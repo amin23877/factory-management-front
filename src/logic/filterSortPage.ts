@@ -25,7 +25,7 @@ const generateFilter = (filters?: GridFilterModelParams) => {
 };
 
 const generatePage = (page?: GridPageChangeParams) => {
-    if (!page) return "page=1";
+    if (!page || page.page === 0) return "page=1";
 
     let res = `page=${page.page}`;
     if (page.pageSize) {
@@ -51,20 +51,20 @@ export const generateURL = (
     url: string,
     filters?: GridFilterModelParams,
     sorts?: GridSortModelParams,
-    page?: GridPageChangeParams
+    page?: GridPageChangeParams,
+    defaultParams?:string,
 ) => {
-    // let url = "/item";
     let params: string[] = [];
 
-    if (!filters && !sorts && !page) return url;
+    if (!filters && !sorts && !page) return `${url}?${defaultParams}`;
 
-    if (filters || sorts || page) url += "?";
+    if (filters || sorts || page) url += `?${defaultParams}&`;
 
-    const generatedPage = generatePage(page)
+    const generatedPage = generatePage(page);
     const generatedFilters = generateFilter(filters);
     const generatedSorts = generateSorts(sorts);
 
-    if(generatedPage){
+    if (generatedPage) {
         params.push(generatedPage);
     }
     if (generatedFilters) {

@@ -9,7 +9,9 @@ import { colors } from "./Drawer";
 
 const Message = ({ user, message }: { message: messageType; user: userType }) => {
     const isSent = message.from === user.username;
-
+    if (message.hasFile) {
+        console.log(message.fileAddress?.split("public")[1]);
+    }
     return (
         <Box m={1} display="flex" style={{ justifyContent: !isSent ? "flex-end" : "flex-start" }}>
             <Box display="inline-flex">
@@ -24,6 +26,13 @@ const Message = ({ user, message }: { message: messageType; user: userType }) =>
                             backgroundColor: isSent ? colors.highlight : colors.light,
                         }}
                     >
+                        {message.hasFile && (
+                            <img
+                                src={"http://digitalphocus.ir" + message.fileAddress?.split("public")[1]}
+                                alt=""
+                                style={{ width: 100, height: 100, objectFit: "cover", margin: 8, borderRadius: 16 }}
+                            />
+                        )}
                         {message.content}
                     </ListItemText>
                 </ListItem>
