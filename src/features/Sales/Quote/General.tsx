@@ -34,7 +34,7 @@ export default function GeneralQuote({
 
     return (
         <Box style={{ overflowY: "auto", width: "100%" }}>
-            <Formik initialValues={{} as IQuote} validationSchema={schema} onSubmit={handleSubmit}>
+            <Formik initialValues={{ ...data } as IQuote} validationSchema={schema} onSubmit={handleSubmit}>
                 {({ handleChange, handleBlur, values, isSubmitting, setFieldValue }) => (
                     <Form>
                         <Box display="flex" m={1}>

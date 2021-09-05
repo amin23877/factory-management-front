@@ -26,7 +26,7 @@ export interface IQuote {
     unitPricingLevel: string;
     estimatedShipDate: number;
     TicketId: number;
-
+    QuoteRequestId?: any;
     freightTerms: string;
     paymentTerms: string;
     depositRequired: boolean;

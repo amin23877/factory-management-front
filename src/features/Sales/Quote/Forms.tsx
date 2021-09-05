@@ -246,7 +246,7 @@ export const GeneralForm = ({
                     onChange={handleChange}
                 />
                 <FieldSelect
-                    value={typeof values.salesperson === "string" ? values.salesperson : values.salesperson.id}
+                    value={typeof values.salesperson === "string" ? values.salesperson : values.salesperson?.id}
                     request={getAllEmployees}
                     itemTitleField="username"
                     itemValueField="id"

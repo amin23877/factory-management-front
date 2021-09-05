@@ -15,18 +15,21 @@ export default function AddQuote({
     onClose,
     onDone,
     initialData,
+    addFromReq,
 }: {
-    initialData: IQuoteComplete;
+    initialData: any;
     open: boolean;
     onClose: () => void;
     onDone: () => void;
+    addFromReq?: boolean;
 }) {
     const [step, setStep] = useState(0);
-    const [quote, setQuote] = useState<IQuoteComplete>(initialData);
+    const [quote, setQuote] = useState<any>(initialData);
     const [createdQuote, setCreatedQuote] = useState<IQuote>();
 
     useEffect(() => {
         if (initialData) {
+            console.log(initialData);
             setQuote(initialData);
         }
     }, [initialData]);
@@ -55,9 +58,10 @@ export default function AddQuote({
                     <Box display="flex" justifyContent="center" flexGrow={1} my={2}>
                         <General
                             add={true}
-                            data={quote}
+                            data={initialData}
+                            // data={quote}
                             onDone={(d) => {
-                                setQuote((prev) => ({ ...prev, ...d }));
+                                setQuote((prev: any) => ({ ...prev, ...d }));
                                 setStep((prev) => prev + 1);
                             }}
                         />
@@ -71,6 +75,7 @@ export default function AddQuote({
                             setQuote((d: any) => ({ ...d, lines: items }));
                             setStep((prev) => prev + 1);
                         }}
+                        devices={initialData?.devices}
                     />
                 )}
                 {step === 2 && quote && (

@@ -225,10 +225,12 @@ export const LinesForm = ({
     onDone,
     onBack,
     data,
+    devices,
 }: {
     data?: IPurchasePOComplete | ISOComplete | IQuoteComplete;
     onDone: (items: ILineItem[]) => void;
     onBack: () => void;
+    devices?: IItem[];
 }) => {
     const [createdItems, setCreatedItems] = useState<ILineItem[]>(data && data.lines ? data.lines : []);
     const [selectedItem, setSelectedItem] = useState<IItem>();
@@ -271,7 +273,7 @@ export const LinesForm = ({
                         <Form>
                             <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
                                 <Autocomplete
-                                    options={items ? items.result : []}
+                                    options={devices ? devices : items ? items.result : []}
                                     getOptionLabel={(item: any) => item.name}
                                     onChange={(e, nv) => setFieldValue("ItemId", nv.id)}
                                     onBlur={handleBlur}

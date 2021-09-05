@@ -10,6 +10,7 @@ import Confirm from "../../Modals/Confirm";
 import EditTab from "./EditTab";
 import AddQuote from "./AddQuote";
 import QuoteDatagrid from "./Datagrid";
+import ReqQuoteModal from "./ReqQuote/Modals";
 
 import { deleteQuote, IQuote } from "../../../api/quote";
 
@@ -17,6 +18,7 @@ export default function QuotePanel() {
     const [selectedQuote, setSelectedQuote] = useState<IQuote>();
     const [activeTab, setActiveTab] = useState(0);
     const [addQ, setAddQ] = useState(false);
+    const [reqQuote, setReqQuote] = useState(false);
     const [compQ] = useState<any>();
     const [confirm, setConfirm] = useState(false);
 
@@ -42,7 +44,7 @@ export default function QuotePanel() {
         <Box>
             <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
             <AddQuote open={addQ} onClose={() => setAddQ(false)} initialData={compQ} onDone={() => {}} />
-
+            <ReqQuoteModal open={reqQuote} onClose={() => setReqQuote(false)} />
             <Box mb={2} display="flex" alignItems="center">
                 <Button
                     style={{
@@ -57,6 +59,7 @@ export default function QuotePanel() {
                     <AddRoundedIcon />
                     Add Quote
                 </Button>
+
                 {selectedQuote ? (
                     <div>
                         <Button kind="delete" onClick={() => setConfirm(true)} disabled={!selectedQuote}>
@@ -64,6 +67,9 @@ export default function QuotePanel() {
                         </Button>
                     </div>
                 ) : null}
+                <Button variant="outlined" onClick={() => setReqQuote(true)}>
+                    Requested Quotes
+                </Button>
                 <div style={{ flexGrow: 1 }} />
             </Box>
 
