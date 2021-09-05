@@ -26,7 +26,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     const [sorts, setSort] = useState<GridSortModelParams>();
 
     const { data: items } = useSWR<{ result: IItem[]; total: number }>(
-        generateURL("/item?device=false", filters, sorts, page)
+        generateURL("/item", filters, sorts, page, "device=false")
     );
     const { data: fields } = useSWR("/field");
     const { data: clusters } = useSWR("/filter");
