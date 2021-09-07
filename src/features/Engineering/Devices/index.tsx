@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Box, IconButton, ListItem, Paper, Tabs, Tab } from "@material-ui/core";
 import {
     NoteRounded,
@@ -40,13 +40,21 @@ import { splitLevelName } from "../../../logic/levels";
 
 const Devices = ({ sales }: { sales?: boolean }) => {
     const classes = useDataGridStyles();
-    const [filters, setFilters] = useState<GridFilterModelParams>();
-    const [page, setPage] = useState<GridPageChangeParams>();
-    const [sorts, setSort] = useState<GridSortModelParams>();
+    const [dataState, setDataState] =
+        useState<{ filters?: GridFilterModelParams; page?: GridPageChangeParams; sorts?: GridSortModelParams }>();
+    const [rowCount, setRowCount] = useState(0);
 
     const { data: items, mutate: mutateItems } = useSWR<{ result: IItem[]; total: number }>(
-        generateURL("/item", filters, sorts, page, "device=true")
+        generateURL("/item", dataState?.filters, dataState?.sorts, dataState?.page, "device=true")
     );
+    useEffect(() => {
+        console.log(items);
+
+        if (items && items.total) {
+            setRowCount(items.total);
+        }
+    }, [items]);
+
     const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
 
     const [activeTab, setActiveTab] = useState(0);
@@ -258,21 +266,23 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                             <Paper>
                                 <Box height={550}>
                                     <DataGrid
+                                        loading={!items}
                                         className={classes.root}
                                         onRowSelected={(r) => {
                                             setSelectedItem(r.data as any);
                                             setActiveTab(1);
                                         }}
                                         pagination
-                                        pageSize={25}
-                                        rowCount={items ? items.total : 0}
+                                        pageSize={dataState && dataState.page ? dataState.page.pageSize : 25}
+                                        page={dataState && dataState.page ? dataState.page.page : 0}
+                                        rowCount={rowCount}
                                         filterMode="server"
                                         paginationMode="server"
                                         sortingMode="server"
-                                        onSortModelChange={(s) => setSort(s)}
-                                        onPageChange={(p) => setPage(p)}
-                                        onPageSizeChange={(ps) => setPage(ps)}
-                                        onFilterModelChange={(f) => setFilters(f)}
+                                        onSortModelChange={(s) => setDataState((prev) => ({ ...prev, sorts: s }))}
+                                        onPageChange={(p) => setDataState((prev) => ({ ...prev, page: p }))}
+                                        onPageSizeChange={(ps) => setDataState((prev) => ({ ...prev, page: ps }))}
+                                        onFilterModelChange={(f) => setDataState((prev) => ({ ...prev, filters: f }))}
                                         rows={items ? items.result : []}
                                         columns={gridColumns}
                                         components={{ Toolbar: GridToolbar }}

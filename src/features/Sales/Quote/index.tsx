@@ -11,6 +11,7 @@ import EditTab from "./EditTab";
 import AddQuote from "./AddQuote";
 import QuoteDatagrid from "./Datagrid";
 import ReqQuoteModal from "./ReqQuote/Modals";
+import EmailModal from "../../Email/Modal";
 
 import { deleteQuote, IQuote } from "../../../api/quote";
 
@@ -21,6 +22,7 @@ export default function QuotePanel() {
     const [reqQuote, setReqQuote] = useState(false);
     const [compQ] = useState<any>();
     const [confirm, setConfirm] = useState(false);
+    const [emailModal, setEmailModal] = useState(false);
 
     const { mutate: mutateQuotes } = useSWR("/quote");
 
@@ -45,12 +47,12 @@ export default function QuotePanel() {
             <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
             <AddQuote open={addQ} onClose={() => setAddQ(false)} initialData={compQ} onDone={() => {}} />
             <ReqQuoteModal open={reqQuote} onClose={() => setReqQuote(false)} />
-            <Box mb={2} display="flex" alignItems="center">
+            <EmailModal open={emailModal} onClose={() => setEmailModal(false)} />
+            <Box mb={2} display="flex" alignItems="center" style={{ gap: 10 }}>
                 <Button
                     style={{
                         backgroundColor: "#1a73e8",
                         color: "#fff",
-                        margin: "0 0.5em",
                         padding: " 6px 15px",
                         boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
                     }}
@@ -69,6 +71,9 @@ export default function QuotePanel() {
                 ) : null}
                 <Button variant="outlined" onClick={() => setReqQuote(true)}>
                     Requested Quotes
+                </Button>
+                <Button variant="outlined" onClick={() => setEmailModal(true)}>
+                    Send Email
                 </Button>
                 <div style={{ flexGrow: 1 }} />
             </Box>
