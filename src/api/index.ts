@@ -175,9 +175,11 @@ export function patch(path: string, data: any, headers = { "Content-Type": "appl
         .catch(onError);
 }
 
-export function uploadFile(file: any) {
+export function uploadFile(name:string, file: any) {
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("sampleFile", name);
+    formData.append("name", name);
 
     return post("/upload", formData);
 }

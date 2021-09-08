@@ -6,6 +6,7 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
 import { colors } from "./Drawer";
+import { uploadFile } from "../../api";
 
 const schema = Yup.object().shape({
     content: Yup.string().required(),
@@ -14,13 +15,36 @@ const schema = Yup.object().shape({
 export default function ChatForm({ onPrivateMessage }: { onPrivateMessage: (content: string, file?: any) => void }) {
     const fileUploader = useRef<HTMLInputElement | null>(null);
     const [file, setFile] = useState<any>();
+    const [isUploading, setIsUploading] = useState(false);
+
+    const handleChangeFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        try {
+            if (e.target.files) {
+                // console.log(e.target.files[0]);
+
+                // setFile(e.target.files[0]);
+                setIsUploading(true);
+                const resp = await uploadFile(e.target.files[0].name, e.target.files[0]);
+                if (resp.address) {
+                    setFile(resp.address);
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            if (!file) {
+                setIsUploading(false);
+            }
+        }
+    };
 
     return (
         <Box style={{ backgroundColor: "#f9fafc" }} p="7px">
             {file && (
                 <Paper style={{ marginBottom: 5 }}>
                     <Box display="flex" alignItems="center" justifyContent="space-between">
-                        <Typography style={{ marginLeft: 8 }}>"{String(file.name)}" attached</Typography>
+                        {/* <Typography style={{ marginLeft: 8 }}>"{String(file.name)}" attached</Typography> */}
+                        <Typography style={{ marginLeft: 8 }}>file attached</Typography>
                         <IconButton onClick={() => setFile(undefined)}>
                             <CloseRounded />
                         </IconButton>
@@ -32,6 +56,7 @@ export default function ChatForm({ onPrivateMessage }: { onPrivateMessage: (cont
                 validationSchema={schema}
                 onSubmit={(d, { resetForm }) => {
                     onPrivateMessage(d.content, file);
+                    setFile(undefined);
                     resetForm();
                 }}
             >
@@ -63,10 +88,13 @@ export default function ChatForm({ onPrivateMessage }: { onPrivateMessage: (cont
                                     hidden
                                     type="file"
                                     name="file"
-                                    onChange={(e) => e.target.files && setFile(e.target.files[0])}
+                                    onChange={handleChangeFile}
                                     ref={(e) => (fileUploader.current = e)}
                                 />
-                                <IconButton onClick={() => (fileUploader.current ? fileUploader.current.click() : {})}>
+                                <IconButton
+                                    disabled={isUploading}
+                                    onClick={() => (fileUploader.current ? fileUploader.current.click() : {})}
+                                >
                                     <AttachFileRounded htmlColor={colors.light} />
                                 </IconButton>
                             </div>

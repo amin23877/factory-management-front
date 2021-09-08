@@ -24,7 +24,6 @@ import { formatTimestampToDate } from "../../../logic/date";
 import { IUnitHistory } from "../../../api/units";
 
 import Toast from "../../../app/Toast";
-import MyQRCode from "../../../app/QRCode";
 import { exportPdf } from "../../../logic/pdf";
 import { EditTaskModal } from "./TaskModal";
 import DeviceQRCode from "./QRCode";
@@ -55,11 +54,7 @@ function ItemsDetails({
     const [AddService, setAddService] = useState(false);
     const [unitHistoryModal, setUnitHistoryModal] = useState(false);
 
-    const [selectedNote, setSelectedNote] = useState<any>();
-    const [selectedDoc, setSelectedDoc] = useState<any>();
     const [selectedStep, setSelectedStep] = useState<any>();
-    const [selectedFlag, setSelectedFlag] = useState<any>();
-
     const [selectedUnit, setSelectedUnit] = useState<IUnitHistory>();
 
     const [stepModal, setStepModal] = useState(false);
