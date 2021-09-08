@@ -2,8 +2,8 @@ import React, { useState } from "react";
 
 import { Tab, Tabs, Box } from "@material-ui/core";
 
-import Table from "../../Table";
-import Details from "../../index";
+import Table from "./Table";
+import Details from "./Details";
 import { IUnit } from "../../../../api/units";
 
 function Index() {
@@ -19,7 +19,7 @@ function Index() {
                     onChange={(e, nv) => setActiveTab(nv)}
                 >
                     <Tab label="List" />
-                    <Tab label="Details" />
+                    <Tab label="Details" disabled={!selectedUnit} />
                 </Tabs>
                 <div style={{ flex: 1 }}></div>
             </Box>

@@ -1,12 +1,12 @@
 import React, { useState, useMemo } from "react";
 import { Box, Paper } from "@material-ui/core";
-import { endOfWeek, endOfMonth } from "date-fns";
+import { addDays } from "date-fns";
 import { DataGrid, GridColDef, GridToolbar } from "@material-ui/data-grid";
 import useSWR from "swr";
 
-import Button from "../../app/Button";
-import { DateInput } from "../../components/Filters/Date";
-import { UnitSearchBox } from "../../app/SearchBox";
+import Button from "../../../../app/Button";
+import { DateInput } from "../../../../components/Filters/Date";
+import { UnitSearchBox } from "../../../../app/SearchBox";
 
 function Table({
     setActiveTab,
@@ -15,7 +15,7 @@ function Table({
     setSelectedUnit: (a: any) => void;
     setActiveTab: (a: any) => void;
 }) {
-    const [topDateFilter, setTopDateFilter] = useState<"week" | "month">();
+    const [topDateFilter, setTopDateFilter] = useState<"week" | "week2" | "week3" | "week4">();
     const [finish, setFinish] = useState<string>();
 
     const { data: units } = useSWR(finish ? `/unit?finish=${finish}` : "/unit");
@@ -62,21 +62,41 @@ function Table({
                     variant="contained"
                     onClick={() => {
                         setTopDateFilter("week");
-                        setFinish(dateStringToUnix(endOfWeek(new Date())));
+                        setFinish(dateStringToUnix(addDays(new Date(), 7)));
                     }}
                 >
-                    This week
+                    XX Units Due This Week
                 </Button>
                 <Button
-                    color={topDateFilter === "month" ? "primary" : "default"}
+                    color={topDateFilter === "week2" ? "primary" : "default"}
+                    variant="contained"
+                    onClick={() => {
+                        setTopDateFilter("week2");
+                        setFinish(dateStringToUnix(addDays(new Date(), 7 * 2)));
+                    }}
+                >
+                    XX Units Due This Week2
+                </Button>
+                <Button
+                    color={topDateFilter === "week3" ? "primary" : "default"}
+                    variant="contained"
+                    onClick={() => {
+                        setTopDateFilter("week3");
+                        setFinish(dateStringToUnix(addDays(new Date(), 7 * 3)));
+                    }}
+                >
+                    XX Units Due This Week3
+                </Button>
+                <Button
+                    color={topDateFilter === "week4" ? "primary" : "default"}
                     variant="contained"
                     style={{ margin: "0 0.5em" }}
                     onClick={() => {
-                        setTopDateFilter("month");
-                        setFinish(dateStringToUnix(endOfMonth(new Date())));
+                        setTopDateFilter("week4");
+                        setFinish(dateStringToUnix(addDays(new Date(), 4 * 7)));
                     }}
                 >
-                    This month
+                    XX Units Due Week4
                 </Button>
                 <Button
                     onClick={() => {

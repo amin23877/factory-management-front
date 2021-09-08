@@ -4,7 +4,7 @@ import { GridColDef } from "@material-ui/data-grid";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 
-import UnitInfo from "../features/Production/UnitInfo";
+import UnitInfo from "../features/Production/Dashboard/UnitList/UnitInfo";
 import { General as ItemGeneral } from "../features/Items/Forms";
 import { GeneralForm as SOGeneral } from "../features/Sales/SO/Forms";
 

@@ -15,11 +15,21 @@ function Index() {
 
     const tasksCols: GridColDef[] = [
         {
-            field: "Date",
+            field: "Date Assigned",
             valueFormatter: (r) => formatTimestampToDate(r.row?.createdAt),
-            width: 100,
+            width: 120,
         },
-        { field: "number", headerName: "PO Number", width: 110 },
+        { field: "Task Number", headerName: "Task Number", width: 120 },
+        { field: "Task Name", headerName: "Task Name", width: 120 },
+        { field: "Task Description", headerName: "Task Description", width: 130 },
+        { field: "Unit", headerName: "Unit", width: 100 },
+        { field: "Assign", headerName: "Assign", width: 100 },
+        { field: "Device", headerName: "Device", width: 110 },
+        { field: "SO NO.", headerName: "SO NO.", width: 100 },
+        { field: "Est. Ship Date", headerName: "Est. Ship Date", width: 130 },
+        { field: "Production Status", headerName: "Production Status", width: 140 },
+        { field: "Package Status", headerName: "Package Status", width: 135 },
+        { field: "Time Left", headerName: "Time Left", width: 120 },
     ];
 
     const taskListCols: GridColDef[] = [

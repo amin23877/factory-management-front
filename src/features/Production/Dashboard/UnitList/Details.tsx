@@ -4,17 +4,17 @@ import { GridColDef } from "@material-ui/data-grid";
 import useSWR from "swr";
 
 import UnitInfo from "./UnitInfo";
-import { General as ItemGeneral } from "../Items/Forms";
-import { GeneralForm as SOGeneral } from "../Sales/SO/Forms";
+import { General as ItemGeneral } from "../../../Items/Forms";
+import { GeneralForm as SOGeneral } from "../../../Sales/SO/Forms";
 
-import Button from "../../app/Button";
-import { BasePaper } from "../../app/Paper";
-import BaseDataGrid from "../../app/BaseDataGrid";
-import MyQRCode from "../../app/QRCode";
+import Button from "../../../../app/Button";
+import { BasePaper } from "../../../../app/Paper";
+import BaseDataGrid from "../../../../app/BaseDataGrid";
+import MyQRCode from "../../../../app/QRCode";
 
-import { IUnit } from "../../api/units";
+import { IUnit } from "../../../../api/units";
 
-import { exportPdf } from "../../logic/pdf";
+import { exportPdf } from "../../../../logic/pdf";
 
 function Details({ unit }: { unit: IUnit }) {
     const qrCode = useRef<HTMLElement | null>(null);
