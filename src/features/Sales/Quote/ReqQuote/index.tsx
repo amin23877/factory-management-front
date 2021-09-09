@@ -12,10 +12,11 @@ import AddQuote from "../AddQuote";
 import BaseDataGrid from "../../../../app/BaseDataGrid";
 import { GridColumns } from "@material-ui/data-grid";
 import { formatTimestampToDate } from "../../../../logic/date";
-import { IReqQuoteComplete } from "../../../../api/reqQuote";
+// import { IQuoteRequest, IReqQuoteComplete } from "../../../../api/reqQuote";
+import General from "./Forms";
 
 export default function ReqQuotePanel() {
-    const [selectedQuote, setSelectedQuote] = useState<IReqQuoteComplete>();
+    const [selectedQuote, setSelectedQuote] = useState<any>();
     const [activeTab, setActiveTab] = useState(0);
     const [addQ, setAddQ] = useState(false);
 
@@ -100,6 +101,7 @@ export default function ReqQuotePanel() {
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="List" />
                     <Tab label="Details" disabled={!selectedQuote} />
+                    <Tab label="Add" disabled={activeTab === 0} />
                 </Tabs>
                 {activeTab === 0 && (
                     <BaseDataGrid
@@ -112,6 +114,7 @@ export default function ReqQuotePanel() {
                     />
                 )}
                 {activeTab === 1 && selectedQuote && <EditTab selectedQuote={selectedQuote} />}
+                {activeTab === 2 && selectedQuote && <General requestedQuote={selectedQuote} />}
             </BasePaper>
         </Box>
     );
