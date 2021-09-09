@@ -490,7 +490,9 @@ function ItemsDetails({
                                 )}
                                 {activeTab === 2 && (
                                     <Box>
-                                        <Button onClick={() => setAddService(true)}>Add Warranty</Button>
+                                        <Button onClick={() => setAddService(true)} variant="outlined">
+                                            Add Warranty
+                                        </Button>
                                         <BaseDataGrid
                                             cols={warCols}
                                             rows={warranties || []}
@@ -570,7 +572,9 @@ function ItemsDetails({
 
                                 {activeTab === 1 && (
                                     <Box>
-                                        <Button onClick={() => setAddService(true)}>Add Warranty</Button>
+                                        <Button onClick={() => setAddService(true)} variant="outlined">
+                                            Add Warranty
+                                        </Button>
                                         <BaseDataGrid
                                             cols={warCols}
                                             rows={warranties || []}
