@@ -28,7 +28,8 @@ function Index() {
         { field: "SO NO.", headerName: "SO NO.", width: 100 },
         { field: "Est. Ship Date", headerName: "Est. Ship Date", width: 130 },
         { field: "Production Status", headerName: "Production Status", width: 140 },
-        { field: "Package Status", headerName: "Package Status", width: 135 },
+        { field: "Package", headerName: "Package", width: 100 },
+        { field: "Status", headerName: "Status", width: 100 },
         { field: "Time Left", headerName: "Time Left", width: 120 },
     ];
 
