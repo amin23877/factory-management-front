@@ -10,8 +10,8 @@ Axios.defaults.baseURL = BaseUrl;
 
 Axios.interceptors.request.use(
     (config) => {
-        if (!config.headers.authorization) {
-            config.headers.authorization = `Bearer ${getToken()}`;
+        if (!config.headers.Authorization) {
+            config.headers.Authorization = `Bearer ${getToken()}`;
             // config.headers['Content-Type'] = 'application/json';
         }
 
@@ -23,11 +23,14 @@ Axios.interceptors.request.use(
     }
 );
 
-Axios.interceptors.response.use((config) => config, (error) => {
-    if(error.response.status === 401){
-        localStorage.removeItem(StorageKey);
-        store.dispatch(logout())
+Axios.interceptors.response.use(
+    (config) => config,
+    (error) => {
+        if (error.response.status === 401) {
+            localStorage.removeItem(StorageKey);
+            store.dispatch(logout());
+        }
+
+        return Promise.reject(error);
     }
-    
-    return Promise.reject(error);
-})
+);

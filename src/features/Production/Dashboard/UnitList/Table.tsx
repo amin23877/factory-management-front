@@ -1,13 +1,14 @@
 import React, { useState, useMemo } from "react";
 import { Box, Paper } from "@material-ui/core";
-import { endOfWeek, endOfMonth } from "date-fns";
-import { DataGrid, GridColDef, GridToolbar } from "@material-ui/data-grid";
+import { addDays } from "date-fns";
+import { DataGrid, GridColDef, GridToolbar, GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
 
-import Button from "../../app/Button";
-import { DateInput } from "../../components/Filters/Date";
-import { UnitSearchBox } from "../../app/SearchBox";
-
+import Button from "../../../../app/Button";
+import { DateInput } from "../../../../components/Filters/Date";
+import { UnitSearchBox } from "../../../../app/SearchBox";
+import { formatTimestampToDate } from "../../../../logic/date";
+import { useDataGridStyles } from "../../../../app/BaseDataGrid";
 function Table({
     setActiveTab,
     setSelectedUnit,
@@ -15,27 +16,41 @@ function Table({
     setSelectedUnit: (a: any) => void;
     setActiveTab: (a: any) => void;
 }) {
-    const [topDateFilter, setTopDateFilter] = useState<"week" | "month">();
+    const [topDateFilter, setTopDateFilter] = useState<"week" | "week2" | "week3" | "week4">();
     const [finish, setFinish] = useState<string>();
 
     const { data: units } = useSWR(finish ? `/unit?finish=${finish}` : "/unit");
+
+    const classes = useDataGridStyles();
 
     const dateStringToUnix = (date: Date) => {
         return String(Math.round(new Date(date).getTime() / 1000));
     };
 
     const unitCols = useMemo<GridColDef[]>(() => {
-        const cols: any = [
-            { field: "number", headerName: "Serial No." },
-            { field: "laborCost", headerName: "Labor Cost" },
+        const cols: GridColumns = [
             {
-                field: "dueDate",
-                headerName: "Due Date",
-                flex: 1,
-                type: "date",
-                valueFormatter: (d: any) => new Date(d.row.dueDate),
+                field: "EST. Ship Date",
+                valueFormatter: (r) => formatTimestampToDate(r.row?.estimatedShipDate),
+                width: 130,
             },
-            { field: "status", headerName: "Status" },
+            { field: "SO NO.", headerName: "SO NO.", width: 100 },
+            { field: "Assign", headerName: "Assign", width: 100 },
+            { field: "number", headerName: "Unit", width: 100 },
+            { field: "Device", headerName: "Device", width: 110 },
+            { field: "Client", headerName: "Client", width: 110 },
+            { field: "Rep", headerName: "Rep", width: 110 },
+            { field: "Production Status", headerName: "Production Status", width: 140 },
+            { field: "Package", headerName: "Package", width: 100 },
+            { field: "status", headerName: "Status", width: 100 },
+            { field: "Time Left", headerName: "Time Left", width: 100 },
+            // {
+            //     field: "dueDate",
+            //     headerName: "Due Date",
+            //     flex: 1,
+            //     type: "date",
+            //     valueFormatter: (d: any) => new Date(d.row.dueDate),
+            // },
         ];
         const dateColumn = cols.find((column: any) => column.field === "dueDate")!;
         const dateColIndex = cols.findIndex((column: any) => column.field === "dueDate");
@@ -62,21 +77,42 @@ function Table({
                     variant="contained"
                     onClick={() => {
                         setTopDateFilter("week");
-                        setFinish(dateStringToUnix(endOfWeek(new Date())));
+                        setFinish(dateStringToUnix(addDays(new Date(), 7)));
                     }}
                 >
-                    This week
+                    XX Units Due this Week
                 </Button>
                 <Button
-                    color={topDateFilter === "month" ? "primary" : "default"}
+                    color={topDateFilter === "week2" ? "primary" : "default"}
+                    variant="contained"
+                    onClick={() => {
+                        setTopDateFilter("week2");
+                        setFinish(dateStringToUnix(addDays(new Date(), 7 * 2)));
+                    }}
+                    style={{ margin: "0 0.5em" }}
+                >
+                    XX Units Due Week 2
+                </Button>
+                <Button
+                    color={topDateFilter === "week3" ? "primary" : "default"}
+                    variant="contained"
+                    onClick={() => {
+                        setTopDateFilter("week3");
+                        setFinish(dateStringToUnix(addDays(new Date(), 7 * 3)));
+                    }}
+                >
+                    XX Units Due Week 3
+                </Button>
+                <Button
+                    color={topDateFilter === "week4" ? "primary" : "default"}
                     variant="contained"
                     style={{ margin: "0 0.5em" }}
                     onClick={() => {
-                        setTopDateFilter("month");
-                        setFinish(dateStringToUnix(endOfMonth(new Date())));
+                        setTopDateFilter("week4");
+                        setFinish(dateStringToUnix(addDays(new Date(), 4 * 7)));
                     }}
                 >
-                    This month
+                    XX Units Due Week 4
                 </Button>
                 <Button
                     onClick={() => {
@@ -91,6 +127,8 @@ function Table({
             <Paper>
                 <Box height={350}>
                     <DataGrid
+                        density="compact"
+                        className={classes.root}
                         columns={unitCols}
                         rows={units ? units.result : []}
                         filterMode="server"
