@@ -12,9 +12,10 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IReqQuote })
 
     const LICols = useMemo<GridColumns>(
         () => [
-            { field: "NO.", valueFormatter: (r) => r.row?.no, width: 200 },
-            { field: "ItemId", headerName: "Part Name", valueFormatter: (r) => r.row?.name, flex: 1 },
-            { field: "Description", valueFormatter: (r) => r.row?.description, flex: 1 },
+            { field: "NO.", valueFormatter: (r) => r.row?.number?.no, width: 150 },
+            { field: "ItemId", headerName: "Part Name", valueFormatter: (r) => r.row?.number?.name, flex: 1 },
+            { field: "Description", valueFormatter: (r) => r.row?.number?.description, flex: 1 },
+            { field: "Quantity", valueFormatter: (r) => r.row?.quantity, width: 100 },
         ],
         []
     );
