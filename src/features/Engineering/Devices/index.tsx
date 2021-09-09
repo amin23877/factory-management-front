@@ -89,8 +89,8 @@ const Devices = ({ sales }: { sales?: boolean }) => {
     const gridColumns = useMemo<GridColDef[]>(() => {
         let res: GridColDef[] = [
             { field: "no", headerName: "Device Number", width: 120 },
-            { field: "name", headerName: "Name", flex: 1 },
-            { field: "description", headerName: "Description", flex: 2 },
+            { field: "name", headerName: "Name", flex: 1, width: 200 },
+            { field: "description", headerName: "Description", flex: 2, width: 200 },
             { field: "lead", headerName: "Lead Time", width: 120 },
             { field: "retailPrice", headerName: "Price", width: 120 },
         ];
@@ -102,7 +102,9 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                 Object.keys(item.filters).forEach((f) => newCols.add(f));
                 Object.keys(item.fields).forEach((f) => newCols.add(f));
             });
-            newCols.forEach((c) => res.push({ field: c, headerName: splitLevelName(c), width: 120 }));
+            newCols.forEach((c) =>
+                res.push({ field: c, headerName: splitLevelName(c), width: 120, disableColumnMenu: true })
+            );
         }
 
         return res;
