@@ -111,7 +111,7 @@ export const GeneralForm = ({
                 })
                 .catch((e) => console.log(e));
         }
-    }, [selectedQuote, onChangeInit, values]);
+    }, [onChangeInit, selectedQuote]);
 
     return (
         <Fragment>
