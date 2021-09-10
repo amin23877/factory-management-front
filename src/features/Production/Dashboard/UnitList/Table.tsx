@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Box, Paper } from "@material-ui/core";
 import { addDays } from "date-fns";
 import { DataGrid, GridColDef, GridToolbar, GridColumns } from "@material-ui/data-grid";
@@ -6,9 +6,10 @@ import useSWR from "swr";
 
 import Button from "../../../../app/Button";
 import { DateInput } from "../../../../components/Filters/Date";
-import { UnitSearchBox } from "../../../../app/SearchBox";
+// import { UnitSearchBox } from "../../../../app/SearchBox";
 import { formatTimestampToDate } from "../../../../logic/date";
 import { useDataGridStyles } from "../../../../app/BaseDataGrid";
+import axios from "axios";
 function Table({
     setActiveTab,
     setSelectedUnit,
@@ -16,34 +17,79 @@ function Table({
     setSelectedUnit: (a: any) => void;
     setActiveTab: (a: any) => void;
 }) {
+    const dateStringToUnix = (date: Date) => {
+        return String(Math.round(new Date(date).getTime() / 1));
+    };
+
     const [topDateFilter, setTopDateFilter] = useState<"week" | "week2" | "week3" | "week4">();
     const [finish, setFinish] = useState<string>();
+    const [start, setStart] = useState<string>();
+    const [week, setWeek] = useState<any>();
+    const [week2, setWeek2] = useState<any>();
+    const [week3, setWeek3] = useState<any>();
+    const [week4, setWeek4] = useState<any>();
 
-    const { data: units } = useSWR(finish ? `/unit?finish=${finish}` : "/unit");
+    const sWeek = dateStringToUnix(new Date());
+    const sWeek1 = dateStringToUnix(addDays(new Date(), 7));
+    const sWeek2 = dateStringToUnix(addDays(new Date(), 7 * 2));
+    const sWeek3 = dateStringToUnix(addDays(new Date(), 7 * 3));
+    const sWeek4 = dateStringToUnix(addDays(new Date(), 7 * 4));
 
-    const classes = useDataGridStyles();
-
-    const dateStringToUnix = (date: Date) => {
-        return String(Math.round(new Date(date).getTime() / 1000));
+    const { data: units } = useSWR(finish && start ? `/unit?finish=${finish}&start=${start}` : "/unit");
+    // const { data: week } = useSWR(`/unit?finish=${sWeek1}&start=${sWeek}`, fetcher, { revalidateOnMount: false });
+    // const { data: week2 } = useSWR(`/unit?finish=${sWeek2}&start=${sWeek1}`, fetcher, { revalidateOnMount: false });
+    // const { data: week3 } = useSWR(`/unit?finish=${sWeek3}&start=${sWeek2}`, fetcher, { revalidateOnMount: false });
+    // const { data: week4 } = useSWR(`/unit?finish=${sWeek4}&start=${sWeek3}`, fetcher, { revalidateOnMount: false });
+    const getWeeks = async () => {
+        const resp = await axios.get(`/unit?finish=${sWeek1}&start=${sWeek}`);
+        if (resp.data) {
+            setWeek(resp.data);
+        }
+        const resp2 = await axios.get(`/unit?finish=${sWeek2}&start=${sWeek1}`);
+        if (resp2.data) {
+            setWeek2(resp2.data);
+        }
+        const resp3 = await axios.get(`/unit?finish=${sWeek3}&start=${sWeek2}`);
+        if (resp3.data) {
+            setWeek3(resp3.data);
+        }
+        const resp4 = await axios.get(`/unit?finish=${sWeek4}&start=${sWeek3}`);
+        if (resp4.data) {
+            setWeek4(resp4.data);
+        }
     };
+    useEffect(() => {
+        getWeeks();
+    }, []);
+    const classes = useDataGridStyles();
 
     const unitCols = useMemo<GridColDef[]>(() => {
         const cols: GridColumns = [
             {
                 field: "EST. Ship Date",
-                valueFormatter: (r) => formatTimestampToDate(r.row?.estimatedShipDate),
+                valueFormatter: (r) => formatTimestampToDate(r.row?.so?.estimatedShipDate),
                 width: 130,
             },
-            { field: "SO NO.", headerName: "SO NO.", width: 100 },
-            { field: "Assign", headerName: "Assign", width: 100 },
+            {
+                field: "SO NO.",
+                headerName: "SO NO.",
+                width: 90,
+                valueFormatter: (r) => r.row?.so?.number,
+            },
+            { field: "assignee", headerName: "Assign", width: 100, valueFormatter: (r) => r.row?.assignee?.lastName },
             { field: "number", headerName: "Unit", width: 100 },
-            { field: "Device", headerName: "Device", width: 110 },
-            { field: "Client", headerName: "Client", width: 110 },
-            { field: "Rep", headerName: "Rep", width: 110 },
-            { field: "Production Status", headerName: "Production Status", width: 140 },
-            { field: "Package", headerName: "Package", width: 100 },
+            {
+                field: "Device",
+                headerName: "Device",
+                width: 200,
+                valueFormatter: (r) => r.row?.item?.no,
+            },
+            { field: "Client", headerName: "Client", width: 110, valueFormatter: (r) => r.row?.so?.client?.name },
+            { field: "Rep", headerName: "Rep", width: 110, valueFormatter: (r) => r.row?.so?.repOrAgency?.name },
+            { field: "productionStatus", headerName: "Production Status", width: 140 }, // touch later
+            { field: "Package", headerName: "Package", width: 100 }, // touch later
             { field: "status", headerName: "Status", width: 100 },
-            { field: "Time Left", headerName: "Time Left", width: 100 },
+            { field: "Time Left", headerName: "Time Left", width: 100 }, // touch later
             // {
             //     field: "dueDate",
             //     headerName: "Due Date",
@@ -70,38 +116,41 @@ function Table({
 
     return (
         <Box>
-            <UnitSearchBox />
+            {/* <UnitSearchBox /> */}
             <Box display="flex" alignItems="center" my={1}>
                 <Button
                     color={topDateFilter === "week" ? "primary" : "default"}
                     variant="contained"
                     onClick={() => {
                         setTopDateFilter("week");
-                        setFinish(dateStringToUnix(addDays(new Date(), 7)));
+                        setFinish(sWeek1);
+                        setStart(sWeek);
                     }}
                 >
-                    XX Units Due this Week
+                    {week ? week?.totalCount : "1"} Units Due this Week
                 </Button>
                 <Button
                     color={topDateFilter === "week2" ? "primary" : "default"}
                     variant="contained"
                     onClick={() => {
                         setTopDateFilter("week2");
-                        setFinish(dateStringToUnix(addDays(new Date(), 7 * 2)));
+                        setFinish(sWeek2);
+                        setStart(sWeek1);
                     }}
                     style={{ margin: "0 0.5em" }}
                 >
-                    XX Units Due Week 2
+                    {week2 ? week2.totalCount : ""} Units Due Week 2
                 </Button>
                 <Button
                     color={topDateFilter === "week3" ? "primary" : "default"}
                     variant="contained"
                     onClick={() => {
                         setTopDateFilter("week3");
-                        setFinish(dateStringToUnix(addDays(new Date(), 7 * 3)));
+                        setFinish(sWeek3);
+                        setStart(sWeek2);
                     }}
                 >
-                    XX Units Due Week 3
+                    {week3 ? week3.totalCount : ""} Units Due Week 3
                 </Button>
                 <Button
                     color={topDateFilter === "week4" ? "primary" : "default"}
@@ -109,10 +158,11 @@ function Table({
                     style={{ margin: "0 0.5em" }}
                     onClick={() => {
                         setTopDateFilter("week4");
-                        setFinish(dateStringToUnix(addDays(new Date(), 4 * 7)));
+                        setFinish(sWeek4);
+                        setStart(sWeek3);
                     }}
                 >
-                    XX Units Due Week 4
+                    {week4 ? week4.totalCount : ""} Units Due Week 4
                 </Button>
                 <Button
                     onClick={() => {

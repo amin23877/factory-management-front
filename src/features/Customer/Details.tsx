@@ -130,7 +130,7 @@ export default function ClientDetails({ selectedRow }: { selectedRow: ICustomer 
             />
             <NoteModal
                 itemId={selectedRow?.id}
-                model="client"
+                model="customer"
                 open={addNoteModal}
                 onClose={() => setAddNoteModal(false)}
             />
@@ -138,7 +138,7 @@ export default function ClientDetails({ selectedRow }: { selectedRow: ICustomer 
                 open={addDocModal}
                 onClose={() => setAddDocModal(false)}
                 itemId={selectedRow?.id}
-                model="client"
+                model="customer"
             />
 
             <Formik initialValues={selectedRow} onSubmit={handleSubmit}>
