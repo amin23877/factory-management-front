@@ -53,7 +53,7 @@ export const General = ({
                 <ArraySelect
                     fullWidth
                     label="Production Status"
-                    items={["fill this later pls"]}
+                    items={["Manufacturing", "Evaluation", "Test"]}
                     name="productionStatus"
                     value={values.productionStatus}
                     onChange={handleChange}

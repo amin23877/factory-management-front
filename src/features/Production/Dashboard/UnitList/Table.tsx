@@ -76,7 +76,7 @@ function Table({
                 width: 90,
                 valueFormatter: (r) => r.row?.so?.number,
             },
-            { field: "assignee", headerName: "Assign", width: 100, valueFormatter: (r) => r.row?.assignee?.lastName },
+            { field: "Assign", width: 100, valueFormatter: (r) => r.row?.assignee?.username },
             { field: "number", headerName: "Unit", width: 100 },
             {
                 field: "Device",
@@ -86,7 +86,7 @@ function Table({
             },
             { field: "Client", headerName: "Client", width: 110, valueFormatter: (r) => r.row?.so?.client?.name },
             { field: "Rep", headerName: "Rep", width: 110, valueFormatter: (r) => r.row?.so?.repOrAgency?.name },
-            { field: "productionStatus", headerName: "Production Status", width: 140 }, // touch later
+            { field: "productionStatus", headerName: "Production Status", width: 140 },
             { field: "Package", headerName: "Package", width: 100 }, // touch later
             { field: "status", headerName: "Status", width: 100 },
             { field: "Time Left", headerName: "Time Left", width: 100 }, // touch later

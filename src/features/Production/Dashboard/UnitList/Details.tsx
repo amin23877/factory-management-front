@@ -24,7 +24,7 @@ import { IDocument } from "../../../../api/document";
 import { formatTimestampToDate } from "../../../../logic/date";
 import { fileType } from "../../../../logic/fileType";
 import DocumentModal from "../../../Modals/DocumentModals";
-import AddServiceModal from "../../../FieldService/AddServiceModal";
+import UnitWorkFlow, { ProductionWorkFlow } from "./WorkFlows";
 
 const schema = Yup.object().shape({
     // laborCost: Yup.number().required(),
@@ -221,7 +221,9 @@ function Details({ unit }: { unit: IUnit }) {
                     </Form>
                 )}
             </Formik>
-
+            <h1 style={{ marginLeft: "3em" }}>Unit Work Flow</h1>
+            <UnitWorkFlow />
+            <ProductionWorkFlow />
             <BasePaper>
                 <Tabs value={gridActiveTab} onChange={(e, nv) => setGridActiveTab(nv)}>
                     <Tab label="Warranties" />
