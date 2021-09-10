@@ -6,7 +6,7 @@ import { mutate } from "swr";
 import { BasePaper } from "../../../../app/Paper";
 import { EntitiesTab } from "../Forms";
 
-import { IQuote, updateQuote } from "../../../../api/quote";
+import { updateQuote } from "../../../../api/quote";
 import Toast from "../../../../app/Toast";
 import { getModifiedValues } from "../../../../logic/utils";
 import { IReqQuote } from "../../../../api/reqQuote";

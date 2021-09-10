@@ -8,7 +8,7 @@ import General from "./General";
 import { FinalForm } from "./EditForm";
 import { DocumentForm } from "./Forms";
 
-import { IQuote, IQuoteComplete } from "../../../api/quote";
+import { IQuote } from "../../../api/quote";
 
 export default function AddQuote({
     open,
@@ -29,7 +29,6 @@ export default function AddQuote({
 
     useEffect(() => {
         if (initialData) {
-            console.log(initialData);
             setQuote(initialData);
         }
     }, [initialData]);

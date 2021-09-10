@@ -3,6 +3,7 @@ import { Step, StepLabel, Stepper } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
 import BaseDataGrid from "../../../../app/BaseDataGrid";
 import { BasePaper } from "../../../../app/Paper";
+import useSWR from "swr";
 
 const UnitWorkFlow = ({ stepper }: { stepper?: any }) => {
     const [activeStep, setActiveStep] = useState(3);
@@ -42,8 +43,9 @@ const UnitWorkFlow = ({ stepper }: { stepper?: any }) => {
 
 export default UnitWorkFlow;
 
-export const ProductionWorkFlow = ({ stepper }: { stepper?: any }) => {
+export const ProductionWorkFlow = ({ stepper, unitId }: { stepper?: any; unitId: string }) => {
     const [activeStep, setActiveStep] = useState(0);
+    const { data: tasks } = useSWR(`/unit/${unitId}/tasks`);
     useEffect(() => {
         switch (stepper) {
             case "Manufacturing":
@@ -59,12 +61,26 @@ export const ProductionWorkFlow = ({ stepper }: { stepper?: any }) => {
                 setActiveStep(0);
         }
     }, []);
-    const taskListCols: GridColDef[] = [
-        { field: "Task Number", headerName: "Task Number", flex: 1 },
-        { field: "Task Name", headerName: "Task Name", flex: 1 },
-        { field: "Task Description", headerName: "Task Description", flex: 1 },
-        { field: "Device", headerName: "Device", flex: 1 },
-        { field: "Type", headerName: "Type", flex: 1 },
+    const manCols: GridColDef[] = [
+        { field: "id", headerName: "Task Number", flex: 1 },
+        { field: "name", headerName: "Task Name", flex: 1 },
+        { field: "description", headerName: "Task Description", flex: 1 },
+        { field: "Device", valueFormatter: (r) => r.row?.ItemId?.no, flex: 1 },
+        { field: "Type", valueFormatter: (r) => "Manufacturing", flex: 1 },
+    ];
+    const evalCols: GridColDef[] = [
+        { field: "id", headerName: "Task Number", flex: 1 },
+        { field: "name", headerName: "Task Name", flex: 1 },
+        { field: "description", headerName: "Task Description", flex: 1 },
+        { field: "Device", valueFormatter: (r) => r.row?.ItemId?.no, flex: 1 },
+        { field: "Type", valueFormatter: (r) => "Evaluation", flex: 1 },
+    ];
+    const testCols: GridColDef[] = [
+        { field: "id", headerName: "Task Number", flex: 1 },
+        { field: "name", headerName: "Task Name", flex: 1 },
+        { field: "description", headerName: "Task Description", flex: 1 },
+        { field: "Device", valueFormatter: (r) => r.row?.ItemId?.no, flex: 1 },
+        { field: "Type", valueFormatter: (r) => "Test", flex: 1 },
     ];
     return (
         <>
@@ -93,9 +109,9 @@ export const ProductionWorkFlow = ({ stepper }: { stepper?: any }) => {
                         <StepLabel>Test</StepLabel>
                     </Step>
                 </Stepper>
-                {activeStep === 0 && <BaseDataGrid cols={taskListCols} rows={[]} />}
-                {activeStep === 1 && <BaseDataGrid cols={taskListCols} rows={[]} />}
-                {activeStep === 2 && <BaseDataGrid cols={taskListCols} rows={[]} />}
+                {activeStep === 0 && tasks && <BaseDataGrid cols={manCols} rows={tasks.man || []} />}
+                {activeStep === 1 && tasks && <BaseDataGrid cols={evalCols} rows={tasks.eval || []} />}
+                {activeStep === 2 && tasks && <BaseDataGrid cols={testCols} rows={tasks.test || []} />}
             </BasePaper>
         </>
     );

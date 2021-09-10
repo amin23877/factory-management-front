@@ -4,6 +4,7 @@ import { IItem } from "./items";
 
 import { ILineItem } from "./lineItem";
 import { ILineService } from "./lineService";
+import { IQuote } from "./quote";
 
 export interface IReqQuote {
     id: string;
@@ -50,4 +51,21 @@ export interface IReqQuote {
 export interface IReqQuoteComplete extends IReqQuote {
     lines: ILineItem[];
     lineServices: ILineService[];
+}
+
+export interface IQuoteRequest {
+    QuoteId: IQuote;
+    number: string;
+    repOrAgency: ICustomer;
+    client: string;
+    requesterName: string;
+    requesterMail: string;
+    requesterPhone: string;
+    requesterCompany: string;
+    requesterAddress: string;
+    requesterCity: string;
+    requesterState: string;
+    requesterZipcode: string;
+    note: string;
+    devices: { number: IItem; quantity: number }[];
 }

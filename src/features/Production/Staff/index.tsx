@@ -8,23 +8,27 @@ import useSwr from "swr";
 import { formatTimestampToDate } from "../../../logic/date";
 
 function Index() {
-    const { data: staffs } = useSwr("/");
+    const { data: staffs } = useSwr("/prodtask");
 
     const cols: GridColDef[] = [
-        { field: "Name", headerName: "Name", flex: 1 },
-        { field: "Last Name", headerName: "Last Name", flex: 1 },
-        { field: "Role", headerName: "Role", flex: 1 },
-        { field: "Task", headerName: "Task", flex: 1 },
+        { field: "Name", valueFormatter: (r) => r.row?.UnitId?.assignee?.firstName, flex: 1 },
+        { field: "Last Name", valueFormatter: (r) => r.row?.UnitId?.assignee?.lastName, flex: 1 },
+        { field: "Role", valueFormatter: (r) => r.row?.UnitId?.assignee?.position, flex: 1 },
+        {
+            field: "Task",
+            valueFormatter: (r) => r.row?.EngEvalTaskId?.id || r.row?.EngManTaskId?.id || r.row?.EngTestTaskId?.id,
+            flex: 1,
+        },
         {
             field: "Assigned Date",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.createdAt),
+            valueFormatter: (r) => formatTimestampToDate(r.row?.assginDate),
             flex: 1,
         },
     ];
 
     return (
         <Box>
-            <BaseDataGrid cols={cols} rows={[]} onRowSelected={(d) => {}} />
+            <BaseDataGrid cols={cols} rows={staffs || []} onRowSelected={(d) => {}} />
         </Box>
     );
 }

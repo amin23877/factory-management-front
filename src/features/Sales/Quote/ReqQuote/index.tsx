@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
-import AddRoundedIcon from "@material-ui/icons/AddRounded";
+// import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import useSWR from "swr";
 
-import Button from "../../../../app/Button";
+// import Button from "../../../../app/Button";
 import { BasePaper } from "../../../../app/Paper";
 
 import EditTab from "./EditTab";
@@ -12,10 +12,11 @@ import AddQuote from "../AddQuote";
 import BaseDataGrid from "../../../../app/BaseDataGrid";
 import { GridColumns } from "@material-ui/data-grid";
 import { formatTimestampToDate } from "../../../../logic/date";
-import { IReqQuoteComplete } from "../../../../api/reqQuote";
+// import { IQuoteRequest, IReqQuoteComplete } from "../../../../api/reqQuote";
+import General from "./Forms";
 
 export default function ReqQuotePanel() {
-    const [selectedQuote, setSelectedQuote] = useState<IReqQuoteComplete>();
+    const [selectedQuote, setSelectedQuote] = useState<any>();
     const [activeTab, setActiveTab] = useState(0);
     const [addQ, setAddQ] = useState(false);
 
@@ -76,7 +77,7 @@ export default function ReqQuotePanel() {
                 />
             )}
 
-            <Box mb={2} display="flex" alignItems="center">
+            {/* <Box mb={2} display="flex" alignItems="center">
                 {selectedQuote && (
                     <Button
                         style={{
@@ -94,12 +95,12 @@ export default function ReqQuotePanel() {
                 )}
 
                 <div style={{ flexGrow: 1 }} />
-            </Box>
-
+            </Box> */}
             <BasePaper>
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="List" />
                     <Tab label="Details" disabled={!selectedQuote} />
+                    <Tab label="Add" disabled={activeTab === 0} />
                 </Tabs>
                 {activeTab === 0 && (
                     <BaseDataGrid
@@ -112,6 +113,15 @@ export default function ReqQuotePanel() {
                     />
                 )}
                 {activeTab === 1 && selectedQuote && <EditTab selectedQuote={selectedQuote} />}
+                {activeTab === 2 && selectedQuote && (
+                    <General
+                        requestedQuote={selectedQuote}
+                        onDone={() => {
+                            setActiveTab(0);
+                            setSelectedQuote(undefined);
+                        }}
+                    />
+                )}
             </BasePaper>
         </Box>
     );

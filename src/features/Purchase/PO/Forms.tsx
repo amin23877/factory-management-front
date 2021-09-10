@@ -190,7 +190,7 @@ export const FinalForm = ({
                 console.log(resp);
                 onDone(resp);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.log(error);
             console.log(error.response.data.error);
             setError(error.response.data.error);
@@ -274,8 +274,8 @@ export const LinesForm = ({
                             <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
                                 <Autocomplete
                                     options={devices ? devices : items ? items.result : []}
-                                    getOptionLabel={(item: any) => item.name}
-                                    onChange={(e, nv) => setFieldValue("ItemId", nv.id)}
+                                    getOptionLabel={(item: any) => (devices ? item.number.name : item.name)}
+                                    onChange={(e, nv) => setFieldValue("ItemId", devices ? nv.number.id : nv.id)}
                                     onBlur={handleBlur}
                                     renderInput={(params) => <TextField {...params} label="Item" name="ItemId" />}
                                     fullWidth

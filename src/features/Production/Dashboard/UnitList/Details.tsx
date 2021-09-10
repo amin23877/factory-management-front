@@ -25,6 +25,7 @@ import { formatTimestampToDate } from "../../../../logic/date";
 import { fileType } from "../../../../logic/fileType";
 import DocumentModal from "../../../Modals/DocumentModals";
 import UnitWorkFlow, { ProductionWorkFlow } from "./WorkFlows";
+import { getModifiedValues } from "../../../../logic/utils";
 
 const schema = Yup.object().shape({
     // laborCost: Yup.number().required(),
@@ -37,7 +38,7 @@ function Details({ unit }: { unit: IUnit }) {
     const handleSubmit = async (data: any) => {
         try {
             if (unit?.id) {
-                await updateUnit(unit.id, data);
+                await updateUnit(unit.id, getModifiedValues(data, unit));
                 await mutate("/unit");
                 Toast("Unit updated", "success");
             }
@@ -122,6 +123,11 @@ function Details({ unit }: { unit: IUnit }) {
                                     handleChange={handleChange}
                                     setFieldValue={setFieldValue}
                                 />
+                                <Box textAlign="center" my={1}>
+                                    <Button disabled={isSubmitting} kind="add" type="submit">
+                                        Save
+                                    </Button>
+                                </Box>
                             </BasePaper>
                             <BasePaper>
                                 <Tabs value={infoActiveTab} onChange={(e, nv) => setInfoActiveTab(nv)}>
@@ -206,24 +212,12 @@ function Details({ unit }: { unit: IUnit }) {
                                 )}
                             </BasePaper>
                         </Box>
-                        <div
-                            style={{
-                                width: "100%",
-                                display: "flex",
-                                justifyContent: "center",
-                                marginBottom: "0.5em",
-                            }}
-                        >
-                            <Button disabled={isSubmitting} kind="add" type="submit" style={{ width: "25%" }}>
-                                Save
-                            </Button>
-                        </div>
                     </Form>
                 )}
             </Formik>
             <h1 style={{ marginLeft: "3em" }}>Unit Work Flow</h1>
             <UnitWorkFlow />
-            <ProductionWorkFlow />
+            <ProductionWorkFlow unitId={unit.id} />
             <BasePaper>
                 <Tabs value={gridActiveTab} onChange={(e, nv) => setGridActiveTab(nv)}>
                     <Tab label="Warranties" />
@@ -249,7 +243,12 @@ function Details({ unit }: { unit: IUnit }) {
                         >
                             + Add Document
                         </Button>
-                        <BaseDataGrid height={250} cols={docCols} rows={documents || []} onRowSelected={(v) => {}} />
+                        <BaseDataGrid
+                            height={250}
+                            cols={docCols}
+                            rows={documents && documents.length ? documents : []}
+                            onRowSelected={(v) => {}}
+                        />
                     </>
                 )}
                 {gridActiveTab === 2 && <BaseDataGrid cols={bomCols} rows={unitBoms || []} onRowSelected={() => {}} />}
