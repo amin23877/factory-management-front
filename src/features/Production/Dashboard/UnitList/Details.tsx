@@ -24,7 +24,7 @@ import { IDocument } from "../../../../api/document";
 import { formatTimestampToDate } from "../../../../logic/date";
 import { fileType } from "../../../../logic/fileType";
 import DocumentModal from "../../../Modals/DocumentModals";
-import AddServiceModal from "../../../FieldService/AddServiceModal";
+// import AddServiceModal from "../../../FieldService/AddServiceModal";
 
 const schema = Yup.object().shape({
     // laborCost: Yup.number().required(),
@@ -122,6 +122,11 @@ function Details({ unit }: { unit: IUnit }) {
                                     handleChange={handleChange}
                                     setFieldValue={setFieldValue}
                                 />
+                                <Box textAlign="center" my={1}>
+                                    <Button disabled={isSubmitting} kind="add" type="submit">
+                                        Save
+                                    </Button>
+                                </Box>
                             </BasePaper>
                             <BasePaper>
                                 <Tabs value={infoActiveTab} onChange={(e, nv) => setInfoActiveTab(nv)}>
@@ -206,18 +211,6 @@ function Details({ unit }: { unit: IUnit }) {
                                 )}
                             </BasePaper>
                         </Box>
-                        <div
-                            style={{
-                                width: "100%",
-                                display: "flex",
-                                justifyContent: "center",
-                                marginBottom: "0.5em",
-                            }}
-                        >
-                            <Button disabled={isSubmitting} kind="add" type="submit" style={{ width: "25%" }}>
-                                Save
-                            </Button>
-                        </div>
                     </Form>
                 )}
             </Formik>
@@ -247,7 +240,12 @@ function Details({ unit }: { unit: IUnit }) {
                         >
                             + Add Document
                         </Button>
-                        <BaseDataGrid height={250} cols={docCols} rows={documents || []} onRowSelected={(v) => {}} />
+                        <BaseDataGrid
+                            height={250}
+                            cols={docCols}
+                            rows={documents && documents.length ? documents : []}
+                            onRowSelected={(v) => {}}
+                        />
                     </>
                 )}
                 {gridActiveTab === 2 && <BaseDataGrid cols={bomCols} rows={unitBoms || []} onRowSelected={() => {}} />}

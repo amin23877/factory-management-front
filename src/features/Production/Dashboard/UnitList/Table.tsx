@@ -1,15 +1,18 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Box, Paper } from "@material-ui/core";
-import { addDays } from "date-fns";
 import { DataGrid, GridColDef, GridToolbar, GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
+import { addDays } from "date-fns";
 
 import Button from "../../../../app/Button";
-import { DateInput } from "../../../../components/Filters/Date";
 // import { UnitSearchBox } from "../../../../app/SearchBox";
-import { formatTimestampToDate } from "../../../../logic/date";
 import { useDataGridStyles } from "../../../../app/BaseDataGrid";
-import axios from "axios";
+
+import { DateInput } from "../../../../components/Filters/Date";
+
+import { formatTimestampToDate } from "../../../../logic/date";
+import { get } from "../../../../api";
+
 function Table({
     setActiveTab,
     setSelectedUnit,
@@ -40,27 +43,29 @@ function Table({
     // const { data: week2 } = useSWR(`/unit?finish=${sWeek2}&start=${sWeek1}`, fetcher, { revalidateOnMount: false });
     // const { data: week3 } = useSWR(`/unit?finish=${sWeek3}&start=${sWeek2}`, fetcher, { revalidateOnMount: false });
     // const { data: week4 } = useSWR(`/unit?finish=${sWeek4}&start=${sWeek3}`, fetcher, { revalidateOnMount: false });
+
     const getWeeks = async () => {
-        const resp = await axios.get(`/unit?finish=${sWeek1}&start=${sWeek}`);
-        if (resp.data) {
-            setWeek(resp.data);
+        const resp = await get(`/unit?finish=${sWeek1}&start=${sWeek}`);
+        if (resp) {
+            setWeek(resp);
         }
-        const resp2 = await axios.get(`/unit?finish=${sWeek2}&start=${sWeek1}`);
-        if (resp2.data) {
-            setWeek2(resp2.data);
+        const resp2 = await get(`/unit?finish=${sWeek2}&start=${sWeek1}`);
+        if (resp2) {
+            setWeek2(resp2);
         }
-        const resp3 = await axios.get(`/unit?finish=${sWeek3}&start=${sWeek2}`);
-        if (resp3.data) {
-            setWeek3(resp3.data);
+        const resp3 = await get(`/unit?finish=${sWeek3}&start=${sWeek2}`);
+        if (resp3) {
+            setWeek3(resp3);
         }
-        const resp4 = await axios.get(`/unit?finish=${sWeek4}&start=${sWeek3}`);
-        if (resp4.data) {
-            setWeek4(resp4.data);
+        const resp4 = await get(`/unit?finish=${sWeek4}&start=${sWeek3}`);
+        if (resp4) {
+            setWeek4(resp4);
         }
     };
     useEffect(() => {
         getWeeks();
     }, []);
+
     const classes = useDataGridStyles();
 
     const unitCols = useMemo<GridColDef[]>(() => {

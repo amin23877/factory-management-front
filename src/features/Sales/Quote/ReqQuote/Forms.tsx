@@ -12,13 +12,16 @@ import LineItemsTable from "../../../LineItem/Table";
 
 import { createQuote, IQuoteComplete } from "../../../../api/quote";
 import Toast from "../../../../app/Toast";
+import { mutate } from "swr";
 
-export default function AddForms({ requestedQuote }: { requestedQuote: any }) {
+export default function AddForms({ requestedQuote, onDone }: { requestedQuote: any; onDone: () => void }) {
     const [items, setItems] = useState<any[]>([]);
 
     useEffect(() => {
         setItems(
             requestedQuote.devices.map((item: any, index: number) => ({
+                ItemId: item.number.id,
+
                 index: index + 1,
                 name: item.number.name,
                 quantity: item.quantity,
@@ -53,8 +56,10 @@ export default function AddForms({ requestedQuote }: { requestedQuote: any }) {
 
             // console.log({ ...data, lines: items });
             await createQuote({ ...data, lines: items });
+            mutate("/quote");
 
             Toast("Record added", "success");
+            onDone();
         } catch (error) {
             console.log(error);
         }

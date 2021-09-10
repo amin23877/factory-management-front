@@ -275,7 +275,7 @@ export const LinesForm = ({
                                 <Autocomplete
                                     options={devices ? devices : items ? items.result : []}
                                     getOptionLabel={(item: any) => (devices ? item.number.name : item.name)}
-                                    onChange={(e, nv) => setFieldValue("ItemId", nv.id)}
+                                    onChange={(e, nv) => setFieldValue("ItemId", devices ? nv.number.id : nv.id)}
                                     onBlur={handleBlur}
                                     renderInput={(params) => <TextField {...params} label="Item" name="ItemId" />}
                                     fullWidth
