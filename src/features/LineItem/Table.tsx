@@ -13,6 +13,7 @@ import {
 import { AddRounded, DeleteRounded, EditRounded } from "@material-ui/icons";
 
 import TextField from "../../app/TextField";
+import { useStyles } from "../../app/Table";
 
 export type tableLineItemType = {
     index: number;
@@ -40,9 +41,11 @@ export default function LineItemsTable({
     onEdit?: (index: number, data: any) => void;
     onAdd?: (data: any) => void;
 }) {
+    const classes = useStyles();
+
     return (
         <TableContainer component={Paper} style={{ maxHeight: 500, overflowY: "auto" }}>
-            <Table>
+            <Table className={classes.root}>
                 <TableHead>
                     <TableRow>
                         <TableCell>Index</TableCell>

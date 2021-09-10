@@ -95,7 +95,6 @@ export const FinalForm = ({ onDone, onBack, data }: { onDone: (a: any) => void; 
             }
         } catch (error) {
             console.log(error);
-            console.log(error.response.data.error);
         } finally {
             setLoading(false);
         }

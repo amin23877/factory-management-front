@@ -101,7 +101,7 @@ export default function ReqQuotePanel() {
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="List" />
                     <Tab label="Details" disabled={!selectedQuote} />
-                    <Tab label="Add" disabled={activeTab === 0} />
+                    {/* <Tab label="Add" disabled={activeTab === 0} /> */}
                 </Tabs>
                 {activeTab === 0 && (
                     <BaseDataGrid
