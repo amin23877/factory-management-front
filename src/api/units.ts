@@ -18,6 +18,8 @@ export interface IUnit {
     laborCost: number;
     totalCost: number;
     bomCost: number;
+    productionStatus: string;
+    options: any[];
 }
 
 export interface IUnitHistory {

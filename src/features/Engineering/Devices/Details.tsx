@@ -342,7 +342,7 @@ function ItemsDetails({
                 {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
                     <Form>
                         <Grid container spacing={2}>
-                            <Grid item md={5} xs={12}>
+                            <Grid item md={4} xs={12}>
                                 <BasePaper>
                                     <General
                                         sales={sales}
@@ -362,7 +362,7 @@ function ItemsDetails({
                                     )}
                                 </BasePaper>
                             </Grid>
-                            <Grid item md={7} xs={12}>
+                            <Grid item md={8} xs={12}>
                                 <BasePaper
                                     style={{
                                         height: "100%",

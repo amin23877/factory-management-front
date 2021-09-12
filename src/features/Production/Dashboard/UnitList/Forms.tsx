@@ -29,7 +29,7 @@ export const General = ({
 }: IForm) => {
     return (
         <>
-            <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
+            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
                 <ArraySelect
                     fullWidth
                     label="Status"
@@ -60,47 +60,16 @@ export const General = ({
                     onBlur={handleBlur}
                     error={Boolean(errors.productionStatus)}
                 />
-                <TextField
-                    label="Device Number"
-                    value={values.item.no}
-                    name="no"
-                    onChange={handleChange}
+                <DateTimePicker
+                    name="dueDate"
+                    value={values.dueDate || null}
+                    onChange={(d) => setFieldValue("dueDate", d?.toString())}
                     onBlur={handleBlur}
-                    error={Boolean(errors.no && touched.no)}
-                    placeholder="Device Number"
-                    disabled
-                />
-                <TextField
-                    label="Device name"
-                    placeholder="Device name"
-                    name="name"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.name && touched.name)}
-                    value={values.item.name}
-                    disabled
-                />
-                <TextField
-                    label="Unit"
-                    placeholder="Unit"
-                    name="number"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.number && touched.number)}
-                    value={values.number}
-                    disabled
-                />
-                <TextField
-                    multiline
-                    style={{ gridColumnEnd: "span 2" }}
-                    rows={4}
-                    placeholder="Description"
-                    label="Description"
-                    name="description"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.item.description}
-                    disabled
+                    error={Boolean(errors.dueDate)}
+                    helperText={errors.dueDate}
+                    size="small"
+                    placeholder="dueDate"
+                    label="Due Date"
                 />
             </Box>
         </>
@@ -120,7 +89,7 @@ export const UnitInfo = ({
     return (
         <>
             <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
-                <TextField
+                {/* <TextField
                     name="laborCost"
                     value={values.laborCost}
                     onChange={handleChange}
@@ -130,19 +99,8 @@ export const UnitInfo = ({
                     size="small"
                     placeholder="Labor Cost"
                     label="Labor Cost"
-                />
-                <DateTimePicker
-                    name="dueDate"
-                    value={values.dueDate || null}
-                    onChange={(d) => setFieldValue("dueDate", d?.toString())}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.dueDate)}
-                    helperText={errors.dueDate}
-                    size="small"
-                    placeholder="dueDate"
-                    label="Due Date"
-                />
-                <FieldSelect
+                /> */}
+                {/* <FieldSelect
                     request={getAllEmployees}
                     itemTitleField="username"
                     itemValueField="id"
@@ -151,6 +109,50 @@ export const UnitInfo = ({
                     label="Employee"
                     placeholder="Employee"
                     value={typeof values.assignee === "string" ? values.assignee : values.assignee?.id}
+                /> */}
+                <TextField
+                    label="Unit"
+                    placeholder="Unit"
+                    name="number"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.number && touched.number)}
+                    value={values.number}
+                    disabled
+                />
+                <TextField
+                    label="Device Number"
+                    value={values.item.no}
+                    name="no"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.no && touched.no)}
+                    placeholder="Device Number"
+                    disabled
+                />
+                <TextField
+                    label="Device name"
+                    placeholder="Device name"
+                    name="name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.name && touched.name)}
+                    value={values.item.name}
+                    style={{ gridColumnEnd: "span 2" }}
+                    disabled
+                />
+
+                <TextField
+                    multiline
+                    style={{ gridColumnEnd: "span 2" }}
+                    rows={4}
+                    placeholder="Description"
+                    label="Description"
+                    name="description"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.item.description}
+                    disabled
                 />
             </Box>
         </>

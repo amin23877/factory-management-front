@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef, useState, Fragment } from "react";
 import { Box, Typography, Tabs, Tab } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
@@ -26,7 +26,8 @@ import { fileType } from "../../../../logic/fileType";
 import DocumentModal from "../../../Modals/DocumentModals";
 import UnitWorkFlow, { ProductionWorkFlow } from "./WorkFlows";
 import { getModifiedValues } from "../../../../logic/utils";
-
+import Confirm from "../../../Modals/Confirm";
+import { addOption, deleteOption, IOption } from "../../../../api/options";
 const schema = Yup.object().shape({
     // laborCost: Yup.number().required(),
     // status: Yup.string().required(),
@@ -51,6 +52,22 @@ function Details({ unit }: { unit: IUnit }) {
     const [infoActiveTab, setInfoActiveTab] = useState(0);
     const [gridActiveTab, setGridActiveTab] = useState(0);
     const [addDocModal, setAddDocModal] = useState(false);
+    const [selectedOption, setSelectedOption] = useState<IOption>();
+    const [confirm, setConfirm] = useState(false);
+    const [addOption, setAddOption] = useState(false);
+
+    const handleDeleteOption = async () => {
+        try {
+            if (selectedOption) {
+                const resp = await deleteOption(unit.id, selectedOption.ItemId.id);
+                if (resp) {
+                    Toast("Unit updated", "success");
+                }
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    };
 
     const { data: warranties } = useSWR(
         gridActiveTab === 0
@@ -61,6 +78,7 @@ function Details({ unit }: { unit: IUnit }) {
     );
     const { data: documents } = useSWR<IDocument[]>(gridActiveTab === 1 ? `/document/unit/${unit.id}` : null);
     const { data: unitBoms } = useSWR(`/ubom?UnitId=${unit.id}`);
+
     const bomCols = useMemo<GridColDef[]>(
         () => [
             { field: "number", headerName: "Serial No." },
@@ -78,6 +96,15 @@ function Details({ unit }: { unit: IUnit }) {
             { field: "description", headerName: "Note", flex: 1 },
             { field: "term", headerName: "Term", flex: 1 },
             { field: "status", headerName: "Status", width: 150 },
+        ],
+        []
+    );
+    const optionCols = useMemo<GridColumns>(
+        () => [
+            { field: "Option Number", valueFormatter: (params) => params.row?.ItemId?.no, flex: 1 },
+            { field: "Option Name", valueFormatter: (params) => params.row?.ItemId?.name, flex: 1 },
+            { field: "Option Description", valueFormatter: (params) => params.row?.ItemId?.description, flex: 1 },
+            { field: "quantity", headerName: "Quantity", width: 100 },
         ],
         []
     );
@@ -109,11 +136,12 @@ function Details({ unit }: { unit: IUnit }) {
     );
     return (
         <BasePaper>
+            <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDeleteOption} />
             <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={unit?.id} model="unit" />
             <Formik initialValues={unit as IUnit} validationSchema={schema} onSubmit={handleSubmit}>
                 {({ values, errors, handleChange, handleBlur, isSubmitting, setFieldValue, touched }) => (
                     <Form>
-                        <Box mb={2} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
+                        <Box mb={2} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridGap={10}>
                             <BasePaper>
                                 <General
                                     values={values}
@@ -129,8 +157,12 @@ function Details({ unit }: { unit: IUnit }) {
                                     </Button>
                                 </Box>
                             </BasePaper>
-                            <BasePaper>
-                                <Tabs value={infoActiveTab} onChange={(e, nv) => setInfoActiveTab(nv)}>
+                            <BasePaper style={{ gridColumnEnd: "span 2" }}>
+                                <Tabs
+                                    value={infoActiveTab}
+                                    onChange={(e, nv) => setInfoActiveTab(nv)}
+                                    style={{ marginBottom: "0.5em" }}
+                                >
                                     <Tab label="Image" />
                                     <Tab label="QR Code" />
                                     <Tab label="Unit Info" />
@@ -210,6 +242,26 @@ function Details({ unit }: { unit: IUnit }) {
                                         setFieldValue={setFieldValue}
                                     />
                                 )}
+                                {infoActiveTab === 3 && (
+                                    <Fragment>
+                                        <Button kind="add" onClick={() => setAddOption(true)}>
+                                            add Option
+                                        </Button>
+                                        <Button
+                                            kind="delete"
+                                            onClick={() => setConfirm(true)}
+                                            disabled={!selectedOption}
+                                            style={{ margin: "0 0.5em" }}
+                                        >
+                                            Delete Option
+                                        </Button>
+                                        <BaseDataGrid
+                                            rows={unit.options || []}
+                                            cols={optionCols}
+                                            onRowSelected={() => {}}
+                                        />
+                                    </Fragment>
+                                )}
                             </BasePaper>
                         </Box>
                     </Form>
@@ -217,7 +269,7 @@ function Details({ unit }: { unit: IUnit }) {
             </Formik>
             <h1 style={{ marginLeft: "3em" }}>Unit Work Flow</h1>
             <UnitWorkFlow />
-            <ProductionWorkFlow unitId={unit.id} />
+            <ProductionWorkFlow unitId={unit.id} stepper={unit.productionStatus} />
             <BasePaper>
                 <Tabs value={gridActiveTab} onChange={(e, nv) => setGridActiveTab(nv)}>
                     <Tab label="Warranties" />
@@ -251,7 +303,15 @@ function Details({ unit }: { unit: IUnit }) {
                         />
                     </>
                 )}
-                {gridActiveTab === 2 && <BaseDataGrid cols={bomCols} rows={unitBoms || []} onRowSelected={() => {}} />}
+                {gridActiveTab === 2 && (
+                    <BaseDataGrid
+                        cols={bomCols}
+                        rows={unitBoms || []}
+                        onRowSelected={(r) => {
+                            setSelectedOption(r);
+                        }}
+                    />
+                )}
             </BasePaper>
         </BasePaper>
     );

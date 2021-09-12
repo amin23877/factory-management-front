@@ -55,12 +55,12 @@ export const ProductionWorkFlow = ({ stepper, unitId }: { stepper?: any; unitId:
                 setActiveStep(1);
                 break;
             case "Test":
-                setActiveStep(0);
+                setActiveStep(2);
                 break;
             default:
                 setActiveStep(0);
         }
-    }, []);
+    }, [stepper]);
     const manCols: GridColDef[] = [
         { field: "id", headerName: "Task Number", flex: 1 },
         { field: "name", headerName: "Task Name", flex: 1 },
