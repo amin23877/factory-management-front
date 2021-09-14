@@ -56,7 +56,7 @@ export default function TicketForm({
                 <DateTimePicker
                     name="callTime"
                     value={values.callTime || null}
-                    onChange={(d) => setFieldValue("callTime", d?.toString())}
+                    onChange={(d) => setFieldValue("callTime", d && new Date(d?.toISOString()).getTime())}
                     onBlur={handleBlur}
                     error={Boolean(errors.callTime)}
                     helperText={errors.callTime}
@@ -67,7 +67,7 @@ export default function TicketForm({
                 <DateTimePicker
                     name="deadline"
                     value={values.deadline || null}
-                    onChange={(d) => setFieldValue("deadline", d?.toString())}
+                    onChange={(d) => setFieldValue("deadline", d && new Date(d?.toISOString()).getTime())}
                     onBlur={handleBlur}
                     error={Boolean(errors.deadline)}
                     helperText={errors.deadline}

@@ -12,7 +12,7 @@ import { GeneralForm, ShippingForm, BillingTab, TermsTab } from "./Forms";
 import { ISO } from "../../../api/so";
 
 const schema = Yup.object().shape({
-    CustomerId: Yup.string().required(),
+    client: Yup.string().required(),
     // issuedBy: Yup.string().required(),
 });
 
