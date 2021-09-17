@@ -72,7 +72,7 @@ export const EntitiesForm = ({
                         itemTitleField="name"
                         itemValueField="id"
                         name="repOrAgency"
-                        label="repOrAgency / Agency"
+                        label="rep/ Agency"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />

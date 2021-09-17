@@ -7,7 +7,7 @@ import { Formik } from "formik";
 import BaseDataGrid from "../../app/BaseDataGrid";
 import { BasePaper } from "../../app/Paper";
 import Snack from "../../app/Snack";
-import JobForm from "./Forms";
+import JobForm, { ContactForm, EntitiesForm, TechnicianForm } from "./Forms";
 import SODatagrid from "../Sales/SO/Datagrid";
 
 import { ITicket, schema, updateTicket } from "../../api/ticket";
@@ -15,6 +15,7 @@ import { fetcher } from "../../api";
 import QuoteDatagrid from "../Sales/Quote/Datagrid";
 import { getModifiedValues } from "../../logic/utils";
 import { formatTimestampToDate } from "../../logic/date";
+import { fileType } from "../../logic/fileType";
 
 export default function Details({
     initialValue,
@@ -33,6 +34,7 @@ export default function Details({
     const { data: itemDocuments } = useSWR(lineItem ? `/document/item/${lineItem.ItemId}` : null);
 
     const [activeTab, setActiveTab] = useState(0);
+    const [moreActiveTab, setMoreActiveTab] = useState(0);
     const [snack, setSnack] = useState(false);
     const [msg, setMsg] = useState("");
     const [severity, setSeverity] = useState<"success" | "info" | "warning" | "error">("info");
@@ -57,11 +59,32 @@ export default function Details({
         []
     );
 
-    const docCols: GridColDef[] = [
-        { field: "name", headerName: "Name" },
-        { field: "description", headerName: "Description", width: 250 },
-        { field: "createdAt", headerName: "Created at", width: 300 },
-    ];
+    const docCols = useMemo<GridColumns>(
+        () => [
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            {
+                field: "EmployeeId",
+                headerName: "Creator",
+                valueFormatter: (params) => params.row?.employee?.username,
+                width: 120,
+            },
+            { field: "name", headerName: "Name", flex: 1 },
+            { field: "id", headerName: "ID", width: 200 },
+            { field: "description", headerName: "Description", flex: 1 },
+            {
+                field: "type",
+                headerName: "File Type",
+                valueFormatter: (params) => fileType(params.row?.path),
+                width: 120,
+            },
+        ],
+        []
+    );
 
     const handleSubmit = async (d: any) => {
         try {
@@ -90,12 +113,12 @@ export default function Details({
                 {msg}
             </Snack>
 
-            <Box display="grid" gridTemplateColumns="1fr 2fr" gridColumnGap={10}>
+            <Box display="grid" gridTemplateColumns="1fr" gridColumnGap={10}>
                 <Box my={1}>
                     <Formik initialValues={initialValue} validationSchema={schema} onSubmit={handleSubmit}>
                         {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
-                            <BasePaper>
-                                <Box display="grid" gridTemplateColumns="1fr" gridColumnGap={24}>
+                            <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={24}>
+                                <BasePaper>
                                     <JobForm
                                         errors={errors}
                                         values={values}
@@ -103,43 +126,68 @@ export default function Details({
                                         handleChange={handleChange}
                                         setFieldValue={setFieldValue}
                                     />
-                                </Box>
-                            </BasePaper>
+                                </BasePaper>
+                                <BasePaper>
+                                    <Tabs onChange={(e, nv) => setMoreActiveTab(nv)} value={moreActiveTab}>
+                                        <Tab label="Contact" />
+                                        <Tab label="Entities" />
+                                        <Tab label="Technician" />
+                                    </Tabs>
+                                    {moreActiveTab === 0 && (
+                                        <ContactForm
+                                            values={values}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                        />
+                                    )}
+                                    {moreActiveTab === 1 && (
+                                        <EntitiesForm
+                                            values={values}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            setFieldValue={setFieldValue}
+                                        />
+                                    )}
+                                    {moreActiveTab === 2 && (
+                                        <TechnicianForm
+                                            errors={errors}
+                                            values={values}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            setFieldValue={setFieldValue}
+                                        />
+                                    )}
+                                </BasePaper>
+                            </Box>
                         )}
                     </Formik>
                 </Box>
                 <BasePaper>
                     <Tabs variant="scrollable" value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
-                        <Tab label="Sales orders" />
-                        <Tab label="Quotes" />
-                        <Tab label="Item Notes" />
-                        <Tab label="Item Documents" />
-                        <Tab label="Ticket documents" />
-                        <Tab label="Ticket notes" />
-                        <Tab label="RMAs" />
-                        <Tab label="Forms" />
+                        <Tab label="Filed Service History" />
+                        <Tab label="Device Document" />
+                        <Tab label="Device Quote History" />
+                        <Tab label="Device SO History" />
+                        <Tab label="Device Forms" />
+                        <Tab label="Ticket Documents" />
+                        <Tab label="Device RMA History" />
+                        <Tab label="Notes" />
+                        <Tab label="Auditing" />
                     </Tabs>
-                    {activeTab === 0 && <SODatagrid params={`JobId=${initialValue.id}`} onRowSelected={() => {}} />}
-                    {activeTab === 1 && <QuoteDatagrid params={`JobId=${initialValue.id}`} onRowSelected={() => {}} />}
-                    {activeTab === 2 && (
-                        <BaseDataGrid cols={noteCols} rows={itemNotes ? itemNotes : []} onRowSelected={() => {}} />
-                    )}
-                    {activeTab === 3 && (
+                    {activeTab === 1 && (
                         <BaseDataGrid
                             cols={docCols}
                             rows={itemDocuments ? itemDocuments : []}
                             onRowSelected={() => {}}
                         />
                     )}
-                    {activeTab === 4 && (
-                        <BaseDataGrid
-                            cols={noteCols}
-                            rows={notes ? notes : []}
-                            onRowSelected={(n) => {
-                                onNoteSelected(n);
-                            }}
-                        />
-                    )}
+                    {activeTab === 2 && <QuoteDatagrid params={`JobId=${initialValue.id}`} onRowSelected={() => {}} />}
+                    {activeTab === 3 && <SODatagrid params={`JobId=${initialValue.id}`} onRowSelected={() => {}} />}
+                    {/* {activeTab === 2 && (
+                        <BaseDataGrid cols={noteCols} rows={itemNotes ? itemNotes : []} onRowSelected={() => {}} />
+                    )} */}
+                    {activeTab === 4 && <BaseDataGrid cols={docCols} rows={[]} onRowSelected={() => {}} />}
+
                     {activeTab === 5 && (
                         <BaseDataGrid
                             cols={docCols}
@@ -150,7 +198,15 @@ export default function Details({
                         />
                     )}
                     {activeTab === 6 && <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />}
-                    {activeTab === 7 && <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />}
+                    {activeTab === 7 && (
+                        <BaseDataGrid
+                            cols={noteCols}
+                            rows={notes ? notes : []}
+                            onRowSelected={(n) => {
+                                onNoteSelected(n);
+                            }}
+                        />
+                    )}
                 </BasePaper>
             </Box>
         </>

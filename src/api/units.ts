@@ -1,4 +1,4 @@
-import { patch } from ".";
+import { patch, get } from ".";
 
 import { IItem } from "./items";
 import { ISO } from "./so";
@@ -45,4 +45,8 @@ export const updateUnit = (id: string, data: any) => {
         data.dueDate = date.getTime();
     }
     return patch(`/unit/${id}`, data);
+};
+
+export const getAllUnits = () => {
+    return get("/unit");
 };

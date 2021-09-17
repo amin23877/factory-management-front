@@ -17,16 +17,20 @@ export default function FieldService() {
                 <SearchBar />
                 <div style={{ flexGrow: 1 }} />
                 <MyTabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-                    <MyTab label="Managment" />
+                    <MyTab label="Dashboard" />
+                    <MyTab label="Services" />
                     <MyTab label="Tickets" />
                     <MyTab label="Tasks" />
+                    <MyTab label="RMA" />
+                    <MyTab label="UP" />
+                    <MyTab label="Vendor Tech" />
                 </MyTabs>
             </Box>
             <Box>
                 <Suspense fallback={<LinearProgress />}>
-                    {activeTab === 0 && <ServiceIndex />}
-                    {activeTab === 1 && <Tickets />}
-                    {activeTab === 2 && <Tasks />}
+                    {activeTab === 1 && <ServiceIndex />}
+                    {activeTab === 2 && <Tickets />}
+                    {activeTab === 3 && <Tasks />}
                 </Suspense>
             </Box>
         </Container>

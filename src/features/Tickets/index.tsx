@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 import { Box, Tabs, Tab, ListItem, IconButton } from "@material-ui/core";
-import { AddRounded, NoteAddRounded, FileCopyRounded, ShoppingCartRounded, PostAddRounded } from "@material-ui/icons";
+import {
+    AddRounded,
+    NoteAddRounded,
+    FileCopyRounded,
+    ShoppingCartRounded,
+    PostAddRounded,
+    CategoryRounded,
+    LocalOfferRounded,
+    PlaylistAddCheckRounded,
+} from "@material-ui/icons";
 import { mutate } from "swr";
 
 import Table from "./Table";
@@ -16,6 +25,9 @@ import { INote } from "../../api/note";
 import { IDocument } from "../../api/document";
 import AddSOModal from "../Sales/SO/AddSoModal";
 import AddQuote from "../Sales/Quote/AddQuote";
+import AddTagModal from "./AddTag";
+import AddStatusModal from "./AddStatus";
+import AddCategoryModal from "./AddCategory";
 
 export default function Tickets() {
     const [ticketModal, setTicketModal] = useState(false);
@@ -23,6 +35,9 @@ export default function Tickets() {
     const [documentModal, setDocumentModal] = useState(false);
     const [soModal, setSoModal] = useState(false);
     const [quoteModal, setQuoteModal] = useState(false);
+    const [tagModal, setTagModal] = useState(false);
+    const [statusModal, setStatusModal] = useState(false);
+    const [categoryModal, setCategoryModal] = useState(false);
 
     const [selectedJob, setSelectedJob] = useState<ITicket>();
     const [selectedNote, setSelectedNote] = useState<INote>();
@@ -68,13 +83,15 @@ export default function Tickets() {
                 />
             )}
             <TicketModal open={ticketModal} onClose={() => setTicketModal(false)} />
-
+            <AddTagModal open={tagModal} onClose={() => setTagModal(false)} />
+            <AddStatusModal open={statusModal} onClose={() => setStatusModal(false)} />
+            <AddCategoryModal open={categoryModal} onClose={() => setCategoryModal(false)} />
             <Box display="flex">
-                <div style={{ flexGrow: 1 }} />
                 <Tabs textColor="primary" value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="List" />
                     <Tab label="Details" disabled={!selectedJob} />
                 </Tabs>
+                <div style={{ flexGrow: 1 }} />
             </Box>
 
             <Box display="flex">
@@ -105,6 +122,36 @@ export default function Tickets() {
                                 }}
                             >
                                 <FileCopyRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton
+                                title="Add Tag"
+                                onClick={() => {
+                                    setTagModal(true);
+                                }}
+                            >
+                                <LocalOfferRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton
+                                title="Add Status"
+                                onClick={() => {
+                                    setStatusModal(true);
+                                }}
+                            >
+                                <PlaylistAddCheckRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton
+                                title="Add Category"
+                                onClick={() => {
+                                    setCategoryModal(true);
+                                }}
+                            >
+                                <CategoryRounded />
                             </IconButton>
                         </ListItem>
                         <ListItem>

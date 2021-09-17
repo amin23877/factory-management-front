@@ -71,8 +71,8 @@ function Details({ unit }: { unit: IUnit }) {
 
     const { data: warranties } = useSWR(
         gridActiveTab === 0
-            ? unit && unit.id
-                ? `/service?ItemId=${unit.item.id}&ServiceFamilyId=60efd0bcca0feadc84be6618`
+            ? unit && unit.ItemId.id
+                ? `/service?ItemId=${unit.ItemId.id}&ServiceFamilyId=60efd0bcca0feadc84be6618`
                 : null
             : null
     );
