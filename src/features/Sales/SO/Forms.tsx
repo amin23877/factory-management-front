@@ -982,13 +982,13 @@ export const TermsTab = ({
                 onChange={handleChange}
             />
             <FieldSelect
-                value={values.CustomerId ? values.CustomerId : ""}
+                value={values.client ? values.client : ""}
                 request={getCustomers}
                 itemTitleField="name"
                 itemValueField="id"
                 keyField="id"
-                name="CustomerId"
-                label="Customer"
+                name="client"
+                label="Client"
                 onChange={handleChange}
             />
             <FieldSelect
@@ -1010,6 +1010,16 @@ export const TermsTab = ({
                 name="JobId"
                 label="Job"
                 onChange={handleChange}
+            />
+            <FieldSelect
+                value={typeof values.issuedBy === "string" ? values.issuedBy : values.issuedBy?.id}
+                name="issuedBy"
+                label="Issued By"
+                request={getAllEmployees}
+                itemTitleField="username"
+                itemValueField="id"
+                onChange={handleChange}
+                onBlur={handleBlur}
             />
         </Box>
     );

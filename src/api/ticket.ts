@@ -1,8 +1,10 @@
 import * as Yup from "yup";
 import { delete_, get, patch, post } from ".";
+import { IItem } from "./items";
 
 export interface ITicket {
     id: string;
+    productionStatus: string;
     name: string;
     ContactId: string;
     LineServiceRecordId: any;
@@ -11,6 +13,15 @@ export interface ITicket {
     description: string;
     status: string;
     deadline: number;
+    subject: string;
+    priority: string;
+    note: string;
+    fsh: boolean;
+    ItemId: IItem;
+
+    createdAt: number;
+    updatedAt: number;
+    __v: number;
 }
 
 export const schema = Yup.object().shape({

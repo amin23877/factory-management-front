@@ -1,54 +1,48 @@
-import React, { useMemo, useRef, useState, Fragment } from "react";
-import { Box, Typography, Tabs, Tab } from "@material-ui/core";
+import React, { useMemo, useState } from "react";
+import { Box, Tabs, Tab } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
+import { Formik, Form } from "formik";
+import { mutate } from "swr";
+import * as Yup from "yup";
 import useSWR from "swr";
 
-// import UnitInfo from "./UnitInfo";
-// import { General as ItemGeneral } from "../../../Items/Forms";
-// import { GeneralForm as SOGeneral } from "../../../Sales/SO/Forms";
-import { General, UnitInfo } from "./Forms";
+import { General, UnitInfo, Warranty, BatteryInfo } from "./Forms";
+import UnitWorkFlow, { ProductionWorkFlow } from "../UnitList/WorkFlows";
 
 import Button from "../../../../app/Button";
 import { BasePaper } from "../../../../app/Paper";
 import BaseDataGrid from "../../../../app/BaseDataGrid";
-import MyQRCode from "../../../../app/QRCode";
-
-import { IUnit, updateUnit } from "../../../../api/units";
-
-import { exportPdf } from "../../../../logic/pdf";
-import { Formik, Form } from "formik";
-import { mutate } from "swr";
-import * as Yup from "yup";
 import Toast from "../../../../app/Toast";
-import { IDocument } from "../../../../api/document";
+
+import Confirm from "../../../Modals/Confirm";
+import DocumentModal from "../../../Modals/DocumentModals";
+
 import { formatTimestampToDate } from "../../../../logic/date";
 import { fileType } from "../../../../logic/fileType";
-import DocumentModal from "../../../Modals/DocumentModals";
-import UnitWorkFlow, { ProductionWorkFlow } from "./WorkFlows";
 import { getModifiedValues } from "../../../../logic/utils";
-import Confirm from "../../../Modals/Confirm";
-import { addOption, deleteOption, IOption } from "../../../../api/options";
-const schema = Yup.object().shape({
-    // laborCost: Yup.number().required(),
-    // status: Yup.string().required(),
-    // dueDate: Yup.string().required(),
-    // assignee: Yup.string().required(),
-});
 
-function Details({ unit }: { unit: IUnit }) {
+// import { addOption, deleteOption, IOption } from "../../../../api/options";
+// import { IUnit, updateUnit } from "../../../../api/units";
+import { deleteOption, IOption } from "../../../../api/options";
+import { IDocument } from "../../../../api/document";
+import { ITicket, updateTicket } from "../../../../api/ticket";
+
+const schema = Yup.object().shape({});
+
+function ServiceDetails({ ticket }: { ticket: ITicket }) {
     const handleSubmit = async (data: any) => {
         try {
-            if (unit?.id) {
-                await updateUnit(unit.id, getModifiedValues(data, unit));
-                await mutate("/unit");
-                Toast("Unit updated", "success");
+            if (ticket.id) {
+                await updateTicket(ticket.id, getModifiedValues(data, ticket));
+
+                await mutate("/ticket");
+                Toast("Updated successfully.", "success");
             }
         } catch (e) {
             console.log(e);
         }
     };
 
-    const qrCode = useRef<HTMLElement | null>(null);
     const [infoActiveTab, setInfoActiveTab] = useState(0);
     const [gridActiveTab, setGridActiveTab] = useState(0);
     const [addDocModal, setAddDocModal] = useState(false);
@@ -59,7 +53,7 @@ function Details({ unit }: { unit: IUnit }) {
     const handleDeleteOption = async () => {
         try {
             if (selectedOption) {
-                const resp = await deleteOption(unit.id, selectedOption.ItemId.id);
+                const resp = await deleteOption(ticket.ItemId.id, selectedOption.ItemId.id);
                 if (resp) {
                     Toast("Unit updated", "success");
                 }
@@ -69,15 +63,8 @@ function Details({ unit }: { unit: IUnit }) {
         }
     };
 
-    const { data: warranties } = useSWR(
-        gridActiveTab === 0
-            ? unit && unit.ItemId.id
-                ? `/service?ItemId=${unit.ItemId.id}&ServiceFamilyId=60efd0bcca0feadc84be6618`
-                : null
-            : null
-    );
-    const { data: documents } = useSWR<IDocument[]>(gridActiveTab === 1 ? `/document/unit/${unit.id}` : null);
-    const { data: unitBoms } = useSWR(`/ubom?UnitId=${unit.id}`);
+    const { data: documents } = useSWR<IDocument[]>(gridActiveTab === 1 ? `/document/unit/${ticket.ItemId.id}` : null);
+    const { data: unitBoms } = useSWR(`/ubom?UnitId=${ticket.ItemId.id}`);
 
     const bomCols = useMemo<GridColDef[]>(
         () => [
@@ -92,17 +79,6 @@ function Details({ unit }: { unit: IUnit }) {
         []
     );
 
-    const warCols = useMemo<GridColumns>(
-        () => [
-            { field: "date", headerName: "Date", type: "date", width: 120 },
-            { field: "number", headerName: "Warranty Number", width: 160 },
-            { field: "name", headerName: "Name", width: 160 },
-            { field: "description", headerName: "Note", flex: 1 },
-            { field: "term", headerName: "Term", flex: 1 },
-            { field: "status", headerName: "Status", width: 150 },
-        ],
-        []
-    );
     const optionCols = useMemo<GridColumns>(
         () => [
             { field: "Option Number", valueFormatter: (params) => params.row?.ItemId?.no, flex: 1 },
@@ -138,11 +114,17 @@ function Details({ unit }: { unit: IUnit }) {
         ],
         []
     );
+
     return (
         <BasePaper>
             <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDeleteOption} />
-            <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={unit?.id} model="unit" />
-            <Formik initialValues={unit as IUnit} validationSchema={schema} onSubmit={handleSubmit}>
+            <DocumentModal
+                open={addDocModal}
+                onClose={() => setAddDocModal(false)}
+                itemId={ticket.ItemId.id}
+                model="unit"
+            />
+            <Formik initialValues={ticket} validationSchema={schema} onSubmit={handleSubmit}>
                 {({ values, errors, handleChange, handleBlur, isSubmitting, setFieldValue, touched }) => (
                     <Form>
                         <Box mb={2} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridGap={10}>
@@ -167,58 +149,12 @@ function Details({ unit }: { unit: IUnit }) {
                                     onChange={(e, nv) => setInfoActiveTab(nv)}
                                     style={{ marginBottom: "0.5em" }}
                                 >
-                                    <Tab label="Image" />
-                                    <Tab label="QR Code" />
                                     <Tab label="Unit Info" />
                                     <Tab label="Options" />
                                     <Tab label="Battery Info" />
-                                    {/* <Tab label="SO" /> */}
+                                    <Tab label="Warranty Info" />
                                 </Tabs>
                                 {infoActiveTab === 0 && (
-                                    <Box
-                                        mt={1}
-                                        height="100%"
-                                        display="flex"
-                                        justifyContent="center"
-                                        alignItems="center"
-                                        flexDirection="column"
-                                        gridGap={10}
-                                    >
-                                        {unit?.item?.photo && (
-                                            <img
-                                                style={{
-                                                    maxWidth: "100%",
-                                                    height: "auto",
-                                                    maxHeight: 400,
-                                                    margin: "0px auto",
-                                                }}
-                                                alt=""
-                                                src={`http://digitalphocus.ir${unit?.item?.photo}`}
-                                            />
-                                        )}
-                                    </Box>
-                                )}
-                                {infoActiveTab === 1 && (
-                                    <Box mt={1} display="flex" justifyContent="space-around" alignItems="center">
-                                        <div ref={(e) => (qrCode.current = e)} style={{ flex: 1 }}>
-                                            <MyQRCode value={String(unit.number)} />
-                                            <Typography variant="subtitle1">Unit Number: {unit.item.no}</Typography>
-                                            <Typography variant="subtitle1">Unit Name: {unit.item.name}</Typography>
-                                            <Typography variant="subtitle1">Sales Order NO.: {unit.number}</Typography>
-                                        </div>
-                                        <Button
-                                            variant="contained"
-                                            onClick={async () => {
-                                                if (qrCode.current) {
-                                                    await exportPdf(qrCode.current);
-                                                }
-                                            }}
-                                        >
-                                            Print
-                                        </Button>
-                                    </Box>
-                                )}
-                                {infoActiveTab === 2 && (
                                     <UnitInfo
                                         values={values}
                                         errors={errors}
@@ -228,8 +164,8 @@ function Details({ unit }: { unit: IUnit }) {
                                         setFieldValue={setFieldValue}
                                     />
                                 )}
-                                {infoActiveTab === 3 && (
-                                    <Fragment>
+                                {infoActiveTab === 1 && (
+                                    <>
                                         <Button kind="add" onClick={() => setAddOption(true)}>
                                             add Option
                                         </Button>
@@ -241,12 +177,35 @@ function Details({ unit }: { unit: IUnit }) {
                                         >
                                             Delete Option
                                         </Button>
-                                        <BaseDataGrid
-                                            rows={unit.options || []}
-                                            cols={optionCols}
-                                            onRowSelected={() => {}}
-                                        />
-                                    </Fragment>
+                                        <Box mb={1}>
+                                            <BaseDataGrid
+                                                rows={[]}
+                                                cols={optionCols}
+                                                onRowSelected={() => {}}
+                                                height={280}
+                                            />
+                                        </Box>
+                                    </>
+                                )}
+                                {infoActiveTab === 2 && (
+                                    <BatteryInfo
+                                        values={values}
+                                        errors={errors}
+                                        touched={touched}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        setFieldValue={setFieldValue}
+                                    />
+                                )}
+                                {infoActiveTab === 3 && (
+                                    <Warranty
+                                        values={values}
+                                        errors={errors}
+                                        touched={touched}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        setFieldValue={setFieldValue}
+                                    />
                                 )}
                             </BasePaper>
                         </Box>
@@ -255,23 +214,16 @@ function Details({ unit }: { unit: IUnit }) {
             </Formik>
             <h1 style={{ marginLeft: "3em" }}>Unit Work Flow</h1>
             <UnitWorkFlow />
-            <ProductionWorkFlow unitId={unit.id} stepper={unit.productionStatus} />
+            <ProductionWorkFlow unitId={ticket.ItemId.id} stepper={ticket.productionStatus} />
             <BasePaper>
                 <Tabs value={gridActiveTab} onChange={(e, nv) => setGridActiveTab(nv)}>
-                    <Tab label="Warranties" />
                     <Tab label="Documents" />
-                    <Tab label="BOM" />
+                    <Tab label="JOB" />
                     <Tab label="Wire List" />
                     <Tab label="Forms" />
                     <Tab label="Time logs" />
                 </Tabs>
-
                 {gridActiveTab === 0 && (
-                    <Box>
-                        <BaseDataGrid cols={warCols} rows={warranties || []} onRowSelected={(d) => {}} />
-                    </Box>
-                )}
-                {gridActiveTab === 1 && (
                     <>
                         <Button
                             onClick={() => {
@@ -289,7 +241,7 @@ function Details({ unit }: { unit: IUnit }) {
                         />
                     </>
                 )}
-                {gridActiveTab === 2 && (
+                {gridActiveTab === 1 && (
                     <BaseDataGrid
                         cols={bomCols}
                         rows={unitBoms || []}
@@ -303,4 +255,4 @@ function Details({ unit }: { unit: IUnit }) {
     );
 }
 
-export default Details;
+export default ServiceDetails;

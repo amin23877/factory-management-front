@@ -45,7 +45,8 @@ export default UnitWorkFlow;
 
 export const ProductionWorkFlow = ({ stepper, unitId }: { stepper?: any; unitId: string }) => {
     const [activeStep, setActiveStep] = useState(0);
-    const { data: tasks } = useSWR(`/unit/${unitId}/tasks`);
+    const [tasks, setTasks] = useState({ man: [], eval: [], test: [] });
+    // const { data: tasks } = useSWR(`/unit/${unitId}/tasks`);
     useEffect(() => {
         switch (stepper) {
             case "Manufacturing":
@@ -84,7 +85,7 @@ export const ProductionWorkFlow = ({ stepper, unitId }: { stepper?: any; unitId:
     ];
     return (
         <>
-            <BasePaper style={{ marginBottom: "1em'" }}>
+            <BasePaper style={{ marginBottom: "1em" }}>
                 <h1 style={{ marginLeft: "3em" }}>Production Work Flow</h1>
                 <Stepper activeStep={activeStep} alternativeLabel style={{ cursor: "pointer" }}>
                     <Step
@@ -109,9 +110,9 @@ export const ProductionWorkFlow = ({ stepper, unitId }: { stepper?: any; unitId:
                         <StepLabel>Test</StepLabel>
                     </Step>
                 </Stepper>
-                {activeStep === 0 && tasks && <BaseDataGrid cols={manCols} rows={tasks.man || []} />}
-                {activeStep === 1 && tasks && <BaseDataGrid cols={evalCols} rows={tasks.eval || []} />}
-                {activeStep === 2 && tasks && <BaseDataGrid cols={testCols} rows={tasks.test || []} />}
+                {activeStep === 0 && tasks && <BaseDataGrid cols={manCols} rows={tasks.man || []} height={280} />}
+                {activeStep === 1 && tasks && <BaseDataGrid cols={evalCols} rows={tasks.eval || []} height={280} />}
+                {activeStep === 2 && tasks && <BaseDataGrid cols={testCols} rows={tasks.test || []} height={280} />}
             </BasePaper>
         </>
     );

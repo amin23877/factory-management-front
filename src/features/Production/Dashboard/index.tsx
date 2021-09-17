@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-
 import Box from "@material-ui/core/Box";
 
 import { MyTabs, MyTab } from "../../../app/Tabs";
+
 import UnitList from "./UnitList";
+import ServiceList from "./ServiceList";
 
 function Index() {
     const [activeTab, setActiveTab] = useState(0);
@@ -18,7 +19,7 @@ function Index() {
                 <div style={{ flex: 1 }}></div>
             </Box>
             {activeTab === 0 && <UnitList />}
-            {activeTab === 1 && <div></div>}
+            {activeTab === 1 && <ServiceList />}
         </Box>
     );
 }

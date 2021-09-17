@@ -136,7 +136,7 @@ export const FinalForm = ({
                 onDone(resp);
             }
         } catch (error) {
-            console.log(error.response.data);
+            console.log(error);
         } finally {
             setLoading(false);
         }

@@ -94,7 +94,7 @@ export default function MainForm({
                                 disabled={!lineItems}
                                 // value={values?.LineItemRecordId}
                                 options={lineItems ? lineItems : []}
-                                getOptionLabel={(item: any) => item.ItemId.name}
+                                getOptionLabel={(item: any) => (item?.ItemId ? item?.ItemId.name : "")}
                                 onChange={(e, nv: any) => setFieldValue("LineItemRecordId", nv?.id)}
                                 onBlur={handleBlur}
                                 fullWidth

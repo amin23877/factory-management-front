@@ -1,5 +1,4 @@
 import React from "react";
-import { LinearProgress } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
 import useSWR from "swr";
 
@@ -11,7 +10,6 @@ import { formatTimestampToDate } from "../../logic/date";
 
 export default function Table({ onRowSelected }: { onRowSelected: (d: ITicket) => void }) {
     const { data: tickets } = useSWR<ITicket[]>("/ticket");
-    // Date	Ticket ID	Subject	Company	Contact Name	Contact Number	Contact Email	State	Zip Code	Assigned to 	Created By	Category	Target Date	Status	Tag
 
     const cols: GridColDef[] = [
         {
