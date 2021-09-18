@@ -2,7 +2,7 @@ import { get, post, delete_, patch } from ".";
 
 export interface ICustomer {
     id: string;
-
+    approved: boolean;
     name: string;
     address: string;
     state: string;

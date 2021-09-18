@@ -595,25 +595,22 @@ export const LastUsed = ({ values, errors, handleChange, handleBlur, touched }: 
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={Boolean(errors.usedInLastQuarter && touched.usedInLastQuarter)}
-                disabled
             />
             <TextField
                 label="last used in 60 days"
-                value={values.usedInLastSixty}
-                name="usedInLastSixty"
+                value={values.usedInLastTwoMonth}
+                name="usedInLastTwoMonth"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={Boolean(errors.usedInLastSixty && touched.usedInLastSixty)}
-                disabled
+                error={Boolean(errors.usedInLastTwoMonth && touched.usedInLastSixty)}
             />
             <TextField
                 label="last used in 30 days"
-                value={values.usedInLastThirty}
-                name="usedInLastThirty"
+                value={values.usedInLastMonth}
+                name="usedInLastMonth"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={Boolean(errors.usedInLastThirty && touched.usedInLastThirty)}
-                disabled
+                error={Boolean(errors.usedInLastMonth && touched.usedInLastMonth)}
             />
         </Box>
     );

@@ -43,6 +43,14 @@ export const GeneralForm = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
+                <FormControlLabel
+                    name="approved"
+                    value={values.approved}
+                    control={<Checkbox checked={Boolean(values.approved)} />}
+                    label="Approved"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
             </Paper>
             <Box mb={1} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr 1fr 1fr">
                 {/* TODO: Add customer type autocomplete later with good props */}
