@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import Autocomplete, { createFilterOptions } from "@material-ui/lab/Autocomplete";
 import useSWR from "swr";
 
-import TextField from "../../app/TextField";
+import TextField from "../../../app/TextField";
 
-import { ICustomerType } from "../../api/customerType";
+import { ICustomerType } from "../../../api/customerType";
 import CustomerTypeModal from "./CustomerType";
 
 const filter = createFilterOptions<ICustomerType>();

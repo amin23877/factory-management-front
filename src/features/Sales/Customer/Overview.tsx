@@ -1,7 +1,7 @@
 import React from "react";
 import { GridColDef, GridRowData } from "@material-ui/data-grid";
 
-import BaseDataGrid from "../../app/BaseDataGrid";
+import BaseDataGrid from "../../../app/BaseDataGrid";
 //	Status
 
 export default function ClientOverview({

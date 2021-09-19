@@ -1,9 +1,8 @@
 import React, { useMemo } from "react";
-import { GridColumns } from "@material-ui/data-grid";
-import useSWR from "swr";
+import { DataGrid, GridColumns, GridToolbar } from "@material-ui/data-grid";
 
-import BaseDataGrid from "../../../app/BaseDataGrid";
 import { formatTimestampToDate } from "../../../logic/date";
+import usePaginatedData from "../../../components/Datagrid/hooks";
 // import { formatTimestampToDate } from "../../../logic/date";
 
 function QuoteDatagrid({
@@ -15,10 +14,9 @@ function QuoteDatagrid({
     url?: string;
     onRowSelected: (row: any) => void;
 }) {
-    const { data: quotes } = useSWR(url ? url : params ? `/quote?${params}` : "/quote");
-    // Date	Quote ID	Client	Rep	State	Requestor	Project Name	Quoted By	SO	Status	Total Amount
+    const { dataGridClasses, loading, page, rows, setPage } = usePaginatedData({ params, url: "/quote" });
 
-    const quoteCols = useMemo<GridColumns>(
+    const cols = useMemo<GridColumns>(
         () => [
             {
                 field: "Date",
@@ -59,7 +57,32 @@ function QuoteDatagrid({
         []
     );
 
-    return <BaseDataGrid cols={quoteCols} rows={quotes || []} onRowSelected={onRowSelected} />;
+    return (
+        <div
+            style={{
+                flexGrow: 1,
+                height: 500,
+            }}
+        >
+            <DataGrid
+                loading={loading}
+                density="compact"
+                components={{ Toolbar: GridToolbar }}
+                className={dataGridClasses.root}
+                onRowSelected={(r) => {
+                    onRowSelected && onRowSelected(r.data);
+                }}
+                columns={cols}
+                pagination
+                paginationMode="server"
+                page={page}
+                onPageChange={(p) => setPage(p.page)}
+                pageSize={25}
+                rows={rows ? rows.result : []}
+                rowCount={rows ? rows.total : 0}
+            />
+        </div>
+    );
 }
 
 export default QuoteDatagrid;

@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Box, Grid, Tabs, Tab } from "@material-ui/core";
 import { AddRounded } from "@material-ui/icons";
 import useSWR from "swr";
 
-import Button from "../../app/Button";
-import { BasePaper } from "../../app/Paper";
-import Toast from "../../app/Toast";
+import Button from "../../../app/Button";
+import { BasePaper } from "../../../app/Paper";
+import Toast from "../../../app/Toast";
 
-import { deleteCustomer, editCustomer, ICustomer } from "../../api/customer";
+import { deleteCustomer, ICustomer } from "../../../api/customer";
 
 import AddCustomerModal from "./Modals";
 import CustomerTypeModal from "./CustomerType";
-import Confirm from "../Modals/Confirm";
+import Confirm from "../../Modals/Confirm";
 import Details from "./Details";
 import Overview from "./Overview";
 
@@ -23,7 +23,7 @@ export default function Customers() {
     const [conf, setConf] = useState(false);
 
     const { data: customers, mutate: mutateCustomers } = useSWR<ICustomer[]>("/customer");
-    const { data: nonACustomers, mutate: mutateNCustomers } = useSWR<ICustomer[]>("/customer?approved=false");
+    const { data: nonACustomers } = useSWR<ICustomer[]>("/customer?approved=false");
 
     // async function changeApproved() {
     //     if (customers) {
@@ -92,7 +92,7 @@ export default function Customers() {
                             <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                                 <Tab label="List" />
                                 <Tab label="Non Approved Customers" />
-                                <Tab label="Details" disabled={Boolean(selectedRow === null)} />
+                                <Tab label="Details" disabled={!selectedRow} />
                             </Tabs>
                             <div style={{ flex: 1 }}></div>
                         </Box>
@@ -101,7 +101,7 @@ export default function Customers() {
                                 rows={customers || []}
                                 onRowSelected={(v) => {
                                     setSelectedRow(v);
-                                    setActiveTab(1);
+                                    setActiveTab(2);
                                 }}
                             />
                         )}
@@ -110,7 +110,7 @@ export default function Customers() {
                                 rows={nonACustomers || []}
                                 onRowSelected={(v) => {
                                     setSelectedRow(v);
-                                    setActiveTab(1);
+                                    setActiveTab(2);
                                 }}
                             />
                         )}

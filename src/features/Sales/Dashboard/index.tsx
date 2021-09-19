@@ -90,7 +90,7 @@ export default function Dashboard() {
             <Grid item xs={12} sm={12}>
                 <BasePaper>
                     <Typography variant="h6">In progress SOs</Typography>
-                    <BaseDataGrid cols={cols} rows={inProgressSOs || []} height={350} />
+                    <BaseDataGrid cols={cols} rows={inProgressSOs ? inProgressSOs.result : []} height={350} />
                 </BasePaper>
             </Grid>
         </Grid>

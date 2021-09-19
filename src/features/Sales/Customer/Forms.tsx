@@ -1,12 +1,12 @@
 import React from "react";
 import { Box, FormControlLabel, FormLabel, RadioGroup, Radio, Checkbox, FormControl, Paper } from "@material-ui/core";
 
-import { FieldSelect } from "../../app/Inputs";
-import TextField from "../../app/TextField";
+import { FieldSelect } from "../../../app/Inputs";
+import TextField from "../../../app/TextField";
 
-import { getCustomers } from "../../api/customer";
-import { getCustomerTypes } from "../../api/customerType";
-import { getAllEmployees } from "../../api/employee";
+import { getCustomers } from "../../../api/customer";
+import { getCustomerTypes } from "../../../api/customerType";
+import { getAllEmployees } from "../../../api/employee";
 // import CustomerTypeAutocomplete from "./ClientTypeAutocomplete";
 
 export const GeneralForm = ({

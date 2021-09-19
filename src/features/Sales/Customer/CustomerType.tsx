@@ -5,13 +5,13 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import useSWR from "swr";
 
-import Dialog from "../../app/Dialog";
-import TextField from "../../app/TextField";
-import Button from "../../app/Button";
-import Toast from "../../app/Toast";
+import Dialog from "../../../app/Dialog";
+import TextField from "../../../app/TextField";
+import Button from "../../../app/Button";
+import Toast from "../../../app/Toast";
 
-import { ICustomerType, addCustomerType, deleteCustomerType, editCustomerType } from "../../api/customerType";
-import Confirm from "../Modals/Confirm";
+import { ICustomerType, addCustomerType, deleteCustomerType, editCustomerType } from "../../../api/customerType";
+import Confirm from "../../Modals/Confirm";
 
 const schema = Yup.object().shape({
     name: Yup.string().required(),

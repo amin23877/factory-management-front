@@ -1,9 +1,8 @@
-import { LinearProgress } from "@material-ui/core";
-import { GridColumns } from "@material-ui/data-grid";
 import React, { useMemo } from "react";
-import useSWR from "swr";
-import BaseDataGrid from "../../../app/BaseDataGrid";
+import { GridColumns, DataGrid, GridToolbar } from "@material-ui/data-grid";
+
 import { formatTimestampToDate } from "../../../logic/date";
+import usePaginatedData from "../../../components/Datagrid/hooks";
 
 function SODatagrid({
     onRowSelected,
@@ -14,7 +13,7 @@ function SODatagrid({
     params?: string;
     url?: string;
 }) {
-    const { data: sos } = useSWR(url ? url : params ? `/so?${params}` : "/so");
+    const { dataGridClasses, loading, page, rows, setPage } = usePaginatedData({ params, url: "/so" });
 
     const cols = useMemo<GridColumns>(
         () => [
@@ -59,11 +58,32 @@ function SODatagrid({
         []
     );
 
-    if (!sos) {
-        return <LinearProgress />;
-    }
-
-    return <BaseDataGrid cols={cols} rows={sos || []} onRowSelected={onRowSelected} />;
+    return (
+        <div
+            style={{
+                flexGrow: 1,
+                height: 500,
+            }}
+        >
+            <DataGrid
+                loading={loading}
+                density="compact"
+                components={{ Toolbar: GridToolbar }}
+                className={dataGridClasses.root}
+                onRowSelected={(r) => {
+                    onRowSelected && onRowSelected(r.data);
+                }}
+                columns={cols}
+                pagination
+                paginationMode="server"
+                page={page}
+                onPageChange={(p) => setPage(p.page)}
+                pageSize={25}
+                rows={rows ? rows.result : []}
+                rowCount={rows ? rows.total : 0}
+            />
+        </div>
+    );
 }
 
 export default SODatagrid;

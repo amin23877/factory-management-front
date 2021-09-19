@@ -6,24 +6,24 @@ import useSWR, { mutate } from "swr";
 // import * as Yup from "yup";
 
 import { CommissionForm, GeneralForm, MainContactForm, MoreInfoForm } from "./Forms";
-import Button from "../../app/Button";
-import { BasePaper } from "../../app/Paper";
-import BaseDataGrid from "../../app/BaseDataGrid";
+import Button from "../../../app/Button";
+import { BasePaper } from "../../../app/Paper";
+import BaseDataGrid from "../../../app/BaseDataGrid";
 
-import { editCustomer, ICustomer } from "../../api/customer";
-import { INote } from "../../api/note";
+import { editCustomer, ICustomer } from "../../../api/customer";
+import { INote } from "../../../api/note";
 
-import SOTable from "../Items/SOTable";
+import SOTable from "../../Items/SOTable";
 
-import { formatTimestampToDate } from "../../logic/date";
-import { fileType } from "../../logic/fileType";
+import { formatTimestampToDate } from "../../../logic/date";
+import { fileType } from "../../../logic/fileType";
 
-import NoteModal from "../Modals/NoteModals";
-import DocumentModal from "../Modals/DocumentModals";
-import { ContactModal } from "../Modals/ContactModal";
-import Toast from "../../app/Toast";
-import { IDocument } from "../../api/document";
-import { getModifiedValues } from "../../logic/utils";
+import NoteModal from "../../Modals/NoteModals";
+import DocumentModal from "../../Modals/DocumentModals";
+import { ContactModal } from "../../Modals/ContactModal";
+import Toast from "../../../app/Toast";
+import { IDocument } from "../../../api/document";
+import { getModifiedValues } from "../../../logic/utils";
 
 export default function ClientDetails({ selectedRow }: { selectedRow: ICustomer }) {
     const [activeTab, setActiveTab] = useState(0);
@@ -42,6 +42,7 @@ export default function ClientDetails({ selectedRow }: { selectedRow: ICustomer 
         try {
             await editCustomer(selectedRow.id, getModifiedValues(values, selectedRow));
             mutate("/customer");
+            mutate("/customer?approved=false");
             setSubmitting(false);
 
             Toast("Record updated", "success");

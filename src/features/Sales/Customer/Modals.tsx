@@ -3,11 +3,11 @@ import { Box, Step, StepLabel, Stepper } from "@material-ui/core";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import Dialog from "../../app/Dialog";
-import Button from "../../app/Button";
-import { CommissionForm, GeneralForm, MainContactForm, MoreInfoForm } from "./Forms";
+import Dialog from "../../../app/Dialog";
+import Button from "../../../app/Button";
+import { CommissionForm, GeneralForm, MoreInfoForm } from "./Forms";
 
-import { addCustomer, ICustomer } from "../../api/customer";
+import { addCustomer, ICustomer } from "../../../api/customer";
 
 const schema = Yup.object().shape({
     CustomerTypeId: Yup.string().required().notOneOf([0]),

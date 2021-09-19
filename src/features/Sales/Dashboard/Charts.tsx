@@ -15,11 +15,11 @@ import {
 } from "../../../logic/reports/sales";
 
 export function ClientPie() {
-    const { data: SOs } = useSWR<ISO[]>("/so");
+    const { data: SOs } = useSWR<{ result: ISO[] }>("/so");
 
     const chartData = useMemo(() => {
         if (SOs) {
-            return extractClientPieChartData(SOs);
+            return extractClientPieChartData(SOs.result);
         } else {
             return [];
         }
@@ -29,11 +29,11 @@ export function ClientPie() {
 }
 
 export function SalesVsWeek() {
-    const { data: SOs } = useSWR<ISO[]>("/so");
+    const { data: SOs } = useSWR<{ result: ISO[] }>("/so");
 
     const chartData = useMemo(() => {
         if (SOs) {
-            return extractSalesVsWeek(SOs);
+            return extractSalesVsWeek(SOs.result);
         } else {
             return [];
         }
@@ -61,7 +61,7 @@ export function SalesLocationPie() {
 
     const chartData = useMemo(() => {
         if (salesOrders) {
-            return extractSalesLocation(salesOrders);
+            return extractSalesLocation(salesOrders.result);
         } else {
             return [];
         }
@@ -75,7 +75,7 @@ export function SalesRepPie() {
 
     const chartData = useMemo(() => {
         if (salesOrders) {
-            return extractSalesRep(salesOrders);
+            return extractSalesRep(salesOrders.result);
         } else {
             return [];
         }

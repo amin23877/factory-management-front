@@ -10,7 +10,7 @@ import PurchaseOrderPanel from "../features/Sales/PO";
 import DevicesPanel from "../features/Engineering/Devices";
 import Dashboard from "../features/Sales/Dashboard";
 import Calls from "../features/Sales/Call";
-import Customers from "../features/Customer";
+import Customers from "../features/Sales/Customer";
 
 export default function Sales() {
     const [activeTab, setActiveTab] = useState(0);
