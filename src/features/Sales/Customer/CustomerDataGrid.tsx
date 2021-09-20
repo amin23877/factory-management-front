@@ -1,16 +1,20 @@
 import React from "react";
-import { GridColDef, GridRowData } from "@material-ui/data-grid";
+import { DataGrid, GridColDef, GridToolbar } from "@material-ui/data-grid";
 
-import BaseDataGrid from "../../../app/BaseDataGrid";
+import usePaginatedData from "../../../components/Datagrid/hooks";
 //	Status
 
-export default function ClientOverview({
-    rows,
+export default function CustomerDataGrid({
+    url,
     onRowSelected,
+    params,
 }: {
-    rows: GridRowData[];
+    params?: string;
+    url: string;
     onRowSelected: (row: any) => void;
 }) {
+    const { dataGridClasses, loading, page, rows, setPage } = usePaginatedData({ url, params });
+
     const cols: GridColDef[] = [
         {
             field: "number",
@@ -82,5 +86,31 @@ export default function ClientOverview({
         },
     ];
 
-    return <BaseDataGrid rows={rows} onRowSelected={onRowSelected} cols={cols} />;
+    // FIXME: *rows.results* should change to *rows.result* from api response
+    return (
+        <div
+            style={{
+                flexGrow: 1,
+                height: 500,
+            }}
+        >
+            <DataGrid
+                loading={loading}
+                density="compact"
+                components={{ Toolbar: GridToolbar }}
+                className={dataGridClasses.root}
+                onRowSelected={(r) => {
+                    onRowSelected && onRowSelected(r.data);
+                }}
+                columns={cols}
+                pagination
+                paginationMode="server"
+                page={page}
+                onPageChange={(p) => setPage(p.page)}
+                pageSize={25}
+                rows={rows ? (rows as any).results : []}
+                rowCount={rows ? rows.total : 0}
+            />
+        </div>
+    );
 }

@@ -13,7 +13,7 @@ import AddCustomerModal from "./Modals";
 import CustomerTypeModal from "./CustomerType";
 import Confirm from "../../Modals/Confirm";
 import Details from "./Details";
-import Overview from "./Overview";
+import CustomerDataGrid from "./CustomerDataGrid";
 
 export default function Customers() {
     const [activeTab, setActiveTab] = useState(0);
@@ -22,8 +22,8 @@ export default function Customers() {
     const [selectedRow, setSelectedRow] = useState<ICustomer>();
     const [conf, setConf] = useState(false);
 
-    const { data: customers, mutate: mutateCustomers } = useSWR<ICustomer[]>("/customer");
-    const { data: nonACustomers } = useSWR<ICustomer[]>("/customer?approved=false");
+    const { mutate: mutateCustomers } = useSWR<ICustomer[]>("/customer");
+    // const { data: nonACustomers } = useSWR<ICustomer[]>("/customer?approved=false");
 
     // async function changeApproved() {
     //     if (customers) {
@@ -37,6 +37,7 @@ export default function Customers() {
     // useEffect(() => {
     //     changeApproved();
     // }, [customers]);
+
     const handleDelete = async () => {
         try {
             if (selectedRow) {
@@ -97,8 +98,8 @@ export default function Customers() {
                             <div style={{ flex: 1 }}></div>
                         </Box>
                         {activeTab === 0 && (
-                            <Overview
-                                rows={customers || []}
+                            <CustomerDataGrid
+                                url="/customer"
                                 onRowSelected={(v) => {
                                     setSelectedRow(v);
                                     setActiveTab(2);
@@ -106,8 +107,9 @@ export default function Customers() {
                             />
                         )}
                         {activeTab === 1 && (
-                            <Overview
-                                rows={nonACustomers || []}
+                            <CustomerDataGrid
+                                url="/customer"
+                                params="approved=false"
                                 onRowSelected={(v) => {
                                     setSelectedRow(v);
                                     setActiveTab(2);

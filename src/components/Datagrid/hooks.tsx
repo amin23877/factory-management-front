@@ -13,7 +13,8 @@ function usePaginatedData({ params, url }: { params?: string; url: string }) {
         setLoading(true);
         get(params ? `${url}?${params}&page=${page + 1}` : `${url}?page=${page + 1}`)
             .then((resp) => {
-                if (resp && resp.result) {
+                // if (resp && resp.result) {
+                if (resp) {
                     setRows(resp);
                 }
             })

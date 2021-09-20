@@ -1,3 +1,4 @@
+import { delete_ } from ".";
 import { ICustomer } from "./customer";
 import { IEmployee } from "./employee";
 import { IItem } from "./items";
@@ -69,3 +70,7 @@ export interface IQuoteRequest {
     note: string;
     devices: { number: IItem; quantity: number }[];
 }
+
+export const deleteRequestQuote = async (id: string) => {
+    return delete_(`/quoterequest/${id}`);
+};
