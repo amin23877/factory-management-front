@@ -25,7 +25,15 @@ import Toast from "../../../app/Toast";
 import { IDocument } from "../../../api/document";
 import { getModifiedValues } from "../../../logic/utils";
 
-export default function ClientDetails({ selectedRow }: { selectedRow: ICustomer }) {
+export default function ClientDetails({
+    selectedRow,
+    req,
+    changeTab,
+}: {
+    selectedRow: ICustomer;
+    req?: any;
+    changeTab: (a: number) => void;
+}) {
     const [activeTab, setActiveTab] = useState(0);
     const [activeSubTab, setActiveSubTab] = useState(0);
 
@@ -154,6 +162,9 @@ export default function ClientDetails({ selectedRow }: { selectedRow: ICustomer 
                                         handleBlur={handleBlur}
                                         handleChange={handleChange}
                                         touched={touched}
+                                        req={req}
+                                        cId={selectedRow.id}
+                                        changeTab={changeTab}
                                     />
                                     <Box textAlign="center">
                                         <Button type="submit" kind="edit">
