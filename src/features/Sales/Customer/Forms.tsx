@@ -1,12 +1,14 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { Box, FormControlLabel, FormLabel, RadioGroup, Radio, Checkbox, FormControl, Paper } from "@material-ui/core";
 
 import { FieldSelect } from "../../../app/Inputs";
 import TextField from "../../../app/TextField";
+import Button from "../../../app/Button";
 
-import { getCustomers } from "../../../api/customer";
+import { editCustomer, getCustomers, ICustomer } from "../../../api/customer";
 import { getCustomerTypes } from "../../../api/customerType";
 import { getAllEmployees } from "../../../api/employee";
+import Toast from "../../../app/Toast";
 // import CustomerTypeAutocomplete from "./ClientTypeAutocomplete";
 
 export const GeneralForm = ({
@@ -15,13 +17,34 @@ export const GeneralForm = ({
     errors,
     handleBlur,
     handleChange,
+    req,
+    cId,
+    changeTab,
 }: {
     values: any;
     errors: any;
     touched: any;
     handleBlur: any;
     handleChange: any;
+    req?: any;
+    cId: string;
+    changeTab: (a: number) => void;
 }) => {
+    const handleApprove = async () => {
+        const resp = await editCustomer(cId, { approved: true } as ICustomer);
+        if (resp) {
+            Toast("Approved", "success");
+            changeTab(0);
+        }
+    };
+    const handleReject = async () => {
+        const resp = await editCustomer(cId, { approved: false } as ICustomer);
+        if (resp) {
+            Toast("Rejected", "success");
+            changeTab(2);
+        }
+    };
+
     return (
         <>
             <Paper
@@ -43,14 +66,25 @@ export const GeneralForm = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
-                <FormControlLabel
-                    name="approved"
-                    value={values.approved}
-                    control={<Checkbox checked={Boolean(values.approved)} />}
-                    label="Approved"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
+                {req ? (
+                    <Fragment>
+                        <Button kind="add" onClick={handleApprove}>
+                            Approve
+                        </Button>
+                        <Button kind="delete" onClick={handleReject}>
+                            Reject
+                        </Button>
+                    </Fragment>
+                ) : (
+                    <FormControlLabel
+                        name="approved"
+                        value={values.approved}
+                        control={<Checkbox checked={Boolean(values.approved)} />}
+                        label="Approved"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                )}
             </Paper>
             <Box mb={1} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr 1fr 1fr">
                 {/* TODO: Add customer type autocomplete later with good props */}

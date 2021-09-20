@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Grid, Tabs, Tab } from "@material-ui/core";
 import { AddRounded } from "@material-ui/icons";
 import useSWR from "swr";
@@ -21,9 +21,11 @@ export default function Customers() {
     const [cTypeModal, setCTypeModal] = useState(false);
     const [selectedRow, setSelectedRow] = useState<ICustomer>();
     const [conf, setConf] = useState(false);
+    const [req, setReq] = useState(false);
 
-    const { data: customers, mutate: mutateCustomers } = useSWR<ICustomer[]>("/customer");
-    const { data: nonACustomers } = useSWR<ICustomer[]>("/customer?approved=false");
+    const { data: customers, mutate: mutateCustomers } = useSWR(activeTab === 0 ? "/customer?approved=true" : null);
+    const { data: pending } = useSWR(activeTab === 1 ? "/customer?approved=null" : null);
+    const { data: rejected } = useSWR(activeTab === 2 ? "/customer?approved=false" : null);
 
     // async function changeApproved() {
     //     if (customers) {
@@ -35,7 +37,7 @@ export default function Customers() {
     // }
 
     // useEffect(() => {
-    //     changeApproved();
+    //     console.log(customers);
     // }, [customers]);
     const handleDelete = async () => {
         try {
@@ -91,30 +93,45 @@ export default function Customers() {
                         <Box mb={2} display="flex">
                             <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                                 <Tab label="List" />
-                                <Tab label="Non Approved Customers" />
+                                <Tab label="Requests" />
+                                <Tab label="Rejected" />
                                 <Tab label="Details" disabled={!selectedRow} />
                             </Tabs>
                             <div style={{ flex: 1 }}></div>
                         </Box>
                         {activeTab === 0 && (
                             <Overview
-                                rows={customers || []}
+                                rows={customers?.results || []}
                                 onRowSelected={(v) => {
                                     setSelectedRow(v);
-                                    setActiveTab(2);
+                                    setActiveTab(3);
+                                    setReq(false);
                                 }}
                             />
                         )}
                         {activeTab === 1 && (
                             <Overview
-                                rows={nonACustomers || []}
+                                rows={pending?.results || []}
                                 onRowSelected={(v) => {
                                     setSelectedRow(v);
-                                    setActiveTab(2);
+                                    setActiveTab(3);
+                                    setReq(true);
                                 }}
                             />
                         )}
-                        {activeTab === 2 && selectedRow && <Details selectedRow={selectedRow} />}
+                        {activeTab === 2 && (
+                            <Overview
+                                rows={rejected?.results || []}
+                                onRowSelected={(v) => {
+                                    setSelectedRow(v);
+                                    setActiveTab(3);
+                                    setReq(false);
+                                }}
+                            />
+                        )}
+                        {activeTab === 3 && selectedRow && (
+                            <Details selectedRow={selectedRow} req={req} changeTab={(i) => setActiveTab(i)} />
+                        )}
                     </BasePaper>
                 </Grid>
             </Grid>

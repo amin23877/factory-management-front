@@ -79,6 +79,8 @@ export default function AddCustomerModal({
                             handleBlur={handleBlur}
                             handleChange={handleChange}
                             touched={touched}
+                            cId={""}
+                            changeTab={() => {}}
                         />
                     )}
                     {activeStep === 1 && (
