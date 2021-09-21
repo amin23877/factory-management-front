@@ -34,7 +34,7 @@ export const MaterialFieldSelect = ({
     useEffect(() => {
         const t = options.find((o) => getOptionValue(o) === value);
         setFindValue(t);
-    }, [value, options]);
+    }, [value, options, getOptionValue]);
 
     useEffect(() => {
         request()
@@ -46,7 +46,7 @@ export const MaterialFieldSelect = ({
                 }
             })
             .catch((e) => console.log(e));
-    }, []);
+    }, [limit, request]);
 
     return (
         <Autocomplete
@@ -123,7 +123,7 @@ export const FieldSelect = ({
                 }
             })
             .catch((e) => console.log(e));
-    }, []);
+    }, [getOptionList, limit, request]);
 
     return <ObjectSelect {...props} itemTitleField={itemTitleField} itemValueField={itemValueField} items={items} />;
 };

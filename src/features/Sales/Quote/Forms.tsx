@@ -22,7 +22,7 @@ import { getTickets } from "../../../api/ticket";
 import QuotePDF from "../../../PDFTemplates/Quote";
 import { createAModelDocument } from "../../../api/document";
 import { IQuoteComplete } from "../../../api/quote";
-import { getContacts } from "../../../api/contact";
+// import { getContacts } from "../../../api/contact";
 import { getCustomers } from "../../../api/customer";
 
 export const DocumentForm = ({
@@ -340,6 +340,7 @@ export const EntitiesTab = ({
             <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
                 <FieldSelect
                     value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
+                    getOptionList={(resp) => resp.results}
                     request={getCustomers}
                     itemTitleField="name"
                     itemValueField="id"
@@ -378,21 +379,21 @@ export const EntitiesTab = ({
                 <TextField
                     value={values.requesterName}
                     name="requesterName"
-                    label="requesterName"
+                    label="Requester Name"
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
                 <TextField
                     value={values.requesterMail}
                     name="requesterMail"
-                    label="requesterMail"
+                    label="Requester Mail"
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
                 <TextField
                     value={values.requesterPhone}
                     name="requesterPhone"
-                    label="requesterPhone"
+                    label="Requester Phone"
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
@@ -409,6 +410,7 @@ export const EntitiesTab = ({
                 /> */}
                 <FieldSelect
                     value={typeof values.client === "string" ? values.client : values.client?.id}
+                    getOptionList={(resp) => resp.results}
                     request={getCustomers}
                     itemTitleField="name"
                     itemValueField="id"

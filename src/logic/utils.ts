@@ -24,3 +24,22 @@ export const getModifiedValues = (values: any, initialValues: any) => {
 export const countProperty = (data: any[], value: string, propGetter: (item: any) => any) => {
     return data.filter((item) => propGetter(item) === value).length;
 };
+
+export type ParameterType = {
+    [key: string]: string | number | boolean | null | undefined;
+};
+
+export const generateQuery = (params: ParameterType) => {
+    const queryArray = [];
+    let paramValue: any = "";
+
+    for (const paramName in params) {
+        paramValue = params[paramName];
+
+        if (paramValue !== null && paramValue !== undefined && paramValue !== "") {
+            queryArray.push(`${paramName}=${paramValue}`);
+        }
+    }
+
+    return queryArray.join("&");
+};

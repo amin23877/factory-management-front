@@ -276,6 +276,7 @@ export const MoreInfoForm = ({
                 label="fax"
             />
             <FieldSelect
+                getOptionList={(resp) => resp.results}
                 request={getCustomers}
                 itemTitleField="name"
                 itemValueField="id"

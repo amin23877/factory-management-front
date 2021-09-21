@@ -13,7 +13,7 @@ import AddCustomerModal from "./Modals";
 import CustomerTypeModal from "./CustomerType";
 import Confirm from "../../Modals/Confirm";
 import Details from "./Details";
-import CustomerDataGrid from "./CustomerDataGrid";
+import CustomerDataGrid from "./DataGrid";
 
 export default function Customers() {
     const [activeTab, setActiveTab] = useState(0);

@@ -20,19 +20,16 @@ export default function CustomerDataGrid({
             field: "number",
             width: 120,
             headerName: "Customer ID",
-            editable: true,
         },
         {
             field: "name",
             width: 120,
             headerName: "Name",
-            editable: true,
         },
         {
             field: "state",
             width: 120,
             headerName: "State",
-            editable: true,
         },
         {
             field: "city",
