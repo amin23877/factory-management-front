@@ -7,6 +7,7 @@ const ServiceIndex = React.lazy(() => import("../features/FieldService"));
 const Tickets = React.lazy(() => import("../features/Tickets"));
 const Tasks = React.lazy(() => import("../features/Tasks"));
 const FRUs = React.lazy(() => import("../features/FieldService/FRU"));
+const Units = React.lazy(() => import("../features/FieldService/Units"));
 
 export default function FieldService() {
     const [activeTab, setActiveTab] = useState(0);
@@ -34,6 +35,7 @@ export default function FieldService() {
                     {activeTab === 2 && <ServiceIndex />}
                     {activeTab === 3 && <Tickets />}
                     {activeTab === 4 && <Tasks />}
+                    {activeTab === 5 && <Units />}
                 </Suspense>
             </Box>
         </Container>

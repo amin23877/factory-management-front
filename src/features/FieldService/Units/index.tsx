@@ -10,22 +10,41 @@ import { BasePaper } from "../../../app/Paper";
 
 import { formatTimestampToDate } from "../../../logic/date";
 
-export default function FRU() {
+export default function Unit() {
     const [activeTab, setActiveTab] = useState(0);
-    const [selectedFru, setSelectedFru] = useState<any>();
+    const [selectedUnit, setSelectedUnit] = useState<any>();
 
-    const { data: FRUs } = useSwr("/");
+    const { data: units } = useSwr("/");
 
     const callCols: GridColDef[] = [
-        { field: "number", headerName: "FRU Number", width: 110 },
-        { field: "name", headerName: "FRU Name", width: 120 },
-        { field: "description", headerName: "FRU Description", flex: 1 },
+        { field: "number", headerName: "Device Serial Number", width: 100 },
         {
-            field: "Lead Time",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.leadTime),
+            field: "estimatedShipDate",
+            headerName: "Est. S.D.",
+            valueFormatter: (r) => formatTimestampToDate(r.row?.estimatedShipDate),
             width: 120,
         },
-        { field: "price", headerName: "Price", width: 110 },
+        {
+            field: "actualShipDate",
+            headerName: "Act. S.D.",
+            valueFormatter: (r) => formatTimestampToDate(r.row?.actualShipDate),
+            width: 120,
+        },
+        { field: "status", headerName: "Status", width: 110 },
+
+        { field: "warrantyStatus", headerName: "Warranty Status", width: 120 },
+        {
+            field: "warrantyEndDate",
+            headerName: "Warranty End Date",
+            valueFormatter: (r) => formatTimestampToDate(r.row?.warrantyEndDate),
+            width: 120,
+        },
+        { field: "SO Number", valueFormatter: (r) => r.row?.SOId?.number, width: 120 },
+        {
+            field: "SO Date",
+            valueFormatter: (r) => formatTimestampToDate(r.row?.SOId?.createdAt),
+            width: 120,
+        },
     ];
 
     return (
@@ -46,7 +65,7 @@ export default function FRU() {
                 </Button>
                 <Button
                     kind="delete"
-                    disabled={!selectedFru}
+                    disabled={!selectedUnit}
                     onClick={() => setConfirm(true)}
                     style={{ margin: "0 0.5em" }}
                 >
@@ -64,19 +83,19 @@ export default function FRU() {
                     style={{ marginBottom: 10 }}
                 >
                     <Tab label="List" />
-                    <Tab label="Details" disabled={!selectedFru} />
+                    <Tab label="Details" disabled={!selectedUnit} />
                 </Tabs>
-                {activeTab === 0 && FRUs && (
+                {activeTab === 0 && units && (
                     <BaseDataGrid
-                        rows={FRUs || []}
+                        rows={units || []}
                         cols={callCols}
                         onRowSelected={(d) => {
-                            setSelectedFru(d);
+                            setSelectedUnit(d);
                             setActiveTab(1);
                         }}
                     />
                 )}
-                {/* {activeTab === 1 && selectedFru && <Details FRUsData={selectedFru} />} */}
+                {/* {activeTab === 1 && selectedUnit && <Details unitsData={selectedUnit} />} */}
             </BasePaper>
         </Box>
     );
