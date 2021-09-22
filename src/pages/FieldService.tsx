@@ -3,10 +3,10 @@ import { Box, Container, LinearProgress } from "@material-ui/core";
 
 import { SearchBar } from "../app/TextField";
 import { MyTabs, MyTab } from "../app/Tabs";
-
 const ServiceIndex = React.lazy(() => import("../features/FieldService"));
 const Tickets = React.lazy(() => import("../features/Tickets"));
 const Tasks = React.lazy(() => import("../features/Tasks"));
+const FRUs = React.lazy(() => import("../features/FieldService/FRU"));
 
 export default function FieldService() {
     const [activeTab, setActiveTab] = useState(0);
@@ -30,6 +30,7 @@ export default function FieldService() {
             </Box>
             <Box>
                 <Suspense fallback={<LinearProgress />}>
+                    {activeTab === 1 && <FRUs />}
                     {activeTab === 2 && <ServiceIndex />}
                     {activeTab === 3 && <Tickets />}
                     {activeTab === 4 && <Tasks />}
