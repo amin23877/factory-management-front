@@ -18,9 +18,11 @@ export default function FieldService() {
                 <div style={{ flexGrow: 1 }} />
                 <MyTabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <MyTab label="Dashboard" />
+                    <MyTab label="FRU" />
                     <MyTab label="Services" />
                     <MyTab label="Tickets" />
                     <MyTab label="Tasks" />
+                    <MyTab label="Units" />
                     <MyTab label="RMA" />
                     <MyTab label="UP" />
                     <MyTab label="Vendor Tech" />
@@ -28,9 +30,9 @@ export default function FieldService() {
             </Box>
             <Box>
                 <Suspense fallback={<LinearProgress />}>
-                    {activeTab === 1 && <ServiceIndex />}
-                    {activeTab === 2 && <Tickets />}
-                    {activeTab === 3 && <Tasks />}
+                    {activeTab === 2 && <ServiceIndex />}
+                    {activeTab === 3 && <Tickets />}
+                    {activeTab === 4 && <Tasks />}
                 </Suspense>
             </Box>
         </Container>
