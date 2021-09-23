@@ -1,14 +1,14 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React from "react";
 import { Box, FormControlLabel, Checkbox, LinearProgress, Divider, Paper } from "@material-ui/core";
 import useSWR from "swr";
 
 import TextField from "../../app/TextField";
-import { ArraySelect } from "../../app/Inputs";
 import Button from "../../app/Button";
 
 import { IFilter } from "../../api/filter";
 import { IField } from "../../api/field";
-import { splitLevelName } from "../../logic/levels";
+import Cluster from "./ClusterAndLevels/Cluster";
+import Level from "./ClusterAndLevels/Level";
 
 interface IForm {
     values: any;
@@ -251,6 +251,7 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
         </Box>
     );
 };
+
 export const Pricing = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
     return (
         <Box mt={1} display="grid" gridTemplateColumns="auto auto" gridColumnGap={10} gridRowGap={10}>
@@ -443,74 +444,8 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
 };
 
 export const DynamicFilterAndFields = ({ values = "", handleChange, handleBlur, selectedItem, device }: any) => {
-    const [dynamicFields, setDynamicFields] = useState<ReactNode[]>([]);
     const { data: filters } = useSWR<IFilter[]>("/filter");
     const { data: fields } = useSWR<IField[]>("/field");
-    // const { data: filterNFields } = useSWR("/filter/field");
-    // const filters: IFilter[] = selectedItem.filters;
-    // const fields: IField[] = selectedItem.fields;
-
-    useEffect(() => {
-        let validFields: ReactNode[] = [];
-        const addInputToArray = (field: IField) => {
-            if (field.type === "string" || field.type === "number") {
-                validFields.push(
-                    <TextField
-                        required={field.required}
-                        name={field.name}
-                        label={splitLevelName(field.name)}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values[field.name]}
-                    />
-                );
-            } else if (field.type === "enum") {
-                validFields.push(
-                    <ArraySelect
-                        required={field.required}
-                        name={field.name}
-                        label={splitLevelName(field.name)}
-                        items={field.valid}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        value={values[field.name]}
-                    />
-                );
-            } else if (field.type === "boolean") {
-                validFields.push(
-                    <FormControlLabel
-                        checked={values[field.name]}
-                        control={<Checkbox required={field.required} />}
-                        name={field.name}
-                        label={splitLevelName(field.name)}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                );
-            }
-        };
-        fields?.map((field) => {
-            if (selectedItem?.device || device) {
-                if (
-                    field.all ||
-                    field.filterValue.includes(values[field.filterName]) ||
-                    field.filterValue.includes("all")
-                ) {
-                    addInputToArray(field);
-                }
-            } else if (field.filterName[0] !== "Product Family") {
-                if (
-                    field.all ||
-                    field.filterValue.includes(values[field.filterName]) ||
-                    field.filterValue.includes("all")
-                ) {
-                    addInputToArray(field);
-                }
-            }
-        });
-
-        setDynamicFields(validFields);
-    }, [fields, values]);
 
     if (!filters) {
         return <LinearProgress />;
@@ -518,35 +453,25 @@ export const DynamicFilterAndFields = ({ values = "", handleChange, handleBlur, 
 
     return (
         <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
-            {filters?.map((filter) => {
-                if (selectedItem?.device || device) {
-                    return (
-                        <ArraySelect
-                            defaultValue={values[filter.name as any] || ""}
-                            name={filter.name}
-                            label={filter.name}
-                            items={filter.valid}
-                            value={values[filter.name as any]}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                    );
-                } else if (filter.name !== "Product Family") {
-                    return (
-                        <ArraySelect
-                            defaultValue={values ? values[filter.name as any] : ""}
-                            name={filter.name}
-                            label={filter.name}
-                            items={filter.valid}
-                            value={values ? values[filter.name as any] : ""}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                    );
-                }
-            })}
+            {filters?.map((filter) => (
+                <Cluster
+                    cluster={filter}
+                    device={device}
+                    handleBlur={handleBlur}
+                    handleChange={handleChange}
+                    values={values}
+                />
+            ))}
             <Divider style={{ gridColumnEnd: "span 2" }} />
-            {dynamicFields}
+            {fields?.map((field) => (
+                <Level
+                    level={field}
+                    device={device}
+                    handleBlur={handleBlur}
+                    handleChange={handleChange}
+                    values={values}
+                />
+            ))}
         </Box>
     );
 };

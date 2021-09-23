@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-import { get,  delete_, patch, post } from ".";
+import { get, delete_, patch, post } from ".";
 
 export const AddItemSchema = Yup.object().shape({
     name: Yup.string().min(4, "Too short!").max(60, "Too long").required("Required !!"),
@@ -78,6 +78,8 @@ export interface IItem {
     fields: {
         [key: string]: string | number;
     };
+
+    [key: string]: any;
 }
 
 export const AddItemInitialValues = {};

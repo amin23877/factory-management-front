@@ -1,6 +1,6 @@
 export interface IField {
     id?: string;
-    filterName: string;
+    filterName: string[];
     filterValue: string[];
     type: "string" | "boolean" | "number" | "enum";
     name: string;
