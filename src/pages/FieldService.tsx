@@ -7,6 +7,9 @@ import { MyTabs, MyTab } from "../app/Tabs";
 const ServiceIndex = React.lazy(() => import("../features/FieldService"));
 const Tickets = React.lazy(() => import("../features/Tickets"));
 const Tasks = React.lazy(() => import("../features/Tasks"));
+const FRUs = React.lazy(() => import("../features/FieldService/FRU"));
+const Units = React.lazy(() => import("../features/FieldService/Units"));
+const Vendors = React.lazy(() => import("../features/Vendor"));
 
 export default function FieldService() {
     const [activeTab, setActiveTab] = useState(0);
@@ -18,9 +21,11 @@ export default function FieldService() {
                 <div style={{ flexGrow: 1 }} />
                 <MyTabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <MyTab label="Dashboard" />
+                    <MyTab label="FRU" />
                     <MyTab label="Services" />
                     <MyTab label="Tickets" />
                     <MyTab label="Tasks" />
+                    {/* <MyTab label="Units" /> */}
                     <MyTab label="RMA" />
                     <MyTab label="UP" />
                     <MyTab label="Vendor Tech" />
@@ -28,9 +33,12 @@ export default function FieldService() {
             </Box>
             <Box>
                 <Suspense fallback={<LinearProgress />}>
-                    {activeTab === 1 && <ServiceIndex />}
-                    {activeTab === 2 && <Tickets />}
-                    {activeTab === 3 && <Tasks />}
+                    {activeTab === 1 && <FRUs />}
+                    {activeTab === 2 && <ServiceIndex />}
+                    {activeTab === 3 && <Tickets />}
+                    {activeTab === 4 && <Tasks />}
+                    {activeTab === 7 && <Vendors tech />}
+                    {/* {activeTab === 5 && <Units />} */}
                 </Suspense>
             </Box>
         </Container>

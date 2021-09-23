@@ -17,11 +17,11 @@ import Confirm from "../Modals/Confirm";
 import { deleteVendor, IVendor } from "../../api/vendor";
 import VendorTypeModal from "./VendorType";
 
-export default function Vendors() {
+export default function Vendors({ tech }: { tech?: boolean }) {
     const [activeTab, setActiveTab] = useState(0);
     const [selectedVendor, setSelectedVendor] = useState<IVendor>();
 
-    const { data: vendors, mutate: mutateVendors } = useSWR<IVendor[]>("/vendor");
+    const { data: vendors, mutate: mutateVendors } = useSWR(tech ? "/vendor?tech=true" : "/vendor");
 
     const [addVendor, setAddVendor] = useState(false);
     const [addType, setAddType] = useState(false);
@@ -120,7 +120,7 @@ export default function Vendors() {
                     </Box>
                     {activeTab === 0 && (
                         <BaseDataGrid
-                            rows={vendors || []}
+                            rows={vendors?.result || []}
                             cols={cols}
                             onRowSelected={(d) => {
                                 setSelectedVendor(d);

@@ -51,6 +51,7 @@ import { ILineService } from "../../../api/lineService";
 import { formatTimestampToDate } from "../../../logic/date";
 import { DateTimePicker } from "@material-ui/pickers";
 import { IItem } from "../../../api/items";
+import { getAllUnits } from "../../../api/units";
 
 export const DocumentForm = ({
     createdPO,
@@ -330,6 +331,18 @@ export const LinesForm = ({
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                     error={Boolean(errors.index)}
+                                />
+                                <FieldSelect
+                                    value={typeof values.fru === "string" ? values.fru : values.fru}
+                                    name="fru"
+                                    label="FRU"
+                                    request={getAllUnits}
+                                    itemTitleField="number"
+                                    itemValueField="id"
+                                    onChange={(e) => {
+                                        handleChange(e);
+                                    }}
+                                    onBlur={handleBlur}
                                 />
                                 <FormControlLabel
                                     style={{ width: "100%" }}
