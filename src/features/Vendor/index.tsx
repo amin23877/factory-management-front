@@ -59,7 +59,12 @@ export default function Vendors({ tech }: { tech?: boolean }) {
 
     return (
         <Box>
-            <VendorModal open={addVendor} onClose={() => setAddVendor(false)} onDone={mutateVendors} />
+            <VendorModal
+                tech={Boolean(tech)}
+                open={addVendor}
+                onClose={() => setAddVendor(false)}
+                onDone={mutateVendors}
+            />
             <Confirm
                 text={`Are you sure? You are going to delete vendor ${selectedVendor?.name}`}
                 open={confirm}

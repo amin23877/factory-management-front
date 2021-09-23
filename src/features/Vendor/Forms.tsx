@@ -2,22 +2,23 @@ import React from "react";
 import { Box, Checkbox, FormControlLabel, Paper, Tab, Tabs } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import { mutate } from "swr";
 
 import TextField from "../../app/TextField";
 import Button from "../../app/Button";
-import { createVendor, updateVendor } from "../../api/vendor";
-import { mutate } from "swr";
-import { getVendorTypes } from "../../api/vendorType";
 import { FieldSelect } from "../../app/Inputs";
 import { BasePaper } from "../../app/Paper";
+
+import { createVendor, updateVendor } from "../../api/vendor";
+import { getVendorTypes } from "../../api/vendorType";
 
 const schema = Yup.object().shape({
     name: Yup.string().required(),
 });
-export const AddVendorForm = ({ onDone }: { initialValues?: any; onDone: () => void }) => {
+export const AddVendorForm = ({ onDone, tech }: { initialValues?: any; onDone: () => void; tech: boolean }) => {
     const handleSubmit = async (d: any, { setSubmitting }: any) => {
         try {
-            const resp = await createVendor(d);
+            const resp = await createVendor({ ...d, tech });
             if (resp) {
                 onDone();
             }

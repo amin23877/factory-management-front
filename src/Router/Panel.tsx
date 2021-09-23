@@ -9,11 +9,8 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
-import ChatRounded from "@material-ui/icons/ChatRounded";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-
-import Fab from "@material-ui/core/Fab";
 
 import { TopAppBar } from "../app/TopAppBar";
 import MainNav from "../app/Drawer";
@@ -156,7 +153,13 @@ export default function PanelRouter() {
                             <MenuIcon />
                         </div>
                     </IconButton>
-                    <TopAppBar chatDrawerWidth={chatDrawerWidth} drawerWidth={drawerWidth} />
+                    <TopAppBar
+                        isChatOpen={chatDrawerOpen}
+                        onOpenChatClicked={() => {
+                            setChatDrawerOpen(true);
+                            setMainDrawerOpen(false);
+                        }}
+                    />
                 </Toolbar>
             </AppBar>
 
@@ -193,14 +196,13 @@ export default function PanelRouter() {
                     [classes.contentShiftRight]: chatDrawerOpen,
                 })}
             >
-                <Fab
-                    // onClick={() => setChatModal(true)}
+                {/* <Fab
                     onClick={() => setChatDrawerOpen(true)}
                     color="primary"
                     style={{ position: "fixed", bottom: 15, right: 15, zIndex: 1000 }}
                 >
                     <ChatRounded />
-                </Fab>
+                </Fab> */}
 
                 <Box style={{ flexGrow: 1, padding: "1em" }}>
                     <div style={theme.mixins.toolbar as any} />

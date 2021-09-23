@@ -25,7 +25,7 @@ export default function FieldService() {
                     <MyTab label="Services" />
                     <MyTab label="Tickets" />
                     <MyTab label="Tasks" />
-                    {/* <MyTab label="Units" /> */}
+                    <MyTab label="Units" disabled />
                     <MyTab label="RMA" />
                     <MyTab label="UP" />
                     <MyTab label="Vendor Tech" />
@@ -37,7 +37,7 @@ export default function FieldService() {
                     {activeTab === 2 && <ServiceIndex />}
                     {activeTab === 3 && <Tickets />}
                     {activeTab === 4 && <Tasks />}
-                    {activeTab === 7 && <Vendors tech />}
+                    {activeTab === 8 && <Vendors tech />}
                     {/* {activeTab === 5 && <Units />} */}
                 </Suspense>
             </Box>

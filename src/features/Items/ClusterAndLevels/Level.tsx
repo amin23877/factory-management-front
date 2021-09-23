@@ -26,7 +26,7 @@ export default function Level({
         return null;
     }
 
-    if (level.filterName[0] !== "Product Family" && !device) {
+    if (level.filterName[0] === "Product Family" && !device) {
         return null;
     }
 

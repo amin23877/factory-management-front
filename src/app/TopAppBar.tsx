@@ -1,10 +1,16 @@
 import React from "react";
 import { Button, IconButton, Avatar, Box } from "@material-ui/core";
-import { ArrowDropDownRounded, NotificationsOutlined, HelpOutline, TvRounded } from "@material-ui/icons";
+import { ArrowDropDownRounded, NotificationsOutlined, HelpOutline, TvRounded, ChatRounded } from "@material-ui/icons";
 
 import { useSession } from "../features/Session/sessionsSlice";
 
-export const TopAppBar = ({ drawerWidth, chatDrawerWidth }: { drawerWidth: number; chatDrawerWidth: number }) => {
+export const TopAppBar = ({
+    isChatOpen,
+    onOpenChatClicked,
+}: {
+    onOpenChatClicked: () => void;
+    isChatOpen: boolean;
+}) => {
     const session = useSession();
 
     return (
@@ -27,6 +33,11 @@ export const TopAppBar = ({ drawerWidth, chatDrawerWidth }: { drawerWidth: numbe
                 Phazify
                 <ArrowDropDownRounded />
             </Button>
+            {!isChatOpen && (
+                <IconButton color="primary" onClick={onOpenChatClicked}>
+                    <ChatRounded />
+                </IconButton>
+            )}
         </Box>
     );
 };
