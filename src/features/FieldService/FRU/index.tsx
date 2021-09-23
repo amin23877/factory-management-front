@@ -14,18 +14,29 @@ export default function FRU() {
     const [activeTab, setActiveTab] = useState(0);
     const [selectedFru, setSelectedFru] = useState<any>();
 
-    const { data: FRUs } = useSwr("/");
+    const { data: FRUs } = useSwr("/unit?fru=true");
 
     const callCols: GridColDef[] = [
-        { field: "number", headerName: "FRU Number", width: 110 },
-        { field: "name", headerName: "FRU Name", width: 120 },
-        { field: "description", headerName: "FRU Description", flex: 1 },
+        {
+            field: "number",
+            headerName: "FRU Number",
+            width: 150,
+            valueFormatter: (r) => r.row?.ItemId?.no,
+        },
+        { field: "name", headerName: "FRU Name", width: 200, valueFormatter: (r) => r.row?.ItemId?.name },
+        {
+            field: "description",
+            headerName: "FRU Description",
+            flex: 1,
+            valueFormatter: (r) => r.row?.ItemId?.description,
+        },
         {
             field: "Lead Time",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.leadTime),
+            valueFormatter: (r) => formatTimestampToDate(r.row?.ItemId?.lead),
             width: 120,
         },
-        { field: "price", headerName: "Price", width: 110 },
+
+        { field: "price", headerName: "Price", width: 110, valueFormatter: (r) => r.row?.LineItemRecordId?.price },
     ];
 
     return (
@@ -68,7 +79,7 @@ export default function FRU() {
                 </Tabs>
                 {activeTab === 0 && FRUs && (
                     <BaseDataGrid
-                        rows={FRUs || []}
+                        rows={FRUs.result || []}
                         cols={callCols}
                         onRowSelected={(d) => {
                             setSelectedFru(d);

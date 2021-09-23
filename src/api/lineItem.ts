@@ -11,7 +11,7 @@ export interface ILineItem {
     quantity: number;
     price: number;
     tax: boolean;
-
+    fru?: string;
     services: any[];
 }
 
