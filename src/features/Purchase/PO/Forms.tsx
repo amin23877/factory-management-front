@@ -239,7 +239,11 @@ export const LinesForm = ({
     const { data: services } = useSWR(selectedItem ? `/service?ItemId=${selectedItem.id}` : "/service");
 
     const schema = Yup.object().shape({
-        ItemId: Yup.string().required(),
+        ItemId: Yup.string().when("fru", {
+            is: undefined,
+            then: Yup.string().required(),
+            otherwise: Yup.string(),
+        }),
         quantity: Yup.number().required().min(1),
         price: Yup.number().required().min(0.0001),
     });
@@ -337,11 +341,10 @@ export const LinesForm = ({
                                     name="fru"
                                     label="FRU"
                                     request={getAllUnits}
+                                    getOptionList={(resp) => resp.result}
                                     itemTitleField="number"
                                     itemValueField="id"
-                                    onChange={(e) => {
-                                        handleChange(e);
-                                    }}
+                                    onChange={(e) => handleChange(e)}
                                     onBlur={handleBlur}
                                 />
                                 <FormControlLabel

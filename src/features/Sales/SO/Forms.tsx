@@ -128,6 +128,7 @@ export const GeneralForm = ({
                     name="QuoteId"
                     label="Quote ID"
                     request={getQuotes}
+                    getOptionList={(resp) => resp.result}
                     itemTitleField="number"
                     itemValueField="id"
                     onChange={(e) => {
@@ -211,6 +212,7 @@ export const EntitiesForm = ({
                 <FieldSelect
                     value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
                     request={getCustomers}
+                    getOptionList={(resp) => resp.result}
                     itemTitleField="name"
                     itemValueField="id"
                     name="repOrAgency"
@@ -974,6 +976,7 @@ export const TermsTab = ({
             <FieldSelect
                 value={values.requester ? values.requester : ""}
                 request={getAllEmployees}
+                getOptionList={(resp) => resp.result}
                 itemTitleField="username"
                 itemValueField="id"
                 keyField="id"
@@ -984,6 +987,7 @@ export const TermsTab = ({
             <FieldSelect
                 value={values.client ? values.client : ""}
                 request={getCustomers}
+                getOptionList={(resp) => resp.result}
                 itemTitleField="name"
                 itemValueField="id"
                 keyField="id"
