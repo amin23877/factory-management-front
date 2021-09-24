@@ -12,6 +12,7 @@ import { DateInput } from "../../../../components/Filters/Date";
 
 import { formatTimestampToDate } from "../../../../logic/date";
 import { get } from "../../../../api";
+import { UnitSearchBox } from "../../../../app/SearchBox";
 
 function Table({
     setActiveTab,
@@ -121,7 +122,7 @@ function Table({
 
     return (
         <Box>
-            {/* <UnitSearchBox /> */}
+            <UnitSearchBox />
             <Box display="flex" alignItems="center" my={1}>
                 <Button
                     color={topDateFilter === "week" ? "primary" : "default"}
