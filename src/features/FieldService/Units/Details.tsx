@@ -3,7 +3,7 @@ import { Box, Tabs, Tab } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
 
-import { General } from "./Forms";
+import { General, Status, Expense, Shipping } from "./Forms";
 
 import Button from "../../../app/Button";
 import { BasePaper } from "../../../app/Paper";
@@ -20,6 +20,8 @@ import { formatTimestampToDate } from "../../../logic/date";
 import { fileType } from "../../../logic/fileType";
 import DocumentModal from "../../Modals/DocumentModals";
 import { getModifiedValues } from "../../../logic/utils";
+import { DynamicFilterAndFields } from "../../Items/Forms";
+
 const schema = Yup.object().shape({});
 
 function Details({ unit }: { unit: IUnit }) {
@@ -110,12 +112,12 @@ function Details({ unit }: { unit: IUnit }) {
         []
     );
     return (
-        <BasePaper>
+        <>
             <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={unit?.id} model="unit" />
             <Formik initialValues={unit as IUnit} validationSchema={schema} onSubmit={handleSubmit}>
                 {({ values, errors, handleChange, handleBlur, isSubmitting, setFieldValue, touched }) => (
                     <Form>
-                        <Box mb={2} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridGap={10}>
+                        <Box mb={2} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
                             <BasePaper>
                                 <General
                                     values={values}
@@ -131,7 +133,7 @@ function Details({ unit }: { unit: IUnit }) {
                                     </Button>
                                 </Box>
                             </BasePaper>
-                            <BasePaper style={{ gridColumnEnd: "span 2" }}>
+                            <BasePaper>
                                 <Tabs
                                     value={infoActiveTab}
                                     onChange={(e, nv) => setInfoActiveTab(nv)}
@@ -167,9 +169,47 @@ function Details({ unit }: { unit: IUnit }) {
                                         )}
                                     </Box>
                                 )}
-                                {infoActiveTab === 1 && <div></div>}
-                                {infoActiveTab === 2 && <div></div>}
-                                {infoActiveTab === 3 && <Fragment></Fragment>}
+                                {infoActiveTab === 1 && (
+                                    <Status
+                                        values={values}
+                                        errors={errors}
+                                        touched={touched}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        setFieldValue={setFieldValue}
+                                    />
+                                )}
+                                {infoActiveTab === 2 && (
+                                    <Expense
+                                        values={values}
+                                        errors={errors}
+                                        touched={touched}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        setFieldValue={setFieldValue}
+                                    />
+                                )}
+                                {infoActiveTab === 3 && (
+                                    <Shipping
+                                        values={values}
+                                        errors={errors}
+                                        touched={touched}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        setFieldValue={setFieldValue}
+                                    />
+                                )}
+                                {infoActiveTab === 4 && (
+                                    <DynamicFilterAndFields
+                                        values={values.item}
+                                        handleChange={handleChange}
+                                        handleBlur={handleBlur}
+                                        setFieldValue={setFieldValue}
+                                        errors={errors}
+                                        touched={touched}
+                                        selectedItem={unit?.item}
+                                    />
+                                )}
                             </BasePaper>
                         </Box>
                     </Form>
@@ -212,7 +252,7 @@ function Details({ unit }: { unit: IUnit }) {
                     </>
                 )}
             </BasePaper>
-        </BasePaper>
+        </>
     );
 }
 

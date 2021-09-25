@@ -1,49 +1,53 @@
 import React, { useState } from "react";
-import { GridColDef } from "@material-ui/data-grid";
+import { GridColumns } from "@material-ui/data-grid";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import useSwr from "swr";
 
 import BaseDataGrid from "../../../app/BaseDataGrid";
 import { BasePaper } from "../../../app/Paper";
 
-// import Details from "./Details";
+import Details from "./Details";
 
 import { formatTimestampToDate } from "../../../logic/date";
+import { UnitSearchBox } from "../../../app/SearchBox";
 
 export default function Unit() {
     const [activeTab, setActiveTab] = useState(0);
     const [selectedUnit, setSelectedUnit] = useState<any>();
 
-    const { data: units } = useSwr("/");
+    const { data: units } = useSwr("/unit");
 
-    const callCols: GridColDef[] = [
-        { field: "number", headerName: "Device Serial Number", width: 100 },
+    const cols: GridColumns = [
         {
-            field: "estimatedShipDate",
-            headerName: "Est. S.D.",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.estimatedShipDate),
+            field: "Device",
+            headerName: "Device",
+            flex: 1,
+            valueFormatter: (r) => r.row?.item?.no,
+        },
+        {
+            field: "EST.S.D",
+            valueFormatter: (r) => formatTimestampToDate(r.row?.so?.estimatedShipDate),
             width: 120,
         },
         {
-            field: "actualShipDate",
-            headerName: "Act. S.D.",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.actualShipDate),
+            field: "Act.S.D.",
+            valueFormatter: (r) => formatTimestampToDate(r.row?.so?.actualShipDate),
             width: 120,
         },
-        { field: "status", headerName: "Status", width: 110 },
-
-        { field: "warrantyStatus", headerName: "Warranty Status", width: 120 },
+        { field: "status", headerName: "Status", width: 100 },
+        { field: "warrantyStatus", headerName: "Warranty Status", width: 150 },
+        { field: "warrantyEndDate", headerName: "warranty End Date", width: 150 },
         {
-            field: "warrantyEndDate",
-            headerName: "Warranty End Date",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.warrantyEndDate),
-            width: 120,
+            field: "SO NO.",
+            headerName: "SO NO.",
+            width: 90,
+            valueFormatter: (r) => r.row?.so?.number,
         },
-        { field: "SO Number", valueFormatter: (r) => r.row?.SOId?.number, width: 120 },
         {
             field: "SO Date",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.SOId?.createdAt),
-            width: 120,
+            headerName: "SO Date",
+            width: 100,
+            valueFormatter: (r) => formatTimestampToDate(r.row?.so?.createdAt),
         },
     ];
 
@@ -86,16 +90,19 @@ export default function Unit() {
                     <Tab label="Details" disabled={!selectedUnit} />
                 </Tabs>
                 {activeTab === 0 && units && (
-                    <BaseDataGrid
-                        rows={units || []}
-                        cols={callCols}
-                        onRowSelected={(d) => {
-                            setSelectedUnit(d);
-                            setActiveTab(1);
-                        }}
-                    />
+                    <>
+                        <UnitSearchBox />
+                        <BaseDataGrid
+                            rows={units.result || []}
+                            cols={cols}
+                            onRowSelected={(d) => {
+                                setSelectedUnit(d);
+                                setActiveTab(1);
+                            }}
+                        />
+                    </>
                 )}
-                {/* {activeTab === 1 && selectedUnit && <Details unitsData={selectedUnit} />} */}
+                {activeTab === 1 && selectedUnit && <Details unit={selectedUnit} />}
             </BasePaper>
         </Box>
     );

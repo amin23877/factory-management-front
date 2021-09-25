@@ -28,9 +28,45 @@ export const General = ({
 }: IForm) => {
     return (
         <>
-            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
-                Unite Name Unite Description Serial Number Status ID SO
+            <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
+                {/* Unite Name Unite Description Serial Number Status ID SO */}
+                <TextField
+                    label="Unit name"
+                    placeholder="Unit name"
+                    name="name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.name && touched.name)}
+                    value={values.item.name}
+                    style={{ gridColumnEnd: "span 2" }}
+                    disabled
+                />
+                <TextField
+                    multiline
+                    style={{ gridColumnEnd: "span 2" }}
+                    rows={4}
+                    placeholder="Unit Description"
+                    label="Unit Description"
+                    name="description"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.item.description}
+                    disabled
+                />
+                <TextField
+                    label="Serial Number"
+                    value={values.item.no}
+                    name="no"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.no && touched.no)}
+                    placeholder="Serial Number"
+                    style={{ gridColumnEnd: "span 2" }}
+                    disabled
+                />
+
                 <ArraySelect
+                    style={{ gridColumnEnd: "span 2" }}
                     fullWidth
                     label="Status"
                     items={[
@@ -51,42 +87,98 @@ export const General = ({
                     error={Boolean(errors.status)}
                 />
                 <TextField
-                    label="SO Date"
-                    value={formatTimestampToDate(values.so.createdAt)}
-                    name="soDate"
+                    label="ID"
+                    placeholder="ID"
+                    name="number"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={Boolean(errors.soDate && touched.soDate)}
-                    placeholder="SO Date"
+                    error={Boolean(errors.number && touched.number)}
+                    value={values.number}
                     disabled
                 />
-                <ArraySelect
-                    fullWidth
-                    label="Production Status"
-                    items={["Manufacturing", "Evaluation", "Test"]}
-                    name="productionStatus"
-                    value={values.productionStatus}
+                <TextField
+                    label="SO"
+                    value={values.so.number}
+                    name="so"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={Boolean(errors.productionStatus)}
-                />
-                <DateTimePicker
-                    name="dueDate"
-                    value={values.dueDate || null}
-                    onChange={(d) => setFieldValue("dueDate", d?.toString())}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.dueDate)}
-                    helperText={errors.dueDate}
-                    size="small"
-                    placeholder="dueDate"
-                    label="Due Date"
+                    error={Boolean(errors.so && touched.so)}
+                    placeholder="SO"
+                    disabled
                 />
             </Box>
         </>
     );
 };
 
-export const UnitInfo = ({
+export const Status = ({
+    isSubmitting,
+    values,
+    errors,
+    handleChange,
+    handleBlur,
+    touched,
+    setFieldValue,
+    device,
+}: IForm) => {
+    return (
+        <>
+            <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
+                <DateTimePicker
+                    size="small"
+                    value={values.warrantyExpDate}
+                    name="warrantyExpDate"
+                    label="Warranty exp date"
+                    onChange={(date) => setFieldValue("warrantyExpDate", date)}
+                    onBlur={handleBlur}
+                />
+                <DateTimePicker
+                    size="small"
+                    value={values.purchaseDate}
+                    name="purchaseDate"
+                    label="purchase date"
+                    onChange={(date) => setFieldValue("purchaseDate", date)}
+                    onBlur={handleBlur}
+                />
+                <DateTimePicker
+                    size="small"
+                    value={values.estimatedShipDate}
+                    name="estimatedShipDate"
+                    label="Estimated ship date"
+                    onChange={(date) => setFieldValue("estimatedShipDate", date)}
+                    onBlur={handleBlur}
+                />
+
+                <DateTimePicker
+                    size="small"
+                    value={values.actualShipDate}
+                    name="actualShipDate"
+                    label="Actual ship date"
+                    onChange={(date) => setFieldValue("actualShipDate", date)}
+                    onBlur={handleBlur}
+                />
+                <DateTimePicker
+                    size="small"
+                    value={values.estimatedLeadTime}
+                    name="estimatedLeadTime"
+                    label="Estimated Lead time"
+                    onChange={(date) => setFieldValue("estimatedLeadTime", date)}
+                    onBlur={handleBlur}
+                />
+                <DateTimePicker
+                    size="small"
+                    value={values.actualLeadTime}
+                    name="actualLeadTime"
+                    label="Actual Lead Time"
+                    onChange={(date) => setFieldValue("actualLeadTime", date)}
+                    onBlur={handleBlur}
+                />
+            </Box>
+        </>
+    );
+};
+
+export const Expense = ({
     isSubmitting,
     values,
     errors,
@@ -100,48 +192,114 @@ export const UnitInfo = ({
         <>
             <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
                 <TextField
-                    label="Unit"
-                    placeholder="Unit"
-                    name="number"
+                    label="Item Labor Time"
+                    value={values.itemLaborTime}
+                    name="itemLaborTime"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={Boolean(errors.number && touched.number)}
-                    value={values.number}
+                    error={Boolean(errors.itemLaborTime && touched.itemLaborTime)}
+                    placeholder="Item Labor Time"
                     disabled
                 />
                 <TextField
-                    label="Device Number"
-                    value={values.item.no}
-                    name="no"
+                    label="Item Labor Cost"
+                    value={values.itemLaborCost}
+                    name="itemLaborCost"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={Boolean(errors.no && touched.no)}
-                    placeholder="Device Number"
+                    error={Boolean(errors.itemLaborCost && touched.itemLaborCost)}
+                    placeholder="Item Labor Cost"
                     disabled
                 />
                 <TextField
-                    label="Device name"
-                    placeholder="Device name"
-                    name="name"
+                    label="Item BOM Cost"
+                    value={values.bomCost}
+                    name="bomCost"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={Boolean(errors.name && touched.name)}
-                    value={values.item.name}
-                    style={{ gridColumnEnd: "span 2" }}
+                    error={Boolean(errors.bomCost && touched.bomCost)}
+                    placeholder="Item BOM Cost"
+                />
+                <TextField
+                    label="Item Total Cost"
+                    value={values.ItemId?.cost}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.ItemId?.cost && touched.ItemId?.cost)}
+                    placeholder="Item Total Cost"
                     disabled
                 />
+            </Box>
+        </>
+    );
+};
 
+export const Shipping = ({
+    isSubmitting,
+    values,
+    errors,
+    handleChange,
+    handleBlur,
+    touched,
+    setFieldValue,
+    device,
+}: IForm) => {
+    return (
+        <>
+            <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
                 <TextField
-                    multiline
-                    style={{ gridColumnEnd: "span 2" }}
-                    rows={4}
-                    placeholder="Description"
-                    label="Description"
-                    name="description"
+                    label="Entity"
+                    value={values.entity}
+                    name="entity"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.item.description}
-                    disabled
+                    error={Boolean(errors.entity && touched.entity)}
+                    placeholder="Entity"
+                />
+                <TextField
+                    label="Shipping Address"
+                    value={values.shippingAddress}
+                    name="shippingAddress"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.shippingAddress && touched.shippingAddress)}
+                    placeholder="Shipping Address"
+                />
+                <TextField
+                    label="Contact Person"
+                    value={values.contactPerson}
+                    name="contactPerson"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.contactPerson && touched.contactPerson)}
+                    placeholder="Contact Person"
+                />
+                <TextField
+                    label="Contact Person Email"
+                    value={values.contactPersonEmail}
+                    name="contactPersonEmail"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.contactPersonEmail && touched.contactPersonEmail)}
+                    placeholder="Contact Person Email"
+                />
+                <TextField
+                    label="Contact Person Phone Number"
+                    value={values.contactPersonPhone}
+                    name="contactPersonPhone"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.contactPersonPhone && touched.contactPersonPhone)}
+                    placeholder="Contact Person Phone Number"
+                />
+                <TextField
+                    label="Unit Location"
+                    value={values.unitLocation}
+                    name="unitLocation"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.unitLocation && touched.unitLocation)}
+                    placeholder="Unit Location"
                 />
             </Box>
         </>
