@@ -9,6 +9,7 @@ const Tickets = React.lazy(() => import("../features/Tickets"));
 const Tasks = React.lazy(() => import("../features/Tasks"));
 const FRUs = React.lazy(() => import("../features/FieldService/FRU"));
 const Units = React.lazy(() => import("../features/FieldService/Units"));
+const UP = React.lazy(() => import("../features/FieldService/UP"));
 const Vendors = React.lazy(() => import("../features/Vendor"));
 
 export default function FieldService() {
@@ -38,6 +39,7 @@ export default function FieldService() {
                     {activeTab === 3 && <Tickets />}
                     {activeTab === 4 && <Tasks />}
                     {activeTab === 5 && <Units />}
+                    {activeTab === 7 && <UP />}
                     {activeTab === 8 && <Vendors tech />}
                 </Suspense>
             </Box>
