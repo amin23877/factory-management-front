@@ -298,3 +298,201 @@ export const Battery = ({
         </>
     );
 };
+
+export const Inverter = ({
+    isSubmitting,
+    values,
+    errors,
+    handleChange,
+    handleBlur,
+    touched,
+    setFieldValue,
+    device,
+}: IForm) => {
+    return (
+        <>
+            <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gap: 10 }}>
+                <ArraySelect
+                    fullWidth
+                    label="Unit Type"
+                    items={["Single Phase", "Three Phase"]}
+                    name="unitType"
+                    value={values.unitType}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.unitType)}
+                />
+                <TextField
+                    label="Power Rating"
+                    value={values.powerRating}
+                    name="powerRating"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.powerRating && touched.powerRating)}
+                    placeholder="Power Rating"
+                />
+                <TextField
+                    label="Input Voltage"
+                    value={values.inputVoltage}
+                    name="inputVoltage"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.inputVoltage && touched.inputVoltage)}
+                    placeholder="Input Voltage"
+                />
+                <TextField
+                    label="Output Voltage"
+                    value={values.outputVoltage}
+                    name="outputVoltage"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.outputVoltage && touched.outputVoltage)}
+                    placeholder="Output Voltage"
+                />
+                <TextField
+                    label="Run Time"
+                    value={values.runTime}
+                    name="runTime"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.runTime && touched.runTime)}
+                    placeholder="Run Time"
+                />
+                <TextField
+                    label="Inverter Status"
+                    value={values.inverterStatus}
+                    name="inverterStatus"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.inverterStatus && touched.inverterStatus)}
+                    placeholder="Inverter Status"
+                />
+                {values.unitType === "Single Phase" ? (
+                    <Box
+                        mt={1}
+                        display="grid"
+                        gridTemplateColumns="1fr 1fr 1fr"
+                        style={{ gap: 10, gridColumnEnd: "span 3" }}
+                    >
+                        <TextField
+                            label="Input Voltage"
+                            value={values.inputVoltage}
+                            name="inputVoltage"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.inputVoltage && touched.inputVoltage)}
+                            placeholder="Input Voltage"
+                        />
+                        <TextField
+                            label="Output Voltage"
+                            value={values.outputVoltage}
+                            name="outputVoltage"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.outputVoltage && touched.outputVoltage)}
+                            placeholder="Output Voltage"
+                        />
+                        <TextField
+                            label="Power"
+                            value={values.power}
+                            name="power"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.power && touched.power)}
+                            placeholder="Power"
+                        />
+                    </Box>
+                ) : (
+                    <Box
+                        mt={1}
+                        display="grid"
+                        gridTemplateColumns="1fr 1fr 1fr"
+                        style={{ gap: 10, gridColumnEnd: "span 3" }}
+                    >
+                        <TextField
+                            label="Input Voltage A"
+                            value={values.inputVoltage}
+                            name="inputVoltage"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.inputVoltage && touched.inputVoltage)}
+                            placeholder="Input Voltage"
+                        />
+                        <TextField
+                            label="Output Voltage A"
+                            value={values.outputVoltage}
+                            name="outputVoltage"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.outputVoltage && touched.outputVoltage)}
+                            placeholder="Output Voltage"
+                        />
+                        <TextField
+                            label="Power A"
+                            value={values.power}
+                            name="power"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.power && touched.power)}
+                            placeholder="Power"
+                        />
+                        <TextField
+                            label="Input Voltage B"
+                            value={values.inputVoltage}
+                            name="inputVoltage"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.inputVoltage && touched.inputVoltage)}
+                            placeholder="Input Voltage"
+                        />
+                        <TextField
+                            label="Output Voltage B"
+                            value={values.outputVoltage}
+                            name="outputVoltage"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.outputVoltage && touched.outputVoltage)}
+                            placeholder="Output Voltage"
+                        />
+                        <TextField
+                            label="Power B"
+                            value={values.power}
+                            name="power"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.power && touched.power)}
+                            placeholder="Power"
+                        />
+                        <TextField
+                            label="Input Voltage C"
+                            value={values.inputVoltage}
+                            name="inputVoltage"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.inputVoltage && touched.inputVoltage)}
+                            placeholder="Input Voltage"
+                        />
+                        <TextField
+                            label="Output Voltage C"
+                            value={values.outputVoltage}
+                            name="outputVoltage"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.outputVoltage && touched.outputVoltage)}
+                            placeholder="Output Voltage"
+                        />
+                        <TextField
+                            label="Power C"
+                            value={values.power}
+                            name="power"
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            error={Boolean(errors.power && touched.power)}
+                            placeholder="Power"
+                        />
+                    </Box>
+                )}
+            </Box>
+        </>
+    );
+};

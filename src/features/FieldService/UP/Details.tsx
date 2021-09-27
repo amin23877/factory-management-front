@@ -3,7 +3,7 @@ import { Box, Tabs, Tab, Typography } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
 
-import { General, Warranty, Battery } from "./Forms";
+import { General, Warranty, Battery, Inverter } from "./Forms";
 import MyQRCode from "../../../app/QRCode";
 
 import Button from "../../../app/Button";
@@ -224,54 +224,65 @@ function Details({ up }: { up: any }) {
                                 )}
                             </BasePaper>
                         </Box>
+
+                        <BasePaper>
+                            <Tabs value={gridActiveTab} onChange={(e, nv) => setGridActiveTab(nv)}>
+                                <Tab label="Documents" /> 0
+                                <Tab label="Job" /> 1
+                                <Tab label="Field Service History" /> 2
+                                <Tab label="Unit Images" /> 3
+                                <Tab label="Inverter measurements" /> 4
+                                <Tab label="Battery Measurements" /> 5
+                                <Tab label="Unit Logs" /> 6
+                                <Tab label="Note" /> 7
+                                <Tab label="Auditing" /> 8
+                            </Tabs>
+
+                            {gridActiveTab === 2 && <BaseDataGrid cols={bomCols} rows={[]} onRowSelected={(r) => {}} />}
+                            {gridActiveTab === 3 && (
+                                <>
+                                    <Button
+                                        onClick={() => {
+                                            setAddDocModal(true);
+                                        }}
+                                        variant="outlined"
+                                    >
+                                        + Add Document
+                                    </Button>
+                                    <BaseDataGrid
+                                        height={250}
+                                        cols={docCols}
+                                        rows={documents && documents.length ? documents : []}
+                                        onRowSelected={(v) => {}}
+                                    />
+                                </>
+                            )}
+                            {gridActiveTab === 5 && (
+                                <Fragment>
+                                    <Tabs
+                                        value={batteryTab}
+                                        onChange={(e, nv) => setBatteryTab(nv)}
+                                        style={{ marginBottom: "0.5em" }}
+                                    >
+                                        <Tab label="List" />
+                                        <Tab label="Diagram" />
+                                    </Tabs>
+                                </Fragment>
+                            )}
+                            {gridActiveTab === 4 && (
+                                <Inverter
+                                    values={values}
+                                    errors={errors}
+                                    touched={touched}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                    setFieldValue={setFieldValue}
+                                />
+                            )}
+                        </BasePaper>
                     </Form>
                 )}
             </Formik>
-            <BasePaper>
-                <Tabs value={gridActiveTab} onChange={(e, nv) => setGridActiveTab(nv)}>
-                    <Tab label="Documents" /> 0
-                    <Tab label="Job" /> 1
-                    <Tab label="Field Service History" /> 2
-                    <Tab label="Unit Images" /> 3
-                    <Tab label="Inverter measurements" /> 4
-                    <Tab label="Battery Measurements" /> 5
-                    <Tab label="Unit Logs" /> 6
-                    <Tab label="Note" /> 7
-                    <Tab label="Auditing" /> 8
-                </Tabs>
-
-                {gridActiveTab === 2 && <BaseDataGrid cols={bomCols} rows={[]} onRowSelected={(r) => {}} />}
-                {gridActiveTab === 3 && (
-                    <>
-                        <Button
-                            onClick={() => {
-                                setAddDocModal(true);
-                            }}
-                            variant="outlined"
-                        >
-                            + Add Document
-                        </Button>
-                        <BaseDataGrid
-                            height={250}
-                            cols={docCols}
-                            rows={documents && documents.length ? documents : []}
-                            onRowSelected={(v) => {}}
-                        />
-                    </>
-                )}
-                {gridActiveTab === 5 && (
-                    <Fragment>
-                        <Tabs
-                            value={batteryTab}
-                            onChange={(e, nv) => setBatteryTab(nv)}
-                            style={{ marginBottom: "0.5em" }}
-                        >
-                            <Tab label="List" />
-                            <Tab label="Diagram" />
-                        </Tabs>
-                    </Fragment>
-                )}
-            </BasePaper>
         </>
     );
 }
