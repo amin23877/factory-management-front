@@ -130,7 +130,7 @@ export const General = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={Boolean(errors.lastRun && touched.lastRun)}
-                    placeholder="lastRun"
+                    placeholder="Last System Test Run"
                 />
             </Box>
         </>
@@ -150,54 +150,50 @@ export const Warranty = ({
     return (
         <>
             <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
-                <DateTimePicker
-                    size="small"
-                    value={values.warrantyExpDate}
-                    name="warrantyExpDate"
-                    label="Warranty exp date"
-                    onChange={(date) => setFieldValue("warrantyExpDate", date)}
+                <TextField
+                    label="Warranty Number"
+                    value={values.warrantyNumber}
+                    name="warrantyNumber"
+                    onChange={handleChange}
                     onBlur={handleBlur}
+                    error={Boolean(errors.warrantyNumber && touched.warrantyNumber)}
+                    placeholder="Warranty Number"
                 />
-                <DateTimePicker
-                    size="small"
+                <TextField
+                    label="Warranty Name"
+                    value={values.warrantyName}
+                    name="warrantyName"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.warrantyName && touched.warrantyName)}
+                    placeholder="Warranty Name"
+                />
+                <TextField
+                    label="Expiration Date"
+                    value={values.expirationDate}
+                    name="expirationDate"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.expirationDate && touched.expirationDate)}
+                    placeholder="Expiration Date"
+                />
+                <TextField
+                    label="Purchase Date"
                     value={values.purchaseDate}
                     name="purchaseDate"
-                    label="purchase date"
-                    onChange={(date) => setFieldValue("purchaseDate", date)}
+                    onChange={handleChange}
                     onBlur={handleBlur}
+                    error={Boolean(errors.purchaseDate && touched.purchaseDate)}
+                    placeholder="Purchase Date"
                 />
-                <DateTimePicker
-                    size="small"
-                    value={values.estimatedShipDate}
-                    name="estimatedShipDate"
-                    label="Estimated ship date"
-                    onChange={(date) => setFieldValue("estimatedShipDate", date)}
+                <TextField
+                    label="SO Ship Date"
+                    value={values.SOShipDate}
+                    name="SOShipDate"
+                    onChange={handleChange}
                     onBlur={handleBlur}
-                />
-
-                <DateTimePicker
-                    size="small"
-                    value={values.actualShipDate}
-                    name="actualShipDate"
-                    label="Actual ship date"
-                    onChange={(date) => setFieldValue("actualShipDate", date)}
-                    onBlur={handleBlur}
-                />
-                <DateTimePicker
-                    size="small"
-                    value={values.estimatedLeadTime}
-                    name="estimatedLeadTime"
-                    label="Estimated Lead time"
-                    onChange={(date) => setFieldValue("estimatedLeadTime", date)}
-                    onBlur={handleBlur}
-                />
-                <DateTimePicker
-                    size="small"
-                    value={values.actualLeadTime}
-                    name="actualLeadTime"
-                    label="Actual Lead Time"
-                    onChange={(date) => setFieldValue("actualLeadTime", date)}
-                    onBlur={handleBlur}
+                    error={Boolean(errors.SOShipDate && touched.SOShipDate)}
+                    placeholder="SO Ship Date"
                 />
             </Box>
         </>
@@ -218,42 +214,85 @@ export const Battery = ({
         <>
             <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
                 <TextField
-                    label="Item Labor Time"
-                    value={values.itemLaborTime}
-                    name="itemLaborTime"
+                    label="Battery Qty"
+                    value={values.batteryQty}
+                    name="batteryQty"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={Boolean(errors.itemLaborTime && touched.itemLaborTime)}
-                    placeholder="Item Labor Time"
-                    disabled
+                    error={Boolean(errors.batteryQty && touched.batteryQty)}
+                    placeholder="Battery Qty"
                 />
                 <TextField
-                    label="Item Labor Cost"
-                    value={values.itemLaborCost}
-                    name="itemLaborCost"
+                    label="Battery Cabinet Qty"
+                    value={values.batteryCabinetQty}
+                    name="batteryCabinetQty"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={Boolean(errors.itemLaborCost && touched.itemLaborCost)}
-                    placeholder="Item Labor Cost"
-                    disabled
+                    error={Boolean(errors.batteryCabinetQty && touched.batteryCabinetQty)}
+                    placeholder="Battery Cabinet Qty"
                 />
                 <TextField
-                    label="Item BOM Cost"
-                    value={values.bomCost}
-                    name="bomCost"
+                    label="Battery Type"
+                    value={values.batteryType}
+                    name="batteryType"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={Boolean(errors.bomCost && touched.bomCost)}
-                    placeholder="Item BOM Cost"
+                    error={Boolean(errors.batteryType && touched.batteryType)}
+                    placeholder="Battery Type"
                 />
                 <TextField
-                    label="Item Total Cost"
-                    value={values.ItemId?.cost}
+                    label="Cabinet"
+                    value={values.Cabinet}
+                    name="Cabinet"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={Boolean(errors.ItemId?.cost && touched.ItemId?.cost)}
-                    placeholder="Item Total Cost"
-                    disabled
+                    error={Boolean(errors.Cabinet && touched.Cabinet)}
+                    placeholder="Cabinet"
+                />
+                <TextField
+                    label="Battery Diagram"
+                    value={values.batteryDiagram}
+                    name="batteryDiagram"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.batteryDiagram && touched.batteryDiagram)}
+                    placeholder="Battery Diagram"
+                />
+                <TextField
+                    label="Battery Order Date"
+                    value={values.batteryOrderDate}
+                    name="batteryOrderDate"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.batteryOrderDate && touched.batteryOrderDate)}
+                    placeholder="Battery Order Date"
+                />
+                <TextField
+                    label="PO"
+                    value={values.po}
+                    name="po"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.po && touched.po)}
+                    placeholder="PO"
+                />
+                <TextField
+                    label="Date Required"
+                    value={values.dateRequired}
+                    name="dateRequired"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.dateRequired && touched.dateRequired)}
+                    placeholder="Date Required"
+                />
+                <TextField
+                    label="Battery Shipping Address"
+                    value={values.batteryShippingAddress}
+                    name="batteryShippingAddress"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.batteryShippingAddress && touched.batteryShippingAddress)}
+                    placeholder="Battery Shipping Address"
                 />
             </Box>
         </>
