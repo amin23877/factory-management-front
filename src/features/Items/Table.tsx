@@ -1,33 +1,28 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { Box } from "@material-ui/core";
-import {
-    DataGrid,
-    GridColumns,
-    GridFilterModelParams,
-    GridPageChangeParams,
-    GridSortModelParams,
-    GridToolbar,
-} from "@material-ui/data-grid";
+import { DataGrid, GridColumns, GridToolbar } from "@material-ui/data-grid";
 import useSWR from "swr";
 
 import { BasePaper } from "../../app/Paper";
 
-import { IItem } from "../../api/items";
-import { generateURL } from "../../logic/filterSortPage";
 import SearchBox from "../../app/SearchBox";
 import { splitLevelName } from "../../logic/levels";
-import { useDataGridStyles } from "../../app/BaseDataGrid";
+import { useDataGridData } from "../../components/Datagrid/hooks";
 
 function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
-    const classes = useDataGridStyles();
+    // const [filters, setFilters] = useState<GridFilterModelParams>();
+    // const [sorts, setSort] = useState<GridSortModelParams>();
+    const {
+        dataGridClasses,
+        loading,
+        page,
+        rows: items,
+        setPage,
+    } = useDataGridData({ url: "/item", params: { device: false } });
 
-    const [filters, setFilters] = useState<GridFilterModelParams>();
-    const [page, setPage] = useState<GridPageChangeParams>();
-    const [sorts, setSort] = useState<GridSortModelParams>();
-
-    const { data: items } = useSWR<{ result: IItem[]; total: number }>(
-        generateURL("/item", filters, sorts, page, "device=false")
-    );
+    // const { data: items } = useSWR<{ result: IItem[]; total: number }>(
+    //     generateURL("/item", filters, sorts, page, "device=false")
+    // );
     const { data: fields } = useSWR("/field");
     const { data: clusters } = useSWR("/filter");
 
@@ -159,17 +154,19 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
             <BasePaper>
                 <Box height={550}>
                     <DataGrid
-                        className={classes.root}
+                        loading={loading}
+                        className={dataGridClasses.root}
                         onRowSelected={onRowSelected}
                         pagination
+                        page={page}
                         pageSize={25}
                         rowCount={items ? items.total : 0}
                         filterMode="server"
                         paginationMode="server"
                         sortingMode="server"
                         onSortModelChange={(s) => setSort(s)}
-                        onPageChange={(p) => setPage(p)}
-                        onPageSizeChange={(ps) => setPage(ps)}
+                        onPageChange={(p) => setPage(p.page)}
+                        // onPageSizeChange={(ps) => setPage(ps)}
                         onFilterModelChange={(f) => {
                             f.filterModel.items[0].value && setFilters(f);
                         }}

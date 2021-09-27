@@ -1,7 +1,9 @@
 import React, { useMemo, useState, Fragment, useRef } from "react";
 import { Box, Tabs, Tab, Typography } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
 
 import { General, Warranty, Battery, Inverter } from "./Forms";
 import MyQRCode from "../../../app/QRCode";
@@ -10,16 +12,14 @@ import Button from "../../../app/Button";
 import { BasePaper } from "../../../app/Paper";
 import BaseDataGrid from "../../../app/BaseDataGrid";
 
-import { Formik, Form } from "formik";
-import { mutate } from "swr";
-import * as Yup from "yup";
 import Toast from "../../../app/Toast";
+import { getModifiedValues } from "../../../logic/utils";
 import { IDocument } from "../../../api/document";
 import { formatTimestampToDate } from "../../../logic/date";
 import { fileType } from "../../../logic/fileType";
 import DocumentModal from "../../Modals/DocumentModals";
-import { getModifiedValues } from "../../../logic/utils";
 import { exportPdf } from "../../../logic/pdf";
+import BatteryDiagram from "./BatteryDiagram";
 
 const schema = Yup.object().shape({});
 
@@ -267,6 +267,7 @@ function Details({ up }: { up: any }) {
                                         <Tab label="List" />
                                         <Tab label="Diagram" />
                                     </Tabs>
+                                    {batteryTab === 1 && <BatteryDiagram />}
                                 </Fragment>
                             )}
                             {gridActiveTab === 4 && (

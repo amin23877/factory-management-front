@@ -12,7 +12,13 @@ import { formatTimestampToDate } from "../../../logic/date";
 
 export default function Up() {
     const [activeTab, setActiveTab] = useState(0);
-    const [selectedUp, setSelectedUp] = useState<any>();
+    const [selectedUp, setSelectedUp] = useState<any>({
+        id: "test",
+        number: "testnumber",
+        item: { no: "testitemno", name: "testitemname", modelName: "", modelNumber: "", description: "" },
+        so: { number: "" },
+        options: [],
+    });
 
     const { data: ups } = useSwr("/up");
     // Device Serial Number	Model	Actual Ship Date	SO Number	Warranty End Date	Inverter Status	Battery Status
@@ -51,7 +57,8 @@ export default function Up() {
                     style={{ marginBottom: 10 }}
                 >
                     <Tab label="List" />
-                    <Tab label="Details" disabled={!selectedUp} />
+                    {/* <Tab label="Details" disabled={!selectedUp} /> */}
+                    <Tab label="Details" />
                 </Tabs>
                 {activeTab === 0 && ups && (
                     <>

@@ -83,7 +83,6 @@ export default function CustomerDataGrid({
         },
     ];
 
-    // FIXME: *rows.results* should change to *rows.result* from api response
     return (
         <div
             style={{
@@ -105,7 +104,7 @@ export default function CustomerDataGrid({
                 page={page}
                 onPageChange={(p) => setPage(p.page)}
                 pageSize={25}
-                rows={rows ? (rows as any).results : []}
+                rows={rows ? rows.result : []}
                 rowCount={rows ? rows.total : 0}
             />
         </div>

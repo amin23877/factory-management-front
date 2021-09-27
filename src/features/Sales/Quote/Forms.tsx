@@ -340,7 +340,7 @@ export const EntitiesTab = ({
             <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
                 <FieldSelect
                     value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
-                    getOptionList={(resp) => resp.results}
+                    getOptionList={(resp) => resp.result}
                     request={getCustomers}
                     itemTitleField="name"
                     itemValueField="id"
@@ -410,7 +410,7 @@ export const EntitiesTab = ({
                 /> */}
                 <FieldSelect
                     value={typeof values.client === "string" ? values.client : values.client?.id}
-                    getOptionList={(resp) => resp.results}
+                    getOptionList={(resp) => resp.result}
                     request={getCustomers}
                     itemTitleField="name"
                     itemValueField="id"

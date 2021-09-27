@@ -13,7 +13,7 @@ export const useQuery = async (request: (arg?: any) => Promise<any>) => {
                 setData(resp);
                 setIsLoading(false);
             }
-        } catch (error) {
+        } catch (error: any) {
             setError(error);
             setData(null);
             setIsLoading(false);

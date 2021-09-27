@@ -17,7 +17,14 @@ export const useDataGridData = ({ params, url }: { params?: ParameterType; url: 
     const dataGridClasses = useDataGridStyles();
 
     const { data, mutate } = useSWR(
-        params ? `${url}?${generateQuery(params)}&page=${page + 1}` : `${url}?page=${page + 1}`
+        params ? `${url}?${generateQuery(params)}&page=${page + 1}` : `${url}?page=${page + 1}`,
+        (url) => {
+            setLoading(true);
+            return get(url)
+                .then((res) => res)
+                .catch((e) => console.log(e))
+                .finally(() => setLoading(false));
+        }
     );
     const rows: any = useStickyResult(data);
 
