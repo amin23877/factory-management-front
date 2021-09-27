@@ -1,6 +1,6 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { Box } from "@material-ui/core";
-import { DataGrid, GridColumns, GridToolbar } from "@material-ui/data-grid";
+import { DataGrid, GridColumns, GridFilterModelParams, GridSortModelParams, GridToolbar } from "@material-ui/data-grid";
 import useSWR from "swr";
 
 import { BasePaper } from "../../app/Paper";
@@ -10,8 +10,8 @@ import { splitLevelName } from "../../logic/levels";
 import { useDataGridData } from "../../components/Datagrid/hooks";
 
 function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
-    // const [filters, setFilters] = useState<GridFilterModelParams>();
-    // const [sorts, setSort] = useState<GridSortModelParams>();
+    const [filters, setFilters] = useState<GridFilterModelParams>();
+    const [sorts, setSort] = useState<GridSortModelParams>();
     const {
         dataGridClasses,
         loading,
