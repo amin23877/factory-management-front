@@ -5,7 +5,7 @@ import useSWR, { mutate } from "swr";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
-import { General, Warranty, Battery, Inverter } from "./Forms";
+import { General, Warranty, Battery, Inverter, Control } from "./Forms";
 import MyQRCode from "../../../app/QRCode";
 
 import Button from "../../../app/Button";
@@ -137,6 +137,7 @@ function Details({ up }: { up: any }) {
                                     <Tab label="Options" />
                                     <Tab label="Battery Info" />
                                     <Tab label="Warranty Info" />
+                                    <Tab label="Control" />
                                 </Tabs>
                                 {infoActiveTab === 0 && (
                                     <Box
@@ -214,6 +215,16 @@ function Details({ up }: { up: any }) {
                                 )}
                                 {infoActiveTab === 4 && (
                                     <Warranty
+                                        values={values}
+                                        errors={errors}
+                                        touched={touched}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        setFieldValue={setFieldValue}
+                                    />
+                                )}
+                                {infoActiveTab === 5 && (
+                                    <Control
                                         values={values}
                                         errors={errors}
                                         touched={touched}
