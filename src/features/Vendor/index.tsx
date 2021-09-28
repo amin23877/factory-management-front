@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { Box, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
-import { GridColDef } from "@material-ui/data-grid";
-import useSWR from "swr";
+import { DataGrid, GridColDef, GridToolbar } from "@material-ui/data-grid";
 
 import { AddRounded, DeleteRounded, PrintRounded, PostAdd, LocalOfferRounded } from "@material-ui/icons";
 
-import BaseDataGrid from "../../app/BaseDataGrid";
 import List from "../../app/SideUtilityList";
 import Toast from "../../app/Toast";
 
@@ -16,12 +14,20 @@ import Confirm from "../Modals/Confirm";
 
 import { deleteVendor, IVendor } from "../../api/vendor";
 import VendorTypeModal from "./VendorType";
+import { useDataGridData } from "../../components/Datagrid/hooks";
 
 export default function Vendors({ tech }: { tech?: boolean }) {
     const [activeTab, setActiveTab] = useState(0);
     const [selectedVendor, setSelectedVendor] = useState<IVendor>();
 
-    const { data: vendors, mutate: mutateVendors } = useSWR(tech ? "/vendor?tech=true" : "/vendor");
+    const {
+        dataGridClasses,
+        loading,
+        mutate: mutateVendors,
+        page,
+        rows: vendors,
+        setPage,
+    } = useDataGridData({ url: "/vendor", params: { tech } });
 
     const [addVendor, setAddVendor] = useState(false);
     const [addType, setAddType] = useState(false);
@@ -124,14 +130,33 @@ export default function Vendors({ tech }: { tech?: boolean }) {
                         <div style={{ flexGrow: 1 }} />
                     </Box>
                     {activeTab === 0 && (
-                        <BaseDataGrid
-                            rows={vendors?.result || []}
-                            cols={cols}
-                            onRowSelected={(d) => {
-                                setSelectedVendor(d);
-                                setActiveTab(1);
-                            }}
-                        />
+                        // <BaseDataGrid
+                        //     rows={vendors?.result || []}
+                        //     cols={cols}
+                        // onRowSelected={(d) => {
+                        //     setSelectedVendor(d);
+                        //     setActiveTab(1);
+                        // }}
+                        // />
+                        <Box height={550}>
+                            <DataGrid
+                                loading={loading}
+                                className={dataGridClasses.root}
+                                onRowSelected={(d) => {
+                                    setSelectedVendor(d.data as any);
+                                    setActiveTab(1);
+                                }}
+                                pagination
+                                page={page}
+                                pageSize={25}
+                                rowCount={vendors ? vendors.total : 0}
+                                paginationMode="server"
+                                onPageChange={(p) => setPage(p.page)}
+                                rows={vendors ? vendors.result : []}
+                                columns={cols}
+                                components={{ Toolbar: GridToolbar }}
+                            />
+                        </Box>
                     )}
                     {activeTab === 1 && selectedVendor && <Details vendor={selectedVendor} />}
                 </Box>
