@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Box, Tab, Tabs } from "@material-ui/core";
-import { GridColDef, GridColumns } from "@material-ui/data-grid";
+import { GridColumns } from "@material-ui/data-grid";
 import useSWR, { mutate } from "swr";
 import { Formik } from "formik";
 
@@ -30,7 +30,7 @@ export default function Details({
     const { data: documents } = useSWR(`/document/job/${initialValue.id}`, fetcher);
 
     const { data: lineItem } = useSWR(`/lineitem/${initialValue.LineServiceRecordId.LineItemRecordId}`);
-    const { data: itemNotes } = useSWR(lineItem ? `/note/item/${lineItem.ItemId}` : null);
+    // const { data: itemNotes } = useSWR(lineItem ? `/note/item/${lineItem.ItemId}` : null);
     const { data: itemDocuments } = useSWR(lineItem ? `/document/item/${lineItem.ItemId}` : null);
 
     const [activeTab, setActiveTab] = useState(0);
@@ -181,8 +181,8 @@ export default function Details({
                             onRowSelected={() => {}}
                         />
                     )}
-                    {activeTab === 2 && <QuoteDatagrid params={`JobId=${initialValue.id}`} onRowSelected={() => {}} />}
-                    {activeTab === 3 && <SODatagrid params={`JobId=${initialValue.id}`} onRowSelected={() => {}} />}
+                    {activeTab === 2 && <QuoteDatagrid params={{ JobId: initialValue.id }} onRowSelected={() => {}} />}
+                    {activeTab === 3 && <SODatagrid params={{ JobId: initialValue.id }} onRowSelected={() => {}} />}
                     {/* {activeTab === 2 && (
                         <BaseDataGrid cols={noteCols} rows={itemNotes ? itemNotes : []} onRowSelected={() => {}} />
                     )} */}

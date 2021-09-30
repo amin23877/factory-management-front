@@ -2,18 +2,19 @@ import React, { useMemo } from "react";
 import { GridColumns, DataGrid, GridToolbar } from "@material-ui/data-grid";
 
 import { formatTimestampToDate } from "../../../logic/date";
-import usePaginatedData from "../../../components/Datagrid/hooks";
+import { useDataGridData } from "../../../components/Datagrid/hooks";
+import { ParameterType } from "../../../logic/utils";
 
-function SODatagrid({
+function SODataGrid({
     onRowSelected,
     params,
     url,
 }: {
     onRowSelected: (row: any) => void;
-    params?: string;
+    params?: ParameterType;
     url?: string;
 }) {
-    const { dataGridClasses, loading, page, rows, setPage } = usePaginatedData({ params, url: "/so" });
+    const { dataGridClasses, loading, page, rows, setPage } = useDataGridData({ params, url: "/so" });
 
     const cols = useMemo<GridColumns>(
         () => [
@@ -86,4 +87,4 @@ function SODatagrid({
     );
 }
 
-export default SODatagrid;
+export default SODataGrid;

@@ -2,19 +2,20 @@ import React, { useMemo } from "react";
 import { DataGrid, GridColumns, GridToolbar } from "@material-ui/data-grid";
 
 import { formatTimestampToDate } from "../../../logic/date";
-import usePaginatedData from "../../../components/Datagrid/hooks";
+import { useDataGridData } from "../../../components/Datagrid/hooks";
+import { ParameterType } from "../../../logic/utils";
 // import { formatTimestampToDate } from "../../../logic/date";
 
-function QuoteDatagrid({
+function QuoteDataGrid({
     onRowSelected,
     params,
     url,
 }: {
-    params?: string;
+    params?: ParameterType;
     url?: string;
     onRowSelected: (row: any) => void;
 }) {
-    const { dataGridClasses, loading, page, rows, setPage } = usePaginatedData({ params, url: "/quote" });
+    const { dataGridClasses, loading, page, rows, setPage } = useDataGridData({ params, url: "/quote" });
 
     const cols = useMemo<GridColumns>(
         () => [
@@ -85,4 +86,4 @@ function QuoteDatagrid({
     );
 }
 
-export default QuoteDatagrid;
+export default QuoteDataGrid;

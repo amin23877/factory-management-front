@@ -40,6 +40,6 @@ export const generateQuery = (params: ParameterType) => {
             queryArray.push(`${paramName}=${paramValue}`);
         }
     }
-
+    
     return queryArray.join("&");
 };

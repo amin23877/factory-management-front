@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
-import { DataGrid, GridColDef, GridToolbar } from "@material-ui/data-grid";
+import { GridColDef } from "@material-ui/data-grid";
 
 import { AddRounded, DeleteRounded, PrintRounded, PostAdd, LocalOfferRounded } from "@material-ui/icons";
 
@@ -14,20 +14,12 @@ import Confirm from "../Modals/Confirm";
 
 import { deleteVendor, IVendor } from "../../api/vendor";
 import VendorTypeModal from "./VendorType";
-import { useDataGridData } from "../../components/Datagrid/hooks";
+import FullDataGrid from "../../components/Datagrid/FullDataGrid";
+import { mutate } from "swr";
 
-export default function Vendors({ tech }: { tech?: boolean }) {
+export default function Vendors({ tech }: { tech: boolean }) {
     const [activeTab, setActiveTab] = useState(0);
     const [selectedVendor, setSelectedVendor] = useState<IVendor>();
-
-    const {
-        dataGridClasses,
-        loading,
-        mutate: mutateVendors,
-        page,
-        rows: vendors,
-        setPage,
-    } = useDataGridData({ url: "/vendor", params: { tech } });
 
     const [addVendor, setAddVendor] = useState(false);
     const [addType, setAddType] = useState(false);
@@ -39,7 +31,7 @@ export default function Vendors({ tech }: { tech?: boolean }) {
             if (selectedVendor && selectedVendor.id) {
                 await deleteVendor(selectedVendor.id);
 
-                mutateVendors();
+                mutate(`/vendor?tech=${tech}`);
                 setConfirm(false);
                 setActiveTab(0);
                 Toast("Record deleted");
@@ -48,7 +40,6 @@ export default function Vendors({ tech }: { tech?: boolean }) {
             console.log(error);
         }
     };
-    //	Zip Code	Contact	Contact Phone	 Contact Email	Active
 
     const cols: GridColDef[] = [
         { field: "number", headerName: "Number", width: 100 },
@@ -69,7 +60,7 @@ export default function Vendors({ tech }: { tech?: boolean }) {
                 tech={Boolean(tech)}
                 open={addVendor}
                 onClose={() => setAddVendor(false)}
-                onDone={mutateVendors}
+                onDone={() => mutate(`/vendor?tech=${tech}`)}
             />
             <Confirm
                 text={`Are you sure? You are going to delete vendor ${selectedVendor?.name}`}
@@ -130,33 +121,15 @@ export default function Vendors({ tech }: { tech?: boolean }) {
                         <div style={{ flexGrow: 1 }} />
                     </Box>
                     {activeTab === 0 && (
-                        // <BaseDataGrid
-                        //     rows={vendors?.result || []}
-                        //     cols={cols}
-                        // onRowSelected={(d) => {
-                        //     setSelectedVendor(d);
-                        //     setActiveTab(1);
-                        // }}
-                        // />
-                        <Box height={550}>
-                            <DataGrid
-                                loading={loading}
-                                className={dataGridClasses.root}
-                                onRowSelected={(d) => {
-                                    setSelectedVendor(d.data as any);
-                                    setActiveTab(1);
-                                }}
-                                pagination
-                                page={page}
-                                pageSize={25}
-                                rowCount={vendors ? vendors.total : 0}
-                                paginationMode="server"
-                                onPageChange={(p) => setPage(p.page)}
-                                rows={vendors ? vendors.result : []}
-                                columns={cols}
-                                components={{ Toolbar: GridToolbar }}
-                            />
-                        </Box>
+                        <FullDataGrid
+                            url="/vendor"
+                            columns={cols}
+                            defaultQueries={{ tech }}
+                            onRowSelected={(d) => {
+                                setSelectedVendor(d.data as any);
+                                setActiveTab(1);
+                            }}
+                        />
                     )}
                     {activeTab === 1 && selectedVendor && <Details vendor={selectedVendor} />}
                 </Box>

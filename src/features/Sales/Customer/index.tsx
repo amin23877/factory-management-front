@@ -113,7 +113,7 @@ export default function Customers() {
                         {activeTab === 1 && (
                             <CustomerDataGrid
                                 url="/customer"
-                                params="approved=null"
+                                params={{ approved: "null" }}
                                 onRowSelected={(v) => {
                                     setSelectedRow(v);
                                     setActiveTab(3);
@@ -124,7 +124,7 @@ export default function Customers() {
                         {activeTab === 2 && (
                             <CustomerDataGrid
                                 url="/customer"
-                                params="approved=false"
+                                params={{ approved: false }}
                                 onRowSelected={(v) => {
                                     setSelectedRow(v);
                                     setActiveTab(3);

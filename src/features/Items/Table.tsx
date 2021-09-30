@@ -10,19 +10,17 @@ import { splitLevelName } from "../../logic/levels";
 import { useDataGridData } from "../../components/Datagrid/hooks";
 
 function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
-    const [filters, setFilters] = useState<GridFilterModelParams>();
-    const [sorts, setSort] = useState<GridSortModelParams>();
+    const [filters, setFilters] = useState<{ [key: string]: any }>({});
+    const [sorts, setSort] = useState<{ [key: string]: string }>({});
+    const [limit, setLimit] = useState<string | number>();
     const {
         dataGridClasses,
         loading,
         page,
         rows: items,
         setPage,
-    } = useDataGridData({ url: "/item", params: { device: false } });
+    } = useDataGridData({ url: "/item", params: { device: false, ...filters, ...sorts }, limit });
 
-    // const { data: items } = useSWR<{ result: IItem[]; total: number }>(
-    //     generateURL("/item", filters, sorts, page, "device=false")
-    // );
     const { data: fields } = useSWR("/field");
     const { data: clusters } = useSWR("/filter");
 
@@ -148,6 +146,31 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
         return res;
     }, [items, fields, clusters]);
 
+    const handleChangeFilter = (f: GridFilterModelParams) => {
+        const { columnField, value, operatorValue } = f.filterModel.items[0];
+
+        if (columnField) {
+            setFilters({
+                [`${operatorValue === "contains" ? "contain" : ""}${columnField}`]: value,
+            });
+        } else if (columnField && !value) {
+            setFilters({});
+        }
+    };
+
+    const handleSortChange = (s: GridSortModelParams): void => {
+        if (s.sortModel[0]) {
+            const { field, sort } = s.sortModel[0];
+            if (!field || !sort) {
+                return;
+            }
+
+            setSort({ sort: field, order: sort === "desc" ? "DESC" : "ASC" });
+        } else {
+            setSort({});
+        }
+    };
+
     return (
         <>
             <SearchBox panel="inventory" />
@@ -164,12 +187,10 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
                         filterMode="server"
                         paginationMode="server"
                         sortingMode="server"
-                        onSortModelChange={(s) => setSort(s)}
+                        onSortModelChange={handleSortChange}
                         onPageChange={(p) => setPage(p.page)}
-                        // onPageSizeChange={(ps) => setPage(ps)}
-                        onFilterModelChange={(f) => {
-                            f.filterModel.items[0].value && setFilters(f);
-                        }}
+                        onPageSizeChange={(ps) => setLimit(ps.pageSize)}
+                        onFilterModelChange={handleChangeFilter}
                         rows={items ? items.result : []}
                         columns={gridColumns}
                         components={{ Toolbar: GridToolbar }}

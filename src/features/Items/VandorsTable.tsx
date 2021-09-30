@@ -17,7 +17,7 @@ import Snack from "../../app/Snack";
 export const useStyles = makeStyles((theme) => ({
     tableCont: {
         borderRadius: 10,
-        maxHeight: 550,
+        height: 350,
     },
     root: {
         backgroundColor: "#f9f9f9",
@@ -95,7 +95,7 @@ export default function VendorsTable({
 
     useEffect(() => {
         setVendors(rows);
-    }, [vendors]);
+    }, [rows, vendors]);
 
     useEffect(() => {
         setPrefVendor(selectedItem?.prefVendor);
@@ -104,7 +104,7 @@ export default function VendorsTable({
     return (
         <>
             <Snack open={snack} onClose={() => setSnack(false)}>
-                Preferred vendor changes successfuly
+                Preferred vendor changes successfully
             </Snack>
 
             <TableContainer component={Paper} className={classes.tableCont}>

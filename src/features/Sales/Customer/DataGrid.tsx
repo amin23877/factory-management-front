@@ -1,19 +1,18 @@
 import React from "react";
 import { DataGrid, GridColDef, GridToolbar } from "@material-ui/data-grid";
 
-import usePaginatedData from "../../../components/Datagrid/hooks";
-//	Status
+import { useDataGridData } from "../../../components/Datagrid/hooks";
 
 export default function CustomerDataGrid({
     url,
     onRowSelected,
     params,
 }: {
-    params?: string;
+    params?: { [key: string]: any };
     url: string;
     onRowSelected: (row: any) => void;
 }) {
-    const { dataGridClasses, loading, page, rows, setPage } = usePaginatedData({ url, params });
+    const { dataGridClasses, loading, page, rows, setPage } = useDataGridData({ url, params });
 
     const cols: GridColDef[] = [
         {

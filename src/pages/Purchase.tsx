@@ -25,7 +25,7 @@ export default function Purchase() {
             </Box>
             {activeTab === 1 && <PurchaseQuote />}
             {activeTab === 2 && <PurchasePO />}
-            {activeTab === 3 && <Vendors />}
+            {activeTab === 3 && <Vendors tech={false} />}
         </Container>
     );
 }
