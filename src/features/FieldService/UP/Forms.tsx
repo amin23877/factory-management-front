@@ -1,8 +1,9 @@
-import React from "react";
-import { Box } from "@material-ui/core";
+import React, { useState } from "react";
+import { Box, Tabs, Tab } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 
 import TextField from "../../../app/TextField";
+import Button from "../../../app/Button";
 import { formatTimestampToDate } from "../../../logic/date";
 import { ArraySelect } from "../../../app/Inputs";
 
@@ -295,6 +296,66 @@ export const Battery = ({
                     placeholder="Battery Shipping Address"
                 />
             </Box>
+        </>
+    );
+};
+export const Control = ({
+    isSubmitting,
+    values,
+    errors,
+    handleChange,
+    handleBlur,
+    touched,
+    setFieldValue,
+    device,
+}: IForm) => {
+    const [activeTab, setActiveTab] = useState(0);
+
+    return (
+        <>
+            <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} style={{ marginBottom: "0.5em" }}>
+                <Tab label="Battery Run Test" />
+                <Tab label="Manual Run Test" />
+            </Tabs>
+            {activeTab === 0 && (
+                <Box mt={1} display="grid" gridTemplateColumns="1fr" style={{ gap: 10 }}>
+                    Period Run Time
+                    <TextField
+                        label="Period"
+                        value={values.period}
+                        name="period"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.period && touched.period)}
+                        placeholder="Period"
+                    />
+                    <TextField
+                        label="Run Time"
+                        value={values.autoRunTime}
+                        name="autoRunTime"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.autoRunTime && touched.autoRunTime)}
+                        placeholder="Run Time"
+                    />
+                </Box>
+            )}
+            {activeTab === 1 && (
+                <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
+                    <TextField
+                        label="Run Time"
+                        value={values.autoRunTime}
+                        name="autoRunTime"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.autoRunTime && touched.autoRunTime)}
+                        placeholder="Run Time"
+                        style={{ gridColumnEnd: "span 2" }}
+                    />
+                    <Button kind="add">Start</Button>
+                    <Button kind="delete">Stop</Button>
+                </Box>
+            )}
         </>
     );
 };
