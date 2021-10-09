@@ -6,7 +6,8 @@ import useSwr from "swr";
 import BaseDataGrid from "../../../app/BaseDataGrid";
 import { BasePaper } from "../../../app/Paper";
 
-import Details from "./Details";
+// import Details from "./Details";
+import Details from "../../FieldService/Units/Details";
 
 import { formatTimestampToDate } from "../../../logic/date";
 
@@ -124,7 +125,8 @@ export default function Ship({ tab }: { tab: number }) {
                         />
                     </>
                 )}
-                {activeTab === 1 && selectedShip && <Details ship={selectedShip} />}
+                {/* {activeTab === 1 && selectedShip && <Details ship={selectedShip} />} */}
+                {activeTab === 1 && <Details unit={selectedShip} />}
             </BasePaper>
         </Box>
     );

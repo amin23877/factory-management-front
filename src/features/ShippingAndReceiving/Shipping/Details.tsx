@@ -9,6 +9,8 @@ import * as Yup from "yup";
 
 import Button from "../../../app/Button";
 import { BasePaper } from "../../../app/Paper";
+import { fileType } from "../../../logic/fileType";
+import { formatTimestampToDate } from "../../../logic/date";
 
 const schema = Yup.object().shape({});
 
@@ -17,6 +19,109 @@ function Details({ ship }: { ship: any }) {
 
     const [infoActiveTab, setInfoActiveTab] = useState(0);
     const [gridActiveTab, setGridActiveTab] = useState(0);
+
+    // Target Date	Actual Date	Shipment No	Carrier	Delivery Method	Tracking Number
+
+    const unitCols: GridColumns = useMemo(
+        () => [
+            { field: "number", headerName: "Unit ID", width: 100 },
+            {
+                field: "UnitSerialNo",
+                headerName: "Unit Serial No.",
+                valueFormatter: (r) => r.row?.device?.number,
+                width: 130,
+            },
+            // { field: "LineItemRecordId",  width: 200 },
+            { field: "description", headerName: "Description", flex: 1 },
+            { field: "model", headerName: "Model", width: 120 },
+            { field: "shippingDate", headerName: "Estimated SD.", width: 150 },
+        ],
+        []
+    );
+
+    const FSCols = useMemo<GridColumns>(
+        () => [
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            { field: "number", headerName: "Ticket ID", width: 130 },
+            { field: "subject", headerName: "Subject", flex: 1 },
+            {
+                field: "unit",
+                headerName: "Unit",
+                valueFormatter: (params) => params.row?.unit?.number,
+                width: 120,
+            },
+            { field: "AssignedTo", headerName: "Assigned To", width: 120 },
+            { field: "contact", headerName: "Contact", width: 120 },
+            { field: "status", headerName: "Status", width: 120 },
+        ],
+        []
+    );
+
+    const LICols = useMemo<GridColumns>(
+        () => [
+            { field: "index", headerName: "Sort" },
+            { field: "ItemId", headerName: "Part Number", valueFormatter: (r) => r.row?.ItemId?.name, width: 200 },
+            { field: "description", headerName: "Description", flex: 1 },
+            { field: "quantity", headerName: "QTY", width: 90 },
+            { field: "price", headerName: "Price", width: 100 },
+            { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
+            { field: "total", headerName: "Total", valueFormatter: (r) => r.row?.price * r.row?.quantity, width: 200 },
+            { field: "invoice", headerName: "Invoice", width: 200 },
+        ],
+        []
+    );
+
+    const noteCols = useMemo<GridColumns>(
+        () => [
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            {
+                field: "creator",
+                headerName: "Creator",
+                width: 180,
+                valueFormatter: (params) => params.row?.EmployeeId?.username,
+            },
+            { field: "subject", headerName: "Subject", width: 300 },
+            { field: "note", headerName: "Note", flex: 1 },
+        ],
+        []
+    );
+
+    const docCols = useMemo<GridColumns>(
+        () => [
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            {
+                field: "EmployeeId",
+                headerName: "Creator",
+                valueFormatter: (params) => params.row?.employee?.username,
+                width: 120,
+            },
+            { field: "name", headerName: "Name", flex: 1 },
+            { field: "id", headerName: "ID", width: 200 },
+            { field: "description", headerName: "Description", flex: 1 },
+            {
+                field: "type",
+                headerName: "File Type",
+                valueFormatter: (params) => fileType(params.row?.path),
+                width: 120,
+            },
+        ],
+        []
+    );
 
     return (
         <>
