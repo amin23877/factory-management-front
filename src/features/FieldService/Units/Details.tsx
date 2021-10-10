@@ -43,17 +43,11 @@ function Details({ unit }: { unit: IUnit }) {
     const [addDocModal, setAddDocModal] = useState(false);
     const [addShipModal, setAddShipModal] = useState(false);
 
-    const { data: warranties } = useSWR(
-        gridActiveTab === 1
-            ? unit && unit.ItemId.id
-                ? `/service?ItemId=${unit.ItemId.id}&ServiceFamilyId=60efd0bcca0feadc84be6618`
-                : null
-            : null
-    );
+    const { data: warranties } = useSWR(gridActiveTab === 1 ? `/lineservice?UnitId=${unit.id}` : null);
     const { data: documents } = useSWR<IDocument[]>(gridActiveTab === 3 ? `/document/unit/${unit.id}` : null);
     const { data: shipments } = useSWR(gridActiveTab === 4 ? `/shipments` : null);
-    const { data: unitBoms } = useSWR(`/ubom?UnitId=${unit.id}`);
-
+    const { data: unitBoms } = useSWR(gridActiveTab === 2 ? `/ubom?UnitId=${unit.id}` : null);
+    const { data: fsh } = useSWR(gridActiveTab === 7 ? `/ticket?UnitId=${unit.id}` : null);
     const bomCols = useMemo<GridColDef[]>(
         () => [
             { field: "Line", width: 80 },
@@ -127,6 +121,8 @@ function Details({ unit }: { unit: IUnit }) {
         ],
         []
     );
+    // Part Number	Description	QTY
+
     return (
         <>
             <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={unit?.id} model="unit" />

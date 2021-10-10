@@ -141,6 +141,17 @@ export const ShippedForm = ({
                 label="Tracking Number"
                 placeholder="Tracking Number"
             />
+            <TextField
+                style={{ gridColumnEnd: "span 2" }}
+                name="carrier"
+                value={values.carrier}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                error={Boolean(errors.carrier)}
+                helperText={touched.carrier && errors.carrier && String(errors.carrier)}
+                label="Carrier"
+                placeholder="Carrier"
+            />
             <DateTimePicker
                 name="deliveryDate"
                 value={values.deliveryDate || null}
@@ -153,12 +164,12 @@ export const ShippedForm = ({
                 label="Delivery Date"
             />
             <DateTimePicker
-                name="shippingDate"
-                value={values.shippingDate || null}
-                onChange={(d) => setFieldValue("shippingDate", d && new Date(d?.toISOString()).getTime())}
+                name="shipDate"
+                value={values.shipDate || null}
+                onChange={(d) => setFieldValue("shipDate", d && new Date(d?.toISOString()).getTime())}
                 onBlur={handleBlur}
-                error={Boolean(errors.shippingDate)}
-                helperText={errors.shippingDate}
+                error={Boolean(errors.shipDate)}
+                helperText={errors.shipDate}
                 size="small"
                 placeholder="Shipping Date"
                 label="Shipping Date"

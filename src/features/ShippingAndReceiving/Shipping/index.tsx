@@ -10,12 +10,15 @@ import { BasePaper } from "../../../app/Paper";
 import Details from "../../FieldService/Units/Details";
 
 import { formatTimestampToDate } from "../../../logic/date";
+import { UnitSearchBox } from "../../../app/SearchBox";
 
 export default function Ship({ tab }: { tab: number }) {
     const [activeTab, setActiveTab] = useState(0);
     const [selectedShip, setSelectedShip] = useState<any>();
 
-    const { data: ships } = useSwr(tab === 0 ? "/ship?progress" : tab === 1 ? "/ship?ready" : "/ship?shipped");
+    const { data: ships } = useSwr(
+        tab === 0 ? "/unit?nstatus=ready to ship" : tab === 1 ? "/unit?status=ready to ship" : "/unit?status=shipped"
+    );
 
     const cols: GridColumns =
         tab !== 2
@@ -112,11 +115,12 @@ export default function Ship({ tab }: { tab: number }) {
                     <Tab label="List" />
                     <Tab label="Details" />
                 </Tabs>
+                <UnitSearchBox />
                 {activeTab === 0 && ships && (
                     <>
                         <BaseDataGrid
-                            // rows={ships.result || []}
-                            rows={[]}
+                            rows={ships.result || []}
+                            // rows={[]}
                             cols={cols}
                             onRowSelected={(d) => {
                                 setSelectedShip(d);
@@ -125,8 +129,7 @@ export default function Ship({ tab }: { tab: number }) {
                         />
                     </>
                 )}
-                {/* {activeTab === 1 && selectedShip && <Details ship={selectedShip} />} */}
-                {activeTab === 1 && <Details unit={selectedShip} />}
+                {activeTab === 1 && selectedShip && <Details unit={selectedShip} />}
             </BasePaper>
         </Box>
     );
