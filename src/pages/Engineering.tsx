@@ -10,7 +10,7 @@ import BOM from "../features/Engineering/BOM";
 import Monitoring from "../features/Engineering/Monitoring";
 import Dashboard from "../features/Engineering/Dashboard";
 
-export default function Sales() {
+export default function Engineering() {
     const [activeTab, setActiveTab] = useState(0);
 
     return (

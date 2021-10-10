@@ -19,6 +19,7 @@ import { IDocument } from "../../../api/document";
 import { formatTimestampToDate } from "../../../logic/date";
 import { fileType } from "../../../logic/fileType";
 import DocumentModal from "../../Modals/DocumentModals";
+import ShipmentModal from "../../Modals/ShipmentModal";
 import { getModifiedValues } from "../../../logic/utils";
 import { DynamicFilterAndFields } from "../../Items/Forms";
 
@@ -40,17 +41,13 @@ function Details({ unit }: { unit: IUnit }) {
     const [infoActiveTab, setInfoActiveTab] = useState(0);
     const [gridActiveTab, setGridActiveTab] = useState(0);
     const [addDocModal, setAddDocModal] = useState(false);
+    const [addShipModal, setAddShipModal] = useState(false);
 
-    const { data: warranties } = useSWR(
-        gridActiveTab === 0
-            ? unit && unit.ItemId.id
-                ? `/service?ItemId=${unit.ItemId.id}&ServiceFamilyId=60efd0bcca0feadc84be6618`
-                : null
-            : null
-    );
-    const { data: documents } = useSWR<IDocument[]>(gridActiveTab === 1 ? `/document/unit/${unit.id}` : null);
-    const { data: unitBoms } = useSWR(`/ubom?UnitId=${unit.id}`);
-
+    const { data: warranties } = useSWR(gridActiveTab === 1 ? `/lineservice?UnitId=${unit.id}` : null);
+    const { data: documents } = useSWR<IDocument[]>(gridActiveTab === 3 ? `/document/unit/${unit.id}` : null);
+    const { data: shipments } = useSWR(gridActiveTab === 4 ? `/shipments` : null);
+    const { data: unitBoms } = useSWR(gridActiveTab === 2 ? `/ubom?UnitId=${unit.id}` : null);
+    const { data: fsh } = useSWR(gridActiveTab === 7 ? `/ticket?UnitId=${unit.id}` : null);
     const bomCols = useMemo<GridColDef[]>(
         () => [
             { field: "Line", width: 80 },
@@ -72,6 +69,19 @@ function Details({ unit }: { unit: IUnit }) {
             { field: "description", headerName: "Note", flex: 1 },
             { field: "term", headerName: "Term", flex: 1 },
             { field: "status", headerName: "Status", width: 150 },
+        ],
+        []
+    );
+
+    //this should change
+    const shipCols = useMemo<GridColumns>(
+        () => [
+            { field: "date", headerName: "Target Date", type: "date", width: 120 },
+            { field: "number", headerName: "Actual Date", width: 160 },
+            { field: "name", headerName: "Shipment No", width: 160 },
+            { field: "description", headerName: "Carrier", flex: 1 },
+            { field: "term", headerName: "Delivery Method", flex: 1 },
+            { field: "status", headerName: "Tracking Number", width: 150 },
         ],
         []
     );
@@ -111,9 +121,12 @@ function Details({ unit }: { unit: IUnit }) {
         ],
         []
     );
+    // Part Number	Description	QTY
+
     return (
         <>
             <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={unit?.id} model="unit" />
+            <ShipmentModal open={addShipModal} onClose={() => setAddShipModal(false)} />
             <Formik initialValues={unit as IUnit} validationSchema={schema} onSubmit={handleSubmit}>
                 {({ values, errors, handleChange, handleBlur, isSubmitting, setFieldValue, touched }) => (
                     <Form>
@@ -217,15 +230,16 @@ function Details({ unit }: { unit: IUnit }) {
             </Formik>
             <BasePaper>
                 <Tabs value={gridActiveTab} onChange={(e, nv) => setGridActiveTab(nv)}>
-                    <Tab label="Phocus Monitor" />
-                    <Tab label="Warranties" />
-                    <Tab label="Job" />
-                    <Tab label="Documents" />
-                    <Tab label="Quality Control" />
-                    <Tab label="Sales Order Items" />
-                    <Tab label="Field Service History" />
-                    <Tab label="Note" />
-                    <Tab label="Auditing" />
+                    <Tab label="Phocus Monitor" /> 0
+                    <Tab label="Warranties" /> 1
+                    <Tab label="Job" /> 2
+                    <Tab label="Documents" /> 3
+                    <Tab label="Shipment" /> 4
+                    <Tab label="Quality Control" /> 5
+                    <Tab label="Sales Order Items" /> 6
+                    <Tab label="Field Service History" /> 7
+                    <Tab label="Note" /> 8
+                    <Tab label="Auditing" /> 9
                 </Tabs>
                 {gridActiveTab === 1 && (
                     <Box>
@@ -249,6 +263,20 @@ function Details({ unit }: { unit: IUnit }) {
                             rows={documents && documents.length ? documents : []}
                             onRowSelected={(v) => {}}
                         />
+                    </>
+                )}
+                {gridActiveTab === 4 && (
+                    <>
+                        <Button
+                            onClick={() => {
+                                setAddShipModal(true);
+                            }}
+                            variant="outlined"
+                        >
+                            + Add Shipment
+                        </Button>
+                        {/* <BaseDataGrid cols={shipCols} rows={shipments || []} onRowSelected={(v) => {}} /> */}
+                        <BaseDataGrid cols={shipCols} rows={[]} onRowSelected={(v) => {}} />
                     </>
                 )}
             </BasePaper>

@@ -21,7 +21,6 @@ export default function Up() {
     });
 
     const { data: ups } = useSwr("/up");
-    // Device Serial Number	Model	Actual Ship Date	SO Number	Warranty End Date	Inverter Status	Battery Status
 
     const cols: GridColumns = [
         {

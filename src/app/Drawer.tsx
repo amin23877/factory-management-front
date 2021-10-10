@@ -4,7 +4,9 @@ import { Link, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import ShoppingCartRounded from "@material-ui/icons/ShoppingCartRounded";
+import { LocalShippingOutlined } from "@material-ui/icons";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+
 import { SettingsRounded } from "@material-ui/icons";
 
 import CustomScrollbars from "./CustomScroll";
@@ -196,6 +198,11 @@ const drawerItems = [
                 />
             </svg>
         ),
+    },
+    {
+        name: "Shipping and Receiving",
+        link: "/panel/shipping",
+        icon: <LocalShippingOutlined />,
     },
     {
         name: "Field Service",

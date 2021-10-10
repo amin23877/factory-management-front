@@ -68,12 +68,39 @@ function Details({ up }: { up: any }) {
         ],
         []
     );
+    const UnitLogsCols = useMemo<GridColumns>(
+        () => [
+            { field: "date", headerName: "Timestamp", type: "date", width: 120 },
+            { field: "number", headerName: "Error Number", width: 160 },
+            { field: "description", headerName: "Error Description", flex: 1 },
+        ],
+        []
+    );
     const optionCols = useMemo<GridColumns>(
         () => [
             { field: "Option Number", valueFormatter: (params) => params.row?.ItemId?.no, flex: 1 },
             { field: "Option Name", valueFormatter: (params) => params.row?.ItemId?.name, flex: 1 },
             { field: "Option Description", valueFormatter: (params) => params.row?.ItemId?.description, flex: 1 },
             { field: "quantity", headerName: "Quantity", width: 100 },
+        ],
+        []
+    );
+    const noteCols = useMemo<GridColumns>(
+        () => [
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                width: 120,
+            },
+            {
+                field: "creator",
+                headerName: "Creator",
+                width: 180,
+                valueFormatter: (params) => params.row?.EmployeeId?.username,
+            },
+            { field: "subject", headerName: "Subject", width: 300 },
+            { field: "note", headerName: "Note", flex: 1 },
         ],
         []
     );
@@ -103,6 +130,7 @@ function Details({ up }: { up: any }) {
         ],
         []
     );
+
     return (
         <>
             <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={up?.id} model="up" />
@@ -248,25 +276,26 @@ function Details({ up }: { up: any }) {
                                 <Tab label="Note" /> 7
                                 <Tab label="Auditing" /> 8
                             </Tabs>
-
-                            {gridActiveTab === 2 && <BaseDataGrid cols={bomCols} rows={[]} onRowSelected={(r) => {}} />}
-                            {gridActiveTab === 3 && (
+                            {gridActiveTab === 0 && (
                                 <>
-                                    <Button
-                                        onClick={() => {
-                                            setAddDocModal(true);
-                                        }}
-                                        variant="outlined"
-                                    >
-                                        + Add Document
-                                    </Button>
                                     <BaseDataGrid
-                                        height={250}
                                         cols={docCols}
                                         rows={documents && documents.length ? documents : []}
                                         onRowSelected={(v) => {}}
                                     />
                                 </>
+                            )}
+                            {gridActiveTab === 1 && <BaseDataGrid cols={bomCols} rows={[]} onRowSelected={(r) => {}} />}
+                            {gridActiveTab === 3 && <BaseDataGrid cols={docCols} rows={[]} onRowSelected={(r) => {}} />}
+                            {gridActiveTab === 4 && (
+                                <Inverter
+                                    values={values}
+                                    errors={errors}
+                                    touched={touched}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                    setFieldValue={setFieldValue}
+                                />
                             )}
                             {gridActiveTab === 5 && (
                                 <Fragment>
@@ -281,15 +310,11 @@ function Details({ up }: { up: any }) {
                                     {batteryTab === 1 && <BatteryDiagram />}
                                 </Fragment>
                             )}
-                            {gridActiveTab === 4 && (
-                                <Inverter
-                                    values={values}
-                                    errors={errors}
-                                    touched={touched}
-                                    handleBlur={handleBlur}
-                                    handleChange={handleChange}
-                                    setFieldValue={setFieldValue}
-                                />
+                            {gridActiveTab === 6 && (
+                                <BaseDataGrid cols={UnitLogsCols} rows={[]} onRowSelected={(r) => {}} />
+                            )}
+                            {gridActiveTab === 7 && (
+                                <BaseDataGrid cols={noteCols} rows={[]} onRowSelected={(r) => {}} />
                             )}
                         </BasePaper>
                     </Form>
