@@ -12,8 +12,8 @@
 # testing
 /coverage
 
-# production
-/build
+# production - MUST BE IN FILE, THIS IS AN EXCEPTION
+# /build
 
 # misc
 .DS_Store
