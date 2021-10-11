@@ -10,13 +10,13 @@ import Button from "../../app/Button";
 import TextField from "../../app/TextField";
 
 import * as Yup from "yup";
-// import { addCall } from "../../../api/calls";
+import { createShipment } from "../../api/shipment";
 
 const schema = Yup.object().shape({
     // name: Yup.string().required(),
 });
 
-const AddCallModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+const AddShipModal = ({ open, onClose, unitId }: { open: boolean; onClose: () => void; unitId: string }) => {
     const [activeStep, setActiveStep] = useState(0);
 
     const handleNext = () => {
@@ -28,9 +28,8 @@ const AddCallModal = ({ open, onClose }: { open: boolean; onClose: () => void })
     };
     const handleSubmit = async (values: any, setSubmitting: any) => {
         try {
-            // await addCall({ ...values, Tags: [values.Tags] });
-            // mutate("/calls");
-            // onClose();
+            await createShipment({ ...values, UnitId: unitId });
+            onClose();
         } catch (error) {
             console.log(error);
         } finally {
@@ -102,7 +101,7 @@ const AddCallModal = ({ open, onClose }: { open: boolean; onClose: () => void })
     );
 };
 
-export default AddCallModal;
+export default AddShipModal;
 
 export const ShippedForm = ({
     values,
