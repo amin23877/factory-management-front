@@ -18,9 +18,10 @@ import { IDocument } from "../../../api/document";
 import { formatTimestampToDate } from "../../../logic/date";
 import { fileType } from "../../../logic/fileType";
 import DocumentModal from "../../Modals/DocumentModals";
-import ShipmentModal from "../../Modals/ShipmentModal";
+import ShipmentModal, { EditShipModal } from "../../Modals/ShipmentModal";
 import { getModifiedValues } from "../../../logic/utils";
 import { DynamicFilterAndFields } from "../../Items/Forms";
+import { IShipment } from "../../../api/shipment";
 
 const schema = Yup.object().shape({});
 
@@ -42,7 +43,7 @@ function Details({ unit }: { unit: IUnit }) {
     const [addDocModal, setAddDocModal] = useState(false);
     const [addShipModal, setAddShipModal] = useState(false);
     const [editShip, setEditShip] = useState(false);
-    const [selectedShip, setSelectedShip] = useState(false);
+    const [selectedShip, setSelectedShip] = useState<IShipment>();
 
     const { data: warranties } = useSWR(gridActiveTab === 1 ? `/lineservice?UnitId=${unit.id}` : null);
     const { data: documents } = useSWR<IDocument[]>(gridActiveTab === 3 ? `/document/unit/${unit.id}` : null);
@@ -137,6 +138,14 @@ function Details({ unit }: { unit: IUnit }) {
             <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={unit?.id} model="unit" />
             {unit && unit.id && (
                 <ShipmentModal open={addShipModal} onClose={() => setAddShipModal(false)} unitId={unit.id} />
+            )}
+            {unit && unit.id && selectedShip && (
+                <EditShipModal
+                    open={editShip}
+                    onClose={() => setEditShip(false)}
+                    unitId={unit.id}
+                    init={selectedShip}
+                />
             )}
             <Formik initialValues={unit as IUnit} validationSchema={schema} onSubmit={handleSubmit}>
                 {({ values, errors, handleChange, handleBlur, isSubmitting, setFieldValue, touched }) => (

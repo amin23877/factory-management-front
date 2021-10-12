@@ -10,7 +10,7 @@ import Button from "../../app/Button";
 import TextField from "../../app/TextField";
 import UploadButton from "../../app/FileUploader";
 import * as Yup from "yup";
-import { createShipment } from "../../api/shipment";
+import { createShipment, deleteShipment, IShipment, updateShipment } from "../../api/shipment";
 import { addImage, deleteImage } from "../../api/units";
 
 const schema = Yup.object().shape({
@@ -154,6 +154,79 @@ const AddShipModal = ({ open, onClose, unitId }: { open: boolean; onClose: () =>
                                 disabled={activeStep === 3}
                             >
                                 Next
+                            </Button>
+                        </Box>
+                    </Form>
+                )}
+            </Formik>
+        </Dialog>
+    );
+};
+export const EditShipModal = ({
+    open,
+    onClose,
+    unitId,
+    init,
+}: {
+    open: boolean;
+    onClose: () => void;
+    unitId: string;
+    init: IShipment;
+}) => {
+    const handleSubmit = async (values: any, setSubmitting: any) => {
+        try {
+            await updateShipment(init.id, { ...values, UnitId: unitId });
+            mutate(`/shipment?UnitId=${unitId}`);
+            onClose();
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    const handleDelete = async () => {
+        try {
+            await deleteShipment(init.id);
+            mutate(`/shipment?UnitId=${unitId}`);
+            onClose();
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    return (
+        <Dialog open={open} onClose={onClose} fullWidth maxWidth="md" title="Edit Shipment">
+            <Formik initialValues={init as IShipment} onSubmit={handleSubmit} validationSchema={schema}>
+                {({ values, errors, touched, handleChange, handleBlur, setFieldValue, setSubmitting }) => (
+                    <Form>
+                        <Box p={5} style={{ padding: "30px 15%" }}>
+                            <ShippedForm
+                                values={values}
+                                touched={touched}
+                                errors={errors}
+                                handleBlur={handleBlur}
+                                handleChange={handleChange}
+                                setFieldValue={setFieldValue}
+                            />
+                        </Box>
+                        <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="space-between"
+                            margin="10px auto"
+                            width="50%"
+                        >
+                            <Button type="submit" kind="edit">
+                                Save
+                            </Button>
+                            <Button
+                                kind="delete"
+                                onClick={() => {
+                                    handleDelete();
+                                }}
+                            >
+                                Delete
                             </Button>
                         </Box>
                     </Form>
