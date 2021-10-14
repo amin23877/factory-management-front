@@ -70,6 +70,7 @@ export const General = ({
                     fullWidth
                     label="Status"
                     items={[
+                        "New",
                         "Sales Pending",
                         "Engineering Pending",
                         "Purchasing Pending",
