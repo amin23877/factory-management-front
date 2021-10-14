@@ -19,6 +19,7 @@ import NoteModal from "../Modals/NoteModals";
 import DocumentModal from "../Modals/DocumentModals";
 import { VendorModal } from "../Modals/AddVendor";
 import BOMModal from "../BOM/BomModal";
+import Parts from "../BOM/Parts";
 
 import { INote } from "../../api/note";
 import { IDocument } from "../../api/document";
@@ -107,6 +108,8 @@ function ItemsDetails({
     const [addDocModal, setAddDocModal] = useState(false);
     const [addVendorModal, setAddVendorModal] = useState(false);
     const [bomModal, setBomModal] = useState(false);
+    const [bomPartsModal, setBomPartsModal] = useState(false);
+    const [selectedBom, setSelectedBom] = useState<IBom>();
 
     const poCols = useMemo<GridColDef[]>(
         () => [
@@ -315,6 +318,7 @@ function ItemsDetails({
             />
 
             <BOMModal itemId={selectedRow.id} open={bomModal} onClose={() => setBomModal(false)} />
+            {selectedBom && <Parts open={bomPartsModal} onClose={() => setBomPartsModal(false)} bom={selectedBom} />}
 
             <ManualCountModal
                 open={manualCountModal}
@@ -545,7 +549,14 @@ function ItemsDetails({
                             >
                                 + Add Bill of Material
                             </Button>
-                            <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={() => {}} />
+                            <BaseDataGrid
+                                cols={bomCols}
+                                rows={boms || []}
+                                onRowSelected={(d) => {
+                                    setSelectedBom(d);
+                                    setBomPartsModal(true);
+                                }}
+                            />
                         </Fragment>
                     )}
                     {activeTab === 2 && (

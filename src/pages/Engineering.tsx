@@ -19,18 +19,18 @@ export default function Engineering() {
                 <SearchBar />
                 <div style={{ flexGrow: 1 }} />
                 <MyTabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                    <MyTab label="Dashboard" />
                     <MyTab label="Devices" />
+                    <MyTab label="Devices BOM" />
                     <MyTab label="Phocus Monitoring" />
                     <MyTab label="Projects" />
-                    <MyTab label="Dashboard" />
-                    <MyTab label="Devices BOM" />
                 </MyTabs>
             </Box>
-            {activeTab === 0 && <DevicesPanel />}
-            {activeTab === 1 && <Monitoring />}
-            {activeTab === 2 && <Project />}
-            {activeTab === 3 && <Dashboard />}
-            {activeTab === 4 && <BOM />}
+            {activeTab === 0 && <Dashboard />}
+            {activeTab === 1 && <DevicesPanel />}
+            {activeTab === 2 && <BOM />}
+            {activeTab === 3 && <Project />}
+            {activeTab === 4 && <Monitoring />}
         </Container>
     );
 }

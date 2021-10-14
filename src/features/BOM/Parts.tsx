@@ -12,11 +12,11 @@ function Parts({ open, onClose, bom }: { open: boolean; onClose: () => void; bom
 
     const bomRecordCols = useMemo<GridColumns>(
         () => [
-            { field: "no", headerName: "No.", valueFormatter: (params) => params.row?.ItemId?.no, flex: 1 },
+            { field: "no", headerName: "No.", valueFormatter: (params) => params.row?.ItemId?.no, width: 120 },
             { field: "name", headerName: "Name", valueFormatter: (params) => params.row?.ItemId?.name, flex: 1 },
-            { field: "revision", headerName: "Revision", flex: 1 },
+            { field: "revision", headerName: "Revision", width: 120 },
             { field: "usage", headerName: "Usage", width: 80 },
-            { field: "fixedQty", headerName: "fixed Qty", type: "boolean", flex: 1 },
+            { field: "fixedQty", headerName: "fixed Qty", type: "boolean", width: 120 },
         ],
         []
     );

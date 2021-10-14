@@ -118,32 +118,6 @@ export default function FRU() {
 
     return (
         <Box>
-            {/* <Box mb={2} display="flex" alignItems="center">
-                <Button
-                    onClick={() => setAddCall(true)}
-                    style={{
-                        backgroundColor: "#1a73e8",
-                        color: "#fff",
-                        margin: "0 0.5em",
-                        padding: " 6px 15px",
-                        boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-                    }}
-                >
-                    <AddRoundedIcon />
-                    Add Ticket
-                </Button>
-                <Button
-                    kind="delete"
-                    disabled={!selectedFru}
-                    onClick={() => setConfirm(true)}
-                    style={{ margin: "0 0.5em" }}
-                >
-                    Delete Ticket
-                </Button>
-                <Button kind="add" onClick={() => setCTagModal(true)} style={{ margin: "0 0.5em" }}>
-                    Add Call Tags
-                </Button>
-            </Box> */}
             <BasePaper>
                 <Tabs
                     value={activeTab}
@@ -151,26 +125,28 @@ export default function FRU() {
                     onChange={(e, nv) => setActiveTab(nv)}
                     style={{ marginBottom: 10 }}
                 >
-                    <Tab label="Units" />
                     <Tab label="Devices" />
+                    <Tab label="Units" />
                     <Tab label="Details" disabled={!selectedFru} />
                 </Tabs>
-                {activeTab === 0 && FRUs && (
+                {activeTab === 0 && (
+                    <FullDataGrid
+                        url="/item"
+                        columns={fruDevicesColumns}
+                        defaultQueries={{ device: true, "containProduct Family": "FRU" }}
+                        onRowSelected={() => {}}
+                        height={450}
+                    />
+                )}
+                {activeTab === 1 && FRUs && (
                     <BaseDataGrid
+                        height={450}
                         rows={FRUs.result || []}
                         cols={callCols}
                         onRowSelected={(d) => {
                             setSelectedFru(d);
                             setActiveTab(1);
                         }}
-                    />
-                )}
-                {activeTab === 1 && (
-                    <FullDataGrid
-                        url="/item"
-                        columns={fruDevicesColumns}
-                        defaultQueries={{ device: true, "containProduct Family": "FRU" }}
-                        onRowSelected={() => {}}
                     />
                 )}
                 {/* {activeTab === 1 && selectedFru && <Details FRUsData={selectedFru} />} */}
