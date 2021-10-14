@@ -46,9 +46,10 @@ function Details({ unit }: { unit: IUnit }) {
     const [selectedShip, setSelectedShip] = useState<IShipment>();
 
     const { data: warranties } = useSWR(gridActiveTab === 1 ? `/lineservice?UnitId=${unit.id}` : null);
+    const { data: unitBoms } = useSWR(gridActiveTab === 2 ? `/ubom?UnitId=${unit.id}` : null);
     const { data: documents } = useSWR<IDocument[]>(gridActiveTab === 3 ? `/document/unit/${unit.id}` : null);
     const { data: shipments } = useSWR(gridActiveTab === 4 ? `/shipment?UnitId=${unit.id}` : null);
-    const { data: unitBoms } = useSWR(gridActiveTab === 2 ? `/ubom?UnitId=${unit.id}` : null);
+    const { data: SOI } = useSWR(gridActiveTab === 6 ? `/unit?SOId=${unit.so.id}` : null);
     const { data: fsh } = useSWR(gridActiveTab === 7 ? `/ticket?UnitId=${unit.id}` : null);
     const bomCols = useMemo<GridColDef[]>(
         () => [
@@ -96,12 +97,16 @@ function Details({ unit }: { unit: IUnit }) {
         ],
         []
     );
+
     const fshCols = useMemo<GridColumns>(
         () => [
-            { field: "Option Number", valueFormatter: (params) => params.row?.ItemId?.no, flex: 1 },
-            { field: "Option Name", valueFormatter: (params) => params.row?.ItemId?.name, flex: 1 },
-            { field: "Option Description", valueFormatter: (params) => params.row?.ItemId?.description, flex: 1 },
-            { field: "quantity", headerName: "Quantity", width: 100 },
+            { field: "Date", valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt), width: 120 },
+            { field: "Ticket ID", valueFormatter: (params) => params.row?.number, width: 120 },
+            { field: "Subject", valueFormatter: (params) => params.row?.subject, flex: 1 },
+            { field: "Unit", valueFormatter: (params) => params.row?.UnitId?.number, width: 150 },
+            { field: "Assigned To", valueFormatter: (params) => params.row?.assignee?.username, width: 120 },
+            { field: "Contact", valueFormatter: (params) => params.row?.ContactId.lastName, width: 120 },
+            { field: "Status", valueFormatter: (params) => params.row?.status, width: 120 },
         ],
         []
     );
@@ -132,7 +137,13 @@ function Details({ unit }: { unit: IUnit }) {
         []
     );
     // Part Number	Description	QTY
-
+    const SOICols = useMemo<GridColumns>(
+        () => [
+            { field: "Option Number", valueFormatter: (params) => params.row?.ItemId?.no, flex: 1 },
+            { field: "Option Description", valueFormatter: (params) => params.row?.ItemId?.description, flex: 1 },
+        ],
+        []
+    );
     return (
         <>
             <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={unit?.id} model="unit" />
@@ -304,6 +315,9 @@ function Details({ unit }: { unit: IUnit }) {
                             }}
                         />
                     </>
+                )}
+                {gridActiveTab === 6 && (
+                    <BaseDataGrid cols={SOICols} rows={SOI.result || []} onRowSelected={(r) => {}} />
                 )}
                 {gridActiveTab === 7 && <BaseDataGrid cols={fshCols} rows={fsh || []} onRowSelected={(r) => {}} />}
             </BasePaper>
