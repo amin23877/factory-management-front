@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { GridColDef } from "@material-ui/data-grid";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import useSwr from "swr";
@@ -9,13 +9,90 @@ import { BasePaper } from "../../../app/Paper";
 // import Details from "./Details";
 
 import { formatTimestampToDate } from "../../../logic/date";
+import FullDataGrid from "../../../components/Datagrid/FullDataGrid";
 
 export default function FRU() {
     const [activeTab, setActiveTab] = useState(0);
     const [selectedFru, setSelectedFru] = useState<any>();
 
     const { data: FRUs } = useSwr("/unit?fru=true");
+    // /item?device=true&page=1&containProduct%20Family=FRU
 
+    const fruDevicesColumns = useMemo(
+        () => [
+            { field: "no", headerName: "Number", width: 100 },
+            { field: "name", headerName: "Name", width: 180 },
+            { field: "description", headerName: "Description", width: 200 },
+            //filter ha dynamic hast
+            {
+                field: "salesApproved",
+                headerName: "Sales Ap.",
+                type: "boolean",
+                width: 80,
+                disableColumnMenu: true,
+            },
+            {
+                field: "engineeringApproved",
+                headerName: "Eng. Ap.",
+                type: "boolean",
+                width: 80,
+                disableColumnMenu: true,
+            },
+            {
+                field: "shippingApproved",
+                headerName: "Ship Ap.",
+                type: "boolean",
+                width: 80,
+                disableColumnMenu: true,
+            },
+            {
+                field: "prefVendor",
+                headerName: "Preferred Vendor",
+                valueFormatter: (params: any) => params.row?.prefVendor?.name,
+                disableColumnMenu: true,
+                width: 150,
+            },
+            { field: "vendorPartNumber", headerName: "V. Part NO.", width: 100 },
+            { field: "cost", headerName: "Cost", width: 80 },
+            { field: "location", headerName: "Location", width: 100 },
+            { field: "qtyOnHand", headerName: "QOH.", width: 80 },
+            { field: "qtyRemain", headerName: " Remain", width: 80 },
+            { field: "qtyOnOrder", headerName: "on Order", width: 80 },
+            { field: "qtyAllocated", headerName: "Allocated", width: 80 },
+            { field: "usedInLastQuarter", headerName: "Used 90", width: 80 },
+            { field: "fifo", headerName: "FIFO Val.", width: 80 },
+            {
+                field: "qohVal",
+                headerName: "QOH Val.",
+                width: 80,
+                valueFormatter: (params: any) => params.row?.cost * params.row?.qtyOnHand,
+                // disableColumnMenu: true,
+            },
+            { field: "uom", headerName: "UOM", width: 100, disableColumnMenu: true },
+            {
+                field: "obsolete",
+                headerName: "Obsolete",
+                type: "boolean",
+                width: 80,
+                // disableColumnMenu: true,
+            },
+            {
+                field: "nonInventoryItem",
+                headerName: "NON Inv.",
+                type: "boolean",
+                width: 80,
+                // disableColumnMenu: true,
+            },
+            {
+                field: "rndOnly",
+                headerName: "R&D",
+                type: "boolean",
+                width: 80,
+                // disableColumnMenu: true,
+            },
+        ],
+        []
+    );
     const callCols: GridColDef[] = [
         {
             field: "number",
@@ -74,7 +151,8 @@ export default function FRU() {
                     onChange={(e, nv) => setActiveTab(nv)}
                     style={{ marginBottom: 10 }}
                 >
-                    <Tab label="List" />
+                    <Tab label="Units" />
+                    <Tab label="Devices" />
                     <Tab label="Details" disabled={!selectedFru} />
                 </Tabs>
                 {activeTab === 0 && FRUs && (
@@ -85,6 +163,14 @@ export default function FRU() {
                             setSelectedFru(d);
                             setActiveTab(1);
                         }}
+                    />
+                )}
+                {activeTab === 1 && (
+                    <FullDataGrid
+                        url="/item"
+                        columns={fruDevicesColumns}
+                        defaultQueries={{ device: true, "containProduct Family": "FRU" }}
+                        onRowSelected={() => {}}
                     />
                 )}
                 {/* {activeTab === 1 && selectedFru && <Details FRUsData={selectedFru} />} */}

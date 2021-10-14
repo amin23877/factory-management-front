@@ -63,25 +63,25 @@ export default function Dashboard() {
                     <SalesVsWeek />
                 </BasePaper>
             </Grid>
-            <Grid item xs={6} sm={3}>
+            <Grid item xs={6} sm={6}>
                 <BasePaper>
                     <Typography variant="h6">Snapshot For Each Device</Typography>
                     <DevicesPie />
                 </BasePaper>
             </Grid>
-            <Grid item xs={6} sm={3}>
+            <Grid item xs={6} sm={6}>
                 <BasePaper>
                     <Typography variant="h6">Snapshot For Location</Typography>
                     <SalesLocationPie />
                 </BasePaper>
             </Grid>
-            <Grid item xs={6} sm={3}>
+            <Grid item xs={6} sm={6}>
                 <BasePaper>
                     <Typography variant="subtitle1">Snapshot For Each Client</Typography>
                     <ClientPie />
                 </BasePaper>
             </Grid>
-            <Grid item xs={6} sm={3}>
+            <Grid item xs={6} sm={6}>
                 <BasePaper>
                     <Typography variant="subtitle1">Snapshot For Each Rep</Typography>
                     <SalesRepPie />
