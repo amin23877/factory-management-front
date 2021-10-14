@@ -1,7 +1,7 @@
 import React, { useMemo, useState, Fragment } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 
 import { General, Status, Expense, Shipping } from "./Forms";
 
@@ -12,16 +12,16 @@ import BaseDataGrid from "../../../app/BaseDataGrid";
 import { IUnit, updateUnit } from "../../../api/units";
 
 import { Formik, Form } from "formik";
-import { mutate } from "swr";
 import * as Yup from "yup";
 import Toast from "../../../app/Toast";
 import { IDocument } from "../../../api/document";
 import { formatTimestampToDate } from "../../../logic/date";
 import { fileType } from "../../../logic/fileType";
 import DocumentModal from "../../Modals/DocumentModals";
-import ShipmentModal from "../../Modals/ShipmentModal";
+import ShipmentModal, { EditShipModal } from "../../Modals/ShipmentModal";
 import { getModifiedValues } from "../../../logic/utils";
 import { DynamicFilterAndFields } from "../../Items/Forms";
+import { IShipment } from "../../../api/shipment";
 
 const schema = Yup.object().shape({});
 
@@ -42,10 +42,12 @@ function Details({ unit }: { unit: IUnit }) {
     const [gridActiveTab, setGridActiveTab] = useState(0);
     const [addDocModal, setAddDocModal] = useState(false);
     const [addShipModal, setAddShipModal] = useState(false);
+    const [editShip, setEditShip] = useState(false);
+    const [selectedShip, setSelectedShip] = useState<IShipment>();
 
     const { data: warranties } = useSWR(gridActiveTab === 1 ? `/lineservice?UnitId=${unit.id}` : null);
     const { data: documents } = useSWR<IDocument[]>(gridActiveTab === 3 ? `/document/unit/${unit.id}` : null);
-    const { data: shipments } = useSWR(gridActiveTab === 4 ? `/shipments` : null);
+    const { data: shipments } = useSWR(gridActiveTab === 4 ? `/shipment?UnitId=${unit.id}` : null);
     const { data: unitBoms } = useSWR(gridActiveTab === 2 ? `/ubom?UnitId=${unit.id}` : null);
     const { data: fsh } = useSWR(gridActiveTab === 7 ? `/ticket?UnitId=${unit.id}` : null);
     const bomCols = useMemo<GridColDef[]>(
@@ -73,20 +75,28 @@ function Details({ unit }: { unit: IUnit }) {
         []
     );
 
-    //this should change
     const shipCols = useMemo<GridColumns>(
         () => [
-            { field: "date", headerName: "Target Date", type: "date", width: 120 },
-            { field: "number", headerName: "Actual Date", width: 160 },
-            { field: "name", headerName: "Shipment No", width: 160 },
-            { field: "description", headerName: "Carrier", flex: 1 },
-            { field: "term", headerName: "Delivery Method", flex: 1 },
-            { field: "status", headerName: "Tracking Number", width: 150 },
+            { field: "targetDate", headerName: "Target Date", type: "date", width: 130 },
+            { field: "shipDate", headerName: "Actual Date", width: 130 },
+            { field: "shipmentNo", headerName: "Shipment No", width: 130 },
+            { field: "carrier", headerName: "Carrier", flex: 1 },
+            { field: "deliveryMethod", headerName: "Delivery Method", flex: 1 },
+            { field: "trackingNumber", headerName: "Tracking Number", width: 150 },
         ],
         []
     );
 
     const optionCols = useMemo<GridColumns>(
+        () => [
+            { field: "Option Number", valueFormatter: (params) => params.row?.ItemId?.no, flex: 1 },
+            { field: "Option Name", valueFormatter: (params) => params.row?.ItemId?.name, flex: 1 },
+            { field: "Option Description", valueFormatter: (params) => params.row?.ItemId?.description, flex: 1 },
+            { field: "quantity", headerName: "Quantity", width: 100 },
+        ],
+        []
+    );
+    const fshCols = useMemo<GridColumns>(
         () => [
             { field: "Option Number", valueFormatter: (params) => params.row?.ItemId?.no, flex: 1 },
             { field: "Option Name", valueFormatter: (params) => params.row?.ItemId?.name, flex: 1 },
@@ -126,7 +136,17 @@ function Details({ unit }: { unit: IUnit }) {
     return (
         <>
             <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={unit?.id} model="unit" />
-            <ShipmentModal open={addShipModal} onClose={() => setAddShipModal(false)} />
+            {unit && unit.id && (
+                <ShipmentModal open={addShipModal} onClose={() => setAddShipModal(false)} unitId={unit.id} />
+            )}
+            {unit && unit.id && selectedShip && (
+                <EditShipModal
+                    open={editShip}
+                    onClose={() => setEditShip(false)}
+                    unitId={unit.id}
+                    init={selectedShip}
+                />
+            )}
             <Formik initialValues={unit as IUnit} validationSchema={schema} onSubmit={handleSubmit}>
                 {({ values, errors, handleChange, handleBlur, isSubmitting, setFieldValue, touched }) => (
                     <Form>
@@ -275,10 +295,17 @@ function Details({ unit }: { unit: IUnit }) {
                         >
                             + Add Shipment
                         </Button>
-                        {/* <BaseDataGrid cols={shipCols} rows={shipments || []} onRowSelected={(v) => {}} /> */}
-                        <BaseDataGrid cols={shipCols} rows={[]} onRowSelected={(v) => {}} />
+                        <BaseDataGrid
+                            cols={shipCols}
+                            rows={shipments || []}
+                            onRowSelected={(v) => {
+                                setSelectedShip(v);
+                                setEditShip(true);
+                            }}
+                        />
                     </>
                 )}
+                {gridActiveTab === 7 && <BaseDataGrid cols={fshCols} rows={fsh || []} onRowSelected={(r) => {}} />}
             </BasePaper>
         </>
     );

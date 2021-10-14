@@ -1,4 +1,4 @@
-import { patch, get } from ".";
+import { patch, get, post, delete_ } from ".";
 
 import { IItem } from "./items";
 import { ISO } from "./so";
@@ -38,6 +38,15 @@ export interface IUnitHistory {
     so: ISO;
     SODate: number;
 }
+
+export const addImage = (unitId: string, file: any) => {
+    const data = new FormData();
+    data.append("photo", file);
+    return post(`/unit/${unitId}/photo`, data);
+};
+export const deleteImage = (unitId: string, data: any) => {
+    return delete_(`/unit/${unitId}/photo`, null, data);
+};
 
 export const updateUnit = (id: string, data: any) => {
     if (data.dueDate) {

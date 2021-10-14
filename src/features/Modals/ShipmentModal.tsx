@@ -3,21 +3,49 @@ import { Box, Step, StepLabel, Stepper } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 
 import { Formik, Form } from "formik";
-import { mutate } from "swr";
+import useSWR, { mutate } from "swr";
 
 import Dialog from "../../app/Dialog";
 import Button from "../../app/Button";
 import TextField from "../../app/TextField";
-
+import UploadButton from "../../app/FileUploader";
 import * as Yup from "yup";
-// import { addCall } from "../../../api/calls";
+import { createShipment, deleteShipment, IShipment, updateShipment } from "../../api/shipment";
+import { addImage, deleteImage } from "../../api/units";
 
 const schema = Yup.object().shape({
     // name: Yup.string().required(),
 });
 
-const AddCallModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+const AddShipModal = ({ open, onClose, unitId }: { open: boolean; onClose: () => void; unitId: string }) => {
     const [activeStep, setActiveStep] = useState(0);
+    const [img, setImg] = useState<any>();
+
+    const { data: unit } = useSWR(`/unit/${unitId}`);
+
+    const handleFileChange = async (e: any) => {
+        if (unitId) {
+            if (!e.target.files) {
+                return;
+            }
+            let file = e.target.files[0];
+            let url = URL.createObjectURL(file);
+            const resp = await addImage(unitId, file);
+            if (resp) {
+                setImg(url);
+                mutate(`/unit/${unitId}`);
+            }
+        }
+    };
+    const handleFileDelete = async (url: string) => {
+        if (unitId) {
+            const data = { url: url };
+            const resp = await deleteImage(unitId, data);
+            if (resp) {
+                mutate(`/unit/${unitId}`);
+            }
+        }
+    };
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -28,9 +56,9 @@ const AddCallModal = ({ open, onClose }: { open: boolean; onClose: () => void })
     };
     const handleSubmit = async (values: any, setSubmitting: any) => {
         try {
-            // await addCall({ ...values, Tags: [values.Tags] });
-            // mutate("/calls");
-            // onClose();
+            await createShipment({ ...values, UnitId: unitId });
+            mutate(`/shipment?UnitId=${unitId}`);
+            onClose();
         } catch (error) {
             console.log(error);
         } finally {
@@ -61,7 +89,40 @@ const AddCallModal = ({ open, onClose }: { open: boolean; onClose: () => void })
                         <Box p={5} style={{ padding: "30px 15%" }}>
                             {activeStep === 0 && <></>}
                             {activeStep === 1 && <></>}
-                            {activeStep === 2 && <></>}
+                            {activeStep === 2 && (
+                                <>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            width: "100%",
+                                            justifyContent: "center",
+                                        }}
+                                    >
+                                        <UploadButton onChange={handleFileChange} accept="image/*" />
+                                    </div>
+                                    <div>
+                                        {unit &&
+                                            unit.photo[0] &&
+                                            unit.photo.map((url: string) => (
+                                                <>
+                                                    <img
+                                                        style={{
+                                                            maxWidth: "100%",
+                                                            height: "auto",
+                                                            maxHeight: 400,
+                                                            margin: "0px auto",
+                                                        }}
+                                                        alt=""
+                                                        src={`http://digitalphocus.ir${url}`}
+                                                    />
+                                                    <Button kind="delete" onClick={() => handleFileDelete(url)}>
+                                                        delete
+                                                    </Button>
+                                                </>
+                                            ))}
+                                    </div>
+                                </>
+                            )}
                             {activeStep === 3 && (
                                 <ShippedForm
                                     values={values}
@@ -101,8 +162,81 @@ const AddCallModal = ({ open, onClose }: { open: boolean; onClose: () => void })
         </Dialog>
     );
 };
+export const EditShipModal = ({
+    open,
+    onClose,
+    unitId,
+    init,
+}: {
+    open: boolean;
+    onClose: () => void;
+    unitId: string;
+    init: IShipment;
+}) => {
+    const handleSubmit = async (values: any, setSubmitting: any) => {
+        try {
+            await updateShipment(init.id, { ...values, UnitId: unitId });
+            mutate(`/shipment?UnitId=${unitId}`);
+            onClose();
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
-export default AddCallModal;
+    const handleDelete = async () => {
+        try {
+            await deleteShipment(init.id);
+            mutate(`/shipment?UnitId=${unitId}`);
+            onClose();
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    return (
+        <Dialog open={open} onClose={onClose} fullWidth maxWidth="md" title="Edit Shipment">
+            <Formik initialValues={init as IShipment} onSubmit={handleSubmit} validationSchema={schema}>
+                {({ values, errors, touched, handleChange, handleBlur, setFieldValue, setSubmitting }) => (
+                    <Form>
+                        <Box p={5} style={{ padding: "30px 15%" }}>
+                            <ShippedForm
+                                values={values}
+                                touched={touched}
+                                errors={errors}
+                                handleBlur={handleBlur}
+                                handleChange={handleChange}
+                                setFieldValue={setFieldValue}
+                            />
+                        </Box>
+                        <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="space-between"
+                            margin="10px auto"
+                            width="50%"
+                        >
+                            <Button type="submit" kind="edit">
+                                Save
+                            </Button>
+                            <Button
+                                kind="delete"
+                                onClick={() => {
+                                    handleDelete();
+                                }}
+                            >
+                                Delete
+                            </Button>
+                        </Box>
+                    </Form>
+                )}
+            </Formik>
+        </Dialog>
+    );
+};
+
+export default AddShipModal;
 
 export const ShippedForm = ({
     values,
@@ -142,7 +276,6 @@ export const ShippedForm = ({
                 placeholder="Tracking Number"
             />
             <TextField
-                style={{ gridColumnEnd: "span 2" }}
                 name="carrier"
                 value={values.carrier}
                 onBlur={handleBlur}
@@ -151,6 +284,16 @@ export const ShippedForm = ({
                 helperText={touched.carrier && errors.carrier && String(errors.carrier)}
                 label="Carrier"
                 placeholder="Carrier"
+            />
+            <TextField
+                name="shipmentNo"
+                value={values.shipmentNo}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                error={Boolean(errors.shipmentNo)}
+                helperText={touched.shipmentNo && errors.shipmentNo && String(errors.shipmentNo)}
+                label="shipment No."
+                placeholder="shipment No."
             />
             <DateTimePicker
                 name="deliveryDate"

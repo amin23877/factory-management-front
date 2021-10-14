@@ -8,16 +8,20 @@ import { BasePaper } from "../../../app/Paper";
 
 // import Details from "./Details";
 import Details from "../../FieldService/Units/Details";
-
+import { subMonths } from "date-fns";
 import { formatTimestampToDate } from "../../../logic/date";
 import { UnitSearchBox } from "../../../app/SearchBox";
 
 export default function Ship({ tab }: { tab: number }) {
     const [activeTab, setActiveTab] = useState(0);
     const [selectedShip, setSelectedShip] = useState<any>();
-
+    const [month, setMonth] = useState(new Date(subMonths(new Date(), 1)).getTime());
     const { data: ships } = useSwr(
-        tab === 0 ? "/unit?nstatus=ready to ship" : tab === 1 ? "/unit?status=ready to ship" : "/unit?status=shipped"
+        tab === 0
+            ? "/unit?nstatus=ready to ship"
+            : tab === 1
+            ? "/unit?status=ready to ship"
+            : `/unit?status=shipped?shipDate=${month}`
     );
 
     const cols: GridColumns =
