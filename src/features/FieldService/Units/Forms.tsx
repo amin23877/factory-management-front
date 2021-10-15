@@ -70,6 +70,7 @@ export const General = ({
                     fullWidth
                     label="Status"
                     items={[
+                        "New",
                         "Sales Pending",
                         "Engineering Pending",
                         "Purchasing Pending",
@@ -132,30 +133,30 @@ export const Status = ({
                     onChange={(date) => setFieldValue("warrantyExpDate", date)}
                     onBlur={handleBlur}
                 />
-                <DateTimePicker
+                <TextField
                     size="small"
-                    value={values.purchaseDate}
+                    value={formatTimestampToDate(values?.so?.date)}
                     name="purchaseDate"
                     label="purchase date"
-                    onChange={(date) => setFieldValue("purchaseDate", date)}
                     onBlur={handleBlur}
+                    disabled
                 />
-                <DateTimePicker
+                <TextField
                     size="small"
-                    value={values.estimatedShipDate}
+                    value={formatTimestampToDate(values?.so?.estimatedShipDate)}
                     name="estimatedShipDate"
                     label="Estimated ship date"
-                    onChange={(date) => setFieldValue("estimatedShipDate", date)}
                     onBlur={handleBlur}
+                    disabled
                 />
 
-                <DateTimePicker
+                <TextField
                     size="small"
-                    value={values.actualShipDate}
+                    value={formatTimestampToDate(values?.so?.actualShipDate)}
                     name="actualShipDate"
                     label="Actual ship date"
-                    onChange={(date) => setFieldValue("actualShipDate", date)}
                     onBlur={handleBlur}
+                    disabled
                 />
                 <DateTimePicker
                     size="small"
