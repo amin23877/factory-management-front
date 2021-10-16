@@ -154,6 +154,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
 
                     <Box height={450}>
                         <DataGrid
+                            density="compact"
                             className={classes.root}
                             columns={table.columns}
                             rows={table.rows}

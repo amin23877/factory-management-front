@@ -37,6 +37,7 @@ export default function DevicesList({ onDeviceSelected }: { onDeviceSelected: (r
         <Paper>
             <Box height={450}>
                 <DataGrid
+                    density="compact"
                     filterMode="server"
                     onFilterModelChange={(filters) => {
                         console.log(filters.filterModel.items[0]);

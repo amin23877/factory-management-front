@@ -129,6 +129,7 @@ export default function Calls() {
                             setSelectedCall(d);
                             setActiveTab(1);
                         }}
+                        height={500}
                     />
                 )}
                 {activeTab === 1 && selectedCall && <Details callsData={selectedCall} />}

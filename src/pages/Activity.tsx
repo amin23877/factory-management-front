@@ -107,7 +107,7 @@ export default function Activity() {
     };
 
     return (
-        <Container>
+        <>
             <Snack open={snack} onClose={() => setSnack(false)}>
                 {msg}
             </Snack>
@@ -212,6 +212,6 @@ export default function Activity() {
                     )}
                 </Box>
             </Box>
-        </Container>
+        </>
     );
 }

@@ -12,7 +12,7 @@ import "../styles/dashboard.css";
 export default function Dashboard() {
     const [activeTab, setActiveTab] = useState(0);
     return (
-        <Container>
+        <>
             <Box display="flex" alignItems="center" style={{ margin: "1em 0" }}>
                 <SearchBar />
                 <div style={{ flexGrow: 1 }} />
@@ -25,6 +25,6 @@ export default function Dashboard() {
             {activeTab === 0 && <Quote />}
             {activeTab === 1 && <Sales />}
             {activeTab === 2 && <Ship />}
-        </Container>
+        </>
     );
 }

@@ -188,7 +188,7 @@ function ItemsDetails() {
     }
 
     return (
-        <Container>
+        <>
             {/* <NoteModal
                 itemId={selectedItem.id as any}
                 model="item"
@@ -388,7 +388,7 @@ function ItemsDetails() {
                     )}
                 </Box>
             </BasePaper>
-        </Container>
+        </>
     );
 }
 

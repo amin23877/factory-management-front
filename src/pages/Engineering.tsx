@@ -14,7 +14,7 @@ export default function Engineering() {
     const [activeTab, setActiveTab] = useState(0);
 
     return (
-        <Container>
+        <>
             <Box display="flex" alignItems="center" my={2}>
                 <SearchBar />
                 <div style={{ flexGrow: 1 }} />

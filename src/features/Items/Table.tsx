@@ -177,6 +177,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
             <BasePaper>
                 <Box height={550}>
                     <DataGrid
+                        density="compact"
                         loading={loading}
                         className={dataGridClasses.root}
                         onRowSelected={onRowSelected}

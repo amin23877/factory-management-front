@@ -297,7 +297,7 @@ function DeviceDetails() {
     }
 
     return (
-        <Container>
+        <>
             {selectedStep && selectedRow && selectedRow.id && (
                 <EditTaskModal
                     device={selectedRow}
@@ -525,7 +525,7 @@ function DeviceDetails() {
                     </BasePaper>
                 </Grid>
             </Grid>
-        </Container>
+        </>
     );
 }
 export default DeviceDetails;

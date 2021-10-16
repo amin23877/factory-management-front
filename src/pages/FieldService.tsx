@@ -16,7 +16,7 @@ export default function FieldService() {
     const [activeTab, setActiveTab] = useState(0);
 
     return (
-        <Container>
+        <>
             <Box display="flex" alignItems="center" my={2}>
                 <SearchBar />
                 <div style={{ flexGrow: 1 }} />
@@ -43,6 +43,6 @@ export default function FieldService() {
                     {activeTab === 8 && <Vendors tech />}
                 </Suspense>
             </Box>
-        </Container>
+        </>
     );
 }

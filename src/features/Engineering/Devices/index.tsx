@@ -278,6 +278,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                             <Paper>
                                 <Box height={550}>
                                     <DataGrid
+                                        density="compact"
                                         loading={loading}
                                         className={classes.root}
                                         onRowSelected={(r) => {

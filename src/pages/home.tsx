@@ -66,7 +66,7 @@ export default function Home() {
         <div>
             <div className="Homebg"></div>
             <div className="HomeContain"></div>
-            <Container style={{ height: "87vh" }}>
+            <Box style={{ height: "87vh" }}>
                 <Grid container style={{ height: "100%" }}>
                     <Grid item xs={12} sm={6} md={4} lg={3}>
                         <ItemCard icon={<PaymentRounded />} title="Dashboard" href="/panel/dashboard" />
@@ -93,7 +93,7 @@ export default function Home() {
                         <ItemCard icon={<AccountTreeRounded />} title="Projects" href="/panel/projects" />
                     </Grid>
                 </Grid>
-            </Container>
+            </Box>
         </div>
     );
 }

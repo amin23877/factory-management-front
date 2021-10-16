@@ -3,7 +3,15 @@ import { DataGrid } from "@material-ui/data-grid";
 
 import { getAllModelNotes, INote } from "../../api/note";
 
-export const RecordNotes = ({ model, itemId, onRowSelected }: { model: string; itemId: number; onRowSelected?: (row: any) => void }) => {
+export const RecordNotes = ({
+    model,
+    itemId,
+    onRowSelected,
+}: {
+    model: string;
+    itemId: number;
+    onRowSelected?: (row: any) => void;
+}) => {
     const [rows, setRows] = useState<INote[]>([]);
 
     const cols = [
@@ -20,7 +28,7 @@ export const RecordNotes = ({ model, itemId, onRowSelected }: { model: string; i
 
     return (
         <div style={{ width: "100%", height: 250 }}>
-            <DataGrid columns={cols} rows={rows} onRowSelected={onRowSelected} />
+            <DataGrid columns={cols} rows={rows} onRowSelected={onRowSelected} density="compact" />
         </div>
     );
 };

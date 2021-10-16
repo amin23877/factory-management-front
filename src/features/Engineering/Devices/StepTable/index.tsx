@@ -200,6 +200,7 @@ function StepTable({ taskId, type }: { taskId: string; type: stepType }) {
 
                 <Box height={470}>
                     <DataGrid
+                        density="compact"
                         components={{ Toolbar: GridToolbar, Footer: CustomFooterStatusComponent }}
                         componentsProps={{
                             footer: { submited: Boolean(changedRows.length > 0 || renamedColumns || unsetColumns) },
