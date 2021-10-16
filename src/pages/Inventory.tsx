@@ -10,7 +10,7 @@ const Inventory = () => {
     const [mainTab, setMainTab] = useState(0);
 
     return (
-        <Container>
+        <>
             <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
                 <div style={{ flexGrow: 1 }} />
                 <MyTabs value={mainTab} onChange={(e, nv) => setMainTab(nv)} textColor="secondary">
@@ -20,7 +20,7 @@ const Inventory = () => {
             </Box>
             {mainTab === 0 && <Dashboard />}
             {mainTab === 1 && <Items />}
-        </Container>
+        </>
     );
 };
 

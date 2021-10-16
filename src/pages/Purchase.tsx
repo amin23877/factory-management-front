@@ -12,7 +12,7 @@ export default function Purchase() {
     const [activeTab, setActiveTab] = useState(0);
 
     return (
-        <Container>
+        <>
             <Box display="flex" alignItems="center" my={2}>
                 <SearchBar />
                 <div style={{ flexGrow: 1 }} />
@@ -26,6 +26,6 @@ export default function Purchase() {
             {activeTab === 1 && <PurchaseQuote />}
             {activeTab === 2 && <PurchasePO />}
             {activeTab === 3 && <Vendors />}
-        </Container>
+        </>
     );
 }

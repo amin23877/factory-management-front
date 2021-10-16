@@ -11,7 +11,8 @@ export default function ShipNReceive() {
     const [receiveActiveTab, setReceiveActiveTab] = useState(0);
 
     return (
-        <Container>
+        // <Container>
+        <>
             <Box display="flex" alignItems="center" my={2}>
                 <MyTabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <MyTab label="Shipping" />
@@ -45,6 +46,7 @@ export default function ShipNReceive() {
             {activeTab === 0 && shipActiveTab === 1 && <Shipping tab={1} />}
             {activeTab === 0 && shipActiveTab === 2 && <Shipping tab={2} />}
             {activeTab === 0 && shipActiveTab === 3 && <Units />}
-        </Container>
+        </>
+        // </Container>
     );
 }

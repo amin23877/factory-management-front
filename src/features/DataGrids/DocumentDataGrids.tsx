@@ -28,7 +28,7 @@ export const RecordDocuments = ({
 
     return (
         <div style={{ width: "100%", height: 250 }}>
-            <DataGrid columns={cols} rows={rows} onRowSelected={onRowSelected} />
+            <DataGrid columns={cols} rows={rows} onRowSelected={onRowSelected} density="compact" />
         </div>
     );
 };

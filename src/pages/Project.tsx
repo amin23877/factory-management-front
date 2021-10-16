@@ -65,9 +65,20 @@ export default function Project() {
     const cols: GridColDef[] = [{ field: "name" }];
 
     return (
-        <Container>
-            <ProjectModal open={projectModal} onClose={() => setProjectModal(false)} onDone={refreshProjects} data={pData} />
-            {selectedActivity && <ActivityModal open={activityModal} onClose={() => setActivityModal(false)} activity={selectedActivity} />}
+        <>
+            <ProjectModal
+                open={projectModal}
+                onClose={() => setProjectModal(false)}
+                onDone={refreshProjects}
+                data={pData}
+            />
+            {selectedActivity && (
+                <ActivityModal
+                    open={activityModal}
+                    onClose={() => setActivityModal(false)}
+                    activity={selectedActivity}
+                />
+            )}
 
             <Box my={2} display="flex" alignItems="center">
                 <Button
@@ -112,6 +123,6 @@ export default function Project() {
                     </Box>
                 )}
             </Box>
-        </Container>
+        </>
     );
 }

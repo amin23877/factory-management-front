@@ -10,7 +10,7 @@ export default function Unit() {
     const [activeTab, setActiveTab] = useState(0);
 
     return (
-        <Container>
+        <>
             <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
                 <div style={{ flexGrow: 1 }} />
                 <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="secondary">
@@ -23,6 +23,6 @@ export default function Unit() {
             {activeTab === 1 && <Tasks />}
             {activeTab === 2 && <Staff />}
             {/* we had something called management here that was for labors cost per hour */}
-        </Container>
+        </>
     );
 }
