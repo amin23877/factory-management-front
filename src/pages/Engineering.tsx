@@ -29,8 +29,8 @@ export default function Engineering() {
             {activeTab === 0 && <Dashboard />}
             {activeTab === 1 && <DevicesPanel />}
             {activeTab === 2 && <BOM />}
-            {activeTab === 3 && <Project />}
-            {activeTab === 4 && <Monitoring />}
+            {activeTab === 3 && <Monitoring />}
+            {activeTab === 4 && <Project />}
         </Container>
     );
 }

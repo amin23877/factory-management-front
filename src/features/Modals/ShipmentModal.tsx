@@ -25,7 +25,7 @@ const AddShipModal = ({ open, onClose, unitId }: { open: boolean; onClose: () =>
 
     const handleFileChange = async (e: any) => {
         if (unitId) {
-            if (!e.target.files) {
+            if (!(e.target.files || e.target.files[0])) {
                 return;
             }
             let file = e.target.files[0];

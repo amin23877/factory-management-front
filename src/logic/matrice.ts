@@ -36,7 +36,9 @@ export const generateDatagridColumns = (tableData: any[], productFamily: string)
             dtCols.push({field: c, flex: 1, sortable: false, editable: false})
     );
 
-    dtCols[0].hide = true;
+    if(dtCols[0] && dtCols[0].hide){
+        dtCols[0].hide = true;
+    }
     dtCols.unshift({field: "Product family", flex: 1, sortable: false, editable: false});
     dtCols.unshift({field: "name", flex: 1, headerName: "Name", sortable: false, editable: false});
 

@@ -1,5 +1,15 @@
 import React from "react";
-import { TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Typography, Box, makeStyles } from "@material-ui/core";
+import {
+    TableContainer,
+    Table,
+    TableHead,
+    TableRow,
+    TableCell,
+    TableBody,
+    Typography,
+    Box,
+    makeStyles,
+} from "@material-ui/core";
 
 export const useStyles = makeStyles((theme) => ({
     tableCont: {
@@ -54,7 +64,7 @@ export const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export const MinimalTable = ({ cols, rows }: { cols: any[]; rows: any[] }) => {
+export const MinimalTable = ({ cols, rows }: { cols: any[]; rows: any }) => {
     return (
         <TableContainer style={{ maxHeight: 280, overflow: "auto" }}>
             <Table style={{ background: "#f1f1f1", margin: "1em 0", borderRadius: 10 }}>
@@ -68,7 +78,7 @@ export const MinimalTable = ({ cols, rows }: { cols: any[]; rows: any[] }) => {
                     </TableRow>
                 </TableHead>
                 <TableBody style={{ borderBottom: "none" }}>
-                    {rows.map((tr, i: number) => (
+                    {/* {rows?.result.map((tr: any, i: number) => (
                         <TableRow style={{ borderBottom: "none" }} key={i}>
                             {cols.map((col) => (
                                 <TableCell style={{ borderBottom: "none" }} key={col.field}>
@@ -76,7 +86,7 @@ export const MinimalTable = ({ cols, rows }: { cols: any[]; rows: any[] }) => {
                                 </TableCell>
                             ))}
                         </TableRow>
-                    ))}
+                    ))} */}
                 </TableBody>
             </Table>
         </TableContainer>
