@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, IconButton, Avatar, Box } from "@material-ui/core";
+import { Button, IconButton, Avatar, Box, TextField } from "@material-ui/core";
 import { ArrowDropDownRounded, NotificationsOutlined, HelpOutline, TvRounded, ChatRounded } from "@material-ui/icons";
 
 import { useSession } from "../features/Session/sessionsSlice";
@@ -21,7 +21,7 @@ export const TopAppBar = ({
                     <span style={{ fontSize: 12, fontWeight: 400, marginBottom: "auto" }}>{session?.username}</span>
                 </span>
             </Button>
-            <div style={{ flexGrow: 1 }} />
+            <TextField style={{ flexGrow: 1, margin: "0 4em" }} variant="filled" placeholder="Search..." />
             <IconButton size="small" title="Help">
                 <HelpOutline style={{ marginRight: 3 }} />
             </IconButton>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Container } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 
 import { SearchBar } from "../app/TextField";
 import { MyTabs, MyTab } from "../app/Tabs";
@@ -31,6 +31,6 @@ export default function Engineering() {
             {activeTab === 2 && <BOM />}
             {activeTab === 3 && <Monitoring />}
             {activeTab === 4 && <Project />}
-        </Container>
+        </>
     );
 }

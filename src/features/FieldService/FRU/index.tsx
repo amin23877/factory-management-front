@@ -93,6 +93,7 @@ export default function FRU() {
         ],
         []
     );
+
     const callCols: GridColDef[] = [
         {
             field: "number",
