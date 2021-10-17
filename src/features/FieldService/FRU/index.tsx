@@ -6,14 +6,17 @@ import useSwr from "swr";
 import BaseDataGrid from "../../../app/BaseDataGrid";
 import { BasePaper } from "../../../app/Paper";
 
-// import Details from "./Details";
-
 import { formatTimestampToDate } from "../../../logic/date";
 import FullDataGrid from "../../../components/Datagrid/FullDataGrid";
 
+import UnitDetails from "../Units/Details";
+import DeviceDetails from "../../../features/Engineering/Devices/Details";
+import { IUnit } from "../../../api/units";
+
 export default function FRU() {
     const [activeTab, setActiveTab] = useState(0);
-    const [selectedFru, setSelectedFru] = useState<any>();
+    const [selectedUnitFru, setSelectedUnitFru] = useState<IUnit>();
+    const [selectedItemFru, setSelectedItemFru] = useState<any>();
 
     const { data: FRUs } = useSwr("/unit?fru=true");
     // /item?device=true&page=1&containProduct%20Family=FRU
@@ -128,14 +131,18 @@ export default function FRU() {
                 >
                     <Tab label="Devices" />
                     <Tab label="Units" />
-                    <Tab label="Details" disabled={!selectedFru} />
+                    <Tab label="Details" disabled={!selectedUnitFru && !selectedItemFru} />
                 </Tabs>
                 {activeTab === 0 && (
                     <FullDataGrid
                         url="/item"
                         columns={fruDevicesColumns}
                         defaultQueries={{ device: true, "containProduct Family": "FRU" }}
-                        onRowSelected={() => {}}
+                        onRowSelected={(d) => {
+                            setSelectedUnitFru(undefined);
+                            setSelectedItemFru(d);
+                            setActiveTab(2);
+                        }}
                         height={450}
                     />
                 )}
@@ -145,12 +152,24 @@ export default function FRU() {
                         rows={FRUs.result || []}
                         cols={callCols}
                         onRowSelected={(d) => {
-                            setSelectedFru(d);
-                            setActiveTab(1);
+                            setSelectedItemFru(undefined);
+                            setSelectedUnitFru(d);
+                            setActiveTab(2);
                         }}
                     />
                 )}
-                {/* {activeTab === 1 && selectedFru && <Details FRUsData={selectedFru} />} */}
+                {activeTab === 2 && selectedUnitFru && <UnitDetails unit={selectedUnitFru} />}
+                {activeTab === 2 && selectedItemFru && (
+                    <DeviceDetails
+                        sales={true}
+                        onDone={() => {}}
+                        selectedRow={selectedItemFru.data}
+                        onDocSelected={(d) => {}}
+                        onNoteSelected={(d) => {}}
+                        onStepSelected={(d) => {}}
+                        onFlagSelected={(d) => {}}
+                    />
+                )}
             </BasePaper>
         </Box>
     );
