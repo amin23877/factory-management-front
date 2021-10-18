@@ -1,4 +1,5 @@
 import { delete_, get, patch, post } from ".";
+import { IItem } from "./items";
 
 export interface IBom {
     id?: string;
@@ -6,18 +7,26 @@ export interface IBom {
     name: string;
     note: string;
     current: boolean;
+    ItemId: IItem;
+    items: number;
+    createdAt: number;
+    updatedAt: number;
 }
 
 export interface IBomRecord {
+    id:string;
     revision: string;
     usage: number;
     fixedQty: boolean;
     index: number;
-    ItemId: string;
+    ItemId: IItem;
+    BOMId:string;
+    createdAt:number;
+    updatedAt:number;
 }
 
 export const getBom = (ItemId: string) => {
-    return get(`/bom`, { params:{ ItemId} });
+    return get(`/bom`, { params: { ItemId } });
 };
 
 export const addBom = (ItemId: string, { no, name, note, current }: IBom) => {
@@ -33,7 +42,7 @@ export const deleteBom = (itemId: string) => {
 };
 
 export const getBomRecord = (BOMId: string) => {
-    return get(`/bomrecord`, { params:{ BOMId} });
+    return get(`/bomrecord`, { params: { BOMId } });
 };
 
 export const addBomRecord = (bomId: string, { revision, usage, fixedQty, index, ItemId }: IBomRecord) => {

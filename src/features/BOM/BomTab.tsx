@@ -144,12 +144,14 @@ export default function BomTab({
                         itemId={itemId}
                         method="patch"
                         bomId={selectedBom.id}
-                        initialValues={{
-                            name: selectedBom.name,
-                            no: selectedBom.no,
-                            note: selectedBom.note,
-                            current: selectedBom.current,
-                        }}
+                        initialValues={
+                            {
+                                name: selectedBom.name,
+                                no: selectedBom.no,
+                                note: selectedBom.note,
+                                current: selectedBom.current,
+                            } as IBom
+                        }
                     />
                 )}
             </Box>

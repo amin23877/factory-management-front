@@ -16,7 +16,7 @@ function Parts({ open, onClose, bom }: { open: boolean; onClose: () => void; bom
             { field: "name", headerName: "Name", valueFormatter: (params) => params.row?.ItemId?.name, flex: 1 },
             { field: "revision", headerName: "Revision", width: 120 },
             { field: "usage", headerName: "Usage", width: 80 },
-            { field: "fixedQty", headerName: "fixed Qty", type: "boolean", width: 120 },
+            { field: "fixedQty", headerName: "Fixed QTY", type: "boolean", width: 120 },
         ],
         []
     );

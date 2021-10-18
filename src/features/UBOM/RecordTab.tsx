@@ -8,9 +8,9 @@ import Button from "../../app/Button";
 import { FieldSelect } from "../../app/Inputs";
 
 import { getItems } from "../../api/items";
-import { addBomRecord, updateBomRecord, deleteBomRecord } from "../../api/bom";
+import { updateBomRecord, deleteBomRecord } from "../../api/bom";
 import Confirm from "../Modals/Confirm";
-import { addUBomRecord, IBomRecord, updateUBomRecord } from "../../api/ubom";
+import { addUBomRecord, IBomRecord } from "../../api/ubom";
 
 const BomRecordForm = ({
     initialValues,
@@ -37,17 +37,15 @@ const BomRecordForm = ({
         try {
             if (method === "post") {
                 if (itemId) {
+                    await addUBomRecord(bomId, values);
 
-                    console.log(bomId, values);
-                    const resp = await addUBomRecord(bomId, values);
-                    console.log(resp);
                     onDone();
                     setSubmitting(false);
                 }
             } else if (method === "patch") {
                 console.log(bomRecordId);
                 if (bomRecordId) {
-                    const resp = await updateBomRecord(bomRecordId, values);
+                    const resp = await updateBomRecord(bomRecordId, values as any);
                     console.log(resp);
                     onDone();
                     setSubmitting(false);

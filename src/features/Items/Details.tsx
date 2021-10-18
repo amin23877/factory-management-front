@@ -35,6 +35,7 @@ import QRCode from "./QRCode";
 import { fileType } from "../../logic/fileType";
 import { formatTimestampToDate } from "../../logic/date";
 import { getModifiedValues } from "../../logic/utils";
+import ItemBomTable from "../BOM/ItemBomTable";
 
 const style = {
     border: "1px solid gray ",
@@ -78,9 +79,9 @@ function ItemsDetails({
         activeTab === 0 ? (selectedRow && selectedRow.id ? `/document/item/${selectedRow.id}` : null) : null
     );
 
-    const { data: boms } = useSWR<IBom[]>(
-        activeTab === 1 ? (selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null) : null
-    );
+    // const { data: boms } = useSWR<IBom[]>(
+    //     activeTab === 1 ? (selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null) : null
+    // );
     const { data: vendors } = useSWR(
         activeTab === 2 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/vendors` : null) : null
     );
@@ -190,22 +191,22 @@ function ItemsDetails({
         []
     );
     // Items	Revision	Revision Date	BOM Name	Note	Current
-    const bomCols = useMemo<GridColDef[]>(
-        () => [
-            { field: "items", headerName: "Items", width: 100 },
-            { field: "revision", headerName: "Revision", width: 100 },
-            {
-                field: "date",
-                headerName: "Revision Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
-                width: 120,
-            },
-            { field: "name", headerName: "Name", flex: 1 },
-            { field: "note", headerName: "Note", flex: 1 },
-            { field: "current", headerName: "Current", type: "boolean", width: 100 },
-        ],
-        []
-    );
+    // const bomCols = useMemo<GridColDef[]>(
+    //     () => [
+    //         { field: "items", headerName: "Items", width: 100 },
+    //         { field: "revision", headerName: "Revision", width: 100 },
+    //         {
+    //             field: "date",
+    //             headerName: "Revision Date",
+    //             valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+    //             width: 120,
+    //         },
+    //         { field: "name", headerName: "Name", flex: 1 },
+    //         { field: "note", headerName: "Note", flex: 1 },
+    //         { field: "current", headerName: "Current", type: "boolean", width: 100 },
+    //     ],
+    //     []
+    // );
 
     // const usesCols = useMemo<GridColDef[]>(
     //     () => [
@@ -540,24 +541,25 @@ function ItemsDetails({
                     )}
                     {/* {activeTab === 2 && <BaseDataGrid cols={usesCols} rows={uses || []} onRowSelected={() => {}} />} */}
                     {activeTab === 1 && (
-                        <Fragment>
-                            <Button
-                                onClick={() => {
-                                    setBomModal(true);
-                                }}
-                                style={style}
-                            >
-                                + Add Bill of Material
-                            </Button>
-                            <BaseDataGrid
-                                cols={bomCols}
-                                rows={boms || []}
-                                onRowSelected={(d) => {
-                                    setSelectedBom(d);
-                                    setBomPartsModal(true);
-                                }}
-                            />
-                        </Fragment>
+                        // <Fragment>
+                        //     <Button
+                        //         onClick={() => {
+                        //             setBomModal(true);
+                        //         }}
+                        //         style={style}
+                        //     >
+                        //         + Add Bill of Material
+                        //     </Button>
+                        //     <BaseDataGrid
+                        //         cols={bomCols}
+                        //         rows={boms || []}
+                        //         onRowSelected={(d) => {
+                        //             setSelectedBom(d);
+                        //             setBomPartsModal(true);
+                        //         }}
+                        //     />
+                        // </Fragment>
+                        <ItemBomTable itemId={selectedRow.id} />
                     )}
                     {activeTab === 2 && (
                         <Fragment>
