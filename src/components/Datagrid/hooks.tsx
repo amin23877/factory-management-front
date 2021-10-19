@@ -25,7 +25,7 @@ export const useDataGridData = ({
     const dataGridClasses = useDataGridStyles();
 
     const paginationQueries = `page=${page + 1}&pageSize=${limit ? limit : 25}`;
-    const otherQueries = params ? generateQuery(params) + "&" : "";
+    const otherQueries = params && generateQuery(params) ? generateQuery(params) + "&" : "";
     const { data, mutate } = useSWR(`${url}?${otherQueries}${paginationQueries}`, async (url) => {
         try {
             setLoading(true);

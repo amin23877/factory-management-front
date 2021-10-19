@@ -1,21 +1,20 @@
 import React, { useState } from "react";
-import { GridColumns } from "@material-ui/data-grid";
+import { DataGrid, GridColumns, GridToolbar } from "@material-ui/data-grid";
 import { Box, Tabs, Tab } from "@material-ui/core";
-import useSwr from "swr";
 
-import BaseDataGrid from "../../../app/BaseDataGrid";
+import { UnitSearchBox } from "../../../app/SearchBox";
 import { BasePaper } from "../../../app/Paper";
 
+import { useDataGridData } from "../../../components/Datagrid/hooks";
 import Details from "./Details";
 
 import { formatTimestampToDate } from "../../../logic/date";
-import { UnitSearchBox } from "../../../app/SearchBox";
 
 export default function Unit() {
     const [activeTab, setActiveTab] = useState(0);
     const [selectedUnit, setSelectedUnit] = useState<any>();
 
-    const { data: units } = useSwr("/unit");
+    const { rows: units, loading, page, setPage, dataGridClasses } = useDataGridData({ url: "/unit" });
 
     const cols: GridColumns = [
         {
@@ -53,32 +52,6 @@ export default function Unit() {
 
     return (
         <Box>
-            {/* <Box mb={2} display="flex" alignItems="center">
-                <Button
-                    onClick={() => setAddCall(true)}
-                    style={{
-                        backgroundColor: "#1a73e8",
-                        color: "#fff",
-                        margin: "0 0.5em",
-                        padding: " 6px 15px",
-                        boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-                    }}
-                >
-                    <AddRoundedIcon />
-                    Add Ticket
-                </Button>
-                <Button
-                    kind="delete"
-                    disabled={!selectedUnit}
-                    onClick={() => setConfirm(true)}
-                    style={{ margin: "0 0.5em" }}
-                >
-                    Delete Ticket
-                </Button>
-                <Button kind="add" onClick={() => setCTagModal(true)} style={{ margin: "0 0.5em" }}>
-                    Add Call Tags
-                </Button>
-            </Box> */}
             <BasePaper>
                 <Tabs
                     value={activeTab}
@@ -92,14 +65,28 @@ export default function Unit() {
                 {activeTab === 0 && units && (
                     <>
                         <UnitSearchBox />
-                        <BaseDataGrid
-                            rows={units.result || []}
-                            cols={cols}
-                            onRowSelected={(d) => {
-                                setSelectedUnit(d);
-                                setActiveTab(1);
-                            }}
-                        />
+
+                        <Box height={550}>
+                            <DataGrid
+                                density="compact"
+                                loading={loading}
+                                pagination
+                                paginationMode="server"
+                                page={page}
+                                onPageChange={(p) => setPage(p.page)}
+                                pageSize={25}
+                                rowCount={units ? units.totalCount : 0}
+                                className={dataGridClasses.root}
+                                filterMode="server"
+                                components={{ Toolbar: GridToolbar }}
+                                rows={units.result || []}
+                                columns={cols}
+                                onRowSelected={(d) => {
+                                    setSelectedUnit(d.data);
+                                    setActiveTab(1);
+                                }}
+                            />
+                        </Box>
                     </>
                 )}
                 {activeTab === 1 && selectedUnit && <Details unit={selectedUnit} />}

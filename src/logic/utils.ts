@@ -32,10 +32,11 @@ export type ParameterType = {
 export const generateQuery = (params: ParameterType) => {
     const queryArray = [];
     let paramValue: any = "";
-
+    
+    
     for (const paramName in params) {
         paramValue = params[paramName];
-
+        
         if (paramValue !== null && paramValue !== undefined && paramValue !== "") {
             queryArray.push(`${paramName}=${paramValue}`);
         }

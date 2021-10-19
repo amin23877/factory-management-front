@@ -1,18 +1,21 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Box, Paper } from "@material-ui/core";
 import { DataGrid, GridColDef, GridToolbar, GridColumns } from "@material-ui/data-grid";
-import useSWR from "swr";
 import { addDays } from "date-fns";
 
 import Button from "../../../../app/Button";
 // import { UnitSearchBox } from "../../../../app/SearchBox";
 import { useDataGridStyles } from "../../../../app/BaseDataGrid";
-
+import { UnitSearchBox } from "../../../../app/SearchBox";
 import { DateInput } from "../../../../components/Filters/Date";
 
+import { useDataGridData } from "../../../../components/Datagrid/hooks";
 import { formatTimestampToDate } from "../../../../logic/date";
 import { get } from "../../../../api";
-import { UnitSearchBox } from "../../../../app/SearchBox";
+
+const dateStringToUnix = (date: Date) => {
+    return String(Math.round(new Date(date).getTime() / 1));
+};
 
 function Table({
     setActiveTab,
@@ -21,10 +24,6 @@ function Table({
     setSelectedUnit: (a: any) => void;
     setActiveTab: (a: any) => void;
 }) {
-    const dateStringToUnix = (date: Date) => {
-        return String(Math.round(new Date(date).getTime() / 1));
-    };
-
     const [topDateFilter, setTopDateFilter] = useState<"week" | "week2" | "week3" | "week4">();
     const [finish, setFinish] = useState<string>();
     const [start, setStart] = useState<string>();
@@ -39,11 +38,7 @@ function Table({
     const sWeek3 = dateStringToUnix(addDays(new Date(), 7 * 3));
     const sWeek4 = dateStringToUnix(addDays(new Date(), 7 * 4));
 
-    const { data: units } = useSWR(finish && start ? `/unit?finish=${finish}&start=${start}` : "/unit");
-    // const { data: week } = useSWR(`/unit?finish=${sWeek1}&start=${sWeek}`, fetcher, { revalidateOnMount: false });
-    // const { data: week2 } = useSWR(`/unit?finish=${sWeek2}&start=${sWeek1}`, fetcher, { revalidateOnMount: false });
-    // const { data: week3 } = useSWR(`/unit?finish=${sWeek3}&start=${sWeek2}`, fetcher, { revalidateOnMount: false });
-    // const { data: week4 } = useSWR(`/unit?finish=${sWeek4}&start=${sWeek3}`, fetcher, { revalidateOnMount: false });
+    const { rows: units, loading, page, setPage } = useDataGridData({ url: "/unit", params: { finish, start } });
 
     const getWeeks = async () => {
         const resp = await get(`/unit?finish=${sWeek1}&start=${sWeek}`);
@@ -181,9 +176,16 @@ function Table({
                 <div style={{ marginLeft: "auto" }} />
             </Box>
             <Paper>
-                <Box height={350}>
+                <Box height={550}>
                     <DataGrid
                         density="compact"
+                        loading={loading}
+                        pagination
+                        paginationMode="server"
+                        page={page}
+                        onPageChange={(p) => setPage(p.page)}
+                        pageSize={25}
+                        rowCount={units ? units.totalCount : 0}
                         className={classes.root}
                         columns={unitCols}
                         rows={units ? units.result : []}

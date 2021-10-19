@@ -33,27 +33,13 @@ interface IBaseDataGrid {
     rows: any[];
     cols: any[];
     height?: number;
+    loading?: boolean;
 }
 
 export default function BaseDataGrid({ onRowSelected, rows, cols, height }: IBaseDataGrid) {
     const classes = useDataGridStyles();
 
-    // const updatedCols = cols.map((x) => {
-    //     let obj = Object.keys(x);
-    //     let check = false;
-    //     for (let o in obj) {
-    //         if (o == "flex") {
-    //             check = true;
-    //         }
-    //     }
-    //     if (!check) {
-    //         x = { ...x, flex: 1 };
-    //     }
-    //     return x;
-    // });
-
     return (
-        // <Box display="flex" boxShadow="rgba(0, 0, 0, 0.08) 0px 4px 12px" border="none" height="100%">
         <div
             style={{
                 flexGrow: 1,
@@ -71,7 +57,6 @@ export default function BaseDataGrid({ onRowSelected, rows, cols, height }: IBas
                 rows={rows}
             />
         </div>
-        // </Box>
     );
 }
 
