@@ -16,10 +16,11 @@ import Paper from "@material-ui/core/Paper";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import { Check, Clear } from "@material-ui/icons";
+import { Check, Clear, LaptopWindows } from "@material-ui/icons";
 
 import { IBom, IBomRecord } from "../../api/bom";
 import { formatTimestampToDate } from "../../logic/date";
+import { openRequestedSinglePopup } from "../../logic/window";
 
 const useRowStyles = makeStyles({
     root: {
@@ -90,6 +91,11 @@ function Row({ row }: { row: IBom }) {
                 <TableCell>
                     <IconButton aria-label="expand BOM row" size="small" onClick={() => setOpen(!open)}>
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                    </IconButton>
+                </TableCell>
+                <TableCell>
+                    <IconButton onClick={() => openRequestedSinglePopup({ url: `/panel/bom/${row.id}/parts` })}>
+                        <LaptopWindows />
                     </IconButton>
                 </TableCell>
                 <TableCell component="th" scope="row">
@@ -163,6 +169,7 @@ export default function ItemBomTable({ itemId }: { itemId: string }) {
             <Table className={classes.root} size="small" aria-label="collapsible BOM table">
                 <TableHead>
                     <TableRow>
+                        <TableCell />
                         <TableCell />
                         <TableCell>Items</TableCell>
                         <TableCell align="right">Revision</TableCell>
