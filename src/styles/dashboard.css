@@ -1,43 +1,37 @@
-body{
+/* body{
     background-image: url("../assets/background.png");
     z-index: -3;
     height: 100vh;
     background-position:bottom;
     background-size: cover;
 
-}
-body .Homebg{
+} */
+/* body .Homebg{
     position: absolute;
     top:0;
     right: 0;
-    /* The image used */
     background-color:#fff ;
   
-    /* Full height */
     height: 100%;
     width: 100%; 
     z-index: -2;
-    /* Center and scale the image nicely */
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
   
-}
+} */
 
-body .HomeContain{
+/* body .HomeContain{
         position: absolute;
         top:0;
         right: 0;
-        /* The image used */
         background-image: url("../assets/icons/background.svg");
       
-        /* Full height */
         height: 100%;
         width: 100%; 
         z-index: -1;
-        /* Center and scale the image nicely */
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
       
-}
+} */

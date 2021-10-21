@@ -10,7 +10,17 @@ interface IButton extends ButtonProps {
 export default function MyButton({ kind, ...props }: IButton) {
     const useStyles = makeStyles({
         btnStyle: {
-            background: kind ? (kind === "add" ? Gradients.success : kind === "edit" ? Gradients.warning : Gradients.error) : "default",
+            background: kind
+                ? kind === "add"
+                    ? Gradients.success
+                    : kind === "edit"
+                    ? Gradients.warning
+                    : Gradients.error
+                : "default",
+            borderRadius: "0.5em",
+            boxShadow: "none",
+            paddingRight: "25px",
+            paddingLeft: "25px",
         },
     });
     let icons = {

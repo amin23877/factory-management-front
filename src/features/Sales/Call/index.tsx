@@ -17,6 +17,7 @@ import AddCallModal from "./CallModal";
 
 import { formatTimestampToDate } from "../../../logic/date";
 import { deleteCall } from "../../../api/calls";
+import { ListAltRounded, FindInPageRounded } from "@material-ui/icons";
 
 export default function Calls() {
     const [activeTab, setActiveTab] = useState(0);
@@ -89,11 +90,13 @@ export default function Calls() {
                 <Button
                     onClick={() => setAddCall(true)}
                     style={{
-                        backgroundColor: "#1a73e8",
+                        backgroundColor: "rgb(25,117,228)",
                         color: "#fff",
                         margin: "0 0.5em",
-                        padding: " 6px 15px",
-                        boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+                        padding: " 6px 25px",
+                        borderRadius: "0.5em",
+                        fontSize: "small",
+                        // boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
                     }}
                 >
                     <AddRoundedIcon />
@@ -118,8 +121,24 @@ export default function Calls() {
                     onChange={(e, nv) => setActiveTab(nv)}
                     style={{ marginBottom: 10 }}
                 >
-                    <Tab label="List" />
-                    <Tab label="Details" disabled={!selectedCall} />
+                    <Tab
+                        // label="List"
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                <ListAltRounded /> List
+                            </span>
+                        }
+                        wrapped
+                    />
+                    <Tab
+                        // label="Details"
+                        disabled={!selectedCall}
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <FindInPageRounded /> Details
+                            </span>
+                        }
+                    />
                 </Tabs>
                 {activeTab === 0 && calls && (
                     <BaseDataGrid
