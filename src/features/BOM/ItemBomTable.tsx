@@ -21,6 +21,7 @@ import { Check, Clear, LaptopWindows } from "@material-ui/icons";
 import { IBom, IBomRecord } from "../../api/bom";
 import { formatTimestampToDate } from "../../logic/date";
 import { openRequestedSinglePopup } from "../../logic/window";
+import { useHistory } from "react-router-dom";
 
 const useRowStyles = makeStyles({
     root: {
@@ -80,6 +81,7 @@ export const useTableStyles = makeStyles((theme) => ({
 }));
 
 function Row({ row }: { row: IBom }) {
+    let history = useHistory();
     const { data: bomRecords } = useSWR<IBomRecord[]>(`/bomrecord?BOMId=${row.id}`);
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
@@ -130,7 +132,12 @@ function Row({ row }: { row: IBom }) {
                                     <TableBody>
                                         {bomRecords ? (
                                             bomRecords.map((part) => (
-                                                <TableRow key={part.id}>
+                                                <TableRow
+                                                    key={part.id}
+                                                    onClick={() => {
+                                                        history.push(`/panel/inventory/${part.ItemId.id}`);
+                                                    }}
+                                                >
                                                     <TableCell component="th" scope="row">
                                                         {part.ItemId.no}
                                                     </TableCell>

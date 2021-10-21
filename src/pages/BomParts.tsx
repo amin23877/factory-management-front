@@ -3,12 +3,14 @@ import { Container, Typography } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
+import { useHistory } from "react-router-dom";
 
 import BaseDataGrid from "../app/BaseDataGrid";
 
 function Parts() {
     const { bomId } = useParams<{ bomId: string }>();
     const { data: bomRecords } = useSWR(bomId ? `/bomrecord?BOMId=${bomId}` : null);
+    let history = useHistory();
 
     const bomRecordCols = useMemo<GridColumns>(
         () => [
@@ -29,7 +31,13 @@ function Parts() {
 
     return (
         <Container>
-            <BaseDataGrid cols={bomRecordCols} rows={bomRecords || []} onRowSelected={() => {}} />
+            <BaseDataGrid
+                cols={bomRecordCols}
+                rows={bomRecords || []}
+                onRowSelected={(d) => {
+                    history.push(`/panel/inventory/${d.ItemId.id}`);
+                }}
+            />
         </Container>
     );
 }
