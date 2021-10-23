@@ -125,7 +125,7 @@ export default function Calls() {
                         // label="List"
                         icon={
                             <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                                <ListAltRounded /> List
+                                <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> List
                             </span>
                         }
                         wrapped
@@ -135,7 +135,7 @@ export default function Calls() {
                         disabled={!selectedCall}
                         icon={
                             <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                <FindInPageRounded /> Details
+                                <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
                             </span>
                         }
                     />

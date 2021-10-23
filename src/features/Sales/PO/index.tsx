@@ -193,6 +193,7 @@ export default function POPanel() {
                 </Tabs>
                 {activeTab === 0 && pos && (
                     <BaseDataGrid
+                        height={500}
                         rows={pos}
                         cols={poCols}
                         onRowSelected={(d) => {

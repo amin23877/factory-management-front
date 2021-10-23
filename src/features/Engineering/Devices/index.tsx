@@ -276,7 +276,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                         <>
                             <SearchBox panel="engineering" />
                             <Paper>
-                                <Box height={550}>
+                                <Box height={500}>
                                     <DataGrid
                                         density="compact"
                                         loading={loading}
