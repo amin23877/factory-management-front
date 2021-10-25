@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import { Box, Grid, Tabs, Tab } from "@material-ui/core";
-import { AddRounded } from "@material-ui/icons";
+import {
+    AddRounded,
+    FindInPageRounded,
+    HelpOutlineRounded,
+    ListAltRounded,
+    ThumbDownAltRounded,
+} from "@material-ui/icons";
 import useSWR from "swr";
 
 import Button from "../../../app/Button";
@@ -92,11 +98,64 @@ export default function Customers() {
                 <Grid item xs={12}>
                     <BasePaper>
                         <Box mb={2} display="flex">
-                            <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
-                                <Tab label="List" />
-                                <Tab label="Requests" />
-                                <Tab label="Rejected" />
-                                <Tab label="Details" disabled={!selectedRow} />
+                            <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="primary">
+                                <Tab
+                                    // label="List"
+                                    icon={
+                                        <span
+                                            style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "space-between",
+                                            }}
+                                        >
+                                            <ListAltRounded style={{ marginRight: "5px" }} /> List
+                                        </span>
+                                    }
+                                    wrapped
+                                />
+                                <Tab
+                                    // label="List"
+                                    icon={
+                                        <span
+                                            style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "space-between",
+                                            }}
+                                        >
+                                            <HelpOutlineRounded style={{ marginRight: "5px" }} /> Requests
+                                        </span>
+                                    }
+                                    wrapped
+                                />
+                                <Tab
+                                    // label="List"
+                                    icon={
+                                        <span
+                                            style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "space-between",
+                                            }}
+                                        >
+                                            <ThumbDownAltRounded style={{ marginRight: "5px" }} /> Rejected
+                                        </span>
+                                    }
+                                    wrapped
+                                />
+
+                                <Tab
+                                    // label="Details"
+                                    disabled={!selectedRow}
+                                    icon={
+                                        <span
+                                            style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+                                        >
+                                            <FindInPageRounded style={{ marginRight: "5px" }} /> Details
+                                        </span>
+                                    }
+                                />
                             </Tabs>
                             <div style={{ flex: 1 }}></div>
                         </Box>

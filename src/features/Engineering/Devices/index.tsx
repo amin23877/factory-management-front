@@ -8,6 +8,8 @@ import {
     PostAddRounded,
     FormatListNumberedRounded,
     OutlinedFlagRounded,
+    ListAltRounded,
+    FindInPageRounded,
 } from "@material-ui/icons";
 import {
     DataGrid,
@@ -37,6 +39,7 @@ import { generateURL } from "../../../logic/filterSortPage";
 import SearchBox from "../../../app/SearchBox";
 import { useDataGridStyles } from "../../../app/BaseDataGrid";
 import { splitLevelName } from "../../../logic/levels";
+import { BasePaper } from "../../../app/Paper";
 
 const Devices = ({ sales }: { sales?: boolean }) => {
     const classes = useDataGridStyles();
@@ -124,7 +127,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
     }, [selectedItem, refreshItems]);
 
     return (
-        <Box>
+        <BasePaper>
             {selectedStep && selectedItem && selectedItem.id && (
                 <EditTaskModal
                     device={selectedItem}
@@ -205,8 +208,24 @@ const Devices = ({ sales }: { sales?: boolean }) => {
 
             <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-                    <Tab label="List" />
-                    <Tab disabled={!selectedItem} label="Details" />
+                    <Tab
+                        // label="List"
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                <ListAltRounded style={{ marginRight: "5px" }} /> List
+                            </span>
+                        }
+                        wrapped
+                    />
+                    <Tab
+                        // label="Details"
+                        disabled={!selectedItem}
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <FindInPageRounded style={{ marginRight: "5px" }} /> Details
+                            </span>
+                        }
+                    />
                 </Tabs>
                 <div style={{ flexGrow: 1 }} />
             </Box>
@@ -274,36 +293,34 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                 <Box flex={11} ml={2}>
                     {activeTab === 0 && (
                         <>
-                            <SearchBox panel="engineering" />
-                            <Paper>
-                                <Box height={550}>
-                                    <DataGrid
-                                        density="compact"
-                                        loading={loading}
-                                        className={classes.root}
-                                        onRowSelected={(r) => {
-                                            setSelectedItem(r.data as any);
-                                            setActiveTab(1);
-                                        }}
-                                        pagination
-                                        filterMode="server"
-                                        sortingMode="server"
-                                        paginationMode="server"
-                                        rowCount={items.total}
-                                        rowsPerPageOptions={[25]}
-                                        pageSize={dataState && dataState.page ? dataState.page.pageSize : 25}
-                                        onPageChange={(p) =>
-                                            setDataState((prev) => ({ ...prev, page: { ...p, page: p.page + 1 } }))
-                                        }
-                                        onPageSizeChange={(ps) => setDataState((prev) => ({ ...prev, page: ps }))}
-                                        onSortModelChange={(s) => setDataState((prev) => ({ ...prev, sorts: s }))}
-                                        onFilterModelChange={(f) => setDataState((prev) => ({ ...prev, filters: f }))}
-                                        rows={items ? items.result : []}
-                                        columns={gridColumns}
-                                        components={{ Toolbar: GridToolbar }}
-                                    />
-                                </Box>
-                            </Paper>
+                            {/* <SearchBox panel="engineering" /> */}
+                            <Box height={550}>
+                                <DataGrid
+                                    density="compact"
+                                    loading={loading}
+                                    className={classes.root}
+                                    onRowSelected={(r) => {
+                                        setSelectedItem(r.data as any);
+                                        setActiveTab(1);
+                                    }}
+                                    pagination
+                                    filterMode="server"
+                                    sortingMode="server"
+                                    paginationMode="server"
+                                    rowCount={items.total}
+                                    rowsPerPageOptions={[25]}
+                                    pageSize={dataState && dataState.page ? dataState.page.pageSize : 25}
+                                    onPageChange={(p) =>
+                                        setDataState((prev) => ({ ...prev, page: { ...p, page: p.page + 1 } }))
+                                    }
+                                    onPageSizeChange={(ps) => setDataState((prev) => ({ ...prev, page: ps }))}
+                                    onSortModelChange={(s) => setDataState((prev) => ({ ...prev, sorts: s }))}
+                                    onFilterModelChange={(f) => setDataState((prev) => ({ ...prev, filters: f }))}
+                                    rows={items ? items.result : []}
+                                    columns={gridColumns}
+                                    components={{ Toolbar: GridToolbar }}
+                                />
+                            </Box>
                         </>
                     )}
                     {activeTab === 1 && (
@@ -331,7 +348,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                     )}
                 </Box>
             </Box>
-        </Box>
+        </BasePaper>
     );
 };
 

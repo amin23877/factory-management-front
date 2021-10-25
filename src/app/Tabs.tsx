@@ -51,6 +51,7 @@ export const MyTabs = withStyles({
         height: 0,
     },
     vertical: {
+        textAlign: "left",
         width: "125px",
         backgroundImage: `url(${tabBG})`,
         backgroundColor: "black",
@@ -75,10 +76,12 @@ export const MyTabs = withStyles({
 export const MyTab = withStyles((theme: Theme) =>
     createStyles({
         root: {
+            textAlign: "left",
             textTransform: "none",
             minWidth: "2em",
             minHeight: "45px",
             color: "white",
+            marginRight: "auto",
             "&:hover": {
                 color: "#aaa",
                 opacity: 1,
@@ -87,6 +90,7 @@ export const MyTab = withStyles((theme: Theme) =>
                 backgroundColor: "rgb(42,49,59)",
                 borderRadius: "0.5em",
                 color: "rgb(230,128,49)",
+                width: "100%",
             },
             "&:active": {
                 borderRadius: "0.5em",

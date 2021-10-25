@@ -24,6 +24,7 @@ export default function CustomerDataGrid({
             field: "name",
             width: 120,
             headerName: "Name",
+            flex: 1,
         },
         {
             field: "state",
@@ -56,6 +57,7 @@ export default function CustomerDataGrid({
             headerName: "Main Contact",
             width: 130,
             valueFormatter: (data) => data.row?.contact?.firstName,
+            hide: true,
         },
 
         {
@@ -68,6 +70,8 @@ export default function CustomerDataGrid({
             field: "email",
             headerName: "Email",
             width: 150,
+            hide: true,
+
             // valueFormatter: (data) => (data.row.phone ? data.row?.phone?.ext + " " + data.row?.phone?.phone : ""),
         },
         {
