@@ -1,15 +1,5 @@
 import React from "react";
-import {
-    Tabs,
-    Tab,
-    TabProps,
-    withStyles,
-    createStyles,
-    Theme,
-    makeStyles,
-    ExtendButtonBase,
-    TabTypeMap,
-} from "@material-ui/core";
+import { Tabs, Tab, withStyles, createStyles, Theme } from "@material-ui/core";
 import tabBG from "../assets/tabBG.png";
 // const useStyles = makeStyles({
 //     root: {
@@ -51,6 +41,7 @@ export const MyTabs = withStyles({
         height: 0,
     },
     vertical: {
+        textAlign: "left",
         width: "125px",
         backgroundImage: `url(${tabBG})`,
         backgroundColor: "black",
@@ -65,20 +56,19 @@ export const MyTabs = withStyles({
         },
     },
 })(Tabs);
-// ExtendButtonBase<TabTypeMap<{}, "div">>
-// export const MyTab = (props: any) => {
-//     const classes = useStyles();
-
-//     return <Tab className={classes.root} disableRipple {...props} />;
-// };
 
 export const MyTab = withStyles((theme: Theme) =>
     createStyles({
         root: {
+            textAlign: "left",
             textTransform: "none",
             minWidth: "2em",
             minHeight: "45px",
             color: "white",
+            marginRight: "auto",
+            "& .MuiTab-wrapper": {
+                alignItems: "normal",
+            },
             "&:hover": {
                 color: "#aaa",
                 opacity: 1,
@@ -87,6 +77,7 @@ export const MyTab = withStyles((theme: Theme) =>
                 backgroundColor: "rgb(42,49,59)",
                 borderRadius: "0.5em",
                 color: "rgb(230,128,49)",
+                width: "100%",
             },
             "&:active": {
                 borderRadius: "0.5em",

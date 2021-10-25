@@ -25,7 +25,7 @@ function SODataGrid({
                 width: 100,
             },
             { field: "number", headerName: "SO ID", width: 100 },
-            { field: "Client", width: 130, valueGetter: (data) => data.row.client?.name },
+            { field: "Client", flex: 1, valueGetter: (data) => data.row.client?.name },
             { field: "description", headerName: "Description", width: 150 },
             { field: "Rep", width: 130, valueGetter: (data) => data.row.repOrAgency?.name },
             { field: "state", headerName: "State", width: 120, valueGetter: (data) => data.row.repOrAgency?.state },
@@ -34,6 +34,7 @@ function SODataGrid({
                 headerName: "Original SD.",
                 valueFormatter: (params) => formatTimestampToDate(params.row?.originalShippingDate),
                 width: 120,
+                hide: true,
             },
             {
                 field: "estimatedShipDate",
@@ -47,7 +48,7 @@ function SODataGrid({
                 valueFormatter: (params) => formatTimestampToDate(params.row?.actualShipDate),
                 width: 120,
             },
-            { field: "invoice", headerName: "Invoice", width: 120 },
+            { field: "invoice", headerName: "Invoice", width: 120, hide: true },
             { field: "status", headerName: "Status", width: 120 },
             {
                 field: "total",

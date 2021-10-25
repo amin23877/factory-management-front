@@ -24,15 +24,15 @@ export default function Sales() {
                 textColor="primary"
                 onChange={(e, nv) => setActiveTab(nv)}
                 orientation="vertical"
-                style={{ marginRight: "1em" }}
+                style={{ marginRight: "1em", position: "sticky", top: 65 }}
             >
-                <MyTab label="Calls" />
-                <MyTab label="Dashboard" />
-                <MyTab label="Devices" />
-                <MyTab label="Quotes" />
-                <MyTab label="Customer POs" />
-                <MyTab label="Sales Orders" />
-                <MyTab label="Customers" />
+                <MyTab label="+ Calls" />
+                <MyTab label="+ Dashboard" />
+                <MyTab label="+ Devices" />
+                <MyTab label="+ Quotes" />
+                <MyTab label="+ Customer POs" />
+                <MyTab label="+ Sales Orders" />
+                <MyTab label="+ Customers" />
             </MyTabs>
             <Box flex={1}>
                 {activeTab === 0 && <Calls />}

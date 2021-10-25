@@ -20,6 +20,7 @@ import AddPOModal from "./AddPoModal";
 import { BasePaper } from "../../../app/Paper";
 import { GridColDef } from "@material-ui/data-grid";
 import { formatTimestampToDate } from "../../../logic/date";
+import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
 export default function POPanel() {
     const [activeTab, setActiveTab] = useState(0);
@@ -188,8 +189,24 @@ export default function POPanel() {
             </Box>
             <BasePaper>
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-                    <Tab label="List" />
-                    <Tab label="Details" disabled={!selectedPO} />
+                    <Tab
+                        // label="List"
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                <ListAltRounded style={{ marginRight: "5px" }} /> List
+                            </span>
+                        }
+                        wrapped
+                    />
+                    <Tab
+                        // label="Details"
+                        disabled={!selectedPO}
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <FindInPageRounded style={{ marginRight: "5px" }} /> Details
+                            </span>
+                        }
+                    />
                 </Tabs>
                 {activeTab === 0 && pos && (
                     <BaseDataGrid

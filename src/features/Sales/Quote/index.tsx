@@ -14,6 +14,7 @@ import ReqQuoteModal from "./ReqQuote/Modals";
 import EmailModal from "../../Email/Modal";
 
 import { deleteQuote, IQuote } from "../../../api/quote";
+import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
 export default function QuotePanel() {
     const [selectedQuote, setSelectedQuote] = useState<IQuote>();
@@ -80,8 +81,24 @@ export default function QuotePanel() {
 
             <BasePaper>
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-                    <Tab label="List" />
-                    <Tab label="Details" disabled={!selectedQuote} />
+                    <Tab
+                        // label="List"
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                <ListAltRounded style={{ marginRight: "5px" }} /> List
+                            </span>
+                        }
+                        wrapped
+                    />
+                    <Tab
+                        // label="Details"
+                        disabled={!selectedQuote}
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <FindInPageRounded style={{ marginRight: "5px" }} /> Details
+                            </span>
+                        }
+                    />
                 </Tabs>
                 {activeTab === 0 && (
                     <QuoteDatagrid

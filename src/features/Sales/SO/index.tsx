@@ -20,6 +20,7 @@ import { ILineItem } from "../../../api/lineItem";
 import { ILineService } from "../../../api/lineService";
 import { BasePaper } from "../../../app/Paper";
 import Datagrid from "./Datagrid";
+import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
 export default function SalesOrderPanel() {
     const [activeTab, setActiveTab] = useState(0);
@@ -166,8 +167,24 @@ export default function SalesOrderPanel() {
 
             <BasePaper>
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-                    <Tab label="Overview" />
-                    <Tab label="Details" disabled={!selectedSO} />
+                    <Tab
+                        // label="List"
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                <ListAltRounded style={{ marginRight: "5px" }} /> List
+                            </span>
+                        }
+                        wrapped
+                    />
+                    <Tab
+                        // label="Details"
+                        disabled={!selectedSO}
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <FindInPageRounded style={{ marginRight: "5px" }} /> Details
+                            </span>
+                        }
+                    />
                 </Tabs>
                 {activeTab === 0 && (
                     <Datagrid
