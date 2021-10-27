@@ -115,7 +115,7 @@ export const GeneralForm = ({
 
     return (
         <>
-            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gridColumnGap={10} gridRowGap={10}>
+            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={10} gridRowGap={10}>
                 <TextField
                     value={values.number}
                     name="number"
@@ -320,7 +320,7 @@ export const EntitiesForm = ({
                     disabled
                 />
             </Box>
-            <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gridColumn: "span 3" }} gridGap={10}>
+            <Box my="4px" display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gridColumn: "span 3" }} gridGap={5}>
                 <FieldSelect
                     label="24 Hour Contact"
                     name="twentyFourContact"

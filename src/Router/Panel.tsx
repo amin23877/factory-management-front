@@ -201,14 +201,6 @@ export default function PanelRouter() {
                     [classes.contentShiftRight]: chatDrawerOpen,
                 })}
             >
-                {/* <Fab
-                    onClick={() => setChatDrawerOpen(true)}
-                    color="primary"
-                    style={{ position: "fixed", bottom: 15, right: 15, zIndex: 1000 }}
-                >
-                    <ChatRounded />
-                </Fab> */}
-
                 <Box style={{ flexGrow: 1, padding: "1em" }}>
                     <div style={theme.mixins.toolbar as any} />
                     <Suspense fallback={<MyBackdrop />}>

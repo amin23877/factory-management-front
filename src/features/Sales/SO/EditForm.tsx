@@ -35,7 +35,7 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
             {({ handleChange, handleBlur, values, setValues, isSubmitting, setFieldValue }) => (
                 <Form>
                     <Box display="flex" flexDirection="column" style={{ gap: 10 }}>
-                        <Box flex={2}>
+                        <Box>
                             <BasePaper style={{ margin: "0 1em" }}>
                                 <GeneralForm
                                     onChangeInit={setValues}
@@ -50,7 +50,7 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                                 </Box>
                             </BasePaper>
                         </Box>
-                        <Box flex={3}>
+                        <Box>
                             <BasePaper style={{ margin: "0 1em", height: "100%" }}>
                                 <Tabs
                                     textColor="primary"

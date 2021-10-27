@@ -1,5 +1,5 @@
 import React from "react";
-import { createStyles, Theme, withStyles, makeStyles } from "@material-ui/core/styles";
+import { createStyles, Theme, withStyles } from "@material-ui/core/styles";
 import InputBase, { InputBaseProps } from "@material-ui/core/InputBase";
 import TextField, { StandardTextFieldProps } from "@material-ui/core/TextField";
 
@@ -60,16 +60,13 @@ export interface IBaseTextField extends InputBaseProps {
 
 export default function BaseTextField(props: StandardTextFieldProps) {
     return (
-        // <FormControl style={{ ...props.style, marginTop: 5, marginBottom: 5 }}>
-        //     {props.label && (
-        //         <InputLabel shrink htmlFor="bootstrap-input">
-        //             {props.label}
-        //         </InputLabel>
-        //     )}
-        //     <BootstrapInput inputProps={{ style: { borderColor: props.error ? "red" : "#ced4da" } }} {...props} id="bootstrap-input" />
-        //     {props.helperText && <Typography variant="caption">{props.helperText}</Typography>}
-        // </FormControl>
-        <TextField variant="outlined" size="small" {...props} />
+        <TextField
+            inputProps={{ style: { ...props.style, fontSize: "0.8rem" } }}
+            InputLabelProps={{ style: { fontSize: "0.8rem" } }}
+            variant="outlined"
+            size="small"
+            {...props}
+        />
     );
 }
 
