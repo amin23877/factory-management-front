@@ -5,13 +5,12 @@ import { mutate } from "swr";
 
 import Dialog from "../../../app/Dialog";
 import Button from "../../../app/Button";
-import { GeneralForm, MainContactForm, MoreInfoForm } from "./Forms";
+import { GeneralForm, ResponseForm, MoreInfoForm } from "./Forms";
 
 import * as Yup from "yup";
 import { addCall } from "../../../api/calls";
 
 const schema = Yup.object().shape({
-    name: Yup.string().required(),
     address: Yup.string().required(),
     zip: Yup.string().required(),
     state: Yup.string().required(),
@@ -20,7 +19,7 @@ const schema = Yup.object().shape({
     description: Yup.string().required(),
     CreatedBy: Yup.string().required(),
     AssignedTo: Yup.string().required(),
-    Response: Yup.string().required(),
+    response: Yup.string().required(),
     contactName: Yup.string().required(),
     contactNumber: Yup.string().required(),
 });
@@ -46,21 +45,6 @@ const AddCallModal = ({ open, onClose }: { open: boolean; onClose: () => void })
             setSubmitting(false);
         }
     };
-    // const { errors, touched, values, handleChange, handleBlur } = useFormik({
-    //     initialValues: {},
-    //     onSubmit: async (data: any, { setSubmitting }) => {
-    //         try {
-    //             await addCall({ ...data, Tags: [values.Tags] });
-    //             mutate("/calls");
-    //             onClose();
-    //         } catch (error) {
-    //             console.log(error);
-    //         } finally {
-    //             setSubmitting(false);
-    //         }
-    //     },
-    //     validationSchema: { schema },
-    // });
 
     return (
         <Dialog open={open} onClose={onClose} fullWidth maxWidth="md" title="Add New Ticket">
@@ -101,7 +85,7 @@ const AddCallModal = ({ open, onClose }: { open: boolean; onClose: () => void })
                                 />
                             )}
                             {activeStep === 2 && (
-                                <MainContactForm
+                                <ResponseForm
                                     values={values}
                                     errors={errors}
                                     handleBlur={handleBlur}
@@ -120,7 +104,7 @@ const AddCallModal = ({ open, onClose }: { open: boolean; onClose: () => void })
                             <Button variant="contained" disabled={activeStep === 0} onClick={handleBack}>
                                 Back
                             </Button>
-                            <Button type="submit" kind="add">
+                            <Button type="submit" kind="add" onClick={() => console.log(errors)}>
                                 Save
                             </Button>
                             <Button

@@ -222,7 +222,7 @@ export const MoreInfoForm = ({
     );
 };
 
-export const MainContactForm = ({
+export const ResponseForm = ({
     values,
     touched,
     errors,

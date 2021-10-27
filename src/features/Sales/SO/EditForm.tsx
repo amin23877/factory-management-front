@@ -34,7 +34,7 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
         <Formik initialValues={selectedSo} onSubmit={handleSubmit}>
             {({ handleChange, handleBlur, values, setValues, isSubmitting, setFieldValue }) => (
                 <Form>
-                    <Box display="flex" style={{ justifyContent: "space-evenly" }}>
+                    <Box display="flex" flexDirection="column" style={{ gap: 10 }}>
                         <Box flex={2}>
                             <BasePaper style={{ margin: "0 1em" }}>
                                 <GeneralForm
@@ -43,8 +43,8 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                                     handleBlur={handleBlur}
                                     handleChange={handleChange}
                                 />
-                                <Box display="flex" justifyContent="center" my={2}>
-                                    <Button disabled={isSubmitting} type="submit" kind="edit">
+                                <Box textAlign="center" mt={1}>
+                                    <Button fullWidth disabled={isSubmitting} type="submit" kind="edit">
                                         Save
                                     </Button>
                                 </Box>

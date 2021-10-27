@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, Fragment } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
     Typography,
     Box,
@@ -111,11 +111,11 @@ export const GeneralForm = ({
                 })
                 .catch((e) => console.log(e));
         }
-    }, [onChangeInit, selectedQuote]);
+    }, [onChangeInit, selectedQuote, values]);
 
     return (
-        <Fragment>
-            <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10}>
+        <>
+            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gridColumnGap={10} gridRowGap={10}>
                 <TextField
                     value={values.number}
                     name="number"
@@ -174,24 +174,23 @@ export const GeneralForm = ({
                     disabled
                 />
                 <TextField value={values.csa} name="csa" label="CSA" onChange={handleChange} />
+                <Paper
+                    style={{
+                        padding: "0 0.5em 0 1em",
+                        backgroundColor: "#eee",
+                        gridColumnEnd: "span 2",
+                    }}
+                >
+                    <FormControlLabel
+                        name="callADayBeforeDelivery"
+                        control={<Checkbox checked={Boolean(values.callADayBeforeDelivery)} />}
+                        label="Call 24 hours before delivery"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                    />
+                </Paper>
             </Box>
-            <Paper
-                style={{
-                    margin: "0.5em 0",
-                    padding: "0 0.5em 0 1em",
-                    backgroundColor: "#eee",
-                    gridColumnEnd: "span 4",
-                }}
-            >
-                <FormControlLabel
-                    name="callADayBeforeDelivery"
-                    control={<Checkbox checked={Boolean(values.callADayBeforeDelivery)} />}
-                    label="Call 24 hours before delivery"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
-            </Paper>
-        </Fragment>
+        </>
     );
 };
 
@@ -207,8 +206,8 @@ export const EntitiesForm = ({
     setFieldValue: any;
 }) => {
     return (
-        <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={10}>
-            <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
+        <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridColumnGap={10}>
+            <Box my={1} display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
                 <FieldSelect
                     value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
                     request={getCustomers}
@@ -246,7 +245,7 @@ export const EntitiesForm = ({
                     disabled
                 />
             </Box>
-            <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
+            <Box my={1} display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
                 <TextField
                     value={values.requesterName}
                     name="requesterName"
@@ -271,7 +270,7 @@ export const EntitiesForm = ({
                 <TextField style={{ opacity: 0 }} />
                 <TextField style={{ opacity: 0 }} />
             </Box>
-            <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
+            <Box my={1} display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
                 {/* <TextField
                     value={values.client}
                     name="client"
@@ -321,7 +320,7 @@ export const EntitiesForm = ({
                     disabled
                 />
             </Box>
-            <Box my={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
+            <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gridColumn: "span 3" }} gridGap={10}>
                 <FieldSelect
                     label="24 Hour Contact"
                     name="twentyFourContact"
@@ -379,9 +378,6 @@ export const EntitiesForm = ({
                     onBlur={handleBlur}
                     disabled
                 />
-
-                <TextField style={{ opacity: 0 }} />
-                <TextField style={{ opacity: 0 }} />
             </Box>
         </Box>
     );
@@ -573,7 +569,7 @@ export const AccountingForm = ({
 }) => {
     const [activeTab, setActiveTab] = useState(0);
     return (
-        <Fragment>
+        <>
             <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10}>
                 <TextField
                     value={values.requestApproval}
@@ -684,7 +680,7 @@ export const AccountingForm = ({
                     />
                 </Box>
             )}
-        </Fragment>
+        </>
     );
 };
 
@@ -700,7 +696,7 @@ export const ApprovalForm = ({
     setFieldValue: any;
 }) => {
     return (
-        <Fragment>
+        <>
             <Paper
                 style={{
                     margin: "1em 0",
@@ -781,7 +777,7 @@ export const ApprovalForm = ({
                     items={["New", "Pending", "Fulfilled", "Shipped"]}
                 />
             </Box>
-        </Fragment>
+        </>
     );
 };
 
@@ -825,62 +821,6 @@ export const ShippingForm = ({
                 onChange={(date) => setFieldValue("actualShipDate", date)}
                 onBlur={handleBlur}
             />
-
-            {/* 
-             <FieldSelect
-                value={values.shippingContact ? values.shippingContact : ""}
-                request={getContacts}
-                itemTitleField="lastName"
-                itemValueField="id"
-                keyField="id"
-                name="shippingContact"
-                label="Shipping Contact"
-                onChange={handleChange}
-            />
-            <FieldSelect
-                value={values.shippingAddress ? values.shippingAddress : ""}
-                name="shippingAddress"
-                request={getAddresses}
-                itemTitleField="address"
-                itemValueField="id"
-                keyField="id"
-                label="Shipping Address"
-                onChange={handleChange}
-                onBlur={handleBlur}
-            />
-           
-            <FieldSelect
-                value={values.shippingEmail ? values.shippingEmail : ""}
-                request={getEmails}
-                itemTitleField="email"
-                itemValueField="id"
-                keyField="id"
-                name="shippingEmail"
-                label="Shipping Email"
-                onChange={handleChange}
-            />
-            <FieldSelect
-                value={values.shippingPhone ? values.shippingPhone : ""}
-                request={getPhones}
-                itemTitleField="phone"
-                itemValueField="id"
-                keyField="id"
-                name="shippingPhone"
-                label="Shipping Phone"
-                onChange={handleChange}
-            />
-            <FormControl style={{ gridColumnEnd: "span 2" }}>
-                <FormLabel>Shipping Client or Agency</FormLabel>
-                <RadioGroup
-                    style={{ flexDirection: "row" }}
-                    name="shippingEntitiy"
-                    value={String(values.shippingEntitiy)}
-                    onChange={handleChange}
-                >
-                    <FormControlLabel control={<Radio />} label="Client" value="client" />
-                    <FormControlLabel control={<Radio />} label="Agency" value="agency" />
-                </RadioGroup>
-            </FormControl> */}
         </Box>
     );
 };
@@ -1043,12 +983,11 @@ export const DocumentForm = ({
     const divToPrintCus = useRef<HTMLElement | null>(null);
 
     // const classes = useStyles();
-    const [canSave, setCanSave] = useState(false);
+    // const [canSave, setCanSave] = useState(false);
     const [isUploading, setIsUploading] = useState(false);
 
     const handleSaveDocument = async () => {
         try {
-            setCanSave(false);
             setIsUploading(true);
             if (divToPrintAcc.current && createdSO?.id) {
                 const generatedAccPdf = await exportPdf(divToPrintAcc.current);
@@ -1083,7 +1022,6 @@ export const DocumentForm = ({
         } catch (error) {
             console.log(error);
         } finally {
-            setCanSave(true);
             setIsUploading(false);
             onDone();
         }

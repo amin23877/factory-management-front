@@ -32,7 +32,7 @@ interface IBaseDataGrid {
     onRowSelected?: (row: any) => void;
     rows: any[];
     cols: any[];
-    height?: number;
+    height?: number | string;
     loading?: boolean;
 }
 

@@ -6,6 +6,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Button from "../../../app/Button";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
+import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
 import Confirm from "../../Modals/Confirm";
 import NoteModal from "../../Modals/NoteModals";
@@ -20,7 +21,6 @@ import { ILineItem } from "../../../api/lineItem";
 import { ILineService } from "../../../api/lineService";
 import { BasePaper } from "../../../app/Paper";
 import Datagrid from "./Datagrid";
-import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
 export default function SalesOrderPanel() {
     const [activeTab, setActiveTab] = useState(0);

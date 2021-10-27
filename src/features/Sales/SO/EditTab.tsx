@@ -1,4 +1,4 @@
-import React, { useMemo, useState, Fragment } from "react";
+import React, { useMemo, useState } from "react";
 import { Box } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 import Tabs from "@material-ui/core/Tabs";
@@ -7,6 +7,7 @@ import useSWR from "swr";
 
 import Button from "../../../app/Button";
 import BaseDataGrid from "../../../app/BaseDataGrid";
+import { BasePaper } from "../../../app/Paper";
 
 import EditForm from "./EditForm";
 
@@ -106,16 +107,6 @@ export default function EditTab({
         ],
         []
     );
-    // const LSCols: GridColumns = useMemo(
-    //     () => [
-    //         { field: "ServiceId", headerName: "Service", valueFormatter: (r) => r.row.ServiceId.name, flex: 1 },
-    //         // { field: "LineItemRecordId",  width: 200 },
-    //         { field: "quantity", headerName: "Quantity", width: 100 },
-    //         { field: "price", headerName: "Price", width: 100 },
-    //         { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
-    //     ],
-    //     []
-    // );
 
     const unitCols: GridColumns = useMemo(
         () => [
@@ -192,77 +183,114 @@ export default function EditTab({
         []
     );
     return (
-        <div>
+        <>
             {selectedSo && selectedSo.id && (
                 <NoteModal open={addNote} onClose={() => setAddNote(false)} itemId={selectedSo.id} model="so" />
             )}
             {selectedSo && selectedSo.id && (
                 <DocumentModal open={addDoc} onClose={() => setAddDoc(false)} itemId={selectedSo.id} model="so" />
             )}
-            <Box>
-                <EditForm selectedSo={selectedSo} />
+            <Box display="flex" style={{ gap: 10 }}>
+                <Box flex={1}>
+                    <EditForm selectedSo={selectedSo} />
+                </Box>
+                <Box flex={2}>
+                    <Tabs
+                        style={{ margin: "1em 0" }}
+                        textColor="primary"
+                        value={activeTab}
+                        onChange={(e, nv) => setActiveTab(nv)}
+                        variant="scrollable"
+                    >
+                        <Tab label="Line Items" />
+                        <Tab label="Units" />
+                        <Tab label="Documents" />
+                        <Tab label="Activities" />
+                        <Tab label="Shipment" />
+                        <Tab label="Field Services" />
+                        <Tab label="Notes" />
+                        <Tab label="Auditing" />
+                    </Tabs>
+                    <BasePaper style={{ height: "85%" }}>
+                        {activeTab === 0 && (
+                            <BaseDataGrid
+                                cols={LICols}
+                                rows={lineItems || []}
+                                onRowSelected={onLineItemSelected}
+                                height="100%"
+                            />
+                        )}
+                        {activeTab === 1 && (
+                            <BaseDataGrid
+                                cols={unitCols}
+                                rows={lineItems || []}
+                                onRowSelected={onLineItemSelected}
+                                height="100%"
+                            />
+                        )}
+                        {activeTab === 2 && (
+                            <>
+                                <Button
+                                    onClick={() => {
+                                        setAddDoc(true);
+                                    }}
+                                    style={style}
+                                >
+                                    + Add Document
+                                </Button>
+                                <BaseDataGrid
+                                    cols={docCols}
+                                    rows={documents || []}
+                                    onRowSelected={onDocSelected}
+                                    height="90%"
+                                />
+                            </>
+                        )}
+                        {activeTab === 3 && (
+                            <BaseDataGrid
+                                cols={activityCols}
+                                rows={documents || []}
+                                onRowSelected={() => {}}
+                                height="100%"
+                            />
+                        )}
+                        {activeTab === 4 && (
+                            <BaseDataGrid
+                                cols={shipCols}
+                                rows={documents || []}
+                                onRowSelected={() => {}}
+                                height="100%"
+                            />
+                        )}
+                        {activeTab === 5 && (
+                            <BaseDataGrid
+                                cols={FSCols}
+                                rows={lineServices || []}
+                                onRowSelected={onLineServiceSelected}
+                                height="100%"
+                            />
+                        )}
+                        {activeTab === 6 && (
+                            <>
+                                <Button
+                                    onClick={() => {
+                                        setAddNote(true);
+                                    }}
+                                    style={style}
+                                >
+                                    + Add Note
+                                </Button>
+                                <BaseDataGrid
+                                    cols={noteCols}
+                                    rows={notes || []}
+                                    onRowSelected={onNoteSelected}
+                                    height="90%"
+                                />
+                            </>
+                        )}
+                    </BasePaper>
+                </Box>
             </Box>
-            <Tabs
-                style={{ margin: "1em 0" }}
-                textColor="primary"
-                value={activeTab}
-                onChange={(e, nv) => setActiveTab(nv)}
-            >
-                <Tab label="Line Items" />
-                <Tab label="Units" />
-                <Tab label="Documents" />
-                <Tab label="Activities" />
-                <Tab label="Shipment" />
-                <Tab label="Field Services" />
-                <Tab label="Notes" />
-                <Tab label="Auditing" />
-            </Tabs>
-            {activeTab === 0 && (
-                <BaseDataGrid cols={LICols} rows={lineItems || []} onRowSelected={onLineItemSelected} height={300} />
-            )}
-            {activeTab === 1 && (
-                <BaseDataGrid cols={unitCols} rows={lineItems || []} onRowSelected={onLineItemSelected} height={300} />
-            )}
-            {activeTab === 2 && (
-                <Fragment>
-                    <Button
-                        onClick={() => {
-                            setAddDoc(true);
-                        }}
-                        style={style}
-                    >
-                        + Add Document
-                    </Button>
-                    <BaseDataGrid cols={docCols} rows={documents || []} onRowSelected={onDocSelected} height={300} />
-                </Fragment>
-            )}
-            {activeTab === 3 && (
-                <BaseDataGrid cols={activityCols} rows={documents || []} onRowSelected={() => {}} height={300} />
-            )}
-            {activeTab === 4 && (
-                <BaseDataGrid cols={shipCols} rows={documents || []} onRowSelected={() => {}} height={300} />
-            )}
-            {activeTab === 5 && (
-                <BaseDataGrid
-                    cols={FSCols}
-                    rows={lineServices || []}
-                    onRowSelected={onLineServiceSelected}
-                    height={300}
-                />
-            )}
-            {activeTab === 6 && (
-                <Fragment>
-                    <Button
-                        onClick={() => {
-                            setAddNote(true);
-                        }}
-                        style={style}
-                    >
-                        + Add Note
-                    </Button>
-                    <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} height={300} />
-                </Fragment>
-            )}
-        </div>
+        </>
     );
 }
