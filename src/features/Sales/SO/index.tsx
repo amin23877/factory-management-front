@@ -55,7 +55,7 @@ export default function SalesOrderPanel() {
     };
 
     return (
-        <Box>
+        <>
             {selectedSO && selectedSO.id && (
                 <LineItemModal
                     open={lineItemModal}
@@ -142,31 +142,18 @@ export default function SalesOrderPanel() {
                         >
                             Add Line service
                         </Button>
-                        {/* <Button
-                            onClick={() => {
-                                setSelectedNote(undefined);
-                                setNoteModal(true);
-                            }}
-                        >
-                            Add note
-                        </Button>
-                        <Button
-                            style={{ backgroundColor: "#1a73e8", color: "#fff", marginLeft: "5px" }}
-                            onClick={() => {
-                                setSelectedDoc(undefined);
-                                setDocModal(true);
-                            }}
-                        >
-                            <AddRoundedIcon />
-                            Add Document
-                        </Button> */}
                     </>
                 )}
                 <div style={{ flexGrow: 1 }} />
             </Box>
 
-            <BasePaper>
-                <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+            <BasePaper style={{ height: "92%" }}>
+                <Tabs
+                    value={activeTab}
+                    textColor="primary"
+                    onChange={(e, nv) => setActiveTab(nv)}
+                    style={{ marginBottom: 16 }}
+                >
                     <Tab
                         // label="List"
                         icon={
@@ -216,6 +203,6 @@ export default function SalesOrderPanel() {
                     />
                 )}
             </BasePaper>
-        </Box>
+        </>
     );
 }

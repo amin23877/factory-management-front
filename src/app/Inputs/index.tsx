@@ -72,7 +72,7 @@ interface IOS extends StandardTextFieldProps {
 }
 export const ObjectSelect = ({ inputStyle, items, itemTitleField, itemValueField, keyField, ...props }: IOS) => {
     return (
-        <TextField {...props} select>
+        <TextField {...props} select style={{ ...props.style, fontSize: "0.8rem" }}>
             <MenuItem value={undefined}>None</MenuItem>
             {items &&
                 items.length >= 0 &&

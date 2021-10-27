@@ -35,80 +35,76 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
             {({ handleChange, handleBlur, values, setValues, isSubmitting, setFieldValue }) => (
                 <Form>
                     <Box display="flex" flexDirection="column" style={{ gap: 10 }}>
-                        <Box>
-                            <BasePaper style={{ margin: "0 1em" }}>
-                                <GeneralForm
-                                    onChangeInit={setValues}
-                                    values={values}
-                                    handleBlur={handleBlur}
-                                    handleChange={handleChange}
-                                />
-                                <Box textAlign="center" mt={1}>
-                                    <Button fullWidth disabled={isSubmitting} type="submit" kind="edit">
-                                        Save
-                                    </Button>
-                                </Box>
-                            </BasePaper>
-                        </Box>
-                        <Box>
-                            <BasePaper style={{ margin: "0 1em", height: "100%" }}>
-                                <Tabs
-                                    textColor="primary"
-                                    value={activeTab}
-                                    onChange={(e, nv) => setActiveTab(nv)}
-                                    variant="scrollable"
-                                    style={{ maxWidth: 700 }}
-                                >
-                                    <Tab label="Approvals" />
-                                    <Tab label="Accounting" />
-                                    <Tab label="Shipping" />
-                                    <Tab label="Entities" />
-                                    <Tab label="Addresses" />
-                                </Tabs>
-                                <Box>
-                                    {activeTab === 0 && (
-                                        <ApprovalForm
-                                            setFieldValue={setFieldValue}
-                                            values={values}
-                                            handleBlur={handleBlur}
-                                            handleChange={handleChange}
-                                        />
-                                    )}
-                                    {activeTab === 1 && (
-                                        <AccountingForm
-                                            setFieldValue={setFieldValue}
-                                            values={values}
-                                            handleBlur={handleBlur}
-                                            handleChange={handleChange}
-                                        />
-                                    )}
-                                    {activeTab === 2 && (
-                                        <ShippingForm
-                                            setFieldValue={setFieldValue}
-                                            values={values}
-                                            handleBlur={handleBlur}
-                                            handleChange={handleChange}
-                                        />
-                                    )}
-                                    {activeTab === 3 && (
-                                        <EntitiesForm
-                                            setFieldValue={setFieldValue}
-                                            values={values}
-                                            handleBlur={handleBlur}
-                                            handleChange={handleChange}
-                                        />
-                                    )}
-                                    {activeTab === 4 && (
-                                        <AddressesForm
-                                            setFieldValue={setFieldValue}
-                                            values={values}
-                                            handleBlur={handleBlur}
-                                            handleChange={handleChange}
-                                        />
-                                    )}
-                                </Box>
-                            </BasePaper>
-                        </Box>
+                        <BasePaper>
+                            <GeneralForm
+                                onChangeInit={setValues}
+                                values={values}
+                                handleBlur={handleBlur}
+                                handleChange={handleChange}
+                            />
+                            <Box textAlign="center" mt={1}>
+                                <Button fullWidth disabled={isSubmitting} type="submit" kind="edit">
+                                    Save
+                                </Button>
+                            </Box>
+                        </BasePaper>
+                        <BasePaper>
+                            <Tabs
+                                textColor="primary"
+                                value={activeTab}
+                                onChange={(e, nv) => setActiveTab(nv)}
+                                variant="scrollable"
+                                style={{ maxWidth: 700 }}
+                            >
+                                <Tab label="Approvals" />
+                                <Tab label="Accounting" />
+                                <Tab label="Shipping" />
+                                <Tab label="Entities" />
+                                <Tab label="Addresses" />
+                            </Tabs>
+                            <Box>
+                                {activeTab === 0 && (
+                                    <ApprovalForm
+                                        setFieldValue={setFieldValue}
+                                        values={values}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                    />
+                                )}
+                                {activeTab === 1 && (
+                                    <AccountingForm
+                                        setFieldValue={setFieldValue}
+                                        values={values}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                    />
+                                )}
+                                {activeTab === 2 && (
+                                    <ShippingForm
+                                        setFieldValue={setFieldValue}
+                                        values={values}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                    />
+                                )}
+                                {activeTab === 3 && (
+                                    <EntitiesForm
+                                        setFieldValue={setFieldValue}
+                                        values={values}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                    />
+                                )}
+                                {activeTab === 4 && (
+                                    <AddressesForm
+                                        setFieldValue={setFieldValue}
+                                        values={values}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                    />
+                                )}
+                            </Box>
+                        </BasePaper>
                     </Box>
                 </Form>
             )}

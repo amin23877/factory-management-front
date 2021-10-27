@@ -61,7 +61,7 @@ export interface IBaseTextField extends InputBaseProps {
 export default function BaseTextField(props: StandardTextFieldProps) {
     return (
         <TextField
-            inputProps={{ style: { ...props.style, fontSize: "0.8rem" } }}
+            inputProps={{ style: { ...props.inputProps?.style, fontSize: "0.8rem" } }}
             InputLabelProps={{ style: { fontSize: "0.8rem" } }}
             variant="outlined"
             size="small"

@@ -190,7 +190,7 @@ export default function EditTab({
             {selectedSo && selectedSo.id && (
                 <DocumentModal open={addDoc} onClose={() => setAddDoc(false)} itemId={selectedSo.id} model="so" />
             )}
-            <Box display="flex" style={{ gap: 10 }}>
+            <Box pb="8px" display="flex" style={{ gap: 10 }}>
                 <Box flex={1}>
                     <EditForm selectedSo={selectedSo} />
                 </Box>
