@@ -39,6 +39,7 @@ const DeviceDetails = React.lazy(() => import("../pages/DeviceDetails"));
 const UnitDetails = React.lazy(() => import("../pages/UnitDetails"));
 
 const BomParts = React.lazy(() => import("../pages/BomParts"));
+const JobParts = React.lazy(() => import("../pages/JobParts"));
 
 const drawerWidth = 220;
 export const chatDrawerWidth = 340;
@@ -231,6 +232,7 @@ export default function PanelRouter() {
                             <Route exact path="/panel/production/:unitNumber" component={UnitDetails} />
 
                             <Route exact path="/panel/bom/:bomId/parts" component={BomParts} />
+                            <Route exact path="/panel/ubom/:bomId/parts" component={JobParts} />
 
                             <Route exact path="*" component={Page404} />
                         </Switch>

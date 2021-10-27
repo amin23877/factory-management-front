@@ -28,6 +28,7 @@ import UnitWorkFlow, { ProductionWorkFlow } from "./WorkFlows";
 import { getModifiedValues } from "../../../../logic/utils";
 import Confirm from "../../../Modals/Confirm";
 import { deleteOption, IOption } from "../../../../api/options";
+import { openRequestedSinglePopup } from "../../../../logic/window";
 
 const schema = Yup.object().shape({
     // laborCost: Yup.number().required(),
@@ -82,6 +83,7 @@ function Details({ unit }: { unit: IUnit }) {
 
     const bomCols = useMemo<GridColDef[]>(
         () => [
+            { headerName: "No.", field: "no", width: 80 },
             { field: "Line", width: 80 },
             { field: "Component", width: 180 },
             { field: "Component Name", width: 180 },
@@ -295,7 +297,8 @@ function Details({ unit }: { unit: IUnit }) {
                         cols={bomCols}
                         rows={unitBoms || []}
                         onRowSelected={(r) => {
-                            setSelectedOption(r);
+                            openRequestedSinglePopup({ url: `/panel/ubom/${r.id}/parts` });
+                            // setSelectedOption(r);
                         }}
                     />
                 )}
