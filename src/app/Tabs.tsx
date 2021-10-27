@@ -77,7 +77,7 @@ export const MyTab = withStyles((theme: Theme) =>
                 backgroundColor: "rgb(42,49,59)",
                 borderRadius: "0.5em",
                 color: "rgb(230,128,49)",
-                width: "100%",
+                // width: "100%",
             },
             "&:active": {
                 borderRadius: "0.5em",
