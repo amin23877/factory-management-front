@@ -20,6 +20,7 @@ export interface IUnit {
     bomCost: number;
     productionStatus: string;
     options: any[];
+    photo: any[];
 }
 
 export interface IUnitHistory {

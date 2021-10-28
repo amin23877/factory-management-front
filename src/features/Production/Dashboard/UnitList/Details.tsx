@@ -1,7 +1,6 @@
 import React, { useMemo, useRef, useState, Fragment } from "react";
 import { Box, Typography, Tabs, Tab } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
-import useSWR from "swr";
 
 // import UnitInfo from "./UnitInfo";
 // import { General as ItemGeneral } from "../../../Items/Forms";
@@ -14,10 +13,11 @@ import BaseDataGrid from "../../../../app/BaseDataGrid";
 import MyQRCode from "../../../../app/QRCode";
 
 import { IUnit, updateUnit } from "../../../../api/units";
+import UploadButton from "../../../../app/FileUploader";
 
 import { exportPdf } from "../../../../logic/pdf";
 import { Formik, Form } from "formik";
-import { mutate } from "swr";
+import useSWR, { mutate } from "swr";
 import * as Yup from "yup";
 import Toast from "../../../../app/Toast";
 import { IDocument } from "../../../../api/document";
@@ -29,6 +29,7 @@ import { getModifiedValues } from "../../../../logic/utils";
 import Confirm from "../../../Modals/Confirm";
 import { deleteOption, IOption } from "../../../../api/options";
 import { openRequestedSinglePopup } from "../../../../logic/window";
+import { addImage, deleteImage } from "../../../../api/units";
 
 const schema = Yup.object().shape({
     // laborCost: Yup.number().required(),
@@ -57,7 +58,32 @@ function Details({ unit }: { unit: IUnit }) {
     const [selectedOption, setSelectedOption] = useState<IOption>();
     const [confirm, setConfirm] = useState(false);
     const [addOption, setAddOption] = useState(false);
+    const [img, setImg] = useState<any>();
+    const { data: photo } = useSWR(`/unit/${unit.id}`);
 
+    const handleFileChange = async (e: any) => {
+        if (unit.id) {
+            if (!(e.target.files || e.target.files[0])) {
+                return;
+            }
+            let file = e.target.files[0];
+            let url = URL.createObjectURL(file);
+            const resp = await addImage(unit.id, file);
+            if (resp) {
+                setImg(url);
+                mutate(`/unit/${unit.id}`);
+            }
+        }
+    };
+    const handleFileDelete = async (url: string) => {
+        if (unit.id) {
+            const data = { url: url };
+            const resp = await deleteImage(unit.id, data);
+            if (resp) {
+                mutate(`/unit/${unit.id}`);
+            }
+        }
+    };
     const handleDeleteOption = async () => {
         try {
             if (selectedOption) {
@@ -264,6 +290,7 @@ function Details({ unit }: { unit: IUnit }) {
                     <Tab label="Warranties" />
                     <Tab label="Documents" />
                     <Tab label="BOM" />
+                    <Tab label="Photos" />
                     <Tab label="Wire List" />
                     <Tab label="Forms" />
                     <Tab label="Time logs" />
@@ -301,6 +328,39 @@ function Details({ unit }: { unit: IUnit }) {
                             // setSelectedOption(r);
                         }}
                     />
+                )}
+                {gridActiveTab === 3 && (
+                    <>
+                        <div
+                            style={{
+                                display: "flex",
+                                width: "100%",
+                            }}
+                        >
+                            <UploadButton onChange={handleFileChange} accept="image/*" />
+                        </div>
+                        <div>
+                            {photo &&
+                                photo.photo[0] &&
+                                photo.photo.map((url: string) => (
+                                    <>
+                                        <img
+                                            style={{
+                                                maxWidth: "100%",
+                                                height: "auto",
+                                                maxHeight: 400,
+                                                margin: "0px auto",
+                                            }}
+                                            alt=""
+                                            src={`http://digitalphocus.ir${url}`}
+                                        />
+                                        <Button kind="delete" onClick={() => handleFileDelete(url)}>
+                                            delete
+                                        </Button>
+                                    </>
+                                ))}
+                        </div>
+                    </>
                 )}
             </BasePaper>
         </BasePaper>
