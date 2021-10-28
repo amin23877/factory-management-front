@@ -12,7 +12,7 @@
 # testing
 /coverage
 
-# production - MUST BE IN FILE, THIS IS AN EXCEPTION
+# production
 /build
 
 # misc

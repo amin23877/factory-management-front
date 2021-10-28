@@ -12,6 +12,7 @@ import {
     Paper,
     Tabs,
     Tab,
+    makeStyles,
 } from "@material-ui/core";
 import { DateTimePicker } from "@material-ui/pickers";
 
@@ -39,6 +40,12 @@ import SORep from "../../../PDFTemplates/SORep";
 import SOAcc from "../../../PDFTemplates/SOAcc";
 import { getPO } from "../../../api/po";
 
+const useStyles = makeStyles({
+    checkboxLabel: {
+        fontSize: "11px",
+    },
+});
+
 export const GeneralForm = ({
     handleChange,
     handleBlur,
@@ -50,6 +57,7 @@ export const GeneralForm = ({
     handleBlur: (a: any) => void;
     onChangeInit: (data: any) => void;
 }) => {
+    const classes = useStyles();
     const [selectedQuote, setSelectedQuote] = useState<string>();
 
     useEffect(() => {
@@ -185,6 +193,7 @@ export const GeneralForm = ({
                         name="callADayBeforeDelivery"
                         control={<Checkbox checked={Boolean(values.callADayBeforeDelivery)} />}
                         label="Call 24 hours before delivery"
+                        classes={{ label: classes.checkboxLabel }}
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
