@@ -13,7 +13,7 @@
 /coverage
 
 # production - MUST BE IN FILE, THIS IS AN EXCEPTION
-# /build
+/build
 
 # misc
 .DS_Store
