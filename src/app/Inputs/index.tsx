@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { MenuItem, TextField, StandardTextFieldProps } from "@material-ui/core";
-// import { BootstrapInput } from "../TextField";
+import { MenuItem, StandardTextFieldProps } from "@material-ui/core";
+import TextField from "../TextField";
 
 // import styles from "./inputs.module.css";
 import { Autocomplete } from "@material-ui/lab";
@@ -57,14 +57,7 @@ export const MaterialFieldSelect = ({
             onBlur={props.onBlur}
             value={findValue}
             renderInput={(params) => (
-                <TextField
-                    {...params}
-                    label={props?.label}
-                    error={props.error}
-                    placeholder={props.placeholder}
-                    size="small"
-                    variant="outlined"
-                />
+                <TextField {...params} label={props?.label} error={props.error} placeholder={props.placeholder} />
             )}
         />
     );
@@ -79,7 +72,7 @@ interface IOS extends StandardTextFieldProps {
 }
 export const ObjectSelect = ({ inputStyle, items, itemTitleField, itemValueField, keyField, ...props }: IOS) => {
     return (
-        <TextField {...props} variant="outlined" size="small" select>
+        <TextField {...props} select style={{ ...props.style, fontSize: "0.8rem" }}>
             <MenuItem value={undefined}>None</MenuItem>
             {items &&
                 items.length >= 0 &&
@@ -144,7 +137,7 @@ export const ArraySelect = ({ items, ...props }: IArraySelect) => {
 
 export const BaseSelect = (props: StandardTextFieldProps) => {
     return (
-        <TextField {...props} variant="outlined" size="small" select>
+        <TextField {...props} select>
             {props.children}
         </TextField>
     );

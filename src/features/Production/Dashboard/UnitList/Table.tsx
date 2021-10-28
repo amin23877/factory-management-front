@@ -1,17 +1,18 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Box, Paper } from "@material-ui/core";
-import { DataGrid, GridColDef, GridToolbar, GridColumns } from "@material-ui/data-grid";
+import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { addDays } from "date-fns";
 
 import Button from "../../../../app/Button";
 // import { UnitSearchBox } from "../../../../app/SearchBox";
-import { useDataGridStyles } from "../../../../app/BaseDataGrid";
+// import { useDataGridStyles } from "../../../../app/BaseDataGrid";
 import { UnitSearchBox } from "../../../../app/SearchBox";
 import { DateInput } from "../../../../components/Filters/Date";
 
-import { useDataGridData } from "../../../../components/Datagrid/hooks";
+// import { useDataGridData } from "../../../../components/Datagrid/hooks";
 import { formatTimestampToDate } from "../../../../logic/date";
 import { get } from "../../../../api";
+import FullDataGrid from "../../../../components/Datagrid/FullDataGrid";
 
 const dateStringToUnix = (date: Date) => {
     return String(Math.round(new Date(date).getTime() / 1));
@@ -38,8 +39,6 @@ function Table({
     const sWeek3 = dateStringToUnix(addDays(new Date(), 7 * 3));
     const sWeek4 = dateStringToUnix(addDays(new Date(), 7 * 4));
 
-    const { rows: units, loading, page, setPage } = useDataGridData({ url: "/unit", params: { finish, start } });
-
     const getWeeks = async () => {
         const resp = await get(`/unit?finish=${sWeek1}&start=${sWeek}`);
         if (resp) {
@@ -62,7 +61,7 @@ function Table({
         getWeeks();
     }, []);
 
-    const classes = useDataGridStyles();
+    // const classes = useDataGridStyles();
 
     const unitCols = useMemo<GridColDef[]>(() => {
         const cols: GridColumns = [
@@ -177,7 +176,7 @@ function Table({
             </Box>
             <Paper>
                 <Box height={550}>
-                    <DataGrid
+                    {/* <DataGrid
                         density="compact"
                         loading={loading}
                         pagination
@@ -198,6 +197,15 @@ function Table({
                                 setFinish(String(finishUnix));
                             }
                         }}
+                        onRowSelected={(i) => {
+                            setSelectedUnit(i.data as any);
+                            setActiveTab(1);
+                        }}
+                    /> */}
+                    <FullDataGrid
+                        columns={unitCols}
+                        url="/unit"
+                        height={500}
                         onRowSelected={(i) => {
                             setSelectedUnit(i.data as any);
                             setActiveTab(1);

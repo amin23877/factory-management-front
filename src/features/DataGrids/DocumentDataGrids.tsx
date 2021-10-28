@@ -17,7 +17,7 @@ export const RecordDocuments = ({
     const cols = [
         { field: "name", headerName: "Name" },
         { field: "description", headerName: "Description", width: 250 },
-        { field: "createdAt", headerName: "Created at", width: 300 },
+        { field: "date", headerName: "Created at", width: 300 },
     ];
 
     useEffect(() => {

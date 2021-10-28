@@ -11,7 +11,7 @@ export type IPurchasePO = {
     ContactId: string;
     EmployeeId: string;
     status: string;
-    createdAt?: string;
+    date?: string;
     note?: string;
     billingAddressCompany?: string;
     billingAddressAttn?: string;

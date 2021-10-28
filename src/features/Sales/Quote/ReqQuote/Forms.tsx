@@ -48,7 +48,7 @@ export default function AddForms({ requestedQuote, onDone }: { requestedQuote: a
     const handleSubmit = async (d: IQuoteComplete) => {
         try {
             const data = JSON.parse(JSON.stringify(d));
-            delete data.createdAt;
+            delete data.date;
             delete data.updatedAt;
             delete data.__v;
             delete data.id;

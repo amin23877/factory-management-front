@@ -32,7 +32,7 @@ export default function SOTable({ rows }: { rows: any[] }) {
                     {rows &&
                         rows.map((row: any, i) => (
                             <TableRow key={i}>
-                                <TableCell>{formatTimestampToDate(row?.LineItemRecord?.createdAt)}</TableCell>
+                                <TableCell>{formatTimestampToDate(row?.LineItemRecord?.date)}</TableCell>
                                 <TableCell>{row?.SO?.number}</TableCell>
                                 <TableCell>{row?.SO?.Client?.name}</TableCell>
                                 <TableCell></TableCell>

@@ -12,7 +12,7 @@ export interface IShipment {
     carrier: string;
     UnitId: IUnit;
 
-    createdAt: number;
+    date: number;
     updatedAt: number;
     __v: number;
 }

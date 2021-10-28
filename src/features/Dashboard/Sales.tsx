@@ -174,11 +174,11 @@ export const Sales = () => {
                         <div style={{ padding: "0.5em" }}>
                             <LineChart
                                 data={[
-                                    { createdAt: "2021-03-2", count: 10 },
-                                    { createdAt: "2021-03-7", count: 5 },
-                                    { createdAt: "2021-03-10", count: 16 },
+                                    { date: "2021-03-2", count: 10 },
+                                    { date: "2021-03-7", count: 5 },
+                                    { date: "2021-03-10", count: 16 },
                                 ]}
-                                xDataKey="createdAt"
+                                xDataKey="date"
                                 barDataKey="count"
                             />
                         </div>

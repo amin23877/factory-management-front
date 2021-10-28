@@ -80,7 +80,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
             {
                 field: "date",
                 headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 width: 120,
             },
             {
@@ -100,7 +100,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
             {
                 field: "date",
                 headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 width: 120,
             },
             {

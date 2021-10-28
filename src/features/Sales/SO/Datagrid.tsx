@@ -21,7 +21,7 @@ function SODataGrid({
             {
                 field: "date",
                 headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 width: 100,
             },
             { field: "number", headerName: "SO ID", width: 100 },

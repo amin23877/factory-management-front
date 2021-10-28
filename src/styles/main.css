@@ -57,3 +57,7 @@
 .MuiPickersBasePicker-container .MuiToolbar-root {
     padding: 3em 1em;
 }
+
+.MuiSelect-outlined.MuiSelect-outlined{
+    font-size: 0.8rem;
+}

@@ -1,13 +1,19 @@
 import React from "react";
 import { Paper, withStyles, PaperProps } from "@material-ui/core";
 
+// export const BasePaper = withStyles((theme) => ({
+//     root: {
+//         borderRadius: 20,
+//         padding: "1em",
+//         boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
+//     },
+// }))((props: PaperProps) => <Paper {...props} />);
 export const BasePaper = withStyles((theme) => ({
     root: {
-        borderRadius: 20,
+        borderRadius: 10,
         padding: "1em",
-        boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
     },
-}))((props: PaperProps) => <Paper {...props} />);
+}))((props: PaperProps) => <Paper elevation={3} {...props} />);
 
 export const IconPaper = withStyles((theme) => ({
     root: {

@@ -41,7 +41,7 @@ export default function POPanel() {
 
         {
             field: "Date",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.createdAt),
+            valueFormatter: (r) => formatTimestampToDate(r.row?.date),
             width: 110,
         },
         { field: "number", headerName: "Customer PO Number", flex: 1 },

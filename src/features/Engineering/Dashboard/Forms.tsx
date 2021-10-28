@@ -254,7 +254,7 @@ export const FieldService = ({ onClose, help }: IHelpForm) => {
                                 />
                             </Paper>
                             <TextField
-                                value={help.fsh.createdAt}
+                                value={help.fsh.date}
                                 name="date"
                                 label="Date"
                                 onChange={handleChange}

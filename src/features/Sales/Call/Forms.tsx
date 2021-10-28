@@ -40,7 +40,7 @@ export const GeneralForm = ({
                     name="date"
                     label="Date"
                     disabled
-                    value={values.createdAt ? formatTimestampToDate(values.createdAt) : new Date()}
+                    value={values.date ? formatTimestampToDate(values.date) : new Date()}
                 />
                 <TextField name="number" label="Ticket ID" disabled value={values.number} />
                 <TextField

@@ -4,11 +4,11 @@ export const extractEngAppData = (data: any[]) => {
     let res: any[] = [];
     let cnt = 0;
     res = data.reduce((_, curVal) => {
-        return { [formatDate(curVal.createdAt, "yy-MMMM-dd")]: ++cnt };
+        return { [formatDate(curVal.date, "yy-MMMM-dd")]: ++cnt };
     }, {});
 
     res = Object.keys(res).map((k) => ({
-        createdAt: k,
+        date: k,
         units: res[k as any],
     }));
 
@@ -19,11 +19,11 @@ export const extractFshData = (data: any[]) => {
     let res: any[] = [];
     let cnt = 0;
     res = data.reduce((_, curVal) => {
-        return { [formatDate(curVal.fsh.createdAt, "yy-MMMM-dd")]: ++cnt };
+        return { [formatDate(curVal.fsh.date, "yy-MMMM-dd")]: ++cnt };
     }, {});
 
     res = Object.keys(res).map((k) => ({
-        createdAt: k,
+        date: k,
         units: res[k as any],
     }));
 

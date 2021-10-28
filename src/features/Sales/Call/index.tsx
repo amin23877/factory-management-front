@@ -30,9 +30,9 @@ export default function Calls() {
 
     const callCols: GridColDef[] = [
         {
-            field: "createdAt",
+            field: "date",
             headerName: "Date",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.createdAt),
+            valueFormatter: (r) => formatTimestampToDate(r.row?.date),
             width: 110,
         },
         { field: "number", headerName: "Ticket ID", width: 100 },

@@ -9,20 +9,20 @@ export interface IBom {
     current: boolean;
     ItemId: IItem;
     items: number;
-    createdAt: number;
+    date: number;
     updatedAt: number;
 }
 
 export interface IBomRecord {
-    id:string;
+    id: string;
     revision: string;
     usage: number;
     fixedQty: boolean;
     index: number;
     ItemId: IItem;
-    BOMId:string;
-    createdAt:number;
-    updatedAt:number;
+    BOMId: string;
+    date: number;
+    updatedAt: number;
 }
 
 export const getBom = (ItemId: string) => {

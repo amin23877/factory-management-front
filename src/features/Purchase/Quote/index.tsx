@@ -41,7 +41,7 @@ function Index() {
     const cols: GridColDef[] = [
         {
             field: "Date",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.createdAt),
+            valueFormatter: (r) => formatTimestampToDate(r.row?.date),
             flex: 1,
         },
         { field: "senderNumber", headerName: "Quote NO.", flex: 1 },

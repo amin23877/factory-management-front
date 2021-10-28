@@ -115,7 +115,7 @@ export const GeneralForm = ({
 
     return (
         <>
-            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gridColumnGap={10} gridRowGap={10}>
+            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={10} gridRowGap={10}>
                 <TextField
                     value={values.number}
                     name="number"
@@ -144,7 +144,7 @@ export const GeneralForm = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
-                <TextField value={formatTimestampToDate(values.createdAt)} name="createdAt" label="SO Date" disabled />
+                <TextField value={formatTimestampToDate(values.date)} name="date" label="SO Date" disabled />
                 <ArraySelect
                     value={values.warranty}
                     name="warranty"
@@ -169,7 +169,7 @@ export const GeneralForm = ({
                 <TextField
                     value={values.acknowledgeDate}
                     name="acknowledgeDate"
-                    label="Date acknowledged "
+                    label="Date Ack."
                     onChange={handleChange}
                     disabled
                 />
@@ -320,7 +320,7 @@ export const EntitiesForm = ({
                     disabled
                 />
             </Box>
-            <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gridColumn: "span 3" }} gridGap={10}>
+            <Box my="4px" display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gridColumn: "span 3" }} gridGap={5}>
                 <FieldSelect
                     label="24 Hour Contact"
                     name="twentyFourContact"
@@ -579,7 +579,7 @@ export const AccountingForm = ({
                     onBlur={handleBlur}
                 />
                 <TextField
-                    value={formatTimestampToDate(values.createdAt)}
+                    value={formatTimestampToDate(values.date)}
                     name="toBeInvoicedDate"
                     label="To be Invoiced Date"
                     onChange={handleChange}
@@ -735,7 +735,7 @@ export const ApprovalForm = ({
                     label="Customer PO"
                 />
                 <TextField
-                    value={formatTimestampToDate(values.POId?.createdAt)}
+                    value={formatTimestampToDate(values.POId?.date)}
                     name="POReceivedDate"
                     label="PO Received Date"
                     onChange={handleChange}

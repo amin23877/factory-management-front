@@ -30,14 +30,12 @@ export default function Report() {
                 </Box>
                 {activeTab === 0 && (
                     <Box flex={1}>
-                        {engApp && <BaseLineChart data={engAppData} xDataKey="createdAt" barDataKey="units" />}
+                        {engApp && <BaseLineChart data={engAppData} xDataKey="date" barDataKey="units" />}
                     </Box>
                 )}
                 {activeTab === 1 && <Box flex={1}></Box>}
                 {activeTab === 2 && (
-                    <Box flex={1}>
-                        {fshData && <BaseLineChart data={fshData} xDataKey="createdAt" barDataKey="units" />}
-                    </Box>
+                    <Box flex={1}>{fshData && <BaseLineChart data={fshData} xDataKey="date" barDataKey="units" />}</Box>
                 )}
                 {activeTab === 3 && <Box flex={1}></Box>}
                 {activeTab === 4 && <Box flex={1}></Box>}

@@ -21,7 +21,7 @@ function QuoteDataGrid({
         () => [
             {
                 field: "Date",
-                valueFormatter: (r) => formatTimestampToDate(r.row?.createdAt),
+                valueFormatter: (r) => formatTimestampToDate(r.row?.date),
                 width: 100,
             },
             { field: "number", headerName: "Quote ID", width: 100 },

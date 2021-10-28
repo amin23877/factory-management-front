@@ -97,7 +97,7 @@ export default function PurchasePO({
                             <td>123 456 789</td>
                             <td>123 456 789</td>
                             <td> </td>
-                            <td>{createdPO?.createdAt?.slice(0, 10)}</td>
+                            <td>{createdPO?.date?.slice(0, 10)}</td>
                             <td> </td> */}
                 </tr>
             </table>

@@ -175,7 +175,7 @@ export const FinalForm = ({
             const { lines } = data;
             let newLines = [...lines];
             newLines.forEach(function (v: any) {
-                delete v.createdAt;
+                delete v.date;
                 delete v.id;
                 delete v.PurchasePOId;
                 delete v.PurchaseSOId;
@@ -938,7 +938,7 @@ export const MoreInfoForm = ({
     return (
         <>
             <Box my={2} display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10}>
-                {!addForm && <TextField label="PO Date" value={formatTimestampToDate(values.createdAt)} disabled />}
+                {!addForm && <TextField label="PO Date" value={formatTimestampToDate(values.date)} disabled />}
                 <DateTimePicker
                     size="small"
                     value={values.acknowledgeDate}

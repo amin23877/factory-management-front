@@ -102,7 +102,7 @@ function ItemsDetails() {
             {
                 field: "date",
                 headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 width: 120,
             },
             {
@@ -122,7 +122,7 @@ function ItemsDetails() {
             { field: "name", headerName: "Name" },
             { field: "EmployeeId", headerName: "Employee" },
             { field: "description", headerName: "Description", width: 250 },
-            { field: "createdAt", headerName: "Date", width: 300 },
+            { field: "date", headerName: "Date", width: 300 },
         ],
         []
     );

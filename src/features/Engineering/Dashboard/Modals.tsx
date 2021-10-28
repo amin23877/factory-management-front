@@ -25,7 +25,7 @@ export const FieldModal = ({ open, onClose, help }: IModal) => {
                 headerName: "Date",
                 width: 180,
                 type: "date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
             },
             {
                 field: "id",

@@ -9,11 +9,11 @@ export const extractChartData = (data: any[]) => {
     let res: any[] = [];
     let cnt = 1;
     res = data.reduce((_, curVal) => {
-        return { [formatDate(curVal.so?.createdAt, "yy-MMMM")]: ++cnt };
+        return { [formatDate(curVal.so?.date, "yy-MMMM")]: ++cnt };
     }, {});
 
     res = Object.keys(res).map((k) => ({
-        createdAt: k,
+        date: k,
         units: res[k as any],
     }));
 
@@ -23,25 +23,25 @@ export const extractChartData = (data: any[]) => {
 export const extractSalesVsWeek = (data: ISO[]) => {
     let res: any[] = [],
         totalAmounts: any = {};
-    const filtered = data.filter(so => Boolean(so.totalAmount));
-    filtered.forEach(so => totalAmounts[getWeek(so.createdAt).toString()] = 0)
+    const filtered = data.filter((so) => Boolean(so.totalAmount));
+    filtered.forEach((so) => (totalAmounts[getWeek(so.date).toString()] = 0));
 
-    for(const so of filtered){
-        totalAmounts[getWeek(so.createdAt).toString()] += so.totalAmount          
+    for (const so of filtered) {
+        totalAmounts[getWeek(so.date).toString()] += so.totalAmount;
     }
 
-    for(const week in totalAmounts) {
-        res.push({week, totalAmount:totalAmounts[week]})
+    for (const week in totalAmounts) {
+        res.push({ week, totalAmount: totalAmounts[week] });
     }
 
-    return res
+    return res;
 };
 
 export const extractClientPieChartData = (data: any[]) => {
     let res: any[] = [],
         clientName: string | undefined = "",
         soBasedOnClients: any = {};
-    const filtered =data.filter(c => Boolean(c.client)) 
+    const filtered = data.filter((c) => Boolean(c.client));
 
     for (const so of filtered) {
         soBasedOnClients[so.client.name] = countProperty(filtered, so.client.name, (item) => item.client.name);
@@ -93,7 +93,7 @@ export const extractSalesRep = (data: any[]) => {
     let res: any[] = [],
         sales: any = {};
     const filtered = data.filter((so) => Boolean(so.repOrAgency));
-    
+
     for (const so of filtered) {
         sales[so.repOrAgency.name] = countProperty(filtered, so.repOrAgency.name, (item) => item.repOrAgency.name);
     }

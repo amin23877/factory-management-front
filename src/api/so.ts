@@ -15,7 +15,7 @@ export interface ISO {
     QuoteId: string;
     issuedBy?: string;
     status: string;
-    createdAt: number;
+    date: number;
 
     estimatedShipDate: string;
     actualShipDate: string;

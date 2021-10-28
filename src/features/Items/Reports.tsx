@@ -8,31 +8,31 @@ import { ISO } from "../../api/so";
 
 const data = [
     {
-        createdAt: "2020-03-1",
+        date: "2020-03-1",
         so: 5,
         quote: 7,
         po: 12,
     },
     {
-        createdAt: "2020-03-3",
+        date: "2020-03-3",
         so: 20,
         quote: 7,
         po: 5,
     },
     {
-        createdAt: "2020-03-7",
+        date: "2020-03-7",
         so: 7,
         quote: 19,
         po: 28,
     },
     {
-        createdAt: "2020-03-10",
+        date: "2020-03-10",
         so: 17,
         quote: 5,
         po: 6,
     },
     {
-        createdAt: "2020-03-17",
+        date: "2020-03-17",
         so: 27,
         quote: 34,
         po: 10,

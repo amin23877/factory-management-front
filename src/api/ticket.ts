@@ -19,7 +19,7 @@ export interface ITicket {
     fsh: boolean;
     ItemId: IItem;
 
-    createdAt: number;
+    date: number;
     updatedAt: number;
     __v: number;
 }

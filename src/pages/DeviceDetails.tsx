@@ -130,7 +130,7 @@ function DeviceDetails() {
             {
                 field: "date",
                 headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 width: 120,
             },
             {
@@ -161,7 +161,7 @@ function DeviceDetails() {
     const docCols = useMemo(
         () => [
             { field: "file", headerName: "File" },
-            { field: "createdAt", headerName: "Date", flex: 1 },
+            { field: "date", headerName: "Date", flex: 1 },
             { field: "EmployeeId", headerName: "Creator", flex: 1 },
             { field: "name", headerName: "File Name", flex: 1 },
             { field: "id", headerName: "File ID", flex: 1 },
@@ -271,7 +271,7 @@ function DeviceDetails() {
             {
                 field: "SODate",
                 headerName: "SO Date",
-                valueFormatter: (r) => formatTimestampToDate(r.row.so.createdAt),
+                valueFormatter: (r) => formatTimestampToDate(r.row.so.date),
                 flex: 1,
             },
         ],
