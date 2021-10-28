@@ -14,10 +14,10 @@ export default function Table({ onRowSelected }: { onRowSelected: (row: ITicket)
     const cols = useMemo<GridColumns>(
         () => [
             {
-                field: "createdAt",
+                field: "date",
                 headerName: "Date",
                 type: "date",
-                valueFormatter: (params) => formatTimestampToDate(params.row.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row.date),
                 width: 120,
                 disableColumnMenu: true,
             },

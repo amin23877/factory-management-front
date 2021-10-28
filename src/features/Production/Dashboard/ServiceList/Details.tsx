@@ -93,7 +93,7 @@ function ServiceDetails({ ticket }: { ticket: ITicket }) {
             {
                 field: "date",
                 headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 width: 120,
             },
             {

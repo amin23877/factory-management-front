@@ -116,7 +116,7 @@ export default function Details({
                                         />
                                         <TextField
                                             name="date"
-                                            value={formatTimestampToDate(values.createdAt)}
+                                            value={formatTimestampToDate(values.date)}
                                             label="Date"
                                             onChange={handleChange}
                                             onBlur={handleBlur}

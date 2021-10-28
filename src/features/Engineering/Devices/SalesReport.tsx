@@ -14,7 +14,7 @@ const Chart = ({ data }: { data: { string: number }[] }) => {
         <div style={{ width: "100%", height: 400, display: "flex", justifyContent: "center" }}>
             <ResponsiveContainer width="100%" height="100%">
                 <LineChart width={300} height={100} data={data}>
-                    <XAxis dataKey="createdAt" />
+                    <XAxis dataKey="date" />
                     <YAxis />
                     <Tooltip />
                     <Legend />

@@ -26,7 +26,7 @@ export default function ReqQuotePanel() {
         () => [
             {
                 field: "Date",
-                valueFormatter: (r) => formatTimestampToDate(r.row?.createdAt),
+                valueFormatter: (r) => formatTimestampToDate(r.row?.date),
                 width: 100,
             },
             { field: "number", headerName: "NO.", width: 100 },

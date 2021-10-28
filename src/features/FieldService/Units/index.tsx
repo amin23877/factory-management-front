@@ -46,7 +46,7 @@ export default function Unit() {
             field: "SO Date",
             headerName: "SO Date",
             width: 100,
-            valueFormatter: (r) => formatTimestampToDate(r.row?.so?.createdAt),
+            valueFormatter: (r) => formatTimestampToDate(r.row?.so?.date),
         },
     ];
 

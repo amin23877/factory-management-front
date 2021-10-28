@@ -17,7 +17,7 @@ export default function Dashboard() {
             {
                 field: "date",
                 headerName: "Date",
-                valueFormatter: (params: any) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params: any) => formatTimestampToDate(params.row?.date),
                 width: 100,
             },
             { field: "number", headerName: "SO ID", width: 100 },

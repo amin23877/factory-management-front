@@ -41,7 +41,7 @@ export interface IReqQuote {
     salesperson: IEmployee;
 
     EmployeeId: IEmployee;
-    createdAt: number;
+    date: number;
     updatedAt: number;
     totalAmount: number;
     lineItemRecords: ILineItem[];

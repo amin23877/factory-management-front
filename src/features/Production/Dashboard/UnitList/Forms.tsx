@@ -42,7 +42,7 @@ export const General = ({
                 />
                 <TextField
                     label="SO Date"
-                    value={formatTimestampToDate(values.so.createdAt)}
+                    value={formatTimestampToDate(values.so.date)}
                     name="soDate"
                     onChange={handleChange}
                     onBlur={handleBlur}

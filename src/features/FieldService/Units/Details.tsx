@@ -100,7 +100,7 @@ function Details({ unit }: { unit: IUnit }) {
 
     const fshCols = useMemo<GridColumns>(
         () => [
-            { field: "Date", valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt), width: 120 },
+            { field: "Date", valueFormatter: (params) => formatTimestampToDate(params.row?.date), width: 120 },
             { field: "Ticket ID", valueFormatter: (params) => params.row?.number, width: 120 },
             { field: "Subject", valueFormatter: (params) => params.row?.subject, flex: 1 },
             { field: "Unit", valueFormatter: (params) => params.row?.UnitId?.number, width: 150 },
@@ -115,7 +115,7 @@ function Details({ unit }: { unit: IUnit }) {
             {
                 field: "date",
                 headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 width: 120,
             },
             {

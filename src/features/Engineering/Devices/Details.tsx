@@ -141,7 +141,7 @@ function ItemsDetails({
             {
                 field: "date",
                 headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 width: 120,
             },
             {
@@ -172,7 +172,7 @@ function ItemsDetails({
     const docCols = useMemo(
         () => [
             { field: "file", headerName: "File" },
-            { field: "createdAt", headerName: "Date", width: 180, type: "date" },
+            { field: "date", headerName: "Date", width: 180, type: "date" },
             { field: "EmployeeId", headerName: "Creator", flex: 1 },
             { field: "name", headerName: "File Name", flex: 1 },
             { field: "id", headerName: "File ID", flex: 1 },
@@ -282,7 +282,7 @@ function ItemsDetails({
             {
                 field: "SODate",
                 headerName: "SO Date",
-                valueFormatter: (r) => formatTimestampToDate(r.row.so.createdAt),
+                valueFormatter: (r) => formatTimestampToDate(r.row.so.date),
                 flex: 1,
             },
         ],

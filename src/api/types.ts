@@ -3,7 +3,7 @@ import { get, post, patch, delete_ } from ".";
 export interface IItemType {
     id?: string;
     name: string;
-    createdAt?: string;
+    date?: string;
     updatedAt?: string;
 }
 

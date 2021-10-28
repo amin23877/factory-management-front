@@ -68,7 +68,7 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
 
     const docCols = [
         { field: "file", headerName: "File", width: 100 },
-        { field: "createdAt", headerName: "Date", width: 150 },
+        { field: "date", headerName: "Date", width: 150 },
         { field: "name", headerName: "File Name", flex: 1 },
         { field: "id", headerName: "File ID", flex: 1 },
         { field: "description", headerName: "Description", flex: 1 },
@@ -81,7 +81,7 @@ function Modal({ open, onClose, unit }: { open: boolean; onClose: () => void; un
             {
                 field: "date",
                 headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 width: 120,
             },
             {

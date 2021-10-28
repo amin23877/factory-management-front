@@ -52,7 +52,7 @@ export default function EditTab({
             {
                 field: "date",
                 headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 width: 120,
             },
             {
@@ -72,7 +72,7 @@ export default function EditTab({
             {
                 field: "date",
                 headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 width: 120,
             },
             {
@@ -129,7 +129,7 @@ export default function EditTab({
             {
                 field: "date",
                 headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 width: 120,
             },
             { field: "number", headerName: "Ticket ID", width: 130 },
@@ -162,14 +162,14 @@ export default function EditTab({
             {
                 field: "date",
                 headerName: "Target Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 flex: 1,
             },
             {
                 field: "actualDate",
                 headerName: "Actual Date",
                 flex: 1,
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
             },
             { field: "number", headerName: "Shipment No.", flex: 2 },
             {

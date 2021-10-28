@@ -54,7 +54,7 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
             {
                 field: "date",
                 headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 width: 120,
             },
             {
@@ -76,7 +76,7 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
             {
                 field: "date",
                 headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 width: 120,
             },
             { field: "Number", headerName: "PO NO.", width: 100 },
@@ -96,7 +96,7 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
             {
                 field: "date",
                 headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 width: 120,
             },
             {

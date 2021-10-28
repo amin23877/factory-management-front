@@ -117,7 +117,7 @@ function ItemsDetails({
             {
                 field: "date",
                 headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 width: 100,
             },
             { field: "number", headerName: "Number", flex: 1 },
@@ -129,7 +129,7 @@ function ItemsDetails({
             {
                 field: "dateReceived",
                 headerName: "Date Received",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 width: 120,
             },
             { field: "cost", headerName: "Cost", width: 80 },
@@ -149,7 +149,7 @@ function ItemsDetails({
             {
                 field: "date",
                 headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 width: 120,
             },
             {
@@ -169,7 +169,7 @@ function ItemsDetails({
             {
                 field: "date",
                 headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
                 width: 120,
             },
             {
@@ -198,7 +198,7 @@ function ItemsDetails({
     //         {
     //             field: "date",
     //             headerName: "Revision Date",
-    //             valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+    //             valueFormatter: (params) => formatTimestampToDate(params.row?.date),
     //             width: 120,
     //         },
     //         { field: "name", headerName: "Name", flex: 1 },
@@ -223,7 +223,7 @@ function ItemsDetails({
             {
                 field: "soDate",
                 headerName: "SO Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.so.createdAt),
+                valueFormatter: (params) => formatTimestampToDate(params.row?.so.date),
                 flex: 1,
             },
             {

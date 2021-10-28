@@ -50,7 +50,7 @@ function Index() {
     const cols: GridColDef[] = [
         {
             field: "Date",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.createdAt),
+            valueFormatter: (r) => formatTimestampToDate(r.row?.date),
             width: 100,
         },
         { field: "number", headerName: "PO Number", width: 110 },
