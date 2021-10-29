@@ -41,7 +41,7 @@ export default function EditTab({
     const { data: notes } = useSWR(selectedSo && selectedSo.id ? `/note/so/${selectedSo.id}` : null);
     const { data: documents } = useSWR(selectedSo && selectedSo.id ? `/document/so/${selectedSo.id}` : null);
     const { data: lineItems } = useSWR(selectedSo && selectedSo.id ? `/lineitem?SOId=${selectedSo.id}` : null);
-    const { data: lineServices } = useSWR(selectedSo && selectedSo.id ? `/lineservice?SOId=${selectedSo.id}` : null);
+    // const { data: lineServices } = useSWR(selectedSo && selectedSo.id ? `/lineservice?SOId=${selectedSo.id}` : null);
 
     const [activeTab, setActiveTab] = useState(0);
     const [addNote, setAddNote] = useState(false);
@@ -96,14 +96,14 @@ export default function EditTab({
 
     const LICols = useMemo<GridColumns>(
         () => [
-            { field: "index", headerName: "Sort" },
-            { field: "ItemId", headerName: "Part Number", valueFormatter: (r) => r.row?.ItemId?.name, width: 200 },
-            { field: "description", headerName: "Description", flex: 1 },
+            { field: "index", headerName: "Sort", width: 60, disableColumnMenu: true },
+            { field: "ItemId", headerName: "Part Number", valueFormatter: (r) => r.row?.ItemId?.no, width: 200 },
+            { field: "description", headerName: "Description", width: 150, disableColumnMenu: true },
             { field: "quantity", headerName: "QTY", width: 90 },
             { field: "price", headerName: "Price", width: 100 },
             { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
-            { field: "total", headerName: "Total", valueFormatter: (r) => r.row?.price * r.row?.quantity, width: 200 },
-            { field: "invoice", headerName: "Invoice", width: 200 },
+            { field: "total", headerName: "Total", valueFormatter: (r) => r.row?.price * r.row?.quantity, width: 80 },
+            { field: "invoice", headerName: "Invoice", width: 100 },
         ],
         []
     );
@@ -191,10 +191,10 @@ export default function EditTab({
                 <DocumentModal open={addDoc} onClose={() => setAddDoc(false)} itemId={selectedSo.id} model="so" />
             )}
             <Box pb="8px" display="flex" style={{ gap: 10 }}>
-                <Box flex={1}>
+                <Box flex={3}>
                     <EditForm selectedSo={selectedSo} />
                 </Box>
-                <Box flex={2}>
+                <Box flex={4}>
                     <Tabs
                         style={{ margin: "1em 0" }}
                         textColor="primary"
@@ -263,12 +263,7 @@ export default function EditTab({
                             />
                         )}
                         {activeTab === 5 && (
-                            <BaseDataGrid
-                                cols={FSCols}
-                                rows={lineServices || []}
-                                onRowSelected={onLineServiceSelected}
-                                height="100%"
-                            />
+                            <BaseDataGrid cols={FSCols} rows={[]} onRowSelected={onLineServiceSelected} height="100%" />
                         )}
                         {activeTab === 6 && (
                             <>

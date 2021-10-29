@@ -186,11 +186,11 @@ export default function SalesOrderPanel() {
                         selectedSo={selectedSO}
                         onLineServiceSelected={(d) => {
                             setSelectedLS(d);
-                            setLineServiceModal(true);
+                            // setLineServiceModal(true);
                         }}
                         onLineItemSelected={(d) => {
                             setSelectedLI(d);
-                            setLineItemModal(true);
+                            // setLineItemModal(true);
                         }}
                         onNoteSelected={(d) => {
                             setSelectedNote(d);

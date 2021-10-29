@@ -25,7 +25,7 @@ export default function LineItemModal({
     readOnly?: boolean;
 }) {
     return (
-        <Dialog open={open} onClose={onClose} title={`Add new line item`}>
+        <Dialog open={open} onClose={onClose} title={`${selectedLine ? "Edit" : "Add new"} Line Item`}>
             <Box p={2}>
                 <Form
                     initialValues={selectedLine}

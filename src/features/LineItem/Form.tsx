@@ -66,7 +66,7 @@ export default function MainForm({
                             getOptionList={(data) => data.result}
                             itemTitleField="name"
                             itemValueField="id"
-                            value={values?.ItemId as any}
+                            value={typeof values?.ItemId === "string" ? values?.ItemId : values?.ItemId.id}
                             onChange={handleChange}
                             onBlur={handleBlur}
                             error={Boolean(errors.ItemId)}
