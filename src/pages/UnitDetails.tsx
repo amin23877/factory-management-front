@@ -65,6 +65,7 @@ export default function UnitDetails() {
                     )}
                     {infoActiveTab === 1 && (
                         <SOGeneral
+                            setFieldValue={() => {}}
                             values={unit.so}
                             onChangeInit={() => {}}
                             handleBlur={() => {}}

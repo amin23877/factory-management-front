@@ -223,7 +223,7 @@ export default function PanelRouter() {
                             <Route exact path="/panel/inventory/:itemId" component={ItemDetails} />
                             <Route exact path="/panel/engineering/:deviceId" component={DeviceDetails} />
                             <Route exact path="/panel/production/:unitNumber" component={UnitDetails} />
-                            <Route exact path="/panel/sales/:quoteNumber" component={QuoteDetails} />
+                            <Route exact path="/panel/quote/:quoteNumber" component={QuoteDetails} />
 
                             <Route exact path="/panel/bom/:bomId/parts" component={BomParts} />
                             <Route exact path="/panel/ubom/:bomId/parts" component={JobParts} />

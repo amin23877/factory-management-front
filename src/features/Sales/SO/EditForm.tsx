@@ -41,6 +41,7 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                                 values={values}
                                 handleBlur={handleBlur}
                                 handleChange={handleChange}
+                                setFieldValue={setFieldValue}
                             />
                             <Box textAlign="center" mt={1}>
                                 <Button fullWidth disabled={isSubmitting} type="submit" kind="edit">

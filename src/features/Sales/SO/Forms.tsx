@@ -19,6 +19,7 @@ import { DateTimePicker } from "@material-ui/pickers";
 import TextField from "../../../app/TextField";
 import { FieldSelect, ArraySelect } from "../../../app/Inputs";
 import Button from "../../../app/Button";
+import LinkSelect from "../../../app/Inputs/LinkSelect";
 
 import { getAllEmployees } from "../../../api/employee";
 import { getAllModelContact, getContacts } from "../../../api/contact";
@@ -51,11 +52,13 @@ export const GeneralForm = ({
     handleBlur,
     onChangeInit,
     values,
+    setFieldValue,
 }: {
     values: any;
     handleChange: (a: any) => void;
     handleBlur: (a: any) => void;
     onChangeInit: (data: any) => void;
+    setFieldValue: any;
 }) => {
     const classes = useStyles();
     const [selectedQuote, setSelectedQuote] = useState<string>();
@@ -131,7 +134,7 @@ export const GeneralForm = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
-                <FieldSelect
+                {/* <FieldSelect
                     value={typeof values.QuoteId === "string" ? values.QuoteId : values.QuoteId?.id}
                     name="QuoteId"
                     label="Quote ID"
@@ -144,6 +147,20 @@ export const GeneralForm = ({
                         handleChange(e);
                     }}
                     onBlur={handleBlur}
+                /> */}
+                <LinkSelect
+                    value={typeof values.QuoteId === "string" ? values.QuoteId : values.QuoteId?.id}
+                    label="Quote ID"
+                    request={getQuotes}
+                    getOptionList={(resp) => resp?.result}
+                    getOptionLabel={(quote) => quote?.number}
+                    getOptionValue={(quote) => quote?.id}
+                    onChange={(e, nv) => {
+                        setSelectedQuote(nv.id as string);
+                        setFieldValue("QuoteId", nv.id);
+                    }}
+                    onBlur={handleBlur}
+                    url="/panel/quote"
                 />
                 <TextField
                     value={values.invoice}

@@ -35,6 +35,7 @@ export default function MainForm({ onDone, data }: { data?: any; onDone: (data: 
                                     values={values}
                                     handleChange={handleChange}
                                     handleBlur={handleBlur}
+                                    setFieldValue={setFieldValue}
                                 />
                                 <Button type="submit" kind="add">
                                     Add

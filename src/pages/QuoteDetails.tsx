@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Tabs, Tab, Box, makeStyles } from "@material-ui/core";
+import { Tabs, Tab, Box, makeStyles, LinearProgress } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
 
@@ -48,12 +48,18 @@ export default function EditTab() {
     const [selectedNote, setSelectedNote] = useState<INote>();
     const [selectedDoc, setSelectedDoc] = useState<IDocument>();
 
-    const { data: lineItems } = useSWR<ILineItem[]>(activeTab === 0 ? `/lineitem?QuoteId=${selectedQuote.id}` : null);
-    const { data: lineServices } = useSWR<ILineService[]>(
-        activeTab === 1 ? `/lineservice?QuoteId=${selectedQuote.id}` : null
+    const { data: lineItems } = useSWR<ILineItem[]>(
+        activeTab === 0 && selectedQuote ? `/lineitem?QuoteId=${selectedQuote.id}` : null
     );
-    const { data: documents } = useSWR<IDocument[]>(activeTab === 2 ? `/document/quote/${selectedQuote.id}` : null);
-    const { data: notes } = useSWR<INote[]>(activeTab === 4 ? `/note/quote/${selectedQuote.id}` : null);
+    const { data: lineServices } = useSWR<ILineService[]>(
+        activeTab === 1 && selectedQuote ? `/lineservice?QuoteId=${selectedQuote.id}` : null
+    );
+    const { data: documents } = useSWR<IDocument[]>(
+        activeTab === 2 && selectedQuote ? `/document/quote/${selectedQuote.id}` : null
+    );
+    const { data: notes } = useSWR<INote[]>(
+        activeTab === 4 && selectedQuote ? `/note/quote/${selectedQuote.id}` : null
+    );
 
     const LICols = useMemo<GridColumns>(
         () => [
@@ -137,7 +143,9 @@ export default function EditTab() {
         ],
         []
     );
-
+    if (!selectedQuote) {
+        return <LinearProgress />;
+    }
     return (
         <Box>
             <NoteModal
