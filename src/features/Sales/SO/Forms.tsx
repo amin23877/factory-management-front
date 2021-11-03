@@ -122,7 +122,8 @@ export const GeneralForm = ({
                 })
                 .catch((e) => console.log(e));
         }
-    }, [onChangeInit, selectedQuote, values]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedQuote]);
 
     return (
         <>
@@ -149,7 +150,7 @@ export const GeneralForm = ({
                     onBlur={handleBlur}
                 /> */}
                 <LinkSelect
-                    value={typeof values.QuoteId === "string" ? values.QuoteId : values.QuoteId?.id}
+                    value={typeof values.QuoteId === "string" ? values.QuoteId : values.QuoteId}
                     label="Quote ID"
                     request={getQuotes}
                     getOptionList={(resp) => resp?.result}
