@@ -156,8 +156,8 @@ export const GeneralForm = ({
                     getOptionLabel={(quote) => quote?.number}
                     getOptionValue={(quote) => quote?.id}
                     onChange={(e, nv) => {
-                        setSelectedQuote(nv.id as string);
-                        setFieldValue("QuoteId", nv.id);
+                        setSelectedQuote(nv?.id as string);
+                        setFieldValue("QuoteId", nv?.id);
                     }}
                     onBlur={handleBlur}
                     url="/panel/quote"
