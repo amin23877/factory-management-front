@@ -25,6 +25,7 @@ import { IQuoteComplete } from "../../../api/quote";
 // import { getContacts } from "../../../api/contact";
 import { getCustomers } from "../../../api/customer";
 import LinkSelect from "../../../app/Inputs/LinkFields";
+import { getSO } from "../../../api/so";
 
 export const DocumentForm = ({
     onDone,
@@ -210,7 +211,23 @@ export const GeneralForm = ({
         <>
             <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={10} gridRowGap={10}>
                 {edit && <TextField label="Quote ID" value={values.number} disabled />}
-                {edit && <TextField label="SO ID" value={values.number} style={{ width: "100%" }} disabled />}
+                {/* {edit && <TextField label="SO ID" value={values.number} style={{ width: "100%" }} disabled />} */}
+                {edit && (
+                    <LinkSelect
+                        value={typeof values.SOId === "string" ? values.SOId : values.SOId}
+                        label="SO ID"
+                        request={getSO}
+                        getOptionList={(resp) => resp?.result}
+                        getOptionLabel={(so) => so?.number}
+                        getOptionValue={(so) => so?.id}
+                        onChange={(e, nv) => {
+                            setFieldValue("SOId", nv?.id);
+                        }}
+                        onBlur={handleBlur}
+                        url="/panel/so"
+                        disabled
+                    />
+                )}
                 <DateTimePicker
                     style={{ fontSize: "0.8rem" }}
                     size="small"
