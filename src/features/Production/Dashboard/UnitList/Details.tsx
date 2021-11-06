@@ -6,7 +6,7 @@ import { GridColDef, GridColumns } from "@material-ui/data-grid";
 // import { General as ItemGeneral } from "../../../Items/Forms";
 // import { GeneralForm as SOGeneral } from "../../../Sales/SO/Forms";
 import { General, UnitInfo } from "./Forms";
-
+import { host } from '../../../../host'
 import Button from "../../../../app/Button";
 import { BasePaper } from "../../../../app/Paper";
 import BaseDataGrid from "../../../../app/BaseDataGrid";
@@ -222,7 +222,7 @@ function Details({ unit }: { unit: IUnit }) {
                                                     margin: "0px auto",
                                                 }}
                                                 alt=""
-                                                src={`http://digitalphocus.ir${unit?.item?.photo}`}
+                                                src={`http://${host}${unit?.item?.photo}`}
                                             />
                                         )}
                                     </Box>
@@ -352,7 +352,7 @@ function Details({ unit }: { unit: IUnit }) {
                                                 margin: "0px auto",
                                             }}
                                             alt=""
-                                            src={`http://digitalphocus.ir${url}`}
+                                            src={`http://${host}${url}`}
                                         />
                                         <Button kind="delete" onClick={() => handleFileDelete(url)}>
                                             delete

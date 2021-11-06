@@ -4,7 +4,7 @@ import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { useParams } from "react-router-dom";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
-
+import { host } from '../host'
 import Button from "../app/Button";
 import BaseDataGrid from "../app/BaseDataGrid";
 import { BasePaper } from "../app/Paper";
@@ -306,7 +306,7 @@ function ItemsDetails() {
                                                         margin: "0px auto",
                                                     }}
                                                     alt=""
-                                                    src={img ? img : `http://digitalphocus.ir${selectedRow?.photo}`}
+                                                    src={img ? img : `http://${host}${selectedRow?.photo}`}
                                                 />
                                             )}
                                             <UploadButton onChange={handleFileChange} accept="image/*" />

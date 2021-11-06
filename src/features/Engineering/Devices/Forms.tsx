@@ -4,6 +4,7 @@ import { Box, Checkbox, FormControlLabel, Paper } from "@material-ui/core";
 import Button from "../../../app/Button";
 import TextField from "../../../app/TextField";
 import { addImage } from "../../../api/items";
+import { host } from '../../../host'
 
 interface IForm {
     values: any;
@@ -44,7 +45,7 @@ export const Photo = ({ device }: { device: any }) => {
                         margin: "10px auto",
                     }}
                     alt=""
-                    src={img ? img : `http://digitalphocus.ir${device?.photo}`}
+                    src={img ? img : `http://${host}${device?.photo}`}
                 />
             )}
             <div>

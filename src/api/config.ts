@@ -3,8 +3,8 @@ import { logout } from "../features/Session/sessionsSlice";
 import { store } from "../store";
 
 import { getToken, StorageKey } from "./";
-
-export const BaseUrl = "http://digitalphocus.ir/api/";
+import { host } from '../host'
+export const BaseUrl = `http://${host}/api/`;
 
 Axios.defaults.baseURL = BaseUrl;
 
