@@ -45,7 +45,13 @@ const Table = ({ data }: { data: any }) => {
         []
     );
 
-    return <BaseDataGrid cols={cols} rows={data ? data.map((d: any, i: any) => ({ ...d, id: i })) : []} height={380} />;
+    return (
+        <BaseDataGrid
+            cols={cols}
+            rows={data && data.map ? data.map((d: any, i: any) => ({ ...d, id: i })) : []}
+            height={380}
+        />
+    );
 };
 
 function SalesReport() {

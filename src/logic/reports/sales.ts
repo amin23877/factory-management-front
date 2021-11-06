@@ -8,11 +8,11 @@ import { IUnit } from "../../api/units";
 export const extractChartData = (data: any[]) => {
     let res: any[] = [];
     let cnt = 1;
-    res = data.reduce((_, curVal) => {
+    res = data.reduce && data.reduce((_, curVal) => {
         return { [formatDate(curVal.so?.date, "yy-MMMM")]: ++cnt };
     }, {});
 
-    res = Object.keys(res).map((k) => ({
+    res = res && Object.keys(res).map((k) => ({
         date: k,
         units: res[k as any],
     }));
