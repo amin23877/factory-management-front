@@ -23,6 +23,7 @@ interface IMFS {
     value?: any;
     freeSolo?: any;
     url?: string;
+    disabled?: boolean;
 }
 
 const useStyles = makeStyles({
@@ -48,6 +49,7 @@ export default function MaterialFieldSelect({
     getOptionList,
     onChange,
     value,
+    disabled,
     ...props
 }: IMFS) {
     const [options, setOptions] = useState<any[]>([]);
@@ -117,7 +119,9 @@ export default function MaterialFieldSelect({
                             }}
                             onClick={() => {
                                 if (props.url && value) {
-                                    openRequestedSinglePopup({ url: `${props.url}/${value}` });
+                                    openRequestedSinglePopup({
+                                        url: `${props.url}/${typeof value === "string" ? value : value.id}`,
+                                    });
                                 }
                             }}
                         >
@@ -135,6 +139,7 @@ export default function MaterialFieldSelect({
                             style={{ flex: 1, fontSize: "0.8rem" }}
                             type="text"
                             InputLabelProps={{ shrink: true }}
+                            disabled={disabled}
                         />
                     </div>
                 );
