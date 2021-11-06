@@ -101,8 +101,8 @@ const Devices = ({ sales }: { sales?: boolean }) => {
             const newCols = new Set<string>();
 
             items.result.forEach((item) => {
-                Object.keys(item.filters).forEach((f) => newCols.add(f));
-                Object.keys(item.fields).forEach((f) => newCols.add(f));
+                item.filters && Object.keys(item.filters).forEach((f) => newCols.add(f));
+                item.fields && Object.keys(item.fields).forEach((f) => newCols.add(f));
             });
             newCols.forEach((c) =>
                 res.push({ field: c, headerName: splitLevelName(c), width: 120, disableColumnMenu: true })

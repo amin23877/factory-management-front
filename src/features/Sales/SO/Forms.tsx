@@ -166,8 +166,10 @@ export const GeneralForm = ({
                 <LinkSelect
                     value={typeof values.InvoiceId === "string" ? values.InvoiceId : values.InvoiceId}
                     label="Invoice Id"
-                    request={async () => {}}
-                    getOptionList={(resp) => resp?.result}
+                    request={async () => {
+                        return [];
+                    }}
+                    getOptionList={(resp) => resp}
                     getOptionLabel={(invoice) => invoice?.name}
                     getOptionValue={(invoice) => invoice?.id}
                     onChange={(e, nv) => {
@@ -187,8 +189,10 @@ export const GeneralForm = ({
                 <LinkSelect
                     value={typeof values.WarrantyId === "string" ? values.WarrantyId : values.WarrantyId}
                     label="Warranty"
-                    request={async () => {}}
-                    getOptionList={(resp) => resp?.result}
+                    request={async () => {
+                        return [];
+                    }}
+                    getOptionList={(resp) => resp}
                     getOptionLabel={(warranty) => warranty?.name}
                     getOptionValue={(warranty) => warranty?.id}
                     onChange={(e, nv) => {
@@ -209,7 +213,7 @@ export const GeneralForm = ({
                     value={typeof values.ProjectId === "string" ? values.ProjectId : values.ProjectId}
                     label="Project Name"
                     request={getProjects}
-                    getOptionList={(resp) => resp?.result}
+                    getOptionList={(resp) => resp}
                     getOptionLabel={(project) => project?.name}
                     getOptionValue={(project) => project?.id}
                     onChange={(e, nv) => {

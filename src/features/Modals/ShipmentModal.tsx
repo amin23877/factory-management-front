@@ -4,7 +4,7 @@ import { DateTimePicker } from "@material-ui/pickers";
 
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
-
+import { host } from '../../host'
 import Dialog from "../../app/Dialog";
 import Button from "../../app/Button";
 import TextField from "../../app/TextField";
@@ -113,7 +113,7 @@ const AddShipModal = ({ open, onClose, unitId }: { open: boolean; onClose: () =>
                                                             margin: "0px auto",
                                                         }}
                                                         alt=""
-                                                        src={`http://digitalphocus.ir${url}`}
+                                                        src={`http://${host}${url}`}
                                                     />
                                                     <Button kind="delete" onClick={() => handleFileDelete(url)}>
                                                         delete

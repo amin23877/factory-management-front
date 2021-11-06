@@ -4,7 +4,7 @@ import { messageType, userType } from "../../logic/Chat/ChatAdapter";
 import { ChevronLeft } from "@material-ui/icons";
 
 import ChatForm from "./Form";
-
+import { host } from '../../host'
 import { colors } from "./Drawer";
 
 const Message = ({ user, message }: { message: messageType; user: userType }) => {
@@ -28,7 +28,7 @@ const Message = ({ user, message }: { message: messageType; user: userType }) =>
                     >
                         {message.hasFile && (
                             <img
-                                src={"http://digitalphocus.ir" + message.fileAddress?.split("public")[1]}
+                                src={`http://${host}` + message.fileAddress?.split("public")[1]}
                                 alt=""
                                 style={{ width: 100, height: 100, objectFit: "cover", margin: 8, borderRadius: 16 }}
                             />

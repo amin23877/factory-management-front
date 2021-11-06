@@ -4,6 +4,7 @@ import { Formik, Form } from "formik";
 
 import Dialog from "../../app/Dialog";
 import Button from "../../app/Button";
+import { host } from '../../host'
 
 import { createAModelDocument, updateAModelDocument, deleteAModelDocument, IDocument } from "../../api/document";
 import PhotoSizeSelectActualOutlinedIcon from "@material-ui/icons/PhotoSizeSelectActualOutlined";
@@ -65,7 +66,7 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
         <Dialog open={open} onClose={onClose} fullScreen title={`${docData ? "Edit" : "Add"} Document to ${model}`}>
             <Box height="82vh" m={3} display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10}>
                 <Box>
-                    {docData?.path && <PDFPreview height="100%" pdf={"http://digitalphocus.ir/" + docData?.path} />}
+                    {docData?.path && <PDFPreview height="100%" pdf={`http://${host}/` + docData?.path} />}
                 </Box>
                 <Formik initialValues={docData ? docData : ({} as IDocument)} onSubmit={handleSubmit}>
                     {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (

@@ -4,6 +4,7 @@ import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import useSWR, { mutate } from "swr";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import { host } from '../../../host'
 
 import { General, Warranty, Battery, Inverter, Control } from "./Forms";
 import MyQRCode from "../../../app/QRCode";
@@ -186,7 +187,7 @@ function Details({ up }: { up: any }) {
                                                     margin: "0px auto",
                                                 }}
                                                 alt=""
-                                                src={`http://digitalphocus.ir${up?.item?.photo}`}
+                                                src={`http://${host}${up?.item?.photo}`}
                                             />
                                         )}
                                     </Box>

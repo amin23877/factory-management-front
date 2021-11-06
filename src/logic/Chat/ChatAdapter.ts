@@ -1,5 +1,6 @@
 import { io } from "socket.io-client";
 import { getToken } from "../../api";
+import { host } from '../../host'
 
 export type messageType = {
     _id: string;
@@ -22,7 +23,7 @@ export type userType = {
 
 // Adapter for chat socket
 export default class ChatAdapter {
-    private socketURL: string = "http://digitalphocus.ir";
+    private socketURL: string = `http://${host}`;
     private socket;
     private token = getToken();
 

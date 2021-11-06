@@ -2,6 +2,7 @@ import React, { useMemo, useState, Fragment } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import useSWR, { mutate } from "swr";
+import { host } from '../../../host'
 
 import { General, Status, Expense, Shipping } from "./Forms";
 
@@ -208,7 +209,7 @@ function Details({ unit }: { unit: IUnit }) {
                                                     margin: "0px auto",
                                                 }}
                                                 alt=""
-                                                src={`http://digitalphocus.ir${unit?.item?.photo}`}
+                                                src={`http://${host}${unit?.item?.photo}`}
                                             />
                                         )}
                                     </Box>

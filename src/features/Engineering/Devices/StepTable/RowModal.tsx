@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { Box, Tab, Tabs } from "@material-ui/core";
 import { Formik, Form } from "formik";
-
+import { host } from '../../../../host'
 import Dialog from "../../../../app/Dialog";
 import TextField from "../../../../app/TextField";
 import Button from "../../../../app/Button";
@@ -152,7 +152,7 @@ function RowModal({
                                             setConfirm(true);
                                         }}
                                         alt={initialValues?.number}
-                                        src={"http://digitalphocus.ir" + f}
+                                        src={`http://${host}` + f}
                                         style={{ width: "100%", height: "100%", objectFit: "cover" }}
                                     />
                                 ))}
