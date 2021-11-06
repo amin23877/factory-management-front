@@ -19,7 +19,7 @@ import { DateTimePicker } from "@material-ui/pickers";
 import TextField from "../../../app/TextField";
 import { FieldSelect, ArraySelect } from "../../../app/Inputs";
 import Button from "../../../app/Button";
-import LinkSelect from "../../../app/Inputs/LinkSelect";
+import LinkSelect from "../../../app/Inputs/LinkFields";
 
 import { getAllEmployees } from "../../../api/employee";
 import { getAllModelContact, getContacts } from "../../../api/contact";
@@ -163,23 +163,62 @@ export const GeneralForm = ({
                     onBlur={handleBlur}
                     url="/panel/quote"
                 />
-                <TextField
+                <LinkSelect
+                    value={typeof values.InvoiceId === "string" ? values.InvoiceId : values.InvoiceId}
+                    label="Invoice Id"
+                    request={async () => {}}
+                    getOptionList={(resp) => resp?.result}
+                    getOptionLabel={(invoice) => invoice?.name}
+                    getOptionValue={(invoice) => invoice?.id}
+                    onChange={(e, nv) => {
+                        setFieldValue("InvoiceId", nv?.id);
+                    }}
+                    onBlur={handleBlur}
+                    url="/panel/invoice"
+                />
+                {/* <TextField
                     value={values.invoice}
                     name="invoice"
                     label="Invoice ID"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                />
+                /> */}
                 <TextField value={formatTimestampToDate(values.date)} name="date" label="SO Date" disabled />
-                <ArraySelect
+                <LinkSelect
+                    value={typeof values.WarrantyId === "string" ? values.WarrantyId : values.WarrantyId}
+                    label="Warranty"
+                    request={async () => {}}
+                    getOptionList={(resp) => resp?.result}
+                    getOptionLabel={(warranty) => warranty?.name}
+                    getOptionValue={(warranty) => warranty?.id}
+                    onChange={(e, nv) => {
+                        setFieldValue("WarrantyId", nv?.id);
+                    }}
+                    onBlur={handleBlur}
+                    url="/panel/warranty"
+                />
+                {/* <ArraySelect
                     value={values.warranty}
                     name="warranty"
                     label="Warranty"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     items={[]}
+                /> */}
+                <LinkSelect
+                    value={typeof values.ProjectId === "string" ? values.ProjectId : values.ProjectId}
+                    label="Project Name"
+                    request={getProjects}
+                    getOptionList={(resp) => resp?.result}
+                    getOptionLabel={(project) => project?.name}
+                    getOptionValue={(project) => project?.id}
+                    onChange={(e, nv) => {
+                        setFieldValue("ProjectId", nv?.id);
+                    }}
+                    onBlur={handleBlur}
+                    url="/panel/project"
                 />
-                <FieldSelect
+                {/* <FieldSelect
                     value={typeof values.ProjectId === "string" ? values.ProjectId : values.ProjectId?.id}
                     request={getProjects}
                     itemTitleField="name"
@@ -188,7 +227,7 @@ export const GeneralForm = ({
                     name="ProjectId"
                     label="Project Name"
                     onChange={handleChange}
-                />
+                /> */}
 
                 <TextField value={values.location} name="location" label="Location" onChange={handleChange} />
                 <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} />

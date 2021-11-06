@@ -31,7 +31,7 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
         <Formik initialValues={selectedQuote} onSubmit={handleSubmit}>
             {({ handleChange, handleBlur, values, isSubmitting, setFieldValue }) => (
                 <Form>
-                    <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
+                    <Box display="flex" flexDirection="column" style={{ gap: 10 }}>
                         <BasePaper>
                             <GeneralForm
                                 edit
@@ -40,18 +40,13 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
                                 handleBlur={handleBlur}
                                 handleChange={handleChange}
                             />
-                            <Box display="flex" justifyContent="center" mt={1}>
-                                <Button disabled={isSubmitting} type="submit" kind="edit">
+                            <Box display="flex" justifyContent="center" mt={1} style={{ width: "100%" }}>
+                                <Button disabled={isSubmitting} type="submit" kind="edit" style={{ width: "100%" }}>
                                     Save
                                 </Button>
                             </Box>
                         </BasePaper>
-                        <BasePaper
-                            style={{
-                                margin: "0 1em",
-                                height: "100%",
-                            }}
-                        >
+                        <BasePaper>
                             <Tabs
                                 value={activeTab}
                                 textColor="primary"

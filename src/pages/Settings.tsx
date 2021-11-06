@@ -2,7 +2,7 @@ import React from "react";
 import Container from "@material-ui/core/Container";
 
 import UnderDev from "../app/UnderDevelopment";
-import LinkSelect from "../app/Inputs/LinkSelect";
+import LinkSelect from "../app/Inputs/LinkFields";
 import { getAllEmployees } from "../api/employee";
 
 export default function Settings() {

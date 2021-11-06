@@ -34,7 +34,8 @@ const useStyles = makeStyles({
     amin: {
         transform: " translateY(0px)",
         "& input": {
-            padding: 9,
+            padding: 11,
+            fontSize: "0.8rem",
         },
     },
 });
