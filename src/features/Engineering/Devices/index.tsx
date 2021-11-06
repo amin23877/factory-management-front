@@ -90,7 +90,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
 
     const gridColumns = useMemo<GridColDef[]>(() => {
         let res: GridColDef[] = [
-            { field: "no", headerName: "Device Number", width: 120 },
+            { field: "no", headerName: "Device Number", width: 120, disableColumnMenu: true },
             { field: "name", headerName: "Name", flex: 1, width: 200 },
             { field: "description", headerName: "Description", flex: 2, width: 200 },
             { field: "lead", headerName: "Lead Time", width: 120 },
