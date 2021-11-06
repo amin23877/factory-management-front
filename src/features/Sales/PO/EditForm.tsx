@@ -3,8 +3,8 @@ import { Box, Tabs, Tab } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
-import { AddressesForm, EntitiesForm, GeneralForm } from "./Forms";
-
+import { AddressesForm, GeneralForm } from "./Forms";
+import { EntitiesForm } from "../SO/Forms";
 import Button from "../../../app/Button";
 import { BasePaper } from "../../../app/Paper";
 import Toast from "../../../app/Toast";
@@ -39,7 +39,7 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
             <Formik validationSchema={schema} initialValues={poData} onSubmit={handleSubmit}>
                 {({ values, handleChange, handleBlur, setValues, setFieldValue, isSubmitting }) => (
                     <Form>
-                        <Box display="flex" style={{ justifyContent: "space-evenly" }}>
+                        <Box display="flex" flexDirection="column" style={{ gap: 10 }}>
                             <Box flex={1}>
                                 <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", margin: "0 1em " }}>
                                     <GeneralForm
@@ -47,9 +47,15 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                                         values={values}
                                         handleBlur={handleBlur}
                                         handleChange={handleChange}
+                                        setFieldValue={setFieldValue}
                                     />
-                                    <Box display="flex" justifyContent="center" my={2}>
-                                        <Button disabled={isSubmitting} type="submit" kind="edit">
+                                    <Box display="flex" justifyContent="center" style={{ width: "100%" }} my={1}>
+                                        <Button
+                                            disabled={isSubmitting}
+                                            type="submit"
+                                            kind="edit"
+                                            style={{ width: "100%" }}
+                                        >
                                             Save
                                         </Button>
                                     </Box>

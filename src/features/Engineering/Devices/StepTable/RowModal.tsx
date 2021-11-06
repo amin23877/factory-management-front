@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from "react";
 import { Box, Tab, Tabs } from "@material-ui/core";
 import { Formik, Form } from "formik";
-import { host } from '../../../../host'
+import { host } from "../../../../host";
 import Dialog from "../../../../app/Dialog";
 import TextField from "../../../../app/TextField";
 import Button from "../../../../app/Button";
@@ -100,7 +100,13 @@ function RowModal({
                                 <Form>
                                     <Box height="440px" display="flex" flexDirection="column">
                                         <Box display="flex" flexDirection="column">
-                                            <Box py={1} display="grid" gridTemplateColumns="1fr 1fr" overflow="auto" gridGap={10}>
+                                            <Box
+                                                py={1}
+                                                display="grid"
+                                                gridTemplateColumns="1fr 1fr"
+                                                overflow="auto"
+                                                gridGap={10}
+                                            >
                                                 {columns.map(
                                                     (column) =>
                                                         column.field !== "files" &&

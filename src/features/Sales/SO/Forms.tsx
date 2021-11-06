@@ -278,16 +278,18 @@ export const EntitiesForm = ({
     return (
         <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridColumnGap={10}>
             <Box my={1} display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-                <FieldSelect
+                <LinkSelect
                     value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
-                    request={getCustomers}
-                    getOptionList={(resp) => resp.result}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    name="repOrAgency"
                     label="rep / Agency"
-                    onChange={handleChange}
+                    request={getCustomers}
+                    getOptionList={(resp) => resp?.result}
+                    getOptionLabel={(cus) => cus?.name}
+                    getOptionValue={(cus) => cus?.id}
+                    onChange={(e, nv) => {
+                        setFieldValue("repOrAgency", nv?.id);
+                    }}
                     onBlur={handleBlur}
+                    url="/panel/customer"
                 />
                 <TextField value={values.repOrAgency?.address} label="Address" disabled />
                 <TextField
@@ -348,14 +350,18 @@ export const EntitiesForm = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                 /> */}
-                <FieldSelect
+                <LinkSelect
                     value={typeof values.client === "string" ? values.client : values.client?.id}
-                    request={getCustomers}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    name="client"
                     label="Client"
-                    onChange={handleChange}
+                    request={getCustomers}
+                    getOptionList={(resp) => resp?.result}
+                    getOptionLabel={(cus) => cus?.name}
+                    getOptionValue={(cus) => cus?.id}
+                    onChange={(e, nv) => {
+                        setFieldValue("client", nv?.id);
+                    }}
+                    onBlur={handleBlur}
+                    url="/panel/customer"
                 />
                 <TextField
                     value={values.contact?.lastName}

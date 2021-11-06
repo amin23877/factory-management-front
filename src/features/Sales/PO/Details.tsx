@@ -13,6 +13,8 @@ import Button from "../../../app/Button";
 import { IPO } from "../../../api/po";
 import { formatTimestampToDate } from "../../../logic/date";
 import { fileType } from "../../../logic/fileType";
+import { Box } from "@material-ui/core";
+import { BasePaper } from "../../../app/Paper";
 
 const style = {
     border: "1px solid gray ",
@@ -107,45 +109,65 @@ export default function Details({
             {poData && poData.id && (
                 <DocModal open={addDoc} onClose={() => setAddDoc(false)} itemId={poData.id} model="po" />
             )}
-            <EditForm poData={poData} onDone={onDone} />
-            <Tabs
-                style={{ margin: "1em 0" }}
-                textColor="primary"
-                value={activeTab}
-                onChange={(e, nv) => setActiveTab(nv)}
-            >
-                <Tab label="Line Items" />
-                <Tab label="Documents" />
-                <Tab label="Notes" />
-                <Tab label="Auditing" />
-            </Tabs>
-            {activeTab === 0 && <BaseDataGrid cols={LICols} rows={docs} onRowSelected={onDocSelected} height={300} />}
-            {activeTab === 1 && (
-                <Fragment>
-                    <Button
-                        onClick={() => {
-                            setAddDoc(true);
-                        }}
-                        style={style}
+            <Box pb="8px" display="flex" style={{ gap: 10 }}>
+                <Box flex={3}>
+                    <EditForm poData={poData} onDone={onDone} />
+                </Box>
+                <Box flex={4}>
+                    <Tabs
+                        style={{ margin: "1em 0" }}
+                        textColor="primary"
+                        value={activeTab}
+                        onChange={(e, nv) => setActiveTab(nv)}
                     >
-                        + Add Document
-                    </Button>
-                    <BaseDataGrid cols={docCols} rows={docs} onRowSelected={onDocSelected} height={300} />
-                </Fragment>
-            )}
-            {activeTab === 2 && (
-                <Fragment>
-                    <Button
-                        onClick={() => {
-                            setAddNote(true);
-                        }}
-                        style={style}
-                    >
-                        + Add Note
-                    </Button>
-                    <BaseDataGrid cols={noteCols} rows={notes} onRowSelected={onNoteSelected} height={300} />
-                </Fragment>
-            )}
+                        <Tab label="Line Items" />
+                        <Tab label="Documents" />
+                        <Tab label="Notes" />
+                        <Tab label="Auditing" />
+                    </Tabs>
+                    <BasePaper>
+                        {activeTab === 0 && (
+                            <BaseDataGrid cols={LICols} rows={docs} onRowSelected={onDocSelected} height="61.5vh" />
+                        )}
+                        {activeTab === 1 && (
+                            <Fragment>
+                                <Button
+                                    onClick={() => {
+                                        setAddDoc(true);
+                                    }}
+                                    style={style}
+                                >
+                                    + Add Document
+                                </Button>
+                                <BaseDataGrid
+                                    cols={docCols}
+                                    rows={docs}
+                                    onRowSelected={onDocSelected}
+                                    height="58.5vh"
+                                />
+                            </Fragment>
+                        )}
+                        {activeTab === 2 && (
+                            <Fragment>
+                                <Button
+                                    onClick={() => {
+                                        setAddNote(true);
+                                    }}
+                                    style={style}
+                                >
+                                    + Add Note
+                                </Button>
+                                <BaseDataGrid
+                                    cols={noteCols}
+                                    rows={notes}
+                                    onRowSelected={onNoteSelected}
+                                    height="58.5vh"
+                                />
+                            </Fragment>
+                        )}
+                    </BasePaper>
+                </Box>
+            </Box>
         </Fragment>
     );
 }

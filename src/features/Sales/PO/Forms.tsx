@@ -3,6 +3,7 @@ import { Box, FormControlLabel, Checkbox, Paper, Tabs, Tab } from "@material-ui/
 
 import TextField from "../../../app/TextField";
 import { FieldSelect } from "../../../app/Inputs";
+import LinkSelect from "../../../app/Inputs/LinkFields";
 
 import { getAllEmployees } from "../../../api/employee";
 import { getSO } from "../../../api/so";
@@ -14,17 +15,19 @@ export const GeneralForm = ({
     handleBlur,
     onChangeInit,
     values,
+    setFieldValue,
 }: {
     values: any;
     handleChange: (a: any) => void;
     handleBlur: (a: any) => void;
     onChangeInit: (data: any) => void;
+    setFieldValue: any;
 }) => {
     const [selectedSO, setSelectedSO] = useState<string>();
 
     return (
         <>
-            <Box display="grid" gridTemplateColumns="1fr" gridColumnGap={10} gridRowGap={10} my={5}>
+            <Box display="grid" gridTemplateColumns="1fr" gridColumnGap={10} gridRowGap={10}>
                 <TextField
                     value={values.number}
                     name="number"
@@ -32,18 +35,18 @@ export const GeneralForm = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
-                <FieldSelect
-                    value={typeof values.SOId === "string" ? values.SOId : values.SOId?.id}
-                    name="SOId"
-                    label="SO Number"
+                <LinkSelect
+                    value={typeof values.SOId === "string" ? values.SOId : values.SOId}
+                    label="SO ID"
                     request={getSO}
-                    itemTitleField="number"
-                    itemValueField="id"
-                    onChange={(e) => {
-                        setSelectedSO(e.target.value as string);
-                        handleChange(e);
+                    getOptionList={(resp) => resp?.result}
+                    getOptionLabel={(so) => so?.number}
+                    getOptionValue={(so) => so?.id}
+                    onChange={(e, nv) => {
+                        setFieldValue("SOId", nv?.id);
                     }}
                     onBlur={handleBlur}
+                    url="/panel/so"
                 />
                 <TextField value={values.SOId?.issuedBy?.username} label="SO Issued By" disabled />
             </Box>
