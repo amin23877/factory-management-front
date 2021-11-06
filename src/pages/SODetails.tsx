@@ -40,7 +40,7 @@ export default function EditTab({
     onDocSelected: (a: any) => void;
 }) {
     const { soNumber } = useParams<{ soNumber: string }>();
-    const { data: selectedSo } = useSWR(soNumber ? `/so/${soNumber}` : null);
+    const { data: selectedSo } = useSWR<ISO>(soNumber ? `/so/${soNumber}` : null);
 
     const { data: notes } = useSWR(selectedSo && selectedSo.id ? `/note/so/${selectedSo.id}` : null);
     const { data: documents } = useSWR(selectedSo && selectedSo.id ? `/document/so/${selectedSo.id}` : null);

@@ -58,7 +58,12 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IReqQuote }
                             </Tabs>
                             <Box style={{ minHeight: "600", overflowY: "auto", marginBottom: "auto" }}>
                                 {activeTab === 0 && (
-                                    <EntitiesTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                                    <EntitiesTab
+                                        values={values}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        setFieldValue={setFieldValue}
+                                    />
                                 )}
                             </Box>
                         </BasePaper>

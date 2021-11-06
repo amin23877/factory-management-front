@@ -82,7 +82,12 @@ export default function AddForms({ requestedQuote, onDone }: { requestedQuote: a
                             </Button>
                         </BasePaper>
                         <BasePaper>
-                            <EntitiesTab handleBlur={handleBlur} handleChange={handleChange} values={values} />
+                            <EntitiesTab
+                                handleBlur={handleBlur}
+                                handleChange={handleChange}
+                                values={values}
+                                setFieldValue={setFieldValue}
+                            />
                         </BasePaper>
                         <BasePaper>
                             <CommissionTab handleBlur={handleBlur} handleChange={handleChange} values={values} />

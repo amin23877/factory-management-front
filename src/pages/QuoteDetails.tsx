@@ -33,7 +33,7 @@ const useStyle = makeStyles({
 
 export default function EditTab() {
     const { quoteNumber } = useParams<{ quoteNumber: string }>();
-    const { data: selectedQuote } = useSWR(quoteNumber ? `/quote/${quoteNumber}` : null);
+    const { data: selectedQuote } = useSWR<IQuote>(quoteNumber ? `/quote/${quoteNumber}` : null);
 
     const classes = useStyle();
     const [activeTab, setActiveTab] = useState(0);

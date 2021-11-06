@@ -339,15 +339,17 @@ export const EntitiesTab = ({
     handleChange,
     handleBlur,
     values,
+    setFieldValue,
 }: {
     values: any;
     handleChange: (a: any) => void;
     handleBlur: (a: any) => void;
+    setFieldValue: any;
 }) => {
     return (
         <Box display="grid" gridTemplateColumns="1fr 1fr 1fr " gridColumnGap={10}>
-            <Box display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
-                <FieldSelect
+            <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
+                {/* <FieldSelect
                     value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
                     getOptionList={(resp) => resp.result}
                     request={getCustomers}
@@ -357,6 +359,19 @@ export const EntitiesTab = ({
                     label="rep / Agency"
                     onChange={handleChange}
                     onBlur={handleBlur}
+                /> */}
+                <LinkSelect
+                    value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
+                    label="rep / Agency"
+                    request={getCustomers}
+                    getOptionList={(resp) => resp?.result}
+                    getOptionLabel={(cus) => cus?.name}
+                    getOptionValue={(cus) => cus?.id}
+                    onChange={(e, nv) => {
+                        setFieldValue("repOrAgency", nv?.id);
+                    }}
+                    onBlur={handleBlur}
+                    url="/panel/customer"
                 />
                 <TextField value={values.repOrAgency?.address} label="Address" disabled />
                 <TextField
@@ -417,7 +432,7 @@ export const EntitiesTab = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                 /> */}
-                <FieldSelect
+                {/* <FieldSelect
                     value={typeof values.client === "string" ? values.client : values.client?.id}
                     getOptionList={(resp) => resp.result}
                     request={getCustomers}
@@ -426,6 +441,19 @@ export const EntitiesTab = ({
                     name="client"
                     label="Client"
                     onChange={handleChange}
+                /> */}
+                <LinkSelect
+                    value={typeof values.client === "string" ? values.client : values.client?.id}
+                    label="Client"
+                    request={getCustomers}
+                    getOptionList={(resp) => resp?.result}
+                    getOptionLabel={(cus) => cus?.name}
+                    getOptionValue={(cus) => cus?.id}
+                    onChange={(e, nv) => {
+                        setFieldValue("client", nv?.id);
+                    }}
+                    onBlur={handleBlur}
+                    url="/panel/customer"
                 />
                 <TextField
                     value={values.contact?.lastName}

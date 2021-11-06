@@ -66,6 +66,7 @@ export default function GeneralQuote({
                                 )} */}
                                     {activeTab === 0 && (
                                         <EntitiesTab
+                                            setFieldValue={setFieldValue}
                                             values={values}
                                             handleBlur={handleBlur}
                                             handleChange={handleChange}
