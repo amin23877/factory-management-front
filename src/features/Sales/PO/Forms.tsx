@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { Box, FormControlLabel, Checkbox, Paper, Tabs, Tab } from "@material-ui/core";
+import { Box, Tabs, Tab } from "@material-ui/core";
 
 import TextField from "../../../app/TextField";
 import { FieldSelect } from "../../../app/Inputs";
 import LinkSelect from "../../../app/Inputs/LinkFields";
 
-import { getAllEmployees } from "../../../api/employee";
 import { getSO } from "../../../api/so";
 import { getCustomers } from "../../../api/customer";
 import { getAllModelContact } from "../../../api/contact";
@@ -27,7 +26,7 @@ export const GeneralForm = ({
 
     return (
         <>
-            <Box display="grid" gridTemplateColumns="1fr" gridColumnGap={10} gridRowGap={10}>
+            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gridColumnGap={10} gridRowGap={10}>
                 <TextField
                     value={values.number}
                     name="number"
@@ -44,6 +43,7 @@ export const GeneralForm = ({
                     getOptionValue={(so) => so?.id}
                     onChange={(e, nv) => {
                         setFieldValue("SOId", nv?.id);
+                        setSelectedSO(nv?.id);
                     }}
                     onBlur={handleBlur}
                     url="/panel/so"
