@@ -207,12 +207,11 @@ export const GeneralForm = ({
 }) => {
     return (
         <>
-            <Box my={1} display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10}>
-                {edit && (
-                    <TextField label="Quote ID" value={values.number} style={{ gridColumnEnd: "span 2" }} disabled />
-                )}
+            <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={10} gridRowGap={10}>
+                {edit && <TextField label="Quote ID" value={values.number} disabled />}
                 {edit && <TextField label="SO ID" value={values.number} style={{ width: "100%" }} disabled />}
                 <DateTimePicker
+                    style={{ fontSize: "0.8rem" }}
                     size="small"
                     value={values.entryDate}
                     name="entryDate"
@@ -221,6 +220,7 @@ export const GeneralForm = ({
                     onBlur={handleBlur}
                 />
                 <DateTimePicker
+                    style={{ fontSize: "0.8rem" }}
                     size="small"
                     value={values.expireDate}
                     name="expireDate"
@@ -228,13 +228,7 @@ export const GeneralForm = ({
                     onChange={(date) => setFieldValue("expireDate", date)}
                     onBlur={handleBlur}
                 />
-                <TextField
-                    value={values.location}
-                    style={edit ? {} : { gridColumnEnd: "span 2" }}
-                    name="location"
-                    label="Location"
-                    onChange={handleChange}
-                />
+                <TextField value={values.location} name="location" label="Location" onChange={handleChange} />
                 <FieldSelect
                     value={typeof values.ProjectId === "string" ? values.ProjectId : values.ProjectId?.id}
                     request={getProjects}
@@ -255,16 +249,10 @@ export const GeneralForm = ({
                     label="Sales person"
                     onChange={handleChange}
                 />
-                <TextField
-                    value={values.leadTime}
-                    name="leadTime"
-                    label="Lead Time"
-                    onChange={handleChange}
-                    style={{ gridColumnEnd: "span 2" }}
-                />
+                <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} />
                 <TextField
                     value={values.note}
-                    style={{ gridColumnEnd: "span 2" }}
+                    style={{ gridColumnEnd: "span 4" }}
                     name="note"
                     label="Note"
                     onChange={handleChange}
@@ -286,7 +274,7 @@ export const TermsTab = ({
     handleBlur: (a: any) => void;
 }) => {
     return (
-        <Box my={1} display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
+        <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
             <ArraySelect
                 style={{ width: "100%" }}
                 value={values.status}
@@ -336,8 +324,8 @@ export const EntitiesTab = ({
     handleBlur: (a: any) => void;
 }) => {
     return (
-        <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr " gridColumnGap={10}>
-            <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
+        <Box display="grid" gridTemplateColumns="1fr 1fr 1fr " gridColumnGap={10}>
+            <Box display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
                 <FieldSelect
                     value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
                     getOptionList={(resp) => resp.result}

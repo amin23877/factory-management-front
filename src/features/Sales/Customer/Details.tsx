@@ -271,7 +271,7 @@ export default function ClientDetails({
                                     )}
                                     {activeTab === 2 && (
                                         <BaseDataGrid
-                                            height="58.5vh"
+                                            height="62.5vh"
                                             cols={activityCols}
                                             rows={activities || []}
                                             onRowSelected={() => {}}
