@@ -153,129 +153,150 @@ export default function ClientDetails({
             <Formik initialValues={selectedRow} onSubmit={handleSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur }) => (
                     <Form>
-                        <Box display="flex" style={{ justifyContent: "space-between" }}>
-                            <Box flex={3} my={1} mr={1}>
-                                <BasePaper>
-                                    <GeneralForm
-                                        values={values}
-                                        errors={errors}
-                                        handleBlur={handleBlur}
-                                        handleChange={handleChange}
-                                        touched={touched}
-                                        req={req}
-                                        cId={selectedRow.id}
-                                        changeTab={changeTab}
-                                    />
-                                    <Box textAlign="center">
-                                        <Button type="submit" kind="edit">
-                                            Save
-                                        </Button>
-                                    </Box>
-                                </BasePaper>
+                        <Box pb="8px" display="flex" style={{ gap: 10 }}>
+                            <Box flex={3}>
+                                <Box display="flex" flexDirection="column" style={{ gap: 10 }}>
+                                    <BasePaper>
+                                        <GeneralForm
+                                            values={values}
+                                            errors={errors}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            touched={touched}
+                                            req={req}
+                                            cId={selectedRow.id}
+                                            changeTab={changeTab}
+                                        />
+                                        <Box textAlign="center" style={{ width: "100%" }}>
+                                            <Button type="submit" kind="edit" style={{ width: "100%" }}>
+                                                Save
+                                            </Button>
+                                        </Box>
+                                    </BasePaper>
+                                    <BasePaper style={{ height: "100%" }}>
+                                        <Tabs
+                                            textColor="primary"
+                                            value={activeSubTab}
+                                            onChange={(e, nv) => setActiveSubTab(nv)}
+                                            variant="scrollable"
+                                            style={{ maxWidth: 700 }}
+                                        >
+                                            <Tab label="More Info" />
+                                            <Tab label="Main Contact" />
+                                            <Tab label="Commission" />
+                                        </Tabs>
+                                        <Box>
+                                            {activeSubTab === 0 && (
+                                                <MoreInfoForm
+                                                    values={values}
+                                                    errors={errors}
+                                                    handleBlur={handleBlur}
+                                                    handleChange={handleChange}
+                                                    touched={touched}
+                                                />
+                                            )}
+                                            {activeSubTab === 1 && (
+                                                <MainContactForm
+                                                    values={values}
+                                                    errors={errors}
+                                                    handleBlur={handleBlur}
+                                                    handleChange={handleChange}
+                                                    touched={touched}
+                                                />
+                                            )}
+                                            {activeSubTab === 2 && (
+                                                <CommissionForm
+                                                    values={values}
+                                                    errors={errors}
+                                                    handleBlur={handleBlur}
+                                                    handleChange={handleChange}
+                                                    touched={touched}
+                                                />
+                                            )}
+                                        </Box>
+                                    </BasePaper>
+                                </Box>
                             </Box>
-                            <Box flex={2} my={1}>
-                                <BasePaper style={{ height: "100%" }}>
-                                    <Tabs
-                                        textColor="primary"
-                                        value={activeSubTab}
-                                        onChange={(e, nv) => setActiveSubTab(nv)}
-                                        variant="scrollable"
-                                        style={{ maxWidth: 700 }}
-                                    >
-                                        <Tab label="More Info" />
-                                        <Tab label="Main Contact" />
-                                        <Tab label="Commission" />
-                                    </Tabs>
-                                    <Box>
-                                        {activeSubTab === 0 && (
-                                            <MoreInfoForm
-                                                values={values}
-                                                errors={errors}
-                                                handleBlur={handleBlur}
-                                                handleChange={handleChange}
-                                                touched={touched}
+                            <Box flex={4}>
+                                <Tabs
+                                    value={activeTab}
+                                    textColor="primary"
+                                    onChange={(e, v) => setActiveTab(v)}
+                                    variant="scrollable"
+                                >
+                                    <Tab label="Contacts" />
+                                    <Tab label="Documents" />
+                                    <Tab label="Activities" />
+                                    <Tab label="Sales History" />
+                                    <Tab label="Work Orders" />
+                                    <Tab label="Notes" />
+                                    <Tab label="Auditing" />
+                                </Tabs>
+                                <BasePaper>
+                                    {activeTab === 0 && (
+                                        <>
+                                            <Button
+                                                onClick={() => {
+                                                    setAddContact(true);
+                                                }}
+                                                variant="outlined"
+                                            >
+                                                + Add Contact
+                                            </Button>
+                                            <BaseDataGrid
+                                                height="58.5vh"
+                                                cols={contactsCols}
+                                                rows={contacts || []}
+                                                onRowSelected={(c) => {}}
                                             />
-                                        )}
-                                        {activeSubTab === 1 && (
-                                            <MainContactForm
-                                                values={values}
-                                                errors={errors}
-                                                handleBlur={handleBlur}
-                                                handleChange={handleChange}
-                                                touched={touched}
+                                        </>
+                                    )}
+                                    {activeTab === 1 && (
+                                        <>
+                                            <Button
+                                                onClick={() => {
+                                                    setAddDocModal(true);
+                                                }}
+                                                variant="outlined"
+                                            >
+                                                + Add Document
+                                            </Button>
+                                            <BaseDataGrid
+                                                height="58.5vh"
+                                                cols={docCols}
+                                                rows={documents || []}
+                                                onRowSelected={(v) => {}}
                                             />
-                                        )}
-                                        {activeSubTab === 2 && (
-                                            <CommissionForm
-                                                values={values}
-                                                errors={errors}
-                                                handleBlur={handleBlur}
-                                                handleChange={handleChange}
-                                                touched={touched}
+                                        </>
+                                    )}
+                                    {activeTab === 2 && (
+                                        <BaseDataGrid
+                                            height="58.5vh"
+                                            cols={activityCols}
+                                            rows={activities || []}
+                                            onRowSelected={() => {}}
+                                        />
+                                    )}
+                                    {activeTab === 3 && <SOTable rows={[]} />}
+                                    {activeTab === 5 && (
+                                        <>
+                                            <Button onClick={() => setAddNoteModal(true)} variant="outlined">
+                                                + Add Note
+                                            </Button>
+                                            <BaseDataGrid
+                                                height="58.5vh"
+                                                cols={noteCols}
+                                                rows={notes || []}
+                                                onRowSelected={(v) => {}}
                                             />
-                                        )}
-                                    </Box>
+                                        </>
+                                    )}
                                 </BasePaper>
                             </Box>
                         </Box>
                     </Form>
                 )}
             </Formik>
-
-            <Tabs value={activeTab} textColor="primary" onChange={(e, v) => setActiveTab(v)} variant="scrollable">
-                <Tab label="Contacts" />
-                <Tab label="Documents" />
-                <Tab label="Activities" />
-                <Tab label="Sales History" />
-                <Tab label="Work Orders" />
-                <Tab label="Notes" />
-                <Tab label="Auditing" />
-            </Tabs>
-            <Box p={3}>
-                {activeTab === 0 && (
-                    <>
-                        <Button
-                            onClick={() => {
-                                setAddContact(true);
-                            }}
-                            variant="outlined"
-                        >
-                            + Add Contact
-                        </Button>
-                        <BaseDataGrid
-                            height={250}
-                            cols={contactsCols}
-                            rows={contacts || []}
-                            onRowSelected={(c) => {}}
-                        />
-                    </>
-                )}
-                {activeTab === 1 && (
-                    <>
-                        <Button
-                            onClick={() => {
-                                setAddDocModal(true);
-                            }}
-                            variant="outlined"
-                        >
-                            + Add Document
-                        </Button>
-                        <BaseDataGrid height={250} cols={docCols} rows={documents || []} onRowSelected={(v) => {}} />
-                    </>
-                )}
-                {activeTab === 2 && (
-                    <BaseDataGrid height={250} cols={activityCols} rows={activities || []} onRowSelected={() => {}} />
-                )}
-                {activeTab === 3 && <SOTable rows={[]} />}
-                {activeTab === 5 && (
-                    <>
-                        <Button onClick={() => setAddNoteModal(true)} variant="outlined">
-                            + Add Note
-                        </Button>
-                        <BaseDataGrid height={250} cols={noteCols} rows={notes || []} onRowSelected={(v) => {}} />
-                    </>
-                )}
-            </Box>
         </Box>
     );
 }

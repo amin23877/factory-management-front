@@ -49,7 +49,7 @@ export const GeneralForm = ({
         <>
             <Paper
                 style={{
-                    margin: "0.5em 0 2em 0",
+                    margin: "0 0 2em 0",
                     padding: "0.5em",
                     backgroundColor: "#eee",
                     gridColumnEnd: "span 3",
@@ -86,7 +86,7 @@ export const GeneralForm = ({
                     />
                 )}
             </Paper>
-            <Box mb={1} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr 1fr 1fr">
+            <Box mb={1} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr 1fr 1fr 1fr">
                 {/* TODO: Add customer type autocomplete later with good props */}
                 {/* <CustomerTypeAutocomplete /> */}
                 <FieldSelect
@@ -203,12 +203,20 @@ export const GeneralForm = ({
                     helperText={touched.productLine && errors.productLine && String(errors.productLine)}
                     label="Product Line"
                 />
-                <FormControl style={{ display: "flex", gridColumnEnd: "span 2" }}>
-                    <FormLabel style={{ display: "inline" }}>Size</FormLabel>
-                    <RadioGroup row name="size" value={values.size} onChange={handleChange}>
-                        <FormControlLabel value="small" control={<Radio />} label="Small" />
-                        <FormControlLabel value="medium" control={<Radio />} label="Medium" />
-                        <FormControlLabel value="large" control={<Radio />} label="Large" />
+                <FormControl
+                    style={{
+                        display: "flex",
+                        gridColumnEnd: "span 2",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        flexDirection: "row",
+                    }}
+                >
+                    <FormLabel>Size</FormLabel>
+                    <RadioGroup row name="size" value={values.size} onChange={handleChange} style={{}}>
+                        <FormControlLabel value="small" control={<Radio size="small" />} label="Small" />
+                        <FormControlLabel value="medium" control={<Radio size="small" />} label="Medium" />
+                        <FormControlLabel value="large" control={<Radio size="small" />} label="Large" />
                     </RadioGroup>
                 </FormControl>
             </Box>
@@ -229,7 +237,7 @@ export const MoreInfoForm = ({
     handleChange: any;
 }) => {
     return (
-        <Box my={2} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr 1fr">
+        <Box my={2} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr 1fr 1fr">
             <TextField
                 name="website"
                 value={values.website}
