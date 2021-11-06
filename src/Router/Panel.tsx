@@ -38,6 +38,7 @@ const ItemDetails = React.lazy(() => import("../pages/ItemDetails"));
 const DeviceDetails = React.lazy(() => import("../pages/DeviceDetails"));
 const UnitDetails = React.lazy(() => import("../pages/UnitDetails"));
 const QuoteDetails = React.lazy(() => import("../pages/QuoteDetails"));
+const SODetails = React.lazy(() => import("../pages/SODetails"));
 
 const BomParts = React.lazy(() => import("../pages/BomParts"));
 const JobParts = React.lazy(() => import("../pages/JobParts"));
@@ -224,6 +225,7 @@ export default function PanelRouter() {
                             <Route exact path="/panel/engineering/:deviceId" component={DeviceDetails} />
                             <Route exact path="/panel/production/:unitNumber" component={UnitDetails} />
                             <Route exact path="/panel/quote/:quoteNumber" component={QuoteDetails} />
+                            <Route exact path="/panel/so/:soNumber" component={SODetails} />
 
                             <Route exact path="/panel/bom/:bomId/parts" component={BomParts} />
                             <Route exact path="/panel/ubom/:bomId/parts" component={JobParts} />

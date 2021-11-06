@@ -9,6 +9,7 @@ import { formatTimestampToDate } from "../../../logic/date";
 import { getQuotes } from "../../../api/quote";
 import { getSO } from "../../../api/so";
 import { getCallsTags } from "../../../api/callsTags";
+import LinkSelect from "../../../app/Inputs/LinkFields";
 
 export const GeneralForm = ({
     add,
@@ -106,7 +107,7 @@ export const GeneralForm = ({
                     helperText={touched.zip && errors.zip && String(errors.zip)}
                     label="Zip Code"
                 />
-                <FieldSelect
+                {/* <FieldSelect
                     label="Quote ID"
                     name="QuoteId"
                     request={getQuotes}
@@ -116,8 +117,22 @@ export const GeneralForm = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={Boolean(errors.QuoteId)}
+                /> */}
+                <LinkSelect
+                    value={typeof values.QuoteId === "string" ? values.QuoteId : values.QuoteId}
+                    label="Quote ID"
+                    request={getQuotes}
+                    getOptionList={(resp) => resp?.result}
+                    getOptionLabel={(quote) => quote?.number}
+                    getOptionValue={(quote) => quote?.id}
+                    onChange={(e, nv) => {
+                        // setSelectedQuote(nv?.id as string);
+                        setFieldValue("QuoteId", nv?.id);
+                    }}
+                    onBlur={handleBlur}
+                    url="/panel/quote"
                 />
-                <FieldSelect
+                {/* <FieldSelect
                     itemValueField="id"
                     itemTitleField="number"
                     request={getSO}
@@ -128,6 +143,19 @@ export const GeneralForm = ({
                     error={Boolean(errors.SOId)}
                     helperText={touched.SOId && errors.SOId && String(errors.SOId)}
                     label="SO ID"
+                /> */}
+                <LinkSelect
+                    value={typeof values.SOId === "string" ? values.SOId : values.SOId}
+                    label="SO ID"
+                    request={getSO}
+                    getOptionList={(resp) => resp?.result}
+                    getOptionLabel={(so) => so?.number}
+                    getOptionValue={(so) => so?.id}
+                    onChange={(e, nv) => {
+                        setFieldValue("SOId", nv?.id);
+                    }}
+                    onBlur={handleBlur}
+                    url="/panel/so"
                 />
                 <FieldSelect
                     itemValueField="id"

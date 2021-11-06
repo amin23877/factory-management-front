@@ -24,6 +24,7 @@ import { createAModelDocument } from "../../../api/document";
 import { IQuoteComplete } from "../../../api/quote";
 // import { getContacts } from "../../../api/contact";
 import { getCustomers } from "../../../api/customer";
+import LinkSelect from "../../../app/Inputs/LinkFields";
 
 export const DocumentForm = ({
     onDone,
@@ -229,15 +230,18 @@ export const GeneralForm = ({
                     onBlur={handleBlur}
                 />
                 <TextField value={values.location} name="location" label="Location" onChange={handleChange} />
-                <FieldSelect
-                    value={typeof values.ProjectId === "string" ? values.ProjectId : values.ProjectId?.id}
-                    request={getProjects}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    keyField="id"
-                    name="ProjectId"
+                <LinkSelect
+                    value={typeof values.ProjectId === "string" ? values.ProjectId : values.ProjectId}
                     label="Project Name"
-                    onChange={handleChange}
+                    request={getProjects}
+                    getOptionList={(resp) => resp?.result}
+                    getOptionLabel={(project) => project?.name}
+                    getOptionValue={(project) => project?.id}
+                    onChange={(e, nv) => {
+                        setFieldValue("ProjectId", nv?.id);
+                    }}
+                    onBlur={handleBlur}
+                    url="/panel/project"
                 />
                 <FieldSelect
                     value={typeof values.salesperson === "string" ? values.salesperson : values.salesperson?.id}
