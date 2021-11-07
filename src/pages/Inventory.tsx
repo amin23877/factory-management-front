@@ -15,7 +15,7 @@ const Inventory = () => {
                 <div style={{ flexGrow: 1 }} />
                 <MyTabs value={mainTab} onChange={(e, nv) => setMainTab(nv)} textColor="secondary">
                     <MyTab color="primary" label="Dashboard" />
-                    <MyTab label="items" />
+                    <MyTab label="Items" />
                 </MyTabs>
             </Box>
             {mainTab === 0 && <Dashboard />}
