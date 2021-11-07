@@ -466,7 +466,7 @@ function ItemsDetails({
                                             <BaseDataGrid
                                                 rows={selectedRow?.Pricing || []}
                                                 cols={pricingCols}
-                                                height={250}
+                                                height={220}
                                             />
                                             <Pricing
                                                 values={values}
