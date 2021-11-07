@@ -273,25 +273,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched }: I
                 onChange={handleChange}
                 style={{ marginBottom: 3 }}
             />
-            <TextField
-                label="FIFO Value"
-                name="fifo"
-                placeholder="FIFO Value"
-                value={values.fifo}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                style={{ marginBottom: 3 }}
-            />
-            <TextField
-                label="QOH Value"
-                name="qohVal"
-                placeholder="QOH Value"
-                value={values.cost * values.qtyOnHand}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                style={{ marginBottom: 3 }}
-                disabled
-            />
+
             <TextField
                 label="retail price"
                 name="retailPrice"
@@ -301,14 +283,14 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched }: I
                 onChange={handleChange}
                 style={{ marginBottom: 3 }}
             />
-            <TextField
+            {/* <TextField
                 label="Resell Cost"
                 value={values.resellCost}
                 name="resellCost"
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={Boolean(errors.resellCost && touched.resellCost)}
-            />
+            /> */}
         </Box>
     );
 };
@@ -358,7 +340,22 @@ export const Quantity = ({ itemId, handleManualCount, values, handleUpdateQuanti
                 style={{ gridColumnEnd: "span 2" }}
                 disabled
             />
-
+            <TextField
+                label="FIFO Value"
+                name="fifo"
+                placeholder="FIFO Value"
+                value={values.fifo}
+                style={{ marginBottom: 3 }}
+                disabled
+            />
+            <TextField
+                label="QOH Value"
+                name="qohVal"
+                placeholder="QOH Value"
+                value={values.cost * values.qtyOnHand}
+                disabled
+                style={{ marginBottom: 3 }}
+            />
             {handleUpdateQuantity && (
                 <Button kind="edit" onClick={handleUpdateQuantity}>
                     Update quantity
@@ -376,7 +373,7 @@ export const Quantity = ({ itemId, handleManualCount, values, handleUpdateQuanti
 export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
     return (
         <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10} mt={1}>
-            <TextField
+            {/* <TextField
                 style={{ gridColumnEnd: "span 2" }}
                 label="Last shipping fee"
                 name="lastShippingFee"
@@ -400,7 +397,7 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                 value={values.weightOz}
                 onBlur={handleBlur}
                 onChange={handleChange}
-            />
+            /> */}
             <TextField
                 label="shipping Lb"
                 name="shippingLb"
@@ -409,14 +406,14 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                 onBlur={handleBlur}
                 onChange={handleChange}
             />
-            <TextField
+            {/* <TextField
                 label="shipping Oz"
                 name="shippingOz"
                 placeholder="shippingOz"
                 value={values.shippingOz}
                 onBlur={handleBlur}
                 onChange={handleChange}
-            />
+            /> */}
             <TextField
                 style={{ gridColumnEnd: "span 2" }}
                 fullWidth
