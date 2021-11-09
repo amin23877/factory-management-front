@@ -3,7 +3,7 @@ import { Box, Grid, Tabs, Tab, LinearProgress, Typography } from "@material-ui/c
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
-import { host } from '../../host'
+import { host } from "../../host";
 import Button from "../../app/Button";
 import BaseDataGrid from "../../app/BaseDataGrid";
 import { BasePaper } from "../../app/Paper";
@@ -83,7 +83,7 @@ function ItemsDetails({
     //     activeTab === 1 ? (selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null) : null
     // );
     const { data: vendors } = useSWR(
-        activeTab === 2 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/vendors` : null) : null
+        activeTab === 2 ? (selectedRow && selectedRow.id ? `/vending?ItemId=${selectedRow.id}` : null) : null
     );
 
     const { data: itemSOs } = useSWR(
@@ -266,15 +266,14 @@ function ItemsDetails({
         []
     );
 
-    // const qtyHistoryCols = useMemo<GridColDef[]>(
-    //     () => [
-    //         { field: "before", headerName: "Before" },
-    //         { field: "after", headerName: "After" },
-    //         { field: "fieldName", headerName: "Level name" },
-    //         { field: "description", headerName: "description", flex: 1 },
-    //     ],
-    //     []
-    // );
+    const pricingCols = useMemo<GridColDef[]>(
+        () => [
+            { field: "label", headerName: "Label" },
+            { field: "price", headerName: "Price" },
+            { field: "nonCommissionable", headerName: "no Com." },
+        ],
+        []
+    );
 
     const handleSubmit = async (data: any, { setSubmitting }: any) => {
         try {
@@ -363,14 +362,13 @@ function ItemsDetails({
                                         textColor="primary"
                                         onChange={(e, v) => setMoreInfoTab(v)}
                                     >
-                                        <Tab label="Image" />
-                                        <Tab label="UPC" />
-                                        <Tab label="More Info." />
-                                        <Tab label="Quantity" />
-                                        <Tab label="Pricing" />
-                                        <Tab label="Shipping" />
-                                        {/* <Tab label="Last Used" /> */}
-                                        <Tab label="Clusters and Levels" />
+                                        <Tab label="Image" /> 0
+                                        <Tab label="UPC" /> 1
+                                        <Tab label="More Info." /> 2
+                                        <Tab label="Quantity" /> 3
+                                        <Tab label="Pricing" /> 4
+                                        <Tab label="Shipping" /> 5
+                                        <Tab label="Clusters and Levels" /> 6
                                     </Tabs>
                                     {moreInfoTab === 0 && (
                                         <Box
@@ -464,14 +462,21 @@ function ItemsDetails({
                                         </Fragment>
                                     )}
                                     {moreInfoTab === 4 && (
-                                        <Pricing
-                                            values={values}
-                                            handleChange={handleChange}
-                                            handleBlur={handleBlur}
-                                            setFieldValue={setFieldValue}
-                                            errors={errors}
-                                            touched={touched}
-                                        />
+                                        <>
+                                            <BaseDataGrid
+                                                rows={selectedRow?.Pricing || []}
+                                                cols={pricingCols}
+                                                height={220}
+                                            />
+                                            <Pricing
+                                                values={values}
+                                                handleChange={handleChange}
+                                                handleBlur={handleBlur}
+                                                setFieldValue={setFieldValue}
+                                                errors={errors}
+                                                touched={touched}
+                                            />
+                                        </>
                                     )}
                                     {moreInfoTab === 5 && (
                                         <Shipping

@@ -84,7 +84,7 @@ export default function VendorsTable({
     const handleChangePreferred = async (vendorId: number) => {
         try {
             setPrefVendor(vendorId);
-            const resp = await updateAnItem(selectedItem.id, { prefVendor: vendorId });
+            const resp = await updateAnItem(selectedItem.id, { preffered: vendorId });
             if (resp) {
                 setSnack(true);
             }
@@ -117,7 +117,6 @@ export default function VendorsTable({
                             <TableCell>Last Replenish Time</TableCell>
                             <TableCell>Cost</TableCell>
                             <TableCell>Last Quantity Ordered</TableCell>
-                            <TableCell>Note</TableCell>
                             <TableCell>Preferred</TableCell>
                         </TableRow>
                     </TableHead>
@@ -125,17 +124,16 @@ export default function VendorsTable({
                         {vendors &&
                             vendors.map((item) => (
                                 <TableRow key={item.id} onClick={() => onRowSelected(item)}>
-                                    <TableCell>{item.name}</TableCell>
-                                    <TableCell>{item.number}</TableCell>
-                                    <TableCell>{item.description}</TableCell>
-                                    <TableCell>{item.lastReplenishTime}</TableCell>
+                                    <TableCell>{item.VendorId?.name}</TableCell>
+                                    <TableCell>{item.vendorSKU}</TableCell>
+                                    <TableCell>{item.vendorPartName}</TableCell>
+                                    <TableCell>{item.leadTime}</TableCell>
                                     <TableCell>{item.cost}</TableCell>
                                     <TableCell>{item.lastQuantityOrdered}</TableCell>
-                                    <TableCell>{item.note}</TableCell>
                                     <TableCell>
                                         <Checkbox
-                                            value={prefVendor === item.id}
-                                            checked={prefVendor === item.id}
+                                            value={item.preffered}
+                                            checked={Boolean(item.preffered)}
                                             onChange={(e, c) => {
                                                 if (c) {
                                                     handleChangePreferred(item.id);
