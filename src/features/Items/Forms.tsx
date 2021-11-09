@@ -152,7 +152,7 @@ export const General = ({
                         <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
                             checked={values.doNotSplit}
-                            label="doNotSplit"
+                            label="Do Not Split"
                             name="doNotSplit"
                             onChange={handleChange}
                             control={<Checkbox />}
