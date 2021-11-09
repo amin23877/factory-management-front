@@ -19,7 +19,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
         page,
         rows: items,
         setPage,
-    } = useDataGridData({ url: "/item", params: { device: false, ...filters, ...sorts }, limit });
+    } = useDataGridData({ url: "/item", params: { ...filters, ...sorts }, limit });
 
     const { data: fields } = useSWR("/field");
     const { data: clusters } = useSWR("/filter");
