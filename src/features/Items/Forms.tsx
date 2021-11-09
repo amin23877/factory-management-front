@@ -321,15 +321,6 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched }: I
     return (
         <Box mt={1} display="grid" gridTemplateColumns="auto auto" gridColumnGap={10} gridRowGap={10}>
             <TextField
-                label="Recent cost"
-                name="recentCost"
-                placeholder="recentCost"
-                value={values.recentCost}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                style={{ marginBottom: 3 }}
-            />
-            <TextField
                 label="Labor Cost"
                 name="laborCost"
                 placeholder="Labor Cost"
@@ -348,14 +339,56 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched }: I
                 onChange={handleChange}
                 style={{ marginBottom: 3 }}
             />
-            {/* <TextField
-                label="Resell Cost"
-                value={values.resellCost}
-                name="resellCost"
-                onChange={handleChange}
+            <TextField label="Total Cost" value={values.totalCost} name="totalCost" disabled />
+            {values.device === false && (
+                <div>
+                    <FormControlLabel
+                        style={{ fontSize: "0.7rem" }}
+                        checked={values.bomCostEstimateUse}
+                        name="bomCostEstimateUse"
+                        label=" "
+                        onChange={handleChange}
+                        control={<Checkbox />}
+                    />
+                    <TextField
+                        label="Override"
+                        name="override"
+                        placeholder="Override"
+                        value={values.override}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        style={{ marginBottom: 3 }}
+                    />
+                </div>
+            )}
+            <TextField
+                label=" Bom Total Part Cost"
+                name="bomCost"
+                placeholder=" Bom Total Part Cost"
+                value={values.bomCost}
                 onBlur={handleBlur}
-                error={Boolean(errors.resellCost && touched.resellCost)}
-            /> */}
+                onChange={handleChange}
+                style={{ marginBottom: 3 }}
+            />
+            <div>
+                <FormControlLabel
+                    style={{ fontSize: "0.7rem" }}
+                    checked={values.overrideUse}
+                    name="overrideUse"
+                    label=" "
+                    onChange={handleChange}
+                    control={<Checkbox />}
+                />
+                <TextField
+                    label=" Bom Cost Estimate"
+                    name="bomCostEstimate"
+                    placeholder=" Bom Cost Estimate"
+                    value={values.bomCostEstimate}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    style={{ marginBottom: 3 }}
+                />
+            </div>
         </Box>
     );
 };
@@ -535,6 +568,15 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                 onBlur={handleBlur}
                 error={Boolean(errors.lastOrderedQty && touched.lastOrderedQty)}
                 value={values.lastOrderedQty}
+            />
+            <TextField
+                style={{ gridColumnEnd: "span 2" }}
+                label="Recent cost"
+                name="recentCost"
+                placeholder="recentCost"
+                value={values.recentCost}
+                onBlur={handleBlur}
+                onChange={handleChange}
             />
         </Box>
     );
