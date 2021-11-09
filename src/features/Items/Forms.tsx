@@ -9,6 +9,8 @@ import { IFilter } from "../../api/filter";
 import { IField } from "../../api/field";
 import Cluster from "./ClusterAndLevels/Cluster";
 import Level from "./ClusterAndLevels/Level";
+import { formatTimestampToDate } from "../../logic/date";
+import DateTimePicker from "../../app/DateTimePicker";
 
 interface IForm {
     values: any;
@@ -48,15 +50,15 @@ export const General = ({
                         gridColumnEnd: "span 4",
                     }}
                 >
-                    <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
-                        <FormControlLabel
+                    <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
+                        {/* <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
                             checked={values.shippingApproved}
                             label="Ship. Ap."
                             name="shippingApproved"
                             onChange={handleChange}
                             control={<Checkbox />}
-                        />
+                        /> */}
                         <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
                             checked={values.salesApproved}
@@ -93,7 +95,7 @@ export const General = ({
                         <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
                             checked={values.rndOnly}
-                            label="R&D"
+                            label="R&D Only"
                             name="rndOnly"
                             onChange={handleChange}
                             control={<Checkbox />}
@@ -101,7 +103,7 @@ export const General = ({
                         <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
                             checked={values.dontTrackQoh}
-                            label="Do not Track QOH"
+                            label="Don't Track QOH"
                             name="dontTrackQoh"
                             onChange={handleChange}
                             control={<Checkbox />}
@@ -109,7 +111,7 @@ export const General = ({
                         <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
                             checked={values.dontOrderPO}
-                            label="Do not order on POs"
+                            label="Don't order on POs"
                             name="dontOrderPO"
                             onChange={handleChange}
                             control={<Checkbox />}
@@ -125,16 +127,33 @@ export const General = ({
                         />
                         <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
-                            checked={values.archived}
-                            label="Archive"
-                            name="archived"
+                            checked={values.option}
+                            label="Option"
+                            name="option"
                             onChange={handleChange}
                             control={<Checkbox />}
                         />
-                        {values.archived && (
+                        <FormControlLabel
+                            style={{ fontSize: "0.7rem" }}
+                            checked={values.taxable}
+                            label="Taxable"
+                            name="taxable"
+                            onChange={handleChange}
+                            control={<Checkbox />}
+                        />
+                        <div style={{ display: "flex", gridColumnEnd: "span 2", alignItems: "center" }}>
+                            {" "}
+                            <FormControlLabel
+                                style={{ fontSize: "0.7rem" }}
+                                checked={values.archived}
+                                label="Archive"
+                                name="archived"
+                                onChange={handleChange}
+                                control={<Checkbox />}
+                            />
                             <TextField
                                 label="Archive Date"
-                                value={values.archiveDate}
+                                value={formatTimestampToDate(values.archiveDate)}
                                 name="archiveDate"
                                 onChange={handleChange}
                                 onBlur={handleBlur}
@@ -143,7 +162,7 @@ export const General = ({
                                 disabled
                                 style={{ gridColumnEnd: "span 2", marginBottom: 10 }}
                             />
-                        )}
+                        </div>
                     </Box>
                 </Paper>
                 <TextField
@@ -177,6 +196,26 @@ export const General = ({
                     onBlur={handleBlur}
                     value={values.description}
                 />
+                {/* <TextField
+                    style={{ gridColumnEnd: "span 2" }}
+                    label="Category"
+                    value={values.Category}
+                    name="Category"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.Category && touched.Category)}
+                    placeholder="Category"
+                />
+                <TextField
+                    style={{ gridColumnEnd: "span 2" }}
+                    label="Type"
+                    value={values.Type}
+                    name="Type"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.Type && touched.Type)}
+                    placeholder="Type"
+                /> */}
             </Box>
         </>
     );
@@ -192,6 +231,7 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                 value={values.version}
                 onBlur={handleBlur}
                 onChange={handleChange}
+                style={{ gridColumnEnd: "span 2" }}
             />
             {/* <TextField
                 label="keywords"
@@ -244,6 +284,15 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                 name="qbid"
                 placeholder="Quickbook ID"
                 value={values.qbid}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                style={{ marginBottom: 3 }}
+            />
+            <TextField
+                label="QB Type"
+                name="qbtype"
+                placeholder="QB Type"
+                value={values.qbtype}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 style={{ marginBottom: 3 }}
@@ -332,14 +381,14 @@ export const Quantity = ({ itemId, handleManualCount, values, handleUpdateQuanti
                 value={values.qtyAllocated}
                 disabled
             />
-            <TextField
+            {/* <TextField
                 label="Quantity remain"
                 placeholder="Quantity remain"
                 name="qtyRemain"
                 value={values.qtyRemain}
                 style={{ gridColumnEnd: "span 2" }}
                 disabled
-            />
+            /> */}
             <TextField
                 label="FIFO Value"
                 name="fifo"
@@ -405,6 +454,7 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                 value={values.shippingLb}
                 onBlur={handleBlur}
                 onChange={handleChange}
+                style={{ gridColumnEnd: "span 2" }}
             />
             {/* <TextField
                 label="shipping Oz"
@@ -473,7 +523,7 @@ export const DynamicFilterAndFields = ({ values = "", handleChange, handleBlur, 
     );
 };
 
-export const LastUsed = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
+export const LastUsed = ({ values, errors, handleChange, handleBlur, touched, setFieldValue }: IForm) => {
     return (
         <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10}>
             <TextField
@@ -491,9 +541,10 @@ export const LastUsed = ({ values, errors, handleChange, handleBlur, touched }: 
                 value={values.lastUsedInBom}
                 onBlur={handleBlur}
                 onChange={handleChange}
+                disabled
             />
 
-            <TextField
+            {/* <TextField
                 name="minOrder"
                 label="Minimum Order Quantity Per Purchase"
                 placeholder="Minimum Order Quantity Per Purchase"
@@ -501,38 +552,45 @@ export const LastUsed = ({ values, errors, handleChange, handleBlur, touched }: 
                 onBlur={handleBlur}
                 onChange={handleChange}
                 style={{ gridColumnEnd: "span 2" }}
-            />
-            <TextField
+            /> */}
+            {/* <TextField
                 name="lastCount"
                 label="Last Count"
                 placeholder="Last Count"
-                value={values.lastCount}
+                value={formatTimestampToDate(values.lastCount)}
                 onBlur={handleBlur}
                 onChange={handleChange}
+            /> */}
+            <DateTimePicker
+                value={values.lastCount}
+                name="lastCount"
+                label="lastCount"
+                onChange={(lastCount) => setFieldValue("lastCount", lastCount)}
+                onBlur={handleBlur}
             />
             <TextField
                 label="last used in 90 days"
-                value={values.usedInLastQuarter}
-                name="usedInLastQuarter"
+                value={values.usedQuarter}
+                name="usedQuarter"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={Boolean(errors.usedInLastQuarter && touched.usedInLastQuarter)}
+                error={Boolean(errors.usedQuarter && touched.usedQuarter)}
             />
             <TextField
-                label="last used in 60 days"
-                value={values.usedInLastTwoMonth}
-                name="usedInLastTwoMonth"
+                label="last used in 180 days"
+                value={values.usedHalf}
+                name="usedHalf"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={Boolean(errors.usedInLastTwoMonth && touched.usedInLastSixty)}
+                error={Boolean(errors.usedHalf && touched.usedHalf)}
             />
             <TextField
-                label="last used in 30 days"
-                value={values.usedInLastMonth}
-                name="usedInLastMonth"
+                label="last used in 360 days"
+                value={values.usedYear}
+                name="usedYear"
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={Boolean(errors.usedInLastMonth && touched.usedInLastMonth)}
+                error={Boolean(errors.usedYear && touched.usedYear)}
             />
         </Box>
     );
