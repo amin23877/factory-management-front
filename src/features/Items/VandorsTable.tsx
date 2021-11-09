@@ -84,7 +84,7 @@ export default function VendorsTable({
     const handleChangePreferred = async (vendorId: number) => {
         try {
             setPrefVendor(vendorId);
-            const resp = await updateAnItem(selectedItem.id, { prefVendor: vendorId });
+            const resp = await updateAnItem(selectedItem.id, { preffered: vendorId });
             if (resp) {
                 setSnack(true);
             }
@@ -126,8 +126,8 @@ export default function VendorsTable({
                             vendors.map((item) => (
                                 <TableRow key={item.id} onClick={() => onRowSelected(item)}>
                                     <TableCell>{item.name}</TableCell>
-                                    <TableCell>{item.number}</TableCell>
-                                    <TableCell>{item.description}</TableCell>
+                                    <TableCell>{item.vendorSKU}</TableCell>
+                                    <TableCell>{item.vendorPartName}</TableCell>
                                     <TableCell>{item.lastReplenishTime}</TableCell>
                                     <TableCell>{item.cost}</TableCell>
                                     <TableCell>{item.lastQuantityOrdered}</TableCell>
