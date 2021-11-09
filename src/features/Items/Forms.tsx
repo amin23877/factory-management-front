@@ -141,6 +141,22 @@ export const General = ({
                             onChange={handleChange}
                             control={<Checkbox />}
                         />
+                        <FormControlLabel
+                            style={{ fontSize: "0.7rem" }}
+                            checked={values.doNotDiscount}
+                            label="Do Not Discount"
+                            name="doNotDiscount"
+                            onChange={handleChange}
+                            control={<Checkbox />}
+                        />
+                        <FormControlLabel
+                            style={{ fontSize: "0.7rem" }}
+                            checked={values.doNotSplit}
+                            label="doNotSplit"
+                            name="doNotSplit"
+                            onChange={handleChange}
+                            control={<Checkbox />}
+                        />
                         <div style={{ display: "flex", gridColumnEnd: "span 2", alignItems: "center" }}>
                             {" "}
                             <FormControlLabel
@@ -344,7 +360,14 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched }: I
     );
 };
 
-export const Quantity = ({ itemId, handleManualCount, values, handleUpdateQuantity }: IQForm) => {
+export const Quantity = ({
+    itemId,
+    handleManualCount,
+    values,
+    handleUpdateQuantity,
+    handleBlur,
+    handleChange,
+}: IQForm) => {
     // qtyOnHand -> ,
     // qtyAvailable -> ,
     // qtyOnOrder -> ,
@@ -352,7 +375,14 @@ export const Quantity = ({ itemId, handleManualCount, values, handleUpdateQuanti
     // qtyRemain -> ,
 
     return (
-        <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10}>
+        <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10}>
+            <TextField
+                label="Total Quantity"
+                placeholder="Total Quantity"
+                name="total"
+                value={values.qtyOnHand + values.qtyOnOrder}
+                disabled
+            />
             <TextField
                 label="Quantity on hand"
                 placeholder="Quantity on hand"
@@ -361,10 +391,10 @@ export const Quantity = ({ itemId, handleManualCount, values, handleUpdateQuanti
                 disabled
             />
             <TextField
-                label="Quantity availabe"
-                placeholder="Quantity availabe"
+                label="Quantity Available"
+                placeholder="Quantity Available"
                 name="qtyAvailable"
-                value={values.qtyAvailable}
+                value={values.qtyOnHand - values.qtyAllocated}
                 disabled
             />
             <TextField
@@ -390,6 +420,24 @@ export const Quantity = ({ itemId, handleManualCount, values, handleUpdateQuanti
                 disabled
             /> */}
             <TextField
+                label="Trigger Quantity"
+                name="triggerQty"
+                placeholder="Trigger Quantity"
+                value={values.triggerQty}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                style={{ marginBottom: 3 }}
+            />
+            <TextField
+                label="Reorder Quantity"
+                name="reorderQty"
+                placeholder="Reorder Quantity"
+                value={values.reorderQty}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                style={{ marginBottom: 3 }}
+            />
+            <TextField
                 label="FIFO Value"
                 name="fifo"
                 placeholder="FIFO Value"
@@ -405,16 +453,18 @@ export const Quantity = ({ itemId, handleManualCount, values, handleUpdateQuanti
                 disabled
                 style={{ marginBottom: 3 }}
             />
-            {handleUpdateQuantity && (
-                <Button kind="edit" onClick={handleUpdateQuantity}>
-                    Update quantity
-                </Button>
-            )}
-            {handleManualCount && (
-                <Button kind="add" onClick={handleManualCount}>
-                    Adjust manual count
-                </Button>
-            )}
+            <div style={{ gridColumnEnd: "span 3", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+                {handleUpdateQuantity && (
+                    <Button kind="edit" onClick={handleUpdateQuantity}>
+                        Update quantity
+                    </Button>
+                )}
+                {handleManualCount && (
+                    <Button kind="add" onClick={handleManualCount}>
+                        Adjust manual count
+                    </Button>
+                )}
+            </div>
         </Box>
     );
 };
