@@ -132,8 +132,8 @@ export default function VendorsTable({
                                     <TableCell>{item.lastQuantityOrdered}</TableCell>
                                     <TableCell>
                                         <Checkbox
-                                            value={prefVendor === item.id}
-                                            checked={prefVendor === item.id}
+                                            value={item.preffered}
+                                            checked={Boolean(item.preffered)}
                                             onChange={(e, c) => {
                                                 if (c) {
                                                     handleChangePreferred(item.id);
