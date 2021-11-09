@@ -117,7 +117,6 @@ export default function VendorsTable({
                             <TableCell>Last Replenish Time</TableCell>
                             <TableCell>Cost</TableCell>
                             <TableCell>Last Quantity Ordered</TableCell>
-                            <TableCell>Note</TableCell>
                             <TableCell>Preferred</TableCell>
                         </TableRow>
                     </TableHead>
@@ -125,13 +124,12 @@ export default function VendorsTable({
                         {vendors &&
                             vendors.map((item) => (
                                 <TableRow key={item.id} onClick={() => onRowSelected(item)}>
-                                    <TableCell>{item.name}</TableCell>
+                                    <TableCell>{item.VendorId?.name}</TableCell>
                                     <TableCell>{item.vendorSKU}</TableCell>
                                     <TableCell>{item.vendorPartName}</TableCell>
-                                    <TableCell>{item.lastReplenishTime}</TableCell>
+                                    <TableCell>{item.leadTime}</TableCell>
                                     <TableCell>{item.cost}</TableCell>
                                     <TableCell>{item.lastQuantityOrdered}</TableCell>
-                                    <TableCell>{item.note}</TableCell>
                                     <TableCell>
                                         <Checkbox
                                             value={prefVendor === item.id}

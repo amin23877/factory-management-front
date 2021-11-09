@@ -83,7 +83,7 @@ function ItemsDetails({
     //     activeTab === 1 ? (selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null) : null
     // );
     const { data: vendors } = useSWR(
-        activeTab === 2 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/vendors` : null) : null
+        activeTab === 2 ? (selectedRow && selectedRow.id ? `/vending?ItemId=${selectedRow.id}` : null) : null
     );
 
     const { data: itemSOs } = useSWR(
