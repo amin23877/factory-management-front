@@ -36,7 +36,13 @@ function Index() {
 
     const [selNote, setSelNote] = useState<any>();
     const [selDoc, setSelDoc] = useState<any>();
-    const [selPQ, setSelPQ] = useState<IPurchaseQuote>();
+    // TODO: Delete default selectedPurchaseQuote after one pquote added - for dev purposes
+    const [selPQ, setSelPQ] = useState<IPurchaseQuote | undefined>({
+        id: "",
+        requester: "",
+        ContactId: "",
+        VendorId: "",
+    });
     // Date	Quote Number	Vendor	SO 	Staff	Contact
 
     const cols: GridColDef[] = [

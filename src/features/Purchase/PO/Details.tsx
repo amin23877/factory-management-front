@@ -124,125 +124,137 @@ export default function Details({
             <Snack open={snack} onClose={() => setSnack(false)}>
                 {msg}
             </Snack>
-            <Box>
-                <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-                    {({ values, handleChange, handleBlur, errors, setFieldValue }) => (
-                        <Form>
-                            <Box display="flex" style={{ justifyContent: "space-evenly" }}>
-                                <Box flex={2}>
-                                    <BasePaper
-                                        style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", margin: "0 1em " }}
-                                    >
-                                        <UpdateForm
-                                            values={values}
-                                            errors={errors}
-                                            handleBlur={handleBlur}
-                                            handleChange={handleChange}
-                                        />
-                                        <Box display="flex">
-                                            <Button style={{ margin: "1em auto" }} type="submit" kind="edit">
-                                                Save
-                                            </Button>
-                                        </Box>
-                                    </BasePaper>
-                                </Box>
-                                <Box flex={3}>
-                                    <BasePaper
-                                        style={{
-                                            boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
-                                            margin: "0 1em",
-                                            height: "100%",
-                                        }}
-                                    >
-                                        <Tabs
-                                            textColor="primary"
-                                            value={activeMoreTab}
-                                            onChange={(e, nv) => setActiveMoreTab(nv)}
-                                            variant="scrollable"
-                                            style={{ maxWidth: 700 }}
+            <Box display="grid" gridTemplateColumns="1fr 2fr" gridGap={10}>
+                <Box>
+                    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+                        {({ values, handleChange, handleBlur, errors, setFieldValue }) => (
+                            <Form>
+                                <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                                    <Box flex={2}>
+                                        <BasePaper
+                                            style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", margin: "0 1em " }}
                                         >
-                                            <Tab label="More Info" />
-                                            <Tab label="Vendor" />
-                                            <Tab label="Addresses" />
-                                        </Tabs>
-                                        <Box>
-                                            {activeMoreTab === 0 && (
-                                                <MoreInfoForm
-                                                    errors={errors}
-                                                    values={values}
-                                                    handleBlur={handleBlur}
-                                                    handleChange={handleChange}
-                                                    setFieldValue={setFieldValue}
-                                                />
-                                            )}
-                                            {activeMoreTab === 1 && (
-                                                <VendorForm
-                                                    values={values}
-                                                    handleBlur={handleBlur}
-                                                    handleChange={handleChange}
-                                                />
-                                            )}
-                                            {activeMoreTab === 2 && (
-                                                <AddressesForm
-                                                    values={values}
-                                                    handleBlur={handleBlur}
-                                                    handleChange={handleChange}
-                                                />
-                                            )}
-                                        </Box>
-                                    </BasePaper>
+                                            <UpdateForm
+                                                values={values}
+                                                errors={errors}
+                                                handleBlur={handleBlur}
+                                                handleChange={handleChange}
+                                            />
+                                            <Box display="flex">
+                                                <Button style={{ margin: "1em auto" }} type="submit" kind="edit">
+                                                    Save
+                                                </Button>
+                                            </Box>
+                                        </BasePaper>
+                                    </Box>
+                                    <Box flex={3}>
+                                        <BasePaper
+                                            style={{
+                                                boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
+                                                margin: "0 1em",
+                                                height: "100%",
+                                            }}
+                                        >
+                                            <Tabs
+                                                textColor="primary"
+                                                value={activeMoreTab}
+                                                onChange={(e, nv) => setActiveMoreTab(nv)}
+                                                variant="scrollable"
+                                                style={{ maxWidth: 700 }}
+                                            >
+                                                <Tab label="More Info" />
+                                                <Tab label="Vendor" />
+                                                <Tab label="Addresses" />
+                                            </Tabs>
+                                            <Box>
+                                                {activeMoreTab === 0 && (
+                                                    <MoreInfoForm
+                                                        errors={errors}
+                                                        values={values}
+                                                        handleBlur={handleBlur}
+                                                        handleChange={handleChange}
+                                                        setFieldValue={setFieldValue}
+                                                    />
+                                                )}
+                                                {activeMoreTab === 1 && (
+                                                    <VendorForm
+                                                        values={values}
+                                                        handleBlur={handleBlur}
+                                                        handleChange={handleChange}
+                                                    />
+                                                )}
+                                                {activeMoreTab === 2 && (
+                                                    <AddressesForm
+                                                        values={values}
+                                                        handleBlur={handleBlur}
+                                                        handleChange={handleChange}
+                                                    />
+                                                )}
+                                            </Box>
+                                        </BasePaper>
+                                    </Box>
                                 </Box>
-                            </Box>
-                        </Form>
+                            </Form>
+                        )}
+                    </Formik>
+                </Box>
+                <Box>
+                    <Tabs
+                        textColor="primary"
+                        style={{ marginBottom: "1em" }}
+                        value={activeTab}
+                        onChange={(e, nv) => setActiveTab(nv)}
+                    >
+                        {/* Line Items	Documents	Receiving	Notes	Auditing */}
+                        <Tab label="Line items" />
+                        <Tab label="Documents" />
+                        <Tab label="Receiving" />
+                        <Tab label="Notes" />
+                        <Tab label="Auditing" />
+                    </Tabs>
+                    {activeTab === 0 && (
+                        <BaseDataGrid
+                            rows={lines}
+                            cols={LICols}
+                            onRowSelected={(d) => onLineSelected(d)}
+                            height={300}
+                        />
                     )}
-                </Formik>
-            </Box>
-            <Box>
-                <Tabs
-                    textColor="primary"
-                    style={{ marginBottom: "1em" }}
-                    value={activeTab}
-                    onChange={(e, nv) => setActiveTab(nv)}
-                >
-                    {/* Line Items	Documents	Receiving	Notes	Auditing */}
-                    <Tab label="Line items" />
-                    <Tab label="Documents" />
-                    <Tab label="Receiving" />
-                    <Tab label="Notes" />
-                    <Tab label="Auditing" />
-                </Tabs>
-                {activeTab === 0 && (
-                    <BaseDataGrid rows={lines} cols={LICols} onRowSelected={(d) => onLineSelected(d)} height={300} />
-                )}
-                {activeTab === 1 && (
-                    <Fragment>
-                        <Button
-                            onClick={() => {
-                                setDocModal(true);
-                            }}
-                            style={style}
-                        >
-                            + Add Document
-                        </Button>
-                        <DocumentsDataGrid documents={docs} onDocumentSelected={onDocumentSelected} />
-                    </Fragment>
-                )}
-                {activeTab === 2 && (
-                    <BaseDataGrid rows={[]} cols={receivedCols} onRowSelected={(d) => onLineSelected(d)} height={300} />
-                )}
-                {activeTab === 3 && (
-                    <Fragment>
-                        <Button
-                            onClick={() => {
-                                setNoteModal(true);
-                            }}
-                            style={style}
-                        >
-                            + Add Note
-                        </Button>
-                        <NotesDataGrid notes={notes} onNoteSelected={onNoteSelected} />
-                    </Fragment>
-                )}
+                    {activeTab === 1 && (
+                        <Fragment>
+                            <Button
+                                onClick={() => {
+                                    setDocModal(true);
+                                }}
+                                style={style}
+                            >
+                                + Add Document
+                            </Button>
+                            <DocumentsDataGrid documents={docs} onDocumentSelected={onDocumentSelected} />
+                        </Fragment>
+                    )}
+                    {activeTab === 2 && (
+                        <BaseDataGrid
+                            rows={[]}
+                            cols={receivedCols}
+                            onRowSelected={(d) => onLineSelected(d)}
+                            height={300}
+                        />
+                    )}
+                    {activeTab === 3 && (
+                        <Fragment>
+                            <Button
+                                onClick={() => {
+                                    setNoteModal(true);
+                                }}
+                                style={style}
+                            >
+                                + Add Note
+                            </Button>
+                            <NotesDataGrid notes={notes} onNoteSelected={onNoteSelected} />
+                        </Fragment>
+                    )}
+                </Box>
             </Box>
         </BasePaper>
     );

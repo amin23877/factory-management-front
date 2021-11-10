@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import { Formik, Form } from "formik";
 
 import Box from "@material-ui/core/Box";
@@ -7,11 +7,9 @@ import Dialog from "../../../app/Dialog";
 import { FieldSelect } from "../../../app/Inputs";
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
-import { getAllEmployees } from "../../../api/employee";
 import { getVendors } from "../../../api/vendor";
-import { getContacts } from "../../../api/contact";
-import { Typography } from "@material-ui/core";
 import { createPurchaseQuote } from "../../../api/purchaseQuote";
+import { getAllEmployees } from "../../../api/employee";
 
 export default function AddPQModal({
     open,
@@ -22,8 +20,8 @@ export default function AddPQModal({
     onClose: () => void;
     onDone: () => void;
 }) {
-    const uploader = useRef<HTMLInputElement | null>();
-    const [file, setFile] = useState<File | null>(null);
+    // const uploader = useRef<HTMLInputElement | null>();
+    // const [file, setFile] = useState<File | null>(null);
 
     return (
         <Dialog open={open} onClose={onClose} title="Add new quote">
@@ -32,7 +30,9 @@ export default function AddPQModal({
                     initialValues={{}}
                     onSubmit={async (d: any) => {
                         try {
-                            const resp = await createPurchaseQuote({ ...d, file });
+                            // console.log(d);
+
+                            const resp = await createPurchaseQuote({ ...d });
                             if (resp) {
                                 onDone();
                                 onClose();
@@ -44,67 +44,6 @@ export default function AddPQModal({
                 >
                     {({ values, errors, handleChange, handleBlur }: any) => (
                         <Form>
-                            {/* <input
-                                hidden
-                                type="file"
-                                name="file"
-                                ref={(e) => (uploader.current = e)}
-                                onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
-                            />
-                            <Button
-                                fullWidth
-                                variant="outlined"
-                                onClick={() => uploader.current && uploader.current.click()}
-                            >
-                                File
-                            </Button>
-                            <Box my={1}>
-                                <Typography variant="caption">{file?.name}</Typography>
-                            </Box>
-                            <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10} my={2}>
-                                <TextField
-                                    name="senderNumber"
-                                    label="Sender number"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.senderNumber}
-                                    error={Boolean(errors.senderNumber)}
-                                    style={{ marginRight: 5 }}
-                                />
-                                <FieldSelect
-                                    request={getAllEmployees}
-                                    itemTitleField="username"
-                                    itemValueField="id"
-                                    name="requester"
-                                    label="Requester"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.requester}
-                                    error={Boolean(errors.requester)}
-                                />
-                                <FieldSelect
-                                    style={{ marginRight: 5, marginLeft: 5 }}
-                                    request={getVendors}
-                                    itemTitleField="name"
-                                    itemValueField="id"
-                                    name="VendorId"
-                                    label="Vendor"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.VendorId}
-                                    error={Boolean(errors.VendorId)}
-                                />
-                                <FieldSelect
-                                    request={getContacts}
-                                    itemTitleField="lastName"
-                                    itemValueField="id"
-                                    name="ContactId"
-                                    label="Contact"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={values.ContactId}
-                                    error={Boolean(errors.ContactId)}
-                                /> */}
                             <Box display="grid" gridTemplateColumns="1fr 1fr" my={2} gridGap={10}>
                                 <TextField
                                     name="senderNumber"
@@ -123,30 +62,22 @@ export default function AddPQModal({
                                     onBlur={handleBlur}
                                     value={typeof values.VendorId === "string" ? values.VendorId : values.VendorId?.id}
                                     error={Boolean(errors.VendorId)}
+                                    getOptionList={(data) => data?.result}
                                 />
-                                {/* <FieldSelect
-                                    request={getVendors}
-                                    itemTitleField="number"
+                                <FieldSelect
+                                    request={getAllEmployees}
+                                    itemTitleField="username"
                                     itemValueField="id"
-                                    name="VendorId"
-                                    label="Vendor Number"
+                                    name="requester"
+                                    label="Requester"
                                     onChange={handleChange}
                                     onBlur={handleBlur}
-                                    value={typeof values.VendorId === "string" ? values.VendorId : values.VendorId?.id}
-                                    error={Boolean(errors.VendorId)}
-                                /> */}
-
-                                {/* <FieldSelect
-                                    request={getVendors}
-                                    itemTitleField="website"
-                                    itemValueField="id"
-                                    name="VendorId"
-                                    label="Vendor Website"
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    value={typeof values.VendorId === "string" ? values.VendorId : values.VendorId?.id}
-                                    error={Boolean(errors.VendorId)}
-                                /> */}
+                                    value={
+                                        typeof values.requester === "string" ? values.requester : values.requester?.id
+                                    }
+                                    error={Boolean(errors.requester)}
+                                    // getOptionList={(data) => data?.result}
+                                />
                                 <TextField
                                     name="companyName"
                                     value={values.companyName}

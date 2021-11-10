@@ -42,7 +42,14 @@ function Index() {
     const [selDoc, setSelDoc] = useState<any>();
 
     const [selectedLine, setSelectedLine] = useState<ILineItem>();
-    const [selPO, setSelPO] = useState<IPurchasePO>();
+    const [selPO, setSelPO] = useState<IPurchasePO | undefined>({
+        ContactId: "",
+        EmployeeId: "",
+        VendorId: "",
+        number: "123",
+        requester: "",
+        status: "test",
+    });
     const [compPo, setCompPo] = useState<any>();
 
     // Date	PO Number	Vendor	Trac. Num	Vendor Ack. Date	Est. Ship	Act. Ship	SO 	Required By	Staff	Status	Total Cost	Approved	Appr. By	QuickBooks Info
