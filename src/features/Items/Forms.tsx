@@ -344,8 +344,8 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched }: I
                 <div>
                     <FormControlLabel
                         style={{ fontSize: "0.7rem" }}
-                        checked={values.bomCostEstimateUse}
-                        name="bomCostEstimateUse"
+                        checked={values.overrideUse}
+                        name="overrideUse"
                         label=" "
                         onChange={handleChange}
                         control={<Checkbox />}
@@ -373,8 +373,8 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched }: I
             <div>
                 <FormControlLabel
                     style={{ fontSize: "0.7rem" }}
-                    checked={values.overrideUse}
-                    name="overrideUse"
+                    checked={values.bomCostEstimateUse}
+                    name="bomCostEstimateUse"
                     label=" "
                     onChange={handleChange}
                     control={<Checkbox />}
