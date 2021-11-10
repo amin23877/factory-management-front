@@ -157,91 +157,94 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                 data={selectedContact}
             />
 
-            <Box>
-                <UpdateVendorForm initialValues={vendor} />
+            <Box pb="8px" display="flex" style={{ gap: 10 }}>
+                <Box flex={2}>
+                    <UpdateVendorForm initialValues={vendor} />
+                </Box>
+                <Box flex={3}>
+                    <BasePaper>
+                        <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} style={{ margin: "0.5em 0" }}>
+                            <Tab label="Items" />
+                            <Tab label="Documents" />
+                            <Tab label="Contacts" />
+                            <Tab label="PO History" />
+                            <Tab label="Notes" />
+                            <Tab label="Auditing" />
+                        </Tabs>
 
-                <BasePaper style={{ marginTop: "1em" }}>
-                    <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} style={{ margin: "0.5em 0" }}>
-                        <Tab label="Items" />
-                        <Tab label="Documents" />
-                        <Tab label="Contacts" />
-                        <Tab label="PO History" />
-                        <Tab label="Notes" />
-                        <Tab label="Auditing" />
-                    </Tabs>
-
-                    {activeTab === 0 && (
-                        <BaseDataGrid
-                            cols={itemCols}
-                            rows={(items && items.map((r: any, i: number) => ({ ...r, id: i }))) || []}
-                            onRowSelected={() => {}}
-                        />
-                    )}
-                    {activeTab === 1 && (
-                        <>
-                            <Button
-                                variant="outlined"
-                                onClick={() => {
-                                    setSelectedDocument(undefined);
-                                    setDocumentModal(true);
-                                }}
-                            >
-                                + Add Document
-                            </Button>
+                        {activeTab === 0 && (
                             <BaseDataGrid
-                                cols={docCols}
-                                rows={documents || []}
-                                onRowSelected={(r) => {
-                                    setSelectedDocument(r);
-                                    setDocumentModal(true);
-                                }}
+                                cols={itemCols}
+                                rows={(items && items.map((r: any, i: number) => ({ ...r, id: i }))) || []}
+                                onRowSelected={() => {}}
                             />
-                        </>
-                    )}
-                    {activeTab === 2 && (
-                        <>
-                            <Button
-                                variant="outlined"
-                                onClick={() => {
-                                    setSelectedContact(undefined);
-                                    setContactModal(true);
-                                }}
-                            >
-                                + Add Contact
-                            </Button>
-                            <BaseDataGrid
-                                cols={contactsCols}
-                                rows={contacts || []}
-                                onRowSelected={(r) => {
-                                    setSelectedContact(r);
-                                    setContactModal(true);
-                                }}
-                            />
-                        </>
-                    )}
-                    {activeTab === 3 && <BaseDataGrid cols={POCols} rows={POs || []} onRowSelected={() => {}} />}
-                    {activeTab === 4 && (
-                        <>
-                            <Button
-                                variant="outlined"
-                                onClick={() => {
-                                    setSelectedNote(undefined);
-                                    setNoteModal(true);
-                                }}
-                            >
-                                + Add Note
-                            </Button>
-                            <BaseDataGrid
-                                cols={noteCols}
-                                rows={notes || []}
-                                onRowSelected={(r) => {
-                                    setSelectedNote(r);
-                                    setNoteModal(true);
-                                }}
-                            />
-                        </>
-                    )}
-                </BasePaper>
+                        )}
+                        {activeTab === 1 && (
+                            <>
+                                <Button
+                                    variant="outlined"
+                                    onClick={() => {
+                                        setSelectedDocument(undefined);
+                                        setDocumentModal(true);
+                                    }}
+                                >
+                                    + Add Document
+                                </Button>
+                                <BaseDataGrid
+                                    cols={docCols}
+                                    rows={documents || []}
+                                    onRowSelected={(r) => {
+                                        setSelectedDocument(r);
+                                        setDocumentModal(true);
+                                    }}
+                                />
+                            </>
+                        )}
+                        {activeTab === 2 && (
+                            <>
+                                <Button
+                                    variant="outlined"
+                                    onClick={() => {
+                                        setSelectedContact(undefined);
+                                        setContactModal(true);
+                                    }}
+                                >
+                                    + Add Contact
+                                </Button>
+                                <BaseDataGrid
+                                    cols={contactsCols}
+                                    rows={contacts || []}
+                                    onRowSelected={(r) => {
+                                        setSelectedContact(r);
+                                        setContactModal(true);
+                                    }}
+                                />
+                            </>
+                        )}
+                        {activeTab === 3 && <BaseDataGrid cols={POCols} rows={POs || []} onRowSelected={() => {}} />}
+                        {activeTab === 4 && (
+                            <>
+                                <Button
+                                    variant="outlined"
+                                    onClick={() => {
+                                        setSelectedNote(undefined);
+                                        setNoteModal(true);
+                                    }}
+                                >
+                                    + Add Note
+                                </Button>
+                                <BaseDataGrid
+                                    cols={noteCols}
+                                    rows={notes || []}
+                                    onRowSelected={(r) => {
+                                        setSelectedNote(r);
+                                        setNoteModal(true);
+                                    }}
+                                />
+                            </>
+                        )}
+                    </BasePaper>
+                </Box>
             </Box>
         </>
     );

@@ -177,8 +177,8 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
         <Formik initialValues={initialValues} validationSchema={schema} onSubmit={handleSubmit}>
             {({ values, errors, handleChange, handleBlur }) => (
                 <Form>
-                    <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
-                        <Box>
+                    <Box>
+                        <Box display="flex" flexDirection="column" style={{ gap: 10 }}>
                             <BasePaper>
                                 <Paper
                                     style={{
@@ -187,7 +187,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                                         backgroundColor: "#eee",
                                         gridColumnEnd: "span 3",
                                         display: "grid",
-                                        gridTemplateColumns: "1fr 1fr",
+                                        gridTemplateColumns: "1fr 1fr 1fr",
                                         columnGap: "15px",
                                     }}
                                 >
@@ -205,7 +205,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                                     display="grid"
                                     gridColumnGap={10}
                                     gridRowGap={10}
-                                    gridTemplateColumns="1fr 1fr "
+                                    gridTemplateColumns="1fr 1fr 1fr"
                                 >
                                     <FieldSelect
                                         request={getVendorTypes}
@@ -238,7 +238,6 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         error={Boolean(errors.name)}
-                                        style={{ gridColumnEnd: "span 2" }}
                                     />
                                     <TextField
                                         name="address"
@@ -289,29 +288,33 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                                         error={Boolean(errors.terms)}
                                     />
                                     <TextField
-                                        style={{ gridColumnEnd: "span 2" }}
+                                        style={{ gridColumnEnd: "span 3" }}
                                         value={values.note}
                                         name="note"
                                         label="Note"
                                         multiline
-                                        rows={4}
+                                        rows={3}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                     />
                                 </Box>
                                 <Box style={{ display: "flex", justifyContent: "center" }}>
-                                    <Button type="submit" kind="edit" style={{ margin: "0.6em auto" }}>
+                                    <Button type="submit" kind="edit" style={{ margin: "0.6em", width: "100%" }}>
                                         Save
                                     </Button>
                                 </Box>
                             </BasePaper>
-                        </Box>
-                        <Box>
                             <BasePaper style={{ height: "100%" }}>
                                 <Tabs value={0} style={{ margin: "0.5em 0" }} textColor="primary">
                                     <Tab label="Main Contact" />
                                 </Tabs>
-                                <Box mt={2} display="grid" gridRowGap={10} gridTemplateColumns="1fr">
+                                <Box
+                                    mt={2}
+                                    display="grid"
+                                    gridRowGap={10}
+                                    gridColumnGap={10}
+                                    gridTemplateColumns="1fr 1fr"
+                                >
                                     <TextField
                                         label="Name"
                                         value={`${values.contact?.firstName}  ${values.contact?.lastName}`}
