@@ -11,15 +11,22 @@ const Inventory = () => {
 
     return (
         <>
-            <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
-                <div style={{ flexGrow: 1 }} />
-                <MyTabs value={mainTab} onChange={(e, nv) => setMainTab(nv)} textColor="secondary">
+            <Box display="flex">
+                <MyTabs
+                    value={mainTab}
+                    onChange={(e, nv) => setMainTab(nv)}
+                    textColor="secondary"
+                    orientation="vertical"
+                    style={{ marginRight: "1em", position: "sticky", top: 65 }}
+                >
                     <MyTab color="primary" label="Dashboard" />
                     <MyTab label="Items" />
                 </MyTabs>
+                <Box flex={1}>
+                    {mainTab === 0 && <Dashboard />}
+                    {mainTab === 1 && <Items />}
+                </Box>
             </Box>
-            {mainTab === 0 && <Dashboard />}
-            {mainTab === 1 && <Items />}
         </>
     );
 };
