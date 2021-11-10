@@ -464,7 +464,7 @@ function ItemsDetails({
                                     {moreInfoTab === 4 && (
                                         <>
                                             <BaseDataGrid
-                                                rows={selectedRow?.Pricing || []}
+                                                rows={selectedRow?.pricing || []}
                                                 cols={pricingCols}
                                                 height={220}
                                             />
