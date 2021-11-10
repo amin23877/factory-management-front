@@ -4,7 +4,7 @@ import useSWR from "swr";
 
 import TextField from "../../app/TextField";
 import Button from "../../app/Button";
-
+import { format } from "date-fns";
 import { IFilter } from "../../api/filter";
 import { IField } from "../../api/field";
 import Cluster from "./ClusterAndLevels/Cluster";
@@ -659,6 +659,7 @@ export const LastUsed = ({ values, errors, handleChange, handleBlur, touched, se
                 label="lastCount"
                 onChange={(lastCount) => setFieldValue("lastCount", lastCount)}
                 onBlur={handleBlur}
+                format="dd/mm/yyyy"
             />
             <TextField
                 label="last used in 90 days"
