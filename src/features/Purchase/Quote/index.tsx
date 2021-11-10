@@ -21,6 +21,7 @@ import Confirm from "../../Modals/Confirm";
 import { getAllModelNotes } from "../../../api/note";
 import { getAllModelDocuments } from "../../../api/document";
 import { formatTimestampToDate } from "../../../logic/date";
+import { BasePaper } from "../../../app/Paper";
 
 function Index() {
     const [activeTab, setActiveTab] = useState(0);
@@ -97,7 +98,7 @@ function Index() {
     };
 
     useEffect(() => {
-        if (activeTab == 1) {
+        if (activeTab === 1) {
             refreshNotes();
             refreshDocs();
         }
@@ -108,7 +109,7 @@ function Index() {
     }, []);
 
     return (
-        <Box display="grid" gridTemplateColumns="1fr 11fr">
+        <>
             <AddPQuoteModal open={addPQ} onClose={() => setAddPQ(false)} onDone={refreshPQs} />
             {selPQ && (
                 <Confirm
@@ -138,70 +139,76 @@ function Index() {
                     onDone={refreshDocs}
                 />
             )}
-
-            <Box>
-                <List>
-                    <ListItem>
-                        <IconButton
-                            onClick={() => {
-                                setActiveTab(0);
-                                setSelPQ(undefined);
-                                setAddPQ(true);
-                            }}
+            <BasePaper>
+                <Box display="flex">
+                    <Box>
+                        <List>
+                            <ListItem>
+                                <IconButton
+                                    onClick={() => {
+                                        setActiveTab(0);
+                                        setSelPQ(undefined);
+                                        setAddPQ(true);
+                                    }}
+                                >
+                                    <AddRounded />
+                                </IconButton>
+                            </ListItem>
+                            <ListItem>
+                                <IconButton onClick={() => setConfirm(true)}>
+                                    <DeleteRounded />
+                                </IconButton>
+                            </ListItem>
+                            <ListItem>
+                                <IconButton>
+                                    <PrintRounded />
+                                </IconButton>
+                            </ListItem>
+                        </List>
+                    </Box>
+                    <Box flex={1} flexGrow={1} ml={2}>
+                        <Tabs
+                            style={{ marginBottom: "1em" }}
+                            textColor="primary"
+                            value={activeTab}
+                            onChange={(e, nv) => setActiveTab(nv)}
                         >
-                            <AddRounded />
-                        </IconButton>
-                    </ListItem>
-                    <ListItem>
-                        <IconButton onClick={() => setConfirm(true)}>
-                            <DeleteRounded />
-                        </IconButton>
-                    </ListItem>
-                    <ListItem>
-                        <IconButton>
-                            <PrintRounded />
-                        </IconButton>
-                    </ListItem>
-                </List>
-            </Box>
-            <Box>
-                <Tabs
-                    style={{ marginBottom: "1em" }}
-                    textColor="primary"
-                    value={activeTab}
-                    onChange={(e, nv) => setActiveTab(nv)}
-                >
-                    <Tab label="List" />
-                    <Tab label="Details" disabled={!selPQ} />
-                </Tabs>
-                {activeTab === 0 && (
-                    <BaseDataGrid
-                        cols={cols}
-                        rows={pqs}
-                        onRowSelected={(d) => {
-                            setSelPQ(d);
-                            setActiveTab(1);
-                        }}
-                    />
-                )}
-                {activeTab === 1 && selPQ && (
-                    <Details
-                        initialValues={selPQ}
-                        onDone={refreshPQs}
-                        notes={notes}
-                        docs={docs}
-                        onNoteSelected={(d) => {
-                            setSelNote(d);
-                            setNoteModal(true);
-                        }}
-                        onDocumentSelected={(d) => {
-                            setSelDoc(d);
-                            setDocModal(true);
-                        }}
-                    />
-                )}
-            </Box>
-        </Box>
+                            <Tab label="List" />
+                            <Tab label="Details" disabled={!selPQ} />
+                        </Tabs>
+                        {activeTab === 0 && (
+                            <BasePaper>
+                                <BaseDataGrid
+                                    height="74vh"
+                                    cols={cols}
+                                    rows={pqs}
+                                    onRowSelected={(d) => {
+                                        setSelPQ(d);
+                                        setActiveTab(1);
+                                    }}
+                                />
+                            </BasePaper>
+                        )}
+                        {activeTab === 1 && selPQ && (
+                            <Details
+                                initialValues={selPQ}
+                                onDone={refreshPQs}
+                                notes={notes}
+                                docs={docs}
+                                onNoteSelected={(d) => {
+                                    setSelNote(d);
+                                    setNoteModal(true);
+                                }}
+                                onDocumentSelected={(d) => {
+                                    setSelDoc(d);
+                                    setDocModal(true);
+                                }}
+                            />
+                        )}
+                    </Box>
+                </Box>
+            </BasePaper>
+        </>
     );
 }
 

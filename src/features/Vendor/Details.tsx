@@ -157,7 +157,7 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                 data={selectedContact}
             />
 
-            <Box p={2}>
+            <Box>
                 <UpdateVendorForm initialValues={vendor} />
 
                 <BasePaper style={{ marginTop: "1em" }}>

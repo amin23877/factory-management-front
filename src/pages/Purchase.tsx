@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 
-import { SearchBar } from "../app/TextField";
 import { MyTabs, MyTab } from "../app/Tabs";
 
 import PurchaseQuote from "../features/Purchase/Quote";

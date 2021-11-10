@@ -177,154 +177,152 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
         <Formik initialValues={initialValues} validationSchema={schema} onSubmit={handleSubmit}>
             {({ values, errors, handleChange, handleBlur }) => (
                 <Form>
-                    <Box>
-                        <Box display="flex" justifyContent="space-between">
-                            <Box flex={3} mr={2}>
-                                <BasePaper>
-                                    <Paper
-                                        style={{
-                                            margin: "0.5em 0 2em 0",
-                                            padding: "0.5em",
-                                            backgroundColor: "#eee",
-                                            gridColumnEnd: "span 3",
-                                            display: "grid",
-                                            gridTemplateColumns: "1fr 1fr",
-                                            columnGap: "15px",
-                                        }}
-                                    >
-                                        <FormControlLabel
-                                            name="active"
-                                            value={values.active}
-                                            control={<Checkbox checked={Boolean(values.active)} />}
-                                            label="Active"
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                        />
-                                    </Paper>
-                                    <Box
-                                        mb={1}
-                                        display="grid"
-                                        gridColumnGap={10}
-                                        gridRowGap={10}
-                                        gridTemplateColumns="1fr 1fr "
-                                    >
-                                        <FieldSelect
-                                            request={getVendorTypes}
-                                            itemTitleField="name"
-                                            itemValueField="id"
-                                            name="VendorTypeId"
-                                            label="Customer Type"
-                                            fullWidth
-                                            onChange={handleChange}
-                                            value={
-                                                typeof values.VendorTypeId === "string"
-                                                    ? values.VendorTypeId
-                                                    : values.VendorTypeId?.id
-                                            }
-                                            error={Boolean(errors.VendorTypeId)}
-                                        />
-                                        <TextField
-                                            name="number"
-                                            label="Vendor Number"
-                                            value={values.number}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            error={Boolean(errors.number)}
-                                            disabled
-                                        />
-                                        <TextField
-                                            name="name"
-                                            label="Vendor Name"
-                                            value={values.name}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            error={Boolean(errors.name)}
-                                            style={{ gridColumnEnd: "span 2" }}
-                                        />
-                                        <TextField
-                                            name="address"
-                                            label="Address"
-                                            value={values.address}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            error={Boolean(errors.address)}
-                                        />
-                                        <TextField
-                                            name="city"
-                                            label="City"
-                                            value={values.city}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            error={Boolean(errors.city)}
-                                        />
-                                        <TextField
-                                            name="state"
-                                            label="State"
-                                            value={values.state}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            error={Boolean(errors.state)}
-                                        />
-                                        <TextField
-                                            name="zipcode"
-                                            label="Zip code"
-                                            value={values.zipcode}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            error={Boolean(errors.zipcode)}
-                                        />
-                                        <TextField
-                                            name="website"
-                                            label="Website"
-                                            value={values.website}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            error={Boolean(errors.website)}
-                                        />
-                                        <TextField
-                                            name="terms"
-                                            label="Terms"
-                                            value={values.terms}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            error={Boolean(errors.terms)}
-                                        />
-                                        <TextField
-                                            style={{ gridColumnEnd: "span 2" }}
-                                            value={values.note}
-                                            name="note"
-                                            label="Note"
-                                            multiline
-                                            rows={4}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                        />
-                                    </Box>
-                                    <Box style={{ display: "flex", justifyContent: "center" }}>
-                                        <Button type="submit" kind="edit" style={{ margin: "0.6em auto" }}>
-                                            Save
-                                        </Button>
-                                    </Box>
-                                </BasePaper>
-                            </Box>
-                            <Box flex={2} ml={2}>
-                                <BasePaper style={{ height: "100%" }}>
-                                    <Tabs value={0} style={{ margin: "0.5em 0" }} textColor="primary">
-                                        <Tab label="Main Contact" />
-                                    </Tabs>
-                                    <Box mt={2} display="grid" gridRowGap={10} gridTemplateColumns="1fr">
-                                        <TextField
-                                            label="Name"
-                                            value={`${values.contact?.firstName}  ${values.contact?.lastName}`}
-                                            disabled
-                                        />
-                                        <TextField label="Phone" value={values.contact?.phone} disabled />
-                                        <TextField label="EXT" value={values.contact?.ext} disabled />
-                                        <TextField label="Email" value={values.contact?.email} disabled />
-                                        <TextField label="Office Hours" value={values.contact?.officeHours} disabled />
-                                    </Box>
-                                </BasePaper>
-                            </Box>
+                    <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                        <Box>
+                            <BasePaper>
+                                <Paper
+                                    style={{
+                                        margin: "0.5em 0 2em 0",
+                                        padding: "0.5em",
+                                        backgroundColor: "#eee",
+                                        gridColumnEnd: "span 3",
+                                        display: "grid",
+                                        gridTemplateColumns: "1fr 1fr",
+                                        columnGap: "15px",
+                                    }}
+                                >
+                                    <FormControlLabel
+                                        name="active"
+                                        value={values.active}
+                                        control={<Checkbox checked={Boolean(values.active)} />}
+                                        label="Active"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                </Paper>
+                                <Box
+                                    mb={1}
+                                    display="grid"
+                                    gridColumnGap={10}
+                                    gridRowGap={10}
+                                    gridTemplateColumns="1fr 1fr "
+                                >
+                                    <FieldSelect
+                                        request={getVendorTypes}
+                                        itemTitleField="name"
+                                        itemValueField="id"
+                                        name="VendorTypeId"
+                                        label="Customer Type"
+                                        fullWidth
+                                        onChange={handleChange}
+                                        value={
+                                            typeof values.VendorTypeId === "string"
+                                                ? values.VendorTypeId
+                                                : values.VendorTypeId?.id
+                                        }
+                                        error={Boolean(errors.VendorTypeId)}
+                                    />
+                                    <TextField
+                                        name="number"
+                                        label="Vendor Number"
+                                        value={values.number}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.number)}
+                                        disabled
+                                    />
+                                    <TextField
+                                        name="name"
+                                        label="Vendor Name"
+                                        value={values.name}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.name)}
+                                        style={{ gridColumnEnd: "span 2" }}
+                                    />
+                                    <TextField
+                                        name="address"
+                                        label="Address"
+                                        value={values.address}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.address)}
+                                    />
+                                    <TextField
+                                        name="city"
+                                        label="City"
+                                        value={values.city}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.city)}
+                                    />
+                                    <TextField
+                                        name="state"
+                                        label="State"
+                                        value={values.state}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.state)}
+                                    />
+                                    <TextField
+                                        name="zipcode"
+                                        label="Zip code"
+                                        value={values.zipcode}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.zipcode)}
+                                    />
+                                    <TextField
+                                        name="website"
+                                        label="Website"
+                                        value={values.website}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.website)}
+                                    />
+                                    <TextField
+                                        name="terms"
+                                        label="Terms"
+                                        value={values.terms}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.terms)}
+                                    />
+                                    <TextField
+                                        style={{ gridColumnEnd: "span 2" }}
+                                        value={values.note}
+                                        name="note"
+                                        label="Note"
+                                        multiline
+                                        rows={4}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                    />
+                                </Box>
+                                <Box style={{ display: "flex", justifyContent: "center" }}>
+                                    <Button type="submit" kind="edit" style={{ margin: "0.6em auto" }}>
+                                        Save
+                                    </Button>
+                                </Box>
+                            </BasePaper>
+                        </Box>
+                        <Box>
+                            <BasePaper style={{ height: "100%" }}>
+                                <Tabs value={0} style={{ margin: "0.5em 0" }} textColor="primary">
+                                    <Tab label="Main Contact" />
+                                </Tabs>
+                                <Box mt={2} display="grid" gridRowGap={10} gridTemplateColumns="1fr">
+                                    <TextField
+                                        label="Name"
+                                        value={`${values.contact?.firstName}  ${values.contact?.lastName}`}
+                                        disabled
+                                    />
+                                    <TextField label="Phone" value={values.contact?.phone} disabled />
+                                    <TextField label="EXT" value={values.contact?.ext} disabled />
+                                    <TextField label="Email" value={values.contact?.email} disabled />
+                                    <TextField label="Office Hours" value={values.contact?.officeHours} disabled />
+                                </Box>
+                            </BasePaper>
                         </Box>
                     </Box>
                 </Form>
