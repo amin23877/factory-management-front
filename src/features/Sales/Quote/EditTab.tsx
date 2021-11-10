@@ -46,9 +46,9 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
     const [selectedDoc, setSelectedDoc] = useState<IDocument>();
 
     const { data: lineItems } = useSWR<ILineItem[]>(activeTab === 0 ? `/lineitem?QuoteId=${selectedQuote.id}` : null);
-    const { data: lineServices } = useSWR<ILineService[]>(
-        activeTab === 1 ? `/lineservice?QuoteId=${selectedQuote.id}` : null
-    );
+    // const { data: lineServices } = useSWR<ILineService[]>(
+    //     activeTab === 1 ? `/lineservice?QuoteId=${selectedQuote.id}` : null
+    // );
     const { data: documents } = useSWR<IDocument[]>(activeTab === 2 ? `/document/quote/${selectedQuote.id}` : null);
     const { data: notes } = useSWR<INote[]>(activeTab === 4 ? `/note/quote/${selectedQuote.id}` : null);
 
@@ -217,7 +217,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
                                 <BaseDataGrid
                                     height="59vh"
                                     cols={LSCols}
-                                    rows={lineServices || []}
+                                    rows={[]}
                                     onRowSelected={(r) => {
                                         setSelectedLS(r);
                                         setLineServiceModal(true);

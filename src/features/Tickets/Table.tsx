@@ -7,6 +7,7 @@ import BaseDataGrid from "../../app/BaseDataGrid";
 // import { fetcher } from "../../api";
 import { ITicket } from "../../api/ticket";
 import { formatTimestampToDate } from "../../logic/date";
+import { BasePaper } from "../../app/Paper";
 
 export default function Table({ onRowSelected }: { onRowSelected: (d: ITicket) => void }) {
     const { data: tickets } = useSWR<ITicket[]>("/ticket");
@@ -52,5 +53,9 @@ export default function Table({ onRowSelected }: { onRowSelected: (d: ITicket) =
     //     return <LinearProgress />;
     // }
 
-    return <BaseDataGrid cols={cols} rows={tickets || []} onRowSelected={onRowSelected} />;
+    return (
+        <BasePaper>
+            <BaseDataGrid height="73vh" cols={cols} rows={tickets || []} onRowSelected={onRowSelected} />
+        </BasePaper>
+    );
 }

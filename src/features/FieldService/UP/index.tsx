@@ -60,16 +60,15 @@ export default function Up() {
                     <Tab label="Details" />
                 </Tabs>
                 {activeTab === 0 && ups && (
-                    <>
-                        <BaseDataGrid
-                            rows={ups.result || []}
-                            cols={cols}
-                            onRowSelected={(d) => {
-                                setSelectedUp(d);
-                                setActiveTab(1);
-                            }}
-                        />
-                    </>
+                    <BaseDataGrid
+                        height="74vh"
+                        rows={ups.result || []}
+                        cols={cols}
+                        onRowSelected={(d) => {
+                            setSelectedUp(d);
+                            setActiveTab(1);
+                        }}
+                    />
                 )}
                 {activeTab === 1 && selectedUp && <Details up={selectedUp} />}
             </BasePaper>

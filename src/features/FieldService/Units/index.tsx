@@ -51,46 +51,44 @@ export default function Unit() {
     ];
 
     return (
-        <Box>
-            <BasePaper>
-                <Tabs
-                    value={activeTab}
-                    textColor="primary"
-                    onChange={(e, nv) => setActiveTab(nv)}
-                    style={{ marginBottom: 10 }}
-                >
-                    <Tab label="List" />
-                    <Tab label="Details" disabled={!selectedUnit} />
-                </Tabs>
-                {activeTab === 0 && units && (
-                    <>
-                        <UnitSearchBox />
+        <BasePaper style={{ height: "85vh" }}>
+            <Tabs
+                value={activeTab}
+                textColor="primary"
+                onChange={(e, nv) => setActiveTab(nv)}
+                style={{ marginBottom: 10 }}
+            >
+                <Tab label="List" />
+                <Tab label="Details" disabled={!selectedUnit} />
+            </Tabs>
+            {activeTab === 0 && units && (
+                <>
+                    <UnitSearchBox />
 
-                        <Box height={550}>
-                            <DataGrid
-                                density="compact"
-                                loading={loading}
-                                pagination
-                                paginationMode="server"
-                                page={page}
-                                onPageChange={(p) => setPage(p.page)}
-                                pageSize={25}
-                                rowCount={units ? units.totalCount : 0}
-                                className={dataGridClasses.root}
-                                filterMode="server"
-                                components={{ Toolbar: GridToolbar }}
-                                rows={units.result || []}
-                                columns={cols}
-                                onRowSelected={(d) => {
-                                    setSelectedUnit(d.data);
-                                    setActiveTab(1);
-                                }}
-                            />
-                        </Box>
-                    </>
-                )}
-                {activeTab === 1 && selectedUnit && <Details unit={selectedUnit} />}
-            </BasePaper>
-        </Box>
+                    <Box height="67vh">
+                        <DataGrid
+                            density="compact"
+                            loading={loading}
+                            pagination
+                            paginationMode="server"
+                            page={page}
+                            onPageChange={(p) => setPage(p.page)}
+                            pageSize={25}
+                            rowCount={units ? units.totalCount : 0}
+                            className={dataGridClasses.root}
+                            filterMode="server"
+                            components={{ Toolbar: GridToolbar }}
+                            rows={units.result || []}
+                            columns={cols}
+                            onRowSelected={(d) => {
+                                setSelectedUnit(d.data);
+                                setActiveTab(1);
+                            }}
+                        />
+                    </Box>
+                </>
+            )}
+            {activeTab === 1 && selectedUnit && <Details unit={selectedUnit} />}
+        </BasePaper>
     );
 }

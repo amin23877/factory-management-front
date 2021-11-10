@@ -5,33 +5,48 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import useSWR from "swr";
 
-import Dialog from "../../../app/Dialog";
-import TextField from "../../../app/TextField";
-import Button from "../../../app/Button";
-import Toast from "../../../app/Toast";
+import Dialog from "../../app/Dialog";
+import TextField from "../../app/TextField";
+import Button from "../../app/Button";
+import Toast from "../../app/Toast";
 
-import { ICallsTags, addCallsTag, deleteCallsTag, editCallsTag } from "../../../api/callsTags";
-import Confirm from "../../Modals/Confirm";
+import Confirm from "../../features/Modals/Confirm";
 
 const schema = Yup.object().shape({
     name: Yup.string().required(),
 });
 
-export default function CallsTagsModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+export default function OneFieldModal({
+    open,
+    getUrl,
+    title,
+    onClose,
+    postRecord,
+    deleteRecord,
+    updateRecord,
+}: {
+    open: boolean;
+    getUrl: string;
+    title: string;
+    onClose: () => void;
+    updateRecord: (...a: any) => Promise<any>;
+    postRecord: (...a: any) => Promise<any>;
+    deleteRecord: (...a: any) => Promise<any>;
+}) {
     const [confirm, setConfirm] = useState(false);
     const [selectedCT, setSelectedCT] = useState<string>();
-    const { data: callsTags, mutate } = useSWR("/callsTags");
+    const { data, mutate } = useSWR(getUrl);
 
-    const handleSubmit = async (d: ICallsTags, { resetForm }: any) => {
+    const handleSubmit = async (d: any, { resetForm }: any) => {
         try {
             if (d.id) {
-                await editCallsTag(d.id, d.name);
+                await updateRecord(d.id, d.name);
                 Toast("Record updated", "success");
-                resetForm({ values: { name: "" } as ICallsTags });
+                resetForm({ values: { name: "" } as any });
             } else {
-                await addCallsTag(d.name);
+                await postRecord(d.name);
                 Toast("Record added", "success");
-                resetForm({ values: { name: "" } as ICallsTags });
+                resetForm({ values: { name: "" } as any });
             }
         } catch (error) {
             console.log(error);
@@ -43,7 +58,7 @@ export default function CallsTagsModal({ open, onClose }: { open: boolean; onClo
     const handleDelete = async () => {
         try {
             if (selectedCT) {
-                await deleteCallsTag(selectedCT);
+                await deleteRecord(selectedCT);
                 Toast("Record deleted", "success");
                 setConfirm(false);
                 mutate();
@@ -56,14 +71,14 @@ export default function CallsTagsModal({ open, onClose }: { open: boolean; onClo
     return (
         <>
             <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
-            <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth title="Add Calls Tags">
+            <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth title={title}>
                 <Box m={1}>
                     <Formik
                         initialValues={{} as { name: string; id?: string }}
                         validationSchema={schema}
                         onSubmit={handleSubmit}
                     >
-                        {({ getFieldProps, errors, touched, setValues, values, resetForm }) => (
+                        {({ getFieldProps, errors, touched, setValues, resetForm }) => (
                             <Form>
                                 <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
                                     <Box display="grid" gridTemplateColumns="3fr 1fr 1fr" gridGap={10}>
@@ -78,14 +93,14 @@ export default function CallsTagsModal({ open, onClose }: { open: boolean; onClo
                                         </Button>
                                         <Button
                                             variant="outlined"
-                                            onClick={() => resetForm({ values: { name: "" } as ICallsTags })}
+                                            onClick={() => resetForm({ values: { name: "" } as any })}
                                         >
-                                            clear
+                                            Clear
                                         </Button>
                                     </Box>
                                     <List>
-                                        {callsTags &&
-                                            callsTags.map((ct: any) => (
+                                        {data &&
+                                            data.map((ct: any) => (
                                                 <ListItem key={ct.id}>
                                                     <ListItemText>{ct.name}</ListItemText>
                                                     <ListItemSecondaryAction>

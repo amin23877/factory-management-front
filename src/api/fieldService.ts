@@ -6,7 +6,7 @@ export interface IFieldService {
     ItemId: string;
     period: number;
     price: number;
-    ServiceFamilyId: string;
+    ServiceClassId: string;
     description?: string;
 }
 

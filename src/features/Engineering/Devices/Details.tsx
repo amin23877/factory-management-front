@@ -476,6 +476,7 @@ function ItemsDetails({
                                         <Box p={3}>
                                             {activeTab === 0 && (
                                                 <BaseDataGrid
+                                                    height={"53vh"}
                                                     cols={docCols}
                                                     rows={docs || []}
                                                     onRowSelected={() => {}}
@@ -483,6 +484,7 @@ function ItemsDetails({
                                             )}
                                             {activeTab === 1 && (
                                                 <BaseDataGrid
+                                                    height={"53vh"}
                                                     cols={bomCols}
                                                     rows={boms || []}
                                                     onRowSelected={(d) => {
@@ -497,6 +499,7 @@ function ItemsDetails({
                                                         Add Warranty
                                                     </Button>
                                                     <BaseDataGrid
+                                                        height={"53vh"}
                                                         cols={warCols}
                                                         rows={warranties || []}
                                                         onRowSelected={(d) => {}}
@@ -505,6 +508,7 @@ function ItemsDetails({
                                             )}
                                             {activeTab === 3 && (
                                                 <BaseDataGrid
+                                                    height={"53vh"}
                                                     cols={manCols}
                                                     rows={manSteps || []}
                                                     onRowSelected={(d) => {
@@ -514,6 +518,7 @@ function ItemsDetails({
                                             )}
                                             {activeTab === 4 && (
                                                 <BaseDataGrid
+                                                    height={"53vh"}
                                                     cols={evalCols}
                                                     rows={evalSteps || []}
                                                     onRowSelected={(d) => {
@@ -523,6 +528,7 @@ function ItemsDetails({
                                             )}
                                             {activeTab === 5 && (
                                                 <BaseDataGrid
+                                                    height={"53vh"}
                                                     cols={evalCols}
                                                     rows={testSteps || []}
                                                     onRowSelected={(d) => {
@@ -532,6 +538,7 @@ function ItemsDetails({
                                             )}
                                             {activeTab === 6 && (
                                                 <BaseDataGrid
+                                                    height={"53vh"}
                                                     cols={evalCols}
                                                     rows={fieldSteps || []}
                                                     onRowSelected={(d) => {
@@ -541,6 +548,7 @@ function ItemsDetails({
                                             )}
                                             {activeTab === 8 && (
                                                 <BaseDataGrid
+                                                    height={"53vh"}
                                                     cols={unitHistoryCols}
                                                     rows={
                                                         uniteHistory
@@ -559,6 +567,7 @@ function ItemsDetails({
                                             {activeTab === 9 && <SalesReport />}
                                             {activeTab === 10 && (
                                                 <BaseDataGrid
+                                                    height={"53vh"}
                                                     cols={serviceCols}
                                                     rows={services || []}
                                                     onRowSelected={() => {}}
@@ -566,6 +575,7 @@ function ItemsDetails({
                                             )}
                                             {activeTab === 11 && (
                                                 <BaseDataGrid
+                                                    height={"53vh"}
                                                     cols={flagCols}
                                                     rows={flags || []}
                                                     onRowSelected={onFlagSelected}
@@ -573,6 +583,7 @@ function ItemsDetails({
                                             )}
                                             {activeTab === 12 && (
                                                 <BaseDataGrid
+                                                    height={"53vh"}
                                                     cols={noteCols}
                                                     rows={notes || []}
                                                     onRowSelected={onNoteSelected}
@@ -583,6 +594,7 @@ function ItemsDetails({
                                         <Box p={3}>
                                             {activeTab === 0 && (
                                                 <BaseDataGrid
+                                                    height={"53vh"}
                                                     cols={docCols}
                                                     rows={docs || []}
                                                     onRowSelected={() => {}}
@@ -595,6 +607,7 @@ function ItemsDetails({
                                                         Add Warranty
                                                     </Button>
                                                     <BaseDataGrid
+                                                        height={"53vh"}
                                                         cols={warCols}
                                                         rows={warranties || []}
                                                         onRowSelected={(d) => {}}
@@ -606,6 +619,7 @@ function ItemsDetails({
 
                                             {activeTab === 3 && (
                                                 <BaseDataGrid
+                                                    height={"53vh"}
                                                     cols={noteCols}
                                                     rows={notes || []}
                                                     onRowSelected={onNoteSelected}

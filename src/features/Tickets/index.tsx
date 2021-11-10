@@ -28,6 +28,7 @@ import AddQuote from "../Sales/Quote/AddQuote";
 import AddTagModal from "./AddTag";
 import AddStatusModal from "./AddStatus";
 import AddCategoryModal from "./AddCategory";
+import { BasePaper } from "../../app/Paper";
 
 export default function Tickets() {
     const [ticketModal, setTicketModal] = useState(false);
@@ -86,117 +87,126 @@ export default function Tickets() {
             <AddTagModal open={tagModal} onClose={() => setTagModal(false)} />
             <AddStatusModal open={statusModal} onClose={() => setStatusModal(false)} />
             <AddCategoryModal open={categoryModal} onClose={() => setCategoryModal(false)} />
-            <Box display="flex">
-                <Tabs textColor="primary" value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+
+            <BasePaper>
+                <Tabs
+                    textColor="primary"
+                    value={activeTab}
+                    onChange={(e, nv) => setActiveTab(nv)}
+                    style={{ marginBottom: 10 }}
+                >
                     <Tab label="List" />
                     <Tab label="Details" disabled={!selectedJob} />
                 </Tabs>
-                <div style={{ flexGrow: 1 }} />
-            </Box>
 
-            <Box display="flex">
-                <Box>
-                    <List>
-                        <ListItem>
-                            <IconButton onClick={() => setTicketModal(true)}>
-                                <AddRounded />
-                            </IconButton>
-                        </ListItem>
-                        <ListItem>
-                            <IconButton
-                                title="Add note"
-                                onClick={() => {
-                                    setSelectedNote(undefined);
+                <Box display="flex">
+                    <Box>
+                        <List>
+                            <ListItem>
+                                <IconButton onClick={() => setTicketModal(true)}>
+                                    <AddRounded />
+                                </IconButton>
+                            </ListItem>
+                            <ListItem>
+                                <IconButton
+                                    title="Add note"
+                                    onClick={() => {
+                                        setSelectedNote(undefined);
+                                        setNoteModal(true);
+                                    }}
+                                >
+                                    <NoteAddRounded />
+                                </IconButton>
+                            </ListItem>
+                            <ListItem>
+                                <IconButton
+                                    title="Add document"
+                                    onClick={() => {
+                                        setSelectedDocument(undefined);
+                                        setDocumentModal(true);
+                                    }}
+                                >
+                                    <FileCopyRounded />
+                                </IconButton>
+                            </ListItem>
+                            <ListItem>
+                                <IconButton
+                                    title="Add Tag"
+                                    onClick={() => {
+                                        setTagModal(true);
+                                    }}
+                                >
+                                    <LocalOfferRounded />
+                                </IconButton>
+                            </ListItem>
+                            <ListItem>
+                                <IconButton
+                                    title="Add Status"
+                                    onClick={() => {
+                                        setStatusModal(true);
+                                    }}
+                                >
+                                    <PlaylistAddCheckRounded />
+                                </IconButton>
+                            </ListItem>
+                            <ListItem>
+                                <IconButton
+                                    title="Add Category"
+                                    onClick={() => {
+                                        setCategoryModal(true);
+                                    }}
+                                >
+                                    <CategoryRounded />
+                                </IconButton>
+                            </ListItem>
+                            <ListItem>
+                                <IconButton
+                                    disabled={activeTab !== 1}
+                                    title="Add new SO"
+                                    onClick={() => setSoModal(true)}
+                                >
+                                    <ShoppingCartRounded />
+                                </IconButton>
+                            </ListItem>
+                            <ListItem>
+                                <IconButton
+                                    disabled={activeTab !== 1}
+                                    title="Add new Quote"
+                                    onClick={() => setQuoteModal(true)}
+                                >
+                                    <PostAddRounded />
+                                </IconButton>
+                            </ListItem>
+                        </List>
+                    </Box>
+                    <Box flex={1} flexGrow={1} ml={2}>
+                        {activeTab === 0 && (
+                            <Box flex={11} ml={2}>
+                                <Table
+                                    onRowSelected={(r) => {
+                                        setSelectedJob(r);
+                                        setActiveTab(1);
+                                        // setJobModal(true);
+                                    }}
+                                />
+                            </Box>
+                        )}
+                        {activeTab === 1 && selectedJob && (
+                            <Details
+                                initialValue={selectedJob}
+                                onNoteSelected={(n) => {
+                                    setSelectedNote(n);
                                     setNoteModal(true);
                                 }}
-                            >
-                                <NoteAddRounded />
-                            </IconButton>
-                        </ListItem>
-                        <ListItem>
-                            <IconButton
-                                title="Add document"
-                                onClick={() => {
-                                    setSelectedDocument(undefined);
+                                onDocumentSelected={(d) => {
+                                    setSelectedDocument(d);
                                     setDocumentModal(true);
                                 }}
-                            >
-                                <FileCopyRounded />
-                            </IconButton>
-                        </ListItem>
-                        <ListItem>
-                            <IconButton
-                                title="Add Tag"
-                                onClick={() => {
-                                    setTagModal(true);
-                                }}
-                            >
-                                <LocalOfferRounded />
-                            </IconButton>
-                        </ListItem>
-                        <ListItem>
-                            <IconButton
-                                title="Add Status"
-                                onClick={() => {
-                                    setStatusModal(true);
-                                }}
-                            >
-                                <PlaylistAddCheckRounded />
-                            </IconButton>
-                        </ListItem>
-                        <ListItem>
-                            <IconButton
-                                title="Add Category"
-                                onClick={() => {
-                                    setCategoryModal(true);
-                                }}
-                            >
-                                <CategoryRounded />
-                            </IconButton>
-                        </ListItem>
-                        <ListItem>
-                            <IconButton disabled={activeTab !== 1} title="Add new SO" onClick={() => setSoModal(true)}>
-                                <ShoppingCartRounded />
-                            </IconButton>
-                        </ListItem>
-                        <ListItem>
-                            <IconButton
-                                disabled={activeTab !== 1}
-                                title="Add new Quote"
-                                onClick={() => setQuoteModal(true)}
-                            >
-                                <PostAddRounded />
-                            </IconButton>
-                        </ListItem>
-                    </List>
-                </Box>
-                <Box flex={1} flexGrow={1} ml={2}>
-                    {activeTab === 0 && (
-                        <Box flex={11} ml={2}>
-                            <Table
-                                onRowSelected={(r) => {
-                                    setSelectedJob(r);
-                                    setActiveTab(1);
-                                    // setJobModal(true);
-                                }}
                             />
-                        </Box>
-                    )}
-                    {activeTab === 1 && selectedJob && (
-                        <Details
-                            initialValue={selectedJob}
-                            onNoteSelected={(n) => {
-                                setSelectedNote(n);
-                                setNoteModal(true);
-                            }}
-                            onDocumentSelected={(d) => {
-                                setSelectedDocument(d);
-                                setDocumentModal(true);
-                            }}
-                        />
-                    )}
+                        )}
+                    </Box>
                 </Box>
-            </Box>
+            </BasePaper>
         </>
     );
 }

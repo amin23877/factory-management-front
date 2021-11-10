@@ -18,7 +18,7 @@ function FullDataGrid({
     columns: GridColumns;
     url: string;
     onRowSelected: (r: any) => void;
-    height?: number;
+    height?: number | string;
 }) {
     const [filters, setFilters] = useState<{ [key: string]: any }>();
     const [sorts, setSort] = useState<{ [key: string]: string }>();
@@ -62,6 +62,7 @@ function FullDataGrid({
         <BasePaper>
             <Box height={height}>
                 <DataGrid
+                    density="compact"
                     loading={loading}
                     className={dataGridClasses.root}
                     onRowSelected={onRowSelected}
