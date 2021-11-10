@@ -13,19 +13,25 @@ export default function Purchase() {
 
     return (
         <>
-            <Box display="flex" alignItems="center" my={2}>
-                <SearchBar />
-                <div style={{ flexGrow: 1 }} />
-                <MyTabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+            <Box display="flex">
+                <MyTabs
+                    value={activeTab}
+                    textColor="primary"
+                    onChange={(e, nv) => setActiveTab(nv)}
+                    orientation="vertical"
+                    style={{ marginRight: "1em", position: "sticky", top: 65 }}
+                >
                     <MyTab label="Dashboard" />
                     <MyTab label="Quote" />
                     <MyTab label="Purchase Order" />
                     <MyTab label="Vendor" />
                 </MyTabs>
+                <Box flex={1}>
+                    {activeTab === 1 && <PurchaseQuote />}
+                    {activeTab === 2 && <PurchasePO />}
+                    {activeTab === 3 && <Vendors tech={false} />}
+                </Box>
             </Box>
-            {activeTab === 1 && <PurchaseQuote />}
-            {activeTab === 2 && <PurchasePO />}
-            {activeTab === 3 && <Vendors tech={false} />}
         </>
     );
 }

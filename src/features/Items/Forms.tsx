@@ -4,14 +4,20 @@ import useSWR from "swr";
 
 import TextField from "../../app/TextField";
 import Button from "../../app/Button";
-
+import { format } from "date-fns";
 import { IFilter } from "../../api/filter";
 import { IField } from "../../api/field";
 import Cluster from "./ClusterAndLevels/Cluster";
 import Level from "./ClusterAndLevels/Level";
 import { formatTimestampToDate } from "../../logic/date";
 import DateTimePicker from "../../app/DateTimePicker";
+import { makeStyles } from "@material-ui/core";
 
+const useStyles = makeStyles({
+    label: {
+        fontSize: "0.8rem",
+    },
+});
 interface IForm {
     values: any;
     errors: any;
@@ -39,6 +45,7 @@ export const General = ({
     setFieldValue,
     device,
 }: IForm) => {
+    const classes = useStyles();
     return (
         <>
             <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
@@ -50,7 +57,7 @@ export const General = ({
                         gridColumnEnd: "span 4",
                     }}
                 >
-                    <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
+                    <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={10} pr={1}>
                         {/* <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
                             checked={values.shippingApproved}
@@ -60,112 +67,125 @@ export const General = ({
                             control={<Checkbox />}
                         /> */}
                         <FormControlLabel
-                            style={{ fontSize: "0.7rem" }}
+                            style={{ fontSize: "0.1rem" }}
                             checked={values.salesApproved}
                             label="Sales Ap."
                             name="salesApproved"
                             onChange={handleChange}
-                            control={<Checkbox />}
+                            classes={{ label: classes.label }}
+                            control={<Checkbox size="small" />}
                         />
                         <FormControlLabel
+                            classes={{ label: classes.label }}
                             style={{ fontSize: "0.7rem" }}
                             checked={values.engineeringApproved}
                             label="En. Ap."
                             name="engineeringApproved"
                             onChange={handleChange}
-                            control={<Checkbox />}
+                            control={<Checkbox size="small" />}
                         />
                         <FormControlLabel
+                            classes={{ label: classes.label }}
                             style={{ fontSize: "0.7rem" }}
                             checked={values.obsolete}
                             label="Obsolete"
                             name="obsolete"
                             onChange={handleChange}
-                            control={<Checkbox />}
+                            control={<Checkbox size="small" />}
                         />
 
                         <FormControlLabel
+                            classes={{ label: classes.label }}
                             style={{ fontSize: "0.7rem" }}
                             checked={values.nonInventoryItem}
                             label="Non-Inventory Item"
                             name="nonInventoryItem"
                             onChange={handleChange}
-                            control={<Checkbox />}
+                            control={<Checkbox size="small" />}
                         />
                         <FormControlLabel
+                            classes={{ label: classes.label }}
                             style={{ fontSize: "0.7rem" }}
                             checked={values.rndOnly}
                             label="R&D Only"
                             name="rndOnly"
                             onChange={handleChange}
-                            control={<Checkbox />}
+                            control={<Checkbox size="small" />}
                         />
                         <FormControlLabel
+                            classes={{ label: classes.label }}
                             style={{ fontSize: "0.7rem" }}
                             checked={values.dontTrackQoh}
                             label="Don't Track QOH"
                             name="dontTrackQoh"
                             onChange={handleChange}
-                            control={<Checkbox />}
+                            control={<Checkbox size="small" />}
                         />
                         <FormControlLabel
+                            classes={{ label: classes.label }}
                             style={{ fontSize: "0.7rem" }}
                             checked={values.dontOrderPO}
                             label="Don't order on POs"
                             name="dontOrderPO"
                             onChange={handleChange}
-                            control={<Checkbox />}
+                            control={<Checkbox size="small" />}
                         />
 
                         <FormControlLabel
+                            classes={{ label: classes.label }}
                             style={{ fontSize: "0.7rem" }}
                             checked={values.buildToStock}
                             label="Build To Stock"
                             name="buildToStock"
                             onChange={handleChange}
-                            control={<Checkbox />}
+                            control={<Checkbox size="small" />}
                         />
                         <FormControlLabel
+                            classes={{ label: classes.label }}
                             style={{ fontSize: "0.7rem" }}
                             checked={values.option}
                             label="Option"
                             name="option"
                             onChange={handleChange}
-                            control={<Checkbox />}
+                            control={<Checkbox size="small" />}
                         />
                         <FormControlLabel
+                            classes={{ label: classes.label }}
                             style={{ fontSize: "0.7rem" }}
                             checked={values.taxable}
                             label="Taxable"
                             name="taxable"
                             onChange={handleChange}
-                            control={<Checkbox />}
+                            control={<Checkbox size="small" />}
                         />
                         <FormControlLabel
+                            classes={{ label: classes.label }}
                             style={{ fontSize: "0.7rem" }}
                             checked={values.doNotDiscount}
                             label="Do Not Discount"
                             name="doNotDiscount"
                             onChange={handleChange}
-                            control={<Checkbox />}
+                            control={<Checkbox size="small" />}
                         />
                         <FormControlLabel
+                            classes={{ label: classes.label }}
                             style={{ fontSize: "0.7rem" }}
                             checked={values.doNotSplit}
                             label="Do Not Split"
                             name="doNotSplit"
                             onChange={handleChange}
-                            control={<Checkbox />}
+                            control={<Checkbox size="small" />}
                         />
                         <div style={{ display: "flex", gridColumnEnd: "span 2", alignItems: "center" }}>
                             {" "}
                             <FormControlLabel
+                                classes={{ label: classes.label }}
                                 style={{ fontSize: "0.7rem" }}
                                 checked={values.archived}
                                 label="Archive"
                                 name="archived"
                                 onChange={handleChange}
-                                control={<Checkbox />}
+                                control={<Checkbox size="small" />}
                             />
                             <TextField
                                 label="Archive Date"
@@ -182,7 +202,7 @@ export const General = ({
                     </Box>
                 </Paper>
                 <TextField
-                    style={{ gridColumnEnd: "span 4" }}
+                    style={{ gridColumnEnd: "span 2" }}
                     label="no"
                     value={values.no}
                     name="no"
@@ -192,7 +212,7 @@ export const General = ({
                     placeholder="no"
                 />
                 <TextField
-                    style={{ gridColumnEnd: "span 4" }}
+                    style={{ gridColumnEnd: "span 2" }}
                     label="Item name"
                     placeholder="Item name"
                     name="name"
@@ -204,7 +224,7 @@ export const General = ({
                 <TextField
                     multiline
                     style={{ gridColumnEnd: "span 4" }}
-                    rows={4}
+                    rows={3}
                     placeholder="description"
                     label="Description"
                     name="description"
@@ -239,7 +259,7 @@ export const General = ({
 
 export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
     return (
-        <Box mt={1} display="grid" gridTemplateColumns="auto auto" gridColumnGap={10} gridRowGap={10}>
+        <Box mt={1} display="grid" gridTemplateColumns="auto auto auto" gridColumnGap={10} gridRowGap={10}>
             <TextField
                 label="Version"
                 name="version"
@@ -247,7 +267,6 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                 value={values.version}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                style={{ gridColumnEnd: "span 2" }}
             />
             {/* <TextField
                 label="keywords"
@@ -340,12 +359,12 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched }: I
                 style={{ marginBottom: 3 }}
             />
             <TextField label="Total Cost" value={values.totalCost} name="totalCost" disabled />
-            {values.device === false && (
+            {values.device === false ? (
                 <div>
                     <FormControlLabel
                         style={{ fontSize: "0.7rem" }}
-                        checked={values.bomCostEstimateUse}
-                        name="bomCostEstimateUse"
+                        checked={values.overrideUse}
+                        name="overrideUse"
                         label=" "
                         onChange={handleChange}
                         control={<Checkbox />}
@@ -360,35 +379,39 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched }: I
                         style={{ marginBottom: 3 }}
                     />
                 </div>
+            ) : (
+                <>
+                    {" "}
+                    <TextField
+                        label=" Bom Total Part Cost"
+                        name="bomCost"
+                        placeholder=" Bom Total Part Cost"
+                        value={values.bomCost}
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        style={{ marginBottom: 3 }}
+                    />
+                    <div>
+                        <FormControlLabel
+                            style={{ fontSize: "0.7rem" }}
+                            checked={values.bomCostEstimateUse}
+                            name="bomCostEstimateUse"
+                            label=" "
+                            onChange={handleChange}
+                            control={<Checkbox />}
+                        />
+                        <TextField
+                            label=" Bom Cost Estimate"
+                            name="bomCostEstimate"
+                            placeholder=" Bom Cost Estimate"
+                            value={values.bomCostEstimate}
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            style={{ marginBottom: 3 }}
+                        />
+                    </div>
+                </>
             )}
-            <TextField
-                label=" Bom Total Part Cost"
-                name="bomCost"
-                placeholder=" Bom Total Part Cost"
-                value={values.bomCost}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                style={{ marginBottom: 3 }}
-            />
-            <div>
-                <FormControlLabel
-                    style={{ fontSize: "0.7rem" }}
-                    checked={values.overrideUse}
-                    name="overrideUse"
-                    label=" "
-                    onChange={handleChange}
-                    control={<Checkbox />}
-                />
-                <TextField
-                    label=" Bom Cost Estimate"
-                    name="bomCostEstimate"
-                    placeholder=" Bom Cost Estimate"
-                    value={values.bomCostEstimate}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    style={{ marginBottom: 3 }}
-                />
-            </div>
         </Box>
     );
 };
@@ -537,7 +560,6 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                 value={values.shippingLb}
                 onBlur={handleBlur}
                 onChange={handleChange}
-                style={{ gridColumnEnd: "span 2" }}
             />
             {/* <TextField
                 label="shipping Oz"
@@ -548,7 +570,6 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                 onChange={handleChange}
             /> */}
             <TextField
-                style={{ gridColumnEnd: "span 2" }}
                 fullWidth
                 label="size"
                 placeholder="size"
@@ -559,7 +580,6 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                 value={values.size}
             />
             <TextField
-                style={{ gridColumnEnd: "span 2" }}
                 fullWidth
                 label="Last Ordered Qty"
                 placeholder="Last Ordered Qty"
@@ -570,7 +590,6 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                 value={values.lastOrderedQty}
             />
             <TextField
-                style={{ gridColumnEnd: "span 2" }}
                 label="Recent cost"
                 name="recentCost"
                 placeholder="recentCost"
@@ -617,7 +636,7 @@ export const DynamicFilterAndFields = ({ values = "", handleChange, handleBlur, 
 
 export const LastUsed = ({ values, errors, handleChange, handleBlur, touched, setFieldValue }: IForm) => {
     return (
-        <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10}>
+        <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridColumnGap={10} gridRowGap={10}>
             <TextField
                 name="uom"
                 label="Unit Of Measure"
@@ -659,6 +678,7 @@ export const LastUsed = ({ values, errors, handleChange, handleBlur, touched, se
                 label="lastCount"
                 onChange={(lastCount) => setFieldValue("lastCount", lastCount)}
                 onBlur={handleBlur}
+                format="dd/mm/yyyy"
             />
             <TextField
                 label="last used in 90 days"

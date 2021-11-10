@@ -173,7 +173,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
 
     return (
         <>
-            <SearchBox panel="inventory" />
+            {/* <SearchBox panel="inventory" /> */}
             <BasePaper>
                 <Box height={550}>
                     <DataGrid
