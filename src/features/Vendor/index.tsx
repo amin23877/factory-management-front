@@ -74,7 +74,7 @@ export default function Vendors({ tech }: { tech: boolean }) {
             <VendorTypeModal open={addType} onClose={() => setAddType(false)} />
 
             <Box display="flex">
-                <Box flex={1} m={1}>
+                <Box m={1}>
                     <List>
                         <ListItem>
                             <IconButton onClick={() => setAddVendor(true)} title="Add Vendor">
