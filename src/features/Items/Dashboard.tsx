@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
-import BaseDataGrid, { ScrollDataGrid } from "../../app/BaseDataGrid";
+import BaseDataGrid from "../../app/BaseDataGrid";
 import useSWR from "swr";
 
 import { GridColumns } from "@material-ui/data-grid";
@@ -42,6 +42,7 @@ const Dashboard = () => {
         ],
         []
     );
+
     const onOrderCols = useMemo<GridColumns>(
         () => [
             { field: "Est Receiving Date", disableColumnMenu: true, width: 150 },
@@ -73,6 +74,7 @@ const Dashboard = () => {
         ],
         []
     );
+
     const lowQuantityCols = useMemo<GridColumns>(
         () => [
             { field: "Est Receiving Date", disableColumnMenu: true, width: 150 },
@@ -116,23 +118,21 @@ const Dashboard = () => {
                 <div style={{ flexGrow: 1 }} />
             </Box>
             <BasePaper>
-                <Box height={450}>
-                    {activeTab === 0 && (
-                        <BaseDataGrid
-                            cols={recentlyAddedCols}
-                            rows={
-                                recentlyAddedItems ? recentlyAddedItems.map((r: any, i: any) => ({ ...r, id: i })) : []
-                            }
-                        />
-                    )}
-                    {activeTab === 1 && (
-                        <ScrollDataGrid
-                            cols={onOrderCols}
-                            rows={onOrderItems ? onOrderItems.map((r: any, i: any) => ({ ...r, id: i })) : []}
-                        />
-                    )}
-                    {activeTab === 2 && <ScrollDataGrid cols={lowQuantityCols} rows={[{ id: 1 }]} />}
-                </Box>
+                {activeTab === 0 && (
+                    <BaseDataGrid
+                        height="73vh"
+                        cols={recentlyAddedCols}
+                        rows={recentlyAddedItems ? recentlyAddedItems.map((r: any, i: any) => ({ ...r, id: i })) : []}
+                    />
+                )}
+                {activeTab === 1 && (
+                    <BaseDataGrid
+                        height="73vh"
+                        cols={onOrderCols}
+                        rows={onOrderItems ? onOrderItems.map((r: any, i: any) => ({ ...r, id: i })) : []}
+                    />
+                )}
+                {activeTab === 2 && <BaseDataGrid height="73vh" cols={lowQuantityCols} rows={[{ id: 1 }]} />}
             </BasePaper>
         </>
     );

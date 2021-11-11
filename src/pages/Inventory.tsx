@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Container } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 
 import Dashboard from "../features/Items/Dashboard";
 import Items from "../features/Items";

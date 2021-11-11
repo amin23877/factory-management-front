@@ -7,7 +7,7 @@ export default withStyles((theme) => ({
         top: 70,
 
         display: "inline-flex",
-        flexDirection: "column",
+        flexDirection: "row",
         backgroundColor: "#ffff",
         boxShadow: theme.shadows["4"],
         borderRadius: 50,

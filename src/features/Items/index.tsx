@@ -95,15 +95,12 @@ const Items = () => {
 
             <FieldNFilter open={FieldNFilterModal} onClose={() => setFieldNFilterModal(false)} />
 
-            <Box display="flex" justifyContent="flex-end" alignItems="center">
+            <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1}>
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="List" />
                     <Tab disabled={!selectedItem} label="Details" />
                 </Tabs>
                 <div style={{ flexGrow: 1 }} />
-            </Box>
-
-            <Box display="flex" alignItems="flex-start">
                 <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
                     <ListItem>
                         <IconButton title="Add item" onClick={() => setAddItemModal(true)}>
@@ -124,6 +121,9 @@ const Items = () => {
                         </IconButton>
                     </ListItem>
                 </List>
+            </Box>
+
+            <Box display="flex" alignItems="flex-start">
                 <Box flex={11} ml={2}>
                     {activeTab === 0 && (
                         <ItemTable

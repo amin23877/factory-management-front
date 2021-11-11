@@ -59,26 +59,3 @@ export default function BaseDataGrid({ onRowSelected, rows, cols, height }: IBas
         </div>
     );
 }
-
-export const ScrollDataGrid = ({ onRowSelected, rows, cols, height }: IBaseDataGrid) => {
-    const classes = useDataGridStyles();
-
-    return (
-        // <div
-        //     style={{
-        //         height: height || 450,
-        //     }}
-        // >
-        <DataGrid
-            density="compact"
-            components={{ Toolbar: GridToolbar }}
-            className={classes.root}
-            onRowSelected={(r) => {
-                onRowSelected && onRowSelected(r.data);
-            }}
-            columns={cols}
-            rows={rows}
-        />
-        // </div>
-    );
-};
