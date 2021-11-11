@@ -6,8 +6,9 @@ function CustomDateTimePicker({ ...props }: DateTimePickerProps) {
         <DateTimePicker
             // type="date"
             inputVariant="outlined"
-            InputProps={{ inputProps: { style: { paddingTop: 10.5, paddingBottom: 10.5 } } }}
+            InputProps={{ inputProps: { style: { paddingTop: 10.5, paddingBottom: 10.5, fontSize: "0.8rem" } } }}
             {...props}
+            inputProps={{ style: { fontSize: "0.8rem" } }}
             InputLabelProps={{
                 shrink: true,
             }}

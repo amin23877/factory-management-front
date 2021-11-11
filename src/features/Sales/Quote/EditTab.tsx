@@ -194,7 +194,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
                                         + Add Line Item
                                     </Button>
                                     <BaseDataGrid
-                                        height="55vh"
+                                        height="57.6vh"
                                         cols={LICols}
                                         rows={lineItems || []}
                                         onRowSelected={(r) => {
@@ -204,59 +204,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
                                     />
                                 </>
                             )}
-                            {/* {activeTab === 1 && (
-                                <>
-                                    <Button
-                                        onClick={() => {
-                                            setSelectedLS(undefined);
-                                            setLineServiceModal(true);
-                                        }}
-                                        className={classes.btn}
-                                    >
-                                        + Add Line Service
-                                    </Button>
-                                    <BaseDataGrid
-                                        height="59vh"
-                                        cols={LSCols}
-                                        rows={lineServices || []}
-                                        onRowSelected={(r) => {
-                                            setSelectedLS(r);
-                                            setLineServiceModal(true);
-                                        }}
-                                    />
-                                </>
-                            )}
-                            {activeTab === 2 && (
-                                <>
-                                    <Button
-                                        onClick={() => {
-                                            setSelectedDoc(undefined);
-                                            setDocumentModal(true);
-                                        }}
-                                        className={classes.btn}
-                                    >
-                                        + Add Document
-                                    </Button>
-                                    <BaseDataGrid
-                                        height="59vh"
-                                        cols={docCols}
-                                        rows={documents || []}
-                                        onRowSelected={(r) => {
-                                            setSelectedDoc(r);
-                                            setDocumentModal(true);
-                                        }}
-                                    />
-                                </>
-                            )}
-                            {activeTab === 3 && (
-                                <BaseDataGrid
-                                    cols={quoteHistoryCols}
-                                    rows={[]}
-                                    onRowSelected={() => {}}
-                                    height="59vh"
-                                />
-                            </>
-                        )} */}
+
                             {activeTab === 1 && (
                                 <>
                                     <Button
@@ -269,7 +217,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
                                         + Add Line Service
                                     </Button>
                                     <BaseDataGrid
-                                        height="55vh"
+                                        height="57.6vh"
                                         cols={LSCols}
                                         rows={[]}
                                         onRowSelected={(r) => {
@@ -291,7 +239,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
                                         + Add Document
                                     </Button>
                                     <BaseDataGrid
-                                        height="55vh"
+                                        height="57.6vh"
                                         cols={docCols}
                                         rows={documents || []}
                                         onRowSelected={(r) => {
@@ -306,7 +254,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
                                     cols={quoteHistoryCols}
                                     rows={[]}
                                     onRowSelected={() => {}}
-                                    height="55vh"
+                                    height="63.4vh"
                                 />
                             )}
                             {activeTab === 4 && (
@@ -327,11 +275,11 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
                                             setSelectedNote(r);
                                             setNoteModal(true);
                                         }}
-                                        height="55vh"
+                                        height="57.6vh"
                                     />
                                 </>
                             )}
-                            {activeTab === 5 && <div>Auditing</div>}
+                            {activeTab === 5 && <div style={{ minHeight: "63.4vh" }}>Auditing</div>}
                         </BasePaper>
                     </Box>
                 </Box>

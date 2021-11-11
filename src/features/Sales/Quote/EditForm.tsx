@@ -31,7 +31,7 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
         <Formik initialValues={selectedQuote} onSubmit={handleSubmit}>
             {({ handleChange, handleBlur, values, isSubmitting, setFieldValue }) => (
                 <Form>
-                    <Box display="flex" flexDirection="column" style={{ gap: 7 }} mt={1}>
+                    <Box display="flex" flexDirection="column" style={{ gap: 7, height: "71.6vh" }} mt={1}>
                         <BasePaper>
                             <GeneralForm
                                 edit
@@ -46,7 +46,7 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
                                 </Button>
                             </Box>
                         </BasePaper>
-                        <BasePaper>
+                        <BasePaper style={{ flex: 1 }}>
                             <Tabs
                                 value={activeTab}
                                 textColor="primary"
@@ -58,30 +58,18 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
                                 <Tab label="Entities" />
                                 <Tab label="Commission" />
                             </Tabs>
-                            <Box
-                                style={{
-                                    minHeight: "600",
-                                    overflowY: "auto",
-                                    marginBottom: "auto",
-                                    paddingTop: "1em",
-                                }}
-                            >
-                                {activeTab === 0 && (
-                                    <EntitiesTab
-                                        values={values}
-                                        handleBlur={handleBlur}
-                                        handleChange={handleChange}
-                                        setFieldValue={setFieldValue}
-                                    />
-                                )}
-                                {activeTab === 1 && (
-                                    <CommissionTab
-                                        values={values}
-                                        handleBlur={handleBlur}
-                                        handleChange={handleChange}
-                                    />
-                                )}
-                            </Box>
+
+                            {activeTab === 0 && (
+                                <EntitiesTab
+                                    values={values}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                    setFieldValue={setFieldValue}
+                                />
+                            )}
+                            {activeTab === 1 && (
+                                <CommissionTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                            )}
                         </BasePaper>
                     </Box>
                 </Form>
