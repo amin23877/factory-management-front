@@ -55,7 +55,7 @@ export default function FRU() {
                 disableColumnMenu: true,
                 width: 150,
             },
-            { field: "vendorPartNumber", headerName: "V. Part NO.", width: 100 },
+            { field: "vendorPartNumber", headerName: "V.Part NO.", width: 100 },
             { field: "cost", headerName: "Cost", width: 80 },
             { field: "location", headerName: "Location", width: 100 },
             { field: "qtyOnHand", headerName: "QOH.", width: 80 },
@@ -143,20 +143,22 @@ export default function FRU() {
                             setSelectedItemFru(d);
                             setActiveTab(2);
                         }}
-                        height={450}
+                        height="72vh"
                     />
                 )}
                 {activeTab === 1 && FRUs && (
-                    <BaseDataGrid
-                        height={450}
-                        rows={FRUs.result || []}
-                        cols={callCols}
-                        onRowSelected={(d) => {
-                            setSelectedItemFru(undefined);
-                            setSelectedUnitFru(d);
-                            setActiveTab(2);
-                        }}
-                    />
+                    <BasePaper>
+                        <BaseDataGrid
+                            height="72vh"
+                            rows={FRUs.result || []}
+                            cols={callCols}
+                            onRowSelected={(d) => {
+                                setSelectedItemFru(undefined);
+                                setSelectedUnitFru(d);
+                                setActiveTab(2);
+                            }}
+                        />
+                    </BasePaper>
                 )}
                 {activeTab === 2 && selectedUnitFru && <UnitDetails unit={selectedUnitFru} />}
                 {activeTab === 2 && selectedItemFru && (

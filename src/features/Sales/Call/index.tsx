@@ -4,20 +4,21 @@ import { Box, Tabs, Tab } from "@material-ui/core";
 import useSwr, { mutate } from "swr";
 
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
+import { ListAltRounded, FindInPageRounded } from "@material-ui/icons";
 
 import Confirm from "../../Modals/Confirm";
+import OneFieldModal from "../../../components/OneFieldModal";
 
 import BaseDataGrid from "../../../app/BaseDataGrid";
 import { BasePaper } from "../../../app/Paper";
 import Button from "../../../app/Button";
 
-import CallsTagsModal from "./CallsTags";
 import Details from "./Details";
 import AddCallModal from "./CallModal";
 
 import { formatTimestampToDate } from "../../../logic/date";
 import { deleteCall } from "../../../api/calls";
-import { ListAltRounded, FindInPageRounded } from "@material-ui/icons";
+import { addCallsTag, deleteCallsTag, editCallsTag } from "../../../api/callsTags";
 
 export default function Calls() {
     const [activeTab, setActiveTab] = useState(0);
@@ -78,7 +79,17 @@ export default function Calls() {
 
     return (
         <Box>
-            <CallsTagsModal open={CTagModal} onClose={() => setCTagModal(false)} />
+            {/* <CallsTagsModal open={CTagModal} onClose={() => setCTagModal(false)} /> */}
+
+            <OneFieldModal
+                title="Add/Edit Calls Tags"
+                getUrl="/callsTags"
+                open={CTagModal}
+                onClose={() => setCTagModal(false)}
+                postRecord={addCallsTag}
+                updateRecord={editCallsTag}
+                deleteRecord={deleteCallsTag}
+            />
             <AddCallModal open={addCall} onClose={() => setAddCall(false)} />
             <Confirm
                 open={confirm}

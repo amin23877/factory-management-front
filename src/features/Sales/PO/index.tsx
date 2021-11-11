@@ -172,25 +172,15 @@ export default function POPanel() {
                 >
                     Delete PO
                 </Button>
-                {/* {activeTab === 1 && (
-                    <Button kind="add" onClick={() => setNoteModal(true)}>
-                        Add note
-                    </Button>
-                )}
-                {activeTab === 1 && (
-                    <Button
-                        style={{ backgroundColor: "#1a73e8", color: "#fff", marginLeft: "5px" }}
-                        onClick={() => setDocModal(true)}
-                        startIcon={<AddRoundedIcon />}
-                    >
-                        Add document
-                    </Button>
-                )} */}
             </Box>
             <BasePaper>
-                <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                <Tabs
+                    value={activeTab}
+                    style={{ marginBottom: 10 }}
+                    textColor="primary"
+                    onChange={(e, nv) => setActiveTab(nv)}
+                >
                     <Tab
-                        // label="List"
                         icon={
                             <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                 <ListAltRounded style={{ marginRight: "5px" }} /> List
@@ -199,7 +189,6 @@ export default function POPanel() {
                         wrapped
                     />
                     <Tab
-                        // label="Details"
                         disabled={!selectedPO}
                         icon={
                             <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>

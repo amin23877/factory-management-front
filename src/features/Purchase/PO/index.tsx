@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-
 import Box from "@material-ui/core/Box";
 import ListItem from "@material-ui/core/ListItem";
 import IconButton from "@material-ui/core/IconButton";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { AddRounded, DeleteRounded, PrintRounded, LocalOfferRounded, PostAddRounded } from "@material-ui/icons";
+import { GridColDef } from "@material-ui/data-grid";
 
 import List from "../../../app/SideUtilityList";
 import BaseDataGrid from "../../../app/BaseDataGrid";
-import { GridColDef } from "@material-ui/data-grid";
+import { BasePaper } from "../../../app/Paper";
 
 import AddPOModal from "./AddPurchasePO";
 import AddLineItem from "../../LineItem";
@@ -146,7 +146,7 @@ function Index() {
     }, [activeTab]);
 
     return (
-        <Box display="grid" gridTemplateColumns="1fr 11fr">
+        <>
             <AddPOModal
                 initialData={compPo}
                 open={addPO}
@@ -197,93 +197,100 @@ function Index() {
                 />
             )}
 
-            <Box>
-                <List>
-                    <ListItem>
-                        <IconButton
-                            onClick={() => {
-                                setSelPO(undefined);
-                                setAddPO(true);
-                            }}
-                        >
-                            <AddRounded />
-                        </IconButton>
-                    </ListItem>
-                    <ListItem>
-                        <IconButton onClick={() => setConfirm(true)}>
-                            <DeleteRounded />
-                        </IconButton>
-                    </ListItem>
-                    <ListItem>
-                        <IconButton onClick={() => setAddType(true)} title="Add PO Types">
-                            <LocalOfferRounded />
-                        </IconButton>
-                    </ListItem>
-                    {activeTab === 1 && (
-                        <>
+            <BasePaper>
+                <Box display="flex">
+                    <Box>
+                        <List>
                             <ListItem>
                                 <IconButton
                                     onClick={() => {
-                                        setCompPo({ ...selPO, lines });
+                                        setSelPO(undefined);
                                         setAddPO(true);
                                     }}
-                                    title="Add new PO based on this PO"
                                 >
-                                    <PostAddRounded />
+                                    <AddRounded />
                                 </IconButton>
                             </ListItem>
-                        </>
-                    )}
-                    <ListItem>
-                        <IconButton>
-                            <PrintRounded />
-                        </IconButton>
-                    </ListItem>
-                </List>
-            </Box>
-            <Box>
-                <Tabs
-                    textColor="primary"
-                    style={{ marginBottom: "1em" }}
-                    value={activeTab}
-                    onChange={(e, nv) => setActiveTab(nv)}
-                >
-                    <Tab label="List" />
-                    <Tab label="Details" disabled={!selPO} />
-                </Tabs>
-                {activeTab === 0 && (
-                    <BaseDataGrid
-                        cols={cols}
-                        rows={pos}
-                        onRowSelected={(d) => {
-                            setSelPO(d);
-                            setActiveTab(1);
-                        }}
-                    />
-                )}
-                {activeTab === 1 && selPO && (
-                    <Details
-                        initialValues={selPO}
-                        onDone={refreshPOs}
-                        lines={lines}
-                        notes={notes}
-                        docs={docs}
-                        onNoteSelected={(d) => {
-                            setSelNote(d);
-                            setNoteModal(true);
-                        }}
-                        onDocumentSelected={(d) => {
-                            setSelDoc(d);
-                            setDocModal(true);
-                        }}
-                        onLineSelected={(d) => {
-                            setSelectedLine(d);
-                            setAddLineItem(true);
-                        }}
-                    />
-                )}
-            </Box>
-        </Box>
+                            <ListItem>
+                                <IconButton onClick={() => setConfirm(true)}>
+                                    <DeleteRounded />
+                                </IconButton>
+                            </ListItem>
+                            <ListItem>
+                                <IconButton onClick={() => setAddType(true)} title="Add PO Types">
+                                    <LocalOfferRounded />
+                                </IconButton>
+                            </ListItem>
+                            {activeTab === 1 && (
+                                <>
+                                    <ListItem>
+                                        <IconButton
+                                            onClick={() => {
+                                                setCompPo({ ...selPO, lines });
+                                                setAddPO(true);
+                                            }}
+                                            title="Add new PO based on this PO"
+                                        >
+                                            <PostAddRounded />
+                                        </IconButton>
+                                    </ListItem>
+                                </>
+                            )}
+                            <ListItem>
+                                <IconButton>
+                                    <PrintRounded />
+                                </IconButton>
+                            </ListItem>
+                        </List>
+                    </Box>
+                    <Box flex={1} flexGrow={1} ml={2}>
+                        <Tabs
+                            textColor="primary"
+                            style={{ marginBottom: "1em" }}
+                            value={activeTab}
+                            onChange={(e, nv) => setActiveTab(nv)}
+                        >
+                            <Tab label="List" />
+                            <Tab label="Details" disabled={!selPO} />
+                        </Tabs>
+                        {activeTab === 0 && (
+                            <BasePaper>
+                                <BaseDataGrid
+                                    height="74vh"
+                                    cols={cols}
+                                    rows={pos}
+                                    onRowSelected={(d) => {
+                                        setSelPO(d);
+                                        setActiveTab(1);
+                                    }}
+                                />
+                            </BasePaper>
+                        )}
+                        {activeTab === 1 && selPO && (
+                            <Details
+                                initialValues={selPO}
+                                onDone={refreshPOs}
+                                lines={lines}
+                                notes={notes}
+                                docs={docs}
+                                onNoteSelected={(d) => {
+                                    setSelNote(d);
+                                    setNoteModal(true);
+                                }}
+                                onDocumentSelected={(d) => {
+                                    setSelDoc(d);
+                                    setDocModal(true);
+                                }}
+                                onLineSelected={(d) => {
+                                    setSelectedLine(d);
+                                    setAddLineItem(true);
+                                }}
+                            />
+                        )}
+                    </Box>
+                </Box>
+            </BasePaper>
+        </>
     );
 }
 

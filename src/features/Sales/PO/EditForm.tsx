@@ -41,7 +41,7 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                     <Form>
                         <Box display="flex" flexDirection="column" style={{ gap: 10 }}>
                             <Box flex={1}>
-                                <BasePaper style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", margin: "0 1em " }}>
+                                <BasePaper style={{ margin: "0 1em " }}>
                                     <GeneralForm
                                         onChangeInit={setValues}
                                         values={values}
@@ -64,7 +64,6 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                             <Box flex={3}>
                                 <BasePaper
                                     style={{
-                                        boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
                                         margin: "0 1em",
                                         height: "100%",
                                     }}

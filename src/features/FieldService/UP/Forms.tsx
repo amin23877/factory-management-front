@@ -4,7 +4,7 @@ import { DateTimePicker } from "@material-ui/pickers";
 
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
-import { formatTimestampToDate } from "../../../logic/date";
+// import { formatTimestampToDate } from "../../../logic/date";
 import { ArraySelect } from "../../../app/Inputs";
 
 interface IForm {
@@ -123,6 +123,7 @@ export const General = ({
                     label="Actual ship date"
                     onChange={(date) => setFieldValue("actualShipDate", date)}
                     onBlur={handleBlur}
+                    inputProps={{ style: { fontSize: "0.8rem" } }}
                 />
                 <TextField
                     label="Last System Test Run"

@@ -31,7 +31,7 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
         <Formik initialValues={selectedQuote} onSubmit={handleSubmit}>
             {({ handleChange, handleBlur, values, isSubmitting, setFieldValue }) => (
                 <Form>
-                    <Box display="flex" flexDirection="column" style={{ gap: 10 }} mt={1}>
+                    <Box display="flex" flexDirection="column" style={{ gap: 7 }} mt={1}>
                         <BasePaper>
                             <GeneralForm
                                 edit

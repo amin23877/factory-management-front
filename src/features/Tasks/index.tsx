@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box, Button, Container, Grid, Paper, Typography } from "@material-ui/core";
+import { Box, Button, Grid, Paper, Typography } from "@material-ui/core";
 import FullCalendar, { EventClickArg, EventDropArg } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, { Draggable, DropArg } from "@fullcalendar/interaction";
 
 import { BasePaper } from "../../app/Paper";
-import { changeTaskDate, getTasks, ITask, updateTask } from "../../api/task";
+import { changeTaskDate, getTasks, ITask } from "../../api/task";
 import TaskModal from "../../features/Tasks/TaskModal";
 
 export default function Tasks() {
@@ -65,7 +65,7 @@ export default function Tasks() {
     const handleChangeEventDate = async (e: EventDropArg) => {
         try {
             if (e.event.start?.toString()) {
-                const resp = await changeTaskDate(e.event.id, e.event.start?.toString());
+                await changeTaskDate(e.event.id, e.event.start?.toString());
             }
         } catch (error) {
             console.log(error);
@@ -89,7 +89,7 @@ export default function Tasks() {
     };
 
     return (
-        <Container>
+        <>
             <TaskModal
                 open={taskModal}
                 onClose={() => setTaskModal(false)}
@@ -140,6 +140,6 @@ export default function Tasks() {
                     </BasePaper>
                 </Grid>
             </Grid>
-        </Container>
+        </>
     );
 }

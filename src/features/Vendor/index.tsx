@@ -16,6 +16,7 @@ import { deleteVendor, IVendor } from "../../api/vendor";
 import VendorTypeModal from "./VendorType";
 import FullDataGrid from "../../components/Datagrid/FullDataGrid";
 import { mutate } from "swr";
+import { BasePaper } from "../../app/Paper";
 
 export default function Vendors({ tech }: { tech: boolean }) {
     const [activeTab, setActiveTab] = useState(0);
@@ -55,7 +56,7 @@ export default function Vendors({ tech }: { tech: boolean }) {
     ];
 
     return (
-        <Box>
+        <>
             <VendorModal
                 tech={Boolean(tech)}
                 open={addVendor}
@@ -73,67 +74,75 @@ export default function Vendors({ tech }: { tech: boolean }) {
             )}
             <VendorTypeModal open={addType} onClose={() => setAddType(false)} />
 
-            <Box display="flex">
-                <Box m={1}>
-                    <List>
-                        <ListItem>
-                            <IconButton onClick={() => setAddVendor(true)} title="Add Vendor">
-                                <AddRounded />
-                            </IconButton>
-                        </ListItem>
-                        <ListItem>
-                            <IconButton
-                                disabled={!selectedVendor}
-                                onClick={() => setConfirm(true)}
-                                title="delete Vendor"
-                            >
-                                <DeleteRounded />
-                            </IconButton>
-                        </ListItem>
-                        <ListItem>
-                            <IconButton onClick={() => setAddType(true)} title="Add VendorType">
-                                <LocalOfferRounded />
-                            </IconButton>
-                        </ListItem>
-                        <ListItem>
-                            <IconButton
-                                disabled={!selectedVendor}
-                                onClick={() => setVendingModal(true)}
-                                title="Add Item"
-                            >
-                                <PostAdd />
-                            </IconButton>
-                        </ListItem>
+            <BasePaper>
+                <Box display="flex">
+                    <Box>
+                        <List>
+                            <ListItem>
+                                <IconButton onClick={() => setAddVendor(true)} title="Add Vendor">
+                                    <AddRounded />
+                                </IconButton>
+                            </ListItem>
+                            <ListItem>
+                                <IconButton
+                                    disabled={!selectedVendor}
+                                    onClick={() => setConfirm(true)}
+                                    title="delete Vendor"
+                                >
+                                    <DeleteRounded />
+                                </IconButton>
+                            </ListItem>
+                            <ListItem>
+                                <IconButton onClick={() => setAddType(true)} title="Add VendorType">
+                                    <LocalOfferRounded />
+                                </IconButton>
+                            </ListItem>
+                            <ListItem>
+                                <IconButton
+                                    disabled={!selectedVendor}
+                                    onClick={() => setVendingModal(true)}
+                                    title="Add Item"
+                                >
+                                    <PostAdd />
+                                </IconButton>
+                            </ListItem>
 
-                        <ListItem>
-                            <IconButton>
-                                <PrintRounded />
-                            </IconButton>
-                        </ListItem>
-                    </List>
-                </Box>
-                <Box flex={11} mt={1}>
-                    <Box display="flex">
-                        <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="primary">
-                            <Tab label="List" />
-                            <Tab label="Details" disabled={!selectedVendor} />
-                        </Tabs>
-                        <div style={{ flexGrow: 1 }} />
+                            <ListItem>
+                                <IconButton>
+                                    <PrintRounded />
+                                </IconButton>
+                            </ListItem>
+                        </List>
                     </Box>
-                    {activeTab === 0 && (
-                        <FullDataGrid
-                            url="/vendor"
-                            columns={cols}
-                            defaultQueries={{ tech }}
-                            onRowSelected={(d) => {
-                                setSelectedVendor(d.data as any);
-                                setActiveTab(1);
-                            }}
-                        />
-                    )}
-                    {activeTab === 1 && selectedVendor && <Details vendor={selectedVendor} />}
+                    <Box flex={1} flexGrow={1} ml={2}>
+                        <Box display="flex">
+                            <Tabs
+                                style={{ marginBottom: 10 }}
+                                value={activeTab}
+                                onChange={(e, nv) => setActiveTab(nv)}
+                                textColor="primary"
+                            >
+                                <Tab label="List" />
+                                <Tab label="Details" disabled={!selectedVendor} />
+                            </Tabs>
+                            <div style={{ flexGrow: 1 }} />
+                        </Box>
+                        {activeTab === 0 && (
+                            <FullDataGrid
+                                height="72vh"
+                                url="/vendor"
+                                columns={cols}
+                                defaultQueries={{ tech }}
+                                onRowSelected={(d) => {
+                                    setSelectedVendor(d.data as any);
+                                    setActiveTab(1);
+                                }}
+                            />
+                        )}
+                        {activeTab === 1 && selectedVendor && <Details vendor={selectedVendor} />}
+                    </Box>
                 </Box>
-            </Box>
-        </Box>
+            </BasePaper>
+        </>
     );
 }

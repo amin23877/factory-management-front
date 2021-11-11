@@ -26,7 +26,7 @@ import {
     removeServiceFromLineitem,
     // updateFieldService,
 } from "../../api/fieldService";
-import { getServiceFamilies } from "../../api/serviceFamily";
+import { getServiceClasses } from "../../api/serviceClass";
 
 export const LineItemFSForm = ({ LineItem }: { LineItem: ILineItem }) => {
     const [snack, setSnack] = useState(false);
@@ -181,15 +181,15 @@ export default function FieldServiceForm({
                 disabled={Boolean(device)}
             />
             <FieldSelect
-                request={getServiceFamilies}
+                request={getServiceClasses}
                 itemTitleField="name"
                 itemValueField="id"
-                label="Service family"
-                name="ServiceFamilyId"
-                value={device ? "60efd0bcca0feadc84be6618" : values.ServiceFamilyId}
+                label="Service Class"
+                name="ServiceClassId"
+                value={device ? "60efd0bcca0feadc84be6618" : values.ServiceClassId}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={Boolean(errors.ServiceFamilyId)}
+                error={Boolean(errors.ServiceClassId)}
                 fullWidth
                 disabled={Boolean(device)}
             />
