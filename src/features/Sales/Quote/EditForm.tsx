@@ -31,7 +31,7 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
         <Formik initialValues={selectedQuote} onSubmit={handleSubmit}>
             {({ handleChange, handleBlur, values, isSubmitting, setFieldValue }) => (
                 <Form>
-                    <Box display="flex" flexDirection="column" style={{ gap: 10 }}>
+                    <Box display="flex" flexDirection="column" style={{ gap: 10 }} mt={1}>
                         <BasePaper>
                             <GeneralForm
                                 edit
@@ -58,7 +58,14 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
                                 <Tab label="Entities" />
                                 <Tab label="Commission" />
                             </Tabs>
-                            <Box style={{ minHeight: "600", overflowY: "auto", marginBottom: "auto" }}>
+                            <Box
+                                style={{
+                                    minHeight: "600",
+                                    overflowY: "auto",
+                                    marginBottom: "auto",
+                                    paddingTop: "1em",
+                                }}
+                            >
                                 {activeTab === 0 && (
                                     <EntitiesTab
                                         values={values}

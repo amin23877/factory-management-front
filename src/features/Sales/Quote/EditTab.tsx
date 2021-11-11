@@ -180,100 +180,107 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
                         <Tab label="Note" />
                         <Tab label="Auditing" />
                     </Tabs>
-                    <BasePaper>
-                        {activeTab === 0 && (
-                            <>
-                                <Button
-                                    onClick={() => {
-                                        setSelectedLI(undefined);
-                                        setLineItemModal(true);
-                                    }}
-                                    className={classes.btn}
-                                >
-                                    + Add Line Item
-                                </Button>
+                    <Box p={1}>
+                        <BasePaper>
+                            {activeTab === 0 && (
+                                <>
+                                    <Button
+                                        onClick={() => {
+                                            setSelectedLI(undefined);
+                                            setLineItemModal(true);
+                                        }}
+                                        className={classes.btn}
+                                    >
+                                        + Add Line Item
+                                    </Button>
+                                    <BaseDataGrid
+                                        height="59vh"
+                                        cols={LICols}
+                                        rows={lineItems || []}
+                                        onRowSelected={(r) => {
+                                            setSelectedLI(r);
+                                            setLineItemModal(true);
+                                        }}
+                                    />
+                                </>
+                            )}
+                            {activeTab === 1 && (
+                                <>
+                                    <Button
+                                        onClick={() => {
+                                            setSelectedLS(undefined);
+                                            setLineServiceModal(true);
+                                        }}
+                                        className={classes.btn}
+                                    >
+                                        + Add Line Service
+                                    </Button>
+                                    <BaseDataGrid
+                                        height="59vh"
+                                        cols={LSCols}
+                                        rows={lineServices || []}
+                                        onRowSelected={(r) => {
+                                            setSelectedLS(r);
+                                            setLineServiceModal(true);
+                                        }}
+                                    />
+                                </>
+                            )}
+                            {activeTab === 2 && (
+                                <>
+                                    <Button
+                                        onClick={() => {
+                                            setSelectedDoc(undefined);
+                                            setDocumentModal(true);
+                                        }}
+                                        className={classes.btn}
+                                    >
+                                        + Add Document
+                                    </Button>
+                                    <BaseDataGrid
+                                        height="59vh"
+                                        cols={docCols}
+                                        rows={documents || []}
+                                        onRowSelected={(r) => {
+                                            setSelectedDoc(r);
+                                            setDocumentModal(true);
+                                        }}
+                                    />
+                                </>
+                            )}
+                            {activeTab === 3 && (
                                 <BaseDataGrid
-                                    height="59vh"
-                                    cols={LICols}
-                                    rows={lineItems || []}
-                                    onRowSelected={(r) => {
-                                        setSelectedLI(r);
-                                        setLineItemModal(true);
-                                    }}
-                                />
-                            </>
-                        )}
-                        {activeTab === 1 && (
-                            <>
-                                <Button
-                                    onClick={() => {
-                                        setSelectedLS(undefined);
-                                        setLineServiceModal(true);
-                                    }}
-                                    className={classes.btn}
-                                >
-                                    + Add Line Service
-                                </Button>
-                                <BaseDataGrid
-                                    height="59vh"
-                                    cols={LSCols}
-                                    rows={lineServices || []}
-                                    onRowSelected={(r) => {
-                                        setSelectedLS(r);
-                                        setLineServiceModal(true);
-                                    }}
-                                />
-                            </>
-                        )}
-                        {activeTab === 2 && (
-                            <>
-                                <Button
-                                    onClick={() => {
-                                        setSelectedDoc(undefined);
-                                        setDocumentModal(true);
-                                    }}
-                                    className={classes.btn}
-                                >
-                                    + Add Document
-                                </Button>
-                                <BaseDataGrid
-                                    height="59vh"
-                                    cols={docCols}
-                                    rows={documents || []}
-                                    onRowSelected={(r) => {
-                                        setSelectedDoc(r);
-                                        setDocumentModal(true);
-                                    }}
-                                />
-                            </>
-                        )}
-                        {activeTab === 3 && (
-                            <BaseDataGrid cols={quoteHistoryCols} rows={[]} onRowSelected={() => {}} height="59vh" />
-                        )}
-                        {activeTab === 4 && (
-                            <>
-                                <Button
-                                    onClick={() => {
-                                        setSelectedNote(undefined);
-                                        setNoteModal(true);
-                                    }}
-                                    className={classes.btn}
-                                >
-                                    + Add Note
-                                </Button>
-                                <BaseDataGrid
-                                    cols={noteCols}
-                                    rows={notes || []}
-                                    onRowSelected={(r) => {
-                                        setSelectedNote(r);
-                                        setNoteModal(true);
-                                    }}
+                                    cols={quoteHistoryCols}
+                                    rows={[]}
+                                    onRowSelected={() => {}}
                                     height="59vh"
                                 />
-                            </>
-                        )}
-                        {activeTab === 5 && <div>Auditing</div>}
-                    </BasePaper>
+                            )}
+                            {activeTab === 4 && (
+                                <>
+                                    <Button
+                                        onClick={() => {
+                                            setSelectedNote(undefined);
+                                            setNoteModal(true);
+                                        }}
+                                        className={classes.btn}
+                                    >
+                                        + Add Note
+                                    </Button>
+                                    <BaseDataGrid
+                                        cols={noteCols}
+                                        rows={notes || []}
+                                        onRowSelected={(r) => {
+                                            setSelectedNote(r);
+                                            setNoteModal(true);
+                                        }}
+                                        height="59vh"
+                                    />
+                                </>
+                            )}
+                            {activeTab === 5 && <div>Auditing</div>}
+                        </BasePaper>
+                    </Box>
                 </Box>
             </Box>
         </Box>
