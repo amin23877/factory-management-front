@@ -19,8 +19,8 @@ const Inventory = () => {
                     orientation="vertical"
                     style={{ marginRight: "1em", position: "sticky", top: 65 }}
                 >
-                    <MyTab color="primary" label="Dashboard" />
-                    <MyTab label="Items" />
+                    <MyTab color="primary" label="+ Dashboard" />
+                    <MyTab label="+ Items" />
                 </MyTabs>
                 <Box flex={1}>
                     {mainTab === 0 && <Dashboard />}

@@ -167,7 +167,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
                 mutateField="QuoteId"
                 selectedLine={selectedLS}
             />
-            <Box pb="8px" display="flex" style={{ gap: 10 }}>
+            <Box display="flex" style={{ gap: 10 }}>
                 <Box flex={3}>
                     <EditForm selectedQuote={selectedQuote} />
                 </Box>

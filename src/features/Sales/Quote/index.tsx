@@ -49,7 +49,7 @@ export default function QuotePanel() {
             <AddQuote open={addQ} onClose={() => setAddQ(false)} initialData={compQ} onDone={() => {}} />
             <ReqQuoteModal open={reqQuote} onClose={() => setReqQuote(false)} />
             <EmailModal open={emailModal} onClose={() => setEmailModal(false)} />
-            <Box mb={2} display="flex" alignItems="center" style={{ gap: 10 }}>
+            <Box display="flex" alignItems="center" style={{ gap: 10 }}>
                 <Button
                     style={{
                         backgroundColor: "#1a73e8",
