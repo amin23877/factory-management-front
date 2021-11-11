@@ -341,7 +341,7 @@ function ItemsDetails({
             <Formik initialValues={selectedRow} validationSchema={AddItemSchema} onSubmit={handleSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
                     <Form>
-                        <Grid container spacing={2}>
+                        <Grid container>
                             <Grid item md={4} xs={12}>
                                 <Box display="flex" flexDirection="column" style={{ gap: 10 }}>
                                     <BasePaper>
@@ -580,7 +580,7 @@ function ItemsDetails({
                                             )}
                                         </Box>
                                     ) : (
-                                        <Box p={3}>
+                                        <Box p={1}>
                                             {activeTab === 0 && (
                                                 <BaseDataGrid
                                                     cols={docCols}
@@ -590,7 +590,7 @@ function ItemsDetails({
                                             )}
 
                                             {activeTab === 1 && (
-                                                <Box>
+                                                <>
                                                     <Button onClick={() => setAddService(true)} variant="outlined">
                                                         Add Warranty
                                                     </Button>
@@ -599,7 +599,7 @@ function ItemsDetails({
                                                         rows={warranties || []}
                                                         onRowSelected={(d) => {}}
                                                     />
-                                                </Box>
+                                                </>
                                             )}
 
                                             {activeTab === 2 && <SalesReport />}
