@@ -1,5 +1,5 @@
-import React, { useMemo, useState, useRef, Fragment } from "react";
-import { Box, Grid, Tabs, Tab, LinearProgress, Typography } from "@material-ui/core";
+import React, { useMemo, useState, useRef } from "react";
+import { Box, Tabs, Tab, LinearProgress, Typography } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
@@ -190,33 +190,6 @@ function ItemsDetails({
         ],
         []
     );
-    // Items	Revision	Revision Date	BOM Name	Note	Current
-    // const bomCols = useMemo<GridColDef[]>(
-    //     () => [
-    //         { field: "items", headerName: "Items", width: 100 },
-    //         { field: "revision", headerName: "Revision", width: 100 },
-    //         {
-    //             field: "date",
-    //             headerName: "Revision Date",
-    //             valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-    //             width: 120,
-    //         },
-    //         { field: "name", headerName: "Name", flex: 1 },
-    //         { field: "note", headerName: "Note", flex: 1 },
-    //         { field: "current", headerName: "Current", type: "boolean", width: 100 },
-    //     ],
-    //     []
-    // );
-
-    // const usesCols = useMemo<GridColDef[]>(
-    //     () => [
-    //         { field: "no", headerName: "NO.", width: 120 },
-    //         { field: "name", headerName: "Name", width: 180 },
-    //         { field: "note", headerName: "Note", flex: 1 },
-    //         { field: "current", headerName: "Current", type: "boolean" },
-    //     ],
-    //     []
-    // );
 
     const usageCols = useMemo<GridColDef[]>(
         () => [
@@ -298,7 +271,7 @@ function ItemsDetails({
     }
 
     return (
-        <Box>
+        <>
             <NoteModal
                 itemId={selectedRow.id as any}
                 model="item"
@@ -330,11 +303,115 @@ function ItemsDetails({
             <Formik initialValues={selectedRow} validationSchema={AddItemSchema} onSubmit={handleSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
                     <Form>
-                        <Box pb="8px" display="flex" style={{ gap: 10 }}>
-                            <Box flex={3}>
-                                <Box display="flex" flexDirection="column" style={{ gap: 10 }}>
-                                    <BasePaper>
-                                        <General
+                        <Box
+                            pb="8px"
+                            display="grid"
+                            gridTemplateColumns="1fr 2fr"
+                            gridTemplateRows="340px 1fr"
+                            gridGap={5}
+                        >
+                            <BasePaper style={{ maxHeight: 340 }}>
+                                <General
+                                    values={values}
+                                    handleChange={handleChange}
+                                    handleBlur={handleBlur}
+                                    setFieldValue={setFieldValue}
+                                    errors={errors}
+                                    touched={touched}
+                                />
+
+                                <Button style={{ margin: "10px 0px", width: "100%" }} kind="edit" type="submit">
+                                    Save
+                                </Button>
+                            </BasePaper>
+                            <BasePaper
+                                style={{
+                                    height: "100%",
+                                    display: "flex",
+                                    flexDirection: "column",
+                                }}
+                            >
+                                <Tabs
+                                    style={{ marginBottom: 16, maxWidth: "35vw" }}
+                                    value={moreInfoTab}
+                                    variant="scrollable"
+                                    textColor="primary"
+                                    onChange={(e, v) => setMoreInfoTab(v)}
+                                >
+                                    <Tab label="Image" /> 0
+                                    <Tab label="UPC" /> 1
+                                    <Tab label="More Info." /> 2
+                                    <Tab label="Quantity" /> 3
+                                    <Tab label="Pricing" /> 4
+                                    <Tab label="Shipping" /> 5
+                                    <Tab label="Clusters and Levels" /> 6
+                                </Tabs>
+                                {moreInfoTab === 0 && (
+                                    <Box
+                                        mt={1}
+                                        height="100%"
+                                        display="flex"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        flexDirection="column"
+                                        gridGap={10}
+                                    >
+                                        {selectedRow?.photo && (
+                                            <img
+                                                style={{
+                                                    maxWidth: "100%",
+                                                    height: "auto",
+                                                    maxHeight: 400,
+                                                    margin: "0px auto",
+                                                }}
+                                                alt=""
+                                                src={img ? img : `http://${host}${selectedRow?.photo}`}
+                                            />
+                                        )}
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                width: "100%",
+                                                justifyContent: "center",
+                                            }}
+                                        >
+                                            <UploadButton onChange={handleFileChange} accept="image/*" />
+                                        </div>
+                                    </Box>
+                                )}
+                                {moreInfoTab === 1 && (
+                                    <Box display="flex" justifyContent="space-around" alignItems="center">
+                                        <div ref={(e) => (qrCode.current = e)}>
+                                            <QRCode number={selectedRow.no} />
+                                            <Typography variant="subtitle1">Device Number: {selectedRow.no}</Typography>
+                                            <Typography variant="subtitle1">Device Name: {selectedRow.name}</Typography>
+                                        </div>
+                                        <Button
+                                            variant="contained"
+                                            onClick={async () => {
+                                                if (qrCode.current) {
+                                                    await exportPdf(qrCode.current);
+                                                }
+                                            }}
+                                        >
+                                            Print
+                                        </Button>
+                                    </Box>
+                                )}
+
+                                {moreInfoTab === 2 && (
+                                    <MoreInfo
+                                        values={values}
+                                        handleChange={handleChange}
+                                        handleBlur={handleBlur}
+                                        setFieldValue={setFieldValue}
+                                        errors={errors}
+                                        touched={touched}
+                                    />
+                                )}
+                                {moreInfoTab === 3 && (
+                                    <>
+                                        <LastUsed
                                             values={values}
                                             handleChange={handleChange}
                                             handleBlur={handleBlur}
@@ -342,152 +419,48 @@ function ItemsDetails({
                                             errors={errors}
                                             touched={touched}
                                         />
-
-                                        <Button style={{ margin: "10px 0px", width: "100%" }} kind="edit" type="submit">
-                                            Save
-                                        </Button>
-                                    </BasePaper>
-                                    <BasePaper
-                                        style={{
-                                            height: "100%",
-                                            display: "flex",
-                                            flexDirection: "column",
-                                        }}
-                                    >
-                                        <Tabs
-                                            style={{ marginBottom: 16, maxWidth: "35vw" }}
-                                            value={moreInfoTab}
-                                            variant="scrollable"
-                                            textColor="primary"
-                                            onChange={(e, v) => setMoreInfoTab(v)}
-                                        >
-                                            <Tab label="Image" /> 0
-                                            <Tab label="UPC" /> 1
-                                            <Tab label="More Info." /> 2
-                                            <Tab label="Quantity" /> 3
-                                            <Tab label="Pricing" /> 4
-                                            <Tab label="Shipping" /> 5
-                                            <Tab label="Clusters and Levels" /> 6
-                                        </Tabs>
-                                        {moreInfoTab === 0 && (
-                                            <Box
-                                                mt={1}
-                                                height="100%"
-                                                display="flex"
-                                                justifyContent="center"
-                                                alignItems="center"
-                                                flexDirection="column"
-                                                gridGap={10}
-                                            >
-                                                {selectedRow?.photo && (
-                                                    <img
-                                                        style={{
-                                                            maxWidth: "100%",
-                                                            height: "auto",
-                                                            maxHeight: 400,
-                                                            margin: "0px auto",
-                                                        }}
-                                                        alt=""
-                                                        src={img ? img : `http://${host}${selectedRow?.photo}`}
-                                                    />
-                                                )}
-                                                <div
-                                                    style={{
-                                                        display: "flex",
-                                                        width: "100%",
-                                                        justifyContent: "center",
-                                                    }}
-                                                >
-                                                    <UploadButton onChange={handleFileChange} accept="image/*" />
-                                                </div>
-                                            </Box>
-                                        )}
-                                        {moreInfoTab === 1 && (
-                                            <Box display="flex" justifyContent="space-around" alignItems="center">
-                                                <div ref={(e) => (qrCode.current = e)}>
-                                                    <QRCode number={selectedRow.no} />
-                                                    <Typography variant="subtitle1">
-                                                        Device Number: {selectedRow.no}
-                                                    </Typography>
-                                                    <Typography variant="subtitle1">
-                                                        Device Name: {selectedRow.name}
-                                                    </Typography>
-                                                </div>
-                                                <Button
-                                                    variant="contained"
-                                                    onClick={async () => {
-                                                        if (qrCode.current) {
-                                                            await exportPdf(qrCode.current);
-                                                        }
-                                                    }}
-                                                >
-                                                    Print
-                                                </Button>
-                                            </Box>
-                                        )}
-
-                                        {moreInfoTab === 2 && (
-                                            <MoreInfo
-                                                values={values}
-                                                handleChange={handleChange}
-                                                handleBlur={handleBlur}
-                                                setFieldValue={setFieldValue}
-                                                errors={errors}
-                                                touched={touched}
-                                            />
-                                        )}
-                                        {moreInfoTab === 3 && (
-                                            <Fragment>
-                                                <LastUsed
-                                                    values={values}
-                                                    handleChange={handleChange}
-                                                    handleBlur={handleBlur}
-                                                    setFieldValue={setFieldValue}
-                                                    errors={errors}
-                                                    touched={touched}
-                                                />
-                                                <hr style={{ width: "100%" }} />
-                                                <Quantity
-                                                    values={values}
-                                                    handleChange={handleChange}
-                                                    handleBlur={handleBlur}
-                                                    setFieldValue={setFieldValue}
-                                                    errors={errors}
-                                                    touched={touched}
-                                                    itemId={selectedRow.id}
-                                                    handleManualCount={() => setManualCountModal(true)}
-                                                    handleUpdateQuantity={() => setQuantityModal(true)}
-                                                />
-                                            </Fragment>
-                                        )}
-                                        {moreInfoTab === 4 && (
-                                            <>
-                                                <BaseDataGrid
-                                                    rows={selectedRow?.pricing || []}
-                                                    cols={pricingCols}
-                                                    height={220}
-                                                />
-                                                <Pricing
-                                                    values={values}
-                                                    handleChange={handleChange}
-                                                    handleBlur={handleBlur}
-                                                    setFieldValue={setFieldValue}
-                                                    errors={errors}
-                                                    touched={touched}
-                                                />
-                                            </>
-                                        )}
-                                        {moreInfoTab === 5 && (
-                                            <Shipping
-                                                values={values}
-                                                handleChange={handleChange}
-                                                handleBlur={handleBlur}
-                                                setFieldValue={setFieldValue}
-                                                errors={errors}
-                                                touched={touched}
-                                            />
-                                        )}
-                                        {/* {moreInfoTab === 3 && (
+                                        <hr style={{ width: "100%" }} />
+                                        <Quantity
+                                            values={values}
+                                            handleChange={handleChange}
+                                            handleBlur={handleBlur}
+                                            setFieldValue={setFieldValue}
+                                            errors={errors}
+                                            touched={touched}
+                                            itemId={selectedRow.id}
+                                            handleManualCount={() => setManualCountModal(true)}
+                                            handleUpdateQuantity={() => setQuantityModal(true)}
+                                        />
+                                    </>
+                                )}
+                                {moreInfoTab === 4 && (
+                                    <>
+                                        <BaseDataGrid
+                                            rows={selectedRow?.pricing || []}
+                                            cols={pricingCols}
+                                            height={220}
+                                        />
+                                        <Pricing
+                                            values={values}
+                                            handleChange={handleChange}
+                                            handleBlur={handleBlur}
+                                            setFieldValue={setFieldValue}
+                                            errors={errors}
+                                            touched={touched}
+                                        />
+                                    </>
+                                )}
+                                {moreInfoTab === 5 && (
+                                    <Shipping
+                                        values={values}
+                                        handleChange={handleChange}
+                                        handleBlur={handleBlur}
+                                        setFieldValue={setFieldValue}
+                                        errors={errors}
+                                        touched={touched}
+                                    />
+                                )}
+                                {/* {moreInfoTab === 3 && (
                                         <LastUsed
                                             values={values}
                                             handleChange={handleChange}
@@ -498,139 +471,111 @@ function ItemsDetails({
                                         />
                                     )}
                                      */}
-                                        {moreInfoTab === 6 && (
-                                            <DynamicFilterAndFields
-                                                values={values}
-                                                handleChange={handleChange}
-                                                handleBlur={handleBlur}
-                                                setFieldValue={setFieldValue}
-                                                errors={errors}
-                                                touched={touched}
-                                                selectedItem={selectedRow}
-                                            />
-                                        )}
-                                    </BasePaper>
-                                </Box>
-                            </Box>
-                            <Box flex={4}>
-                                <BasePaper>
-                                    <Tabs
-                                        value={activeTab}
-                                        onChange={(e, v) => setActiveTab(v)}
-                                        textColor="primary"
-                                        variant="scrollable"
-                                    >
-                                        <Tab label="Document" />
-                                        {/* <Tab label="BOM allocated" /> */}
-                                        <Tab label="BOM" />
-                                        <Tab label="Vendor" />
-                                        <Tab label="Sales order History" />
-                                        <Tab label="PO History" />
-                                        {/* <Tab label="Sales Report" /> */}
-                                        <Tab label="Usage" />
-                                        <Tab label="Note" />
-                                        {/* <Tab label="Quantity history" /> */}
-                                        <Tab label="Auditing" />
-                                    </Tabs>
-                                    <Box p={3}>
-                                        {activeTab === 0 && (
-                                            <Fragment>
-                                                <Button
-                                                    onClick={() => {
-                                                        setAddDocModal(true);
-                                                    }}
-                                                    style={style}
-                                                >
-                                                    + Add Document
-                                                </Button>
-                                                <BaseDataGrid
-                                                    cols={docCols}
-                                                    rows={docs || []}
-                                                    onRowSelected={onDocSelected}
-                                                />
-                                            </Fragment>
-                                        )}
-                                        {/* {activeTab === 2 && <BaseDataGrid cols={usesCols} rows={uses || []} onRowSelected={() => {}} />} */}
-                                        {activeTab === 1 && (
-                                            // <Fragment>
-                                            //     <Button
-                                            //         onClick={() => {
-                                            //             setBomModal(true);
-                                            //         }}
-                                            //         style={style}
-                                            //     >
-                                            //         + Add Bill of Material
-                                            //     </Button>
-                                            //     <BaseDataGrid
-                                            //         cols={bomCols}
-                                            //         rows={boms || []}
-                                            //         onRowSelected={(d) => {
-                                            //             setSelectedBom(d);
-                                            //             setBomPartsModal(true);
-                                            //         }}
-                                            //     />
-                                            // </Fragment>
-                                            <ItemBomTable itemId={selectedRow.id} />
-                                        )}
-                                        {activeTab === 2 && (
-                                            <Fragment>
-                                                <Button
-                                                    onClick={() => {
-                                                        setAddVendorModal(true);
-                                                    }}
-                                                    style={style}
-                                                >
-                                                    + Add Vendor
-                                                </Button>
-                                                <VendorsTable
-                                                    selectedItem={selectedRow}
-                                                    rows={vendors || []}
-                                                    onRowSelected={() => {}}
-                                                />
-                                            </Fragment>
-                                        )}
-
-                                        {activeTab === 3 && <SOTable rows={itemSOs} />}
-                                        {activeTab === 4 && (
-                                            <BaseDataGrid cols={poCols} rows={itemPOs || []} onRowSelected={() => {}} />
-                                        )}
-                                        {/* {activeTab === 8 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />} */}
-                                        {activeTab === 5 && (
+                                {moreInfoTab === 6 && (
+                                    <DynamicFilterAndFields
+                                        values={values}
+                                        handleChange={handleChange}
+                                        handleBlur={handleBlur}
+                                        setFieldValue={setFieldValue}
+                                        errors={errors}
+                                        touched={touched}
+                                        selectedItem={selectedRow}
+                                    />
+                                )}
+                            </BasePaper>
+                            <BasePaper style={{ gridRow: 1, gridColumn: 2, gridRowEnd: "span 2" }}>
+                                <Tabs
+                                    value={activeTab}
+                                    onChange={(e, v) => setActiveTab(v)}
+                                    textColor="primary"
+                                    variant="scrollable"
+                                >
+                                    <Tab label="Document" />
+                                    {/* <Tab label="BOM allocated" /> */}
+                                    <Tab label="BOM" />
+                                    <Tab label="Vendor" />
+                                    <Tab label="Sales order History" />
+                                    <Tab label="PO History" />
+                                    {/* <Tab label="Sales Report" /> */}
+                                    <Tab label="Usage" />
+                                    <Tab label="Note" />
+                                    {/* <Tab label="Quantity history" /> */}
+                                    <Tab label="Auditing" />
+                                </Tabs>
+                                <Box p={1}>
+                                    {activeTab === 0 && (
+                                        <>
+                                            <Button
+                                                onClick={() => {
+                                                    setAddDocModal(true);
+                                                }}
+                                                style={style}
+                                            >
+                                                + Add Document
+                                            </Button>
                                             <BaseDataGrid
-                                                cols={usageCols}
-                                                rows={itemUsage || []}
+                                                cols={docCols}
+                                                rows={docs || []}
+                                                onRowSelected={onDocSelected}
+                                            />
+                                        </>
+                                    )}
+                                    {activeTab === 1 && <ItemBomTable itemId={selectedRow.id} />}
+                                    {activeTab === 2 && (
+                                        <>
+                                            <Button
+                                                onClick={() => {
+                                                    setAddVendorModal(true);
+                                                }}
+                                                style={style}
+                                            >
+                                                + Add Vendor
+                                            </Button>
+                                            <VendorsTable
+                                                selectedItem={selectedRow}
+                                                rows={vendors || []}
                                                 onRowSelected={() => {}}
                                             />
-                                        )}
-                                        {activeTab === 6 && (
-                                            <Fragment>
-                                                <Button
-                                                    onClick={() => {
-                                                        setAddNoteModal(true);
-                                                    }}
-                                                    style={style}
-                                                >
-                                                    + Add Note
-                                                </Button>
-                                                <BaseDataGrid
-                                                    cols={noteCols}
-                                                    rows={notes || []}
-                                                    onRowSelected={onNoteSelected}
-                                                />
-                                            </Fragment>
-                                        )}
-                                        {activeTab === 7 && <div>Auditing</div>}
-                                        {/* {activeTab === 10 && (
-                        <BaseDataGrid cols={qtyHistoryCols} rows={itemQtyHistory || []} onRowSelected={() => {}} />
-                    )} */}
-                                    </Box>
-                                </BasePaper>
-                            </Box>
+                                        </>
+                                    )}
+
+                                    {activeTab === 3 && <SOTable rows={itemSOs} />}
+                                    {activeTab === 4 && (
+                                        <BaseDataGrid cols={poCols} rows={itemPOs || []} onRowSelected={() => {}} />
+                                    )}
+                                    {/* {activeTab === 8 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />} */}
+                                    {activeTab === 5 && (
+                                        <BaseDataGrid
+                                            cols={usageCols}
+                                            rows={itemUsage || []}
+                                            onRowSelected={() => {}}
+                                        />
+                                    )}
+                                    {activeTab === 6 && (
+                                        <>
+                                            <Button
+                                                onClick={() => {
+                                                    setAddNoteModal(true);
+                                                }}
+                                                style={style}
+                                            >
+                                                + Add Note
+                                            </Button>
+                                            <BaseDataGrid
+                                                cols={noteCols}
+                                                rows={notes || []}
+                                                onRowSelected={onNoteSelected}
+                                            />
+                                        </>
+                                    )}
+                                    {activeTab === 7 && <div>Auditing</div>}
+                                </Box>
+                            </BasePaper>
                         </Box>
                     </Form>
                 )}
             </Formik>
-        </Box>
+        </>
     );
 }
 

@@ -18,6 +18,7 @@ import List from "../../app/SideUtilityList";
 import FieldNFilter from "../ClusterAndLevel/Modal";
 
 import ItemTable from "./Table";
+import { BasePaper } from "../../app/Paper";
 
 const Items = () => {
     const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
@@ -50,7 +51,7 @@ const Items = () => {
     }, [selectedItem]);
 
     return (
-        <Box>
+        <>
             {selectedNote && selectedItem && selectedItem.id && (
                 <NoteModal
                     noteData={selectedNote}
@@ -89,42 +90,39 @@ const Items = () => {
             {selectedItem && selectedItem.id && (
                 <BOMModal itemId={selectedItem.id} open={bomModal} onClose={() => setBomModal(false)} />
             )}
-
             <AddItemModal open={addItemModal} onClose={() => setAddItemModal(false)} />
             <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
-
             <FieldNFilter open={FieldNFilterModal} onClose={() => setFieldNFilterModal(false)} />
 
-            <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1}>
-                <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-                    <Tab label="List" />
-                    <Tab disabled={!selectedItem} label="Details" />
-                </Tabs>
-                <div style={{ flexGrow: 1 }} />
-                <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
-                    <ListItem>
-                        <IconButton title="Add item" onClick={() => setAddItemModal(true)}>
-                            <AddRounded />
-                        </IconButton>
-                    </ListItem>
-                    <ListItem>
-                        <IconButton
-                            title="Delete item"
-                            onClick={() => selectedItem && selectedItem?.id && setDeleteItemModal(true)}
-                        >
-                            <DeleteRounded />
-                        </IconButton>
-                    </ListItem>
-                    <ListItem>
-                        <IconButton title="Cluster and level" onClick={() => setFieldNFilterModal(true)}>
-                            <PostAddRounded />
-                        </IconButton>
-                    </ListItem>
-                </List>
-            </Box>
-
-            <Box display="flex" alignItems="flex-start">
-                <Box flex={11} ml={2}>
+            <BasePaper style={{ height: "100%" }}>
+                <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1}>
+                    <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                        <Tab label="List" />
+                        <Tab disabled={!selectedItem} label="Details" />
+                    </Tabs>
+                    <div style={{ flexGrow: 1 }} />
+                    <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
+                        <ListItem>
+                            <IconButton title="Add item" onClick={() => setAddItemModal(true)}>
+                                <AddRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton
+                                title="Delete item"
+                                onClick={() => selectedItem && selectedItem?.id && setDeleteItemModal(true)}
+                            >
+                                <DeleteRounded />
+                            </IconButton>
+                        </ListItem>
+                        <ListItem>
+                            <IconButton title="Cluster and level" onClick={() => setFieldNFilterModal(true)}>
+                                <PostAddRounded />
+                            </IconButton>
+                        </ListItem>
+                    </List>
+                </Box>
+                <Box display="flex" flex={1}>
                     {activeTab === 0 && (
                         <ItemTable
                             onRowSelected={(r) => {
@@ -147,8 +145,8 @@ const Items = () => {
                         />
                     )}
                 </Box>
-            </Box>
-        </Box>
+            </BasePaper>
+        </>
     );
 };
 

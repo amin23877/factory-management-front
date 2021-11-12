@@ -5,7 +5,6 @@ import useSWR from "swr";
 
 import { BasePaper } from "../../app/Paper";
 
-import SearchBox from "../../app/SearchBox";
 import { splitLevelName } from "../../logic/levels";
 import { useDataGridData } from "../../components/Datagrid/hooks";
 
@@ -172,33 +171,30 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     };
 
     return (
-        <>
-            {/* <SearchBox panel="inventory" /> */}
-            <BasePaper>
-                <Box height={550}>
-                    <DataGrid
-                        density="compact"
-                        loading={loading}
-                        className={dataGridClasses.root}
-                        onRowSelected={onRowSelected}
-                        pagination
-                        page={page}
-                        pageSize={25}
-                        rowCount={items ? items.total : 0}
-                        filterMode="server"
-                        paginationMode="server"
-                        sortingMode="server"
-                        onSortModelChange={handleSortChange}
-                        onPageChange={(p) => setPage(p.page)}
-                        onPageSizeChange={(ps) => setLimit(ps.pageSize)}
-                        onFilterModelChange={handleChangeFilter}
-                        rows={items ? items.result : []}
-                        columns={gridColumns}
-                        components={{ Toolbar: GridToolbar }}
-                    />
-                </Box>
-            </BasePaper>
-        </>
+        <BasePaper style={{ flex: 1 }}>
+            <Box height="77vh">
+                <DataGrid
+                    density="compact"
+                    loading={loading}
+                    className={dataGridClasses.root}
+                    onRowSelected={onRowSelected}
+                    pagination
+                    page={page}
+                    pageSize={25}
+                    rowCount={items ? items.total : 0}
+                    filterMode="server"
+                    paginationMode="server"
+                    sortingMode="server"
+                    onSortModelChange={handleSortChange}
+                    onPageChange={(p) => setPage(p.page)}
+                    onPageSizeChange={(ps) => setLimit(ps.pageSize)}
+                    onFilterModelChange={handleChangeFilter}
+                    rows={items ? items.result : []}
+                    columns={gridColumns}
+                    components={{ Toolbar: GridToolbar }}
+                />
+            </Box>
+        </BasePaper>
     );
 }
 

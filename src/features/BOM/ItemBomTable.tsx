@@ -172,7 +172,7 @@ export default function ItemBomTable({ itemId }: { itemId: string }) {
     const classes = useTableStyles();
 
     return (
-        <TableContainer className={classes.tableCont} component={Paper} style={{ maxHeight: 1000 }}>
+        <TableContainer className={classes.tableCont} component={Paper} style={{ maxHeight: 700, minHeight: 500 }}>
             <Table className={classes.root} size="small" aria-label="collapsible BOM table">
                 <TableHead>
                     <TableRow>

@@ -16,5 +16,8 @@ export default withStyles((theme) => ({
         "& .MuiListItem-gutters": {
             padding: "4px 0",
         },
+        "& .MuiIconButton-root": {
+            padding: 4,
+        },
     },
 }))(List);

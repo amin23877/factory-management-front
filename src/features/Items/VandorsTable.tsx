@@ -107,7 +107,7 @@ export default function VendorsTable({
                 Preferred vendor changes successfully
             </Snack>
 
-            <TableContainer component={Paper} className={classes.tableCont}>
+            <TableContainer component={Paper} className={classes.tableCont} style={{ maxHeight: 700, minHeight: 450 }}>
                 <Table stickyHeader size="small" aria-label="Items table" className={classes.root}>
                     <TableHead>
                         <TableRow>

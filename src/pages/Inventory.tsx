@@ -10,24 +10,22 @@ const Inventory = () => {
     const [mainTab, setMainTab] = useState(0);
 
     return (
-        <>
-            <Box display="flex">
-                <MyTabs
-                    value={mainTab}
-                    onChange={(e, nv) => setMainTab(nv)}
-                    textColor="secondary"
-                    orientation="vertical"
-                    style={{ marginRight: "1em", position: "sticky", top: 65 }}
-                >
-                    <MyTab color="primary" label="+ Dashboard" />
-                    <MyTab label="+ Items" />
-                </MyTabs>
-                <Box flex={1}>
-                    {mainTab === 0 && <Dashboard />}
-                    {mainTab === 1 && <Items />}
-                </Box>
+        <Box display="flex">
+            <MyTabs
+                value={mainTab}
+                onChange={(e, nv) => setMainTab(nv)}
+                textColor="secondary"
+                orientation="vertical"
+                style={{ marginRight: "1em", position: "sticky", top: 65 }}
+            >
+                <MyTab color="primary" label="+ Dashboard" />
+                <MyTab label="+ Items" />
+            </MyTabs>
+            <Box flex={1}>
+                {mainTab === 0 && <Dashboard />}
+                {mainTab === 1 && <Items />}
             </Box>
-        </>
+        </Box>
     );
 };
 

@@ -15,7 +15,7 @@ export default function SOTable({ rows }: { rows: any[] }) {
     const classes = useStyles();
 
     return (
-        <TableContainer component={Paper} className={classes.tableCont} style={{ height: 250 }}>
+        <TableContainer component={Paper} className={classes.tableCont} style={{ maxHeight: 700, minHeight: 500 }}>
             <Table aria-label="Items table" className={classes.root}>
                 <TableHead>
                     <TableRow>
