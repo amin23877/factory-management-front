@@ -45,7 +45,7 @@ export const MyTabs = withStyles({
         width: "125px",
         backgroundImage: `url(${tabBG})`,
         backgroundColor: "black",
-        height: "90vh",
+        height: "89.5vh",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",

@@ -209,7 +209,7 @@ export const GeneralForm = ({
 }) => {
     return (
         <>
-            <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={10} gridRowGap={10}>
+            <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={5} gridRowGap={5}>
                 {edit && <TextField label="Quote ID" value={values.number} disabled />}
                 {/* {edit && <TextField label="SO ID" value={values.number} style={{ width: "100%" }} disabled />} */}
                 {edit && (
@@ -347,8 +347,8 @@ export const EntitiesTab = ({
     setFieldValue: any;
 }) => {
     return (
-        <Box display="grid" gridTemplateColumns="1fr 1fr 1fr " gridColumnGap={10}>
-            <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
+        <Box display="grid" gridTemplateColumns="1fr 1fr 1fr " gridColumnGap={5} pt={1}>
+            <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={7}>
                 {/* <FieldSelect
                     value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
                     getOptionList={(resp) => resp.result}
@@ -399,7 +399,7 @@ export const EntitiesTab = ({
                     disabled
                 />
             </Box>
-            <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
+            <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={7}>
                 <TextField
                     value={values.requesterName}
                     name="requesterName"
@@ -424,7 +424,7 @@ export const EntitiesTab = ({
                 <TextField style={{ opacity: 0 }} />
                 <TextField style={{ opacity: 0 }} />
             </Box>
-            <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
+            <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={7}>
                 {/* <TextField
                     value={values.client}
                     name="client"
@@ -504,7 +504,7 @@ export const CommissionTab = ({
     handleBlur: (a: any) => void;
 }) => {
     return (
-        <Box my={1} display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridGap={10}>
+        <Box my={1} display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridGap={5} style={{ flex: 1 }}>
             <TextField
                 style={{ gridColumnEnd: "span 2" }}
                 value={values.commissionLabel}
