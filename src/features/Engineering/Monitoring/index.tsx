@@ -9,9 +9,9 @@ import { formatTimestampToDate } from "../../../logic/date";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 import { BasePaper } from "../../../app/Paper";
 
-const Inventory = () => {
+const Monitoring = () => {
     const { data: items } = useSWR("/monitor");
-    const [selectedItem, setSelectedItem] = useState<any>({ id: "", assertion: "", vars: [] });
+    const [selectedItem, setSelectedItem] = useState<any>({ id: "", assertion: "", vars: [], date: new Date() });
 
     const [activeTab, setActiveTab] = useState(0);
 
@@ -40,7 +40,7 @@ const Inventory = () => {
     );
 
     return (
-        <Box>
+        <BasePaper>
             <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1}>
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab
@@ -73,15 +73,15 @@ const Inventory = () => {
                                     setSelectedItem(d);
                                     setActiveTab(1);
                                 }}
-                                height={"79vh"}
+                                height={"77vh"}
                             />
                         </BasePaper>
                     )}
                     {activeTab === 1 && <Details selectedRow={selectedItem} />}
                 </Box>
             </Box>
-        </Box>
+        </BasePaper>
     );
 };
 
-export default Inventory;
+export default Monitoring;

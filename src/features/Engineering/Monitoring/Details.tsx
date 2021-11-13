@@ -74,86 +74,79 @@ function ItemsDetails({ selectedRow }: { selectedRow: IMonitorRule }) {
     }, []);
 
     return (
-        <Box>
+        <>
             {selectedHistory && (
                 <HistoryInfo open={historyInfo} onClose={() => setHistoryInfo(false)} data={selectedHistory} />
             )}
 
-            <Grid container spacing={2}>
-                <Grid item md={5} xs={12}>
-                    <BasePaper>
-                        <General rule={selectedRow} />
-                    </BasePaper>
-                </Grid>
-                <Grid item md={7} xs={12}>
-                    <BasePaper
-                        style={{
-                            height: "100%",
-                            display: "flex",
-                            flexDirection: "column",
-                        }}
+            <Box display="grid" gridTemplateColumns="1fr 2fr" gridTemplateRows="auto auto" gridGap={10}>
+                <BasePaper>
+                    <General rule={selectedRow} />
+                </BasePaper>
+                <BasePaper
+                    style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gridRow: "span 2",
+                    }}
+                >
+                    <Tabs
+                        style={{ marginBottom: 10 }}
+                        value={moreInfoTab}
+                        variant="scrollable"
+                        textColor="primary"
+                        onChange={(e, v) => setMoreInfoTab(v)}
                     >
-                        <Tabs
-                            style={{ marginBottom: 16 }}
-                            value={moreInfoTab}
-                            variant="scrollable"
-                            textColor="primary"
-                            onChange={(e, v) => setMoreInfoTab(v)}
-                        >
-                            <Tab label="Equation factors modifications" />
-                        </Tabs>
-                        {moreInfoTab === 0 && (
-                            <TableContainer style={{ maxHeight: 250 }}>
-                                <Table>
-                                    <TableHead style={{ backgroundColor: theme.palette.secondary.main }}>
-                                        <TableRow>
-                                            {Array.from({ length: table.columns }, (_, i) => i + 1).map((c: any) => (
-                                                <TableCell key={c}></TableCell>
+                        <Tab label="Equation factors modifications" />
+                    </Tabs>
+                    {moreInfoTab === 0 && (
+                        <TableContainer style={{ maxHeight: 250 }}>
+                            <Table>
+                                <TableHead style={{ backgroundColor: theme.palette.secondary.main }}>
+                                    <TableRow>
+                                        {Array.from({ length: table.columns }, (_, i) => i + 1).map((c: any) => (
+                                            <TableCell key={c}></TableCell>
+                                        ))}
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {assertions?.map((row, i) => (
+                                        <TableRow key={i}>
+                                            {row.map((cell, i) => (
+                                                <TableCell key={i}>{cell}</TableCell>
                                             ))}
                                         </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        {assertions?.map((row, i) => (
-                                            <TableRow key={i}>
-                                                {row.map((cell, i) => (
-                                                    <TableCell key={i}>{cell}</TableCell>
-                                                ))}
-                                            </TableRow>
-                                        ))}
-                                    </TableBody>
-                                </Table>
-                            </TableContainer>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    )}
+                </BasePaper>
+                <BasePaper>
+                    <Tabs
+                        value={activeTab}
+                        onChange={(e, v) => setActiveTab(v)}
+                        textColor="primary"
+                        variant="scrollable"
+                    >
+                        <Tab label="Rule History" />
+                    </Tabs>
+                    <Box p={1}>
+                        {activeTab === 0 && (
+                            <BaseDataGrid
+                                height={250}
+                                cols={gridColumns}
+                                rows={[]}
+                                onRowSelected={(d) => {
+                                    setSelectedHistory(d);
+                                    setHistoryInfo(true);
+                                }}
+                            />
                         )}
-                    </BasePaper>
-                </Grid>
-            </Grid>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <BasePaper>
-                        <Tabs
-                            value={activeTab}
-                            onChange={(e, v) => setActiveTab(v)}
-                            textColor="primary"
-                            variant="scrollable"
-                        >
-                            <Tab label="Rule History" />
-                        </Tabs>
-                        <Box p={3}>
-                            {activeTab === 0 && (
-                                <BaseDataGrid
-                                    cols={gridColumns}
-                                    rows={historyItems || []}
-                                    onRowSelected={(d) => {
-                                        setSelectedHistory(d);
-                                        setHistoryInfo(true);
-                                    }}
-                                />
-                            )}
-                        </Box>
-                    </BasePaper>
-                </Grid>
-            </Grid>
-        </Box>
+                    </Box>
+                </BasePaper>
+            </Box>
+        </>
     );
 }
 export default ItemsDetails;

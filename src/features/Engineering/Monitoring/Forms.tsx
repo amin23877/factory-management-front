@@ -27,52 +27,51 @@ export const General = ({ rule }: { rule?: any }) => {
         <Formik initialValues={rule ? rule : ({} as any)} onSubmit={handleSubmit}>
             {({ values, handleChange, getFieldProps, setFieldValue }) => (
                 <Form>
-                    <Box display="grid" gridTemplateColumns={"1fr"} gridGap={10}>
-                        <Box m={2} display="grid" gridTemplateColumns="1fr 1fr " gridGap={10}>
-                            <Paper
-                                style={{
-                                    margin: "0.5em 0",
-                                    padding: "0 0.5em",
-                                    backgroundColor: "#eee",
-                                    gridColumnEnd: "span 2",
-                                }}
-                            >
-                                <FormControlLabel
-                                    name="enable"
-                                    checked={values.enable}
-                                    control={<Checkbox />}
-                                    label="Enable / Disable"
-                                    onChange={handleChange}
-                                />
-                                <FormControlLabel
-                                    name="engAP"
-                                    checked={values.engAP}
-                                    control={<Checkbox />}
-                                    label="Engineering Approved"
-                                    onChange={handleChange}
-                                />
-                            </Paper>
-                            <TextField disabled label="ID" {...getFieldProps("id")} />
-                            <TextField label="Name" {...getFieldProps("name")} />
-                            <DatePicker
-                                size="small"
-                                label="Date"
-                                name="date"
-                                value={formatTimestampToDate(values.date)}
-                                onChange={(date) => setFieldValue("date", date)}
+                    <Box display="grid" gridTemplateColumns={"1fr 1fr"} gridGap={10}>
+                        <Paper
+                            style={{
+                                margin: "0.5em 0",
+                                padding: "0 0.5em",
+                                backgroundColor: "#eee",
+                                gridColumnEnd: "span 2",
+                            }}
+                        >
+                            <FormControlLabel
+                                name="enable"
+                                checked={values.enable}
+                                control={<Checkbox />}
+                                label="Enable / Disable"
+                                onChange={handleChange}
                             />
-                            <TextField label="Section" {...getFieldProps("section")} />
-                            <TextField
-                                style={{ gridColumnEnd: "span 2" }}
-                                label="Description"
-                                multiline
-                                rows={4}
-                                {...getFieldProps("description")}
+                            <FormControlLabel
+                                name="engAP"
+                                checked={values.engAP}
+                                control={<Checkbox />}
+                                label="Engineering Approved"
+                                onChange={handleChange}
                             />
-                            <Button kind="edit" type="submit">
-                                Save
-                            </Button>
-                        </Box>
+                        </Paper>
+                        <TextField disabled label="ID" {...getFieldProps("id")} />
+                        <TextField label="Name" {...getFieldProps("name")} />
+                        <DatePicker
+                            size="small"
+                            label="Date"
+                            name="date"
+                            value={formatTimestampToDate(values.date)}
+                            onChange={(date) => setFieldValue("date", date)}
+                            inputProps={{ style: { fontSize: "0.8rem" } }}
+                        />
+                        <TextField label="Section" {...getFieldProps("section")} />
+                        <TextField
+                            style={{ gridColumnEnd: "span 2" }}
+                            label="Description"
+                            multiline
+                            rows={4}
+                            {...getFieldProps("description")}
+                        />
+                        <Button kind="edit" type="submit" style={{ gridColumn: "span 2" }}>
+                            Save
+                        </Button>
                     </Box>
                 </Form>
             )}
