@@ -276,7 +276,7 @@ export const EntitiesForm = ({
     setFieldValue: any;
 }) => {
     return (
-        <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridColumnGap={10}>
+        <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gridColumnGap={10}>
             <Box my={1} display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
                 <LinkSelect
                     value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}

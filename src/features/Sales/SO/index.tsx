@@ -103,7 +103,7 @@ export default function SalesOrderPanel() {
                 text={`Are you sure, You are going to delete SO with number ${selectedSO?.number}`}
             />
 
-            <Box mb={2} display="flex" alignItems="center">
+            <Box mb={1} display="flex" alignItems="center">
                 <Button
                     onClick={() => setAddSo(true)}
                     style={{
@@ -152,7 +152,7 @@ export default function SalesOrderPanel() {
                     value={activeTab}
                     textColor="primary"
                     onChange={(e, nv) => setActiveTab(nv)}
-                    style={{ marginBottom: 16 }}
+                    style={{ marginBottom: 10 }}
                 >
                     <Tab
                         // label="List"

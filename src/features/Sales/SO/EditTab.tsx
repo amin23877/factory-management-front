@@ -196,7 +196,7 @@ export default function EditTab({
                 </Box>
                 <Box flex={4}>
                     <Tabs
-                        style={{ margin: "1em 0" }}
+                        style={{ margin: "10px 0" }}
                         textColor="primary"
                         value={activeTab}
                         onChange={(e, nv) => setActiveTab(nv)}
@@ -211,13 +211,13 @@ export default function EditTab({
                         <Tab label="Notes" />
                         <Tab label="Auditing" />
                     </Tabs>
-                    <BasePaper style={{ height: "85%" }}>
+                    <BasePaper style={{ height: "85.5%" }}>
                         {activeTab === 0 && (
                             <BaseDataGrid
                                 cols={LICols}
                                 rows={lineItems || []}
                                 onRowSelected={onLineItemSelected}
-                                height="100%"
+                                height="100.5%"
                             />
                         )}
                         {activeTab === 1 && (
@@ -225,7 +225,7 @@ export default function EditTab({
                                 cols={unitCols}
                                 rows={lineItems || []}
                                 onRowSelected={onLineItemSelected}
-                                height="100%"
+                                height="100.5%"
                             />
                         )}
                         {activeTab === 2 && (
@@ -242,7 +242,7 @@ export default function EditTab({
                                     cols={docCols}
                                     rows={documents || []}
                                     onRowSelected={onDocSelected}
-                                    height="90%"
+                                    height="90.5%"
                                 />
                             </>
                         )}
@@ -251,7 +251,7 @@ export default function EditTab({
                                 cols={activityCols}
                                 rows={documents || []}
                                 onRowSelected={() => {}}
-                                height="100%"
+                                height="100.5%"
                             />
                         )}
                         {activeTab === 4 && (
@@ -259,11 +259,16 @@ export default function EditTab({
                                 cols={shipCols}
                                 rows={documents || []}
                                 onRowSelected={() => {}}
-                                height="100%"
+                                height="100.5%"
                             />
                         )}
                         {activeTab === 5 && (
-                            <BaseDataGrid cols={FSCols} rows={[]} onRowSelected={onLineServiceSelected} height="100%" />
+                            <BaseDataGrid
+                                cols={FSCols}
+                                rows={[]}
+                                onRowSelected={onLineServiceSelected}
+                                height="100.5%"
+                            />
                         )}
                         {activeTab === 6 && (
                             <>
@@ -279,7 +284,7 @@ export default function EditTab({
                                     cols={noteCols}
                                     rows={notes || []}
                                     onRowSelected={onNoteSelected}
-                                    height="90%"
+                                    height="90.5%"
                                 />
                             </>
                         )}

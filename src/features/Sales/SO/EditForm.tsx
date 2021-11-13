@@ -34,7 +34,7 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
         <Formik initialValues={selectedSo} onSubmit={handleSubmit}>
             {({ handleChange, handleBlur, values, setValues, isSubmitting, setFieldValue }) => (
                 <Form>
-                    <Box display="flex" flexDirection="column" style={{ gap: 10 }}>
+                    <Box display="flex" flexDirection="column" style={{ gap: 10, height: "74vh" }}>
                         <BasePaper>
                             <GeneralForm
                                 onChangeInit={setValues}
@@ -49,7 +49,7 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                                 </Button>
                             </Box>
                         </BasePaper>
-                        <BasePaper>
+                        <BasePaper style={{ flex: 1, marginBottom: "10px" }}>
                             <Tabs
                                 textColor="primary"
                                 value={activeTab}
