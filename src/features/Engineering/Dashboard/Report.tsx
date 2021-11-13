@@ -16,7 +16,7 @@ export default function Report() {
     const fshData = useMemo(() => (fsh ? extractFshData(fsh) : []), [fsh]);
 
     return (
-        <Box>
+        <Box height="78.7vh">
             <BasePaper>
                 <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
                     <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 
-import { SearchBar } from "../app/TextField";
 import { MyTabs, MyTab } from "../app/Tabs";
 
 import DevicesPanel from "../features/Engineering/Devices";
@@ -15,22 +14,28 @@ export default function Engineering() {
 
     return (
         <>
-            <Box display="flex" alignItems="center" my={2}>
-                <SearchBar />
-                <div style={{ flexGrow: 1 }} />
-                <MyTabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-                    <MyTab label="Dashboard" />
-                    <MyTab label="Devices" />
-                    <MyTab label="Devices BOM" />
-                    <MyTab label="Phocus Monitoring" />
-                    <MyTab label="Projects" />
+            <Box display="flex">
+                <MyTabs
+                    value={activeTab}
+                    textColor="primary"
+                    onChange={(e, nv) => setActiveTab(nv)}
+                    orientation="vertical"
+                    style={{ marginRight: "1em", position: "sticky", top: 65 }}
+                >
+                    <MyTab label="+ Dashboard" />
+                    <MyTab label="+ Devices" />
+                    <MyTab label="+ Devices BOM" />
+                    <MyTab label="+ Monitoring" />
+                    <MyTab label="+ Projects" />
                 </MyTabs>
+                <Box flex={1}>
+                    {activeTab === 0 && <Dashboard />}
+                    {activeTab === 1 && <DevicesPanel />}
+                    {activeTab === 2 && <BOM />}
+                    {activeTab === 3 && <Monitoring />}
+                    {activeTab === 4 && <Project />}
+                </Box>
             </Box>
-            {activeTab === 0 && <Dashboard />}
-            {activeTab === 1 && <DevicesPanel />}
-            {activeTab === 2 && <BOM />}
-            {activeTab === 3 && <Monitoring />}
-            {activeTab === 4 && <Project />}
         </>
     );
 }

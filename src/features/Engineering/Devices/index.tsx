@@ -227,9 +227,6 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                     />
                 </Tabs>
                 <div style={{ flexGrow: 1 }} />
-            </Box>
-
-            <Box display="flex" alignItems="flex-start" mt={1}>
                 {!sales && (
                     <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
                         <ListItem>
@@ -289,7 +286,10 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                         </ListItem>
                     </List>
                 )}
-                <Box flex={11} ml={2}>
+            </Box>
+
+            <Box display="flex" alignItems="flex-start" mt={1}>
+                <Box flex={1}>
                     {activeTab === 0 && (
                         <>
                             {/* <SearchBox panel="engineering" /> */}

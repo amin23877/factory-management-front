@@ -149,7 +149,7 @@ export default function ENDashboard() {
                 <PurchaseModal open={purchaseOpen} onClose={() => setPurchaseOpen(false)} help={selectedPurchase} />
             )}
             <BasePaper>
-                <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
+                <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1}>
                     <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                         <Tab label="Report" />
                         <Tab label="EN. Approval" />
@@ -169,6 +169,7 @@ export default function ENDashboard() {
                         onRowSelected={(d) => {
                             history.push(`/panel/engineering/${d.ItemId.id}`);
                         }}
+                        height={"78.7vh"}
                     />
                 )}
                 {activeTab === 2 && (
@@ -179,6 +180,7 @@ export default function ENDashboard() {
                             setSelectedField(d);
                             setFieldOpen(true);
                         }}
+                        height={"78.7vh"}
                     />
                 )}
                 {activeTab === 3 && (
@@ -189,10 +191,15 @@ export default function ENDashboard() {
                             setSelectedPurchase(d);
                             setPurchaseOpen(true);
                         }}
+                        height={"78.7vh"}
                     />
                 )}
-                {activeTab === 4 && <BaseDataGrid rows={GQ || []} cols={QuestionCols} onRowSelected={() => {}} />}
-                {activeTab === 5 && <BaseDataGrid rows={QCCase || []} cols={QCCols} onRowSelected={() => {}} />}
+                {activeTab === 4 && (
+                    <BaseDataGrid rows={GQ || []} cols={QuestionCols} onRowSelected={() => {}} height={"78.7vh"} />
+                )}
+                {activeTab === 5 && (
+                    <BaseDataGrid rows={QCCase || []} cols={QCCols} onRowSelected={() => {}} height={"78.7vh"} />
+                )}
             </BasePaper>
         </Box>
     );

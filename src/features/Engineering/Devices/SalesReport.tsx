@@ -49,7 +49,7 @@ const Table = ({ data }: { data: any }) => {
         <BaseDataGrid
             cols={cols}
             rows={data && data.map ? data.map((d: any, i: any) => ({ ...d, id: i })) : []}
-            height={380}
+            height={430}
         />
     );
 };
@@ -67,7 +67,7 @@ function SalesReport() {
     }, [data]);
 
     return (
-        <Box height={450}>
+        <Box height={493}>
             <Tabs style={{ marginBottom: 10 }} value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                 <Tab label="Graph" />
                 <Tab label="Details" />

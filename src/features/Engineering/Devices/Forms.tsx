@@ -4,7 +4,7 @@ import { Box, Checkbox, FormControlLabel, Paper } from "@material-ui/core";
 import Button from "../../../app/Button";
 import TextField from "../../../app/TextField";
 import { addImage } from "../../../api/items";
-import { host } from '../../../host'
+import { host } from "../../../host";
 
 interface IForm {
     values: any;
@@ -75,56 +75,55 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
                     padding: "0 0.5em",
                     backgroundColor: "#eee",
                     gridColumnEnd: "span 4",
+                    // display: "grid",
+                    // gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
+                    display: "flex",
+                    justifyContent: "space-between",
                 }}
             >
                 <FormControlLabel
-                    style={{ fontSize: "0.7rem" }}
                     checked={values.active}
                     label="Active"
                     name="active"
                     onChange={handleChange}
-                    control={<Checkbox />}
+                    control={<Checkbox size="small" />}
                     disabled={sales}
                 />
                 <FormControlLabel
-                    style={{ fontSize: "0.7rem" }}
                     checked={values.obsolete}
                     label="Obsolete"
                     name="obsolete"
                     onChange={handleChange}
-                    control={<Checkbox />}
+                    control={<Checkbox size="small" />}
                     disabled={sales}
                 />
                 <FormControlLabel
-                    style={{ fontSize: "0.7rem" }}
                     checked={values.rndOnly}
                     label="R&D only"
                     name="rndOnly"
                     onChange={handleChange}
-                    control={<Checkbox />}
+                    control={<Checkbox size="small" />}
                     disabled={sales}
                 />
                 <FormControlLabel
-                    style={{ fontSize: "0.7rem" }}
                     checked={values.salesApproved}
                     label="S. Ap."
                     name="salesApproved"
                     onChange={handleChange}
-                    control={<Checkbox />}
+                    control={<Checkbox size="small" />}
                     disabled={sales}
                 />
                 <FormControlLabel
-                    style={{ fontSize: "0.7rem" }}
                     checked={values.engineeringApproved}
                     label="En. Ap."
                     name="engineeringApproved"
                     onChange={handleChange}
-                    control={<Checkbox />}
+                    control={<Checkbox size="small" />}
                     disabled={sales}
                 />
             </Paper>
             <TextField
-                style={{ gridColumnEnd: "span 4" }}
+                style={{ gridColumnEnd: "span 2" }}
                 label="Device ID"
                 placeholder="Device ID"
                 name="no"
@@ -135,7 +134,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
                 disabled
             />
             <TextField
-                style={{ gridColumnEnd: "span 4" }}
+                style={{ gridColumnEnd: "span 2" }}
                 label="Device Name"
                 placeholder="Device name"
                 name="name"
@@ -148,7 +147,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
             <TextField
                 multiline
                 style={{ gridColumnEnd: "span 4" }}
-                rows={4}
+                rows={3}
                 placeholder="description"
                 label="Description"
                 name="description"

@@ -342,8 +342,8 @@ function ItemsDetails({
                 {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
                     <Form>
                         <Grid container spacing={2}>
-                            <Grid item md={4} xs={12}>
-                                <Box display="flex" flexDirection="column" style={{ gap: 10 }}>
+                            <Grid item md={5} xs={12}>
+                                <Box display="flex" flexDirection="column" style={{ gap: 10, height: "77.3vh" }}>
                                     <BasePaper>
                                         <General
                                             sales={sales}
@@ -366,7 +366,7 @@ function ItemsDetails({
                                             </Box>
                                         )}
                                     </BasePaper>
-                                    <BasePaper>
+                                    <BasePaper style={{ flex: 1, overflowY: "auto" }}>
                                         <Tabs
                                             style={{ marginBottom: 16 }}
                                             value={moreInfoTab}
@@ -417,60 +417,51 @@ function ItemsDetails({
                                     </BasePaper>
                                 </Box>
                             </Grid>
-                            <Grid item md={8} xs={12}>
-                                <BasePaper>
-                                    <Box display="flex" maxWidth="850px">
-                                        {!sales ? (
-                                            <Tabs
-                                                value={activeTab}
-                                                onChange={(e, v) => setActiveTab(v)}
-                                                textColor="primary"
-                                                variant="scrollable"
-                                            >
-                                                <Tab label="Design documents" />
-                                                <Tab label="BOM" />
-                                                <Tab label="Warranties" />
-                                                <Tab label="Manufacturing" />
-                                                <Tab label="Evaluation" />
-                                                <Tab label="Test" />
-                                                <Tab label="Field Start-up" />
-                                                <Tab label="Label" />
-                                                <Tab label="Unit History" />
-                                                <Tab label="Sales Report" />
-                                                <Tab label="Field Service" />
-                                                <Tab label="Quality Control" />
-                                                <Tab label="Notes" />
-                                                <Tab label="Auditing" />
-                                            </Tabs>
-                                        ) : (
-                                            <Tabs
-                                                value={activeTab}
-                                                onChange={(e, v) => setActiveTab(v)}
-                                                textColor="primary"
-                                                variant="scrollable"
-                                            >
-                                                <Tab label="Design documents" />
-                                                {/* <Tab label="BOM" /> */}
-                                                <Tab label="Warranties" />
-                                                {/* <Tab label="Manufacturing" /> */}
-                                                {/* <Tab label="Evaluation" /> */}
-                                                {/* <Tab label="Test" /> */}
-                                                {/* <Tab label="Field Start-up" /> */}
-                                                {/* <Tab label="Label" /> */}
-                                                {/* <Tab label="Unit History" /> */}
-                                                <Tab label="Sales Report" />
-                                                {/* <Tab label="Field Service" /> */}
-                                                {/* <Tab label="Quality Control" /> */}
-                                                <Tab label="Notes" />
-                                                <Tab label="Auditing" />
-                                            </Tabs>
-                                        )}
-                                    </Box>
+                            <Grid item md={7} xs={12}>
+                                <Box display="flex" maxWidth="850px" mb={1}>
                                     {!sales ? (
-                                        <Box p={3}>
+                                        <Tabs
+                                            value={activeTab}
+                                            onChange={(e, v) => setActiveTab(v)}
+                                            textColor="primary"
+                                            variant="scrollable"
+                                        >
+                                            <Tab label="Design documents" />
+                                            <Tab label="BOM" />
+                                            <Tab label="Warranties" />
+                                            <Tab label="Manufacturing" />
+                                            <Tab label="Evaluation" />
+                                            <Tab label="Test" />
+                                            <Tab label="Field Start-up" />
+                                            <Tab label="Label" />
+                                            <Tab label="Unit History" />
+                                            <Tab label="Sales Report" />
+                                            <Tab label="Field Service" />
+                                            <Tab label="Quality Control" />
+                                            <Tab label="Notes" />
+                                            <Tab label="Auditing" />
+                                        </Tabs>
+                                    ) : (
+                                        <Tabs
+                                            value={activeTab}
+                                            onChange={(e, v) => setActiveTab(v)}
+                                            textColor="primary"
+                                            variant="scrollable"
+                                        >
+                                            <Tab label="Design documents" />
+                                            <Tab label="Warranties" />
+                                            <Tab label="Sales Report" />
+                                            <Tab label="Notes" />
+                                            <Tab label="Auditing" />
+                                        </Tabs>
+                                    )}
+                                </Box>
+                                <BasePaper>
+                                    {!sales ? (
+                                        <Box>
                                             {activeTab === 0 && (
                                                 <BaseDataGrid
-                                                    height={"53vh"}
+                                                    height={"66.8vh"}
                                                     cols={docCols}
                                                     rows={docs || []}
                                                     onRowSelected={() => {}}
@@ -478,7 +469,7 @@ function ItemsDetails({
                                             )}
                                             {activeTab === 1 && (
                                                 <BaseDataGrid
-                                                    height={"53vh"}
+                                                    height={"66.8vh"}
                                                     cols={bomCols}
                                                     rows={boms || []}
                                                     onRowSelected={(d) => {
@@ -493,7 +484,7 @@ function ItemsDetails({
                                                         Add Warranty
                                                     </Button>
                                                     <BaseDataGrid
-                                                        height={"53vh"}
+                                                        height={"62.7vh"}
                                                         cols={warCols}
                                                         rows={warranties || []}
                                                         onRowSelected={(d) => {}}
@@ -502,7 +493,7 @@ function ItemsDetails({
                                             )}
                                             {activeTab === 3 && (
                                                 <BaseDataGrid
-                                                    height={"53vh"}
+                                                    height={"66.8vh"}
                                                     cols={manCols}
                                                     rows={manSteps || []}
                                                     onRowSelected={(d) => {
@@ -512,7 +503,7 @@ function ItemsDetails({
                                             )}
                                             {activeTab === 4 && (
                                                 <BaseDataGrid
-                                                    height={"53vh"}
+                                                    height={"66.8vh"}
                                                     cols={evalCols}
                                                     rows={evalSteps || []}
                                                     onRowSelected={(d) => {
@@ -522,7 +513,7 @@ function ItemsDetails({
                                             )}
                                             {activeTab === 5 && (
                                                 <BaseDataGrid
-                                                    height={"53vh"}
+                                                    height={"66.8vh"}
                                                     cols={evalCols}
                                                     rows={testSteps || []}
                                                     onRowSelected={(d) => {
@@ -532,7 +523,7 @@ function ItemsDetails({
                                             )}
                                             {activeTab === 6 && (
                                                 <BaseDataGrid
-                                                    height={"53vh"}
+                                                    height={"66.8vh"}
                                                     cols={evalCols}
                                                     rows={fieldSteps || []}
                                                     onRowSelected={(d) => {
@@ -542,7 +533,7 @@ function ItemsDetails({
                                             )}
                                             {activeTab === 8 && (
                                                 <BaseDataGrid
-                                                    height={"53vh"}
+                                                    height={"66.8vh"}
                                                     cols={unitHistoryCols}
                                                     rows={
                                                         uniteHistory
@@ -561,7 +552,7 @@ function ItemsDetails({
                                             {activeTab === 9 && <SalesReport />}
                                             {activeTab === 10 && (
                                                 <BaseDataGrid
-                                                    height={"53vh"}
+                                                    height={"66.8vh"}
                                                     cols={serviceCols}
                                                     rows={services || []}
                                                     onRowSelected={() => {}}
@@ -569,7 +560,7 @@ function ItemsDetails({
                                             )}
                                             {activeTab === 11 && (
                                                 <BaseDataGrid
-                                                    height={"53vh"}
+                                                    height={"66.8vh"}
                                                     cols={flagCols}
                                                     rows={flags || []}
                                                     onRowSelected={onFlagSelected}
@@ -577,7 +568,7 @@ function ItemsDetails({
                                             )}
                                             {activeTab === 12 && (
                                                 <BaseDataGrid
-                                                    height={"53vh"}
+                                                    height={"66.8vh"}
                                                     cols={noteCols}
                                                     rows={notes || []}
                                                     onRowSelected={onNoteSelected}
@@ -585,10 +576,10 @@ function ItemsDetails({
                                             )}
                                         </Box>
                                     ) : (
-                                        <Box p={1}>
+                                        <Box>
                                             {activeTab === 0 && (
                                                 <BaseDataGrid
-                                                    height={"53vh"}
+                                                    height={"66.8vh"}
                                                     cols={docCols}
                                                     rows={docs || []}
                                                     onRowSelected={() => {}}
@@ -601,7 +592,7 @@ function ItemsDetails({
                                                         Add Warranty
                                                     </Button>
                                                     <BaseDataGrid
-                                                        height={"53vh"}
+                                                        height={"62.7vh"}
                                                         cols={warCols}
                                                         rows={warranties || []}
                                                         onRowSelected={(d) => {}}
@@ -613,7 +604,7 @@ function ItemsDetails({
 
                                             {activeTab === 3 && (
                                                 <BaseDataGrid
-                                                    height={"53vh"}
+                                                    height={"66.8vh"}
                                                     cols={noteCols}
                                                     rows={notes || []}
                                                     onRowSelected={onNoteSelected}
@@ -627,9 +618,6 @@ function ItemsDetails({
                     </Form>
                 )}
             </Formik>
-            {/* <Grid container spacing={2}>
-                <Grid item xs={12}></Grid>
-            </Grid> */}
         </Box>
     );
 }
