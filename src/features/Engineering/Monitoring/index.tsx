@@ -1,15 +1,17 @@
 import React, { useMemo, useState } from "react";
-import { Box, Paper, Tabs, Tab, LinearProgress } from "@material-ui/core";
+import { Box, Tabs, Tab } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
 import useSWR from "swr";
 
 import BaseDataGrid from "../../../app/BaseDataGrid";
 import Details from "./Details";
 import { formatTimestampToDate } from "../../../logic/date";
+import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
+import { BasePaper } from "../../../app/Paper";
 
 const Inventory = () => {
-    const { data: items, mutate: mutateItems } = useSWR("/monitor");
-    const [selectedItem, setSelectedItem] = useState<any>(null);
+    const { data: items } = useSWR("/monitor");
+    const [selectedItem, setSelectedItem] = useState<any>({ id: "", assertion: "", vars: [] });
 
     const [activeTab, setActiveTab] = useState(0);
 
@@ -39,17 +41,31 @@ const Inventory = () => {
 
     return (
         <Box>
-            <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
+            <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1}>
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-                    <Tab label="List" />
-                    <Tab label="Details" disabled={!selectedItem} />
+                    <Tab
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                <ListAltRounded style={{ marginRight: "5px" }} /> List
+                            </span>
+                        }
+                        wrapped
+                    />
+                    <Tab
+                        disabled={!selectedItem}
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <FindInPageRounded style={{ marginRight: "5px" }} /> Details
+                            </span>
+                        }
+                    />
                 </Tabs>
                 <div style={{ flexGrow: 1 }} />
             </Box>
-            <Box display="flex" alignItems="flex-start" mt={1}>
-                <Box flex={11} ml={2}>
+            <Box display="flex" alignItems="flex-start">
+                <Box flex={11}>
                     {activeTab === 0 && (
-                        <Paper>
+                        <BasePaper>
                             <BaseDataGrid
                                 rows={items || []}
                                 cols={gridColumns}
@@ -57,8 +73,9 @@ const Inventory = () => {
                                     setSelectedItem(d);
                                     setActiveTab(1);
                                 }}
+                                height={"79vh"}
                             />
-                        </Paper>
+                        </BasePaper>
                     )}
                     {activeTab === 1 && <Details selectedRow={selectedItem} />}
                 </Box>

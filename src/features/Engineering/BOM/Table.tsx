@@ -143,7 +143,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
                 />
             )}
 
-            <Box display="flex" alignItems="flex-top" height="75vh" width="100%">
+            <Box display="flex" alignItems="flex-top" width="100%">
                 <BasePaper style={{ width: "100%" }}>
                     <Button variant="outlined" style={{ margin: "0.5em 0" }} onClick={() => setAddPart(true)}>
                         Add part
@@ -152,7 +152,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
                         Submit changes
                     </Button>
 
-                    <Box height={450}>
+                    <Box height={538}>
                         <DataGrid
                             density="compact"
                             className={classes.root}

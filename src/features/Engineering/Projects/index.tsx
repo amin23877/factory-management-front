@@ -14,6 +14,7 @@ import { TaskModal } from "./Modals";
 import Table from "../../../app/CollapsableTable";
 import { BasePaper } from "../../../app/Paper";
 import { formatTimestampToDate } from "../../../logic/date";
+import { ListAltRounded, CalendarTodayRounded } from "@material-ui/icons";
 
 export default function QuotePanel() {
     const [addProject, setAddProject] = useState(false);
@@ -25,8 +26,7 @@ export default function QuotePanel() {
     const [formatProject, setFormatProject] = useState<any[]>([]);
     const [activeTab, setActiveTab] = useState(0);
 
-    const { data: projects, mutate: mutate } = useSWR("/engineering/project");
-    const { data: calenderData, mutate: mutates } = useSWR("/engineering/project/linear");
+    const { data: projects } = useSWR("/engineering/project");
 
     const projectCols: GridColDef[] = useMemo(
         () => [
@@ -200,23 +200,39 @@ export default function QuotePanel() {
             {selectedTask && selectedTask.id && (
                 <TaskModal open={selectedTask} onClose={() => setSelectedTask(false)} task={selectedTask} />
             )}
-            <Box mb={2} display="flex" alignItems="center">
-                <Button onClick={() => setAddProject(true)}>Add project</Button>
+
+            <Box display="flex" justifyContent="flex-end" alignItems="center">
+                <Tabs
+                    value={activeTab}
+                    textColor="primary"
+                    onChange={(e, nv) => setActiveTab(nv)}
+                    style={{ marginBottom: "10px" }}
+                >
+                    <Tab
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                <ListAltRounded style={{ marginRight: "5px" }} /> List
+                            </span>
+                        }
+                        wrapped
+                    />
+                    <Tab
+                        onClick={() => {
+                            setSelectedCalender(false);
+                        }}
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <CalendarTodayRounded style={{ marginRight: "5px" }} /> Calender
+                            </span>
+                        }
+                    />
+                </Tabs>
                 <div style={{ flexGrow: 1 }} />
+                <Button variant="outlined" onClick={() => setAddProject(true)} style={{ marginRight: "10px" }}>
+                    Add project
+                </Button>
             </Box>
-            <BasePaper>
-                <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
-                    <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-                        <Tab label="List" />
-                        <Tab
-                            label="calender"
-                            onClick={() => {
-                                setSelectedCalender(false);
-                            }}
-                        />
-                    </Tabs>
-                    <div style={{ flexGrow: 1 }} />
-                </Box>
+            <BasePaper style={{ height: "81.5vh" }}>
                 {activeTab === 0 && (
                     <Box flex={1}>
                         <Table
