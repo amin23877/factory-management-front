@@ -59,30 +59,28 @@ function FullDataGrid({
     };
 
     return (
-        <BasePaper>
-            <Box height={height}>
-                <DataGrid
-                    density="compact"
-                    loading={loading}
-                    className={dataGridClasses.root}
-                    onRowSelected={onRowSelected}
-                    pagination
-                    page={page}
-                    pageSize={25}
-                    rowCount={items ? items.total : 0}
-                    filterMode="server"
-                    paginationMode="server"
-                    sortingMode="server"
-                    onSortModelChange={handleSortChange}
-                    onPageChange={(p) => setPage(p.page)}
-                    onPageSizeChange={(ps) => setLimit(ps.pageSize)}
-                    onFilterModelChange={handleChangeFilter}
-                    rows={items ? items.result : []}
-                    columns={columns}
-                    components={{ Toolbar: GridToolbar }}
-                />
-            </Box>
-        </BasePaper>
+        <Box height={height}>
+            <DataGrid
+                density="compact"
+                loading={loading}
+                className={dataGridClasses.root}
+                onRowSelected={onRowSelected}
+                pagination
+                page={page}
+                pageSize={25}
+                rowCount={items ? items.total : 0}
+                filterMode="server"
+                paginationMode="server"
+                sortingMode="server"
+                onSortModelChange={handleSortChange}
+                onPageChange={(p) => setPage(p.page)}
+                onPageSizeChange={(ps) => setLimit(ps.pageSize)}
+                onFilterModelChange={handleChangeFilter}
+                rows={items ? items.result : []}
+                columns={columns}
+                components={{ Toolbar: GridToolbar }}
+            />
+        </Box>
     );
 }
 

@@ -2,7 +2,15 @@ import React, { useState } from "react";
 import { Box, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
 
-import { AddRounded, DeleteRounded, PrintRounded, PostAdd, LocalOfferRounded } from "@material-ui/icons";
+import {
+    AddRounded,
+    DeleteRounded,
+    PrintRounded,
+    PostAdd,
+    LocalOfferRounded,
+    ListAltRounded,
+    FindInPageRounded,
+} from "@material-ui/icons";
 
 import List from "../../app/SideUtilityList";
 import Toast from "../../app/Toast";
@@ -76,45 +84,7 @@ export default function Vendors({ tech }: { tech: boolean }) {
 
             <BasePaper>
                 <Box display="flex">
-                    <Box>
-                        <List>
-                            <ListItem>
-                                <IconButton onClick={() => setAddVendor(true)} title="Add Vendor">
-                                    <AddRounded />
-                                </IconButton>
-                            </ListItem>
-                            <ListItem>
-                                <IconButton
-                                    disabled={!selectedVendor}
-                                    onClick={() => setConfirm(true)}
-                                    title="delete Vendor"
-                                >
-                                    <DeleteRounded />
-                                </IconButton>
-                            </ListItem>
-                            <ListItem>
-                                <IconButton onClick={() => setAddType(true)} title="Add VendorType">
-                                    <LocalOfferRounded />
-                                </IconButton>
-                            </ListItem>
-                            <ListItem>
-                                <IconButton
-                                    disabled={!selectedVendor}
-                                    onClick={() => setVendingModal(true)}
-                                    title="Add Item"
-                                >
-                                    <PostAdd />
-                                </IconButton>
-                            </ListItem>
-
-                            <ListItem>
-                                <IconButton>
-                                    <PrintRounded />
-                                </IconButton>
-                            </ListItem>
-                        </List>
-                    </Box>
-                    <Box flex={1} flexGrow={1} ml={2}>
+                    <Box flex={1} flexGrow={1}>
                         <Box display="flex">
                             <Tabs
                                 style={{ marginBottom: 10 }}
@@ -122,14 +92,76 @@ export default function Vendors({ tech }: { tech: boolean }) {
                                 onChange={(e, nv) => setActiveTab(nv)}
                                 textColor="primary"
                             >
-                                <Tab label="List" />
-                                <Tab label="Details" disabled={!selectedVendor} />
+                                <Tab
+                                    // label="List"
+                                    icon={
+                                        <span
+                                            style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "space-between",
+                                            }}
+                                        >
+                                            <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> List
+                                        </span>
+                                    }
+                                    wrapped
+                                />
+                                <Tab
+                                    // label="Details"
+                                    disabled={!selectedVendor}
+                                    icon={
+                                        <span
+                                            style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+                                        >
+                                            <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
+                                        </span>
+                                    }
+                                />
                             </Tabs>
                             <div style={{ flexGrow: 1 }} />
+                            <Box>
+                                <List>
+                                    <ListItem>
+                                        <IconButton onClick={() => setAddVendor(true)} title="Add Vendor">
+                                            <AddRounded />
+                                        </IconButton>
+                                    </ListItem>
+                                    <ListItem>
+                                        <IconButton
+                                            disabled={!selectedVendor}
+                                            onClick={() => setConfirm(true)}
+                                            title="delete Vendor"
+                                        >
+                                            <DeleteRounded />
+                                        </IconButton>
+                                    </ListItem>
+                                    <ListItem>
+                                        <IconButton onClick={() => setAddType(true)} title="Add VendorType">
+                                            <LocalOfferRounded />
+                                        </IconButton>
+                                    </ListItem>
+                                    <ListItem>
+                                        <IconButton
+                                            disabled={!selectedVendor}
+                                            onClick={() => setVendingModal(true)}
+                                            title="Add Item"
+                                        >
+                                            <PostAdd />
+                                        </IconButton>
+                                    </ListItem>
+
+                                    <ListItem>
+                                        <IconButton>
+                                            <PrintRounded />
+                                        </IconButton>
+                                    </ListItem>
+                                </List>
+                            </Box>
                         </Box>
                         {activeTab === 0 && (
                             <FullDataGrid
-                                height="72vh"
+                                height="78.5vh"
                                 url="/vendor"
                                 columns={cols}
                                 defaultQueries={{ tech }}

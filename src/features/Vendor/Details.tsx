@@ -162,21 +162,26 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                     <UpdateVendorForm initialValues={vendor} />
                 </Box>
                 <Box flex={3}>
+                    <Tabs
+                        value={activeTab}
+                        onChange={(e, nv) => setActiveTab(nv)}
+                        style={{ margin: "0.5em 0" }}
+                        textColor="primary"
+                    >
+                        <Tab label="Items" />
+                        <Tab label="Documents" />
+                        <Tab label="Contacts" />
+                        <Tab label="PO History" />
+                        <Tab label="Notes" />
+                        <Tab label="Auditing" />
+                    </Tabs>
                     <BasePaper>
-                        <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} style={{ margin: "0.5em 0" }}>
-                            <Tab label="Items" />
-                            <Tab label="Documents" />
-                            <Tab label="Contacts" />
-                            <Tab label="PO History" />
-                            <Tab label="Notes" />
-                            <Tab label="Auditing" />
-                        </Tabs>
-
                         {activeTab === 0 && (
                             <BaseDataGrid
                                 cols={itemCols}
                                 rows={(items && items.map((r: any, i: number) => ({ ...r, id: i }))) || []}
                                 onRowSelected={() => {}}
+                                height="66.7vh"
                             />
                         )}
                         {activeTab === 1 && (
@@ -197,6 +202,7 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                                         setSelectedDocument(r);
                                         setDocumentModal(true);
                                     }}
+                                    height="62.7vh"
                                 />
                             </>
                         )}
@@ -218,10 +224,14 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                                         setSelectedContact(r);
                                         setContactModal(true);
                                     }}
+                                    height="62.7vh"
                                 />
                             </>
                         )}
-                        {activeTab === 3 && <BaseDataGrid cols={POCols} rows={POs || []} onRowSelected={() => {}} />}
+
+                        {activeTab === 3 && (
+                            <BaseDataGrid cols={POCols} rows={POs || []} onRowSelected={() => {}} height="66.7vh" />
+                        )}
                         {activeTab === 4 && (
                             <>
                                 <Button
@@ -240,6 +250,7 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                                         setSelectedNote(r);
                                         setNoteModal(true);
                                     }}
+                                    height="62.7vh"
                                 />
                             </>
                         )}

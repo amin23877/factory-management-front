@@ -178,12 +178,12 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
             {({ values, errors, handleChange, handleBlur }) => (
                 <Form>
                     <Box>
-                        <Box display="flex" flexDirection="column" style={{ gap: 10 }}>
+                        <Box display="flex" flexDirection="column" style={{ gap: 10, height: "77.5vh" }}>
                             <BasePaper>
                                 <Paper
                                     style={{
                                         margin: "0.5em 0 2em 0",
-                                        padding: "0.5em",
+                                        paddingLeft: "0.5em",
                                         backgroundColor: "#eee",
                                         gridColumnEnd: "span 3",
                                         display: "grid",
@@ -194,7 +194,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                                     <FormControlLabel
                                         name="active"
                                         value={values.active}
-                                        control={<Checkbox checked={Boolean(values.active)} />}
+                                        control={<Checkbox checked={Boolean(values.active)} size="small" />}
                                         label="Active"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
@@ -304,7 +304,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                                     </Button>
                                 </Box>
                             </BasePaper>
-                            <BasePaper style={{ height: "100%" }}>
+                            <BasePaper style={{ flex: 1 }}>
                                 <Tabs value={0} style={{ margin: "0.5em 0" }} textColor="primary">
                                     <Tab label="Main Contact" />
                                 </Tabs>
