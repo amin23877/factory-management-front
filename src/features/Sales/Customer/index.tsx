@@ -97,7 +97,7 @@ export default function Customers() {
             <Grid container style={{ marginRight: "1px" }}>
                 <Grid item xs={12}>
                     <BasePaper>
-                        <Box mb={2} display="flex">
+                        <Box mb={1} display="flex">
                             <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="primary">
                                 <Tab
                                     // label="List"

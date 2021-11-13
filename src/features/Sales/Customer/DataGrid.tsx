@@ -90,7 +90,7 @@ export default function CustomerDataGrid({
         <div
             style={{
                 flexGrow: 1,
-                height: 500,
+                height: 544,
             }}
         >
             <DataGrid

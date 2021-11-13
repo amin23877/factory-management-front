@@ -155,7 +155,7 @@ export default function ClientDetails({
                     <Form>
                         <Box pb="8px" display="flex" style={{ gap: 10 }}>
                             <Box flex={3}>
-                                <Box display="flex" flexDirection="column" style={{ gap: 10 }}>
+                                <Box display="flex" flexDirection="column" style={{ gap: 10, height: "72.5vh" }}>
                                     <BasePaper>
                                         <GeneralForm
                                             values={values}
@@ -173,7 +173,7 @@ export default function ClientDetails({
                                             </Button>
                                         </Box>
                                     </BasePaper>
-                                    <BasePaper style={{ height: "100%" }}>
+                                    <BasePaper style={{ height: "100%", flex: 1 }}>
                                         <Tabs
                                             textColor="primary"
                                             value={activeSubTab}
@@ -232,7 +232,7 @@ export default function ClientDetails({
                                     <Tab label="Notes" />
                                     <Tab label="Auditing" />
                                 </Tabs>
-                                <BasePaper>
+                                <BasePaper style={{ marginTop: "10px" }}>
                                     {activeTab === 0 && (
                                         <>
                                             <Button
@@ -244,7 +244,7 @@ export default function ClientDetails({
                                                 + Add Contact
                                             </Button>
                                             <BaseDataGrid
-                                                height="58.5vh"
+                                                height="58vh"
                                                 cols={contactsCols}
                                                 rows={contacts || []}
                                                 onRowSelected={(c) => {}}
@@ -262,7 +262,7 @@ export default function ClientDetails({
                                                 + Add Document
                                             </Button>
                                             <BaseDataGrid
-                                                height="58.5vh"
+                                                height="58vh"
                                                 cols={docCols}
                                                 rows={documents || []}
                                                 onRowSelected={(v) => {}}
@@ -271,7 +271,7 @@ export default function ClientDetails({
                                     )}
                                     {activeTab === 2 && (
                                         <BaseDataGrid
-                                            height="62.5vh"
+                                            height="62vh"
                                             cols={activityCols}
                                             rows={activities || []}
                                             onRowSelected={() => {}}
@@ -284,7 +284,7 @@ export default function ClientDetails({
                                                 + Add Note
                                             </Button>
                                             <BaseDataGrid
-                                                height="58.5vh"
+                                                height="58vh"
                                                 cols={noteCols}
                                                 rows={notes || []}
                                                 onRowSelected={(v) => {}}
