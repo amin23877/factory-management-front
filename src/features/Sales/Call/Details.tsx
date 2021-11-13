@@ -60,7 +60,7 @@ export default function Details({ callsData }: { callsData: any }) {
                                 <TextField
                                     multiline
                                     style={{ gridColumnEnd: "span 4" }}
-                                    rows={3}
+                                    rows={4}
                                     placeholder="description"
                                     label="Description"
                                     name="description"

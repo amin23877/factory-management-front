@@ -30,13 +30,7 @@ export const GeneralForm = ({
 }) => {
     return (
         <>
-            <Box
-                mb={1}
-                display="grid"
-                gridColumnGap={10}
-                gridRowGap={10}
-                gridTemplateColumns={add ? "1fr 1fr 1fr" : "1fr 1fr 1fr 1fr"}
-            >
+            <Box mb={1} display="grid" gridColumnGap={10} gridRowGap={11} gridTemplateColumns={"1fr 1fr 1fr"}>
                 <TextField
                     name="date"
                     label="Date"
@@ -195,7 +189,7 @@ export const GeneralForm = ({
                             error={Boolean(errors.CreatedBy)}
                         />
                         <TextField
-                            style={{ gridColumnEnd: "span 2" }}
+                            style={{ gridColumnEnd: "span 3" }}
                             name="subject"
                             value={values.subject}
                             onBlur={handleBlur}
