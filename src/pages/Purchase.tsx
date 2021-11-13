@@ -20,10 +20,10 @@ export default function Purchase() {
                     orientation="vertical"
                     style={{ marginRight: "1em", position: "sticky", top: 65 }}
                 >
-                    <MyTab label="Dashboard" />
-                    <MyTab label="Quote" />
-                    <MyTab label="Purchase Order" />
-                    <MyTab label="Vendor" />
+                    <MyTab label="+ Dashboard" />
+                    <MyTab label="+ Quote" />
+                    <MyTab label="+ Purchase Order" />
+                    <MyTab label="+ Vendor" />
                 </MyTabs>
                 <Box flex={1}>
                     {activeTab === 1 && <PurchaseQuote />}

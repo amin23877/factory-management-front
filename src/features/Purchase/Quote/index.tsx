@@ -5,7 +5,7 @@ import ListItem from "@material-ui/core/ListItem";
 import IconButton from "@material-ui/core/IconButton";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { AddRounded, DeleteRounded, PrintRounded } from "@material-ui/icons";
+import { AddRounded, DeleteRounded, FindInPageRounded, ListAltRounded, PrintRounded } from "@material-ui/icons";
 import { GridColDef } from "@material-ui/data-grid";
 
 import List from "../../../app/SideUtilityList";
@@ -147,53 +147,78 @@ function Index() {
             )}
             <BasePaper>
                 <Box display="flex">
-                    <Box>
-                        <List>
-                            <ListItem>
-                                <IconButton
-                                    onClick={() => {
-                                        setActiveTab(0);
-                                        setSelPQ(undefined);
-                                        setAddPQ(true);
-                                    }}
-                                >
-                                    <AddRounded />
-                                </IconButton>
-                            </ListItem>
-                            <ListItem>
-                                <IconButton onClick={() => setConfirm(true)}>
-                                    <DeleteRounded />
-                                </IconButton>
-                            </ListItem>
-                            <ListItem>
-                                <IconButton>
-                                    <PrintRounded />
-                                </IconButton>
-                            </ListItem>
-                        </List>
-                    </Box>
-                    <Box flex={1} flexGrow={1} ml={2}>
-                        <Tabs
-                            style={{ marginBottom: "1em" }}
-                            textColor="primary"
-                            value={activeTab}
-                            onChange={(e, nv) => setActiveTab(nv)}
-                        >
-                            <Tab label="List" />
-                            <Tab label="Details" disabled={!selPQ} />
-                        </Tabs>
-                        {activeTab === 0 && (
-                            <BasePaper>
-                                <BaseDataGrid
-                                    height="74vh"
-                                    cols={cols}
-                                    rows={pqs}
-                                    onRowSelected={(d) => {
-                                        setSelPQ(d);
-                                        setActiveTab(1);
-                                    }}
+                    <Box flex={1} flexGrow={1}>
+                        <Box display="flex">
+                            <Tabs
+                                style={{ marginBottom: "1em" }}
+                                textColor="primary"
+                                value={activeTab}
+                                onChange={(e, nv) => setActiveTab(nv)}
+                            >
+                                <Tab
+                                    // label="List"
+                                    icon={
+                                        <span
+                                            style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                                justifyContent: "space-between",
+                                            }}
+                                        >
+                                            <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> List
+                                        </span>
+                                    }
+                                    wrapped
                                 />
-                            </BasePaper>
+                                <Tab
+                                    // label="Details"
+                                    disabled={!selPQ}
+                                    icon={
+                                        <span
+                                            style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+                                        >
+                                            <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
+                                        </span>
+                                    }
+                                />
+                            </Tabs>
+                            <div style={{ flex: 1 }}> </div>
+                            <Box>
+                                <List>
+                                    <ListItem>
+                                        <IconButton
+                                            onClick={() => {
+                                                setActiveTab(0);
+                                                setSelPQ(undefined);
+                                                setAddPQ(true);
+                                            }}
+                                        >
+                                            <AddRounded />
+                                        </IconButton>
+                                    </ListItem>
+                                    <ListItem>
+                                        <IconButton onClick={() => setConfirm(true)}>
+                                            <DeleteRounded />
+                                        </IconButton>
+                                    </ListItem>
+                                    <ListItem>
+                                        <IconButton>
+                                            <PrintRounded />
+                                        </IconButton>
+                                    </ListItem>
+                                </List>
+                            </Box>
+                        </Box>
+                        {activeTab === 0 && (
+                            <BaseDataGrid
+                                height="78.5vh"
+                                cols={cols}
+                                rows={pqs}
+                                onRowSelected={(d) => {
+                                    setSelPQ(d);
+                                    setActiveTab(1);
+                                }}
+                            />
                         )}
                         {activeTab === 1 && selPQ && (
                             <Details
