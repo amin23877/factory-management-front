@@ -127,7 +127,7 @@ export default function Details({
                     </Tabs>
                     <BasePaper>
                         {activeTab === 0 && (
-                            <BaseDataGrid cols={LICols} rows={docs} onRowSelected={onDocSelected} height="61.5vh" />
+                            <BaseDataGrid cols={LICols} rows={docs} onRowSelected={onDocSelected} height="60vh" />
                         )}
                         {activeTab === 1 && (
                             <Fragment>
@@ -143,7 +143,7 @@ export default function Details({
                                     cols={docCols}
                                     rows={docs}
                                     onRowSelected={onDocSelected}
-                                    height="58.5vh"
+                                    height="54.4vh"
                                 />
                             </Fragment>
                         )}
@@ -161,7 +161,7 @@ export default function Details({
                                     cols={noteCols}
                                     rows={notes}
                                     onRowSelected={onNoteSelected}
-                                    height="58.5vh"
+                                    height="54.4vh"
                                 />
                             </Fragment>
                         )}

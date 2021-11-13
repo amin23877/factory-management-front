@@ -26,7 +26,7 @@ export const GeneralForm = ({
 
     return (
         <>
-            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gridColumnGap={10} gridRowGap={10}>
+            <Box display="grid" gridTemplateColumns="1fr  1fr" gridColumnGap={10} gridRowGap={10}>
                 <TextField
                     value={values.number}
                     name="number"
@@ -34,6 +34,7 @@ export const GeneralForm = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
+                <TextField value={values.SOId?.issuedBy?.username} label="SO Issued By" disabled />
                 <LinkSelect
                     value={typeof values.SOId === "string" ? values.SOId : values.SOId}
                     label="SO ID"
@@ -47,8 +48,8 @@ export const GeneralForm = ({
                     }}
                     onBlur={handleBlur}
                     url="/panel/so"
+                    style={{ gridColumnEnd: "span 2" }}
                 />
-                <TextField value={values.SOId?.issuedBy?.username} label="SO Issued By" disabled />
             </Box>
         </>
     );

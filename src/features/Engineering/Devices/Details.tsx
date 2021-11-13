@@ -341,7 +341,7 @@ function ItemsDetails({
             <Formik initialValues={selectedRow} validationSchema={AddItemSchema} onSubmit={handleSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
                     <Form>
-                        <Grid container>
+                        <Grid container spacing={2}>
                             <Grid item md={4} xs={12}>
                                 <Box display="flex" flexDirection="column" style={{ gap: 10 }}>
                                     <BasePaper>
@@ -366,13 +366,7 @@ function ItemsDetails({
                                             </Box>
                                         )}
                                     </BasePaper>
-                                    <BasePaper
-                                        style={{
-                                            height: "100%",
-                                            display: "flex",
-                                            flexDirection: "column",
-                                        }}
-                                    >
+                                    <BasePaper>
                                         <Tabs
                                             style={{ marginBottom: 16 }}
                                             value={moreInfoTab}

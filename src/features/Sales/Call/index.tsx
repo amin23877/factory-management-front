@@ -97,7 +97,7 @@ export default function Calls() {
                 onConfirm={handleDelete}
                 text={`Are you sure, You are going to delete PO with number ${selectedCall?.number}`}
             />
-            <Box mb={2} display="flex" alignItems="center">
+            <Box mb={1} display="flex" alignItems="center">
                 <Button
                     onClick={() => setAddCall(true)}
                     style={{
@@ -159,7 +159,7 @@ export default function Calls() {
                             setSelectedCall(d);
                             setActiveTab(1);
                         }}
-                        height={500}
+                        height={"73.2vh"}
                     />
                 )}
                 {activeTab === 1 && selectedCall && <Details callsData={selectedCall} />}

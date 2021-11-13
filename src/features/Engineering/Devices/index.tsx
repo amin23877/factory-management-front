@@ -205,7 +205,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
 
             <FieldNFilter open={FieldNFilterModal} onClose={() => setFieldNFilterModal(false)} />
 
-            <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
+            <Box display="flex" justifyContent="flex-end" alignItems="center" my={1}>
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab
                         // label="List"
@@ -293,7 +293,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                     {activeTab === 0 && (
                         <>
                             {/* <SearchBox panel="engineering" /> */}
-                            <Box height={550}>
+                            <Box height={575}>
                                 <DataGrid
                                     density="compact"
                                     loading={loading}

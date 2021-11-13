@@ -150,7 +150,7 @@ export default function POPanel() {
                 text={`Are you sure, You are going to delete PO with number ${selectedPO?.number}`}
             />
 
-            <Box mb={2} display="flex" alignItems="center">
+            <Box mb={1} display="flex" alignItems="center">
                 <Button
                     onClick={() => setAddPo(true)}
                     style={{
@@ -199,7 +199,7 @@ export default function POPanel() {
                 </Tabs>
                 {activeTab === 0 && pos && (
                     <BaseDataGrid
-                        height={500}
+                        height={540}
                         rows={pos}
                         cols={poCols}
                         onRowSelected={(d) => {
