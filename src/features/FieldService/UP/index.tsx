@@ -9,6 +9,7 @@ import { BasePaper } from "../../../app/Paper";
 import Details from "./Details";
 
 import { formatTimestampToDate } from "../../../logic/date";
+import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
 export default function Up() {
     const [activeTab, setActiveTab] = useState(0);
@@ -55,13 +56,26 @@ export default function Up() {
                     onChange={(e, nv) => setActiveTab(nv)}
                     style={{ marginBottom: 10 }}
                 >
-                    <Tab label="List" />
-                    {/* <Tab label="Details" disabled={!selectedUp} /> */}
-                    <Tab label="Details" />
+                    <Tab
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                <ListAltRounded style={{ marginRight: "5px" }} /> List
+                            </span>
+                        }
+                        wrapped
+                    />
+                    <Tab
+                        // disabled={!selectedUp}
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <FindInPageRounded style={{ marginRight: "5px" }} /> Details
+                            </span>
+                        }
+                    />
                 </Tabs>
                 {activeTab === 0 && ups && (
                     <BaseDataGrid
-                        height="74vh"
+                        height="78.3vh"
                         rows={ups.result || []}
                         cols={cols}
                         onRowSelected={(d) => {

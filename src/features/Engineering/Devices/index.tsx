@@ -208,7 +208,6 @@ const Devices = ({ sales }: { sales?: boolean }) => {
             <Box display="flex" justifyContent="flex-end" alignItems="center" my={1}>
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab
-                        // label="List"
                         icon={
                             <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                 <ListAltRounded style={{ marginRight: "5px" }} /> List
@@ -217,7 +216,6 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                         wrapped
                     />
                     <Tab
-                        // label="Details"
                         disabled={!selectedItem}
                         icon={
                             <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
