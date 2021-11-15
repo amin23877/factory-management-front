@@ -1,4 +1,4 @@
-import React, { useMemo, useState, Fragment, useRef } from "react";
+import React, { useMemo, useState, useRef } from "react";
 import { Box, Tabs, Tab, Typography } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
@@ -135,9 +135,9 @@ function Details({ up }: { up: any }) {
             <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={up?.id} model="up" />
             <Formik initialValues={up} validationSchema={schema} onSubmit={handleSubmit}>
                 {({ values, errors, handleChange, handleBlur, isSubmitting, setFieldValue, touched }) => (
-                    <Form>
-                        <Box display="grid" gridTemplateColumns="3fr 4fr" gridGap={10}>
-                            <Box mb={2} display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                    <Form style={{ height: "90%" }}>
+                        <Box height="100%" display="grid" gridTemplateColumns="3fr 4fr" gridGap={10}>
+                            <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
                                 <BasePaper>
                                     <General
                                         values={values}
@@ -215,25 +215,12 @@ function Details({ up }: { up: any }) {
                                         </Box>
                                     )}
                                     {infoActiveTab === 2 && (
-                                        <Fragment>
-                                            {/* <Button kind="add" onClick={() => setAddOption(true)}>
-                                            add Option
-                                        </Button>
-                                        <Button
-                                            kind="delete"
-                                            onClick={() => setConfirm(true)}
-                                            disabled={!selectedOption}
-                                            style={{ margin: "0 0.5em" }}
-                                        >
-                                            Delete Option
-                                        </Button> */}
-                                            <BaseDataGrid
-                                                height={200}
-                                                rows={up.options || []}
-                                                cols={optionCols}
-                                                onRowSelected={() => {}}
-                                            />
-                                        </Fragment>
+                                        <BaseDataGrid
+                                            height={200}
+                                            rows={up.options || []}
+                                            cols={optionCols}
+                                            onRowSelected={() => {}}
+                                        />
                                     )}
                                     {infoActiveTab === 3 && (
                                         <Battery
@@ -268,7 +255,7 @@ function Details({ up }: { up: any }) {
                                 </BasePaper>
                             </Box>
                             <Box>
-                                <Box display="flex" maxWidth="700px" mb={1}>
+                                <Box display="flex" maxWidth="700px">
                                     <Tabs
                                         value={gridActiveTab}
                                         onChange={(e, nv) => setGridActiveTab(nv)}
@@ -286,7 +273,7 @@ function Details({ up }: { up: any }) {
                                         <Tab label="Auditing" />
                                     </Tabs>
                                 </Box>
-                                <BasePaper>
+                                <BasePaper style={{ height: "91.5%" }}>
                                     {gridActiveTab === 0 && (
                                         <>
                                             <BaseDataGrid
@@ -313,7 +300,7 @@ function Details({ up }: { up: any }) {
                                         />
                                     )}
                                     {gridActiveTab === 5 && (
-                                        <Fragment>
+                                        <>
                                             <Tabs
                                                 value={batteryTab}
                                                 onChange={(e, nv) => setBatteryTab(nv)}
@@ -323,7 +310,7 @@ function Details({ up }: { up: any }) {
                                                 <Tab label="Diagram" />
                                             </Tabs>
                                             {batteryTab === 1 && <BatteryDiagram />}
-                                        </Fragment>
+                                        </>
                                     )}
                                     {gridActiveTab === 6 && (
                                         <BaseDataGrid cols={UnitLogsCols} rows={[]} onRowSelected={(r) => {}} />

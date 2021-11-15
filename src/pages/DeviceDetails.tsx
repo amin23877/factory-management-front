@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState } from "react";
-import { Box, Grid, Tabs, Tab, LinearProgress, Typography, Container } from "@material-ui/core";
+import { Box, Grid, Tabs, Tab, LinearProgress, Typography } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
@@ -368,7 +368,7 @@ function DeviceDetails() {
                                     {moreInfoTab === 1 && (
                                         <Box display="flex" justifyContent="space-around" alignItems="center">
                                             <div ref={(e) => (qrCode.current = e)}>
-                                                <DeviceQRCode number={selectedRow.no} />
+                                                {selectedRow.no && <DeviceQRCode number={selectedRow.no} />}
                                                 <Typography variant="subtitle1">
                                                     Device Number: {selectedRow.no}
                                                 </Typography>

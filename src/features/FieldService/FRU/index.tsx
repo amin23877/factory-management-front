@@ -121,8 +121,8 @@ export default function FRU() {
     ];
 
     return (
-        <Box>
-            <BasePaper>
+        <Box display="flex" height="100%">
+            <BasePaper style={{ flex: 1 }}>
                 <Tabs
                     value={activeTab}
                     textColor="primary"

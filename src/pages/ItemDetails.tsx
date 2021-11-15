@@ -4,7 +4,7 @@ import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { useParams } from "react-router-dom";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
-import { host } from '../host'
+import { host } from "../host";
 import Button from "../app/Button";
 import BaseDataGrid from "../app/BaseDataGrid";
 import { BasePaper } from "../app/Paper";
@@ -315,7 +315,7 @@ function ItemsDetails() {
                                     {moreInfoTab === 5 && (
                                         <Box display="flex" justifyContent="space-around" alignItems="center">
                                             <div ref={(e) => (qrCode.current = e)}>
-                                                <QRCode number={selectedRow.no} />
+                                                {selectedRow.no && <QRCode number={selectedRow.no} />}
                                                 <Typography variant="subtitle1">
                                                     Device Number: {selectedRow.no}
                                                 </Typography>

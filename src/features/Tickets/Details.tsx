@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from "react";
 import { Box, Tab, Tabs } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
-import useSWR, { mutate } from "swr";
-import { Formik } from "formik";
+import { mutate } from "swr";
+import { Form, Formik } from "formik";
 
 import BaseDataGrid from "../../app/BaseDataGrid";
 import { BasePaper } from "../../app/Paper";
@@ -11,7 +11,7 @@ import JobForm, { ContactForm, EntitiesForm, TechnicianForm } from "./Forms";
 import SODatagrid from "../Sales/SO/Datagrid";
 
 import { ITicket, schema, updateTicket } from "../../api/ticket";
-import { fetcher } from "../../api";
+// import { fetcher } from "../../api";
 import QuoteDatagrid from "../Sales/Quote/Datagrid";
 import { getModifiedValues } from "../../logic/utils";
 import { formatTimestampToDate } from "../../logic/date";
@@ -26,12 +26,15 @@ export default function Details({
     onNoteSelected: (a: any) => void;
     onDocumentSelected: (a: any) => void;
 }) {
-    const { data: notes } = useSWR(`/note/job/${initialValue.id}`, fetcher);
-    const { data: documents } = useSWR(`/document/job/${initialValue.id}`, fetcher);
+    const notes: any[] = [],
+        documents: any[] = [],
+        itemDocuments: any[] = [];
+    // const { data: notes } = useSWR(`/note/job/${initialValue.id}`, fetcher);
+    // const { data: documents } = useSWR(`/document/job/${initialValue.id}`, fetcher);
 
-    const { data: lineItem } = useSWR(`/lineitem/${initialValue.LineServiceRecordId.LineItemRecordId}`);
-    // const { data: itemNotes } = useSWR(lineItem ? `/note/item/${lineItem.ItemId}` : null);
-    const { data: itemDocuments } = useSWR(lineItem ? `/document/item/${lineItem.ItemId}` : null);
+    // const { data: lineItem } = useSWR(`/lineitem/${initialValue.LineServiceRecordId.LineItemRecordId}`);
+    // // const { data: itemNotes } = useSWR(lineItem ? `/note/item/${lineItem.ItemId}` : null);
+    // const { data: itemDocuments } = useSWR(lineItem ? `/document/item/${lineItem.ItemId}` : null);
 
     const [activeTab, setActiveTab] = useState(0);
     const [moreActiveTab, setMoreActiveTab] = useState(0);
@@ -113,11 +116,11 @@ export default function Details({
                 {msg}
             </Snack>
 
-            <Box display="grid" gridTemplateColumns="1fr" gridColumnGap={10}>
-                <Box my={1}>
-                    <Formik initialValues={initialValue} validationSchema={schema} onSubmit={handleSubmit}>
-                        {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
-                            <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={24}>
+            <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10}>
+                <Formik initialValues={initialValue} validationSchema={schema} onSubmit={handleSubmit}>
+                    {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
+                        <Form>
+                            <Box display="flex" flexDirection="column" style={{ gap: 10 }} height="100%">
                                 <BasePaper>
                                     <JobForm
                                         errors={errors}
@@ -127,7 +130,7 @@ export default function Details({
                                         setFieldValue={setFieldValue}
                                     />
                                 </BasePaper>
-                                <BasePaper>
+                                <BasePaper style={{ height: "100%" }}>
                                     <Tabs onChange={(e, nv) => setMoreActiveTab(nv)} value={moreActiveTab}>
                                         <Tab label="Contact" />
                                         <Tab label="Entities" />
@@ -159,9 +162,10 @@ export default function Details({
                                     )}
                                 </BasePaper>
                             </Box>
-                        )}
-                    </Formik>
-                </Box>
+                        </Form>
+                    )}
+                </Formik>
+
                 <BasePaper>
                     <Tabs variant="scrollable" value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
                         <Tab label="Filed Service History" />

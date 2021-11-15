@@ -25,7 +25,13 @@ export default function ServiceIndex() {
     const [addService, setAddService] = useState(false);
     const [serviceClassModal, setServiceClassModal] = useState(false);
 
-    const [selectedFS, setSelectedFS] = useState<IFieldService>();
+    const [selectedFS, setSelectedFS] = useState<IFieldService | undefined>({
+        ItemId: "",
+        ServiceClassId: "",
+        name: "",
+        period: 123,
+        price: 456,
+    });
 
     const { data: fieldServices, mutate } = useSWR<IFieldService[]>("/service");
 
@@ -40,8 +46,8 @@ export default function ServiceIndex() {
     }
 
     return (
-        <Box flex={1}>
-            <BasePaper>
+        <Box display="flex" height="100%" flex={1}>
+            <BasePaper style={{ flex: 1 }}>
                 <AddServiceModal open={addService} onClose={() => setAddService(false)} onDone={mutate} />
                 <OneFieldModal
                     title="Add/Edit Service Classes"
@@ -53,17 +59,17 @@ export default function ServiceIndex() {
                     deleteRecord={deleteServiceClass}
                 />
 
-                <Tabs
-                    value={activeTab}
-                    textColor="primary"
-                    onChange={(e, nv) => setActiveTab(nv)}
-                    style={{ marginBottom: 10 }}
-                >
-                    <Tab label="List" />
-                    <Tab label="Details" disabled={!selectedFS} />
-                </Tabs>
-                <Box display="flex">
-                    <Box>
+                <Box display="flex" alignItems="center">
+                    <Tabs
+                        value={activeTab}
+                        textColor="primary"
+                        onChange={(e, nv) => setActiveTab(nv)}
+                        style={{ marginBottom: 10 }}
+                    >
+                        <Tab label="List" />
+                        <Tab label="Details" disabled={!selectedFS} />
+                    </Tabs>
+                    <Box marginLeft="auto">
                         <List>
                             <ListItem>
                                 <IconButton
@@ -97,24 +103,24 @@ export default function ServiceIndex() {
                             </ListItem>
                         </List>
                     </Box>
-                    <Box flex={1} flexGrow={1} ml={2}>
-                        {activeTab === 0 && (
-                            <BasePaper>
-                                <BaseDataGrid
-                                    cols={cols}
-                                    rows={fieldServices}
-                                    height="73vh"
-                                    onRowSelected={(fs) => {
-                                        setSelectedFS(fs);
-                                        setActiveTab(1);
-                                    }}
-                                />
-                            </BasePaper>
-                        )}
-                        {activeTab === 1 && selectedFS && (
-                            <FieldServiceDetails onDone={mutate} selectedFieldService={selectedFS} />
-                        )}
-                    </Box>
+                </Box>
+                <Box display="flex" height="90%">
+                    {activeTab === 0 && (
+                        <BasePaper style={{ flex: 1 }}>
+                            <BaseDataGrid
+                                cols={cols}
+                                rows={fieldServices}
+                                height="73vh"
+                                onRowSelected={(fs) => {
+                                    setSelectedFS(fs);
+                                    setActiveTab(1);
+                                }}
+                            />
+                        </BasePaper>
+                    )}
+                    {activeTab === 1 && selectedFS && (
+                        <FieldServiceDetails onDone={mutate} selectedFieldService={selectedFS} />
+                    )}
                 </Box>
             </BasePaper>
         </Box>
