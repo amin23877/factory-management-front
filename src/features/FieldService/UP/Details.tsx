@@ -77,9 +77,21 @@ function Details({ up }: { up: any }) {
     );
     const optionCols = useMemo<GridColumns>(
         () => [
-            { field: "Option Number", valueFormatter: (params) => params.row?.ItemId?.no, flex: 1 },
-            { field: "Option Name", valueFormatter: (params) => params.row?.ItemId?.name, flex: 1 },
-            { field: "Option Description", valueFormatter: (params) => params.row?.ItemId?.description, flex: 1 },
+            {
+                field: "Option Number",
+                valueFormatter: (params) => params.row?.ItemId?.no,
+                flex: 1,
+            },
+            {
+                field: "Option Name",
+                valueFormatter: (params) => params.row?.ItemId?.name,
+                flex: 1,
+            },
+            {
+                field: "Option Description",
+                valueFormatter: (params) => params.row?.ItemId?.description,
+                flex: 1,
+            },
             { field: "quantity", headerName: "Quantity", width: 100 },
         ],
         []

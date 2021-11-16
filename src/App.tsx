@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { CssBaseline, ThemeProvider } from "@material-ui/core";
 import { BrowserRouter } from "react-router-dom";
-import { theme } from "./theme";
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { SWRConfig } from "swr";
 
+import { theme } from "./theme";
 import { useAppDispatch } from "./store";
 import { getCurrentEmployee } from "./features/Session/sessionsSlice";
 
@@ -26,7 +26,7 @@ function App() {
 
     useEffect(() => {
         dispatch(getCurrentEmployee());
-    }, []);
+    }, [dispatch]);
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
