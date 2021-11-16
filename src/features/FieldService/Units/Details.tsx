@@ -153,7 +153,7 @@ function Details({ unit }: { unit: IUnit }) {
                 <Formik initialValues={unit as IUnit} validationSchema={schema} onSubmit={handleSubmit}>
                     {({ values, errors, handleChange, handleBlur, isSubmitting, setFieldValue, touched }) => (
                         <Form>
-                            <Box mb={2} display="grid" gridTemplateColumns="1fr" gridGap={10} height="100%">
+                            <Box display="flex" flexDirection="column" gridGap={10} height="78vh">
                                 <BasePaper>
                                     <General
                                         values={values}
@@ -163,14 +163,20 @@ function Details({ unit }: { unit: IUnit }) {
                                         handleChange={handleChange}
                                         setFieldValue={setFieldValue}
                                     />
-                                    <Box textAlign="center" my={1}>
-                                        <Button disabled={isSubmitting} kind="add" type="submit">
+                                    <Box textAlign="center" my={1} width="100%">
+                                        <Button
+                                            disabled={isSubmitting}
+                                            kind="edit"
+                                            type="submit"
+                                            style={{ width: "100%" }}
+                                        >
                                             Save
                                         </Button>
                                     </Box>
                                 </BasePaper>
-                                <BasePaper style={{ height: "100%" }}>
+                                <BasePaper style={{ flex: 1 }}>
                                     <Tabs
+                                        textColor="primary"
                                         value={infoActiveTab}
                                         onChange={(e, nv) => setInfoActiveTab(nv)}
                                         style={{ marginBottom: "0.5em" }}
@@ -251,8 +257,13 @@ function Details({ unit }: { unit: IUnit }) {
                         </Form>
                     )}
                 </Formik>
-                <BasePaper>
-                    <Tabs value={gridActiveTab} onChange={(e, nv) => setGridActiveTab(nv)}>
+                <Box>
+                    <Tabs
+                        textColor="primary"
+                        value={gridActiveTab}
+                        onChange={(e, nv) => setGridActiveTab(nv)}
+                        style={{ marginBottom: "10px" }}
+                    >
                         <Tab label="Phocus Monitor" />
                         <Tab label="Warranties" />
                         <Tab label="Job" />
@@ -264,60 +275,62 @@ function Details({ unit }: { unit: IUnit }) {
                         <Tab label="Note" />
                         <Tab label="Auditing" />
                     </Tabs>
-                    {gridActiveTab === 1 && (
-                        <Box>
-                            {/* TODO: fetch warranties */}
-                            <BaseDataGrid cols={warCols} rows={[]} onRowSelected={(d) => {}} />
-                        </Box>
-                    )}
-                    {gridActiveTab === 2 && (
-                        <BaseDataGrid cols={bomCols} rows={unitBoms || []} onRowSelected={(r) => {}} />
-                    )}
-                    {gridActiveTab === 3 && (
-                        <>
-                            <Button
-                                onClick={() => {
-                                    setAddDocModal(true);
-                                }}
-                                variant="outlined"
-                            >
-                                + Add Document
-                            </Button>
-                            <BaseDataGrid
-                                height={250}
-                                cols={docCols}
-                                rows={documents && documents.length ? documents : []}
-                                onRowSelected={(v) => {}}
-                            />
-                        </>
-                    )}
-                    {gridActiveTab === 4 && (
-                        <>
-                            <Button
-                                onClick={() => {
-                                    setAddShipModal(true);
-                                }}
-                                variant="outlined"
-                            >
-                                + Add Shipment
-                            </Button>
-                            <BaseDataGrid
-                                cols={shipCols}
-                                rows={shipments || []}
-                                onRowSelected={(v) => {
-                                    setSelectedShip(v);
-                                    setEditShip(true);
-                                }}
-                            />
-                        </>
-                    )}
-                    {gridActiveTab === 6 && (
-                        // TODO: fetch sales order items
-                        <BaseDataGrid cols={SOICols} rows={[]} onRowSelected={(r) => {}} />
-                    )}
-                    {/* TODO: fetch fsh */}
-                    {gridActiveTab === 7 && <BaseDataGrid cols={fshCols} rows={[]} onRowSelected={(r) => {}} />}
-                </BasePaper>
+                    <BasePaper>
+                        {gridActiveTab === 1 && (
+                            <Box>
+                                {/* TODO: fetch warranties */}
+                                <BaseDataGrid cols={warCols} rows={[]} onRowSelected={(d) => {}} />
+                            </Box>
+                        )}
+                        {gridActiveTab === 2 && (
+                            <BaseDataGrid cols={bomCols} rows={unitBoms || []} onRowSelected={(r) => {}} />
+                        )}
+                        {gridActiveTab === 3 && (
+                            <>
+                                <Button
+                                    onClick={() => {
+                                        setAddDocModal(true);
+                                    }}
+                                    variant="outlined"
+                                >
+                                    + Add Document
+                                </Button>
+                                <BaseDataGrid
+                                    height={250}
+                                    cols={docCols}
+                                    rows={documents && documents.length ? documents : []}
+                                    onRowSelected={(v) => {}}
+                                />
+                            </>
+                        )}
+                        {gridActiveTab === 4 && (
+                            <>
+                                <Button
+                                    onClick={() => {
+                                        setAddShipModal(true);
+                                    }}
+                                    variant="outlined"
+                                >
+                                    + Add Shipment
+                                </Button>
+                                <BaseDataGrid
+                                    cols={shipCols}
+                                    rows={shipments || []}
+                                    onRowSelected={(v) => {
+                                        setSelectedShip(v);
+                                        setEditShip(true);
+                                    }}
+                                />
+                            </>
+                        )}
+                        {gridActiveTab === 6 && (
+                            // TODO: fetch sales order items
+                            <BaseDataGrid cols={SOICols} rows={[]} onRowSelected={(r) => {}} />
+                        )}
+                        {/* TODO: fetch fsh */}
+                        {gridActiveTab === 7 && <BaseDataGrid cols={fshCols} rows={[]} onRowSelected={(r) => {}} />}
+                    </BasePaper>
+                </Box>
             </Box>
         </>
     );

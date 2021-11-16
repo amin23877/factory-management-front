@@ -44,7 +44,7 @@ export const General = ({
                 <TextField
                     multiline
                     style={{ gridColumnEnd: "span 2" }}
-                    rows={4}
+                    rows={3}
                     placeholder="Unit Description"
                     label="Unit Description"
                     name="description"
@@ -61,12 +61,10 @@ export const General = ({
                     onBlur={handleBlur}
                     error={Boolean(errors.no && touched.no)}
                     placeholder="Serial Number"
-                    style={{ gridColumnEnd: "span 2" }}
                     disabled
                 />
 
                 <ArraySelect
-                    style={{ gridColumnEnd: "span 2" }}
                     fullWidth
                     label="Status"
                     items={[

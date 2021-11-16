@@ -16,7 +16,13 @@ export default function FieldService() {
 
     return (
         <Box display="flex">
-            <MyTabs value={activeTab} orientation="vertical" textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+            <MyTabs
+                value={activeTab}
+                orientation="vertical"
+                textColor="primary"
+                onChange={(e, nv) => setActiveTab(nv)}
+                style={{ marginRight: "1em", position: "sticky", top: 65 }}
+            >
                 <MyTab label="Dashboard" />
                 <MyTab label="FRU" />
                 <MyTab label="Services" />
