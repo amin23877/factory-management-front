@@ -279,11 +279,16 @@ function Details({ unit }: { unit: IUnit }) {
                         {gridActiveTab === 1 && (
                             <Box>
                                 {/* TODO: fetch warranties */}
-                                <BaseDataGrid cols={warCols} rows={[]} onRowSelected={(d) => {}} />
+                                <BaseDataGrid cols={warCols} rows={[]} onRowSelected={(d) => {}} height="67.3vh" />
                             </Box>
                         )}
                         {gridActiveTab === 2 && (
-                            <BaseDataGrid cols={bomCols} rows={unitBoms || []} onRowSelected={(r) => {}} />
+                            <BaseDataGrid
+                                cols={bomCols}
+                                rows={unitBoms || []}
+                                onRowSelected={(r) => {}}
+                                height="67.3vh"
+                            />
                         )}
                         {gridActiveTab === 3 && (
                             <>
@@ -296,7 +301,7 @@ function Details({ unit }: { unit: IUnit }) {
                                     + Add Document
                                 </Button>
                                 <BaseDataGrid
-                                    height={250}
+                                    height={"63.2vh"}
                                     cols={docCols}
                                     rows={documents && documents.length ? documents : []}
                                     onRowSelected={(v) => {}}
@@ -320,15 +325,18 @@ function Details({ unit }: { unit: IUnit }) {
                                         setSelectedShip(v);
                                         setEditShip(true);
                                     }}
+                                    height={"63.2vh"}
                                 />
                             </>
                         )}
                         {gridActiveTab === 6 && (
                             // TODO: fetch sales order items
-                            <BaseDataGrid cols={SOICols} rows={[]} onRowSelected={(r) => {}} />
+                            <BaseDataGrid cols={SOICols} rows={[]} onRowSelected={(r) => {}} height="67.3vh" />
                         )}
                         {/* TODO: fetch fsh */}
-                        {gridActiveTab === 7 && <BaseDataGrid cols={fshCols} rows={[]} onRowSelected={(r) => {}} />}
+                        {gridActiveTab === 7 && (
+                            <BaseDataGrid cols={fshCols} rows={[]} onRowSelected={(r) => {}} height="67.3vh" />
+                        )}
                     </BasePaper>
                 </Box>
             </Box>

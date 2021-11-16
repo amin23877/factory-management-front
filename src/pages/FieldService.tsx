@@ -23,15 +23,15 @@ export default function FieldService() {
                 onChange={(e, nv) => setActiveTab(nv)}
                 style={{ marginRight: "1em", position: "sticky", top: 65 }}
             >
-                <MyTab label="Dashboard" />
-                <MyTab label="FRU" />
-                <MyTab label="Services" />
-                <MyTab label="Tickets" />
-                <MyTab label="Tasks" />
-                <MyTab label="Units" />
-                <MyTab label="RMA" />
-                <MyTab label="UP" />
-                <MyTab label="Vendor Tech" />
+                <MyTab label="+ Dashboard" />
+                <MyTab label="+ FRU" />
+                <MyTab label="+ Services" />
+                <MyTab label="+ Tickets" />
+                <MyTab label="+ Tasks" />
+                <MyTab label="+ Units" />
+                <MyTab label="+ RMA" />
+                <MyTab label="+ UP" />
+                <MyTab label="+ Vendor Tech" />
             </MyTabs>
 
             <Box flex={1} px={1}>
