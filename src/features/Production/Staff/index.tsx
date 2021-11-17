@@ -6,6 +6,7 @@ import BaseDataGrid from "../../../app/BaseDataGrid";
 import { GridColDef } from "@material-ui/data-grid";
 import useSwr from "swr";
 import { formatTimestampToDate } from "../../../logic/date";
+import { BasePaper } from "../../../app/Paper";
 
 function Index() {
     const { data: staffs } = useSwr("/prodtask");
@@ -27,9 +28,9 @@ function Index() {
     ];
 
     return (
-        <Box>
-            <BaseDataGrid cols={cols} rows={staffs || []} onRowSelected={(d) => {}} />
-        </Box>
+        <BasePaper>
+            <BaseDataGrid cols={cols} rows={staffs || []} onRowSelected={(d) => {}} height={635} />
+        </BasePaper>
     );
 }
 

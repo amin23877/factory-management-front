@@ -12,17 +12,24 @@ export default function Unit() {
 
     return (
         <>
-            <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
-                <div style={{ flexGrow: 1 }} />
-                <MyTabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="secondary">
-                    <MyTab label="Dashboard" />
-                    <MyTab label="Tasks" />
-                    <MyTab label="Staff" />
+            <Box display="flex">
+                <MyTabs
+                    value={activeTab}
+                    onChange={(e, nv) => setActiveTab(nv)}
+                    textColor="primary"
+                    orientation="vertical"
+                    style={{ marginRight: "1em", position: "sticky", top: 65 }}
+                >
+                    <MyTab label="+ Dashboard" />
+                    <MyTab label="+ Tasks" />
+                    <MyTab label="+ Staff" />
                 </MyTabs>
+                <Box flex={1}>
+                    {activeTab === 0 && <Dashboard />}
+                    {activeTab === 1 && <Tasks />}
+                    {activeTab === 2 && <Staff />}
+                </Box>
             </Box>
-            {activeTab === 0 && <Dashboard />}
-            {activeTab === 1 && <Tasks />}
-            {activeTab === 2 && <Staff />}
             {/* we had something called management here that was for labors cost per hour */}
         </>
     );

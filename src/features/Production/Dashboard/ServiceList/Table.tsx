@@ -40,5 +40,5 @@ export default function Table({ onRowSelected }: { onRowSelected: (row: ITicket)
         []
     );
 
-    return <BaseDataGrid cols={cols} rows={tickets || []} onRowSelected={onRowSelected} />;
+    return <BaseDataGrid cols={cols} rows={tickets || []} onRowSelected={onRowSelected} height={580} />;
 }
