@@ -53,9 +53,5 @@ export default function Table({ onRowSelected }: { onRowSelected: (d: ITicket) =
     //     return <LinearProgress />;
     // }
 
-    return (
-        <BasePaper>
-            <BaseDataGrid height="73vh" cols={cols} rows={tickets || []} onRowSelected={onRowSelected} />
-        </BasePaper>
-    );
+    return <BaseDataGrid height="78vh" cols={cols} rows={tickets || []} onRowSelected={onRowSelected} />;
 }

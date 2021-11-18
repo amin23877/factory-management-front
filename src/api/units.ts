@@ -21,6 +21,7 @@ export interface IUnit {
     productionStatus: string;
     options: any[];
     photo: any[];
+    data: any;
 }
 
 export interface IUnitHistory {

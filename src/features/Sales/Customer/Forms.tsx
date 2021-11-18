@@ -206,13 +206,13 @@ export const GeneralForm = ({
                 <FormControl
                     style={{
                         display: "flex",
-                        gridColumnEnd: "span 2",
+                        gridColumnEnd: "span 4",
                         alignItems: "center",
-                        justifyContent: "space-between",
+                        // justifyContent: "space-between",
                         flexDirection: "row",
                     }}
                 >
-                    <FormLabel>Size</FormLabel>
+                    <FormLabel style={{ marginRight: "10px" }}>Size</FormLabel>
                     <RadioGroup row name="size" value={values.size} onChange={handleChange} style={{}}>
                         <FormControlLabel value="small" control={<Radio size="small" />} label="Small" />
                         <FormControlLabel value="medium" control={<Radio size="small" />} label="Medium" />

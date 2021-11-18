@@ -12,6 +12,7 @@ import FullDataGrid from "../../../components/Datagrid/FullDataGrid";
 import UnitDetails from "../Units/Details";
 import DeviceDetails from "../../../features/Engineering/Devices/Details";
 import { IUnit } from "../../../api/units";
+import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
 export default function FRU() {
     const [activeTab, setActiveTab] = useState(0);
@@ -121,17 +122,44 @@ export default function FRU() {
     ];
 
     return (
-        <Box>
-            <BasePaper>
+        <Box display="flex" height="100%">
+            <BasePaper style={{ flex: 1 }}>
                 <Tabs
                     value={activeTab}
                     textColor="primary"
                     onChange={(e, nv) => setActiveTab(nv)}
                     style={{ marginBottom: 10 }}
                 >
-                    <Tab label="Devices" />
+                    <Tab
+                        // label="List"
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> Devices
+                            </span>
+                        }
+                        wrapped
+                    />
+                    <Tab
+                        // label="List"
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> Units
+                            </span>
+                        }
+                        wrapped
+                    />
+                    <Tab
+                        // label="Details"
+                        disabled={!selectedUnitFru && !selectedItemFru}
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
+                            </span>
+                        }
+                    />
+                    {/* <Tab label="Devices" />
                     <Tab label="Units" />
-                    <Tab label="Details" disabled={!selectedUnitFru && !selectedItemFru} />
+                    <Tab label="Details"  /> */}
                 </Tabs>
                 {activeTab === 0 && (
                     <FullDataGrid
@@ -143,22 +171,20 @@ export default function FRU() {
                             setSelectedItemFru(d);
                             setActiveTab(2);
                         }}
-                        height="72vh"
+                        height="78vh"
                     />
                 )}
                 {activeTab === 1 && FRUs && (
-                    <BasePaper>
-                        <BaseDataGrid
-                            height="72vh"
-                            rows={FRUs.result || []}
-                            cols={callCols}
-                            onRowSelected={(d) => {
-                                setSelectedItemFru(undefined);
-                                setSelectedUnitFru(d);
-                                setActiveTab(2);
-                            }}
-                        />
-                    </BasePaper>
+                    <BaseDataGrid
+                        height="78vh"
+                        rows={FRUs.result || []}
+                        cols={callCols}
+                        onRowSelected={(d) => {
+                            setSelectedItemFru(undefined);
+                            setSelectedUnitFru(d);
+                            setActiveTab(2);
+                        }}
+                    />
                 )}
                 {activeTab === 2 && selectedUnitFru && <UnitDetails unit={selectedUnitFru} />}
                 {activeTab === 2 && selectedItemFru && (

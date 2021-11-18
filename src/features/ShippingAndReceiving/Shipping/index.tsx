@@ -11,6 +11,7 @@ import Details from "../../FieldService/Units/Details";
 import { subMonths } from "date-fns";
 import { formatTimestampToDate } from "../../../logic/date";
 import { UnitSearchBox } from "../../../app/SearchBox";
+import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
 export default function Ship({ tab }: { tab: number }) {
     const [activeTab, setActiveTab] = useState(0);
@@ -116,10 +117,23 @@ export default function Ship({ tab }: { tab: number }) {
                     onChange={(e, nv) => setActiveTab(nv)}
                     style={{ marginBottom: 10 }}
                 >
-                    <Tab label="List" />
-                    <Tab label="Details" />
+                    <Tab
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                <ListAltRounded style={{ marginRight: "5px" }} /> List
+                            </span>
+                        }
+                        wrapped
+                    />
+                    <Tab
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <FindInPageRounded style={{ marginRight: "5px" }} /> Details
+                            </span>
+                        }
+                    />
                 </Tabs>
-                <UnitSearchBox />
+                {/* <UnitSearchBox /> */}
                 {activeTab === 0 && ships && (
                     <>
                         <BaseDataGrid
@@ -130,6 +144,7 @@ export default function Ship({ tab }: { tab: number }) {
                                 setSelectedShip(d);
                                 setActiveTab(1);
                             }}
+                            height={580}
                         />
                     </>
                 )}
