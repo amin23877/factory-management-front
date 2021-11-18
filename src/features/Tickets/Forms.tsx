@@ -42,8 +42,8 @@ export default function TicketForm({
     const { data: services } = useSWR(SOId ? `/lineservice?SOId=${SOId}` : null);
 
     return (
-        <Form>
-            <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gap: 10 }}>
+        <>
+            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gap: 5 }}>
                 <DateTimePicker
                     name="date"
                     value={values.date || null}
@@ -99,28 +99,6 @@ export default function TicketForm({
                     value={typeof values.category === "string" ? values.category : values.category?.id}
                     error={Boolean(errors.category)}
                 />
-                {/* 
-                <FieldSelect
-                    name="ContactId"
-                    label="Contact"
-                    value={values.ContactId}
-                    request={getContacts}
-                    itemTitleField="lastName"
-                    itemValueField="id"
-                    onChange={handleChange}
-                />
-                <DateTimePicker
-                    name="callTime"
-                    value={values.callTime || null}
-                    onChange={(d) => setFieldValue("callTime", d && new Date(d?.toISOString()).getTime())}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.callTime)}
-                    helperText={errors.callTime}
-                    size="small"
-                    placeholder="Call time"
-                    label="Call time"
-                /> */}
-
                 <TextField
                     name="number"
                     value={values.number}
@@ -235,7 +213,7 @@ export default function TicketForm({
                     label="Subject"
                 />
                 <TextField
-                    style={{ gridColumnEnd: "span 3" }}
+                    style={{ gridColumnEnd: "span 2" }}
                     name="description"
                     value={values.description}
                     onChange={handleChange}
@@ -250,7 +228,6 @@ export default function TicketForm({
                     rows={4}
                 />
                 <TextField
-                    style={{ gridColumnEnd: "span 3" }}
                     name=" response"
                     value={values.response}
                     onChange={handleChange}
@@ -300,7 +277,7 @@ export default function TicketForm({
                     </>
                 )}
             </Box>
-        </Form>
+        </>
     );
 }
 export function TechnicianForm({
@@ -319,60 +296,58 @@ export function TechnicianForm({
     setFieldValue: (a: any, b: any) => void;
 }) {
     return (
-        <Form>
-            <Box mt={1} display="grid" gridTemplateColumns="1fr" style={{ gap: 10 }}>
-                <TextField
-                    name="vendorTech"
-                    value={values.vendorTech}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.vendorTech)}
-                    helperText={errors.vendorTech}
-                    size="small"
-                    placeholder="Vendor Tech"
-                />
-                <TextField
-                    name="vendorEmail"
-                    value={values.vendorEmail}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.vendorEmail)}
-                    helperText={errors.vendorEmail}
-                    size="small"
-                    placeholder="Vendor Email"
-                />
-                <FieldSelect
-                    itemValueField="id"
-                    itemTitleField="number"
-                    request={getPO}
-                    name="POId"
-                    value={typeof values.POId === "string" ? values.POId : values.POId?.id}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    label="Customer PO"
-                />
-                <TextField
-                    name="sendPO"
-                    value={values.sendPO}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.sendPO)}
-                    helperText={errors.sendPO}
-                    size="small"
-                    placeholder="Send PO"
-                />
-                <TextField
-                    name="DateSent"
-                    value={values.DateSent}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.DateSent)}
-                    helperText={errors.DateSent}
-                    size="small"
-                    placeholder="Date sent"
-                />
-            </Box>
-        </Form>
+        <Box mt={1} display="grid" gridTemplateColumns="1fr" style={{ gap: 10 }} height="100%">
+            <TextField
+                name="vendorTech"
+                value={values.vendorTech}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.vendorTech)}
+                helperText={errors.vendorTech}
+                size="small"
+                placeholder="Vendor Tech"
+            />
+            <TextField
+                name="vendorEmail"
+                value={values.vendorEmail}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.vendorEmail)}
+                helperText={errors.vendorEmail}
+                size="small"
+                placeholder="Vendor Email"
+            />
+            <FieldSelect
+                itemValueField="id"
+                itemTitleField="number"
+                request={getPO}
+                name="POId"
+                value={typeof values.POId === "string" ? values.POId : values.POId?.id}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                label="Customer PO"
+            />
+            <TextField
+                name="sendPO"
+                value={values.sendPO}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.sendPO)}
+                helperText={errors.sendPO}
+                size="small"
+                placeholder="Send PO"
+            />
+            <TextField
+                name="DateSent"
+                value={values.DateSent}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.DateSent)}
+                helperText={errors.DateSent}
+                size="small"
+                placeholder="Date sent"
+            />
+        </Box>
     );
 }
 
@@ -578,7 +553,7 @@ export const ContactForm = ({
     handleChange: any;
 }) => {
     return (
-        <Box my={2} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr">
+        <Box my={2} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr 1fr 1fr">
             <TextField
                 value={values.contactName}
                 name="contactName"

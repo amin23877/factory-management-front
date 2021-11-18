@@ -54,8 +54,8 @@ export default function Table({ onRowSelected }: { onRowSelected: (d: ITicket) =
     // }
 
     return (
-        <BasePaper>
-            <BaseDataGrid height="73vh" cols={cols} rows={tickets || []} onRowSelected={onRowSelected} />
+        <BasePaper style={{ flex: 1 }}>
+            <BaseDataGrid height="70vh" cols={cols} rows={tickets || []} onRowSelected={onRowSelected} />
         </BasePaper>
     );
 }

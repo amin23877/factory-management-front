@@ -149,11 +149,11 @@ function Details({ unit }: { unit: IUnit }) {
                     init={selectedShip}
                 />
             )}
-            <Box display="grid" gridTemplateColumns="1fr 2fr" gridGap={10}>
+            <Box display="grid" gridTemplateColumns="1fr 2fr" gridGap={10} height="90%">
                 <Formik initialValues={unit as IUnit} validationSchema={schema} onSubmit={handleSubmit}>
                     {({ values, errors, handleChange, handleBlur, isSubmitting, setFieldValue, touched }) => (
                         <Form>
-                            <Box mb={2} display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                            <Box mb={2} display="grid" gridTemplateColumns="1fr" gridGap={10} height="100%">
                                 <BasePaper>
                                     <General
                                         values={values}
@@ -169,7 +169,7 @@ function Details({ unit }: { unit: IUnit }) {
                                         </Button>
                                     </Box>
                                 </BasePaper>
-                                <BasePaper>
+                                <BasePaper style={{ height: "100%" }}>
                                     <Tabs
                                         value={infoActiveTab}
                                         onChange={(e, nv) => setInfoActiveTab(nv)}

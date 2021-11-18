@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { DataGrid, GridColumns, GridToolbar } from "@material-ui/data-grid";
-import { Box, Tabs, Tab } from "@material-ui/core";
+import { Tabs, Tab } from "@material-ui/core";
 
 import { UnitSearchBox } from "../../../app/SearchBox";
 import { BasePaper } from "../../../app/Paper";
@@ -51,7 +51,7 @@ export default function Unit() {
     ];
 
     return (
-        <BasePaper style={{ height: "85vh" }}>
+        <BasePaper style={{ height: "100%" }}>
             <Tabs
                 value={activeTab}
                 textColor="primary"
@@ -65,7 +65,7 @@ export default function Unit() {
                 <>
                     <UnitSearchBox />
 
-                    <Box height="67vh">
+                    <BasePaper style={{ height: "70vh" }}>
                         <DataGrid
                             density="compact"
                             loading={loading}
@@ -85,7 +85,7 @@ export default function Unit() {
                                 setActiveTab(1);
                             }}
                         />
-                    </Box>
+                    </BasePaper>
                 </>
             )}
             {activeTab === 1 && selectedUnit && <Details unit={selectedUnit} />}

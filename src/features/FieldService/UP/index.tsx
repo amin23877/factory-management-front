@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { GridColumns } from "@material-ui/data-grid";
-import { Box, Tabs, Tab } from "@material-ui/core";
+import { Tabs, Tab } from "@material-ui/core";
 import useSwr from "swr";
 
 import BaseDataGrid from "../../../app/BaseDataGrid";
@@ -48,44 +48,42 @@ export default function Up() {
     ];
 
     return (
-        <Box>
-            <BasePaper>
-                <Tabs
-                    value={activeTab}
-                    textColor="primary"
-                    onChange={(e, nv) => setActiveTab(nv)}
-                    style={{ marginBottom: 10 }}
-                >
-                    <Tab
-                        icon={
-                            <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                                <ListAltRounded style={{ marginRight: "5px" }} /> List
-                            </span>
-                        }
-                        wrapped
-                    />
-                    <Tab
-                        // disabled={!selectedUp}
-                        icon={
-                            <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                <FindInPageRounded style={{ marginRight: "5px" }} /> Details
-                            </span>
-                        }
-                    />
-                </Tabs>
-                {activeTab === 0 && ups && (
-                    <BaseDataGrid
-                        height="78.3vh"
-                        rows={ups.result || []}
-                        cols={cols}
-                        onRowSelected={(d) => {
-                            setSelectedUp(d);
-                            setActiveTab(1);
-                        }}
-                    />
-                )}
-                {activeTab === 1 && selectedUp && <Details up={selectedUp} />}
-            </BasePaper>
-        </Box>
+        <BasePaper style={{ height: "100%" }}>
+            <Tabs
+                value={activeTab}
+                textColor="primary"
+                onChange={(e, nv) => setActiveTab(nv)}
+                style={{ marginBottom: 10 }}
+            >
+                <Tab
+                    icon={
+                        <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                            <ListAltRounded style={{ marginRight: "5px" }} /> List
+                        </span>
+                    }
+                    wrapped
+                />
+                <Tab
+                    // disabled={!selectedUp}
+                    icon={
+                        <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <FindInPageRounded style={{ marginRight: "5px" }} /> Details
+                        </span>
+                    }
+                />
+            </Tabs>
+            {activeTab === 0 && ups && (
+                <BaseDataGrid
+                    height="78.3vh"
+                    rows={ups.result || []}
+                    cols={cols}
+                    onRowSelected={(d) => {
+                        setSelectedUp(d);
+                        setActiveTab(1);
+                    }}
+                />
+            )}
+            {activeTab === 1 && selectedUp && <Details up={selectedUp} />}
+        </BasePaper>
     );
 }
