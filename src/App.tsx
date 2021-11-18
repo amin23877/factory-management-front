@@ -21,28 +21,28 @@ console.log(config.BaseUrl);
 // ---------------------------
 
 function App() {
-    // const session = useSelector(selectSession);
-    const dispatch = useAppDispatch();
+  // const session = useSelector(selectSession);
+  const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        dispatch(getCurrentEmployee());
-    }, [dispatch]);
+  useEffect(() => {
+    dispatch(getCurrentEmployee());
+  }, [dispatch]);
 
-    return (
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <SWRConfig value={{ fetcher: get }}>
-                <BrowserRouter>
-                    <ThemeProvider theme={theme}>
-                        <CssBaseline />
+  return (
+    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+      <SWRConfig value={{ fetcher: get }}>
+        <BrowserRouter>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
 
-                        <ChatSocketProvider>
-                            <BaseRouter />
-                        </ChatSocketProvider>
-                    </ThemeProvider>
-                </BrowserRouter>
-            </SWRConfig>
-        </MuiPickersUtilsProvider>
-    );
+            <ChatSocketProvider>
+              <BaseRouter />
+            </ChatSocketProvider>
+          </ThemeProvider>
+        </BrowserRouter>
+      </SWRConfig>
+    </MuiPickersUtilsProvider>
+  );
 }
 
 export default App;
