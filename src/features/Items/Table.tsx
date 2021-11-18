@@ -171,30 +171,28 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     };
 
     return (
-        <BasePaper style={{ flex: 1 }}>
-            <Box height="77vh">
-                <DataGrid
-                    density="compact"
-                    loading={loading}
-                    className={dataGridClasses.root}
-                    onRowSelected={onRowSelected}
-                    pagination
-                    page={page}
-                    pageSize={25}
-                    rowCount={items ? items.total : 0}
-                    filterMode="server"
-                    paginationMode="server"
-                    sortingMode="server"
-                    onSortModelChange={handleSortChange}
-                    onPageChange={(p) => setPage(p.page)}
-                    onPageSizeChange={(ps) => setLimit(ps.pageSize)}
-                    onFilterModelChange={handleChangeFilter}
-                    rows={items ? items.result : []}
-                    columns={gridColumns}
-                    components={{ Toolbar: GridToolbar }}
-                />
-            </Box>
-        </BasePaper>
+        <Box height="77vh" flex={1}>
+            <DataGrid
+                density="compact"
+                loading={loading}
+                className={dataGridClasses.root}
+                onRowSelected={onRowSelected}
+                pagination
+                page={page}
+                pageSize={25}
+                rowCount={items ? items.total : 0}
+                filterMode="server"
+                paginationMode="server"
+                sortingMode="server"
+                onSortModelChange={handleSortChange}
+                onPageChange={(p) => setPage(p.page)}
+                onPageSizeChange={(ps) => setLimit(ps.pageSize)}
+                onFilterModelChange={handleChangeFilter}
+                rows={items ? items.result : []}
+                columns={gridColumns}
+                components={{ Toolbar: GridToolbar }}
+            />
+        </Box>
     );
 }
 
