@@ -142,7 +142,7 @@ const Items = () => {
                     {activeTab === 0 && (
                         <ItemTable
                             onRowSelected={(r) => {
-                                setSelectedItem(r.data as any);
+                                setSelectedItem(r as any);
                                 setActiveTab(1);
                             }}
                         />

@@ -1,12 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { Box } from "@material-ui/core";
-import {
-  DataGrid,
-  GridColumns,
-  GridFilterModelParams,
-  GridSortModelParams,
-  GridToolbar,
-} from "@material-ui/data-grid";
+import { DataGrid, GridColumns, GridFilterModelParams, GridSortModelParams, GridToolbar } from "@material-ui/data-grid";
 import useSWR from "swr";
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
@@ -207,279 +201,325 @@ import { CheckRounded, ClearRounded } from "@material-ui/icons";
 //     );
 // }
 const columns = [
-  { name: "name", header: "Name", minWidth: 50, defaultFlex: 2 },
-  { name: "no", header: "NO.", maxWidth: 1000, defaultFlex: 1 },
+    { name: "name", header: "Name", minWidth: 50, defaultFlex: 2 },
+    { name: "no", header: "NO.", maxWidth: 1000, defaultFlex: 1 },
 ];
 
 const defaultFilterValue = [
-  { name: "name", type: "string", operator: "contains", value: undefined },
-  { name: "no", type: "string", operator: "contains", value: undefined },
-  {
-    name: "description",
-    type: "string",
-    operator: "contains",
-    value: undefined,
-  },
-  {
-    name: "salesApproved",
-    type: "boolean",
-    operator: "contains",
-    value: undefined,
-  },
-  {
-    name: "engineeringApproved",
-    type: "boolean",
-    operator: "contains",
-    value: undefined,
-  },
-  {
-    name: "shippingApproved",
-    type: "boolean",
-    operator: "contains",
-    value: undefined,
-  },
-  {
-    name: "prefVendor",
-    type: "boolean",
-    operator: "contains",
-    value: undefined,
-  },
-  {
-    name: "vendorPartNumber",
-    type: "string",
-    operator: "contains",
-    value: undefined,
-  },
-  { name: "cost", type: "string", operator: "contains", value: undefined },
-  { name: "location", type: "string", operator: "contains", value: undefined },
-  { name: "qtyOnHand", type: "string", operator: "contains", value: undefined },
-  { name: "qtyRemain", type: "string", operator: "contains", value: undefined },
-  {
-    name: "qtyOnOrder",
-    type: "string",
-    operator: "contains",
-    value: undefined,
-  },
-  {
-    name: "qtyAllocated",
-    type: "string",
-    operator: "contains",
-    value: undefined,
-  },
-  {
-    name: "usedInLastQuarter",
-    type: "string",
-    operator: "contains",
-    value: undefined,
-  },
-  { name: "fifo", type: "string", operator: "contains", value: undefined },
-  {
-    name: "qohVal",
-    type: "number",
-    operator: "contains",
-    value: undefined,
-  },
-  {
-    name: "uom",
-    type: "string",
-    operator: "contains",
-    value: undefined,
-  },
-  {
-    name: "obsolete",
-    type: "boolean",
-    operator: "contains",
-    value: undefined,
-  },
-  {
-    name: "nonInventoryItem",
-    type: "boolean",
-    operator: "contains",
-    value: undefined,
-  },
-  {
-    name: "rndOnly",
-    type: "boolean",
-    operator: "contains",
-    value: undefined,
-  },
+    { name: "name", type: "string", operator: "startsWith", value: undefined },
+    { name: "no", type: "string", operator: "contains", value: undefined },
+    {
+        name: "description",
+        type: "string",
+        operator: "contains",
+        value: undefined,
+    },
+    {
+        name: "salesApproved",
+        type: "boolean",
+        operator: "contains",
+        value: undefined,
+    },
+    {
+        name: "engineeringApproved",
+        type: "boolean",
+        operator: "contains",
+        value: undefined,
+    },
+    {
+        name: "shippingApproved",
+        type: "boolean",
+        operator: "contains",
+        value: undefined,
+    },
+    {
+        name: "prefVendor",
+        type: "boolean",
+        operator: "contains",
+        value: undefined,
+    },
+    {
+        name: "vendorPartNumber",
+        type: "string",
+        operator: "contains",
+        value: undefined,
+    },
+    { name: "cost", type: "string", operator: "contains", value: undefined },
+    { name: "location", type: "string", operator: "contains", value: undefined },
+    { name: "qtyOnHand", type: "string", operator: "contains", value: undefined },
+    { name: "qtyRemain", type: "string", operator: "contains", value: undefined },
+    {
+        name: "qtyOnOrder",
+        type: "string",
+        operator: "contains",
+        value: undefined,
+    },
+    {
+        name: "qtyAllocated",
+        type: "string",
+        operator: "contains",
+        value: undefined,
+    },
+    {
+        name: "usedInLastQuarter",
+        type: "string",
+        operator: "contains",
+        value: undefined,
+    },
+    { name: "fifo", type: "string", operator: "contains", value: undefined },
+    {
+        name: "qohVal",
+        type: "number",
+        operator: "contains",
+        value: undefined,
+    },
+    {
+        name: "uom",
+        type: "string",
+        operator: "contains",
+        value: undefined,
+    },
+    {
+        name: "obsolete",
+        type: "boolean",
+        operator: "contains",
+        value: undefined,
+    },
+    {
+        name: "nonInventoryItem",
+        type: "boolean",
+        operator: "contains",
+        value: undefined,
+    },
+    {
+        name: "rndOnly",
+        type: "boolean",
+        operator: "contains",
+        value: undefined,
+    },
 ];
 
-const gridStyle = { minHeight: 740 };
+const gridStyle = { minHeight: 600 };
 
 const getOperator = (op: string) => {
-  switch (op) {
-    case "contains":
-      return "contain";
-    case "startsWith":
-      return "startsWith";
-    case "endsWith":
-      return "endsWith";
-    case "lt":
-      return "max";
-    case "gt":
-      return "min";
-    default:
-      return "";
-  }
+    switch (op) {
+        case "contains":
+            return "contain";
+        case "startsWith":
+            return "startsWith";
+        case "endsWith":
+            return "endsWith";
+        case "lt":
+            return "max";
+        case "gt":
+            return "min";
+        default:
+            return "";
+    }
 };
 
 function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
-  const { data: fields } = useSWR("/field");
-  const { data: clusters } = useSWR("/filter");
-  const [items, setItems] = useState<IItem[]>([]);
+    const { data: fields } = useSWR("/field");
+    const { data: clusters } = useSWR("/filter");
+    const [items, setItems] = useState<IItem[]>([]);
 
-  const columns = useMemo(
-    () => [
-      { name: "no", header: "Number", minWidth: 100 },
-      { name: "name", header: "Name", minWidth: 180 },
-      { name: "description", header: "Description", minWidth: 200 },
-      {
-        name: "salesApproved",
-        header: "Sales Ap.",
-        type: "boolean",
-        render: ({ data }: any) =>
-          data.salesApproved ? <CheckRounded /> : <ClearRounded />,
-        minWidth: 80,
-      },
-      {
-        name: "engineeringApproved",
-        header: "Eng. Ap.",
-        type: "boolean",
-        render: ({ data }: any) =>
-          data.salesApproved ? <CheckRounded /> : <ClearRounded />,
-        minWidth: 80,
-      },
-      {
-        name: "shippingApproved",
-        header: "Ship Ap.",
-        type: "boolean",
-        render: ({ data }: any) =>
-          data.salesApproved ? <CheckRounded /> : <ClearRounded />,
-        minWidth: 80,
-      },
-      {
-        name: "prefVendor",
-        header: "Preferred Vendor",
-        valueFormatter: (params: any) => params.row?.prefVendor?.name,
-
-        minWidth: 150,
-      },
-      { name: "vendorPartNumber", header: "V. Part NO.", minWidth: 100 },
-      { name: "cost", header: "Cost", minWidth: 80 },
-      { name: "location", header: "Location", minWidth: 100 },
-      { name: "qtyOnHand", header: "QOH.", minWidth: 80 },
-      { name: "qtyRemain", header: " Remain", minWidth: 80 },
-      { name: "qtyOnOrder", header: "on Order", minWidth: 80 },
-      { name: "qtyAllocated", header: "Allocated", minWidth: 80 },
-      { name: "usedInLastQuarter", header: "Used 90", minWidth: 80 },
-      { name: "fifo", header: "FIFO Val.", minWidth: 80 },
-      {
-        name: "qohVal",
-        header: "QOH Val.",
-        minWidth: 80,
-        valueFormatter: (params: any) =>
-          params.row?.cost * params.row?.qtyOnHand,
-      },
-      {
-        name: "uom",
-        header: "UOM",
-        minWidth: 100,
-      },
-      {
-        name: "obsolete",
-        header: "Obsolete",
-        type: "boolean",
-        render: ({ data }: any) =>
-          data.salesApproved ? <CheckRounded /> : <ClearRounded />,
-        minWidth: 80,
-      },
-      {
-        name: "nonInventoryItem",
-        header: "NON Inv.",
-        type: "boolean",
-        render: ({ data }: any) =>
-          data.salesApproved ? <CheckRounded /> : <ClearRounded />,
-        minWidth: 80,
-      },
-      {
-        name: "rndOnly",
-        header: "R&D",
-        type: "boolean",
-        render: ({ data }: any) =>
-          data.salesApproved ? <CheckRounded /> : <ClearRounded />,
-        minWidth: 80,
-      },
-    ],
-    []
-  );
-
-  const fetchData = useCallback(({ filterValue, limit, sortInfo }) => {
-    let params: any = {};
-    for (const fv of filterValue) {
-      if (fv.value) {
-        params[getOperator(fv.operator) + fv.name] = fv.value;
-      }
-    }
-
-    // return dataSource;
-    return get("/item", { params })
-      .then((d) => {
-        setItems(d.result);
-        return d.result;
-      })
-      .catch((e) => console.log(e));
-  }, []);
-
-  return (
-    <ReactDataGrid
-      idProperty="id"
-      columns={columns}
-      dataSource={fetchData}
-      style={gridStyle}
-      defaultFilterValue={defaultFilterValue}
-      filterTypes={{
-        boolean: {
-          type: "boolean",
-          emptyValue: false,
-          operators: [
+    const columns = useMemo(() => {
+        let res: any[] = [
+            { name: "no", header: "Number", minWidth: 100 },
+            { name: "name", header: "Name", minWidth: 180 },
+            { name: "description", header: "Description", minWidth: 200 },
             {
-              name: "neq",
-              fn: ({ value, filterValue }) => value !== filterValue,
+                name: "salesApproved",
+                header: "Sales Ap.",
+                type: "boolean",
+                render: ({ data }: any) => (data.salesApproved ? <CheckRounded /> : <ClearRounded />),
+                maxWidth: 90,
             },
             {
-              name: "eq",
-              fn: ({ value, filterValue }) => value === filterValue,
-            },
-          ],
-        },
-        string: {
-          type: "string",
-          emptyValue: "",
-          operators: [
-            {
-              name: "startsWith",
-              fn: ({ value, filterValue }) => {
-                return !filterValue
-                  ? true
-                  : Boolean(value.startsWith(filterValue));
-              },
+                name: "engineeringApproved",
+                header: "Eng. Ap.",
+                type: "boolean",
+                render: ({ data }: any) => (data.salesApproved ? <CheckRounded /> : <ClearRounded />),
+                maxWidth: 90,
             },
             {
-              name: "contains",
-              fn: ({ value, filterValue }) => {
-                return !filterValue ? true : value.indexOf(filterValue) !== -1;
-              },
+                name: "shippingApproved",
+                header: "Ship Ap.",
+                type: "boolean",
+                render: ({ data }: any) => (data.salesApproved ? <CheckRounded /> : <ClearRounded />),
+                maxWidth: 90,
             },
             {
-              name: "eq",
-              fn: ({ value, filterValue }) => value === filterValue,
+                name: "prefVendor",
+                header: "Preferred Vendor",
+                render: ({ data }: any) => data?.prefVendor?.name,
+                minWidth: 150,
             },
-          ],
-        },
-      }}
-    />
-  );
+            { name: "vendorPartNumber", header: "V. Part NO.", minWidth: 100 },
+            { name: "cost", header: "Cost", minWidth: 80 },
+            { name: "location", header: "Location", minWidth: 100 },
+            { name: "qtyOnHand", header: "QOH.", minWidth: 80 },
+            { name: "qtyRemain", header: " Remain", minWidth: 80 },
+            { name: "qtyOnOrder", header: "on Order", minWidth: 80 },
+            { name: "qtyAllocated", header: "Allocated", minWidth: 80 },
+            { name: "usedInLastQuarter", header: "Used 90", minWidth: 80 },
+            { name: "fifo", header: "FIFO Val.", minWidth: 80 },
+            {
+                name: "qohVal",
+                header: "QOH Val.",
+                minWidth: 80,
+                render: ({ data }: any) => data?.cost * data?.qtyOnHand,
+            },
+            {
+                name: "uom",
+                header: "UOM",
+                minWidth: 100,
+            },
+            {
+                name: "obsolete",
+                header: "Obsolete",
+                type: "boolean",
+                render: ({ data }: any) => (data.salesApproved ? <CheckRounded /> : <ClearRounded />),
+                minWidth: 80,
+            },
+            {
+                name: "nonInventoryItem",
+                header: "NON Inv.",
+                type: "boolean",
+                render: ({ data }: any) => (data.salesApproved ? <CheckRounded /> : <ClearRounded />),
+                minWidth: 80,
+            },
+            {
+                name: "rndOnly",
+                header: "R&D",
+                type: "boolean",
+                render: ({ data }: any) => (data.salesApproved ? <CheckRounded /> : <ClearRounded />),
+                minWidth: 80,
+            },
+        ];
+
+        const exceptions = [
+            "__v",
+            "id",
+            "no",
+            "name",
+            "description",
+            "cost",
+            "salesApproved",
+            "engineeringApproved",
+            "totalQoh",
+            "usedInLastQuarter",
+            "resellCost",
+            "filters",
+            "fields",
+            "prefVendor",
+            "location",
+            "rndOnly",
+            "nonInventoryItem",
+            "obsolete",
+            "uom",
+            "qohVal",
+            "fifo",
+            "qtyAllocated",
+            "qtyRemain",
+            "qtyOnOrder",
+            "vendorPartNumber",
+        ];
+        if (items && items.length > 0) {
+            const fieldNames = fields ? fields.map((f: any) => f.name) : [];
+            const filterNames = clusters ? clusters.map((f: any) => f.name) : [];
+            for (let f of Object.keys(items[0])) {
+                if (!exceptions.includes(f)) {
+                    if (filterNames.includes(f)) {
+                        res.splice(3, 0, { name: f, header: f, minWidth: 120 });
+                    } else if (fieldNames.includes(f)) {
+                        res.splice(3, 0, { name: f, header: splitLevelName(f), minWidth: 120 });
+                    } else {
+                        res.push({ name: f, header: f, hide: true });
+                    }
+                }
+            }
+        }
+
+        return res;
+    }, [clusters, fields, items]);
+
+    const defaultFilterValue = useMemo(() => {
+        let res = columns.map(({ name, type }) => ({
+            name,
+            type: type ? type : "string",
+            operator: type === "boolean" ? "eq" : "startsWith",
+            value: undefined,
+        }));
+
+        return res;
+    }, [columns]);
+
+    const fetchData = useCallback(({ filterValue, limit, sortInfo }) => {
+        let params: any = {};
+        for (const fv of filterValue) {
+            if (fv.value) {
+                params[getOperator(fv.operator) + fv.name] = fv.value;
+            }
+        }
+
+        // return dataSource;
+        return get("/item", { params })
+            .then((d) => {
+                setItems(d.result);
+                return d.result;
+            })
+            .catch((e) => console.log(e));
+    }, []);
+
+    return (
+        <ReactDataGrid
+            idProperty="id"
+            columns={columns}
+            dataSource={fetchData}
+            style={gridStyle}
+            defaultFilterValue={defaultFilterValue}
+            onRowClick={({ data }) => onRowSelected(data)}
+            filterTypes={{
+                boolean: {
+                    type: "boolean",
+                    emptyValue: false,
+                    operators: [
+                        {
+                            name: "neq",
+                            fn: ({ value, filterValue }) => value !== filterValue,
+                        },
+                        {
+                            name: "eq",
+                            fn: ({ value, filterValue }) => value === filterValue,
+                        },
+                    ],
+                },
+                string: {
+                    type: "string",
+                    emptyValue: "",
+                    operators: [
+                        {
+                            name: "startsWith",
+                            fn: ({ value, filterValue }) => {
+                                return !filterValue ? true : Boolean(value.startsWith(filterValue));
+                            },
+                        },
+                        {
+                            name: "contains",
+                            fn: ({ value, filterValue }) => {
+                                return !filterValue ? true : value.indexOf(filterValue) !== -1;
+                            },
+                        },
+                        {
+                            name: "eq",
+                            fn: ({ value, filterValue }) => value === filterValue,
+                        },
+                    ],
+                },
+            }}
+        />
+    );
 }
 
 export default ItemTable;
