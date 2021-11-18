@@ -35,7 +35,7 @@ export default function UPCToggle() {
             </IconButton>
             <Menu id="QR Scanner" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
                 <div style={{ width: 400, height: 400 }}>
-                    <QrReader onError={(e) => Toast(String(e), "error")} onScan={handleScan} />
+                    {Boolean(anchorEl) && <QrReader onError={(e) => Toast(String(e), "error")} onScan={handleScan} />}
                 </div>
             </Menu>
         </>
