@@ -109,7 +109,7 @@ const Dashboard = () => {
 
     return (
         <>
-            <Box display="flex" justifyContent="flex-end" alignItems="center" my={2}>
+            <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1}>
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="Recently Added Items" />
                     <Tab label="Items On Order" />
@@ -120,19 +120,19 @@ const Dashboard = () => {
             <BasePaper>
                 {activeTab === 0 && (
                     <BaseDataGrid
-                        height="73vh"
+                        height="79vh"
                         cols={recentlyAddedCols}
                         rows={recentlyAddedItems ? recentlyAddedItems.map((r: any, i: any) => ({ ...r, id: i })) : []}
                     />
                 )}
                 {activeTab === 1 && (
                     <BaseDataGrid
-                        height="73vh"
+                        height="79vh"
                         cols={onOrderCols}
                         rows={onOrderItems ? onOrderItems.map((r: any, i: any) => ({ ...r, id: i })) : []}
                     />
                 )}
-                {activeTab === 2 && <BaseDataGrid height="73vh" cols={lowQuantityCols} rows={[{ id: 1 }]} />}
+                {activeTab === 2 && <BaseDataGrid height="79vh" cols={lowQuantityCols} rows={[{ id: 1 }]} />}
             </BasePaper>
         </>
     );
