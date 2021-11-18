@@ -199,6 +199,7 @@ export default function PanelRouter() {
                 <MainNav width={drawerWidth} closeIt={handleDrawerClose} />
             </Drawer>
             <main
+                style={{ zIndex: 5 }}
                 className={clsx(classes.content, {
                     [classes.contentShiftLeft]: mainDrawerOpen,
                     [classes.contentShiftRight]: chatDrawerOpen,
