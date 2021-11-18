@@ -9,6 +9,8 @@ import {
     CategoryRounded,
     LocalOfferRounded,
     PlaylistAddCheckRounded,
+    FindInPageRounded,
+    ListAltRounded,
 } from "@material-ui/icons";
 import { mutate } from "swr";
 
@@ -40,7 +42,26 @@ export default function Tickets() {
     const [statusModal, setStatusModal] = useState(false);
     const [categoryModal, setCategoryModal] = useState(false);
 
-    const [selectedJob, setSelectedJob] = useState<ITicket>();
+    const [selectedJob, setSelectedJob] = useState<ITicket>({
+        id: "",
+        note: "",
+        priority: "",
+        productionStatus: "",
+        status: "",
+        subject: "",
+        tags: "",
+        updatedAt: +new Date(),
+        deadline: +new Date(),
+        name: "",
+        ItemId: { description: "", name: "", active: false, id: "" },
+        ContactId: "",
+        LineServiceRecordId: "",
+        __v: 1,
+        callTime: +new Date(),
+        date: +new Date(),
+        description: "",
+        fsh: false,
+    });
     const [selectedNote, setSelectedNote] = useState<INote>();
     const [selectedDocument, setSelectedDocument] = useState<IDocument>();
     const [activeTab, setActiveTab] = useState(0);
@@ -88,19 +109,38 @@ export default function Tickets() {
             <AddStatusModal open={statusModal} onClose={() => setStatusModal(false)} />
             <AddCategoryModal open={categoryModal} onClose={() => setCategoryModal(false)} />
 
-            <BasePaper>
-                <Tabs
-                    textColor="primary"
-                    value={activeTab}
-                    onChange={(e, nv) => setActiveTab(nv)}
-                    style={{ marginBottom: 10 }}
-                >
-                    <Tab label="List" />
-                    <Tab label="Details" disabled={!selectedJob} />
-                </Tabs>
-
+            <BasePaper style={{ height: "100%" }}>
                 <Box display="flex">
-                    <Box>
+                    <Tabs
+                        textColor="primary"
+                        value={activeTab}
+                        onChange={(e, nv) => setActiveTab(nv)}
+                        style={{ marginBottom: 10 }}
+                    >
+                        <Tab
+                            // label="List"
+                            icon={
+                                <span
+                                    style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
+                                >
+                                    <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> List
+                                </span>
+                            }
+                            wrapped
+                        />
+                        <Tab
+                            // label="Details"
+                            disabled={!selectedJob}
+                            icon={
+                                <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
+                                </span>
+                            }
+                        />
+                        {/* <Tab label="List" />
+                        <Tab label="Details" disabled={!selectedJob} /> */}
+                    </Tabs>
+                    <Box marginLeft="auto">
                         <List>
                             <ListItem>
                                 <IconButton onClick={() => setTicketModal(true)}>
@@ -179,32 +219,29 @@ export default function Tickets() {
                             </ListItem>
                         </List>
                     </Box>
-                    <Box flex={1} flexGrow={1} ml={2}>
-                        {activeTab === 0 && (
-                            <Box flex={11} ml={2}>
-                                <Table
-                                    onRowSelected={(r) => {
-                                        setSelectedJob(r);
-                                        setActiveTab(1);
-                                        // setJobModal(true);
-                                    }}
-                                />
-                            </Box>
-                        )}
-                        {activeTab === 1 && selectedJob && (
-                            <Details
-                                initialValue={selectedJob}
-                                onNoteSelected={(n) => {
-                                    setSelectedNote(n);
-                                    setNoteModal(true);
-                                }}
-                                onDocumentSelected={(d) => {
-                                    setSelectedDocument(d);
-                                    setDocumentModal(true);
-                                }}
-                            />
-                        )}
-                    </Box>
+                </Box>
+                <Box display="flex" height="90%">
+                    {activeTab === 0 && (
+                        <Table
+                            onRowSelected={(r) => {
+                                setSelectedJob(r);
+                                setActiveTab(1);
+                            }}
+                        />
+                    )}
+                    {activeTab === 1 && selectedJob && (
+                        <Details
+                            initialValue={selectedJob}
+                            onNoteSelected={(n) => {
+                                setSelectedNote(n);
+                                setNoteModal(true);
+                            }}
+                            onDocumentSelected={(d) => {
+                                setSelectedDocument(d);
+                                setDocumentModal(true);
+                            }}
+                        />
+                    )}
                 </Box>
             </BasePaper>
         </>

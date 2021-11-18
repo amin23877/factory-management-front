@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from "react";
 import { Box, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
-import { AddRounded, DeleteRounded, PostAddRounded } from "@material-ui/icons";
+import { AddRounded, DeleteRounded, FindInPageRounded, ListAltRounded, PostAddRounded } from "@material-ui/icons";
 import { mutate } from "swr";
 
 import Confirm from "../Modals/Confirm";
@@ -97,8 +97,24 @@ const Items = () => {
             <BasePaper style={{ height: "100%" }}>
                 <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1}>
                     <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-                        <Tab label="List" />
-                        <Tab disabled={!selectedItem} label="Details" />
+                        <Tab
+                            icon={
+                                <span
+                                    style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
+                                >
+                                    <ListAltRounded style={{ marginRight: "5px" }} /> List
+                                </span>
+                            }
+                            wrapped
+                        />
+                        <Tab
+                            disabled={!selectedItem}
+                            icon={
+                                <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    <FindInPageRounded style={{ marginRight: "5px" }} /> Details
+                                </span>
+                            }
+                        />
                     </Tabs>
                     <div style={{ flexGrow: 1 }} />
                     <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>

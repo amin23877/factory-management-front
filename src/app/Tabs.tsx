@@ -87,6 +87,9 @@ export const MyTab = withStyles((theme: Theme) =>
                 borderRadius: "0.5em",
                 color: "rgb(230,128,49)",
             },
+            "&:disabled": {
+                color: "#bbb",
+            },
         },
         selected: {},
     })

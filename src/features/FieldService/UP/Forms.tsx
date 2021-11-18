@@ -29,7 +29,7 @@ export const General = ({
 }: IForm) => {
     return (
         <>
-            <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
+            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10}>
                 <ArraySelect
                     fullWidth
                     label="Inverter Status"
@@ -78,17 +78,6 @@ export const General = ({
                     value={values.item.modelName}
                 />
                 <TextField
-                    multiline
-                    style={{ gridColumnEnd: "span 2" }}
-                    rows={4}
-                    placeholder="Unit Description"
-                    label="Unit Description"
-                    name="description"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    value={values.item.description}
-                />
-                <TextField
                     label="SO Number"
                     value={values.so.number}
                     name="so"
@@ -98,42 +87,60 @@ export const General = ({
                     placeholder="SO"
                 />
                 <TextField
-                    label="Warranty Number"
-                    value={values.warrantyNumber}
-                    name="warrantyNumber"
+                    multiline
+                    style={{ gridColumnEnd: "span 3" }}
+                    rows={3}
+                    placeholder="Unit Description"
+                    label="Unit Description"
+                    name="description"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    error={Boolean(errors.warrantyNumber && touched.warrantyNumber)}
-                    placeholder="warrantyNumber"
+                    value={values.item.description}
                 />
-                <TextField
-                    label="Warranty End Date"
-                    value={values.warrantyEndDate}
-                    name="warrantyEndDate"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.warrantyEndDate && touched.warrantyEndDate)}
-                    placeholder="warrantyEndDate"
-                />
-
-                <DateTimePicker
-                    size="small"
-                    value={values.actualShipDate}
-                    name="actualShipDate"
-                    label="Actual ship date"
-                    onChange={(date) => setFieldValue("actualShipDate", date)}
-                    onBlur={handleBlur}
-                    inputProps={{ style: { fontSize: "0.8rem" } }}
-                />
-                <TextField
-                    label="Last System Test Run"
-                    value={values.lastRun}
-                    name="lastRun"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.lastRun && touched.lastRun)}
-                    placeholder="Last System Test Run"
-                />
+                <Box
+                    display="grid"
+                    gridTemplateColumns="1fr 1fr"
+                    gridRowGap={10}
+                    gridColumnGap={10}
+                    style={{ gridColumnEnd: "span 3" }}
+                >
+                    <TextField
+                        label="Warranty Number"
+                        value={values.warrantyNumber}
+                        name="warrantyNumber"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.warrantyNumber && touched.warrantyNumber)}
+                        placeholder="warrantyNumber"
+                    />
+                    <TextField
+                        label="Warranty End Date"
+                        value={values.warrantyEndDate}
+                        name="warrantyEndDate"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.warrantyEndDate && touched.warrantyEndDate)}
+                        placeholder="warrantyEndDate"
+                    />
+                    <DateTimePicker
+                        size="small"
+                        value={values.actualShipDate}
+                        name="actualShipDate"
+                        label="Actual ship date"
+                        onChange={(date) => setFieldValue("actualShipDate", date)}
+                        onBlur={handleBlur}
+                        inputProps={{ style: { fontSize: "0.8rem" } }}
+                    />
+                    <TextField
+                        label="Last System Test Run"
+                        value={values.lastRun}
+                        name="lastRun"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.lastRun && touched.lastRun)}
+                        placeholder="Last System Test Run"
+                    />
+                </Box>
             </Box>
         </>
     );
@@ -214,7 +221,7 @@ export const Battery = ({
 }: IForm) => {
     return (
         <>
-            <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
+            <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gap: 10 }}>
                 <TextField
                     label="Battery Qty"
                     value={values.batteryQty}

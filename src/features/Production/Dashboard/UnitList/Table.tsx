@@ -13,18 +13,14 @@ import { DateInput } from "../../../../components/Filters/Date";
 import { formatTimestampToDate } from "../../../../logic/date";
 import { get } from "../../../../api";
 import FullDataGrid from "../../../../components/Datagrid/FullDataGrid";
+import { IUnit } from "../../../../api/units";
+import { BasePaper } from "../../../../app/Paper";
 
 const dateStringToUnix = (date: Date) => {
     return String(Math.round(new Date(date).getTime() / 1));
 };
 
-function Table({
-    setActiveTab,
-    setSelectedUnit,
-}: {
-    setSelectedUnit: (a: any) => void;
-    setActiveTab: (a: any) => void;
-}) {
+function Table({ onRowSelected }: { onRowSelected: (row: IUnit) => void }) {
     const [topDateFilter, setTopDateFilter] = useState<"week" | "week2" | "week3" | "week4">();
     const [finish, setFinish] = useState<string>();
     const [start, setStart] = useState<string>();
@@ -115,8 +111,8 @@ function Table({
     }, [finish]);
 
     return (
-        <Box>
-            <UnitSearchBox />
+        <>
+            {/* <UnitSearchBox /> */}
             <Box display="flex" alignItems="center" my={1}>
                 <Button
                     color={topDateFilter === "week" ? "primary" : "default"}
@@ -174,9 +170,7 @@ function Table({
                 </Button>
                 <div style={{ marginLeft: "auto" }} />
             </Box>
-            <Paper>
-                <Box height={550}>
-                    {/* <DataGrid
+            {/* <DataGrid
                         density="compact"
                         loading={loading}
                         pagination
@@ -202,18 +196,8 @@ function Table({
                             setActiveTab(1);
                         }}
                     /> */}
-                    <FullDataGrid
-                        columns={unitCols}
-                        url="/unit"
-                        height={500}
-                        onRowSelected={(i) => {
-                            setSelectedUnit(i.data as any);
-                            setActiveTab(1);
-                        }}
-                    />
-                </Box>
-            </Paper>
-        </Box>
+            <FullDataGrid columns={unitCols} url="/unit" height={534} onRowSelected={onRowSelected} />
+        </>
     );
 }
 
