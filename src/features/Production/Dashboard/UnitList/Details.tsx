@@ -6,7 +6,7 @@ import { GridColDef, GridColumns } from "@material-ui/data-grid";
 // import { General as ItemGeneral } from "../../../Items/Forms";
 // import { GeneralForm as SOGeneral } from "../../../Sales/SO/Forms";
 import { General, UnitInfo } from "./Forms";
-import { host } from '../../../../host'
+import { host } from "../../../../host";
 import Button from "../../../../app/Button";
 import { BasePaper } from "../../../../app/Paper";
 import BaseDataGrid from "../../../../app/BaseDataGrid";
@@ -99,8 +99,8 @@ function Details({ unit }: { unit: IUnit }) {
 
     const { data: warranties } = useSWR(
         gridActiveTab === 0
-            ? unit && unit.ItemId.id
-                ? `/service?ItemId=${unit.ItemId.id}&ServiceFamilyId=60efd0bcca0feadc84be6618`
+            ? unit && unit?.ItemId?.id
+                ? `/service?ItemId=${unit?.ItemId?.id}&ServiceFamilyId=60efd0bcca0feadc84be6618`
                 : null
             : null
     );
@@ -168,7 +168,7 @@ function Details({ unit }: { unit: IUnit }) {
         []
     );
     return (
-        <BasePaper>
+        <>
             <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDeleteOption} />
             <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={unit?.id} model="unit" />
             <Formik initialValues={unit as IUnit} validationSchema={schema} onSubmit={handleSubmit}>
@@ -363,7 +363,7 @@ function Details({ unit }: { unit: IUnit }) {
                     </>
                 )}
             </BasePaper>
-        </BasePaper>
+        </>
     );
 }
 

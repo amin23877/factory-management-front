@@ -62,7 +62,7 @@ function QuoteDataGrid({
         <div
             style={{
                 flexGrow: 1,
-                height: 550,
+                height: 500,
             }}
         >
             <DataGrid

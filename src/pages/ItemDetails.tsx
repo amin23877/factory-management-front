@@ -315,7 +315,12 @@ function ItemsDetails() {
                                     {moreInfoTab === 5 && (
                                         <Box display="flex" justifyContent="space-around" alignItems="center">
                                             <div ref={(e) => (qrCode.current = e)}>
-                                                {selectedRow.no && <QRCode number={selectedRow.no} />}
+                                                <QRCode
+                                                    value={JSON.stringify({
+                                                        type: "item",
+                                                        no: selectedRow.no,
+                                                    })}
+                                                />
                                                 <Typography variant="subtitle1">
                                                     Device Number: {selectedRow.no}
                                                 </Typography>

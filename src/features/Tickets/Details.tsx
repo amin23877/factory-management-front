@@ -120,7 +120,7 @@ export default function Details({
                 <Formik initialValues={initialValue} validationSchema={schema} onSubmit={handleSubmit}>
                     {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
                         <Form>
-                            <Box display="flex" flexDirection="column" style={{ gap: 10 }} height="100%">
+                            <Box display="flex" flexDirection="column" style={{ gap: 10 }} height="78.5vh">
                                 <BasePaper>
                                     <JobForm
                                         errors={errors}
@@ -130,8 +130,12 @@ export default function Details({
                                         setFieldValue={setFieldValue}
                                     />
                                 </BasePaper>
-                                <BasePaper style={{ height: "100%" }}>
-                                    <Tabs onChange={(e, nv) => setMoreActiveTab(nv)} value={moreActiveTab}>
+                                <BasePaper style={{ flex: 1, overflowY: "auto" }}>
+                                    <Tabs
+                                        onChange={(e, nv) => setMoreActiveTab(nv)}
+                                        value={moreActiveTab}
+                                        textColor="primary"
+                                    >
                                         <Tab label="Contact" />
                                         <Tab label="Entities" />
                                         <Tab label="Technician" />
@@ -165,9 +169,14 @@ export default function Details({
                         </Form>
                     )}
                 </Formik>
-
-                <BasePaper>
-                    <Tabs variant="scrollable" value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+                <Box>
+                    <Tabs
+                        variant="scrollable"
+                        value={activeTab}
+                        onChange={(e, nv) => setActiveTab(nv)}
+                        textColor="primary"
+                        style={{ marginBottom: "10px" }}
+                    >
                         <Tab label="Filed Service History" />
                         <Tab label="Device Document" />
                         <Tab label="Device Quote History" />
@@ -178,40 +187,49 @@ export default function Details({
                         <Tab label="Notes" />
                         <Tab label="Auditing" />
                     </Tabs>
-                    {activeTab === 1 && (
-                        <BaseDataGrid
-                            cols={docCols}
-                            rows={itemDocuments ? itemDocuments : []}
-                            onRowSelected={() => {}}
-                        />
-                    )}
-                    {activeTab === 2 && <QuoteDatagrid params={{ JobId: initialValue.id }} onRowSelected={() => {}} />}
-                    {activeTab === 3 && <SODatagrid params={{ JobId: initialValue.id }} onRowSelected={() => {}} />}
-                    {/* {activeTab === 2 && (
+                    <BasePaper>
+                        {activeTab === 1 && (
+                            <BaseDataGrid
+                                cols={docCols}
+                                rows={itemDocuments ? itemDocuments : []}
+                                onRowSelected={() => {}}
+                                height={500}
+                            />
+                        )}
+                        {activeTab === 2 && (
+                            <QuoteDatagrid params={{ JobId: initialValue.id }} onRowSelected={() => {}} />
+                        )}
+                        {activeTab === 3 && <SODatagrid params={{ JobId: initialValue.id }} onRowSelected={() => {}} />}
+                        {/* {activeTab === 2 && (
                         <BaseDataGrid cols={noteCols} rows={itemNotes ? itemNotes : []} onRowSelected={() => {}} />
                     )} */}
-                    {activeTab === 4 && <BaseDataGrid cols={docCols} rows={[]} onRowSelected={() => {}} />}
+                        {activeTab === 4 && (
+                            <BaseDataGrid cols={docCols} rows={[]} onRowSelected={() => {}} height={500} />
+                        )}
 
-                    {activeTab === 5 && (
-                        <BaseDataGrid
-                            cols={docCols}
-                            rows={documents ? documents : []}
-                            onRowSelected={(d) => {
-                                onDocumentSelected(d);
-                            }}
-                        />
-                    )}
-                    {activeTab === 6 && <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />}
-                    {activeTab === 7 && (
-                        <BaseDataGrid
-                            cols={noteCols}
-                            rows={notes ? notes : []}
-                            onRowSelected={(n) => {
-                                onNoteSelected(n);
-                            }}
-                        />
-                    )}
-                </BasePaper>
+                        {activeTab === 5 && (
+                            <BaseDataGrid
+                                cols={docCols}
+                                rows={documents ? documents : []}
+                                onRowSelected={(d) => {
+                                    onDocumentSelected(d);
+                                }}
+                                height={500}
+                            />
+                        )}
+                        {activeTab === 6 && <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} height={500} />}
+                        {activeTab === 7 && (
+                            <BaseDataGrid
+                                cols={noteCols}
+                                rows={notes ? notes : []}
+                                onRowSelected={(n) => {
+                                    onNoteSelected(n);
+                                }}
+                                height={500}
+                            />
+                        )}
+                    </BasePaper>
+                </Box>
             </Box>
         </>
     );

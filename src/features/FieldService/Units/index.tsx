@@ -9,6 +9,7 @@ import { useDataGridData } from "../../../components/Datagrid/hooks";
 import Details from "./Details";
 
 import { formatTimestampToDate } from "../../../logic/date";
+import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
 export default function Unit() {
     const [activeTab, setActiveTab] = useState(0);
@@ -58,35 +59,47 @@ export default function Unit() {
                 onChange={(e, nv) => setActiveTab(nv)}
                 style={{ marginBottom: 10 }}
             >
-                <Tab label="List" />
-                <Tab label="Details" disabled={!selectedUnit} />
+                <Tab
+                    // label="List"
+                    icon={
+                        <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                            <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> List
+                        </span>
+                    }
+                    wrapped
+                />
+                <Tab
+                    // label="Details"
+                    disabled={!selectedUnit}
+                    icon={
+                        <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
+                        </span>
+                    }
+                />
             </Tabs>
             {activeTab === 0 && units && (
-                <>
-                    <UnitSearchBox />
-
-                    <BasePaper style={{ height: "70vh" }}>
-                        <DataGrid
-                            density="compact"
-                            loading={loading}
-                            pagination
-                            paginationMode="server"
-                            page={page}
-                            onPageChange={(p) => setPage(p.page)}
-                            pageSize={25}
-                            rowCount={units ? units.totalCount : 0}
-                            className={dataGridClasses.root}
-                            filterMode="server"
-                            components={{ Toolbar: GridToolbar }}
-                            rows={units.result || []}
-                            columns={cols}
-                            onRowSelected={(d) => {
-                                setSelectedUnit(d.data);
-                                setActiveTab(1);
-                            }}
-                        />
-                    </BasePaper>
-                </>
+                <div style={{ height: "78vh" }}>
+                    <DataGrid
+                        density="compact"
+                        loading={loading}
+                        pagination
+                        paginationMode="server"
+                        page={page}
+                        onPageChange={(p) => setPage(p.page)}
+                        pageSize={25}
+                        rowCount={units ? units.totalCount : 0}
+                        className={dataGridClasses.root}
+                        filterMode="server"
+                        components={{ Toolbar: GridToolbar }}
+                        rows={units.result || []}
+                        columns={cols}
+                        onRowSelected={(d) => {
+                            setSelectedUnit(d.data);
+                            setActiveTab(1);
+                        }}
+                    />
+                </div>
             )}
             {activeTab === 1 && selectedUnit && <Details unit={selectedUnit} />}
         </BasePaper>

@@ -212,35 +212,36 @@ export default function TicketForm({
                     error={Boolean(errors.subject)}
                     label="Subject"
                 />
-                <TextField
-                    style={{ gridColumnEnd: "span 2" }}
-                    name="description"
-                    value={values.description}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.description)}
-                    helperText={errors.description}
-                    size="small"
-                    placeholder="Description"
-                    label="Description"
-                    fullWidth
-                    multiline
-                    rows={4}
-                />
-                <TextField
-                    name=" response"
-                    value={values.response}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.response)}
-                    helperText={errors.response}
-                    size="small"
-                    placeholder="Response"
-                    label="Response"
-                    fullWidth
-                    multiline
-                    rows={4}
-                />
+                <div style={{ gridColumnEnd: "span 3", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                    <TextField
+                        name="description"
+                        value={values.description}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.description)}
+                        helperText={errors.description}
+                        size="small"
+                        placeholder="Description"
+                        label="Description"
+                        fullWidth
+                        multiline
+                        rows={3}
+                    />
+                    <TextField
+                        name=" response"
+                        value={values.response}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={Boolean(errors.response)}
+                        helperText={errors.response}
+                        size="small"
+                        placeholder="Response"
+                        label="Response"
+                        fullWidth
+                        multiline
+                        rows={3}
+                    />
+                </div>
                 {/* <ArraySelect
                     style={{ gridColumnEnd: "span 2" }}
                     items={["1", "2", "3", "4", "5"]}
@@ -251,17 +252,16 @@ export default function TicketForm({
                     onBlur={handleBlur}
                 /> */}
             </Box>
-            <Box mt={1}>
+            <Box width="100%">
                 <FormControlLabel
                     name="fsh"
                     label="Help"
                     control={<Checkbox checked={values.fsh} onChange={handleChange} />}
                 />
-            </Box>
-            <Box display="flex" alignItems="center" mt={1}>
+                {/* <Box display="flex" alignItems="center" mt={1}> */}
                 {!values.id ? (
                     <>
-                        <Button type="submit" kind="add" style={{ marginRight: "0.5em" }}>
+                        <Button type="submit" kind="edit" style={{ marginRight: "0.5em", width: "100%" }}>
                             Book a job
                         </Button>
                         {/* <Button>Show calendar</Button> */}
@@ -276,6 +276,7 @@ export default function TicketForm({
                         </Button>
                     </>
                 )}
+                {/* </Box> */}
             </Box>
         </>
     );
@@ -296,7 +297,7 @@ export function TechnicianForm({
     setFieldValue: (a: any, b: any) => void;
 }) {
     return (
-        <Box mt={1} display="grid" gridTemplateColumns="1fr" style={{ gap: 10 }} height="100%">
+        <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gap: 10 }}>
             <TextField
                 name="vendorTech"
                 value={values.vendorTech}
@@ -553,7 +554,7 @@ export const ContactForm = ({
     handleChange: any;
 }) => {
     return (
-        <Box my={2} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr 1fr 1fr">
+        <Box my={2} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr 1fr">
             <TextField
                 value={values.contactName}
                 name="contactName"
@@ -574,6 +575,7 @@ export const ContactForm = ({
                 label="Contact Mail"
                 onChange={handleChange}
                 onBlur={handleBlur}
+                style={{ gridColumnEnd: "span 2" }}
             />
         </Box>
     );

@@ -9,6 +9,8 @@ import {
     CategoryRounded,
     LocalOfferRounded,
     PlaylistAddCheckRounded,
+    FindInPageRounded,
+    ListAltRounded,
 } from "@material-ui/icons";
 import { mutate } from "swr";
 
@@ -115,8 +117,28 @@ export default function Tickets() {
                         onChange={(e, nv) => setActiveTab(nv)}
                         style={{ marginBottom: 10 }}
                     >
-                        <Tab label="List" />
-                        <Tab label="Details" disabled={!selectedJob} />
+                        <Tab
+                            // label="List"
+                            icon={
+                                <span
+                                    style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
+                                >
+                                    <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> List
+                                </span>
+                            }
+                            wrapped
+                        />
+                        <Tab
+                            // label="Details"
+                            disabled={!selectedJob}
+                            icon={
+                                <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
+                                </span>
+                            }
+                        />
+                        {/* <Tab label="List" />
+                        <Tab label="Details" disabled={!selectedJob} /> */}
                     </Tabs>
                     <Box marginLeft="auto">
                         <List>

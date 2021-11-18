@@ -19,6 +19,7 @@ import { createServiceClass, deleteServiceClass, updateServiceClass } from "../.
 import BaseDataGrid from "../../app/BaseDataGrid";
 import OneFieldModal from "../../components/OneFieldModal";
 import { BasePaper } from "../../app/Paper";
+import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
 export default function ServiceIndex() {
     const [activeTab, setActiveTab] = useState(0);
@@ -66,8 +67,28 @@ export default function ServiceIndex() {
                         onChange={(e, nv) => setActiveTab(nv)}
                         style={{ marginBottom: 10 }}
                     >
-                        <Tab label="List" />
-                        <Tab label="Details" disabled={!selectedFS} />
+                        <Tab
+                            // label="List"
+                            icon={
+                                <span
+                                    style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
+                                >
+                                    <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> List
+                                </span>
+                            }
+                            wrapped
+                        />
+                        <Tab
+                            // label="Details"
+                            disabled={!selectedFS}
+                            icon={
+                                <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
+                                </span>
+                            }
+                        />
+                        {/* <Tab label="List" />
+                        <Tab label="Details" disabled={!selectedFS} /> */}
                     </Tabs>
                     <Box marginLeft="auto">
                         <List>
@@ -106,17 +127,15 @@ export default function ServiceIndex() {
                 </Box>
                 <Box display="flex" height="90%">
                     {activeTab === 0 && (
-                        <BasePaper style={{ flex: 1 }}>
-                            <BaseDataGrid
-                                cols={cols}
-                                rows={fieldServices}
-                                height="73vh"
-                                onRowSelected={(fs) => {
-                                    setSelectedFS(fs);
-                                    setActiveTab(1);
-                                }}
-                            />
-                        </BasePaper>
+                        <BaseDataGrid
+                            cols={cols}
+                            rows={fieldServices}
+                            height="78vh"
+                            onRowSelected={(fs) => {
+                                setSelectedFS(fs);
+                                setActiveTab(1);
+                            }}
+                        />
                     )}
                     {activeTab === 1 && selectedFS && (
                         <FieldServiceDetails onDone={mutate} selectedFieldService={selectedFS} />

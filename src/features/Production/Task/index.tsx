@@ -7,6 +7,8 @@ import { GridColDef } from "@material-ui/data-grid";
 import useSwr from "swr";
 import { formatTimestampToDate } from "../../../logic/date";
 import { Tab, Tabs } from "@material-ui/core";
+import { ListAltRounded } from "@material-ui/icons";
+import { BasePaper } from "../../../app/Paper";
 
 function Index() {
     const { data: tasks } = useSwr("/prodtask");
@@ -75,7 +77,7 @@ function Index() {
     ];
 
     return (
-        <Box>
+        <BasePaper>
             <Box display="flex">
                 <Tabs
                     textColor="primary"
@@ -83,14 +85,35 @@ function Index() {
                     value={activeTab}
                     onChange={(e, nv) => setActiveTab(nv)}
                 >
+                    <Tab
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                <ListAltRounded style={{ marginRight: "5px" }} /> Tasks
+                            </span>
+                        }
+                        wrapped
+                    />
+                    <Tab
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                <ListAltRounded style={{ marginRight: "5px" }} /> Task List
+                            </span>
+                        }
+                        wrapped
+                    />
+                    {/* 
                     <Tab label="Tasks" />
-                    <Tab label="Task List" />
+                    <Tab label="Task List" /> */}
                 </Tabs>
                 <div style={{ flex: 1 }}></div>
             </Box>
-            {activeTab === 0 && <BaseDataGrid cols={tasksCols} rows={tasks || []} onRowSelected={(d) => {}} />}
-            {activeTab === 1 && <BaseDataGrid cols={taskListCols} rows={taskList || []} onRowSelected={(d) => {}} />}
-        </Box>
+            {activeTab === 0 && (
+                <BaseDataGrid cols={tasksCols} rows={tasks || []} onRowSelected={(d) => {}} height={580} />
+            )}
+            {activeTab === 1 && (
+                <BaseDataGrid cols={taskListCols} rows={taskList || []} onRowSelected={(d) => {}} height={580} />
+            )}
+        </BasePaper>
     );
 }
 

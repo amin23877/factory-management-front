@@ -147,9 +147,9 @@ function Details({ up }: { up: any }) {
             <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={up?.id} model="up" />
             <Formik initialValues={up} validationSchema={schema} onSubmit={handleSubmit}>
                 {({ values, errors, handleChange, handleBlur, isSubmitting, setFieldValue, touched }) => (
-                    <Form style={{ height: "90%" }}>
-                        <Box height="100%" display="grid" gridTemplateColumns="3fr 4fr" gridGap={10}>
-                            <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                    <Form>
+                        <Box display="grid" gridTemplateColumns="3fr 4fr" gridGap={10}>
+                            <Box display="flex" flexDirection="column" gridGap={10} height="78.3vh">
                                 <BasePaper>
                                     <General
                                         values={values}
@@ -159,18 +159,23 @@ function Details({ up }: { up: any }) {
                                         handleChange={handleChange}
                                         setFieldValue={setFieldValue}
                                     />
-                                    <Box textAlign="center" my={1}>
-                                        <Button disabled={isSubmitting} kind="add" type="submit">
+                                    <Box textAlign="center" my={1} width="100%">
+                                        <Button
+                                            disabled={isSubmitting}
+                                            kind="edit"
+                                            type="submit"
+                                            style={{ width: "100%" }}
+                                        >
                                             Save
                                         </Button>
                                     </Box>
                                 </BasePaper>
-                                <BasePaper>
+                                <BasePaper style={{ flex: 1, overflowY: "auto" }}>
                                     <Tabs
                                         value={infoActiveTab}
                                         onChange={(e, nv) => setInfoActiveTab(nv)}
-                                        style={{ marginBottom: "0.5em" }}
-                                        variant="scrollable"
+                                        style={{ marginBottom: "10" }}
+                                        // variant="scrollable"
                                     >
                                         <Tab label="Image" />
                                         <Tab label="UPC" />
@@ -183,7 +188,6 @@ function Details({ up }: { up: any }) {
                                     {infoActiveTab === 0 && (
                                         <Box
                                             mt={1}
-                                            height="100%"
                                             display="flex"
                                             justifyContent="center"
                                             alignItems="center"
@@ -195,7 +199,7 @@ function Details({ up }: { up: any }) {
                                                     style={{
                                                         maxWidth: "100%",
                                                         height: "auto",
-                                                        maxHeight: 400,
+                                                        maxHeight: 300,
                                                         margin: "0px auto",
                                                     }}
                                                     alt=""
@@ -206,8 +210,10 @@ function Details({ up }: { up: any }) {
                                     )}
                                     {infoActiveTab === 1 && (
                                         <Box mt={1} display="flex" justifyContent="space-around" alignItems="center">
-                                            <div ref={(e) => (qrCode.current = e)} style={{ flex: 1 }}>
+                                            <div ref={(e) => (qrCode.current = e)}>
                                                 <MyQRCode value={String(up.number)} />
+                                            </div>
+                                            <div>
                                                 <Typography variant="subtitle1">Unit Number: {up.item.no}</Typography>
                                                 <Typography variant="subtitle1">Unit Name: {up.item.name}</Typography>
                                                 <Typography variant="subtitle1">
@@ -228,7 +234,7 @@ function Details({ up }: { up: any }) {
                                     )}
                                     {infoActiveTab === 2 && (
                                         <BaseDataGrid
-                                            height={200}
+                                            height={300}
                                             rows={up.options || []}
                                             cols={optionCols}
                                             onRowSelected={() => {}}
@@ -273,6 +279,7 @@ function Details({ up }: { up: any }) {
                                         onChange={(e, nv) => setGridActiveTab(nv)}
                                         textColor="primary"
                                         variant="scrollable"
+                                        style={{ marginBottom: "10px" }}
                                     >
                                         <Tab label="Documents" />
                                         <Tab label="Job" />
@@ -285,7 +292,7 @@ function Details({ up }: { up: any }) {
                                         <Tab label="Auditing" />
                                     </Tabs>
                                 </Box>
-                                <BasePaper style={{ height: "91.5%" }}>
+                                <BasePaper style={{ height: "90%" }}>
                                     {gridActiveTab === 0 && (
                                         <>
                                             <BaseDataGrid
