@@ -322,6 +322,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     const { data: fields } = useSWR("/field");
     const { data: clusters } = useSWR("/filter");
     const [items, setItems] = useState<IItem[]>([]);
+    const [allColumns, setAllColumns] = useState<any[]>([]);
 
     const columns = useMemo(() => {
         let res: any[] = [
@@ -397,6 +398,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
                 minWidth: 80,
             },
         ];
+        const spareColumns: any[] = [];
 
         const exceptions = [
             "__v",
@@ -435,12 +437,14 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
                     } else if (fieldNames.includes(f)) {
                         res.splice(3, 0, { name: f, header: splitLevelName(f), minWidth: 120 });
                     } else {
-                        res.push({ name: f, header: f, hide: true });
+                        // res.push({ name: f, header: f, defaultVisible: true });
+                        spareColumns.push({ name: f, header: f, defaultVisible: true });
                     }
                 }
             }
         }
 
+        setAllColumns([...res, ...spareColumns]);
         return res;
     }, [clusters, fields, items]);
 
@@ -455,22 +459,46 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
         return res;
     }, [columns]);
 
-    const fetchData = useCallback(({ filterValue, limit, sortInfo }) => {
-        let params: any = {};
-        for (const fv of filterValue) {
-            if (fv.value) {
-                params[getOperator(fv.operator) + fv.name] = fv.value;
+    const fetchData = useCallback(
+        async ({
+            filterValue,
+            limit,
+            sortInfo,
+            skip,
+        }): Promise<{
+            data: any[];
+            count: number;
+        }> => {
+            let params: any = { device: false };
+            for (const fv of filterValue) {
+                if (fv.value) {
+                    params[getOperator(fv.operator) + fv.name] = fv.value;
+                }
             }
-        }
+            if (limit) {
+                params.pageSize = limit;
+            }
+            if (skip) {
+                params.page = skip / limit + 1;
+            }
+            if (sortInfo) {
+                // setSort({ sort: field, order: sort === "desc" ? "DESC" : "ASC" });
+                // console.log(sortInfo);
+                params.sort = sortInfo.name;
+                params.order = sortInfo.dir === 1 ? "ASC" : "DESC";
+            }
 
-        // return dataSource;
-        return get("/item", { params })
-            .then((d) => {
+            try {
+                const d = await get("/item", { params });
                 setItems(d.result);
-                return d.result;
-            })
-            .catch((e) => console.log(e));
-    }, []);
+                return { data: d.result, count: d.total };
+            } catch (e) {
+                console.log(e);
+                return { data: [], count: 0 };
+            }
+        },
+        []
+    );
 
     return (
         <ReactDataGrid
@@ -480,6 +508,8 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
             style={gridStyle}
             defaultFilterValue={defaultFilterValue}
             onRowClick={({ data }) => onRowSelected(data)}
+            showColumnMenuTool={false}
+            pagination
             filterTypes={{
                 boolean: {
                     type: "boolean",
