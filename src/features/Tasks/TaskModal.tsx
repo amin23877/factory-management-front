@@ -10,7 +10,7 @@ import { ArraySelect, MaterialFieldSelect } from "../../app/Inputs";
 import { getTickets } from "../../api/ticket";
 import { getAllEmployees } from "../../api/employee";
 import TPCAutocomplete from "../TPC/autocomplete";
-import { DateTimePicker } from "@material-ui/pickers";
+import DateTimePicker from "../../app/DateTimePicker";
 
 export default function TaskModal({
     open,

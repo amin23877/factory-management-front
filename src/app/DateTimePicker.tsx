@@ -11,6 +11,7 @@ function CustomDateTimePicker({ ...props }: DateTimePickerProps) {
             inputProps={{ style: { fontSize: "0.8rem" } }}
             InputLabelProps={{
                 shrink: true,
+                style: { fontSize: "0.8rem" },
             }}
         />
     );

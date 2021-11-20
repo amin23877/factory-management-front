@@ -9,7 +9,7 @@ import {
     RadioGroup,
     Radio,
 } from "@material-ui/core";
-import { DateTimePicker } from "@material-ui/pickers";
+import DateTimePicker from "../../../app/DateTimePicker";
 
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
@@ -209,7 +209,7 @@ export const GeneralForm = ({
 }) => {
     return (
         <>
-            <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={5} gridRowGap={5}>
+            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={5} gridRowGap={10}>
                 {edit && <TextField label="Quote ID" value={values.number} disabled />}
                 {/* {edit && <TextField label="SO ID" value={values.number} style={{ width: "100%" }} disabled />} */}
                 {edit && (

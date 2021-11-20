@@ -4,8 +4,15 @@ import TextField from "../TextField";
 
 // import styles from "./inputs.module.css";
 import { Autocomplete } from "@material-ui/lab";
-import { CSSProperties } from "@material-ui/styles";
+import { CSSProperties, makeStyles } from "@material-ui/styles";
 
+const useStyle = makeStyles({
+    root: {
+        "& .MuiInputBase-root": {
+            lineHeight: "1em",
+        },
+    },
+});
 interface IMFS {
     request: () => Promise<any>;
     limit?: number;
@@ -71,8 +78,15 @@ interface IOS extends StandardTextFieldProps {
     inputStyle?: any;
 }
 export const ObjectSelect = ({ inputStyle, items, itemTitleField, itemValueField, keyField, ...props }: IOS) => {
+    const classes = useStyle();
     return (
-        <TextField {...props} select style={{ ...props.style, fontSize: "0.8rem" }}>
+        <TextField
+            {...props}
+            select
+            style={{ ...props.style, fontSize: "0.8rem", height: "100%" }}
+            InputProps={{ inputProps: { style: { lineHeight: "1em" } } }}
+            classes={{ root: classes.root }}
+        >
             <MenuItem value={undefined}>None</MenuItem>
             {items &&
                 items.length >= 0 &&

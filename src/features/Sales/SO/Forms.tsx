@@ -14,7 +14,7 @@ import {
     Tab,
     makeStyles,
 } from "@material-ui/core";
-import { DateTimePicker } from "@material-ui/pickers";
+import DateTimePicker from "../../../app/DateTimePicker";
 
 import TextField from "../../../app/TextField";
 import { FieldSelect, ArraySelect } from "../../../app/Inputs";

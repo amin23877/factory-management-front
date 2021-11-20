@@ -1,6 +1,6 @@
 import React from "react";
 import { Box } from "@material-ui/core";
-import { DateTimePicker } from "@material-ui/pickers";
+import DateTimePicker from "../../../app/DateTimePicker";
 
 import TextField from "../../../app/TextField";
 import { formatTimestampToDate } from "../../../logic/date";
