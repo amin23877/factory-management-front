@@ -138,7 +138,7 @@ export default function MaterialFieldSelect({
                             }}
                             style={{ flex: 1, fontSize: "0.8rem" }}
                             type="text"
-                            InputLabelProps={{ shrink: true }}
+                            InputLabelProps={{ shrink: true, style: { fontSize: "0.8rem" } }}
                             disabled={disabled}
                         />
                     </div>

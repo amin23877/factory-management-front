@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
-import { DateTimePicker } from "@material-ui/pickers";
+import DateTimePicker from "../../../app/DateTimePicker";
 
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";

@@ -4,7 +4,8 @@ import { Box } from "@material-ui/core";
 import TextField from "../../../../app/TextField";
 import { formatTimestampToDate } from "../../../../logic/date";
 import { ArraySelect, FieldSelect } from "../../../../app/Inputs";
-import { DateTimePicker } from "@material-ui/pickers";
+import DateTimePicker from "../../../../app/DateTimePicker";
+
 import { getAllEmployees } from "../../../../api/employee";
 
 interface IForm {

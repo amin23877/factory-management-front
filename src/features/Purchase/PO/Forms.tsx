@@ -49,7 +49,7 @@ import PurchasePO from "../../../PDFTemplates/PurchasePO";
 import { getFieldServices } from "../../../api/fieldService";
 import { ILineService } from "../../../api/lineService";
 import { formatTimestampToDate } from "../../../logic/date";
-import { DateTimePicker } from "@material-ui/pickers";
+import DateTimePicker from "../../../app/DateTimePicker";
 import { IItem } from "../../../api/items";
 import { getAllUnits } from "../../../api/units";
 

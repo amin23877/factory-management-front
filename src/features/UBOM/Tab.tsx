@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { Box, FormControlLabel, Checkbox, List, ListItem } from "@material-ui/core";
+import { Box, List, ListItem } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
 import TextField from "../../app/TextField";
 import Button from "../../app/Button";
 import Confirm from "../Modals/Confirm";
-import {  deleteBom } from "../../api/bom";
+import { deleteBom } from "../../api/bom";
 import { addUBom, IUBom, updateUBom } from "../../api/ubom";
-import { DateTimePicker } from "@material-ui/pickers";
+import DateTimePicker from "../../app/DateTimePicker";
 
 const BomForm = ({
     initialValues,
@@ -32,7 +32,7 @@ const BomForm = ({
     const handleSubmit = async (values: IUBom, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
         try {
             if (method === "post") {
-                console.log(unitId, values, 'add')
+                console.log(unitId, values, "add");
                 const resp = await addUBom(unitId, values);
                 console.log(resp);
                 onDone();
