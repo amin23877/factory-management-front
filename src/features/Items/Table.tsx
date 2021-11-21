@@ -1,17 +1,27 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { Box } from "@material-ui/core";
-import { DataGrid, GridColumns, GridFilterModelParams, GridSortModelParams, GridToolbar } from "@material-ui/data-grid";
+// import { Box } from "@material-ui/core";
+// import { DataGrid, GridColumns, GridFilterModelParams, GridSortModelParams, GridToolbar } from "@material-ui/data-grid";
 import useSWR from "swr";
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
 
-import { BasePaper } from "../../app/Paper";
+// import { BasePaper } from "../../app/Paper";
 
 import { splitLevelName } from "../../logic/levels";
-import { useDataGridData } from "../../components/Datagrid/hooks";
+// import { useDataGridData } from "../../components/Datagrid/hooks";
 import { get } from "../../api";
 import { IItem } from "../../api/items";
 import { CheckRounded, ClearRounded } from "@material-ui/icons";
+
+import { makeStyles } from "@material-ui/styles";
+const useStyle = makeStyles({
+    root: {
+        "& .InovuaReactDataGrid__column-header": {
+            background: "#202731",
+            color: "#fff",
+        },
+    },
+});
 
 // function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
 //     const [filters, setFilters] = useState<{ [key: string]: any }>({});
@@ -323,6 +333,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     const { data: clusters } = useSWR("/filter");
     const [items, setItems] = useState<IItem[]>([]);
     const [allColumns, setAllColumns] = useState<any[]>([]);
+    const classes = useStyle();
 
     const columns = useMemo(() => {
         let res: any[] = [
@@ -510,6 +521,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
             onRowClick={({ data }) => onRowSelected(data)}
             showColumnMenuTool={false}
             pagination
+            className={classes.root}
             filterTypes={{
                 boolean: {
                     type: "boolean",
