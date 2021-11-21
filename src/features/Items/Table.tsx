@@ -210,104 +210,104 @@ const useStyle = makeStyles({
 //         </Box>
 //     );
 // }
-const columns = [
-    { name: "name", header: "Name", minWidth: 50, defaultFlex: 2 },
-    { name: "no", header: "NO.", maxWidth: 1000, defaultFlex: 1 },
-];
+// const columns = [
+//     { name: "name", header: "Name", minWidth: 50, defaultFlex: 2 },
+//     { name: "no", header: "NO.", maxWidth: 1000, defaultFlex: 1 },
+// ];
 
-const defaultFilterValue = [
-    { name: "name", type: "string", operator: "startsWith", value: undefined },
-    { name: "no", type: "string", operator: "contains", value: undefined },
-    {
-        name: "description",
-        type: "string",
-        operator: "contains",
-        value: undefined,
-    },
-    {
-        name: "salesApproved",
-        type: "boolean",
-        operator: "contains",
-        value: undefined,
-    },
-    {
-        name: "engineeringApproved",
-        type: "boolean",
-        operator: "contains",
-        value: undefined,
-    },
-    {
-        name: "shippingApproved",
-        type: "boolean",
-        operator: "contains",
-        value: undefined,
-    },
-    {
-        name: "prefVendor",
-        type: "boolean",
-        operator: "contains",
-        value: undefined,
-    },
-    {
-        name: "vendorPartNumber",
-        type: "string",
-        operator: "contains",
-        value: undefined,
-    },
-    { name: "cost", type: "string", operator: "contains", value: undefined },
-    { name: "location", type: "string", operator: "contains", value: undefined },
-    { name: "qtyOnHand", type: "string", operator: "contains", value: undefined },
-    { name: "qtyRemain", type: "string", operator: "contains", value: undefined },
-    {
-        name: "qtyOnOrder",
-        type: "string",
-        operator: "contains",
-        value: undefined,
-    },
-    {
-        name: "qtyAllocated",
-        type: "string",
-        operator: "contains",
-        value: undefined,
-    },
-    {
-        name: "usedInLastQuarter",
-        type: "string",
-        operator: "contains",
-        value: undefined,
-    },
-    { name: "fifo", type: "string", operator: "contains", value: undefined },
-    {
-        name: "qohVal",
-        type: "number",
-        operator: "contains",
-        value: undefined,
-    },
-    {
-        name: "uom",
-        type: "string",
-        operator: "contains",
-        value: undefined,
-    },
-    {
-        name: "obsolete",
-        type: "boolean",
-        operator: "contains",
-        value: undefined,
-    },
-    {
-        name: "nonInventoryItem",
-        type: "boolean",
-        operator: "contains",
-        value: undefined,
-    },
-    {
-        name: "rndOnly",
-        type: "boolean",
-        operator: "contains",
-        value: undefined,
-    },
-];
+// const defaultFilterValue = [
+//     { name: "name", type: "string", operator: "startsWith", value: undefined },
+//     { name: "no", type: "string", operator: "startsWith", value: undefined },
+//     {
+//         name: "description",
+//         type: "string",
+//         operator: "contains",
+//         value: undefined,
+//     },
+//     {
+//         name: "salesApproved",
+//         type: "boolean",
+//         operator: "contains",
+//         value: undefined,
+//     },
+//     {
+//         name: "engineeringApproved",
+//         type: "boolean",
+//         operator: "contains",
+//         value: undefined,
+//     },
+//     {
+//         name: "shippingApproved",
+//         type: "boolean",
+//         operator: "contains",
+//         value: undefined,
+//     },
+//     {
+//         name: "prefVendor",
+//         type: "boolean",
+//         operator: "contains",
+//         value: undefined,
+//     },
+//     {
+//         name: "vendorPartNumber",
+//         type: "string",
+//         operator: "contains",
+//         value: undefined,
+//     },
+//     { name: "cost", type: "string", operator: "contains", value: undefined },
+//     { name: "location", type: "string", operator: "contains", value: undefined },
+//     { name: "qtyOnHand", type: "string", operator: "contains", value: undefined },
+//     { name: "qtyRemain", type: "string", operator: "contains", value: undefined },
+//     {
+//         name: "qtyOnOrder",
+//         type: "string",
+//         operator: "contains",
+//         value: undefined,
+//     },
+//     {
+//         name: "qtyAllocated",
+//         type: "string",
+//         operator: "contains",
+//         value: undefined,
+//     },
+//     {
+//         name: "usedInLastQuarter",
+//         type: "string",
+//         operator: "contains",
+//         value: undefined,
+//     },
+//     { name: "fifo", type: "string", operator: "contains", value: undefined },
+//     {
+//         name: "qohVal",
+//         type: "number",
+//         operator: "contains",
+//         value: undefined,
+//     },
+//     {
+//         name: "uom",
+//         type: "string",
+//         operator: "contains",
+//         value: undefined,
+//     },
+//     {
+//         name: "obsolete",
+//         type: "boolean",
+//         operator: "contains",
+//         value: undefined,
+//     },
+//     {
+//         name: "nonInventoryItem",
+//         type: "boolean",
+//         operator: "contains",
+//         value: undefined,
+//     },
+//     {
+//         name: "rndOnly",
+//         type: "boolean",
+//         operator: "contains",
+//         value: undefined,
+//     },
+// ];
 
 const gridStyle = { minHeight: 600 };
 
@@ -515,6 +515,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
         <ReactDataGrid
             idProperty="id"
             columns={columns}
+            rowHeight={20}
             dataSource={fetchData}
             style={gridStyle}
             defaultFilterValue={defaultFilterValue}

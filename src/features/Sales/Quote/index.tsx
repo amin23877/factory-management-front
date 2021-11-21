@@ -81,7 +81,12 @@ export default function QuotePanel() {
 
             <BasePaper>
                 <Box style={{ height: "81.2vh" }}>
-                    <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                    <Tabs
+                        value={activeTab}
+                        textColor="primary"
+                        onChange={(e, nv) => setActiveTab(nv)}
+                        style={{ marginBottom: "10px" }}
+                    >
                         <Tab
                             // label="List"
                             icon={
