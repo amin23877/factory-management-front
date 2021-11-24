@@ -309,7 +309,7 @@ const useStyle = makeStyles({
 //     },
 // ];
 
-const gridStyle = { minHeight: 600 };
+const gridStyle = { minHeight: "calc(100vh - 170px)" };
 
 const getOperator = (op: string) => {
     switch (op) {
