@@ -23,6 +23,8 @@ export interface IBomRecord {
     BOMId: string;
     date: number;
     updatedAt: number;
+    uom: string;
+    location: string;
 }
 
 export const getBom = (ItemId: string) => {

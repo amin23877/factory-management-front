@@ -27,6 +27,7 @@ interface IForm {
     setFieldValue: any;
     isSubmitting?: boolean;
     device?: boolean;
+    boms?: boolean;
 }
 
 interface IQForm extends IForm {
@@ -336,7 +337,7 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
     );
 };
 
-export const Pricing = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
+export const Pricing = ({ values, errors, handleChange, handleBlur, touched, boms }: IForm) => {
     return (
         <Box mt={1} display="grid" gridTemplateColumns="auto auto" gridColumnGap={10} gridRowGap={10}>
             <TextField
@@ -358,8 +359,13 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched }: I
                 onChange={handleChange}
                 style={{ marginBottom: 3 }}
             />
-            <TextField label="Total Cost" value={values.totalCost} name="totalCost" disabled />
-            {values.device === false ? (
+            <TextField
+                label="Total Cost"
+                value={values.overrideUse ? values.override : values.totalCost}
+                name="totalCost"
+                disabled
+            />
+            {!boms ? (
                 <div>
                     <FormControlLabel
                         style={{ fontSize: "0.7rem" }}
@@ -377,6 +383,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched }: I
                         onBlur={handleBlur}
                         onChange={handleChange}
                         style={{ marginBottom: 3 }}
+                        disabled={!values.overrideUse}
                     />
                 </div>
             ) : (
@@ -390,6 +397,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched }: I
                         onBlur={handleBlur}
                         onChange={handleChange}
                         style={{ marginBottom: 3 }}
+                        disabled
                     />
                     <div>
                         <FormControlLabel

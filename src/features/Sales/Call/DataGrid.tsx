@@ -96,7 +96,7 @@ function QuoteDataGrid({ onRowSelected }: { onRowSelected: (row: any) => void })
             data: any[];
             count: number;
         }> => {
-            let params: any = { device: false };
+            let params: any = {};
             for (const fv of filterValue) {
                 if (fv.value) {
                     params[getOperator(fv.operator) + fv.name] = fv.value;

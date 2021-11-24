@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import TableContainer from "@material-ui/core/TableContainer";
 import Table from "@material-ui/core/Table";
@@ -13,7 +13,9 @@ import { useStyles } from "../../app/Table";
 
 export default function SOTable({ rows }: { rows: any[] }) {
     const classes = useStyles();
-
+    useEffect(() => {
+        console.log(rows);
+    }, [rows]);
     return (
         <TableContainer component={Paper} className={classes.tableCont} style={{ maxHeight: 700, minHeight: 457 }}>
             <Table aria-label="Items table" className={classes.root}>
@@ -23,24 +25,21 @@ export default function SOTable({ rows }: { rows: any[] }) {
                         <TableCell>SO Number</TableCell>
                         <TableCell>Client</TableCell>
                         <TableCell>Date Iinvoiced</TableCell>
-                        {/* <TableCell>Description</TableCell>
-                        <TableCell>Quantity usage</TableCell>
-                        <TableCell>Price</TableCell> */}
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {rows &&
-                        rows.map((row: any, i) => (
-                            <TableRow key={i}>
-                                <TableCell>{formatTimestampToDate(row?.LineItemRecord?.date)}</TableCell>
-                                <TableCell>{row?.SO?.number}</TableCell>
-                                <TableCell>{row?.SO?.Client?.name}</TableCell>
-                                <TableCell></TableCell>
-                                {/* <TableCell>{row?.LineItemRecord?.description}</TableCell>
-                                <TableCell>{row?.LineItemRecord?.quantity}</TableCell>
-                                <TableCell>{row?.LineItemRecord?.price}</TableCell> */}
-                            </TableRow>
-                        ))}
+                        rows.map((row: any, i) => {
+                            console.log(row);
+                            return (
+                                <TableRow key={i}>
+                                    <TableCell>{formatTimestampToDate(row?.so?.date)}</TableCell>
+                                    <TableCell>{row?.so?.number}</TableCell>
+                                    <TableCell>{row?.so?.clientName}</TableCell>
+                                    <TableCell>{formatTimestampToDate(row?.so?.invoicedDate)}</TableCell>
+                                </TableRow>
+                            );
+                        })}
                 </TableBody>
             </Table>
         </TableContainer>

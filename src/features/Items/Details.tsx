@@ -80,25 +80,27 @@ function ItemsDetails({
         activeTab === 0 ? (selectedRow && selectedRow.id ? `/document/item/${selectedRow.id}` : null) : null
     );
 
+    const { data: boms } = useSWR<IBom[]>(selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null);
+
     // const { data: boms } = useSWR<IBom[]>(
     //     activeTab === 1 ? (selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null) : null
     // );
     const { data: vendors } = useSWR(
-        activeTab === 2 ? (selectedRow && selectedRow.id ? `/vending?ItemId=${selectedRow.id}` : null) : null
+        activeTab === 1 ? (selectedRow && selectedRow.id ? `/vending?ItemId=${selectedRow.id}` : null) : null
     );
 
     const { data: itemSOs } = useSWR(
-        activeTab === 3 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/so` : null) : null
+        activeTab === 2 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/so` : null) : null
     );
 
     const { data: itemPOs } = useSWR(
-        activeTab === 4 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/purchasepo` : null) : null
+        activeTab === 3 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/purchasepo` : null) : null
     );
     const { data: itemUsage } = useSWR(
-        activeTab === 5 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/uses` : null) : null
+        activeTab === 4 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/uses` : null) : null
     );
     const { data: notes } = useSWR<INote[]>(
-        activeTab === 6 ? (selectedRow && selectedRow.id ? `/note/item/${selectedRow.id}` : null) : null
+        activeTab === 5 ? (selectedRow && selectedRow.id ? `/note/item/${selectedRow.id}` : null) : null
     );
     // const { data: itemQtyHistory } = useSWR(
     //     activeTab === 10 ? (selectedRow && selectedRow.id ? `/item/${ selectedRow.id}/qty` : null) : null
@@ -447,6 +449,8 @@ function ItemsDetails({
                                             rows={selectedRow?.pricing || []}
                                             cols={pricingCols}
                                             height={220}
+                                            filter
+                                            pagination
                                         />
                                         <Pricing
                                             values={values}
@@ -455,6 +459,7 @@ function ItemsDetails({
                                             setFieldValue={setFieldValue}
                                             errors={errors}
                                             touched={touched}
+                                            boms={boms?.length === 0 ? false : true}
                                         />
                                     </>
                                 )}
@@ -498,17 +503,13 @@ function ItemsDetails({
                                     textColor="primary"
                                     variant="scrollable"
                                 >
-                                    <Tab label="Document" />
-                                    {/* <Tab label="BOM allocated" /> */}
-                                    <Tab label="BOM" />
-                                    <Tab label="Vendor" />
-                                    <Tab label="Sales order History" />
-                                    <Tab label="PO History" />
-                                    {/* <Tab label="Sales Report" /> */}
-                                    <Tab label="Usage" />
-                                    <Tab label="Note" />
-                                    {/* <Tab label="Quantity history" /> */}
-                                    <Tab label="Auditing" />
+                                    <Tab label="Document" /> 0{/* <Tab label="BOM allocated" /> */}
+                                    {boms?.length === 0 ? <Tab label="Vendor" /> : <Tab label="BOM" />}
+                                    <Tab label="Sales order History" />2
+                                    <Tab label="PO History" />3{/* <Tab label="Sales Report" /> */}
+                                    <Tab label="Usage" />4
+                                    <Tab label="Note" />5{/* <Tab label="Quantity history" /> */}
+                                    <Tab label="Auditing" />6
                                 </Tabs>
                                 <Box p={1}>
                                     {activeTab === 0 && (
@@ -528,8 +529,8 @@ function ItemsDetails({
                                             />
                                         </>
                                     )}
-                                    {activeTab === 1 && <ItemBomTable itemId={selectedRow.id} />}
-                                    {activeTab === 2 && (
+                                    {activeTab === 1 && boms && <ItemBomTable boms={boms} />}
+                                    {activeTab === 1 && !boms && (
                                         <>
                                             <Button
                                                 onClick={() => {
@@ -547,19 +548,19 @@ function ItemsDetails({
                                         </>
                                     )}
 
-                                    {activeTab === 3 && <SOTable rows={itemSOs} />}
-                                    {activeTab === 4 && (
+                                    {activeTab === 2 && itemSOs && <SOTable rows={itemSOs} />}
+                                    {activeTab === 3 && (
                                         <BaseDataGrid cols={poCols} rows={itemPOs || []} onRowSelected={() => {}} />
                                     )}
                                     {/* {activeTab === 8 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />} */}
-                                    {activeTab === 5 && (
+                                    {activeTab === 4 && (
                                         <BaseDataGrid
                                             cols={usageCols}
                                             rows={itemUsage || []}
                                             onRowSelected={() => {}}
                                         />
                                     )}
-                                    {activeTab === 6 && (
+                                    {activeTab === 5 && (
                                         <>
                                             <Button
                                                 onClick={() => {
@@ -576,7 +577,7 @@ function ItemsDetails({
                                             />
                                         </>
                                     )}
-                                    {activeTab === 7 && <div>Auditing</div>}
+                                    {activeTab === 6 && <div>Auditing</div>}
                                 </Box>
                             </BasePaper>
                         </Box>

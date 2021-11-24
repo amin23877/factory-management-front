@@ -189,7 +189,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
             data: any[];
             count: number;
         }> => {
-            let params: any = {  };
+            let params: any = {};
             for (const fv of filterValue) {
                 if (fv.value) {
                     params[getOperator(fv.operator) + fv.name] = fv.value;

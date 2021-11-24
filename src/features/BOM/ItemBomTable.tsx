@@ -103,7 +103,7 @@ function Row({ row }: { row: IBom }) {
                 <TableCell component="th" scope="row">
                     {row.items}
                 </TableCell>
-                <TableCell align="right">{/* Revision */}</TableCell>
+                <TableCell align="right">{row.no}</TableCell>
                 <TableCell align="right">{formatTimestampToDate(row.updatedAt)}</TableCell>
                 <TableCell align="right">{row.name}</TableCell>
                 <TableCell align="right">{row.note}</TableCell>
@@ -124,7 +124,8 @@ function Row({ row }: { row: IBom }) {
                                         <TableRow>
                                             <TableCell>No</TableCell>
                                             <TableCell>Name</TableCell>
-                                            <TableCell align="right">Revision</TableCell>
+                                            <TableCell align="right">Uom</TableCell>
+                                            <TableCell align="right">Location</TableCell>
                                             <TableCell align="right">Usage</TableCell>
                                             <TableCell align="right">Fixed QTY</TableCell>
                                         </TableRow>
@@ -142,7 +143,8 @@ function Row({ row }: { row: IBom }) {
                                                         {part.ItemId.no}
                                                     </TableCell>
                                                     <TableCell>{part.ItemId.name}</TableCell>
-                                                    <TableCell align="right">{part?.revision}</TableCell>
+                                                    <TableCell align="right">{part?.uom}</TableCell>
+                                                    <TableCell align="right">{part?.location}</TableCell>
                                                     <TableCell align="right">{part.usage}</TableCell>
                                                     <TableCell align="right">
                                                         {part.fixedQty ? (
@@ -167,8 +169,7 @@ function Row({ row }: { row: IBom }) {
     );
 }
 
-export default function ItemBomTable({ itemId }: { itemId: string }) {
-    const { data: boms } = useSWR<IBom[]>(`/bom?ItemId=${itemId}`);
+export default function ItemBomTable({ boms }: { boms: IBom[] }) {
     const classes = useTableStyles();
 
     return (
@@ -179,7 +180,7 @@ export default function ItemBomTable({ itemId }: { itemId: string }) {
                         <TableCell />
                         <TableCell />
                         <TableCell>Items</TableCell>
-                        <TableCell align="right">Revision</TableCell>
+                        <TableCell align="right">Rev. No.</TableCell>
                         <TableCell align="right">Revision Date</TableCell>
                         <TableCell align="right">Name</TableCell>
                         <TableCell align="right">Note</TableCell>

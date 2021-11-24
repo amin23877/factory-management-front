@@ -34,9 +34,11 @@ interface IBaseDataGrid {
     cols: any[];
     height?: number | string;
     loading?: boolean;
+    pagination?: boolean;
+    filter?: boolean;
 }
 
-export default function BaseDataGrid({ onRowSelected, rows, cols, height }: IBaseDataGrid) {
+export default function BaseDataGrid({ onRowSelected, rows, cols, height, pagination, filter }: IBaseDataGrid) {
     const classes = useDataGridStyles();
 
     return (
@@ -48,13 +50,14 @@ export default function BaseDataGrid({ onRowSelected, rows, cols, height }: IBas
         >
             <DataGrid
                 density="compact"
-                components={{ Toolbar: GridToolbar }}
+                components={filter ? {} : { Toolbar: GridToolbar }}
                 className={classes.root}
                 onRowSelected={(r) => {
                     onRowSelected && onRowSelected(r.data);
                 }}
                 columns={cols}
                 rows={rows}
+                hideFooter={pagination}
             />
         </div>
     );
