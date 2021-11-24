@@ -169,15 +169,15 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     }, [clusters, fields, items]);
 
     const defaultFilterValue = useMemo(() => {
-        let res = columns.map(({ name, type }) => ({
+        let res = allColumns.map(({ name, type }) => ({
             name,
             type: type ? type : "string",
             operator: type === "boolean" ? "eq" : "startsWith",
-            value: undefined,
+            value: "",
         }));
 
         return res;
-    }, [columns]);
+    }, [allColumns]);
 
     const fetchData = useCallback(
         async ({
