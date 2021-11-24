@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { GridColDef } from "@material-ui/data-grid";
 import { Box, Tabs, Tab } from "@material-ui/core";
-import useSwr, { mutate } from "swr";
+import { mutate } from "swr";
 
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import { ListAltRounded, FindInPageRounded } from "@material-ui/icons";
@@ -9,16 +8,15 @@ import { ListAltRounded, FindInPageRounded } from "@material-ui/icons";
 import Confirm from "../../Modals/Confirm";
 import OneFieldModal from "../../../components/OneFieldModal";
 
-import BaseDataGrid from "../../../app/BaseDataGrid";
 import { BasePaper } from "../../../app/Paper";
 import Button from "../../../app/Button";
 
 import Details from "./Details";
 import AddCallModal from "./CallModal";
 
-import { formatTimestampToDate } from "../../../logic/date";
 import { deleteCall } from "../../../api/calls";
 import { addCallsTag, deleteCallsTag, editCallsTag } from "../../../api/callsTags";
+import DataGrid from "./DataGrid";
 
 export default function Calls() {
     const [activeTab, setActiveTab] = useState(0);
@@ -26,40 +24,6 @@ export default function Calls() {
     const [addCall, setAddCall] = useState(false);
     const [confirm, setConfirm] = useState(false);
     const [CTagModal, setCTagModal] = useState(false);
-
-    const { data: calls } = useSwr("/calls");
-
-    const callCols: GridColDef[] = [
-        {
-            field: "date",
-            headerName: "Date",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.date),
-            width: 110,
-        },
-        { field: "number", headerName: "Ticket ID", width: 100 },
-        { field: "subject", headerName: "Subject", width: 100 },
-        { field: "company", headerName: "Company", width: 100 },
-        { field: "contactName", headerName: "Name", width: 100 },
-        { field: "contactNumber", headerName: "Contact No.", width: 110 },
-        { field: "contactEmail", headerName: "Email", width: 150 },
-        { field: "state", headerName: "State", width: 100 },
-        { field: "zip", headerName: "Zip Code", width: 100 },
-        {
-            field: "Assigned To",
-            valueFormatter: (r) => r.row?.AssignedTo?.username,
-            width: 110,
-        },
-        {
-            field: "Created By",
-            valueFormatter: (r) => r.row?.CreatedBy?.username,
-            width: 110,
-        },
-        {
-            field: "Tag",
-            valueFormatter: (r) => r.row?.Tags[0]?.name,
-            width: 100,
-        },
-    ];
 
     const handleDelete = async () => {
         try {
@@ -151,15 +115,12 @@ export default function Calls() {
                         }
                     />
                 </Tabs>
-                {activeTab === 0 && calls && (
-                    <BaseDataGrid
-                        rows={calls}
-                        cols={callCols}
+                {activeTab === 0 && (
+                    <DataGrid
                         onRowSelected={(d) => {
                             setSelectedCall(d);
                             setActiveTab(1);
                         }}
-                        height={"73.2vh"}
                     />
                 )}
                 {activeTab === 1 && selectedCall && <Details callsData={selectedCall} />}
