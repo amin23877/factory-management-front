@@ -1,7 +1,8 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
+import StringFilter from "@inovua/reactdatagrid-community/StringFilter";
 import { CheckRounded, ClearRounded } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
 
@@ -42,6 +43,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     const { data: clusters } = useSWR("/filter");
     const [items, setItems] = useState<IItem[]>([]);
     const [allColumns, setAllColumns] = useState<any[]>([]);
+
     const classes = useStyle();
 
     const columns = useMemo(() => {
@@ -153,12 +155,17 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
             for (let f of Object.keys(items[0])) {
                 if (!exceptions.includes(f)) {
                     if (filterNames.includes(f)) {
-                        res.splice(3, 0, { name: f, header: f, minWidth: 120 });
+                        res.splice(3, 0, { name: f, header: f, minWidth: 120, filterEditor: StringFilter });
                     } else if (fieldNames.includes(f)) {
-                        res.splice(3, 0, { name: f, header: splitLevelName(f), minWidth: 120 });
+                        res.splice(3, 0, {
+                            name: f,
+                            header: splitLevelName(f),
+                            minWidth: 120,
+                            filterEditor: StringFilter,
+                        });
                     } else {
                         // res.push({ name: f, header: f, defaultVisible: true });
-                        spareColumns.push({ name: f, header: f, defaultVisible: true });
+                        spareColumns.push({ name: f, header: f, defaultVisible: true, filterEditor: StringFilter });
                     }
                 }
             }
@@ -169,15 +176,14 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     }, [clusters, fields, items]);
 
     const defaultFilterValue = useMemo(() => {
-        let res = allColumns.map(({ name, type }) => ({
+        let res = columns.map(({ name, type }) => ({
             name,
             type: type ? type : "string",
             operator: type === "boolean" ? "eq" : "startsWith",
             value: "",
         }));
-
         return res;
-    }, [allColumns]);
+    }, [columns]);
 
     const fetchData = useCallback(
         async ({
@@ -220,57 +226,66 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
         []
     );
 
+    useEffect(() => {
+        // setAllColumns(columns);
+        fetchData({ filterValue: [], limit: 50, sortInfo: {} });
+    }, []);
+
     return (
-        <ReactDataGrid
-            idProperty="id"
-            columns={columns}
-            rowHeight={20}
-            dataSource={fetchData}
-            style={gridStyle}
-            defaultFilterValue={defaultFilterValue}
-            onRowClick={({ data }) => onRowSelected(data)}
-            showColumnMenuTool={false}
-            pagination
-            className={classes.root}
-            filterTypes={{
-                boolean: {
-                    type: "boolean",
-                    emptyValue: false,
-                    operators: [
-                        {
-                            name: "neq",
-                            fn: ({ value, filterValue }) => value !== filterValue,
+        <>
+            {columns[3]?.name === "Type" && (
+                <ReactDataGrid
+                    idProperty="id"
+                    columns={columns}
+                    rowHeight={20}
+                    dataSource={fetchData}
+                    style={gridStyle}
+                    defaultFilterValue={defaultFilterValue}
+                    onRowClick={({ data }) => onRowSelected(data)}
+                    showColumnMenuTool={false}
+                    pagination
+                    className={classes.root}
+                    filterTypes={{
+                        boolean: {
+                            type: "boolean",
+                            emptyValue: false,
+                            operators: [
+                                {
+                                    name: "neq",
+                                    fn: ({ value, filterValue }) => value !== filterValue,
+                                },
+                                {
+                                    name: "eq",
+                                    fn: ({ value, filterValue }) => value === filterValue,
+                                },
+                            ],
                         },
-                        {
-                            name: "eq",
-                            fn: ({ value, filterValue }) => value === filterValue,
+                        string: {
+                            type: "string",
+                            emptyValue: "",
+                            operators: [
+                                {
+                                    name: "startsWith",
+                                    fn: ({ value, filterValue }) => {
+                                        return !filterValue ? true : Boolean(value.startsWith(filterValue));
+                                    },
+                                },
+                                {
+                                    name: "contains",
+                                    fn: ({ value, filterValue }) => {
+                                        return !filterValue ? true : value.indexOf(filterValue) !== -1;
+                                    },
+                                },
+                                {
+                                    name: "eq",
+                                    fn: ({ value, filterValue }) => value === filterValue,
+                                },
+                            ],
                         },
-                    ],
-                },
-                string: {
-                    type: "string",
-                    emptyValue: "",
-                    operators: [
-                        {
-                            name: "startsWith",
-                            fn: ({ value, filterValue }) => {
-                                return !filterValue ? true : Boolean(value.startsWith(filterValue));
-                            },
-                        },
-                        {
-                            name: "contains",
-                            fn: ({ value, filterValue }) => {
-                                return !filterValue ? true : value.indexOf(filterValue) !== -1;
-                            },
-                        },
-                        {
-                            name: "eq",
-                            fn: ({ value, filterValue }) => value === filterValue,
-                        },
-                    ],
-                },
-            }}
-        />
+                    }}
+                />
+            )}
+        </>
     );
 }
 

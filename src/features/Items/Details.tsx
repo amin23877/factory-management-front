@@ -118,31 +118,55 @@ function ItemsDetails({
     const poCols = useMemo<GridColDef[]>(
         () => [
             {
-                field: "date",
-                headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
+                field: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params?.row?.purchasePO.date),
                 width: 100,
             },
-            { field: "number", headerName: "Number", flex: 1 },
-            { field: "vendor", headerName: "Vendor", width: 100 },
-            { field: "ordered", headerName: "QTY Ordered", width: 120 },
-            { field: "received", headerName: "QTY Received", width: 120 },
-            { field: "sold", headerName: "QTY Sold", width: 100 },
-            { field: "uom", headerName: "PO UOM", width: 100 },
             {
-                field: "dateReceived",
-                headerName: "Date Received",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
+                field: "Number",
+                flex: 1,
+                valueFormatter: (params) => params.row?.purchasePO.number,
+            },
+            {
+                field: "Vendor",
+                width: 100,
+                valueFormatter: (params) => params?.row?.vendor.name,
+            },
+            {
+                field: "Qty Ord.",
+                width: 120,
+                valueFormatter: (params) => params.row?.lir.quantity,
+            },
+            {
+                field: "Qty Received",
+                width: 120,
+                valueFormatter: (params) => params.row?.lir?.received,
+            },
+            {
+                field: "Received Date",
+                width: 100,
+                valueFormatter: (params) => formatTimestampToDate(params.row?.lir.receivedDate),
+            },
+            {
+                field: "UOM ",
+                valueFormatter: (params) => params.row?.lir.uom,
                 width: 120,
             },
-            { field: "cost", headerName: "Cost", width: 80 },
             {
-                field: "totalCost",
-                headerName: "Total Cost",
-                width: 100,
-                valueFormatter: (params) => params.row?.cost * params.row?.ordered,
+                field: "Cost",
+                width: 80,
+                valueFormatter: (params) => params.row?.lir.cost,
             },
-            { field: "status", headerName: "Status", width: 80 },
+            {
+                field: "Total Cost",
+                width: 100,
+                valueFormatter: (params) => params?.row?.lir.cost * params?.row?.lir.quantity,
+            },
+            {
+                field: "Status",
+                width: 80,
+                valueFormatter: (params) => params.row?.lir.status,
+            },
         ],
         []
     );
