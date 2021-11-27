@@ -199,39 +199,41 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
             "qtyOnOrder",
             "vendorPartNumber",
         ];
+
         if (items && items.length > 0) {
-            const fieldNames = fields ? fields.map((f: any) => f.name) : [];
-            const filterNames = clusters ? clusters.map((f: any) => f.name) : [];
-            for (let f of Object.keys(items[0])) {
-                if (!exceptions.includes(f)) {
-                    if (filterNames.includes(f)) {
-                        res.splice(3, 0, { name: f, header: f, minWidth: 120 });
-                    } else if (fieldNames.includes(f)) {
-                        res.splice(3, 0, {
-                            name: f,
-                            header: splitLevelName(f),
-                            minWidth: 120,
-                        });
-                    } else {
-                        spareColumns.push({ name: f, header: f, defaultVisible: true });
-                    }
-                }
-            }
+            const fieldNames = fields
+                ? fields.map((f: any) => res.splice(3, 0, { name: f.name, header: f.name, minWidth: 120 }))
+                : [];
+            const filterNames = clusters
+                ? clusters.map((f: any) =>
+                      res.splice(3, 0, {
+                          name: f.name,
+                          header: splitLevelName(f.name),
+                          minWidth: 120,
+                      })
+                  )
+                : [];
             fields && clusters && setFinish(true);
         }
         // if (items && items.length > 0) {
-        //     const fieldNames = fields
-        //         ? fields.map((f: any) => res.splice(3, 0, { name: f.name, header: f.name, minWidth: 120 }))
-        //         : [];
-        //     const filterNames = clusters
-        //         ? clusters.map((f: any) =>
-        //               res.splice(3, 0, {
-        //                   name: f,
-        //                   header: splitLevelName(f.name),
-        //                   minWidth: 120,
-        //               })
-        //           )
-        //         : [];
+        //     const fieldNames = fields ? fields.map((f: any) => f.name) : [];
+        //     const filterNames = clusters ? clusters.map((f: any) => f.name) : [];
+        //     for (let f of Object.keys(items[0])) {
+        //         if (!exceptions.includes(f)) {
+        //             if (filterNames.includes(f)) {
+        //                 res.splice(3, 0, { name: f, header: f, minWidth: 120 });
+        //             } else if (fieldNames.includes(f)) {
+        //                 res.splice(3, 0, {
+        //                     name: f,
+        //                     header: splitLevelName(f),
+        //                     minWidth: 120,
+        //                 });
+        //             } else {
+        //                 spareColumns.push({ name: f, header: f, defaultVisible: true });
+        //             }
+        //         }
+        //     }
+        //     fields && clusters && setFinish(true);
         // }
         if (res) {
             res = res.map((r) => {
@@ -310,18 +312,6 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     useEffect(() => {
         fetchData({ filterValue: [], limit: 50, sortInfo: {} });
     }, []);
-
-    // if (items && items.length < 1) {
-    //     return (
-    //         <ReactDataGrid
-    //             columns={columns}
-    //             dataSource={async ({ filterValue, limit, sortInfo, skip }) => ({ data: [], count: 0 })}
-    //             defaultFilterValue={defaultFilterValue}
-    //             style={gridStyle}
-    //             className={classes.root}
-    //         />
-    //     );
-    // }
 
     return (
         <>
