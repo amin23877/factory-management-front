@@ -47,6 +47,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     const { data: fields } = useSWR("/field");
     const { data: clusters } = useSWR("/filter");
     const [items, setItems] = useState<IItem[]>([]);
+    const [finish, setFinish] = useState(false);
 
     const classes = useStyle();
 
@@ -216,7 +217,22 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
                     }
                 }
             }
+            fields && clusters && setFinish(true);
         }
+        // if (items && items.length > 0) {
+        //     const fieldNames = fields
+        //         ? fields.map((f: any) => res.splice(3, 0, { name: f.name, header: f.name, minWidth: 120 }))
+        //         : [];
+        //     const filterNames = clusters
+        //         ? clusters.map((f: any) =>
+        //               res.splice(3, 0, {
+        //                   name: f,
+        //                   header: splitLevelName(f.name),
+        //                   minWidth: 120,
+        //               })
+        //           )
+        //         : [];
+        // }
         if (res) {
             res = res.map((r) => {
                 if (r.type === "boolean") {
@@ -295,7 +311,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
         fetchData({ filterValue: [], limit: 50, sortInfo: {} });
     }, []);
 
-    // if (!items || items.length < 1) {
+    // if (items && items.length < 1) {
     //     return (
     //         <ReactDataGrid
     //             columns={columns}
@@ -310,7 +326,8 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     return (
         <>
             {/* {columns[3]?.name === "Type" ? ( */}
-            {(items && items.length < 1) || columns.length > 21 ? (
+            {/* {columns.length > 21 ? ( */}
+            {finish ? (
                 <ReactDataGrid
                     idProperty="id"
                     columns={columns}
@@ -380,7 +397,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
                     }}
                 />
             ) : (
-                items.length === 0 && <LinearProgress />
+                <LinearProgress />
             )}
         </>
     );
