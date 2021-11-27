@@ -22,7 +22,9 @@ const useStyle = makeStyles({
     },
 });
 
-const gridStyle = { minHeight: 600 };
+const gridStyle = { minHeight: "calc(100vh - 180px)" };
+const green = { color: "#12AE25" };
+const red = { color: "#F53636" };
 
 const getOperator = (op: string) => {
     switch (op) {
@@ -57,21 +59,48 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
                 name: "salesApproved",
                 header: "Sales Ap.",
                 type: "boolean",
-                render: ({ data }: any) => (data.salesApproved ? <CheckRounded /> : <ClearRounded />),
+                render: ({ data }: any) =>
+                    data.salesApproved ? (
+                        <div style={green}>
+                            <CheckRounded />
+                        </div>
+                    ) : (
+                        <div style={red}>
+                            <ClearRounded />
+                        </div>
+                    ),
                 // maxWidth: 90,
             },
             {
                 name: "engineeringApproved",
                 header: "Eng. Ap.",
                 type: "boolean",
-                render: ({ data }: any) => (data.engineeringApproved ? <CheckRounded /> : <ClearRounded />),
+                render: ({ data }: any) =>
+                    data.engineeringApproved ? (
+                        <div style={green}>
+                            <CheckRounded />
+                        </div>
+                    ) : (
+                        <div style={red}>
+                            <ClearRounded />
+                        </div>
+                    ),
                 // maxWidth: 90,
             },
             {
                 name: "shippingApproved",
                 header: "Ship Ap.",
                 type: "boolean",
-                render: ({ data }: any) => (data.shippingApproved ? <CheckRounded /> : <ClearRounded />),
+                render: ({ data }: any) =>
+                    data.shippingApproved ? (
+                        <div style={green}>
+                            <CheckRounded />
+                        </div>
+                    ) : (
+                        <div style={red}>
+                            <ClearRounded />
+                        </div>
+                    ),
                 // maxWidth: 90,
             },
             {
@@ -111,14 +140,32 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
                 name: "nonInventoryItem",
                 header: "NON Inv.",
                 type: "boolean",
-                render: ({ data }: any) => (data.nonInventoryItem ? <CheckRounded /> : <ClearRounded />),
+                render: ({ data }: any) =>
+                    data.nonInventoryItem ? (
+                        <div style={green}>
+                            <CheckRounded />
+                        </div>
+                    ) : (
+                        <div style={red}>
+                            <ClearRounded />
+                        </div>
+                    ),
                 // minWidth: 80,
             },
             {
                 name: "rndOnly",
                 header: "R&D",
                 type: "boolean",
-                render: ({ data }: any) => (data.rndOnly ? <CheckRounded /> : <ClearRounded />),
+                render: ({ data }: any) =>
+                    data.rndOnly ? (
+                        <div style={green}>
+                            <CheckRounded />
+                        </div>
+                    ) : (
+                        <div style={red}>
+                            <ClearRounded />
+                        </div>
+                    ),
                 // minWidth: 80,
             },
         ];
