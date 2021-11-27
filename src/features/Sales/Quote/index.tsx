@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import useSWR from "swr";
@@ -9,12 +9,13 @@ import { BasePaper } from "../../../app/Paper";
 import Confirm from "../../Modals/Confirm";
 import EditTab from "./EditTab";
 import AddQuote from "./AddQuote";
-import QuoteDatagrid from "./Datagrid";
+import DataGrid from "../../../app/NewDataGrid";
 import ReqQuoteModal from "./ReqQuote/Modals";
 import EmailModal from "../../Email/Modal";
 
 import { deleteQuote, IQuote } from "../../../api/quote";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
+import { formatTimestampToDate } from "../../../logic/date";
 
 export default function QuotePanel() {
     const [selectedQuote, setSelectedQuote] = useState<IQuote>();
@@ -42,6 +43,46 @@ export default function QuotePanel() {
             console.log(error);
         }
     };
+    const columns = useMemo(
+        () => [
+            {
+                name: "Date",
+                render: ({ data }: any) => formatTimestampToDate(data.date),
+                minWidth: 100,
+            },
+            { name: "number", header: "Quote ID", minWidth: 100 },
+            {
+                name: "client",
+                header: "Client",
+                minWidth: 100,
+                render: ({ data }: any) => data.client?.name,
+            },
+            { name: "rep", header: "Rep", minWidth: 100, render: ({ data }: any) => data.repOrAgency?.name },
+            {
+                name: "state",
+                header: "State",
+                minWidth: 100,
+                render: ({ data }: any) => data.repOrAgency?.state,
+            },
+            { name: "requesterName", header: "Requester", minWidth: 100 },
+            {
+                name: "project",
+                header: "Project Name",
+                minWidth: 100,
+                render: ({ data }: any) => data.ProjectId?.name,
+            },
+            {
+                name: "quotedBy",
+                header: "Quoted By",
+                minWidth: 100,
+                render: ({ data }: any) => data.salesperson?.username,
+            },
+            { name: "so", header: "SO", minWidth: 100, render: ({ data }) => data.SOId?.number },
+            { name: "status", header: "Status", minWidth: 100 },
+            { name: "total", header: "Total Amount", flex: 1 },
+        ],
+        []
+    );
 
     return (
         <Box>
@@ -80,7 +121,7 @@ export default function QuotePanel() {
             </Box>
 
             <BasePaper>
-                <Box style={{ height: "81.2vh" }}>
+                <Box>
                     <Tabs
                         value={activeTab}
                         textColor="primary"
@@ -109,11 +150,13 @@ export default function QuotePanel() {
                         />
                     </Tabs>
                     {activeTab === 0 && (
-                        <QuoteDatagrid
+                        <DataGrid
                             onRowSelected={(d) => {
                                 setSelectedQuote(d);
                                 setActiveTab(1);
                             }}
+                            url="/quote"
+                            columns={columns}
                         />
                     )}
                     {activeTab === 1 && selectedQuote && <EditTab selectedQuote={selectedQuote} />}

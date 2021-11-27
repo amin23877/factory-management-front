@@ -1,30 +1,6 @@
 import React from "react";
 import { Tabs, Tab, withStyles, createStyles, Theme } from "@material-ui/core";
 import tabBG from "../assets/tabBG.png";
-// const useStyles = makeStyles({
-//     root: {
-//         textTransform: "none",
-//         minWidth: "2em",
-//         minHeight: "45px",
-//         "&:hover": {
-//             color: "#aaa",
-//             opacity: 1,
-//         },
-//         "&$selected": {
-//             backgroundColor: "#1a73e8",
-//             borderRadius: "0.5em",
-//             color: "#fff",
-//         },
-//         "&:active": {
-//             borderRadius: "0.5em",
-//             color: "#aaa",
-//         },
-//         "&:focus": {
-//             borderRadius: "0.5em",
-//             color: "#fff",
-//         },
-//     },
-// });
 
 export const MyTabs = withStyles({
     root: {
@@ -45,7 +21,7 @@ export const MyTabs = withStyles({
         width: "125px",
         backgroundImage: `url(${tabBG})`,
         backgroundColor: "black",
-        height: "89.5vh",
+        height: "calc(100vh - 80px)",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",

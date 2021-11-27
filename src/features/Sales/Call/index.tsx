@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import { mutate } from "swr";
 
@@ -16,7 +16,8 @@ import AddCallModal from "./CallModal";
 
 import { deleteCall } from "../../../api/calls";
 import { addCallsTag, deleteCallsTag, editCallsTag } from "../../../api/callsTags";
-import DataGrid from "./DataGrid";
+import DataGrid from "../../../app/NewDataGrid";
+import { formatTimestampToDate } from "../../../logic/date";
 
 export default function Calls() {
     const [activeTab, setActiveTab] = useState(0);
@@ -40,7 +41,40 @@ export default function Calls() {
             setConfirm(false);
         }
     };
-
+    const columns = useMemo(
+        () => [
+            {
+                name: "date",
+                header: "Date",
+                render: ({ data }: any) => formatTimestampToDate(data?.date),
+                minWidth: 110,
+            },
+            { name: "number", header: "Ticket ID", minWidth: 100 },
+            { name: "subject", header: "Subject", minWidth: 100 },
+            { name: "company", header: "Company", minWidth: 100 },
+            { name: "contactName", header: "Name", minWidth: 100 },
+            { name: "contactNumber", header: "Contact No.", minWidth: 110 },
+            { name: "contactEmail", header: "Email", minWidth: 150 },
+            { name: "state", header: "State", minWidth: 100 },
+            { name: "zip", header: "Zip Code", minWidth: 100 },
+            {
+                name: "Assigned To",
+                render: ({ data }: any) => data.AssignedTo?.username,
+                minWidth: 110,
+            },
+            {
+                name: "Created By",
+                render: ({ data }: any) => data.CreatedBy?.username,
+                minWidth: 110,
+            },
+            {
+                name: "Tag",
+                render: ({ data }: any) => data.Tags[0]?.name,
+                minWidth: 100,
+            },
+        ],
+        []
+    );
     return (
         <Box>
             {/* <CallsTagsModal open={CTagModal} onClose={() => setCTagModal(false)} /> */}
@@ -121,6 +155,8 @@ export default function Calls() {
                             setSelectedCall(d);
                             setActiveTab(1);
                         }}
+                        url="/calls"
+                        columns={columns}
                     />
                 )}
                 {activeTab === 1 && selectedCall && <Details callsData={selectedCall} />}

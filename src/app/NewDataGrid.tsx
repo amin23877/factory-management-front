@@ -1,16 +1,11 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
 
-import { get } from "../../../api";
+import { get } from "../api";
 
 import { makeStyles } from "@material-ui/styles";
-
-import { formatTimestampToDate } from "../../../logic/date";
-
-import { ParameterType } from "../../../logic/utils";
-import { IQuote } from "../../../api/quote";
 
 const useStyle = makeStyles({
     root: {
@@ -20,8 +15,6 @@ const useStyle = makeStyles({
         },
     },
 });
-
-const gridStyle = { minHeight: 520 };
 
 const getOperator = (op: string) => {
     switch (op) {
@@ -40,60 +33,18 @@ const getOperator = (op: string) => {
     }
 };
 
-function QuoteDataGrid({
+function NewDataGrid({
     onRowSelected,
-    params,
+    columns,
+    style,
     url,
 }: {
-    params?: ParameterType;
-    url?: string;
     onRowSelected: (row: any) => void;
+    columns: any[];
+    style?: any;
+    url: string;
 }) {
-    // const { dataGridClasses, loading, page, rows, setPage } = useDataGridData({ params, url: "/quote" });
-    const [quotes, setQuotes] = useState<IQuote[]>([]);
-
     const classes = useStyle();
-
-    const columns = useMemo(
-        () => [
-            {
-                name: "Date",
-                render: ({ data }: any) => formatTimestampToDate(data.date),
-                minWidth: 100,
-            },
-            { name: "number", header: "Quote ID", minWidth: 100 },
-            {
-                name: "client",
-                header: "Client",
-                minWidth: 100,
-                render: ({ data }: any) => data.client?.name,
-            },
-            { name: "rep", header: "Rep", minWidth: 100, render: ({ data }: any) => data.repOrAgency?.name },
-            {
-                name: "state",
-                header: "State",
-                minWidth: 100,
-                render: ({ data }: any) => data.repOrAgency?.state,
-            },
-            { name: "requesterName", header: "Requester", minWidth: 100 },
-            {
-                name: "project",
-                header: "Project Name",
-                minWidth: 100,
-                render: ({ data }: any) => data.ProjectId?.name,
-            },
-            {
-                name: "quotedBy",
-                header: "Quoted By",
-                minWidth: 100,
-                render: ({ data }: any) => data.salesperson?.username,
-            },
-            { name: "so", header: "SO", minWidth: 100, render: ({ data }) => data.SOId?.number },
-            { name: "status", header: "Status", minWidth: 100 },
-            { name: "total", header: "Total Amount", flex: 1 },
-        ],
-        []
-    );
 
     const defaultFilterValue = useMemo(() => {
         let res = columns.map(({ name }) => ({
@@ -105,6 +56,8 @@ function QuoteDataGrid({
 
         return res;
     }, [columns]);
+
+    const gridStyle = { minHeight: "calc(100vh - 200px)" };
 
     const fetchData = useCallback(
         async ({
@@ -129,15 +82,12 @@ function QuoteDataGrid({
                 params.page = skip / limit + 1;
             }
             if (sortInfo) {
-                // setSort({ sort: field, order: sort === "desc" ? "DESC" : "ASC" });
-                // console.log(sortInfo);
                 params.sort = sortInfo.name;
                 params.order = sortInfo.dir === 1 ? "ASC" : "DESC";
             }
 
             try {
-                const d = await get("/quote", { params });
-                setQuotes(d.result);
+                const d = await get(url, { params });
                 return { data: d.result, count: d.total };
             } catch (e) {
                 console.log(e);
@@ -153,7 +103,7 @@ function QuoteDataGrid({
             rowHeight={20}
             columns={columns}
             dataSource={fetchData}
-            style={gridStyle}
+            style={style ? style : gridStyle}
             defaultFilterValue={defaultFilterValue}
             onRowClick={({ data }) => onRowSelected(data)}
             showColumnMenuTool={false}
@@ -201,4 +151,4 @@ function QuoteDataGrid({
     );
 }
 
-export default QuoteDataGrid;
+export default NewDataGrid;
