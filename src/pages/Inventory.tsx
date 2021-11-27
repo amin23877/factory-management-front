@@ -7,7 +7,7 @@ import Items from "../features/Items";
 import { MyTabs, MyTab } from "../app/Tabs";
 
 const Inventory = () => {
-    const [mainTab, setMainTab] = useState(0);
+    const [mainTab, setMainTab] = useState(1);
 
     return (
         <Box display="flex">

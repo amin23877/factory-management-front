@@ -397,7 +397,9 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
                     }}
                 />
             ) : (
-                <LinearProgress />
+                <div style={{ width: "100%" }}>
+                    <LinearProgress />
+                </div>
             )}
         </>
     );
