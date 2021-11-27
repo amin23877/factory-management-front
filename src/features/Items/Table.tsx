@@ -2,13 +2,16 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
-import StringFilter from "@inovua/reactdatagrid-community/StringFilter";
 import { CheckRounded, ClearRounded } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
 
 import { splitLevelName } from "../../logic/levels";
 import { get } from "../../api";
 import { IItem } from "../../api/items";
+import { LinearProgress } from "@material-ui/core";
+
+import NumberFilter from "@inovua/reactdatagrid-community/NumberFilter";
+import BoolFilter from "@inovua/reactdatagrid-community/BoolFilter";
 
 const useStyle = makeStyles({
     root: {
@@ -42,7 +45,6 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     const { data: fields } = useSWR("/field");
     const { data: clusters } = useSWR("/filter");
     const [items, setItems] = useState<IItem[]>([]);
-    const [allColumns, setAllColumns] = useState<any[]>([]);
 
     const classes = useStyle();
 
@@ -56,21 +58,21 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
                 header: "Sales Ap.",
                 type: "boolean",
                 render: ({ data }: any) => (data.salesApproved ? <CheckRounded /> : <ClearRounded />),
-                maxWidth: 90,
+                // maxWidth: 90,
             },
             {
                 name: "engineeringApproved",
                 header: "Eng. Ap.",
                 type: "boolean",
-                render: ({ data }: any) => (data.salesApproved ? <CheckRounded /> : <ClearRounded />),
-                maxWidth: 90,
+                render: ({ data }: any) => (data.engineeringApproved ? <CheckRounded /> : <ClearRounded />),
+                // maxWidth: 90,
             },
             {
                 name: "shippingApproved",
                 header: "Ship Ap.",
                 type: "boolean",
-                render: ({ data }: any) => (data.salesApproved ? <CheckRounded /> : <ClearRounded />),
-                maxWidth: 90,
+                render: ({ data }: any) => (data.shippingApproved ? <CheckRounded /> : <ClearRounded />),
+                // maxWidth: 90,
             },
             {
                 name: "prefVendor",
@@ -79,19 +81,20 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
                 minWidth: 150,
             },
             { name: "vendorPartNumber", header: "V. Part NO.", minWidth: 100 },
-            { name: "cost", header: "Cost", minWidth: 80 },
+            { name: "cost", header: "Cost", minWidth: 80, type: "number" },
             { name: "location", header: "Location", minWidth: 100 },
-            { name: "qtyOnHand", header: "QOH.", minWidth: 80 },
-            { name: "qtyRemain", header: " Remain", minWidth: 80 },
-            { name: "qtyOnOrder", header: "on Order", minWidth: 80 },
-            { name: "qtyAllocated", header: "Allocated", minWidth: 80 },
-            { name: "usedInLastQuarter", header: "Used 90", minWidth: 80 },
-            { name: "fifo", header: "FIFO Val.", minWidth: 80 },
+            { name: "qtyOnHand", header: "QOH.", minWidth: 80, type: "number" },
+            { name: "qtyRemain", header: " Remain", minWidth: 80, type: "number" },
+            { name: "qtyOnOrder", header: "on Order", minWidth: 80, type: "number" },
+            { name: "qtyAllocated", header: "Allocated", minWidth: 80, type: "number" },
+            { name: "usedInLastQuarter", header: "Used 90", minWidth: 80, type: "number" },
+            { name: "fifo", header: "FIFO Val.", minWidth: 80, type: "number" },
             {
                 name: "qohVal",
                 header: "QOH Val.",
                 minWidth: 80,
                 render: ({ data }: any) => data?.cost * data?.qtyOnHand,
+                type: "number",
             },
             {
                 name: "uom",
@@ -102,22 +105,21 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
                 name: "obsolete",
                 header: "Obsolete",
                 type: "boolean",
-                render: ({ data }: any) => (data.salesApproved ? <CheckRounded /> : <ClearRounded />),
-                minWidth: 80,
+                // minWidth: 80,
             },
             {
                 name: "nonInventoryItem",
                 header: "NON Inv.",
                 type: "boolean",
-                render: ({ data }: any) => (data.salesApproved ? <CheckRounded /> : <ClearRounded />),
-                minWidth: 80,
+                render: ({ data }: any) => (data.nonInventoryItem ? <CheckRounded /> : <ClearRounded />),
+                // minWidth: 80,
             },
             {
                 name: "rndOnly",
                 header: "R&D",
                 type: "boolean",
-                render: ({ data }: any) => (data.salesApproved ? <CheckRounded /> : <ClearRounded />),
-                minWidth: 80,
+                render: ({ data }: any) => (data.rndOnly ? <CheckRounded /> : <ClearRounded />),
+                // minWidth: 80,
             },
         ];
         const spareColumns: any[] = [];
@@ -155,23 +157,40 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
             for (let f of Object.keys(items[0])) {
                 if (!exceptions.includes(f)) {
                     if (filterNames.includes(f)) {
-                        res.splice(3, 0, { name: f, header: f, minWidth: 120, filterEditor: StringFilter });
+                        res.splice(3, 0, { name: f, header: f, minWidth: 120 });
                     } else if (fieldNames.includes(f)) {
                         res.splice(3, 0, {
                             name: f,
                             header: splitLevelName(f),
                             minWidth: 120,
-                            filterEditor: StringFilter,
                         });
                     } else {
-                        // res.push({ name: f, header: f, defaultVisible: true });
-                        spareColumns.push({ name: f, header: f, defaultVisible: true, filterEditor: StringFilter });
+                        spareColumns.push({ name: f, header: f, defaultVisible: true });
                     }
                 }
             }
         }
+        if (res) {
+            res = res.map((r) => {
+                if (r.type === "boolean") {
+                    r = {
+                        ...r,
+                        minWidth: 50,
+                        maxWidth: 80,
+                        filterEditor: BoolFilter,
+                    };
+                }
+                if (r.type === "number") {
+                    r = {
+                        ...r,
+                        // minWidth: 70,
+                        filterEditor: NumberFilter,
+                    };
+                }
+                return r;
+            });
+        }
 
-        setAllColumns([...res, ...spareColumns]);
         return res;
     }, [clusters, fields, items]);
 
@@ -179,9 +198,10 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
         let res = columns.map(({ name, type }) => ({
             name,
             type: type ? type : "string",
-            operator: type === "boolean" ? "eq" : "startsWith",
+            operator: type === "boolean" ? "eq" : type === "number" ? "eq" : "startsWith",
             value: "",
         }));
+        console.log(columns);
         return res;
     }, [columns]);
 
@@ -208,8 +228,6 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
                 params.page = skip / limit + 1;
             }
             if (sortInfo) {
-                // setSort({ sort: field, order: sort === "desc" ? "DESC" : "ASC" });
-                // console.log(sortInfo);
                 params.sort = sortInfo.name;
                 params.order = sortInfo.dir === 1 ? "ASC" : "DESC";
             }
@@ -227,13 +245,25 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
     );
 
     useEffect(() => {
-        // setAllColumns(columns);
         fetchData({ filterValue: [], limit: 50, sortInfo: {} });
     }, []);
 
+    // if (!items || items.length < 1) {
+    //     return (
+    //         <ReactDataGrid
+    //             columns={columns}
+    //             dataSource={async ({ filterValue, limit, sortInfo, skip }) => ({ data: [], count: 0 })}
+    //             defaultFilterValue={defaultFilterValue}
+    //             style={gridStyle}
+    //             className={classes.root}
+    //         />
+    //     );
+    // }
+
     return (
         <>
-            {columns[3]?.name === "Type" && (
+            {/* {columns[3]?.name === "Type" ? ( */}
+            {(items && items.length < 1) || columns.length > 21 ? (
                 <ReactDataGrid
                     idProperty="id"
                     columns={columns}
@@ -250,13 +280,31 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
                             type: "boolean",
                             emptyValue: false,
                             operators: [
-                                {
-                                    name: "neq",
-                                    fn: ({ value, filterValue }) => value !== filterValue,
-                                },
+                                // {
+                                //     name: "neq",
+                                //     fn: ({ value, filterValue }) => value !== filterValue,
+                                // },
                                 {
                                     name: "eq",
                                     fn: ({ value, filterValue }) => value === filterValue,
+                                },
+                            ],
+                        },
+                        number: {
+                            type: "number",
+                            emptyValue: null,
+                            operators: [
+                                {
+                                    name: "eq",
+                                    fn: ({ value, filterValue }) => value === filterValue,
+                                },
+                                {
+                                    name: "lt",
+                                    fn: ({ value, filterValue }) => value < filterValue,
+                                },
+                                {
+                                    name: "gt",
+                                    fn: ({ value, filterValue }) => value > filterValue,
                                 },
                             ],
                         },
@@ -284,6 +332,8 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
                         },
                     }}
                 />
+            ) : (
+                items.length === 0 && <LinearProgress />
             )}
         </>
     );
