@@ -20,8 +20,6 @@ import { INote } from "../api/note";
 import { IDocument } from "../api/document";
 import { AddItemSchema, updateAnItem, addImage, IItem } from "../api/items";
 import { IBom } from "../api/bom";
-// import SODatagrid from "../Sales/SO/Datagrid";
-import QuoteDatagrid from "../features/Sales/Quote/Datagrid";
 import SOTable from "../features/Items/SOTable";
 import Toast from "../app/Toast";
 import UploadButton from "../app/FileUploader";
@@ -166,7 +164,51 @@ function ItemsDetails() {
         ],
         []
     );
-
+    const QuoteCols = useMemo<GridColumns>(
+        () => [
+            {
+                field: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params?.row?.date),
+                minWidth: 100,
+            },
+            { field: "number", headerName: "Quote ID", minWidth: 100 },
+            {
+                field: "client",
+                headerName: "Client",
+                minWidth: 100,
+                valueFormatter: (params) => params?.row?.client?.name,
+            },
+            {
+                field: "rep",
+                headerName: "Rep",
+                minWidth: 100,
+                valueFormatter: (params) => params?.row?.repOrAgency?.name,
+            },
+            {
+                field: "state",
+                headerName: "State",
+                minWidth: 100,
+                valueFormatter: (params) => params?.row?.repOrAgency?.state,
+            },
+            { field: "requesterName", headerName: "Requester", minWidth: 100 },
+            {
+                field: "project",
+                headerName: "Project Name",
+                minWidth: 100,
+                valueFormatter: (params) => params?.row?.ProjectId?.name,
+            },
+            {
+                field: "quotedBy",
+                headerName: "Quoted By",
+                minWidth: 100,
+                valueFormatter: (params) => params?.row?.salesperson?.username,
+            },
+            { field: "so", headerName: "SO", minWidth: 100, valueFormatter: (params) => params?.row?.SOId?.number },
+            { field: "status", headerName: "Status", minWidth: 100 },
+            { field: "total", headerName: "Total Amount", flex: 1 },
+        ],
+        []
+    );
     const handleSubmit = async (data: any, { setSubmitting }: any) => {
         try {
             if (selectedRow && selectedRow.id) {
@@ -380,7 +422,7 @@ function ItemsDetails() {
                         <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => {}} />
                     )}
                     {activeTab === 5 && (
-                        <QuoteDatagrid url={`/item/${selectedRow.id}/quote`} onRowSelected={() => {}} />
+                        <BaseDataGrid rows={itemQuotes || []} cols={QuoteCols} onRowSelected={() => {}} />
                     )}
                     {activeTab === 6 && <SOTable rows={itemSOs} />}
                     {activeTab === 7 && <BaseDataGrid cols={poCols} rows={itemPOs || []} onRowSelected={() => {}} />}

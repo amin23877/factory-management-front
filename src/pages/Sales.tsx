@@ -12,7 +12,7 @@ import Calls from "../features/Sales/Call";
 import Customers from "../features/Sales/Customer";
 
 export default function Sales() {
-    const [activeTab, setActiveTab] = useState(0);
+    const [activeTab, setActiveTab] = useState(5);
 
     return (
         // <Container>

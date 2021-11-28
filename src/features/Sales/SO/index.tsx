@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { mutate } from "swr";
 
 import Box from "@material-ui/core/Box";
@@ -20,7 +20,9 @@ import { deleteSO, ISO } from "../../../api/so";
 import { ILineItem } from "../../../api/lineItem";
 import { ILineService } from "../../../api/lineService";
 import { BasePaper } from "../../../app/Paper";
-import Datagrid from "./Datagrid";
+// import Datagrid from "./Datagrid";
+import DataGrid from "../../../app/NewDataGrid";
+import { formatTimestampToDate } from "../../../logic/date";
 
 export default function SalesOrderPanel() {
     const [activeTab, setActiveTab] = useState(0);
@@ -37,6 +39,50 @@ export default function SalesOrderPanel() {
     const [selectedLI, setSelectedLI] = useState<ILineItem>();
     const [selectedLS, setSelectedLS] = useState<ILineService>();
     const [selectedSO, setSelectedSO] = useState<ISO>();
+
+    const columns = useMemo(
+        () => [
+            {
+                name: "date",
+                header: "Date",
+                minWidth: 100,
+                type: "date",
+            },
+            { name: "number", header: "SO ID", minWidth: 100 },
+            { name: "Client", flex: 1, render: ({ data }: any) => data?.client?.name },
+            { name: "description", header: "Description", minWidth: 150 },
+            { name: "Rep", minWidth: 130, render: ({ data }: any) => data?.repOrAgency?.name },
+            { name: "state", header: "State", minWidth: 120, render: ({ data }: any) => data?.repOrAgency?.state },
+            // {
+            //     name: "originalShipDate",
+            //     header : "Original SD.",
+            //     render: ( {data } : any ) => formatTimestampToDate(data?.originalShippingDate),
+            //     minWidth: 120,
+            //     hide: true,
+            // },
+            {
+                name: "estimatedShipDate",
+                header: "Estimated SD.",
+                minWidth: 120,
+                type: "date",
+            },
+            {
+                name: "actualShipDate",
+                header: "Actual SD.",
+                minWidth: 120,
+                type: "date",
+            },
+            // { name: "invoice", header : "Invoice", minWidth: 120},
+            { name: "status", header: "Status", minWidth: 120 },
+            {
+                name: "totalOrder",
+                header: "Total Amount",
+                minWidth: 120,
+                type: "number",
+            },
+        ],
+        []
+    );
 
     const handleDelete = async () => {
         try {
@@ -174,11 +220,14 @@ export default function SalesOrderPanel() {
                     />
                 </Tabs>
                 {activeTab === 0 && (
-                    <Datagrid
+                    // <></>
+                    <DataGrid
+                        url="/so"
                         onRowSelected={(d) => {
                             setSelectedSO(d);
                             setActiveTab(1);
                         }}
+                        columns={columns}
                     />
                 )}
                 {activeTab === 1 && selectedSO && (

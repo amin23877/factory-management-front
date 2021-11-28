@@ -2,10 +2,18 @@ import React, { useCallback, useMemo } from "react";
 
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
+import NumberFilter from "@inovua/reactdatagrid-community/NumberFilter";
+import BoolFilter from "@inovua/reactdatagrid-community/BoolFilter";
+import DateFilter from "@inovua/reactdatagrid-community/DateFilter";
 
 import { get } from "../api";
 
 import { makeStyles } from "@material-ui/styles";
+import { CheckRounded, ClearRounded } from "@material-ui/icons";
+import moment from "moment";
+import { formatTimestampToDate } from "../logic/date";
+
+window.moment = moment;
 
 const useStyle = makeStyles({
     root: {
@@ -28,10 +36,24 @@ const getOperator = (op: string) => {
             return "max";
         case "gt":
             return "min";
+        case "before":
+            return "max";
+        case "after":
+            return "min";
         default:
             return "";
     }
 };
+
+const gridStyle = { minHeight: "calc(100vh - 200px)" };
+const green = {
+    color: "#12AE25",
+    width: "100%",
+    display: "flex",
+    justifyContent: "center ",
+    alignItems: "center",
+};
+const red = { color: "#F53636", width: "100%", display: "flex", justifyContent: "center ", alignItems: "center" };
 
 function NewDataGrid({
     onRowSelected,
@@ -46,18 +68,59 @@ function NewDataGrid({
 }) {
     const classes = useStyle();
 
+    const cols = useMemo(() => {
+        let res: any[] = columns;
+        if (res) {
+            res = res.map((r) => {
+                if (r.type === "boolean") {
+                    r = {
+                        ...r,
+                        minWidth: 50,
+                        maxWidth: 80,
+                        filterEditor: BoolFilter,
+                        render: ({ data }: any) =>
+                            data[r.name] ? (
+                                <div style={green}>
+                                    <CheckRounded />
+                                </div>
+                            ) : (
+                                <div style={red}>
+                                    <ClearRounded />
+                                </div>
+                            ),
+                    };
+                }
+                if (r.type === "number") {
+                    r = {
+                        ...r,
+                        filterEditor: NumberFilter,
+                    };
+                }
+                if (r.type === "date") {
+                    r = {
+                        ...r,
+                        dateFormat: "x",
+                        filterEditor: DateFilter,
+                        render: ({ value, cellProps: { dateFormat } }: { value: any; cellProps: any }) =>
+                            formatTimestampToDate(value),
+                    };
+                }
+                return r;
+            });
+        }
+        return res;
+    }, [columns]);
+
     const defaultFilterValue = useMemo(() => {
-        let res = columns.map(({ name }) => ({
+        let res = columns.map(({ name, type }) => ({
             name,
-            type: "string",
-            operator: "startsWith",
-            value: undefined,
+            type: type ? type : "string",
+            operator: type === "string" ? "startsWith" : "eq",
+            value: type === "date" ? "" : undefined,
         }));
 
         return res;
     }, [columns]);
-
-    const gridStyle = { minHeight: "calc(100vh - 200px)" };
 
     const fetchData = useCallback(
         async ({
@@ -94,14 +157,14 @@ function NewDataGrid({
                 return { data: [], count: 0 };
             }
         },
-        []
+        [url]
     );
 
     return (
         <ReactDataGrid
             idProperty="id"
             rowHeight={20}
-            columns={columns}
+            columns={cols}
             dataSource={fetchData}
             style={style ? style : gridStyle}
             defaultFilterValue={defaultFilterValue}
@@ -143,6 +206,42 @@ function NewDataGrid({
                         {
                             name: "eq",
                             fn: ({ value, filterValue }) => value === filterValue,
+                        },
+                    ],
+                },
+                number: {
+                    type: "number",
+                    emptyValue: null,
+                    operators: [
+                        {
+                            name: "eq",
+                            fn: ({ value, filterValue }) => value === filterValue,
+                        },
+                        {
+                            name: "lt",
+                            fn: ({ value, filterValue }) => value < filterValue,
+                        },
+                        {
+                            name: "gt",
+                            fn: ({ value, filterValue }) => value > filterValue,
+                        },
+                    ],
+                },
+                date: {
+                    type: "date",
+                    emptyValue: null,
+                    operators: [
+                        {
+                            name: "eq",
+                            fn: ({ value, filterValue }) => value === filterValue,
+                        },
+                        {
+                            name: "before",
+                            fn: ({ value, filterValue }) => value < filterValue,
+                        },
+                        {
+                            name: "after",
+                            fn: ({ value, filterValue }) => value > filterValue,
                         },
                     ],
                 },

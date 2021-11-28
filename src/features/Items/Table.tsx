@@ -23,8 +23,14 @@ const useStyle = makeStyles({
 });
 
 const gridStyle = { minHeight: "calc(100vh - 180px)" };
-const green = { color: "#12AE25" };
-const red = { color: "#F53636" };
+const green = {
+    color: "#12AE25",
+    width: "100%",
+    display: "flex",
+    justifyContent: "center ",
+    alignItems: "center",
+};
+const red = { color: "#F53636", width: "100%", display: "flex", justifyContent: "center ", alignItems: "center" };
 
 const getOperator = (op: string) => {
     switch (op) {

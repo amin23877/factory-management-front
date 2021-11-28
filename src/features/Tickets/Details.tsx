@@ -12,7 +12,7 @@ import SODatagrid from "../Sales/SO/Datagrid";
 
 import { ITicket, schema, updateTicket } from "../../api/ticket";
 // import { fetcher } from "../../api";
-import QuoteDatagrid from "../Sales/Quote/Datagrid";
+// import QuoteDatagrid from "../Sales/Quote/Datagrid";
 import { getModifiedValues } from "../../logic/utils";
 import { formatTimestampToDate } from "../../logic/date";
 import { fileType } from "../../logic/fileType";
@@ -42,6 +42,51 @@ export default function Details({
     const [msg, setMsg] = useState("");
     const [severity, setSeverity] = useState<"success" | "info" | "warning" | "error">("info");
 
+    const QuoteCols = useMemo<GridColumns>(
+        () => [
+            {
+                field: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params?.row?.date),
+                minWidth: 100,
+            },
+            { field: "number", headerName: "Quote ID", minWidth: 100 },
+            {
+                field: "client",
+                headerName: "Client",
+                minWidth: 100,
+                valueFormatter: (params) => params?.row?.client?.name,
+            },
+            {
+                field: "rep",
+                headerName: "Rep",
+                minWidth: 100,
+                valueFormatter: (params) => params?.row?.repOrAgency?.name,
+            },
+            {
+                field: "state",
+                headerName: "State",
+                minWidth: 100,
+                valueFormatter: (params) => params?.row?.repOrAgency?.state,
+            },
+            { field: "requesterName", headerName: "Requester", minWidth: 100 },
+            {
+                field: "project",
+                headerName: "Project Name",
+                minWidth: 100,
+                valueFormatter: (params) => params?.row?.ProjectId?.name,
+            },
+            {
+                field: "quotedBy",
+                headerName: "Quoted By",
+                minWidth: 100,
+                valueFormatter: (params) => params?.row?.salesperson?.username,
+            },
+            { field: "so", headerName: "SO", minWidth: 100, valueFormatter: (params) => params?.row?.SOId?.number },
+            { field: "status", headerName: "Status", minWidth: 100 },
+            { field: "total", headerName: "Total Amount", flex: 1 },
+        ],
+        []
+    );
     const noteCols = useMemo<GridColumns>(
         () => [
             {
@@ -196,9 +241,7 @@ export default function Details({
                                 height={500}
                             />
                         )}
-                        {activeTab === 2 && (
-                            <QuoteDatagrid params={{ JobId: initialValue.id }} onRowSelected={() => {}} />
-                        )}
+                        {activeTab === 2 && <BaseDataGrid rows={[]} cols={QuoteCols} onRowSelected={() => {}} />}
                         {activeTab === 3 && <SODatagrid params={{ JobId: initialValue.id }} onRowSelected={() => {}} />}
                         {/* {activeTab === 2 && (
                         <BaseDataGrid cols={noteCols} rows={itemNotes ? itemNotes : []} onRowSelected={() => {}} />
