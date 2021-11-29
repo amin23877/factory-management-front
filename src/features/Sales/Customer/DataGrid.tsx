@@ -1,8 +1,9 @@
 import React from "react";
-import { DataGrid, GridColDef, GridToolbar } from "@material-ui/data-grid";
+// import { DataGrid, GridColDef, GridToolbar } from "@material-ui/data-grid";
 
-import { useDataGridData } from "../../../components/Datagrid/hooks";
+// import { useDataGridData } from "../../../components/Datagrid/hooks";
 
+import DataGrid from "../../../app/NewDataGrid";
 export default function CustomerDataGrid({
     url,
     onRowSelected,
@@ -12,104 +13,82 @@ export default function CustomerDataGrid({
     url: string;
     onRowSelected: (row: any) => void;
 }) {
-    const { dataGridClasses, loading, page, rows, setPage } = useDataGridData({ url, params });
-
-    const cols: GridColDef[] = [
+    const cols = [
         {
-            field: "number",
-            width: 120,
-            headerName: "Customer ID",
+            name: "number",
+            width: 90,
+            header: "ID",
         },
         {
-            field: "name",
-            width: 120,
-            headerName: "Name",
-            flex: 1,
+            name: "name",
+            minWidth: 120,
+            header: "Name",
         },
         {
-            field: "state",
-            width: 120,
-            headerName: "State",
+            name: "state",
+            minWidth: 120,
+            header: "State",
         },
         {
-            field: "city",
-            width: 120,
-            headerName: "City",
+            name: "city",
+            minWidth: 120,
+            header: "City",
         },
         {
-            field: "zipcode",
-            headerName: "Zip Code",
-            width: 120,
+            name: "zipcode",
+            header: "Zip Code",
+            width: 90,
         },
         {
-            field: "productLine",
-            width: 120,
-            headerName: "Product Line",
+            name: "productLine",
+            minWidth: 120,
+            header: "Product Line",
         },
         {
-            field: "supportStaff",
-            width: 120,
-            headerName: "Support Staff",
-            valueFormatter: (data) => data.row?.supportStaff?.username,
+            name: "supportStaff",
+            minWidth: 120,
+            header: "Support Staff",
+            render: ({ data }: any) => data?.supportStaff?.username,
         },
         {
-            field: "contact",
-            headerName: "Main Contact",
-            width: 130,
-            valueFormatter: (data) => data.row?.contact?.firstName,
+            name: "contact",
+            header: "Main Contact",
+            minWidth: 130,
+            render: ({ data }: any) => data?.contact?.firstName,
             hide: true,
         },
 
         {
-            field: "phone",
-            headerName: "Phone",
-            width: 150,
-            // valueFormatter: (data) => (data.row.phone ? data.row?.phone?.ext + " " + data.row?.phone?.phone : ""),
+            name: "phone",
+            header: "Phone",
+            minWidth: 150,
         },
         {
-            field: "email",
-            headerName: "Email",
-            width: 150,
+            name: "email",
+            header: "Email",
+            minWidth: 150,
             hide: true,
-
-            // valueFormatter: (data) => (data.row.phone ? data.row?.phone?.ext + " " + data.row?.phone?.phone : ""),
         },
         {
-            field: "Type",
+            name: "Type",
             width: 100,
-            valueFormatter: (data) => data.row?.CustomerTypeId?.name,
+            render: ({ data }: any) => data?.CustomerTypeId?.name,
         },
         {
-            field: "status",
+            name: "status",
             width: 100,
-            headerName: "Status",
+            header: "Status",
         },
     ];
 
     return (
-        <div
-            style={{
-                flexGrow: 1,
-                height: 544,
+        <DataGrid
+            onRowSelected={(r) => {
+                onRowSelected && onRowSelected(r);
             }}
-        >
-            <DataGrid
-                loading={loading}
-                density="compact"
-                components={{ Toolbar: GridToolbar }}
-                className={dataGridClasses.root}
-                onRowSelected={(r) => {
-                    onRowSelected && onRowSelected(r.data);
-                }}
-                columns={cols}
-                pagination
-                paginationMode="server"
-                page={page}
-                onPageChange={(p) => setPage(p.page)}
-                pageSize={25}
-                rows={rows ? rows.result : []}
-                rowCount={rows ? rows.total : 0}
-            />
-        </div>
+            columns={cols}
+            url={url}
+            initParams={params}
+        />
     );
 }

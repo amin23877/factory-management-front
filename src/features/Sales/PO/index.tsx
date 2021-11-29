@@ -12,15 +12,16 @@ import { getAllModelDocuments } from "../../../api/document";
 import Confirm from "../../Modals/Confirm";
 import NoteModal from "../../Modals/NoteModals";
 import DocModal from "../../Modals/DocumentModals";
-import BaseDataGrid from "../../../app/BaseDataGrid";
+// import BaseDataGrid from "../../../app/BaseDataGrid";
 import Button from "../../../app/Button";
 
 import Details from "./Details";
 import AddPOModal from "./AddPoModal";
 import { BasePaper } from "../../../app/Paper";
-import { GridColDef } from "@material-ui/data-grid";
-import { formatTimestampToDate } from "../../../logic/date";
+// import { GridColDef } from "@material-ui/data-grid";
+// import { formatTimestampToDate } from "../../../logic/date";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
+import DataGrid from "../../../app/NewDataGrid";
 
 export default function POPanel() {
     const [activeTab, setActiveTab] = useState(0);
@@ -36,29 +37,28 @@ export default function POPanel() {
     const [selectedNote, setSelectedNote] = useState<any>();
     const [selectedDoc, setSelectedDoc] = useState<any>();
 
-    const poCols: GridColDef[] = [
-        // Date	Customer PO Number	SO Number	Client	Rep	State	Project	Status
-
+    const poCols = [
         {
-            field: "Date",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.date),
+            name: "date",
+            header: "Date",
             width: 110,
+            type: "date",
         },
-        { field: "number", headerName: "Customer PO Number", flex: 1 },
-        { field: "SoID", headerName: "SO Number", flex: 1 },
-        { field: "Client", valueFormatter: (r) => r.row?.ClientId?.name, flex: 1 },
+        { name: "number", headerName: "ID", width: 90 },
+        { name: "SoID", headerName: "SO ID", flex: 1 },
+        { name: "Client", render: ({ data }: any) => data?.ClientId?.name, flex: 1 },
         {
-            field: "Rep",
-            valueFormatter: (r) => r.row?.ContactId?.name,
+            name: "Rep",
+            render: ({ data }: any) => data?.ContactId?.name,
             flex: 1,
         },
-        { field: "state", headerName: "State", width: 110 },
+        { name: "state", headerName: "State", width: 110 },
         {
-            field: "Project",
-            valueFormatter: (r) => r.row?.ProjectId?.name,
+            name: "Project",
+            render: ({ data }: any) => data?.ProjectId?.name,
             flex: 1,
         },
-        { field: "status", headerName: "Status", width: 110 },
+        { name: "status", headerName: "Status", width: 110 },
     ];
 
     const refreshPOs = async () => {
@@ -198,10 +198,9 @@ export default function POPanel() {
                     />
                 </Tabs>
                 {activeTab === 0 && pos && (
-                    <BaseDataGrid
-                        height={540}
-                        rows={pos}
-                        cols={poCols}
+                    <DataGrid
+                        url="/po"
+                        columns={poCols}
                         onRowSelected={(d) => {
                             setSelectedPO(d);
                             setActiveTab(1);

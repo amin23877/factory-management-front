@@ -6,11 +6,9 @@ import IconButton from "@material-ui/core/IconButton";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { AddRounded, DeleteRounded, FindInPageRounded, ListAltRounded, PrintRounded } from "@material-ui/icons";
-import { GridColDef } from "@material-ui/data-grid";
 
 import List from "../../../app/SideUtilityList";
-import BaseDataGrid from "../../../app/BaseDataGrid";
-
+import DataGrid from "../../../app/NewDataGrid";
 import NoteModal from "../../Modals/NoteModals";
 import DocumentsModal from "../../Modals/DocumentModals";
 import AddPQuoteModal from "./AddPQuoteModal";
@@ -20,7 +18,6 @@ import { deletePurchaseQuote, getPurchaseQuotes, IPurchaseQuote } from "../../..
 import Confirm from "../../Modals/Confirm";
 import { getAllModelNotes } from "../../../api/note";
 import { getAllModelDocuments } from "../../../api/document";
-import { formatTimestampToDate } from "../../../logic/date";
 import { BasePaper } from "../../../app/Paper";
 
 function Index() {
@@ -45,17 +42,18 @@ function Index() {
     });
     // Date	Quote Number	Vendor	SO 	Staff	Contact
 
-    const cols: GridColDef[] = [
+    const cols = [
         {
-            field: "Date",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.date),
-            flex: 1,
+            name: "date",
+            header: "Date",
+            type: "date",
+            minWidth: 90,
         },
-        { field: "senderNumber", headerName: "Quote NO.", flex: 1 },
-        { field: "Vendor", flex: 1, valueFormatter: (r) => r.row?.VendorId?.name },
-        { field: "SO", flex: 1, valueFormatter: (r) => r.row?.SOId?.number },
-        { field: "Staff", flex: 1, valueFormatter: (r) => r.row?.EmployeeId?.username },
-        { field: "contactName", headerName: "Contact", flex: 1 },
+        { name: "senderNumber", headerName: "ID", minWidth: 90 },
+        { name: "Vendor", minWidth: 90, render: ({ data }: any) => data?.VendorId?.name },
+        { name: "SO", minWidth: 90, render: ({ data }: any) => data?.SOId?.number },
+        { name: "Staff", minWidth: 90, render: ({ data }: any) => data?.EmployeeId?.username },
+        { name: "contactName", headerName: "Contact", minWidth: 90 },
     ];
 
     const refreshPQs = async () => {
@@ -182,7 +180,7 @@ function Index() {
                                     }
                                 />
                             </Tabs>
-                            <div style={{ flex: 1 }}> </div>
+                            <div style={{ minWidth: 90 }}> </div>
                             <Box>
                                 <List>
                                     <ListItem>
@@ -210,10 +208,10 @@ function Index() {
                             </Box>
                         </Box>
                         {activeTab === 0 && (
-                            <BaseDataGrid
-                                height="78.5vh"
-                                cols={cols}
-                                rows={pqs}
+                            <DataGrid
+                                style={{ minHeight: "calc(100vh - 160px)" }}
+                                columns={cols}
+                                url="/purchaseQuote"
                                 onRowSelected={(d) => {
                                     setSelPQ(d);
                                     setActiveTab(1);

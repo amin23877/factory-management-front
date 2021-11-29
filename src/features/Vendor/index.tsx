@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Box, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
-import { GridColDef } from "@material-ui/data-grid";
 
 import {
     AddRounded,
@@ -22,7 +21,7 @@ import Confirm from "../Modals/Confirm";
 
 import { deleteVendor, IVendor } from "../../api/vendor";
 import VendorTypeModal from "./VendorType";
-import FullDataGrid from "../../components/Datagrid/FullDataGrid";
+import DataGrid from "../../app/NewDataGrid";
 import { mutate } from "swr";
 import { BasePaper } from "../../app/Paper";
 
@@ -50,17 +49,17 @@ export default function Vendors({ tech }: { tech: boolean }) {
         }
     };
 
-    const cols: GridColDef[] = [
-        { field: "number", headerName: "Number", width: 100 },
-        { field: "name", headerName: "Name", flex: 1 },
-        { field: "address", headerName: "Address", width: 100 },
-        { field: "city", headerName: "City", width: 90 },
-        { field: "state", headerName: "State", width: 90 },
-        { field: "zipcode", headerName: "Zip Code", width: 110 },
-        { field: "Contact", width: 110, valueFormatter: (params) => params.row?.contact?.lastName },
-        { field: "C. Phone", width: 110, valueFormatter: (params) => params.row?.contact?.phone },
-        { field: "C. Email", width: 110, valueFormatter: (params) => params.row?.contact?.email },
-        { field: "active", headerName: "Active", width: 90, type: "boolean" },
+    const cols = [
+        { name: "number", header: "ID", width: 90 },
+        { name: "name", header: "Name", flex: 1 },
+        { name: "address", header: "Address", minWidth: 230 },
+        { name: "city", header: "City", minWidth: 90 },
+        { name: "state", header: "State", width: 90 },
+        { name: "zipcode", header: "Zip Code", width: 90 },
+        { name: "mcLastName", minWidth: 110, header: "Contact" },
+        { name: "mcPhone", minWidth: 110, header: "Phone" },
+        { name: "mcEmail", minWidth: 110, header: "Email" },
+        { name: "active", header: "Active", minWidth: 90, type: "boolean" },
     ];
 
     return (
@@ -160,11 +159,11 @@ export default function Vendors({ tech }: { tech: boolean }) {
                             </Box>
                         </Box>
                         {activeTab === 0 && (
-                            <FullDataGrid
-                                height="78.5vh"
+                            <DataGrid
+                                style={{ minHeight: "calc(100vh - 160px)" }}
                                 url="/vendor"
                                 columns={cols}
-                                defaultQueries={{ tech }}
+                                initParams={tech ? { tech: true } : {}}
                                 onRowSelected={(d) => {
                                     setSelectedVendor(d.data as any);
                                     setActiveTab(1);
