@@ -200,39 +200,40 @@ export default function QuotePanel() {
             {selectedTask && selectedTask.id && (
                 <TaskModal open={selectedTask} onClose={() => setSelectedTask(false)} task={selectedTask} />
             )}
-
-            <Box display="flex" justifyContent="flex-end" alignItems="center">
-                <Tabs
-                    value={activeTab}
-                    textColor="primary"
-                    onChange={(e, nv) => setActiveTab(nv)}
-                    style={{ marginBottom: "10px" }}
-                >
-                    <Tab
-                        icon={
-                            <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                                <ListAltRounded style={{ marginRight: "5px" }} /> List
-                            </span>
-                        }
-                        wrapped
-                    />
-                    <Tab
-                        onClick={() => {
-                            setSelectedCalender(false);
-                        }}
-                        icon={
-                            <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                <CalendarTodayRounded style={{ marginRight: "5px" }} /> Calender
-                            </span>
-                        }
-                    />
-                </Tabs>
-                <div style={{ flexGrow: 1 }} />
-                <Button variant="outlined" onClick={() => setAddProject(true)} style={{ marginRight: "10px" }}>
-                    Add project
-                </Button>
-            </Box>
-            <BasePaper style={{ height: "81.5vh" }}>
+            <BasePaper style={{ height: "calc(100vh - 80px)" }}>
+                <Box display="flex" justifyContent="flex-end" alignItems="center">
+                    <Tabs
+                        value={activeTab}
+                        textColor="primary"
+                        onChange={(e, nv) => setActiveTab(nv)}
+                        style={{ marginBottom: "10px" }}
+                    >
+                        <Tab
+                            icon={
+                                <span
+                                    style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
+                                >
+                                    <ListAltRounded style={{ marginRight: "5px" }} /> List
+                                </span>
+                            }
+                            wrapped
+                        />
+                        <Tab
+                            onClick={() => {
+                                setSelectedCalender(false);
+                            }}
+                            icon={
+                                <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    <CalendarTodayRounded style={{ marginRight: "5px" }} /> Calender
+                                </span>
+                            }
+                        />
+                    </Tabs>
+                    <div style={{ flexGrow: 1 }} />
+                    <Button variant="outlined" onClick={() => setAddProject(true)} style={{ marginRight: "10px" }}>
+                        Add project
+                    </Button>
+                </Box>
                 {activeTab === 0 && (
                     <Box flex={1}>
                         <Table

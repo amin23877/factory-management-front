@@ -60,45 +60,45 @@ const drawerItems = [
             </svg>
         ),
     },
-    {
-        name: "Dashboard",
-        link: "/panel/dashboard",
-        icon: (
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="18.327"
-                height="18.327"
-                viewBox="0 0 18.327 18.327"
-                fill="inherit"
-            >
-                <defs>
-                    <clipPath id="clip-path">
-                        <rect
-                            id="Rectangle_6471"
-                            data-name="Rectangle 6471"
-                            width="18.327"
-                            height="18.327"
-                            transform="translate(0 0)"
-                        />
-                    </clipPath>
-                </defs>
-                <g id="pie-chart" clip-path="url(#clip-path)">
-                    <path
-                        id="Path_13178"
-                        data-name="Path 13178"
-                        d="M20.06,10.423H12.337a.9.9,0,0,1-.919-.919V1.719a.951.951,0,0,1,.276-.674A.922.922,0,0,1,12.367.8a9.14,9.14,0,0,1,8.581,8.643.943.943,0,0,1-.889.981Zm-6.8-1.839h5.762a7.368,7.368,0,0,0-5.762-5.823Z"
-                        transform="translate(-2.652 -0.8)"
-                    />
-                    <path
-                        id="Path_13179"
-                        data-name="Path 13179"
-                        d="M9.964,19.18A9.169,9.169,0,0,1,7.7,1.128a.914.914,0,1,1,.429,1.778,7.334,7.334,0,1,0,8.919,8.98.922.922,0,1,1,1.778.49A9.16,9.16,0,0,1,9.964,19.18Z"
-                        transform="translate(-0.8 -0.853)"
-                    />
-                </g>
-            </svg>
-        ),
-    },
+    // {
+    //     name: "Dashboard",
+    //     link: "/panel/dashboard",
+    //     icon: (
+    //         <svg
+    //             xmlns="http://www.w3.org/2000/svg"
+    //             width="18.327"
+    //             height="18.327"
+    //             viewBox="0 0 18.327 18.327"
+    //             fill="inherit"
+    //         >
+    //             <defs>
+    //                 <clipPath id="clip-path">
+    //                     <rect
+    //                         id="Rectangle_6471"
+    //                         data-name="Rectangle 6471"
+    //                         width="18.327"
+    //                         height="18.327"
+    //                         transform="translate(0 0)"
+    //                     />
+    //                 </clipPath>
+    //             </defs>
+    //             <g id="pie-chart" clip-path="url(#clip-path)">
+    //                 <path
+    //                     id="Path_13178"
+    //                     data-name="Path 13178"
+    //                     d="M20.06,10.423H12.337a.9.9,0,0,1-.919-.919V1.719a.951.951,0,0,1,.276-.674A.922.922,0,0,1,12.367.8a9.14,9.14,0,0,1,8.581,8.643.943.943,0,0,1-.889.981Zm-6.8-1.839h5.762a7.368,7.368,0,0,0-5.762-5.823Z"
+    //                     transform="translate(-2.652 -0.8)"
+    //                 />
+    //                 <path
+    //                     id="Path_13179"
+    //                     data-name="Path 13179"
+    //                     d="M9.964,19.18A9.169,9.169,0,0,1,7.7,1.128a.914.914,0,1,1,.429,1.778,7.334,7.334,0,1,0,8.919,8.98.922.922,0,1,1,1.778.49A9.16,9.16,0,0,1,9.964,19.18Z"
+    //                     transform="translate(-0.8 -0.853)"
+    //                 />
+    //             </g>
+    //         </svg>
+    //     ),
+    // },
     {
         name: "Sales",
         link: "/panel/sales",

@@ -1,20 +1,16 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { Box, Paper } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { addDays } from "date-fns";
 
 import Button from "../../../../app/Button";
-// import { UnitSearchBox } from "../../../../app/SearchBox";
-// import { useDataGridStyles } from "../../../../app/BaseDataGrid";
-import { UnitSearchBox } from "../../../../app/SearchBox";
+
 import { DateInput } from "../../../../components/Filters/Date";
 
-// import { useDataGridData } from "../../../../components/Datagrid/hooks";
 import { formatTimestampToDate } from "../../../../logic/date";
 import { get } from "../../../../api";
 import FullDataGrid from "../../../../components/Datagrid/FullDataGrid";
 import { IUnit } from "../../../../api/units";
-import { BasePaper } from "../../../../app/Paper";
 
 const dateStringToUnix = (date: Date) => {
     return String(Math.round(new Date(date).getTime() / 1));
@@ -57,8 +53,6 @@ function Table({ onRowSelected }: { onRowSelected: (row: IUnit) => void }) {
         getWeeks();
     }, []);
 
-    // const classes = useDataGridStyles();
-
     const unitCols = useMemo<GridColDef[]>(() => {
         const cols: GridColumns = [
             {
@@ -86,13 +80,6 @@ function Table({ onRowSelected }: { onRowSelected: (row: IUnit) => void }) {
             { field: "Package", headerName: "Package", width: 100 }, // touch later
             { field: "status", headerName: "Status", width: 100 },
             { field: "Time Left", headerName: "Time Left", width: 100 }, // touch later
-            // {
-            //     field: "dueDate",
-            //     headerName: "Due Date",
-            //     flex: 1,
-            //     type: "date",
-            //     valueFormatter: (d: any) => new Date(d.row.dueDate),
-            // },
         ];
         const dateColumn = cols.find((column: any) => column.field === "dueDate")!;
         const dateColIndex = cols.findIndex((column: any) => column.field === "dueDate");
@@ -170,32 +157,7 @@ function Table({ onRowSelected }: { onRowSelected: (row: IUnit) => void }) {
                 </Button>
                 <div style={{ marginLeft: "auto" }} />
             </Box>
-            {/* <DataGrid
-                        density="compact"
-                        loading={loading}
-                        pagination
-                        paginationMode="server"
-                        page={page}
-                        onPageChange={(p) => setPage(p.page)}
-                        pageSize={25}
-                        rowCount={units ? units.totalCount : 0}
-                        className={classes.root}
-                        columns={unitCols}
-                        rows={units ? units.result : []}
-                        filterMode="server"
-                        components={{ Toolbar: GridToolbar }}
-                        onFilterModelChange={(f) => {
-                            const date = f.filterModel.items[0].value;
-                            if (date) {
-                                const finishUnix = Math.round(new Date(date).getTime() / 1000);
-                                setFinish(String(finishUnix));
-                            }
-                        }}
-                        onRowSelected={(i) => {
-                            setSelectedUnit(i.data as any);
-                            setActiveTab(1);
-                        }}
-                    /> */}
+
             <FullDataGrid columns={unitCols} url="/unit" height={534} onRowSelected={onRowSelected} />
         </>
     );

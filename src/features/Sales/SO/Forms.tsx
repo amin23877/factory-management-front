@@ -131,7 +131,7 @@ export const GeneralForm = ({
                 <TextField
                     value={values.number}
                     name="number"
-                    label="SO ID"
+                    label="SO NO."
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
@@ -151,7 +151,7 @@ export const GeneralForm = ({
                 /> */}
                 <LinkSelect
                     value={typeof values.QuoteId === "string" ? values.QuoteId : values.QuoteId}
-                    label="Quote ID"
+                    label="Quote NO."
                     request={getQuotes}
                     getOptionList={(resp) => resp?.result}
                     getOptionLabel={(quote) => quote?.number}
@@ -163,7 +163,7 @@ export const GeneralForm = ({
                     onBlur={handleBlur}
                     url="/panel/quote"
                 />
-                <LinkSelect
+                {/* <LinkSelect
                     value={typeof values.InvoiceId === "string" ? values.InvoiceId : values.InvoiceId}
                     label="Invoice Id"
                     request={async () => {
@@ -177,14 +177,14 @@ export const GeneralForm = ({
                     }}
                     onBlur={handleBlur}
                     url="/panel/invoice"
-                />
-                {/* <TextField
-                    value={values.invoice}
-                    name="invoice"
-                    label="Invoice ID"
+                /> */}
+                <TextField
+                    value={values.invoiceNumber}
+                    name="invoiceNumber"
+                    label="Invoice NO."
                     onChange={handleChange}
                     onBlur={handleBlur}
-                /> */}
+                />
                 <TextField value={formatTimestampToDate(values.date)} name="date" label="SO Date" disabled />
                 <LinkSelect
                     value={typeof values.WarrantyId === "string" ? values.WarrantyId : values.WarrantyId}
@@ -233,7 +233,12 @@ export const GeneralForm = ({
                     onChange={handleChange}
                 /> */}
 
-                <TextField value={values.location} name="location" label="Location" onChange={handleChange} />
+                <TextField
+                    value={values.projectLocation}
+                    name="projectLocationlocation"
+                    label="Project Location"
+                    onChange={handleChange}
+                />
                 <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} />
                 <TextField
                     value={values.acknowledgeDate}
@@ -242,7 +247,13 @@ export const GeneralForm = ({
                     onChange={handleChange}
                     disabled
                 />
-                <TextField value={values.csa} name="csa" label="CSA" onChange={handleChange} />
+                <TextField
+                    value={values.paymentTerm}
+                    name="paymentTerm"
+                    label="Payment Term"
+                    onChange={handleChange}
+                    disabled
+                />
                 <Paper
                     style={{
                         padding: "0 0.5em 0 1em",
@@ -895,6 +906,20 @@ export const ShippingForm = ({
                 name="actualShipDate"
                 label="Actual ship date"
                 onChange={(date) => setFieldValue("actualShipDate", date)}
+                onBlur={handleBlur}
+            />
+            <TextField
+                value={values.carrier}
+                name="carrier"
+                label="Carrier"
+                onChange={handleChange}
+                onBlur={handleBlur}
+            />
+            <TextField
+                value={values.freightTerm}
+                name="freightTerm"
+                label="Freigh Terms"
+                onChange={handleChange}
                 onBlur={handleBlur}
             />
         </Box>

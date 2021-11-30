@@ -174,6 +174,7 @@ function NewDataGrid({
             onRowClick={({ data }) => onRowSelected(data)}
             showColumnMenuTool={false}
             pagination
+            defaultLimit={100}
             className={classes.root}
             filterTypes={{
                 boolean: {

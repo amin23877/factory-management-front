@@ -4,6 +4,7 @@ import { Box, Tab, Tabs } from "@material-ui/core";
 import BOMTable from "./Table";
 import DevicesList from "./DevicesList";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
+import { BasePaper } from "../../../app/Paper";
 
 function BOM() {
     const [activeTab, setActiveTab] = useState(0);
@@ -15,7 +16,7 @@ function BOM() {
     };
 
     return (
-        <Box>
+        <BasePaper>
             <Box mb={1}>
                 <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="primary">
                     <Tab
@@ -38,7 +39,7 @@ function BOM() {
             </Box>
             {activeTab === 0 && <DevicesList onDeviceSelected={handleSelectDevice} />}
             {activeTab === 1 && productFamily && <BOMTable productFamily={productFamily} />}
-        </Box>
+        </BasePaper>
     );
 }
 

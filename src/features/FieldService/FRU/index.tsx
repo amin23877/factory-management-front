@@ -1,13 +1,10 @@
 import React, { useMemo, useState } from "react";
-import { GridColDef } from "@material-ui/data-grid";
 import { Box, Tabs, Tab } from "@material-ui/core";
-import useSwr from "swr";
 
-import BaseDataGrid from "../../../app/BaseDataGrid";
 import { BasePaper } from "../../../app/Paper";
 
 import { formatTimestampToDate } from "../../../logic/date";
-import FullDataGrid from "../../../components/Datagrid/FullDataGrid";
+import DataGrid from "../../../app/NewDataGrid";
 
 import UnitDetails from "../Units/Details";
 import DeviceDetails from "../../../features/Engineering/Devices/Details";
@@ -19,106 +16,98 @@ export default function FRU() {
     const [selectedUnitFru, setSelectedUnitFru] = useState<IUnit>();
     const [selectedItemFru, setSelectedItemFru] = useState<any>();
 
-    const { data: FRUs } = useSwr("/unit?fru=true");
-    // /item?device=true&page=1&containProduct%20Family=FRU
-
     const fruDevicesColumns = useMemo(
         () => [
-            { field: "no", headerName: "Number", width: 100 },
-            { field: "name", headerName: "Name", width: 180 },
-            { field: "description", headerName: "Description", width: 200 },
-            //filter ha dynamic hast
+            { name: "no", header: "Number", minWidth: 100 },
+            { name: "name", header: "Name", minWidth: 180 },
+            { name: "description", header: "Description", minWidth: 200 },
             {
-                field: "salesApproved",
-                headerName: "Sales Ap.",
+                name: "salesApproved",
+                header: "Sales Ap.",
                 type: "boolean",
-                width: 80,
+                minWidth: 80,
                 disableColumnMenu: true,
             },
             {
-                field: "engineeringApproved",
-                headerName: "Eng. Ap.",
+                name: "engineeringApproved",
+                header: "Eng. Ap.",
                 type: "boolean",
-                width: 80,
+                minWidth: 80,
                 disableColumnMenu: true,
             },
             {
-                field: "shippingApproved",
-                headerName: "Ship Ap.",
+                name: "shippingApproved",
+                header: "Ship Ap.",
                 type: "boolean",
-                width: 80,
+                minWidth: 80,
                 disableColumnMenu: true,
             },
             {
-                field: "prefVendor",
-                headerName: "Preferred Vendor",
-                valueFormatter: (params: any) => params.row?.prefVendor?.name,
+                name: "prefVendor",
+                header: "Preferred Vendor",
+                render: ({ data }: any) => data?.prefVendor?.name,
                 disableColumnMenu: true,
-                width: 150,
+                minWidth: 150,
             },
-            { field: "vendorPartNumber", headerName: "V.Part NO.", width: 100 },
-            { field: "cost", headerName: "Cost", width: 80 },
-            { field: "location", headerName: "Location", width: 100 },
-            { field: "qtyOnHand", headerName: "QOH.", width: 80 },
-            { field: "qtyRemain", headerName: " Remain", width: 80 },
-            { field: "qtyOnOrder", headerName: "on Order", width: 80 },
-            { field: "qtyAllocated", headerName: "Allocated", width: 80 },
-            { field: "usedInLastQuarter", headerName: "Used 90", width: 80 },
-            { field: "fifo", headerName: "FIFO Val.", width: 80 },
+            { name: "vendorPartNumber", header: "V.Part NO.", minWidth: 100 },
+            { name: "cost", header: "Cost", minWidth: 80 },
+            { name: "location", header: "Location", minWidth: 100 },
+            { name: "qtyOnHand", header: "QOH.", minWidth: 80 },
+            { name: "qtyRemain", header: " Remain", minWidth: 80 },
+            { name: "qtyOnOrder", header: "on Order", minWidth: 80 },
+            { name: "qtyAllocated", header: "Allocated", minWidth: 80 },
+            { name: "usedInLastQuarter", header: "Used 90", minWidth: 80 },
+            { name: "fifo", header: "FIFO Val.", minWidth: 80 },
             {
-                field: "qohVal",
-                headerName: "QOH Val.",
-                width: 80,
-                valueFormatter: (params: any) => params.row?.cost * params.row?.qtyOnHand,
-                // disableColumnMenu: true,
+                name: "qohVal",
+                header: "QOH Val.",
+                minWidth: 80,
+                render: ({ data }: any) => data?.cost * data?.qtyOnHand,
             },
-            { field: "uom", headerName: "UOM", width: 100, disableColumnMenu: true },
+            { name: "uom", header: "UOM", minWidth: 100, disableColumnMenu: true },
             {
-                field: "obsolete",
-                headerName: "Obsolete",
+                name: "obsolete",
+                header: "Obsolete",
                 type: "boolean",
-                width: 80,
-                // disableColumnMenu: true,
+                minWidth: 80,
             },
             {
-                field: "nonInventoryItem",
-                headerName: "NON Inv.",
+                name: "nonInventoryItem",
+                header: "NON Inv.",
                 type: "boolean",
-                width: 80,
-                // disableColumnMenu: true,
+                minWidth: 80,
             },
             {
-                field: "rndOnly",
-                headerName: "R&D",
+                name: "rndOnly",
+                header: "R&D",
                 type: "boolean",
-                width: 80,
-                // disableColumnMenu: true,
+                minWidth: 80,
             },
         ],
         []
     );
 
-    const callCols: GridColDef[] = [
+    const callCols = [
         {
-            field: "number",
-            headerName: "FRU Number",
-            width: 150,
-            valueFormatter: (r) => r.row?.ItemId?.no,
+            name: "number",
+            header: "FRU Number",
+            minWidth: 150,
+            render: ({ data }: any) => data?.ItemId?.no,
         },
-        { field: "name", headerName: "FRU Name", width: 200, valueFormatter: (r) => r.row?.ItemId?.name },
+        { name: "name", header: "FRU Name", minWidth: 200, render: ({ data }: any) => data?.ItemId?.name },
         {
-            field: "description",
-            headerName: "FRU Description",
+            name: "description",
+            header: "FRU Description",
             flex: 1,
-            valueFormatter: (r) => r.row?.ItemId?.description,
+            render: ({ data }: any) => data?.ItemId?.description,
         },
         {
-            field: "Lead Time",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.ItemId?.lead),
-            width: 120,
+            name: "Lead Time",
+            render: ({ data }: any) => formatTimestampToDate(data?.ItemId?.lead),
+            minWidth: 120,
         },
 
-        { field: "price", headerName: "Price", width: 110, valueFormatter: (r) => r.row?.LineItemRecordId?.price },
+        { name: "price", header: "Price", minWidth: 110, render: ({ data }: any) => data?.LineItemRecordId?.price },
     ];
 
     return (
@@ -131,7 +120,6 @@ export default function FRU() {
                     style={{ marginBottom: 10 }}
                 >
                     <Tab
-                        // label="List"
                         icon={
                             <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                 <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> Devices
@@ -140,7 +128,6 @@ export default function FRU() {
                         wrapped
                     />
                     <Tab
-                        // label="List"
                         icon={
                             <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                 <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> Units
@@ -149,7 +136,6 @@ export default function FRU() {
                         wrapped
                     />
                     <Tab
-                        // label="Details"
                         disabled={!selectedUnitFru && !selectedItemFru}
                         icon={
                             <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -157,28 +143,24 @@ export default function FRU() {
                             </span>
                         }
                     />
-                    {/* <Tab label="Devices" />
-                    <Tab label="Units" />
-                    <Tab label="Details"  /> */}
                 </Tabs>
                 {activeTab === 0 && (
-                    <FullDataGrid
+                    <DataGrid
                         url="/item"
                         columns={fruDevicesColumns}
-                        defaultQueries={{ device: true, "containProduct Family": "FRU" }}
+                        initParams={{ device: true, "containProduct Family": "FRU" }}
                         onRowSelected={(d) => {
                             setSelectedUnitFru(undefined);
                             setSelectedItemFru(d);
                             setActiveTab(2);
                         }}
-                        height="78vh"
                     />
                 )}
-                {activeTab === 1 && FRUs && (
-                    <BaseDataGrid
-                        height="78vh"
-                        rows={FRUs.result || []}
-                        cols={callCols}
+                {activeTab === 1 && (
+                    <DataGrid
+                        url="/unit"
+                        initParams={{ fru: true }}
+                        columns={callCols}
                         onRowSelected={(d) => {
                             setSelectedItemFru(undefined);
                             setSelectedUnitFru(d);

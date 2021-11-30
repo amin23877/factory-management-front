@@ -1,40 +1,33 @@
 import React, { useMemo, useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
-import { GridColDef } from "@material-ui/data-grid";
-import useSWR from "swr";
 
-import BaseDataGrid from "../../../app/BaseDataGrid";
+import DataGrid from "../../../app/NewDataGrid";
 import Details from "./Details";
-import { formatTimestampToDate } from "../../../logic/date";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 import { BasePaper } from "../../../app/Paper";
 
 const Monitoring = () => {
-    const { data: items } = useSWR("/monitor");
     const [selectedItem, setSelectedItem] = useState<any>({ id: "", assertion: "", vars: [], date: new Date() });
-
     const [activeTab, setActiveTab] = useState(0);
 
-    const gridColumns = useMemo<GridColDef[]>(
+    const gridColumns = useMemo(
         () => [
-            { field: "id", headerName: "Rule ID", flex: 3 },
+            { name: "id", header: "Rule ID", minWidth: 150 },
             {
-                field: "date",
-                headerName: "Date",
-                flex: 2,
-                valueFormatter: (params) => formatTimestampToDate(params.row.date),
+                name: "date",
+                header: "Date",
+                minWidth: 110,
+                type: "date",
             },
-            { field: "name", headerName: "Name", flex: 3 },
-            { field: "description", headerName: "Description", flex: 3 },
-            { field: "section", headerName: "Section", flex: 2 },
+            { name: "name", header: "Name", minWidth: 150 },
+            { name: "description", header: "Description", minWidth: 150, flex: 1 },
+            { name: "section", header: "Section", minWidth: 110 },
             {
-                field: "engAP",
-                headerName: "E.A.",
-                description: "Engineering Approved",
+                name: "engAP",
+                header: "Eng.A.",
                 type: "boolean",
-                width: 100,
             },
-            { field: "enable", headerName: "Enable", type: "boolean", width: 100 },
+            { name: "enable", header: "Enable", type: "boolean" },
         ],
         []
     );
@@ -65,17 +58,14 @@ const Monitoring = () => {
             <Box display="flex" alignItems="flex-start">
                 <Box flex={11}>
                     {activeTab === 0 && (
-                        <BasePaper>
-                            <BaseDataGrid
-                                rows={items || []}
-                                cols={gridColumns}
-                                onRowSelected={(d) => {
-                                    setSelectedItem(d);
-                                    setActiveTab(1);
-                                }}
-                                height={"77vh"}
-                            />
-                        </BasePaper>
+                        <DataGrid
+                            url="/monitor"
+                            columns={gridColumns}
+                            onRowSelected={(d) => {
+                                setSelectedItem(d);
+                                setActiveTab(1);
+                            }}
+                        />
                     )}
                     {activeTab === 1 && <Details selectedRow={selectedItem} />}
                 </Box>

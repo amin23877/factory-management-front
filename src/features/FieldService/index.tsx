@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { GridColDef } from "@material-ui/data-grid";
-import useSWR from "swr";
 
-import { Box, IconButton, ListItem, Tabs, Tab, LinearProgress } from "@material-ui/core";
+import { Box, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
 import AddRounded from "@material-ui/icons/AddRounded";
 import DeleteRounded from "@material-ui/icons/DeleteRounded";
 import PrintRounded from "@material-ui/icons/PrintRounded";
@@ -16,10 +14,10 @@ import FieldServiceDetails from "../../features/FieldService/Details";
 import { IFieldService } from "../../api/fieldService";
 import { createServiceClass, deleteServiceClass, updateServiceClass } from "../../api/serviceClass";
 
-import BaseDataGrid from "../../app/BaseDataGrid";
 import OneFieldModal from "../../components/OneFieldModal";
 import { BasePaper } from "../../app/Paper";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
+import DataGrid from "../../app/NewDataGrid";
 
 export default function ServiceIndex() {
     const [activeTab, setActiveTab] = useState(0);
@@ -34,22 +32,16 @@ export default function ServiceIndex() {
         price: 456,
     });
 
-    const { data: fieldServices, mutate } = useSWR<IFieldService[]>("/service");
-
-    const cols: GridColDef[] = [
+    const cols = [
         { field: "name", headerName: "Name" },
         { field: "price", headerName: "Price" },
         { field: "length", headerName: "Length" },
     ];
 
-    if (!fieldServices) {
-        return <LinearProgress />;
-    }
-
     return (
         <Box display="flex" height="100%" flex={1}>
             <BasePaper style={{ flex: 1 }}>
-                <AddServiceModal open={addService} onClose={() => setAddService(false)} onDone={mutate} />
+                <AddServiceModal open={addService} onClose={() => setAddService(false)} onDone={() => {}} />
                 <OneFieldModal
                     title="Add/Edit Service Classes"
                     getUrl="/serviceClass"
@@ -68,7 +60,6 @@ export default function ServiceIndex() {
                         style={{ marginBottom: 10 }}
                     >
                         <Tab
-                            // label="List"
                             icon={
                                 <span
                                     style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
@@ -79,7 +70,6 @@ export default function ServiceIndex() {
                             wrapped
                         />
                         <Tab
-                            // label="Details"
                             disabled={!selectedFS}
                             icon={
                                 <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -87,8 +77,6 @@ export default function ServiceIndex() {
                                 </span>
                             }
                         />
-                        {/* <Tab label="List" />
-                        <Tab label="Details" disabled={!selectedFS} /> */}
                     </Tabs>
                     <Box marginLeft="auto">
                         <List>
@@ -127,10 +115,9 @@ export default function ServiceIndex() {
                 </Box>
                 <Box display="flex" height="90%">
                     {activeTab === 0 && (
-                        <BaseDataGrid
-                            cols={cols}
-                            rows={fieldServices}
-                            height="78vh"
+                        <DataGrid
+                            columns={cols}
+                            url="/service"
                             onRowSelected={(fs) => {
                                 setSelectedFS(fs);
                                 setActiveTab(1);
@@ -138,7 +125,7 @@ export default function ServiceIndex() {
                         />
                     )}
                     {activeTab === 1 && selectedFS && (
-                        <FieldServiceDetails onDone={mutate} selectedFieldService={selectedFS} />
+                        <FieldServiceDetails onDone={() => {}} selectedFieldService={selectedFS} />
                     )}
                 </Box>
             </BasePaper>

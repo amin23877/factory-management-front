@@ -1,109 +1,95 @@
 import React, { useState } from "react";
-import { GridColumns } from "@material-ui/data-grid";
 import { Box, Tabs, Tab } from "@material-ui/core";
-import useSwr from "swr";
 
-import BaseDataGrid from "../../../app/BaseDataGrid";
 import { BasePaper } from "../../../app/Paper";
 
-// import Details from "./Details";
 import Details from "../../FieldService/Units/Details";
 import { subMonths } from "date-fns";
-import { formatTimestampToDate } from "../../../logic/date";
-import { UnitSearchBox } from "../../../app/SearchBox";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
+
+import DataGrid from "../../../app/NewDataGrid";
 
 export default function Ship({ tab }: { tab: number }) {
     const [activeTab, setActiveTab] = useState(0);
     const [selectedShip, setSelectedShip] = useState<any>();
     const [month, setMonth] = useState(new Date(subMonths(new Date(), 1)).getTime());
-    const { data: ships } = useSwr(
-        tab === 0
-            ? "/unit?nstatus=ready to ship"
-            : tab === 1
-            ? "/unit?status=ready to ship"
-            : `/unit?status=shipped?shipDate=${month}`
-    );
 
-    const cols: GridColumns =
+    const cols =
         tab !== 2
             ? [
                   {
-                      field: "SO NO.",
-                      headerName: "SO NO.",
+                      name: "SO NO.",
+                      header: "SO NO.",
                       width: 90,
-                      valueFormatter: (r) => r.row?.so?.number,
+                      render: ({ data }: any) => data?.so?.number,
                   },
                   {
-                      field: "Est.S.D.",
-                      valueFormatter: (r) => formatTimestampToDate(r.row?.so?.estimatedShipDate),
+                      name: "estimatedShipDate",
+                      type: "date",
+                      header: "Est.S.D.",
                       width: 120,
                   },
                   {
-                      field: "unit",
-                      headerName: "Unit Serial Number",
+                      name: "unit",
+                      header: "Unit Serial Number",
                       flex: 1,
-                      valueFormatter: (r) => r.row?.item?.no,
+                      render: ({ data }: any) => data?.item?.no,
                   },
                   //check these three
                   {
-                      field: "Client",
+                      name: "Client",
                       flex: 1,
-                      valueFormatter: (r) => r.row?.item?.no,
+                      render: ({ data }: any) => data?.item?.no,
                   },
                   {
-                      field: "Rep",
+                      name: "Rep",
                       flex: 1,
-                      valueFormatter: (r) => r.row?.item?.no,
+                      render: ({ data }: any) => data?.item?.no,
                   },
                   {
-                      field: "State",
+                      name: "State",
                       flex: 1,
-                      valueFormatter: (r) => r.row?.item?.no,
+                      render: ({ data }: any) => data?.item?.no,
                   },
               ]
             : [
                   {
-                      field: "SO NO.",
-                      headerName: "SO NO.",
+                      name: "SO NO.",
+                      header: "SO NO.",
                       width: 90,
-                      valueFormatter: (r) => r.row?.so?.number,
+                      render: ({ data }: any) => data?.so?.number,
                   },
+
                   {
-                      field: "Est.S.D.",
-                      valueFormatter: (r) => formatTimestampToDate(r.row?.so?.estimatedShipDate),
+                      name: "actualShipDate",
+                      header: "Act.S.D.",
+                      type: "date",
                       width: 120,
                   },
                   {
-                      field: "Act.S.D.",
-                      valueFormatter: (r) => formatTimestampToDate(r.row?.so?.actualShipDate),
-                      width: 120,
-                  },
-                  {
-                      field: "unit",
-                      headerName: "Unit Serial Number",
+                      name: "unit",
+                      header: "Unit Serial Number",
                       flex: 1,
-                      valueFormatter: (r) => r.row?.item?.no,
+                      render: ({ data }: any) => data?.item?.no,
                   },
-                  //check these three
                   {
-                      field: "Client",
+                      name: "Client",
                       width: 120,
-                      valueFormatter: (r) => r.row?.item?.no,
+                      render: ({ data }: any) => data?.item?.no,
                   },
                   {
-                      field: "Rep",
+                      name: "Rep",
                       width: 120,
-                      valueFormatter: (r) => r.row?.item?.no,
+                      render: ({ data }: any) => data?.item?.no,
                   },
                   {
-                      field: "State",
+                      name: "State",
                       width: 120,
-                      valueFormatter: (r) => r.row?.item?.no,
+                      render: ({ data }: any) => data?.item?.no,
                   },
                   {
-                      field: "TrackingNumber",
-                      headerName: "Tracking NO.",
+                      name: "TrackingNumber",
+                      header: "Tracking NO.",
                       width: 120,
                   },
               ];
@@ -133,18 +119,22 @@ export default function Ship({ tab }: { tab: number }) {
                         }
                     />
                 </Tabs>
-                {/* <UnitSearchBox /> */}
-                {activeTab === 0 && ships && (
+                {activeTab === 0 && (
                     <>
-                        <BaseDataGrid
-                            rows={ships.result || []}
-                            // rows={[]}
-                            cols={cols}
+                        <DataGrid
+                            url="/unit"
+                            columns={cols}
+                            initParams={
+                                tab === 0
+                                    ? { nstatus: "ready to ship" }
+                                    : tab === 1
+                                    ? { status: "ready to ship" }
+                                    : { status: "shipped", shipDate: `${month}` }
+                            }
                             onRowSelected={(d) => {
                                 setSelectedShip(d);
                                 setActiveTab(1);
                             }}
-                            height={580}
                         />
                     </>
                 )}
