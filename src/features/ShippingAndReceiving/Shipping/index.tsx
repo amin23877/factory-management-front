@@ -74,23 +74,23 @@ export default function Ship({ tab }: { tab: number }) {
                   },
                   {
                       name: "Client",
-                      width: 120,
+                      flex: 1,
                       render: ({ data }: any) => data?.item?.no,
                   },
                   {
                       name: "Rep",
-                      width: 120,
+                      flex: 1,
                       render: ({ data }: any) => data?.item?.no,
                   },
                   {
                       name: "State",
-                      width: 120,
+                      flex: 1,
                       render: ({ data }: any) => data?.item?.no,
                   },
                   {
                       name: "TrackingNumber",
                       header: "Tracking NO.",
-                      width: 120,
+                      flex: 1,
                   },
               ];
 

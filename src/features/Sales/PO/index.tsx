@@ -12,21 +12,19 @@ import { getAllModelDocuments } from "../../../api/document";
 import Confirm from "../../Modals/Confirm";
 import NoteModal from "../../Modals/NoteModals";
 import DocModal from "../../Modals/DocumentModals";
-// import BaseDataGrid from "../../../app/BaseDataGrid";
 import Button from "../../../app/Button";
 
 import Details from "./Details";
 import AddPOModal from "./AddPoModal";
 import { BasePaper } from "../../../app/Paper";
-// import { GridColDef } from "@material-ui/data-grid";
-// import { formatTimestampToDate } from "../../../logic/date";
+
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 import DataGrid from "../../../app/NewDataGrid";
 
 export default function POPanel() {
     const [activeTab, setActiveTab] = useState(0);
     const [selectedPO, setSelectedPO] = useState<IPO>();
-    const [pos, setPos] = useState([]);
+    // const [pos, setPos] = useState([]);
     const [addPo, setAddPo] = useState(false);
     const [confirm, setConfirm] = useState(false);
     const [notes, setNotes] = useState([]);
@@ -41,10 +39,10 @@ export default function POPanel() {
         {
             name: "date",
             header: "Date",
-            width: 110,
+            minWidth: 110,
             type: "date",
         },
-        { name: "number", headerName: "ID", width: 90 },
+        { name: "number", headerName: "ID", minWidth: 90 },
         { name: "SoID", headerName: "SO ID", flex: 1 },
         { name: "Client", render: ({ data }: any) => data?.ClientId?.name, flex: 1 },
         {
@@ -58,17 +56,17 @@ export default function POPanel() {
             render: ({ data }: any) => data?.ProjectId?.name,
             flex: 1,
         },
-        { name: "status", headerName: "Status", width: 110 },
+        { name: "status", headerName: "Status", minWidth: 110 },
     ];
 
-    const refreshPOs = async () => {
-        try {
-            const resp = await getPO();
-            setPos(resp);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    // const refreshPOs = async () => {
+    //     try {
+    //         const resp = await getPO();
+    //         setPos(resp);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
     const refreshNotes = async () => {
         try {
@@ -92,9 +90,9 @@ export default function POPanel() {
         }
     };
 
-    useEffect(() => {
-        refreshPOs();
-    }, []);
+    // useEffect(() => {
+    //     refreshPOs();
+    // }, []);
 
     useEffect(() => {
         if (activeTab === 1) {
@@ -108,7 +106,7 @@ export default function POPanel() {
             if (selectedPO && selectedPO.id) {
                 const resp = await deletePO(selectedPO.id as any);
                 if (resp) {
-                    refreshPOs();
+                    // refreshPOs();
                     setActiveTab(0);
                 }
             }
@@ -142,7 +140,7 @@ export default function POPanel() {
                 />
             )}
 
-            <AddPOModal open={addPo} onClose={() => setAddPo(false)} onDone={refreshPOs} />
+            <AddPOModal open={addPo} onClose={() => setAddPo(false)} onDone={() => {}} />
             <Confirm
                 open={confirm}
                 onClose={() => setConfirm(false)}
@@ -197,7 +195,7 @@ export default function POPanel() {
                         }
                     />
                 </Tabs>
-                {activeTab === 0 && pos && (
+                {activeTab === 0 && (
                     <DataGrid
                         url="/po"
                         columns={poCols}
@@ -211,7 +209,7 @@ export default function POPanel() {
                 {activeTab === 1 && selectedPO && (
                     <Details
                         poData={selectedPO}
-                        onDone={refreshPOs}
+                        onDone={() => {}}
                         onNoteSelected={(d) => {
                             setSelectedNote(d);
                             setNoteModal(true);

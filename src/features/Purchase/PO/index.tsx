@@ -29,7 +29,7 @@ import Confirm from "../../Modals/Confirm";
 import NoteModal from "../../Modals/NoteModals";
 import DocumentModal from "../../Modals/DocumentModals";
 import PurchasePOTypeModal from "./PurchasePoType";
-import { getPurchasePOs, deletePurchasePO, IPurchasePO, getPurchasePOLines } from "../../../api/purchasePO";
+import { deletePurchasePO, IPurchasePO, getPurchasePOLines } from "../../../api/purchasePO";
 import { getAllModelNotes } from "../../../api/note";
 import { getAllModelDocuments } from "../../../api/document";
 import { ILineItem } from "../../../api/lineItem";
@@ -40,7 +40,7 @@ function Index() {
     const [addLineItem, setAddLineItem] = useState(false);
     const [addType, setAddType] = useState(false);
     const [confirm, setConfirm] = useState(false);
-    const [pos, setPOs] = useState([]);
+    // const [pos, setPOs] = useState([]);
     const [lines, setLines] = useState([]);
     const [noteModal, setNoteModal] = useState(false);
     const [docModal, setDocModal] = useState(false);
@@ -124,21 +124,21 @@ function Index() {
         }
     };
 
-    const refreshPOs = async () => {
-        try {
-            const resp = await getPurchasePOs();
-            resp && setPOs(resp);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    // const refreshPOs = async () => {
+    //     try {
+    //         const resp = await getPurchasePOs();
+    //         resp && setPOs(resp);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
     const handleDelete = async () => {
         try {
             if (selPO && selPO.id) {
                 const resp = await deletePurchasePO(selPO.id);
                 if (resp) {
-                    refreshPOs();
+                    // refreshPOs();
                     setConfirm(false);
                     setActiveTab(0);
                 }
@@ -148,9 +148,9 @@ function Index() {
         }
     };
 
-    useEffect(() => {
-        refreshPOs();
-    }, []);
+    // useEffect(() => {
+    //     refreshPOs();
+    // }, []);
 
     useEffect(() => {
         if (activeTab === 1) {
@@ -167,7 +167,7 @@ function Index() {
                 open={addPO}
                 onClose={() => setAddPO(false)}
                 onDone={() => {
-                    refreshPOs();
+                    // refreshPOs();
                     setActiveTab(0);
                     setLines([]);
                 }}
@@ -309,7 +309,7 @@ function Index() {
                         {activeTab === 1 && selPO && (
                             <Details
                                 initialValues={selPO}
-                                onDone={refreshPOs}
+                                onDone={() => {}}
                                 lines={lines}
                                 notes={notes}
                                 docs={docs}

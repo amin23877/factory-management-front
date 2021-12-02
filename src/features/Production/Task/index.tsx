@@ -19,9 +19,9 @@ function Index() {
     const [taskList, setTaskList] = useState([]);
     useEffect(() => {
         if (man && evaluation && test) {
-            const newMan = man.map((i: any) => ({ ...i, type: "Manufacturing" }));
-            const newEval = evaluation.map((i: any) => ({ ...i, type: "Evaluation" }));
-            const newTest = test.map((i: any) => ({ ...i, type: "Test" }));
+            const newMan = man?.result.map((i: any) => ({ ...i, type: "Manufacturing" }));
+            const newEval = evaluation?.result.map((i: any) => ({ ...i, type: "Evaluation" }));
+            const newTest = test?.result.map((i: any) => ({ ...i, type: "Test" }));
             let combinedArray1 = newMan.concat(newEval);
             let done = combinedArray1.concat(newTest);
             setTaskList(done);

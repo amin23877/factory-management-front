@@ -17,7 +17,6 @@ import AddCallModal from "./CallModal";
 import { deleteCall } from "../../../api/calls";
 import { addCallsTag, deleteCallsTag, editCallsTag } from "../../../api/callsTags";
 import DataGrid from "../../../app/NewDataGrid";
-import { formatTimestampToDate } from "../../../logic/date";
 
 export default function Calls() {
     const [activeTab, setActiveTab] = useState(0);
@@ -46,8 +45,8 @@ export default function Calls() {
             {
                 name: "date",
                 header: "Date",
-                render: ({ data }: any) => formatTimestampToDate(data?.date),
                 minWidth: 110,
+                type: "date",
             },
             { name: "number", header: "Ticket ID", minWidth: 100 },
             { name: "subject", header: "Subject", minWidth: 100 },

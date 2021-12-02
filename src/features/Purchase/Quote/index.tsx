@@ -14,7 +14,7 @@ import DocumentsModal from "../../Modals/DocumentModals";
 import AddPQuoteModal from "./AddPQuoteModal";
 import Details from "./Details";
 
-import { deletePurchaseQuote, getPurchaseQuotes, IPurchaseQuote } from "../../../api/purchaseQuote";
+import { deletePurchaseQuote, IPurchaseQuote } from "../../../api/purchaseQuote";
 import Confirm from "../../Modals/Confirm";
 import { getAllModelNotes } from "../../../api/note";
 import { getAllModelDocuments } from "../../../api/document";
@@ -24,7 +24,7 @@ function Index() {
     const [activeTab, setActiveTab] = useState(0);
     const [addPQ, setAddPQ] = useState(false);
     const [confirm, setConfirm] = useState(false);
-    const [pqs, setPqs] = useState([]);
+    // const [pqs, setPqs] = useState([]);
 
     const [noteModal, setNoteModal] = useState(false);
     const [docModal, setDocModal] = useState(false);
@@ -50,27 +50,27 @@ function Index() {
             minWidth: 90,
         },
         { name: "senderNumber", headerName: "ID", minWidth: 90 },
-        { name: "Vendor", minWidth: 90, render: ({ data }: any) => data?.VendorId?.name },
-        { name: "SO", minWidth: 90, render: ({ data }: any) => data?.SOId?.number },
-        { name: "Staff", minWidth: 90, render: ({ data }: any) => data?.EmployeeId?.username },
+        { name: "Vendor", minWidth: 90, render: ({ data }: any) => data?.VendorId?.name, flex: 1 },
+        { name: "SO", minWidth: 90, render: ({ data }: any) => data?.SOId?.number, flex: 1 },
+        { name: "Staff", minWidth: 90, render: ({ data }: any) => data?.EmployeeId?.username, flex: 1 },
         { name: "contactName", headerName: "Contact", minWidth: 90 },
     ];
 
-    const refreshPQs = async () => {
-        try {
-            const resp = await getPurchaseQuotes();
-            resp && setPqs(resp);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    // const refreshPQs = async () => {
+    //     try {
+    //         const resp = await getPurchaseQuotes();
+    //         resp && setPqs(resp);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
     const handleDelete = async () => {
         try {
             if (selPQ && selPQ.id) {
                 const resp = await deletePurchaseQuote(selPQ.id);
                 if (resp) {
-                    refreshPQs();
+                    // refreshPQs();
                     setConfirm(false);
                 }
             }
@@ -109,12 +109,12 @@ function Index() {
     }, [activeTab]);
 
     useEffect(() => {
-        refreshPQs();
+        // refreshPQs();
     }, []);
 
     return (
         <>
-            <AddPQuoteModal open={addPQ} onClose={() => setAddPQ(false)} onDone={refreshPQs} />
+            <AddPQuoteModal open={addPQ} onClose={() => setAddPQ(false)} onDone={() => {}} />
             {selPQ && (
                 <Confirm
                     open={confirm}
@@ -154,7 +154,6 @@ function Index() {
                                 onChange={(e, nv) => setActiveTab(nv)}
                             >
                                 <Tab
-                                    // label="List"
                                     icon={
                                         <span
                                             style={{
@@ -169,7 +168,6 @@ function Index() {
                                     wrapped
                                 />
                                 <Tab
-                                    // label="Details"
                                     disabled={!selPQ}
                                     icon={
                                         <span
@@ -180,7 +178,7 @@ function Index() {
                                     }
                                 />
                             </Tabs>
-                            <div style={{ minWidth: 90 }}> </div>
+                            <div style={{ flex: 1 }}> </div>
                             <Box>
                                 <List>
                                     <ListItem>
@@ -221,7 +219,7 @@ function Index() {
                         {activeTab === 1 && selPQ && (
                             <Details
                                 initialValues={selPQ}
-                                onDone={refreshPQs}
+                                onDone={() => {}}
                                 notes={notes}
                                 docs={docs}
                                 onNoteSelected={(d) => {

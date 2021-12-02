@@ -33,9 +33,9 @@ export default function ServiceIndex() {
     });
 
     const cols = [
-        { field: "name", headerName: "Name" },
-        { field: "price", headerName: "Price" },
-        { field: "length", headerName: "Length" },
+        { name: "name", header: "Name", flex: 1 },
+        { name: "price", header: "Price", flex: 1, type: "number" },
+        { name: "length", header: "Length", flex: 1 },
     ];
 
     return (
