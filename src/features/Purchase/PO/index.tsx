@@ -13,11 +13,13 @@ import {
     ListAltRounded,
     FindInPageRounded,
 } from "@material-ui/icons";
-import { GridColDef } from "@material-ui/data-grid";
+// import { GridColDef } from "@material-ui/data-grid";
 
 import List from "../../../app/SideUtilityList";
-import BaseDataGrid from "../../../app/BaseDataGrid";
+// import BaseDataGrid from "../../../app/BaseDataGrid";
+
 import { BasePaper } from "../../../app/Paper";
+import DataGrid from "../../../app/NewDataGrid";
 
 import AddPOModal from "./AddPurchasePO";
 import AddLineItem from "../../LineItem";
@@ -27,11 +29,10 @@ import Confirm from "../../Modals/Confirm";
 import NoteModal from "../../Modals/NoteModals";
 import DocumentModal from "../../Modals/DocumentModals";
 import PurchasePOTypeModal from "./PurchasePoType";
-import { getPurchasePOs, deletePurchasePO, IPurchasePO, getPurchasePOLines } from "../../../api/purchasePO";
+import { deletePurchasePO, IPurchasePO, getPurchasePOLines } from "../../../api/purchasePO";
 import { getAllModelNotes } from "../../../api/note";
 import { getAllModelDocuments } from "../../../api/document";
 import { ILineItem } from "../../../api/lineItem";
-import { formatTimestampToDate } from "../../../logic/date";
 
 function Index() {
     const [activeTab, setActiveTab] = useState(0);
@@ -39,7 +40,7 @@ function Index() {
     const [addLineItem, setAddLineItem] = useState(false);
     const [addType, setAddType] = useState(false);
     const [confirm, setConfirm] = useState(false);
-    const [pos, setPOs] = useState([]);
+    // const [pos, setPOs] = useState([]);
     const [lines, setLines] = useState([]);
     const [noteModal, setNoteModal] = useState(false);
     const [docModal, setDocModal] = useState(false);
@@ -60,33 +61,32 @@ function Index() {
     });
     const [compPo, setCompPo] = useState<any>();
 
-    // Date	PO Number	Vendor	Trac. Num	Vendor Ack. Date	Est. Ship	Act. Ship	SO 	Required By	Staff	Status	Total Cost	Approved	Appr. By	QuickBooks Info
-
-    const cols: GridColDef[] = [
+    const cols = [
         {
-            field: "Date",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.date),
+            name: "date",
+            header: "Date",
             width: 100,
+            type: "date",
         },
-        { field: "number", headerName: "PO Number", width: 110 },
-        { field: "Vendor", width: 110, valueFormatter: (r) => r.row?.VendorId?.name }, // change this
-        { field: "TrackNumber", headerName: "Trac. No.", width: 120 },
+        { name: "number", header: "ID", width: 110 },
+        { name: "Vendor", width: 110, render: ({ data }: any) => data?.VendorId?.name }, // change this
+        { name: "TrackNumber", header: "Trac. No.", width: 120 },
         {
-            field: "acknowledgeDate",
-            headerName: "Ack. Date",
+            name: "acknowledgeDate",
+            header: "Ack. Date",
             width: 110,
-            valueFormatter: (r) => (r.row?.acknowledgeDate === -1 ? "-" : r.row?.acknowledgeDate),
+            type: "date",
         },
-        { field: "estimatedShipDate", headerName: "Est. Ship", width: 110 },
-        { field: "actualShipDate", headerName: "act. Ship", width: 110 },
-        { field: "SO", width: 110, valueFormatter: (r) => r.row?.SOId?.number },
-        { field: "requiredBy", headerName: "Required By", width: 110 },
-        { field: "Staff", width: 110, valueFormatter: (r) => r.row?.EmployeeId?.username },
-        { field: "status", headerName: "Status", width: 100 },
-        { field: "totalCost", headerName: "Total Cost", width: 100 },
-        { field: "approved", headerName: "Appr.", width: 80, type: "boolean" },
-        { field: "Appr. By", width: 110, valueFormatter: (r) => r.row?.ApprovedBy?.username },
-        { field: "QuickBooks Info", headerName: "QuickBooks Info", width: 120 },
+        { name: "estimatedShipDate", header: "Est. Ship", width: 110, type: "date" },
+        { name: "actualShipDate", header: "act. Ship", width: 110, type: "date" },
+        { name: "SO", width: 110, render: ({ data }: any) => data?.SOId?.number },
+        { name: "requiredBy", header: "Required By", width: 110, type: "date" },
+        { name: "Staff", width: 110, render: ({ data }: any) => data?.EmployeeId?.username },
+        { name: "status", header: "Status", width: 100 },
+        { name: "totalCost", header: "Total Cost", width: 100, type: "number" },
+        { name: "approved", header: "Appr.", width: 80, type: "boolean" },
+        { name: "Appr. By", width: 110, render: ({ data }: any) => data?.ApprovedBy?.username },
+        { name: "QuickBooks Info", header: "QuickBooks Info", width: 120 },
     ];
 
     const refreshNotes = async () => {
@@ -124,21 +124,21 @@ function Index() {
         }
     };
 
-    const refreshPOs = async () => {
-        try {
-            const resp = await getPurchasePOs();
-            resp && setPOs(resp);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    // const refreshPOs = async () => {
+    //     try {
+    //         const resp = await getPurchasePOs();
+    //         resp && setPOs(resp);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
     const handleDelete = async () => {
         try {
             if (selPO && selPO.id) {
                 const resp = await deletePurchasePO(selPO.id);
                 if (resp) {
-                    refreshPOs();
+                    // refreshPOs();
                     setConfirm(false);
                     setActiveTab(0);
                 }
@@ -148,9 +148,9 @@ function Index() {
         }
     };
 
-    useEffect(() => {
-        refreshPOs();
-    }, []);
+    // useEffect(() => {
+    //     refreshPOs();
+    // }, []);
 
     useEffect(() => {
         if (activeTab === 1) {
@@ -167,7 +167,7 @@ function Index() {
                 open={addPO}
                 onClose={() => setAddPO(false)}
                 onDone={() => {
-                    refreshPOs();
+                    // refreshPOs();
                     setActiveTab(0);
                     setLines([]);
                 }}
@@ -296,10 +296,10 @@ function Index() {
                             </Box>
                         </Box>
                         {activeTab === 0 && (
-                            <BaseDataGrid
-                                height="78.5vh"
-                                cols={cols}
-                                rows={pos}
+                            <DataGrid
+                                style={{ minHeight: "calc(100vh - 160px)" }}
+                                columns={cols}
+                                url="/purchasepo"
                                 onRowSelected={(d) => {
                                     setSelPO(d);
                                     setActiveTab(1);
@@ -309,7 +309,7 @@ function Index() {
                         {activeTab === 1 && selPO && (
                             <Details
                                 initialValues={selPO}
-                                onDone={refreshPOs}
+                                onDone={() => {}}
                                 lines={lines}
                                 notes={notes}
                                 docs={docs}

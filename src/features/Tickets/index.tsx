@@ -118,7 +118,6 @@ export default function Tickets() {
                         style={{ marginBottom: 10 }}
                     >
                         <Tab
-                            // label="List"
                             icon={
                                 <span
                                     style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
@@ -129,7 +128,6 @@ export default function Tickets() {
                             wrapped
                         />
                         <Tab
-                            // label="Details"
                             disabled={!selectedJob}
                             icon={
                                 <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -137,8 +135,6 @@ export default function Tickets() {
                                 </span>
                             }
                         />
-                        {/* <Tab label="List" />
-                        <Tab label="Details" disabled={!selectedJob} /> */}
                     </Tabs>
                     <Box marginLeft="auto">
                         <List>

@@ -1,57 +1,45 @@
 import React from "react";
-import { GridColDef } from "@material-ui/data-grid";
-import useSWR from "swr";
-
-import BaseDataGrid from "../../app/BaseDataGrid";
-
-// import { fetcher } from "../../api";
+import DataGrid from "../../app/NewDataGrid";
 import { ITicket } from "../../api/ticket";
-import { formatTimestampToDate } from "../../logic/date";
-import { BasePaper } from "../../app/Paper";
 
 export default function Table({ onRowSelected }: { onRowSelected: (d: ITicket) => void }) {
-    const { data: tickets } = useSWR<ITicket[]>("/ticket");
-
-    const cols: GridColDef[] = [
+    const cols = [
         {
-            field: "Date",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.date),
+            name: "date",
+            header: "Date",
+            type: "date",
             width: 110,
         },
-        { field: "number", headerName: "Ticket ID", width: 110 },
-        { field: "subject", headerName: "Subject", width: 110 },
-        { field: "Company", headerName: "Company", width: 110, valueGetter: (data) => data.row.repOrAgency?.name },
-        { field: "contactName", headerName: "Contact Name", width: 130 },
-        { field: "contactNumber", headerName: "Contact Number", width: 130 },
-        { field: "contactEmail", headerName: "Contact Email", width: 130 },
-        { field: "state", headerName: "State", width: 110, valueGetter: (data) => data.row.repOrAgency?.state },
-        { field: "Zip Code", headerName: "Zip Code", width: 110, valueGetter: (data) => data.row.repOrAgency?.zipcode },
+        { name: "number", header: "Ticket ID", width: 110 },
+        { name: "subject", header: "Subject", width: 110 },
+        { name: "Company", header: "Company", width: 110, render: ({ data }: any) => data?.repOrAgency?.name },
+        { name: "contactName", header: "Contact Name", width: 130 },
+        { name: "contactNumber", header: "Contact Number", width: 130 },
+        { name: "contactEmail", header: "Contact Email", width: 130 },
+        { name: "state", header: "State", width: 110, render: ({ data }: any) => data?.repOrAgency?.state },
+        { name: "Zip Code", header: "Zip Code", width: 110, render: ({ data }: any) => data?.repOrAgency?.zipcode },
         {
-            field: "assignedTo",
-            headerName: "Assigned to",
+            name: "assignedTo",
+            header: "Assigned to",
             width: 120,
-            valueGetter: (data) => data.row.AssignedTo?.username,
+            render: ({ data }: any) => data?.AssignedTo?.username,
         },
         {
-            field: "createdBy",
-            headerName: "Created By",
+            name: "createdBy",
+            header: "Created By",
             width: 120,
-            valueGetter: (data) => data.row.AssignedTo?.username,
+            render: ({ data }: any) => data?.AssignedTo?.username,
         },
-        { field: "Category", headerName: "Category", width: 110, valueGetter: (data) => data.row.category?.name },
+        { name: "Category", header: "Category", width: 110, render: ({ data }: any) => data?.category?.name },
         {
-            field: "deadline",
-            headerName: "Target Date",
+            name: "deadline",
+            header: "Target Date",
             width: 120,
-            valueFormatter: (r) => formatTimestampToDate(r.row?.deadline),
+            type: "date",
         },
-        { field: "status", headerName: "Status", width: 110, valueGetter: (data) => data.row.status?.name },
-        { field: "tag", headerName: "tag", width: 110, valueGetter: (data) => data.row.tag?.name },
+        { name: "status", header: "Status", width: 110, render: ({ data }: any) => data?.status?.name },
+        { name: "tag", header: "tag", width: 110, render: ({ data }: any) => data?.tag?.name },
     ];
 
-    // if (!tickets) {
-    //     return <LinearProgress />;
-    // }
-
-    return <BaseDataGrid height="78vh" cols={cols} rows={tickets || []} onRowSelected={onRowSelected} />;
+    return <DataGrid columns={cols} url="/ticket" onRowSelected={onRowSelected} />;
 }

@@ -1,44 +1,33 @@
 import React, { useMemo } from "react";
-import { GridColumns } from "@material-ui/data-grid";
-import useSWR from "swr";
-
-import BaseDataGrid from "../../../../app/BaseDataGrid";
-
-import { formatTimestampToDate } from "../../../../logic/date";
 import { ITicket } from "../../../../api/ticket";
+import DataGrid from "../../../../app/NewDataGrid";
 
 export default function Table({ onRowSelected }: { onRowSelected: (row: ITicket) => void }) {
-    const { data: tickets } = useSWR<ITicket[]>("/ticket");
-
-    // TODO: Assign, Ticket NO, Ticket Name, Client, Rep, Package,
-    const cols = useMemo<GridColumns>(
+    const cols = useMemo(
         () => [
             {
-                field: "date",
-                headerName: "Date",
+                name: "date",
+                header: "Date",
                 type: "date",
-                valueFormatter: (params) => formatTimestampToDate(params.row.date),
                 width: 120,
-                disableColumnMenu: true,
             },
             {
-                field: "SO NO",
-                valueFormatter: (params) => params.row?.LineServiceRecordId?.SOId,
+                name: "SO NO",
+                render: ({ data }: any) => data?.LineServiceRecordId?.SOId,
                 width: 120,
-                disableColumnMenu: true,
             },
-            { field: "Assign", flex: 1, disableColumnMenu: true },
-            { field: "Ticket NO", width: 120, disableColumnMenu: true },
-            { field: "Ticket Name", flex: 1, disableColumnMenu: true },
-            { field: "Unit", valueFormatter: (params) => params.row?.ItemId?.no, width: 150, disableColumnMenu: true },
-            { field: "Client", width: 150, disableColumnMenu: true },
-            { field: "Rep", width: 100, disableColumnMenu: true },
-            { field: "Package", width: 80, disableColumnMenu: true },
-            { field: "status", headerName: "Status", width: 80, disableColumnMenu: true },
-            { field: "productionStatus", headerName: "Prod. Status", width: 100, disableColumnMenu: true },
+            { name: "Assign", flex: 1 },
+            { name: "Ticket NO", width: 120 },
+            { name: "Ticket Name", flex: 1 },
+            { name: "Unit", render: ({ data }: any) => data?.ItemId?.no, width: 150 },
+            { name: "Client", width: 150 },
+            { name: "Rep", width: 100 },
+            { name: "Package", width: 80 },
+            { name: "status", header: "Status", width: 80 },
+            { name: "productionStatus", header: "Prod. Status", width: 100 },
         ],
         []
     );
 
-    return <BaseDataGrid cols={cols} rows={tickets || []} onRowSelected={onRowSelected} height={580} />;
+    return <DataGrid columns={cols} url="/ticket" onRowSelected={onRowSelected} />;
 }

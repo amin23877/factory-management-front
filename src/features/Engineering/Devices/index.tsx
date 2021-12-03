@@ -1,5 +1,5 @@
-import React, { useCallback, useMemo, useState, useEffect } from "react";
-import { Box, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
+import React, { useCallback, useMemo, useState } from "react";
+import { Box, IconButton, ListItem, Tabs, Tab, LinearProgress } from "@material-ui/core";
 import {
     NoteRounded,
     FileCopyRounded,
@@ -11,14 +11,6 @@ import {
     ListAltRounded,
     FindInPageRounded,
 } from "@material-ui/icons";
-import {
-    DataGrid,
-    GridColDef,
-    GridFilterModelParams,
-    GridPageChangeParams,
-    GridSortModelParams,
-    GridToolbar,
-} from "@material-ui/data-grid";
 
 import Confirm from "../../Modals/Confirm";
 import NoteModal from "../../Modals/NoteModals";
@@ -31,43 +23,21 @@ import AddTaskModal, { EditTaskModal } from "./TaskModal";
 import FlagModal from "./FlagModal";
 
 import List from "../../../app/SideUtilityList";
-import { useDataGridStyles } from "../../../app/BaseDataGrid";
 import { BasePaper } from "../../../app/Paper";
 
 import { deleteAnItem, IItem } from "../../../api/items";
-import { get } from "../../../api";
 
-import { generateURL } from "../../../logic/filterSortPage";
 import { splitLevelName } from "../../../logic/levels";
 
+import DataGrid from "../../../app/NewDataGrid";
+import useSWR from "swr";
+
 const Devices = ({ sales }: { sales?: boolean }) => {
-    const classes = useDataGridStyles();
-    const [dataState, setDataState] =
-        useState<{ filters?: GridFilterModelParams; page?: GridPageChangeParams; sorts?: GridSortModelParams }>();
-    const [items, setItems] = useState<{ result: IItem[]; total: number }>({ result: [], total: 0 });
-    const [loading, setLoading] = useState(false);
-
-    const refreshItems = useCallback(async () => {
-        try {
-            setLoading(true);
-            const resp = await get(
-                generateURL("/item", dataState?.filters, dataState?.sorts, dataState?.page, "device=true")
-            );
-            if (resp) {
-                setItems(resp);
-            }
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
-        }
-    }, [dataState?.filters, dataState?.page, dataState?.sorts]);
-
-    useEffect(() => {
-        refreshItems();
-    }, [dataState, refreshItems]);
+    const { data: fields } = useSWR("/field");
+    const { data: clusters } = useSWR("/filter");
 
     const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
+    const [finish, setFinish] = useState(false);
 
     const [activeTab, setActiveTab] = useState(0);
     const [selectedNote, setSelectedNote] = useState<any>();
@@ -88,42 +58,38 @@ const Devices = ({ sales }: { sales?: boolean }) => {
     const [flagModalOpen, setFlagModalOpen] = useState(false);
     const [FieldNFilterModal, setFieldNFilterModal] = useState(false);
 
-    const gridColumns = useMemo<GridColDef[]>(() => {
-        let res: GridColDef[] = [
-            { field: "no", headerName: "Device Number", width: 120, disableColumnMenu: true },
-            { field: "name", headerName: "Name", flex: 1, width: 200 },
-            { field: "description", headerName: "Description", flex: 2, width: 200 },
-            { field: "lead", headerName: "Lead Time", width: 120 },
-            { field: "retailPrice", headerName: "Price", width: 120 },
+    const gridColumns = useMemo(() => {
+        let res = [
+            { name: "no", header: "Device Number", minWidth: 120 },
+            { name: "name", header: "Name", flex: 1, minWidth: 200 },
+            { name: "description", header: "Description", flex: 2, minWidth: 200 },
+            { name: "lead", header: "Lead Time", minWidth: 120 },
+            { name: "retailPrice", header: "Price", minWidth: 120, type: "number" },
         ];
 
-        if (items && !sales) {
-            const newCols = new Set<string>();
-
-            items.result.forEach((item) => {
-                item.filters && Object.keys(item.filters).forEach((f) => newCols.add(f));
-                item.fields && Object.keys(item.fields).forEach((f) => newCols.add(f));
-            });
-            newCols.forEach((c) =>
-                res.push({ field: c, headerName: splitLevelName(c), width: 120, disableColumnMenu: true })
-            );
+        if (!sales) {
+            if (fields && clusters) {
+                fields.map((f: any) => res.splice(3, 0, { name: f.name, header: f.name, minWidth: 120 }));
+                clusters.map((f: any) =>
+                    res.splice(3, 0, { name: f.name, header: splitLevelName(f.name), minWidth: 120 })
+                );
+                setFinish(true);
+            }
         }
 
         return res;
-    }, [items, sales]);
+    }, [clusters, fields, sales]);
 
     const handleDelete = useCallback(async () => {
         try {
             if (selectedItem && selectedItem.id) {
                 await deleteAnItem(selectedItem.id);
-                refreshItems();
-
                 setDeleteItemModal(false);
             }
         } catch (error) {
             console.log(error);
         }
-    }, [selectedItem, refreshItems]);
+    }, [selectedItem]);
 
     return (
         <BasePaper>
@@ -290,40 +256,27 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                 <Box flex={1}>
                     {activeTab === 0 && (
                         <>
-                            {/* <SearchBox panel="engineering" /> */}
                             <Box height={575}>
-                                <DataGrid
-                                    density="compact"
-                                    loading={loading}
-                                    className={classes.root}
-                                    onRowSelected={(r) => {
-                                        setSelectedItem(r.data as any);
-                                        setActiveTab(1);
-                                    }}
-                                    pagination
-                                    filterMode="server"
-                                    sortingMode="server"
-                                    paginationMode="server"
-                                    rowCount={items.total}
-                                    rowsPerPageOptions={[25]}
-                                    pageSize={dataState && dataState.page ? dataState.page.pageSize : 25}
-                                    onPageChange={(p) =>
-                                        setDataState((prev) => ({ ...prev, page: { ...p, page: p.page + 1 } }))
-                                    }
-                                    onPageSizeChange={(ps) => setDataState((prev) => ({ ...prev, page: ps }))}
-                                    onSortModelChange={(s) => setDataState((prev) => ({ ...prev, sorts: s }))}
-                                    onFilterModelChange={(f) => setDataState((prev) => ({ ...prev, filters: f }))}
-                                    rows={items ? items.result : []}
-                                    columns={gridColumns}
-                                    components={{ Toolbar: GridToolbar }}
-                                />
+                                {finish || sales ? (
+                                    <DataGrid
+                                        url="/item"
+                                        initParams={{ device: true }}
+                                        onRowSelected={(r) => {
+                                            setSelectedItem(r.data as any);
+                                            setActiveTab(1);
+                                        }}
+                                        columns={gridColumns}
+                                    />
+                                ) : (
+                                    <LinearProgress />
+                                )}
                             </Box>
                         </>
                     )}
                     {activeTab === 1 && (
                         <DetailTab
                             sales={sales}
-                            onDone={refreshItems}
+                            onDone={() => {}}
                             selectedRow={selectedItem}
                             onDocSelected={(d) => {
                                 setSelectedDoc(d);

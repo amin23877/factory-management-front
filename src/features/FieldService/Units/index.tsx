@@ -1,53 +1,49 @@
 import React, { useState } from "react";
-import { DataGrid, GridColumns, GridToolbar } from "@material-ui/data-grid";
 import { Tabs, Tab } from "@material-ui/core";
 
-import { UnitSearchBox } from "../../../app/SearchBox";
 import { BasePaper } from "../../../app/Paper";
 
-import { useDataGridData } from "../../../components/Datagrid/hooks";
 import Details from "./Details";
 
 import { formatTimestampToDate } from "../../../logic/date";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
+import DataGrid from "../../../app/NewDataGrid";
 
 export default function Unit() {
     const [activeTab, setActiveTab] = useState(0);
     const [selectedUnit, setSelectedUnit] = useState<any>();
 
-    const { rows: units, loading, page, setPage, dataGridClasses } = useDataGridData({ url: "/unit" });
-
-    const cols: GridColumns = [
+    const cols = [
         {
-            field: "Device",
-            headerName: "Device",
+            name: "Device",
+            header: "Device",
             flex: 1,
-            valueFormatter: (r) => r.row?.item?.no,
+            render: ({ data }: any) => data?.item?.no,
         },
         {
-            field: "EST.S.D",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.so?.estimatedShipDate),
-            width: 120,
+            name: "EST.S.D",
+            render: ({ data }: any) => formatTimestampToDate(data?.so?.estimatedShipDate),
+            minWidth: 120,
         },
         {
-            field: "Act.S.D.",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.so?.actualShipDate),
-            width: 120,
+            name: "Act.S.D.",
+            render: ({ data }: any) => formatTimestampToDate(data?.so?.actualShipDate),
+            minWidth: 120,
         },
-        { field: "status", headerName: "Status", width: 100 },
-        { field: "warrantyStatus", headerName: "Warranty Status", width: 150 },
-        { field: "warrantyEndDate", headerName: "warranty End Date", width: 150 },
+        { name: "status", header: "Status", minWidth: 100 },
+        { name: "warrantyStatus", header: "Warranty Status", minWidth: 150 },
+        { name: "warrantyEndDate", header: "warranty End Date", minWidth: 150 },
         {
-            field: "SO NO.",
-            headerName: "SO NO.",
-            width: 90,
-            valueFormatter: (r) => r.row?.so?.number,
+            name: "SO NO.",
+            header: "SO NO.",
+            minWidth: 90,
+            render: ({ data }: any) => data?.so?.number,
         },
         {
-            field: "SO Date",
-            headerName: "SO Date",
-            width: 100,
-            valueFormatter: (r) => formatTimestampToDate(r.row?.so?.date),
+            name: "SO Date",
+            header: "SO Date",
+            minWidth: 100,
+            render: ({ data }: any) => formatTimestampToDate(data?.so?.date),
         },
     ];
 
@@ -60,7 +56,6 @@ export default function Unit() {
                 style={{ marginBottom: 10 }}
             >
                 <Tab
-                    // label="List"
                     icon={
                         <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                             <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> List
@@ -69,7 +64,6 @@ export default function Unit() {
                     wrapped
                 />
                 <Tab
-                    // label="Details"
                     disabled={!selectedUnit}
                     icon={
                         <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -78,28 +72,15 @@ export default function Unit() {
                     }
                 />
             </Tabs>
-            {activeTab === 0 && units && (
-                <div style={{ height: "78vh" }}>
-                    <DataGrid
-                        density="compact"
-                        loading={loading}
-                        pagination
-                        paginationMode="server"
-                        page={page}
-                        onPageChange={(p) => setPage(p.page)}
-                        pageSize={25}
-                        rowCount={units ? units.totalCount : 0}
-                        className={dataGridClasses.root}
-                        filterMode="server"
-                        components={{ Toolbar: GridToolbar }}
-                        rows={units.result || []}
-                        columns={cols}
-                        onRowSelected={(d) => {
-                            setSelectedUnit(d.data);
-                            setActiveTab(1);
-                        }}
-                    />
-                </div>
+            {activeTab === 0 && (
+                <DataGrid
+                    url="/unit"
+                    columns={cols}
+                    onRowSelected={(d) => {
+                        setSelectedUnit(d.data);
+                        setActiveTab(1);
+                    }}
+                />
             )}
             {activeTab === 1 && selectedUnit && <Details unit={selectedUnit} />}
         </BasePaper>

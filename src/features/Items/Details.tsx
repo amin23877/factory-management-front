@@ -574,7 +574,15 @@ function ItemsDetails({
 
                                     {activeTab === 2 && itemSOs && <SOTable rows={itemSOs} />}
                                     {activeTab === 3 && (
-                                        <BaseDataGrid cols={poCols} rows={itemPOs || []} onRowSelected={() => {}} />
+                                        <BaseDataGrid
+                                            cols={poCols}
+                                            rows={
+                                                itemPOs
+                                                    ? itemPOs.map((i: any, index: string) => ({ ...i, id: index }))
+                                                    : []
+                                            }
+                                            onRowSelected={() => {}}
+                                        />
                                     )}
                                     {/* {activeTab === 8 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />} */}
                                     {activeTab === 4 && (

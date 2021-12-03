@@ -1,91 +1,47 @@
 import React, { useMemo } from "react";
-import { GridColumns, DataGrid, GridToolbar } from "@material-ui/data-grid";
 
-import { formatTimestampToDate } from "../../../logic/date";
-import { useDataGridData } from "../../../components/Datagrid/hooks";
 import { ParameterType } from "../../../logic/utils";
+import DataGrid from "../../../app/NewDataGrid";
 
-function SODataGrid({
-    onRowSelected,
-    params,
-    url,
-}: {
-    onRowSelected: (row: any) => void;
-    params?: ParameterType;
-    url?: string;
-}) {
-    const { dataGridClasses, loading, page, rows, setPage } = useDataGridData({ params, url: "/so" });
-
-    const cols = useMemo<GridColumns>(
+function SODataGrid({ onRowSelected, params }: { onRowSelected: (row: any) => void; params?: ParameterType }) {
+    const columns = useMemo(
         () => [
             {
-                field: "date",
-                headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-                width: 100,
+                name: "date",
+                header: "Date",
+                minWidth: 100,
+                type: "date",
             },
-            { field: "number", headerName: "SO ID", width: 100 },
-            { field: "Client", flex: 1, valueGetter: (data) => data.row.client?.name },
-            { field: "description", headerName: "Description", width: 150 },
-            { field: "Rep", width: 130, valueGetter: (data) => data.row.repOrAgency?.name },
-            { field: "state", headerName: "State", width: 120, valueGetter: (data) => data.row.repOrAgency?.state },
+            { name: "number", header: "SO ID", minWidth: 100 },
+            { name: "Client", minWidth: 100, render: ({ data }: any) => data?.client?.name },
+            { name: "description", header: "Description", minWidth: 150 },
+            { name: "Rep", minWidth: 130, render: ({ data }: any) => data?.repOrAgency?.name },
+            { name: "state", header: "State", minWidth: 120, render: ({ data }: any) => data?.repOrAgency?.state },
+
             {
-                field: "originalShipDate",
-                headerName: "Original SD.",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.originalShippingDate),
-                width: 120,
-                hide: true,
-            },
-            {
-                field: "estimatedShipDate",
-                headerName: "Estimated SD.",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.estimatedShipDate),
-                width: 120,
+                name: "estimatedShipDate",
+                header: "Estimated SD.",
+                minWidth: 120,
+                type: "date",
             },
             {
-                field: "actualShipDate",
-                headerName: "Actual SD.",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.actualShipDate),
-                width: 120,
+                name: "actualShipDate",
+                header: "Actual SD.",
+                minWidth: 120,
+                type: "date",
             },
-            { field: "invoice", headerName: "Invoice", width: 120, hide: true },
-            { field: "status", headerName: "Status", width: 120 },
+            { name: "status", header: "Status", minWidth: 120 },
             {
-                field: "total",
-                headerName: "Total Amount",
-                valueFormatter: (params) => params.row?.cost * params.row?.quantity,
-                width: 120,
+                name: "totalOrder",
+                header: "Total Amount",
+                minWidth: 120,
+                type: "number",
             },
         ],
         []
     );
 
-    return (
-        <div
-            style={{
-                flexGrow: 1,
-                height: 500,
-            }}
-        >
-            <DataGrid
-                loading={loading}
-                density="compact"
-                components={{ Toolbar: GridToolbar }}
-                className={dataGridClasses.root}
-                onRowSelected={(r) => {
-                    onRowSelected && onRowSelected(r.data);
-                }}
-                columns={cols}
-                pagination
-                paginationMode="server"
-                page={page}
-                onPageChange={(p) => setPage(p.page)}
-                pageSize={25}
-                rows={rows ? rows.result : []}
-                rowCount={rows ? rows.total : 0}
-            />
-        </div>
-    );
+    return <DataGrid url="/so" onRowSelected={onRowSelected} columns={columns} initParams={params} />;
 }
 
 export default SODataGrid;

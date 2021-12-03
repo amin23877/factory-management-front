@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import useSWR from "swr";
+// import useSWR from "swr";
 
 import Button from "../../../app/Button";
 import { BasePaper } from "../../../app/Paper";
@@ -15,7 +15,6 @@ import EmailModal from "../../Email/Modal";
 
 import { deleteQuote, IQuote } from "../../../api/quote";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
-import { formatTimestampToDate } from "../../../logic/date";
 
 export default function QuotePanel() {
     const [selectedQuote, setSelectedQuote] = useState<IQuote>();
@@ -26,14 +25,14 @@ export default function QuotePanel() {
     const [confirm, setConfirm] = useState(false);
     const [emailModal, setEmailModal] = useState(false);
 
-    const { mutate: mutateQuotes } = useSWR("/quote");
+    // const { mutate: mutateQuotes } = useSWR("/quote");
 
     const handleDelete = async () => {
         try {
             if (selectedQuote && selectedQuote.id) {
                 const resp = await deleteQuote(selectedQuote.id);
                 if (resp) {
-                    mutateQuotes();
+                    // mutateQuotes();
                 }
                 setConfirm(false);
                 setSelectedQuote(undefined);
@@ -46,8 +45,9 @@ export default function QuotePanel() {
     const columns = useMemo(
         () => [
             {
-                name: "Date",
-                render: ({ data }: any) => formatTimestampToDate(data.date),
+                name: "date",
+                header: "Date",
+                type: "date",
                 minWidth: 100,
             },
             { name: "number", header: "Quote ID", minWidth: 100 },
@@ -79,7 +79,7 @@ export default function QuotePanel() {
             },
             { name: "so", header: "SO", minWidth: 100, render: ({ data }) => data.SOId?.number },
             { name: "status", header: "Status", minWidth: 100 },
-            { name: "total", header: "Total Amount", flex: 1 },
+            { name: "total", header: "Total Amount", minWidth: 100, type: "number" },
         ],
         []
     );
@@ -129,7 +129,6 @@ export default function QuotePanel() {
                         style={{ marginBottom: "10px" }}
                     >
                         <Tab
-                            // label="List"
                             icon={
                                 <span
                                     style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
@@ -140,7 +139,6 @@ export default function QuotePanel() {
                             wrapped
                         />
                         <Tab
-                            // label="Details"
                             disabled={!selectedQuote}
                             icon={
                                 <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>

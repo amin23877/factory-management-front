@@ -1,20 +1,17 @@
 import React, { useState, useMemo, useEffect } from "react";
-import { Box, Paper } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { addDays } from "date-fns";
 
 import Button from "../../../../app/Button";
-// import { UnitSearchBox } from "../../../../app/SearchBox";
-// import { useDataGridStyles } from "../../../../app/BaseDataGrid";
-import { UnitSearchBox } from "../../../../app/SearchBox";
+
 import { DateInput } from "../../../../components/Filters/Date";
 
-// import { useDataGridData } from "../../../../components/Datagrid/hooks";
 import { formatTimestampToDate } from "../../../../logic/date";
 import { get } from "../../../../api";
-import FullDataGrid from "../../../../components/Datagrid/FullDataGrid";
+// import FullDataGrid from "../../../../components/Datagrid/FullDataGrid";
 import { IUnit } from "../../../../api/units";
-import { BasePaper } from "../../../../app/Paper";
+import DataGrid from "../../../../app/NewDataGrid";
 
 const dateStringToUnix = (date: Date) => {
     return String(Math.round(new Date(date).getTime() / 1));
@@ -57,58 +54,49 @@ function Table({ onRowSelected }: { onRowSelected: (row: IUnit) => void }) {
         getWeeks();
     }, []);
 
-    // const classes = useDataGridStyles();
-
-    const unitCols = useMemo<GridColDef[]>(() => {
-        const cols: GridColumns = [
+    const unitCols = useMemo(() => {
+        const cols = [
             {
-                field: "EST. Ship Date",
-                valueFormatter: (r) => formatTimestampToDate(r.row?.so?.estimatedShipDate),
-                width: 130,
+                name: "EST. Ship Date",
+                render: ({ data }: any) => formatTimestampToDate(data?.so?.estimatedShipDate),
+                minWidth: 130,
             },
             {
-                field: "SO NO.",
-                headerName: "SO NO.",
-                width: 90,
-                valueFormatter: (r) => r.row?.so?.number,
+                name: "SO NO.",
+                header: "SO NO.",
+                minWidth: 90,
+                render: ({ data }: any) => data?.so?.number,
             },
-            { field: "Assign", width: 100, valueFormatter: (r) => r.row?.assignee?.username },
-            { field: "number", headerName: "Unit", width: 100 },
+            { name: "Assign", minWidth: 100, render: ({ data }: any) => data?.assignee?.username },
+            { name: "number", header: "Unit", minWidth: 100 },
             {
-                field: "Device",
-                headerName: "Device",
-                width: 200,
-                valueFormatter: (r) => r.row?.item?.no,
+                name: "Device",
+                header: "Device",
+                minWidth: 200,
+                render: ({ data }: any) => data?.item?.no,
             },
-            { field: "Client", headerName: "Client", width: 110, valueFormatter: (r) => r.row?.so?.client?.name },
-            { field: "Rep", headerName: "Rep", width: 110, valueFormatter: (r) => r.row?.so?.repOrAgency?.name },
-            { field: "productionStatus", headerName: "Production Status", width: 140 },
-            { field: "Package", headerName: "Package", width: 100 }, // touch later
-            { field: "status", headerName: "Status", width: 100 },
-            { field: "Time Left", headerName: "Time Left", width: 100 }, // touch later
-            // {
-            //     field: "dueDate",
-            //     headerName: "Due Date",
-            //     flex: 1,
-            //     type: "date",
-            //     valueFormatter: (d: any) => new Date(d.row.dueDate),
-            // },
+            { name: "Client", header: "Client", minWidth: 110, render: ({ data }: any) => data?.so?.client?.name },
+            { name: "Rep", header: "Rep", minWidth: 110, render: ({ data }: any) => data?.so?.repOrAgency?.name },
+            { name: "productionStatus", header: "Production Status", minWidth: 140 },
+            { name: "Package", header: "Package", minWidth: 100 }, // touch later
+            { name: "status", header: "Status", minWidth: 100 },
+            { name: "Time Left", header: "Time Left", minWidth: 100 }, // touch later
         ];
-        const dateColumn = cols.find((column: any) => column.field === "dueDate")!;
-        const dateColIndex = cols.findIndex((column: any) => column.field === "dueDate");
-        const dateOperators = [
-            {
-                label: "Finish",
-                value: "finish",
-                getApplyFilterFn: () => null,
-                InputComponent: DateInput,
-                InputComponentProps: { value: finish },
-            },
-        ];
+        // const dateColumn = cols.find((column: any) => column.field === "dueDate")!;
+        // const dateColIndex = cols.findIndex((column: any) => column.field === "dueDate");
+        // const dateOperators = [
+        //     {
+        //         label: "Finish",
+        //         value: "finish",
+        //         getApplyFilterFn: () => null,
+        //         InputComponent: DateInput,
+        //         InputComponentProps: { value: finish },
+        //     },
+        // ];
 
-        cols[dateColIndex] = { ...dateColumn, filterOperators: dateOperators };
+        // cols[dateColIndex] = { ...dateColumn, filterOperators: dateOperators };
         return cols;
-    }, [finish]);
+    }, []);
 
     return (
         <>
@@ -164,39 +152,20 @@ function Table({ onRowSelected }: { onRowSelected: (row: IUnit) => void }) {
                     onClick={() => {
                         setTopDateFilter(undefined);
                         setFinish(undefined);
+                        setStart(undefined);
                     }}
                 >
                     clear
                 </Button>
                 <div style={{ marginLeft: "auto" }} />
             </Box>
-            {/* <DataGrid
-                        density="compact"
-                        loading={loading}
-                        pagination
-                        paginationMode="server"
-                        page={page}
-                        onPageChange={(p) => setPage(p.page)}
-                        pageSize={25}
-                        rowCount={units ? units.totalCount : 0}
-                        className={classes.root}
-                        columns={unitCols}
-                        rows={units ? units.result : []}
-                        filterMode="server"
-                        components={{ Toolbar: GridToolbar }}
-                        onFilterModelChange={(f) => {
-                            const date = f.filterModel.items[0].value;
-                            if (date) {
-                                const finishUnix = Math.round(new Date(date).getTime() / 1000);
-                                setFinish(String(finishUnix));
-                            }
-                        }}
-                        onRowSelected={(i) => {
-                            setSelectedUnit(i.data as any);
-                            setActiveTab(1);
-                        }}
-                    /> */}
-            <FullDataGrid columns={unitCols} url="/unit" height={534} onRowSelected={onRowSelected} />
+
+            <DataGrid
+                columns={unitCols}
+                url="/unit"
+                onRowSelected={onRowSelected}
+                initParams={{ finish: finish, start: start }}
+            />
         </>
     );
 }

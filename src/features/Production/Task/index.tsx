@@ -9,9 +9,9 @@ import { formatTimestampToDate } from "../../../logic/date";
 import { Tab, Tabs } from "@material-ui/core";
 import { ListAltRounded } from "@material-ui/icons";
 import { BasePaper } from "../../../app/Paper";
+import DataGrid from "../../../app/NewDataGrid";
 
 function Index() {
-    const { data: tasks } = useSwr("/prodtask");
     const { data: man } = useSwr("/engineering/manufacturing/task");
     const { data: evaluation } = useSwr("/engineering/eval/task");
     const { data: test } = useSwr("/engineering/test/task");
@@ -19,53 +19,52 @@ function Index() {
     const [taskList, setTaskList] = useState([]);
     useEffect(() => {
         if (man && evaluation && test) {
-            const newMan = man.map((i: any) => ({ ...i, type: "Manufacturing" }));
-            const newEval = evaluation.map((i: any) => ({ ...i, type: "Evaluation" }));
-            const newTest = test.map((i: any) => ({ ...i, type: "Test" }));
+            const newMan = man?.result.map((i: any) => ({ ...i, type: "Manufacturing" }));
+            const newEval = evaluation?.result.map((i: any) => ({ ...i, type: "Evaluation" }));
+            const newTest = test?.result.map((i: any) => ({ ...i, type: "Test" }));
             let combinedArray1 = newMan.concat(newEval);
             let done = combinedArray1.concat(newTest);
             setTaskList(done);
         }
     }, [man, evaluation, test]);
 
-    const tasksCols: GridColDef[] = [
+    const tasksCols = [
         {
-            field: "Date Assigned",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.assginDate),
-            width: 120,
+            name: "assginDate",
+            header: "Date Assigned",
+            minWidth: 120,
+            type: "date",
         },
         {
-            field: "Task Number",
-            valueFormatter: (r) => r.row?.EngEvalTaskId?.id || r.row?.EngManTaskId?.id || r.row?.EngTestTaskId?.id,
-            width: 120,
+            name: "Task Number",
+            render: ({ data }: any) => data?.EngEvalTaskId?.id || data?.EngManTaskId?.id || data?.EngTestTaskId?.id,
+            minWidth: 120,
         },
         {
-            field: "Task Name",
-            valueFormatter: (r) =>
-                r.row?.EngEvalTaskId?.name || r.row?.EngManTaskId?.name || r.row?.EngTestTaskId?.name,
-            width: 120,
+            name: "Task Name",
+            render: ({ data }: any) =>
+                data?.EngEvalTaskId?.name || data?.EngManTaskId?.name || data?.EngTestTaskId?.name,
+            minWidth: 120,
         },
         {
-            field: "Task Description",
-            valueFormatter: (r) =>
-                r.row?.EngEvalTaskId?.description ||
-                r.row?.EngManTaskId?.description ||
-                r.row?.EngTestTaskId?.description,
-            width: 130,
+            name: "Task Description",
+            render: ({ data }: any) =>
+                data?.EngEvalTaskId?.description || data?.EngManTaskId?.description || data?.EngTestTaskId?.description,
+            minWidth: 130,
         },
-        { field: "Unit", valueFormatter: (r) => r.row?.UnitId?.number, width: 100 },
-        { field: "Assign", valueFormatter: (r) => r.row?.UnitId?.assignee?.username, width: 100 },
-        { field: "Device", valueFormatter: (r) => r.row?.UnitId?.ItemId?.no, width: 110 },
-        { field: "SO NO.", valueFormatter: (r) => r.row?.UnitId?.LineItemRecordId?.SOId?.number, width: 100 },
+        { name: "Unit", render: ({ data }: any) => data?.UnitId?.number, minWidth: 100 },
+        { name: "Assign", render: ({ data }: any) => data?.UnitId?.assignee?.username, minWidth: 100 },
+        { name: "Device", render: ({ data }: any) => data?.UnitId?.ItemId?.no, minWidth: 110 },
+        { name: "SO NO.", render: ({ data }: any) => data?.UnitId?.LineItemRecordId?.SOId?.number, minWidth: 100 },
         {
-            field: "Est. Ship Date",
-            valueFormatter: (r) => formatTimestampToDate(r.row?.UnitId?.LineItemRecordId?.SOId?.estimatedShipDate),
-            width: 130,
+            name: "Est. Ship Date",
+            render: ({ data }: any) => formatTimestampToDate(data?.UnitId?.LineItemRecordId?.SOId?.estimatedShipDate),
+            minWidth: 130,
         },
-        { field: "Production Status", valueFormatter: (r) => r.row?.UnitId?.productionStatus, width: 140 },
-        { field: "Package", headerName: "Package", width: 100 }, // touch later
-        { field: "Status", valueFormatter: (r) => r.row?.UnitId?.status, width: 100 },
-        { field: "Time Left", valueFormatter: (r) => r.row?.UnitId?.timeLeft, width: 120 },
+        { name: "Production Status", render: ({ data }: any) => data?.UnitId?.productionStatus, minWidth: 140 },
+        { name: "Package", headerName: "Package", minWidth: 100 }, // touch later
+        { name: "Status", render: ({ data }: any) => data?.UnitId?.status, minWidth: 100 },
+        { name: "Time Left", render: ({ data }: any) => data?.UnitId?.timeLeft, minWidth: 120 },
     ];
 
     const taskListCols: GridColDef[] = [
@@ -101,15 +100,10 @@ function Index() {
                         }
                         wrapped
                     />
-                    {/* 
-                    <Tab label="Tasks" />
-                    <Tab label="Task List" /> */}
                 </Tabs>
                 <div style={{ flex: 1 }}></div>
             </Box>
-            {activeTab === 0 && (
-                <BaseDataGrid cols={tasksCols} rows={tasks || []} onRowSelected={(d) => {}} height={580} />
-            )}
+            {activeTab === 0 && <DataGrid columns={tasksCols} url="/prodTask" onRowSelected={(d) => {}} />}
             {activeTab === 1 && (
                 <BaseDataGrid cols={taskListCols} rows={taskList || []} onRowSelected={(d) => {}} height={580} />
             )}

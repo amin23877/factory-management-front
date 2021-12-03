@@ -12,6 +12,7 @@ import { makeStyles } from "@material-ui/styles";
 import { CheckRounded, ClearRounded } from "@material-ui/icons";
 import moment from "moment";
 import { formatTimestampToDate } from "../logic/date";
+import { ParameterType } from "../logic/utils";
 
 window.moment = moment;
 
@@ -60,11 +61,13 @@ function NewDataGrid({
     columns,
     style,
     url,
+    initParams,
 }: {
     onRowSelected: (row: any) => void;
     columns: any[];
     style?: any;
     url: string;
+    initParams?: ParameterType;
 }) {
     const classes = useStyle();
 
@@ -114,8 +117,8 @@ function NewDataGrid({
     const defaultFilterValue = useMemo(() => {
         let res = columns.map(({ name, type }) => ({
             name,
+            operator: type ? "eq" : "startsWith",
             type: type ? type : "string",
-            operator: type === "string" ? "startsWith" : "eq",
             value: type === "date" ? "" : undefined,
         }));
 
@@ -132,7 +135,7 @@ function NewDataGrid({
             data: any[];
             count: number;
         }> => {
-            let params: any = {};
+            let params: any = { ...initParams };
             for (const fv of filterValue) {
                 if (fv.value) {
                     params[getOperator(fv.operator) + fv.name] = fv.value;
@@ -157,7 +160,7 @@ function NewDataGrid({
                 return { data: [], count: 0 };
             }
         },
-        [url]
+        [initParams, url]
     );
 
     return (
@@ -171,6 +174,7 @@ function NewDataGrid({
             onRowClick={({ data }) => onRowSelected(data)}
             showColumnMenuTool={false}
             pagination
+            defaultLimit={100}
             className={classes.root}
             filterTypes={{
                 boolean: {
