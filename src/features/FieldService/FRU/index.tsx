@@ -164,7 +164,7 @@ export default function FRU() {
                     <DeviceDetails
                         sales={true}
                         onDone={() => {}}
-                        selectedRow={selectedItemFru.data}
+                        selectedRow={selectedItemFru}
                         onDocSelected={(d) => {}}
                         onNoteSelected={(d) => {}}
                         onStepSelected={(d) => {}}

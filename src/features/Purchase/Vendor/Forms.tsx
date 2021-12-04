@@ -4,13 +4,13 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { mutate } from "swr";
 
-import TextField from "../../app/TextField";
-import Button from "../../app/Button";
-import { FieldSelect } from "../../app/Inputs";
-import { BasePaper } from "../../app/Paper";
+import TextField from "../../../app/TextField";
+import Button from "../../../app/Button";
+import { FieldSelect } from "../../../app/Inputs";
+import { BasePaper } from "../../../app/Paper";
 
-import { createVendor, updateVendor } from "../../api/vendor";
-import { getVendorTypes } from "../../api/vendorType";
+import { createVendor, updateVendor } from "../../../api/vendor";
+import { getVendorTypes } from "../../../api/vendorType";
 
 const schema = Yup.object().shape({
     name: Yup.string().required(),

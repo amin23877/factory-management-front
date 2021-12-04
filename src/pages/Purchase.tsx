@@ -5,7 +5,7 @@ import { MyTabs, MyTab } from "../app/Tabs";
 
 import PurchaseQuote from "../features/Purchase/Quote";
 import PurchasePO from "../features/Purchase/PO";
-import Vendors from "../features/Vendor";
+import Vendors from "../features/Purchase/Vendor";
 
 export default function Purchase() {
     const [activeTab, setActiveTab] = useState(0);

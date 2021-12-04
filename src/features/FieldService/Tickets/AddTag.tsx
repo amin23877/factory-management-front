@@ -5,33 +5,33 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import useSWR from "swr";
 
-import Dialog from "../../app/Dialog";
-import TextField from "../../app/TextField";
-import Button from "../../app/Button";
-import Toast from "../../app/Toast";
+import Dialog from "../../../app/Dialog";
+import TextField from "../../../app/TextField";
+import Button from "../../../app/Button";
+import Toast from "../../../app/Toast";
 
-import { IVendorType, addVendorType, deleteVendorType, editVendorType } from "../../api/vendorType";
-import Confirm from "../Modals/Confirm";
+import { ITicketTag, addTicketTags, deleteTicketTags, editTicketTags } from "../../../api/ticketTag";
+import Confirm from "../../Modals/Confirm";
 
 const schema = Yup.object().shape({
     name: Yup.string().required(),
 });
 
-export default function VendorTypeModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+export default function CustomerTypeModal({ open, onClose }: { open: boolean; onClose: () => void }) {
     const [confirm, setConfirm] = useState(false);
     const [selectedCT, setSelectedCT] = useState<string>();
-    const { data: PPOTypes, mutate } = useSWR("/vendortype");
+    const { data: ticketTags, mutate } = useSWR("/ticketTags");
 
-    const handleSubmit = async (d: IVendorType, { resetForm }: any) => {
+    const handleSubmit = async (d: ITicketTag, { resetForm }: any) => {
         try {
             if (d.id) {
-                await editVendorType(d.id, d.name);
+                await editTicketTags(d.id, d.name);
                 Toast("Record updated", "success");
-                resetForm({ values: { name: "" } as IVendorType });
+                resetForm({ values: { name: "" } as ITicketTag });
             } else {
-                await addVendorType(d.name);
+                await addTicketTags(d.name);
                 Toast("Record added", "success");
-                resetForm({ values: { name: "" } as IVendorType });
+                resetForm({ values: { name: "" } as ITicketTag });
             }
         } catch (error) {
             console.log(error);
@@ -43,7 +43,7 @@ export default function VendorTypeModal({ open, onClose }: { open: boolean; onCl
     const handleDelete = async () => {
         try {
             if (selectedCT) {
-                await deleteVendorType(selectedCT);
+                await deleteTicketTags(selectedCT);
                 Toast("Record deleted", "success");
                 setConfirm(false);
                 mutate();
@@ -56,7 +56,7 @@ export default function VendorTypeModal({ open, onClose }: { open: boolean; onCl
     return (
         <>
             <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
-            <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth title="Add Vendor Types">
+            <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth title="Add Ticket Tags">
                 <Box m={1}>
                     <Formik
                         initialValues={{} as { name: string; id?: string }}
@@ -78,14 +78,14 @@ export default function VendorTypeModal({ open, onClose }: { open: boolean; onCl
                                         </Button>
                                         <Button
                                             variant="outlined"
-                                            onClick={() => resetForm({ values: { name: "" } as IVendorType })}
+                                            onClick={() => resetForm({ values: { name: "" } as ITicketTag })}
                                         >
                                             clear
                                         </Button>
                                     </Box>
                                     <List>
-                                        {PPOTypes &&
-                                            PPOTypes.map((ct: any) => (
+                                        {ticketTags &&
+                                            ticketTags.map((ct: any) => (
                                                 <ListItem key={ct.id}>
                                                     <ListItemText>{ct.name}</ListItemText>
                                                     <ListItemSecondaryAction>

@@ -16,20 +16,10 @@ interface IForm {
     isSubmitting?: boolean;
     device?: boolean;
 }
-export const General = ({
-    isSubmitting,
-    values,
-    errors,
-    handleChange,
-    handleBlur,
-    touched,
-    setFieldValue,
-    device,
-}: IForm) => {
+export const General = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
     return (
         <>
             <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
-                {/* Unite Name Unite Description Serial Number Status ID SO */}
                 <TextField
                     label="Unit name"
                     placeholder="Unit name"
@@ -37,7 +27,7 @@ export const General = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={Boolean(errors.name && touched.name)}
-                    value={values.item.name}
+                    value={values?.item?.name}
                     style={{ gridColumnEnd: "span 2" }}
                     disabled
                 />
@@ -50,12 +40,12 @@ export const General = ({
                     name="description"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.item.description}
+                    value={values?.item?.description}
                     disabled
                 />
                 <TextField
                     label="Serial Number"
-                    value={values.item.no}
+                    value={values?.item?.no}
                     name="no"
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -63,7 +53,6 @@ export const General = ({
                     placeholder="Serial Number"
                     disabled
                 />
-
                 <ArraySelect
                     fullWidth
                     label="Status"
@@ -97,7 +86,7 @@ export const General = ({
                 />
                 <TextField
                     label="SO"
-                    value={values.so.number}
+                    value={values?.so?.number}
                     name="so"
                     onChange={handleChange}
                     onBlur={handleBlur}

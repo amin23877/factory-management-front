@@ -5,11 +5,11 @@ import { MyTabs, MyTab } from "../app/Tabs";
 
 const FRUs = React.lazy(() => import("../features/FieldService/FRU"));
 const ServiceIndex = React.lazy(() => import("../features/FieldService"));
-const Tickets = React.lazy(() => import("../features/Tickets"));
-const Tasks = React.lazy(() => import("../features/Tasks"));
+const Tickets = React.lazy(() => import("../features/FieldService/Tickets"));
+const Tasks = React.lazy(() => import("../features/FieldService/Tasks"));
 const Units = React.lazy(() => import("../features/FieldService/Units"));
 const UP = React.lazy(() => import("../features/FieldService/UP"));
-const Vendors = React.lazy(() => import("../features/Vendor"));
+const Vendors = React.lazy(() => import("../features/Purchase/Vendor"));
 
 export default function FieldService() {
     const [activeTab, setActiveTab] = useState(0);

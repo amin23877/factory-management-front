@@ -1,6 +1,6 @@
 import React from "react";
-import DataGrid from "../../app/NewDataGrid";
-import { ITicket } from "../../api/ticket";
+import DataGrid from "../../../app/NewDataGrid";
+import { ITicket } from "../../../api/ticket";
 
 export default function Table({ onRowSelected }: { onRowSelected: (d: ITicket) => void }) {
     const cols = [

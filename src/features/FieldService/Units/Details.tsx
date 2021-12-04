@@ -46,12 +46,10 @@ function Details({ unit }: { unit: IUnit }) {
     const [editShip, setEditShip] = useState(false);
     const [selectedShip, setSelectedShip] = useState<IShipment>();
 
-    // const { data: warranties } = useSWR(gridActiveTab === 1 ? `/lineservice?UnitId=${unit.id}` : null);
     const { data: unitBoms } = useSWR(gridActiveTab === 2 ? `/ubom?UnitId=${unit.id}` : null);
     const { data: documents } = useSWR<IDocument[]>(gridActiveTab === 3 ? `/document/unit/${unit.id}` : null);
     const { data: shipments } = useSWR(gridActiveTab === 4 ? `/shipment?UnitId=${unit.id}` : null);
-    // const { data: SOI } = useSWR(gridActiveTab === 6 ? `/unit?SOId=${unit.so.id}` : null);
-    // const { data: fsh } = useSWR(gridActiveTab === 7 ? `/ticket?UnitId=${unit.id}` : null);
+
     const bomCols = useMemo<GridColDef[]>(
         () => [
             { field: "Line", width: 80 },
@@ -127,7 +125,6 @@ function Details({ unit }: { unit: IUnit }) {
         ],
         []
     );
-    // Part Number	Description	QTY
     const SOICols = useMemo<GridColumns>(
         () => [
             { field: "Option Number", valueFormatter: (params) => params.row?.ItemId?.no, flex: 1 },
@@ -278,7 +275,6 @@ function Details({ unit }: { unit: IUnit }) {
                     <BasePaper>
                         {gridActiveTab === 1 && (
                             <Box>
-                                {/* TODO: fetch warranties */}
                                 <BaseDataGrid cols={warCols} rows={[]} onRowSelected={(d) => {}} height="67.3vh" />
                             </Box>
                         )}
@@ -330,10 +326,8 @@ function Details({ unit }: { unit: IUnit }) {
                             </>
                         )}
                         {gridActiveTab === 6 && (
-                            // TODO: fetch sales order items
                             <BaseDataGrid cols={SOICols} rows={[]} onRowSelected={(r) => {}} height="67.3vh" />
                         )}
-                        {/* TODO: fetch fsh */}
                         {gridActiveTab === 7 && (
                             <BaseDataGrid cols={fshCols} rows={[]} onRowSelected={(r) => {}} height="67.3vh" />
                         )}

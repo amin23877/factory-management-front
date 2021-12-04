@@ -5,13 +5,13 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import useSWR from "swr";
 
-import Dialog from "../../app/Dialog";
-import TextField from "../../app/TextField";
-import Button from "../../app/Button";
-import Toast from "../../app/Toast";
+import Dialog from "../../../app/Dialog";
+import TextField from "../../../app/TextField";
+import Button from "../../../app/Button";
+import Toast from "../../../app/Toast";
 
-import { ITicketTag, addTicketTags, deleteTicketTags, editTicketTags } from "../../api/ticketTag";
-import Confirm from "../Modals/Confirm";
+import { ITicketStatus, addTicketStatus, deleteTicketStatus, editTicketStatus } from "../../../api/ticketStatus";
+import Confirm from "../../Modals/Confirm";
 
 const schema = Yup.object().shape({
     name: Yup.string().required(),
@@ -20,18 +20,18 @@ const schema = Yup.object().shape({
 export default function CustomerTypeModal({ open, onClose }: { open: boolean; onClose: () => void }) {
     const [confirm, setConfirm] = useState(false);
     const [selectedCT, setSelectedCT] = useState<string>();
-    const { data: ticketTags, mutate } = useSWR("/ticketTags");
+    const { data: ticketStatus, mutate } = useSWR("/ticketStatus");
 
-    const handleSubmit = async (d: ITicketTag, { resetForm }: any) => {
+    const handleSubmit = async (d: ITicketStatus, { resetForm }: any) => {
         try {
             if (d.id) {
-                await editTicketTags(d.id, d.name);
+                await editTicketStatus(d.id, d.name);
                 Toast("Record updated", "success");
-                resetForm({ values: { name: "" } as ITicketTag });
+                resetForm({ values: { name: "" } as ITicketStatus });
             } else {
-                await addTicketTags(d.name);
+                await addTicketStatus(d.name);
                 Toast("Record added", "success");
-                resetForm({ values: { name: "" } as ITicketTag });
+                resetForm({ values: { name: "" } as ITicketStatus });
             }
         } catch (error) {
             console.log(error);
@@ -43,7 +43,7 @@ export default function CustomerTypeModal({ open, onClose }: { open: boolean; on
     const handleDelete = async () => {
         try {
             if (selectedCT) {
-                await deleteTicketTags(selectedCT);
+                await deleteTicketStatus(selectedCT);
                 Toast("Record deleted", "success");
                 setConfirm(false);
                 mutate();
@@ -56,7 +56,7 @@ export default function CustomerTypeModal({ open, onClose }: { open: boolean; on
     return (
         <>
             <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
-            <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth title="Add Ticket Tags">
+            <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth title="Add Ticket Status">
                 <Box m={1}>
                     <Formik
                         initialValues={{} as { name: string; id?: string }}
@@ -78,14 +78,14 @@ export default function CustomerTypeModal({ open, onClose }: { open: boolean; on
                                         </Button>
                                         <Button
                                             variant="outlined"
-                                            onClick={() => resetForm({ values: { name: "" } as ITicketTag })}
+                                            onClick={() => resetForm({ values: { name: "" } as ITicketStatus })}
                                         >
                                             clear
                                         </Button>
                                     </Box>
                                     <List>
-                                        {ticketTags &&
-                                            ticketTags.map((ct: any) => (
+                                        {ticketStatus &&
+                                            ticketStatus.map((ct: any) => (
                                                 <ListItem key={ct.id}>
                                                     <ListItemText>{ct.name}</ListItemText>
                                                     <ListItemSecondaryAction>

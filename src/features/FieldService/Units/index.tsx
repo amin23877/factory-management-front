@@ -77,7 +77,7 @@ export default function Unit() {
                     url="/unit"
                     columns={cols}
                     onRowSelected={(d) => {
-                        setSelectedUnit(d.data);
+                        setSelectedUnit(d);
                         setActiveTab(1);
                     }}
                 />

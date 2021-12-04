@@ -27,7 +27,6 @@ function Index() {
                     style={{ marginBottom: "10px" }}
                 >
                     <Tab
-                        // label="List"
                         icon={
                             <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                 <ListAltRounded style={{ marginRight: "5px" }} /> Unit List
@@ -36,7 +35,6 @@ function Index() {
                         wrapped
                     />
                     <Tab
-                        // label="List"
                         icon={
                             <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                 <ListAltRounded style={{ marginRight: "5px" }} /> Service List
@@ -45,7 +43,6 @@ function Index() {
                         wrapped
                     />
                     <Tab
-                        // label="Details"
                         disabled={!(selectedTicket || selectedUnit)}
                         icon={
                             <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -53,9 +50,6 @@ function Index() {
                             </span>
                         }
                     />
-                    {/* <Tab label="Unit List" />
-                    <Tab label="Service List" />
-                    <Tab label="Details" /> */}
                 </Tabs>
                 <div style={{ flex: 1 }}></div>
             </Box>
@@ -64,7 +58,7 @@ function Index() {
                     onRowSelected={(u) => {
                         setSelectedTicket(null);
                         setActiveTab(2);
-                        setSelectedUnit(u?.data);
+                        setSelectedUnit(u);
                     }}
                 />
             )}
@@ -79,8 +73,6 @@ function Index() {
             )}
             {activeTab === 2 && selectedUnit && <UnitDetails unit={selectedUnit} />}
             {activeTab === 2 && selectedTicket && <TicketDetails ticket={selectedTicket} />}
-            {/* {activeTab === 0 && <UnitList />}
-            {activeTab === 1 && <ServiceList />} */}
         </BasePaper>
     );
 }

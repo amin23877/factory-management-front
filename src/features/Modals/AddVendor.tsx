@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { GridColDef } from "@material-ui/data-grid";
 import useSWR, { mutate } from "swr";
 
-import VendingModal from "../../features/Vendor/Vending/Modal";
+import VendingModal from "../Purchase/Vendor/Vending/Modal";
 
 import Dialog from "../../app/Dialog";
 import BaseDataGrid from "../../app/BaseDataGrid";

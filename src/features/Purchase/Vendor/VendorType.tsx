@@ -5,33 +5,33 @@ import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import useSWR from "swr";
 
-import Dialog from "../../app/Dialog";
-import TextField from "../../app/TextField";
-import Button from "../../app/Button";
-import Toast from "../../app/Toast";
+import Dialog from "../../../app/Dialog";
+import TextField from "../../../app/TextField";
+import Button from "../../../app/Button";
+import Toast from "../../../app/Toast";
 
-import { ITicketCategory, addTicketCategory, deleteTicketCategory, editTicketCategory } from "../../api/ticketCategory";
-import Confirm from "../Modals/Confirm";
+import { IVendorType, addVendorType, deleteVendorType, editVendorType } from "../../../api/vendorType";
+import Confirm from "../../Modals/Confirm";
 
 const schema = Yup.object().shape({
     name: Yup.string().required(),
 });
 
-export default function CustomerTypeModal({ open, onClose }: { open: boolean; onClose: () => void }) {
+export default function VendorTypeModal({ open, onClose }: { open: boolean; onClose: () => void }) {
     const [confirm, setConfirm] = useState(false);
     const [selectedCT, setSelectedCT] = useState<string>();
-    const { data: ticketCategory, mutate } = useSWR("/ticketCategory");
+    const { data: PPOTypes, mutate } = useSWR("/vendortype");
 
-    const handleSubmit = async (d: ITicketCategory, { resetForm }: any) => {
+    const handleSubmit = async (d: IVendorType, { resetForm }: any) => {
         try {
             if (d.id) {
-                await editTicketCategory(d.id, d.name);
+                await editVendorType(d.id, d.name);
                 Toast("Record updated", "success");
-                resetForm({ values: { name: "" } as ITicketCategory });
+                resetForm({ values: { name: "" } as IVendorType });
             } else {
-                await addTicketCategory(d.name);
+                await addVendorType(d.name);
                 Toast("Record added", "success");
-                resetForm({ values: { name: "" } as ITicketCategory });
+                resetForm({ values: { name: "" } as IVendorType });
             }
         } catch (error) {
             console.log(error);
@@ -43,7 +43,7 @@ export default function CustomerTypeModal({ open, onClose }: { open: boolean; on
     const handleDelete = async () => {
         try {
             if (selectedCT) {
-                await deleteTicketCategory(selectedCT);
+                await deleteVendorType(selectedCT);
                 Toast("Record deleted", "success");
                 setConfirm(false);
                 mutate();
@@ -56,7 +56,7 @@ export default function CustomerTypeModal({ open, onClose }: { open: boolean; on
     return (
         <>
             <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
-            <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth title="Add Ticket Category">
+            <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth title="Add Vendor Types">
                 <Box m={1}>
                     <Formik
                         initialValues={{} as { name: string; id?: string }}
@@ -78,14 +78,14 @@ export default function CustomerTypeModal({ open, onClose }: { open: boolean; on
                                         </Button>
                                         <Button
                                             variant="outlined"
-                                            onClick={() => resetForm({ values: { name: "" } as ITicketCategory })}
+                                            onClick={() => resetForm({ values: { name: "" } as IVendorType })}
                                         >
                                             clear
                                         </Button>
                                     </Box>
                                     <List>
-                                        {ticketCategory &&
-                                            ticketCategory.map((ct: any) => (
+                                        {PPOTypes &&
+                                            PPOTypes.map((ct: any) => (
                                                 <ListItem key={ct.id}>
                                                     <ListItemText>{ct.name}</ListItemText>
                                                     <ListItemSecondaryAction>

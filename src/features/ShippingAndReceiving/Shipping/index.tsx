@@ -18,10 +18,9 @@ export default function Ship({ tab }: { tab: number }) {
         tab !== 2
             ? [
                   {
-                      name: "SO NO.",
+                      name: "sono",
                       header: "SO NO.",
                       width: 90,
-                      render: ({ data }: any) => data?.so?.number,
                   },
                   {
                       name: "estimatedShipDate",
@@ -54,10 +53,9 @@ export default function Ship({ tab }: { tab: number }) {
               ]
             : [
                   {
-                      name: "SO NO.",
+                      name: "sono",
                       header: "SO NO.",
                       width: 90,
-                      render: ({ data }: any) => data?.so?.number,
                   },
 
                   {

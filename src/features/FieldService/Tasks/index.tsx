@@ -4,9 +4,9 @@ import FullCalendar, { EventClickArg, EventDropArg } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, { Draggable, DropArg } from "@fullcalendar/interaction";
 
-import { BasePaper } from "../../app/Paper";
-import { changeTaskDate, getTasks, ITask } from "../../api/task";
-import TaskModal from "../../features/Tasks/TaskModal";
+import { BasePaper } from "../../../app/Paper";
+import { changeTaskDate, getTasks, ITask } from "../../../api/task";
+import TaskModal from "./TaskModal";
 
 export default function Tasks() {
     const [calendarEvents, setCalendarEvents] = useState([]);

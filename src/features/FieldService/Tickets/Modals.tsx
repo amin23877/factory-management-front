@@ -1,9 +1,9 @@
 import { Formik } from "formik";
 import React from "react";
 import { mutate } from "swr";
-import { createTicket, ITicket, schema } from "../../api/ticket";
+import { createTicket, ITicket, schema } from "../../../api/ticket";
 
-import Dialog from "../../app/Dialog";
+import Dialog from "../../../app/Dialog";
 import TicketForm from "./Forms";
 
 export default function Modal({ open, onClose }: { open: boolean; onClose: () => void }) {

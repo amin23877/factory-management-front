@@ -17,20 +17,20 @@ import { mutate } from "swr";
 import Table from "./Table";
 import Details from "./Details";
 
-import List from "../../app/SideUtilityList";
-import TicketModal from "../../features/Tickets/Modals";
+import List from "../../../app/SideUtilityList";
+import TicketModal from "./Modals";
 
-import { ITicket } from "../../api/ticket";
-import NoteModal from "../Modals/NoteModals";
-import DocumentModal from "../Modals/DocumentModals";
-import { INote } from "../../api/note";
-import { IDocument } from "../../api/document";
-import AddSOModal from "../Sales/SO/AddSoModal";
-import AddQuote from "../Sales/Quote/AddQuote";
+import { ITicket } from "../../../api/ticket";
+import NoteModal from "../../Modals/NoteModals";
+import DocumentModal from "../../Modals/DocumentModals";
+import { INote } from "../../../api/note";
+import { IDocument } from "../../../api/document";
+import AddSOModal from "../../Sales/SO/AddSoModal";
+import AddQuote from "../../Sales/Quote/AddQuote";
 import AddTagModal from "./AddTag";
 import AddStatusModal from "./AddStatus";
 import AddCategoryModal from "./AddCategory";
-import { BasePaper } from "../../app/Paper";
+import { BasePaper } from "../../../app/Paper";
 
 export default function Tickets() {
     const [ticketModal, setTicketModal] = useState(false);

@@ -13,13 +13,7 @@ import { BasePaper } from "../../../app/Paper";
 
 import { IMatrice, postMatriceData } from "../../../api/matrice";
 import { CustomFooterStatusComponent } from "../../../components/Datagrid/FooterStatus";
-import {
-    splitColumnNames,
-    extractLevels,
-    generateDatagridColumns,
-    generateRows,
-    extractPartNames,
-} from "../../../logic/matrice";
+import { splitColumnNames, extractLevels, generateDatagridColumns, generateRows } from "../../../logic/matrice";
 
 const useStyles = makeStyles({
     root: {
@@ -152,7 +146,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
                         Submit changes
                     </Button>
 
-                    <Box height={538}>
+                    <Box>
                         <DataGrid
                             density="compact"
                             className={classes.root}

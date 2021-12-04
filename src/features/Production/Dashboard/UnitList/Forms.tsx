@@ -43,7 +43,7 @@ export const General = ({
                 />
                 <TextField
                     label="SO Date"
-                    value={formatTimestampToDate(values.so.date)}
+                    value={formatTimestampToDate(values?.so?.date)}
                     name="soDate"
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -90,27 +90,6 @@ export const UnitInfo = ({
     return (
         <>
             <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
-                {/* <TextField
-                    name="laborCost"
-                    value={values.laborCost}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.laborCost)}
-                    helperText={errors.laborCost}
-                    size="small"
-                    placeholder="Labor Cost"
-                    label="Labor Cost"
-                /> */}
-                {/* <FieldSelect
-                    request={getAllEmployees}
-                    itemTitleField="username"
-                    itemValueField="id"
-                    name="assignee"
-                    onChange={handleChange}
-                    label="Employee"
-                    placeholder="Employee"
-                    value={typeof values.assignee === "string" ? values.assignee : values.assignee?.id}
-                /> */}
                 <TextField
                     label="Unit"
                     placeholder="Unit"
@@ -123,7 +102,7 @@ export const UnitInfo = ({
                 />
                 <TextField
                     label="Device Number"
-                    value={values.item.no}
+                    value={values?.item?.no}
                     name="no"
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -138,7 +117,7 @@ export const UnitInfo = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                     error={Boolean(errors.name && touched.name)}
-                    value={values.item.name}
+                    value={values?.item?.name}
                     style={{ gridColumnEnd: "span 2" }}
                     disabled
                 />
@@ -152,7 +131,7 @@ export const UnitInfo = ({
                     name="description"
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    value={values.item.description}
+                    value={values?.item?.description}
                     disabled
                 />
             </Box>

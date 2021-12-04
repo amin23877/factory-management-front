@@ -12,7 +12,8 @@ export default function DevicesList({ onDeviceSelected }: { onDeviceSelected: (r
             url="/item"
             initParams={{ device: true }}
             columns={cols}
-            onRowSelected={(params) => onDeviceSelected(params.data)}
+            // onRowSelected={(params) => onDeviceSelected(params.data)}
+            onRowSelected={onDeviceSelected}
             style={{ minHeight: "calc(100vh - 160px)" }}
         />
     );

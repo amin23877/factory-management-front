@@ -1,6 +1,6 @@
 import React from "react";
 
-import Dialog from "../../app/Dialog";
+import Dialog from "../../../app/Dialog";
 import { AddVendorForm } from "./Forms";
 
 export default function VendorDialog({

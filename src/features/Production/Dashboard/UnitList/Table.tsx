@@ -1,15 +1,11 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { Box } from "@material-ui/core";
-import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { addDays } from "date-fns";
 
 import Button from "../../../../app/Button";
 
-import { DateInput } from "../../../../components/Filters/Date";
-
 import { formatTimestampToDate } from "../../../../logic/date";
 import { get } from "../../../../api";
-// import FullDataGrid from "../../../../components/Datagrid/FullDataGrid";
 import { IUnit } from "../../../../api/units";
 import DataGrid from "../../../../app/NewDataGrid";
 
@@ -82,25 +78,12 @@ function Table({ onRowSelected }: { onRowSelected: (row: IUnit) => void }) {
             { name: "status", header: "Status", minWidth: 100 },
             { name: "Time Left", header: "Time Left", minWidth: 100 }, // touch later
         ];
-        // const dateColumn = cols.find((column: any) => column.field === "dueDate")!;
-        // const dateColIndex = cols.findIndex((column: any) => column.field === "dueDate");
-        // const dateOperators = [
-        //     {
-        //         label: "Finish",
-        //         value: "finish",
-        //         getApplyFilterFn: () => null,
-        //         InputComponent: DateInput,
-        //         InputComponentProps: { value: finish },
-        //     },
-        // ];
 
-        // cols[dateColIndex] = { ...dateColumn, filterOperators: dateOperators };
         return cols;
     }, []);
 
     return (
         <>
-            {/* <UnitSearchBox /> */}
             <Box display="flex" alignItems="center" my={1}>
                 <Button
                     color={topDateFilter === "week" ? "primary" : "default"}

@@ -4,14 +4,14 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { mutate } from "swr";
 
-import Dialog from "../../../app/Dialog";
-import TextField from "../../../app/TextField";
-import Button from "../../../app/Button";
-import { FieldSelect } from "../../../app/Inputs";
+import Dialog from "../../../../app/Dialog";
+import TextField from "../../../../app/TextField";
+import Button from "../../../../app/Button";
+import { FieldSelect } from "../../../../app/Inputs";
 
-import { IVendor } from "../../../api/vendor";
-import { createVending, deleteVending, updateVending } from "../../../api/vending";
-import { getItems } from "../../../api/items";
+import { IVendor } from "../../../../api/vendor";
+import { createVending, deleteVending, updateVending } from "../../../../api/vending";
+import { getItems } from "../../../../api/items";
 
 const schema = Yup.object().shape({
     serialNo: Yup.string().required(),

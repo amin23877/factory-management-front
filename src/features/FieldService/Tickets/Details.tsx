@@ -4,18 +4,18 @@ import { GridColumns } from "@material-ui/data-grid";
 import { mutate } from "swr";
 import { Form, Formik } from "formik";
 
-import BaseDataGrid from "../../app/BaseDataGrid";
-import { BasePaper } from "../../app/Paper";
-import Snack from "../../app/Snack";
+import BaseDataGrid from "../../../app/BaseDataGrid";
+import { BasePaper } from "../../../app/Paper";
+import Snack from "../../../app/Snack";
 import JobForm, { ContactForm, EntitiesForm, TechnicianForm } from "./Forms";
-import SODatagrid from "../Sales/SO/Datagrid";
+import SODatagrid from "../../Sales/SO/Datagrid";
 
-import { ITicket, schema, updateTicket } from "../../api/ticket";
+import { ITicket, schema, updateTicket } from "../../../api/ticket";
 // import { fetcher } from "../../api";
 // import QuoteDatagrid from "../Sales/Quote/Datagrid";
-import { getModifiedValues } from "../../logic/utils";
-import { formatTimestampToDate } from "../../logic/date";
-import { fileType } from "../../logic/fileType";
+import { getModifiedValues } from "../../../logic/utils";
+import { formatTimestampToDate } from "../../../logic/date";
+import { fileType } from "../../../logic/fileType";
 
 export default function Details({
     initialValue,

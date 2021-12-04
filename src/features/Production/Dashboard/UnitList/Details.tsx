@@ -1,10 +1,10 @@
 import React, { useMemo, useRef, useState, Fragment } from "react";
 import { Box, Typography, Tabs, Tab } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
+import { Formik, Form } from "formik";
+import useSWR, { mutate } from "swr";
+import * as Yup from "yup";
 
-// import UnitInfo from "./UnitInfo";
-// import { General as ItemGeneral } from "../../../Items/Forms";
-// import { GeneralForm as SOGeneral } from "../../../Sales/SO/Forms";
 import { General, UnitInfo } from "./Forms";
 import { host } from "../../../../host";
 import Button from "../../../../app/Button";
@@ -16,9 +16,6 @@ import { IUnit, updateUnit } from "../../../../api/units";
 import UploadButton from "../../../../app/FileUploader";
 
 import { exportPdf } from "../../../../logic/pdf";
-import { Formik, Form } from "formik";
-import useSWR, { mutate } from "swr";
-import * as Yup from "yup";
 import Toast from "../../../../app/Toast";
 import { IDocument } from "../../../../api/document";
 import { formatTimestampToDate } from "../../../../logic/date";
@@ -105,7 +102,7 @@ function Details({ unit }: { unit: IUnit }) {
             : null
     );
     const { data: documents } = useSWR<IDocument[]>(gridActiveTab === 1 ? `/document/unit/${unit.id}` : null);
-    const { data: unitBoms } = useSWR(`/ubom?UnitId=${unit.id}`);
+    const { data: unitBoms } = useSWR(gridActiveTab === 2 ? `/ubom?UnitId=${unit.id}` : null);
 
     const bomCols = useMemo<GridColDef[]>(
         () => [
@@ -201,7 +198,6 @@ function Details({ unit }: { unit: IUnit }) {
                                     <Tab label="Unit Info" />
                                     <Tab label="Options" />
                                     <Tab label="Battery Info" />
-                                    {/* <Tab label="SO" /> */}
                                 </Tabs>
                                 {infoActiveTab === 0 && (
                                     <Box
@@ -286,7 +282,7 @@ function Details({ unit }: { unit: IUnit }) {
             <UnitWorkFlow />
             <ProductionWorkFlow unitId={unit.id} stepper={unit.productionStatus} />
             <BasePaper>
-                <Tabs value={gridActiveTab} onChange={(e, nv) => setGridActiveTab(nv)}>
+                <Tabs value={gridActiveTab} onChange={(e, nv) => setGridActiveTab(nv)} textColor="primary">
                     <Tab label="Warranties" />
                     <Tab label="Documents" />
                     <Tab label="BOM" />
@@ -298,7 +294,7 @@ function Details({ unit }: { unit: IUnit }) {
 
                 {gridActiveTab === 0 && (
                     <Box>
-                        <BaseDataGrid cols={warCols} rows={warranties || []} onRowSelected={(d) => {}} />
+                        <BaseDataGrid cols={warCols} rows={warranties.result || []} onRowSelected={(d) => {}} />
                     </Box>
                 )}
                 {gridActiveTab === 1 && (
@@ -325,7 +321,6 @@ function Details({ unit }: { unit: IUnit }) {
                         rows={unitBoms || []}
                         onRowSelected={(r) => {
                             openRequestedSinglePopup({ url: `/panel/ubom/${r.id}/parts` });
-                            // setSelectedOption(r);
                         }}
                     />
                 )}

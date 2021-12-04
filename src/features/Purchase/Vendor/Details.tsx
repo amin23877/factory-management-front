@@ -3,23 +3,23 @@ import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { Box, Tab, Tabs } from "@material-ui/core";
 import useSWR from "swr";
 
-import Button from "../../app/Button";
-import { BasePaper } from "../../app/Paper";
-import BaseDataGrid from "../../app/BaseDataGrid";
+import Button from "../../../app/Button";
+import { BasePaper } from "../../../app/Paper";
+import BaseDataGrid from "../../../app/BaseDataGrid";
 
 import { UpdateVendorForm } from "./Forms";
-import { formatTimestampToDate } from "../../logic/date";
+import { formatTimestampToDate } from "../../../logic/date";
 
-import NoteModal from "../Modals/NoteModals";
-import DocumentModal from "../Modals/DocumentModals";
+import NoteModal from "../../Modals/NoteModals";
+import DocumentModal from "../../Modals/DocumentModals";
 
-import { ContactModal } from "../Modals/ContactModal";
+import { ContactModal } from "../../Modals/ContactModal";
 
-import { IContact } from "../../api/contact";
-import { INote } from "../../api/note";
-import { IDocument } from "../../api/document";
-import { IVendor } from "../../api/vendor";
-import { fileType } from "../../logic/fileType";
+import { IContact } from "../../../api/contact";
+import { INote } from "../../../api/note";
+import { IDocument } from "../../../api/document";
+import { IVendor } from "../../../api/vendor";
+import { fileType } from "../../../logic/fileType";
 
 export default function VendorDetails({ vendor }: { vendor: IVendor }) {
     const [activeTab, setActiveTab] = useState(0);

@@ -11,19 +11,19 @@ import {
     FindInPageRounded,
 } from "@material-ui/icons";
 
-import List from "../../app/SideUtilityList";
-import Toast from "../../app/Toast";
+import List from "../../../app/SideUtilityList";
+import Toast from "../../../app/Toast";
 
 import Details from "./Details";
 import VendorModal from "./AddVendor";
 import Vending from "./Vending/Modal";
-import Confirm from "../Modals/Confirm";
+import Confirm from "../../Modals/Confirm";
 
-import { deleteVendor, IVendor } from "../../api/vendor";
+import { deleteVendor, IVendor } from "../../../api/vendor";
 import VendorTypeModal from "./VendorType";
-import DataGrid from "../../app/NewDataGrid";
+import DataGrid from "../../../app/NewDataGrid";
 import { mutate } from "swr";
-import { BasePaper } from "../../app/Paper";
+import { BasePaper } from "../../../app/Paper";
 
 export default function Vendors({ tech }: { tech: boolean }) {
     const [activeTab, setActiveTab] = useState(0);
