@@ -262,7 +262,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                                         url="/item"
                                         initParams={{ device: true }}
                                         onRowSelected={(r) => {
-                                            setSelectedItem(r.data as any);
+                                            setSelectedItem(r as any);
                                             setActiveTab(1);
                                         }}
                                         columns={gridColumns}
