@@ -1,7 +1,10 @@
 import React, { Suspense, useState } from "react";
-import { Box, LinearProgress } from "@material-ui/core";
+import { Box, Portal, Popover, LinearProgress } from "@material-ui/core";
+import { KeyboardArrowDownRounded, KeyboardArrowUpRounded } from "@material-ui/icons";
 
 import { MyTabs, MyTab } from "../app/Tabs";
+
+import { usePortal } from "../logic/PortalContext";
 
 const FRUs = React.lazy(() => import("../features/FieldService/FRU"));
 const ServiceIndex = React.lazy(() => import("../features/FieldService"));
@@ -13,38 +16,86 @@ const Vendors = React.lazy(() => import("../features/Purchase/Vendor"));
 
 export default function FieldService() {
     const [activeTab, setActiveTab] = useState(0);
+    const [tabText, setTabText] = useState("Dashboard");
+    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+
+    const handleClick = (event: any) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+    const id = open ? "simple-popover" : undefined;
+    const portals = usePortal();
 
     return (
-        <Box display="flex">
-            <MyTabs
-                value={activeTab}
-                orientation="vertical"
-                textColor="primary"
-                onChange={(e, nv) => setActiveTab(nv)}
-                style={{ marginRight: "1em", position: "sticky", top: 65 }}
-            >
-                <MyTab label="+ Dashboard" />
-                <MyTab label="+ FRU" />
-                <MyTab label="+ Services" />
-                <MyTab label="+ Tickets" />
-                <MyTab label="+ Tasks" />
-                <MyTab label="+ Units" />
-                <MyTab label="+ RMA" />
-                <MyTab label="+ UP" />
-                <MyTab label="+ Vendor Tech" />
-            </MyTabs>
-
-            <Box flex={1} px={1}>
-                <Suspense fallback={<LinearProgress />}>
-                    {activeTab === 1 && <FRUs />}
-                    {activeTab === 2 && <ServiceIndex />}
-                    {activeTab === 3 && <Tickets />}
-                    {activeTab === 4 && <Tasks />}
-                    {activeTab === 5 && <Units />}
-                    {activeTab === 7 && <UP />}
-                    {activeTab === 8 && <Vendors tech />}
-                </Suspense>
+        <>
+            <Portal container={portals.topAppBar ? (portals.topAppBar as any).current : null}>
+                <div
+                    onClick={handleClick}
+                    style={{
+                        color: "black",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        marginRight: "20px",
+                        cursor: "pointer",
+                    }}
+                >
+                    {anchorEl ? <KeyboardArrowUpRounded /> : <KeyboardArrowDownRounded />} {tabText}
+                </div>
+                <Popover
+                    id={id}
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "left",
+                    }}
+                    transformOrigin={{
+                        vertical: "top",
+                        horizontal: "left",
+                    }}
+                >
+                    <MyTabs
+                        value={activeTab}
+                        textColor="primary"
+                        onChange={(e: any, nv) => {
+                            setActiveTab(nv);
+                            setTabText(e.target.textContent);
+                            handleClose();
+                        }}
+                        orientation="vertical"
+                    >
+                        <MyTab label="Dashboard" />
+                        <MyTab label="FRU" />
+                        <MyTab label="Services" />
+                        <MyTab label="Tickets" />
+                        <MyTab label="Tasks" />
+                        <MyTab label="Units" />
+                        <MyTab label="RMA" />
+                        <MyTab label="UP" />
+                        <MyTab label="Vendor Tech" />
+                    </MyTabs>
+                </Popover>
+            </Portal>
+            <Box display="flex">
+                <Box flex={1} px={1}>
+                    <Suspense fallback={<LinearProgress />}>
+                        {activeTab === 1 && <FRUs />}
+                        {activeTab === 2 && <ServiceIndex />}
+                        {activeTab === 3 && <Tickets />}
+                        {activeTab === 4 && <Tasks />}
+                        {activeTab === 5 && <Units />}
+                        {activeTab === 7 && <UP />}
+                        {activeTab === 8 && <Vendors tech />}
+                    </Suspense>
+                </Box>
             </Box>
-        </Box>
+        </>
     );
 }

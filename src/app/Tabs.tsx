@@ -21,14 +21,15 @@ export const MyTabs = withStyles({
         width: "125px",
         backgroundImage: `url(${tabBG})`,
         backgroundColor: "black",
-        height: "calc(100vh - 80px)",
+        paddingBottom: "30px",
+        // height: "calc(100vh - 80px)",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         backgroundSize: "cover",
         paddingTop: "30px",
 
         "& .MuiTabs-indicator": {
-            backgroundColor: "rgb(230,128,49)",
+            backgroundColor: "rgba(230,128,49,0)",
         },
     },
 })(Tabs);
