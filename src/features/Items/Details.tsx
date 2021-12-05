@@ -268,9 +268,9 @@ function ItemsDetails({
 
     const pricingCols = useMemo<GridColDef[]>(
         () => [
-            { field: "label", headerName: "Label" },
-            { field: "price", headerName: "Price" },
-            { field: "nonCommissionable", headerName: "no Com." },
+            { field: "label", headerName: "Label", flex: 1 },
+            { field: "price", headerName: "Price", flex: 1 },
+            { field: "nonCommissionable", headerName: "no Com.", flex: 1, type: "boolean" },
         ],
         []
     );
@@ -330,175 +330,109 @@ function ItemsDetails({
             <Formik initialValues={selectedRow} validationSchema={AddItemSchema} onSubmit={handleSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
                     <Form>
-                        <Box
-                            pb="8px"
-                            display="grid"
-                            gridTemplateColumns="1fr 2fr"
-                            gridTemplateRows="340px 1fr"
-                            gridGap={5}
-                        >
-                            <BasePaper style={{ maxHeight: 340 }}>
-                                <General
-                                    values={values}
-                                    handleChange={handleChange}
-                                    handleBlur={handleBlur}
-                                    setFieldValue={setFieldValue}
-                                    errors={errors}
-                                    touched={touched}
-                                />
-
-                                <Button style={{ margin: "10px 0px", width: "100%" }} kind="edit" type="submit">
-                                    Save
-                                </Button>
-                            </BasePaper>
-                            <BasePaper
-                                style={{
-                                    height: "100%",
-                                    display: "flex",
-                                    flexDirection: "column",
-                                }}
-                            >
-                                <Tabs
-                                    style={{ marginBottom: 16, maxWidth: "35vw" }}
-                                    value={moreInfoTab}
-                                    variant="scrollable"
-                                    textColor="primary"
-                                    onChange={(e, v) => setMoreInfoTab(v)}
+                        <Box pb="8px" display="grid" gridTemplateColumns="1fr 2fr" gridTemplateRows="1fr">
+                            <Box display="flex" flexDirection="column" gridGap={5}>
+                                <BasePaper>
+                                    <General
+                                        values={values}
+                                        handleChange={handleChange}
+                                        handleBlur={handleBlur}
+                                        setFieldValue={setFieldValue}
+                                        errors={errors}
+                                        touched={touched}
+                                    />
+                                    <Button style={{ margin: "10px 0px", width: "100%" }} kind="edit" type="submit">
+                                        Save
+                                    </Button>
+                                </BasePaper>
+                                <BasePaper
+                                    style={{
+                                        height: "100%",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                    }}
                                 >
-                                    <Tab label="Image" /> 0
-                                    <Tab label="UPC" /> 1
-                                    <Tab label="More Info." /> 2
-                                    <Tab label="Quantity" /> 3
-                                    <Tab label="Pricing" /> 4
-                                    <Tab label="Shipping" /> 5
-                                    <Tab label="Clusters and Levels" /> 6
-                                </Tabs>
-                                {moreInfoTab === 0 && (
-                                    <Box
-                                        mt={1}
-                                        height="100%"
-                                        display="flex"
-                                        justifyContent="center"
-                                        alignItems="center"
-                                        flexDirection="column"
-                                        gridGap={10}
+                                    <Tabs
+                                        style={{ marginBottom: 16, maxWidth: "35vw" }}
+                                        value={moreInfoTab}
+                                        variant="scrollable"
+                                        textColor="primary"
+                                        onChange={(e, v) => setMoreInfoTab(v)}
                                     >
-                                        {selectedRow?.photo && (
-                                            <img
+                                        <Tab label="Image" /> 0
+                                        <Tab label="UPC" /> 1
+                                        <Tab label="More Info." /> 2
+                                        <Tab label="Quantity" /> 3
+                                        <Tab label="Pricing" /> 4
+                                        <Tab label="Shipping" /> 5
+                                        <Tab label="Clusters and Levels" /> 6
+                                    </Tabs>
+                                    {moreInfoTab === 0 && (
+                                        <Box
+                                            mt={1}
+                                            height="100%"
+                                            display="flex"
+                                            justifyContent="center"
+                                            alignItems="center"
+                                            flexDirection="column"
+                                            gridGap={10}
+                                        >
+                                            {selectedRow?.photo && (
+                                                <img
+                                                    style={{
+                                                        maxWidth: "100%",
+                                                        height: "auto",
+                                                        maxHeight: 400,
+                                                        margin: "0px auto",
+                                                    }}
+                                                    alt=""
+                                                    src={img ? img : `http://${host}${selectedRow?.photo}`}
+                                                />
+                                            )}
+                                            <div
                                                 style={{
-                                                    maxWidth: "100%",
-                                                    height: "auto",
-                                                    maxHeight: 400,
-                                                    margin: "0px auto",
+                                                    display: "flex",
+                                                    width: "100%",
+                                                    justifyContent: "center",
                                                 }}
-                                                alt=""
-                                                src={img ? img : `http://${host}${selectedRow?.photo}`}
-                                            />
-                                        )}
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                width: "100%",
-                                                justifyContent: "center",
-                                            }}
-                                        >
-                                            <UploadButton onChange={handleFileChange} accept="image/*" />
-                                        </div>
-                                    </Box>
-                                )}
-                                {moreInfoTab === 1 && (
-                                    <Box display="flex" justifyContent="space-around" alignItems="center">
-                                        <div ref={(e) => (qrCode.current = e)}>
-                                            <QRCode
-                                                value={JSON.stringify({
-                                                    type: "item",
-                                                    panel: "inventory",
-                                                    no: selectedRow.no,
-                                                    id: selectedRow.id,
-                                                })}
-                                            />
-                                            <Typography variant="subtitle1">Device Number: {selectedRow.no}</Typography>
-                                            <Typography variant="subtitle1">Device Name: {selectedRow.name}</Typography>
-                                        </div>
-                                        <Button
-                                            variant="contained"
-                                            onClick={async () => {
-                                                if (qrCode.current) {
-                                                    await exportPdf(qrCode.current);
-                                                }
-                                            }}
-                                        >
-                                            Print
-                                        </Button>
-                                    </Box>
-                                )}
+                                            >
+                                                <UploadButton onChange={handleFileChange} accept="image/*" />
+                                            </div>
+                                        </Box>
+                                    )}
+                                    {moreInfoTab === 1 && (
+                                        <Box display="flex" justifyContent="space-around" alignItems="center">
+                                            <div ref={(e) => (qrCode.current = e)}>
+                                                <QRCode
+                                                    value={JSON.stringify({
+                                                        type: "item",
+                                                        panel: "inventory",
+                                                        no: selectedRow.no,
+                                                        id: selectedRow.id,
+                                                    })}
+                                                />
+                                                <Typography variant="subtitle1">
+                                                    Device Number: {selectedRow.no}
+                                                </Typography>
+                                                <Typography variant="subtitle1">
+                                                    Device Name: {selectedRow.name}
+                                                </Typography>
+                                            </div>
+                                            <Button
+                                                variant="contained"
+                                                onClick={async () => {
+                                                    if (qrCode.current) {
+                                                        await exportPdf(qrCode.current);
+                                                    }
+                                                }}
+                                            >
+                                                Print
+                                            </Button>
+                                        </Box>
+                                    )}
 
-                                {moreInfoTab === 2 && (
-                                    <MoreInfo
-                                        values={values}
-                                        handleChange={handleChange}
-                                        handleBlur={handleBlur}
-                                        setFieldValue={setFieldValue}
-                                        errors={errors}
-                                        touched={touched}
-                                    />
-                                )}
-                                {moreInfoTab === 3 && (
-                                    <>
-                                        <LastUsed
-                                            values={values}
-                                            handleChange={handleChange}
-                                            handleBlur={handleBlur}
-                                            setFieldValue={setFieldValue}
-                                            errors={errors}
-                                            touched={touched}
-                                        />
-                                        <hr style={{ width: "100%" }} />
-                                        <Quantity
-                                            values={values}
-                                            handleChange={handleChange}
-                                            handleBlur={handleBlur}
-                                            setFieldValue={setFieldValue}
-                                            errors={errors}
-                                            touched={touched}
-                                            itemId={selectedRow.id}
-                                            handleManualCount={() => setManualCountModal(true)}
-                                            handleUpdateQuantity={() => setQuantityModal(true)}
-                                        />
-                                    </>
-                                )}
-                                {moreInfoTab === 4 && (
-                                    <>
-                                        <BaseDataGrid
-                                            rows={selectedRow?.pricing || []}
-                                            cols={pricingCols}
-                                            height={220}
-                                            filter
-                                            pagination
-                                        />
-                                        <Pricing
-                                            values={values}
-                                            handleChange={handleChange}
-                                            handleBlur={handleBlur}
-                                            setFieldValue={setFieldValue}
-                                            errors={errors}
-                                            touched={touched}
-                                            boms={boms?.length === 0 ? false : true}
-                                        />
-                                    </>
-                                )}
-                                {moreInfoTab === 5 && (
-                                    <Shipping
-                                        values={values}
-                                        handleChange={handleChange}
-                                        handleBlur={handleBlur}
-                                        setFieldValue={setFieldValue}
-                                        errors={errors}
-                                        touched={touched}
-                                    />
-                                )}
-                                {/* {moreInfoTab === 3 && (
-                                        <LastUsed
+                                    {moreInfoTab === 2 && (
+                                        <MoreInfo
                                             values={values}
                                             handleChange={handleChange}
                                             handleBlur={handleBlur}
@@ -507,20 +441,85 @@ function ItemsDetails({
                                             touched={touched}
                                         />
                                     )}
-                                     */}
-                                {moreInfoTab === 6 && (
-                                    <DynamicFilterAndFields
-                                        values={values}
-                                        handleChange={handleChange}
-                                        handleBlur={handleBlur}
-                                        setFieldValue={setFieldValue}
-                                        errors={errors}
-                                        touched={touched}
-                                        selectedItem={selectedRow}
-                                    />
-                                )}
-                            </BasePaper>
-                            <BasePaper style={{ gridRow: 1, gridColumn: 2, gridRowEnd: "span 2" }}>
+                                    {moreInfoTab === 3 && (
+                                        <>
+                                            <LastUsed
+                                                values={values}
+                                                handleChange={handleChange}
+                                                handleBlur={handleBlur}
+                                                setFieldValue={setFieldValue}
+                                                errors={errors}
+                                                touched={touched}
+                                            />
+                                            <hr style={{ width: "100%" }} />
+                                            <Quantity
+                                                values={values}
+                                                handleChange={handleChange}
+                                                handleBlur={handleBlur}
+                                                setFieldValue={setFieldValue}
+                                                errors={errors}
+                                                touched={touched}
+                                                itemId={selectedRow.id}
+                                                handleManualCount={() => setManualCountModal(true)}
+                                                handleUpdateQuantity={() => setQuantityModal(true)}
+                                            />
+                                        </>
+                                    )}
+                                    {moreInfoTab === 4 && (
+                                        <>
+                                            <BaseDataGrid
+                                                rows={selectedRow?.pricing || []}
+                                                cols={pricingCols}
+                                                height={220}
+                                                filter
+                                                pagination
+                                            />
+                                            <Pricing
+                                                values={values}
+                                                handleChange={handleChange}
+                                                handleBlur={handleBlur}
+                                                setFieldValue={setFieldValue}
+                                                errors={errors}
+                                                touched={touched}
+                                                boms={boms?.length === 0 ? false : true}
+                                            />
+                                        </>
+                                    )}
+                                    {moreInfoTab === 5 && (
+                                        <Shipping
+                                            values={values}
+                                            handleChange={handleChange}
+                                            handleBlur={handleBlur}
+                                            setFieldValue={setFieldValue}
+                                            errors={errors}
+                                            touched={touched}
+                                        />
+                                    )}
+                                    {/* {moreInfoTab === 3 && (
+                                    <LastUsed
+                                    values={values}
+                                    handleChange={handleChange}
+                                    handleBlur={handleBlur}
+                                            setFieldValue={setFieldValue}
+                                            errors={errors}
+                                            touched={touched}
+                                            />
+                                            )}
+                                        */}
+                                    {moreInfoTab === 6 && (
+                                        <DynamicFilterAndFields
+                                            values={values}
+                                            handleChange={handleChange}
+                                            handleBlur={handleBlur}
+                                            setFieldValue={setFieldValue}
+                                            errors={errors}
+                                            touched={touched}
+                                            selectedItem={selectedRow}
+                                        />
+                                    )}
+                                </BasePaper>
+                            </Box>
+                            <BasePaper style={{ gridRow: 1, gridColumn: 2, gridRowEnd: "span 2", marginLeft: "10px" }}>
                                 <Tabs
                                     value={activeTab}
                                     onChange={(e, v) => setActiveTab(v)}

@@ -146,7 +146,6 @@ export default function SalesOrderPanel() {
                 )}
                 <div style={{ flexGrow: 1 }} />
             </Box>
-
             <BasePaper>
                 <Tabs
                     value={activeTab}
@@ -155,7 +154,6 @@ export default function SalesOrderPanel() {
                     style={{ marginBottom: 10 }}
                 >
                     <Tab
-                        // label="List"
                         icon={
                             <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                 <ListAltRounded style={{ marginRight: "5px" }} /> List
@@ -164,7 +162,6 @@ export default function SalesOrderPanel() {
                         wrapped
                     />
                     <Tab
-                        // label="Details"
                         disabled={!selectedSO}
                         icon={
                             <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -174,7 +171,6 @@ export default function SalesOrderPanel() {
                     />
                 </Tabs>
                 {activeTab === 0 && (
-                    // <></>
                     <Datagrid
                         onRowSelected={(d) => {
                             setSelectedSO(d);

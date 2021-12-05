@@ -92,7 +92,6 @@ export default function Vendors({ tech }: { tech: boolean }) {
                                 textColor="primary"
                             >
                                 <Tab
-                                    // label="List"
                                     icon={
                                         <span
                                             style={{
@@ -107,7 +106,6 @@ export default function Vendors({ tech }: { tech: boolean }) {
                                     wrapped
                                 />
                                 <Tab
-                                    // label="Details"
                                     disabled={!selectedVendor}
                                     icon={
                                         <span
@@ -149,7 +147,6 @@ export default function Vendors({ tech }: { tech: boolean }) {
                                             <PostAdd />
                                         </IconButton>
                                     </ListItem>
-
                                     <ListItem>
                                         <IconButton>
                                             <PrintRounded />
@@ -165,7 +162,7 @@ export default function Vendors({ tech }: { tech: boolean }) {
                                 columns={cols}
                                 initParams={tech ? { tech: true } : {}}
                                 onRowSelected={(d) => {
-                                    setSelectedVendor(d.data as any);
+                                    setSelectedVendor(d as any);
                                     setActiveTab(1);
                                 }}
                             />

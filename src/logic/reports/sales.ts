@@ -8,14 +8,18 @@ import { IUnit } from "../../api/units";
 export const extractChartData = (data: any[]) => {
     let res: any[] = [];
     let cnt = 1;
-    res = data.reduce && data.reduce((_, curVal) => {
-        return { [formatDate(curVal.so?.date, "yy-MMMM")]: ++cnt };
-    }, {});
+    res =
+        data.reduce &&
+        data.reduce((_, curVal) => {
+            return { [formatDate(curVal.so?.date, "yy-MMMM")]: ++cnt };
+        }, {});
 
-    res = res && Object.keys(res).map((k) => ({
-        date: k,
-        units: res[k as any],
-    }));
+    res =
+        res &&
+        Object.keys(res).map((k) => ({
+            date: k,
+            units: res[k as any],
+        }));
 
     return res;
 };
@@ -63,7 +67,9 @@ export const extractDevicesSales = (data: IUnit[]) => {
         productFamily = unit.ItemId ? (unit.ItemId as any)["Product Family"] : "";
         if (!productFamily) break;
 
-        devices[productFamily] = countProperty(data, productFamily, (item) => item.ItemId["Product Family"] || "");
+        devices[productFamily] = countProperty(data, productFamily, (item) => {
+            return item.itemProductFamily || "";
+        });
     }
 
     for (productFamily in devices) {

@@ -41,7 +41,6 @@ export default function EditTab({
     const { data: notes } = useSWR(selectedSo && selectedSo.id ? `/note/so/${selectedSo.id}` : null);
     const { data: documents } = useSWR(selectedSo && selectedSo.id ? `/document/so/${selectedSo.id}` : null);
     const { data: lineItems } = useSWR(selectedSo && selectedSo.id ? `/lineitem?SOId=${selectedSo.id}` : null);
-    // const { data: lineServices } = useSWR(selectedSo && selectedSo.id ? `/lineservice?SOId=${selectedSo.id}` : null);
 
     const [activeTab, setActiveTab] = useState(0);
     const [addNote, setAddNote] = useState(false);
@@ -117,7 +116,6 @@ export default function EditTab({
                 valueFormatter: (r) => r.row?.device?.number,
                 width: 130,
             },
-            // { field: "LineItemRecordId",  width: 200 },
             { field: "description", headerName: "Description", flex: 1 },
             { field: "model", headerName: "Model", width: 120 },
             { field: "shippingDate", headerName: "Estimated SD.", width: 150 },

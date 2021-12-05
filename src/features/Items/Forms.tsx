@@ -49,7 +49,7 @@ export const General = ({
     const classes = useStyles();
     return (
         <>
-            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
+            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10}>
                 <Paper
                     style={{
                         margin: "0.5em 0",
@@ -58,7 +58,7 @@ export const General = ({
                         gridColumnEnd: "span 4",
                     }}
                 >
-                    <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={10} pr={1}>
+                    <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={10}>
                         {/* <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
                             checked={values.shippingApproved}
@@ -686,7 +686,7 @@ export const LastUsed = ({ values, errors, handleChange, handleBlur, touched, se
                 label="lastCount"
                 onChange={(lastCount) => setFieldValue("lastCount", lastCount)}
                 onBlur={handleBlur}
-                format="dd/mm/yyyy"
+                format="yyyy-mm-dd"
             />
             <TextField
                 label="last used in 90 days"

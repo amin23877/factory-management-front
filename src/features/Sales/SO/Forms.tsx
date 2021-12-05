@@ -77,7 +77,7 @@ export const GeneralForm = ({
 
                         estShipDate,
                         actShipDate,
-                        shippingAddress,
+                        shipping,
                         shippingContact,
                         shippingPhone,
                         shippingEmail,
@@ -86,7 +86,7 @@ export const GeneralForm = ({
                         billingContact,
                         billingPhone,
                         billingEmail,
-                        billingAddress,
+                        billing,
                         billingEntitiy,
 
                         requester,
@@ -104,7 +104,7 @@ export const GeneralForm = ({
 
                         estShipDate,
                         actShipDate,
-                        shippingAddress,
+                        shipping,
                         shippingContact,
                         shippingPhone,
                         shippingEmail,
@@ -113,7 +113,7 @@ export const GeneralForm = ({
                         billingContact,
                         billingPhone,
                         billingEmail,
-                        billingAddress,
+                        billing,
                         billingEntitiy,
 
                         requester,
@@ -135,20 +135,7 @@ export const GeneralForm = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
-                {/* <FieldSelect
-                    value={typeof values.QuoteId === "string" ? values.QuoteId : values.QuoteId?.id}
-                    name="QuoteId"
-                    label="Quote ID"
-                    request={getQuotes}
-                    getOptionList={(resp) => resp.result}
-                    itemTitleField="number"
-                    itemValueField="id"
-                    onChange={(e) => {
-                        setSelectedQuote(e.target.value as string);
-                        handleChange(e);
-                    }}
-                    onBlur={handleBlur}
-                /> */}
+
                 <LinkSelect
                     value={typeof values.QuoteId === "string" ? values.QuoteId : values.QuoteId}
                     label="Quote NO."
@@ -163,25 +150,11 @@ export const GeneralForm = ({
                     onBlur={handleBlur}
                     url="/panel/quote"
                 />
-                {/* <LinkSelect
-                    value={typeof values.InvoiceId === "string" ? values.InvoiceId : values.InvoiceId}
-                    label="Invoice Id"
-                    request={async () => {
-                        return [];
-                    }}
-                    getOptionList={(resp) => resp}
-                    getOptionLabel={(invoice) => invoice?.name}
-                    getOptionValue={(invoice) => invoice?.id}
-                    onChange={(e, nv) => {
-                        setFieldValue("InvoiceId", nv?.id);
-                    }}
-                    onBlur={handleBlur}
-                    url="/panel/invoice"
-                /> */}
+
                 <TextField
                     value={values.invoiceNumber}
                     name="invoiceNumber"
-                    label="Invoice NO."
+                    label={values.invoiceLabel}
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
@@ -201,14 +174,7 @@ export const GeneralForm = ({
                     onBlur={handleBlur}
                     url="/panel/warranty"
                 />
-                {/* <ArraySelect
-                    value={values.warranty}
-                    name="warranty"
-                    label="Warranty"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    items={[]}
-                /> */}
+
                 <LinkSelect
                     value={typeof values.ProjectId === "string" ? values.ProjectId : values.ProjectId}
                     label="Project Name"
@@ -222,16 +188,6 @@ export const GeneralForm = ({
                     onBlur={handleBlur}
                     url="/panel/project"
                 />
-                {/* <FieldSelect
-                    value={typeof values.ProjectId === "string" ? values.ProjectId : values.ProjectId?.id}
-                    request={getProjects}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    keyField="id"
-                    name="ProjectId"
-                    label="Project Name"
-                    onChange={handleChange}
-                /> */}
 
                 <TextField
                     value={values.projectLocation}
@@ -354,13 +310,6 @@ export const EntitiesForm = ({
                 <TextField style={{ opacity: 0 }} />
             </Box>
             <Box my={1} display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-                {/* <TextField
-                    value={values.client}
-                    name="client"
-                    label="Client"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                /> */}
                 <LinkSelect
                     value={typeof values.client === "string" ? values.client : values.client?.id}
                     label="Client"
@@ -498,66 +447,66 @@ export const AddressesForm = ({
             {activeTab === 0 && (
                 <Box my={1} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridRowGap={10}>
                     <TextField
-                        value={values.billingAddressCompany}
-                        name="billingAddressCompany"
+                        value={values.billingCompany}
+                        name="billingCompany"
                         label="Company"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.billingAddressAttn}
-                        name="billingAddressAttn"
+                        value={values.billingAttn}
+                        name="billingAttn"
                         label="Attn"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
 
                     <TextField
-                        value={values.billingAddressAddress}
-                        name="billingAddressAddress"
+                        value={values.billingAddress}
+                        name="billingAddress"
                         label="Billing Address"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.billingAddressCity}
-                        name="billingAddressCity"
+                        value={values.billingCity}
+                        name="billingCity"
                         label="City"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.billingAddressState}
-                        name="billingAddressState"
+                        value={values.billingState}
+                        name="billingState"
                         label="State"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.billingAddressZipCode}
-                        name="billingAddressZipCode"
+                        value={values.billingZipCode}
+                        name="billingZipCode"
                         label="Zip Code"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.billingAddressCountry}
-                        name="billingAddressCountry"
+                        value={values.billingCountry}
+                        name="billingCountry"
                         label="Country"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.billingAddressPhone}
-                        name="billingAddressPhone"
-                        label="Billing Phone"
+                        value={values.billingPhone}
+                        name="billingPhone"
+                        label="Phone"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.billingAddressEmail}
-                        name="billingAddressEmail"
-                        label="Billing Email"
+                        value={values.billingEmail}
+                        name="billingEmail"
+                        label="Email"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         style={{ gridColumnEnd: "span 2" }}
@@ -574,65 +523,65 @@ export const AddressesForm = ({
                     gridColumnGap={10}
                 >
                     <TextField
-                        value={values.shippingAddressCompany}
-                        name="shippingAddressCompany"
+                        value={values.shippingCompany}
+                        name="shippingCompany"
                         label="Company"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.shippingAddressAttn}
-                        name="shippingAddressAttn"
+                        value={values.shippingAttn}
+                        name="shippingAttn"
                         label="Attn"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.shippingAddressAddress}
-                        label="Shipping Address"
-                        name="shippingAddressAddress"
+                        value={values.shippingAddress}
+                        label="Address"
+                        name="shippingAddress"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.shippingAddressCity}
-                        name="shippingAddressCity"
+                        value={values.shippingCity}
+                        name="shippingCity"
                         label="City"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.shippingAddressState}
-                        name="shippingAddressState"
+                        value={values.shippingState}
+                        name="shippingState"
                         label="State"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.shippingAddressZipCode}
-                        name="shippingAddressZipCode"
+                        value={values.shippingZipCode}
+                        name="shippingZipCode"
                         label="Zip Code"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.shippingAddressCountry}
-                        name="shippingAddressCountry"
+                        value={values.shippingCountry}
+                        name="shippingCountry"
                         label="Country"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.shippingAddressPhone}
-                        name="shippingAddressPhone"
-                        label="Shipping Phone"
+                        value={values.shippingPhone}
+                        name="shippingPhone"
+                        label="Phone"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.shippingAddressEmail}
-                        name="shippingAddressEmail"
-                        label="Shipping Email"
+                        value={values.shippingEmail}
+                        name="shippingEmail"
+                        label="Email"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         style={{ gridColumnEnd: "span 2" }}
@@ -822,20 +771,17 @@ export const ApprovalForm = ({
                     label="Customer PO"
                 />
                 <TextField
-                    value={formatTimestampToDate(values.POId?.date)}
+                    value={formatTimestampToDate(values.poReceivedDate)}
                     name="POReceivedDate"
                     label="PO Received Date"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     disabled
                 />
-                <FieldSelect
-                    value={typeof values.issuedBy === "string" ? values.issuedBy : values.issuedBy?.id}
-                    name="issuedBy"
+                <TextField
+                    value={values.soIssuedBy}
+                    name="soIssuedBy"
                     label="Issued By"
-                    request={getAllEmployees}
-                    itemTitleField="username"
-                    itemValueField="id"
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
@@ -858,7 +804,7 @@ export const ApprovalForm = ({
                 <ArraySelect
                     value={values.status}
                     name="status"
-                    label="SO Status"
+                    label="Status"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     items={["New", "Pending", "Fulfilled", "Shipped"]}
@@ -889,6 +835,7 @@ export const ShippingForm = ({
                 label="Estimated ship date"
                 onChange={(date) => setFieldValue("estimatedShipDate", date)}
                 onBlur={handleBlur}
+                format="yyyy-mm-dd"
             />
             <DateTimePicker
                 style={{ gridColumnEnd: "span 2" }}
@@ -898,6 +845,7 @@ export const ShippingForm = ({
                 label="Original ship date"
                 onChange={(date) => setFieldValue("orgShipDate", date)}
                 onBlur={handleBlur}
+                format="yyyy-mm-dd"
             />
             <DateTimePicker
                 style={{ gridColumnEnd: "span 2" }}
@@ -907,6 +855,7 @@ export const ShippingForm = ({
                 label="Actual ship date"
                 onChange={(date) => setFieldValue("actualShipDate", date)}
                 onBlur={handleBlur}
+                format="yyyy-mm-dd"
             />
             <TextField
                 value={values.carrier}
@@ -938,13 +887,13 @@ export const BillingTab = ({
     return (
         <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10}>
             <FieldSelect
-                value={values.billingAddress ? values.billingAddress : ""}
+                value={values.billing ? values.billing : ""}
                 request={getAddresses}
                 itemTitleField="address"
                 itemValueField="id"
                 keyField="id"
-                name="billingAddress"
-                label="Billing Address"
+                name="billing"
+                label="Address"
                 onChange={handleChange}
             />
             <FieldSelect
@@ -954,7 +903,7 @@ export const BillingTab = ({
                 itemValueField="id"
                 keyField="id"
                 name="billingContact"
-                label="Billing Contact"
+                label="Contact"
                 onChange={handleChange}
             />
             <FieldSelect
@@ -964,7 +913,7 @@ export const BillingTab = ({
                 itemValueField="id"
                 keyField="id"
                 name="billingPhone"
-                label="Billing Phone"
+                label="Phone"
                 onChange={handleChange}
             />
             <FieldSelect
@@ -974,7 +923,8 @@ export const BillingTab = ({
                 itemValueField="id"
                 keyField="id"
                 name="billingEmail"
-                label="Billing Email"
+                label="
+                Email"
                 onChange={handleChange}
             />
             <FormControl>

@@ -7,7 +7,6 @@ import {
     ListAltRounded,
     ThumbDownAltRounded,
 } from "@material-ui/icons";
-import useSWR from "swr";
 
 import Button from "../../../app/Button";
 import { BasePaper } from "../../../app/Paper";
@@ -29,29 +28,11 @@ export default function Customers() {
     const [conf, setConf] = useState(false);
     const [req, setReq] = useState(false);
 
-    const { mutate: mutateCustomers } = useSWR(activeTab === 0 ? "/customer?approved=true" : null);
-    // const { data: pending } = useSWR(activeTab === 1 ? "/customer?approved=null" : null);
-    // const { data: rejected } = useSWR(activeTab === 2 ? "/customer?approved=false" : null);
-
-    // async function changeApproved() {
-    //     if (customers) {
-    //         for (const c of customers) {
-    //             const resp = await editCustomer(c.id, { approved: true } as ICustomer);
-    //             console.log(resp);
-    //         }
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     console.log(customers);
-    // }, [customers]);
-
     const handleDelete = async () => {
         try {
             if (selectedRow) {
                 await deleteCustomer(selectedRow.id);
 
-                mutateCustomers();
                 setConf(false);
                 setActiveTab(0);
                 Toast("Record deleted");
@@ -63,11 +44,7 @@ export default function Customers() {
     return (
         <>
             <Confirm open={conf} onClose={() => setConf(false)} onConfirm={handleDelete} />
-            <AddCustomerModal
-                open={addCustomerModal}
-                onClose={() => setAddCustomerModal(false)}
-                onDone={mutateCustomers}
-            />
+            <AddCustomerModal open={addCustomerModal} onClose={() => setAddCustomerModal(false)} onDone={() => {}} />
             <CustomerTypeModal open={cTypeModal} onClose={() => setCTypeModal(false)} />
 
             <Box display="flex" alignItems="center" mb={1}>
@@ -100,7 +77,6 @@ export default function Customers() {
                         <Box mb={1} display="flex">
                             <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="primary">
                                 <Tab
-                                    // label="List"
                                     icon={
                                         <span
                                             style={{
@@ -115,7 +91,6 @@ export default function Customers() {
                                     wrapped
                                 />
                                 <Tab
-                                    // label="List"
                                     icon={
                                         <span
                                             style={{
@@ -130,7 +105,6 @@ export default function Customers() {
                                     wrapped
                                 />
                                 <Tab
-                                    // label="List"
                                     icon={
                                         <span
                                             style={{
@@ -146,7 +120,6 @@ export default function Customers() {
                                 />
 
                                 <Tab
-                                    // label="Details"
                                     disabled={!selectedRow}
                                     icon={
                                         <span
