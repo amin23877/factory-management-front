@@ -18,6 +18,9 @@ import MyBackdrop from "../app/Backdrop";
 
 import ChatDrawer from "../features/Chat/Drawer";
 
+import { PortalProvider } from "../logic/PortalContext";
+import { AppBarStation } from "../logic/PortalContext/Stations";
+
 const Home = React.lazy(() => import("../pages/home"));
 const Dashboard = React.lazy(() => import("../pages/HomeDashboard"));
 const Sales = React.lazy(() => import("../pages/Sales"));
@@ -139,107 +142,110 @@ export default function PanelRouter() {
     };
 
     return (
-        <div style={{ display: "flex" }} className={classes.root}>
-            <CssBaseline />
-            <AppBar
-                position="fixed"
-                className={clsx(classes.appBar, {
-                    [classes.appBarShiftLeft]: mainDrawerOpen,
-                    [classes.appBarShiftRight]: chatDrawerOpen,
-                })}
-                style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}
-            >
-                <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        className={clsx(classes.menuButton, mainDrawerOpen && classes.hide)}
-                    >
-                        <div style={{ color: "#202731" }}>
-                            <MenuIcon />
-                        </div>
-                    </IconButton>
-                    <TopAppBar
-                        isChatOpen={chatDrawerOpen}
-                        onOpenChatClicked={() => {
-                            setChatDrawerOpen(true);
-                            setMainDrawerOpen(false);
-                        }}
-                    />
-                </Toolbar>
-            </AppBar>
+        <PortalProvider>
+            <div style={{ display: "flex" }} className={classes.root}>
+                <CssBaseline />
+                <AppBar
+                    position="fixed"
+                    className={clsx(classes.appBar, {
+                        [classes.appBarShiftLeft]: mainDrawerOpen,
+                        [classes.appBarShiftRight]: chatDrawerOpen,
+                    })}
+                    style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}
+                >
+                    <Toolbar>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={handleDrawerOpen}
+                            edge="start"
+                            className={clsx(classes.menuButton, mainDrawerOpen && classes.hide)}
+                        >
+                            <div style={{ color: "#202731" }}>
+                                <MenuIcon />
+                            </div>
+                        </IconButton>
+                        <AppBarStation />
+                        <TopAppBar
+                            isChatOpen={chatDrawerOpen}
+                            onOpenChatClicked={() => {
+                                setChatDrawerOpen(true);
+                                setMainDrawerOpen(false);
+                            }}
+                        />
+                    </Toolbar>
+                </AppBar>
 
-            <Drawer
-                className={classes.drawer}
-                variant="persistent"
-                anchor="left"
-                open={mainDrawerOpen}
-                classes={{
-                    paper: classes.drawerPaper,
-                }}
-            >
-                <div
-                    className={classes.drawerHeader}
-                    style={{
-                        backgroundColor: "#202731",
+                <Drawer
+                    className={classes.drawer}
+                    variant="persistent"
+                    anchor="left"
+                    open={mainDrawerOpen}
+                    classes={{
+                        paper: classes.drawerPaper,
                     }}
                 >
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === "ltr" ? (
-                            <div style={{ color: "white" }}>
-                                <ChevronLeftIcon />
-                            </div>
-                        ) : (
-                            <ChevronRightIcon />
-                        )}
-                    </IconButton>
-                </div>
-                <MainNav width={drawerWidth} closeIt={handleDrawerClose} />
-            </Drawer>
-            <main
-                style={{ zIndex: 5 }}
-                className={clsx(classes.content, {
-                    [classes.contentShiftLeft]: mainDrawerOpen,
-                    [classes.contentShiftRight]: chatDrawerOpen,
-                })}
-            >
-                <Box style={{ flexGrow: 1, padding: "1em" }}>
-                    <div style={theme.mixins.toolbar as any} />
-                    <Suspense fallback={<MyBackdrop />}>
-                        <Switch>
-                            <Route exact path="/panel" component={Home} />
-                            <Route exact path="/panel/dashboard" component={Dashboard} />
-                            <Route exact path="/panel/sales" component={Sales} />
-                            <Route exact path="/panel/inventory" component={Inventory} />
-                            <Route exact path="/panel/settings" component={Settings} />
-                            <Route exact path="/panel/roles" component={Roles} />
-                            <Route exact path="/panel/projects" component={Projects} />
-                            <Route exact path="/panel/activity" component={Activity} />
-                            <Route exact path="/panel/fieldservice" component={Service} />
-                            <Route exact path="/panel/purchase" component={Purchase} />
-                            <Route exact path="/panel/production" component={Production} />
-                            <Route exact path="/panel/shipping" component={ShippingAndReceiVing} />
-                            <Route exact path="/panel/engineering" component={Engineering} />
+                    <div
+                        className={classes.drawerHeader}
+                        style={{
+                            backgroundColor: "#202731",
+                        }}
+                    >
+                        <IconButton onClick={handleDrawerClose}>
+                            {theme.direction === "ltr" ? (
+                                <div style={{ color: "white" }}>
+                                    <ChevronLeftIcon />
+                                </div>
+                            ) : (
+                                <ChevronRightIcon />
+                            )}
+                        </IconButton>
+                    </div>
+                    <MainNav width={drawerWidth} closeIt={handleDrawerClose} />
+                </Drawer>
+                <main
+                    style={{ zIndex: 5 }}
+                    className={clsx(classes.content, {
+                        [classes.contentShiftLeft]: mainDrawerOpen,
+                        [classes.contentShiftRight]: chatDrawerOpen,
+                    })}
+                >
+                    <Box style={{ flexGrow: 1, padding: "1em" }}>
+                        <div style={theme.mixins.toolbar as any} />
+                        <Suspense fallback={<MyBackdrop />}>
+                            <Switch>
+                                <Route exact path="/panel" component={Home} />
+                                <Route exact path="/panel/dashboard" component={Dashboard} />
+                                <Route exact path="/panel/sales" component={Sales} />
+                                <Route exact path="/panel/inventory" component={Inventory} />
+                                <Route exact path="/panel/settings" component={Settings} />
+                                <Route exact path="/panel/roles" component={Roles} />
+                                <Route exact path="/panel/projects" component={Projects} />
+                                <Route exact path="/panel/activity" component={Activity} />
+                                <Route exact path="/panel/fieldservice" component={Service} />
+                                <Route exact path="/panel/purchase" component={Purchase} />
+                                <Route exact path="/panel/production" component={Production} />
+                                <Route exact path="/panel/shipping" component={ShippingAndReceiVing} />
+                                <Route exact path="/panel/engineering" component={Engineering} />
 
-                            <Route exact path="/panel/inventory/:itemId" component={ItemDetails} />
-                            <Route exact path="/panel/engineering/:deviceId" component={DeviceDetails} />
-                            <Route exact path="/panel/production/:unitNumber" component={UnitDetails} />
-                            <Route exact path="/panel/quote/:quoteNumber" component={QuoteDetails} />
-                            <Route exact path="/panel/so/:soNumber" component={SODetails} />
-                            <Route exact path="/panel/customer/:cusNumber" component={CustomerDetails} />
+                                <Route exact path="/panel/inventory/:itemId" component={ItemDetails} />
+                                <Route exact path="/panel/engineering/:deviceId" component={DeviceDetails} />
+                                <Route exact path="/panel/production/:unitNumber" component={UnitDetails} />
+                                <Route exact path="/panel/quote/:quoteNumber" component={QuoteDetails} />
+                                <Route exact path="/panel/so/:soNumber" component={SODetails} />
+                                <Route exact path="/panel/customer/:cusNumber" component={CustomerDetails} />
 
-                            <Route exact path="/panel/bom/:bomId/parts" component={BomParts} />
-                            <Route exact path="/panel/ubom/:bomId/parts" component={JobParts} />
+                                <Route exact path="/panel/bom/:bomId/parts" component={BomParts} />
+                                <Route exact path="/panel/ubom/:bomId/parts" component={JobParts} />
 
-                            <Route exact path="*" component={Page404} />
-                        </Switch>
-                    </Suspense>
-                </Box>
-            </main>
+                                <Route exact path="*" component={Page404} />
+                            </Switch>
+                        </Suspense>
+                    </Box>
+                </main>
 
-            <ChatDrawer open={chatDrawerOpen} onClose={() => setChatDrawerOpen(false)} />
-        </div>
+                <ChatDrawer open={chatDrawerOpen} onClose={() => setChatDrawerOpen(false)} />
+            </div>
+        </PortalProvider>
     );
 }
