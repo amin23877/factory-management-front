@@ -110,17 +110,21 @@ export default function Calls() {
                     <AddRoundedIcon />
                     Add Ticket
                 </Button>
-                <Button
-                    kind="delete"
-                    disabled={!selectedCall}
-                    onClick={() => setConfirm(true)}
-                    style={{ margin: "0 0.5em" }}
-                >
-                    Delete Ticket
-                </Button>
-                <Button kind="add" onClick={() => setCTagModal(true)} style={{ margin: "0 0.5em" }}>
-                    Add Call Tags
-                </Button>
+                {activeTab === 1 && (
+                    <>
+                        <Button
+                            kind="delete"
+                            disabled={!selectedCall}
+                            onClick={() => setConfirm(true)}
+                            style={{ margin: "0 0.5em" }}
+                        >
+                            Delete Ticket
+                        </Button>
+                        <Button kind="add" onClick={() => setCTagModal(true)} style={{ margin: "0 0.5em" }}>
+                            Add Call Tags
+                        </Button>
+                    </>
+                )}
             </Box>
             <BasePaper>
                 <Tabs

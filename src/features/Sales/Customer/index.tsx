@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Grid, Tabs, Tab } from "@material-ui/core";
+import { Box, Grid, Tabs, Tab, useMediaQuery } from "@material-ui/core";
 import {
     AddRounded,
     FindInPageRounded,
@@ -27,6 +27,7 @@ export default function Customers() {
     const [selectedRow, setSelectedRow] = useState<ICustomer>();
     const [conf, setConf] = useState(false);
     const [req, setReq] = useState(false);
+    const phone = useMediaQuery("(max-width:600px)");
 
     const handleDelete = async () => {
         try {
@@ -67,15 +68,21 @@ export default function Customers() {
                     </Button>
                 )}
                 <Button kind="add" onClick={() => setCTypeModal(true)} style={{ margin: "0 0.5em" }}>
-                    Add Customer Type
+                    Add Type
                 </Button>
             </Box>
-
             <Grid container style={{ marginRight: "1px" }}>
                 <Grid item xs={12}>
                     <BasePaper>
                         <Box mb={1} display="flex">
-                            <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)} textColor="primary">
+                            <Tabs
+                                value={activeTab}
+                                onChange={(e, nv) => setActiveTab(nv)}
+                                textColor="primary"
+                                variant="scrollable"
+                                scrollButtons="on"
+                                style={phone ? { width: "calc(100vw - 50px)" } : {}}
+                            >
                                 <Tab
                                     icon={
                                         <span

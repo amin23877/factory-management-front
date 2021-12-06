@@ -25,8 +25,6 @@ export default function QuotePanel() {
     const [confirm, setConfirm] = useState(false);
     const [emailModal, setEmailModal] = useState(false);
 
-    // const { mutate: mutateQuotes } = useSWR("/quote");
-
     const handleDelete = async () => {
         try {
             if (selectedQuote && selectedQuote.id) {
@@ -111,10 +109,10 @@ export default function QuotePanel() {
                         </Button>
                     </div>
                 ) : null}
-                <Button variant="outlined" onClick={() => setReqQuote(true)}>
-                    Requested Quotes
+                <Button variant="outlined" onClick={() => setReqQuote(true)} style={{ padding: "5px 10px" }}>
+                    Requestes
                 </Button>
-                <Button variant="outlined" onClick={() => setEmailModal(true)}>
+                <Button variant="outlined" onClick={() => setEmailModal(true)} style={{ padding: "5px 10px" }}>
                     Send Email
                 </Button>
                 <div style={{ flexGrow: 1 }} />

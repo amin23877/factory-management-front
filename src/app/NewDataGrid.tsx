@@ -13,6 +13,7 @@ import { CheckRounded, ClearRounded } from "@material-ui/icons";
 import moment from "moment";
 import { formatTimestampToDate } from "../logic/date";
 import { ParameterType } from "../logic/utils";
+import { useMediaQuery } from "@material-ui/core";
 
 window.moment = moment;
 
@@ -47,6 +48,7 @@ const getOperator = (op: string) => {
 };
 
 const gridStyle = { minHeight: "calc(100vh - 200px)" };
+const mobileGridStyle = { minHeight: "calc(100vh - 250px)" };
 const green = {
     color: "#12AE25",
     width: "100%",
@@ -70,6 +72,7 @@ function NewDataGrid({
     initParams?: ParameterType;
 }) {
     const classes = useStyle();
+    const phone = useMediaQuery("(max-width:600px)");
 
     const cols = useMemo(() => {
         let res: any[] = columns;
@@ -169,7 +172,7 @@ function NewDataGrid({
             rowHeight={20}
             columns={cols}
             dataSource={fetchData}
-            style={style ? style : gridStyle}
+            style={style ? style : phone ? mobileGridStyle : gridStyle}
             defaultFilterValue={defaultFilterValue}
             onRowClick={({ data }) => onRowSelected(data)}
             showColumnMenuTool={false}

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { Box, IconButton, ListItem, Tabs, Tab, LinearProgress } from "@material-ui/core";
+import { Box, IconButton, ListItem, Tabs, Tab, LinearProgress, useMediaQuery } from "@material-ui/core";
 import {
     NoteRounded,
     FileCopyRounded,
@@ -90,6 +90,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
             console.log(error);
         }
     }, [selectedItem]);
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
         <BasePaper>
@@ -256,9 +257,14 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                 <Box flex={1}>
                     {activeTab === 0 && (
                         <>
-                            <Box height={575}>
+                            <Box>
                                 {finish || sales ? (
                                     <DataGrid
+                                        style={
+                                            phone
+                                                ? { minHeight: "calc(100vh - 215px)" }
+                                                : { minHeight: "calc(100vh - 165px)" }
+                                        }
                                         url="/item"
                                         initParams={{ device: true }}
                                         onRowSelected={(r) => {
