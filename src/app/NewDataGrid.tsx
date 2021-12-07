@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
     Box,
-    Button,
     List,
     ListItem,
     ListItemIcon,
@@ -9,6 +8,7 @@ import {
     Menu,
     Checkbox,
     useMediaQuery,
+    IconButton,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { CheckRounded, ClearRounded, MenuRounded } from "@material-ui/icons";
@@ -284,14 +284,21 @@ function NewDataGrid({
 
     return (
         <Box width="100%" flex={1} position="relative">
-            <Button
+            {/* <Button
+                // style={{ position: "absolute", bottom: 0, right: 0, zIndex: 5 }}
+                variant="outlined"
+                color="primary"
+                onClick={(e) => setAnchorEl(e.currentTarget)}
+            >
+                Columns
+            </Button> */}
+            <IconButton
                 style={{ position: "absolute", top: 0, right: 0, zIndex: 5 }}
-                variant="contained"
                 color="primary"
                 onClick={(e) => setAnchorEl(e.currentTarget)}
             >
                 <MenuRounded />
-            </Button>
+            </IconButton>
             <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)} keepMounted>
                 <Box style={{ width: 200, maxHeight: 300, overflowY: "auto" }}>
                     <List dense>
