@@ -1,4 +1,18 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+    Box,
+    Button,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Menu,
+    Checkbox,
+    useMediaQuery,
+} from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
+import { CheckRounded, ClearRounded, MenuRounded } from "@material-ui/icons";
+import moment from "moment";
 
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
@@ -8,12 +22,8 @@ import DateFilter from "@inovua/reactdatagrid-community/DateFilter";
 
 import { get } from "../api";
 
-import { makeStyles } from "@material-ui/styles";
-import { CheckRounded, ClearRounded } from "@material-ui/icons";
-import moment from "moment";
 import { formatTimestampToDate } from "../logic/date";
 import { ParameterType } from "../logic/utils";
-import { useMediaQuery } from "@material-ui/core";
 
 window.moment = moment;
 
@@ -57,6 +67,80 @@ const green = {
     alignItems: "center",
 };
 const red = { color: "#F53636", width: "100%", display: "flex", justifyContent: "center ", alignItems: "center" };
+const filterTypes = {
+    boolean: {
+        type: "boolean",
+        emptyValue: false,
+        operators: [
+            {
+                name: "neq",
+                fn: ({ value, filterValue }: any) => value !== filterValue,
+            },
+            {
+                name: "eq",
+                fn: ({ value, filterValue }: any) => value === filterValue,
+            },
+        ],
+    },
+    string: {
+        type: "string",
+        emptyValue: "",
+        operators: [
+            {
+                name: "startsWith",
+                fn: ({ value, filterValue }: any) => {
+                    return !filterValue ? true : Boolean(value.startsWith(filterValue));
+                },
+            },
+            {
+                name: "contains",
+                fn: ({ value, filterValue }: any) => {
+                    return !filterValue ? true : value.indexOf(filterValue) !== -1;
+                },
+            },
+            {
+                name: "eq",
+                fn: ({ value, filterValue }: any) => value === filterValue,
+            },
+        ],
+    },
+    number: {
+        type: "number",
+        emptyValue: null,
+        operators: [
+            {
+                name: "eq",
+                fn: ({ value, filterValue }: any) => value === filterValue,
+            },
+            {
+                name: "lt",
+                fn: ({ value, filterValue }: any) => value < filterValue,
+            },
+            {
+                name: "gt",
+                fn: ({ value, filterValue }: any) => value > filterValue,
+            },
+        ],
+    },
+    date: {
+        type: "date",
+        emptyValue: null,
+        operators: [
+            {
+                name: "eq",
+                fn: ({ value, filterValue }: any) => value === filterValue,
+            },
+            {
+                name: "before",
+                fn: ({ value, filterValue }: any) => value < filterValue,
+            },
+            {
+                name: "after",
+                fn: ({ value, filterValue }: any) => value > filterValue,
+            },
+        ],
+    },
+};
 
 function NewDataGrid({
     onRowSelected,
@@ -71,11 +155,17 @@ function NewDataGrid({
     url: string;
     initParams?: ParameterType;
 }) {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [columnsState, setColumnsState] = useState<any[]>(columns.map((c) => ({ ...c, visible: true })));
     const classes = useStyle();
     const phone = useMediaQuery("(max-width:600px)");
 
+    useEffect(() => {
+        setColumnsState(columns.map((c) => ({ ...c, visible: true })));
+    }, [columns]);
+
     const cols = useMemo(() => {
-        let res: any[] = columns;
+        let res: any[] = columnsState;
         if (res) {
             res = res.map((r) => {
                 if (r.type === "boolean") {
@@ -115,7 +205,7 @@ function NewDataGrid({
             });
         }
         return res;
-    }, [columns]);
+    }, [columnsState]);
 
     const defaultFilterValue = useMemo(() => {
         let res = columns.map(({ name, type }) => ({
@@ -166,94 +256,86 @@ function NewDataGrid({
         [initParams, url]
     );
 
+    const handleToggleVisible = (index: number, visible: boolean) => {
+        setColumnsState((prev) => {
+            let temp = prev.concat();
+            temp[index].visible = visible;
+            console.log(temp);
+
+            return temp;
+        });
+    };
+
+    const getTotalVisibleColumns = (arr: any[]) => {
+        const res = arr.reduce((total, { visible }) => {
+            if (visible) {
+                return total + 1;
+            }
+            return total;
+        }, 0);
+        console.log(res);
+
+        return res;
+    };
+
+    const handleToggleAll = (e: React.ChangeEvent<HTMLInputElement>): void => {
+        setColumnsState((prev) => {
+            return prev.concat().map((c) => ({ ...c, visible: e.target.checked }));
+        });
+    };
+
     return (
-        <ReactDataGrid
-            idProperty="id"
-            rowHeight={20}
-            columns={cols}
-            dataSource={fetchData}
-            style={style ? style : phone ? mobileGridStyle : gridStyle}
-            defaultFilterValue={defaultFilterValue}
-            onRowClick={({ data }) => onRowSelected(data)}
-            showColumnMenuTool={false}
-            pagination
-            defaultLimit={100}
-            className={classes.root}
-            filterTypes={{
-                boolean: {
-                    type: "boolean",
-                    emptyValue: false,
-                    operators: [
-                        {
-                            name: "neq",
-                            fn: ({ value, filterValue }) => value !== filterValue,
-                        },
-                        {
-                            name: "eq",
-                            fn: ({ value, filterValue }) => value === filterValue,
-                        },
-                    ],
-                },
-                string: {
-                    type: "string",
-                    emptyValue: "",
-                    operators: [
-                        {
-                            name: "startsWith",
-                            fn: ({ value, filterValue }) => {
-                                return !filterValue ? true : Boolean(value.startsWith(filterValue));
-                            },
-                        },
-                        {
-                            name: "contains",
-                            fn: ({ value, filterValue }) => {
-                                return !filterValue ? true : value.indexOf(filterValue) !== -1;
-                            },
-                        },
-                        {
-                            name: "eq",
-                            fn: ({ value, filterValue }) => value === filterValue,
-                        },
-                    ],
-                },
-                number: {
-                    type: "number",
-                    emptyValue: null,
-                    operators: [
-                        {
-                            name: "eq",
-                            fn: ({ value, filterValue }) => value === filterValue,
-                        },
-                        {
-                            name: "lt",
-                            fn: ({ value, filterValue }) => value < filterValue,
-                        },
-                        {
-                            name: "gt",
-                            fn: ({ value, filterValue }) => value > filterValue,
-                        },
-                    ],
-                },
-                date: {
-                    type: "date",
-                    emptyValue: null,
-                    operators: [
-                        {
-                            name: "eq",
-                            fn: ({ value, filterValue }) => value === filterValue,
-                        },
-                        {
-                            name: "before",
-                            fn: ({ value, filterValue }) => value < filterValue,
-                        },
-                        {
-                            name: "after",
-                            fn: ({ value, filterValue }) => value > filterValue,
-                        },
-                    ],
-                },
-            }}
-        />
+        <Box width="100%" flex={1} position="relative">
+            <Button
+                style={{ position: "absolute", top: 0, right: 0, zIndex: 5 }}
+                variant="contained"
+                color="primary"
+                onClick={(e) => setAnchorEl(e.currentTarget)}
+            >
+                <MenuRounded />
+            </Button>
+            <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)} keepMounted>
+                <Box style={{ width: 200, maxHeight: 300, overflowY: "auto" }}>
+                    <List dense>
+                        <ListItem>
+                            <ListItemIcon>
+                                <Checkbox
+                                    checked={getTotalVisibleColumns(columnsState) === columnsState.length}
+                                    onChange={handleToggleAll}
+                                />
+                            </ListItemIcon>
+                            <ListItemText>All</ListItemText>
+                        </ListItem>
+                        {columnsState &&
+                            columnsState.map(({ name, header, visible }: any, i: number) => (
+                                <ListItem key={i}>
+                                    <ListItemIcon>
+                                        <Checkbox
+                                            checked={visible}
+                                            onChange={(e) => handleToggleVisible(i, e.target.checked)}
+                                        />
+                                    </ListItemIcon>
+                                    <ListItemText>{header || name}</ListItemText>
+                                </ListItem>
+                            ))}
+                    </List>
+                </Box>
+            </Menu>
+            <ReactDataGrid
+                idProperty="id"
+                rowHeight={20}
+                columns={cols}
+                dataSource={fetchData}
+                style={style ? style : phone ? mobileGridStyle : gridStyle}
+                defaultFilterValue={defaultFilterValue}
+                onRowClick={({ data }) => onRowSelected(data)}
+                showColumnMenuTool={false}
+                pagination
+                defaultLimit={100}
+                className={classes.root}
+                filterTypes={filterTypes}
+            />
+        </Box>
     );
 }
 
