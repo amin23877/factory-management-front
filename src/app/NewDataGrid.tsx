@@ -260,7 +260,6 @@ function NewDataGrid({
         setColumnsState((prev) => {
             let temp = prev.concat();
             temp[index].visible = visible;
-            console.log(temp);
 
             return temp;
         });
@@ -273,7 +272,6 @@ function NewDataGrid({
             }
             return total;
         }, 0);
-        console.log(res);
 
         return res;
     };
