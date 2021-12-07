@@ -104,11 +104,13 @@ export default function Calls() {
                         padding: " 6px 25px",
                         borderRadius: "0.5em",
                         fontSize: "small",
-                        // boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
                     }}
                 >
                     <AddRoundedIcon />
                     Add Ticket
+                </Button>
+                <Button kind="add" onClick={() => setCTagModal(true)} style={{ margin: "0 0.5em" }}>
+                    Add Tags
                 </Button>
                 {activeTab === 1 && (
                     <>
@@ -119,9 +121,6 @@ export default function Calls() {
                             style={{ margin: "0 0.5em" }}
                         >
                             Delete Ticket
-                        </Button>
-                        <Button kind="add" onClick={() => setCTagModal(true)} style={{ margin: "0 0.5em" }}>
-                            Add Call Tags
                         </Button>
                     </>
                 )}

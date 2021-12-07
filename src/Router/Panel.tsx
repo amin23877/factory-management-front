@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import { Box, CssBaseline, useTheme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -152,6 +152,10 @@ export default function PanelRouter() {
     const [chatDrawerOpen, setChatDrawerOpen] = useState(false);
     const [value, setValue] = React.useState("/panel/");
 
+    useEffect(() => {
+        setValue(history.location.pathname);
+    }, [history.location.pathname]);
+
     const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
         setValue(newValue);
         history.replace(newValue);
@@ -246,7 +250,7 @@ export default function PanelRouter() {
                         <div style={theme.mixins.toolbar as any} />
                         <Suspense fallback={<MyBackdrop />}>
                             <Switch>
-                                <Route exact path="/panel" component={Home} />
+                                <Route exact path="/panel" component={() => <Home handleChange={handleChange} />} />
                                 <Route exact path="/panel/dashboard" component={Dashboard} />
                                 <Route exact path="/panel/sales" component={Sales} />
                                 <Route exact path="/panel/inventory" component={Inventory} />

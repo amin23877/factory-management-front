@@ -49,10 +49,20 @@ const useStyles = makeStyles({
     },
 });
 
-const ItemCard = ({ icon, title, href }: { icon: ReactNode; title: string; href: string }) => {
+const ItemCard = ({
+    icon,
+    title,
+    href,
+    handleChange,
+}: {
+    icon: ReactNode;
+    title: string;
+    href: string;
+    handleChange: any;
+}) => {
     const classes = useStyles();
     return (
-        <Link to={href} style={{ color: "#555", textDecoration: "none" }}>
+        <Link to={href} style={{ color: "#555", textDecoration: "none" }} onClick={() => handleChange(null, href)}>
             <Box className={classes.itemCont}>
                 <div className={classes.itemIcon}>{icon}</div>
                 <Typography style={{ margin: "1em 0" }}>{title}</Typography>
@@ -61,7 +71,7 @@ const ItemCard = ({ icon, title, href }: { icon: ReactNode; title: string; href:
     );
 };
 
-export default function Home() {
+export default function Home({ handleChange }: { handleChange: any }) {
     const phone = useMediaQuery("(max-width:600px)");
 
     return (
@@ -72,14 +82,44 @@ export default function Home() {
                 height="calc(100vh - 100px)"
                 flex={1}
             >
-                <ItemCard icon={<AssessmentRounded />} title="Sales" href="/panel/sales" />
-                <ItemCard icon={<PaymentRounded />} title="Purchase" href="/panel/purchase" />
-                <ItemCard icon={<GpsFixedRounded />} title="Inventory" href="/panel/inventory" />
-                <ItemCard icon={<AlternateEmailRounded />} title="Engineering" href="/panel/engineering" />
-                <ItemCard icon={<PersonRounded />} title="Production" href="/panel/production" />
-                <ItemCard icon={<LocalActivityRounded />} title="Shipping" href="/panel/shipping" />
-                <ItemCard icon={<AccountBoxRounded />} title="Service" href="/panel/fieldservice" />
-                <ItemCard icon={<AccountTreeRounded />} title="Roles" href="/panel/roles" />
+                <ItemCard icon={<AssessmentRounded />} title="Sales" href="/panel/sales" handleChange={handleChange} />
+                <ItemCard
+                    icon={<PaymentRounded />}
+                    title="Purchase"
+                    href="/panel/purchase"
+                    handleChange={handleChange}
+                />
+                <ItemCard
+                    icon={<GpsFixedRounded />}
+                    title="Inventory"
+                    href="/panel/inventory"
+                    handleChange={handleChange}
+                />
+                <ItemCard
+                    icon={<AlternateEmailRounded />}
+                    title="Engineering"
+                    href="/panel/engineering"
+                    handleChange={handleChange}
+                />
+                <ItemCard
+                    icon={<PersonRounded />}
+                    title="Production"
+                    href="/panel/production"
+                    handleChange={handleChange}
+                />
+                <ItemCard
+                    icon={<LocalActivityRounded />}
+                    title="Shipping"
+                    href="/panel/shipping"
+                    handleChange={handleChange}
+                />
+                <ItemCard
+                    icon={<AccountBoxRounded />}
+                    title="Service"
+                    href="/panel/fieldservice"
+                    handleChange={handleChange}
+                />
+                <ItemCard icon={<AccountTreeRounded />} title="Roles" href="/panel/roles" handleChange={handleChange} />
             </Box>
         </Box>
     );
