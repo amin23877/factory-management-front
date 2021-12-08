@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Tabs, Tab, Box, makeStyles } from "@material-ui/core";
+import { Tabs, Tab, Box, makeStyles, useMediaQuery } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
 
@@ -134,6 +134,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
         ],
         []
     );
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
         <Box>
@@ -167,21 +168,28 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
                 mutateField="QuoteId"
                 selectedLine={selectedLS}
             />
-            <Box display="flex" style={{ gap: 7 }}>
-                <Box flex={3} mt={1}>
+            <Box display="flex" style={{ gap: 10 }} flexDirection={phone ? "column" : "row"}>
+                <Box flex={3}>
                     <EditForm selectedQuote={selectedQuote} />
                 </Box>
                 <Box flex={4}>
-                    <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-                        <Tab label="Line Item" />
-                        <Tab label="Line Services" />
-                        <Tab label="Document" />
-                        <Tab label="Quote history" />
-                        <Tab label="Note" />
-                        <Tab label="Auditing" />
-                    </Tabs>
-                    <Box p={1}>
-                        <BasePaper>
+                    <BasePaper>
+                        <Tabs
+                            value={activeTab}
+                            textColor="primary"
+                            onChange={(e, nv) => setActiveTab(nv)}
+                            variant="scrollable"
+                            scrollButtons={phone ? "on" : "auto"}
+                            style={phone ? { maxWidth: "83vw" } : {}}
+                        >
+                            <Tab label="Line Item" />
+                            <Tab label="Line Services" />
+                            <Tab label="Document" />
+                            <Tab label="Quote history" />
+                            <Tab label="Note" />
+                            <Tab label="Auditing" />
+                        </Tabs>
+                        <Box>
                             {activeTab === 0 && (
                                 <>
                                     <Button
@@ -280,8 +288,8 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
                                 </>
                             )}
                             {activeTab === 5 && <div style={{ minHeight: "63.4vh" }}>Auditing</div>}
-                        </BasePaper>
-                    </Box>
+                        </Box>
+                    </BasePaper>
                 </Box>
             </Box>
         </Box>

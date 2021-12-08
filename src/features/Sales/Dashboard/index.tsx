@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Grid, Typography } from "@material-ui/core";
+import { Box, Grid, Typography, useMediaQuery } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
 
@@ -54,45 +54,39 @@ export default function Dashboard() {
         ],
         []
     );
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
-        <Grid container spacing={1}>
-            <Grid item xs={12} sm={12}>
-                <BasePaper>
-                    <Typography variant="h6">Sales Per Week</Typography>
-                    <SalesVsWeek />
-                </BasePaper>
-            </Grid>
-            <Grid item xs={12} sm={12}>
-                <BasePaper>
-                    <Typography variant="h6">Snapshot For Each Device</Typography>
-                    <DevicesPie />
-                </BasePaper>
-            </Grid>
-            <Grid item xs={12} sm={12}>
-                <BasePaper>
-                    <Typography variant="h6">Snapshot For Location</Typography>
-                    <SalesLocationPie />
-                </BasePaper>
-            </Grid>
-            <Grid item xs={12} sm={12}>
-                <BasePaper>
-                    <Typography variant="subtitle1">Snapshot For Each Client</Typography>
-                    <ClientPie />
-                </BasePaper>
-            </Grid>
-            <Grid item xs={12} sm={12}>
-                <BasePaper>
-                    <Typography variant="subtitle1">Snapshot For Each Rep</Typography>
-                    <SalesRepPie />
-                </BasePaper>
-            </Grid>
-            <Grid item xs={12} sm={12}>
-                <BasePaper>
-                    <Typography variant="h6">In progress SOs</Typography>
-                    <BaseDataGrid cols={cols} rows={inProgressSOs ? inProgressSOs.result : []} height={350} />
-                </BasePaper>
-            </Grid>
-        </Grid>
+        <Box display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 1fr"} gridGap={10}>
+            <BasePaper style={phone ? {} : { gridColumnEnd: "span 2" }}>
+                <Typography variant="h6">Sales Per Week</Typography>
+                <SalesVsWeek />
+            </BasePaper>
+
+            <BasePaper>
+                <Typography variant="h6">Snapshot For Each Device</Typography>
+                <DevicesPie />
+            </BasePaper>
+
+            <BasePaper>
+                <Typography variant="h6">Snapshot For Location</Typography>
+                <SalesLocationPie />
+            </BasePaper>
+
+            <BasePaper>
+                <Typography variant="subtitle1">Snapshot For Each Client</Typography>
+                <ClientPie />
+            </BasePaper>
+
+            <BasePaper>
+                <Typography variant="subtitle1">Snapshot For Each Rep</Typography>
+                <SalesRepPie />
+            </BasePaper>
+
+            <BasePaper style={phone ? {} : { gridColumnEnd: "span 2" }}>
+                <Typography variant="h6">In progress SOs</Typography>
+                <BaseDataGrid cols={cols} rows={inProgressSOs ? inProgressSOs.result : []} height={350} />
+            </BasePaper>
+        </Box>
     );
 }

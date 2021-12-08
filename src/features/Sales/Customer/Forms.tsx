@@ -1,5 +1,15 @@
 import React, { Fragment } from "react";
-import { Box, FormControlLabel, FormLabel, RadioGroup, Radio, Checkbox, FormControl, Paper } from "@material-ui/core";
+import {
+    Box,
+    FormControlLabel,
+    FormLabel,
+    RadioGroup,
+    Radio,
+    Checkbox,
+    FormControl,
+    Paper,
+    useMediaQuery,
+} from "@material-ui/core";
 
 import { FieldSelect } from "../../../app/Inputs";
 import TextField from "../../../app/TextField";
@@ -44,6 +54,7 @@ export const GeneralForm = ({
             changeTab(2);
         }
     };
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
         <>
@@ -86,9 +97,13 @@ export const GeneralForm = ({
                     />
                 )}
             </Paper>
-            <Box mb={1} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr 1fr 1fr 1fr">
-                {/* TODO: Add customer type autocomplete later with good props */}
-                {/* <CustomerTypeAutocomplete /> */}
+            <Box
+                mb={1}
+                display="grid"
+                gridColumnGap={10}
+                gridRowGap={10}
+                gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"}
+            >
                 <FieldSelect
                     request={getCustomerTypes}
                     itemTitleField="name"
@@ -204,13 +219,16 @@ export const GeneralForm = ({
                     label="Product Line"
                 />
                 <FormControl
-                    style={{
-                        display: "flex",
-                        gridColumnEnd: "span 4",
-                        alignItems: "center",
-                        // justifyContent: "space-between",
-                        flexDirection: "row",
-                    }}
+                    style={
+                        phone
+                            ? { display: "flex", gridColumnEnd: "span 2", alignItems: "center", flexDirection: "row" }
+                            : {
+                                  display: "flex",
+                                  gridColumnEnd: "span 4",
+                                  alignItems: "center",
+                                  flexDirection: "row",
+                              }
+                    }
                 >
                     <FormLabel style={{ marginRight: "10px" }}>Size</FormLabel>
                     <RadioGroup row name="size" value={values.size} onChange={handleChange} style={{}}>
@@ -236,8 +254,16 @@ export const MoreInfoForm = ({
     handleBlur: any;
     handleChange: any;
 }) => {
+    const phone = useMediaQuery("(max-width:600px)");
+
     return (
-        <Box my={2} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr 1fr 1fr">
+        <Box
+            my={2}
+            display="grid"
+            gridColumnGap={10}
+            gridRowGap={10}
+            gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"}
+        >
             <TextField
                 name="website"
                 value={values.website}

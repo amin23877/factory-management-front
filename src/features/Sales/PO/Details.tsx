@@ -13,7 +13,7 @@ import Button from "../../../app/Button";
 import { IPO } from "../../../api/po";
 import { formatTimestampToDate } from "../../../logic/date";
 import { fileType } from "../../../logic/fileType";
-import { Box } from "@material-ui/core";
+import { Box, useMediaQuery } from "@material-ui/core";
 import { BasePaper } from "../../../app/Paper";
 
 const style = {
@@ -101,6 +101,8 @@ export default function Details({
         ],
         []
     );
+    const phone = useMediaQuery("(max-width:600px)");
+
     return (
         <Fragment>
             {poData && poData.id && (
@@ -109,7 +111,7 @@ export default function Details({
             {poData && poData.id && (
                 <DocModal open={addDoc} onClose={() => setAddDoc(false)} itemId={poData.id} model="po" />
             )}
-            <Box pb="8px" display="flex" style={{ gap: 10 }}>
+            <Box pb="8px" display="flex" style={phone ? { gap: 10, flexDirection: "column" } : { gap: 10 }}>
                 <Box flex={3}>
                     <EditForm poData={poData} onDone={onDone} />
                 </Box>
@@ -119,6 +121,7 @@ export default function Details({
                         textColor="primary"
                         value={activeTab}
                         onChange={(e, nv) => setActiveTab(nv)}
+                        variant="scrollable"
                     >
                         <Tab label="Line Items" />
                         <Tab label="Documents" />

@@ -8,6 +8,7 @@ import {
     FormControlLabel,
     RadioGroup,
     Radio,
+    useMediaQuery,
 } from "@material-ui/core";
 import DateTimePicker from "../../../app/DateTimePicker";
 
@@ -207,9 +208,16 @@ export const GeneralForm = ({
     handleBlur: (a: any) => void;
     setFieldValue: any;
 }) => {
+    const phone = useMediaQuery("(max-width:600px)");
+
     return (
         <>
-            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={5} gridRowGap={10}>
+            <Box
+                display="grid"
+                gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"}
+                gridColumnGap={5}
+                gridRowGap={10}
+            >
                 {edit && <TextField label="Quote ID" value={values.number} disabled />}
                 {/* {edit && <TextField label="SO ID" value={values.number} style={{ width: "100%" }} disabled />} */}
                 {edit && (
@@ -273,7 +281,7 @@ export const GeneralForm = ({
                 <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} />
                 <TextField
                     value={values.note}
-                    style={{ gridColumnEnd: "span 4" }}
+                    style={phone ? { gridColumnEnd: "span 2" } : { gridColumnEnd: "span 4" }}
                     name="note"
                     label="Note"
                     onChange={handleChange}
@@ -346,20 +354,11 @@ export const EntitiesTab = ({
     handleBlur: (a: any) => void;
     setFieldValue: any;
 }) => {
+    const phone = useMediaQuery("(max-width:600px)");
+
     return (
-        <Box display="grid" gridTemplateColumns="1fr 1fr 1fr " gridColumnGap={5} pt={1}>
-            <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={7}>
-                {/* <FieldSelect
-                    value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
-                    getOptionList={(resp) => resp.result}
-                    request={getCustomers}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    name="repOrAgency"
-                    label="rep / Agency"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                /> */}
+        <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr "} gridColumnGap={5} pt={1}>
+            <Box mb={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={7}>
                 <LinkSelect
                     value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
                     label="rep / Agency"
@@ -399,49 +398,7 @@ export const EntitiesTab = ({
                     disabled
                 />
             </Box>
-            <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={7}>
-                <TextField
-                    value={values.requesterName}
-                    name="requesterName"
-                    label="Requester Name"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
-                <TextField
-                    value={values.requesterMail}
-                    name="requesterMail"
-                    label="Requester Mail"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
-                <TextField
-                    value={values.requesterPhone}
-                    name="requesterPhone"
-                    label="Requester Phone"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
-                <TextField style={{ opacity: 0 }} />
-                <TextField style={{ opacity: 0 }} />
-            </Box>
-            <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={7}>
-                {/* <TextField
-                    value={values.client}
-                    name="client"
-                    label="Client"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                /> */}
-                {/* <FieldSelect
-                    value={typeof values.client === "string" ? values.client : values.client?.id}
-                    getOptionList={(resp) => resp.result}
-                    request={getCustomers}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    name="client"
-                    label="Client"
-                    onChange={handleChange}
-                /> */}
+            <Box mb={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={7}>
                 <LinkSelect
                     value={typeof values.client === "string" ? values.client : values.client?.id}
                     label="Client"
@@ -486,6 +443,35 @@ export const EntitiesTab = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                     disabled
+                />
+            </Box>
+            <Box
+                style={phone ? { gridColumnEnd: "span 2" } : {}}
+                display="grid"
+                gridTemplateColumns={phone ? "1fr 1fr" : " 1fr "}
+                gridGap={7}
+                gridRowGap={7}
+            >
+                <TextField
+                    value={values.requesterName}
+                    name="requesterName"
+                    label="Requester Name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.requesterMail}
+                    name="requesterMail"
+                    label="Requester Mail"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.requesterPhone}
+                    name="requesterPhone"
+                    label="Requester Phone"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                 />
             </Box>
         </Box>

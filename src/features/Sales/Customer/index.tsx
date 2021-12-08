@@ -49,27 +49,31 @@ export default function Customers() {
             <CustomerTypeModal open={cTypeModal} onClose={() => setCTypeModal(false)} />
 
             <Box display="flex" alignItems="center" mb={1}>
-                <Button
-                    onClick={() => setAddCustomerModal(true)}
-                    style={{
-                        backgroundColor: "#1a73e8",
-                        color: "#fff",
-                        margin: "0 0.5em",
-                        padding: " 6px 15px",
-                        boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-                    }}
-                >
-                    <AddRounded />
-                    Add Customer
-                </Button>
-                {selectedRow && (
+                {activeTab !== 3 && (
+                    <>
+                        <Button
+                            onClick={() => setAddCustomerModal(true)}
+                            style={{
+                                backgroundColor: "#1a73e8",
+                                color: "#fff",
+                                margin: "0 0.5em",
+                                padding: " 6px 15px",
+                                boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+                            }}
+                        >
+                            <AddRounded />
+                            Add Customer
+                        </Button>
+                        <Button kind="add" onClick={() => setCTypeModal(true)} style={{ margin: "0 0.5em" }}>
+                            Add Type
+                        </Button>
+                    </>
+                )}
+                {selectedRow && activeTab === 3 && (
                     <Button onClick={() => setConf(true)} kind="delete">
                         Delete Customer
                     </Button>
                 )}
-                <Button kind="add" onClick={() => setCTypeModal(true)} style={{ margin: "0 0.5em" }}>
-                    Add Type
-                </Button>
             </Box>
             <Grid container style={{ marginRight: "1px" }}>
                 <Grid item xs={12}>
@@ -80,7 +84,7 @@ export default function Customers() {
                                 onChange={(e, nv) => setActiveTab(nv)}
                                 textColor="primary"
                                 variant="scrollable"
-                                scrollButtons="on"
+                                scrollButtons={phone ? "on" : "auto"}
                                 style={phone ? { width: "calc(100vw - 50px)" } : {}}
                             >
                                 <Tab

@@ -1,9 +1,8 @@
 import React, { useState, useMemo } from "react";
 import { GridColumns } from "@material-ui/data-grid";
-import { Box, Tabs, Tab } from "@material-ui/core";
+import { Box, Tabs, Tab, useMediaQuery } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
-// import * as Yup from "yup";
 
 import { CommissionForm, GeneralForm, MainContactForm, MoreInfoForm } from "./Forms";
 import Button from "../../../app/Button";
@@ -128,6 +127,7 @@ export default function ClientDetails({
         { field: "main", headerName: "Main", type: "boolean" },
         { field: "active", headerName: "Active", type: "boolean" },
     ];
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
         <Box>
@@ -153,9 +153,13 @@ export default function ClientDetails({
             <Formik initialValues={selectedRow} onSubmit={handleSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur }) => (
                     <Form>
-                        <Box pb="8px" display="flex" style={{ gap: 10 }}>
+                        <Box display="flex" style={{ gap: 10 }} flexDirection={phone ? "column" : "row"}>
                             <Box flex={3}>
-                                <Box display="flex" flexDirection="column" style={{ gap: 10, height: "72.5vh" }}>
+                                <Box
+                                    display="flex"
+                                    flexDirection="column"
+                                    style={phone ? { gap: 10 } : { gap: 10, height: "72.5vh" }}
+                                >
                                     <BasePaper>
                                         <GeneralForm
                                             values={values}
@@ -179,7 +183,8 @@ export default function ClientDetails({
                                             value={activeSubTab}
                                             onChange={(e, nv) => setActiveSubTab(nv)}
                                             variant="scrollable"
-                                            style={{ maxWidth: 700 }}
+                                            scrollButtons={phone ? "on" : "auto"}
+                                            style={phone ? { maxWidth: "83vw" } : {}}
                                         >
                                             <Tab label="More Info" />
                                             <Tab label="Main Contact" />
@@ -223,6 +228,8 @@ export default function ClientDetails({
                                     textColor="primary"
                                     onChange={(e, v) => setActiveTab(v)}
                                     variant="scrollable"
+                                    style={phone ? { maxWidth: "87vw" } : {}}
+                                    scrollButtons={phone ? "on" : "auto"}
                                 >
                                     <Tab label="Contacts" />
                                     <Tab label="Documents" />

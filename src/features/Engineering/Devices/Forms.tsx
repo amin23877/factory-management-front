@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Box, Checkbox, FormControlLabel, Paper } from "@material-ui/core";
+import { Box, Checkbox, FormControlLabel, Paper, useMediaQuery } from "@material-ui/core";
 
 import Button from "../../../app/Button";
 import TextField from "../../../app/TextField";
@@ -67,19 +67,31 @@ export const Photo = ({ device }: { device: any }) => {
 };
 
 export const General = ({ values, errors, handleChange, handleBlur, touched, sales }: IForm) => {
+    const phone = useMediaQuery("(max-width:600px)");
+
     return (
         <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
             <Paper
-                style={{
-                    margin: "0.5em 0",
-                    padding: "0 0.5em",
-                    backgroundColor: "#eee",
-                    gridColumnEnd: "span 4",
-                    // display: "grid",
-                    // gridTemplateColumns: "1fr 1fr 1fr 1fr 1fr",
-                    display: "flex",
-                    justifyContent: "space-between",
-                }}
+                style={
+                    phone
+                        ? {
+                              margin: "0.5em 0",
+                              padding: "0 0.5em",
+                              backgroundColor: "#eee",
+                              gridColumnEnd: "span 4",
+                              display: "grid",
+                              gridTemplateColumns: "1fr 1fr 1fr",
+                              gap: 10,
+                          }
+                        : {
+                              margin: "0.5em 0",
+                              padding: "0 0.5em",
+                              backgroundColor: "#eee",
+                              gridColumnEnd: "span 4",
+                              display: "flex",
+                              justifyContent: "space-between",
+                          }
+                }
             >
                 <FormControlLabel
                     checked={values.active}
@@ -99,7 +111,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
                 />
                 <FormControlLabel
                     checked={values.rndOnly}
-                    label="R&D only"
+                    label="R&D"
                     name="rndOnly"
                     onChange={handleChange}
                     control={<Checkbox size="small" />}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Tabs, Tab } from "@material-ui/core";
+import { Box, Tabs, Tab, useMediaQuery } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
@@ -34,14 +34,20 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
         }
     };
 
+    const phone = useMediaQuery("(max-width:600px)");
+
     return (
         <Box>
             <Formik validationSchema={schema} initialValues={poData} onSubmit={handleSubmit}>
                 {({ values, handleChange, handleBlur, setValues, setFieldValue, isSubmitting }) => (
                     <Form>
-                        <Box display="flex" flexDirection="column" style={{ gap: 10, height: "72.3vh" }}>
+                        <Box
+                            display="flex"
+                            flexDirection="column"
+                            style={phone ? { gap: 10 } : { gap: 10, height: "72.3vh" }}
+                        >
                             <Box>
-                                <BasePaper style={{ margin: "0 1em " }}>
+                                <BasePaper>
                                     <GeneralForm
                                         onChangeInit={setValues}
                                         values={values}
@@ -64,7 +70,6 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
                             <Box flex={1}>
                                 <BasePaper
                                     style={{
-                                        margin: "0 1em",
                                         height: "100%",
                                     }}
                                 >

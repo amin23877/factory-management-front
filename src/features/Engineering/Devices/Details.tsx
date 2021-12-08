@@ -1,12 +1,5 @@
 import React, { useMemo, useRef, useState } from "react";
-import {
-  Box,
-  Grid,
-  Tabs,
-  Tab,
-  LinearProgress,
-  Typography,
-} from "@material-ui/core";
+import { Box, Grid, Tabs, Tab, LinearProgress, Typography, useMediaQuery } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
@@ -38,666 +31,615 @@ import { getModifiedValues } from "../../../logic/utils";
 import DeviceQRCode from "../../../app/QRCode";
 
 function ItemsDetails({
-  sales,
-  selectedRow,
-  onNoteSelected,
-  onDocSelected,
-  onStepSelected,
-  onFlagSelected,
-  onDone,
+    sales,
+    selectedRow,
+    onNoteSelected,
+    onDocSelected,
+    onStepSelected,
+    onFlagSelected,
+    onDone,
 }: {
-  sales?: boolean;
-  selectedRow: any;
-  onDone?: () => void;
-  onNoteSelected: (a: any) => void;
-  onDocSelected: (a: any) => void;
-  onStepSelected: (a: any) => void;
-  onFlagSelected: (a: any) => void;
+    sales?: boolean;
+    selectedRow: any;
+    onDone?: () => void;
+    onNoteSelected: (a: any) => void;
+    onDocSelected: (a: any) => void;
+    onStepSelected: (a: any) => void;
+    onFlagSelected: (a: any) => void;
 }) {
-  const qrCode = useRef<HTMLElement | null>(null);
+    const qrCode = useRef<HTMLElement | null>(null);
 
-  const [moreInfoTab, setMoreInfoTab] = useState(0);
-  const [activeTab, setActiveTab] = useState(0);
-  const [bom, setBom] = useState<any>();
-  const [AddService, setAddService] = useState(false);
-  const [unitHistoryModal, setUnitHistoryModal] = useState(false);
+    const [moreInfoTab, setMoreInfoTab] = useState(0);
+    const [activeTab, setActiveTab] = useState(0);
+    const [bom, setBom] = useState<any>();
+    const [AddService, setAddService] = useState(false);
+    const [unitHistoryModal, setUnitHistoryModal] = useState(false);
 
-  const [selectedStep] = useState<any>();
-  const [selectedUnit, setSelectedUnit] = useState<IUnitHistory>();
+    const [selectedStep] = useState<any>();
+    const [selectedUnit, setSelectedUnit] = useState<IUnitHistory>();
 
-  const [stepModal, setStepModal] = useState(false);
+    const [stepModal, setStepModal] = useState(false);
 
-  const { data: docs } = useSWR<IDocument[]>(
-    activeTab === 0
-      ? selectedRow && selectedRow.id
-        ? `/document/item/${selectedRow.id}`
-        : null
-      : null
-  );
-  const { data: boms } = useSWR<IBom[]>(
-    activeTab === 1
-      ? selectedRow && selectedRow.id
-        ? `/bom?ItemId=${selectedRow.id}`
-        : null
-      : null
-  );
-  const { data: warranties } = useSWR(
-    activeTab === 2
-      ? selectedRow && selectedRow.id
-        ? `/service?ItemId=${selectedRow.id}&ServiceFamilyId=60efd0bcca0feadc84be6618`
-        : null
-      : null
-  );
-  const { data: manSteps } = useSWR(
-    activeTab === 3
-      ? selectedRow && selectedRow.id
-        ? `/engineering/manufacturing/task?ItemId=${selectedRow.id}`
-        : null
-      : null
-  );
-  const { data: evalSteps } = useSWR(
-    activeTab === 4
-      ? selectedRow && selectedRow.id
-        ? `/engineering/eval/task?ItemId=${selectedRow.id}`
-        : null
-      : null
-  );
-  const { data: testSteps } = useSWR(
-    activeTab === 5
-      ? selectedRow && selectedRow.id
-        ? `/engineering/test/task?ItemId=${selectedRow.id}`
-        : null
-      : null
-  );
-  const { data: fieldSteps } = useSWR(
-    activeTab === 6
-      ? selectedRow && selectedRow.id
-        ? `/engineering/fieldstartup/task?ItemId=${selectedRow.id}`
-        : null
-      : null
-  );
-  const { data: uniteHistory } = useSWR(
-    activeTab === 8
-      ? selectedRow && selectedRow.id
-        ? `/unitehistory`
-        : null
-      : null
-  );
-  const { data: services } = useSWR(
-    activeTab === 10
-      ? selectedRow && selectedRow.id
-        ? `/service?ItemId=${selectedRow.id}`
-        : null
-      : null
-  );
-  const { data: flags } = useSWR(
-    activeTab === 11
-      ? selectedRow && selectedRow.id
-        ? `/qccase/item/${selectedRow.id}`
-        : null
-      : null
-  );
-  const { data: notes } = useSWR<INote[]>(
-    activeTab === 12
-      ? selectedRow && selectedRow.id
-        ? `/note/item/${selectedRow.id}`
-        : null
-      : null
-  );
+    const { data: docs } = useSWR<IDocument[]>(
+        activeTab === 0 ? (selectedRow && selectedRow.id ? `/document/item/${selectedRow.id}` : null) : null
+    );
+    const { data: boms } = useSWR<IBom[]>(
+        activeTab === 1 ? (selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null) : null
+    );
+    const { data: warranties } = useSWR(
+        activeTab === 2
+            ? selectedRow && selectedRow.id
+                ? `/service?ItemId=${selectedRow.id}&ServiceFamilyId=60efd0bcca0feadc84be6618`
+                : null
+            : null
+    );
+    const { data: manSteps } = useSWR(
+        activeTab === 3
+            ? selectedRow && selectedRow.id
+                ? `/engineering/manufacturing/task?ItemId=${selectedRow.id}`
+                : null
+            : null
+    );
+    const { data: evalSteps } = useSWR(
+        activeTab === 4
+            ? selectedRow && selectedRow.id
+                ? `/engineering/eval/task?ItemId=${selectedRow.id}`
+                : null
+            : null
+    );
+    const { data: testSteps } = useSWR(
+        activeTab === 5
+            ? selectedRow && selectedRow.id
+                ? `/engineering/test/task?ItemId=${selectedRow.id}`
+                : null
+            : null
+    );
+    const { data: fieldSteps } = useSWR(
+        activeTab === 6
+            ? selectedRow && selectedRow.id
+                ? `/engineering/fieldstartup/task?ItemId=${selectedRow.id}`
+                : null
+            : null
+    );
+    const { data: uniteHistory } = useSWR(
+        activeTab === 8 ? (selectedRow && selectedRow.id ? `/unitehistory` : null) : null
+    );
+    const { data: services } = useSWR(
+        activeTab === 10 ? (selectedRow && selectedRow.id ? `/service?ItemId=${selectedRow.id}` : null) : null
+    );
+    const { data: flags } = useSWR(
+        activeTab === 11 ? (selectedRow && selectedRow.id ? `/qccase/item/${selectedRow.id}` : null) : null
+    );
+    const { data: notes } = useSWR<INote[]>(
+        activeTab === 12 ? (selectedRow && selectedRow.id ? `/note/item/${selectedRow.id}` : null) : null
+    );
 
-  const [bomPartsModal, setBomPartsModal] = useState(false);
+    const [bomPartsModal, setBomPartsModal] = useState(false);
 
-  const warCols = useMemo<GridColumns>(
-    () => [
-      { field: "date", headerName: "Date", type: "date", width: 120 },
-      { field: "number", headerName: "Warranty Number", width: 160 },
-      { field: "name", headerName: "Name", width: 160 },
-      { field: "description", headerName: "Note", flex: 1 },
-      { field: "term", headerName: "Term", flex: 1 },
-      { field: "status", headerName: "Status", width: 150 },
-    ],
-    []
-  );
-  const serviceCols = useMemo(
-    () => [
-      { field: "name", headerName: "Name", flex: 1 },
-      { field: "price", headerName: "Price", flex: 1 },
-      { field: "period", headerName: "Length", flex: 1 },
-      { field: "description", headerName: "Description", flex: 1 },
-    ],
-    []
-  );
+    const warCols = useMemo<GridColumns>(
+        () => [
+            { field: "date", headerName: "Date", type: "date", width: 120 },
+            { field: "number", headerName: "Warranty Number", width: 160 },
+            { field: "name", headerName: "Name", width: 160 },
+            { field: "description", headerName: "Note", flex: 1 },
+            { field: "term", headerName: "Term", flex: 1 },
+            { field: "status", headerName: "Status", width: 150 },
+        ],
+        []
+    );
+    const serviceCols = useMemo(
+        () => [
+            { field: "name", headerName: "Name", flex: 1 },
+            { field: "price", headerName: "Price", flex: 1 },
+            { field: "period", headerName: "Length", flex: 1 },
+            { field: "description", headerName: "Description", flex: 1 },
+        ],
+        []
+    );
 
-  const noteCols = useMemo<GridColumns>(
-    () => [
-      {
-        field: "date",
-        headerName: "Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-        width: 120,
-      },
-      {
-        field: "creator",
-        headerName: "Creator",
-        width: 180,
-        valueFormatter: (params) => params.row?.EmployeeId?.username,
-      },
-      { field: "subject", headerName: "Subject", width: 300 },
-      { field: "note", headerName: "Note", flex: 1 },
-    ],
-    []
-  );
-  const flagCols = useMemo(
-    () => [
-      { field: "date", headerName: "Date", flex: 2 },
-      { field: "number", headerName: "Flag ID", flex: 2 },
-      { field: "name", headerName: "Name", flex: 4 },
-      { field: "serial", headerName: "Serial", flex: 2 },
-      { field: "section", headerName: "Section", flex: 2 },
-      { field: "id", headerName: "ID", flex: 2 },
-      { field: "note", headerName: "Note", flex: 4 },
-      { field: "auditing", headerName: "Auditing", flex: 2 },
-    ],
-    []
-  );
+    const noteCols = useMemo<GridColumns>(
+        () => [
+            {
+                field: "date",
+                headerName: "Date",
+                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
+                width: 120,
+            },
+            {
+                field: "creator",
+                headerName: "Creator",
+                width: 180,
+                valueFormatter: (params) => params.row?.EmployeeId?.username,
+            },
+            { field: "subject", headerName: "Subject", width: 300 },
+            { field: "note", headerName: "Note", flex: 1 },
+        ],
+        []
+    );
+    const flagCols = useMemo(
+        () => [
+            { field: "date", headerName: "Date", flex: 2 },
+            { field: "number", headerName: "Flag ID", flex: 2 },
+            { field: "name", headerName: "Name", flex: 4 },
+            { field: "serial", headerName: "Serial", flex: 2 },
+            { field: "section", headerName: "Section", flex: 2 },
+            { field: "id", headerName: "ID", flex: 2 },
+            { field: "note", headerName: "Note", flex: 4 },
+            { field: "auditing", headerName: "Auditing", flex: 2 },
+        ],
+        []
+    );
 
-  const docCols = useMemo(
-    () => [
-      { field: "file", headerName: "File" },
-      { field: "date", headerName: "Date", width: 180, type: "date" },
-      { field: "EmployeeId", headerName: "Creator", flex: 1 },
-      { field: "name", headerName: "File Name", flex: 1 },
-      { field: "id", headerName: "File ID", flex: 1 },
-      { field: "description", headerName: "Description", flex: 1 },
-      { field: "type", headerName: "File Type" },
-    ],
-    []
-  );
+    const docCols = useMemo(
+        () => [
+            { field: "file", headerName: "File" },
+            { field: "date", headerName: "Date", width: 180, type: "date" },
+            { field: "EmployeeId", headerName: "Creator", flex: 1 },
+            { field: "name", headerName: "File Name", flex: 1 },
+            { field: "id", headerName: "File ID", flex: 1 },
+            { field: "description", headerName: "Description", flex: 1 },
+            { field: "type", headerName: "File Type" },
+        ],
+        []
+    );
 
-  const bomCols = useMemo<GridColDef[]>(
-    () => [
-      { field: "items", headerName: "Items", width: 80 },
-      { field: "revision", headerName: "Revision" },
-      { field: "date", headerName: "Revision Date", type: "date", width: 180 },
-      { field: "name", headerName: "BOM Name", width: 180 },
-      { field: "note", headerName: "Note", flex: 1 },
-      { field: "current", headerName: "Current", type: "boolean" },
-    ],
-    []
-  );
-  const manCols = useMemo<GridColDef[]>(
-    () => [
-      {
-        field: "priority",
-        headerName: "Priority",
-        width: 70,
-        disableColumnMenu: true,
-      },
-      { field: "name", headerName: "Name", flex: 2 },
-      { field: "id", headerName: "ID", width: 160, disableColumnMenu: true },
-      { field: "description", headerName: "Description", flex: 2 },
-      { field: "document", headerName: "Document", flex: 2 },
-      {
-        field: "hours",
-        headerName: " Hours",
-        width: 70,
-        disableColumnMenu: true,
-      },
-      {
-        field: "buildToStock",
-        headerName: "Build To Stock",
-        type: "boolean",
-        width: 100,
-        disableColumnMenu: true,
-      },
-      {
-        field: "engAP",
-        headerName: "Eng AP.",
-        type: "boolean",
-        width: 70,
-        disableColumnMenu: true,
-      },
-      { field: "desc", headerName: "Note", width: 100 },
-    ],
-    []
-  );
+    const bomCols = useMemo<GridColDef[]>(
+        () => [
+            { field: "items", headerName: "Items", width: 80 },
+            { field: "revision", headerName: "Revision" },
+            { field: "date", headerName: "Revision Date", type: "date", width: 180 },
+            { field: "name", headerName: "BOM Name", width: 180 },
+            { field: "note", headerName: "Note", flex: 1 },
+            { field: "current", headerName: "Current", type: "boolean" },
+        ],
+        []
+    );
+    const manCols = useMemo<GridColDef[]>(
+        () => [
+            {
+                field: "priority",
+                headerName: "Priority",
+                width: 70,
+                disableColumnMenu: true,
+            },
+            { field: "name", headerName: "Name", flex: 2 },
+            { field: "id", headerName: "ID", width: 160, disableColumnMenu: true },
+            { field: "description", headerName: "Description", flex: 2 },
+            { field: "document", headerName: "Document", flex: 2 },
+            {
+                field: "hours",
+                headerName: " Hours",
+                width: 70,
+                disableColumnMenu: true,
+            },
+            {
+                field: "buildToStock",
+                headerName: "Build To Stock",
+                type: "boolean",
+                width: 100,
+                disableColumnMenu: true,
+            },
+            {
+                field: "engAP",
+                headerName: "Eng AP.",
+                type: "boolean",
+                width: 70,
+                disableColumnMenu: true,
+            },
+            { field: "desc", headerName: "Note", width: 100 },
+        ],
+        []
+    );
 
-  const evalCols = useMemo<GridColDef[]>(
-    () => [
-      {
-        field: "priority",
-        headerName: "Priority",
-        width: 70,
-        disableColumnMenu: true,
-      },
-      { field: "name", headerName: "Name", flex: 2 },
-      { field: "id", headerName: "ID", width: 150, disableColumnMenu: true },
-      { field: "description", headerName: "Description", flex: 2 },
-      { field: "document", headerName: "Document", flex: 2 },
-      {
-        field: "hours",
-        headerName: " Hours",
-        width: 70,
-        disableColumnMenu: true,
-      },
-      {
-        field: "engAP",
-        headerName: "Eng AP.",
-        type: "boolean",
-        width: 70,
-        disableColumnMenu: true,
-      },
-      { field: "desc", headerName: "Note", width: 100 },
-    ],
-    []
-  );
+    const evalCols = useMemo<GridColDef[]>(
+        () => [
+            {
+                field: "priority",
+                headerName: "Priority",
+                width: 70,
+                disableColumnMenu: true,
+            },
+            { field: "name", headerName: "Name", flex: 2 },
+            { field: "id", headerName: "ID", width: 150, disableColumnMenu: true },
+            { field: "description", headerName: "Description", flex: 2 },
+            { field: "document", headerName: "Document", flex: 2 },
+            {
+                field: "hours",
+                headerName: " Hours",
+                width: 70,
+                disableColumnMenu: true,
+            },
+            {
+                field: "engAP",
+                headerName: "Eng AP.",
+                type: "boolean",
+                width: 70,
+                disableColumnMenu: true,
+            },
+            { field: "desc", headerName: "Note", width: 100 },
+        ],
+        []
+    );
 
-  const unitHistoryCols = useMemo<GridColDef[]>(
-    () => [
-      {
-        field: "estimatedShipDate",
-        headerName: "Estimated Ship Date",
-        flex: 1,
-        disableColumnMenu: true,
-      },
-      { field: "actualShipDate", headerName: "Actual Ship Date", flex: 1 },
-      { field: "serialNumber", headerName: "Device Serial NO.", flex: 1 },
-      { field: "status", headerName: "Status", flex: 1 },
-      {
-        field: "warrantyStatus",
-        headerName: "Warranty Status",
-        type: "boolean",
-        flex: 1,
-      },
-      { field: "warrantyEndDate", headerName: "Warranty End Date", flex: 1 },
-      { field: "SOId", headerName: "SO ID", flex: 1 },
-      {
-        field: "SODate",
-        headerName: "SO Date",
-        valueFormatter: (r) => formatTimestampToDate(r.row.so.date),
-        flex: 1,
-      },
-    ],
-    []
-  );
+    const unitHistoryCols = useMemo<GridColDef[]>(
+        () => [
+            {
+                field: "estimatedShipDate",
+                headerName: "Estimated Ship Date",
+                flex: 1,
+                disableColumnMenu: true,
+            },
+            { field: "actualShipDate", headerName: "Actual Ship Date", flex: 1 },
+            { field: "serialNumber", headerName: "Device Serial NO.", flex: 1 },
+            { field: "status", headerName: "Status", flex: 1 },
+            {
+                field: "warrantyStatus",
+                headerName: "Warranty Status",
+                type: "boolean",
+                flex: 1,
+            },
+            { field: "warrantyEndDate", headerName: "Warranty End Date", flex: 1 },
+            { field: "SOId", headerName: "SO ID", flex: 1 },
+            {
+                field: "SODate",
+                headerName: "SO Date",
+                valueFormatter: (r) => formatTimestampToDate(r.row.so.date),
+                flex: 1,
+            },
+        ],
+        []
+    );
 
-  const handleSubmit = async (data: any, { setSubmitting }: any) => {
-    try {
-      if (selectedRow) {
-        const resp = await updateAnItem(
-          selectedRow.id,
-          getModifiedValues(data, selectedRow)
-        );
-        if (resp) {
-          setSubmitting(false);
-          Toast("Record updated successfully", "success");
+    const handleSubmit = async (data: any, { setSubmitting }: any) => {
+        try {
+            if (selectedRow) {
+                const resp = await updateAnItem(selectedRow.id, getModifiedValues(data, selectedRow));
+                if (resp) {
+                    setSubmitting(false);
+                    Toast("Record updated successfully", "success");
 
-          onDone && onDone();
+                    onDone && onDone();
+                }
+            }
+        } catch (error) {
+            console.log(error);
         }
-      }
-    } catch (error) {
-      console.log(error);
+    };
+    const phone = useMediaQuery("(max-width:600px)");
+
+    if (!selectedRow) {
+        return <LinearProgress />;
     }
-  };
 
-  if (!selectedRow) {
-    return <LinearProgress />;
-  }
+    return (
+        <Box>
+            {selectedStep && selectedRow && selectedRow.id && (
+                <EditTaskModal
+                    device={selectedRow}
+                    tab={selectedStep.tab}
+                    task={selectedStep}
+                    itemId={selectedRow.id as any}
+                    open={stepModal}
+                    onClose={() => setStepModal(false)}
+                />
+            )}
+            {bom && <Parts open={bomPartsModal} onClose={() => setBomPartsModal(false)} bom={bom} />}
+            <AddServiceModal
+                device={selectedRow.id}
+                open={AddService}
+                onClose={() => setAddService(false)}
+                onDone={() => {
+                    mutate(`/service?ItemId=${selectedRow.id}&ServiceFamilyId=60efd0bcca0feadc84be6618`);
+                }}
+            />
+            {selectedUnit && (
+                <UnitHistoryModal
+                    open={unitHistoryModal}
+                    onClose={() => setUnitHistoryModal(false)}
+                    unit={selectedUnit}
+                />
+            )}
 
-  return (
-    <Box>
-      {selectedStep && selectedRow && selectedRow.id && (
-        <EditTaskModal
-          device={selectedRow}
-          tab={selectedStep.tab}
-          task={selectedStep}
-          itemId={selectedRow.id as any}
-          open={stepModal}
-          onClose={() => setStepModal(false)}
-        />
-      )}
-      {bom && (
-        <Parts
-          open={bomPartsModal}
-          onClose={() => setBomPartsModal(false)}
-          bom={bom}
-        />
-      )}
-      <AddServiceModal
-        device={selectedRow.id}
-        open={AddService}
-        onClose={() => setAddService(false)}
-        onDone={() => {
-          mutate(
-            `/service?ItemId=${selectedRow.id}&ServiceFamilyId=60efd0bcca0feadc84be6618`
-          );
-        }}
-      />
-      {selectedUnit && (
-        <UnitHistoryModal
-          open={unitHistoryModal}
-          onClose={() => setUnitHistoryModal(false)}
-          unit={selectedUnit}
-        />
-      )}
+            <Formik initialValues={selectedRow} validationSchema={AddItemSchema} onSubmit={handleSubmit}>
+                {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
+                    <Form>
+                        <Grid container spacing={2}>
+                            <Grid item md={5} xs={12}>
+                                <Box
+                                    display="flex"
+                                    flexDirection="column"
+                                    style={phone ? { gap: 10 } : { gap: 10, height: "77.3vh" }}
+                                >
+                                    <BasePaper>
+                                        <General
+                                            sales={sales}
+                                            values={values}
+                                            handleChange={handleChange}
+                                            handleBlur={handleBlur}
+                                            setFieldValue={setFieldValue}
+                                            errors={errors}
+                                            touched={touched}
+                                        />
+                                        {!sales && (
+                                            <Box
+                                                style={{
+                                                    width: "100%",
+                                                    display: "flex",
+                                                    justifyContent: "center",
+                                                }}
+                                            >
+                                                <Button
+                                                    style={{ margin: "0.5em auto", width: "100%" }}
+                                                    kind="edit"
+                                                    type="submit"
+                                                >
+                                                    Save
+                                                </Button>
+                                            </Box>
+                                        )}
+                                    </BasePaper>
+                                    <BasePaper style={{ flex: 1, overflowY: "auto" }}>
+                                        <Tabs
+                                            style={{ marginBottom: 16 }}
+                                            value={moreInfoTab}
+                                            variant="scrollable"
+                                            textColor="primary"
+                                            onChange={(e, v) => setMoreInfoTab(v)}
+                                        >
+                                            <Tab label="Image" />
+                                            <Tab label="QR Code" />
+                                            {!sales && <Tab label="Clusters and Levels" />}
+                                        </Tabs>
+                                        {moreInfoTab === 0 && <Photo device={selectedRow} />}
+                                        {moreInfoTab === 1 && (
+                                            <Box display="flex" justifyContent="space-around" alignItems="center">
+                                                <div ref={(e) => (qrCode.current = e)}>
+                                                    <DeviceQRCode
+                                                        value={JSON.stringify({
+                                                            type: "device",
+                                                            no: selectedRow.no,
+                                                        })}
+                                                    />
+                                                    <Typography variant="subtitle1">
+                                                        Device Number: {selectedRow.no}
+                                                    </Typography>
+                                                    <Typography variant="subtitle1">
+                                                        Device Name: {selectedRow.name}
+                                                    </Typography>
+                                                </div>
+                                                <Button
+                                                    variant="contained"
+                                                    onClick={async () => {
+                                                        if (qrCode.current) {
+                                                            await exportPdf(qrCode.current);
+                                                        }
+                                                    }}
+                                                >
+                                                    Print
+                                                </Button>
+                                            </Box>
+                                        )}
+                                        {moreInfoTab === 2 && !sales && (
+                                            <DynamicFilterAndFields
+                                                values={values}
+                                                handleChange={handleChange}
+                                                handleBlur={handleBlur}
+                                                setFieldValue={setFieldValue}
+                                                errors={errors}
+                                                touched={touched}
+                                                selectedItem={selectedRow}
+                                                device={true}
+                                            />
+                                        )}
+                                    </BasePaper>
+                                </Box>
+                            </Grid>
+                            <Grid item md={7} xs={12}>
+                                <Box display="flex" maxWidth="850px" mb={1}>
+                                    {!sales ? (
+                                        <Tabs
+                                            value={activeTab}
+                                            onChange={(e, v) => setActiveTab(v)}
+                                            textColor="primary"
+                                            variant="scrollable"
+                                            scrollButtons={phone ? "on" : "auto"}
+                                            style={phone ? { maxWidth: "83vw" } : {}}
+                                        >
+                                            <Tab label="Design documents" />
+                                            <Tab label="BOM" />
+                                            <Tab label="Warranties" />
+                                            <Tab label="Manufacturing" />
+                                            <Tab label="Evaluation" />
+                                            <Tab label="Test" />
+                                            <Tab label="Field Start-up" />
+                                            <Tab label="Label" />
+                                            <Tab label="Unit History" />
+                                            <Tab label="Sales Report" />
+                                            <Tab label="Field Service" />
+                                            <Tab label="Quality Control" />
+                                            <Tab label="Notes" />
+                                            <Tab label="Auditing" />
+                                        </Tabs>
+                                    ) : (
+                                        <Tabs
+                                            value={activeTab}
+                                            onChange={(e, v) => setActiveTab(v)}
+                                            textColor="primary"
+                                            variant="scrollable"
+                                            scrollButtons={phone ? "on" : "auto"}
+                                            style={phone ? { maxWidth: "83vw" } : {}}
+                                        >
+                                            <Tab label="Design documents" />
+                                            <Tab label="Warranties" />
+                                            <Tab label="Sales Report" />
+                                            <Tab label="Notes" />
+                                            <Tab label="Auditing" />
+                                        </Tabs>
+                                    )}
+                                </Box>
+                                <BasePaper>
+                                    {!sales ? (
+                                        <Box>
+                                            {activeTab === 0 && (
+                                                <BaseDataGrid
+                                                    height={"66.8vh"}
+                                                    cols={docCols}
+                                                    rows={docs || []}
+                                                    onRowSelected={() => {}}
+                                                />
+                                            )}
+                                            {activeTab === 1 && (
+                                                <BaseDataGrid
+                                                    height={"66.8vh"}
+                                                    cols={bomCols}
+                                                    rows={boms || []}
+                                                    onRowSelected={(d) => {
+                                                        setBom(d);
+                                                        setBomPartsModal(true);
+                                                    }}
+                                                />
+                                            )}
+                                            {activeTab === 2 && (
+                                                <Box>
+                                                    <Button onClick={() => setAddService(true)} variant="outlined">
+                                                        Add Warranty
+                                                    </Button>
+                                                    <BaseDataGrid
+                                                        height={"62.7vh"}
+                                                        cols={warCols}
+                                                        rows={warranties || []}
+                                                        onRowSelected={(d) => {}}
+                                                    />
+                                                </Box>
+                                            )}
+                                            {activeTab === 3 && (
+                                                <BaseDataGrid
+                                                    height={"66.8vh"}
+                                                    cols={manCols}
+                                                    rows={manSteps || []}
+                                                    onRowSelected={(d) => {
+                                                        onStepSelected({ ...d, tab: 0 });
+                                                    }}
+                                                />
+                                            )}
+                                            {activeTab === 4 && (
+                                                <BaseDataGrid
+                                                    height={"66.8vh"}
+                                                    cols={evalCols}
+                                                    rows={evalSteps || []}
+                                                    onRowSelected={(d) => {
+                                                        onStepSelected({ ...d, tab: 1 });
+                                                    }}
+                                                />
+                                            )}
+                                            {activeTab === 5 && (
+                                                <BaseDataGrid
+                                                    height={"66.8vh"}
+                                                    cols={evalCols}
+                                                    rows={testSteps || []}
+                                                    onRowSelected={(d) => {
+                                                        onStepSelected({ ...d, tab: 2 });
+                                                    }}
+                                                />
+                                            )}
+                                            {activeTab === 6 && (
+                                                <BaseDataGrid
+                                                    height={"66.8vh"}
+                                                    cols={evalCols}
+                                                    rows={fieldSteps || []}
+                                                    onRowSelected={(d) => {
+                                                        onStepSelected({ ...d, tab: 3 });
+                                                    }}
+                                                />
+                                            )}
+                                            {activeTab === 8 && (
+                                                <BaseDataGrid
+                                                    height={"66.8vh"}
+                                                    cols={unitHistoryCols}
+                                                    rows={
+                                                        uniteHistory
+                                                            ? uniteHistory.map((item: any, i: any) => ({
+                                                                  id: i,
+                                                                  ...item,
+                                                              }))
+                                                            : []
+                                                    }
+                                                    onRowSelected={(d) => {
+                                                        setSelectedUnit(d);
+                                                        setUnitHistoryModal(true);
+                                                    }}
+                                                />
+                                            )}
+                                            {activeTab === 9 && <SalesReport />}
+                                            {activeTab === 10 && (
+                                                <BaseDataGrid
+                                                    height={"66.8vh"}
+                                                    cols={serviceCols}
+                                                    rows={services || []}
+                                                    onRowSelected={() => {}}
+                                                />
+                                            )}
+                                            {activeTab === 11 && (
+                                                <BaseDataGrid
+                                                    height={"66.8vh"}
+                                                    cols={flagCols}
+                                                    rows={flags || []}
+                                                    onRowSelected={onFlagSelected}
+                                                />
+                                            )}
+                                            {activeTab === 12 && (
+                                                <BaseDataGrid
+                                                    height={"66.8vh"}
+                                                    cols={noteCols}
+                                                    rows={notes || []}
+                                                    onRowSelected={onNoteSelected}
+                                                />
+                                            )}
+                                        </Box>
+                                    ) : (
+                                        <Box>
+                                            {activeTab === 0 && (
+                                                <BaseDataGrid
+                                                    height={"66.8vh"}
+                                                    cols={docCols}
+                                                    rows={docs || []}
+                                                    onRowSelected={() => {}}
+                                                />
+                                            )}
 
-      <Formik
-        initialValues={selectedRow}
-        validationSchema={AddItemSchema}
-        onSubmit={handleSubmit}
-      >
-        {({
-          values,
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          setFieldValue,
-        }) => (
-          <Form>
-            <Grid container spacing={2}>
-              <Grid item md={5} xs={12}>
-                <Box
-                  display="flex"
-                  flexDirection="column"
-                  style={{ gap: 10, height: "77.3vh" }}
-                >
-                  <BasePaper>
-                    <General
-                      sales={sales}
-                      values={values}
-                      handleChange={handleChange}
-                      handleBlur={handleBlur}
-                      setFieldValue={setFieldValue}
-                      errors={errors}
-                      touched={touched}
-                    />
-                    {!sales && (
-                      <Box
-                        style={{
-                          width: "100%",
-                          display: "flex",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <Button
-                          style={{ margin: "0.5em auto", width: "100%" }}
-                          kind="edit"
-                          type="submit"
-                        >
-                          Save
-                        </Button>
-                      </Box>
-                    )}
-                  </BasePaper>
-                  <BasePaper style={{ flex: 1, overflowY: "auto" }}>
-                    <Tabs
-                      style={{ marginBottom: 16 }}
-                      value={moreInfoTab}
-                      variant="scrollable"
-                      textColor="primary"
-                      onChange={(e, v) => setMoreInfoTab(v)}
-                    >
-                      <Tab label="Image" />
-                      <Tab label="QR Code" />
-                      {!sales && <Tab label="Clusters and Levels" />}
-                    </Tabs>
-                    {moreInfoTab === 0 && <Photo device={selectedRow} />}
-                    {moreInfoTab === 1 && (
-                      <Box
-                        display="flex"
-                        justifyContent="space-around"
-                        alignItems="center"
-                      >
-                        <div ref={(e) => (qrCode.current = e)}>
-                          <DeviceQRCode
-                            value={JSON.stringify({
-                              type: "device",
-                              no: selectedRow.no,
-                            })}
-                          />
-                          <Typography variant="subtitle1">
-                            Device Number: {selectedRow.no}
-                          </Typography>
-                          <Typography variant="subtitle1">
-                            Device Name: {selectedRow.name}
-                          </Typography>
-                        </div>
-                        <Button
-                          variant="contained"
-                          onClick={async () => {
-                            if (qrCode.current) {
-                              await exportPdf(qrCode.current);
-                            }
-                          }}
-                        >
-                          Print
-                        </Button>
-                      </Box>
-                    )}
-                    {moreInfoTab === 2 && !sales && (
-                      <DynamicFilterAndFields
-                        values={values}
-                        handleChange={handleChange}
-                        handleBlur={handleBlur}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
-                        touched={touched}
-                        selectedItem={selectedRow}
-                        device={true}
-                      />
-                    )}
-                  </BasePaper>
-                </Box>
-              </Grid>
-              <Grid item md={7} xs={12}>
-                <Box display="flex" maxWidth="850px" mb={1}>
-                  {!sales ? (
-                    <Tabs
-                      value={activeTab}
-                      onChange={(e, v) => setActiveTab(v)}
-                      textColor="primary"
-                      variant="scrollable"
-                    >
-                      <Tab label="Design documents" />
-                      <Tab label="BOM" />
-                      <Tab label="Warranties" />
-                      <Tab label="Manufacturing" />
-                      <Tab label="Evaluation" />
-                      <Tab label="Test" />
-                      <Tab label="Field Start-up" />
-                      <Tab label="Label" />
-                      <Tab label="Unit History" />
-                      <Tab label="Sales Report" />
-                      <Tab label="Field Service" />
-                      <Tab label="Quality Control" />
-                      <Tab label="Notes" />
-                      <Tab label="Auditing" />
-                    </Tabs>
-                  ) : (
-                    <Tabs
-                      value={activeTab}
-                      onChange={(e, v) => setActiveTab(v)}
-                      textColor="primary"
-                      variant="scrollable"
-                    >
-                      <Tab label="Design documents" />
-                      <Tab label="Warranties" />
-                      <Tab label="Sales Report" />
-                      <Tab label="Notes" />
-                      <Tab label="Auditing" />
-                    </Tabs>
-                  )}
-                </Box>
-                <BasePaper>
-                  {!sales ? (
-                    <Box>
-                      {activeTab === 0 && (
-                        <BaseDataGrid
-                          height={"66.8vh"}
-                          cols={docCols}
-                          rows={docs || []}
-                          onRowSelected={() => {}}
-                        />
-                      )}
-                      {activeTab === 1 && (
-                        <BaseDataGrid
-                          height={"66.8vh"}
-                          cols={bomCols}
-                          rows={boms || []}
-                          onRowSelected={(d) => {
-                            setBom(d);
-                            setBomPartsModal(true);
-                          }}
-                        />
-                      )}
-                      {activeTab === 2 && (
-                        <Box>
-                          <Button
-                            onClick={() => setAddService(true)}
-                            variant="outlined"
-                          >
-                            Add Warranty
-                          </Button>
-                          <BaseDataGrid
-                            height={"62.7vh"}
-                            cols={warCols}
-                            rows={warranties || []}
-                            onRowSelected={(d) => {}}
-                          />
-                        </Box>
-                      )}
-                      {activeTab === 3 && (
-                        <BaseDataGrid
-                          height={"66.8vh"}
-                          cols={manCols}
-                          rows={manSteps || []}
-                          onRowSelected={(d) => {
-                            onStepSelected({ ...d, tab: 0 });
-                          }}
-                        />
-                      )}
-                      {activeTab === 4 && (
-                        <BaseDataGrid
-                          height={"66.8vh"}
-                          cols={evalCols}
-                          rows={evalSteps || []}
-                          onRowSelected={(d) => {
-                            onStepSelected({ ...d, tab: 1 });
-                          }}
-                        />
-                      )}
-                      {activeTab === 5 && (
-                        <BaseDataGrid
-                          height={"66.8vh"}
-                          cols={evalCols}
-                          rows={testSteps || []}
-                          onRowSelected={(d) => {
-                            onStepSelected({ ...d, tab: 2 });
-                          }}
-                        />
-                      )}
-                      {activeTab === 6 && (
-                        <BaseDataGrid
-                          height={"66.8vh"}
-                          cols={evalCols}
-                          rows={fieldSteps || []}
-                          onRowSelected={(d) => {
-                            onStepSelected({ ...d, tab: 3 });
-                          }}
-                        />
-                      )}
-                      {activeTab === 8 && (
-                        <BaseDataGrid
-                          height={"66.8vh"}
-                          cols={unitHistoryCols}
-                          rows={
-                            uniteHistory
-                              ? uniteHistory.map((item: any, i: any) => ({
-                                  id: i,
-                                  ...item,
-                                }))
-                              : []
-                          }
-                          onRowSelected={(d) => {
-                            setSelectedUnit(d);
-                            setUnitHistoryModal(true);
-                          }}
-                        />
-                      )}
-                      {activeTab === 9 && <SalesReport />}
-                      {activeTab === 10 && (
-                        <BaseDataGrid
-                          height={"66.8vh"}
-                          cols={serviceCols}
-                          rows={services || []}
-                          onRowSelected={() => {}}
-                        />
-                      )}
-                      {activeTab === 11 && (
-                        <BaseDataGrid
-                          height={"66.8vh"}
-                          cols={flagCols}
-                          rows={flags || []}
-                          onRowSelected={onFlagSelected}
-                        />
-                      )}
-                      {activeTab === 12 && (
-                        <BaseDataGrid
-                          height={"66.8vh"}
-                          cols={noteCols}
-                          rows={notes || []}
-                          onRowSelected={onNoteSelected}
-                        />
-                      )}
-                    </Box>
-                  ) : (
-                    <Box>
-                      {activeTab === 0 && (
-                        <BaseDataGrid
-                          height={"66.8vh"}
-                          cols={docCols}
-                          rows={docs || []}
-                          onRowSelected={() => {}}
-                        />
-                      )}
+                                            {activeTab === 1 && (
+                                                <>
+                                                    <Button onClick={() => setAddService(true)} variant="outlined">
+                                                        Add Warranty
+                                                    </Button>
+                                                    <BaseDataGrid
+                                                        height={"62.7vh"}
+                                                        cols={warCols}
+                                                        rows={warranties || []}
+                                                        onRowSelected={(d) => {}}
+                                                    />
+                                                </>
+                                            )}
 
-                      {activeTab === 1 && (
-                        <>
-                          <Button
-                            onClick={() => setAddService(true)}
-                            variant="outlined"
-                          >
-                            Add Warranty
-                          </Button>
-                          <BaseDataGrid
-                            height={"62.7vh"}
-                            cols={warCols}
-                            rows={warranties || []}
-                            onRowSelected={(d) => {}}
-                          />
-                        </>
-                      )}
+                                            {activeTab === 2 && <SalesReport />}
 
-                      {activeTab === 2 && <SalesReport />}
-
-                      {activeTab === 3 && (
-                        <BaseDataGrid
-                          height={"66.8vh"}
-                          cols={noteCols}
-                          rows={notes || []}
-                          onRowSelected={onNoteSelected}
-                        />
-                      )}
-                    </Box>
-                  )}
-                </BasePaper>
-              </Grid>
-            </Grid>
-          </Form>
-        )}
-      </Formik>
-    </Box>
-  );
+                                            {activeTab === 3 && (
+                                                <BaseDataGrid
+                                                    height={"66.8vh"}
+                                                    cols={noteCols}
+                                                    rows={notes || []}
+                                                    onRowSelected={onNoteSelected}
+                                                />
+                                            )}
+                                        </Box>
+                                    )}
+                                </BasePaper>
+                            </Grid>
+                        </Grid>
+                    </Form>
+                )}
+            </Formik>
+        </Box>
+    );
 }
 export default ItemsDetails;

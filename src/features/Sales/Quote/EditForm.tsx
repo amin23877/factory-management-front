@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Tabs, Tab, Box, Typography, LinearProgress } from "@material-ui/core";
+import { Tabs, Tab, Box, Typography, LinearProgress, useMediaQuery } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import { mutate } from "swr";
 
@@ -26,12 +26,17 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
             console.log(error);
         }
     };
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
         <Formik initialValues={selectedQuote} onSubmit={handleSubmit}>
             {({ handleChange, handleBlur, values, isSubmitting, setFieldValue }) => (
                 <Form>
-                    <Box display="flex" flexDirection="column" style={{ gap: 7, height: "71.6vh" }} mt={1}>
+                    <Box
+                        display="flex"
+                        flexDirection="column"
+                        style={phone ? { gap: 10 } : { gap: 7, height: "71.6vh" }}
+                    >
                         <BasePaper>
                             <GeneralForm
                                 edit
@@ -54,7 +59,6 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
                                 variant="scrollable"
                                 style={{ maxWidth: 700 }}
                             >
-                                {/* <Tab label="Terms" /> */}
                                 <Tab label="Entities" />
                                 <Tab label="Commission" />
                             </Tabs>

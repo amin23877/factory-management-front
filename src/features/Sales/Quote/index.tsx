@@ -16,7 +16,8 @@ import { deleteQuote, IQuote } from "../../../api/quote";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
 export default function QuotePanel() {
-    const [selectedQuote, setSelectedQuote] = useState<IQuote>();
+    // interface del any
+    const [selectedQuote, setSelectedQuote] = useState<IQuote | any>({ id: "", QuoteRequestId: "" });
     const [activeTab, setActiveTab] = useState(0);
     const [addQ, setAddQ] = useState(false);
     const [reqQuote, setReqQuote] = useState(false);
