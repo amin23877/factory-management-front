@@ -8,11 +8,10 @@ import {
     Menu,
     Checkbox,
     useMediaQuery,
-    IconButton,
     Button,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { CheckRounded, ClearRounded, MenuRounded, MoreVertRounded } from "@material-ui/icons";
+import { CheckRounded, ClearRounded, MoreVertRounded } from "@material-ui/icons";
 import moment from "moment";
 
 import ReactDataGrid from "@inovua/reactdatagrid-community";
@@ -303,13 +302,6 @@ function NewDataGrid({
             >
                 <MoreVertRounded />
             </Button>
-            {/* <IconButton
-                style={{ position: "absolute", top: 0, right: 0, zIndex: 5 }}
-                color="primary"
-                onClick={(e) => setAnchorEl(e.currentTarget)}
-            >
-                <MenuRounded />
-            </IconButton> */}
             <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)} keepMounted>
                 <Box style={{ width: 200, maxHeight: 300, overflowY: "auto" }}>
                     <List dense>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box, useMediaQuery } from "@material-ui/core";
 
 import { FieldSelect } from "../../../app/Inputs";
 import TextField from "../../../app/TextField";
@@ -28,9 +28,18 @@ export const GeneralForm = ({
     handleChange: any;
     setFieldValue: any;
 }) => {
+    const phone = useMediaQuery("(max-width:600px)");
+
     return (
         <>
-            <Box mb={1} display="grid" gridColumnGap={10} gridRowGap={11} gridTemplateColumns={"1fr 1fr 1fr"}>
+            {/* <div
+                style={
+                    phone
+                        ? { marginBottom: "1em", display: "grid", gap: "10px", gridTemplateColumns: "1fr 1fr" }
+                        : { marginBottom: "1em", display: "grid", gap: "10px", gridTemplateColumns: "1fr 1fr 1fr" }
+                }
+            > */}
+            <Box display="grid" gridGap="1em" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"}>
                 <TextField
                     name="date"
                     label="Date"
@@ -101,17 +110,7 @@ export const GeneralForm = ({
                     helperText={touched.zip && errors.zip && String(errors.zip)}
                     label="Zip Code"
                 />
-                {/* <FieldSelect
-                    label="Quote ID"
-                    name="QuoteId"
-                    request={getQuotes}
-                    itemTitleField="number"
-                    itemValueField="id"
-                    value={typeof values.QuoteId === "string" ? values.QuoteId : values.QuoteId?.id}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.QuoteId)}
-                /> */}
+
                 <LinkSelect
                     value={typeof values.QuoteId === "string" ? values.QuoteId : values.QuoteId}
                     label="Quote ID"
@@ -126,18 +125,7 @@ export const GeneralForm = ({
                     onBlur={handleBlur}
                     url="/panel/quote"
                 />
-                {/* <FieldSelect
-                    itemValueField="id"
-                    itemTitleField="number"
-                    request={getSO}
-                    name="SOId"
-                    value={typeof values.SOId === "string" ? values.SOId : values.SOId?.id}
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    error={Boolean(errors.SOId)}
-                    helperText={touched.SOId && errors.SOId && String(errors.SOId)}
-                    label="SO ID"
-                /> */}
+
                 <LinkSelect
                     value={typeof values.SOId === "string" ? values.SOId : values.SOId}
                     label="SO ID"
@@ -189,7 +177,6 @@ export const GeneralForm = ({
                             error={Boolean(errors.CreatedBy)}
                         />
                         <TextField
-                            style={{ gridColumnEnd: "span 3" }}
                             name="subject"
                             value={values.subject}
                             onBlur={handleBlur}
@@ -197,6 +184,7 @@ export const GeneralForm = ({
                             error={Boolean(errors.subject)}
                             helperText={touched.subject && errors.subject && String(errors.subject)}
                             label="Subject"
+                            style={phone ? { gridColumnEnd: "span 2" } : { gridColumnEnd: "span 3" }}
                         />
                     </>
                 )}

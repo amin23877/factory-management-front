@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Box, Tabs, Tab } from "@material-ui/core";
+import { Box, Tabs, Tab, useMediaQuery } from "@material-ui/core";
 import { mutate } from "swr";
 
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
@@ -24,6 +24,7 @@ export default function Calls() {
     const [addCall, setAddCall] = useState(false);
     const [confirm, setConfirm] = useState(false);
     const [CTagModal, setCTagModal] = useState(false);
+    const phone = useMediaQuery("(max-width:600px)");
 
     const handleDelete = async () => {
         try {
@@ -76,8 +77,6 @@ export default function Calls() {
     );
     return (
         <Box>
-            {/* <CallsTagsModal open={CTagModal} onClose={() => setCTagModal(false)} /> */}
-
             <OneFieldModal
                 title="Add/Edit Calls Tags"
                 getUrl="/callsTags"
@@ -97,19 +96,30 @@ export default function Calls() {
             <Box mb={1} display="flex" alignItems="center">
                 <Button
                     onClick={() => setAddCall(true)}
-                    style={{
-                        backgroundColor: "rgb(25,117,228)",
-                        color: "#fff",
-                        margin: "0 0.5em",
-                        padding: " 6px 25px",
-                        borderRadius: "0.5em",
-                        fontSize: "small",
-                    }}
+                    style={
+                        phone
+                            ? {
+                                  backgroundColor: "rgb(25,117,228)",
+                                  color: "#fff",
+                                  margin: "0 0.5em 0 0",
+                                  padding: "6px 10px",
+                                  borderRadius: "0.5em",
+                                  fontSize: "small",
+                              }
+                            : {
+                                  backgroundColor: "rgb(25,117,228)",
+                                  color: "#fff",
+                                  margin: "0 0.5em 0 0",
+                                  padding: "6px 25px",
+                                  borderRadius: "0.5em",
+                                  fontSize: "small",
+                              }
+                    }
                 >
                     <AddRoundedIcon />
                     Add Ticket
                 </Button>
-                <Button kind="add" onClick={() => setCTagModal(true)} style={{ margin: "0 0.5em" }}>
+                <Button kind="add" onClick={() => setCTagModal(true)} style={{ margin: "0 0.5em 0 0" }}>
                     Add Tags
                 </Button>
                 {activeTab === 1 && (
@@ -118,7 +128,7 @@ export default function Calls() {
                             kind="delete"
                             disabled={!selectedCall}
                             onClick={() => setConfirm(true)}
-                            style={{ margin: "0 0.5em" }}
+                            style={{ margin: "0 0.5em 0 0" }}
                         >
                             Delete Ticket
                         </Button>
@@ -133,7 +143,6 @@ export default function Calls() {
                     style={{ marginBottom: 10 }}
                 >
                     <Tab
-                        // label="List"
                         icon={
                             <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                                 <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> List
@@ -142,7 +151,6 @@ export default function Calls() {
                         wrapped
                     />
                     <Tab
-                        // label="Details"
                         disabled={!selectedCall}
                         icon={
                             <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>

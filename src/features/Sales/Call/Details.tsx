@@ -13,7 +13,7 @@ import Toast from "../../../app/Toast";
 import { editCall } from "../../../api/calls";
 
 import { getModifiedValues } from "../../../logic/utils";
-// Name - Number - Address - Zip - State - Tag - Subject - Description - CreatedBy - AssignedTo (if nobody -> None)  - Response
+
 const schema = Yup.object().shape({
     address: Yup.string().required(),
     zip: Yup.string().required(),
@@ -81,7 +81,7 @@ export default function Details({ callsData }: { callsData: any }) {
                                 />
                             </Box>
                             <Box style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-                                <Button type="submit" kind="edit">
+                                <Button type="submit" kind="edit" style={{ width: "200px" }}>
                                     Save
                                 </Button>
                             </Box>

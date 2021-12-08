@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
-// import useSWR from "swr";
 
 import Button from "../../../app/Button";
 import { BasePaper } from "../../../app/Paper";
@@ -108,13 +107,17 @@ export default function QuotePanel() {
                             Delete Quote
                         </Button>
                     </div>
-                ) : null}
-                <Button variant="outlined" onClick={() => setReqQuote(true)} style={{ padding: "5px 10px" }}>
-                    Requestes
-                </Button>
-                <Button variant="outlined" onClick={() => setEmailModal(true)} style={{ padding: "5px 10px" }}>
-                    Send Email
-                </Button>
+                ) : (
+                    <>
+                        <Button variant="outlined" onClick={() => setReqQuote(true)} style={{ padding: "5px 10px" }}>
+                            Requestes
+                        </Button>
+                        <Button variant="outlined" onClick={() => setEmailModal(true)} style={{ padding: "5px 10px" }}>
+                            Send Email
+                        </Button>
+                    </>
+                )}
+
                 <div style={{ flexGrow: 1 }} />
             </Box>
 
