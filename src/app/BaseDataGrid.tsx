@@ -50,7 +50,7 @@ export default function BaseDataGrid({ onRowSelected, rows, cols, height, pagina
         >
             <DataGrid
                 density="compact"
-                components={filter ? {} : { Toolbar: GridToolbar }}
+                components={!filter ? {} : { Toolbar: GridToolbar }}
                 className={classes.root}
                 onRowSelected={(r) => {
                     onRowSelected && onRowSelected(r.data);

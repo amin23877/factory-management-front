@@ -13,6 +13,7 @@ import {
     Tabs,
     Tab,
     makeStyles,
+    useMediaQuery,
 } from "@material-ui/core";
 import DateTimePicker from "../../../app/DateTimePicker";
 
@@ -124,10 +125,16 @@ export const GeneralForm = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedQuote]);
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
         <>
-            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={10} gridRowGap={10}>
+            <Box
+                display="grid"
+                gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"}
+                gridColumnGap={10}
+                gridRowGap={10}
+            >
                 <TextField
                     value={values.number}
                     name="number"
@@ -242,9 +249,11 @@ export const EntitiesForm = ({
     handleBlur: (a: any) => void;
     setFieldValue: any;
 }) => {
+    const phone = useMediaQuery("(max-width:600px)");
+
     return (
-        <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gridColumnGap={10}>
-            <Box my={1} display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
+        <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"} gridColumnGap={10}>
+            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} my={1}>
                 <LinkSelect
                     value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
                     label="rep / Agency"
@@ -284,32 +293,7 @@ export const EntitiesForm = ({
                     disabled
                 />
             </Box>
-            <Box my={1} display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-                <TextField
-                    value={values.requesterName}
-                    name="requesterName"
-                    label="requesterName"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
-                <TextField
-                    value={values.requesterMail}
-                    name="requesterMail"
-                    label="requesterMail"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
-                <TextField
-                    value={values.requesterPhone}
-                    name="requesterPhone"
-                    label="requesterPhone"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
-                <TextField style={{ opacity: 0 }} />
-                <TextField style={{ opacity: 0 }} />
-            </Box>
-            <Box my={1} display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
+            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} my={1}>
                 <LinkSelect
                     value={typeof values.client === "string" ? values.client : values.client?.id}
                     label="Client"
@@ -356,7 +340,30 @@ export const EntitiesForm = ({
                     disabled
                 />
             </Box>
-            <Box my="4px" display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gridColumn: "span 3" }} gridGap={5}>
+            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
+                <TextField
+                    value={values.requesterName}
+                    name="requesterName"
+                    label="requesterName"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.requesterMail}
+                    name="requesterMail"
+                    label="requesterMail"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.requesterPhone}
+                    name="requesterPhone"
+                    label="requesterPhone"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+            </Box>
+            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
                 <FieldSelect
                     label="24 Hour Contact"
                     name="twentyFourContact"

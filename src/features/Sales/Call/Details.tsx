@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box, useMediaQuery } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import { mutate } from "swr";
 
@@ -41,12 +41,16 @@ export default function Details({ callsData }: { callsData: any }) {
             console.log(error);
         }
     };
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
         <Formik initialValues={callsData} onSubmit={handleSubmit} validationSchema={schema}>
-            {({ values, errors, touched, handleChange, handleBlur, setFieldValue, setSubmitting }) => (
+            {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
                 <Form>
-                    <Box display="flex" style={{ justifyContent: "space-between" }}>
+                    <Box
+                        display="flex"
+                        style={phone ? { justifyContent: "center", maxWidth: "(calc(100vw - 4em))" } : {}}
+                    >
                         <Box flex={3}>
                             <GeneralForm
                                 setFieldValue={setFieldValue}

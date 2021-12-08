@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Tabs, Tab, Box, Typography, LinearProgress } from "@material-ui/core";
+import { Tabs, Tab, Box, Typography, LinearProgress, useMediaQuery } from "@material-ui/core";
 
 import { Form, Formik } from "formik";
 
@@ -29,12 +29,17 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
             console.log(error);
         }
     };
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
         <Formik initialValues={selectedSo} onSubmit={handleSubmit}>
             {({ handleChange, handleBlur, values, setValues, isSubmitting, setFieldValue }) => (
                 <Form>
-                    <Box display="flex" flexDirection="column" style={{ gap: 10, height: "74vh" }}>
+                    <Box
+                        display="flex"
+                        flexDirection="column"
+                        style={phone ? { gap: 10 } : { gap: 10, height: "75vh" }}
+                    >
                         <BasePaper>
                             <GeneralForm
                                 onChangeInit={setValues}
@@ -44,7 +49,7 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                                 setFieldValue={setFieldValue}
                             />
                             <Box textAlign="center" mt={1}>
-                                <Button fullWidth disabled={isSubmitting} type="submit" kind="edit">
+                                <Button style={{ width: "200px" }} disabled={isSubmitting} type="submit" kind="edit">
                                     Save
                                 </Button>
                             </Box>
@@ -55,7 +60,7 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                                 value={activeTab}
                                 onChange={(e, nv) => setActiveTab(nv)}
                                 variant="scrollable"
-                                style={{ maxWidth: 700 }}
+                                style={phone ? { maxWidth: "80vw" } : { maxWidth: 700 }}
                             >
                                 <Tab label="Approvals" />
                                 <Tab label="Accounting" />

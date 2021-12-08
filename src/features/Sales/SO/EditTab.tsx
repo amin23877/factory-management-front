@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Box } from "@material-ui/core";
+import { Box, useMediaQuery } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -180,6 +180,8 @@ export default function EditTab({
         ],
         []
     );
+    const phone = useMediaQuery("(max-width:600px)");
+
     return (
         <>
             {selectedSo && selectedSo.id && (
@@ -188,43 +190,33 @@ export default function EditTab({
             {selectedSo && selectedSo.id && (
                 <DocumentModal open={addDoc} onClose={() => setAddDoc(false)} itemId={selectedSo.id} model="so" />
             )}
-            <Box pb="8px" display="flex" style={{ gap: 10 }}>
-                <Box flex={3}>
+            <Box display="flex" style={{ gap: 10 }} flexDirection={phone ? "column" : "row"}>
+                <Box style={phone ? {} : { flex: 3 }}>
                     <EditForm selectedSo={selectedSo} />
                 </Box>
-                <Box flex={4}>
-                    <Tabs
-                        style={{ margin: "10px 0" }}
-                        textColor="primary"
-                        value={activeTab}
-                        onChange={(e, nv) => setActiveTab(nv)}
-                        variant="scrollable"
-                    >
-                        <Tab label="Line Items" />
-                        <Tab label="Units" />
-                        <Tab label="Documents" />
-                        <Tab label="Activities" />
-                        <Tab label="Shipment" />
-                        <Tab label="Field Services" />
-                        <Tab label="Notes" />
-                        <Tab label="Auditing" />
-                    </Tabs>
-                    <BasePaper style={{ height: "85.5%" }}>
+                <Box style={phone ? {} : { flex: 4 }}>
+                    <BasePaper style={{ paddingTop: "0px" }}>
+                        <Tabs
+                            style={!phone ? { margin: "10px 0" } : { maxWidth: "80vw", marginBottom: "10px" }}
+                            textColor="primary"
+                            value={activeTab}
+                            onChange={(e, nv) => setActiveTab(nv)}
+                            variant="scrollable"
+                        >
+                            <Tab label="Line Items" />
+                            <Tab label="Units" />
+                            <Tab label="Documents" />
+                            <Tab label="Activities" />
+                            <Tab label="Shipment" />
+                            <Tab label="Field Services" />
+                            <Tab label="Notes" />
+                            <Tab label="Auditing" />
+                        </Tabs>
                         {activeTab === 0 && (
-                            <BaseDataGrid
-                                cols={LICols}
-                                rows={lineItems || []}
-                                onRowSelected={onLineItemSelected}
-                                height="100.5%"
-                            />
+                            <BaseDataGrid cols={LICols} rows={lineItems || []} onRowSelected={onLineItemSelected} />
                         )}
                         {activeTab === 1 && (
-                            <BaseDataGrid
-                                cols={unitCols}
-                                rows={lineItems || []}
-                                onRowSelected={onLineItemSelected}
-                                height="100.5%"
-                            />
+                            <BaseDataGrid cols={unitCols} rows={lineItems || []} onRowSelected={onLineItemSelected} />
                         )}
                         {activeTab === 2 && (
                             <>
@@ -236,37 +228,17 @@ export default function EditTab({
                                 >
                                     + Add Document
                                 </Button>
-                                <BaseDataGrid
-                                    cols={docCols}
-                                    rows={documents || []}
-                                    onRowSelected={onDocSelected}
-                                    height="90.5%"
-                                />
+                                <BaseDataGrid cols={docCols} rows={documents || []} onRowSelected={onDocSelected} />
                             </>
                         )}
                         {activeTab === 3 && (
-                            <BaseDataGrid
-                                cols={activityCols}
-                                rows={documents || []}
-                                onRowSelected={() => {}}
-                                height="100.5%"
-                            />
+                            <BaseDataGrid cols={activityCols} rows={documents || []} onRowSelected={() => {}} />
                         )}
                         {activeTab === 4 && (
-                            <BaseDataGrid
-                                cols={shipCols}
-                                rows={documents || []}
-                                onRowSelected={() => {}}
-                                height="100.5%"
-                            />
+                            <BaseDataGrid cols={shipCols} rows={documents || []} onRowSelected={() => {}} />
                         )}
                         {activeTab === 5 && (
-                            <BaseDataGrid
-                                cols={FSCols}
-                                rows={[]}
-                                onRowSelected={onLineServiceSelected}
-                                height="100.5%"
-                            />
+                            <BaseDataGrid cols={FSCols} rows={[]} onRowSelected={onLineServiceSelected} />
                         )}
                         {activeTab === 6 && (
                             <>
@@ -278,12 +250,7 @@ export default function EditTab({
                                 >
                                     + Add Note
                                 </Button>
-                                <BaseDataGrid
-                                    cols={noteCols}
-                                    rows={notes || []}
-                                    onRowSelected={onNoteSelected}
-                                    height="90.5%"
-                                />
+                                <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} />
                             </>
                         )}
                     </BasePaper>

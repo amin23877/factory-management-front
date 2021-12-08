@@ -21,6 +21,7 @@ import { ILineItem } from "../../../api/lineItem";
 import { ILineService } from "../../../api/lineService";
 import { BasePaper } from "../../../app/Paper";
 import Datagrid from "./Datagrid";
+import { useMediaQuery } from "@material-ui/core";
 
 export default function SalesOrderPanel() {
     const [activeTab, setActiveTab] = useState(0);
@@ -37,6 +38,7 @@ export default function SalesOrderPanel() {
     const [selectedLI, setSelectedLI] = useState<ILineItem>();
     const [selectedLS, setSelectedLS] = useState<ILineService>();
     const [selectedSO, setSelectedSO] = useState<ISO>();
+    const phone = useMediaQuery("(max-width:600px)");
 
     const handleDelete = async () => {
         try {
@@ -104,20 +106,21 @@ export default function SalesOrderPanel() {
             />
 
             <Box mb={1} display="flex" alignItems="center">
-                <Button
-                    onClick={() => setAddSo(true)}
-                    style={{
-                        backgroundColor: "#1a73e8",
-                        color: "#fff",
-                        margin: "0 0.5em",
-                        padding: " 6px 15px",
-                        boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-                    }}
-                >
-                    <AddRoundedIcon />
-                    Add SO
-                </Button>
-
+                {activeTab === 0 && (
+                    <Button
+                        onClick={() => setAddSo(true)}
+                        style={{
+                            backgroundColor: "#1a73e8",
+                            color: "#fff",
+                            margin: "0 0.5em",
+                            padding: " 6px 15px",
+                            boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+                        }}
+                    >
+                        <AddRoundedIcon />
+                        Add SO
+                    </Button>
+                )}
                 {activeTab === 1 && (
                     <>
                         <Button disabled={!selectedSO} onClick={() => setConfirm(true)} kind="delete">
@@ -146,7 +149,7 @@ export default function SalesOrderPanel() {
                 )}
                 <div style={{ flexGrow: 1 }} />
             </Box>
-            <BasePaper>
+            <BasePaper style={{ paddingTop: "0px" }}>
                 <Tabs
                     value={activeTab}
                     textColor="primary"
