@@ -1,10 +1,10 @@
 import React, { useRef } from "react";
-import { Box, TextField, Link } from "@material-ui/core";
+import { Box, TextField } from "@material-ui/core";
 import { Formik, Form } from "formik";
 
 import Dialog from "../../app/Dialog";
 import Button from "../../app/Button";
-import { host } from '../../host'
+import { host } from "../../host";
 
 import { createAModelDocument, updateAModelDocument, deleteAModelDocument, IDocument } from "../../api/document";
 import PhotoSizeSelectActualOutlinedIcon from "@material-ui/icons/PhotoSizeSelectActualOutlined";
@@ -65,9 +65,7 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
     return (
         <Dialog open={open} onClose={onClose} fullScreen title={`${docData ? "Edit" : "Add"} Document to ${model}`}>
             <Box height="82vh" m={3} display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10}>
-                <Box>
-                    {docData?.path && <PDFPreview height="100%" pdf={`http://${host}/` + docData?.path} />}
-                </Box>
+                <Box>{docData?.path && <PDFPreview height="100%" pdf={`http://${host}/` + docData?.path} />}</Box>
                 <Formik initialValues={docData ? docData : ({} as IDocument)} onSubmit={handleSubmit}>
                     {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
                         <Form>
@@ -100,9 +98,9 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
                                         // String((values.file as any).name)
                                         <p>ads</p>
                                     ) : docData ? (
-                                        <Link download href={docData.path}>
+                                        <a rel="noopener noreferrer" target="_blank" href={docData.path.slice(0)}>
                                             Download previous file
-                                        </Link>
+                                        </a>
                                     ) : (
                                         ""
                                     )}
