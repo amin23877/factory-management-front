@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
-import { Box, Tab, Tabs } from "@material-ui/core";
+import { Box, Tab, Tabs, useMediaQuery } from "@material-ui/core";
 import useSWR from "swr";
 
 import Button from "../../../app/Button";
@@ -131,6 +131,7 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
         { field: "main", headerName: "Main", width: 80, type: "boolean" },
         { field: "active", headerName: "Active", width: 80, type: "boolean" },
     ];
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
         <>
@@ -157,25 +158,27 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                 data={selectedContact}
             />
 
-            <Box pb="8px" display="flex" style={{ gap: 10 }}>
+            <Box pb="8px" display="flex" flexDirection={phone ? "column" : "row"} style={{ gap: 10 }}>
                 <Box flex={2}>
                     <UpdateVendorForm initialValues={vendor} />
                 </Box>
                 <Box flex={3}>
-                    <Tabs
-                        value={activeTab}
-                        onChange={(e, nv) => setActiveTab(nv)}
-                        style={{ margin: "0.5em 0" }}
-                        textColor="primary"
-                    >
-                        <Tab label="Items" />
-                        <Tab label="Documents" />
-                        <Tab label="Contacts" />
-                        <Tab label="PO History" />
-                        <Tab label="Notes" />
-                        <Tab label="Auditing" />
-                    </Tabs>
                     <BasePaper>
+                        <Tabs
+                            value={activeTab}
+                            onChange={(e, nv) => setActiveTab(nv)}
+                            textColor="primary"
+                            variant="scrollable"
+                            scrollButtons={phone ? "on" : "auto"}
+                            style={phone ? { maxWidth: "83vw", marginBottom: "1em" } : { marginBottom: "1em" }}
+                        >
+                            <Tab label="Items" />
+                            <Tab label="Documents" />
+                            <Tab label="Contacts" />
+                            <Tab label="PO History" />
+                            <Tab label="Notes" />
+                            <Tab label="Auditing" />
+                        </Tabs>
                         {activeTab === 0 && (
                             <BaseDataGrid
                                 cols={itemCols}

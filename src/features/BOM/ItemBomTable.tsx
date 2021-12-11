@@ -22,6 +22,7 @@ import { IBom, IBomRecord } from "../../api/bom";
 import { formatTimestampToDate } from "../../logic/date";
 import { openRequestedSinglePopup } from "../../logic/window";
 import { useHistory } from "react-router-dom";
+import { useMediaQuery } from "@material-ui/core";
 
 const useRowStyles = makeStyles({
     root: {
@@ -82,6 +83,7 @@ export const useTableStyles = makeStyles((theme) => ({
 
 function Row({ row }: { row: IBom }) {
     let history = useHistory();
+    const phone = useMediaQuery("(max-width:600px)");
     const { data: bomRecords } = useSWR<IBomRecord[]>(`/bomrecord?BOMId=${row.id}`);
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
@@ -96,7 +98,13 @@ function Row({ row }: { row: IBom }) {
                     </IconButton>
                 </TableCell>
                 <TableCell>
-                    <IconButton onClick={() => openRequestedSinglePopup({ url: `/panel/bom/${row.id}/parts` })}>
+                    <IconButton
+                        onClick={() => {
+                            phone
+                                ? history.push(`/panel/bom/${row.id}/parts`)
+                                : openRequestedSinglePopup({ url: `/panel/bom/${row.id}/parts` });
+                        }}
+                    >
                         <LaptopWindows />
                     </IconButton>
                 </TableCell>

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router";
+
 import { Autocomplete } from "@material-ui/lab";
 import { CSSProperties } from "@material-ui/styles";
-import { TextField } from "@material-ui/core";
+import { TextField, useMediaQuery } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import SearchRounded from "@material-ui/icons/SearchRounded";
 
@@ -32,7 +34,7 @@ const useStyles = makeStyles({
             padding: "0px",
         },
     },
-    amin: {
+    textField: {
         transform: " translateY(0px)",
         "& input": {
             padding: 11,
@@ -55,6 +57,8 @@ export default function MaterialFieldSelect({
     const [options, setOptions] = useState<any[]>([]);
     const [selectValue, setSelectValue] = useState<any>(value);
     const classes = useStyles();
+    const phone = useMediaQuery("(max-width:600px)");
+    const history = useHistory();
 
     useEffect(() => {
         const fetchData = () => {
@@ -119,9 +123,11 @@ export default function MaterialFieldSelect({
                             }}
                             onClick={() => {
                                 if (props.url && value) {
-                                    openRequestedSinglePopup({
-                                        url: `${props.url}/${typeof value === "string" ? value : value.id}`,
-                                    });
+                                    phone
+                                        ? history.push(`${props.url}/${typeof value === "string" ? value : value.id}`)
+                                        : openRequestedSinglePopup({
+                                              url: `${props.url}/${typeof value === "string" ? value : value.id}`,
+                                          });
                                 }
                             }}
                         >
@@ -134,7 +140,7 @@ export default function MaterialFieldSelect({
                             error={props.error}
                             placeholder={props.placeholder}
                             classes={{
-                                root: classes.amin,
+                                root: classes.textField,
                             }}
                             style={{ flex: 1, fontSize: "0.8rem" }}
                             type="text"

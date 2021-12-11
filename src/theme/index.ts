@@ -32,7 +32,8 @@ export const theme = createMuiTheme({
     palette: {
         divider: "#4f4f4f",
         primary: {
-            main: "#3389ff",
+            // main: "#3389ff",
+            main: "#e68031",
             contrastText: "#fff",
         },
         secondary: {

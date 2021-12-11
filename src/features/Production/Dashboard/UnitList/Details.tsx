@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState, Fragment } from "react";
-import { Box, Typography, Tabs, Tab } from "@material-ui/core";
+import { Box, Typography, Tabs, Tab, useMediaQuery } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
@@ -27,6 +27,7 @@ import Confirm from "../../../Modals/Confirm";
 import { deleteOption, IOption } from "../../../../api/options";
 import { openRequestedSinglePopup } from "../../../../logic/window";
 import { addImage, deleteImage } from "../../../../api/units";
+import { useHistory } from "react-router";
 
 const schema = Yup.object().shape({
     // laborCost: Yup.number().required(),
@@ -36,6 +37,9 @@ const schema = Yup.object().shape({
 });
 
 function Details({ unit }: { unit: IUnit }) {
+    let history = useHistory();
+    const phone = useMediaQuery("(max-width:600px)");
+
     const handleSubmit = async (data: any) => {
         try {
             if (unit?.id) {
@@ -320,7 +324,9 @@ function Details({ unit }: { unit: IUnit }) {
                         cols={bomCols}
                         rows={unitBoms || []}
                         onRowSelected={(r) => {
-                            openRequestedSinglePopup({ url: `/panel/ubom/${r.id}/parts` });
+                            phone
+                                ? history.push(`/panel/ubom/${r.id}/parts`)
+                                : openRequestedSinglePopup({ url: `/panel/ubom/${r.id}/parts` });
                         }}
                     />
                 )}

@@ -17,6 +17,7 @@ import { DocumentsDataGrid, NotesDataGrid } from "../../common/DataGrids";
 import { GridColumns } from "@material-ui/data-grid";
 import { formatTimestampToDate } from "../../../logic/date";
 import { getModifiedValues } from "../../../logic/utils";
+import { useMediaQuery } from "@material-ui/core";
 
 const style = {
     border: "1px solid gray ",
@@ -102,6 +103,7 @@ export default function Details({
             console.log(error);
         }
     };
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
         <>
@@ -124,12 +126,12 @@ export default function Details({
             <Snack open={snack} onClose={() => setSnack(false)}>
                 {msg}
             </Snack>
-            <Box display="grid" gridTemplateColumns="3fr 4fr" gridGap={10}>
+            <Box display="grid" gridTemplateColumns={phone ? "1fr" : "3fr 4fr"} gridGap={10}>
                 <Box>
                     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
                         {({ values, handleChange, handleBlur, errors, setFieldValue }) => (
                             <Form>
-                                <Box display="flex" flexDirection="column" height="78.7vh" gridGap={10}>
+                                <Box display="flex" flexDirection="column" height={phone ? "" : "78.7vh"} gridGap={10}>
                                     <Box>
                                         <BasePaper>
                                             <UpdateForm
@@ -138,9 +140,14 @@ export default function Details({
                                                 handleBlur={handleBlur}
                                                 handleChange={handleChange}
                                             />
-                                            <Box display="flex" width="100%">
+                                            <Box
+                                                display="flex"
+                                                width="100%"
+                                                justifyContent="center"
+                                                alignItems="center"
+                                            >
                                                 <Button
-                                                    style={{ marginTop: "1em", width: "100%" }}
+                                                    style={{ marginTop: "1em", width: "200px" }}
                                                     type="submit"
                                                     kind="edit"
                                                 >
@@ -155,7 +162,12 @@ export default function Details({
                                             value={activeMoreTab}
                                             onChange={(e, nv) => setActiveMoreTab(nv)}
                                             variant="scrollable"
-                                            style={{ maxWidth: 700 }}
+                                            scrollButtons={phone ? "on" : "auto"}
+                                            style={
+                                                phone
+                                                    ? { maxWidth: "83vw", marginBottom: "1em" }
+                                                    : { marginBottom: "1em" }
+                                            }
                                         >
                                             <Tab label="More Info" />
                                             <Tab label="Vendor" />
@@ -193,20 +205,22 @@ export default function Details({
                     </Formik>
                 </Box>
                 <Box>
-                    <Tabs
-                        textColor="primary"
-                        style={{ marginBottom: "1em" }}
-                        value={activeTab}
-                        onChange={(e, nv) => setActiveTab(nv)}
-                    >
-                        {/* Line Items	Documents	Receiving	Notes	Auditing */}
-                        <Tab label="Line items" />
-                        <Tab label="Documents" />
-                        <Tab label="Receiving" />
-                        <Tab label="Notes" />
-                        <Tab label="Auditing" />
-                    </Tabs>
                     <BasePaper>
+                        <Tabs
+                            textColor="primary"
+                            value={activeTab}
+                            onChange={(e, nv) => setActiveTab(nv)}
+                            variant="scrollable"
+                            scrollButtons={phone ? "on" : "auto"}
+                            style={phone ? { maxWidth: "83vw", marginBottom: "1em" } : { marginBottom: "1em" }}
+                        >
+                            {/* Line Items	Documents	Receiving	Notes	Auditing */}
+                            <Tab label="Line items" />
+                            <Tab label="Documents" />
+                            <Tab label="Receiving" />
+                            <Tab label="Notes" />
+                            <Tab label="Auditing" />
+                        </Tabs>
                         {activeTab === 0 && (
                             <BaseDataGrid
                                 rows={lines}

@@ -14,7 +14,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
-import { Tabs, Tab } from "@material-ui/core";
+import { Tabs, Tab, useMediaQuery } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import Alert from "@material-ui/lab/Alert";
@@ -827,9 +827,16 @@ export const UpdateForm = ({
     handleBlur: any;
     errors: any;
 }) => {
+    const phone = useMediaQuery("(max-width:600px)");
+
     return (
         <>
-            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gridRowGap={7} gridColumnGap={7}>
+            <Box
+                display="grid"
+                gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"}
+                gridRowGap={7}
+                gridColumnGap={7}
+            >
                 <TextField name="number" label="PO ID" value={values.number} disabled />
                 <FieldSelect
                     request={getPPOTypes}
@@ -880,16 +887,18 @@ export const UpdateForm = ({
                     fullWidth
                 />
                 <Paper
-                    style={{
-                        // margin: "0.5em 0 2em 0",
-                        // padding: "0.5em",
-                        paddingLeft: "0.5em",
-                        backgroundColor: "#eee",
-                        gridColumnEnd: "span 2",
-                        // display: "grid",
-                        // gridTemplateColumns: "1fr 1fr 1fr",
-                        // columnGap: "15px",
-                    }}
+                    style={
+                        phone
+                            ? {
+                                  paddingLeft: "0.5em",
+                                  backgroundColor: "#eee",
+                              }
+                            : {
+                                  paddingLeft: "0.5em",
+                                  backgroundColor: "#eee",
+                                  gridColumnEnd: "span 2",
+                              }
+                    }
                 >
                     <FormControlLabel
                         style={{ width: "100%" }}
@@ -901,7 +910,7 @@ export const UpdateForm = ({
                     />
                 </Paper>
                 <TextField
-                    style={{ gridColumnEnd: "span 3" }}
+                    style={phone ? { gridColumnEnd: "span 2" } : { gridColumnEnd: "span 3" }}
                     value={values.note}
                     name="note"
                     label="PO note"
@@ -992,6 +1001,7 @@ export const AddressesForm = ({
     handleBlur: (a: any) => void;
 }) => {
     const [activeTab, setActiveTab] = useState(0);
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
         <>
@@ -1006,7 +1016,13 @@ export const AddressesForm = ({
                 <Tab label="Shipping Address" />
             </Tabs>
             {activeTab === 0 && (
-                <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridGap={10} gridRowGap={10}>
+                <Box
+                    my={1}
+                    display="grid"
+                    gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"}
+                    gridGap={10}
+                    gridRowGap={10}
+                >
                     <TextField
                         value={values.billingAddressCompany}
                         name="billingAddressCompany"
@@ -1078,7 +1094,7 @@ export const AddressesForm = ({
                 <Box
                     my={1}
                     display="grid"
-                    gridTemplateColumns="1fr 1fr 1fr"
+                    gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"}
                     gridGap={10}
                     gridRowGap={10}
                     gridColumnGap={10}

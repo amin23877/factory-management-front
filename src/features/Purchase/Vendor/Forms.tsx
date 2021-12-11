@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Checkbox, FormControlLabel, Paper, Tab, Tabs } from "@material-ui/core";
+import { Box, Checkbox, FormControlLabel, Paper, Tab, Tabs, useMediaQuery } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { mutate } from "swr";
@@ -172,13 +172,18 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
             setSubmitting(false);
         }
     };
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
         <Formik initialValues={initialValues} validationSchema={schema} onSubmit={handleSubmit}>
             {({ values, errors, handleChange, handleBlur }) => (
                 <Form>
                     <Box>
-                        <Box display="flex" flexDirection="column" style={{ gap: 10, height: "77.5vh" }}>
+                        <Box
+                            display="flex"
+                            flexDirection="column"
+                            style={phone ? { gap: 10 } : { gap: 10, height: "77.5vh" }}
+                        >
                             <BasePaper>
                                 <Paper
                                     style={{
@@ -205,7 +210,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                                     display="grid"
                                     gridColumnGap={10}
                                     gridRowGap={10}
-                                    gridTemplateColumns="1fr 1fr 1fr"
+                                    gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"}
                                 >
                                     <FieldSelect
                                         request={getVendorTypes}
@@ -288,7 +293,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                                         error={Boolean(errors.terms)}
                                     />
                                     <TextField
-                                        style={{ gridColumnEnd: "span 3" }}
+                                        style={phone ? { gridColumnEnd: "span 2" } : { gridColumnEnd: "span 3" }}
                                         value={values.note}
                                         name="note"
                                         label="Note"
@@ -299,7 +304,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                                     />
                                 </Box>
                                 <Box style={{ display: "flex", justifyContent: "center" }}>
-                                    <Button type="submit" kind="edit" style={{ margin: "0.6em", width: "100%" }}>
+                                    <Button type="submit" kind="edit" style={{ margin: "0.6em", width: "200px" }}>
                                         Save
                                     </Button>
                                 </Box>
