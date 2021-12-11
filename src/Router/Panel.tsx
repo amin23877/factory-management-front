@@ -1,5 +1,6 @@
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useState } from "react";
 import { Switch, Route } from "react-router-dom";
+import { useHistory } from "react-router";
 import { Box, CssBaseline, useTheme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -12,21 +13,17 @@ import MenuIcon from "@material-ui/icons/Menu";
 import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-
-import BottomNavigation from "@material-ui/core/BottomNavigation";
-import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
-
-import { HomeRounded, ShoppingCartRounded, GpsFixedRounded, BuildRounded, HeadsetMicRounded } from "@material-ui/icons";
+import KeyboardBackspaceRoundedIcon from "@material-ui/icons/KeyboardBackspaceRounded";
 
 import { TopAppBar } from "../app/TopAppBar";
 import MainNav from "../app/Drawer";
 import MyBackdrop from "../app/Backdrop";
+import BottomNav from "../app/BottomNav";
 
 import ChatDrawer from "../features/Chat/Drawer";
 
 import { PortalProvider } from "../logic/PortalContext";
 import { AppBarStation } from "../logic/PortalContext/Stations";
-import { useHistory } from "react-router";
 
 const Home = React.lazy(() => import("../pages/home"));
 const Dashboard = React.lazy(() => import("../pages/HomeDashboard"));
@@ -69,7 +66,8 @@ const useStyles = makeStyles((theme) => ({
         height: "54px",
         BorderBottom: "1px solid gray",
         boxShadow: "rgba(207, 171, 171, 0.08) 0px 4px 12px",
-        backgroundColor: "#fefefe",
+        backgroundColor: "#304050",
+        color: "white",
     },
     appBarShiftRight: {
         width: `calc(100% - ${chatDrawerWidth}px)`,
@@ -132,34 +130,23 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 0,
     },
 }));
-const useStyleBottom = makeStyles({
-    root: {
-        width: "100vw",
-        position: "fixed",
-        bottom: 0,
-        zIndex: 6,
-        boxShadow: "rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px",
-    },
-});
+
 export default function PanelRouter() {
     const phone = useMediaQuery("(max-width:600px)");
-    const history = useHistory();
     const theme = useTheme();
     const classes = useStyles();
-    const classesBottom = useStyleBottom();
+    const history = useHistory();
+
+    const [value, setValue] = React.useState("/panel/");
 
     const [mainDrawerOpen, setMainDrawerOpen] = useState(false);
     const [chatDrawerOpen, setChatDrawerOpen] = useState(false);
-    const [value, setValue] = React.useState("/panel/");
-
-    useEffect(() => {
-        setValue(history.location.pathname);
-    }, [history.location.pathname]);
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
         setValue(newValue);
         history.replace(newValue);
     };
+
     const handleDrawerOpen = () => {
         setMainDrawerOpen(true);
     };
@@ -181,7 +168,18 @@ export default function PanelRouter() {
                     style={{ boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px" }}
                 >
                     <Toolbar>
-                        {!phone && (
+                        {phone ? (
+                            <IconButton
+                                color="inherit"
+                                aria-label="back"
+                                onClick={() => {
+                                    history.goBack();
+                                }}
+                                edge="start"
+                            >
+                                <KeyboardBackspaceRoundedIcon />
+                            </IconButton>
+                        ) : (
                             <IconButton
                                 color="inherit"
                                 aria-label="open drawer"
@@ -189,9 +187,7 @@ export default function PanelRouter() {
                                 edge="start"
                                 className={clsx(classes.menuButton, mainDrawerOpen && classes.hide)}
                             >
-                                <div style={{ color: "#202731" }}>
-                                    <MenuIcon />
-                                </div>
+                                <MenuIcon />
                             </IconButton>
                         )}
 
@@ -282,25 +278,7 @@ export default function PanelRouter() {
 
                 <ChatDrawer open={chatDrawerOpen} onClose={() => setChatDrawerOpen(false)} />
             </div>
-            {phone && (
-                <BottomNavigation value={value} onChange={handleChange} className={classesBottom.root}>
-                    <BottomNavigationAction
-                        label="Sales"
-                        value="/panel/sales"
-                        icon={<ShoppingCartRounded />}
-                        style={{ marginLeft: "15px" }}
-                    />
-                    <BottomNavigationAction label="Inventory" value="/panel/inventory" icon={<GpsFixedRounded />} />
-                    <BottomNavigationAction label="Home" value="/panel/" icon={<HomeRounded />} />
-                    <BottomNavigationAction label="Engineering" value="/panel/engineering" icon={<BuildRounded />} />
-                    <BottomNavigationAction
-                        label="Services"
-                        value="/panel/fieldservice"
-                        icon={<HeadsetMicRounded />}
-                        style={{ marginRight: "15px" }}
-                    />
-                </BottomNavigation>
-            )}
+            {phone && <BottomNav value={value} handleChange={handleChange} />}
         </PortalProvider>
     );
 }

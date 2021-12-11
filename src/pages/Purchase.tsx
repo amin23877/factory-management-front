@@ -32,7 +32,7 @@ export default function Purchase() {
                 <div
                     onClick={handleClick}
                     style={{
-                        color: "black",
+                        color: "inherit",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
@@ -40,7 +40,7 @@ export default function Purchase() {
                         cursor: "pointer",
                     }}
                 >
-                    {anchorEl ? <KeyboardArrowUpRounded /> : <KeyboardArrowDownRounded />} {tabText}
+                    {tabText} {anchorEl ? <KeyboardArrowUpRounded /> : <KeyboardArrowDownRounded />}
                 </div>
                 <Popover
                     id={id}

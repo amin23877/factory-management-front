@@ -30,7 +30,7 @@ export default function UPCToggle() {
 
     return (
         <>
-            <IconButton size="small" title="UPC" onClick={handleClick}>
+            <IconButton size="small" title="UPC" onClick={handleClick} color="inherit">
                 <CropFreeRounded style={{ marginRight: 3 }} />
             </IconButton>
             <Menu id="QR Scanner" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>

@@ -25,14 +25,15 @@ export const TopAppBar = ({
 
     return (
         <Box flex={1} display="flex" alignItems="center">
+            <div style={{ flexGrow: 1 }}></div>
             {phone ? (
                 <div style={{ flexGrow: 1 }}></div>
             ) : (
                 <>
-                    <Button>
+                    {/* <Button>
                         <Avatar>{session?.username[0]}</Avatar>
                         <span style={{ textAlign: "left", marginLeft: 10 }}>
-                            <span style={{ fontSize: 12, fontWeight: 400, marginBottom: "auto" }}>
+                            <span style={{ fontSize: 12, fontWeight: 400, marginBottom: "auto", color: "inherit" }}>
                                 {session?.username}
                             </span>
                         </span>
@@ -52,28 +53,28 @@ export const TopAppBar = ({
                             <SearchRounded />
                         </div>
                         <InputBase placeholder="Search..." fullWidth />
-                    </div>
+                    </div> */}
                 </>
             )}
 
             <UPCToggle />
             {!phone && (
-                <IconButton size="small" title="Help">
+                <IconButton size="small" title="Help" color="inherit">
                     <HelpOutline style={{ marginRight: 3 }} />
                 </IconButton>
             )}
-            <IconButton size="small" title="Notifications">
+            <IconButton size="small" title="Notifications" color="inherit">
                 <NotificationsOutlined style={{ marginRight: 3 }} />
             </IconButton>
             {!phone && (
-                <Button size="small">
+                <Button size="small" color="inherit">
                     <TvRounded style={{ marginRight: 3 }} />
                     Phazify
                     <ArrowDropDownRounded />
                 </Button>
             )}
             {!isChatOpen && (
-                <IconButton size="small" color="primary" onClick={onOpenChatClicked}>
+                <IconButton size="small" color="inherit" onClick={onOpenChatClicked}>
                     <ChatRounded style={{ marginRight: 3 }} />
                 </IconButton>
             )}

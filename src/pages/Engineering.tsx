@@ -34,7 +34,7 @@ export default function Engineering() {
                 <div
                     onClick={handleClick}
                     style={{
-                        color: "black",
+                        color: "inherit",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "space-between",
@@ -42,7 +42,7 @@ export default function Engineering() {
                         cursor: "pointer",
                     }}
                 >
-                    {anchorEl ? <KeyboardArrowUpRounded /> : <KeyboardArrowDownRounded />} {tabText}
+                    {tabText} {anchorEl ? <KeyboardArrowUpRounded /> : <KeyboardArrowDownRounded />}
                 </div>
                 <Popover
                     id={id}
