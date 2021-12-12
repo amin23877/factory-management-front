@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, FormControlLabel, Checkbox, LinearProgress, Divider, Paper } from "@material-ui/core";
+import { Box, FormControlLabel, Checkbox, LinearProgress, Divider, Paper, useMediaQuery } from "@material-ui/core";
 import useSWR from "swr";
 
 import TextField from "../../app/TextField";
@@ -47,9 +47,11 @@ export const General = ({
     device,
 }: IForm) => {
     const classes = useStyles();
+    const phone = useMediaQuery("(max-width:600px)");
+
     return (
         <>
-            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10}>
+            <Box display="grid" gridTemplateColumns={"1fr 1fr 1fr 1fr"} gridRowGap={10} gridColumnGap={10}>
                 <Paper
                     style={{
                         margin: "0.5em 0",
@@ -58,7 +60,7 @@ export const General = ({
                         gridColumnEnd: "span 4",
                     }}
                 >
-                    <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={10}>
+                    <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"} gridColumnGap={10}>
                         {/* <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
                             checked={values.shippingApproved}
@@ -259,8 +261,16 @@ export const General = ({
 };
 
 export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
+    const phone = useMediaQuery("(max-width:600px)");
+
     return (
-        <Box mt={1} display="grid" gridTemplateColumns="auto auto auto" gridColumnGap={10} gridRowGap={10}>
+        <Box
+            mt={1}
+            display="grid"
+            gridTemplateColumns={phone ? "auto auto" : "auto auto auto"}
+            gridColumnGap={10}
+            gridRowGap={10}
+        >
             <TextField
                 label="Version"
                 name="version"
@@ -288,15 +298,6 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                 style={{ marginBottom: 3 }}
             />
             <TextField
-                label="Manufacturer Product Number"
-                name="manufacturerProductNumber"
-                placeholder="Manufacturer Product Number"
-                value={values.manufacturerProductNumber}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                style={{ marginBottom: 3 }}
-            />
-            <TextField
                 label="Manufacturer"
                 name="manufacturer"
                 placeholder="Manufacturer"
@@ -305,6 +306,16 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                 onChange={handleChange}
                 style={{ marginBottom: 3 }}
             />
+            <TextField
+                label="Man. Product No."
+                name="manufacturerProductNumber"
+                placeholder="Man. Product No."
+                value={values.manufacturerProductNumber}
+                onBlur={handleBlur}
+                onChange={handleChange}
+                style={{ marginBottom: 3 }}
+            />
+
             <TextField
                 label="Lead Time"
                 name="leadTime"
@@ -338,6 +349,8 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
 };
 
 export const Pricing = ({ values, errors, handleChange, handleBlur, touched, boms }: IForm) => {
+    const phone = useMediaQuery("(max-width:600px)");
+
     return (
         <Box mt={1} display="grid" gridTemplateColumns="auto auto" gridColumnGap={10} gridRowGap={10}>
             <TextField
@@ -366,7 +379,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
                 disabled
             />
             {!boms ? (
-                <div>
+                <div style={phone ? { gridColumnEnd: "span 2" } : {}}>
                     <FormControlLabel
                         style={{ fontSize: "0.7rem" }}
                         checked={values.overrideUse}
@@ -399,7 +412,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
                         style={{ marginBottom: 3 }}
                         disabled
                     />
-                    <div>
+                    <div style={phone ? { gridColumnEnd: "span 2" } : {}}>
                         <FormControlLabel
                             style={{ fontSize: "0.7rem" }}
                             checked={values.bomCostEstimateUse}
@@ -437,9 +450,16 @@ export const Quantity = ({
     // qtyOnOrder -> ,
     // qtyAllocated -> ,
     // qtyRemain -> ,
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
-        <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10}>
+        <Box
+            mt={1}
+            display="grid"
+            gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"}
+            gridRowGap={10}
+            gridColumnGap={10}
+        >
             <TextField
                 label="Total Quantity"
                 placeholder="Total Quantity"
@@ -517,7 +537,13 @@ export const Quantity = ({
                 disabled
                 style={{ marginBottom: 3 }}
             />
-            <div style={{ gridColumnEnd: "span 3", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+            <div
+                style={
+                    phone
+                        ? { gridColumnEnd: "span 2", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }
+                        : { gridColumnEnd: "span 3", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }
+                }
+            >
                 {handleUpdateQuantity && (
                     <Button kind="edit" onClick={handleUpdateQuantity}>
                         Update quantity
@@ -643,8 +669,16 @@ export const DynamicFilterAndFields = ({ values = "", handleChange, handleBlur, 
 };
 
 export const LastUsed = ({ values, errors, handleChange, handleBlur, touched, setFieldValue }: IForm) => {
+    const phone = useMediaQuery("(max-width:600px)");
+
     return (
-        <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridColumnGap={10} gridRowGap={10}>
+        <Box
+            mt={1}
+            display="grid"
+            gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"}
+            gridColumnGap={10}
+            gridRowGap={10}
+        >
             <TextField
                 name="uom"
                 label="Unit Of Measure"

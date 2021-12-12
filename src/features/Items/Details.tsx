@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useRef } from "react";
-import { Box, Tabs, Tab, LinearProgress, Typography } from "@material-ui/core";
+import { Box, Tabs, Tab, LinearProgress, Typography, useMediaQuery } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
@@ -292,6 +292,7 @@ function ItemsDetails({
             console.log(error);
         }
     };
+    const phone = useMediaQuery("(max-width:600px)");
 
     if (!selectedRow) {
         return <LinearProgress />;
@@ -330,7 +331,13 @@ function ItemsDetails({
             <Formik initialValues={selectedRow} validationSchema={AddItemSchema} onSubmit={handleSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
                     <Form>
-                        <Box pb="8px" display="grid" gridTemplateColumns="1fr 2fr" gridTemplateRows="1fr">
+                        <Box
+                            pb="8px"
+                            display="grid"
+                            gridTemplateColumns={phone ? "1fr" : "1fr 2fr"}
+                            gridTemplateRows={phone ? "" : "1fr"}
+                            gridGap={10}
+                        >
                             <Box display="flex" flexDirection="column" gridGap={5}>
                                 <BasePaper>
                                     <General
@@ -353,9 +360,14 @@ function ItemsDetails({
                                     }}
                                 >
                                     <Tabs
-                                        style={{ marginBottom: 16, maxWidth: "35vw" }}
                                         value={moreInfoTab}
                                         variant="scrollable"
+                                        scrollButtons={phone ? "on" : "auto"}
+                                        style={
+                                            phone
+                                                ? { marginBottom: 16, maxWidth: "83vw" }
+                                                : { marginBottom: 16, maxWidth: "35vw" }
+                                        }
                                         textColor="primary"
                                         onChange={(e, v) => setMoreInfoTab(v)}
                                     >
@@ -401,7 +413,12 @@ function ItemsDetails({
                                         </Box>
                                     )}
                                     {moreInfoTab === 1 && (
-                                        <Box display="flex" justifyContent="space-around" alignItems="center">
+                                        <Box
+                                            display="flex"
+                                            justifyContent="space-around"
+                                            alignItems="center"
+                                            maxWidth="83vw"
+                                        >
                                             <div ref={(e) => (qrCode.current = e)}>
                                                 <QRCode
                                                     value={JSON.stringify({
@@ -466,12 +483,11 @@ function ItemsDetails({
                                         </>
                                     )}
                                     {moreInfoTab === 4 && (
-                                        <>
+                                        <div style={{ maxWidth: "83vw" }}>
                                             <BaseDataGrid
                                                 rows={selectedRow?.pricing || []}
                                                 cols={pricingCols}
                                                 height={220}
-                                                filter
                                                 pagination
                                             />
                                             <Pricing
@@ -483,7 +499,7 @@ function ItemsDetails({
                                                 touched={touched}
                                                 boms={boms?.length === 0 ? false : true}
                                             />
-                                        </>
+                                        </div>
                                     )}
                                     {moreInfoTab === 5 && (
                                         <Shipping
@@ -519,12 +535,18 @@ function ItemsDetails({
                                     )}
                                 </BasePaper>
                             </Box>
-                            <BasePaper style={{ gridRow: 1, gridColumn: 2, gridRowEnd: "span 2", marginLeft: "10px" }}>
+                            <BasePaper
+                                style={
+                                    phone ? {} : { gridRow: 1, gridColumn: 2, gridRowEnd: "span 2", marginLeft: "10px" }
+                                }
+                            >
                                 <Tabs
                                     value={activeTab}
                                     onChange={(e, v) => setActiveTab(v)}
                                     textColor="primary"
                                     variant="scrollable"
+                                    scrollButtons={phone ? "on" : "auto"}
+                                    style={phone ? { maxWidth: "83vw" } : {}}
                                 >
                                     <Tab label="Document" /> 0{/* <Tab label="BOM allocated" /> */}
                                     {boms?.length === 0 ? <Tab label="Vendor" /> : <Tab label="BOM" />}
@@ -552,8 +574,7 @@ function ItemsDetails({
                                             />
                                         </>
                                     )}
-                                    {activeTab === 1 && boms && <ItemBomTable boms={boms} />}
-                                    {activeTab === 1 && !boms && (
+                                    {activeTab === 1 && boms && boms?.length === 0 ? (
                                         <>
                                             <Button
                                                 onClick={() => {
@@ -569,6 +590,8 @@ function ItemsDetails({
                                                 onRowSelected={() => {}}
                                             />
                                         </>
+                                    ) : (
+                                        <ItemBomTable boms={boms} />
                                     )}
 
                                     {activeTab === 2 && itemSOs && <SOTable rows={itemSOs} />}

@@ -57,9 +57,7 @@ export const useTableStyles = makeStyles((theme) => ({
         "& .MuiTableSortLabel-icon ": {
             fill: "white",
         },
-        // "& .MuiTableCell-head:hover": {
-        //     backgroundColor: "#333b44",
-        // },
+
         "& tbody .MuiTableCell-root": {
             border: "1px solid #dddddd",
             fontSize: "0.700rem",
@@ -67,10 +65,7 @@ export const useTableStyles = makeStyles((theme) => ({
         "& .MuiButton-root": {
             fontSize: "0.700rem",
         },
-        // "& tbody tr:hover": {
-        //     backgroundColor: "#f3f3f3",
-        //     cursor: "pointer",
-        // },
+
         "& .Mui-selected": {
             boxShadow: " rgba(149, 157, 165, 0.2) 0px 8px 24px",
             backgroundColor: "#fff !important",
@@ -177,7 +172,7 @@ function Row({ row }: { row: IBom }) {
     );
 }
 
-export default function ItemBomTable({ boms }: { boms: IBom[] }) {
+export default function ItemBomTable({ boms }: { boms: IBom[] | undefined }) {
     const classes = useTableStyles();
 
     return (

@@ -109,15 +109,15 @@ const Dashboard = () => {
 
     return (
         <>
-            <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1}>
-                <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-                    <Tab label="Recently Added Items" />
-                    <Tab label="Items On Order" />
-                    <Tab label="Low Quantity Items" />
-                </Tabs>
-                <div style={{ flexGrow: 1 }} />
-            </Box>
             <BasePaper>
+                <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1}>
+                    <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+                        <Tab label="Recently Added " />
+                        <Tab label="On Order" />
+                        <Tab label="Low Quantity" />
+                    </Tabs>
+                    <div style={{ flexGrow: 1 }} />
+                </Box>
                 {activeTab === 0 && (
                     <BaseDataGrid
                         height="79vh"

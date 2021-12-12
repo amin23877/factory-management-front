@@ -66,7 +66,7 @@ const useStyles = makeStyles((theme) => ({
         height: "54px",
         BorderBottom: "1px solid gray",
         boxShadow: "rgba(207, 171, 171, 0.08) 0px 4px 12px",
-        backgroundColor: "#304050",
+        backgroundColor: "rgb(30,40,50)",
         color: "white",
     },
     appBarShiftRight: {
@@ -144,7 +144,7 @@ export default function PanelRouter() {
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
         setValue(newValue);
-        history.replace(newValue);
+        history.push(newValue);
     };
 
     const handleDrawerOpen = () => {
