@@ -34,20 +34,22 @@ export const General = ({ rule }: { rule?: any }) => {
                                 padding: "0 0.5em",
                                 backgroundColor: "#eee",
                                 gridColumnEnd: "span 2",
+                                display: "grid",
+                                gridTemplateColumns: "1fr 1fr",
                             }}
                         >
                             <FormControlLabel
                                 name="enable"
                                 checked={values.enable}
                                 control={<Checkbox />}
-                                label="Enable / Disable"
+                                label="Enable"
                                 onChange={handleChange}
                             />
                             <FormControlLabel
                                 name="engAP"
                                 checked={values.engAP}
                                 control={<Checkbox />}
-                                label="Engineering Approved"
+                                label="Eng. App."
                                 onChange={handleChange}
                             />
                         </Paper>

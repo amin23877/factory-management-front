@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from "react";
 import {
     Box,
-    Grid,
     Tabs,
     Tab,
     TableContainer,
@@ -11,6 +10,7 @@ import {
     TableBody,
     TableCell,
     useTheme,
+    useMediaQuery,
 } from "@material-ui/core";
 import { GridColDef } from "@material-ui/data-grid";
 import useSWR from "swr";
@@ -72,6 +72,7 @@ function ItemsDetails({ selectedRow }: { selectedRow: IMonitorRule }) {
         ];
         return res;
     }, []);
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
         <>
@@ -79,7 +80,12 @@ function ItemsDetails({ selectedRow }: { selectedRow: IMonitorRule }) {
                 <HistoryInfo open={historyInfo} onClose={() => setHistoryInfo(false)} data={selectedHistory} />
             )}
 
-            <Box display="grid" gridTemplateColumns="1fr 2fr" gridTemplateRows="auto auto" gridGap={10}>
+            <Box
+                display="grid"
+                gridTemplateColumns={phone ? "1fr" : "1fr 2fr"}
+                gridTemplateRows="auto auto"
+                gridGap={10}
+            >
                 <BasePaper>
                     <General rule={selectedRow} />
                 </BasePaper>

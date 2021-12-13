@@ -165,6 +165,8 @@ export default function FRU() {
                         sales={true}
                         onDone={() => {}}
                         selectedRow={selectedItemFru}
+                        addDoc={() => {}}
+                        addNote={() => {}}
                         onDocSelected={(d) => {}}
                         onNoteSelected={(d) => {}}
                         onStepSelected={(d) => {}}

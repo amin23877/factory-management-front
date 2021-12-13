@@ -194,61 +194,42 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                 <div style={{ flexGrow: 1 }} />
                 {!sales && (
                     <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
-                        <ListItem>
-                            <IconButton title="Add Device" onClick={() => setAddItemModal(true)}>
-                                <AddRounded />
-                            </IconButton>
-                        </ListItem>
-                        <ListItem>
-                            <IconButton
-                                disabled={activeTab === 0}
-                                title="Add Task"
-                                onClick={() => setAddStepModal(true)}
-                            >
-                                <FormatListNumberedRounded />
-                            </IconButton>
-                        </ListItem>
-                        <ListItem>
-                            <IconButton
-                                disabled={activeTab === 0}
-                                title="Delete Device"
-                                onClick={() => selectedItem && selectedItem?.id && setDeleteItemModal(true)}
-                            >
-                                <DeleteRounded />
-                            </IconButton>
-                        </ListItem>
-                        <ListItem>
-                            <IconButton title="Cluster and level" onClick={() => setFieldNFilterModal(true)}>
-                                <PostAddRounded />
-                            </IconButton>
-                        </ListItem>
-                        <ListItem>
-                            <IconButton
-                                disabled={activeTab === 0}
-                                title="Add Flag"
-                                onClick={() => setFlagModalOpen(true)}
-                            >
-                                <OutlinedFlagRounded />
-                            </IconButton>
-                        </ListItem>
-                        <ListItem>
-                            <IconButton
-                                disabled={activeTab === 0}
-                                title="Add note"
-                                onClick={() => setAddNoteModal(true)}
-                            >
-                                <NoteRounded />
-                            </IconButton>
-                        </ListItem>
-                        <ListItem>
-                            <IconButton
-                                disabled={activeTab === 0}
-                                title="Add document"
-                                onClick={() => setAddDocModal(true)}
-                            >
-                                <FileCopyRounded />
-                            </IconButton>
-                        </ListItem>
+                        {activeTab === 0 && (
+                            <>
+                                <ListItem>
+                                    <IconButton title="Add Device" onClick={() => setAddItemModal(true)}>
+                                        <AddRounded />
+                                    </IconButton>
+                                </ListItem>
+                                <ListItem>
+                                    <IconButton title="Cluster and level" onClick={() => setFieldNFilterModal(true)}>
+                                        <PostAddRounded />
+                                    </IconButton>
+                                </ListItem>
+                            </>
+                        )}
+                        {activeTab === 1 && (
+                            <>
+                                <ListItem>
+                                    <IconButton title="Add Task" onClick={() => setAddStepModal(true)}>
+                                        <FormatListNumberedRounded />
+                                    </IconButton>
+                                </ListItem>
+                                <ListItem>
+                                    <IconButton
+                                        title="Delete Device"
+                                        onClick={() => selectedItem && selectedItem?.id && setDeleteItemModal(true)}
+                                    >
+                                        <DeleteRounded />
+                                    </IconButton>
+                                </ListItem>
+                                <ListItem>
+                                    <IconButton title="Add Flag" onClick={() => setFlagModalOpen(true)}>
+                                        <OutlinedFlagRounded />
+                                    </IconButton>
+                                </ListItem>
+                            </>
+                        )}
                     </List>
                 )}
             </Box>
@@ -281,6 +262,8 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                     )}
                     {activeTab === 1 && (
                         <DetailTab
+                            addNote={() => setAddNoteModal(true)}
+                            addDoc={() => setAddDocModal(true)}
                             sales={sales}
                             onDone={() => {}}
                             selectedRow={selectedItem}

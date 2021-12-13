@@ -41,7 +41,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
 
     const [table, setTable] = useState<{ columns: any; rows: any[] }>({ columns: [], rows: [] });
     console.log(table);
-    // Generate table COLUMNS, ROWS and LEVELS
+
     useEffect(() => {
         if (tableData) {
             const levels = extractLevels(tableData);
@@ -138,7 +138,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
             )}
 
             <Box display="flex" alignItems="flex-top" width="100%">
-                <BasePaper style={{ width: "100%" }}>
+                <Box width="100%">
                     <Button variant="outlined" style={{ margin: "0.5em 0" }} onClick={() => setAddPart(true)}>
                         Add part
                     </Button>
@@ -165,7 +165,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
                             }}
                         />
                     </Box>
-                </BasePaper>
+                </Box>
             </Box>
         </>
     );

@@ -348,7 +348,7 @@ function ItemsDetails({
                                         errors={errors}
                                         touched={touched}
                                     />
-                                    <Button style={{ margin: "10px 0px", width: "100%" }} kind="edit" type="submit">
+                                    <Button style={{ margin: "10px 0px", width: "200px" }} kind="edit" type="submit">
                                         Save
                                     </Button>
                                 </BasePaper>
@@ -511,17 +511,7 @@ function ItemsDetails({
                                             touched={touched}
                                         />
                                     )}
-                                    {/* {moreInfoTab === 3 && (
-                                    <LastUsed
-                                    values={values}
-                                    handleChange={handleChange}
-                                    handleBlur={handleBlur}
-                                            setFieldValue={setFieldValue}
-                                            errors={errors}
-                                            touched={touched}
-                                            />
-                                            )}
-                                        */}
+
                                     {moreInfoTab === 6 && (
                                         <DynamicFilterAndFields
                                             values={values}
@@ -548,12 +538,12 @@ function ItemsDetails({
                                     scrollButtons={phone ? "on" : "auto"}
                                     style={phone ? { maxWidth: "83vw" } : {}}
                                 >
-                                    <Tab label="Document" /> 0{/* <Tab label="BOM allocated" /> */}
+                                    <Tab label="Document" /> 0
                                     {boms?.length === 0 ? <Tab label="Vendor" /> : <Tab label="BOM" />}
                                     <Tab label="Sales order History" />2
-                                    <Tab label="PO History" />3{/* <Tab label="Sales Report" /> */}
+                                    <Tab label="PO History" />3
                                     <Tab label="Usage" />4
-                                    <Tab label="Note" />5{/* <Tab label="Quantity history" /> */}
+                                    <Tab label="Note" />5
                                     <Tab label="Auditing" />6
                                 </Tabs>
                                 <Box p={1}>
@@ -574,8 +564,8 @@ function ItemsDetails({
                                             />
                                         </>
                                     )}
-                                    {activeTab === 1 && boms && boms?.length === 0 ? (
-                                        <>
+                                    {activeTab === 1 && boms?.length === 0 && (
+                                        <div style={{ maxWidth: "79vw", overflow: "auto" }}>
                                             <Button
                                                 onClick={() => {
                                                     setAddVendorModal(true);
@@ -589,11 +579,13 @@ function ItemsDetails({
                                                 rows={vendors || []}
                                                 onRowSelected={() => {}}
                                             />
-                                        </>
-                                    ) : (
-                                        <ItemBomTable boms={boms} />
+                                        </div>
                                     )}
-
+                                    {activeTab === 1 && boms && boms.length > 0 && (
+                                        <div style={{ maxWidth: "79vw", overflow: "auto" }}>
+                                            <ItemBomTable boms={boms} />
+                                        </div>
+                                    )}
                                     {activeTab === 2 && itemSOs && <SOTable rows={itemSOs} />}
                                     {activeTab === 3 && (
                                         <BaseDataGrid
@@ -606,7 +598,6 @@ function ItemsDetails({
                                             onRowSelected={() => {}}
                                         />
                                     )}
-                                    {/* {activeTab === 8 && <SalesReport quotes={itemQuotes} salesOrders={itemSOs || []} />} */}
                                     {activeTab === 4 && (
                                         <BaseDataGrid
                                             cols={usageCols}

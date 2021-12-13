@@ -235,7 +235,7 @@ export default function QuotePanel() {
                     </Button>
                 </Box>
                 {activeTab === 0 && (
-                    <Box flex={1}>
+                    <Box flex={1} maxWidth="89vw" overflow="auto">
                         <Table
                             rows={formatProject || []}
                             cols={projectCols}

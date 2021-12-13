@@ -70,7 +70,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
     const phone = useMediaQuery("(max-width:600px)");
 
     return (
-        <Box display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
+        <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10}>
             <Paper
                 style={
                     phone
@@ -78,7 +78,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
                               margin: "0.5em 0",
                               padding: "0 0.5em",
                               backgroundColor: "#eee",
-                              gridColumnEnd: "span 4",
+                              gridColumnEnd: "span 2",
                               display: "grid",
                               gridTemplateColumns: "1fr 1fr 1fr",
                               gap: 10,
@@ -87,7 +87,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
                               margin: "0.5em 0",
                               padding: "0 0.5em",
                               backgroundColor: "#eee",
-                              gridColumnEnd: "span 4",
+                              gridColumnEnd: "span 2",
                               display: "flex",
                               justifyContent: "space-between",
                           }
@@ -135,7 +135,6 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
                 />
             </Paper>
             <TextField
-                style={{ gridColumnEnd: "span 2" }}
                 label="Device ID"
                 placeholder="Device ID"
                 name="no"
@@ -146,7 +145,6 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
                 disabled
             />
             <TextField
-                style={{ gridColumnEnd: "span 2" }}
                 label="Device Name"
                 placeholder="Device name"
                 name="name"
@@ -158,7 +156,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
             />
             <TextField
                 multiline
-                style={{ gridColumnEnd: "span 4" }}
+                style={{ gridColumnEnd: "span 2" }}
                 rows={3}
                 placeholder="description"
                 label="Description"
@@ -169,7 +167,6 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
                 disabled={sales}
             />
             <TextField
-                style={{ gridColumnEnd: "span 2" }}
                 label="Lead Time"
                 placeholder="Lead Time"
                 name="lead"
@@ -180,7 +177,6 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
                 disabled={sales}
             />
             <TextField
-                style={{ gridColumnEnd: "span 2" }}
                 label="Price"
                 name="retailPrice"
                 onChange={handleChange}

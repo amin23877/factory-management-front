@@ -38,6 +38,8 @@ function ItemsDetails({
     onStepSelected,
     onFlagSelected,
     onDone,
+    addNote,
+    addDoc,
 }: {
     sales?: boolean;
     selectedRow: any;
@@ -46,6 +48,8 @@ function ItemsDetails({
     onDocSelected: (a: any) => void;
     onStepSelected: (a: any) => void;
     onFlagSelected: (a: any) => void;
+    addNote: (a: any) => void;
+    addDoc: (a: any) => void;
 }) {
     const qrCode = useRef<HTMLElement | null>(null);
 
@@ -343,8 +347,8 @@ function ItemsDetails({
             <Formik initialValues={selectedRow} validationSchema={AddItemSchema} onSubmit={handleSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
                     <Form>
-                        <Grid container spacing={2}>
-                            <Grid item md={5} xs={12}>
+                        <Box display="flex" flexDirection={phone ? "column" : "row"} gridGap={10}>
+                            <Box flex={5}>
                                 <Box
                                     display="flex"
                                     flexDirection="column"
@@ -369,7 +373,7 @@ function ItemsDetails({
                                                 }}
                                             >
                                                 <Button
-                                                    style={{ margin: "0.5em auto", width: "100%" }}
+                                                    style={{ margin: "0.5em auto", width: "200px" }}
                                                     kind="edit"
                                                     type="submit"
                                                 >
@@ -380,9 +384,12 @@ function ItemsDetails({
                                     </BasePaper>
                                     <BasePaper style={{ flex: 1, overflowY: "auto" }}>
                                         <Tabs
-                                            style={{ marginBottom: 16 }}
                                             value={moreInfoTab}
                                             variant="scrollable"
+                                            scrollButtons={phone ? "on" : "auto"}
+                                            style={
+                                                phone ? { maxWidth: "83vw", marginBottom: 16 } : { marginBottom: 16 }
+                                            }
                                             textColor="primary"
                                             onChange={(e, v) => setMoreInfoTab(v)}
                                         >
@@ -392,7 +399,12 @@ function ItemsDetails({
                                         </Tabs>
                                         {moreInfoTab === 0 && <Photo device={selectedRow} />}
                                         {moreInfoTab === 1 && (
-                                            <Box display="flex" justifyContent="space-around" alignItems="center">
+                                            <Box
+                                                display="flex"
+                                                justifyContent="space-around"
+                                                alignItems="center"
+                                                maxWidth="83vw"
+                                            >
                                                 <div ref={(e) => (qrCode.current = e)}>
                                                     <DeviceQRCode
                                                         value={JSON.stringify({
@@ -433,60 +445,69 @@ function ItemsDetails({
                                         )}
                                     </BasePaper>
                                 </Box>
-                            </Grid>
-                            <Grid item md={7} xs={12}>
-                                <Box display="flex" maxWidth="850px" mb={1}>
-                                    {!sales ? (
-                                        <Tabs
-                                            value={activeTab}
-                                            onChange={(e, v) => setActiveTab(v)}
-                                            textColor="primary"
-                                            variant="scrollable"
-                                            scrollButtons={phone ? "on" : "auto"}
-                                            style={phone ? { maxWidth: "83vw" } : {}}
-                                        >
-                                            <Tab label="Design documents" />
-                                            <Tab label="BOM" />
-                                            <Tab label="Warranties" />
-                                            <Tab label="Manufacturing" />
-                                            <Tab label="Evaluation" />
-                                            <Tab label="Test" />
-                                            <Tab label="Field Start-up" />
-                                            <Tab label="Label" />
-                                            <Tab label="Unit History" />
-                                            <Tab label="Sales Report" />
-                                            <Tab label="Field Service" />
-                                            <Tab label="Quality Control" />
-                                            <Tab label="Notes" />
-                                            <Tab label="Auditing" />
-                                        </Tabs>
-                                    ) : (
-                                        <Tabs
-                                            value={activeTab}
-                                            onChange={(e, v) => setActiveTab(v)}
-                                            textColor="primary"
-                                            variant="scrollable"
-                                            scrollButtons={phone ? "on" : "auto"}
-                                            style={phone ? { maxWidth: "83vw" } : {}}
-                                        >
-                                            <Tab label="Design documents" />
-                                            <Tab label="Warranties" />
-                                            <Tab label="Sales Report" />
-                                            <Tab label="Notes" />
-                                            <Tab label="Auditing" />
-                                        </Tabs>
-                                    )}
-                                </Box>
+                            </Box>
+                            <Box flex={7}>
                                 <BasePaper>
+                                    <Box display="flex" mb={1}>
+                                        {!sales ? (
+                                            <Tabs
+                                                value={activeTab}
+                                                onChange={(e, v) => setActiveTab(v)}
+                                                textColor="primary"
+                                                variant="scrollable"
+                                                scrollButtons={phone ? "on" : "auto"}
+                                                style={phone ? { maxWidth: "83vw" } : { maxWidth: "50vw" }}
+                                            >
+                                                <Tab label="Design documents" />
+                                                <Tab label="BOM" />
+                                                <Tab label="Warranties" />
+                                                <Tab label="Manufacturing" />
+                                                <Tab label="Evaluation" />
+                                                <Tab label="Test" />
+                                                <Tab label="Field Start-up" />
+                                                <Tab label="Label" />
+                                                <Tab label="Unit History" />
+                                                <Tab label="Sales Report" />
+                                                <Tab label="Field Service" />
+                                                <Tab label="Quality Control" />
+                                                <Tab label="Notes" />
+                                                <Tab label="Auditing" />
+                                            </Tabs>
+                                        ) : (
+                                            <Tabs
+                                                value={activeTab}
+                                                onChange={(e, v) => setActiveTab(v)}
+                                                textColor="primary"
+                                                variant="scrollable"
+                                                scrollButtons={phone ? "on" : "auto"}
+                                                style={phone ? { maxWidth: "83vw" } : { maxWidth: "50vw" }}
+                                            >
+                                                <Tab label="Design documents" />
+                                                <Tab label="Warranties" />
+                                                <Tab label="Sales Report" />
+                                                <Tab label="Notes" />
+                                                <Tab label="Auditing" />
+                                            </Tabs>
+                                        )}
+                                    </Box>
                                     {!sales ? (
                                         <Box>
                                             {activeTab === 0 && (
-                                                <BaseDataGrid
-                                                    height={"66.8vh"}
-                                                    cols={docCols}
-                                                    rows={docs || []}
-                                                    onRowSelected={() => {}}
-                                                />
+                                                <>
+                                                    <Button
+                                                        onClick={addDoc}
+                                                        variant="outlined"
+                                                        style={{ marginBottom: "10px" }}
+                                                    >
+                                                        Add Document
+                                                    </Button>
+                                                    <BaseDataGrid
+                                                        height={"66.8vh"}
+                                                        cols={docCols}
+                                                        rows={docs || []}
+                                                        onRowSelected={() => {}}
+                                                    />
+                                                </>
                                             )}
                                             {activeTab === 1 && (
                                                 <BaseDataGrid
@@ -501,7 +522,11 @@ function ItemsDetails({
                                             )}
                                             {activeTab === 2 && (
                                                 <Box>
-                                                    <Button onClick={() => setAddService(true)} variant="outlined">
+                                                    <Button
+                                                        onClick={() => setAddService(true)}
+                                                        variant="outlined"
+                                                        style={{ marginBottom: "10px" }}
+                                                    >
                                                         Add Warranty
                                                     </Button>
                                                     <BaseDataGrid
@@ -588,12 +613,21 @@ function ItemsDetails({
                                                 />
                                             )}
                                             {activeTab === 12 && (
-                                                <BaseDataGrid
-                                                    height={"66.8vh"}
-                                                    cols={noteCols}
-                                                    rows={notes || []}
-                                                    onRowSelected={onNoteSelected}
-                                                />
+                                                <>
+                                                    <Button
+                                                        onClick={addNote}
+                                                        variant="outlined"
+                                                        style={{ marginBottom: "10px" }}
+                                                    >
+                                                        Add Note
+                                                    </Button>
+                                                    <BaseDataGrid
+                                                        height={"66.8vh"}
+                                                        cols={noteCols}
+                                                        rows={notes || []}
+                                                        onRowSelected={onNoteSelected}
+                                                    />
+                                                </>
                                             )}
                                         </Box>
                                     ) : (
@@ -609,9 +643,9 @@ function ItemsDetails({
 
                                             {activeTab === 1 && (
                                                 <>
-                                                    <Button onClick={() => setAddService(true)} variant="outlined">
+                                                    {/* <Button onClick={() => setAddService(true)} variant="outlined">
                                                         Add Warranty
-                                                    </Button>
+                                                    </Button> */}
                                                     <BaseDataGrid
                                                         height={"62.7vh"}
                                                         cols={warCols}
@@ -634,8 +668,8 @@ function ItemsDetails({
                                         </Box>
                                     )}
                                 </BasePaper>
-                            </Grid>
-                        </Grid>
+                            </Box>
+                        </Box>
                     </Form>
                 )}
             </Formik>

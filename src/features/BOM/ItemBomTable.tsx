@@ -41,7 +41,6 @@ export const useTableStyles = makeStyles((theme) => ({
         backgroundColor: "#f9f9f9",
         border: "none",
         borderRadius: 15,
-
         "& .MuiTableHead-root": {
             position: ["sticky", "-webkit-sticky"],
             top: 0,
