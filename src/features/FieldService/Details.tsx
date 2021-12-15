@@ -1,5 +1,5 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box, useMediaQuery } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
@@ -38,9 +38,10 @@ export default function FieldServiceDetails({
             console.log(error);
         }
     };
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
-        <Box display="flex" style={{ gap: 5 }} flex={1}>
+        <Box display="flex" style={{ gap: 5 }} flex={1} flexDirection={phone ? "column" : "row"}>
             <BasePaper style={{ flex: 1 }}>
                 <Formik initialValues={selectedFieldService} onSubmit={handleSubmit} validationSchema={schema}>
                     {({ values, handleBlur, handleChange, errors }) => (
@@ -61,7 +62,7 @@ export default function FieldServiceDetails({
                 </Formik>
             </BasePaper>
             <BasePaper style={{ flex: 2 }}>
-                <BaseDataGrid height="100%" cols={[]} rows={[]} onRowSelected={() => {}} />
+                <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />
             </BasePaper>
         </Box>
     );

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Box, Tab, Tabs } from "@material-ui/core";
+import { Box, Tab, Tabs, useMediaQuery } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 import { mutate } from "swr";
 import { Form, Formik } from "formik";
@@ -7,12 +7,12 @@ import { Form, Formik } from "formik";
 import BaseDataGrid from "../../../app/BaseDataGrid";
 import { BasePaper } from "../../../app/Paper";
 import Snack from "../../../app/Snack";
-import JobForm, { ContactForm, EntitiesForm, TechnicianForm } from "./Forms";
+import JobForm, { ContactForm, TechnicianForm } from "./Forms";
+import { EntitiesForm } from "../../Sales/SO/Forms";
 import SODatagrid from "../../Sales/SO/Datagrid";
 
 import { ITicket, schema, updateTicket } from "../../../api/ticket";
-// import { fetcher } from "../../api";
-// import QuoteDatagrid from "../Sales/Quote/Datagrid";
+
 import { getModifiedValues } from "../../../logic/utils";
 import { formatTimestampToDate } from "../../../logic/date";
 import { fileType } from "../../../logic/fileType";
@@ -41,6 +41,7 @@ export default function Details({
     const [snack, setSnack] = useState(false);
     const [msg, setMsg] = useState("");
     const [severity, setSeverity] = useState<"success" | "info" | "warning" | "error">("info");
+    const phone = useMediaQuery("(max-width:600px)");
 
     const QuoteCols = useMemo<GridColumns>(
         () => [
@@ -161,11 +162,16 @@ export default function Details({
                 {msg}
             </Snack>
 
-            <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10}>
+            <Box display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 1fr"} gridGap={10}>
                 <Formik initialValues={initialValue} validationSchema={schema} onSubmit={handleSubmit}>
                     {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
                         <Form>
-                            <Box display="flex" flexDirection="column" style={{ gap: 10 }} height="78.5vh">
+                            <Box
+                                display="flex"
+                                flexDirection="column"
+                                style={{ gap: 10 }}
+                                height={phone ? "" : "78.5vh"}
+                            >
                                 <BasePaper>
                                     <JobForm
                                         errors={errors}
@@ -175,11 +181,14 @@ export default function Details({
                                         setFieldValue={setFieldValue}
                                     />
                                 </BasePaper>
-                                <BasePaper style={{ flex: 1, overflowY: "auto" }}>
+                                <BasePaper style={phone ? {} : { flex: 1, overflowY: "auto" }}>
                                     <Tabs
                                         onChange={(e, nv) => setMoreActiveTab(nv)}
                                         value={moreActiveTab}
                                         textColor="primary"
+                                        variant="scrollable"
+                                        style={phone ? { maxWidth: "83vw" } : {}}
+                                        scrollButtons={phone ? "on" : "auto"}
                                     >
                                         <Tab label="Contact" />
                                         <Tab label="Entities" />
@@ -215,24 +224,25 @@ export default function Details({
                     )}
                 </Formik>
                 <Box>
-                    <Tabs
-                        variant="scrollable"
-                        value={activeTab}
-                        onChange={(e, nv) => setActiveTab(nv)}
-                        textColor="primary"
-                        style={{ marginBottom: "10px" }}
-                    >
-                        <Tab label="Filed Service History" />
-                        <Tab label="Device Document" />
-                        <Tab label="Device Quote History" />
-                        <Tab label="Device SO History" />
-                        <Tab label="Device Forms" />
-                        <Tab label="Ticket Documents" />
-                        <Tab label="Device RMA History" />
-                        <Tab label="Notes" />
-                        <Tab label="Auditing" />
-                    </Tabs>
                     <BasePaper>
+                        <Tabs
+                            variant="scrollable"
+                            style={phone ? { maxWidth: "80vw", marginBottom: "10px" } : { marginBottom: "10px" }}
+                            scrollButtons={phone ? "on" : "auto"}
+                            value={activeTab}
+                            onChange={(e, nv) => setActiveTab(nv)}
+                            textColor="primary"
+                        >
+                            <Tab label="Filed Service History" />
+                            <Tab label="Device Document" />
+                            <Tab label="Device Quote History" />
+                            <Tab label="Device SO History" />
+                            <Tab label="Device Forms" />
+                            <Tab label="Ticket Documents" />
+                            <Tab label="Device RMA History" />
+                            <Tab label="Notes" />
+                            <Tab label="Auditing" />
+                        </Tabs>
                         {activeTab === 1 && (
                             <BaseDataGrid
                                 cols={docCols}
@@ -243,9 +253,6 @@ export default function Details({
                         )}
                         {activeTab === 2 && <BaseDataGrid rows={[]} cols={QuoteCols} onRowSelected={() => {}} />}
                         {activeTab === 3 && <SODatagrid params={{ JobId: initialValue.id }} onRowSelected={() => {}} />}
-                        {/* {activeTab === 2 && (
-                        <BaseDataGrid cols={noteCols} rows={itemNotes ? itemNotes : []} onRowSelected={() => {}} />
-                    )} */}
                         {activeTab === 4 && (
                             <BaseDataGrid cols={docCols} rows={[]} onRowSelected={() => {}} height={500} />
                         )}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box, Button, Grid, Paper, Typography } from "@material-ui/core";
+import { Box, Button, Grid, Paper, Typography, useMediaQuery } from "@material-ui/core";
 import FullCalendar, { EventClickArg, EventDropArg } from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin, { Draggable, DropArg } from "@fullcalendar/interaction";
@@ -87,6 +87,7 @@ export default function Tasks() {
         setSelectedTask(undefined);
         setTaskModal(true);
     };
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
         <>
@@ -96,9 +97,8 @@ export default function Tasks() {
                 onDone={() => refreshTasks(true)}
                 selectedTask={selectedTask}
             />
-
-            <Grid container spacing={2}>
-                <Grid item xs={12} md={2}>
+            <Box display="flex" flexDirection={phone ? "column" : "row"} gridGap={10} maxHeight="calc(100vh - 50px)">
+                <Box flex={1}>
                     <Paper
                         style={{
                             borderRadius: 20,
@@ -121,8 +121,8 @@ export default function Tasks() {
                             )}
                         </div>
                     </Paper>
-                </Grid>
-                <Grid item xs={12} md={10}>
+                </Box>
+                <Box flex={11}>
                     <BasePaper>
                         <FullCalendar
                             ref={(e) => (calendar.current = e)}
@@ -138,8 +138,8 @@ export default function Tasks() {
                             eventDrop={handleChangeEventDate}
                         />
                     </BasePaper>
-                </Grid>
-            </Grid>
+                </Box>
+            </Box>
         </>
     );
 }

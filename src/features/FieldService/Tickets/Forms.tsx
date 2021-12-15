@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, FormControlLabel, Checkbox } from "@material-ui/core";
+import { Box, FormControlLabel, Checkbox, useMediaQuery } from "@material-ui/core";
 import DateTimePicker from "../../../app/DateTimePicker";
 
 import { Autocomplete } from "@material-ui/lab";
@@ -41,10 +41,11 @@ export default function TicketForm({
     const [selectedLineService, setSelectedLineService] = useState<ILineService>(values.LineServiceRecordId);
     const [SOId, setSOId] = useState<string>(values.LineServiceRecordId?.SOId);
     const { data: services } = useSWR(SOId ? `/lineservice?SOId=${SOId}` : null);
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
         <>
-            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gap: 5 }}>
+            <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"} style={{ gap: 5 }}>
                 <DateTimePicker
                     name="date"
                     value={values.date || null}
@@ -212,8 +213,15 @@ export default function TicketForm({
                     onChange={handleChange}
                     error={Boolean(errors.subject)}
                     label="Subject"
+                    style={phone ? { gridColumnEnd: "span 2" } : {}}
                 />
-                <div style={{ gridColumnEnd: "span 3", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                <div
+                    style={
+                        phone
+                            ? { gridColumnEnd: "span 2", display: "grid", gridTemplateColumns: "1fr", gap: "10px" }
+                            : { gridColumnEnd: "span 3", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }
+                    }
+                >
                     <TextField
                         name="description"
                         value={values.description}
@@ -243,15 +251,6 @@ export default function TicketForm({
                         rows={3}
                     />
                 </div>
-                {/* <ArraySelect
-                    style={{ gridColumnEnd: "span 2" }}
-                    items={["1", "2", "3", "4", "5"]}
-                    label="Priority"
-                    name="priority"
-                    value={values.priority}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                /> */}
             </Box>
             <Box width="100%">
                 <FormControlLabel
@@ -259,13 +258,11 @@ export default function TicketForm({
                     label="Help"
                     control={<Checkbox checked={values.fsh} onChange={handleChange} />}
                 />
-                {/* <Box display="flex" alignItems="center" mt={1}> */}
                 {!values.id ? (
                     <>
-                        <Button type="submit" kind="edit" style={{ marginRight: "0.5em", width: "100%" }}>
+                        <Button type="submit" kind="edit" style={{ marginRight: "0.5em", width: "200px" }}>
                             Book a job
                         </Button>
-                        {/* <Button>Show calendar</Button> */}
                     </>
                 ) : (
                     <>
@@ -277,7 +274,6 @@ export default function TicketForm({
                         </Button>
                     </>
                 )}
-                {/* </Box> */}
             </Box>
         </>
     );
@@ -297,8 +293,9 @@ export function TechnicianForm({
     handleDelete?: () => void;
     setFieldValue: (a: any, b: any) => void;
 }) {
+    const phone = useMediaQuery("(max-width:600px)");
     return (
-        <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gap: 10 }}>
+        <Box mt={1} display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"} style={{ gap: 10 }}>
             <TextField
                 name="vendorTech"
                 value={values.vendorTech}
@@ -353,194 +350,6 @@ export function TechnicianForm({
     );
 }
 
-export const EntitiesForm = ({
-    handleChange,
-    handleBlur,
-    values,
-    setFieldValue,
-}: {
-    values: any;
-    handleChange: (a: any) => void;
-    handleBlur: (a: any) => void;
-    setFieldValue: any;
-}) => {
-    return (
-        <>
-            <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={10}>
-                <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
-                    <FieldSelect
-                        value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
-                        request={getCustomers}
-                        itemTitleField="name"
-                        itemValueField="id"
-                        name="repOrAgency"
-                        label="rep / Agency"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField value={values.repOrAgency?.address} label="Address" disabled />
-                    <TextField
-                        value={values.repOrAgency?.city}
-                        name="city"
-                        label="City"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        disabled
-                    />
-                    <TextField
-                        value={values.repOrAgency?.state}
-                        name="state"
-                        label="State"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        disabled
-                    />
-                    <TextField
-                        value={values.repOrAgency?.zipcode}
-                        name="zipCode"
-                        label="Zip Code"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        disabled
-                    />
-                </Box>
-                <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
-                    <TextField
-                        value={values.requesterName}
-                        name="requesterName"
-                        label="requesterName"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.requesterMail}
-                        name="requesterMail"
-                        label="requesterMail"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.requesterPhone}
-                        name="requesterPhone"
-                        label="requesterPhone"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField style={{ opacity: 0 }} />
-                    <TextField style={{ opacity: 0 }} />
-                </Box>
-                <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
-                    {/* <TextField
-                    value={values.client}
-                    name="client"
-                    label="Client"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                /> */}
-                    <FieldSelect
-                        value={typeof values.client === "string" ? values.client : values.client?.id}
-                        request={getCustomers}
-                        itemTitleField="name"
-                        itemValueField="id"
-                        name="client"
-                        label="Client"
-                        onChange={handleChange}
-                    />
-                    <TextField
-                        value={values.contact?.lastName}
-                        label="Contact Name"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        disabled
-                    />
-                    <TextField
-                        value={values.contact?.email}
-                        label="Email"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        disabled
-                    />
-                    <TextField
-                        value={values.contact?.lastName}
-                        label="Phone"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        disabled
-                    />
-                    <TextField
-                        value={values.unitPricingLevel}
-                        label="Unit Pricing Level"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        disabled
-                    />
-                </Box>
-                <Box my={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
-                    <FieldSelect
-                        label="24 Hour Contact"
-                        name="twentyFourContact"
-                        request={
-                            typeof values.client === "string"
-                                ? () => getAllModelContact("customer", values.client)
-                                : () => getAllModelContact("customer", values.client?.id)
-                        }
-                        itemTitleField="lastName"
-                        itemValueField="id"
-                        value={
-                            typeof values.twentyFourContact === "string"
-                                ? values.twentyFourContact
-                                : values.twentyFourContact?.id
-                        }
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        disabled={!values.client}
-                    />
-                    <FieldSelect
-                        label="Phone"
-                        name="twentyFourContact"
-                        request={
-                            typeof values.client === "string"
-                                ? () => getAllModelContact("customer", values.client)
-                                : () => getAllModelContact("customer", values.client?.id)
-                        }
-                        itemTitleField="phone"
-                        itemValueField="id"
-                        value={
-                            typeof values.twentyFourContact === "string"
-                                ? values.twentyFourContact
-                                : values.twentyFourContact?.id
-                        }
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        disabled
-                    />
-                    <FieldSelect
-                        label="Email"
-                        name="twentyFourContact"
-                        request={
-                            typeof values.client === "string"
-                                ? () => getAllModelContact("customer", values.client)
-                                : () => getAllModelContact("customer", values.client?.id)
-                        }
-                        itemTitleField="email"
-                        itemValueField="id"
-                        value={
-                            typeof values.twentyFourContact === "string"
-                                ? values.twentyFourContact
-                                : values.twentyFourContact?.id
-                        }
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        disabled
-                    />
-
-                    <TextField style={{ opacity: 0 }} />
-                    <TextField style={{ opacity: 0 }} />
-                </Box>
-            </Box>
-        </>
-    );
-};
 export const ContactForm = ({
     values,
     touched,

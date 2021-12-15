@@ -138,12 +138,7 @@ export default function Tickets() {
                     </Tabs>
                     <Box marginLeft="auto">
                         <List>
-                            <ListItem>
-                                <IconButton onClick={() => setTicketModal(true)}>
-                                    <AddRounded />
-                                </IconButton>
-                            </ListItem>
-                            <ListItem>
+                            {/* <ListItem>
                                 <IconButton
                                     title="Add note"
                                     onClick={() => {
@@ -164,55 +159,61 @@ export default function Tickets() {
                                 >
                                     <FileCopyRounded />
                                 </IconButton>
-                            </ListItem>
-                            <ListItem>
-                                <IconButton
-                                    title="Add Tag"
-                                    onClick={() => {
-                                        setTagModal(true);
-                                    }}
-                                >
-                                    <LocalOfferRounded />
-                                </IconButton>
-                            </ListItem>
-                            <ListItem>
-                                <IconButton
-                                    title="Add Status"
-                                    onClick={() => {
-                                        setStatusModal(true);
-                                    }}
-                                >
-                                    <PlaylistAddCheckRounded />
-                                </IconButton>
-                            </ListItem>
-                            <ListItem>
-                                <IconButton
-                                    title="Add Category"
-                                    onClick={() => {
-                                        setCategoryModal(true);
-                                    }}
-                                >
-                                    <CategoryRounded />
-                                </IconButton>
-                            </ListItem>
-                            <ListItem>
-                                <IconButton
-                                    disabled={activeTab !== 1}
-                                    title="Add new SO"
-                                    onClick={() => setSoModal(true)}
-                                >
-                                    <ShoppingCartRounded />
-                                </IconButton>
-                            </ListItem>
-                            <ListItem>
-                                <IconButton
-                                    disabled={activeTab !== 1}
-                                    title="Add new Quote"
-                                    onClick={() => setQuoteModal(true)}
-                                >
-                                    <PostAddRounded />
-                                </IconButton>
-                            </ListItem>
+                            </ListItem> */}
+                            {activeTab === 0 && (
+                                <>
+                                    <ListItem>
+                                        <IconButton title="Add Ticket" onClick={() => setTicketModal(true)}>
+                                            <AddRounded />
+                                        </IconButton>
+                                    </ListItem>
+                                    <ListItem>
+                                        <IconButton
+                                            title="Add Tag"
+                                            onClick={() => {
+                                                setTagModal(true);
+                                            }}
+                                        >
+                                            <LocalOfferRounded />
+                                        </IconButton>
+                                    </ListItem>
+                                    <ListItem>
+                                        <IconButton
+                                            title="Add Status"
+                                            onClick={() => {
+                                                setStatusModal(true);
+                                            }}
+                                        >
+                                            <PlaylistAddCheckRounded />
+                                        </IconButton>
+                                    </ListItem>
+                                    <ListItem>
+                                        <IconButton
+                                            title="Add Category"
+                                            onClick={() => {
+                                                setCategoryModal(true);
+                                            }}
+                                        >
+                                            <CategoryRounded />
+                                        </IconButton>
+                                    </ListItem>
+                                </>
+                            )}
+
+                            {activeTab === 1 && (
+                                <>
+                                    <ListItem>
+                                        <IconButton title="Add new SO" onClick={() => setSoModal(true)}>
+                                            <ShoppingCartRounded />
+                                        </IconButton>
+                                    </ListItem>
+                                    <ListItem>
+                                        <IconButton title="Add new Quote" onClick={() => setQuoteModal(true)}>
+                                            <PostAddRounded />
+                                        </IconButton>
+                                    </ListItem>
+                                </>
+                            )}
                         </List>
                     </Box>
                 </Box>

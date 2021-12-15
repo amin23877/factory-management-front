@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Tabs, Tab } from "@material-ui/core";
+import { Box, Tabs, Tab, useMediaQuery } from "@material-ui/core";
 import DateTimePicker from "../../../app/DateTimePicker";
 
 import TextField from "../../../app/TextField";
@@ -27,9 +27,16 @@ export const General = ({
     setFieldValue,
     device,
 }: IForm) => {
+    const phone = useMediaQuery("(max-width:600px)");
+
     return (
         <>
-            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gridRowGap={10} gridColumnGap={10}>
+            <Box
+                display="grid"
+                gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"}
+                gridRowGap={10}
+                gridColumnGap={10}
+            >
                 <ArraySelect
                     fullWidth
                     label="Inverter Status"
@@ -88,7 +95,7 @@ export const General = ({
                 />
                 <TextField
                     multiline
-                    style={{ gridColumnEnd: "span 3" }}
+                    style={phone ? { gridColumnEnd: "span 2" } : { gridColumnEnd: "span 3" }}
                     rows={3}
                     placeholder="Unit Description"
                     label="Unit Description"
@@ -102,7 +109,7 @@ export const General = ({
                     gridTemplateColumns="1fr 1fr"
                     gridRowGap={10}
                     gridColumnGap={10}
-                    style={{ gridColumnEnd: "span 3" }}
+                    style={phone ? { gridColumnEnd: "span 2" } : { gridColumnEnd: "span 3" }}
                 >
                     <TextField
                         label="Warranty Number"
@@ -219,9 +226,11 @@ export const Battery = ({
     setFieldValue,
     device,
 }: IForm) => {
+    const phone = useMediaQuery("(max-width:600px)");
+
     return (
         <>
-            <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gap: 10 }}>
+            <Box mt={1} display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"} style={{ gap: 10 }}>
                 <TextField
                     label="Battery Qty"
                     value={values.batteryQty}
@@ -327,7 +336,6 @@ export const Control = ({
             </Tabs>
             {activeTab === 0 && (
                 <Box mt={1} display="grid" gridTemplateColumns="1fr" style={{ gap: 10 }}>
-                    Period Run Time
                     <TextField
                         label="Period"
                         value={values.period}
@@ -378,9 +386,11 @@ export const Inverter = ({
     setFieldValue,
     device,
 }: IForm) => {
+    const phone = useMediaQuery("(max-width:600px)");
+
     return (
         <>
-            <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gap: 10 }}>
+            <Box mt={1} display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"} style={{ gap: 10 }}>
                 <ArraySelect
                     fullWidth
                     label="Unit Type"
@@ -440,8 +450,8 @@ export const Inverter = ({
                     <Box
                         mt={1}
                         display="grid"
-                        gridTemplateColumns="1fr 1fr 1fr"
-                        style={{ gap: 10, gridColumnEnd: "span 3" }}
+                        gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"}
+                        style={phone ? { gap: 10, gridColumnEnd: "span 2" } : { gap: 10, gridColumnEnd: "span 3" }}
                     >
                         <TextField
                             label="Input Voltage"
@@ -475,8 +485,8 @@ export const Inverter = ({
                     <Box
                         mt={1}
                         display="grid"
-                        gridTemplateColumns="1fr 1fr 1fr"
-                        style={{ gap: 10, gridColumnEnd: "span 3" }}
+                        gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"}
+                        style={phone ? { gap: 10, gridColumnEnd: "span 2" } : { gap: 10, gridColumnEnd: "span 3" }}
                     >
                         <TextField
                             label="Input Voltage A"

@@ -113,7 +113,7 @@ export default function ServiceIndex() {
                         </List>
                     </Box>
                 </Box>
-                <Box display="flex" height="90%">
+                <Box display="flex">
                     {activeTab === 0 && (
                         <DataGrid
                             columns={cols}

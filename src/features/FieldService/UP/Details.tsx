@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useRef } from "react";
-import { Box, Tabs, Tab, Typography } from "@material-ui/core";
+import { Box, Tabs, Tab, Typography, useMediaQuery } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
 import { Formik, Form } from "formik";
@@ -141,6 +141,7 @@ function Details({ up }: { up: any }) {
         ],
         []
     );
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
         <>
@@ -148,8 +149,8 @@ function Details({ up }: { up: any }) {
             <Formik initialValues={up} validationSchema={schema} onSubmit={handleSubmit}>
                 {({ values, errors, handleChange, handleBlur, isSubmitting, setFieldValue, touched }) => (
                     <Form>
-                        <Box display="grid" gridTemplateColumns="3fr 4fr" gridGap={10}>
-                            <Box display="flex" flexDirection="column" gridGap={10} height="78.3vh">
+                        <Box display="grid" gridTemplateColumns={phone ? "1fr" : "3fr 4fr"} gridGap={10}>
+                            <Box display="flex" flexDirection="column" gridGap={10} height={phone ? "auto" : "78.3vh"}>
                                 <BasePaper>
                                     <General
                                         values={values}
@@ -164,7 +165,7 @@ function Details({ up }: { up: any }) {
                                             disabled={isSubmitting}
                                             kind="edit"
                                             type="submit"
-                                            style={{ width: "100%" }}
+                                            style={{ width: "200px" }}
                                         >
                                             Save
                                         </Button>
@@ -174,12 +175,16 @@ function Details({ up }: { up: any }) {
                                     <Tabs
                                         value={infoActiveTab}
                                         onChange={(e, nv) => setInfoActiveTab(nv)}
-                                        style={{ marginBottom: "10" }}
-                                        // variant="scrollable"
+                                        variant="scrollable"
+                                        style={
+                                            phone
+                                                ? { maxWidth: "80vw", marginBottom: "10px" }
+                                                : { marginBottom: "10px" }
+                                        }
+                                        scrollButtons={phone ? "on" : "auto"}
                                     >
                                         <Tab label="Image" />
                                         <Tab label="UPC" />
-                                        {/* <Tab label="Unit Info" /> */}
                                         <Tab label="Options" />
                                         <Tab label="Battery Info" />
                                         <Tab label="Warranty Info" />
@@ -209,17 +214,34 @@ function Details({ up }: { up: any }) {
                                         </Box>
                                     )}
                                     {infoActiveTab === 1 && (
-                                        <Box mt={1} display="flex" justifyContent="space-around" alignItems="center">
-                                            <div ref={(e) => (qrCode.current = e)}>
-                                                <MyQRCode value={String(up.number)} />
-                                            </div>
-                                            <div>
-                                                <Typography variant="subtitle1">Unit Number: {up.item.no}</Typography>
-                                                <Typography variant="subtitle1">Unit Name: {up.item.name}</Typography>
-                                                <Typography variant="subtitle1">
-                                                    Sales Order NO.: {up.number}
-                                                </Typography>
-                                            </div>
+                                        <Box
+                                            mt={1}
+                                            display="flex"
+                                            justifyContent="space-around"
+                                            alignItems="center"
+                                            flexDirection="column"
+                                        >
+                                            <Box
+                                                display="flex"
+                                                justifyContent="space-evenly"
+                                                alignItems="center"
+                                                width="100%"
+                                            >
+                                                <div ref={(e) => (qrCode.current = e)}>
+                                                    <MyQRCode value={String(up.number)} />
+                                                </div>
+                                                <div>
+                                                    <Typography variant="subtitle1">
+                                                        Unit Number: {up.item.no}
+                                                    </Typography>
+                                                    <Typography variant="subtitle1">
+                                                        Unit Name: {up.item.name}
+                                                    </Typography>
+                                                    <Typography variant="subtitle1">
+                                                        Sales Order NO.: {up.number}
+                                                    </Typography>
+                                                </div>
+                                            </Box>
                                             <Button
                                                 variant="contained"
                                                 onClick={async () => {
@@ -273,26 +295,31 @@ function Details({ up }: { up: any }) {
                                 </BasePaper>
                             </Box>
                             <Box>
-                                <Box display="flex" maxWidth="700px">
-                                    <Tabs
-                                        value={gridActiveTab}
-                                        onChange={(e, nv) => setGridActiveTab(nv)}
-                                        textColor="primary"
-                                        variant="scrollable"
-                                        style={{ marginBottom: "10px" }}
-                                    >
-                                        <Tab label="Documents" />
-                                        <Tab label="Job" />
-                                        <Tab label="Field Service History" />
-                                        <Tab label="Unit Images" />
-                                        <Tab label="Inverter measurements" />
-                                        <Tab label="Battery Measurements" />
-                                        <Tab label="Unit Logs" />
-                                        <Tab label="Note" />
-                                        <Tab label="Auditing" />
-                                    </Tabs>
-                                </Box>
-                                <BasePaper style={{ height: "90%" }}>
+                                <BasePaper>
+                                    <Box display="flex">
+                                        <Tabs
+                                            value={gridActiveTab}
+                                            onChange={(e, nv) => setGridActiveTab(nv)}
+                                            textColor="primary"
+                                            variant="scrollable"
+                                            style={
+                                                phone
+                                                    ? { maxWidth: "80vw", marginBottom: "10px" }
+                                                    : { marginBottom: "10px", maxWidth: "700px" }
+                                            }
+                                            scrollButtons={phone ? "on" : "auto"}
+                                        >
+                                            <Tab label="Documents" />
+                                            <Tab label="Job" />
+                                            <Tab label="Field Service History" />
+                                            <Tab label="Unit Images" />
+                                            <Tab label="Inverter measurements" />
+                                            <Tab label="Battery Measurements" />
+                                            <Tab label="Unit Logs" />
+                                            <Tab label="Note" />
+                                            <Tab label="Auditing" />
+                                        </Tabs>
+                                    </Box>
                                     {gridActiveTab === 0 && (
                                         <>
                                             <BaseDataGrid

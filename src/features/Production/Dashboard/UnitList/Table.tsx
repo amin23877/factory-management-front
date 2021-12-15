@@ -84,7 +84,7 @@ function Table({ onRowSelected }: { onRowSelected: (row: IUnit) => void }) {
 
     return (
         <>
-            <Box display="flex" alignItems="center" my={1}>
+            <Box display="flex" alignItems="center" my={1} gridGap={10} flexWrap="wrap" style={{ maxWidth: "90vw" }}>
                 <Button
                     color={topDateFilter === "week" ? "primary" : "default"}
                     variant="contained"
@@ -104,7 +104,6 @@ function Table({ onRowSelected }: { onRowSelected: (row: IUnit) => void }) {
                         setFinish(sWeek2);
                         setStart(sWeek1);
                     }}
-                    style={{ margin: "0 0.5em" }}
                 >
                     {week2 ? week2.totalCount : ""} Units Due Week 2
                 </Button>
@@ -122,7 +121,6 @@ function Table({ onRowSelected }: { onRowSelected: (row: IUnit) => void }) {
                 <Button
                     color={topDateFilter === "week4" ? "primary" : "default"}
                     variant="contained"
-                    style={{ margin: "0 0.5em" }}
                     onClick={() => {
                         setTopDateFilter("week4");
                         setFinish(sWeek4);
