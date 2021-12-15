@@ -48,17 +48,14 @@ export default function UnitDetails() {
           <UnitInfo unit={unit} />
         </BasePaper>
         <BasePaper>
-          <Tabs
-            value={infoActiveTab}
-            onChange={(e, nv) => setInfoActiveTab(nv)}
-          >
+          <Tabs value={infoActiveTab} onChange={(e, nv) => setInfoActiveTab(nv)}>
             <Tab label="Item" />
             <Tab label="SO" />
             <Tab label="QR Code" />
           </Tabs>
           {infoActiveTab === 0 && (
             <ItemGeneral
-              values={unit.item}
+              values={unit.ItemId}
               errors={{}}
               touched={{}}
               handleBlur={() => {}}
@@ -69,32 +66,19 @@ export default function UnitDetails() {
           {infoActiveTab === 1 && (
             <SOGeneral
               setFieldValue={() => {}}
-              values={unit.so}
+              values={unit.SOId}
               onChangeInit={() => {}}
               handleBlur={() => {}}
               handleChange={() => {}}
             />
           )}
           {infoActiveTab === 2 && (
-            <Box
-              mt={1}
-              display="flex"
-              justifyContent="space-around"
-              alignItems="center"
-            >
+            <Box mt={1} display="flex" justifyContent="space-around" alignItems="center">
               <div ref={(e) => (qrCode.current = e)} style={{ flex: 1 }}>
-                <MyQRCode
-                  value={JSON.stringify({ type: "unit", no: unit.number })}
-                />
-                <Typography variant="subtitle1">
-                  Unit Number: {unit.item.no}
-                </Typography>
-                <Typography variant="subtitle1">
-                  Unit Name: {unit.item.name}
-                </Typography>
-                <Typography variant="subtitle1">
-                  Sales Order NO.: {unit.number}
-                </Typography>
+                <MyQRCode value={JSON.stringify({ type: "unit", no: unit.number })} />
+                <Typography variant="subtitle1">Unit Number: {unit.item.no}</Typography>
+                <Typography variant="subtitle1">Unit Name: {unit.item.name}</Typography>
+                <Typography variant="subtitle1">Sales Order NO.: {unit.number}</Typography>
               </div>
               <Button
                 variant="contained"
@@ -121,13 +105,7 @@ export default function UnitDetails() {
           <Tab label="Time logs" />
           <Tab label="Auditing" />
         </Tabs>
-        {gridActiveTab === 3 && (
-          <BaseDataGrid
-            cols={bomCols}
-            rows={unitBoms || []}
-            onRowSelected={() => {}}
-          />
-        )}
+        {gridActiveTab === 3 && <BaseDataGrid cols={bomCols} rows={unitBoms || []} onRowSelected={() => {}} />}
       </BasePaper>
     </>
     // </Container>
