@@ -121,7 +121,6 @@ export const Status = ({
                     onBlur={handleBlur}
                 />
                 <TextField
-                    size="small"
                     value={formatTimestampToDate(values?.so?.date)}
                     name="purchaseDate"
                     label="purchase date"
@@ -129,7 +128,6 @@ export const Status = ({
                     disabled
                 />
                 <TextField
-                    size="small"
                     value={formatTimestampToDate(values?.so?.estimatedShipDate)}
                     name="estimatedShipDate"
                     label="Estimated ship date"
@@ -138,7 +136,6 @@ export const Status = ({
                 />
 
                 <TextField
-                    size="small"
                     value={formatTimestampToDate(values?.so?.actualShipDate)}
                     name="actualShipDate"
                     label="Actual ship date"
@@ -146,7 +143,6 @@ export const Status = ({
                     disabled
                 />
                 <DateTimePicker
-                    size="small"
                     value={values.estimatedLeadTime}
                     name="estimatedLeadTime"
                     label="Estimated Lead time"
@@ -154,7 +150,6 @@ export const Status = ({
                     onBlur={handleBlur}
                 />
                 <DateTimePicker
-                    size="small"
                     value={values.actualLeadTime}
                     name="actualLeadTime"
                     label="Actual Lead Time"

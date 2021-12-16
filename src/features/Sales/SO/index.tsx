@@ -21,7 +21,6 @@ import { ILineItem } from "../../../api/lineItem";
 import { ILineService } from "../../../api/lineService";
 import { BasePaper } from "../../../app/Paper";
 import Datagrid from "./Datagrid";
-import { useMediaQuery } from "@material-ui/core";
 
 export default function SalesOrderPanel() {
     const [activeTab, setActiveTab] = useState(0);
@@ -38,7 +37,6 @@ export default function SalesOrderPanel() {
     const [selectedLI, setSelectedLI] = useState<ILineItem>();
     const [selectedLS, setSelectedLS] = useState<ILineService>();
     const [selectedSO, setSelectedSO] = useState<ISO>();
-    const phone = useMediaQuery("(max-width:600px)");
 
     const handleDelete = async () => {
         try {

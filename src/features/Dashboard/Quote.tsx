@@ -8,7 +8,7 @@ import {
     SettingsRounded,
 } from "@material-ui/icons";
 
-import TextField, { BootstrapInput } from "../../app/TextField";
+import TextField from "../../app/TextField";
 import { ArraySelect } from "../../app/Inputs";
 import { BaseTable } from "../../app/Table";
 import { BasePaper } from "../../app/Paper";
@@ -61,12 +61,12 @@ export const OverDueServices = () => {
     return (
         <BasePaper style={{ justifyContent: "space-between", boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <Box display="flex" justifyContent="space-between" alignItems="center">
-                <BootstrapInput
+                {/* <BootstrapInput
                     placeholder="Overdue Services"
                     type="text"
                     value=""
                     style={{ borderColor: "rgb(206, 212, 218)", width: "50%" }}
-                />
+                /> */}
                 <div style={{ flexGrow: 1 }} />
                 <Button variant="contained" color="primary" style={{ margin: "0 1em" }}>
                     <RefreshRounded />

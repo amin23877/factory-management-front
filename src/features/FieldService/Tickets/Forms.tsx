@@ -167,7 +167,6 @@ export default function TicketForm({
                             {...params}
                             label="Warranty"
                             placeholder="Warranty"
-                            size="small"
                             error={Boolean(errors.LineServiceRecordId)}
                             helperText={errors.LineServiceRecordId}
                         />
@@ -229,7 +228,6 @@ export default function TicketForm({
                         onBlur={handleBlur}
                         error={Boolean(errors.description)}
                         helperText={errors.description}
-                        size="small"
                         placeholder="Description"
                         label="Description"
                         fullWidth
@@ -243,7 +241,6 @@ export default function TicketForm({
                         onBlur={handleBlur}
                         error={Boolean(errors.response)}
                         helperText={errors.response}
-                        size="small"
                         placeholder="Response"
                         label="Response"
                         fullWidth
@@ -303,7 +300,7 @@ export function TechnicianForm({
                 onBlur={handleBlur}
                 error={Boolean(errors.vendorTech)}
                 helperText={errors.vendorTech}
-                size="small"
+
                 placeholder="Vendor Tech"
             />
             <TextField
@@ -313,7 +310,7 @@ export function TechnicianForm({
                 onBlur={handleBlur}
                 error={Boolean(errors.vendorEmail)}
                 helperText={errors.vendorEmail}
-                size="small"
+
                 placeholder="Vendor Email"
             />
             <FieldSelect
@@ -333,7 +330,6 @@ export function TechnicianForm({
                 onBlur={handleBlur}
                 error={Boolean(errors.sendPO)}
                 helperText={errors.sendPO}
-                size="small"
                 placeholder="Send PO"
             />
             <TextField
@@ -343,7 +339,6 @@ export function TechnicianForm({
                 onBlur={handleBlur}
                 error={Boolean(errors.DateSent)}
                 helperText={errors.DateSent}
-                size="small"
                 placeholder="Date sent"
             />
         </Box>

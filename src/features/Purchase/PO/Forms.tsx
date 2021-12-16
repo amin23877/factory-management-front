@@ -490,7 +490,6 @@ export const LineServicesForm = ({
                                             renderInput={(params) => (
                                                 <TextField
                                                     {...params}
-                                                    size="small"
                                                     label="Line Item"
                                                     name="LineItemRecordId"
                                                 />
@@ -498,7 +497,6 @@ export const LineServicesForm = ({
                                         />
                                     )}
                                     <TextField
-                                        size="small"
                                         name="description"
                                         label="Description"
                                         value={values.description}
@@ -507,7 +505,6 @@ export const LineServicesForm = ({
                                         error={Boolean(errors.description)}
                                     />
                                     <TextField
-                                        size="small"
                                         name="quantity"
                                         label="Quantity"
                                         value={values.quantity}
@@ -516,7 +513,6 @@ export const LineServicesForm = ({
                                         error={Boolean(errors.quantity)}
                                     />
                                     <TextField
-                                        size="small"
                                         name="price"
                                         label="Price"
                                         value={values.price}
