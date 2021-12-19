@@ -35,10 +35,10 @@ export default function GeneralQuote({
     return (
         <Box style={{ overflowY: "auto", width: "100%" }}>
             <Formik initialValues={{ ...data } as IQuote} validationSchema={schema} onSubmit={handleSubmit}>
-                {({ handleChange, handleBlur, values, isSubmitting, setFieldValue }) => (
+                {({ handleChange, handleBlur, values, setFieldValue }) => (
                     <Form>
-                        <Box display="flex" m={1}>
-                            <Box flex={1} mx={2}>
+                        <Box display="flex" m={1} flexDirection="column">
+                            <Box mb={1}>
                                 <BasePaper>
                                     <GeneralForm
                                         setFieldValue={setFieldValue}
@@ -48,22 +48,18 @@ export default function GeneralQuote({
                                     />
                                 </BasePaper>
                             </Box>
-                            <Box flex={1}>
+                            <Box>
                                 <BasePaper>
                                     <Tabs
                                         value={activeTab}
                                         onChange={(e, nv) => setActiveTab(nv)}
                                         variant="scrollable"
-                                        style={{ maxWidth: 500 }}
+                                        style={{ maxWidth: 500, marginBottom: "1em" }}
                                         textColor="primary"
                                     >
-                                        {/* <Tab label="Terms" /> */}
                                         <Tab label="Entities" />
                                         <Tab label="Commission" />
                                     </Tabs>
-                                    {/* {activeTab === 0 && (
-                                    <TermsTab values={values} handleBlur={handleBlur} handleChange={handleChange} />
-                                )} */}
                                     {activeTab === 0 && (
                                         <EntitiesTab
                                             setFieldValue={setFieldValue}
@@ -83,11 +79,11 @@ export default function GeneralQuote({
                                 </BasePaper>
                             </Box>
                         </Box>
-                        <Box display="flex" justifyContent="center" my={2} py={2}>
+                        {/* <Box display="flex" justifyContent="center" my={2} py={2}>
                             <Button disabled={isSubmitting} type="submit" kind="add" style={{ padding: "1em 2em" }}>
                                 Add
                             </Button>
-                        </Box>
+                        </Box> */}
                     </Form>
                 )}
             </Formik>

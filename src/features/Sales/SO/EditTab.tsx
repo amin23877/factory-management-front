@@ -238,8 +238,8 @@ export default function EditTab({
                                 rows={lineItems || []}
                                 onRowSelected={(r) => {
                                     phone
-                                        ? history.push(`/inventory/${r.id}`)
-                                        : openRequestedSinglePopup({ url: `/panel/inventory/${r?.ItemId?.id}` });
+                                        ? history.push(`/panel/engineering/${r?.ItemId?.id}`)
+                                        : openRequestedSinglePopup({ url: `/panel/engineering/${r?.ItemId?.id}` });
                                 }}
                             />
                         )}
@@ -249,7 +249,7 @@ export default function EditTab({
                                 rows={units?.result || []}
                                 onRowSelected={(r) => {
                                     phone
-                                        ? history.push(`/production/${r.id}`)
+                                        ? history.push(`/panel/production/${r.id}`)
                                         : openRequestedSinglePopup({ url: `/panel/production/${r.id}` });
                                 }}
                             />

@@ -214,7 +214,7 @@ export const GeneralForm = ({
         <>
             <Box
                 display="grid"
-                gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"}
+                gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"}
                 gridColumnGap={5}
                 gridRowGap={10}
             >
@@ -281,7 +281,7 @@ export const GeneralForm = ({
                 <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} />
                 <TextField
                     value={values.note}
-                    style={phone ? { gridColumnEnd: "span 2" } : { gridColumnEnd: "span 4" }}
+                    style={phone ? { gridColumnEnd: "span 2" } : { gridColumnEnd: "span 3" }}
                     name="note"
                     label="Note"
                     onChange={handleChange}
@@ -473,6 +473,7 @@ export const EntitiesTab = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
+                <div style={{ height: "80px", width: "100%" }}></div>
             </Box>
         </Box>
     );

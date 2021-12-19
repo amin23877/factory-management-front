@@ -271,152 +271,156 @@ export const LinesForm = ({
     };
 
     return (
-        <Box display="flex">
-            <Box flex={1} mr={2}>
-                <Formik initialValues={{} as ILineItem} validationSchema={schema} onSubmit={handleSubmit}>
-                    {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
-                        <Form>
-                            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-                                <Autocomplete
-                                    options={devices ? devices : items ? items.result : []}
-                                    getOptionLabel={(item: any) => (devices ? item.number.name : item.name)}
-                                    onChange={(e, nv) => setFieldValue("ItemId", devices ? nv.number.id : nv.id)}
-                                    onBlur={handleBlur}
-                                    renderInput={(params) => <TextField {...params} label="Item" name="ItemId" />}
-                                    fullWidth
-                                />
-                                {errors.ItemId && <Typography variant="caption">{errors.ItemId}</Typography>}
-                                <Autocomplete
-                                    options={services || []}
-                                    getOptionLabel={(item: any) => item.name}
-                                    onChange={(e, nv) => {
-                                        setFieldValue("services", nv);
-                                        setSelectedItem(nv.length > 0 ? nv[nv.length - 1] : undefined);
-                                    }}
-                                    onBlur={handleBlur}
-                                    renderInput={(params) => <TextField {...params} label="Services" name="services" />}
-                                    fullWidth
-                                    freeSolo
-                                    multiple
-                                />
-                                {errors.services && <Typography variant="caption">{errors.services}</Typography>}
-                                <BootstrapTextField
-                                    style={{ width: "100%" }}
-                                    name="description"
-                                    label="Description"
-                                    value={values.description}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.description)}
-                                />
-                                <BootstrapTextField
-                                    style={{ width: "100%" }}
-                                    name="quantity"
-                                    label="Quantity"
-                                    value={values.quantity}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.quantity)}
-                                />
-                                <BootstrapTextField
-                                    style={{ width: "100%" }}
-                                    name="price"
-                                    label="Price"
-                                    value={values.price}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.price)}
-                                />
-                                <BootstrapTextField
-                                    style={{ width: "100%" }}
-                                    name="index"
-                                    label="Index"
-                                    value={values.index}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.index)}
-                                />
-                                <FieldSelect
-                                    value={typeof values.fru === "string" ? values.fru : values.fru}
-                                    name="fru"
-                                    label="FRU"
-                                    request={getAllUnits}
-                                    getOptionList={(resp) => resp.result}
-                                    itemTitleField="number"
-                                    itemValueField="id"
-                                    onChange={(e) => handleChange(e)}
-                                    onBlur={handleBlur}
-                                />
-                                <FormControlLabel
-                                    style={{ width: "100%" }}
-                                    checked={values.tax}
-                                    label="Tax"
-                                    name="tax"
-                                    onChange={handleChange}
-                                    control={<CheckBox />}
-                                />
-                                <Box display="flex" alignItems="center" justifyContent="space-between">
-                                    <Button
-                                        startIcon={<ChevronLeft />}
-                                        onClick={onBack}
-                                        variant="contained"
-                                        color="primary"
-                                    >
-                                        Back
-                                    </Button>
-                                    <Button style={{ margin: "0 0.5em" }} type="submit" kind={"add"}>
-                                        Submit
-                                    </Button>
-                                    <Button
-                                        endIcon={<ChevronRight />}
-                                        onClick={handleNext}
-                                        disabled={createdItems.length === 0}
-                                        variant="contained"
-                                        color="primary"
-                                    >
-                                        Next
-                                    </Button>
+        <BasePaper>
+            <Box display="flex">
+                <Box flex={1} mr={2}>
+                    <Formik initialValues={{} as ILineItem} validationSchema={schema} onSubmit={handleSubmit}>
+                        {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
+                            <Form>
+                                <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
+                                    <Autocomplete
+                                        options={devices ? devices : items ? items.result : []}
+                                        getOptionLabel={(item: any) => (devices ? item.number.name : item.name)}
+                                        onChange={(e, nv) => setFieldValue("ItemId", devices ? nv.number.id : nv.id)}
+                                        onBlur={handleBlur}
+                                        renderInput={(params) => <TextField {...params} label="Item" name="ItemId" />}
+                                        fullWidth
+                                    />
+                                    {errors.ItemId && <Typography variant="caption">{errors.ItemId}</Typography>}
+                                    <Autocomplete
+                                        options={services || []}
+                                        getOptionLabel={(item: any) => item.name}
+                                        onChange={(e, nv) => {
+                                            setFieldValue("services", nv);
+                                            setSelectedItem(nv.length > 0 ? nv[nv.length - 1] : undefined);
+                                        }}
+                                        onBlur={handleBlur}
+                                        renderInput={(params) => (
+                                            <TextField {...params} label="Services" name="services" />
+                                        )}
+                                        fullWidth
+                                        freeSolo
+                                        multiple
+                                    />
+                                    {errors.services && <Typography variant="caption">{errors.services}</Typography>}
+                                    <BootstrapTextField
+                                        style={{ width: "100%" }}
+                                        name="description"
+                                        label="Description"
+                                        value={values.description}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.description)}
+                                    />
+                                    <BootstrapTextField
+                                        style={{ width: "100%" }}
+                                        name="quantity"
+                                        label="Quantity"
+                                        value={values.quantity}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.quantity)}
+                                    />
+                                    <BootstrapTextField
+                                        style={{ width: "100%" }}
+                                        name="price"
+                                        label="Price"
+                                        value={values.price}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.price)}
+                                    />
+                                    <BootstrapTextField
+                                        style={{ width: "100%" }}
+                                        name="index"
+                                        label="Index"
+                                        value={values.index}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.index)}
+                                    />
+                                    <FieldSelect
+                                        value={typeof values.fru === "string" ? values.fru : values.fru}
+                                        name="fru"
+                                        label="FRU"
+                                        request={getAllUnits}
+                                        getOptionList={(resp) => resp.result}
+                                        itemTitleField="number"
+                                        itemValueField="id"
+                                        onChange={(e) => handleChange(e)}
+                                        onBlur={handleBlur}
+                                    />
+                                    <FormControlLabel
+                                        style={{ width: "100%" }}
+                                        checked={values.tax}
+                                        label="Tax"
+                                        name="tax"
+                                        onChange={handleChange}
+                                        control={<CheckBox />}
+                                    />
+                                    <Box display="flex" alignItems="center" justifyContent="space-between">
+                                        <Button
+                                            startIcon={<ChevronLeft />}
+                                            onClick={onBack}
+                                            variant="contained"
+                                            color="primary"
+                                        >
+                                            Back
+                                        </Button>
+                                        <Button style={{ margin: "0 0.5em" }} type="submit" kind={"add"}>
+                                            Submit
+                                        </Button>
+                                        <Button
+                                            endIcon={<ChevronRight />}
+                                            onClick={handleNext}
+                                            disabled={createdItems.length === 0}
+                                            variant="contained"
+                                            color="primary"
+                                        >
+                                            Next
+                                        </Button>
+                                    </Box>
                                 </Box>
-                            </Box>
-                        </Form>
-                    )}
-                </Formik>
-            </Box>
-            <Box flex={1}>
-                <TableContainer component={Paper} style={{ maxHeight: 500, overflowY: "auto" }}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Index</TableCell>
-                                {/* <TableCell>Item Name</TableCell> */}
-                                <TableCell>Description</TableCell>
-                                <TableCell>Quantity</TableCell>
-                                <TableCell>Price</TableCell>
-                                <TableCell>Tax</TableCell>
-                                <TableCell></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {createdItems.map((item: any, i: number) => (
+                            </Form>
+                        )}
+                    </Formik>
+                </Box>
+                <Box flex={1}>
+                    <TableContainer component={Paper} style={{ maxHeight: 500, overflowY: "auto" }}>
+                        <Table>
+                            <TableHead>
                                 <TableRow>
-                                    <TableCell>{item.id}</TableCell>
-                                    {/* <TableCell>{item.name}</TableCell> */}
-                                    <TableCell>{item.description}</TableCell>
-                                    <TableCell>{item.quantity}</TableCell>
-                                    <TableCell>{item.price}</TableCell>
-                                    <TableCell>{item.tax}</TableCell>
-                                    <TableCell>
-                                        <IconButton onClick={() => handleDelete(i)}>
-                                            <DeleteRounded htmlColor="red" />
-                                        </IconButton>
-                                    </TableCell>
+                                    <TableCell>Index</TableCell>
+                                    {/* <TableCell>Item Name</TableCell> */}
+                                    <TableCell>Description</TableCell>
+                                    <TableCell>Quantity</TableCell>
+                                    <TableCell>Price</TableCell>
+                                    <TableCell>Tax</TableCell>
+                                    <TableCell></TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                            </TableHead>
+                            <TableBody>
+                                {createdItems.map((item: any, i: number) => (
+                                    <TableRow>
+                                        <TableCell>{item.id}</TableCell>
+                                        {/* <TableCell>{item.name}</TableCell> */}
+                                        <TableCell>{item.description}</TableCell>
+                                        <TableCell>{item.quantity}</TableCell>
+                                        <TableCell>{item.price}</TableCell>
+                                        <TableCell>{item.tax}</TableCell>
+                                        <TableCell>
+                                            <IconButton onClick={() => handleDelete(i)}>
+                                                <DeleteRounded htmlColor="red" />
+                                            </IconButton>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </Box>
             </Box>
-        </Box>
+        </BasePaper>
     );
 };
 
@@ -488,11 +492,7 @@ export const LineServicesForm = ({
                                             onBlur={handleBlur}
                                             fullWidth
                                             renderInput={(params) => (
-                                                <TextField
-                                                    {...params}
-                                                    label="Line Item"
-                                                    name="LineItemRecordId"
-                                                />
+                                                <TextField {...params} label="Line Item" name="LineItemRecordId" />
                                             )}
                                         />
                                     )}
@@ -632,16 +632,16 @@ export const CreateForm = ({ onDone, data }: { data?: any; onDone: (data: IPurch
                                     request={getPPOTypes}
                                     itemTitleField="name"
                                     itemValueField="id"
-                                    name="purchasePOTypeId"
+                                    name="PurchasePOTypeId"
                                     label="PO Type"
                                     fullWidth
                                     onChange={handleChange}
                                     value={
-                                        typeof values.purchasePOTypeId === "string"
-                                            ? values.purchasePOTypeId
-                                            : values.purchasePOTypeId?.id
+                                        typeof values.PurchasePOTypeId === "string"
+                                            ? values.PurchasePOTypeId
+                                            : values.PurchasePOTypeId?.id
                                     }
-                                    error={Boolean(errors.purchasePOTypeId)}
+                                    error={Boolean(errors.PurchasePOTypeId)}
                                 />
                                 <FieldSelect
                                     itemValueField="id"
@@ -838,16 +838,16 @@ export const UpdateForm = ({
                     request={getPPOTypes}
                     itemTitleField="name"
                     itemValueField="id"
-                    name="purchasePOTypeId"
+                    name="PurchasePOTypeId"
                     label="PO Type"
                     fullWidth
                     onChange={handleChange}
                     value={
-                        typeof values.purchasePOTypeId === "string"
-                            ? values.purchasePOTypeId
-                            : values.purchasePOTypeId?.id
+                        typeof values.PurchasePOTypeId === "string"
+                            ? values.PurchasePOTypeId
+                            : values.PurchasePOTypeId?.id
                     }
-                    error={Boolean(errors.purchasePOTypeId)}
+                    error={Boolean(errors.PurchasePOTypeId)}
                 />
                 <TextField label="So Number" value={values.SOId?.number} fullWidth disabled />
                 <TextField label="Vendor" value={values.VendorId?.name} fullWidth disabled />
@@ -907,9 +907,19 @@ export const UpdateForm = ({
                 </Paper>
                 <TextField
                     style={phone ? { gridColumnEnd: "span 2" } : { gridColumnEnd: "span 3" }}
-                    value={values.note}
-                    name="note"
-                    label="PO note"
+                    value={values.publicNote}
+                    name="publicNote"
+                    label="Note"
+                    multiline
+                    rows={3}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    style={phone ? { gridColumnEnd: "span 2" } : { gridColumnEnd: "span 3" }}
+                    value={values.description}
+                    name="description"
+                    label="Description"
                     multiline
                     rows={3}
                     onChange={handleChange}
@@ -943,7 +953,7 @@ export const MoreInfoForm = ({
                     size="small"
                     value={values.acknowledgeDate}
                     name="acknowledgeDate"
-                    label="Vendor Acknowledged Date"
+                    label="َAck. Date"
                     onChange={(date) => setFieldValue(" acknowledgeDate", date)}
                     onBlur={handleBlur}
                 />
@@ -971,16 +981,21 @@ export const MoreInfoForm = ({
                         disabled
                     />
                 )}
-
-                <TextField
+                <DateTimePicker
+                    size="small"
+                    value={values.requiredBy}
                     name="requiredBy"
                     label="Required By"
-                    value={values.requiredBy}
-                    onChange={handleChange}
+                    onChange={(date) => setFieldValue("requiredBy", date)}
                     onBlur={handleBlur}
-                    error={Boolean(errors.requiredBy)}
-                    fullWidth
-                    type="number"
+                />
+                <DateTimePicker
+                    size="small"
+                    value={values.sentDate}
+                    name="sentDate"
+                    label="Date Sent"
+                    onChange={(date) => setFieldValue("sentDate", date)}
+                    onBlur={handleBlur}
                 />
             </Box>
         </>
@@ -1020,66 +1035,66 @@ export const AddressesForm = ({
                     gridRowGap={10}
                 >
                     <TextField
-                        value={values.billingAddressCompany}
-                        name="billingAddressCompany"
+                        value={values.billingCompany}
+                        name="billingCompany"
                         label="Company"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.billingAddressAttn}
-                        name="billingAddressAttn"
+                        value={values.billingAttn}
+                        name="billingAttn"
                         label="Attn"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
 
                     <TextField
-                        value={values.billingAddressAddress}
-                        name="billingAddressAddress"
-                        label="Billing Address"
+                        value={values.billingAddress}
+                        name="billingAddress"
+                        label="Address"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.billingAddressCity}
-                        name="billingAddressCity"
+                        value={values.billingCity}
+                        name="billingCity"
                         label="City"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.billingAddressState}
-                        name="billingAddressState"
+                        value={values.billingState}
+                        name="billingState"
                         label="State"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.billingAddressZipcode}
-                        name="billingAddressZipcode"
+                        value={values.billingZipcode}
+                        name="billingZipcode"
                         label="Zip Code"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.billingAddressCountry}
-                        name="billingAddressCountry"
+                        value={values.billingCountry}
+                        name="billingCountry"
                         label="Country"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.billingAddressPhone}
-                        name="billingAddressPhone"
-                        label="Billing Phone"
+                        value={values.billingPhone}
+                        name="billingPhone"
+                        label="Phone"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.billingAddressEmail}
-                        name="billingAddressEmail"
-                        label="Billing Email"
+                        value={values.billingEmail}
+                        name="billingEmail"
+                        label="Email"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         // style={{ gridColumnEnd: "span 2" }}
@@ -1096,65 +1111,65 @@ export const AddressesForm = ({
                     gridColumnGap={10}
                 >
                     <TextField
-                        value={values.shippingAddressCompany}
-                        name="shippingAddressCompany"
+                        value={values.shippingCompany}
+                        name="shippingCompany"
                         label="Company"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.shippingAddressAttn}
-                        name="shippingAddressAttn"
+                        value={values.shippingAttn}
+                        name="shippingAttn"
                         label="Attn"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.shippingAddressAddress}
-                        label="Shipping Address"
-                        name="shippingAddressAddress"
+                        value={values.shippingAddress}
+                        label="Address"
+                        name="shippingAddress"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.shippingAddressCity}
-                        name="shippingAddressCity"
+                        value={values.shippingCity}
+                        name="shippingCity"
                         label="City"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.shippingAddressState}
-                        name="shippingAddressState"
+                        value={values.shippingState}
+                        name="shippingState"
                         label="State"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.shippingAddressZipcode}
-                        name="shippingAddressZipcode"
+                        value={values.shippingZipcode}
+                        name="shippingZipcode"
                         label="Zip Code"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.shippingAddressCountry}
-                        name="shippingAddressCountry"
+                        value={values.shippingCountry}
+                        name="shippingCountry"
                         label="Country"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.shippingAddressPhone}
-                        name="shippingAddressPhone"
-                        label="Shipping Phone"
+                        value={values.shippingPhone}
+                        name="shippingPhone"
+                        label="Phone"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
-                        value={values.shippingAddressEmail}
-                        name="shippingAddressEmail"
-                        label="Shipping Email"
+                        value={values.shippingEmail}
+                        name="shippingEmail"
+                        label="Email"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         // style={{ gridColumnEnd: "span 2" }}

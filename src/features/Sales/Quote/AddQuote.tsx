@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Step, StepLabel, Stepper } from "@material-ui/core";
+import { Box, Button, Step, StepLabel, Stepper } from "@material-ui/core";
 
 import Dialog from "../../../app/Dialog";
 
@@ -23,9 +23,17 @@ export default function AddQuote({
     onDone: () => void;
     addFromReq?: boolean;
 }) {
-    const [step, setStep] = useState(0);
+    const [activeStep, setActiveStep] = useState(0);
     const [quote, setQuote] = useState<any>(initialData);
     const [createdQuote, setCreatedQuote] = useState<IQuote>();
+
+    const handleNext = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    };
+
+    const handleBack = () => {
+        setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    };
 
     useEffect(() => {
         if (initialData) {
@@ -36,16 +44,10 @@ export default function AddQuote({
     return (
         <Dialog onClose={onClose} closeOnClickOut={false} open={open} title="Add New Quote" fullScreen maxWidth="md">
             <Box p={2} height={600} display="flex" flexDirection="column">
-                <Stepper activeStep={step}>
+                <Stepper activeStep={activeStep}>
                     <Step>
                         <StepLabel>General Information</StepLabel>
                     </Step>
-                    <Step>
-                        <StepLabel>Line Items</StepLabel>
-                    </Step>
-                    {/* <Step>
-                        <StepLabel>Line Services</StepLabel>
-                    </Step> */}
                     <Step>
                         <StepLabel>Final</StepLabel>
                     </Step>
@@ -53,42 +55,45 @@ export default function AddQuote({
                         <StepLabel>Document</StepLabel>
                     </Step>
                 </Stepper>
-                {step === 0 && (
+                {activeStep === 0 && (
                     <Box display="flex" justifyContent="center" flexGrow={1} my={2}>
-                        <General
-                            add={true}
-                            data={initialData}
-                            // data={quote}
-                            onDone={(d) => {
-                                setQuote((prev: any) => ({ ...prev, ...d }));
-                                setStep((prev) => prev + 1);
-                            }}
-                        />
+                        <Box flex={1}>
+                            <General
+                                add={true}
+                                data={initialData}
+                                // data={quote}
+                                onDone={(d) => {
+                                    setQuote((prev: any) => ({ ...prev, ...d }));
+                                    setActiveStep((prev) => prev + 1);
+                                }}
+                            />
+                        </Box>
+                        <Box flex={1} mt={1}>
+                            <LinesForm
+                                data={quote}
+                                onBack={() => setActiveStep(0)}
+                                onDone={(items: any) => {
+                                    setQuote((d: any) => ({ ...d, lines: items }));
+                                    setActiveStep((prev) => prev + 1);
+                                }}
+                                devices={initialData?.devices}
+                            />
+                        </Box>
                     </Box>
                 )}
-                {step === 1 && (
-                    <LinesForm
-                        data={quote}
-                        onBack={() => setStep(0)}
-                        onDone={(items: any) => {
-                            setQuote((d: any) => ({ ...d, lines: items }));
-                            setStep((prev) => prev + 1);
-                        }}
-                        devices={initialData?.devices}
-                    />
-                )}
-                {step === 2 && quote && (
+
+                {activeStep === 1 && quote && (
                     <FinalForm
                         data={quote}
-                        onBack={() => setStep(1)}
+                        onBack={() => setActiveStep(1)}
                         onDone={(data) => {
                             onDone();
                             setCreatedQuote(data);
-                            setStep((prev) => prev + 1);
+                            setActiveStep((prev) => prev + 1);
                         }}
                     />
                 )}
-                {step === 3 && (
+                {activeStep === 2 && (
                     <DocumentForm
                         data={quote}
                         createdQoute={createdQuote}
@@ -98,6 +103,15 @@ export default function AddQuote({
                         }}
                     />
                 )}
+            </Box>
+            <Box display="flex" alignItems="center" justifyContent="space-between" margin="30px auto" width="30%">
+                <Button variant="contained" disabled={activeStep === 0} onClick={handleBack}>
+                    Back
+                </Button>
+                <div></div>
+                <Button variant="contained" color="primary" onClick={handleNext} disabled={activeStep === 2}>
+                    {activeStep === 1 ? "Finalize" : "Next"}
+                </Button>
             </Box>
         </Dialog>
     );
