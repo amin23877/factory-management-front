@@ -82,40 +82,25 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
     );
 }
 
-export const FinalForm = ({ onDone, onBack, data }: { onDone: (a: any) => void; onBack: () => void; data: any }) => {
-    const [loading, setLoading] = useState(false);
-
-    const handleSubmit = async () => {
-        try {
-            const resp = await createQuoteComplete(data);
-            if (resp) {
-                console.log(resp);
-                onDone(resp);
-            }
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setLoading(false);
-        }
-    };
+export const FinalForm = ({ loading }: { loading: boolean }) => {
     return (
         <>
             <Box height="85%" display="flex" flexDirection="column">
                 <Typography variant="h5">Are you sure?</Typography>
-                <Typography variant="subtitle1" style={{ margin: "1em 0" }}>
-                    If you finilize your Purchase order, You can't update it, So if you want to update it you should
-                    make new version or add new one
+                <Typography variant="subtitle1" style={{ margin: "2em 7em", textAlign: "center", fontSize: "5em" }}>
+                    If you finalize your Quote , You can't update it, So if you want to update it you should make new
+                    version or add new one
                 </Typography>
                 {loading && <LinearProgress />}
                 <div style={{ flexGrow: 1 }} />
-                <Box display="flex" justifyContent="space-between" mt={4}>
+                {/* <Box display="flex" justifyContent="space-between" mt={4}>
                     <Button disabled={loading} onClick={onBack} color="secondary" variant="contained">
                         Back to lines
                     </Button>
                     <Button disabled={loading} onClick={handleSubmit} color="primary" variant="contained">
                         Finilize
                     </Button>
-                </Box>
+                </Box> */}
             </Box>
         </>
     );

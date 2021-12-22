@@ -67,7 +67,7 @@ export default function AddSOModal({
                         />
                     </Box>
                 )}
-                {step === 1 && (
+                {/* {step === 1 && (
                     <LinesForm
                         data={so}
                         onBack={() => setStep(0)}
@@ -76,7 +76,7 @@ export default function AddSOModal({
                             setStep(2);
                         }}
                     />
-                )}
+                )} */}
                 {step === 2 && so && (
                     <FinalForm
                         data={so}

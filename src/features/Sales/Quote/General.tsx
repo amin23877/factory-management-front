@@ -1,92 +1,69 @@
 import React, { useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
-import { Formik, Form } from "formik";
-import * as Yup from "yup";
 
-import Button from "../../../app/Button";
 import { CommissionTab, EntitiesTab, GeneralForm } from "./Forms";
 
-import { IQuote } from "../../../api/quote";
 import { BasePaper } from "../../../app/Paper";
-
-const schema = Yup.object().shape({
-    // requester: Yup.string().required(),
-    // ClientId: Yup.string().required(),
-    // salesperson: Yup.string().required(),
-});
 
 export default function GeneralQuote({
     add,
-    onDone,
-    data,
+    handleChange,
+    handleBlur,
+    values,
+    setFieldValue,
 }: {
     add?: boolean;
-    data?: any;
-    onDone: (data: any) => void;
+    values: any;
+    handleChange: (a: any) => void;
+    handleBlur: (a: any) => void;
+    setFieldValue: any;
 }) {
     const [activeTab, setActiveTab] = useState(0);
 
-    const handleSubmit = async (data: IQuote) => {
-        let entry = new Date(data.entryDate);
-        let exp = new Date(data.expireDate);
-        onDone({ ...data, entryDate: entry.getTime(), expireDate: exp.getTime() });
-    };
-
     return (
         <Box style={{ overflowY: "auto", width: "100%" }}>
-            <Formik initialValues={{ ...data } as IQuote} validationSchema={schema} onSubmit={handleSubmit}>
-                {({ handleChange, handleBlur, values, setFieldValue }) => (
-                    <Form>
-                        <Box display="flex" m={1} flexDirection="column">
-                            <Box mb={1}>
-                                <BasePaper>
-                                    <GeneralForm
-                                        setFieldValue={setFieldValue}
-                                        values={values}
-                                        handleBlur={handleBlur}
-                                        handleChange={handleChange}
-                                    />
-                                </BasePaper>
-                            </Box>
-                            <Box>
-                                <BasePaper>
-                                    <Tabs
-                                        value={activeTab}
-                                        onChange={(e, nv) => setActiveTab(nv)}
-                                        variant="scrollable"
-                                        style={{ maxWidth: 500, marginBottom: "1em" }}
-                                        textColor="primary"
-                                    >
-                                        <Tab label="Entities" />
-                                        <Tab label="Commission" />
-                                    </Tabs>
-                                    {activeTab === 0 && (
-                                        <EntitiesTab
-                                            setFieldValue={setFieldValue}
-                                            values={values}
-                                            handleBlur={handleBlur}
-                                            handleChange={handleChange}
-                                        />
-                                    )}
-                                    {activeTab === 1 && (
-                                        <CommissionTab
-                                            values={values}
-                                            handleBlur={handleBlur}
-                                            handleChange={handleChange}
-                                            add={add}
-                                        />
-                                    )}
-                                </BasePaper>
-                            </Box>
-                        </Box>
-                        {/* <Box display="flex" justifyContent="center" my={2} py={2}>
-                            <Button disabled={isSubmitting} type="submit" kind="add" style={{ padding: "1em 2em" }}>
-                                Add
-                            </Button>
-                        </Box> */}
-                    </Form>
-                )}
-            </Formik>
+            <Box display="flex" m={1} flexDirection="column">
+                <Box mb={1}>
+                    <BasePaper>
+                        <GeneralForm
+                            setFieldValue={setFieldValue}
+                            values={values}
+                            handleBlur={handleBlur}
+                            handleChange={handleChange}
+                        />
+                    </BasePaper>
+                </Box>
+                <Box>
+                    <BasePaper>
+                        <Tabs
+                            value={activeTab}
+                            onChange={(e, nv) => setActiveTab(nv)}
+                            variant="scrollable"
+                            style={{ maxWidth: 500, marginBottom: "1em" }}
+                            textColor="primary"
+                        >
+                            <Tab label="Entities" />
+                            <Tab label="Commission" />
+                        </Tabs>
+                        {activeTab === 0 && (
+                            <EntitiesTab
+                                setFieldValue={setFieldValue}
+                                values={values}
+                                handleBlur={handleBlur}
+                                handleChange={handleChange}
+                            />
+                        )}
+                        {activeTab === 1 && (
+                            <CommissionTab
+                                values={values}
+                                handleBlur={handleBlur}
+                                handleChange={handleChange}
+                                add={add}
+                            />
+                        )}
+                    </BasePaper>
+                </Box>
+            </Box>
         </Box>
     );
 }

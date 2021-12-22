@@ -67,7 +67,7 @@ export const DocumentForm = ({
     return (
         <Box>
             <Typography>We made a pdf from your Quote, now you can save it</Typography>
-            <div style={{ height: 400, overflowY: "auto" }}>
+            <div style={{ height: "calc(100vh - 240px)", overflowY: "auto" }}>
                 <div id="myMm" style={{ height: "1mm" }} />
                 <div
                     id="divToPrint"
@@ -84,9 +84,9 @@ export const DocumentForm = ({
                     <QuotePDF data={data} createdQuote={createdQoute} />
                 </div>
             </div>
-            <Box textAlign="right">
-                <Button disabled={false} kind="add" onClick={handleSaveDocument}>
-                    Save
+            <Box textAlign="right" width="100%" display="flex" justifyContent="center" p={2}>
+                <Button kind="add" onClick={handleSaveDocument}>
+                    Save Document
                 </Button>
                 {isUploading && <LinearProgress />}
             </Box>

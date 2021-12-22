@@ -64,7 +64,7 @@ export default function AddPOModal({
                         </Box>
                     </Box>
                 )}
-                {step === 1 && (
+                {/* {step === 1 && (
                     <LinesForm
                         data={po}
                         onBack={() => setStep(0)}
@@ -73,7 +73,7 @@ export default function AddPOModal({
                             setStep(2);
                         }}
                     />
-                )}
+                )} */}
                 {step === 2 && po && (
                     <FinalForm
                         data={po}

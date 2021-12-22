@@ -14,7 +14,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
-import { Tabs, Tab, useMediaQuery } from "@material-ui/core";
+import { Tabs, Tab, useMediaQuery, InputBase, Popover } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import Alert from "@material-ui/lab/Alert";
@@ -25,6 +25,7 @@ import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import { BasePaper } from "../../../app/Paper";
 
 import { getPPOTypes } from "../../../api/purchasePoType";
+import { AddRounded, CheckRounded, ClearRounded, MoreVertRounded, WarningRounded } from "@material-ui/icons";
 
 import BootstrapTextField from "../../../app/TextField";
 
@@ -52,6 +53,7 @@ import { formatTimestampToDate } from "../../../logic/date";
 import DateTimePicker from "../../../app/DateTimePicker";
 import { IItem } from "../../../api/items";
 import { getAllUnits } from "../../../api/units";
+import "../../../styles/main.css";
 
 export const DocumentForm = ({
     createdPO,
@@ -221,23 +223,37 @@ export const FinalForm = ({
         </Box>
     );
 };
-
+const style = {
+    padding: "10px 20px",
+    borderBottom: "1px solid whiteSmoke",
+    color: "white",
+};
 export const LinesForm = ({
-    onDone,
-    onBack,
-    data,
     devices,
+    createdItems,
+    handleSubmit,
+    handleDelete,
 }: {
-    data?: IPurchasePOComplete | ISOComplete | IQuoteComplete;
-    onDone: (items: ILineItem[]) => void;
-    onBack: () => void;
     devices?: IItem[];
+    createdItems: ILineItem[];
+    handleSubmit: (lineItem: ILineItem, item: IItem | undefined) => void;
+    handleDelete: (index: number) => void;
 }) => {
-    const [createdItems, setCreatedItems] = useState<ILineItem[]>(data && data.lines ? data.lines : []);
     const [selectedItem, setSelectedItem] = useState<IItem>();
     const { data: items } = useSWR<{ total: number; result: any[] }>("/item");
     const { data: services } = useSWR(selectedItem ? `/service?ItemId=${selectedItem.id}` : "/service");
+    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+    const id = open ? "simple-popover" : undefined;
     const schema = Yup.object().shape({
         ItemId: Yup.string().when("fru", {
             is: undefined,
@@ -248,40 +264,25 @@ export const LinesForm = ({
         price: Yup.number().required().min(0.0001),
     });
 
-    const handleSubmit = (d: ILineItem) => {
-        if (d) {
-            setCreatedItems((prev) => prev.concat(d));
-        }
-    };
-
-    const handleDelete = async (index: number) => {
-        setCreatedItems((prev) => prev.filter((item: any, ind) => ind !== index));
-    };
-
-    const handleNext = () => {
-        const res = [...createdItems];
-        res.forEach((_line, index) => {
-            res[index].services = res[index].services?.map((s) => ({
-                ServiceId: s.id,
-                price: s.price,
-                quantity: 1,
-            }));
-        });
-        onDone(res);
-    };
-
     return (
-        <BasePaper>
+        <BasePaper style={{ height: "100%" }}>
             <Box display="flex">
-                <Box flex={1} mr={2}>
-                    <Formik initialValues={{} as ILineItem} validationSchema={schema} onSubmit={handleSubmit}>
+                {/* <Box flex={1} mr={2}> */}
+                {/* <Formik
+                        initialValues={{} as ILineItem}
+                        validationSchema={schema}
+                        onSubmit={(values: ILineItem) => handleSubmit(values, selectedItem)}
+                    >
                         {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
                             <Form>
                                 <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
                                     <Autocomplete
                                         options={devices ? devices : items ? items.result : []}
                                         getOptionLabel={(item: any) => (devices ? item.number.name : item.name)}
-                                        onChange={(e, nv) => setFieldValue("ItemId", devices ? nv.number.id : nv.id)}
+                                        onChange={(e, nv) => {
+                                            setFieldValue("ItemId", devices ? nv.number.id : nv.id);
+                                            setSelectedItem(nv);
+                                        }}
                                         onBlur={handleBlur}
                                         renderInput={(params) => <TextField {...params} label="Item" name="ItemId" />}
                                         fullWidth
@@ -358,66 +359,172 @@ export const LinesForm = ({
                                         onChange={handleChange}
                                         control={<CheckBox />}
                                     />
-                                    <Box display="flex" alignItems="center" justifyContent="space-between">
-                                        <Button
-                                            startIcon={<ChevronLeft />}
-                                            onClick={onBack}
-                                            variant="contained"
-                                            color="primary"
-                                        >
-                                            Back
-                                        </Button>
-                                        <Button style={{ margin: "0 0.5em" }} type="submit" kind={"add"}>
-                                            Submit
-                                        </Button>
-                                        <Button
-                                            endIcon={<ChevronRight />}
-                                            onClick={handleNext}
-                                            disabled={createdItems.length === 0}
-                                            variant="contained"
-                                            color="primary"
-                                        >
-                                            Next
-                                        </Button>
-                                    </Box>
+                                    <Button style={{ margin: "0 0.5em" }} type="submit" kind={"add"}>
+                                        Submit
+                                    </Button>
                                 </Box>
                             </Form>
                         )}
-                    </Formik>
-                </Box>
+                    </Formik> */}
+                {/* </Box> */}
                 <Box flex={1}>
-                    <TableContainer component={Paper} style={{ maxHeight: 500, overflowY: "auto" }}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Index</TableCell>
-                                    {/* <TableCell>Item Name</TableCell> */}
-                                    <TableCell>Description</TableCell>
-                                    <TableCell>Quantity</TableCell>
-                                    <TableCell>Price</TableCell>
-                                    <TableCell>Tax</TableCell>
-                                    <TableCell></TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {createdItems.map((item: any, i: number) => (
-                                    <TableRow>
-                                        <TableCell>{item.id}</TableCell>
-                                        {/* <TableCell>{item.name}</TableCell> */}
-                                        <TableCell>{item.description}</TableCell>
-                                        <TableCell>{item.quantity}</TableCell>
-                                        <TableCell>{item.price}</TableCell>
-                                        <TableCell>{item.tax}</TableCell>
-                                        <TableCell>
-                                            <IconButton onClick={() => handleDelete(i)}>
-                                                <DeleteRounded htmlColor="red" />
-                                            </IconButton>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                    <Formik
+                        initialValues={{} as ILineItem}
+                        validationSchema={schema}
+                        onSubmit={(values, { resetForm }) => {
+                            handleSubmit(values, selectedItem);
+                            // resetForm();
+                        }}
+                    >
+                        {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
+                            <Form>
+                                <Table>
+                                    <TableHead style={{ backgroundColor: "#373a4d", color: "white" }}>
+                                        <TableRow>
+                                            <TableCell style={{ color: "white" }}>Sort</TableCell>
+                                            <TableCell style={{ color: "white" }}>Part Number</TableCell>
+                                            <TableCell style={{ color: "white" }}>Qty</TableCell>
+                                            <TableCell style={{ color: "white" }}>Price</TableCell>
+                                            <TableCell width={50} style={{ color: "white", padding: "2px" }}>
+                                                Tax
+                                            </TableCell>
+                                            <TableCell width={80} style={{ color: "white", padding: "0px" }}>
+                                                Total
+                                            </TableCell>
+                                            <TableCell width={50} style={{ color: "white" }}></TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {createdItems.map((item: any, i: number) => {
+                                            console.log(item);
+
+                                            return (
+                                                <TableRow>
+                                                    <TableCell>{i}</TableCell>
+                                                    <TableCell style={{ position: "relative" }}>
+                                                        <span>{item.i.no}</span>
+                                                        <span
+                                                            style={{ color: "orange", position: "absolute", right: 0 }}
+                                                        >
+                                                            {!item.i.engineeringApproved && <WarningRounded />}
+                                                        </span>
+                                                    </TableCell>
+                                                    <TableCell>{item.quantity}</TableCell>
+                                                    <TableCell>{item.price}</TableCell>
+                                                    <TableCell style={{ padding: "2px" }}>
+                                                        {item.tax ? <CheckRounded /> : <ClearRounded />}
+                                                    </TableCell>
+                                                    <TableCell style={{ padding: "0px" }}>
+                                                        {item.quantity * item.price}
+                                                    </TableCell>
+                                                    <TableCell>
+                                                        <span onClick={handleClick} style={{ cursor: "pointer" }}>
+                                                            <MoreVertRounded />
+                                                        </span>
+                                                        <Popover
+                                                            id={id}
+                                                            open={open}
+                                                            anchorEl={anchorEl}
+                                                            onClose={handleClose}
+                                                            anchorOrigin={{
+                                                                vertical: "top",
+                                                                horizontal: "right",
+                                                            }}
+                                                            transformOrigin={{
+                                                                vertical: "top",
+                                                                horizontal: "right",
+                                                            }}
+                                                        >
+                                                            <Box
+                                                                display="flex"
+                                                                flexDirection="column"
+                                                                style={{
+                                                                    background: "#373a4d",
+                                                                    cursor: "pointer",
+                                                                }}
+                                                            >
+                                                                <span style={style}>Add Service</span>
+                                                                <span style={style}> Add Option</span>
+                                                                <span
+                                                                    style={{ ...style, border: "none" }}
+                                                                    onClick={() => {
+                                                                        handleClose();
+                                                                        handleDelete(i);
+                                                                    }}
+                                                                >
+                                                                    Delete
+                                                                </span>
+                                                            </Box>
+                                                        </Popover>
+                                                    </TableCell>
+                                                </TableRow>
+                                            );
+                                        })}
+                                        <TableRow>
+                                            <TableCell width={50}>
+                                                <IconButton type="submit" style={{ padding: "0px" }}>
+                                                    <AddRounded htmlColor="green" />
+                                                </IconButton>
+                                            </TableCell>
+                                            <TableCell style={{ padding: "2px" }}>
+                                                <Autocomplete
+                                                    options={devices ? devices : items ? items.result : []}
+                                                    getOptionLabel={(item: any) =>
+                                                        devices ? item.number.name : item.name
+                                                    }
+                                                    onChange={(e, nv) => {
+                                                        setFieldValue("ItemId", devices ? nv.number.id : nv.id);
+                                                        setSelectedItem(nv);
+                                                    }}
+                                                    onBlur={handleBlur}
+                                                    renderInput={(params) => (
+                                                        <TextField
+                                                            style={{ padding: "0px" }}
+                                                            {...params}
+                                                            name="ItemId"
+                                                        />
+                                                    )}
+                                                    fullWidth
+                                                />
+                                            </TableCell>
+                                            <TableCell width={90} style={{ padding: "2px" }}>
+                                                <TextField
+                                                    type="number"
+                                                    name="quantity"
+                                                    value={values.quantity}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    error={Boolean(errors.quantity)}
+                                                />
+                                            </TableCell>
+                                            <TableCell width={90} style={{ padding: "2px" }}>
+                                                <TextField
+                                                    type="number"
+                                                    name="price"
+                                                    value={values.price}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    error={Boolean(errors.price)}
+                                                />
+                                            </TableCell>
+                                            <TableCell style={{ padding: "2px" }}>
+                                                <FormControlLabel
+                                                    style={{ width: "100%" }}
+                                                    checked={values.tax}
+                                                    label=""
+                                                    name="tax"
+                                                    onChange={handleChange}
+                                                    control={<CheckBox />}
+                                                />
+                                            </TableCell>
+                                            <TableCell style={{ padding: "0px" }}></TableCell>
+                                            <TableCell></TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                </Table>
+                            </Form>
+                        )}
+                    </Formik>
                 </Box>
             </Box>
         </BasePaper>
