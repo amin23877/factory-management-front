@@ -36,6 +36,8 @@ export const GeneralForm = ({
                 />
                 <TextField value={values.SOId?.issuedBy?.username} label="SO Issued By" disabled />
                 <LinkSelect
+                    path="/so"
+                    filterLabel="number"
                     value={typeof values.SOId === "string" ? values.SOId : values.SOId}
                     label="SO ID"
                     request={getSO}

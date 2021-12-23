@@ -112,6 +112,8 @@ export const GeneralForm = ({
                 />
 
                 <LinkSelect
+                    path="/calls"
+                    filterLabel="number"
                     value={typeof values.QuoteId === "string" ? values.QuoteId : values.QuoteId}
                     label="Quote ID"
                     request={getQuotes}
@@ -130,6 +132,8 @@ export const GeneralForm = ({
                     value={typeof values.SOId === "string" ? values.SOId : values.SOId}
                     label="SO ID"
                     request={getSO}
+                    path="/so"
+                    filterLabel="number"
                     getOptionList={(resp) => resp?.result}
                     getOptionLabel={(so) => so?.number}
                     getOptionValue={(so) => so?.id}

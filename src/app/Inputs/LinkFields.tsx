@@ -9,6 +9,7 @@ import SearchRounded from "@material-ui/icons/SearchRounded";
 
 import "../../styles/dashboard.css";
 import { openRequestedSinglePopup } from "../../logic/window";
+import { get } from "../../api";
 
 interface IMFS {
     request: () => Promise<any>;
@@ -26,6 +27,8 @@ interface IMFS {
     freeSolo?: any;
     url?: string;
     disabled?: boolean;
+    path: string;
+    filterLabel: string;
 }
 
 const useStyles = makeStyles({
@@ -51,30 +54,35 @@ export default function MaterialFieldSelect({
     getOptionList,
     onChange,
     value,
+    path,
     disabled,
+    filterLabel,
     ...props
 }: IMFS) {
     const [options, setOptions] = useState<any[]>([]);
     const [selectValue, setSelectValue] = useState<any>(value);
+    const [refresh, setRefresh] = useState<any>();
     const classes = useStyles();
     const phone = useMediaQuery("(max-width:600px)");
     const history = useHistory();
-
+    let params: any = {};
+    const fetchData = () => {
+        console.log("satart");
+        params["startsWith" + filterLabel] = refresh;
+        get(path, { params })
+            .then((data) => {
+                if (limit && limit > 0) {
+                    setOptions(data.slice(0, limit));
+                } else {
+                    setOptions(getOptionList(data));
+                }
+            })
+            .catch((e) => console.log(e));
+    };
     useEffect(() => {
-        const fetchData = () => {
-            request()
-                .then((data) => {
-                    if (limit && limit > 0) {
-                        setOptions(data.slice(0, limit));
-                    } else {
-                        setOptions(getOptionList(data));
-                    }
-                })
-                .catch((e) => console.log(e));
-        };
         fetchData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [limit, request]);
+    }, [limit, value, refresh]);
 
     useEffect(() => {
         if (typeof value === "string" && options) {
@@ -141,6 +149,10 @@ export default function MaterialFieldSelect({
                             placeholder={props.placeholder}
                             classes={{
                                 root: classes.textField,
+                            }}
+                            onChange={(e) => {
+                                setRefresh(e.target.value);
+                                fetchData();
                             }}
                             style={{ flex: 1, fontSize: "0.8rem" }}
                             type="text"

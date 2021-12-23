@@ -222,6 +222,8 @@ export const GeneralForm = ({
                 {/* {edit && <TextField label="SO ID" value={values.number} style={{ width: "100%" }} disabled />} */}
                 {edit && (
                     <LinkSelect
+                        filterLabel="number"
+                        path="/so"
                         value={typeof values.SOId === "string" ? values.SOId : values.SOId}
                         label="SO ID"
                         request={getSO}
@@ -256,6 +258,8 @@ export const GeneralForm = ({
                 />
                 <TextField value={values.location} name="location" label="Location" onChange={handleChange} />
                 <LinkSelect
+                    filterLabel="name"
+                    path="/project"
                     value={typeof values.ProjectId === "string" ? values.ProjectId : values.ProjectId}
                     label="Project Name"
                     request={getProjects}
@@ -361,6 +365,8 @@ export const EntitiesTab = ({
         <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr "} gridColumnGap={5} pt={1}>
             <Box mb={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={7}>
                 <LinkSelect
+                    filterLabel="name"
+                    path="/customer"
                     value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
                     label="rep / Agency"
                     request={getCustomers}
@@ -418,6 +424,8 @@ export const EntitiesTab = ({
             </Box>
             <Box mb={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={7}>
                 <LinkSelect
+                    filterLabel="name"
+                    path="/customer"
                     value={typeof values.client === "string" ? values.client : values.client?.id}
                     label="Client"
                     request={getCustomers}

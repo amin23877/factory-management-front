@@ -144,6 +144,8 @@ export const GeneralForm = ({
                 />
 
                 <LinkSelect
+                    path="/quote"
+                    filterLabel="number"
                     value={typeof values.QuoteId === "string" ? values.QuoteId : values.QuoteId}
                     label="Quote NO."
                     request={getQuotes}
@@ -172,6 +174,8 @@ export const GeneralForm = ({
                     request={async () => {
                         return [];
                     }}
+                    path="/service"
+                    filterLabel="name"
                     getOptionList={(resp) => resp}
                     getOptionLabel={(warranty) => warranty?.name}
                     getOptionValue={(warranty) => warranty?.id}
@@ -185,6 +189,8 @@ export const GeneralForm = ({
                 <LinkSelect
                     value={typeof values.ProjectId === "string" ? values.ProjectId : values.ProjectId}
                     label="Project Name"
+                    path="/project"
+                    filterLabel="name"
                     request={getProjects}
                     getOptionList={(resp) => resp}
                     getOptionLabel={(project) => project?.name}
@@ -257,6 +263,8 @@ export const EntitiesForm = ({
                 <LinkSelect
                     value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
                     label="rep / Agency"
+                    path="/customer"
+                    filterLabel="name"
                     request={getCustomers}
                     getOptionList={(resp) => resp?.result}
                     getOptionLabel={(cus) => cus?.name}
@@ -306,6 +314,8 @@ export const EntitiesForm = ({
                     }}
                     onBlur={handleBlur}
                     url="/panel/customer"
+                    path="/customer"
+                    filterLabel="name"
                 />
                 <TextField
                     value={values.contact?.lastName}
