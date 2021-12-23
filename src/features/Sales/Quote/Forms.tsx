@@ -24,7 +24,7 @@ import QuotePDF from "../../../PDFTemplates/Quote";
 import { createAModelDocument } from "../../../api/document";
 import { IQuoteComplete } from "../../../api/quote";
 // import { getContacts } from "../../../api/contact";
-import { getCustomers } from "../../../api/customer";
+import { getCustomers, ICustomer } from "../../../api/customer";
 import LinkSelect from "../../../app/Inputs/LinkFields";
 import { getSO } from "../../../api/so";
 
@@ -355,7 +355,8 @@ export const EntitiesTab = ({
     setFieldValue: any;
 }) => {
     const phone = useMediaQuery("(max-width:600px)");
-
+    const [rep, setRep] = useState<ICustomer>();
+    const [client, setClient] = useState<ICustomer>();
     return (
         <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr "} gridColumnGap={5} pt={1}>
             <Box mb={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={7}>
@@ -368,34 +369,51 @@ export const EntitiesTab = ({
                     getOptionValue={(cus) => cus?.id}
                     onChange={(e, nv) => {
                         setFieldValue("repOrAgency", nv?.id);
+                        setRep(nv);
                     }}
                     onBlur={handleBlur}
                     url="/panel/customer"
                 />
-                <TextField value={values.repOrAgency?.address} label="Address" disabled />
                 <TextField
-                    value={values.repOrAgency?.city}
+                    value={rep?.address}
+                    label="Address"
+                    disabled
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                />
+                <TextField
+                    value={rep?.city}
                     name="city"
                     label="City"
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
                     disabled
                 />
                 <TextField
-                    value={values.repOrAgency?.state}
+                    value={rep?.state}
                     name="state"
                     label="State"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     disabled
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
                 />
                 <TextField
-                    value={values.repOrAgency?.zipcode}
+                    value={rep?.zipcode}
                     name="zipCode"
                     label="Zip Code"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     disabled
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
                 />
             </Box>
             <Box mb={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={7}>
@@ -408,33 +426,43 @@ export const EntitiesTab = ({
                     getOptionValue={(cus) => cus?.id}
                     onChange={(e, nv) => {
                         setFieldValue("client", nv?.id);
+                        setClient(nv);
                     }}
                     onBlur={handleBlur}
                     url="/panel/customer"
                 />
                 <TextField
-                    value={values.contact?.lastName}
+                    value={client?.name}
                     name="contactName"
                     label="Contact Name"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     disabled
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
                 />
                 <TextField
-                    value={values.contact?.email}
+                    value={client?.email}
                     name="email"
                     label="Email"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     disabled
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
                 />
                 <TextField
-                    value={values.contact?.lastName}
+                    value={client?.phone}
                     name="phone"
                     label="Phone"
                     onChange={handleChange}
                     onBlur={handleBlur}
                     disabled
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
                 />
                 <TextField
                     value={values.unitPricingLevel}
@@ -443,6 +471,9 @@ export const EntitiesTab = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                     disabled
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
                 />
             </Box>
             <Box
