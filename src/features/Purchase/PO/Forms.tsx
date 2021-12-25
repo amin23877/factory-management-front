@@ -54,6 +54,7 @@ import DateTimePicker from "../../../app/DateTimePicker";
 import { IItem } from "../../../api/items";
 import { getAllUnits } from "../../../api/units";
 import "../../../styles/main.css";
+import LinkSelect from "../../../app/Inputs/LinkFields";
 
 export const DocumentForm = ({
     createdPO,
@@ -255,11 +256,12 @@ export const LinesForm = ({
     const open = Boolean(anchorEl);
     const id = open ? "simple-popover" : undefined;
     const schema = Yup.object().shape({
-        ItemId: Yup.string().when("fru", {
-            is: undefined,
-            then: Yup.string().required(),
-            otherwise: Yup.string(),
-        }),
+        // ItemId: Yup.string().when("fru", {
+        //     is: undefined,
+        //     then: Yup.string().required(),
+        //     otherwise: Yup.string(),
+        // }),
+        ItemId: Yup.string().required(),
         quantity: Yup.number().required().min(1),
         price: Yup.number().required().min(0.0001),
     });
@@ -396,8 +398,6 @@ export const LinesForm = ({
                                     </TableHead>
                                     <TableBody>
                                         {createdItems.map((item: any, i: number) => {
-                                            console.log(item);
-
                                             return (
                                                 <TableRow>
                                                     <TableCell>{i}</TableCell>
@@ -467,7 +467,7 @@ export const LinesForm = ({
                                                 </IconButton>
                                             </TableCell>
                                             <TableCell style={{ padding: "2px" }}>
-                                                <Autocomplete
+                                                {/* <Autocomplete
                                                     options={devices ? devices : items ? items.result : []}
                                                     getOptionLabel={(item: any) =>
                                                         devices ? item.number.name : item.name
@@ -485,6 +485,26 @@ export const LinesForm = ({
                                                         />
                                                     )}
                                                     fullWidth
+                                                /> */}
+                                                <LinkSelect
+                                                    filterLabel="no"
+                                                    path="/item?device=true"
+                                                    value={
+                                                        typeof values.ItemId === "string"
+                                                            ? values.ItemId
+                                                            : values.ItemId?.id
+                                                    }
+                                                    // value={values.ItemId.id}
+                                                    label=""
+                                                    getOptionList={(resp) => (devices ? devices : resp?.result)}
+                                                    getOptionLabel={(item) => (devices ? item.number.no : item?.no)}
+                                                    getOptionValue={(item) => item?.id}
+                                                    onChange={(e, nv) => {
+                                                        setFieldValue("ItemId", devices ? nv.number.id : nv.id);
+                                                        setSelectedItem(nv);
+                                                    }}
+                                                    onBlur={handleBlur}
+                                                    url="/panel/inventory"
                                                 />
                                             </TableCell>
                                             <TableCell width={90} style={{ padding: "2px" }}>

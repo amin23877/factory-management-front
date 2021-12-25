@@ -56,7 +56,11 @@ export const DocumentForm = ({
                 );
                 if (resp) {
                     onDone();
+                } else {
+                    console.log("else");
                 }
+            } else {
+                console.log(createdQoute.id);
             }
         } catch (error) {
             console.log(error);
@@ -84,11 +88,24 @@ export const DocumentForm = ({
                     <QuotePDF data={data} createdQuote={createdQoute} />
                 </div>
             </div>
-            <Box textAlign="right" width="100%" display="flex" justifyContent="center" p={2}>
-                <Button kind="add" onClick={handleSaveDocument}>
+            <Box
+                textAlign="right"
+                width="100%"
+                display="flex"
+                justifyContent="space-between"
+                p={2}
+                flexDirection="column"
+                alignItems="center"
+            >
+                {/* {isUploading && <LinearProgress />} */}
+                {isUploading && (
+                    <div style={{ width: "100%", height: "20px" }}>
+                        <LinearProgress />
+                    </div>
+                )}
+                <Button kind="add" onClick={handleSaveDocument} disabled={isUploading}>
                     Save Document
                 </Button>
-                {isUploading && <LinearProgress />}
             </Box>
         </Box>
     );

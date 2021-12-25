@@ -12,7 +12,7 @@ import { openRequestedSinglePopup } from "../../logic/window";
 import { get } from "../../api";
 
 interface IMFS {
-    request: () => Promise<any>;
+    request?: () => Promise<any>;
     limit?: number;
     label?: string;
     getOptionLabel: (option: any) => string;
@@ -67,7 +67,6 @@ export default function MaterialFieldSelect({
     const history = useHistory();
     let params: any = {};
     const fetchData = () => {
-        console.log("satart");
         params["startsWith" + filterLabel] = refresh;
         get(path, { params })
             .then((data) => {
@@ -89,8 +88,18 @@ export default function MaterialFieldSelect({
             const v = options?.find((item) => getOptionValue(item) === value);
             setSelectValue(v);
         }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [options, value]);
+
+    useEffect(() => {
+        if (typeof value === "string" && options) {
+            const v = options?.find((item) => getOptionValue(item) === value);
+            setRefresh(v[filterLabel]);
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value]);
 
     return (
         <Autocomplete
@@ -143,7 +152,7 @@ export default function MaterialFieldSelect({
                         </span>
                         <TextField
                             {...params.inputProps}
-                            value={getOptionLabel(selectValue)}
+                            value={refresh}
                             label={props?.label}
                             error={props.error}
                             placeholder={props.placeholder}
@@ -152,7 +161,8 @@ export default function MaterialFieldSelect({
                             }}
                             onChange={(e) => {
                                 setRefresh(e.target.value);
-                                fetchData();
+                                // setSelectValue({});
+                                // fetchData();
                             }}
                             style={{ flex: 1, fontSize: "0.8rem" }}
                             type="text"

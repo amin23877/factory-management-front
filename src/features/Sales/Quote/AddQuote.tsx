@@ -75,7 +75,6 @@ export default function AddQuote({
                 setLoading(true);
                 const resp = await createQuoteComplete(quote);
                 if (resp) {
-                    console.log(resp);
                     onDone();
                     setCreatedQuote(resp);
                     setActiveStep((prev) => prev + 1);
