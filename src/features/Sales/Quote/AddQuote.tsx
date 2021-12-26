@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box, Button, Step, StepLabel, Stepper } from "@material-ui/core";
+import { Box, Button, Step, StepLabel, Stepper, useMediaQuery } from "@material-ui/core";
 
 import Dialog from "../../../app/Dialog";
 
@@ -96,23 +96,35 @@ export default function AddQuote({
             setQuote(initialData);
         }
     }, [initialData]);
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
         <Dialog onClose={onClose} closeOnClickOut={false} open={open} title="Add New Quote" fullScreen maxWidth="md">
-            <Box p={2} height={activeStep !== 2 ? 600 : "90vh"} display="flex" flexDirection="column">
+            <Box
+                p={phone ? 0 : 2}
+                height={activeStep !== 2 ? (phone ? "" : "600px") : "90vh"}
+                display="flex"
+                flexDirection="column"
+            >
                 <Stepper activeStep={activeStep}>
                     <Step>
-                        <StepLabel>General Information</StepLabel>
+                        <StepLabel>{phone ? "" : "General Information"}</StepLabel>
                     </Step>
                     <Step>
-                        <StepLabel>Final</StepLabel>
+                        <StepLabel>{phone ? "" : "Final"}</StepLabel>
                     </Step>
                     <Step>
-                        <StepLabel>Document</StepLabel>
+                        <StepLabel>{phone ? "" : "Document"}</StepLabel>
                     </Step>
                 </Stepper>
                 {activeStep === 0 && (
-                    <Box display="flex" justifyContent="center" flexGrow={1} my={2}>
+                    <Box
+                        display="flex"
+                        justifyContent="center"
+                        flexGrow={1}
+                        my={2}
+                        flexDirection={phone ? "column" : "row"}
+                    >
                         <Box flex={1}>
                             <Formik
                                 innerRef={ref}
@@ -155,9 +167,38 @@ export default function AddQuote({
                         }}
                     />
                 )}
+                {activeStep !== 2 && phone && (
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="space-between"
+                        margin="30px auto"
+                        width="30%"
+                        gridGap={10}
+                    >
+                        <Button
+                            variant="contained"
+                            disabled={activeStep === 0 || activeStep === 2}
+                            onClick={handleBack}
+                        >
+                            Back
+                        </Button>
+                        <div></div>
+                        <Button variant="contained" color="primary" onClick={handleNext} disabled={activeStep === 2}>
+                            {activeStep === 1 ? "Finalize" : "Next"}
+                        </Button>
+                    </Box>
+                )}
             </Box>
-            {activeStep !== 2 && (
-                <Box display="flex" alignItems="center" justifyContent="space-between" margin="30px auto" width="30%">
+            {activeStep !== 2 && !phone && (
+                <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                    margin="30px auto"
+                    width="30%"
+                    gridGap={10}
+                >
                     <Button variant="contained" disabled={activeStep === 0 || activeStep === 2} onClick={handleBack}>
                         Back
                     </Button>

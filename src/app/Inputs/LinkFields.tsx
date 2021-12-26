@@ -79,7 +79,8 @@ export default function MaterialFieldSelect({
             .catch((e) => console.log(e));
     };
     useEffect(() => {
-        fetchData();
+        const timeOutId = setTimeout(fetchData, 500);
+        return () => clearTimeout(timeOutId);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [limit, value, refresh]);
 

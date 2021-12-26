@@ -267,8 +267,8 @@ export const LinesForm = ({
     });
 
     return (
-        <BasePaper style={{ height: "100%" }}>
-            <Box display="flex">
+        <BasePaper style={{ height: "100%", overflow: "auto" }}>
+            <Box display="flex" width="100%" mr={1} pr={1}>
                 {/* <Box flex={1} mr={2}> */}
                 {/* <Formik
                         initialValues={{} as ILineItem}
