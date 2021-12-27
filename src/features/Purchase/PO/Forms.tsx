@@ -14,7 +14,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import Box from "@material-ui/core/Box";
 import Paper from "@material-ui/core/Paper";
-import { Tabs, Tab, useMediaQuery, InputBase, Popover } from "@material-ui/core";
+import { Tabs, Tab, useMediaQuery, Popover } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import Alert from "@material-ui/lab/Alert";
@@ -26,8 +26,6 @@ import { BasePaper } from "../../../app/Paper";
 
 import { getPPOTypes } from "../../../api/purchasePoType";
 import { AddRounded, CheckRounded, ClearRounded, MoreVertRounded, WarningRounded } from "@material-ui/icons";
-
-import BootstrapTextField from "../../../app/TextField";
 
 import { getContacts, IContact } from "../../../api/contact";
 import { getAllEmployees, IEmployee } from "../../../api/employee";
@@ -52,7 +50,7 @@ import { ILineService } from "../../../api/lineService";
 import { formatTimestampToDate } from "../../../logic/date";
 import DateTimePicker from "../../../app/DateTimePicker";
 import { IItem } from "../../../api/items";
-import { getAllUnits } from "../../../api/units";
+// import { getAllUnits } from "../../../api/units";
 import "../../../styles/main.css";
 import LinkSelect from "../../../app/Inputs/LinkFields";
 
@@ -207,7 +205,7 @@ export const FinalForm = ({
         <Box height="85%" display="flex" flexDirection="column">
             <Typography variant="h5">Are you sure?</Typography>
             <Typography variant="subtitle1" style={{ margin: "1em 0" }}>
-                If you finilize your Purchase order, You can't update it, So if you want to update it you should make
+                If you finalize your Purchase order, You can't update it, So if you want to update it you should make
                 new version or add new one
             </Typography>
             {error && <Alert severity="error">{error}</Alert>}
@@ -218,7 +216,7 @@ export const FinalForm = ({
                     Back to lines
                 </Button>
                 <Button disabled={loading} onClick={handleSubmit} color="primary" variant="contained">
-                    Finilize
+                    Finalize
                 </Button>
             </Box>
         </Box>
@@ -241,8 +239,8 @@ export const LinesForm = ({
     handleDelete: (index: number) => void;
 }) => {
     const [selectedItem, setSelectedItem] = useState<IItem>();
-    const { data: items } = useSWR<{ total: number; result: any[] }>("/item");
-    const { data: services } = useSWR(selectedItem ? `/service?ItemId=${selectedItem.id}` : "/service");
+    // const { data: items } = useSWR<{ total: number; result: any[] }>("/item");
+    // const { data: services } = useSWR(selectedItem ? `/service?ItemId=${selectedItem.id}` : "/service");
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {

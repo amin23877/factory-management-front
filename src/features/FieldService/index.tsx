@@ -13,29 +13,37 @@ import FieldServiceDetails from "../../features/FieldService/Details";
 
 import { IFieldService } from "../../api/fieldService";
 import { createServiceClass, deleteServiceClass, updateServiceClass } from "../../api/serviceClass";
+import { createServiceCategory, deleteServiceCategory, updateServiceCategory } from "../../api/serviceCategories";
 
 import OneFieldModal from "../../components/OneFieldModal";
 import { BasePaper } from "../../app/Paper";
-import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
+import { FindInPageRounded, ListAltRounded, LocalOfferRounded } from "@material-ui/icons";
 import DataGrid from "../../app/NewDataGrid";
 
 export default function ServiceIndex() {
     const [activeTab, setActiveTab] = useState(0);
     const [addService, setAddService] = useState(false);
     const [serviceClassModal, setServiceClassModal] = useState(false);
+    const [categoryModal, setCategoryModal] = useState(false);
 
-    const [selectedFS, setSelectedFS] = useState<IFieldService | undefined>({
-        ItemId: "",
-        ServiceClassId: "",
-        name: "",
-        period: 123,
-        price: 456,
-    });
+    const [selectedFS, setSelectedFS] = useState<IFieldService | undefined>();
 
     const cols = [
+        { name: "no", header: "ID", minWidth: 200 },
         { name: "name", header: "Name", flex: 1 },
-        { name: "price", header: "Price", flex: 1, type: "number" },
-        { name: "length", header: "Length", flex: 1 },
+        {
+            name: "ServiceCategoryId",
+            header: "Category",
+            render: ({ data }: any) => data?.ServiceCategoryId?.name,
+            minWidth: 200,
+        },
+        {
+            name: "ServiceClassId",
+            header: "Class",
+            render: ({ data }: any) => data?.ServiceClassId?.name,
+            minWidth: 200,
+        },
+        { name: "retailPrice", header: "Price", type: "number", width: 150 },
     ];
 
     return (
@@ -50,6 +58,15 @@ export default function ServiceIndex() {
                     postRecord={createServiceClass}
                     updateRecord={updateServiceClass}
                     deleteRecord={deleteServiceClass}
+                />
+                <OneFieldModal
+                    title="Add/Edit Service Categories"
+                    getUrl="/serviceCategory"
+                    open={categoryModal}
+                    onClose={() => setCategoryModal(false)}
+                    postRecord={createServiceCategory}
+                    updateRecord={updateServiceCategory}
+                    deleteRecord={deleteServiceCategory}
                 />
 
                 <Box display="flex" alignItems="center">
@@ -80,7 +97,7 @@ export default function ServiceIndex() {
                     </Tabs>
                     <Box marginLeft="auto">
                         <List>
-                            <ListItem>
+                            <ListItem title="Add New Service">
                                 <IconButton
                                     onClick={() => {
                                         setAddService(true);
@@ -91,21 +108,36 @@ export default function ServiceIndex() {
                                     <AddRounded />
                                 </IconButton>
                             </ListItem>
-                            <ListItem>
-                                <IconButton
-                                    onClick={() => {
-                                        setServiceClassModal(true);
-                                    }}
-                                >
-                                    <CategoryRounded />
-                                </IconButton>
-                            </ListItem>
-                            <ListItem>
-                                <IconButton>
-                                    <DeleteRounded />
-                                </IconButton>
-                            </ListItem>
-                            <ListItem>
+                            {activeTab === 0 && (
+                                <>
+                                    <ListItem title="Classes">
+                                        <IconButton
+                                            onClick={() => {
+                                                setServiceClassModal(true);
+                                            }}
+                                        >
+                                            <LocalOfferRounded />
+                                        </IconButton>
+                                    </ListItem>
+                                    <ListItem title="Categories">
+                                        <IconButton
+                                            onClick={() => {
+                                                setCategoryModal(true);
+                                            }}
+                                        >
+                                            <CategoryRounded />
+                                        </IconButton>
+                                    </ListItem>
+                                </>
+                            )}
+                            {activeTab === 1 && (
+                                <ListItem title="Delete">
+                                    <IconButton>
+                                        <DeleteRounded />
+                                    </IconButton>
+                                </ListItem>
+                            )}
+                            <ListItem title="Print">
                                 <IconButton>
                                     <PrintRounded />
                                 </IconButton>

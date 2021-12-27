@@ -27,6 +27,7 @@ import {
     // updateFieldService,
 } from "../../api/fieldService";
 import { getServiceClasses } from "../../api/serviceClass";
+import { getServiceCategories } from "../../api/serviceCategories";
 
 export const LineItemFSForm = ({ LineItem }: { LineItem: ILineItem }) => {
     const [snack, setSnack] = useState(false);
@@ -164,72 +165,66 @@ export default function FieldServiceForm({
     errors: any;
     device?: string;
 }) {
+    console.log(values);
+
     return (
         <>
-            <FieldSelect
-                request={getItems}
-                getOptionList={(list) => list.result}
-                itemTitleField="name"
-                itemValueField="id"
-                label="Item"
-                name="ItemId"
-                value={device ? device : values.ItemId}
+            <TextField
+                label="Number"
+                name="no"
+                value={values.no}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={device ? false : Boolean(errors.ItemId)}
+                error={Boolean(errors.no)}
                 fullWidth
-                disabled={Boolean(device)}
-            />
-            <FieldSelect
-                request={getServiceClasses}
-                itemTitleField="name"
-                itemValueField="id"
-                label="Service Class"
-                name="ServiceClassId"
-                value={device ? "60efd0bcca0feadc84be6618" : values.ServiceClassId}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={Boolean(errors.ServiceClassId)}
-                fullWidth
-                disabled={Boolean(device)}
             />
             <TextField
                 label="Name"
                 name="name"
+                multiline
+                rows={4}
                 value={values.name}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={Boolean(errors.name)}
                 fullWidth
             />
-            <TextField
-                label="Period"
-                name="period"
-                value={values.period}
+            <FieldSelect
+                request={getServiceClasses}
+                itemTitleField="name"
+                itemValueField="id"
+                label="Class"
+                name="ServiceClassId"
+                value={typeof values.ServiceClassId == "string" ? values.ServiceClassId : values.ServiceClassId?.id}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={Boolean(errors.period)}
+                error={Boolean(errors.ServiceClassId)}
+                fullWidth
+            />
+            <FieldSelect
+                request={getServiceCategories}
+                itemTitleField="name"
+                itemValueField="id"
+                label="Category"
+                name="ServiceCategoryId"
+                value={
+                    typeof values.ServiceCategoryId == "string"
+                        ? values.ServiceCategoryId
+                        : values.ServiceCategoryId?.id
+                }
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.ServiceCategoryId)}
                 fullWidth
             />
             <TextField
                 label="Price"
-                name="price"
+                name="retailPrice"
                 type="number"
-                value={values.price}
+                value={values.retailPrice}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                error={Boolean(errors.price)}
-                fullWidth
-            />
-            <TextField
-                label="description"
-                name="description"
-                multiline
-                rows={4}
-                value={values.description}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={Boolean(errors.description)}
+                error={Boolean(errors.retailPrice)}
                 fullWidth
             />
         </>

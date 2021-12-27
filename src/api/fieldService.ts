@@ -4,9 +4,11 @@ export interface IFieldService {
     id?: string;
     name: string;
     ItemId: string;
+    no: string;
     period: number;
-    price: number;
-    ServiceClassId: string;
+    retailPrice: number;
+    ServiceClassId: any;
+    ServiceCategoryId: any;
     description?: string;
 }
 
