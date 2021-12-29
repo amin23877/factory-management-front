@@ -41,9 +41,23 @@ export default function AddQuote({
 
     const [createdItems, setCreatedItems] = useState(quote?.lines ? quote.lines : []);
 
+    // const handleAddItem = (d: ILineItem, i: IItem | undefined) => {
+    //     if (d) {
+    //         let first = createdItems.slice(0, 2);
+    //         let second = createdItems.slice(2);
+    //         setCreatedItems(first.concat({ ...d, i }, second));
+    //     }
+    // };
     const handleAddItem = (d: ILineItem, i: IItem | undefined) => {
         if (d) {
             setCreatedItems((prev: any) => prev.concat({ ...d, i }));
+        }
+    };
+    const handleAddService = (d: ILineItem, index: any, i: any) => {
+        if (d) {
+            let first = createdItems.slice(0, index);
+            let second = createdItems.slice(index);
+            setCreatedItems(first.concat({ ...d, i, belongsTo: index }, second));
         }
     };
     const handleDeleteItem = async (index: number) => {
@@ -151,6 +165,7 @@ export default function AddQuote({
                                 createdItems={createdItems}
                                 handleSubmit={handleAddItem}
                                 handleDelete={handleDeleteItem}
+                                handleAddService={handleAddService}
                             />
                         </Box>
                     </Box>

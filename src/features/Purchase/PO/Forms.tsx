@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
-import useSWR from "swr";
 
 import CheckBox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import TextField from "../../../app/TextField";
-import TableContainer from "@material-ui/core/TableContainer";
+
 import Table from "@material-ui/core/Table";
 import TableRow from "@material-ui/core/TableRow";
 import TableHead from "@material-ui/core/TableHead";
@@ -18,14 +17,18 @@ import { Tabs, Tab, useMediaQuery, Popover } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import Alert from "@material-ui/lab/Alert";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import DeleteRounded from "@material-ui/icons/DeleteRounded";
-import ChevronRight from "@material-ui/icons/ChevronRight";
-import ChevronLeft from "@material-ui/icons/ChevronLeft";
+
 import { BasePaper } from "../../../app/Paper";
 
 import { getPPOTypes } from "../../../api/purchasePoType";
-import { AddRounded, CheckRounded, ClearRounded, MoreVertRounded, WarningRounded } from "@material-ui/icons";
+import {
+    AddRounded,
+    CheckRounded,
+    ClearRounded,
+    DeleteRounded,
+    MoreVertRounded,
+    WarningRounded,
+} from "@material-ui/icons";
 
 import { getContacts, IContact } from "../../../api/contact";
 import { getAllEmployees, IEmployee } from "../../../api/employee";
@@ -41,18 +44,16 @@ import { LinearProgress } from "@material-ui/core";
 import { exportPdf } from "../../../logic/pdf";
 
 import "../../../styles/splash.css";
-import { getSO, ISOComplete } from "../../../api/so";
-import { IQuoteComplete } from "../../../api/quote";
+import { getSO } from "../../../api/so";
 
 import PurchasePO from "../../../PDFTemplates/PurchasePO";
-import { getFieldServices } from "../../../api/fieldService";
-import { ILineService } from "../../../api/lineService";
 import { formatTimestampToDate } from "../../../logic/date";
 import DateTimePicker from "../../../app/DateTimePicker";
 import { IItem } from "../../../api/items";
-// import { getAllUnits } from "../../../api/units";
 import "../../../styles/main.css";
 import LinkSelect from "../../../app/Inputs/LinkFields";
+import Dialog from "../../../app/Dialog";
+import { getItemService } from "../../../api/fieldService";
 
 export const DocumentForm = ({
     createdPO,
@@ -232,148 +233,76 @@ export const LinesForm = ({
     createdItems,
     handleSubmit,
     handleDelete,
+    handleAddService,
 }: {
     devices?: IItem[];
     createdItems: ILineItem[];
     handleSubmit: (lineItem: ILineItem, item: IItem | undefined) => void;
     handleDelete: (index: number) => void;
+    handleAddService: (lineItem: ILineItem, index: any, service: any) => void;
 }) => {
     const [selectedItem, setSelectedItem] = useState<IItem>();
-    // const { data: items } = useSWR<{ total: number; result: any[] }>("/item");
-    // const { data: services } = useSWR(selectedItem ? `/service?ItemId=${selectedItem.id}` : "/service");
+    const [addService, setAddService] = useState<any>(false);
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
+    const [index, setIndex] = React.useState<any>();
+    const [clickedItem, setClickedItem] = useState<any>();
+    const [displayItems, setDisplayItems] = useState<ILineItem[]>();
+    const handleClick = (e: any, id: any, i: any) => {
+        setClickedItem(id);
+        setIndex(i);
+        setAnchorEl(e.currentTarget);
     };
 
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const renderTable = () => {
+        let counter = 0;
+        const display = createdItems.map((item: any, i: number) => {
+            if (!item.belongsTo) {
+                counter++;
+            }
+            return { ...item, group: counter };
+        });
+        setDisplayItems(display);
+    };
+    useEffect(() => {
+        renderTable();
+    }, [createdItems]);
 
     const open = Boolean(anchorEl);
     const id = open ? "simple-popover" : undefined;
     const schema = Yup.object().shape({
-        // ItemId: Yup.string().when("fru", {
-        //     is: undefined,
-        //     then: Yup.string().required(),
-        //     otherwise: Yup.string(),
-        // }),
         ItemId: Yup.string().required(),
         quantity: Yup.number().required().min(1),
         price: Yup.number().required().min(0.0001),
     });
-
     return (
-        <BasePaper style={{ height: "100%", overflow: "auto" }}>
+        <BasePaper style={{ height: "50.5vh", overflow: "auto" }}>
+            <Dialog
+                onClose={() => {
+                    setAddService(false);
+                }}
+                open={addService}
+                title="Add Service"
+                maxWidth="xs"
+                fullWidth
+            >
+                <AddServiceForm
+                    onClose={() => setAddService(false)}
+                    itemId={addService}
+                    handleAddService={(d: ILineItem, i: IItem) => {
+                        handleAddService(d, index + 1, i);
+                    }}
+                />
+            </Dialog>
             <Box display="flex" width="100%" mr={1} pr={1}>
-                {/* <Box flex={1} mr={2}> */}
-                {/* <Formik
-                        initialValues={{} as ILineItem}
-                        validationSchema={schema}
-                        onSubmit={(values: ILineItem) => handleSubmit(values, selectedItem)}
-                    >
-                        {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
-                            <Form>
-                                <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-                                    <Autocomplete
-                                        options={devices ? devices : items ? items.result : []}
-                                        getOptionLabel={(item: any) => (devices ? item.number.name : item.name)}
-                                        onChange={(e, nv) => {
-                                            setFieldValue("ItemId", devices ? nv.number.id : nv.id);
-                                            setSelectedItem(nv);
-                                        }}
-                                        onBlur={handleBlur}
-                                        renderInput={(params) => <TextField {...params} label="Item" name="ItemId" />}
-                                        fullWidth
-                                    />
-                                    {errors.ItemId && <Typography variant="caption">{errors.ItemId}</Typography>}
-                                    <Autocomplete
-                                        options={services || []}
-                                        getOptionLabel={(item: any) => item.name}
-                                        onChange={(e, nv) => {
-                                            setFieldValue("services", nv);
-                                            setSelectedItem(nv.length > 0 ? nv[nv.length - 1] : undefined);
-                                        }}
-                                        onBlur={handleBlur}
-                                        renderInput={(params) => (
-                                            <TextField {...params} label="Services" name="services" />
-                                        )}
-                                        fullWidth
-                                        freeSolo
-                                        multiple
-                                    />
-                                    {errors.services && <Typography variant="caption">{errors.services}</Typography>}
-                                    <BootstrapTextField
-                                        style={{ width: "100%" }}
-                                        name="description"
-                                        label="Description"
-                                        value={values.description}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={Boolean(errors.description)}
-                                    />
-                                    <BootstrapTextField
-                                        style={{ width: "100%" }}
-                                        name="quantity"
-                                        label="Quantity"
-                                        value={values.quantity}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={Boolean(errors.quantity)}
-                                    />
-                                    <BootstrapTextField
-                                        style={{ width: "100%" }}
-                                        name="price"
-                                        label="Price"
-                                        value={values.price}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={Boolean(errors.price)}
-                                    />
-                                    <BootstrapTextField
-                                        style={{ width: "100%" }}
-                                        name="index"
-                                        label="Index"
-                                        value={values.index}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={Boolean(errors.index)}
-                                    />
-                                    <FieldSelect
-                                        value={typeof values.fru === "string" ? values.fru : values.fru}
-                                        name="fru"
-                                        label="FRU"
-                                        request={getAllUnits}
-                                        getOptionList={(resp) => resp.result}
-                                        itemTitleField="number"
-                                        itemValueField="id"
-                                        onChange={(e) => handleChange(e)}
-                                        onBlur={handleBlur}
-                                    />
-                                    <FormControlLabel
-                                        style={{ width: "100%" }}
-                                        checked={values.tax}
-                                        label="Tax"
-                                        name="tax"
-                                        onChange={handleChange}
-                                        control={<CheckBox />}
-                                    />
-                                    <Button style={{ margin: "0 0.5em" }} type="submit" kind={"add"}>
-                                        Submit
-                                    </Button>
-                                </Box>
-                            </Form>
-                        )}
-                    </Formik> */}
-                {/* </Box> */}
                 <Box flex={1}>
                     <Formik
                         initialValues={{} as ILineItem}
                         validationSchema={schema}
                         onSubmit={(values, { resetForm }) => {
                             handleSubmit(values, selectedItem);
-                            // resetForm();
                         }}
                     >
                         {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
@@ -381,6 +310,7 @@ export const LinesForm = ({
                                 <Table>
                                     <TableHead style={{ backgroundColor: "#373a4d", color: "white" }}>
                                         <TableRow>
+                                            <TableCell style={{ color: "white" }}>Group</TableCell>
                                             <TableCell style={{ color: "white" }}>Sort</TableCell>
                                             <TableCell style={{ color: "white" }}>Part Number</TableCell>
                                             <TableCell style={{ color: "white" }}>Qty</TableCell>
@@ -395,14 +325,19 @@ export const LinesForm = ({
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {createdItems.map((item: any, i: number) => {
+                                        {displayItems?.map((item: any, i: number) => {
                                             return (
                                                 <TableRow>
-                                                    <TableCell>{i}</TableCell>
+                                                    <TableCell>{item.belongsTo ? "" : item.group}</TableCell>
+                                                    <TableCell>{item.sort}</TableCell>
                                                     <TableCell style={{ position: "relative" }}>
                                                         <span>{item.i.no}</span>
                                                         <span
-                                                            style={{ color: "orange", position: "absolute", right: 0 }}
+                                                            style={{
+                                                                color: "orange",
+                                                                position: "absolute",
+                                                                right: 0,
+                                                            }}
                                                         >
                                                             {!item.i.engineeringApproved && <WarningRounded />}
                                                         </span>
@@ -416,9 +351,23 @@ export const LinesForm = ({
                                                         {item.quantity * item.price}
                                                     </TableCell>
                                                     <TableCell>
-                                                        <span onClick={handleClick} style={{ cursor: "pointer" }}>
-                                                            <MoreVertRounded />
-                                                        </span>
+                                                        {item.belongsTo ? (
+                                                            <div
+                                                                onClick={() => handleDelete(i)}
+                                                                style={{ color: "red", cursor: "pointer" }}
+                                                            >
+                                                                <DeleteRounded />
+                                                            </div>
+                                                        ) : (
+                                                            <span
+                                                                onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+                                                                    handleClick(e, item, i)
+                                                                }
+                                                                style={{ cursor: "pointer" }}
+                                                            >
+                                                                <MoreVertRounded />
+                                                            </span>
+                                                        )}
                                                         <Popover
                                                             id={id}
                                                             open={open}
@@ -441,13 +390,21 @@ export const LinesForm = ({
                                                                     cursor: "pointer",
                                                                 }}
                                                             >
-                                                                <span style={style}>Add Service</span>
+                                                                <span
+                                                                    style={style}
+                                                                    onClick={(e) => {
+                                                                        setAddService(clickedItem.ItemId);
+                                                                        handleClose();
+                                                                    }}
+                                                                >
+                                                                    Add Service
+                                                                </span>
                                                                 <span style={style}> Add Option</span>
                                                                 <span
                                                                     style={{ ...style, border: "none" }}
                                                                     onClick={() => {
                                                                         handleClose();
-                                                                        handleDelete(i);
+                                                                        handleDelete(index);
                                                                     }}
                                                                 >
                                                                     Delete
@@ -464,26 +421,8 @@ export const LinesForm = ({
                                                     <AddRounded htmlColor="green" />
                                                 </IconButton>
                                             </TableCell>
+                                            <TableCell width={50}></TableCell>
                                             <TableCell style={{ padding: "2px" }}>
-                                                {/* <Autocomplete
-                                                    options={devices ? devices : items ? items.result : []}
-                                                    getOptionLabel={(item: any) =>
-                                                        devices ? item.number.name : item.name
-                                                    }
-                                                    onChange={(e, nv) => {
-                                                        setFieldValue("ItemId", devices ? nv.number.id : nv.id);
-                                                        setSelectedItem(nv);
-                                                    }}
-                                                    onBlur={handleBlur}
-                                                    renderInput={(params) => (
-                                                        <TextField
-                                                            style={{ padding: "0px" }}
-                                                            {...params}
-                                                            name="ItemId"
-                                                        />
-                                                    )}
-                                                    fullWidth
-                                                /> */}
                                                 <LinkSelect
                                                     filterLabel="no"
                                                     path="/item?device=true"
@@ -492,7 +431,6 @@ export const LinesForm = ({
                                                             ? values.ItemId
                                                             : values.ItemId?.id
                                                     }
-                                                    // value={values.ItemId.id}
                                                     label=""
                                                     getOptionList={(resp) => (devices ? devices : resp?.result)}
                                                     getOptionLabel={(item) => (devices ? item.number.no : item?.no)}
@@ -549,89 +487,72 @@ export const LinesForm = ({
     );
 };
 
-export const LineServicesForm = ({
-    onDone,
-    onBack,
-    data,
+export const AddServiceForm = ({
+    itemId,
+    handleAddService,
+    onClose,
 }: {
-    data?: IPurchasePOComplete | ISOComplete | IQuoteComplete;
-    onDone: (items: ILineService[]) => void;
-    onBack: () => void;
+    itemId: any;
+    handleAddService: any;
+    onClose: any;
 }) => {
-    const { data: lineItems } = useSWR(data && data.id ? `/lineitem?QuoteId=${data.id}` : null);
-    const [createdItems, setCreatedItems] = useState<ILineService[]>(
-        data && data.lineServices ? data.lineServices : []
-    );
+    const [selectedItem, setSelectedItem] = useState<IItem>();
 
+    const handleSubmit = (d: ILineItem) => {
+        handleAddService(d, selectedItem);
+        onClose();
+    };
     const schema = Yup.object().shape({
-        ServiceId: Yup.string().required(),
+        ItemId: Yup.string().required(),
         quantity: Yup.number().required().min(1),
-        price: Yup.number().required().min(0.1),
+        price: Yup.number().required().min(0.0001),
     });
-
-    const handleSubmit = (d: ILineService) => {
-        if (d) {
-            setCreatedItems((prev) => prev.concat(d));
-        }
-    };
-
-    const handleDelete = async (index: number) => {
-        setCreatedItems((prev) => prev.filter((item: any, ind) => ind !== index));
-    };
 
     return (
         <Box>
             <Box display="flex">
                 <Box flex={1} mr={2}>
-                    <Formik initialValues={{} as ILineService} validationSchema={schema} onSubmit={handleSubmit}>
+                    <Formik initialValues={{} as ILineItem} validationSchema={schema} onSubmit={handleSubmit}>
                         {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
                             <Form>
                                 <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-                                    <FieldSelect
-                                        request={getFieldServices}
-                                        itemTitleField="name"
-                                        itemValueField="id"
-                                        value={values?.ServiceId as any}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={Boolean(errors.ServiceId)}
-                                        name="ServiceId"
-                                        label="Service"
-                                        fullWidth
-                                        // renderInput={(params) => (
-                                        //     <TextField
-                                        //         {...params}
-                                        //         size="small"
-                                        //         label="Line Item"
-                                        //         name="LineItemRecordId"
-                                        //     />
-                                        // )}
-                                    />
-                                    {lineItems && (
-                                        <Autocomplete
-                                            disabled={!lineItems}
-                                            // value={values?.LineItemRecordId}
-                                            options={lineItems ? lineItems : []}
-                                            getOptionLabel={(item: any) => item.ItemId.name}
-                                            onChange={(e, nv: any) => setFieldValue("LineItemRecordId", nv?.id)}
+                                    {itemId && (
+                                        // <FieldSelect
+                                        //     request={() => getItemService(itemId)}
+                                        //     itemTitleField="no"
+                                        //     itemValueField="id"
+                                        //     label="Service"
+                                        //     name="ItemId"
+                                        //     value={typeof values.ItemId == "string" ? values.ItemId : values.ItemId?.id}
+                                        //     onChange={(e) => {
+                                        //         handleChange(e);
+                                        //         console.log(e);
+                                        //     }}
+                                        //     onBlur={handleBlur}
+                                        //     error={Boolean(errors.ItemId)}
+                                        //     fullWidth
+                                        // />
+                                        <LinkSelect
+                                            filterLabel="no"
+                                            path={`/item/${itemId}/service`}
+                                            value={
+                                                typeof values.ItemId === "string" ? values.ItemId : values.ItemId?.id
+                                            }
+                                            label=""
+                                            getOptionList={(resp) => resp}
+                                            getOptionLabel={(item) => item?.no}
+                                            getOptionValue={(item) => item?.id}
+                                            onChange={(e, nv) => {
+                                                setFieldValue("ItemId", nv.id);
+                                                setSelectedItem(nv);
+                                            }}
                                             onBlur={handleBlur}
-                                            fullWidth
-                                            renderInput={(params) => (
-                                                <TextField {...params} label="Line Item" name="LineItemRecordId" />
-                                            )}
+                                            url="/panel/service"
                                         />
                                     )}
                                     <TextField
-                                        name="description"
-                                        label="Description"
-                                        value={values.description}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={Boolean(errors.description)}
-                                    />
-                                    <TextField
                                         name="quantity"
-                                        label="Quantity"
+                                        label="Period"
                                         value={values.quantity}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
@@ -645,77 +566,23 @@ export const LineServicesForm = ({
                                         onBlur={handleBlur}
                                         error={Boolean(errors.price)}
                                     />
-                                    <FormControlLabel
-                                        checked={values.tax}
-                                        label="Tax"
-                                        name="tax"
+                                    <TextField
+                                        name="sort"
+                                        label="Sort"
+                                        value={values.sort}
                                         onChange={handleChange}
-                                        control={<CheckBox />}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.sort)}
                                     />
-                                    <Box display="flex" alignItems="center" justifyContent="space-between">
-                                        <Button
-                                            startIcon={<ChevronLeft />}
-                                            onClick={onBack}
-                                            variant="contained"
-                                            color="primary"
-                                        >
-                                            Back
-                                        </Button>
+                                    <Box display="flex" alignItems="center" justifyContent="center">
                                         <Button style={{ margin: "0 0.5em" }} type="submit" kind={"add"}>
                                             Submit
-                                        </Button>
-                                        <Button
-                                            endIcon={<ChevronRight />}
-                                            onClick={() => {
-                                                onDone(createdItems);
-                                            }}
-                                            disabled={createdItems.length === 0}
-                                            variant="contained"
-                                            color="primary"
-                                        >
-                                            Next
                                         </Button>
                                     </Box>
                                 </Box>
                             </Form>
                         )}
                     </Formik>
-                </Box>
-                <Box flex={1}>
-                    <TableContainer component={Paper} style={{ maxHeight: 500, overflowY: "auto" }}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Index</TableCell>
-                                    <TableCell>Service Name</TableCell>
-                                    <TableCell>Line Item</TableCell>
-                                    <TableCell>Description</TableCell>
-                                    <TableCell>Quantity</TableCell>
-                                    <TableCell>Price</TableCell>
-                                    <TableCell>Tax</TableCell>
-                                    <TableCell></TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {createdItems.map((item: any, i: number) => (
-                                    <TableRow>
-                                        <TableCell>{i}</TableCell>
-                                        <TableCell>{item.ServiceId}</TableCell>
-                                        <TableCell>{item.LineItemRecordId}</TableCell>
-                                        <TableCell>{item.description}</TableCell>
-                                        <TableCell>{item.quantity}</TableCell>
-                                        <TableCell>{item.price}</TableCell>
-                                        <TableCell>{item.tax}</TableCell>
-                                        <TableCell>
-                                            <IconButton onClick={() => handleDelete(i)}>
-                                                <DeleteRounded htmlColor="red" />
-                                            </IconButton>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
                 </Box>
             </Box>
         </Box>

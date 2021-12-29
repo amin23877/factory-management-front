@@ -14,10 +14,8 @@ import TableRow from "@material-ui/core/TableRow";
 import TextField from "../../app/TextField";
 import { FieldSelect } from "../../app/Inputs";
 import Button from "../../app/Button";
-// import { BasePaper } from "../../app/Paper";
 import Snack from "../../app/Snack";
 
-import { getItems } from "../../api/items";
 import { ILineItem, getALineItem } from "../../api/lineItem";
 import {
     addServiceToLineitem,
@@ -165,8 +163,6 @@ export default function FieldServiceForm({
     errors: any;
     device?: string;
 }) {
-    console.log(values);
-
     return (
         <>
             <TextField
@@ -181,8 +177,6 @@ export default function FieldServiceForm({
             <TextField
                 label="Name"
                 name="name"
-                multiline
-                rows={4}
                 value={values.name}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -225,6 +219,17 @@ export default function FieldServiceForm({
                 onChange={handleChange}
                 onBlur={handleBlur}
                 error={Boolean(errors.retailPrice)}
+                fullWidth
+            />
+            <TextField
+                label="Description"
+                name="description"
+                multiline
+                rows={4}
+                value={values.description}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                error={Boolean(errors.description)}
                 fullWidth
             />
         </>

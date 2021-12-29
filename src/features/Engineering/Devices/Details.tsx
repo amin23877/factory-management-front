@@ -12,7 +12,7 @@ import { BasePaper } from "../../../app/Paper";
 
 import { DynamicFilterAndFields } from "../../Items/Forms";
 import { General, Photo } from "./Forms";
-import AddServiceModal from "../../FieldService/AddServiceModal";
+import AddServiceModal from "./AddServiceModal";
 import UnitHistoryModal from "../../Unit/Modal";
 
 import { INote } from "../../../api/note";
@@ -70,12 +70,8 @@ function ItemsDetails({
     const { data: boms } = useSWR<IBom[]>(
         activeTab === 1 ? (selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null) : null
     );
-    const { data: warranties } = useSWR(
-        activeTab === 2
-            ? selectedRow && selectedRow.id
-                ? `/service?ItemId=${selectedRow.id}&ServiceFamilyId=60efd0bcca0feadc84be6618`
-                : null
-            : null
+    const { data: services } = useSWR(
+        activeTab === 2 ? (selectedRow && selectedRow.id ? `item/${selectedRow.id}/service` : null) : null
     );
     const { data: manSteps } = useSWR(
         activeTab === 3
@@ -108,35 +104,34 @@ function ItemsDetails({
     const { data: uniteHistory } = useSWR(
         activeTab === 8 ? (selectedRow && selectedRow.id ? `/unitehistory` : null) : null
     );
-    const { data: services } = useSWR(
-        activeTab === 10 ? (selectedRow && selectedRow.id ? `/service?ItemId=${selectedRow.id}` : null) : null
-    );
+
     const { data: flags } = useSWR(
-        activeTab === 11 ? (selectedRow && selectedRow.id ? `/qccase/item/${selectedRow.id}` : null) : null
+        activeTab === 10 ? (selectedRow && selectedRow.id ? `/qccase/item/${selectedRow.id}` : null) : null
     );
     const { data: notes } = useSWR<INote[]>(
-        activeTab === 12 ? (selectedRow && selectedRow.id ? `/note/item/${selectedRow.id}` : null) : null
+        activeTab === 11 ? (selectedRow && selectedRow.id ? `/note/item/${selectedRow.id}` : null) : null
     );
 
     const [bomPartsModal, setBomPartsModal] = useState(false);
 
-    const warCols = useMemo<GridColumns>(
+    const serviceCols = useMemo<GridColumns>(
         () => [
-            { field: "date", headerName: "Date", type: "date", width: 120 },
-            { field: "number", headerName: "Warranty Number", width: 160 },
-            { field: "name", headerName: "Name", width: 160 },
-            { field: "description", headerName: "Note", flex: 1 },
-            { field: "term", headerName: "Term", flex: 1 },
-            { field: "status", headerName: "Status", width: 150 },
-        ],
-        []
-    );
-    const serviceCols = useMemo(
-        () => [
+            { field: "no", headerName: "ID", width: 150 },
             { field: "name", headerName: "Name", flex: 1 },
-            { field: "price", headerName: "Price", flex: 1 },
-            { field: "period", headerName: "Length", flex: 1 },
-            { field: "description", headerName: "Description", flex: 1 },
+            {
+                field: "ServiceCategoryId",
+                headerName: "Category",
+                valueFormatter: (params) => params.row?.ServiceCategoryId?.name,
+                width: 120,
+            },
+            {
+                field: "ServiceClassId",
+                headerName: "Class",
+                valueFormatter: (params) => params.row?.ServiceClassId?.name,
+
+                width: 120,
+            },
+            { field: "retailPrice", headerName: "Price", width: 90 },
         ],
         []
     );
@@ -333,7 +328,7 @@ function ItemsDetails({
                 open={AddService}
                 onClose={() => setAddService(false)}
                 onDone={() => {
-                    mutate(`/service?ItemId=${selectedRow.id}&ServiceFamilyId=60efd0bcca0feadc84be6618`);
+                    mutate(`/item/${selectedRow.id}/service`);
                 }}
             />
             {selectedUnit && (
@@ -458,20 +453,19 @@ function ItemsDetails({
                                                 scrollButtons={phone ? "on" : "auto"}
                                                 style={phone ? { maxWidth: "83vw" } : { maxWidth: "50vw" }}
                                             >
-                                                <Tab label="Design documents" />
-                                                <Tab label="BOM" />
-                                                <Tab label="Warranties" />
-                                                <Tab label="Manufacturing" />
-                                                <Tab label="Evaluation" />
-                                                <Tab label="Test" />
-                                                <Tab label="Field Start-up" />
-                                                <Tab label="Label" />
-                                                <Tab label="Unit History" />
-                                                <Tab label="Sales Report" />
-                                                <Tab label="Field Service" />
-                                                <Tab label="Quality Control" />
-                                                <Tab label="Notes" />
-                                                <Tab label="Auditing" />
+                                                <Tab label="Design documents" /> 0
+                                                <Tab label="BOM" /> 1
+                                                <Tab label="Services" /> 2
+                                                <Tab label="Manufacturing" /> 3
+                                                <Tab label="Evaluation" /> 4
+                                                <Tab label="Test" /> 5
+                                                <Tab label="Field Start-up" /> 6
+                                                <Tab label="Label" /> 7
+                                                <Tab label="Unit History" /> 8
+                                                <Tab label="Sales Report" /> 9
+                                                <Tab label="Quality Control" /> 10
+                                                <Tab label="Notes" /> 11
+                                                <Tab label="Auditing" /> 12
                                             </Tabs>
                                         ) : (
                                             <Tabs
@@ -483,7 +477,7 @@ function ItemsDetails({
                                                 style={phone ? { maxWidth: "83vw" } : { maxWidth: "50vw" }}
                                             >
                                                 <Tab label="Design documents" />
-                                                <Tab label="Warranties" />
+                                                <Tab label="Services" />
                                                 <Tab label="Sales Report" />
                                                 <Tab label="Notes" />
                                                 <Tab label="Auditing" />
@@ -527,12 +521,12 @@ function ItemsDetails({
                                                         variant="outlined"
                                                         style={{ marginBottom: "10px" }}
                                                     >
-                                                        Add Warranty
+                                                        Add Service
                                                     </Button>
                                                     <BaseDataGrid
                                                         height={"62.7vh"}
-                                                        cols={warCols}
-                                                        rows={warranties || []}
+                                                        cols={serviceCols}
+                                                        rows={services || []}
                                                         onRowSelected={(d) => {}}
                                                     />
                                                 </Box>
@@ -599,20 +593,12 @@ function ItemsDetails({
                                             {activeTab === 10 && (
                                                 <BaseDataGrid
                                                     height={"66.8vh"}
-                                                    cols={serviceCols}
-                                                    rows={services || []}
-                                                    onRowSelected={() => {}}
-                                                />
-                                            )}
-                                            {activeTab === 11 && (
-                                                <BaseDataGrid
-                                                    height={"66.8vh"}
                                                     cols={flagCols}
                                                     rows={flags || []}
                                                     onRowSelected={onFlagSelected}
                                                 />
                                             )}
-                                            {activeTab === 12 && (
+                                            {activeTab === 11 && (
                                                 <>
                                                     <Button
                                                         onClick={addNote}
@@ -643,13 +629,10 @@ function ItemsDetails({
 
                                             {activeTab === 1 && (
                                                 <>
-                                                    {/* <Button onClick={() => setAddService(true)} variant="outlined">
-                                                        Add Warranty
-                                                    </Button> */}
                                                     <BaseDataGrid
                                                         height={"62.7vh"}
-                                                        cols={warCols}
-                                                        rows={warranties || []}
+                                                        cols={serviceCols}
+                                                        rows={services || []}
                                                         onRowSelected={(d) => {}}
                                                     />
                                                 </>

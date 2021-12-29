@@ -23,6 +23,15 @@ export const getAFieldService = (id: string) => {
 export const createFieldService = (data: IFieldService) => {
     return post("/service", data);
 };
+export const addServiceToItem = (data: IFieldService, itemId: string) => {
+    return post(`/item/${itemId}/service`, data);
+};
+export const deleteServiceToItem = (itemId: string) => {
+    return delete_(`/item/${itemId}/service`);
+};
+export const getItemService = (itemId: string) => {
+    return get(`/item/${itemId}/service`);
+};
 
 export const updateFieldService = (id: string, data: IFieldService) => {
     return patch(`/service/${id}`, data);

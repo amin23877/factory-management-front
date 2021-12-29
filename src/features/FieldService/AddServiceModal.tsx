@@ -22,7 +22,7 @@ export default function AddServiceModal({
 }) {
     let schema = Yup.object().shape({
         name: Yup.string().required(),
-        price: Yup.string().required(),
+        retailPrice: Yup.number().required(),
         no: Yup.string().required(),
         ServiceCategoryId: Yup.string().required(),
         ServiceClassId: Yup.string().required(),
@@ -30,10 +30,6 @@ export default function AddServiceModal({
 
     const handleSubmit = async (data: any) => {
         try {
-            if (device) {
-                data.ItemId = device;
-                data.ServiceFamilyId = "60efd0bcca0feadc84be6618";
-            }
             const resp = await createFieldService(data);
             if (resp) {
                 onDone();

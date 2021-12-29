@@ -247,7 +247,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                                                 : { minHeight: "calc(100vh - 165px)" }
                                         }
                                         url="/item"
-                                        initParams={{ device: true }}
+                                        initParams={{ device: true, fru: false }}
                                         onRowSelected={(r) => {
                                             setSelectedItem(r as any);
                                             setActiveTab(1);
