@@ -236,11 +236,11 @@ export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete;
                         </div>
                     </div>
                 </div>
-                {createdQuote?.lineItemRecords?.map((item, index) => (
+                {createdQuote?.lines?.map((item, index) => (
                     <Fragment>
                         <hr />
                         <div className={classes.gray} style={{ marginBottom: "15px" }}>
-                            {item.ItemId?.name}
+                            {item.i?.name}
                         </div>
                         <div className={classes.header} style={{ marginBottom: "15px" }}>
                             <div className={classes.lineItemName}>
@@ -251,10 +251,10 @@ export default function QuotePDF({ data, createdQuote }: { data: IQuoteComplete;
                                     </div>
                                     <div>
                                         <div className={classes.item}>Item No./Description</div>
-                                        <div style={{ textAlign: "center" }}> {item?.ItemId?.no} </div>
+                                        <div style={{ textAlign: "center" }}> {item?.i?.no} </div>
                                     </div>
                                 </div>
-                                <div style={{ paddingRight: "10px" }}>{item?.ItemId?.description}</div>
+                                <div style={{ paddingRight: "10px" }}>{item?.i?.description}</div>
                             </div>
                             <div className={classes.Qty}>
                                 <div>

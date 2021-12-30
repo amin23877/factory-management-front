@@ -128,9 +128,9 @@ export default function PurchasePO({
                     <th style={{ width: "17%" }}>Price</th>
                     <th style={{ width: "17%" }}>Amount</th>
                 </tr>
-                {lines.map((l: any, i: any) => (
+                {lines.map((l: any, index: any) => (
                     <tr
-                        key={i}
+                        key={index}
                         style={{
                             display: "flex",
                             justifyContent: "space-evenly",

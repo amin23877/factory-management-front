@@ -1,4 +1,5 @@
 import { delete_, get, patch, post } from ".";
+import { IItem } from "./items";
 
 export interface ILineItem {
     SoId?: string;
@@ -14,6 +15,7 @@ export interface ILineItem {
     sort?: string;
     fru?: string;
     services: any[];
+    i?: IItem;
 }
 
 export type records = "purchaseSo" | "purchasePo" | "so" | "quote" | "po";

@@ -57,7 +57,7 @@ export default function AddQuote({
         if (d) {
             let first = createdItems.slice(0, index);
             let second = createdItems.slice(index);
-            setCreatedItems(first.concat({ ...d, i, belongsTo: index - 1 }, second));
+            setCreatedItems(first.concat({ ...d, i, belongsTo: index }, second));
         }
     };
     const handleDeleteItem = async (index: number) => {

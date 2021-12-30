@@ -46,7 +46,6 @@ export const DocumentForm = ({
             setIsUploading(true);
             if (divToPrint.current && createdQoute.id) {
                 const generatedPdf = await exportPdf(divToPrint.current);
-                console.log(generatedPdf);
                 const resp = await createAModelDocument(
                     "quote",
                     createdQoute.id,
@@ -68,6 +67,7 @@ export const DocumentForm = ({
             setIsUploading(false);
         }
     };
+    console.log(createdQoute);
     return (
         <Box>
             <Typography>We made a pdf from your Quote, now you can save it</Typography>
