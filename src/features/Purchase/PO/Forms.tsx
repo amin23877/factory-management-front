@@ -243,10 +243,12 @@ export const LinesForm = ({
 }) => {
     const [selectedItem, setSelectedItem] = useState<IItem>();
     const [addService, setAddService] = useState<any>(false);
+    const [addOption, setAddOption] = useState<any>(false);
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
     const [index, setIndex] = React.useState<any>();
     const [clickedItem, setClickedItem] = useState<any>();
     const [displayItems, setDisplayItems] = useState<ILineItem[]>();
+
     const handleClick = (e: any, id: any, i: any) => {
         setClickedItem(id);
         setIndex(i);
@@ -294,6 +296,24 @@ export const LinesForm = ({
                     handleAddService={(d: ILineItem, i: IItem) => {
                         handleAddService(d, index + 1, i);
                     }}
+                />
+            </Dialog>
+            <Dialog
+                onClose={() => {
+                    setAddOption(false);
+                }}
+                open={addOption}
+                title="Add Option"
+                maxWidth="xs"
+                fullWidth
+            >
+                <AddServiceForm
+                    onClose={() => setAddOption(false)}
+                    itemId={addOption}
+                    handleAddService={(d: ILineItem, i: IItem) => {
+                        handleAddService(d, index + 1, i);
+                    }}
+                    option
                 />
             </Dialog>
             <Box display="flex" width="100%" mr={1} pr={1}>
@@ -399,7 +419,16 @@ export const LinesForm = ({
                                                                 >
                                                                     Add Service
                                                                 </span>
-                                                                <span style={style}> Add Option</span>
+                                                                <span
+                                                                    style={style}
+                                                                    onClick={(e) => {
+                                                                        setAddOption(clickedItem.ItemId);
+                                                                        handleClose();
+                                                                    }}
+                                                                >
+                                                                    {" "}
+                                                                    Add Option
+                                                                </span>
                                                                 <span
                                                                     style={{ ...style, border: "none" }}
                                                                     onClick={() => {
@@ -425,7 +454,7 @@ export const LinesForm = ({
                                             <TableCell style={{ padding: "2px" }}>
                                                 <LinkSelect
                                                     filterLabel="no"
-                                                    path="/item?device=true"
+                                                    path="/item?salesApproved=true"
                                                     value={
                                                         typeof values.ItemId === "string"
                                                             ? values.ItemId
@@ -491,10 +520,12 @@ export const AddServiceForm = ({
     itemId,
     handleAddService,
     onClose,
+    option,
 }: {
     itemId: any;
     handleAddService: any;
     onClose: any;
+    option?: boolean;
 }) => {
     const [selectedItem, setSelectedItem] = useState<IItem>();
 
@@ -534,12 +565,12 @@ export const AddServiceForm = ({
                                         // />
                                         <LinkSelect
                                             filterLabel="no"
-                                            path={`/item/${itemId}/service`}
+                                            path={option ? "/item?option=true" : `/item/${itemId}/service`}
                                             value={
                                                 typeof values.ItemId === "string" ? values.ItemId : values.ItemId?.id
                                             }
-                                            label=""
-                                            getOptionList={(resp) => resp}
+                                            label={option ? "Option" : "Service"}
+                                            getOptionList={(resp) => (option ? resp.result : resp)}
                                             getOptionLabel={(item) => item?.no}
                                             getOptionValue={(item) => item?.id}
                                             onChange={(e, nv) => {
@@ -547,12 +578,12 @@ export const AddServiceForm = ({
                                                 setSelectedItem(nv);
                                             }}
                                             onBlur={handleBlur}
-                                            url="/panel/service"
+                                            url={option ? "/panel/inventory" : "/panel/service"}
                                         />
                                     )}
                                     <TextField
                                         name="quantity"
-                                        label="Period"
+                                        label={option ? "quantity" : "Period"}
                                         value={values.quantity}
                                         onChange={handleChange}
                                         onBlur={handleBlur}

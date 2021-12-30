@@ -11,11 +11,12 @@ import { BasePaper } from "../../app/Paper";
 import { IFieldService, updateFieldService } from "../../api/fieldService";
 import Toast from "../../app/Toast";
 
-const schema = Yup.object().shape({
+let schema = Yup.object().shape({
     name: Yup.string().required(),
-    price: Yup.string().required(),
-    length: Yup.string().required(),
-    ItemId: Yup.string().required(),
+    retailPrice: Yup.number().required(),
+    no: Yup.string().required(),
+    ServiceCategoryId: Yup.string().required(),
+    ServiceClassId: Yup.string().required(),
 });
 
 export default function FieldServiceDetails({
