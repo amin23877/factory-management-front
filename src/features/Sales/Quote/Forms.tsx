@@ -51,7 +51,7 @@ export const DocumentForm = ({
                     createdQoute.id,
                     generatedPdf,
                     `${new Date().toJSON().slice(0, 19)} - ${createdQoute.number}`,
-                    `PO_${createdQoute.number}.pdf`
+                    `Quote_${createdQoute.number}.pdf`
                 );
                 if (resp) {
                     onDone();
