@@ -40,6 +40,11 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
             { name: "vendorPartNumber", header: "V. Part NO.", minWidth: 100 },
             { name: "cost", header: "Cost", minWidth: 80, type: "number" },
             { name: "location", header: "Location", minWidth: 100 },
+            {
+                name: "option",
+                header: "option",
+                type: "boolean",
+            },
             { name: "qtyOnHand", header: "QOH.", minWidth: 80, type: "number" },
             { name: "qtyRemain", header: " Remain", minWidth: 80, type: "number" },
             { name: "qtyOnOrder", header: "on Order", minWidth: 80, type: "number" },
