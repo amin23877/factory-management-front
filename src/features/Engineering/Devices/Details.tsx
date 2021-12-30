@@ -70,7 +70,7 @@ function ItemsDetails({
     const { data: boms } = useSWR<IBom[]>(
         activeTab === 1 ? (selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null) : null
     );
-    const { data: services } = useSWR(
+    const { data: services, mutate: mutateServices } = useSWR(
         activeTab === 2 ? (selectedRow && selectedRow.id ? `item/${selectedRow.id}/service` : null) : null
     );
     const { data: manSteps } = useSWR(
@@ -328,7 +328,7 @@ function ItemsDetails({
                 open={AddService}
                 onClose={() => setAddService(false)}
                 onDone={() => {
-                    mutate(`/item/${selectedRow.id}/service`);
+                    mutateServices();
                 }}
             />
             {selectedUnit && (

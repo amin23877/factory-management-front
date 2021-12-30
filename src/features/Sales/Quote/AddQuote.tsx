@@ -41,13 +41,6 @@ export default function AddQuote({
 
     const [createdItems, setCreatedItems] = useState(quote?.lines ? quote.lines : []);
 
-    // const handleAddItem = (d: ILineItem, i: IItem | undefined) => {
-    //     if (d) {
-    //         let first = createdItems.slice(0, 2);
-    //         let second = createdItems.slice(2);
-    //         setCreatedItems(first.concat({ ...d, i }, second));
-    //     }
-    // };
     const handleAddItem = (d: ILineItem, i: IItem | undefined) => {
         if (d) {
             setCreatedItems((prev: any) => prev.concat({ ...d, i }));

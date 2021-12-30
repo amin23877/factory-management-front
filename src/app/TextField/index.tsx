@@ -26,7 +26,7 @@ export default function BaseTextField(props: StandardTextFieldProps) {
     return (
         <TextField
             inputProps={{ style: { ...props.inputProps?.style, fontSize: "0.8rem" } }}
-            InputLabelProps={{ style: { fontSize: "0.8rem" } }}
+            InputLabelProps={{ style: { fontSize: "0.8rem" }, ...props.InputLabelProps }}
             variant="outlined"
             size="small"
             {...props}

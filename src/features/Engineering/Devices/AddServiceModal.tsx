@@ -10,6 +10,7 @@ import { addServiceToItem, IFieldService } from "../../../api/fieldService";
 import { FieldSelect } from "../../../app/Inputs";
 import { getServiceClasses } from "../../../api/serviceClass";
 import { getServiceCategories } from "../../../api/serviceCategories";
+import { mutate } from "swr";
 
 export default function AddServiceModal({
     open,

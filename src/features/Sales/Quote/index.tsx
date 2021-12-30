@@ -85,7 +85,9 @@ export default function QuotePanel() {
     return (
         <Box>
             <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
-            <AddQuote open={addQ} onClose={() => setAddQ(false)} initialData={compQ} onDone={() => {}} />
+            {addQ && (
+                <AddQuote open={addQ} onClose={() => setAddQ(false)} initialData={compQ || {}} onDone={() => {}} />
+            )}
             <ReqQuoteModal open={reqQuote} onClose={() => setReqQuote(false)} />
             <EmailModal open={emailModal} onClose={() => setEmailModal(false)} />
             <Box display="flex" alignItems="center" style={{ gap: 10 }} mb={1}>

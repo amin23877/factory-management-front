@@ -277,7 +277,7 @@ export const LinesForm = ({
     const schema = Yup.object().shape({
         ItemId: Yup.string().required(),
         quantity: Yup.number().required().min(1),
-        price: Yup.number().required().min(0.0001),
+        price: Yup.number().required(),
     });
     return (
         <BasePaper style={{ height: "50.5vh", overflow: "auto" }}>
@@ -319,11 +319,14 @@ export const LinesForm = ({
             <Box display="flex" width="100%" mr={1} pr={1}>
                 <Box flex={1}>
                     <Formik
-                        initialValues={{} as ILineItem}
+                        initialValues={
+                            { price: selectedItem?.retailPrice, ItemId: selectedItem?.id, quantity: 1 } as ILineItem
+                        }
                         validationSchema={schema}
                         onSubmit={(values, { resetForm }) => {
                             handleSubmit(values, selectedItem);
                         }}
+                        enableReinitialize={true}
                     >
                         {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
                             <Form>
@@ -536,33 +539,25 @@ export const AddServiceForm = ({
     const schema = Yup.object().shape({
         ItemId: Yup.string().required(),
         quantity: Yup.number().required().min(1),
-        price: Yup.number().required().min(0.0001),
+        price: Yup.number().required(),
     });
 
     return (
         <Box>
             <Box display="flex">
                 <Box flex={1} mr={2}>
-                    <Formik initialValues={{} as ILineItem} validationSchema={schema} onSubmit={handleSubmit}>
+                    <Formik
+                        initialValues={
+                            { price: selectedItem?.retailPrice, ItemId: selectedItem?.id, quantity: 1 } as ILineItem
+                        }
+                        validationSchema={schema}
+                        onSubmit={handleSubmit}
+                        enableReinitialize={true}
+                    >
                         {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
                             <Form>
                                 <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
                                     {itemId && (
-                                        // <FieldSelect
-                                        //     request={() => getItemService(itemId)}
-                                        //     itemTitleField="no"
-                                        //     itemValueField="id"
-                                        //     label="Service"
-                                        //     name="ItemId"
-                                        //     value={typeof values.ItemId == "string" ? values.ItemId : values.ItemId?.id}
-                                        //     onChange={(e) => {
-                                        //         handleChange(e);
-                                        //         console.log(e);
-                                        //     }}
-                                        //     onBlur={handleBlur}
-                                        //     error={Boolean(errors.ItemId)}
-                                        //     fullWidth
-                                        // />
                                         <LinkSelect
                                             filterLabel="no"
                                             path={option ? "/item?option=true" : `/item/${itemId}/service`}
@@ -596,6 +591,7 @@ export const AddServiceForm = ({
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         error={Boolean(errors.price)}
+                                        InputLabelProps={{ shrink: true }}
                                     />
                                     <TextField
                                         name="sort"
