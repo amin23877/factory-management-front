@@ -240,11 +240,11 @@ export const LinesForm = ({
     createdItems: ILineItem[];
     handleSubmit: (lineItem: ILineItem, item: IItem | undefined) => void;
     handleDelete: (index: number) => void;
-    handleAddService: (lineItem: ILineItem, index: any, service: any) => void;
-    handleEdit: (lineItem: ILineItem, index: any, item: any, belongsTo?: number) => void;
+    handleAddService: (lineItem: ILineItem, index: any, service: any, itemId?: string) => void;
+    handleEdit: (lineItem: ILineItem, index: any, item: any, belongsTo?: number, itemId?: string) => void;
 }) => {
     const [selectedItem, setSelectedItem] = useState<IItem | undefined>();
-    const [addService, setAddService] = useState<any>(false);
+    const [addService, setAddService] = useState<string | undefined>(undefined);
     const [addOption, setAddOption] = useState<any>(false);
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
     const [anchorBEl, setAnchorBEl] = React.useState<HTMLButtonElement | null>(null);
@@ -261,6 +261,7 @@ export const LinesForm = ({
 
     const handleClose = () => {
         setAnchorEl(null);
+        setAnchorBEl(null);
     };
     const renderTable = () => {
         let counter = 0;
@@ -289,18 +290,18 @@ export const LinesForm = ({
         <BasePaper style={{ height: "50.5vh", overflow: "auto" }}>
             <Dialog
                 onClose={() => {
-                    setAddService(false);
+                    setAddService(undefined);
                 }}
-                open={addService}
+                open={Boolean(addService)}
                 title="Add Service"
                 maxWidth="xs"
                 fullWidth
             >
                 <AddServiceForm
-                    onClose={() => setAddService(false)}
+                    onClose={() => setAddService(undefined)}
                     itemId={addService}
                     handleAddService={(d: ILineItem, i: IItem) => {
-                        handleAddService(d, index + 1, i);
+                        handleAddService(d, index + 1, i, addService);
                     }}
                     service
                 />
@@ -336,8 +337,8 @@ export const LinesForm = ({
                     <AddServiceForm
                         edit={edit}
                         onClose={() => setEdit(false)}
-                        handleAddService={(d: ILineItem, i: IItem, belongsTo?: number) => {
-                            handleEdit(d, index, i, belongsTo);
+                        handleAddService={(d: ILineItem, i: IItem, belongsTo?: number, itemId?: string) => {
+                            handleEdit(d, index, i, belongsTo, itemId);
                         }}
                     />
                 </Dialog>
@@ -412,7 +413,7 @@ export const LinesForm = ({
                                                                     onClick={(
                                                                         e: React.MouseEvent<HTMLButtonElement>
                                                                     ) => {
-                                                                        setClickedItem(id);
+                                                                        setClickedItem(item);
                                                                         setIndex(i);
                                                                         setAnchorBEl(e.currentTarget);
                                                                     }}
@@ -567,6 +568,7 @@ export const LinesForm = ({
                                                     }}
                                                     onBlur={handleBlur}
                                                     url="/panel/inventory"
+                                                    error={Boolean(errors.ItemId)}
                                                 />
                                             </TableCell>
                                             <TableCell width={90} style={{ padding: "2px" }}>
@@ -593,7 +595,7 @@ export const LinesForm = ({
                                                 <FormControlLabel
                                                     style={{ width: "100%" }}
                                                     checked={values.tax}
-                                                    label=""
+                                                    label="Tax"
                                                     name="tax"
                                                     onChange={handleChange}
                                                     control={<CheckBox />}
@@ -631,12 +633,12 @@ export const AddServiceForm = ({
     const [selectedItem, setSelectedItem] = useState<IItem | undefined>(edit?.i);
 
     const handleSubmit = (d: ILineItem) => {
-        handleAddService(d, selectedItem, edit?.belongsTo);
+        handleAddService(d, selectedItem, edit?.belongsTo, edit?.belongsToItemId);
         onClose();
     };
     console.log({ edit });
     const schema = Yup.object().shape({
-        // ItemId: Yup.string().required(),
+        ItemId: Yup.string().required(),
         quantity: Yup.number().required().min(1),
         price: Yup.number().required(),
     });
@@ -666,7 +668,49 @@ export const AddServiceForm = ({
                         {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
                             <Form>
                                 <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-                                    {itemId ? (
+                                    {edit ? (
+                                        edit.i.Category === "Service" || (edit.i.option && edit.belongsTo) ? (
+                                            <LinkSelect
+                                                filterLabel="no"
+                                                path={
+                                                    edit.i.option
+                                                        ? "/item?option=true"
+                                                        : `/item/${edit.belongsToItemId}/service`
+                                                }
+                                                value={typeof values.ItemId === "string" ? values.ItemId : values.i?.id}
+                                                label={edit.i.option ? "Option" : "Service"}
+                                                getOptionList={(resp) => (edit.i.option ? resp.result : resp)}
+                                                getOptionLabel={(item) => item?.no}
+                                                getOptionValue={(item) => item?.id}
+                                                onChange={(e, nv) => {
+                                                    setFieldValue("ItemId", nv.id);
+                                                    setSelectedItem(nv);
+                                                }}
+                                                onBlur={handleBlur}
+                                                url={edit.i.option ? "/panel/inventory" : "/panel/service"}
+                                                error={Boolean(errors.ItemId)}
+                                                choseItem={edit?.i}
+                                            />
+                                        ) : (
+                                            <LinkSelect
+                                                filterLabel="no"
+                                                path={"/item?salesApproved=true&fru=false"}
+                                                value={values.ItemId}
+                                                label="Item"
+                                                getOptionList={(resp) => resp.result}
+                                                getOptionLabel={(item) => item?.no}
+                                                getOptionValue={(item) => item?.id}
+                                                onChange={(e, nv) => {
+                                                    setFieldValue("ItemId", nv.id);
+                                                    setSelectedItem(nv);
+                                                }}
+                                                onBlur={handleBlur}
+                                                url={option ? "/panel/inventory" : "/panel/service"}
+                                                error={Boolean(errors.ItemId)}
+                                                choseItem={edit?.i}
+                                            />
+                                        )
+                                    ) : (
                                         <LinkSelect
                                             filterLabel="no"
                                             path={option ? "/item?option=true" : `/item/${itemId}/service`}
@@ -681,24 +725,7 @@ export const AddServiceForm = ({
                                             }}
                                             onBlur={handleBlur}
                                             url={option ? "/panel/inventory" : "/panel/service"}
-                                        />
-                                    ) : (
-                                        // <></>
-                                        <LinkSelect
-                                            filterLabel="no"
-                                            path={"/item?salesApproved=true&fru=false"}
-                                            value={values.ItemId}
-                                            // value={selectedItem}
-                                            label="Item"
-                                            getOptionList={(resp) => resp.result}
-                                            getOptionLabel={(item) => item?.no}
-                                            getOptionValue={(item) => item?.id}
-                                            onChange={(e, nv) => {
-                                                setFieldValue("ItemId", nv.id);
-                                                setSelectedItem(nv);
-                                            }}
-                                            onBlur={handleBlur}
-                                            url={option ? "/panel/inventory" : "/panel/service"}
+                                            error={Boolean(errors.ItemId)}
                                         />
                                     )}
                                     <TextField
@@ -730,7 +757,7 @@ export const AddServiceForm = ({
                                         <FormControlLabel
                                             style={{ width: "100%" }}
                                             checked={values.tax}
-                                            label=""
+                                            label="Tax"
                                             name="tax"
                                             onChange={handleChange}
                                             control={<CheckBox />}

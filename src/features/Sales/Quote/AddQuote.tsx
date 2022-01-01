@@ -46,22 +46,22 @@ export default function AddQuote({
             setCreatedItems((prev: any) => prev.concat({ ...d, i }));
         }
     };
-    const handleEdit = (d: ILineItem, index: number, i: any, belongsTo?: number) => {
+    const handleEdit = (d: ILineItem, index: number, i: any, belongsTo?: number, itemId?: string) => {
         if (d) {
             const newArray = createdItems.slice();
             if (belongsTo) {
-                newArray[index] = { ...d, i, belongsTo: belongsTo };
+                newArray[index] = { ...d, i, belongsTo: belongsTo, belongsToItemId: itemId };
             } else {
                 newArray[index] = { ...d, i };
             }
             setCreatedItems(newArray);
         }
     };
-    const handleAddService = (d: ILineItem, index: any, i: any) => {
+    const handleAddService = (d: ILineItem, index: any, i: any, itemId?: string) => {
         if (d) {
             let first = createdItems.slice(0, index);
             let second = createdItems.slice(index);
-            setCreatedItems(first.concat({ ...d, i, belongsTo: index }, second));
+            setCreatedItems(first.concat({ ...d, i, belongsTo: index, belongsToItemId: itemId }, second));
         }
     };
     const handleDeleteItem = async (index: number) => {

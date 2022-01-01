@@ -29,6 +29,7 @@ interface IMFS {
     disabled?: boolean;
     path: string;
     filterLabel: string;
+    choseItem?: any;
 }
 
 const useStyles = makeStyles({
@@ -46,7 +47,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function MaterialFieldSelect({
+export default function LinkField({
     request,
     limit,
     getOptionLabel,
@@ -57,6 +58,7 @@ export default function MaterialFieldSelect({
     path,
     disabled,
     filterLabel,
+    choseItem,
     ...props
 }: IMFS) {
     const [options, setOptions] = useState<any[]>([]);
@@ -87,6 +89,12 @@ export default function MaterialFieldSelect({
     }, [fetchData]);
 
     useEffect(() => {
+        if (choseItem) {
+            setRefresh(choseItem[filterLabel]);
+        }
+    }, [choseItem, filterLabel]);
+
+    useEffect(() => {
         if (typeof value === "string" && options && options.find) {
             const v = options?.find((item) => getOptionValue(item) === value);
             setSelectValue(v);
@@ -99,9 +107,7 @@ export default function MaterialFieldSelect({
 
             v && v[filterLabel] && setRefresh(v[filterLabel]);
         }
-    }, [filterLabel, getOptionValue, options, value]);
-
-    console.log({ options });
+    }, [value]);
 
     return (
         <Autocomplete
