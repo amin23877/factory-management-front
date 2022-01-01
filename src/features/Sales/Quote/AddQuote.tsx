@@ -46,6 +46,17 @@ export default function AddQuote({
             setCreatedItems((prev: any) => prev.concat({ ...d, i }));
         }
     };
+    const handleEdit = (d: ILineItem, index: number, i: any, belongsTo?: number) => {
+        if (d) {
+            const newArray = createdItems.slice();
+            if (belongsTo) {
+                newArray[index] = { ...d, i, belongsTo: belongsTo };
+            } else {
+                newArray[index] = { ...d, i };
+            }
+            setCreatedItems(newArray);
+        }
+    };
     const handleAddService = (d: ILineItem, index: any, i: any) => {
         if (d) {
             let first = createdItems.slice(0, index);
@@ -154,6 +165,7 @@ export default function AddQuote({
                         </Box>
                         <Box flex={1} mt={1} height="100%" pb={2}>
                             <LinesForm
+                                handleEdit={handleEdit}
                                 devices={initialData?.devices}
                                 createdItems={createdItems}
                                 handleSubmit={handleAddItem}

@@ -42,7 +42,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
             { name: "location", header: "Location", minWidth: 100 },
             {
                 name: "option",
-                header: "option",
+                header: "Option",
                 type: "boolean",
             },
             { name: "qtyOnHand", header: "QOH.", minWidth: 80, type: "number" },

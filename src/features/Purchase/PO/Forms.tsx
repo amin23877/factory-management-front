@@ -234,19 +234,23 @@ export const LinesForm = ({
     handleSubmit,
     handleDelete,
     handleAddService,
+    handleEdit,
 }: {
     devices?: IItem[];
     createdItems: ILineItem[];
     handleSubmit: (lineItem: ILineItem, item: IItem | undefined) => void;
     handleDelete: (index: number) => void;
     handleAddService: (lineItem: ILineItem, index: any, service: any) => void;
+    handleEdit: (lineItem: ILineItem, index: any, item: any, belongsTo?: number) => void;
 }) => {
-    const [selectedItem, setSelectedItem] = useState<IItem>();
+    const [selectedItem, setSelectedItem] = useState<IItem | undefined>();
     const [addService, setAddService] = useState<any>(false);
     const [addOption, setAddOption] = useState<any>(false);
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+    const [anchorBEl, setAnchorBEl] = React.useState<HTMLButtonElement | null>(null);
     const [index, setIndex] = React.useState<any>();
     const [clickedItem, setClickedItem] = useState<any>();
+    const [edit, setEdit] = useState<any>();
     const [displayItems, setDisplayItems] = useState<ILineItem[]>();
 
     const handleClick = (e: any, id: any, i: any) => {
@@ -273,7 +277,9 @@ export const LinesForm = ({
     }, [createdItems]);
 
     const open = Boolean(anchorEl);
+    const openB = Boolean(anchorBEl);
     const id = open ? "simple-popover" : undefined;
+    const idB = openB ? "simple-popover" : undefined;
     const schema = Yup.object().shape({
         ItemId: Yup.string().required(),
         quantity: Yup.number().required().min(1),
@@ -296,6 +302,7 @@ export const LinesForm = ({
                     handleAddService={(d: ILineItem, i: IItem) => {
                         handleAddService(d, index + 1, i);
                     }}
+                    service
                 />
             </Dialog>
             <Dialog
@@ -316,11 +323,36 @@ export const LinesForm = ({
                     option
                 />
             </Dialog>
+            {edit && (
+                <Dialog
+                    onClose={() => {
+                        setEdit(false);
+                    }}
+                    open={edit}
+                    title="Edit Line Item"
+                    maxWidth="xs"
+                    fullWidth
+                >
+                    <AddServiceForm
+                        edit={edit}
+                        onClose={() => setEdit(false)}
+                        handleAddService={(d: ILineItem, i: IItem, belongsTo?: number) => {
+                            handleEdit(d, index, i, belongsTo);
+                        }}
+                    />
+                </Dialog>
+            )}
             <Box display="flex" width="100%" mr={1} pr={1}>
                 <Box flex={1}>
                     <Formik
                         initialValues={
-                            { price: selectedItem?.retailPrice, ItemId: selectedItem?.id, quantity: 1 } as ILineItem
+                            selectedItem
+                                ? ({
+                                      price: selectedItem?.retailPrice,
+                                      ItemId: selectedItem?.id,
+                                      quantity: 1,
+                                  } as ILineItem)
+                                : ({} as ILineItem)
                         }
                         validationSchema={schema}
                         onSubmit={(values, { resetForm }) => {
@@ -328,7 +360,7 @@ export const LinesForm = ({
                         }}
                         enableReinitialize={true}
                     >
-                        {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
+                        {({ values, handleChange, setFieldValue, handleBlur, errors, resetForm }) => (
                             <Form>
                                 <Table>
                                     <TableHead style={{ backgroundColor: "#373a4d", color: "white" }}>
@@ -354,7 +386,7 @@ export const LinesForm = ({
                                                     <TableCell>{item.belongsTo ? "" : item.group}</TableCell>
                                                     <TableCell>{item.sort}</TableCell>
                                                     <TableCell style={{ position: "relative" }}>
-                                                        <span>{item.i.no}</span>
+                                                        <span>{item?.i?.no}</span>
                                                         <span
                                                             style={{
                                                                 color: "orange",
@@ -362,7 +394,7 @@ export const LinesForm = ({
                                                                 right: 0,
                                                             }}
                                                         >
-                                                            {!item.i.engineeringApproved && <WarningRounded />}
+                                                            {!item?.i?.engineeringApproved && <WarningRounded />}
                                                         </span>
                                                     </TableCell>
                                                     <TableCell>{item.quantity}</TableCell>
@@ -375,89 +407,151 @@ export const LinesForm = ({
                                                     </TableCell>
                                                     <TableCell>
                                                         {item.belongsTo ? (
-                                                            <div
-                                                                onClick={() => handleDelete(i)}
-                                                                style={{ color: "red", cursor: "pointer" }}
-                                                            >
-                                                                <DeleteRounded />
-                                                            </div>
+                                                            <>
+                                                                <span
+                                                                    onClick={(
+                                                                        e: React.MouseEvent<HTMLButtonElement>
+                                                                    ) => {
+                                                                        setClickedItem(id);
+                                                                        setIndex(i);
+                                                                        setAnchorBEl(e.currentTarget);
+                                                                    }}
+                                                                    style={{ cursor: "pointer" }}
+                                                                >
+                                                                    <MoreVertRounded />
+                                                                </span>
+                                                                <Popover
+                                                                    id={idB}
+                                                                    open={openB}
+                                                                    anchorEl={anchorBEl}
+                                                                    onClose={() => {
+                                                                        setAnchorBEl(null);
+                                                                    }}
+                                                                    anchorOrigin={{
+                                                                        vertical: "top",
+                                                                        horizontal: "right",
+                                                                    }}
+                                                                    transformOrigin={{
+                                                                        vertical: "top",
+                                                                        horizontal: "right",
+                                                                    }}
+                                                                >
+                                                                    <Box
+                                                                        display="flex"
+                                                                        flexDirection="column"
+                                                                        style={{
+                                                                            background: "#373a4d",
+                                                                            cursor: "pointer",
+                                                                        }}
+                                                                    >
+                                                                        <span
+                                                                            style={style}
+                                                                            onClick={() => {
+                                                                                handleClose();
+                                                                                setEdit(clickedItem);
+                                                                            }}
+                                                                        >
+                                                                            Edit
+                                                                        </span>
+                                                                        <span
+                                                                            style={{ ...style, border: "none" }}
+                                                                            onClick={() => {
+                                                                                handleClose();
+                                                                                handleDelete(index);
+                                                                            }}
+                                                                        >
+                                                                            Delete
+                                                                        </span>
+                                                                    </Box>
+                                                                </Popover>
+                                                            </>
                                                         ) : (
-                                                            <span
-                                                                onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-                                                                    handleClick(e, item, i)
-                                                                }
-                                                                style={{ cursor: "pointer" }}
-                                                            >
-                                                                <MoreVertRounded />
-                                                            </span>
+                                                            <>
+                                                                <span
+                                                                    onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+                                                                        handleClick(e, item, i)
+                                                                    }
+                                                                    style={{ cursor: "pointer" }}
+                                                                >
+                                                                    <MoreVertRounded />
+                                                                </span>
+                                                                <Popover
+                                                                    id={id}
+                                                                    open={open}
+                                                                    anchorEl={anchorEl}
+                                                                    onClose={handleClose}
+                                                                    anchorOrigin={{
+                                                                        vertical: "top",
+                                                                        horizontal: "right",
+                                                                    }}
+                                                                    transformOrigin={{
+                                                                        vertical: "top",
+                                                                        horizontal: "right",
+                                                                    }}
+                                                                >
+                                                                    <Box
+                                                                        display="flex"
+                                                                        flexDirection="column"
+                                                                        style={{
+                                                                            background: "#373a4d",
+                                                                            cursor: "pointer",
+                                                                        }}
+                                                                    >
+                                                                        <span
+                                                                            style={style}
+                                                                            onClick={(e) => {
+                                                                                setAddService(clickedItem.ItemId);
+                                                                                handleClose();
+                                                                            }}
+                                                                        >
+                                                                            Add Service
+                                                                        </span>
+                                                                        <span
+                                                                            style={style}
+                                                                            onClick={(e) => {
+                                                                                setAddOption(clickedItem.ItemId);
+                                                                                handleClose();
+                                                                            }}
+                                                                        >
+                                                                            Add Option
+                                                                        </span>
+                                                                        <span
+                                                                            style={style}
+                                                                            onClick={() => {
+                                                                                handleClose();
+                                                                                setEdit(clickedItem);
+                                                                            }}
+                                                                        >
+                                                                            Edit
+                                                                        </span>
+                                                                        <span
+                                                                            style={{ ...style, border: "none" }}
+                                                                            onClick={() => {
+                                                                                handleClose();
+                                                                                handleDelete(index);
+                                                                            }}
+                                                                        >
+                                                                            Delete
+                                                                        </span>
+                                                                    </Box>
+                                                                </Popover>
+                                                            </>
                                                         )}
-                                                        <Popover
-                                                            id={id}
-                                                            open={open}
-                                                            anchorEl={anchorEl}
-                                                            onClose={handleClose}
-                                                            anchorOrigin={{
-                                                                vertical: "top",
-                                                                horizontal: "right",
-                                                            }}
-                                                            transformOrigin={{
-                                                                vertical: "top",
-                                                                horizontal: "right",
-                                                            }}
-                                                        >
-                                                            <Box
-                                                                display="flex"
-                                                                flexDirection="column"
-                                                                style={{
-                                                                    background: "#373a4d",
-                                                                    cursor: "pointer",
-                                                                }}
-                                                            >
-                                                                <span
-                                                                    style={style}
-                                                                    onClick={(e) => {
-                                                                        setAddService(clickedItem.ItemId);
-                                                                        handleClose();
-                                                                    }}
-                                                                >
-                                                                    Add Service
-                                                                </span>
-                                                                <span
-                                                                    style={style}
-                                                                    onClick={(e) => {
-                                                                        setAddOption(clickedItem.ItemId);
-                                                                        handleClose();
-                                                                    }}
-                                                                >
-                                                                    {" "}
-                                                                    Add Option
-                                                                </span>
-                                                                <span
-                                                                    style={{ ...style, border: "none" }}
-                                                                    onClick={() => {
-                                                                        handleClose();
-                                                                        handleDelete(index);
-                                                                    }}
-                                                                >
-                                                                    Delete
-                                                                </span>
-                                                            </Box>
-                                                        </Popover>
                                                     </TableCell>
                                                 </TableRow>
                                             );
                                         })}
                                         <TableRow>
                                             <TableCell width={50}>
-                                                <IconButton type="submit" style={{ padding: "0px" }}>
-                                                    <AddRounded htmlColor="green" />
+                                                <IconButton type="submit" style={{ padding: "0px", color: "green" }}>
+                                                    <AddRounded />
                                                 </IconButton>
                                             </TableCell>
                                             <TableCell width={50}></TableCell>
                                             <TableCell style={{ padding: "2px" }}>
                                                 <LinkSelect
                                                     filterLabel="no"
-                                                    path="/item?salesApproved=true"
+                                                    path="/item?salesApproved=true&fru=false"
                                                     value={
                                                         typeof values.ItemId === "string"
                                                             ? values.ItemId
@@ -524,31 +618,46 @@ export const AddServiceForm = ({
     handleAddService,
     onClose,
     option,
+    edit,
+    service,
 }: {
-    itemId: any;
+    itemId?: any;
     handleAddService: any;
     onClose: any;
     option?: boolean;
+    service?: boolean;
+    edit?: any;
 }) => {
-    const [selectedItem, setSelectedItem] = useState<IItem>();
+    const [selectedItem, setSelectedItem] = useState<IItem | undefined>(edit?.i);
 
     const handleSubmit = (d: ILineItem) => {
-        handleAddService(d, selectedItem);
+        handleAddService(d, selectedItem, edit?.belongsTo);
         onClose();
     };
+    console.log(edit);
     const schema = Yup.object().shape({
-        ItemId: Yup.string().required(),
+        // ItemId: Yup.string().required(),
         quantity: Yup.number().required().min(1),
         price: Yup.number().required(),
     });
-
     return (
         <Box>
             <Box display="flex">
                 <Box flex={1} mr={2}>
                     <Formik
                         initialValues={
-                            { price: selectedItem?.retailPrice, ItemId: selectedItem?.id, quantity: 1 } as ILineItem
+                            edit
+                                ? ({
+                                      price: edit.price,
+                                      quantity: edit.quantity,
+                                      ItemId: selectedItem?.id,
+                                      tax: edit.tax,
+                                  } as ILineItem)
+                                : ({
+                                      price: selectedItem?.retailPrice,
+                                      ItemId: selectedItem?.id,
+                                      quantity: 1,
+                                  } as ILineItem)
                         }
                         validationSchema={schema}
                         onSubmit={handleSubmit}
@@ -557,13 +666,11 @@ export const AddServiceForm = ({
                         {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
                             <Form>
                                 <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-                                    {itemId && (
+                                    {itemId ? (
                                         <LinkSelect
                                             filterLabel="no"
                                             path={option ? "/item?option=true" : `/item/${itemId}/service`}
-                                            value={
-                                                typeof values.ItemId === "string" ? values.ItemId : values.ItemId?.id
-                                            }
+                                            value={typeof values.ItemId === "string" ? values.ItemId : values.i?.id}
                                             label={option ? "Option" : "Service"}
                                             getOptionList={(resp) => (option ? resp.result : resp)}
                                             getOptionLabel={(item) => item?.no}
@@ -575,10 +682,27 @@ export const AddServiceForm = ({
                                             onBlur={handleBlur}
                                             url={option ? "/panel/inventory" : "/panel/service"}
                                         />
+                                    ) : (
+                                        <></>
+                                        // <LinkSelect
+                                        //     filterLabel="no"
+                                        //     path={"/item?salesApproved=true&fru=false"}
+                                        //     value={values.ItemId}
+                                        //     label="Item"
+                                        //     getOptionList={(resp) => (option ? resp.result : resp)}
+                                        //     getOptionLabel={(item) => item?.no}
+                                        //     getOptionValue={(item) => item?.id}
+                                        //     onChange={(e, nv) => {
+                                        //         setFieldValue("ItemId", nv.id);
+                                        //         setSelectedItem(nv);
+                                        //     }}
+                                        //     onBlur={handleBlur}
+                                        //     url={option ? "/panel/inventory" : "/panel/service"}
+                                        // />
                                     )}
                                     <TextField
                                         name="quantity"
-                                        label={option ? "quantity" : "Period"}
+                                        label={service ? "Period" : "quantity"}
                                         value={values.quantity}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
@@ -601,9 +725,24 @@ export const AddServiceForm = ({
                                         onBlur={handleBlur}
                                         error={Boolean(errors.sort)}
                                     />
+                                    {!service && (
+                                        <FormControlLabel
+                                            style={{ width: "100%" }}
+                                            checked={values.tax}
+                                            label=""
+                                            name="tax"
+                                            onChange={handleChange}
+                                            control={<CheckBox />}
+                                        />
+                                    )}
+
                                     <Box display="flex" alignItems="center" justifyContent="center">
-                                        <Button style={{ margin: "0 0.5em" }} type="submit" kind={"add"}>
-                                            Submit
+                                        <Button
+                                            style={{ margin: "0 0.5em" }}
+                                            type="submit"
+                                            kind={edit ? "edit" : "add"}
+                                        >
+                                            {edit ? "save" : "Submit"}
                                         </Button>
                                     </Box>
                                 </Box>
