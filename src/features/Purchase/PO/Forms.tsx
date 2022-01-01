@@ -634,7 +634,7 @@ export const AddServiceForm = ({
         handleAddService(d, selectedItem, edit?.belongsTo);
         onClose();
     };
-    console.log(edit);
+    console.log({ edit });
     const schema = Yup.object().shape({
         // ItemId: Yup.string().required(),
         quantity: Yup.number().required().min(1),
@@ -683,22 +683,23 @@ export const AddServiceForm = ({
                                             url={option ? "/panel/inventory" : "/panel/service"}
                                         />
                                     ) : (
-                                        <></>
-                                        // <LinkSelect
-                                        //     filterLabel="no"
-                                        //     path={"/item?salesApproved=true&fru=false"}
-                                        //     value={values.ItemId}
-                                        //     label="Item"
-                                        //     getOptionList={(resp) => (option ? resp.result : resp)}
-                                        //     getOptionLabel={(item) => item?.no}
-                                        //     getOptionValue={(item) => item?.id}
-                                        //     onChange={(e, nv) => {
-                                        //         setFieldValue("ItemId", nv.id);
-                                        //         setSelectedItem(nv);
-                                        //     }}
-                                        //     onBlur={handleBlur}
-                                        //     url={option ? "/panel/inventory" : "/panel/service"}
-                                        // />
+                                        // <></>
+                                        <LinkSelect
+                                            filterLabel="no"
+                                            path={"/item?salesApproved=true&fru=false"}
+                                            value={values.ItemId}
+                                            // value={selectedItem}
+                                            label="Item"
+                                            getOptionList={(resp) => resp.result}
+                                            getOptionLabel={(item) => item?.no}
+                                            getOptionValue={(item) => item?.id}
+                                            onChange={(e, nv) => {
+                                                setFieldValue("ItemId", nv.id);
+                                                setSelectedItem(nv);
+                                            }}
+                                            onBlur={handleBlur}
+                                            url={option ? "/panel/inventory" : "/panel/service"}
+                                        />
                                     )}
                                     <TextField
                                         name="quantity"

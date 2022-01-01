@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router";
 
 import { Autocomplete } from "@material-ui/lab";
@@ -63,10 +63,12 @@ export default function MaterialFieldSelect({
     const [selectValue, setSelectValue] = useState<any>(value);
     const [refresh, setRefresh] = useState<any>();
     const classes = useStyles();
+
     const phone = useMediaQuery("(max-width:600px)");
     const history = useHistory();
-    let params: any = {};
-    const fetchData = () => {
+
+    const fetchData = useCallback(() => {
+        let params: any = {};
         params["startsWith" + filterLabel] = refresh;
         get(path, { params })
             .then((data) => {
@@ -77,30 +79,29 @@ export default function MaterialFieldSelect({
                 }
             })
             .catch((e) => console.log(e));
-    };
+    }, [filterLabel, getOptionList, limit, path, refresh]);
+
     useEffect(() => {
         const timeOutId = setTimeout(fetchData, 500);
         return () => clearTimeout(timeOutId);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [limit, value, refresh]);
+    }, [fetchData]);
 
     useEffect(() => {
-        if (typeof value === "string" && options) {
+        if (typeof value === "string" && options && options.find) {
             const v = options?.find((item) => getOptionValue(item) === value);
             setSelectValue(v);
         }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [options, value]);
+    }, [getOptionValue, options, value]);
 
     useEffect(() => {
-        if (typeof value === "string" && options) {
+        if (typeof value === "string" && options && options.find) {
             const v = options?.find((item) => getOptionValue(item) === value);
-            setRefresh(v[filterLabel]);
-        }
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [value]);
+            v && v[filterLabel] && setRefresh(v[filterLabel]);
+        }
+    }, [filterLabel, getOptionValue, options, value]);
+
+    console.log({ options });
 
     return (
         <Autocomplete
