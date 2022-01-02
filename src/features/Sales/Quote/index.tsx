@@ -83,7 +83,7 @@ export default function QuotePanel() {
     );
 
     return (
-        <Box>
+        <>
             <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
             {addQ && (
                 <AddQuote open={addQ} onClose={() => setAddQ(false)} initialData={compQ || {}} onDone={() => {}} />
@@ -125,45 +125,41 @@ export default function QuotePanel() {
             </Box>
 
             <BasePaper>
-                <Box>
-                    <Tabs
-                        value={activeTab}
-                        textColor="primary"
-                        onChange={(e, nv) => setActiveTab(nv)}
-                        style={{ marginBottom: "10px" }}
-                    >
-                        <Tab
-                            icon={
-                                <span
-                                    style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
-                                >
-                                    <ListAltRounded style={{ marginRight: "5px" }} /> List
-                                </span>
-                            }
-                            wrapped
-                        />
-                        <Tab
-                            disabled={!selectedQuote}
-                            icon={
-                                <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                    <FindInPageRounded style={{ marginRight: "5px" }} /> Details
-                                </span>
-                            }
-                        />
-                    </Tabs>
-                    {activeTab === 0 && (
-                        <DataGrid
-                            onRowSelected={(d) => {
-                                setSelectedQuote(d);
-                                setActiveTab(1);
-                            }}
-                            url="/quote"
-                            columns={columns}
-                        />
-                    )}
-                    {activeTab === 1 && selectedQuote && <EditTab selectedQuote={selectedQuote} />}
-                </Box>
+                <Tabs
+                    value={activeTab}
+                    textColor="primary"
+                    onChange={(e, nv) => setActiveTab(nv)}
+                    style={{ marginBottom: "10px" }}
+                >
+                    <Tab
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                                <ListAltRounded style={{ marginRight: "5px" }} /> List
+                            </span>
+                        }
+                        wrapped
+                    />
+                    <Tab
+                        disabled={!selectedQuote}
+                        icon={
+                            <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                <FindInPageRounded style={{ marginRight: "5px" }} /> Details
+                            </span>
+                        }
+                    />
+                </Tabs>
+                {activeTab === 0 && (
+                    <DataGrid
+                        onRowSelected={(d) => {
+                            setSelectedQuote(d);
+                            setActiveTab(1);
+                        }}
+                        url="/quote"
+                        columns={columns}
+                    />
+                )}
+                {activeTab === 1 && selectedQuote && <EditTab selectedQuote={selectedQuote} />}
             </BasePaper>
-        </Box>
+        </>
     );
 }

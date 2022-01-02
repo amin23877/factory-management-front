@@ -25,7 +25,9 @@ export default function MyDialog({ closeOnClickOut, open, title, onClose, ...pro
                     <CloseRounded />
                 </IconButton>
             </Box>
-            <Box m={1}>{props.children}</Box>
+            <Box m={1} height="100%">
+                {props.children}
+            </Box>
         </Dialog>
     );
 }

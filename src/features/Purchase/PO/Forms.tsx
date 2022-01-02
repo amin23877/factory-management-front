@@ -295,7 +295,7 @@ export const LinesForm = ({
         price: Yup.number().required(),
     });
     return (
-        <BasePaper style={{ overflow: "auto", height: "98.5%" }}>
+        <BasePaper style={{ overflow: "auto", height: "100%" }}>
             <Dialog
                 onClose={() => {
                     setAddService(undefined);

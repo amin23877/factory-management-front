@@ -32,11 +32,7 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
         <Formik initialValues={selectedQuote} onSubmit={handleSubmit}>
             {({ handleChange, handleBlur, values, isSubmitting, setFieldValue }) => (
                 <Form>
-                    <Box
-                        display="flex"
-                        flexDirection="column"
-                        style={phone ? { gap: 10 } : { gap: 7, height: "71.6vh" }}
-                    >
+                    <Box display="flex" flexDirection="column" style={phone ? { gap: 10 } : { gap: 7, height: "100%" }}>
                         <BasePaper>
                             <GeneralForm
                                 edit

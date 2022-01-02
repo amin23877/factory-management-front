@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Box, TextField } from "@material-ui/core";
+import { Box, TextField, useMediaQuery } from "@material-ui/core";
 import { Formik, Form } from "formik";
 
 import Dialog from "../../app/Dialog";
@@ -61,10 +61,17 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
             setSubmitting(false);
         }
     };
+    const phone = useMediaQuery("(max-width:600px)");
 
     return (
         <Dialog open={open} onClose={onClose} fullScreen title={`${docData ? "Edit" : "Add"} Document to ${model}`}>
-            <Box height="82vh" m={3} display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10}>
+            <Box
+                height="82vh"
+                m={3}
+                display="grid"
+                gridTemplateColumns={phone ? "1fr" : "1fr 300px"}
+                gridColumnGap={10}
+            >
                 <Box>{docData?.path && <PDFPreview height="100%" pdf={`http://${host}` + docData?.path} />}</Box>
                 <Formik initialValues={docData ? docData : ({} as IDocument)} onSubmit={handleSubmit}>
                     {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
@@ -95,9 +102,10 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
 
                                 <div style={{ margin: "1em 0" }}>
                                     {values.file ? (
-                                        // String((values.file as any).name)
-                                        <p>ads</p>
-                                    ) : docData ? (
+                                        String((values.file as any).name)
+                                    ) : // <p>ads</p>
+
+                                    docData ? (
                                         <a rel="noopener noreferrer" target="_blank" href={docData.path.slice(0)}>
                                             Download previous file
                                         </a>

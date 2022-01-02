@@ -379,7 +379,7 @@ export const EntitiesTab = ({
     const [rep, setRep] = useState<ICustomer>();
     const [client, setClient] = useState<ICustomer>();
     return (
-        <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr "} gridColumnGap={5} pt={1}>
+        <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr "} gridColumnGap={5} pt="12px">
             <Box mb={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={7}>
                 <LinkSelect
                     filterLabel="name"
