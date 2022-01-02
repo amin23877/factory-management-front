@@ -54,6 +54,7 @@ import "../../../styles/main.css";
 import LinkSelect from "../../../app/Inputs/LinkFields";
 import Dialog from "../../../app/Dialog";
 import { getItemService } from "../../../api/fieldService";
+import { makeStyles } from "@material-ui/styles";
 
 export const DocumentForm = ({
     createdPO,
@@ -228,6 +229,11 @@ const style = {
     borderBottom: "1px solid whiteSmoke",
     color: "white",
 };
+const useStyle = makeStyles(() => ({
+    root: {
+        padding: "0px 16px",
+    },
+}));
 export const LinesForm = ({
     devices,
     createdItems,
@@ -243,6 +249,8 @@ export const LinesForm = ({
     handleAddService: (lineItem: ILineItem, index: any, service: any, itemId?: string) => void;
     handleEdit: (lineItem: ILineItem, index: any, item: any, belongsTo?: number, itemId?: string) => void;
 }) => {
+    const classes = useStyle();
+
     const [selectedItem, setSelectedItem] = useState<IItem | undefined>();
     const [addService, setAddService] = useState<string | undefined>(undefined);
     const [addOption, setAddOption] = useState<any>(false);
@@ -287,7 +295,7 @@ export const LinesForm = ({
         price: Yup.number().required(),
     });
     return (
-        <BasePaper style={{ height: "50.5vh", overflow: "auto" }}>
+        <BasePaper style={{ overflow: "auto", height: "98.5%" }}>
             <Dialog
                 onClose={() => {
                     setAddService(undefined);
@@ -343,7 +351,7 @@ export const LinesForm = ({
                     />
                 </Dialog>
             )}
-            <Box display="flex" width="100%" mr={1} pr={1}>
+            <Box display="flex" width="100%">
                 <Box flex={1}>
                     <Formik
                         initialValues={
@@ -369,7 +377,7 @@ export const LinesForm = ({
                                             <TableCell style={{ color: "white" }}>Group</TableCell>
                                             <TableCell style={{ color: "white" }}>Sort</TableCell>
                                             <TableCell style={{ color: "white" }}>Part Number</TableCell>
-                                            <TableCell style={{ color: "white" }}>Qty</TableCell>
+                                            <TableCell style={{ color: "white" }}>Qty / period</TableCell>
                                             <TableCell style={{ color: "white" }}>Price</TableCell>
                                             <TableCell width={50} style={{ color: "white", padding: "2px" }}>
                                                 Tax
@@ -383,10 +391,19 @@ export const LinesForm = ({
                                     <TableBody>
                                         {displayItems?.map((item: any, i: number) => {
                                             return (
-                                                <TableRow>
-                                                    <TableCell>{item.belongsTo ? "" : item.group}</TableCell>
-                                                    <TableCell>{item.sort}</TableCell>
-                                                    <TableCell style={{ position: "relative" }}>
+                                                <TableRow
+                                                    style={item.belongsTo ? { background: "rgba(40,30,150,0.1)" } : {}}
+                                                >
+                                                    <TableCell className={item.belongsTo ? classes.root : ""}>
+                                                        {item.group}
+                                                    </TableCell>
+                                                    <TableCell className={item.belongsTo ? classes.root : ""}>
+                                                        {item.sort}
+                                                    </TableCell>
+                                                    <TableCell
+                                                        className={item.belongsTo ? classes.root : ""}
+                                                        style={{ position: "relative" }}
+                                                    >
                                                         <span>{item?.i?.no}</span>
                                                         <span
                                                             style={{
@@ -398,15 +415,23 @@ export const LinesForm = ({
                                                             {!item?.i?.engineeringApproved && <WarningRounded />}
                                                         </span>
                                                     </TableCell>
-                                                    <TableCell>{item.quantity}</TableCell>
+                                                    <TableCell className={item.belongsTo ? classes.root : ""}>
+                                                        {item.quantity}
+                                                    </TableCell>
                                                     <TableCell>{item.price}</TableCell>
-                                                    <TableCell style={{ padding: "2px" }}>
+                                                    <TableCell
+                                                        className={item.belongsTo ? classes.root : ""}
+                                                        // style={{ padding: "2px" }}
+                                                    >
                                                         {item.tax ? <CheckRounded /> : <ClearRounded />}
                                                     </TableCell>
-                                                    <TableCell style={{ padding: "0px" }}>
+                                                    <TableCell
+                                                        className={item.belongsTo ? classes.root : ""}
+                                                        // style={{ padding: "0px" }}
+                                                    >
                                                         {item.quantity * item.price}
                                                     </TableCell>
-                                                    <TableCell>
+                                                    <TableCell className={item.belongsTo ? classes.root : ""}>
                                                         {item.belongsTo ? (
                                                             <>
                                                                 <span
@@ -745,14 +770,18 @@ export const AddServiceForm = ({
                                         error={Boolean(errors.price)}
                                         InputLabelProps={{ shrink: true }}
                                     />
-                                    <TextField
-                                        name="sort"
-                                        label="Sort"
-                                        value={values.sort}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={Boolean(errors.sort)}
-                                    />
+                                    {edit?.belongsTo || !edit ? (
+                                        <TextField
+                                            name="sort"
+                                            label="Sort"
+                                            value={values.sort}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            error={Boolean(errors.sort)}
+                                        />
+                                    ) : (
+                                        <></>
+                                    )}
                                     {!service && (
                                         <FormControlLabel
                                             style={{ width: "100%" }}
@@ -940,58 +969,6 @@ export const CreateForm = ({ onDone, data }: { data?: any; onDone: (data: IPurch
                             Next
                         </Button>
                     </Box>
-                    {/* <Box display="grid" gridTemplateColumns="auto" gridGap={8}>
-                        <FieldSelect
-                        style={{ width: "100%" }}
-                        request={getAllEmployees}
-                        itemTitleField="username"
-                        itemValueField="id"
-                        name="requester"
-                        label="Requester"
-                        value={values.requester}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={Boolean(errors.requester)}
-                        />
-                        {errors.requester && <Typography variant="caption">{errors.requester}</Typography>}
-                        <FieldSelect
-                        style={{ width: "100%" }}
-                        request={getVendors}
-                            itemTitleField="name"
-                            itemValueField="id"
-                            name="VendorId"
-                            label="Vendor"
-                            value={values.VendorId}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={Boolean(errors.VendorId)}
-                        />
-                        {errors.VendorId && <Typography variant="caption">{errors.VendorId}</Typography>}
-                        <FieldSelect
-                            style={{ width: "100%" }}
-                            request={getContacts}
-                            itemTitleField="lastName"
-                            itemValueField="id"
-                            name="ContactId"
-                            label="Contact"
-                            value={values.ContactId}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={Boolean(errors.ContactId)}
-                        />
-                        {errors.ContactId && <Typography variant="caption">{errors.ContactId}</Typography>}
-                        <ArraySelect
-                            items={["completed", "shipped", "pending"]}
-                            name="status"
-                            label="status"
-                            value={values.status}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                            error={Boolean(errors.status)}
-                            fullWidth
-                        />
-                        
-                    </Box> */}
                 </Form>
             )}
         </Formik>

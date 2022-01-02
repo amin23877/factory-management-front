@@ -22,7 +22,7 @@ export default function GeneralQuote({
 
     return (
         <Box style={{ overflowY: "auto", width: "100%" }}>
-            <Box display="flex" m={1} flexDirection="column">
+            <Box display="flex" m={1} flexDirection="column" height="100%">
                 <Box mb={1}>
                     <BasePaper>
                         <GeneralForm
@@ -33,7 +33,7 @@ export default function GeneralQuote({
                         />
                     </BasePaper>
                 </Box>
-                <Box>
+                <Box flex={1}>
                     <BasePaper>
                         <Tabs
                             value={activeTab}

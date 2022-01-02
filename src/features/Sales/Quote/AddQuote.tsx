@@ -140,7 +140,7 @@ export default function AddQuote({
                         display="flex"
                         justifyContent="center"
                         flexGrow={1}
-                        my={2}
+                        my={1}
                         flexDirection={phone ? "column" : "row"}
                     >
                         <Box flex={1}>
@@ -163,7 +163,7 @@ export default function AddQuote({
                                 )}
                             </Formik>
                         </Box>
-                        <Box flex={1} mt={1} height="100%" pb={2}>
+                        <Box flex={1} mt={1}>
                             <LinesForm
                                 handleEdit={handleEdit}
                                 devices={initialData?.devices}
@@ -187,12 +187,12 @@ export default function AddQuote({
                         }}
                     />
                 )}
-                {activeStep !== 2 && phone && (
+                {activeStep !== 2 && (
                     <Box
                         display="flex"
                         alignItems="center"
                         justifyContent="space-between"
-                        margin="30px auto"
+                        margin={phone ? "30px auto" : "0px auto"}
                         width="30%"
                         gridGap={10}
                     >
@@ -210,24 +210,6 @@ export default function AddQuote({
                     </Box>
                 )}
             </Box>
-            {activeStep !== 2 && !phone && (
-                <Box
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="space-between"
-                    margin="30px auto"
-                    width="30%"
-                    gridGap={10}
-                >
-                    <Button variant="contained" disabled={activeStep === 0 || activeStep === 2} onClick={handleBack}>
-                        Back
-                    </Button>
-                    <div></div>
-                    <Button variant="contained" color="primary" onClick={handleNext} disabled={activeStep === 2}>
-                        {activeStep === 1 ? "Finalize" : "Next"}
-                    </Button>
-                </Box>
-            )}
         </Dialog>
     );
 }
