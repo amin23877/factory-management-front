@@ -118,98 +118,108 @@ export default function AddQuote({
 
     return (
         <Dialog onClose={onClose} closeOnClickOut={false} open={open} title="Add New Quote" fullScreen maxWidth="md">
-            <Box
-                p={phone ? 0 : 2}
-                height={activeStep !== 2 ? (phone ? "" : "600px") : "90vh"}
-                display="flex"
-                flexDirection="column"
-            >
-                <Stepper activeStep={activeStep}>
-                    <Step>
-                        <StepLabel>{phone ? "" : "General Information"}</StepLabel>
-                    </Step>
-                    <Step>
-                        <StepLabel>{phone ? "" : "Final"}</StepLabel>
-                    </Step>
-                    <Step>
-                        <StepLabel>{phone ? "" : "Document"}</StepLabel>
-                    </Step>
-                </Stepper>
-                {activeStep === 0 && (
-                    <Box
-                        display="flex"
-                        justifyContent="center"
-                        flexGrow={1}
-                        my={1}
-                        flexDirection={phone ? "column" : "row"}
-                    >
-                        <Box flex={1}>
-                            <Formik
-                                innerRef={ref}
-                                initialValues={{ ...initialData } as IQuote}
-                                validationSchema={schema}
-                                onSubmit={() => {}}
-                            >
-                                {({ handleChange, handleBlur, values, setFieldValue }) => (
-                                    <Form>
-                                        <General
-                                            add={true}
-                                            handleChange={handleChange}
-                                            handleBlur={handleBlur}
-                                            values={values}
-                                            setFieldValue={setFieldValue}
-                                        />
-                                    </Form>
-                                )}
-                            </Formik>
-                        </Box>
-                        <Box flex={1} mt={1}>
-                            <LinesForm
-                                handleEdit={handleEdit}
-                                devices={initialData?.devices}
-                                createdItems={createdItems}
-                                handleSubmit={handleAddItem}
-                                handleDelete={handleDeleteItem}
-                                handleAddService={handleAddService}
-                            />
-                        </Box>
-                    </Box>
-                )}
-
-                {activeStep === 1 && quote && <FinalForm loading={loading} />}
-                {activeStep === 2 && createdQuote && (
-                    <DocumentForm
-                        data={quote}
-                        createdQoute={createdQuote}
-                        onDone={() => {
-                            onClose();
-                            onDone();
-                        }}
-                    />
-                )}
-                {activeStep !== 2 && (
-                    <Box
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="space-between"
-                        margin={phone ? "30px auto" : "0px auto"}
-                        width="30%"
-                        gridGap={10}
-                    >
-                        <Button
-                            variant="contained"
-                            disabled={activeStep === 0 || activeStep === 2}
-                            onClick={handleBack}
+            <div>
+                <Box
+                    p={phone ? 0 : 2}
+                    height={activeStep !== 2 ? (phone ? "" : "600px") : "90vh"}
+                    display="flex"
+                    flexDirection="column"
+                    justifyContent="center"
+                >
+                    <Stepper activeStep={activeStep}>
+                        <Step>
+                            <StepLabel>{phone ? "" : "General Information"}</StepLabel>
+                        </Step>
+                        <Step>
+                            <StepLabel>{phone ? "" : "Final"}</StepLabel>
+                        </Step>
+                        <Step>
+                            <StepLabel>{phone ? "" : "Document"}</StepLabel>
+                        </Step>
+                    </Stepper>
+                    {activeStep === 0 && (
+                        <Box
+                            display="flex"
+                            justifyContent="center"
+                            // flexGrow={1}
+                            my={1}
+                            flexDirection={phone ? "column" : "row"}
                         >
-                            Back
-                        </Button>
-                        <div></div>
-                        <Button variant="contained" color="primary" onClick={handleNext} disabled={activeStep === 2}>
-                            {activeStep === 1 ? "Finalize" : "Next"}
-                        </Button>
-                    </Box>
-                )}
-            </Box>
+                            <Box flex={1}>
+                                <Formik
+                                    innerRef={ref}
+                                    initialValues={{ ...initialData } as IQuote}
+                                    validationSchema={schema}
+                                    onSubmit={() => {}}
+                                >
+                                    {({ handleChange, handleBlur, values, setFieldValue }) => (
+                                        <Form>
+                                            <General
+                                                add={true}
+                                                handleChange={handleChange}
+                                                handleBlur={handleBlur}
+                                                values={values}
+                                                setFieldValue={setFieldValue}
+                                            />
+                                        </Form>
+                                    )}
+                                </Formik>
+                            </Box>
+                            <Box flex={1} mt={1}>
+                                <LinesForm
+                                    handleEdit={handleEdit}
+                                    devices={initialData?.devices}
+                                    createdItems={createdItems}
+                                    handleSubmit={handleAddItem}
+                                    handleDelete={handleDeleteItem}
+                                    handleAddService={handleAddService}
+                                />
+                            </Box>
+                        </Box>
+                    )}
+
+                    {activeStep === 1 && quote && <FinalForm loading={loading} />}
+                    {activeStep === 2 && createdQuote && (
+                        <DocumentForm
+                            data={quote}
+                            createdQoute={createdQuote}
+                            onDone={() => {
+                                onClose();
+                                onDone();
+                            }}
+                        />
+                    )}
+                    {activeStep !== 2 && (
+                        <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="space-around"
+                            marginTop={phone ? "30px" : "0px"}
+                            width="100%"
+                            gridGap={10}
+                        >
+                            <div style={{ flex: 1 }}></div>
+                            <Button
+                                variant="contained"
+                                disabled={activeStep === 0 || activeStep === 2}
+                                onClick={handleBack}
+                            >
+                                Back
+                            </Button>
+                            <div style={phone ? {} : { flex: 1 }}></div>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={handleNext}
+                                disabled={activeStep === 2}
+                            >
+                                {activeStep === 1 ? "Finalize" : "Next"}
+                            </Button>
+                            <div style={{ flex: 1 }}></div>
+                        </Box>
+                    )}
+                </Box>
+            </div>
         </Dialog>
     );
 }
