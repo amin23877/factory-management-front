@@ -118,12 +118,7 @@ export default function AddQuote({
 
     return (
         <Dialog onClose={onClose} closeOnClickOut={false} open={open} title="Add New Quote" fullScreen maxWidth="md">
-            <Box
-                px={phone ? 0 : 2}
-                height={activeStep !== 2 ? (phone ? "" : "100%") : "90vh"}
-                display="flex"
-                flexDirection="column"
-            >
+            <Box px={phone ? 0 : 2} height={activeStep !== 2 ? "100%" : "90vh"} display="flex" flexDirection="column">
                 <Stepper activeStep={activeStep}>
                     <Step>
                         <StepLabel>{phone ? "" : "General Information"}</StepLabel>
@@ -140,7 +135,7 @@ export default function AddQuote({
                         display="grid"
                         gridGap={10}
                         gridTemplateColumns={phone ? "1fr" : "1fr 1fr"}
-                        height={phone ? "" : "80%"}
+                        height={phone ? "auto" : "100%"}
                     >
                         <Formik
                             innerRef={ref}
@@ -188,6 +183,7 @@ export default function AddQuote({
                         alignItems="center"
                         justifyContent="space-around"
                         marginTop="10px"
+                        paddingBottom="30px"
                         width="100%"
                         gridGap={10}
                     >

@@ -175,7 +175,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
                 height={phone ? "" : "calc(100vh - 200px)"}
             >
                 <EditForm selectedQuote={selectedQuote} />
-                <BasePaper style={{ height: "100%" }}>
+                <BasePaper style={phone ? { height: "80vh" } : { height: "100%" }}>
                     <Tabs
                         value={activeTab}
                         textColor="primary"

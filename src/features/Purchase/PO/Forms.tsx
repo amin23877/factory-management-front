@@ -294,8 +294,10 @@ export const LinesForm = ({
         quantity: Yup.number().required().min(1),
         price: Yup.number().required(),
     });
+    const phone = useMediaQuery("(max-width:600px)");
+
     return (
-        <BasePaper style={{ overflow: "auto", height: "100%" }}>
+        <BasePaper style={phone ? { height: "80vh", overflow: "auto" } : { overflow: "auto", height: "100%" }}>
             <Dialog
                 onClose={() => {
                     setAddService(undefined);
@@ -351,7 +353,7 @@ export const LinesForm = ({
                     />
                 </Dialog>
             )}
-            <Box display="flex" width="100%">
+            <Box display="flex" width="100%" maxHeight="calc(100vh - 2300px)">
                 <Box flex={1}>
                     <Formik
                         initialValues={
