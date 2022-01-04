@@ -54,7 +54,7 @@ export default function Dashboard() {
         ],
         []
     );
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <Box display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 1fr"} gridGap={10}>

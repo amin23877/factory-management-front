@@ -20,7 +20,7 @@ export const TopAppBar = ({
     onOpenChatClicked: () => void;
     isChatOpen: boolean;
 }) => {
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
     const session = useSession();
 
     return (

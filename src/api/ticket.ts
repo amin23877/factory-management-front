@@ -1,6 +1,7 @@
 import * as Yup from "yup";
 import { delete_, get, patch, post } from ".";
 import { IItem } from "./items";
+import { IUnit } from "./units";
 
 export interface ITicket {
     id: string;
@@ -18,7 +19,7 @@ export interface ITicket {
     note: string;
     fsh: boolean;
     ItemId: IItem;
-
+    UnitId: IUnit;
     date: number;
     updatedAt: number;
     __v: number;

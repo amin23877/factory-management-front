@@ -27,7 +27,7 @@ export const General = ({
     setFieldValue,
     device,
 }: IForm) => {
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <>
@@ -226,7 +226,7 @@ export const Battery = ({
     setFieldValue,
     device,
 }: IForm) => {
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <>
@@ -386,7 +386,7 @@ export const Inverter = ({
     setFieldValue,
     device,
 }: IForm) => {
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <>

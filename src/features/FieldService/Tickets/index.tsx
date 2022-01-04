@@ -42,26 +42,7 @@ export default function Tickets() {
     const [statusModal, setStatusModal] = useState(false);
     const [categoryModal, setCategoryModal] = useState(false);
 
-    const [selectedJob, setSelectedJob] = useState<ITicket>({
-        id: "",
-        note: "",
-        priority: "",
-        productionStatus: "",
-        status: "",
-        subject: "",
-        tags: "",
-        updatedAt: +new Date(),
-        deadline: +new Date(),
-        name: "",
-        ItemId: { description: "", name: "", active: false, id: "" },
-        ContactId: "",
-        LineServiceRecordId: "",
-        __v: 1,
-        callTime: +new Date(),
-        date: +new Date(),
-        description: "",
-        fsh: false,
-    });
+    const [selectedJob, setSelectedJob] = useState<ITicket>();
     const [selectedNote, setSelectedNote] = useState<INote>();
     const [selectedDocument, setSelectedDocument] = useState<IDocument>();
     const [activeTab, setActiveTab] = useState(0);
@@ -138,28 +119,6 @@ export default function Tickets() {
                     </Tabs>
                     <Box marginLeft="auto">
                         <List>
-                            {/* <ListItem>
-                                <IconButton
-                                    title="Add note"
-                                    onClick={() => {
-                                        setSelectedNote(undefined);
-                                        setNoteModal(true);
-                                    }}
-                                >
-                                    <NoteAddRounded />
-                                </IconButton>
-                            </ListItem>
-                            <ListItem>
-                                <IconButton
-                                    title="Add document"
-                                    onClick={() => {
-                                        setSelectedDocument(undefined);
-                                        setDocumentModal(true);
-                                    }}
-                                >
-                                    <FileCopyRounded />
-                                </IconButton>
-                            </ListItem> */}
                             {activeTab === 0 && (
                                 <>
                                     <ListItem>

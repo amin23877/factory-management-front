@@ -127,7 +127,7 @@ export default function ClientDetails({
         { field: "main", headerName: "Main", type: "boolean" },
         { field: "active", headerName: "Active", type: "boolean" },
     ];
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <Box>

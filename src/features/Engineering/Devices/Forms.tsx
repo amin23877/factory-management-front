@@ -67,7 +67,7 @@ export const Photo = ({ device }: { device: any }) => {
 };
 
 export const General = ({ values, errors, handleChange, handleBlur, touched, sales }: IForm) => {
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10}>

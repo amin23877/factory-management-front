@@ -134,7 +134,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
         ],
         []
     );
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <>

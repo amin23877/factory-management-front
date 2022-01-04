@@ -21,6 +21,8 @@ import TextField from "../../../app/TextField";
 import { getAllEmployees } from "../../../api/employee";
 import { getAllUnits } from "../../../api/units";
 import { getItems } from "../../../api/items";
+import LinkSelect from "../../../app/Inputs/LinkFields";
+import { formatTimestampToDate } from "../../../logic/date";
 
 export default function TicketForm({
     values,
@@ -37,35 +39,32 @@ export default function TicketForm({
     handleDelete?: () => void;
     setFieldValue: (a: any, b: any) => void;
 }) {
-    // const selectedLineService = values ? values.LineServiceRecordId : null;
     const [selectedLineService, setSelectedLineService] = useState<ILineService>(values.LineServiceRecordId);
     const [SOId, setSOId] = useState<string>(values.LineServiceRecordId?.SOId);
     const { data: services } = useSWR(SOId ? `/lineservice?SOId=${SOId}` : null);
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <>
-            <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"} style={{ gap: 5 }}>
+            <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"} style={{ gap: 10 }}>
                 <DateTimePicker
-                    name="date"
-                    value={values.date || null}
-                    onChange={(d) => setFieldValue("date", d?.toString())}
+                    name="startDate"
+                    value={values.startDate || null}
+                    onChange={(d) => setFieldValue("startDate", d?.toString())}
                     onBlur={handleBlur}
-                    error={Boolean(errors.date)}
-                    helperText={errors.date}
+                    error={Boolean(errors.startDate)}
+                    helperText={errors.startDate}
                     size="small"
-                    placeholder="Date"
                     label="Date"
                 />
                 <DateTimePicker
-                    name="deadline"
-                    value={values.deadline || null}
-                    onChange={(d) => setFieldValue("deadline", d?.toString())}
+                    name="targetDate"
+                    value={values.targetDate || null}
+                    onChange={(d) => setFieldValue("targetDate", d?.toString())}
                     onBlur={handleBlur}
-                    error={Boolean(errors.deadline)}
-                    helperText={errors.deadline}
+                    error={Boolean(errors.targetDate)}
+                    helperText={errors.targetDate}
                     size="small"
-                    placeholder="Deadline"
                     label="Target date"
                 />
                 <FieldSelect
@@ -101,98 +100,59 @@ export default function TicketForm({
                     value={typeof values.category === "string" ? values.category : values.category?.id}
                     error={Boolean(errors.category)}
                 />
-                <TextField
-                    name="number"
-                    value={values.number}
-                    label="Ticket Number"
-                    placeholder="Ticket Number"
+                <TextField name="number" value={values.number} label="Ticket Number" disabled />
+                <LinkSelect
+                    value={typeof values.SOId === "string" ? values.SOId : values.SOId}
+                    label="SO ID"
+                    path="/so"
+                    filterLabel="number"
+                    getOptionList={(resp) => resp?.result}
+                    getOptionLabel={(so) => so?.number}
+                    getOptionValue={(so) => so?.id}
+                    onChange={(e, nv) => {
+                        setFieldValue("SOId", nv?.id);
+                        setSOId(nv.id);
+                    }}
+                    onBlur={handleBlur}
+                    url="/panel/so"
+                />
+                <LinkSelect
+                    filterLabel="no"
+                    path="/item"
+                    value={values.UnitId.ItemId}
+                    label="Device"
+                    getOptionList={(resp) => resp.result}
+                    getOptionLabel={(item) => item?.no}
+                    getOptionValue={(item) => item?.id}
+                    url="/panel/inventory"
                     disabled
                 />
-                <FieldSelect
-                    label="SO Number"
-                    value={SOId ? SOId : undefined}
-                    request={getSO}
-                    itemTitleField="number"
-                    itemValueField="id"
-                    onChange={(e) => {
-                        setSOId(e.target.value);
-                    }}
-                />
-                <FieldSelect
-                    value={typeof values.QuoteId === "string" ? values.QuoteId : values.QuoteId?.id}
-                    name="QuoteId"
-                    label="Quote ID"
-                    request={getQuotes}
-                    itemTitleField="number"
-                    itemValueField="id"
-                    onChange={(e) => {
-                        handleChange(e);
-                    }}
-                    onBlur={handleBlur}
-                />
-                <FieldSelect
-                    label="Device Number"
-                    name="ItemId"
-                    value={values.ItemId}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    request={getItems}
-                    getOptionList={(data) => data.result}
-                    itemTitleField="name"
-                    itemValueField="id"
-                />
-                <FieldSelect
+                <LinkSelect
                     value={typeof values.UnitId === "string" ? values.UnitId : values.UnitId?.id}
-                    name="UnitId"
-                    label="Unit Number"
-                    request={getAllUnits}
-                    itemTitleField="number"
-                    itemValueField="id"
-                    onChange={(e) => {
-                        handleChange(e);
-                    }}
-                    onBlur={handleBlur}
-                />
-                <Autocomplete
-                    disabled={!SOId}
-                    value={selectedLineService}
-                    options={services ? services : []}
-                    getOptionLabel={(option: any) => option?.ServiceId?.name}
+                    label="Unit"
+                    path="/unit"
+                    filterLabel="number"
+                    getOptionList={(resp) => resp?.result}
+                    getOptionLabel={(unit) => unit?.number}
+                    getOptionValue={(unit) => unit?.id}
                     onChange={(e, nv) => {
-                        nv && setSelectedLineService(nv);
-                        nv && nv.id && setFieldValue("LineServiceRecordId", nv.id);
+                        setFieldValue("UnitId", nv?.id);
                     }}
-                    renderInput={(params) => (
-                        <TextField
-                            {...params}
-                            label="Warranty"
-                            placeholder="Warranty"
-                            error={Boolean(errors.LineServiceRecordId)}
-                            helperText={errors.LineServiceRecordId}
-                        />
-                    )}
-                />
-                <DateTimePicker
-                    name="expireDate"
-                    value={values.expireDate || null}
-                    onChange={(d) => setFieldValue("expireDate", d?.toString())}
                     onBlur={handleBlur}
-                    error={Boolean(errors.expireDate)}
-                    helperText={errors.expireDate}
-                    size="small"
-                    placeholder="Exp. Date"
-                    label="Exp. Date"
+                    url="/panel/production"
                 />
+                <TextField value={values.WarrantyId.number} label="Warranty" disabled />
+                <TextField value={formatTimestampToDate(values.WarrantyId.endDate)} label="Exp. Date" disabled />
                 <FieldSelect
-                    value={typeof values.assignedTo === "string" ? values.assignedTo : values.assignedTo?.id}
+                    value={typeof values.assigneeId === "string" ? values.assigneeId : values.assigneeId?.id}
                     request={getAllEmployees}
                     itemTitleField="username"
                     itemValueField="id"
                     keyField="id"
-                    name="assignedTo"
+                    name="assigneeId"
                     label="Assigned To"
                     onChange={handleChange}
-                    error={Boolean(errors.assignedTo)}
+                    error={Boolean(errors.assigneeId)}
                 />
                 <FieldSelect
                     value={typeof values.createdBy === "string" ? values.createdBy : values.createdBy?.id}
@@ -228,7 +188,6 @@ export default function TicketForm({
                         onBlur={handleBlur}
                         error={Boolean(errors.description)}
                         helperText={errors.description}
-                        placeholder="Description"
                         label="Description"
                         fullWidth
                         multiline
@@ -241,7 +200,6 @@ export default function TicketForm({
                         onBlur={handleBlur}
                         error={Boolean(errors.response)}
                         helperText={errors.response}
-                        placeholder="Response"
                         label="Response"
                         fullWidth
                         multiline
@@ -290,7 +248,7 @@ export function TechnicianForm({
     handleDelete?: () => void;
     setFieldValue: (a: any, b: any) => void;
 }) {
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
     return (
         <Box mt={1} display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"} style={{ gap: 10 }}>
             <TextField
@@ -300,7 +258,6 @@ export function TechnicianForm({
                 onBlur={handleBlur}
                 error={Boolean(errors.vendorTech)}
                 helperText={errors.vendorTech}
-
                 placeholder="Vendor Tech"
             />
             <TextField
@@ -310,7 +267,6 @@ export function TechnicianForm({
                 onBlur={handleBlur}
                 error={Boolean(errors.vendorEmail)}
                 helperText={errors.vendorEmail}
-
                 placeholder="Vendor Email"
             />
             <FieldSelect
@@ -359,24 +315,24 @@ export const ContactForm = ({
     handleChange: any;
 }) => {
     return (
-        <Box my={2} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr 1fr">
+        <Box mt={1} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr 1fr">
             <TextField
-                value={values.contactName}
-                name="contactName"
+                value={values.contact}
+                name="contact"
                 label="Contact Name"
                 onChange={handleChange}
                 onBlur={handleBlur}
             />
             <TextField
-                value={values.contactNumber}
-                name="contactNumber"
+                value={values.phone}
+                name="phone"
                 label="Contact Number"
                 onChange={handleChange}
                 onBlur={handleBlur}
             />
             <TextField
-                value={values.contactMail}
-                name="contactMail"
+                value={values.email}
+                name="email"
                 label="Contact Mail"
                 onChange={handleChange}
                 onBlur={handleBlur}

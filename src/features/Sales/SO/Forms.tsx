@@ -125,7 +125,7 @@ export const GeneralForm = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedQuote]);
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <>
@@ -255,7 +255,7 @@ export const EntitiesForm = ({
     handleBlur: (a: any) => void;
     setFieldValue: any;
 }) => {
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"} gridColumnGap={10}>

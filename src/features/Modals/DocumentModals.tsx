@@ -61,7 +61,7 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
             setSubmitting(false);
         }
     };
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <Dialog open={open} onClose={onClose} fullScreen title={`${docData ? "Edit" : "Add"} Document to ${model}`}>

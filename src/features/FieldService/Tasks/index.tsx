@@ -87,7 +87,7 @@ export default function Tasks() {
         setSelectedTask(undefined);
         setTaskModal(true);
     };
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <>

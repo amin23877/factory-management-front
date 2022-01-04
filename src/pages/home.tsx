@@ -72,7 +72,7 @@ const ItemCard = ({
 };
 
 export default function Home({ handleChange }: { handleChange: any }) {
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <Box style={{ zIndex: 5 }} display="flex" alignItems="center">

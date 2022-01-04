@@ -29,7 +29,7 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
             console.log(error);
         }
     };
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <Formik initialValues={selectedSo} onSubmit={handleSubmit}>

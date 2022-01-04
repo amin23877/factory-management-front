@@ -38,7 +38,7 @@ const schema = Yup.object().shape({
 
 function Details({ unit }: { unit: IUnit }) {
     let history = useHistory();
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     const handleSubmit = async (data: any) => {
         try {

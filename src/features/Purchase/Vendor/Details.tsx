@@ -135,7 +135,7 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
         { field: "main", headerName: "Main", width: 80, type: "boolean" },
         { field: "active", headerName: "Active", width: 80, type: "boolean" },
     ];
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <>

@@ -8,7 +8,7 @@ interface IButton extends ButtonProps {
     kind?: "add" | "edit" | "delete";
 }
 export default function MyButton({ kind, ...props }: IButton) {
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     const useStyles = makeStyles(
         phone

@@ -141,7 +141,7 @@ function Details({ up }: { up: any }) {
         ],
         []
     );
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <>

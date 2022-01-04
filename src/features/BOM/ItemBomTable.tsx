@@ -77,7 +77,7 @@ export const useTableStyles = makeStyles((theme) => ({
 
 function Row({ row }: { row: IBom }) {
     let history = useHistory();
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
     const { data: bomRecords } = useSWR<IBomRecord[]>(`/bomrecord?BOMId=${row.id}`);
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();

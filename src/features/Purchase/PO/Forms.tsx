@@ -55,6 +55,8 @@ import LinkSelect from "../../../app/Inputs/LinkFields";
 import Dialog from "../../../app/Dialog";
 import { getItemService } from "../../../api/fieldService";
 import { makeStyles } from "@material-ui/styles";
+import { getServiceCategories } from "../../../api/serviceCategories";
+import { getServiceClasses } from "../../../api/serviceClass";
 
 export const DocumentForm = ({
     createdPO,
@@ -253,6 +255,7 @@ export const LinesForm = ({
 
     const [selectedItem, setSelectedItem] = useState<IItem | undefined>();
     const [addService, setAddService] = useState<string | undefined>(undefined);
+    const [addLineService, setAddLineService] = useState<Boolean>(false);
     const [addOption, setAddOption] = useState<any>(false);
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
     const [anchorBEl, setAnchorBEl] = React.useState<HTMLButtonElement | null>(null);
@@ -294,10 +297,26 @@ export const LinesForm = ({
         quantity: Yup.number().required().min(1),
         price: Yup.number().required(),
     });
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <BasePaper style={phone ? { height: "80vh", overflow: "auto" } : { overflow: "auto", height: "100%" }}>
+            <Dialog
+                onClose={() => {
+                    setAddLineService(false);
+                }}
+                open={Boolean(addLineService)}
+                title="Add Service"
+                maxWidth="xs"
+                fullWidth
+            >
+                <AddLineServiceForm
+                    onClose={() => setAddLineService(false)}
+                    handleAddService={(d: ILineItem, i: IItem) => {
+                        handleSubmit(d, i);
+                    }}
+                />
+            </Dialog>
             <Dialog
                 onClose={() => {
                     setAddService(undefined);
@@ -373,6 +392,15 @@ export const LinesForm = ({
                     >
                         {({ values, handleChange, setFieldValue, handleBlur, errors, resetForm }) => (
                             <Form>
+                                <Button
+                                    variant="outlined"
+                                    onClick={() => {
+                                        setAddLineService(true);
+                                    }}
+                                    style={{ marginBottom: "10px" }}
+                                >
+                                    Add Field Service
+                                </Button>
                                 <Table>
                                     <TableHead style={{ backgroundColor: "#373a4d", color: "white" }}>
                                         <TableRow>
@@ -391,6 +419,68 @@ export const LinesForm = ({
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
+                                        <TableRow>
+                                            <TableCell width={50}>
+                                                <IconButton type="submit" style={{ padding: "0px", color: "green" }}>
+                                                    <AddRounded />
+                                                </IconButton>
+                                            </TableCell>
+                                            <TableCell width={50}></TableCell>
+                                            <TableCell style={{ padding: "2px" }}>
+                                                <LinkSelect
+                                                    filterLabel="no"
+                                                    path="/item?salesApproved=true&fru=false"
+                                                    value={
+                                                        typeof values.ItemId === "string"
+                                                            ? values.ItemId
+                                                            : values.ItemId?.id
+                                                    }
+                                                    label=""
+                                                    getOptionList={(resp) => (devices ? devices : resp?.result)}
+                                                    getOptionLabel={(item) => (devices ? item.number.no : item?.no)}
+                                                    getOptionValue={(item) => item?.id}
+                                                    onChange={(e, nv) => {
+                                                        setFieldValue("ItemId", devices ? nv.number.id : nv.id);
+                                                        setSelectedItem(nv);
+                                                    }}
+                                                    onBlur={handleBlur}
+                                                    url="/panel/inventory"
+                                                    error={Boolean(errors.ItemId)}
+                                                />
+                                            </TableCell>
+                                            <TableCell width={90} style={{ padding: "2px" }}>
+                                                <TextField
+                                                    type="number"
+                                                    name="quantity"
+                                                    value={values.quantity}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    error={Boolean(errors.quantity)}
+                                                />
+                                            </TableCell>
+                                            <TableCell width={90} style={{ padding: "2px" }}>
+                                                <TextField
+                                                    type="number"
+                                                    name="price"
+                                                    value={values.price}
+                                                    onChange={handleChange}
+                                                    onBlur={handleBlur}
+                                                    error={Boolean(errors.price)}
+                                                />
+                                            </TableCell>
+                                            <TableCell style={{ padding: "2px" }}>
+                                                <FormControlLabel
+                                                    style={{ width: "100%" }}
+                                                    checked={values.tax}
+                                                    label="Tax"
+                                                    name="tax"
+                                                    onChange={handleChange}
+                                                    control={<CheckBox />}
+                                                />
+                                            </TableCell>
+                                            <TableCell style={{ padding: "0px" }}></TableCell>
+                                            <TableCell></TableCell>
+                                        </TableRow>
                                         {displayItems?.map((item: any, i: number) => {
                                             return (
                                                 <TableRow
@@ -569,68 +659,6 @@ export const LinesForm = ({
                                                 </TableRow>
                                             );
                                         })}
-                                        <TableRow>
-                                            <TableCell width={50}>
-                                                <IconButton type="submit" style={{ padding: "0px", color: "green" }}>
-                                                    <AddRounded />
-                                                </IconButton>
-                                            </TableCell>
-                                            <TableCell width={50}></TableCell>
-                                            <TableCell style={{ padding: "2px" }}>
-                                                <LinkSelect
-                                                    filterLabel="no"
-                                                    path="/item?salesApproved=true&fru=false"
-                                                    value={
-                                                        typeof values.ItemId === "string"
-                                                            ? values.ItemId
-                                                            : values.ItemId?.id
-                                                    }
-                                                    label=""
-                                                    getOptionList={(resp) => (devices ? devices : resp?.result)}
-                                                    getOptionLabel={(item) => (devices ? item.number.no : item?.no)}
-                                                    getOptionValue={(item) => item?.id}
-                                                    onChange={(e, nv) => {
-                                                        setFieldValue("ItemId", devices ? nv.number.id : nv.id);
-                                                        setSelectedItem(nv);
-                                                    }}
-                                                    onBlur={handleBlur}
-                                                    url="/panel/inventory"
-                                                    error={Boolean(errors.ItemId)}
-                                                />
-                                            </TableCell>
-                                            <TableCell width={90} style={{ padding: "2px" }}>
-                                                <TextField
-                                                    type="number"
-                                                    name="quantity"
-                                                    value={values.quantity}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    error={Boolean(errors.quantity)}
-                                                />
-                                            </TableCell>
-                                            <TableCell width={90} style={{ padding: "2px" }}>
-                                                <TextField
-                                                    type="number"
-                                                    name="price"
-                                                    value={values.price}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    error={Boolean(errors.price)}
-                                                />
-                                            </TableCell>
-                                            <TableCell style={{ padding: "2px" }}>
-                                                <FormControlLabel
-                                                    style={{ width: "100%" }}
-                                                    checked={values.tax}
-                                                    label="Tax"
-                                                    name="tax"
-                                                    onChange={handleChange}
-                                                    control={<CheckBox />}
-                                                />
-                                            </TableCell>
-                                            <TableCell style={{ padding: "0px" }}></TableCell>
-                                            <TableCell></TableCell>
-                                        </TableRow>
                                     </TableBody>
                                 </Table>
                             </Form>
@@ -642,6 +670,121 @@ export const LinesForm = ({
     );
 };
 
+export const AddLineServiceForm = ({ handleAddService, onClose }: { handleAddService: any; onClose: any }) => {
+    const [selectedItem, setSelectedItem] = useState<IItem | undefined>();
+
+    const handleSubmit = (d: any) => {
+        handleAddService(d, selectedItem);
+        onClose();
+    };
+    const schema = Yup.object().shape({
+        ItemId: Yup.string().required(),
+        quantity: Yup.number().required().min(1),
+        price: Yup.number().required(),
+    });
+    return (
+        <Box>
+            <Box display="flex">
+                <Box flex={1} mr={2}>
+                    <Formik
+                        initialValues={
+                            {
+                                price: selectedItem?.retailPrice,
+                                ItemId: selectedItem?.id,
+                                quantity: 1,
+                                ServiceClassId: undefined,
+                                ServiceCategoryId: undefined,
+                            } as any
+                        }
+                        validationSchema={schema}
+                        onSubmit={handleSubmit}
+                        enableReinitialize={true}
+                    >
+                        {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
+                            <Form>
+                                <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
+                                    <FieldSelect
+                                        request={getServiceClasses}
+                                        itemTitleField="name"
+                                        itemValueField="id"
+                                        label="Class"
+                                        name="ServiceClassId"
+                                        value={
+                                            typeof values.ServiceClassId == "string"
+                                                ? values.ServiceClassId
+                                                : values.ServiceClassId?.id
+                                        }
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.ServiceClassId)}
+                                        fullWidth
+                                    />
+                                    <FieldSelect
+                                        request={getServiceCategories}
+                                        itemTitleField="name"
+                                        itemValueField="id"
+                                        label="Category"
+                                        name="ServiceCategoryId"
+                                        value={
+                                            typeof values.ServiceCategoryId == "string"
+                                                ? values.ServiceCategoryId
+                                                : values.ServiceCategoryId?.id
+                                        }
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.ServiceCategoryId)}
+                                        fullWidth
+                                    />
+                                    {values.ServiceCategoryId && values.ServiceClassId && (
+                                        <LinkSelect
+                                            filterLabel="no"
+                                            path={`/service?ServiceCategoryId=${values.ServiceCategoryId}&ServiceClassId=${values.ServiceClassId}`}
+                                            value={typeof values.ItemId === "string" ? values.ItemId : values.i?.id}
+                                            label={"Service"}
+                                            getOptionList={(resp) => resp.result}
+                                            getOptionLabel={(item) => item?.no}
+                                            getOptionValue={(item) => item?.id}
+                                            onChange={(e, nv) => {
+                                                setFieldValue("ItemId", nv.id);
+                                                setSelectedItem(nv);
+                                            }}
+                                            onBlur={handleBlur}
+                                            url={"/panel/service"}
+                                            error={Boolean(errors.ItemId)}
+                                        />
+                                    )}
+                                    <TextField
+                                        name="quantity"
+                                        label="Period"
+                                        value={values.quantity}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.quantity)}
+                                    />
+                                    <TextField
+                                        name="price"
+                                        label="Price"
+                                        value={values.price}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        error={Boolean(errors.price)}
+                                        InputLabelProps={{ shrink: true }}
+                                    />
+
+                                    <Box display="flex" alignItems="center" justifyContent="center">
+                                        <Button style={{ margin: "0 0.5em" }} type="submit" kind="add">
+                                            Submit
+                                        </Button>
+                                    </Box>
+                                </Box>
+                            </Form>
+                        )}
+                    </Formik>
+                </Box>
+            </Box>
+        </Box>
+    );
+};
 export const AddServiceForm = ({
     itemId,
     handleAddService,
@@ -988,7 +1131,7 @@ export const UpdateForm = ({
     handleBlur: any;
     errors: any;
 }) => {
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <>
@@ -1177,7 +1320,7 @@ export const AddressesForm = ({
     handleBlur: (a: any) => void;
 }) => {
     const [activeTab, setActiveTab] = useState(0);
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <>

@@ -172,7 +172,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
             setSubmitting(false);
         }
     };
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <Formik initialValues={initialValues} validationSchema={schema} onSubmit={handleSubmit}>

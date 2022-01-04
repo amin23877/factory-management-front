@@ -114,7 +114,7 @@ export default function AddQuote({
             setQuote(initialData);
         }
     }, [initialData]);
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <Dialog onClose={onClose} closeOnClickOut={false} open={open} title="Add New Quote" fullScreen maxWidth="md">

@@ -28,7 +28,7 @@ export const GeneralForm = ({
     handleChange: any;
     setFieldValue: any;
 }) => {
-    const phone = useMediaQuery("(max-width:600px)");
+    const phone = useMediaQuery("(max-width:1200px)");
 
     return (
         <>
