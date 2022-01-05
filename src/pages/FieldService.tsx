@@ -84,7 +84,7 @@ export default function FieldService() {
                 </Popover>
             </Portal>
             <Box display="flex">
-                <Box flex={1} px={1}>
+                <Box flex={1}>
                     <Suspense fallback={<LinearProgress />}>
                         {activeTab === 1 && <FRUs />}
                         {activeTab === 2 && <ServiceIndex />}

@@ -350,7 +350,7 @@ export const EntitiesForm = ({
                     disabled
                 />
             </Box>
-            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
+            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} my={1}>
                 <TextField
                     value={values.requesterName}
                     name="requesterName"
@@ -372,8 +372,9 @@ export const EntitiesForm = ({
                     onChange={handleChange}
                     onBlur={handleBlur}
                 />
+                <div style={{ height: "80px", width: "100%" }}></div>
             </Box>
-            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
+            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} my={1}>
                 <FieldSelect
                     label="24 Hour Contact"
                     name="twentyFourContact"
@@ -431,6 +432,7 @@ export const EntitiesForm = ({
                     onBlur={handleBlur}
                     disabled
                 />
+                <div style={{ height: "80px", width: "100%" }}></div>
             </Box>
         </Box>
     );

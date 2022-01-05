@@ -7,10 +7,7 @@ import { Form, Formik } from "formik";
 import BaseDataGrid from "../../../app/BaseDataGrid";
 import { BasePaper } from "../../../app/Paper";
 import Snack from "../../../app/Snack";
-import JobForm, { ContactForm, TechnicianForm } from "./Forms";
-import { EntitiesForm } from "../../Sales/SO/Forms";
-import SODatagrid from "../../Sales/SO/Datagrid";
-
+import JobForm, { ContactForm, TechnicianForm, EntitiesForm } from "./Forms";
 import { ITicket, schema, updateTicket } from "../../../api/ticket";
 
 import { getModifiedValues } from "../../../logic/utils";
@@ -34,7 +31,7 @@ export default function Details({
     const [snack, setSnack] = useState(false);
     const [msg, setMsg] = useState("");
     const [severity, setSeverity] = useState<"success" | "info" | "warning" | "error">("info");
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
     const { data: serviceHistory } = useSWR(activeTab === 0 ? `/ticket?UnitId=${initialValue?.UnitId?.id}` : null);
     const { data: itemDocuments } = useSWR<IDocument[]>(
         activeTab === 1 ? `/document/unit/${initialValue?.UnitId?.id}` : null
@@ -157,7 +154,7 @@ export default function Details({
                 {msg}
             </Snack>
 
-            <Box display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 1fr"} gridGap={10}>
+            <Box display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 1fr"} gridGap={10} flex={1}>
                 <Formik initialValues={initialValue} validationSchema={schema} onSubmit={handleSubmit}>
                     {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
                         <Form>
@@ -182,7 +179,7 @@ export default function Details({
                                         value={moreActiveTab}
                                         textColor="primary"
                                         variant="scrollable"
-                                        style={phone ? { maxWidth: "83vw" } : {}}
+                                        style={phone ? { maxWidth: "calc(100vw - 63px)" } : {}}
                                         scrollButtons={phone ? "on" : "auto"}
                                     >
                                         <Tab label="Contact" />
@@ -218,11 +215,15 @@ export default function Details({
                         </Form>
                     )}
                 </Formik>
-                <Box>
+                <Box width="100%">
                     <BasePaper>
                         <Tabs
                             variant="scrollable"
-                            style={phone ? { maxWidth: "80vw", marginBottom: "10px" } : { marginBottom: "10px" }}
+                            style={
+                                phone
+                                    ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" }
+                                    : { marginBottom: "10px" }
+                            }
                             scrollButtons={phone ? "on" : "auto"}
                             value={activeTab}
                             onChange={(e, nv) => setActiveTab(nv)}

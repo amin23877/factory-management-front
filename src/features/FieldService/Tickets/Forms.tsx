@@ -2,27 +2,19 @@ import React, { useState } from "react";
 import { Box, FormControlLabel, Checkbox, useMediaQuery } from "@material-ui/core";
 import DateTimePicker from "../../../app/DateTimePicker";
 
-import { Autocomplete } from "@material-ui/lab";
-import { Form } from "formik";
-import useSWR from "swr";
-
 import Button from "../../../app/Button";
-import { ArraySelect, FieldSelect } from "../../../app/Inputs";
-import { getAllModelContact, getContacts } from "../../../api/contact";
-import { getSO } from "../../../api/so";
-import { ILineService } from "../../../api/lineService";
-import { getCustomers } from "../../../api/customer";
+import { FieldSelect } from "../../../app/Inputs";
+
 import { getPO } from "../../../api/po";
 import { getTicketStatus } from "../../../api/ticketStatus";
 import { getTicketTags } from "../../../api/ticketTag";
 import { getTicketCategory } from "../../../api/ticketCategory";
-import { getQuotes } from "../../../api/quote";
 import TextField from "../../../app/TextField";
 import { getAllEmployees } from "../../../api/employee";
-import { getAllUnits } from "../../../api/units";
-import { getItems } from "../../../api/items";
 import LinkSelect from "../../../app/Inputs/LinkFields";
 import { formatTimestampToDate } from "../../../logic/date";
+import { getAllModelContact } from "../../../api/contact";
+import { getCustomers } from "../../../api/customer";
 
 export default function TicketForm({
     values,
@@ -39,11 +31,7 @@ export default function TicketForm({
     handleDelete?: () => void;
     setFieldValue: (a: any, b: any) => void;
 }) {
-    const [selectedLineService, setSelectedLineService] = useState<ILineService>(values.LineServiceRecordId);
-    const [SOId, setSOId] = useState<string>(values.LineServiceRecordId?.SOId);
-    const { data: services } = useSWR(SOId ? `/lineservice?SOId=${SOId}` : null);
-    const phone = useMediaQuery("(max-width:1200px)");
-
+    const phone = useMediaQuery("(max-width:900px)");
     return (
         <>
             <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"} style={{ gap: 10 }}>
@@ -102,7 +90,7 @@ export default function TicketForm({
                 />
                 <TextField name="number" value={values.number} label="Ticket Number" disabled />
                 <LinkSelect
-                    value={typeof values.SOId === "string" ? values.SOId : values.SOId}
+                    value={values.UnitId.SOId}
                     label="SO ID"
                     path="/so"
                     filterLabel="number"
@@ -111,7 +99,6 @@ export default function TicketForm({
                     getOptionValue={(so) => so?.id}
                     onChange={(e, nv) => {
                         setFieldValue("SOId", nv?.id);
-                        setSOId(nv.id);
                     }}
                     onBlur={handleBlur}
                     url="/panel/so"
@@ -128,7 +115,7 @@ export default function TicketForm({
                     disabled
                 />
                 <LinkSelect
-                    value={typeof values.UnitId === "string" ? values.UnitId : values.UnitId?.id}
+                    value={values.UnitId.id}
                     label="Unit"
                     path="/unit"
                     filterLabel="number"
@@ -140,9 +127,10 @@ export default function TicketForm({
                     }}
                     onBlur={handleBlur}
                     url="/panel/production"
+                    choseItem={values.UnitId}
                 />
-                <TextField value={values.WarrantyId.number} label="Warranty" disabled />
-                <TextField value={formatTimestampToDate(values.WarrantyId.endDate)} label="Exp. Date" disabled />
+                <TextField value={values.WarrantyId?.number} label="Warranty" disabled />
+                <TextField value={formatTimestampToDate(values.WarrantyId?.endDate)} label="Exp. Date" disabled />
                 <FieldSelect
                     value={typeof values.assigneeId === "string" ? values.assigneeId : values.assigneeId?.id}
                     request={getAllEmployees}
@@ -233,6 +221,200 @@ export default function TicketForm({
         </>
     );
 }
+export const EntitiesForm = ({
+    handleChange,
+    handleBlur,
+    values,
+    setFieldValue,
+}: {
+    values: any;
+    handleChange: (a: any) => void;
+    handleBlur: (a: any) => void;
+    setFieldValue: any;
+}) => {
+    const phone = useMediaQuery("(max-width:1200px)");
+
+    return (
+        <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"} gridColumnGap={10}>
+            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} my={1}>
+                <LinkSelect
+                    value={typeof values.repId === "string" ? values.repId : values.repId?.id}
+                    label="rep / Agency"
+                    path="/customer"
+                    filterLabel="name"
+                    request={getCustomers}
+                    getOptionList={(resp) => resp?.result}
+                    getOptionLabel={(cus) => cus?.name}
+                    getOptionValue={(cus) => cus?.id}
+                    onChange={(e, nv) => {
+                        setFieldValue("repId", nv?.id);
+                    }}
+                    onBlur={handleBlur}
+                    choseItem={values.repId}
+                    url="/panel/customer"
+                />
+
+                <TextField value={values.repId?.address} label="Address" disabled />
+                <TextField
+                    value={values.repId?.city}
+                    name="city"
+                    label="City"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled
+                />
+                <TextField
+                    value={values.repId?.state}
+                    name="state"
+                    label="State"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled
+                />
+                <TextField
+                    value={values.repId?.zipcode}
+                    name="zipCode"
+                    label="Zip Code"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled
+                />
+            </Box>
+            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} my={1}>
+                <LinkSelect
+                    value={typeof values.clientId === "string" ? values.clientId : values.clientId?.id}
+                    label="clientId"
+                    request={getCustomers}
+                    getOptionList={(resp) => resp?.result}
+                    getOptionLabel={(cus) => cus?.name}
+                    getOptionValue={(cus) => cus?.id}
+                    onChange={(e, nv) => {
+                        setFieldValue("clientId", nv?.id);
+                    }}
+                    onBlur={handleBlur}
+                    url="/panel/customer"
+                    path="/customer"
+                    filterLabel="name"
+                    choseItem={values.clientId}
+                />
+                <TextField
+                    value={values.contact}
+                    name="contact"
+                    label="Contact Name"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.email}
+                    name="email"
+                    label="Email"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.phone}
+                    name="phone"
+                    label="Phone"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.unitPricingLevel}
+                    name="Unit Pricing Level"
+                    label="Unit Pricing Level"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled
+                />
+            </Box>
+            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} my={1}>
+                <TextField
+                    value={values.requesterName}
+                    name="requesterName"
+                    label="requesterName"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.requesterMail}
+                    name="requesterMail"
+                    label="requesterMail"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                <TextField
+                    value={values.requesterPhone}
+                    name="requesterPhone"
+                    label="requesterPhone"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                />
+                {!phone && <div style={{ height: "80px", width: "100%" }}></div>}
+            </Box>
+            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} my={1}>
+                <FieldSelect
+                    label="24 Hour Contact"
+                    name="twentyFourContact"
+                    request={
+                        typeof values.clientId === "string"
+                            ? () => getAllModelContact("customer", values.clientId)
+                            : () => getAllModelContact("customer", values.clientId?.id)
+                    }
+                    itemTitleField="lastName"
+                    itemValueField="id"
+                    value={
+                        typeof values.twentyFourContact === "string"
+                            ? values.twentyFourContact
+                            : values.twentyFourContact?.id
+                    }
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled={!values.clientId}
+                />
+                <FieldSelect
+                    label="Phone"
+                    name="twentyFourContact"
+                    request={
+                        typeof values.clientId === "string"
+                            ? () => getAllModelContact("customer", values.clientId)
+                            : () => getAllModelContact("customer", values.clientId?.id)
+                    }
+                    itemTitleField="phone"
+                    itemValueField="id"
+                    value={
+                        typeof values.twentyFourContact === "string"
+                            ? values.twentyFourContact
+                            : values.twentyFourContact?.id
+                    }
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled
+                />
+                <FieldSelect
+                    label="Email"
+                    name="twentyFourContact"
+                    request={
+                        typeof values.clientId === "string"
+                            ? () => getAllModelContact("customer", values.clientId)
+                            : () => getAllModelContact("customer", values.clientId?.id)
+                    }
+                    itemTitleField="email"
+                    itemValueField="id"
+                    value={
+                        typeof values.twentyFourContact === "string"
+                            ? values.twentyFourContact
+                            : values.twentyFourContact?.id
+                    }
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    disabled
+                />
+                {!phone && <div style={{ height: "80px", width: "100%" }}></div>}
+            </Box>
+        </Box>
+    );
+};
+
 export function TechnicianForm({
     values,
     errors,
