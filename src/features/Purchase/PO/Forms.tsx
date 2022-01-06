@@ -399,7 +399,7 @@ export const LinesForm = ({
                                     }}
                                     style={{ marginBottom: "10px" }}
                                 >
-                                    Add Field Service
+                                    Add Service
                                 </Button>
                                 <Table>
                                     <TableHead style={{ backgroundColor: "#373a4d", color: "white" }}>
