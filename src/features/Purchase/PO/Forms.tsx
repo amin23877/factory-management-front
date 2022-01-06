@@ -297,7 +297,7 @@ export const LinesForm = ({
         quantity: Yup.number().required().min(1),
         price: Yup.number().required(),
     });
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <BasePaper style={phone ? { height: "80vh", overflow: "auto" } : { overflow: "auto", height: "100%" }}>
@@ -511,16 +511,10 @@ export const LinesForm = ({
                                                         {item.quantity}
                                                     </TableCell>
                                                     <TableCell>{item.price}</TableCell>
-                                                    <TableCell
-                                                        className={item.belongsTo ? classes.root : ""}
-                                                        // style={{ padding: "2px" }}
-                                                    >
+                                                    <TableCell className={item.belongsTo ? classes.root : ""}>
                                                         {item.tax ? <CheckRounded /> : <ClearRounded />}
                                                     </TableCell>
-                                                    <TableCell
-                                                        className={item.belongsTo ? classes.root : ""}
-                                                        // style={{ padding: "0px" }}
-                                                    >
+                                                    <TableCell className={item.belongsTo ? classes.root : ""}>
                                                         {item.quantity * item.price}
                                                     </TableCell>
                                                     <TableCell className={item.belongsTo ? classes.root : ""}>
@@ -1131,7 +1125,7 @@ export const UpdateForm = ({
     handleBlur: any;
     errors: any;
 }) => {
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <>
@@ -1320,7 +1314,7 @@ export const AddressesForm = ({
     handleBlur: (a: any) => void;
 }) => {
     const [activeTab, setActiveTab] = useState(0);
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <>

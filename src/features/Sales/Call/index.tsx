@@ -24,7 +24,7 @@ export default function Calls() {
     const [addCall, setAddCall] = useState(false);
     const [confirm, setConfirm] = useState(false);
     const [CTagModal, setCTagModal] = useState(false);
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     const handleDelete = async () => {
         try {

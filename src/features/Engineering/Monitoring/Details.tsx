@@ -72,7 +72,7 @@ function ItemsDetails({ selectedRow }: { selectedRow: IMonitorRule }) {
         ];
         return res;
     }, []);
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <>

@@ -27,7 +27,7 @@ export default function Customers() {
     const [selectedRow, setSelectedRow] = useState<ICustomer>();
     const [conf, setConf] = useState(false);
     const [req, setReq] = useState(false);
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     const handleDelete = async () => {
         try {

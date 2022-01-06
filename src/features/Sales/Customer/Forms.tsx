@@ -54,7 +54,7 @@ export const GeneralForm = ({
             changeTab(2);
         }
     };
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <>
@@ -254,7 +254,7 @@ export const MoreInfoForm = ({
     handleBlur: any;
     handleChange: any;
 }) => {
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <Box

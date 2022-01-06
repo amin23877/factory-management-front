@@ -127,7 +127,7 @@ export default function ClientDetails({
         { field: "main", headerName: "Main", type: "boolean" },
         { field: "active", headerName: "Active", type: "boolean" },
     ];
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <Box>
@@ -184,7 +184,7 @@ export default function ClientDetails({
                                             onChange={(e, nv) => setActiveSubTab(nv)}
                                             variant="scrollable"
                                             scrollButtons={phone ? "on" : "auto"}
-                                            style={phone ? { maxWidth: "83vw" } : {}}
+                                            style={phone ? { maxWidth: "calc(100vw - 63px)" } : {}}
                                         >
                                             <Tab label="More Info" />
                                             <Tab label="Main Contact" />
@@ -228,7 +228,7 @@ export default function ClientDetails({
                                     textColor="primary"
                                     onChange={(e, v) => setActiveTab(v)}
                                     variant="scrollable"
-                                    style={phone ? { maxWidth: "87vw" } : {}}
+                                    style={phone ? { maxWidth: "calc(100vw - 63px)" } : {}}
                                     scrollButtons={phone ? "on" : "auto"}
                                 >
                                     <Tab label="Contacts" />

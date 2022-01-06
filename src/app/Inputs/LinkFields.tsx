@@ -66,7 +66,7 @@ export default function LinkField({
     const [refresh, setRefresh] = useState<any>();
     const classes = useStyles();
 
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
     const history = useHistory();
 
     const fetchData = useCallback(() => {

@@ -225,7 +225,7 @@ export const GeneralForm = ({
     handleBlur: (a: any) => void;
     setFieldValue: any;
 }) => {
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <>
@@ -375,7 +375,7 @@ export const EntitiesTab = ({
     handleBlur: (a: any) => void;
     setFieldValue: any;
 }) => {
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
     const [rep, setRep] = useState<ICustomer>();
     const [client, setClient] = useState<ICustomer>();
     return (

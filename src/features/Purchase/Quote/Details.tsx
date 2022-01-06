@@ -82,7 +82,7 @@ export default function Details({
             console.log(e);
         }
     };
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <>
@@ -214,7 +214,11 @@ export default function Details({
                             textColor="primary"
                             variant="scrollable"
                             scrollButtons={phone ? "on" : "auto"}
-                            style={phone ? { maxWidth: "83vw", marginBottom: "1em" } : { marginBottom: "1em" }}
+                            style={
+                                phone
+                                    ? { maxWidth: "calc(100vw - 63px)", marginBottom: "1em" }
+                                    : { marginBottom: "1em" }
+                            }
                         >
                             <Tab label="Line Items" />
                             <Tab label="Documents" />

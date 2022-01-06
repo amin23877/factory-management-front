@@ -158,7 +158,7 @@ function NewDataGrid({
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [columnsState, setColumnsState] = useState<any[]>(columns.map((c) => ({ ...c, visible: true })));
     const classes = useStyle();
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     useEffect(() => {
         setColumnsState(columns.map((c) => ({ ...c, visible: true })));

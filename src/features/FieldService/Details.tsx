@@ -39,7 +39,7 @@ export default function FieldServiceDetails({
             console.log(error);
         }
     };
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <Box display="flex" style={{ gap: 5 }} flex={1} flexDirection={phone ? "column" : "row"}>

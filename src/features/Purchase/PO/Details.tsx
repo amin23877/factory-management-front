@@ -103,7 +103,7 @@ export default function Details({
             console.log(error);
         }
     };
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <>
@@ -165,7 +165,7 @@ export default function Details({
                                             scrollButtons={phone ? "on" : "auto"}
                                             style={
                                                 phone
-                                                    ? { maxWidth: "83vw", marginBottom: "1em" }
+                                                    ? { maxWidth: "calc(100vw - 63px)", marginBottom: "1em" }
                                                     : { marginBottom: "1em" }
                                             }
                                         >
@@ -212,7 +212,11 @@ export default function Details({
                             onChange={(e, nv) => setActiveTab(nv)}
                             variant="scrollable"
                             scrollButtons={phone ? "on" : "auto"}
-                            style={phone ? { maxWidth: "83vw", marginBottom: "1em" } : { marginBottom: "1em" }}
+                            style={
+                                phone
+                                    ? { maxWidth: "calc(100vw - 63px)", marginBottom: "1em" }
+                                    : { marginBottom: "1em" }
+                            }
                         >
                             {/* Line Items	Documents	Receiving	Notes	Auditing */}
                             <Tab label="Line items" />

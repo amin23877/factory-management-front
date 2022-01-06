@@ -90,7 +90,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
             console.log(error);
         }
     }, [selectedItem]);
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <BasePaper>

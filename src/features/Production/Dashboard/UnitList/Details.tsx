@@ -38,7 +38,7 @@ const schema = Yup.object().shape({
 
 function Details({ unit }: { unit: IUnit }) {
     let history = useHistory();
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     const handleSubmit = async (data: any) => {
         try {
@@ -198,7 +198,9 @@ function Details({ unit }: { unit: IUnit }) {
                                     onChange={(e, nv) => setInfoActiveTab(nv)}
                                     variant="scrollable"
                                     style={
-                                        phone ? { maxWidth: "80vw", marginBottom: "10px" } : { marginBottom: "10px" }
+                                        phone
+                                            ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" }
+                                            : { marginBottom: "10px" }
                                     }
                                     scrollButtons={phone ? "on" : "auto"}
                                 >
@@ -302,7 +304,7 @@ function Details({ unit }: { unit: IUnit }) {
                     onChange={(e, nv) => setGridActiveTab(nv)}
                     textColor="primary"
                     variant="scrollable"
-                    style={phone ? { maxWidth: "80vw", marginBottom: "10px" } : { marginBottom: "10px" }}
+                    style={phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" } : { marginBottom: "10px" }}
                     scrollButtons={phone ? "on" : "auto"}
                 >
                     <Tab label="Warranties" />

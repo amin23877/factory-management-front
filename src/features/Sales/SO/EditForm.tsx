@@ -29,7 +29,7 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
             console.log(error);
         }
     };
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <Formik initialValues={selectedSo} onSubmit={handleSubmit}>
@@ -60,7 +60,7 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                                 value={activeTab}
                                 onChange={(e, nv) => setActiveTab(nv)}
                                 variant="scrollable"
-                                style={phone ? { maxWidth: "80vw" } : { maxWidth: 700 }}
+                                style={phone ? { maxWidth: "calc(100vw - 80px)" } : { maxWidth: 700 }}
                             >
                                 <Tab label="Approvals" />
                                 <Tab label="Accounting" />

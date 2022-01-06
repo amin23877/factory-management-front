@@ -304,7 +304,7 @@ function ItemsDetails({
             console.log(error);
         }
     };
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     if (!selectedRow) {
         return <LinearProgress />;
@@ -383,7 +383,9 @@ function ItemsDetails({
                                             variant="scrollable"
                                             scrollButtons={phone ? "on" : "auto"}
                                             style={
-                                                phone ? { maxWidth: "83vw", marginBottom: 16 } : { marginBottom: 16 }
+                                                phone
+                                                    ? { maxWidth: "calc(100vw - 63px)", marginBottom: 16 }
+                                                    : { marginBottom: 16 }
                                             }
                                             textColor="primary"
                                             onChange={(e, v) => setMoreInfoTab(v)}
@@ -451,7 +453,9 @@ function ItemsDetails({
                                                 textColor="primary"
                                                 variant="scrollable"
                                                 scrollButtons={phone ? "on" : "auto"}
-                                                style={phone ? { maxWidth: "83vw" } : { maxWidth: "50vw" }}
+                                                style={
+                                                    phone ? { maxWidth: "calc(100vw - 63px)" } : { maxWidth: "50vw" }
+                                                }
                                             >
                                                 <Tab label="Design documents" /> 0
                                                 <Tab label="BOM" /> 1
@@ -474,7 +478,9 @@ function ItemsDetails({
                                                 textColor="primary"
                                                 variant="scrollable"
                                                 scrollButtons={phone ? "on" : "auto"}
-                                                style={phone ? { maxWidth: "83vw" } : { maxWidth: "50vw" }}
+                                                style={
+                                                    phone ? { maxWidth: "calc(100vw - 63px)" } : { maxWidth: "50vw" }
+                                                }
                                             >
                                                 <Tab label="Design documents" />
                                                 <Tab label="Services" />

@@ -125,14 +125,14 @@ export const GeneralForm = ({
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedQuote]);
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <>
             <Box
                 display="grid"
                 gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"}
-                gridColumnGap={10}
+                gridColumnGap={phone ? 5 : 10}
                 gridRowGap={10}
             >
                 <TextField
@@ -255,7 +255,7 @@ export const EntitiesForm = ({
     handleBlur: (a: any) => void;
     setFieldValue: any;
 }) => {
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"} gridColumnGap={10}>
@@ -750,17 +750,30 @@ export const ApprovalForm = ({
     handleBlur: (a: any) => void;
     setFieldValue: any;
 }) => {
+    const phone = useMediaQuery("(max-width:900px)");
+
     return (
         <>
             <Paper
-                style={{
-                    margin: "1em 0",
-                    padding: "0 0.5em 0 1em",
-                    backgroundColor: "#eee",
-                    gridColumnEnd: "span 4",
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                }}
+                style={
+                    phone
+                        ? {
+                              margin: "1em 0",
+                              padding: "0 0.5em 0 1em",
+                              backgroundColor: "#eee",
+                              gridColumnEnd: "span 4",
+                              display: "grid",
+                              gridTemplateColumns: "1fr",
+                          }
+                        : {
+                              margin: "1em 0",
+                              padding: "0 0.5em 0 1em",
+                              backgroundColor: "#eee",
+                              gridColumnEnd: "span 4",
+                              display: "grid",
+                              gridTemplateColumns: "1fr 1fr",
+                          }
+                }
             >
                 <FormControlLabel
                     name="releaseToProduction"

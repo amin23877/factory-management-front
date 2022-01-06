@@ -292,7 +292,7 @@ function ItemsDetails({
             console.log(error);
         }
     };
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     if (!selectedRow) {
         return <LinearProgress />;
@@ -330,13 +330,14 @@ function ItemsDetails({
 
             <Formik initialValues={selectedRow} validationSchema={AddItemSchema} onSubmit={handleSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
-                    <Form>
+                    <Form style={{ flex: 1, display: "flex" }}>
                         <Box
                             pb="8px"
                             display="grid"
                             gridTemplateColumns={phone ? "1fr" : "1fr 2fr"}
                             gridTemplateRows={phone ? "" : "1fr"}
                             gridGap={10}
+                            flex={1}
                         >
                             <Box display="flex" flexDirection="column" gridGap={5}>
                                 <BasePaper>
@@ -365,7 +366,7 @@ function ItemsDetails({
                                         scrollButtons={phone ? "on" : "auto"}
                                         style={
                                             phone
-                                                ? { marginBottom: 16, maxWidth: "83vw" }
+                                                ? { marginBottom: 16, maxWidth: "calc(100vw - 63px)" }
                                                 : { marginBottom: 16, maxWidth: "35vw" }
                                         }
                                         textColor="primary"
@@ -536,7 +537,7 @@ function ItemsDetails({
                                     textColor="primary"
                                     variant="scrollable"
                                     scrollButtons={phone ? "on" : "auto"}
-                                    style={phone ? { maxWidth: "83vw" } : {}}
+                                    style={phone ? { maxWidth: "calc(100vw - 63px)" } : {}}
                                 >
                                     <Tab label="Document" /> 0
                                     {boms?.length === 0 ? <Tab label="Vendor" /> : <Tab label="BOM" />}

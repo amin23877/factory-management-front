@@ -132,7 +132,7 @@ function Details({ unit }: { unit: IUnit }) {
         ],
         []
     );
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <>
@@ -182,7 +182,7 @@ function Details({ unit }: { unit: IUnit }) {
                                         scrollButtons={phone ? "on" : "auto"}
                                         style={
                                             phone
-                                                ? { maxWidth: "83vw", marginBottom: "10px" }
+                                                ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" }
                                                 : { marginBottom: "10px" }
                                         }
                                     >
@@ -270,7 +270,11 @@ function Details({ unit }: { unit: IUnit }) {
                             onChange={(e, nv) => setGridActiveTab(nv)}
                             variant="scrollable"
                             scrollButtons={phone ? "on" : "auto"}
-                            style={phone ? { maxWidth: "83vw", marginBottom: "10px" } : { marginBottom: "10px" }}
+                            style={
+                                phone
+                                    ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" }
+                                    : { marginBottom: "10px" }
+                            }
                         >
                             <Tab label="Phocus Monitor" />
                             <Tab label="Warranties" />
