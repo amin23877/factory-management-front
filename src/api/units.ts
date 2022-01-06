@@ -22,6 +22,7 @@ export interface IUnit {
     options: any[];
     photo: any[];
     data: any;
+    serialNumber: string;
 }
 
 export interface IUnitHistory {

@@ -207,6 +207,7 @@ function Details({ unit }: { unit: IUnit }) {
                                     <Tab label="Unit Info" />
                                     <Tab label="Options" />
                                     <Tab label="Battery Info" />
+                                    <Tab label="Service QR Code" />
                                 </Tabs>
                                 {infoActiveTab === 0 && (
                                     <Box
@@ -218,7 +219,7 @@ function Details({ unit }: { unit: IUnit }) {
                                         flexDirection="column"
                                         gridGap={10}
                                     >
-                                        {unit?.item?.photo && (
+                                        {unit?.ItemId?.photo && (
                                             <img
                                                 style={{
                                                     maxWidth: "100%",
@@ -227,7 +228,7 @@ function Details({ unit }: { unit: IUnit }) {
                                                     margin: "0px auto",
                                                 }}
                                                 alt=""
-                                                src={`http://${host}${unit?.item?.photo}`}
+                                                src={`http://${host}${unit?.ItemId?.photo}`}
                                             />
                                         )}
                                     </Box>
@@ -236,8 +237,8 @@ function Details({ unit }: { unit: IUnit }) {
                                     <Box mt={1} display="flex" justifyContent="space-around" alignItems="center">
                                         <div ref={(e) => (qrCode.current = e)} style={{ flex: 1 }}>
                                             <MyQRCode value={String(unit.number)} />
-                                            <Typography variant="subtitle1">Unit Number: {unit.item.no}</Typography>
-                                            <Typography variant="subtitle1">Unit Name: {unit.item.name}</Typography>
+                                            <Typography variant="subtitle1">Unit Number: {unit.ItemId.no}</Typography>
+                                            <Typography variant="subtitle1">Unit Name: {unit.ItemId.name}</Typography>
                                             <Typography variant="subtitle1">Sales Order NO.: {unit.number}</Typography>
                                         </div>
                                         <Button
@@ -281,6 +282,25 @@ function Details({ unit }: { unit: IUnit }) {
                                             onRowSelected={() => {}}
                                         />
                                     </Fragment>
+                                )}
+                                {infoActiveTab === 5 && (
+                                    <Box mt={1} display="flex" justifyContent="space-around" alignItems="center">
+                                        <div ref={(e) => (qrCode.current = e)} style={{ flex: 1 }}>
+                                            <MyQRCode
+                                                value={`https://phazify.com/dspm/servicerequest?serial=${unit.serialNumber}`}
+                                            />
+                                        </div>
+                                        <Button
+                                            variant="contained"
+                                            onClick={async () => {
+                                                if (qrCode.current) {
+                                                    await exportPdf(qrCode.current);
+                                                }
+                                            }}
+                                        >
+                                            Print
+                                        </Button>
+                                    </Box>
                                 )}
                             </BasePaper>
                         </Box>
