@@ -17,13 +17,13 @@ const useStyles = makeStyles({
     },
 });
 
-export function CustomFooterStatusComponent({ submited }: { submited: boolean }) {
+export function CustomFooterStatusComponent({ submitted }: { submitted: boolean }) {
     const classes = useStyles();
 
     return (
         <div className={classes.root}>
-            <FiberManualRecordIcon fontSize="small" className={!submited ? classes.green : classes.red} />
-            {!submited ? "Submited" : "Not submited"}
+            <FiberManualRecordIcon fontSize="small" className={!submitted ? classes.green : classes.red} />
+            {!submitted ? "Submitted" : "Not submitted"}
         </div>
     );
 }

@@ -26,7 +26,7 @@ import {
 import StepTable from "./StepTable";
 import { ArraySelect } from "../../../app/Inputs";
 import { useEffect } from "react";
-import { extractPartNames } from "../../../logic/matrice";
+import { extractPartNames } from "../../../logic/matrix";
 
 interface ITaskModal {
     open: boolean;
@@ -39,7 +39,7 @@ interface ITaskModal {
 
 export const Manufacturing = ({ open, onClose, itemId, device, onDone, task }: ITaskModal) => {
     const { data: tableData } = useSWR(
-        device['Product Family'] ? `/matrice?productfamily=${device["Product Family"]}` : null
+        device["Product Family"] ? `/matrice?productfamily=${device["Product Family"]}` : null
     );
 
     const [parts, setParts] = useState<string[]>();

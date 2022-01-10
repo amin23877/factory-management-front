@@ -1,6 +1,6 @@
-import {GridColumns} from "@material-ui/data-grid";
+import { GridColumns } from "@material-ui/data-grid";
 
-import {splitLevelName} from "./levels";
+import { splitLevelName } from "./levels";
 
 export const splitColumnNames = (columns: GridColumns) => {
     const temp = [...columns];
@@ -13,18 +13,18 @@ export const generateRows = (tableData: any[], productFamily: string) => {
         const levels = item.row;
 
         const parts = item.data.reduce((obj: any, part: any) => {
-            return {...obj, [part.name || ""]: part.partNumber} as any;
+            return { ...obj, [part.name || ""]: part.partNumber } as any;
         }, {});
 
         const usages = item.data.reduce((obj: any, part: any) => {
-            return {...obj, [part.name || ""]: part.usage} as any;
+            return { ...obj, [part.name || ""]: part.usage } as any;
         }, {});
 
-        return {id: i, ...levels, ...parts, "Product family": productFamily, usages, name:item.name};
+        return { id: i, ...levels, ...parts, "Product family": productFamily, usages, name: item.name };
     });
 };
 
-export const generateDatagridColumns = (tableData: any[], productFamily: string) => {
+export const generateDataGridColumns = (tableData: any[], productFamily: string) => {
     const dtCols: GridColumns = [];
     const cols = extractColumns(tableData, productFamily);
 
@@ -33,14 +33,14 @@ export const generateDatagridColumns = (tableData: any[], productFamily: string)
             c !== "Product family" &&
             c !== "usages" &&
             c !== "name" &&
-            dtCols.push({field: c, flex: 1, sortable: false, editable: false})
+            dtCols.push({ field: c, flex: 1, sortable: false, editable: false })
     );
 
-    if(dtCols[0] && dtCols[0].hide){
+    if (dtCols[0] && dtCols[0].hide) {
         dtCols[0].hide = true;
     }
-    dtCols.unshift({field: "Product family", flex: 1, sortable: false, editable: false});
-    dtCols.unshift({field: "name", flex: 1, headerName: "Name", sortable: false, editable: false});
+    dtCols.unshift({ field: "Product family", flex: 1, sortable: false, editable: false });
+    dtCols.unshift({ field: "name", flex: 1, headerName: "Name", sortable: false, editable: false });
 
     return dtCols;
 };
@@ -57,7 +57,7 @@ export const extractColumns = (tableData: any[], productFamily: string) => {
 export const extractLevels = (tableData: any[]) => {
     const levels = new Set<string>();
 
-    const rows = tableData.map((item) => ({...item.row}));
+    const rows = tableData.map((item) => ({ ...item.row }));
 
     rows.map((r) => Object.keys(r).map((k) => levels.add(k)));
     return Array.from(levels);
@@ -66,8 +66,8 @@ export const extractLevels = (tableData: any[]) => {
 export const extractPartNames = (tableData: any[]) => {
     const parts = new Set<string>();
 
-    const datas = tableData.map((item) => ({...item.data}));
+    const datas = tableData.map((item) => ({ ...item.data }));
 
-    datas.forEach((data: any) => Object.keys(data).forEach((r: any) => parts.add(data[r].name)))
+    datas.forEach((data: any) => Object.keys(data).forEach((r: any) => parts.add(data[r].name)));
     return Array.from(parts);
 };

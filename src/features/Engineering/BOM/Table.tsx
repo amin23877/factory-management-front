@@ -9,11 +9,10 @@ import RenamePart from "./RenamePart";
 
 import Button from "../../../app/Button";
 import Toast from "../../../app/Toast";
-import { BasePaper } from "../../../app/Paper";
 
-import { IMatrice, postMatriceData } from "../../../api/matrice";
+import { IMatrix, postMatrixData } from "../../../api/matrix";
 import { CustomFooterStatusComponent } from "../../../components/Datagrid/FooterStatus";
-import { splitColumnNames, extractLevels, generateDatagridColumns, generateRows } from "../../../logic/matrice";
+import { splitColumnNames, extractLevels, generateDataGridColumns, generateRows } from "../../../logic/matrix";
 
 const useStyles = makeStyles({
     root: {
@@ -24,7 +23,7 @@ const useStyles = makeStyles({
 });
 
 export default function NewBomTable({ productFamily }: { productFamily: string }) {
-    const { data: tableData, mutate: mutateTableData } = useSWR<IMatrice>(`/matrice?productfamily=${productFamily}`);
+    const { data: tableData, mutate: mutateTableData } = useSWR<IMatrix>(`/matrice?productfamily=${productFamily}`);
 
     const classes = useStyles();
 
@@ -46,12 +45,12 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
         if (tableData) {
             const levels = extractLevels(tableData);
             const rows = generateRows(tableData, productFamily);
-            const columns = splitColumnNames(generateDatagridColumns(tableData, productFamily));
+            const columns = splitColumnNames(generateDataGridColumns(tableData, productFamily));
 
             setTable({ columns, rows });
             setLevels(levels);
         }
-    }, [tableData]);
+    }, [productFamily, tableData]);
 
     const handleAddPart = (name: string) => {
         setTable((prev) => ({ ...prev, columns: [...prev.columns, { field: name, flex: 1, sortable: false }] }));
@@ -70,7 +69,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
 
         const row = JSON.parse(JSON.stringify(d));
 
-        Object.keys(row.row).map((r) => {
+        Object.keys(row.row).forEach((r) => {
             if (!levels?.includes(r)) {
                 delete row.row[r];
             }
@@ -102,10 +101,10 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
 
     const submitChanges = async () => {
         try {
-            await postMatriceData(productFamily, { lines });
+            await postMatrixData(productFamily, { lines });
             mutateTableData();
 
-            Toast("Submited", "success");
+            Toast("Submitted", "success");
             setLines(undefined);
         } catch (error) {
             console.log(error);
@@ -153,7 +152,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
                             columns={table.columns}
                             rows={table.rows}
                             components={{ Toolbar: GridToolbar, Footer: CustomFooterStatusComponent }}
-                            componentsProps={{ footer: { submited: Boolean(lines) } }}
+                            componentsProps={{ footer: { submitted: Boolean(lines) } }}
                             onColumnHeaderClick={(params) => {
                                 setSelectedPart({ formerName: params.field, newName: "" });
                                 setRenamePart(true);
