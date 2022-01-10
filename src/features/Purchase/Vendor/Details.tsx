@@ -135,7 +135,7 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
         { field: "main", headerName: "Main", width: 80, type: "boolean" },
         { field: "active", headerName: "Active", width: 80, type: "boolean" },
     ];
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <>
@@ -174,7 +174,11 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                             textColor="primary"
                             variant="scrollable"
                             scrollButtons={phone ? "on" : "auto"}
-                            style={phone ? { maxWidth: "83vw", marginBottom: "1em" } : { marginBottom: "1em" }}
+                            style={
+                                phone
+                                    ? { maxWidth: "calc(100vw - 63px)", marginBottom: "1em" }
+                                    : { marginBottom: "1em" }
+                            }
                         >
                             <Tab label="Items" /> 0
                             <Tab label="Documents" /> 1

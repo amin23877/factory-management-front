@@ -141,7 +141,7 @@ function Details({ up }: { up: any }) {
         ],
         []
     );
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <>
@@ -178,7 +178,7 @@ function Details({ up }: { up: any }) {
                                         variant="scrollable"
                                         style={
                                             phone
-                                                ? { maxWidth: "80vw", marginBottom: "10px" }
+                                                ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" }
                                                 : { marginBottom: "10px" }
                                         }
                                         scrollButtons={phone ? "on" : "auto"}
@@ -304,7 +304,7 @@ function Details({ up }: { up: any }) {
                                             variant="scrollable"
                                             style={
                                                 phone
-                                                    ? { maxWidth: "80vw", marginBottom: "10px" }
+                                                    ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" }
                                                     : { marginBottom: "10px", maxWidth: "700px" }
                                             }
                                             scrollButtons={phone ? "on" : "auto"}

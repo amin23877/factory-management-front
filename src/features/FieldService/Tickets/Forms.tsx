@@ -15,6 +15,7 @@ import LinkSelect from "../../../app/Inputs/LinkFields";
 import { formatTimestampToDate } from "../../../logic/date";
 import { getAllModelContact } from "../../../api/contact";
 import { getCustomers } from "../../../api/customer";
+import useSWR from "swr";
 
 export default function TicketForm({
     values,
@@ -32,6 +33,8 @@ export default function TicketForm({
     setFieldValue: (a: any, b: any) => void;
 }) {
     const phone = useMediaQuery("(max-width:900px)");
+    const { data: item } = useSWR(`/item/${values.UnitId?.ItemId}`);
+
     return (
         <>
             <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"} style={{ gap: 10 }}>
@@ -102,6 +105,8 @@ export default function TicketForm({
                     }}
                     onBlur={handleBlur}
                     url="/panel/so"
+                    disabled
+                    choseItem={{ id: values.UnitId.SOId, number: values.originalSONo }}
                 />
                 <LinkSelect
                     filterLabel="no"
@@ -113,6 +118,7 @@ export default function TicketForm({
                     getOptionValue={(item) => item?.id}
                     url="/panel/inventory"
                     disabled
+                    choseItem={{ id: values.UnitId.ItemId, no: item?.no }}
                 />
                 <LinkSelect
                     value={values.UnitId.id}
@@ -232,7 +238,7 @@ export const EntitiesForm = ({
     handleBlur: (a: any) => void;
     setFieldValue: any;
 }) => {
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"} gridColumnGap={10}>
@@ -430,7 +436,7 @@ export function TechnicianForm({
     handleDelete?: () => void;
     setFieldValue: (a: any, b: any) => void;
 }) {
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
     return (
         <Box mt={1} display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"} style={{ gap: 10 }}>
             <TextField

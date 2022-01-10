@@ -200,7 +200,7 @@ export default function EditTab({
         ],
         []
     );
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <>
@@ -217,7 +217,11 @@ export default function EditTab({
                 <Box style={phone ? {} : { flex: 4 }}>
                     <BasePaper style={{ paddingTop: "0px" }}>
                         <Tabs
-                            style={!phone ? { marginBottom: "10px" } : { maxWidth: "80vw", marginBottom: "10px" }}
+                            style={
+                                !phone
+                                    ? { marginBottom: "10px" }
+                                    : { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" }
+                            }
                             textColor="primary"
                             value={activeTab}
                             onChange={(e, nv) => setActiveTab(nv)}

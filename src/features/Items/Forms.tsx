@@ -47,7 +47,7 @@ export const General = ({
     device,
 }: IForm) => {
     const classes = useStyles();
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <>
@@ -261,7 +261,7 @@ export const General = ({
 };
 
 export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <Box
@@ -349,7 +349,7 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
 };
 
 export const Pricing = ({ values, errors, handleChange, handleBlur, touched, boms }: IForm) => {
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <Box mt={1} display="grid" gridTemplateColumns="auto auto" gridColumnGap={10} gridRowGap={10}>
@@ -450,7 +450,7 @@ export const Quantity = ({
     // qtyOnOrder -> ,
     // qtyAllocated -> ,
     // qtyRemain -> ,
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <Box
@@ -669,7 +669,7 @@ export const DynamicFilterAndFields = ({ values = "", handleChange, handleBlur, 
 };
 
 export const LastUsed = ({ values, errors, handleChange, handleBlur, touched, setFieldValue }: IForm) => {
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <Box

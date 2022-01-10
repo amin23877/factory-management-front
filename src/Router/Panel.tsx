@@ -131,7 +131,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function PanelRouter() {
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
     const theme = useTheme();
     const classes = useStyles();
     const history = useHistory();

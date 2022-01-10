@@ -41,7 +41,7 @@ export default function Details({ callsData }: { callsData: any }) {
             console.log(error);
         }
     };
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <Formik initialValues={callsData} onSubmit={handleSubmit} validationSchema={schema}>

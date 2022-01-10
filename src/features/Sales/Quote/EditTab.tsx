@@ -134,7 +134,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
         ],
         []
     );
-    const phone = useMediaQuery("(max-width:1200px)");
+    const phone = useMediaQuery("(max-width:900px)");
 
     return (
         <>
@@ -182,7 +182,9 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
                         onChange={(e, nv) => setActiveTab(nv)}
                         variant="scrollable"
                         scrollButtons={phone ? "on" : "auto"}
-                        style={phone ? { maxWidth: "83vw", marginBottom: "10px" } : { marginBottom: "10px" }}
+                        style={
+                            phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" } : { marginBottom: "10px" }
+                        }
                     >
                         <Tab label="Line Item" />
                         <Tab label="Line Services" />
