@@ -7,7 +7,7 @@ import Dialog from "../../../app/Dialog";
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
 import Toast from "../../../app/Toast";
-import { renameMatricePart } from "../../../api/matrix";
+import { renameMatrixPart } from "../../../api/matrix";
 
 const schema = Yup.object().shape({
     newName: Yup.string().required(),
@@ -25,7 +25,7 @@ function RenamePart({
 }) {
     const handleSubmit = async (d: any) => {
         try {
-            await renameMatricePart(d.formerName, d.newName);
+            await renameMatrixPart(d.formerName, d.newName);
             Toast("Part changed", "success");
             onClose();
         } catch (error) {
