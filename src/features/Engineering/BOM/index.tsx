@@ -11,7 +11,7 @@ function BOM() {
     const [productFamily, setProductFamily] = useState<string>();
 
     const handleSelectDevice = (device: any) => {
-        setProductFamily(device["Product Family"]);
+        setProductFamily(device.name);
         setActiveTab(1);
     };
 

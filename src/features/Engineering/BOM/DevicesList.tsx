@@ -1,20 +1,14 @@
 import React from "react";
-import DataGrid from "../../../app/NewDataGrid";
+import useSWR from "swr";
+import BaseDataGrid from "../../../app/BaseDataGrid";
 
 export default function DevicesList({ onDeviceSelected }: { onDeviceSelected: (row: any) => void }) {
     const cols = [
-        { name: "name", flex: 1, header: "Name" },
-        { name: "description", flex: 1, header: "Description" },
+        { field: "name", flex: 1, headerName: "Name" },
+        { field: "description", flex: 1, headerName: "Description" },
     ];
-
+    const { data: families } = useSWR("/pfdesc");
     return (
-        <DataGrid
-            url="/item"
-            initParams={{ device: true }}
-            columns={cols}
-            // onRowSelected={(params) => onDeviceSelected(params.data)}
-            onRowSelected={onDeviceSelected}
-            style={{ minHeight: "calc(100vh - 160px)" }}
-        />
+        <BaseDataGrid rows={families || []} cols={cols} onRowSelected={onDeviceSelected} height="calc(100vh - 200px)" />
     );
 }

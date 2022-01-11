@@ -9,11 +9,11 @@ import RenamePart from "./RenamePart";
 
 import Button from "../../../app/Button";
 import Toast from "../../../app/Toast";
-import { BasePaper } from "../../../app/Paper";
 
 import { IMatrice, postMatriceData } from "../../../api/matrice";
 import { CustomFooterStatusComponent } from "../../../components/Datagrid/FooterStatus";
 import { splitColumnNames, extractLevels, generateDatagridColumns, generateRows } from "../../../logic/matrice";
+import BaseDataGrid from "../../../app/BaseDataGrid";
 
 const useStyles = makeStyles({
     root: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles({
 });
 
 export default function NewBomTable({ productFamily }: { productFamily: string }) {
-    const { data: tableData, mutate: mutateTableData } = useSWR<IMatrice>(`/matrice?productfamily=${productFamily}`);
+    const { data: tableData, mutate: mutateTableData } = useSWR<IMatrice>(`/matrice/${productFamily}`);
 
     const classes = useStyles();
 
@@ -50,6 +50,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
 
             setTable({ columns, rows });
             setLevels(levels);
+            console.log(rows);
         }
     }, [tableData]);
 
@@ -147,23 +148,26 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
                     </Button>
 
                     <Box>
-                        <DataGrid
-                            density="compact"
-                            className={classes.root}
-                            columns={table.columns}
-                            rows={table.rows}
-                            components={{ Toolbar: GridToolbar, Footer: CustomFooterStatusComponent }}
-                            componentsProps={{ footer: { submited: Boolean(lines) } }}
-                            onColumnHeaderClick={(params) => {
-                                setSelectedPart({ formerName: params.field, newName: "" });
-                                setRenamePart(true);
-                            }}
-                            onCellClick={(params) => {
-                                setSelectedRow(params.row);
-                                setSelectedRowName(params.field);
-                                setChangePart(true);
-                            }}
-                        />
+                        {!(table?.rows?.length < 3) && (
+                            // <DataGrid
+                            //     density="compact"
+                            //     className={classes.root}
+                            //     columns={table.columns}
+                            //     rows={table.rows}
+                            //     components={{ Toolbar: GridToolbar, Footer: CustomFooterStatusComponent }}
+                            //     componentsProps={{ footer: { submited: Boolean(lines) } }}
+                            //     onColumnHeaderClick={(params) => {
+                            //         setSelectedPart({ formerName: params.field, newName: "" });
+                            //         setRenamePart(true);
+                            //     }}
+                            //     onCellClick={(params) => {
+                            //         setSelectedRow(params.row);
+                            //         setSelectedRowName(params.field);
+                            //         setChangePart(true);
+                            //     }}
+                            // />
+                            <BaseDataGrid rows={table.rows} cols={table.columns} />
+                        )}
                     </Box>
                 </Box>
             </Box>
