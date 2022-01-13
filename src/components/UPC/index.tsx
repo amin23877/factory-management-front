@@ -19,10 +19,12 @@ export default function UPCToggle() {
     };
 
     const handleScan = (data: string | null): void => {
-        console.log(data);
-
         if (!data) {
             return;
+        }
+        if (data.search("serial=")) {
+            const number = data.split("serial=")[1];
+            history.push(`/panel/production/${number}`);
         }
         const { panel, id } = JSON.parse(data);
         history.push(`/panel/${panel}/${id}`);

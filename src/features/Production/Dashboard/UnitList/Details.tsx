@@ -1,33 +1,33 @@
-import React, { useMemo, useRef, useState, Fragment } from "react";
-import { Box, Typography, Tabs, Tab, useMediaQuery } from "@material-ui/core";
+import React, { useMemo, useState, Fragment } from "react";
+import { Box, Tabs, Tab, useMediaQuery } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
+import { useHistory } from "react-router";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 import * as Yup from "yup";
 
+import QRCode from "./QRCode";
 import { General, UnitInfo } from "./Forms";
+import UnitWorkFlow, { ProductionWorkFlow } from "./WorkFlows";
+
+import DocumentModal from "../../../Modals/DocumentModals";
+import Confirm from "../../../Modals/Confirm";
 import { host } from "../../../../host";
 import Button from "../../../../app/Button";
 import { BasePaper } from "../../../../app/Paper";
 import BaseDataGrid from "../../../../app/BaseDataGrid";
-import MyQRCode from "../../../../app/QRCode";
+import UploadButton from "../../../../app/FileUploader";
+import Toast from "../../../../app/Toast";
 
 import { IUnit, updateUnit } from "../../../../api/units";
-import UploadButton from "../../../../app/FileUploader";
-
-import { exportPdf } from "../../../../logic/pdf";
-import Toast from "../../../../app/Toast";
 import { IDocument } from "../../../../api/document";
-import { formatTimestampToDate } from "../../../../logic/date";
-import { fileType } from "../../../../logic/fileType";
-import DocumentModal from "../../../Modals/DocumentModals";
-import UnitWorkFlow, { ProductionWorkFlow } from "./WorkFlows";
-import { getModifiedValues } from "../../../../logic/utils";
-import Confirm from "../../../Modals/Confirm";
 import { deleteOption, IOption } from "../../../../api/options";
 import { addImage, deleteImage } from "../../../../api/units";
+
+import { formatTimestampToDate } from "../../../../logic/date";
+import { fileType } from "../../../../logic/fileType";
+import { getModifiedValues } from "../../../../logic/utils";
 import { openRequestedSinglePopup } from "../../../../logic/window";
-import { useHistory } from "react-router";
 
 const schema = Yup.object().shape({
     // laborCost: Yup.number().required(),
@@ -52,7 +52,6 @@ function Details({ unit }: { unit: IUnit }) {
         }
     };
 
-    const qrCode = useRef<HTMLElement | null>(null);
     const [infoActiveTab, setInfoActiveTab] = useState(0);
     const [gridActiveTab, setGridActiveTab] = useState(0);
     const [addDocModal, setAddDocModal] = useState(false);
@@ -209,7 +208,7 @@ function Details({ unit }: { unit: IUnit }) {
                                     <Tab label="Unit Info" />
                                     <Tab label="Options" />
                                     <Tab label="Battery Info" />
-                                    <Tab label="Service QR Code" />
+                                    {/* <Tab label="Service QR Code" /> */}
                                 </Tabs>
                                 {infoActiveTab === 0 && (
                                     <Box
@@ -235,26 +234,7 @@ function Details({ unit }: { unit: IUnit }) {
                                         )}
                                     </Box>
                                 )}
-                                {infoActiveTab === 1 && (
-                                    <Box mt={1} display="flex" justifyContent="space-around" alignItems="center">
-                                        <div ref={(e) => (qrCode.current = e)} style={{ flex: 1 }}>
-                                            <MyQRCode value={String(unit.number)} />
-                                            <Typography variant="subtitle1">Unit Number: {unit.ItemId.no}</Typography>
-                                            <Typography variant="subtitle1">Unit Name: {unit.ItemId.name}</Typography>
-                                            <Typography variant="subtitle1">Sales Order NO.: {unit.number}</Typography>
-                                        </div>
-                                        <Button
-                                            variant="contained"
-                                            onClick={async () => {
-                                                if (qrCode.current) {
-                                                    await exportPdf(qrCode.current);
-                                                }
-                                            }}
-                                        >
-                                            Print
-                                        </Button>
-                                    </Box>
-                                )}
+                                {infoActiveTab === 1 && <QRCode unit={unit} />}
                                 {infoActiveTab === 2 && (
                                     <UnitInfo
                                         values={values}
@@ -284,25 +264,6 @@ function Details({ unit }: { unit: IUnit }) {
                                             onRowSelected={() => {}}
                                         />
                                     </Fragment>
-                                )}
-                                {infoActiveTab === 5 && (
-                                    <Box mt={1} display="flex" justifyContent="space-around" alignItems="center">
-                                        <div ref={(e) => (qrCode.current = e)} style={{ flex: 1 }}>
-                                            <MyQRCode
-                                                value={`https://phazify.com/dspm/servicerequest?serial=${unit.serialNumber}`}
-                                            />
-                                        </div>
-                                        <Button
-                                            variant="contained"
-                                            onClick={async () => {
-                                                if (qrCode.current) {
-                                                    await exportPdf(qrCode.current);
-                                                }
-                                            }}
-                                        >
-                                            Print
-                                        </Button>
-                                    </Box>
                                 )}
                             </BasePaper>
                         </Box>

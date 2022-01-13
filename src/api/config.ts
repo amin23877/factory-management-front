@@ -3,8 +3,10 @@ import { logout } from "../features/Session/sessionsSlice";
 import { store } from "../store";
 
 import { getToken, StorageKey } from "./";
-import { host } from '../host'
+import { host } from "../host";
+
 export const BaseUrl = `http://${host}/api/`;
+export const WebsiteUrl = "https://phazify.com/dspm";
 
 Axios.defaults.baseURL = BaseUrl;
 
