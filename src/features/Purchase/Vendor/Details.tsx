@@ -73,8 +73,6 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
         []
     );
 
-    // Date	PO Number		Qty Ordered	Qty Received	Qty Sold	PO UOM	Date Received	Cost (Each)	Total Cost	Status
-
     const POCols = useMemo<GridColumns>(
         () => [
             {
@@ -122,8 +120,6 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
         []
     );
 
-    // First Name	Last Name	Phone	Ext	Email	Title	Department	Main	Active
-
     const contactsCols: GridColDef[] = [
         { field: "firstName", headerName: "First Name", flex: 1 },
         { field: "lastName", headerName: "Last Name", flex: 1 },
@@ -162,119 +158,118 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
                 data={selectedContact}
             />
 
-            <Box pb="8px" display="flex" flexDirection={phone ? "column" : "row"} style={{ gap: 10 }}>
-                <Box flex={2}>
-                    <UpdateVendorForm initialValues={vendor} />
-                </Box>
-                <Box flex={3}>
-                    <BasePaper>
-                        <Tabs
-                            value={activeTab}
-                            onChange={(e, nv) => setActiveTab(nv)}
-                            textColor="primary"
-                            variant="scrollable"
-                            scrollButtons={phone ? "on" : "auto"}
-                            style={
-                                phone
-                                    ? { maxWidth: "calc(100vw - 63px)", marginBottom: "1em" }
-                                    : { marginBottom: "1em" }
-                            }
-                        >
-                            <Tab label="Items" /> 0
-                            <Tab label="Documents" /> 1
-                            <Tab label="Contacts" /> 2
-                            <Tab label="PO History" /> 3
-                            <Tab label="Notes" /> 4
-                            <Tab label="Auditing" /> 5
-                        </Tabs>
-                        {activeTab === 0 && (
+            <Box
+                display="grid"
+                gridGap={10}
+                gridTemplateColumns={phone ? "1fr" : "2fr 3fr"}
+                height={phone ? "" : "calc(100vh - 160px)"}
+            >
+                <UpdateVendorForm initialValues={vendor} />
+                <BasePaper>
+                    <Tabs
+                        value={activeTab}
+                        onChange={(e, nv) => setActiveTab(nv)}
+                        textColor="primary"
+                        variant="scrollable"
+                        scrollButtons={phone ? "on" : "auto"}
+                        style={
+                            phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "1em" } : { marginBottom: "1em" }
+                        }
+                    >
+                        <Tab label="Items" /> 0
+                        <Tab label="Documents" /> 1
+                        <Tab label="Contacts" /> 2
+                        <Tab label="PO History" /> 3
+                        <Tab label="Notes" /> 4
+                        <Tab label="Auditing" /> 5
+                    </Tabs>
+                    {activeTab === 0 && (
+                        <BaseDataGrid
+                            cols={itemCols}
+                            rows={(items && items.map((r: any, i: number) => ({ ...r, id: i }))) || []}
+                            onRowSelected={() => {}}
+                            height="calc(100% - 60px)"
+                        />
+                    )}
+                    {activeTab === 1 && (
+                        <>
+                            <Button
+                                variant="outlined"
+                                onClick={() => {
+                                    setSelectedDocument(undefined);
+                                    setDocumentModal(true);
+                                }}
+                                style={{ marginBottom: "10px" }}
+                            >
+                                + Add Document
+                            </Button>
                             <BaseDataGrid
-                                cols={itemCols}
-                                rows={(items && items.map((r: any, i: number) => ({ ...r, id: i }))) || []}
-                                onRowSelected={() => {}}
-                                height="66.7vh"
+                                cols={docCols}
+                                rows={documents || []}
+                                onRowSelected={(r) => {
+                                    setSelectedDocument(r);
+                                    setDocumentModal(true);
+                                }}
+                                height="calc(100% - 100px)"
                             />
-                        )}
-                        {activeTab === 1 && (
-                            <>
-                                <Button
-                                    variant="outlined"
-                                    onClick={() => {
-                                        setSelectedDocument(undefined);
-                                        setDocumentModal(true);
-                                    }}
-                                    style={{ marginBottom: "10px" }}
-                                >
-                                    + Add Document
-                                </Button>
-                                <BaseDataGrid
-                                    cols={docCols}
-                                    rows={documents || []}
-                                    onRowSelected={(r) => {
-                                        setSelectedDocument(r);
-                                        setDocumentModal(true);
-                                    }}
-                                    height="62.7vh"
-                                />
-                            </>
-                        )}
-                        {activeTab === 2 && (
-                            <>
-                                <Button
-                                    variant="outlined"
-                                    onClick={() => {
-                                        setSelectedContact(undefined);
-                                        setContactModal(true);
-                                    }}
-                                    style={{ marginBottom: "10px" }}
-                                >
-                                    + Add Contact
-                                </Button>
-                                <BaseDataGrid
-                                    cols={contactsCols}
-                                    rows={contacts || []}
-                                    onRowSelected={(r) => {
-                                        setSelectedContact(r);
-                                        setContactModal(true);
-                                    }}
-                                    height="62.7vh"
-                                />
-                            </>
-                        )}
+                        </>
+                    )}
+                    {activeTab === 2 && (
+                        <>
+                            <Button
+                                variant="outlined"
+                                onClick={() => {
+                                    setSelectedContact(undefined);
+                                    setContactModal(true);
+                                }}
+                                style={{ marginBottom: "10px" }}
+                            >
+                                + Add Contact
+                            </Button>
+                            <BaseDataGrid
+                                cols={contactsCols}
+                                rows={contacts || []}
+                                onRowSelected={(r) => {
+                                    setSelectedContact(r);
+                                    setContactModal(true);
+                                }}
+                                height="calc(100% - 100px)"
+                            />
+                        </>
+                    )}
 
-                        {activeTab === 3 && (
+                    {activeTab === 3 && (
+                        <BaseDataGrid
+                            cols={POCols}
+                            rows={POs?.result || []}
+                            onRowSelected={() => {}}
+                            height="calc(100% - 60px)"
+                        />
+                    )}
+                    {activeTab === 4 && (
+                        <>
+                            <Button
+                                variant="outlined"
+                                onClick={() => {
+                                    setSelectedNote(undefined);
+                                    setNoteModal(true);
+                                }}
+                                style={{ marginBottom: "10px" }}
+                            >
+                                + Add Note
+                            </Button>
                             <BaseDataGrid
-                                cols={POCols}
-                                rows={POs?.result || []}
-                                onRowSelected={() => {}}
-                                height="66.7vh"
+                                cols={noteCols}
+                                rows={notes || []}
+                                onRowSelected={(r) => {
+                                    setSelectedNote(r);
+                                    setNoteModal(true);
+                                }}
+                                height="calc(100% - 100px)"
                             />
-                        )}
-                        {activeTab === 4 && (
-                            <>
-                                <Button
-                                    variant="outlined"
-                                    onClick={() => {
-                                        setSelectedNote(undefined);
-                                        setNoteModal(true);
-                                    }}
-                                    style={{ marginBottom: "10px" }}
-                                >
-                                    + Add Note
-                                </Button>
-                                <BaseDataGrid
-                                    cols={noteCols}
-                                    rows={notes || []}
-                                    onRowSelected={(r) => {
-                                        setSelectedNote(r);
-                                        setNoteModal(true);
-                                    }}
-                                    height="62.7vh"
-                                />
-                            </>
-                        )}
-                    </BasePaper>
-                </Box>
+                        </>
+                    )}
+                </BasePaper>
             </Box>
         </>
     );

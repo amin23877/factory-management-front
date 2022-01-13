@@ -153,12 +153,18 @@ export default function ClientDetails({
             <Formik initialValues={selectedRow} onSubmit={handleSubmit}>
                 {({ values, errors, touched, handleChange, handleBlur }) => (
                     <Form>
-                        <Box display="flex" style={{ gap: 10 }} flexDirection={phone ? "column" : "row"}>
-                            <Box flex={3}>
+                        {/* <Box display="flex" style={{ gap: 10 }} flexDirection={phone ? "column" : "row"}> */}
+                        <Box
+                            display="grid"
+                            gridGap={10}
+                            gridTemplateColumns={phone ? "1fr" : "3fr 4fr"}
+                            height={phone ? "" : "calc(100vh - 200px)"}
+                        >
+                            <Box>
                                 <Box
                                     display="flex"
                                     flexDirection="column"
-                                    style={phone ? { gap: 10 } : { gap: 10, height: "72.5vh" }}
+                                    style={phone ? { gap: 10 } : { gap: 10, height: "100%" }}
                                 >
                                     <BasePaper>
                                         <GeneralForm
@@ -222,24 +228,28 @@ export default function ClientDetails({
                                     </BasePaper>
                                 </Box>
                             </Box>
-                            <Box flex={4}>
-                                <Tabs
-                                    value={activeTab}
-                                    textColor="primary"
-                                    onChange={(e, v) => setActiveTab(v)}
-                                    variant="scrollable"
-                                    style={phone ? { maxWidth: "calc(100vw - 63px)" } : {}}
-                                    scrollButtons={phone ? "on" : "auto"}
-                                >
-                                    <Tab label="Contacts" />
-                                    <Tab label="Documents" />
-                                    <Tab label="Activities" />
-                                    <Tab label="Sales History" />
-                                    <Tab label="Work Orders" />
-                                    <Tab label="Notes" />
-                                    <Tab label="Auditing" />
-                                </Tabs>
-                                <BasePaper style={{ marginTop: "10px" }}>
+                            <Box>
+                                <BasePaper style={{ height: "100%" }}>
+                                    <Tabs
+                                        value={activeTab}
+                                        textColor="primary"
+                                        onChange={(e, v) => setActiveTab(v)}
+                                        variant="scrollable"
+                                        style={
+                                            phone
+                                                ? { marginBottom: "10px", maxWidth: "calc(100vw - 63px)" }
+                                                : { marginBottom: "10px" }
+                                        }
+                                        scrollButtons={phone ? "on" : "auto"}
+                                    >
+                                        <Tab label="Contacts" />
+                                        <Tab label="Documents" />
+                                        <Tab label="Activities" />
+                                        <Tab label="Sales History" />
+                                        <Tab label="Work Orders" />
+                                        <Tab label="Notes" />
+                                        <Tab label="Auditing" />
+                                    </Tabs>
                                     {activeTab === 0 && (
                                         <>
                                             <Button
@@ -247,11 +257,12 @@ export default function ClientDetails({
                                                     setAddContact(true);
                                                 }}
                                                 variant="outlined"
+                                                style={{ marginBottom: "10px" }}
                                             >
                                                 + Add Contact
                                             </Button>
                                             <BaseDataGrid
-                                                height="58vh"
+                                                height="calc(100% - 100px)"
                                                 cols={contactsCols}
                                                 rows={contacts || []}
                                                 onRowSelected={(c) => {}}
@@ -265,11 +276,12 @@ export default function ClientDetails({
                                                     setAddDocModal(true);
                                                 }}
                                                 variant="outlined"
+                                                style={{ marginBottom: "10px" }}
                                             >
                                                 + Add Document
                                             </Button>
                                             <BaseDataGrid
-                                                height="58vh"
+                                                height="calc(100% - 100px)"
                                                 cols={docCols}
                                                 rows={documents || []}
                                                 onRowSelected={(v) => {}}
@@ -278,7 +290,7 @@ export default function ClientDetails({
                                     )}
                                     {activeTab === 2 && (
                                         <BaseDataGrid
-                                            height="62vh"
+                                            height="calc(100% - 60px)"
                                             cols={activityCols}
                                             rows={activities || []}
                                             onRowSelected={() => {}}
@@ -287,11 +299,15 @@ export default function ClientDetails({
                                     {activeTab === 3 && <SOTable rows={[]} />}
                                     {activeTab === 5 && (
                                         <>
-                                            <Button onClick={() => setAddNoteModal(true)} variant="outlined">
+                                            <Button
+                                                onClick={() => setAddNoteModal(true)}
+                                                variant="outlined"
+                                                style={{ marginBottom: "10px" }}
+                                            >
                                                 + Add Note
                                             </Button>
                                             <BaseDataGrid
-                                                height="58vh"
+                                                height="calc(100% - 100px)"
                                                 cols={noteCols}
                                                 rows={notes || []}
                                                 onRowSelected={(v) => {}}

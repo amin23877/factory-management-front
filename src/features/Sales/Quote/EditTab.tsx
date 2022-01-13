@@ -27,7 +27,7 @@ const useStyle = makeStyles({
         border: "1px solid gray ",
         borderRadius: "4px",
         padding: "5px 10px",
-        margin: "3px 0px 10px 5px ",
+        margin: "0px 0px 10px 5px ",
     },
 });
 

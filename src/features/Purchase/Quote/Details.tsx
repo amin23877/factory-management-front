@@ -102,7 +102,12 @@ export default function Details({
                     onClose={() => setDocModal(false)}
                 />
             )}
-            <Box display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 3fr"} gridGap={10}>
+            <Box
+                display="grid"
+                gridTemplateColumns={phone ? "1fr" : "1fr 3fr"}
+                height={phone ? "" : "calc(100vh - 155px)"}
+                gridGap={10}
+            >
                 <BasePaper>
                     <Formik initialValues={initialValues} validationSchema={schema} onSubmit={handleSubmit}>
                         {({ values, errors, handleChange, handleBlur }: any) => (
@@ -206,59 +211,55 @@ export default function Details({
                         )}
                     </Formik>
                 </BasePaper>
-                <Box>
-                    <BasePaper>
-                        <Tabs
-                            value={activeTab}
-                            onChange={(e, nv) => setActiveTab(nv)}
-                            textColor="primary"
-                            variant="scrollable"
-                            scrollButtons={phone ? "on" : "auto"}
-                            style={
-                                phone
-                                    ? { maxWidth: "calc(100vw - 63px)", marginBottom: "1em" }
-                                    : { marginBottom: "1em" }
-                            }
-                        >
-                            <Tab label="Line Items" />
-                            <Tab label="Documents" />
-                            <Tab label="Notes" />
-                            <Tab label="Auditing" />
-                        </Tabs>
-                        {activeTab === 0 && <BaseDataGrid rows={[]} cols={LICols} height={"68vh"} />}
-                        {activeTab === 1 && (
-                            <>
-                                <Button
-                                    onClick={() => {
-                                        setDocModal(true);
-                                    }}
-                                    style={style}
-                                >
-                                    + Add Document
-                                </Button>
-                                <DocumentsDataGrid documents={docs} onDocumentSelected={onDocumentSelected} />
-                            </>
-                        )}
-                        {activeTab === 2 && (
-                            <>
-                                <Button
-                                    onClick={() => {
-                                        setNoteModal(true);
-                                    }}
-                                    style={style}
-                                >
-                                    + Add Note
-                                </Button>
-                                <NotesDataGrid notes={notes} onNoteSelected={onNoteSelected} />
-                            </>
-                        )}
-                        {activeTab === 3 && (
-                            <>
-                                <div style={{ height: "68vh", width: "100%" }}></div>
-                            </>
-                        )}
-                    </BasePaper>
-                </Box>
+                <BasePaper style={{ height: "100%" }}>
+                    <Tabs
+                        value={activeTab}
+                        onChange={(e, nv) => setActiveTab(nv)}
+                        textColor="primary"
+                        variant="scrollable"
+                        scrollButtons={phone ? "on" : "auto"}
+                        style={
+                            phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "1em" } : { marginBottom: "1em" }
+                        }
+                    >
+                        <Tab label="Line Items" />
+                        <Tab label="Documents" />
+                        <Tab label="Notes" />
+                        <Tab label="Auditing" />
+                    </Tabs>
+                    {activeTab === 0 && <BaseDataGrid rows={[]} cols={LICols} height={"calc(100% - 60px)"} />}
+                    {activeTab === 1 && (
+                        <>
+                            <Button
+                                onClick={() => {
+                                    setDocModal(true);
+                                }}
+                                style={style}
+                            >
+                                + Add Document
+                            </Button>
+                            <DocumentsDataGrid documents={docs} onDocumentSelected={onDocumentSelected} />
+                        </>
+                    )}
+                    {activeTab === 2 && (
+                        <>
+                            <Button
+                                onClick={() => {
+                                    setNoteModal(true);
+                                }}
+                                style={style}
+                            >
+                                + Add Note
+                            </Button>
+                            <NotesDataGrid notes={notes} onNoteSelected={onNoteSelected} />
+                        </>
+                    )}
+                    {activeTab === 3 && (
+                        <>
+                            <div style={{ height: "68vh", width: "100%" }}></div>
+                        </>
+                    )}
+                </BasePaper>
             </Box>
         </>
     );

@@ -40,69 +40,56 @@ export default function EditForm({ poData, onDone }: { poData: IPO; onDone: () =
         <Box>
             <Formik validationSchema={schema} initialValues={poData} onSubmit={handleSubmit}>
                 {({ values, handleChange, handleBlur, setValues, setFieldValue, isSubmitting }) => (
-                    <Form>
+                    <Form style={{ height: "100%" }}>
                         <Box
                             display="flex"
                             flexDirection="column"
-                            style={phone ? { gap: 10 } : { gap: 10, height: "72.3vh" }}
+                            style={phone ? { gap: 10 } : { gap: 10, height: "100%" }}
                         >
-                            <Box>
-                                <BasePaper>
-                                    <GeneralForm
-                                        onChangeInit={setValues}
-                                        values={values}
-                                        handleBlur={handleBlur}
-                                        handleChange={handleChange}
-                                        setFieldValue={setFieldValue}
-                                    />
-                                    <Box display="flex" justifyContent="center" style={{ width: "100%" }} my={1}>
-                                        <Button
-                                            disabled={isSubmitting}
-                                            type="submit"
-                                            kind="edit"
-                                            style={{ width: "100%" }}
-                                        >
-                                            Save
-                                        </Button>
-                                    </Box>
-                                </BasePaper>
-                            </Box>
-                            <Box flex={1}>
-                                <BasePaper
-                                    style={{
-                                        height: "100%",
-                                    }}
+                            <BasePaper>
+                                <GeneralForm
+                                    onChangeInit={setValues}
+                                    values={values}
+                                    handleBlur={handleBlur}
+                                    handleChange={handleChange}
+                                    setFieldValue={setFieldValue}
+                                />
+                                <Box display="flex" justifyContent="center" style={{ width: "100%" }} my={1}>
+                                    <Button disabled={isSubmitting} type="submit" kind="edit" style={{ width: "100%" }}>
+                                        Save
+                                    </Button>
+                                </Box>
+                            </BasePaper>
+                            <BasePaper style={{ flex: 1 }}>
+                                <Tabs
+                                    textColor="primary"
+                                    value={activeTab}
+                                    onChange={(e, nv) => setActiveTab(nv)}
+                                    variant="scrollable"
+                                    style={{ maxWidth: 700 }}
                                 >
-                                    <Tabs
-                                        textColor="primary"
-                                        value={activeTab}
-                                        onChange={(e, nv) => setActiveTab(nv)}
-                                        variant="scrollable"
-                                        style={{ maxWidth: 700 }}
-                                    >
-                                        <Tab label="Entities" />
-                                        <Tab label="Addresses" />
-                                    </Tabs>
-                                    <Box>
-                                        {activeTab === 0 && (
-                                            <EntitiesForm
-                                                setFieldValue={setFieldValue}
-                                                values={values}
-                                                handleBlur={handleBlur}
-                                                handleChange={handleChange}
-                                            />
-                                        )}
-                                        {activeTab === 1 && (
-                                            <AddressesForm
-                                                setFieldValue={setFieldValue}
-                                                values={values}
-                                                handleBlur={handleBlur}
-                                                handleChange={handleChange}
-                                            />
-                                        )}
-                                    </Box>
-                                </BasePaper>
-                            </Box>
+                                    <Tab label="Entities" />
+                                    <Tab label="Addresses" />
+                                </Tabs>
+                                <Box>
+                                    {activeTab === 0 && (
+                                        <EntitiesForm
+                                            setFieldValue={setFieldValue}
+                                            values={values}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                        />
+                                    )}
+                                    {activeTab === 1 && (
+                                        <AddressesForm
+                                            setFieldValue={setFieldValue}
+                                            values={values}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                        />
+                                    )}
+                                </Box>
+                            </BasePaper>
                         </Box>
                     </Form>
                 )}

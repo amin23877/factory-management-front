@@ -1,5 +1,5 @@
 import React, { Fragment, useMemo, useState } from "react";
-import { Form, Formik } from "formik";
+import { Formik } from "formik";
 
 import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
@@ -64,7 +64,6 @@ export default function Details({
         ],
         []
     );
-    // Item Number	Item Name	Vendor Part Number		Qty	UOM	Cost	Total Cost	Status	Note
 
     const LICols = useMemo<GridColumns>(
         () => [
@@ -126,149 +125,137 @@ export default function Details({
             <Snack open={snack} onClose={() => setSnack(false)}>
                 {msg}
             </Snack>
-            <Box display="grid" gridTemplateColumns={phone ? "1fr" : "3fr 4fr"} gridGap={10}>
-                <Box>
-                    <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-                        {({ values, handleChange, handleBlur, errors, setFieldValue }) => (
-                            <Form>
-                                <Box display="flex" flexDirection="column" height={phone ? "" : "78.7vh"} gridGap={10}>
-                                    <Box>
-                                        <BasePaper>
-                                            <UpdateForm
-                                                values={values}
-                                                errors={errors}
-                                                handleBlur={handleBlur}
-                                                handleChange={handleChange}
-                                            />
-                                            <Box
-                                                display="flex"
-                                                width="100%"
-                                                justifyContent="center"
-                                                alignItems="center"
-                                            >
-                                                <Button
-                                                    style={{ marginTop: "1em", width: "200px" }}
-                                                    type="submit"
-                                                    kind="edit"
-                                                >
-                                                    Save
-                                                </Button>
-                                            </Box>
-                                        </BasePaper>
+            <Box
+                display="grid"
+                gridTemplateColumns={phone ? "1fr" : "3fr 4fr"}
+                gridGap={10}
+                height={phone ? "" : "calc(100vh - 160px)"}
+            >
+                <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+                    {({ values, handleChange, handleBlur, errors, setFieldValue }) => (
+                        <Box display="flex" flexDirection="column" height={phone ? "" : "100%"} gridGap={10}>
+                            <Box>
+                                <BasePaper>
+                                    <UpdateForm
+                                        values={values}
+                                        errors={errors}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                    />
+                                    <Box display="flex" width="100%" justifyContent="center" alignItems="center">
+                                        <Button style={{ marginTop: "1em", width: "200px" }} type="submit" kind="edit">
+                                            Save
+                                        </Button>
                                     </Box>
-                                    <BasePaper style={{ flex: 1 }}>
-                                        <Tabs
-                                            textColor="primary"
-                                            value={activeMoreTab}
-                                            onChange={(e, nv) => setActiveMoreTab(nv)}
-                                            variant="scrollable"
-                                            scrollButtons={phone ? "on" : "auto"}
-                                            style={
-                                                phone
-                                                    ? { maxWidth: "calc(100vw - 63px)", marginBottom: "1em" }
-                                                    : { marginBottom: "1em" }
-                                            }
-                                        >
-                                            <Tab label="More Info" />
-                                            <Tab label="Vendor" />
-                                            <Tab label="Addresses" />
-                                        </Tabs>
-                                        <Box>
-                                            {activeMoreTab === 0 && (
-                                                <MoreInfoForm
-                                                    errors={errors}
-                                                    values={values}
-                                                    handleBlur={handleBlur}
-                                                    handleChange={handleChange}
-                                                    setFieldValue={setFieldValue}
-                                                />
-                                            )}
-                                            {activeMoreTab === 1 && (
-                                                <VendorForm
-                                                    values={values}
-                                                    handleBlur={handleBlur}
-                                                    handleChange={handleChange}
-                                                />
-                                            )}
-                                            {activeMoreTab === 2 && (
-                                                <AddressesForm
-                                                    values={values}
-                                                    handleBlur={handleBlur}
-                                                    handleChange={handleChange}
-                                                />
-                                            )}
-                                        </Box>
-                                    </BasePaper>
+                                </BasePaper>
+                            </Box>
+                            <BasePaper style={{ flex: 1 }}>
+                                <Tabs
+                                    textColor="primary"
+                                    value={activeMoreTab}
+                                    onChange={(e, nv) => setActiveMoreTab(nv)}
+                                    variant="scrollable"
+                                    scrollButtons={phone ? "on" : "auto"}
+                                    style={
+                                        phone
+                                            ? { maxWidth: "calc(100vw - 63px)", marginBottom: "1em" }
+                                            : { marginBottom: "1em" }
+                                    }
+                                >
+                                    <Tab label="More Info" />
+                                    <Tab label="Vendor" />
+                                    <Tab label="Addresses" />
+                                </Tabs>
+                                <Box>
+                                    {activeMoreTab === 0 && (
+                                        <MoreInfoForm
+                                            errors={errors}
+                                            values={values}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                            setFieldValue={setFieldValue}
+                                        />
+                                    )}
+                                    {activeMoreTab === 1 && (
+                                        <VendorForm
+                                            values={values}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                        />
+                                    )}
+                                    {activeMoreTab === 2 && (
+                                        <AddressesForm
+                                            values={values}
+                                            handleBlur={handleBlur}
+                                            handleChange={handleChange}
+                                        />
+                                    )}
                                 </Box>
-                            </Form>
-                        )}
-                    </Formik>
-                </Box>
-                <Box>
-                    <BasePaper>
-                        <Tabs
-                            textColor="primary"
-                            value={activeTab}
-                            onChange={(e, nv) => setActiveTab(nv)}
-                            variant="scrollable"
-                            scrollButtons={phone ? "on" : "auto"}
-                            style={
-                                phone
-                                    ? { maxWidth: "calc(100vw - 63px)", marginBottom: "1em" }
-                                    : { marginBottom: "1em" }
-                            }
-                        >
-                            {/* Line Items	Documents	Receiving	Notes	Auditing */}
-                            <Tab label="Line items" />
-                            <Tab label="Documents" />
-                            <Tab label="Receiving" />
-                            <Tab label="Notes" />
-                            <Tab label="Auditing" />
-                        </Tabs>
-                        {activeTab === 0 && (
-                            <BaseDataGrid
-                                rows={lines}
-                                cols={LICols}
-                                onRowSelected={(d) => onLineSelected(d)}
-                                height={"68vh"}
-                            />
-                        )}
-                        {activeTab === 1 && (
-                            <Fragment>
-                                <Button
-                                    onClick={() => {
-                                        setDocModal(true);
-                                    }}
-                                    style={style}
-                                >
-                                    + Add Document
-                                </Button>
-                                <DocumentsDataGrid documents={docs} onDocumentSelected={onDocumentSelected} />
-                            </Fragment>
-                        )}
-                        {activeTab === 2 && (
-                            <BaseDataGrid
-                                rows={[]}
-                                cols={receivedCols}
-                                onRowSelected={(d) => onLineSelected(d)}
-                                height={"68vh"}
-                            />
-                        )}
-                        {activeTab === 3 && (
-                            <Fragment>
-                                <Button
-                                    onClick={() => {
-                                        setNoteModal(true);
-                                    }}
-                                    style={style}
-                                >
-                                    + Add Note
-                                </Button>
-                                <NotesDataGrid notes={notes} onNoteSelected={onNoteSelected} />
-                            </Fragment>
-                        )}
-                    </BasePaper>
-                </Box>
+                            </BasePaper>
+                        </Box>
+                    )}
+                </Formik>
+                <BasePaper style={{ height: "100%" }}>
+                    <Tabs
+                        textColor="primary"
+                        value={activeTab}
+                        onChange={(e, nv) => setActiveTab(nv)}
+                        variant="scrollable"
+                        scrollButtons={phone ? "on" : "auto"}
+                        style={
+                            phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "1em" } : { marginBottom: "1em" }
+                        }
+                    >
+                        {/* Line Items	Documents	Receiving	Notes	Auditing */}
+                        <Tab label="Line items" />
+                        <Tab label="Documents" />
+                        <Tab label="Receiving" />
+                        <Tab label="Notes" />
+                        <Tab label="Auditing" />
+                    </Tabs>
+                    {activeTab === 0 && (
+                        <BaseDataGrid
+                            rows={lines}
+                            cols={LICols}
+                            onRowSelected={(d) => onLineSelected(d)}
+                            height={"calc(100% - 60px)"}
+                        />
+                    )}
+                    {activeTab === 1 && (
+                        <Fragment>
+                            <Button
+                                onClick={() => {
+                                    setDocModal(true);
+                                }}
+                                style={style}
+                            >
+                                + Add Document
+                            </Button>
+                            <DocumentsDataGrid documents={docs} onDocumentSelected={onDocumentSelected} />
+                        </Fragment>
+                    )}
+                    {activeTab === 2 && (
+                        <BaseDataGrid
+                            rows={[]}
+                            cols={receivedCols}
+                            onRowSelected={(d) => onLineSelected(d)}
+                            height={"calc(100% - 60px)"}
+                        />
+                    )}
+                    {activeTab === 3 && (
+                        <Fragment>
+                            <Button
+                                onClick={() => {
+                                    setNoteModal(true);
+                                }}
+                                style={style}
+                            >
+                                + Add Note
+                            </Button>
+                            <NotesDataGrid notes={notes} onNoteSelected={onNoteSelected} />
+                        </Fragment>
+                    )}
+                </BasePaper>
             </Box>
         </>
     );

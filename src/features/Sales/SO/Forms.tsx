@@ -258,7 +258,7 @@ export const EntitiesForm = ({
     const phone = useMediaQuery("(max-width:900px)");
 
     return (
-        <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"} gridColumnGap={10}>
+        <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"} gridColumnGap={10} mt="5px">
             <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} my={1}>
                 <LinkSelect
                     value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
@@ -458,7 +458,7 @@ export const AddressesForm = ({
                 value={activeTab}
                 onChange={(e, nv) => setActiveTab(nv)}
                 variant="scrollable"
-                style={{ maxWidth: 600 }}
+                style={{ maxWidth: 600, marginBottom: "10px" }}
             >
                 <Tab label="Billing Address" />
                 <Tab label="Shipping Address" />

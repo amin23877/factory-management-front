@@ -38,7 +38,7 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                     <Box
                         display="flex"
                         flexDirection="column"
-                        style={phone ? { gap: 10 } : { gap: 10, height: "75vh" }}
+                        style={phone ? { gap: 10 } : { gap: 10, height: "100%" }}
                     >
                         <BasePaper>
                             <GeneralForm
@@ -54,7 +54,7 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                                 </Button>
                             </Box>
                         </BasePaper>
-                        <BasePaper style={{ flex: 1, marginBottom: "10px" }}>
+                        <BasePaper style={{ flex: 1 }}>
                             <Tabs
                                 textColor="primary"
                                 value={activeTab}

@@ -26,7 +26,7 @@ export const NotesDataGrid = ({ notes, onNoteSelected }: { notes: any[]; onNoteS
         []
     );
 
-    return <BaseDataGrid cols={noteCols} rows={notes} onRowSelected={onNoteSelected} height={"62.3vh"} />;
+    return <BaseDataGrid cols={noteCols} rows={notes} onRowSelected={onNoteSelected} height={"calc(100% - 100px)"} />;
 };
 
 export const DocumentsDataGrid = ({
@@ -63,5 +63,12 @@ export const DocumentsDataGrid = ({
         []
     );
 
-    return <BaseDataGrid cols={docCols} rows={documents} onRowSelected={onDocumentSelected} height={"62.3vh"} />;
+    return (
+        <BaseDataGrid
+            cols={docCols}
+            rows={documents}
+            onRowSelected={onDocumentSelected}
+            height={"calc(100% - 100px)"}
+        />
+    );
 };

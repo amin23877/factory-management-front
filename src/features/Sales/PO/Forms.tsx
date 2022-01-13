@@ -272,8 +272,8 @@ export const AddressesForm = ({
                 variant="scrollable"
                 style={{ maxWidth: 600 }}
             >
-                <Tab label="Billing Address" />
-                <Tab label="Shipping Address" />
+                <Tab label="Billing" />
+                <Tab label="Shipping" />
             </Tabs>
             {activeTab === 0 && (
                 <Box my={1} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10} gridRowGap={10}>
@@ -295,7 +295,7 @@ export const AddressesForm = ({
                     <TextField
                         value={values.billingAddressAddress}
                         name="billingAddressAddress"
-                        label="Billing Address"
+                        label="Address"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
@@ -330,14 +330,14 @@ export const AddressesForm = ({
                     <TextField
                         value={values.billingAddressPhone}
                         name="billingAddressPhone"
-                        label="Billing Phone"
+                        label="Phone"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
                         value={values.billingAddressEmail}
                         name="billingAddressEmail"
-                        label="Billing Email"
+                        label="Email"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         style={{ gridColumnEnd: "span 2" }}
@@ -369,7 +369,7 @@ export const AddressesForm = ({
                     />
                     <TextField
                         value={values.shippingAddressAddress}
-                        label="Shipping Address"
+                        label=" Address"
                         name="shippingAddressAddress"
                         onChange={handleChange}
                         onBlur={handleBlur}
@@ -405,14 +405,14 @@ export const AddressesForm = ({
                     <TextField
                         value={values.shippingAddressPhone}
                         name="shippingAddressPhone"
-                        label="Shipping Phone"
+                        label=" Phone"
                         onChange={handleChange}
                         onBlur={handleBlur}
                     />
                     <TextField
                         value={values.shippingAddressEmail}
                         name="shippingAddressEmail"
-                        label="Shipping Email"
+                        label=" Email"
                         onChange={handleChange}
                         onBlur={handleBlur}
                         style={{ gridColumnEnd: "span 2" }}
