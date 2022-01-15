@@ -1,4 +1,5 @@
 import { get, patch, post } from ".";
+import { IItem } from "./items";
 
 export interface IRow {
     [key: string]: string;
@@ -13,7 +14,10 @@ export interface IPart {
     name: string;
 }
 
-export type IMatrixRow = { row: IRow; data: IPart[] };
+export type IMatrixRow = {
+    device?: IItem;
+    [key: string]: string | number | boolean | IItem | undefined;
+};
 
 export type IMatrix = IMatrixRow[];
 

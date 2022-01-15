@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { LinearProgress, Box, makeStyles } from "@material-ui/core";
-import { DataGrid, GridToolbar } from "@material-ui/data-grid";
+import { DataGrid, GridPagination, GridToolbar } from "@material-ui/data-grid";
 import useSWR from "swr";
 
 import AddPartModal from "./AddPartModal";
@@ -12,8 +12,7 @@ import Toast from "../../../app/Toast";
 
 import { IMatrix, postMatrixData } from "../../../api/matrix";
 import { CustomFooterStatusComponent } from "../../../components/Datagrid/FooterStatus";
-import { splitColumnNames, extractLevels, generateDataGridColumns, generateRows } from "../../../logic/matrix";
-import BaseDataGrid from "../../../app/BaseDataGrid";
+import { extractLevels, generateDataGridColumns, generateRows, extractColumns } from "../../../logic/matrix";
 
 const useStyles = makeStyles({
     root: {
@@ -24,7 +23,7 @@ const useStyles = makeStyles({
 });
 
 export default function NewBomTable({ productFamily }: { productFamily: string }) {
-    const { data: tableData, mutate: mutateTableData } = useSWR<IMatrix>(`/matrice?productfamily=${productFamily}`);
+    const { data: tableData, mutate: mutateTableData } = useSWR<IMatrix>(`/matrice/${productFamily}`);
 
     const classes = useStyles();
 
@@ -40,17 +39,15 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
     const [lines, setLines] = useState<any[]>();
 
     const [table, setTable] = useState<{ columns: any; rows: any[] }>({ columns: [], rows: [] });
-    console.log(table);
 
     useEffect(() => {
         if (tableData) {
             const levels = extractLevels(tableData);
-            const rows = generateRows(tableData, productFamily);
-            const columns = splitColumnNames(generateDataGridColumns(tableData, productFamily));
+            const columns = generateDataGridColumns(extractColumns({ tableData, levels }));
+            const rows = generateRows({ tableData, productFamily, levels });
 
             setTable({ columns, rows });
             setLevels(levels);
-            console.log(rows);
         }
     }, [productFamily, tableData]);
 
@@ -60,57 +57,50 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
     };
 
     const handleChangePart = (d: any) => {
-        setTable((prev) => {
-            const res = { ...prev };
-            const index = res.rows.findIndex((r: any) => r.id === d.row.id);
-            const header = d.data[0].name;
-            res.rows[index][header] = d.data[0].partNumber;
-
-            return res;
-        });
-
-        const row = JSON.parse(JSON.stringify(d));
-
-        Object.keys(row.row).forEach((r) => {
-            if (!levels?.includes(r)) {
-                delete row.row[r];
-            }
-        });
-
-        setLines((prev) => {
-            if (prev) {
-                let res = prev.slice();
-                const index = res.findIndex((r) => JSON.stringify(r.row) === JSON.stringify(row.row));
-                if (index > -1) {
-                    const dataIndex = res[index].data.findIndex((d: any) => d.name === row.data[0].name);
-
-                    if (dataIndex > -1) {
-                        res[index].data[dataIndex] = row.data[0];
-                    } else {
-                        res[index].data.push(row.data[0]);
-                    }
-                } else {
-                    res = [...prev, row];
-                }
-
-                return res;
-            } else {
-                return [row];
-            }
-        });
-        setChangePart(false);
+        // setTable((prev) => {
+        //     const res = { ...prev };
+        //     const index = res.rows.findIndex((r: any) => r.id === d.row.id);
+        //     const header = d.data[0].name;
+        //     res.rows[index][header] = d.data[0].partNumber;
+        //     return res;
+        // });
+        // const row = JSON.parse(JSON.stringify(d));
+        // Object.keys(row.row).forEach((r) => {
+        //     if (!levels?.includes(r)) {
+        //         delete row.row[r];
+        //     }
+        // });
+        // setLines((prev) => {
+        //     if (prev) {
+        //         let res = prev.slice();
+        //         const index = res.findIndex((r) => JSON.stringify(r.row) === JSON.stringify(row.row));
+        //         if (index > -1) {
+        //             const dataIndex = res[index].data.findIndex((d: any) => d.name === row.data[0].name);
+        //             if (dataIndex > -1) {
+        //                 res[index].data[dataIndex] = row.data[0];
+        //             } else {
+        //                 res[index].data.push(row.data[0]);
+        //             }
+        //         } else {
+        //             res = [...prev, row];
+        //         }
+        //         return res;
+        //     } else {
+        //         return [row];
+        //     }
+        // });
+        // setChangePart(false);
     };
 
     const submitChanges = async () => {
-        try {
-            await postMatrixData(productFamily, { lines });
-            mutateTableData();
-
-            Toast("Submitted", "success");
-            setLines(undefined);
-        } catch (error) {
-            console.log(error);
-        }
+        // try {
+        //     await postMatrixData(productFamily, { lines });
+        //     mutateTableData();
+        //     Toast("Submitted", "success");
+        //     setLines(undefined);
+        // } catch (error) {
+        //     console.log(error);
+        // }
     };
 
     if (!tableData) {
@@ -147,23 +137,30 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
                         Submit changes
                     </Button>
 
-                    <Box>
+                    <Box height="70vh">
                         <DataGrid
+                            pagination
+                            rowsPerPageOptions={[100, 250, 500]}
                             density="compact"
+                            rowHeight={36}
                             className={classes.root}
                             columns={table.columns}
                             rows={table.rows}
-                            components={{ Toolbar: GridToolbar, Footer: CustomFooterStatusComponent }}
-                            componentsProps={{ footer: { submitted: Boolean(lines) } }}
-                            onColumnHeaderClick={(params) => {
-                                setSelectedPart({ formerName: params.field, newName: "" });
-                                setRenamePart(true);
-                            }}
-                            onCellClick={(params) => {
-                                setSelectedRow(params.row);
-                                setSelectedRowName(params.field);
-                                setChangePart(true);
-                            }}
+                            // components={{
+                            //     Toolbar: GridToolbar,
+                            //     Footer: CustomFooterStatusComponent,
+                            //     Pagination: GridPagination,
+                            // }}
+                            // componentsProps={{ footer: { submitted: Boolean(lines) } }}
+                            // onColumnHeaderClick={(params) => {
+                            //     setSelectedPart({ formerName: params.field, newName: "" });
+                            //     setRenamePart(true);
+                            // }}
+                            // onCellClick={(params) => {
+                            //     setSelectedRow(params.row);
+                            //     setSelectedRowName(params.field);
+                            //     setChangePart(true);
+                            // }}
                         />
                     </Box>
                 </Box>

@@ -1,4 +1,5 @@
 import { GridColumns } from "@material-ui/data-grid";
+import { IMatrix } from "../api/matrix";
 
 import { splitLevelName } from "./levels";
 
@@ -8,69 +9,76 @@ export const splitColumnNames = (columns: GridColumns) => {
     return temp;
 };
 
-export const generateRows = (tableData: any[], productFamily: string) => {
-    return tableData.map((item, i) => {
-        const levels = item.row;
+export const generateRows = ({
+    levels,
+    tableData,
+    productFamily,
+}: {
+    tableData: IMatrix;
+    levels: string[];
+    productFamily: string;
+}) => {
+    return tableData.map((td, i) => {
+        let tdLevels: any = {},
+            tdParts: any = [],
+            parts: any = [];
+        levels.forEach((l) => {
+            tdLevels[l] = td[l];
+        });
+        parts = td.device?.recs ? td.device.recs.map((rec, j) => ({ ...rec, name: `Part-${j}` })) : [];
+        parts.forEach((p: any) => {
+            tdParts[p.name] = p;
+        });
 
-        // const parts = item?.recs?.reduce((obj: any, part: any) => {
-        //     return { ...obj, [part.number || "UnKnown"]: part?.ItemId?.name } as any;
-        // }, {});
-
-        // const usages = item.recs.reduce((obj: any, part: any) => {
-        //     return { ...obj, [part.name || ""]: part.usage } as any;
-        // }, {});
-
-        // return {id: i, ...levels, ...parts, "Product family": productFamily, usages, name:item.name};
-        // return { id: i, ...parts, name: item.no };
-        const parts = item.data.reduce((obj: any, part: any) => {
-            return { ...obj, [part.name || ""]: part.partNumber } as any;
-        }, {});
-
-        const usages = item.data.reduce((obj: any, part: any) => {
-            return { ...obj, [part.name || ""]: part.usage } as any;
-        }, {});
-
-        return { id: i, ...levels, ...parts, "Product family": productFamily, usages, name: item.name };
+        return { id: i, ...tdLevels, ...tdParts, "Product Family": productFamily };
     });
 };
 
-export const generateDataGridColumns = (tableData: any[], productFamily: string) => {
+export const generateDataGridColumns = (columns: string[]) => {
     const dtCols: GridColumns = [];
-    const cols = extractColumns(tableData, productFamily);
 
-    cols.forEach(
-        (c: any) =>
-            c !== "Product family" &&
-            c !== "usages" &&
-            c !== "number" &&
-            // c !== "name" &&
-            dtCols.push({ field: c, flex: 1, sortable: false, editable: false })
-    );
-
-    if (dtCols[0] && dtCols[0].hide) {
-        dtCols[0].hide = true;
-    }
-    // dtCols.unshift({ field: "Product family", flex: 1, sortable: false, editable: false });
-    dtCols.unshift({ field: "number", flex: 1, headerName: "NO.", sortable: false, editable: false });
+    columns.forEach((c) => {
+        if (c.search("Part") > -1) {
+            dtCols.push({
+                field: c,
+                valueFormatter: (p) => p.row[c]?.ItemId.no,
+                width: 100,
+                editable: false,
+                disableColumnMenu: true,
+            });
+        } else {
+            dtCols.push({
+                field: c,
+                width: 100,
+                editable: false,
+                disableColumnMenu: true,
+            });
+        }
+    });
 
     return dtCols;
 };
 
-export const extractColumns = (tableData: any[], productFamily: string) => {
-    const rows = generateRows(tableData, productFamily);
+export const extractColumns = ({ tableData, levels }: { tableData: IMatrix; levels?: string[] }) => {
+    const cols = new Set<string>();
+    cols.add("Product Family");
+    if (levels) {
+        levels.forEach((l) => cols.add(l));
+    }
+    const hasDevice = tableData.filter((td) => td.device);
+    hasDevice.forEach((td) => {
+        td.device?.recs?.forEach((rec, i) => {
+            cols.add(`Part-${i}`);
+        });
+    });
 
-    const cols = new Set();
-    rows.forEach((r) => Object.keys(r).map((k) => cols.add(k)));
-
-    return cols;
+    return Array.from(cols);
 };
 
-export const extractLevels = (tableData: any[]) => {
+export const extractLevels = (tableData: IMatrix) => {
     const levels = new Set<string>();
+    Object.keys(tableData[0]).forEach((k) => k !== "device" && levels.add(k));
 
-    const rows = tableData.map((item) => ({ ...item.row }));
-
-    rows.map((r) => Object.keys(r).map((k) => levels.add(k)));
     return Array.from(levels);
 };
 

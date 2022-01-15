@@ -6,9 +6,20 @@ export const AddItemSchema = Yup.object().shape({
     name: Yup.string().min(4, "Too short!").max(60, "Too long").required("Required !!"),
 });
 
+export interface IBomRecord {
+    id: string;
+    BOMId: string;
+    ItemId: {
+        id: string;
+        name: string;
+        no: string;
+    };
+}
+
 export interface IItem {
     id: string;
 
+    recs?: IBomRecord[];
     approvedForSales?: boolean;
     obsolete?: boolean;
     rndOnly?: boolean;
