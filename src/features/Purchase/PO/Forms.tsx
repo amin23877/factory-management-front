@@ -301,6 +301,110 @@ export const LinesForm = ({
 
     return (
         <BasePaper style={phone ? { height: "80vh", overflow: "auto" } : { overflow: "auto", height: "100%" }}>
+            <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                }}
+                transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                }}
+            >
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    style={{
+                        background: "#373a4d",
+                        cursor: "pointer",
+                    }}
+                >
+                    <span
+                        style={style}
+                        onClick={(e) => {
+                            setAddService(clickedItem.ItemId);
+                            handleClose();
+                        }}
+                    >
+                        Add Service
+                    </span>
+                    <span
+                        style={style}
+                        onClick={(e) => {
+                            setAddOption(clickedItem.ItemId);
+                            handleClose();
+                        }}
+                    >
+                        Add Option
+                    </span>
+                    <span
+                        style={style}
+                        onClick={() => {
+                            handleClose();
+                            setEdit(clickedItem);
+                        }}
+                    >
+                        Edit
+                    </span>
+                    <span
+                        style={{ ...style, border: "none" }}
+                        onClick={() => {
+                            handleClose();
+                            handleDelete(index);
+                        }}
+                    >
+                        Delete
+                    </span>
+                </Box>
+            </Popover>
+            <Popover
+                id={idB}
+                open={openB}
+                anchorEl={anchorBEl}
+                onClose={() => {
+                    setAnchorBEl(null);
+                }}
+                anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                }}
+                transformOrigin={{
+                    vertical: "top",
+                    horizontal: "right",
+                }}
+            >
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    style={{
+                        background: "#373a4d",
+                        cursor: "pointer",
+                    }}
+                >
+                    <span
+                        style={style}
+                        onClick={() => {
+                            handleClose();
+                            setEdit(clickedItem);
+                        }}
+                    >
+                        Edit
+                    </span>
+                    <span
+                        style={{ ...style, border: "none" }}
+                        onClick={() => {
+                            handleClose();
+                            handleDelete(index);
+                        }}
+                    >
+                        Delete
+                    </span>
+                </Box>
+            </Popover>
             <Dialog
                 onClose={() => {
                     setAddLineService(false);
@@ -519,135 +623,25 @@ export const LinesForm = ({
                                                     </TableCell>
                                                     <TableCell className={item.belongsTo ? classes.root : ""}>
                                                         {item.belongsTo ? (
-                                                            <>
-                                                                <span
-                                                                    onClick={(
-                                                                        e: React.MouseEvent<HTMLButtonElement>
-                                                                    ) => {
-                                                                        setClickedItem(item);
-                                                                        setIndex(i);
-                                                                        setAnchorBEl(e.currentTarget);
-                                                                    }}
-                                                                    style={{ cursor: "pointer" }}
-                                                                >
-                                                                    <MoreVertRounded />
-                                                                </span>
-                                                                <Popover
-                                                                    id={idB}
-                                                                    open={openB}
-                                                                    anchorEl={anchorBEl}
-                                                                    onClose={() => {
-                                                                        setAnchorBEl(null);
-                                                                    }}
-                                                                    anchorOrigin={{
-                                                                        vertical: "top",
-                                                                        horizontal: "right",
-                                                                    }}
-                                                                    transformOrigin={{
-                                                                        vertical: "top",
-                                                                        horizontal: "right",
-                                                                    }}
-                                                                >
-                                                                    <Box
-                                                                        display="flex"
-                                                                        flexDirection="column"
-                                                                        style={{
-                                                                            background: "#373a4d",
-                                                                            cursor: "pointer",
-                                                                        }}
-                                                                    >
-                                                                        <span
-                                                                            style={style}
-                                                                            onClick={() => {
-                                                                                handleClose();
-                                                                                setEdit(clickedItem);
-                                                                            }}
-                                                                        >
-                                                                            Edit
-                                                                        </span>
-                                                                        <span
-                                                                            style={{ ...style, border: "none" }}
-                                                                            onClick={() => {
-                                                                                handleClose();
-                                                                                handleDelete(index);
-                                                                            }}
-                                                                        >
-                                                                            Delete
-                                                                        </span>
-                                                                    </Box>
-                                                                </Popover>
-                                                            </>
+                                                            <span
+                                                                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                                                                    setClickedItem(item);
+                                                                    setIndex(i);
+                                                                    setAnchorBEl(e.currentTarget);
+                                                                }}
+                                                                style={{ cursor: "pointer" }}
+                                                            >
+                                                                <MoreVertRounded />
+                                                            </span>
                                                         ) : (
-                                                            <>
-                                                                <span
-                                                                    onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-                                                                        handleClick(e, item, i)
-                                                                    }
-                                                                    style={{ cursor: "pointer" }}
-                                                                >
-                                                                    <MoreVertRounded />
-                                                                </span>
-                                                                <Popover
-                                                                    id={id}
-                                                                    open={open}
-                                                                    anchorEl={anchorEl}
-                                                                    onClose={handleClose}
-                                                                    anchorOrigin={{
-                                                                        vertical: "top",
-                                                                        horizontal: "right",
-                                                                    }}
-                                                                    transformOrigin={{
-                                                                        vertical: "top",
-                                                                        horizontal: "right",
-                                                                    }}
-                                                                >
-                                                                    <Box
-                                                                        display="flex"
-                                                                        flexDirection="column"
-                                                                        style={{
-                                                                            background: "#373a4d",
-                                                                            cursor: "pointer",
-                                                                        }}
-                                                                    >
-                                                                        <span
-                                                                            style={style}
-                                                                            onClick={(e) => {
-                                                                                setAddService(clickedItem.ItemId);
-                                                                                handleClose();
-                                                                            }}
-                                                                        >
-                                                                            Add Service
-                                                                        </span>
-                                                                        <span
-                                                                            style={style}
-                                                                            onClick={(e) => {
-                                                                                setAddOption(clickedItem.ItemId);
-                                                                                handleClose();
-                                                                            }}
-                                                                        >
-                                                                            Add Option
-                                                                        </span>
-                                                                        <span
-                                                                            style={style}
-                                                                            onClick={() => {
-                                                                                handleClose();
-                                                                                setEdit(clickedItem);
-                                                                            }}
-                                                                        >
-                                                                            Edit
-                                                                        </span>
-                                                                        <span
-                                                                            style={{ ...style, border: "none" }}
-                                                                            onClick={() => {
-                                                                                handleClose();
-                                                                                handleDelete(index);
-                                                                            }}
-                                                                        >
-                                                                            Delete
-                                                                        </span>
-                                                                    </Box>
-                                                                </Popover>
-                                                            </>
+                                                            <span
+                                                                onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
+                                                                    handleClick(e, item, i)
+                                                                }
+                                                                style={{ cursor: "pointer" }}
+                                                            >
+                                                                <MoreVertRounded />
+                                                            </span>
                                                         )}
                                                     </TableCell>
                                                 </TableRow>
