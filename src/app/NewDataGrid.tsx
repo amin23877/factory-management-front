@@ -9,6 +9,7 @@ import {
     Checkbox,
     useMediaQuery,
     Button,
+    Tooltip,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { CheckRounded, ClearRounded, MoreVertRounded } from "@material-ui/icons";
@@ -190,6 +191,11 @@ function NewDataGrid({
                     r = {
                         ...r,
                         filterEditor: NumberFilter,
+                        render: ({ value }: { value: any }) => (
+                            <Tooltip title={value}>
+                                <div>{value}</div>
+                            </Tooltip>
+                        ),
                     };
                 }
                 if (r.type === "date") {
@@ -199,6 +205,16 @@ function NewDataGrid({
                         filterEditor: DateFilter,
                         render: ({ value, cellProps: { dateFormat } }: { value: any; cellProps: any }) =>
                             formatTimestampToDate(value),
+                    };
+                }
+                if (r.type === "string" || !r.type) {
+                    r = {
+                        ...r,
+                        render: ({ value }: { value: any }) => (
+                            <Tooltip title={value}>
+                                <div>{value}</div>
+                            </Tooltip>
+                        ),
                     };
                 }
                 return r;
