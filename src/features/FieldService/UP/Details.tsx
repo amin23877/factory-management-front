@@ -149,8 +149,13 @@ function Details({ up }: { up: any }) {
             <Formik initialValues={up} validationSchema={schema} onSubmit={handleSubmit}>
                 {({ values, errors, handleChange, handleBlur, isSubmitting, setFieldValue, touched }) => (
                     <Form>
-                        <Box display="grid" gridTemplateColumns={phone ? "1fr" : "3fr 4fr"} gridGap={10}>
-                            <Box display="flex" flexDirection="column" gridGap={10} height={phone ? "auto" : "78.3vh"}>
+                        <Box
+                            display="grid"
+                            gridTemplateColumns={phone ? "1fr" : "3fr 4fr"}
+                            gridGap={10}
+                            height={phone ? "" : "calc(100vh - 160px)"}
+                        >
+                            <Box display="flex" flexDirection="column" gridGap={10} height={phone ? "auto" : "100%"}>
                                 <BasePaper>
                                     <General
                                         values={values}
@@ -294,78 +299,97 @@ function Details({ up }: { up: any }) {
                                     )}
                                 </BasePaper>
                             </Box>
-                            <Box>
-                                <BasePaper>
-                                    <Box display="flex">
-                                        <Tabs
-                                            value={gridActiveTab}
-                                            onChange={(e, nv) => setGridActiveTab(nv)}
-                                            textColor="primary"
-                                            variant="scrollable"
-                                            style={
-                                                phone
-                                                    ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" }
-                                                    : { marginBottom: "10px", maxWidth: "700px" }
-                                            }
-                                            scrollButtons={phone ? "on" : "auto"}
-                                        >
-                                            <Tab label="Documents" />
-                                            <Tab label="Job" />
-                                            <Tab label="Field Service History" />
-                                            <Tab label="Unit Images" />
-                                            <Tab label="Inverter measurements" />
-                                            <Tab label="Battery Measurements" />
-                                            <Tab label="Unit Logs" />
-                                            <Tab label="Note" />
-                                            <Tab label="Auditing" />
-                                        </Tabs>
-                                    </Box>
-                                    {gridActiveTab === 0 && (
-                                        <>
-                                            <BaseDataGrid
-                                                cols={docCols}
-                                                rows={documents && documents.length ? documents : []}
-                                                onRowSelected={(v) => {}}
-                                            />
-                                        </>
-                                    )}
-                                    {gridActiveTab === 1 && (
-                                        <BaseDataGrid cols={bomCols} rows={[]} onRowSelected={(r) => {}} />
-                                    )}
-                                    {gridActiveTab === 3 && (
-                                        <BaseDataGrid cols={docCols} rows={[]} onRowSelected={(r) => {}} />
-                                    )}
-                                    {gridActiveTab === 4 && (
-                                        <Inverter
-                                            values={values}
-                                            errors={errors}
-                                            touched={touched}
-                                            handleBlur={handleBlur}
-                                            handleChange={handleChange}
-                                            setFieldValue={setFieldValue}
+                            <BasePaper style={{ width: "100%" }}>
+                                <Box display="flex">
+                                    <Tabs
+                                        value={gridActiveTab}
+                                        onChange={(e, nv) => setGridActiveTab(nv)}
+                                        textColor="primary"
+                                        variant="scrollable"
+                                        style={
+                                            phone
+                                                ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" }
+                                                : { marginBottom: "10px", maxWidth: "700px" }
+                                        }
+                                        scrollButtons={phone ? "on" : "auto"}
+                                    >
+                                        <Tab label="Documents" />
+                                        <Tab label="Job" />
+                                        <Tab label="Field Service History" />
+                                        <Tab label="Unit Images" />
+                                        <Tab label="Inverter measurements" />
+                                        <Tab label="Battery Measurements" />
+                                        <Tab label="Unit Logs" />
+                                        <Tab label="Note" />
+                                        <Tab label="Auditing" />
+                                    </Tabs>
+                                </Box>
+                                {gridActiveTab === 0 && (
+                                    <>
+                                        <BaseDataGrid
+                                            cols={docCols}
+                                            rows={documents && documents.length ? documents : []}
+                                            onRowSelected={(v) => {}}
+                                            height={"calc(100% - 60px)"}
                                         />
-                                    )}
-                                    {gridActiveTab === 5 && (
-                                        <>
-                                            <Tabs
-                                                value={batteryTab}
-                                                onChange={(e, nv) => setBatteryTab(nv)}
-                                                style={{ marginBottom: "0.5em" }}
-                                            >
-                                                <Tab label="List" />
-                                                <Tab label="Diagram" />
-                                            </Tabs>
-                                            {batteryTab === 1 && <BatteryDiagram />}
-                                        </>
-                                    )}
-                                    {gridActiveTab === 6 && (
-                                        <BaseDataGrid cols={UnitLogsCols} rows={[]} onRowSelected={(r) => {}} />
-                                    )}
-                                    {gridActiveTab === 7 && (
-                                        <BaseDataGrid cols={noteCols} rows={[]} onRowSelected={(r) => {}} />
-                                    )}
-                                </BasePaper>
-                            </Box>
+                                    </>
+                                )}
+                                {gridActiveTab === 1 && (
+                                    <BaseDataGrid
+                                        cols={bomCols}
+                                        rows={[]}
+                                        onRowSelected={(r) => {}}
+                                        height={"calc(100% - 60px)"}
+                                    />
+                                )}
+                                {gridActiveTab === 3 && (
+                                    <BaseDataGrid
+                                        cols={docCols}
+                                        rows={[]}
+                                        onRowSelected={(r) => {}}
+                                        height={"calc(100% - 60px)"}
+                                    />
+                                )}
+                                {gridActiveTab === 4 && (
+                                    <Inverter
+                                        values={values}
+                                        errors={errors}
+                                        touched={touched}
+                                        handleBlur={handleBlur}
+                                        handleChange={handleChange}
+                                        setFieldValue={setFieldValue}
+                                    />
+                                )}
+                                {gridActiveTab === 5 && (
+                                    <>
+                                        <Tabs
+                                            value={batteryTab}
+                                            onChange={(e, nv) => setBatteryTab(nv)}
+                                            style={{ marginBottom: "0.5em" }}
+                                        >
+                                            <Tab label="List" />
+                                            <Tab label="Diagram" />
+                                        </Tabs>
+                                        {batteryTab === 1 && <BatteryDiagram />}
+                                    </>
+                                )}
+                                {gridActiveTab === 6 && (
+                                    <BaseDataGrid
+                                        cols={UnitLogsCols}
+                                        rows={[]}
+                                        onRowSelected={(r) => {}}
+                                        height={"calc(100% - 60px)"}
+                                    />
+                                )}
+                                {gridActiveTab === 7 && (
+                                    <BaseDataGrid
+                                        cols={noteCols}
+                                        rows={[]}
+                                        onRowSelected={(r) => {}}
+                                        height={"calc(100% - 60px)"}
+                                    />
+                                )}
+                            </BasePaper>
                         </Box>
                     </Form>
                 )}
