@@ -148,11 +148,16 @@ function Details({ unit }: { unit: IUnit }) {
                     init={selectedShip}
                 />
             )}
-            <Box display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 2fr"} gridGap={10} height="90%">
+            <Box
+                display="grid"
+                gridTemplateColumns={phone ? "1fr" : "1fr 2fr"}
+                gridGap={10}
+                height="calc(100vh - 160px)"
+            >
                 <Formik initialValues={unit as IUnit} validationSchema={schema} onSubmit={handleSubmit}>
                     {({ values, errors, handleChange, handleBlur, isSubmitting, setFieldValue, touched }) => (
                         <Form>
-                            <Box display="flex" flexDirection="column" gridGap={10} height={phone ? "" : "78vh"}>
+                            <Box display="flex" flexDirection="column" gridGap={10} height={phone ? "" : "100%"}>
                                 <BasePaper>
                                     <General
                                         values={values}
@@ -262,93 +267,84 @@ function Details({ unit }: { unit: IUnit }) {
                         </Form>
                     )}
                 </Formik>
-                <Box>
-                    <BasePaper>
-                        <Tabs
-                            textColor="primary"
-                            value={gridActiveTab}
-                            onChange={(e, nv) => setGridActiveTab(nv)}
-                            variant="scrollable"
-                            scrollButtons={phone ? "on" : "auto"}
-                            style={
-                                phone
-                                    ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" }
-                                    : { marginBottom: "10px" }
-                            }
-                        >
-                            <Tab label="Phocus Monitor" />
-                            <Tab label="Warranties" />
-                            <Tab label="Job" />
-                            <Tab label="Documents" />
-                            <Tab label="Shipment" />
-                            <Tab label="Quality Control" />
-                            <Tab label="Sales Order Items" />
-                            <Tab label="Field Service History" />
-                            <Tab label="Note" />
-                            <Tab label="Auditing" />
-                        </Tabs>
-                        {gridActiveTab === 1 && (
-                            <Box>
-                                <BaseDataGrid cols={warCols} rows={[]} onRowSelected={(d) => {}} height="67.3vh" />
-                            </Box>
-                        )}
-                        {gridActiveTab === 2 && (
+                <BasePaper style={{ height: "100%" }}>
+                    <Tabs
+                        textColor="primary"
+                        value={gridActiveTab}
+                        onChange={(e, nv) => setGridActiveTab(nv)}
+                        variant="scrollable"
+                        scrollButtons={phone ? "on" : "auto"}
+                        style={
+                            phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" } : { marginBottom: "10px" }
+                        }
+                    >
+                        <Tab label="Phocus Monitor" />
+                        <Tab label="Warranties" />
+                        <Tab label="Job" />
+                        <Tab label="Documents" />
+                        <Tab label="Shipment" />
+                        <Tab label="Quality Control" />
+                        <Tab label="Sales Order Items" />
+                        <Tab label="Field Service History" />
+                        <Tab label="Note" />
+                        <Tab label="Auditing" />
+                    </Tabs>
+                    {gridActiveTab === 1 && (
+                        <Box>
+                            <BaseDataGrid cols={warCols} rows={[]} onRowSelected={(d) => {}} height="67.3vh" />
+                        </Box>
+                    )}
+                    {gridActiveTab === 2 && (
+                        <BaseDataGrid cols={bomCols} rows={unitBoms || []} onRowSelected={(r) => {}} height="67.3vh" />
+                    )}
+                    {gridActiveTab === 3 && (
+                        <>
+                            <Button
+                                onClick={() => {
+                                    setAddDocModal(true);
+                                }}
+                                variant="outlined"
+                                style={{ marginBottom: "10px" }}
+                            >
+                                + Add Document
+                            </Button>
                             <BaseDataGrid
-                                cols={bomCols}
-                                rows={unitBoms || []}
-                                onRowSelected={(r) => {}}
-                                height="67.3vh"
+                                height={"63.2vh"}
+                                cols={docCols}
+                                rows={documents && documents.length ? documents : []}
+                                onRowSelected={(v) => {}}
                             />
-                        )}
-                        {gridActiveTab === 3 && (
-                            <>
-                                <Button
-                                    onClick={() => {
-                                        setAddDocModal(true);
-                                    }}
-                                    variant="outlined"
-                                    style={{ marginBottom: "10px" }}
-                                >
-                                    + Add Document
-                                </Button>
-                                <BaseDataGrid
-                                    height={"63.2vh"}
-                                    cols={docCols}
-                                    rows={documents && documents.length ? documents : []}
-                                    onRowSelected={(v) => {}}
-                                />
-                            </>
-                        )}
-                        {gridActiveTab === 4 && (
-                            <>
-                                <Button
-                                    onClick={() => {
-                                        setAddShipModal(true);
-                                    }}
-                                    variant="outlined"
-                                    style={{ marginBottom: "10px" }}
-                                >
-                                    + Add Shipment
-                                </Button>
-                                <BaseDataGrid
-                                    cols={shipCols}
-                                    rows={shipments || []}
-                                    onRowSelected={(v) => {
-                                        setSelectedShip(v);
-                                        setEditShip(true);
-                                    }}
-                                    height={"63.2vh"}
-                                />
-                            </>
-                        )}
-                        {gridActiveTab === 6 && (
-                            <BaseDataGrid cols={SOICols} rows={[]} onRowSelected={(r) => {}} height="67.3vh" />
-                        )}
-                        {gridActiveTab === 7 && (
-                            <BaseDataGrid cols={fshCols} rows={[]} onRowSelected={(r) => {}} height="67.3vh" />
-                        )}
-                    </BasePaper>
-                </Box>
+                        </>
+                    )}
+                    {gridActiveTab === 4 && (
+                        <>
+                            <Button
+                                onClick={() => {
+                                    setAddShipModal(true);
+                                }}
+                                variant="outlined"
+                                style={{ marginBottom: "10px" }}
+                            >
+                                + Add Shipment
+                            </Button>
+                            <BaseDataGrid
+                                cols={shipCols}
+                                rows={shipments || []}
+                                onRowSelected={(v) => {
+                                    setSelectedShip(v);
+                                    setEditShip(true);
+                                }}
+                                height={"63.2vh"}
+                            />
+                        </>
+                    )}
+                    {gridActiveTab === 6 && (
+                        <BaseDataGrid cols={SOICols} rows={[]} onRowSelected={(r) => {}} height="67.3vh" />
+                    )}
+                    {gridActiveTab === 7 && (
+                        <BaseDataGrid cols={fshCols} rows={[]} onRowSelected={(r) => {}} height="67.3vh" />
+                    )}
+                </BasePaper>
             </Box>
         </>
     );

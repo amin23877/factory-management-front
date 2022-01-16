@@ -154,16 +154,17 @@ export default function Details({
                 {msg}
             </Snack>
 
-            <Box display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 1fr"} gridGap={10} flex={1}>
+            <Box
+                display="grid"
+                gridTemplateColumns={phone ? "1fr" : "1fr 1fr"}
+                gridGap={10}
+                flex={1}
+                height={phone ? "" : "calc(100vh - 160px)"}
+            >
                 <Formik initialValues={initialValue} validationSchema={schema} onSubmit={handleSubmit}>
                     {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
                         <Form>
-                            <Box
-                                display="flex"
-                                flexDirection="column"
-                                style={{ gap: 10 }}
-                                height={phone ? "" : "78.5vh"}
-                            >
+                            <Box display="flex" flexDirection="column" style={{ gap: 10 }} height={phone ? "" : "100%"}>
                                 <BasePaper>
                                     <JobForm
                                         errors={errors}
@@ -215,71 +216,69 @@ export default function Details({
                         </Form>
                     )}
                 </Formik>
-                <Box width="100%">
-                    <BasePaper>
-                        <Tabs
-                            variant="scrollable"
-                            style={
-                                phone
-                                    ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" }
-                                    : { marginBottom: "10px" }
-                            }
-                            scrollButtons={phone ? "on" : "auto"}
-                            value={activeTab}
-                            onChange={(e, nv) => setActiveTab(nv)}
-                            textColor="primary"
-                        >
-                            <Tab label="Filed Service History" /> 0
-                            <Tab label="Device Document" /> 1
-                            <Tab label="Device Forms" /> 2
-                            <Tab label="Ticket Documents" /> 3
-                            <Tab label="Device RMA History" /> 4
-                            <Tab label="Notes" /> 5
-                            <Tab label="Auditing" /> 6
-                        </Tabs>
-                        {activeTab === 0 && (
-                            <BaseDataGrid
-                                cols={historyCols}
-                                rows={serviceHistory?.result || []}
-                                onRowSelected={() => {}}
-                                height={500}
-                            />
-                        )}
-                        {activeTab === 1 && (
-                            <BaseDataGrid
-                                cols={docCols}
-                                rows={itemDocuments || []}
-                                onRowSelected={() => {}}
-                                height={500}
-                            />
-                        )}
-                        {activeTab === 2 && (
-                            <BaseDataGrid cols={docCols} rows={[]} onRowSelected={() => {}} height={500} />
-                        )}
+                <BasePaper style={{ height: "100%" }}>
+                    <Tabs
+                        variant="scrollable"
+                        style={
+                            phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" } : { marginBottom: "10px" }
+                        }
+                        scrollButtons={phone ? "on" : "auto"}
+                        value={activeTab}
+                        onChange={(e, nv) => setActiveTab(nv)}
+                        textColor="primary"
+                    >
+                        <Tab label="Filed Service History" /> 0
+                        <Tab label="Device Document" /> 1
+                        <Tab label="Device Forms" /> 2
+                        <Tab label="Ticket Documents" /> 3
+                        <Tab label="Device RMA History" /> 4
+                        <Tab label="Notes" /> 5
+                        <Tab label="Auditing" /> 6
+                    </Tabs>
+                    {activeTab === 0 && (
+                        <BaseDataGrid
+                            cols={historyCols}
+                            rows={serviceHistory?.result || []}
+                            onRowSelected={() => {}}
+                            height={"calc(100% - 60px)"}
+                        />
+                    )}
+                    {activeTab === 1 && (
+                        <BaseDataGrid
+                            cols={docCols}
+                            rows={itemDocuments || []}
+                            onRowSelected={() => {}}
+                            height={"calc(100% - 60px)"}
+                        />
+                    )}
+                    {activeTab === 2 && (
+                        <BaseDataGrid cols={docCols} rows={[]} onRowSelected={() => {}} height={"calc(100% - 60px)"} />
+                    )}
 
-                        {activeTab === 3 && (
-                            <BaseDataGrid
-                                cols={docCols}
-                                rows={documents || []}
-                                onRowSelected={(d) => {
-                                    onDocumentSelected(d);
-                                }}
-                                height={500}
-                            />
-                        )}
-                        {activeTab === 4 && <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} height={500} />}
-                        {activeTab === 5 && (
-                            <BaseDataGrid
-                                cols={noteCols}
-                                rows={notes ? notes : []}
-                                onRowSelected={(n) => {
-                                    onNoteSelected(n);
-                                }}
-                                height={500}
-                            />
-                        )}
-                    </BasePaper>
-                </Box>
+                    {activeTab === 3 && (
+                        <BaseDataGrid
+                            cols={docCols}
+                            rows={documents || []}
+                            onRowSelected={(d) => {
+                                onDocumentSelected(d);
+                            }}
+                            height={"calc(100% - 60px)"}
+                        />
+                    )}
+                    {activeTab === 4 && (
+                        <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} height={"calc(100% - 60px)"} />
+                    )}
+                    {activeTab === 5 && (
+                        <BaseDataGrid
+                            cols={noteCols}
+                            rows={notes ? notes : []}
+                            onRowSelected={(n) => {
+                                onNoteSelected(n);
+                            }}
+                            height={"calc(100% - 60px)"}
+                        />
+                    )}
+                </BasePaper>
             </Box>
         </>
     );

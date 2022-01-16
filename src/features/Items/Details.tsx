@@ -42,7 +42,7 @@ const style = {
     border: "1px solid gray ",
     borderRadius: "4px",
     padding: "5px 10px",
-    margin: "3px 0px 10px 5px ",
+    margin: "0px 0px 10px 5px ",
 };
 
 function ItemsDetails({
@@ -332,14 +332,14 @@ function ItemsDetails({
                 {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
                     <Form style={{ flex: 1, display: "flex" }}>
                         <Box
-                            pb="8px"
                             display="grid"
                             gridTemplateColumns={phone ? "1fr" : "1fr 2fr"}
                             gridTemplateRows={phone ? "" : "1fr"}
                             gridGap={10}
                             flex={1}
+                            height={phone ? "" : "calc(100vh - 160px)"}
                         >
-                            <Box display="flex" flexDirection="column" gridGap={5}>
+                            <Box display="flex" flexDirection="column" gridGap={5} height={phone ? "" : "100%"}>
                                 <BasePaper>
                                     <General
                                         values={values}
@@ -349,25 +349,21 @@ function ItemsDetails({
                                         errors={errors}
                                         touched={touched}
                                     />
-                                    <Button style={{ margin: "10px 0px", width: "200px" }} kind="edit" type="submit">
-                                        Save
-                                    </Button>
+                                    <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+                                        <Button style={{ width: "200px", marginTop: "10px" }} kind="edit" type="submit">
+                                            Save
+                                        </Button>
+                                    </div>
                                 </BasePaper>
-                                <BasePaper
-                                    style={{
-                                        height: "100%",
-                                        display: "flex",
-                                        flexDirection: "column",
-                                    }}
-                                >
+                                <BasePaper style={{ flex: 1 }}>
                                     <Tabs
                                         value={moreInfoTab}
                                         variant="scrollable"
                                         scrollButtons={phone ? "on" : "auto"}
                                         style={
                                             phone
-                                                ? { marginBottom: 16, maxWidth: "calc(100vw - 63px)" }
-                                                : { marginBottom: 16, maxWidth: "35vw" }
+                                                ? { marginBottom: 10, maxWidth: "calc(100vw - 63px)" }
+                                                : { marginBottom: 10, maxWidth: "35vw" }
                                         }
                                         textColor="primary"
                                         onChange={(e, v) => setMoreInfoTab(v)}
@@ -526,18 +522,18 @@ function ItemsDetails({
                                     )}
                                 </BasePaper>
                             </Box>
-                            <BasePaper
-                                style={
-                                    phone ? {} : { gridRow: 1, gridColumn: 2, gridRowEnd: "span 2", marginLeft: "10px" }
-                                }
-                            >
+                            <BasePaper style={{ height: "100%" }}>
                                 <Tabs
                                     value={activeTab}
                                     onChange={(e, v) => setActiveTab(v)}
                                     textColor="primary"
                                     variant="scrollable"
                                     scrollButtons={phone ? "on" : "auto"}
-                                    style={phone ? { maxWidth: "calc(100vw - 63px)" } : {}}
+                                    style={
+                                        phone
+                                            ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" }
+                                            : { marginBottom: "10px" }
+                                    }
                                 >
                                     <Tab label="Document" /> 0
                                     {boms?.length === 0 ? <Tab label="Vendor" /> : <Tab label="BOM" />}
@@ -547,84 +543,84 @@ function ItemsDetails({
                                     <Tab label="Note" />5
                                     <Tab label="Auditing" />6
                                 </Tabs>
-                                <Box p={1}>
-                                    {activeTab === 0 && (
-                                        <>
-                                            <Button
-                                                onClick={() => {
-                                                    setAddDocModal(true);
-                                                }}
-                                                style={style}
-                                            >
-                                                + Add Document
-                                            </Button>
-                                            <BaseDataGrid
-                                                cols={docCols}
-                                                rows={docs || []}
-                                                onRowSelected={onDocSelected}
-                                            />
-                                        </>
-                                    )}
-                                    {activeTab === 1 && boms?.length === 0 && (
-                                        <div style={{ maxWidth: "79vw", overflow: "auto" }}>
-                                            <Button
-                                                onClick={() => {
-                                                    setAddVendorModal(true);
-                                                }}
-                                                style={style}
-                                            >
-                                                + Add Vendor
-                                            </Button>
-                                            <VendorsTable
-                                                selectedItem={selectedRow}
-                                                rows={vendors || []}
-                                                onRowSelected={() => {}}
-                                            />
-                                        </div>
-                                    )}
-                                    {activeTab === 1 && boms && boms.length > 0 && (
-                                        <div style={{ maxWidth: "79vw", overflow: "auto" }}>
-                                            <ItemBomTable boms={boms} />
-                                        </div>
-                                    )}
-                                    {activeTab === 2 && itemSOs && <SOTable rows={itemSOs} />}
-                                    {activeTab === 3 && (
+                                {activeTab === 0 && (
+                                    <>
+                                        <Button
+                                            onClick={() => {
+                                                setAddDocModal(true);
+                                            }}
+                                            style={style}
+                                        >
+                                            + Add Document
+                                        </Button>
                                         <BaseDataGrid
-                                            cols={poCols}
-                                            rows={
-                                                itemPOs
-                                                    ? itemPOs.map((i: any, index: string) => ({ ...i, id: index }))
-                                                    : []
-                                            }
+                                            cols={docCols}
+                                            rows={docs || []}
+                                            onRowSelected={onDocSelected}
+                                            height={"calc(100% - 100px)"}
+                                        />
+                                    </>
+                                )}
+                                {activeTab === 1 && boms?.length === 0 && (
+                                    <div style={{ maxWidth: "79vw", overflow: "auto" }}>
+                                        <Button
+                                            onClick={() => {
+                                                setAddVendorModal(true);
+                                            }}
+                                            style={style}
+                                        >
+                                            + Add Vendor
+                                        </Button>
+                                        <VendorsTable
+                                            selectedItem={selectedRow}
+                                            rows={vendors || []}
                                             onRowSelected={() => {}}
                                         />
-                                    )}
-                                    {activeTab === 4 && (
+                                    </div>
+                                )}
+                                {activeTab === 1 && boms && boms.length > 0 && (
+                                    <div style={{ maxWidth: "79vw", overflow: "auto" }}>
+                                        <ItemBomTable boms={boms} />
+                                    </div>
+                                )}
+                                {activeTab === 2 && itemSOs && <SOTable rows={itemSOs} />}
+                                {activeTab === 3 && (
+                                    <BaseDataGrid
+                                        cols={poCols}
+                                        rows={
+                                            itemPOs ? itemPOs.map((i: any, index: string) => ({ ...i, id: index })) : []
+                                        }
+                                        onRowSelected={() => {}}
+                                        height={"calc(100% - 60px)"}
+                                    />
+                                )}
+                                {activeTab === 4 && (
+                                    <BaseDataGrid
+                                        cols={usageCols}
+                                        rows={itemUsage || []}
+                                        onRowSelected={() => {}}
+                                        height={"calc(100% - 60px)"}
+                                    />
+                                )}
+                                {activeTab === 5 && (
+                                    <>
+                                        <Button
+                                            onClick={() => {
+                                                setAddNoteModal(true);
+                                            }}
+                                            style={style}
+                                        >
+                                            + Add Note
+                                        </Button>
                                         <BaseDataGrid
-                                            cols={usageCols}
-                                            rows={itemUsage || []}
-                                            onRowSelected={() => {}}
+                                            cols={noteCols}
+                                            rows={notes || []}
+                                            onRowSelected={onNoteSelected}
+                                            height={"calc(100% - 100px)"}
                                         />
-                                    )}
-                                    {activeTab === 5 && (
-                                        <>
-                                            <Button
-                                                onClick={() => {
-                                                    setAddNoteModal(true);
-                                                }}
-                                                style={style}
-                                            >
-                                                + Add Note
-                                            </Button>
-                                            <BaseDataGrid
-                                                cols={noteCols}
-                                                rows={notes || []}
-                                                onRowSelected={onNoteSelected}
-                                            />
-                                        </>
-                                    )}
-                                    {activeTab === 6 && <div>Auditing</div>}
-                                </Box>
+                                    </>
+                                )}
+                                {activeTab === 6 && <div>Auditing</div>}
                             </BasePaper>
                         </Box>
                     </Form>
