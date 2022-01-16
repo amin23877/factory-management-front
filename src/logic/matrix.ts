@@ -9,15 +9,7 @@ export const splitColumnNames = (columns: GridColumns) => {
     return temp;
 };
 
-export const generateRows = ({
-    levels,
-    tableData,
-    productFamily,
-}: {
-    tableData: IMatrix;
-    levels: string[];
-    productFamily: string;
-}) => {
+export const generateRows = ({ levels, tableData }: { tableData: IMatrix; levels: string[] }) => {
     return tableData.map((td, i) => {
         let tdLevels: any = {},
             tdParts: any = [],
@@ -30,26 +22,26 @@ export const generateRows = ({
             tdParts[p.name] = p;
         });
 
-        return { id: i, ...tdLevels, ...tdParts, "Product Family": productFamily };
+        return { id: i, ...tdLevels, ...tdParts, "Device Number": td.device?.no };
     });
 };
 
 export const generateDataGridColumns = (columns: string[]) => {
-    const dtCols: GridColumns = [];
+    const dtCols: any = [];
 
     columns.forEach((c) => {
         if (c.search("Part") > -1) {
             dtCols.push({
-                field: c,
-                valueFormatter: (p) => p.row[c]?.ItemId.no,
-                width: 100,
+                name: c,
+                render: ({ data }: any) => data[c]?.ItemId.no,
+                minWidth: 100,
                 editable: false,
                 disableColumnMenu: true,
             });
         } else {
             dtCols.push({
-                field: c,
-                width: 100,
+                name: c,
+                minWidth: 150,
                 editable: false,
                 disableColumnMenu: true,
             });
@@ -61,7 +53,7 @@ export const generateDataGridColumns = (columns: string[]) => {
 
 export const extractColumns = ({ tableData, levels }: { tableData: IMatrix; levels?: string[] }) => {
     const cols = new Set<string>();
-    cols.add("Product Family");
+    cols.add("Device Number");
     if (levels) {
         levels.forEach((l) => cols.add(l));
     }

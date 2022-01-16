@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { LinearProgress, Box, makeStyles } from "@material-ui/core";
-import { DataGrid, GridPagination, GridToolbar } from "@material-ui/data-grid";
+import { GridPagination, GridToolbar } from "@material-ui/data-grid";
 import useSWR from "swr";
+
+import DataGrid from "@inovua/reactdatagrid-community";
 
 import AddPartModal from "./AddPartModal";
 import ChangePartModal from "./ChangePartModal";
@@ -16,8 +18,9 @@ import { extractLevels, generateDataGridColumns, generateRows, extractColumns } 
 
 const useStyles = makeStyles({
     root: {
-        "& .MuiDataGrid-colCellWrapper": {
-            backgroundColor: "#c8c8c8",
+        "& .InovuaReactDataGrid__column-header": {
+            background: "#202731",
+            color: "#fff",
         },
     },
 });
@@ -44,7 +47,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
         if (tableData) {
             const levels = extractLevels(tableData);
             const columns = generateDataGridColumns(extractColumns({ tableData, levels }));
-            const rows = generateRows({ tableData, productFamily, levels });
+            const rows = generateRows({ tableData, levels });
 
             setTable({ columns, rows });
             setLevels(levels);
@@ -130,37 +133,19 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
 
             <Box display="flex" alignItems="flex-top" width="100%">
                 <Box width="100%">
-                    <Button variant="outlined" style={{ margin: "0.5em 0" }} onClick={() => setAddPart(true)}>
+                    <Button variant="outlined" disabled style={{ margin: "0.5em 0" }} onClick={() => setAddPart(true)}>
                         Add part
                     </Button>
-                    <Button kind="add" disabled={!lines} style={{ margin: "0.5em" }} onClick={submitChanges}>
+                    <Button kind="add" disabled style={{ margin: "0.5em" }} onClick={submitChanges}>
                         Submit changes
                     </Button>
 
-                    <Box height="70vh">
+                    <Box display="flex" height="70vh">
                         <DataGrid
-                            pagination
-                            rowsPerPageOptions={[100, 250, 500]}
-                            density="compact"
-                            rowHeight={36}
                             className={classes.root}
+                            rowHeight={20}
                             columns={table.columns}
-                            rows={table.rows}
-                            // components={{
-                            //     Toolbar: GridToolbar,
-                            //     Footer: CustomFooterStatusComponent,
-                            //     Pagination: GridPagination,
-                            // }}
-                            // componentsProps={{ footer: { submitted: Boolean(lines) } }}
-                            // onColumnHeaderClick={(params) => {
-                            //     setSelectedPart({ formerName: params.field, newName: "" });
-                            //     setRenamePart(true);
-                            // }}
-                            // onCellClick={(params) => {
-                            //     setSelectedRow(params.row);
-                            //     setSelectedRowName(params.field);
-                            //     setChangePart(true);
-                            // }}
+                            dataSource={table.rows}
                         />
                     </Box>
                 </Box>
