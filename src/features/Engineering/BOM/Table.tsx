@@ -14,7 +14,13 @@ import Toast from "../../../app/Toast";
 
 import { IMatrix, postMatrixData } from "../../../api/matrix";
 import { CustomFooterStatusComponent } from "../../../components/Datagrid/FooterStatus";
-import { extractLevels, generateDataGridColumns, generateRows, extractColumns } from "../../../logic/matrix";
+import {
+    extractLevels,
+    generateDataGridColumns,
+    generateDataGridFilterValues,
+    generateRows,
+    extractColumns,
+} from "../../../logic/matrix";
 
 const useStyles = makeStyles({
     root: {
@@ -41,15 +47,20 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
     const [levels, setLevels] = useState<string[]>();
     const [lines, setLines] = useState<any[]>();
 
-    const [table, setTable] = useState<{ columns: any; rows: any[] }>({ columns: [], rows: [] });
+    const [table, setTable] = useState<{ columns: any; rows: any[]; defaultFilterValues: any[] | null }>({
+        columns: [],
+        rows: [],
+        defaultFilterValues: null,
+    });
 
     useEffect(() => {
         if (tableData) {
             const levels = extractLevels(tableData);
             const columns = generateDataGridColumns(extractColumns({ tableData, levels }));
             const rows = generateRows({ tableData, levels });
+            const defaultFilterValues = generateDataGridFilterValues(extractColumns({ tableData, levels }));
 
-            setTable({ columns, rows });
+            setTable({ columns, rows, defaultFilterValues });
             setLevels(levels);
         }
     }, [productFamily, tableData]);
@@ -106,7 +117,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
         // }
     };
 
-    if (!tableData) {
+    if (!tableData || !table.defaultFilterValues) {
         return <LinearProgress />;
     }
 
@@ -146,6 +157,12 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
                             rowHeight={20}
                             columns={table.columns}
                             dataSource={table.rows}
+                            defaultFilterValue={table.defaultFilterValues}
+                            pagination
+                            defaultLimit={250}
+                            // @ts-ignore
+                            onCellClick={(e, cp) => console.log({ e, cp })}
+                            pageSizes={[50, 100, 250, 500]}
                         />
                     </Box>
                 </Box>

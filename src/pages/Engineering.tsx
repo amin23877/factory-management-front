@@ -13,7 +13,7 @@ import Dashboard from "../features/Engineering/Dashboard";
 import { usePortal } from "../logic/PortalContext";
 
 export default function Engineering() {
-    const [activeTab, setActiveTab] = useState(1);
+    const [activeTab, setActiveTab] = useState(2);
     const [tabText, setTabText] = useState("Devices");
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 

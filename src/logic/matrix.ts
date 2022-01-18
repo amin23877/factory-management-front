@@ -22,7 +22,7 @@ export const generateRows = ({ levels, tableData }: { tableData: IMatrix; levels
             tdParts[p.name] = p;
         });
 
-        return { id: i, ...tdLevels, ...tdParts, "Device Number": td.device?.no };
+        return { id: i, ...tdLevels, ...tdParts, deviceId: td.device?.id, "Device Number": td.device?.no };
     });
 };
 
@@ -49,6 +49,16 @@ export const generateDataGridColumns = (columns: string[]) => {
     });
 
     return dtCols;
+};
+
+export const generateDataGridFilterValues = (columns: string[]) => {
+    const dtFilterValues: any = [];
+
+    columns.forEach((c) => {
+        dtFilterValues.push({ name: c, operator: "startsWith", type: "string", value: "" });
+    });
+
+    return dtFilterValues;
 };
 
 export const extractColumns = ({ tableData, levels }: { tableData: IMatrix; levels?: string[] }) => {
