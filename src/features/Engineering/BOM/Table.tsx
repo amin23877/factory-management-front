@@ -31,6 +31,19 @@ const useStyles = makeStyles({
     },
 });
 
+type ITableChangeCell = {
+    ItemId: string;
+    usage: number;
+    location?: string;
+    uom?: string;
+    fixedQty?: boolean;
+};
+
+type ITableChangeRow = {
+    device: string;
+    cells: ITableChangeCell[];
+};
+
 export default function NewBomTable({ productFamily }: { productFamily: string }) {
     const { data: tableData, mutate: mutateTableData } = useSWR<IMatrix>(`/matrice/${productFamily}`);
 
@@ -43,9 +56,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
     const [selectedRow, setSelectedRow] = useState<any>();
     const [selectedPart, setSelectedPart] = useState<{ formerName: string; newName: string }>();
     const [selectedRowName, setSelectedRowName] = useState<string>();
-
-    const [levels, setLevels] = useState<string[]>();
-    const [lines, setLines] = useState<any[]>();
+    const [changes, setChanges] = useState<ITableChangeRow[]>([]);
 
     const [table, setTable] = useState<{ columns: any; rows: any[]; defaultFilterValues: any[] | null }>({
         columns: [],
@@ -61,7 +72,6 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
             const defaultFilterValues = generateDataGridFilterValues(extractColumns({ tableData, levels }));
 
             setTable({ columns, rows, defaultFilterValues });
-            setLevels(levels);
         }
     }, [productFamily, tableData]);
 
@@ -70,51 +80,32 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
         setAddPart(false);
     };
 
-    const handleChangePart = (d: any) => {
-        // setTable((prev) => {
-        //     const res = { ...prev };
-        //     const index = res.rows.findIndex((r: any) => r.id === d.row.id);
-        //     const header = d.data[0].name;
-        //     res.rows[index][header] = d.data[0].partNumber;
-        //     return res;
-        // });
-        // const row = JSON.parse(JSON.stringify(d));
-        // Object.keys(row.row).forEach((r) => {
-        //     if (!levels?.includes(r)) {
-        //         delete row.row[r];
-        //     }
-        // });
-        // setLines((prev) => {
-        //     if (prev) {
-        //         let res = prev.slice();
-        //         const index = res.findIndex((r) => JSON.stringify(r.row) === JSON.stringify(row.row));
-        //         if (index > -1) {
-        //             const dataIndex = res[index].data.findIndex((d: any) => d.name === row.data[0].name);
-        //             if (dataIndex > -1) {
-        //                 res[index].data[dataIndex] = row.data[0];
-        //             } else {
-        //                 res[index].data.push(row.data[0]);
-        //             }
-        //         } else {
-        //             res = [...prev, row];
-        //         }
-        //         return res;
-        //     } else {
-        //         return [row];
-        //     }
-        // });
-        // setChangePart(false);
+    const handleChangePart = (d: ITableChangeRow) => {
+        setChanges((prev) => {
+            let clone = prev?.concat();
+            const index = clone.findIndex((i) => i.device === d.device);
+
+            if (index < 0) {
+                clone.push(d);
+            } else {
+                clone[index].cells = [...clone[index].cells, ...d.cells];
+            }
+
+            return clone;
+        });
+
+        setChangePart(false);
     };
 
     const submitChanges = async () => {
-        // try {
-        //     await postMatrixData(productFamily, { lines });
-        //     mutateTableData();
-        //     Toast("Submitted", "success");
-        //     setLines(undefined);
-        // } catch (error) {
-        //     console.log(error);
-        // }
+        try {
+            await postMatrixData(productFamily, { matrice: [...changes] });
+            mutateTableData();
+            Toast("Submitted", "success");
+            setChanges([]);
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     if (!tableData || !table.defaultFilterValues) {
@@ -147,7 +138,12 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
                     <Button variant="outlined" disabled style={{ margin: "0.5em 0" }} onClick={() => setAddPart(true)}>
                         Add part
                     </Button>
-                    <Button kind="add" disabled style={{ margin: "0.5em" }} onClick={submitChanges}>
+                    <Button
+                        kind="add"
+                        disabled={changes.length < 1}
+                        style={{ margin: "0.5em" }}
+                        onClick={submitChanges}
+                    >
                         Submit changes
                     </Button>
 
@@ -161,7 +157,11 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
                             pagination
                             defaultLimit={250}
                             // @ts-ignore
-                            onCellClick={(e, cp) => console.log({ e, cp })}
+                            onCellClick={(_, { data, id: partName }) => {
+                                setSelectedRowName(partName);
+                                setSelectedRow(data);
+                                setChangePart(true);
+                            }}
                             pageSizes={[50, 100, 250, 500]}
                         />
                     </Box>

@@ -25,8 +25,8 @@ export const getMatrix = (productFamily: string, levels?: string[]) => {
     return get(`/matrice?productfamily=${productFamily}`);
 };
 
-export const postMatrixData = (productFamily: string, lines: any) => {
-    return post(`/matrice?productfamily=${productFamily}`, lines);
+export const postMatrixData = (productFamily: string, changes: any) => {
+    return post(`/matrice?productfamily=${productFamily}`, changes);
 };
 
 export const renameMatrixPart = (formerName: string, newName: string) => {

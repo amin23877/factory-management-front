@@ -22,7 +22,14 @@ export const generateRows = ({ levels, tableData }: { tableData: IMatrix; levels
             tdParts[p.name] = p;
         });
 
-        return { id: i, ...tdLevels, ...tdParts, deviceId: td.device?.id, "Device Number": td.device?.no };
+        return {
+            id: i,
+            ...tdLevels,
+            ...tdParts,
+            parts,
+            DeviceId: (td.device as any)?._id || td.device?.id,
+            "Device Number": td.device?.no,
+        };
     });
 };
 

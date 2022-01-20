@@ -1,17 +1,16 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box, FormControlLabel, Checkbox } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
 import Dialog from "../../../app/Dialog";
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
-import { IPart } from "../../../api/matrix";
 import { FieldSelect } from "../../../app/Inputs";
 import { getItems } from "../../../api/items";
 
 const schema = Yup.object().shape({
-    partNumber: Yup.string().required(),
+    ItemId: Yup.string().required(),
 });
 
 function ChangePartModal({
@@ -28,19 +27,28 @@ function ChangePartModal({
     onDone: (data: any) => void;
 }) {
     const handleSubmit = (d: any) => {
-        const res = { row, data: [{ ...d, name: partName }] };
+        for (const key in d) {
+            if (!d[key]) {
+                delete d[key];
+            }
+        }
+        const prevCells = row.parts.map((p: any) => ({ ItemId: p.id, usage: p.usage }));
+        const res = { device: row.DeviceId, cells: [...prevCells, d] };
+        console.log(res);
+
         onDone(res);
     };
 
     return (
         <Dialog open={open} onClose={onClose} title="Add part">
             <Formik
-                initialValues={
-                    {
-                        partNumber: row && row[partName] ? row[partName] : "",
-                        usage: row && row.usages && row.usages[partName],
-                    } as IPart
-                }
+                initialValues={{
+                    ItemId: undefined,
+                    usage: 1,
+                    location: undefined,
+                    uom: undefined,
+                    // fixedQty: false,
+                }}
                 validationSchema={schema}
                 onSubmit={handleSubmit}
             >
@@ -50,27 +58,55 @@ function ChangePartModal({
                             <TextField disabled label="name" value={partName} />
                             <FieldSelect
                                 request={getItems}
-                                getOptionList={(list) => list.items}
+                                getOptionList={(list) => list.result}
                                 itemTitleField="name"
-                                itemValueField="no"
-                                name="partNumber"
-                                placeholder="partNumber"
+                                itemValueField="id"
+                                name="ItemId"
+                                placeholder="Part Number"
                                 label="Part number"
-                                value={values.partNumber}
+                                value={values.ItemId}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                error={Boolean(errors.partNumber)}
+                                error={Boolean(errors.ItemId)}
                             />
                             <TextField
                                 type="number"
                                 name="usage"
                                 placeholder="usage"
-                                label="usage"
+                                label="Usage"
                                 value={values.usage}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 error={Boolean(errors.usage)}
                             />
+                            <TextField
+                                name="location"
+                                placeholder="Location"
+                                label="Location"
+                                value={values.location}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(errors.location)}
+                            />
+                            <TextField
+                                name="uom"
+                                placeholder="Unit Of Measure"
+                                label="Unit Of Measure"
+                                value={values.uom}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                error={Boolean(errors.uom)}
+                            />
+                            {/* <FormControlLabel
+                                style={{ margin: 0 }}
+                                name="fixedQty"
+                                placeholder="Fixed QTY"
+                                label="Fixed QTY"
+                                checked={values.fixedQty}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                control={<CheckBox />}
+                            /> */}
                             <Button kind="add" type="submit">
                                 Submit
                             </Button>

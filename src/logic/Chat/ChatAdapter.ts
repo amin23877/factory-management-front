@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 import { getToken } from "../../api";
-import { host } from '../../host'
+import { host } from "../../host";
 
 export type messageType = {
     _id: string;
@@ -39,7 +39,7 @@ export default class ChatAdapter {
         this.socket = io(this.socketURL, { autoConnect: false, transports: ["websocket"] });
         this.socket.auth = { token: this.token };
         this.socket.onAny((event, args) => {
-            console.log("ChatAdapter", event, args);
+            // console.log("ChatAdapter", event, args);
         });
 
         this.socket.on("socket connected", ({ userID, username }) => {
