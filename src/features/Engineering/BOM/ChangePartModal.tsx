@@ -32,9 +32,12 @@ function ChangePartModal({
                 delete d[key];
             }
         }
-        const prevCells = row.parts.map((p: any) => ({ ItemId: p.id, usage: p.usage }));
+        const prevCells = row.parts.map((p: any) => ({
+            ItemId: (p?.ItemId as any)?._id || p?.ItemId?.id,
+            usage: p.usage,
+        }));
         const res = { device: row.DeviceId, cells: [...prevCells, d] };
-        console.log(res);
+        console.log({ res, row });
 
         onDone(res);
     };

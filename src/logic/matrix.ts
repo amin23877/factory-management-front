@@ -40,7 +40,7 @@ export const generateDataGridColumns = (columns: string[]) => {
         if (c.search("Part") > -1) {
             dtCols.push({
                 name: c,
-                render: ({ data }: any) => data[c]?.ItemId.no,
+                render: ({ data }: any) => data[c]?.ItemId?.no,
                 minWidth: 100,
                 editable: false,
                 disableColumnMenu: true,
