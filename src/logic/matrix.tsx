@@ -1,13 +1,7 @@
-import { GridColumns } from "@material-ui/data-grid";
+import React from "react";
+import { Typography, Button } from "@material-ui/core";
+import { EditRounded } from "@material-ui/icons";
 import { IMatrix } from "../api/matrix";
-
-import { splitLevelName } from "./levels";
-
-export const splitColumnNames = (columns: GridColumns) => {
-    const temp = [...columns];
-    temp.map((c) => (c.headerName = splitLevelName(c.headerName ? c.headerName : c.field)));
-    return temp;
-};
 
 export const generateRows = ({ levels, tableData }: { tableData: IMatrix; levels: string[] }) => {
     return tableData.map((td, i) => {
@@ -33,7 +27,7 @@ export const generateRows = ({ levels, tableData }: { tableData: IMatrix; levels
     });
 };
 
-export const generateDataGridColumns = (columns: string[]) => {
+export const generateDataGridColumns = (columns: string[], onRename: (header: string) => void) => {
     const dtCols: any = [];
 
     columns.forEach((c) => {
@@ -41,16 +35,24 @@ export const generateDataGridColumns = (columns: string[]) => {
             dtCols.push({
                 name: c,
                 render: ({ data }: any) => data[c]?.ItemId?.no,
-                minWidth: 100,
+                minWidth: 180,
                 editable: false,
-                disableColumnMenu: true,
+                sortable: false,
+                header: (
+                    <div style={{ width: 80, display: "flex", alignItems: "center" }}>
+                        <Typography variant="caption">{c}</Typography>
+                        <Button size="small" onClick={() => onRename(c)}>
+                            <EditRounded htmlColor="white" fontSize="small" />
+                        </Button>
+                    </div>
+                ),
             });
         } else {
             dtCols.push({
                 name: c,
                 minWidth: 150,
                 editable: false,
-                disableColumnMenu: true,
+                header: <Typography variant="caption">{c}</Typography>,
             });
         }
     });

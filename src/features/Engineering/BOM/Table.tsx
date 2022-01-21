@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { LinearProgress, Box, makeStyles } from "@material-ui/core";
-import { GridPagination, GridToolbar } from "@material-ui/data-grid";
-import useSWR from "swr";
+import React, { useState, useEffect, useCallback } from "react";
+import { LinearProgress, Box, makeStyles, Typography } from "@material-ui/core";
 
 import DataGrid from "@inovua/reactdatagrid-community";
 
@@ -12,8 +10,7 @@ import RenamePart from "./RenamePart";
 import Button from "../../../app/Button";
 import Toast from "../../../app/Toast";
 
-import { IMatrix, postMatrixData } from "../../../api/matrix";
-import { CustomFooterStatusComponent } from "../../../components/Datagrid/FooterStatus";
+import { getMatrix, IMatrix, postMatrixData } from "../../../api/matrix";
 import {
     extractLevels,
     generateDataGridColumns,
@@ -21,6 +18,7 @@ import {
     generateRows,
     extractColumns,
 } from "../../../logic/matrix";
+import { EditRounded } from "@material-ui/icons";
 
 const useStyles = makeStyles({
     root: {
@@ -45,7 +43,8 @@ type ITableChangeRow = {
 };
 
 export default function NewBomTable({ productFamily }: { productFamily: string }) {
-    const { data: tableData, mutate: mutateTableData } = useSWR<IMatrix>(`/matrice/${productFamily}`);
+    // const { data: tableData, mutate: mutateTableData } = useSWR<IMatrix>(`/matrice/${productFamily}`);
+    const [tableData, setTableData] = useState<IMatrix>();
 
     const classes = useStyles();
 
@@ -58,25 +57,110 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
     const [selectedRowName, setSelectedRowName] = useState<string>();
     const [changes, setChanges] = useState<ITableChangeRow[]>([]);
 
-    const [table, setTable] = useState<{ columns: any; rows: any[]; defaultFilterValues: any[] | null }>({
-        columns: [],
-        rows: [],
-        defaultFilterValues: null,
-    });
+    // const [table, setTable] = useState<{ columns: any; rows: any[]; defaultFilterValues: any[] | null }>({
+    //     columns: [],
+    //     rows: [],
+    //     defaultFilterValues: null,
+    // });
+    const [tableColumns, setTableColumns] = useState<any[]>([]);
+    const [tableRows, setTableRows] = useState<any[]>([]);
+    const [tableDefaultFilters, setTableDefaultFilters] = useState<any[] | null>(null);
+
+    const refreshTableData = useCallback(async () => {
+        try {
+            const resp = await getMatrix(productFamily);
+            setTableData(resp);
+        } catch (error) {
+            console.log(error);
+        }
+    }, [productFamily]);
+
+    useEffect(() => {
+        refreshTableData();
+    }, [refreshTableData]);
+
+    const handleChangePartName = useCallback((header: string) => {
+        setSelectedPart({ formerName: header, newName: "" });
+        setRenamePart(true);
+    }, []);
+
+    const handleRenamePart = ({ formerName, newName }: { formerName: string; newName: string }) => {
+        setTableColumns((prev) => {
+            const temp = prev.concat();
+            let index = temp.findIndex((c: any) => c.name === formerName);
+            if (index > -1) {
+                temp[index] = {
+                    name: newName,
+                    render: ({ data }: any) => data[newName]?.ItemId?.no,
+                    minWidth: 180,
+                    editable: false,
+                    sortable: false,
+                    header: (
+                        <div style={{ width: 80, display: "flex", alignItems: "center" }}>
+                            <Typography variant="caption">{newName}</Typography>
+                            <Button size="small" onClick={() => handleChangePartName(newName)}>
+                                <EditRounded htmlColor="white" fontSize="small" />
+                            </Button>
+                        </div>
+                    ),
+                };
+            }
+
+            return temp;
+        });
+        setTableDefaultFilters((prev: any) => {
+            const temp = prev?.concat();
+            let index = temp.findIndex((c: any) => c.name === formerName);
+            if (index > -1) {
+                temp[index] = { name: newName, operator: "startsWith", type: "string", value: "" };
+            }
+
+            return temp;
+        });
+        setRenamePart(false);
+    };
 
     useEffect(() => {
         if (tableData) {
             const levels = extractLevels(tableData);
-            const columns = generateDataGridColumns(extractColumns({ tableData, levels }));
+            const columns = generateDataGridColumns(extractColumns({ tableData, levels }), handleChangePartName);
             const rows = generateRows({ tableData, levels });
             const defaultFilterValues = generateDataGridFilterValues(extractColumns({ tableData, levels }));
 
-            setTable({ columns, rows, defaultFilterValues });
+            // setTable({ columns, rows, defaultFilterValues });
+            setTableColumns(columns);
+            setTableRows(rows);
+            setTableDefaultFilters(defaultFilterValues);
         }
-    }, [productFamily, tableData]);
+    }, [handleChangePartName, productFamily, tableData]);
 
     const handleAddPart = (name: string) => {
-        setTable((prev) => ({ ...prev, columns: [...prev.columns, { field: name, flex: 1, sortable: false }] }));
+        setTableColumns((prev) => {
+            const temp = prev.concat();
+            temp.push({
+                name,
+                render: ({ data }: any) => data[name]?.ItemId?.no,
+                minWidth: 180,
+                editable: false,
+                sortable: false,
+                header: (
+                    <div style={{ width: 80, display: "flex", alignItems: "center" }}>
+                        <Typography variant="caption">{name}</Typography>
+                        <Button size="small" onClick={() => handleChangePartName(name)}>
+                            <EditRounded htmlColor="white" fontSize="small" />
+                        </Button>
+                    </div>
+                ),
+            });
+
+            return temp;
+        });
+        setTableDefaultFilters((prev: any) => {
+            const temp = prev?.concat();
+            temp.push({ name, operator: "startsWith", type: "string", value: "" });
+
+            return temp;
+        });
         setAddPart(false);
     };
 
@@ -99,8 +183,8 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
 
     const submitChanges = async () => {
         try {
-            await postMatrixData(productFamily, { matrice: [...changes] });
-            mutateTableData();
+            await postMatrixData({ matrice: [...changes] });
+            refreshTableData();
             Toast("Submitted", "success");
             setChanges([]);
         } catch (error) {
@@ -108,7 +192,12 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
         }
     };
 
-    if (!tableData || !table.defaultFilterValues) {
+    const handleDeletePart = useCallback((name: string) => {
+        console.log({ name });
+        setRenamePart(false);
+    }, []);
+
+    if (!tableData || !tableDefaultFilters) {
         return <LinearProgress />;
     }
 
@@ -119,7 +208,8 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
                     open={renamePart}
                     onClose={() => setRenamePart(false)}
                     initialValue={selectedPart}
-                    onDone={() => {}}
+                    onDone={handleRenamePart}
+                    onDelete={handleDeletePart}
                 />
             )}
             <AddPartModal open={addPart} onClose={() => setAddPart(false)} onDone={handleAddPart} />
@@ -135,7 +225,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
 
             <Box display="flex" alignItems="flex-top" width="100%">
                 <Box width="100%">
-                    <Button variant="outlined" disabled style={{ margin: "0.5em 0" }} onClick={() => setAddPart(true)}>
+                    <Button variant="outlined" style={{ margin: "0.5em 0" }} onClick={() => setAddPart(true)}>
                         Add part
                     </Button>
                     <Button
@@ -151,9 +241,9 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
                         <DataGrid
                             className={classes.root}
                             rowHeight={20}
-                            columns={table.columns}
-                            dataSource={table.rows}
-                            defaultFilterValue={table.defaultFilterValues}
+                            columns={tableColumns}
+                            dataSource={tableRows}
+                            defaultFilterValue={tableDefaultFilters}
                             pagination
                             defaultLimit={250}
                             // @ts-ignore

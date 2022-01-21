@@ -21,12 +21,12 @@ export type IMatrixRow = {
 
 export type IMatrix = IMatrixRow[];
 
-export const getMatrix = (productFamily: string, levels?: string[]) => {
-    return get(`/matrice?productfamily=${productFamily}`);
+export const getMatrix = (productFamily: string) => {
+    return get(`/matrice/${productFamily}`);
 };
 
-export const postMatrixData = (productFamily: string, changes: any) => {
-    return post(`/matrice?productfamily=${productFamily}`, changes);
+export const postMatrixData = (changes: any) => {
+    return post(`/matrice`, changes);
 };
 
 export const renameMatrixPart = (formerName: string, newName: string) => {

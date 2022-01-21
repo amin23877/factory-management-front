@@ -8,6 +8,7 @@ import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
 import { FieldSelect } from "../../../app/Inputs";
 import { getItems } from "../../../api/items";
+import LinkSelect from "../../../app/Inputs/LinkFields";
 
 const schema = Yup.object().shape({
     ItemId: Yup.string().required(),
@@ -50,16 +51,31 @@ function ChangePartModal({
                     usage: 1,
                     location: undefined,
                     uom: undefined,
-                    // fixedQty: false,
+                    fixedQty: false,
                 }}
                 validationSchema={schema}
                 onSubmit={handleSubmit}
             >
-                {({ values, errors, handleChange, handleBlur }) => (
+                {({ values, errors, setFieldValue, handleChange, handleBlur }) => (
                     <Form>
                         <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
                             <TextField disabled label="name" value={partName} />
-                            <FieldSelect
+                            <LinkSelect
+                                value={values.ItemId}
+                                label="Part number"
+                                path="/item"
+                                filterLabel="no"
+                                getOptionList={(resp) => resp?.result}
+                                getOptionLabel={(unit) => unit?.no}
+                                getOptionValue={(unit) => unit?.id}
+                                onChange={(e, nv) => {
+                                    setFieldValue("ItemId", nv?.id);
+                                }}
+                                onBlur={handleBlur}
+                                url="/panel/engineering"
+                                choseItem={values.ItemId}
+                            />
+                            {/* <FieldSelect
                                 request={getItems}
                                 getOptionList={(list) => list.result}
                                 itemTitleField="name"
@@ -71,7 +87,7 @@ function ChangePartModal({
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 error={Boolean(errors.ItemId)}
-                            />
+                            /> */}
                             <TextField
                                 type="number"
                                 name="usage"
@@ -100,7 +116,7 @@ function ChangePartModal({
                                 onBlur={handleBlur}
                                 error={Boolean(errors.uom)}
                             />
-                            {/* <FormControlLabel
+                            <FormControlLabel
                                 style={{ margin: 0 }}
                                 name="fixedQty"
                                 placeholder="Fixed QTY"
@@ -108,8 +124,8 @@ function ChangePartModal({
                                 checked={values.fixedQty}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                control={<CheckBox />}
-                            /> */}
+                                control={<Checkbox />}
+                            />
                             <Button kind="add" type="submit">
                                 Submit
                             </Button>
