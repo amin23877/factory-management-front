@@ -57,11 +57,6 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
     const [selectedRowName, setSelectedRowName] = useState<string>();
     const [changes, setChanges] = useState<ITableChangeRow[]>([]);
 
-    // const [table, setTable] = useState<{ columns: any; rows: any[]; defaultFilterValues: any[] | null }>({
-    //     columns: [],
-    //     rows: [],
-    //     defaultFilterValues: null,
-    // });
     const [tableColumns, setTableColumns] = useState<any[]>([]);
     const [tableRows, setTableRows] = useState<any[]>([]);
     const [tableDefaultFilters, setTableDefaultFilters] = useState<any[] | null>(null);
