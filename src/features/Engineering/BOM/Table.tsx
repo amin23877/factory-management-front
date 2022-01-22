@@ -193,7 +193,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
     };
 
     const handleDeletePart = useCallback((name: string) => {
-        console.log({ name });
+        setTableColumns((prev) => prev.filter((c) => c.name !== name));
         setRenamePart(false);
     }, []);
 
