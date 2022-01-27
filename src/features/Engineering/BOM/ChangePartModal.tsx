@@ -6,8 +6,8 @@ import * as Yup from "yup";
 import Dialog from "../../../app/Dialog";
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
-import { FieldSelect } from "../../../app/Inputs";
-import { getItems } from "../../../api/items";
+// import { FieldSelect } from "../../../app/Inputs";
+// import { getItems } from "../../../api/items";
 import LinkSelect from "../../../app/Inputs/LinkFields";
 
 const schema = Yup.object().shape({
@@ -34,11 +34,11 @@ function ChangePartModal({
             }
         }
         const prevCells = row.parts.map((p: any) => ({
+            name: p?.name || undefined,
             ItemId: (p?.ItemId as any)?._id || p?.ItemId?.id,
             usage: p.usage,
         }));
-        const res = { device: row.DeviceId, cells: [...prevCells, d] };
-        console.log({ res, row });
+        const res = { device: row.DeviceId, cells: [...prevCells, { ...d, name: partName }] };
 
         onDone(res);
     };

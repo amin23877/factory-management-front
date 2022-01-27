@@ -120,6 +120,7 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
             const levels = extractLevels(tableData);
             const columns = generateDataGridColumns(extractColumns({ tableData, levels }), handleChangePartName);
             const rows = generateRows({ tableData, levels });
+
             const defaultFilterValues = generateDataGridFilterValues(extractColumns({ tableData, levels }));
 
             // setTable({ columns, rows, defaultFilterValues });

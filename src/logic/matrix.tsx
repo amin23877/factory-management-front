@@ -11,7 +11,7 @@ export const generateRows = ({ levels, tableData }: { tableData: IMatrix; levels
         levels.forEach((l) => {
             tdLevels[l] = td[l];
         });
-        parts = td.device?.recs ? td.device.recs.map((rec, j) => ({ ...rec, name: `Part-${j}` })) : [];
+        parts = td.device?.recs ? td.device.recs.map((rec, j) => ({ ...rec, name: rec?.name || `Part-${j}` })) : [];
         parts.forEach((p: any) => {
             tdParts[p.name] = p;
         });
@@ -29,9 +29,10 @@ export const generateRows = ({ levels, tableData }: { tableData: IMatrix; levels
 
 export const generateDataGridColumns = (columns: string[], onRename: (header: string) => void) => {
     const dtCols: any = [];
+    const levels = ["Device Number", "power", "input", "output", "runtime"];
 
     columns.forEach((c) => {
-        if (c.search("Part") > -1) {
+        if (!levels.includes(c)) {
             dtCols.push({
                 name: c,
                 render: ({ data }: any) => data[c]?.ItemId?.no,
@@ -79,7 +80,7 @@ export const extractColumns = ({ tableData, levels }: { tableData: IMatrix; leve
     const hasDevice = tableData.filter((td) => td.device);
     hasDevice.forEach((td) => {
         td.device?.recs?.forEach((rec, i) => {
-            cols.add(`Part-${i}`);
+            cols.add(rec?.name || `Part-${i}`);
         });
     });
 

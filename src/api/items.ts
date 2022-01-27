@@ -9,6 +9,7 @@ export const AddItemSchema = Yup.object().shape({
 export interface IBomRecord {
     id: string;
     BOMId: string;
+    name?: string;
     ItemId: {
         id: string;
         name: string;
