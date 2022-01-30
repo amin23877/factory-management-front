@@ -9,7 +9,7 @@ import ChangePartModal from "./ChangePartModal";
 import RenamePart from "./RenamePart";
 
 import Button from "../../../app/Button";
-// import Toast from "../../../app/Toast";
+import Toast from "../../../app/Toast";
 
 import { getMatrix, postMatrixData, IMatrix } from "../../../api/matrix";
 import {
@@ -207,16 +207,16 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
 	};
 
 	const submitChanges = async () => {
-		console.log({ changes });
+		// console.log({ changes });
 
-		// try {
-		// 	await postMatrixData({ matrice: [...changes] });
-		// 	refreshTableData();
-		// 	Toast("Submitted", "success");
-		// 	setChanges([]);
-		// } catch (error) {
-		// 	console.log(error);
-		// }
+		try {
+			await postMatrixData({ matrice: [...changes] });
+			refreshTableData();
+			Toast("Submitted", "success");
+			setChanges([]);
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const handleDeletePart = useCallback(
@@ -240,6 +240,18 @@ export default function NewBomTable({ productFamily }: { productFamily: string }
 		},
 		[tableRows]
 	);
+
+	useEffect(() => {
+		if (changes.length > 0) {
+			window.onbeforeunload = function () {
+				return "";
+			};
+		}
+
+		return () => {
+			window.onbeforeunload = null;
+		};
+	}, [changes.length]);
 
 	if (!tableData || !tableDefaultFilters) {
 		return <LinearProgress />;

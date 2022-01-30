@@ -7,8 +7,8 @@ import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 import { BasePaper } from "../../../app/Paper";
 
 function BOM() {
-	const [activeTab, setActiveTab] = useState(1);
-	const [productFamily, setProductFamily] = useState<string>("DMINIA");
+	const [activeTab, setActiveTab] = useState(0);
+	const [productFamily, setProductFamily] = useState<string>();
 
 	const handleSelectDevice = (device: any) => {
 		setProductFamily(device.name);
