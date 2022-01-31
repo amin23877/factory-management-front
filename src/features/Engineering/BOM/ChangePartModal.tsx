@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, FormControlLabel, Checkbox } from "@material-ui/core";
+import React, { useState } from "react";
+import { Box, FormControlLabel, Checkbox, Typography } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
@@ -11,71 +11,76 @@ import Button from "../../../app/Button";
 import LinkSelect from "../../../app/Inputs/LinkFields";
 
 const schema = Yup.object().shape({
-    ItemId: Yup.string().required(),
+	ItemId: Yup.string().required(),
 });
 
 function ChangePartModal({
-    open,
-    row,
-    partName,
-    onClose,
-    onDone,
+	open,
+	row,
+	partName,
+	onClose,
+	onDone,
 }: {
-    row: any;
-    partName: string;
-    open: boolean;
-    onClose: () => void;
-    onDone: (data: any) => void;
+	row: any;
+	partName: string;
+	open: boolean;
+	onClose: () => void;
+	onDone: (data: any) => void;
 }) {
-    const handleSubmit = (d: any) => {
-        for (const key in d) {
-            if (!d[key]) {
-                delete d[key];
-            }
-        }
-        const prevCells = row.parts.map((p: any) => ({
-            name: p?.name || undefined,
-            ItemId: (p?.ItemId as any)?._id || p?.ItemId?.id,
-            usage: p.usage,
-        }));
-        const res = { device: row.DeviceId, cells: [...prevCells, { ...d, name: partName }] };
+	const [selectedItemName, setSelectedItemName] = useState("");
 
-        onDone(res);
-    };
+	const handleSubmit = (d: any) => {
+		for (const key in d) {
+			if (!d[key]) {
+				delete d[key];
+			}
+		}
+		const prevCells = row.parts.map((p: any) => ({
+			name: p?.name || undefined,
+			ItemId: (p?.ItemId as any)?._id || p?.ItemId?.id,
+			usage: p.usage,
+		}));
+		const res = { device: row.DeviceId, cells: [...prevCells, { ...d, name: partName }] };
 
-    return (
-        <Dialog open={open} onClose={onClose} title="Add part">
-            <Formik
-                initialValues={{
-                    ItemId: undefined,
-                    usage: 1,
-                    location: undefined,
-                    uom: undefined,
-                    fixedQty: false,
-                }}
-                validationSchema={schema}
-                onSubmit={handleSubmit}
-            >
-                {({ values, errors, setFieldValue, handleChange, handleBlur }) => (
-                    <Form>
-                        <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
-                            <TextField disabled label="name" value={partName} />
-                            <LinkSelect
-                                value={values.ItemId}
-                                label="Part number"
-                                path="/item"
-                                filterLabel="no"
-                                getOptionList={(resp) => resp?.result}
-                                getOptionLabel={(unit) => unit?.no}
-                                getOptionValue={(unit) => unit?.id}
-                                onChange={(e, nv) => {
-                                    setFieldValue("ItemId", nv?.id);
-                                }}
-                                onBlur={handleBlur}
-                                url="/panel/engineering"
-                                choseItem={values.ItemId}
-                            />
-                            {/* <FieldSelect
+		onDone(res);
+	};
+
+	return (
+		<Dialog open={open} onClose={onClose} title="Add part">
+			<Formik
+				initialValues={{
+					ItemId: undefined,
+					usage: 1,
+					location: undefined,
+					uom: undefined,
+					fixedQty: false,
+				}}
+				validationSchema={schema}
+				onSubmit={handleSubmit}
+			>
+				{({ values, errors, setFieldValue, handleChange, handleBlur }) => (
+					<Form>
+						<Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
+							<TextField label="Part number" disabled value={row["Device Number"]} />
+							<TextField disabled label="name" value={partName} />
+							<LinkSelect
+								value={values.ItemId}
+								label="Part number"
+								path="/item"
+								filterLabel="no"
+								getOptionList={(resp) => resp?.result}
+								getOptionLabel={(unit) => unit?.no}
+								getOptionValue={(unit) => unit?.id}
+								onChange={(e, nv) => {
+									setSelectedItemName(nv?.name);
+									setFieldValue("ItemId", nv?.id);
+								}}
+								onBlur={handleBlur}
+								url="/panel/engineering"
+								choseItem={values.ItemId}
+							/>
+							<TextField label="Part number" disabled value={selectedItemName} />
+							{/* <FieldSelect
                                 request={getItems}
                                 getOptionList={(list) => list.result}
                                 itemTitleField="name"
@@ -88,53 +93,54 @@ function ChangePartModal({
                                 onBlur={handleBlur}
                                 error={Boolean(errors.ItemId)}
                             /> */}
-                            <TextField
-                                type="number"
-                                name="usage"
-                                placeholder="usage"
-                                label="Usage"
-                                value={values.usage}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={Boolean(errors.usage)}
-                            />
-                            <TextField
-                                name="location"
-                                placeholder="Location"
-                                label="Location"
-                                value={values.location}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={Boolean(errors.location)}
-                            />
-                            <TextField
-                                name="uom"
-                                placeholder="Unit Of Measure"
-                                label="Unit Of Measure"
-                                value={values.uom}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                error={Boolean(errors.uom)}
-                            />
-                            <FormControlLabel
-                                style={{ margin: 0 }}
-                                name="fixedQty"
-                                placeholder="Fixed QTY"
-                                label="Fixed QTY"
-                                checked={values.fixedQty}
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                control={<Checkbox />}
-                            />
-                            <Button kind="add" type="submit">
-                                Submit
-                            </Button>
-                        </Box>
-                    </Form>
-                )}
-            </Formik>
-        </Dialog>
-    );
+							<TextField
+								type="number"
+								name="usage"
+								placeholder="usage"
+								label="Usage"
+								value={values.usage}
+								onChange={handleChange}
+								onBlur={handleBlur}
+								error={Boolean(errors.usage)}
+								InputLabelProps={{ shrink: true }}
+							/>
+							{/* <TextField
+								name="location"
+								placeholder="Location"
+								label="Location"
+								value={values.location}
+								onChange={handleChange}
+								onBlur={handleBlur}
+								error={Boolean(errors.location)}
+							/>
+							<TextField
+								name="uom"
+								placeholder="Unit Of Measure"
+								label="Unit Of Measure"
+								value={values.uom}
+								onChange={handleChange}
+								onBlur={handleBlur}
+								error={Boolean(errors.uom)}
+							/> */}
+							<FormControlLabel
+								style={{ margin: 0 }}
+								name="fixedQty"
+								placeholder="Fixed QTY"
+								label="Fixed QTY"
+								checked={values.fixedQty}
+								onChange={handleChange}
+								onBlur={handleBlur}
+								control={<Checkbox />}
+							/>
+							<Button kind="add" type="submit">
+								Submit
+							</Button>
+						</Box>
+					</Form>
+				)}
+			</Formik>
+		</Dialog>
+	);
 }
 
 export default ChangePartModal;
