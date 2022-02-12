@@ -1,12 +1,12 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
+import { useSelector } from "react-redux";
 
+import { selectSession } from "../features/Session/sessionsSlice";
 import LoginPage from "../pages/Login";
 import PanelRouter from "./Panel";
 
 import { getToken } from "../api";
-import { useSelector } from "react-redux";
-import { selectSession } from "../features/Session/sessionsSlice";
 
 export default function BaseRouter() {
     const session = useSelector(selectSession);
