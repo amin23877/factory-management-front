@@ -15,313 +15,299 @@ import { ISO } from "../../../api/so";
 import { formatTimestampToDate } from "../../../logic/date";
 import { fileType } from "../../../logic/fileType";
 
-import NoteModal from "../../Modals/NoteModals";
-import DocumentModal from "../../Modals/DocumentModals";
+import NoteModal from "../../../common/NoteModal";
+import DocumentModal from "../../../common/DocumentModal";
 
 import { openRequestedSinglePopup } from "../../../logic/window";
 import { useHistory } from "react-router";
 
 const style = {
-    border: "1px solid gray ",
-    borderRadius: "4px",
-    padding: "5px 10px",
-    margin: "3px 0px 10px 5px ",
+  border: "1px solid gray ",
+  borderRadius: "4px",
+  padding: "5px 10px",
+  margin: "3px 0px 10px 5px ",
 };
 
 export default function EditTab({
-    selectedSo,
-    onLineItemSelected,
-    onLineServiceSelected,
-    onNoteSelected,
-    onDocSelected,
+  selectedSo,
+  onLineItemSelected,
+  onLineServiceSelected,
+  onNoteSelected,
+  onDocSelected,
 }: {
-    selectedSo: ISO;
-    onLineItemSelected: (a: any) => void;
-    onLineServiceSelected: (a: any) => void;
-    onNoteSelected: (a: any) => void;
-    onDocSelected: (a: any) => void;
+  selectedSo: ISO;
+  onLineItemSelected: (a: any) => void;
+  onLineServiceSelected: (a: any) => void;
+  onNoteSelected: (a: any) => void;
+  onDocSelected: (a: any) => void;
 }) {
-    const [activeTab, setActiveTab] = useState(0);
-    const [addNote, setAddNote] = useState(false);
-    const [addDoc, setAddDoc] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
+  const [addNote, setAddNote] = useState(false);
+  const [addDoc, setAddDoc] = useState(false);
 
-    const history = useHistory();
+  const history = useHistory();
 
-    const { data: lineItems } = useSWR(
-        selectedSo && selectedSo.id && activeTab === 0 ? `/lineitem?SOId=${selectedSo.id}` : null
-    );
+  const { data: lineItems } = useSWR(
+    selectedSo && selectedSo.id && activeTab === 0 ? `/lineitem?SOId=${selectedSo.id}` : null
+  );
 
-    const { data: units } = useSWR(
-        selectedSo && selectedSo.id && activeTab === 1 ? `/unit?SOId=${selectedSo.id}` : null
-    );
+  const { data: units } = useSWR(selectedSo && selectedSo.id && activeTab === 1 ? `/unit?SOId=${selectedSo.id}` : null);
 
-    const { data: documents } = useSWR(
-        selectedSo && selectedSo.id && activeTab === 2 ? `/document/so/${selectedSo.id}` : null
-    );
+  const { data: documents } = useSWR(
+    selectedSo && selectedSo.id && activeTab === 2 ? `/document/so/${selectedSo.id}` : null
+  );
 
-    const { data: notes } = useSWR(selectedSo && selectedSo.id && activeTab === 0 ? `/note/so/${selectedSo.id}` : null);
+  const { data: notes } = useSWR(selectedSo && selectedSo.id && activeTab === 0 ? `/note/so/${selectedSo.id}` : null);
 
-    const noteCols = useMemo<GridColumns>(
-        () => [
-            {
-                field: "date",
-                headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-                width: 120,
-            },
-            {
-                field: "creator",
-                headerName: "Creator",
-                width: 180,
-                valueFormatter: (params) => params.row?.EmployeeId?.username,
-            },
-            { field: "subject", headerName: "Subject", width: 300 },
-            { field: "note", headerName: "Note", flex: 1 },
-        ],
-        []
-    );
+  const noteCols = useMemo<GridColumns>(
+    () => [
+      {
+        field: "date",
+        headerName: "Date",
+        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
+        width: 120,
+      },
+      {
+        field: "creator",
+        headerName: "Creator",
+        width: 180,
+        valueFormatter: (params) => params.row?.EmployeeId?.username,
+      },
+      { field: "subject", headerName: "Subject", width: 300 },
+      { field: "note", headerName: "Note", flex: 1 },
+    ],
+    []
+  );
 
-    const docCols = useMemo<GridColumns>(
-        () => [
-            {
-                field: "date",
-                headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-                width: 120,
-            },
-            {
-                field: "EmployeeId",
-                headerName: "Creator",
-                valueFormatter: (params) => params.row?.employee?.username,
-                width: 120,
-            },
-            { field: "name", headerName: "Name", flex: 1 },
-            { field: "id", headerName: "ID", width: 200 },
-            { field: "description", headerName: "Description", flex: 1 },
-            {
-                field: "type",
-                headerName: "File Type",
-                valueFormatter: (params) => fileType(params.row?.path),
-                width: 120,
-            },
-        ],
-        []
-    );
+  const docCols = useMemo<GridColumns>(
+    () => [
+      {
+        field: "date",
+        headerName: "Date",
+        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
+        width: 120,
+      },
+      {
+        field: "EmployeeId",
+        headerName: "Creator",
+        valueFormatter: (params) => params.row?.employee?.username,
+        width: 120,
+      },
+      { field: "name", headerName: "Name", flex: 1 },
+      { field: "id", headerName: "ID", width: 200 },
+      { field: "description", headerName: "Description", flex: 1 },
+      {
+        field: "type",
+        headerName: "File Type",
+        valueFormatter: (params) => fileType(params.row?.path),
+        width: 120,
+      },
+    ],
+    []
+  );
 
-    const LICols = useMemo<GridColumns>(
-        () => [
-            { field: "sort", headerName: "Sort", width: 80 },
-            { field: "itemNo", headerName: "Part Number", valueFormatter: (r) => r.row?.ItemId?.no, width: 200 },
-            { field: "itemDescription", headerName: "Description", width: 150 },
-            { field: "quantity", headerName: "QTY", width: 90 },
-            { field: "price", headerName: "Price", width: 100 },
-            { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
-            { field: "total", headerName: "Total", valueFormatter: (r) => r.row?.price * r.row?.quantity, width: 80 },
-            { field: "invoice", headerName: "Invoice", width: 100 },
-        ],
-        []
-    );
+  const LICols = useMemo<GridColumns>(
+    () => [
+      { field: "sort", headerName: "Sort", width: 80 },
+      { field: "itemNo", headerName: "Part Number", valueFormatter: (r) => r.row?.ItemId?.no, width: 200 },
+      { field: "itemDescription", headerName: "Description", width: 150 },
+      { field: "quantity", headerName: "QTY", width: 90 },
+      { field: "price", headerName: "Price", width: 100 },
+      { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
+      { field: "total", headerName: "Total", valueFormatter: (r) => r.row?.price * r.row?.quantity, width: 80 },
+      { field: "invoice", headerName: "Invoice", width: 100 },
+    ],
+    []
+  );
 
-    const unitCols: GridColumns = useMemo(
-        () => [
-            { field: "number", headerName: "Unit ID", width: 100 },
-            {
-                field: "serialNumber",
-                headerName: "Unit Serial No.",
-                valueFormatter: (r) => r.row?.device?.number,
-                width: 130,
-            },
-            { field: "description", headerName: "Description", flex: 1 },
-            { field: "model", headerName: "Model", width: 120 },
-            {
-                field: "shipDate",
-                headerName: "Estimated SD.",
-                width: 150,
-                valueFormatter: (params) => formatTimestampToDate(params.row?.shipDate),
-            },
-        ],
-        []
-    );
-    const FSCols = useMemo<GridColumns>(
-        () => [
-            {
-                field: "date",
-                headerName: "Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-                width: 120,
-            },
-            { field: "number", headerName: "Ticket ID", width: 130 },
-            { field: "subject", headerName: "Subject", flex: 1 },
-            {
-                field: "unit",
-                headerName: "Unit",
-                valueFormatter: (params) => params.row?.unit?.number,
-                width: 120,
-            },
-            { field: "AssignedTo", headerName: "Assigned To", width: 120 },
-            { field: "contact", headerName: "Contact", width: 120 },
-            { field: "status", headerName: "Status", width: 120 },
-        ],
-        []
-    );
-    const activityCols = useMemo<GridColumns>(
-        () => [
-            { field: "startTime", headerName: "Entry Date", width: 150, type: "date" },
-            { field: "number", headerName: "Quote ID", flex: 1 },
-            { field: "project", headerName: "Project Name", flex: 1 },
-            { field: "quotedBy", headerName: "Quoted By", flex: 1 },
-            { field: "requestedBy", headerName: "Requested By", flex: 1 },
-            { field: "note", headerName: "Note" },
-        ],
-        []
-    );
-    const shipCols = useMemo<GridColumns>(
-        () => [
-            {
-                field: "date",
-                headerName: "Target Date",
-                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-                flex: 1,
-            },
-            {
-                field: "actualDate",
-                headerName: "Actual Date",
-                flex: 1,
-                valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-            },
-            { field: "number", headerName: "Shipment No.", flex: 2 },
-            {
-                field: "carrier",
-                headerName: "Carrier",
-                flex: 1,
-            },
-            { field: "deliveryMethod", headerName: "Delivery Method", flex: 1 },
-            { field: "trackingNumber", headerName: "Tracking No.", flex: 1 },
-        ],
-        []
-    );
-    const phone = useMediaQuery("(max-width:900px)");
+  const unitCols: GridColumns = useMemo(
+    () => [
+      { field: "number", headerName: "Unit ID", width: 100 },
+      {
+        field: "serialNumber",
+        headerName: "Unit Serial No.",
+        valueFormatter: (r) => r.row?.device?.number,
+        width: 130,
+      },
+      { field: "description", headerName: "Description", flex: 1 },
+      { field: "model", headerName: "Model", width: 120 },
+      {
+        field: "shipDate",
+        headerName: "Estimated SD.",
+        width: 150,
+        valueFormatter: (params) => formatTimestampToDate(params.row?.shipDate),
+      },
+    ],
+    []
+  );
+  const FSCols = useMemo<GridColumns>(
+    () => [
+      {
+        field: "date",
+        headerName: "Date",
+        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
+        width: 120,
+      },
+      { field: "number", headerName: "Ticket ID", width: 130 },
+      { field: "subject", headerName: "Subject", flex: 1 },
+      {
+        field: "unit",
+        headerName: "Unit",
+        valueFormatter: (params) => params.row?.unit?.number,
+        width: 120,
+      },
+      { field: "AssignedTo", headerName: "Assigned To", width: 120 },
+      { field: "contact", headerName: "Contact", width: 120 },
+      { field: "status", headerName: "Status", width: 120 },
+    ],
+    []
+  );
+  const activityCols = useMemo<GridColumns>(
+    () => [
+      { field: "startTime", headerName: "Entry Date", width: 150, type: "date" },
+      { field: "number", headerName: "Quote ID", flex: 1 },
+      { field: "project", headerName: "Project Name", flex: 1 },
+      { field: "quotedBy", headerName: "Quoted By", flex: 1 },
+      { field: "requestedBy", headerName: "Requested By", flex: 1 },
+      { field: "note", headerName: "Note" },
+    ],
+    []
+  );
+  const shipCols = useMemo<GridColumns>(
+    () => [
+      {
+        field: "date",
+        headerName: "Target Date",
+        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
+        flex: 1,
+      },
+      {
+        field: "actualDate",
+        headerName: "Actual Date",
+        flex: 1,
+        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
+      },
+      { field: "number", headerName: "Shipment No.", flex: 2 },
+      {
+        field: "carrier",
+        headerName: "Carrier",
+        flex: 1,
+      },
+      { field: "deliveryMethod", headerName: "Delivery Method", flex: 1 },
+      { field: "trackingNumber", headerName: "Tracking No.", flex: 1 },
+    ],
+    []
+  );
+  const phone = useMediaQuery("(max-width:900px)");
 
-    return (
-        <>
-            {selectedSo && selectedSo.id && (
-                <NoteModal open={addNote} onClose={() => setAddNote(false)} itemId={selectedSo.id} model="so" />
-            )}
-            {selectedSo && selectedSo.id && (
-                <DocumentModal open={addDoc} onClose={() => setAddDoc(false)} itemId={selectedSo.id} model="so" />
-            )}
-            <Box
-                display="grid"
-                gridGap={10}
-                gridTemplateColumns={phone ? "1fr" : "3fr 4fr"}
-                height={phone ? "" : "calc(100vh - 200px)"}
-            >
-                <EditForm selectedSo={selectedSo} />
-                <BasePaper style={{ paddingTop: "0px" }}>
-                    <Tabs
-                        style={
-                            !phone ? { marginBottom: "10px" } : { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" }
-                        }
-                        textColor="primary"
-                        value={activeTab}
-                        onChange={(e, nv) => setActiveTab(nv)}
-                        variant="scrollable"
-                    >
-                        <Tab label="Line Items" /> 0
-                        <Tab label="Units" /> 1
-                        <Tab label="Documents" /> 2
-                        <Tab label="Activities" /> 3
-                        <Tab label="Shipment" /> 4
-                        <Tab label="Field Services" /> 5
-                        <Tab label="Notes" /> 6
-                        <Tab label="Auditing" />
-                    </Tabs>
-                    {activeTab === 0 && (
-                        <BaseDataGrid
-                            cols={LICols}
-                            rows={lineItems || []}
-                            onRowSelected={(r) => {
-                                phone
-                                    ? history.push(`/panel/engineering/${r?.ItemId?.id}`)
-                                    : openRequestedSinglePopup({ url: `/panel/engineering/${r?.ItemId?.id}` });
-                            }}
-                            height="calc(100% - 60px)"
-                        />
-                    )}
-                    {activeTab === 1 && (
-                        <BaseDataGrid
-                            cols={unitCols}
-                            rows={units?.result || []}
-                            onRowSelected={(r) => {
-                                phone
-                                    ? history.push(`/panel/production/${r.id}`)
-                                    : openRequestedSinglePopup({ url: `/panel/production/${r.id}` });
-                            }}
-                            height="calc(100% - 60px)"
-                        />
-                    )}
-                    {activeTab === 2 && (
-                        <>
-                            <Button
-                                onClick={() => {
-                                    setAddDoc(true);
-                                }}
-                                style={style}
-                            >
-                                + Add Document
-                            </Button>
-                            <BaseDataGrid
-                                cols={docCols}
-                                rows={documents || []}
-                                onRowSelected={onDocSelected}
-                                height=" calc(100% - 100px)"
-                            />
-                        </>
-                    )}
-                    {activeTab === 3 && (
-                        <BaseDataGrid
-                            cols={activityCols}
-                            rows={documents || []}
-                            onRowSelected={() => {}}
-                            height="calc(100% - 60px)"
-                        />
-                    )}
-                    {activeTab === 4 && (
-                        <BaseDataGrid
-                            cols={shipCols}
-                            rows={documents || []}
-                            onRowSelected={() => {}}
-                            height="calc(100% - 60px)"
-                        />
-                    )}
-                    {activeTab === 5 && (
-                        <BaseDataGrid
-                            cols={FSCols}
-                            rows={[]}
-                            onRowSelected={onLineServiceSelected}
-                            height="calc(100% - 60px)"
-                        />
-                    )}
-                    {activeTab === 6 && (
-                        <>
-                            <Button
-                                onClick={() => {
-                                    setAddNote(true);
-                                }}
-                                style={style}
-                            >
-                                + Add Note
-                            </Button>
-                            <BaseDataGrid
-                                cols={noteCols}
-                                rows={notes || []}
-                                onRowSelected={onNoteSelected}
-                                height=" calc(100% - 100px)"
-                            />
-                        </>
-                    )}
-                </BasePaper>
-            </Box>
-        </>
-    );
+  return (
+    <>
+      {selectedSo && selectedSo.id && (
+        <NoteModal open={addNote} onClose={() => setAddNote(false)} itemId={selectedSo.id} model="so" />
+      )}
+      {selectedSo && selectedSo.id && (
+        <DocumentModal open={addDoc} onClose={() => setAddDoc(false)} itemId={selectedSo.id} model="so" />
+      )}
+      <Box
+        display="grid"
+        gridGap={10}
+        gridTemplateColumns={phone ? "1fr" : "3fr 4fr"}
+        height={phone ? "" : "calc(100vh - 200px)"}
+      >
+        <EditForm selectedSo={selectedSo} />
+        <BasePaper style={{ paddingTop: "0px" }}>
+          <Tabs
+            style={!phone ? { marginBottom: "10px" } : { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" }}
+            textColor="primary"
+            value={activeTab}
+            onChange={(e, nv) => setActiveTab(nv)}
+            variant="scrollable"
+          >
+            <Tab label="Line Items" /> 0
+            <Tab label="Units" /> 1
+            <Tab label="Documents" /> 2
+            <Tab label="Activities" /> 3
+            <Tab label="Shipment" /> 4
+            <Tab label="Field Services" /> 5
+            <Tab label="Notes" /> 6
+            <Tab label="Auditing" />
+          </Tabs>
+          {activeTab === 0 && (
+            <BaseDataGrid
+              cols={LICols}
+              rows={lineItems || []}
+              onRowSelected={(r) => {
+                phone
+                  ? history.push(`/panel/engineering/${r?.ItemId?.id}`)
+                  : openRequestedSinglePopup({ url: `/panel/engineering/${r?.ItemId?.id}` });
+              }}
+              height="calc(100% - 60px)"
+            />
+          )}
+          {activeTab === 1 && (
+            <BaseDataGrid
+              cols={unitCols}
+              rows={units?.result || []}
+              onRowSelected={(r) => {
+                phone
+                  ? history.push(`/panel/production/${r.id}`)
+                  : openRequestedSinglePopup({ url: `/panel/production/${r.id}` });
+              }}
+              height="calc(100% - 60px)"
+            />
+          )}
+          {activeTab === 2 && (
+            <>
+              <Button
+                onClick={() => {
+                  setAddDoc(true);
+                }}
+                style={style}
+              >
+                + Add Document
+              </Button>
+              <BaseDataGrid
+                cols={docCols}
+                rows={documents || []}
+                onRowSelected={onDocSelected}
+                height=" calc(100% - 100px)"
+              />
+            </>
+          )}
+          {activeTab === 3 && (
+            <BaseDataGrid
+              cols={activityCols}
+              rows={documents || []}
+              onRowSelected={() => {}}
+              height="calc(100% - 60px)"
+            />
+          )}
+          {activeTab === 4 && (
+            <BaseDataGrid cols={shipCols} rows={documents || []} onRowSelected={() => {}} height="calc(100% - 60px)" />
+          )}
+          {activeTab === 5 && (
+            <BaseDataGrid cols={FSCols} rows={[]} onRowSelected={onLineServiceSelected} height="calc(100% - 60px)" />
+          )}
+          {activeTab === 6 && (
+            <>
+              <Button
+                onClick={() => {
+                  setAddNote(true);
+                }}
+                style={style}
+              >
+                + Add Note
+              </Button>
+              <BaseDataGrid
+                cols={noteCols}
+                rows={notes || []}
+                onRowSelected={onNoteSelected}
+                height=" calc(100% - 100px)"
+              />
+            </>
+          )}
+        </BasePaper>
+      </Box>
+    </>
+  );
 }
