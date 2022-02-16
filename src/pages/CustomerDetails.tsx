@@ -10,7 +10,7 @@ import Button from "app/Button";
 import { BasePaper } from "app/Paper";
 import BaseDataGrid from "app/BaseDataGrid";
 
-import { editCustomer, ICustomer } from "api/customer";
+import { editClient, IClient } from "api/client";
 import { INote } from "api/note";
 
 import SOTable from "features/Items/SOTable";
@@ -31,12 +31,12 @@ export default function ClientDetails({
   req,
   changeTab,
 }: {
-  // selectedRow: ICustomer;
+  // selectedRow: IClient;
   req?: any;
   changeTab: (a: number) => void;
 }) {
   const { cusNumber } = useParams<{ cusNumber: string }>();
-  const { data: selectedRow } = useSWR<ICustomer>(cusNumber ? `/customer/${cusNumber}` : null);
+  const { data: selectedRow } = useSWR<IClient>(cusNumber ? `/customer/${cusNumber}` : null);
 
   const [activeTab, setActiveTab] = useState(0);
   const [activeSubTab, setActiveSubTab] = useState(0);
@@ -53,7 +53,7 @@ export default function ClientDetails({
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     try {
       if (selectedRow) {
-        await editCustomer(selectedRow.id, getModifiedValues(values, selectedRow));
+        await editClient(selectedRow.id, getModifiedValues(values, selectedRow));
         mutate("/customer");
         mutate("/customer?approved=false");
         setSubmitting(false);

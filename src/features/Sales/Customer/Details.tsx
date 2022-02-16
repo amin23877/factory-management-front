@@ -9,7 +9,7 @@ import Button from "../../../app/Button";
 import { BasePaper } from "../../../app/Paper";
 import BaseDataGrid from "../../../app/BaseDataGrid";
 
-import { editCustomer, ICustomer } from "../../../api/customer";
+import { editClient, IClient } from "../../../api/client";
 import { INote } from "../../../api/note";
 
 import SOTable from "../../Items/SOTable";
@@ -29,7 +29,7 @@ export default function ClientDetails({
   req,
   changeTab,
 }: {
-  selectedRow: ICustomer;
+  selectedRow: IClient;
   req?: any;
   changeTab: (a: number) => void;
 }) {
@@ -47,7 +47,7 @@ export default function ClientDetails({
 
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     try {
-      await editCustomer(selectedRow.id, getModifiedValues(values, selectedRow));
+      await editClient(selectedRow.id, getModifiedValues(values, selectedRow));
       mutate("/customer");
       mutate("/customer?approved=false");
       setSubmitting(false);
