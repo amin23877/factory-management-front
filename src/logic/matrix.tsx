@@ -11,9 +11,10 @@ export const generateRows = ({ levels, tableData }: { tableData: IMatrix; levels
     levels.forEach((l) => {
       tdLevels[l] = td[l];
     });
-    parts = td.device?.recs
-      ? td.device.recs.map((rec: any, j: any) => ({ ...rec, name: rec?.name || `Part-${j}` }))
-      : [];
+    parts = [];
+    // parts = td.device?.recs
+    //   ? td.device.recs.map((rec: any, j: any) => ({ ...rec, name: rec?.name || `Part-${j}` }))
+    //   : [];
     parts.forEach((p: any) => {
       tdParts[p.name] = p;
     });
@@ -81,11 +82,11 @@ export const extractColumns = ({ tableData, levels }: { tableData: IMatrix; leve
   }
   const hasDevice = tableData.filter((td) => td.device);
   hasDevice.forEach((td) => {
-    td.device?.recs?.forEach((rec: any, i: any) => {
-      if (rec?.name) {
-        cols.add(rec?.name);
-      }
-    });
+    // td.device?.recs?.forEach((rec: any, i: any) => {
+    //   if (rec?.name) {
+    //     cols.add(rec?.name);
+    //   }
+    // });
   });
 
   return Array.from(cols);

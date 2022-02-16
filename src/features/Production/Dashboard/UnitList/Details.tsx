@@ -216,7 +216,7 @@ function Details({ unit }: { unit: IUnit }) {
                     flexDirection="column"
                     gridGap={10}
                   >
-                    {unit?.ItemId?.photo && (
+                    {/* {unit?.ItemId?.photo && (
                       <img
                         style={{
                           maxWidth: "100%",
@@ -227,7 +227,7 @@ function Details({ unit }: { unit: IUnit }) {
                         alt=""
                         src={`http://${host}${unit?.ItemId?.photo}`}
                       />
-                    )}
+                    )} */}
                   </Box>
                 )}
                 {infoActiveTab === 1 && <QRCode unit={unit} />}

@@ -6,7 +6,6 @@ import { mutate } from "swr";
 import Confirm from "../Modals/Confirm";
 import NoteModal from "../../common/NoteModal";
 import DocumentModal from "../../common/DocumentModal";
-import BOMModal from "../BOM/BomModal";
 
 import { AddItemModal } from "./ItemModals";
 import ItemsDetails from "./Details";
@@ -15,7 +14,8 @@ import { deleteAnItem, IItem } from "../../api/items";
 
 import List from "../../app/SideUtilityList";
 
-import FieldNFilter from "../ClusterAndLevel/Modal";
+// import FieldNFilter from "../ClusterAndLevel/Modal";
+import LevelsModal from "../Level/Modal";
 
 import ItemTable from "./Table";
 import { BasePaper } from "../../app/Paper";
@@ -33,9 +33,7 @@ const Items = () => {
   const [editDocModal, setEditDocModal] = useState(false);
   const [addNoteModal, setAddNoteModal] = useState(false);
   const [addDocModal, setAddDocModal] = useState(false);
-
-  const [bomModal, setBomModal] = useState(false);
-  const [FieldNFilterModal, setFieldNFilterModal] = useState(false);
+  const [levelsModal, setLevelsModal] = useState(false);
 
   const handleDelete = useCallback(async () => {
     try {
@@ -86,13 +84,9 @@ const Items = () => {
           model="item"
         />
       )}
-
-      {selectedItem && selectedItem.id && (
-        <BOMModal itemId={selectedItem.id} open={bomModal} onClose={() => setBomModal(false)} />
-      )}
       <AddItemModal open={addItemModal} onClose={() => setAddItemModal(false)} />
       <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
-      <FieldNFilter open={FieldNFilterModal} onClose={() => setFieldNFilterModal(false)} />
+      <LevelsModal open={levelsModal} onClose={() => setLevelsModal(false)} />
 
       <BasePaper style={{ height: "100%" }}>
         <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1}>
@@ -124,13 +118,14 @@ const Items = () => {
             <ListItem>
               <IconButton
                 title="Delete item"
+                disabled={!selectedItem}
                 onClick={() => selectedItem && selectedItem?.id && setDeleteItemModal(true)}
               >
                 <DeleteRounded />
               </IconButton>
             </ListItem>
             <ListItem>
-              <IconButton title="Cluster and level" onClick={() => setFieldNFilterModal(true)}>
+              <IconButton title="Cluster and level" onClick={() => setLevelsModal(true)}>
                 <PostAddRounded />
               </IconButton>
             </ListItem>

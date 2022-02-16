@@ -71,9 +71,9 @@ export const General = ({
           <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"} gridColumnGap={10}>
             <FormControlLabel
               style={{ fontSize: "0.1rem" }}
-              checked={values.salesApproved}
+              checked={values.approvedForSale}
               label="Sales Ap."
-              name="salesApproved"
+              name="approvedForSale"
               onChange={handleChange}
               classes={{ label: classes.label }}
               control={<Checkbox size="small" />}

@@ -12,7 +12,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
       { name: "name", header: "Name", minWidth: 100 },
       { name: "description", header: "Description", defaultWidth: 180 },
       {
-        name: "salesApproved",
+        name: "approvedForSale",
         header: "Sales Ap.",
         type: "boolean",
         defaultWidth: 100,

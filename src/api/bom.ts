@@ -2,59 +2,52 @@ import { delete_, get, patch, post } from ".";
 import { IItem } from "./items";
 
 export interface IBom {
-    id?: string;
-    no: string;
-    name: string;
-    note: string;
-    current: boolean;
-    ItemId: IItem;
-    items: number;
-    date: number;
-    updatedAt: number;
+  id: string;
+  no: string;
+  name: string;
+  notes: string;
+  current: boolean;
+  ItemId: IItem;
 }
 
 export interface IBomRecord {
-    id: string;
-    revision: string;
-    usage: number;
-    fixedQty: boolean;
-    index: number;
-    ItemId: IItem;
-    BOMId: string;
-    date: number;
-    updatedAt: number;
-    uom: string;
-    location: string;
+  id: string;
+  BOMId: string;
+  ItemId: string;
+  ItemNo: string;
+  ItemName: string;
+  usage: number;
+  fixedQty: boolean;
 }
 
 export const getBom = (ItemId: string) => {
-    return get(`/bom`, { params: { ItemId } });
+  return get(`/bom`, { params: { ItemId } });
 };
 
-export const addBom = (ItemId: string, { no, name, note, current }: IBom) => {
-    return post(`/bom`, { ItemId, no, name, note, current });
+export const addBom = (data: IBom) => {
+  return post(`/bom`, data);
 };
 
-export const updateBom = (itemId: string, { no, name, note, current }: IBom) => {
-    return patch(`/bom/${itemId}`, { no, name, note, current });
+export const updateBom = (id: string, data: Partial<IBom>) => {
+  return patch(`/bom/${id}`, data);
 };
 
 export const deleteBom = (itemId: string) => {
-    return delete_(`/bom/${itemId}`);
+  return delete_(`/bom/${itemId}`);
 };
 
 export const getBomRecord = (BOMId: string) => {
-    return get(`/bomrecord`, { params: { BOMId } });
+  return get(`/bomrecord`, { params: { BOMId } });
 };
 
-export const addBomRecord = (bomId: string, { revision, usage, fixedQty, index, ItemId }: IBomRecord) => {
-    return post(`/bom/${bomId}/record`, { revision, usage, fixedQty, index, ItemId, BOMId: bomId });
+export const addBomRecord = (data: IBomRecord) => {
+  return post(`/bomrecord`, data);
 };
 
-export const updateBomRecord = (id: string, { revision, usage, fixedQty, index }: IBomRecord) => {
-    return patch(`/bomrecord/${id}`, { revision, usage, fixedQty, index });
+export const updateBomRecord = (id: string, data: Partial<IBomRecord>) => {
+  return patch(`/bomrecord/${id}`, data);
 };
 
 export const deleteBomRecord = (BRId: string) => {
-    return delete_(`/bomrecord/${BRId}`);
+  return delete_(`/bomrecord/${BRId}`);
 };

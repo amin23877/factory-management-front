@@ -6,26 +6,26 @@ import Dialog from "app/Dialog";
 import TextField from "app/TextField";
 import Button from "app/Button";
 
-import { addBom, IBom } from "api/bom";
+import { addBomRecord, IBom, IBomRecord } from "api/bom";
 import { mutate } from "swr";
-import { IItem } from "api/items";
+import ItemComboBox from "common/ItemComboBox";
 
-export default function BOMModal({
+export default function BomRecordModal({
   open,
-  onClose,
-  item,
+  bom,
   initialValues,
+  onClose,
 }: {
-  item: IItem;
+  bom: IBom;
   open: boolean;
   onClose: () => void;
-  initialValues?: IBom;
+  initialValues?: IBomRecord;
 }) {
   const handleSubmit = async (data: any) => {
     try {
       if (!initialValues) {
-        await addBom({ ...data, ItemId: item.id });
-        mutate(`/bom?ItemId=${item.id}`);
+        await addBomRecord({ ...data, BOMId: bom.id });
+        mutate(`/bomrecord?BOMId=${bom.id}`);
         onClose();
       }
     } catch (error) {
@@ -36,14 +36,16 @@ export default function BOMModal({
   return (
     <Dialog open={open} onClose={onClose} title="BOM" maxWidth="xs" fullWidth>
       <Box>
-        <Formik initialValues={initialValues || ({ name: item.no } as IBom)} onSubmit={handleSubmit}>
-          {({ getFieldProps }) => (
+        <Formik
+          initialValues={initialValues || ({ ItemId: "6209538cb62c6a399fcce6b8" } as IBomRecord)}
+          onSubmit={handleSubmit}
+        >
+          {({ getFieldProps, setFieldValue, values }) => (
             <Form>
               <Box display="flex" flexDirection="column" style={{ gap: 8 }}>
-                <TextField label="NO" {...getFieldProps("no")} />
-                <TextField label="Name" {...getFieldProps("name")} />
-                <TextField label="Notes" {...getFieldProps("notes")} />
-                <FormControlLabel control={<Checkbox />} label="Current" {...getFieldProps("current")} />
+                <ItemComboBox onChange={(v) => setFieldValue("ItemId", v?.id)} value={values.ItemId} />
+                <TextField label="Usage" {...getFieldProps("usage")} />
+                <FormControlLabel control={<Checkbox />} label="Fixed Quantity" {...getFieldProps("fixedQty")} />
                 <Button kind="add" type="submit">
                   Submit
                 </Button>

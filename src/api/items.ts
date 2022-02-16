@@ -19,6 +19,8 @@ export interface IItemPricing {
 
 export interface IItem {
   id: string;
+  // start detail section
+  recId: string;
   no: string;
   name: string;
   description: string;
@@ -28,11 +30,14 @@ export interface IItem {
   obsolete: boolean;
   rndOnly: boolean;
   archived: boolean;
-  arvhiceDate: number;
+  archiveDate: number;
   nonInventoryItem: boolean;
   dontTrackQoh: boolean;
   dontOrderOnPOs: boolean;
-  pricing: IItemPricing[];
+  // end detail section
+
+  // start pricing section
+  pricing: { label: string; price: number; nonCommissionable: boolean }[];
   engineeringApproval: boolean;
   bom: boolean;
   option: boolean;
@@ -42,11 +47,15 @@ export interface IItem {
   isUnit: boolean;
   overrideUse: boolean;
   override: number;
+  totalCost: number;
+  totalCostBackup: number;
+  retailPrice: number;
   bomCost: number;
   bomCostEstimate: number;
   bomCostEstimateUse: boolean;
-  totalCost: number;
-  retailPrice: number;
+  // end pricing section
+
+  // start quantity section
   onOrderQty: number;
   onHandQty: number;
   allocatedQty: number;
@@ -66,26 +75,35 @@ export interface IItem {
   recentPurchasePriceBy: number;
   qohValue: number;
   qohMismatch: boolean;
+  // end quantity section
+
+  // start shipping section
   preferredVendor: string;
   weight: number;
   notShippable: boolean;
   shippingChecklistRequired: boolean;
   shippableOnBOM: boolean;
+  // end shipping section
+
+  // start attributes section
   manufacturer: string;
   manufacturerProductNumber: number;
+  // end attributes section
+
+  // start more info
   qbType: string;
   qbId: string;
+  // end more info
+
   assembly: boolean;
   productFamily: string;
+  clusterValue: string;
+  levels: { level: string; value: string }[];
+
   manufacturingTime: number;
   evaluateTime: number;
   testTime: number;
   laborCost: number;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-  levels: any[];
-  [key: string]: any;
 }
 
 export const AddItemInitialValues = {};
