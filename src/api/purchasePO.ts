@@ -4,76 +4,83 @@ import { ILineItem } from "./lineItem";
 import { ILineService } from "./lineService";
 
 export type IPurchasePO = {
-    id?: string;
-    number: string;
-    requester: string;
-    VendorId: string;
-    ContactId: string;
-    EmployeeId: string;
-    status: string;
-    date?: string;
-    note?: string;
-    billingAddressCompany?: string;
-    billingAddressAttn?: string;
-    billingAddressAddress?: string;
-    billingAddressCity?: string;
-    billingAddressState?: string;
-    billingAddressZipCode?: string;
-    billingAddressCountry?: string;
-    billingAddressPhone?: string;
-    billingAddressEmail?: string;
-    shippingAddressCompany?: string;
-    shippingAddressAttn?: string;
-    shippingAddressAddress?: string;
-    shippingAddressCity?: string;
-    shippingAddressState?: string;
-    shippingAddressZipCode?: string;
-    shippingAddressCountry?: string;
-    shippingAddressPhone?: string;
-    shippingAddressEmail?: string;
+  id: string;
+  type: string;
+  status: string;
+  description: string;
+  VendorId: string;
+  vendorEmail: string;
+  publicNote: string;
+  date: number;
+  number: string;
+  sentDate: number;
+  ackDate: number;
+  privateNote: string;
+  billingAddressId: string;
+  billingAttn: string;
+  billingPhone: string;
+  billingExt: string;
+  billingEmail: string;
+  shippingAddressId: string;
+  shippigAttn: string;
+  shippigPhone: string;
+  shippingExt: string;
+  shippigEmail: string;
+  SOId: string;
+  QuoteId: string;
+  dateRequired: number;
+  vendorConfirmation: string;
+  shippingConfirmation: number;
+  freightCompany: string;
+  freightCompanyWebsite: string;
+  manualTrackingNumber: string;
+  trackingConfirmation: string;
+  statusNotes: string;
+  terms: string;
+  poConf: string;
 };
 
 export interface IPurchasePOComplete extends IPurchasePO {
-    lines: ILineItem[];
-    lineServices: ILineService[];
+  lines: ILineItem[];
+  lineServices: ILineService[];
 }
 
 export const getPurchasePOs = () => {
-    return get("/purchasePo");
+  return get("/purchasePo");
 };
 
 export const createPurchasePOComplete = (data: IPurchasePOComplete) => {
-    return post("/purchasePO", data);
+  return post("/purchasePO", data);
 };
 
 export const createPurchasePO = (data: IPurchasePO) => {
-    return post(`/purchasePo`, data);
+  return post(`/purchasePo`, data);
 };
 
 export const updatePurchasePO = (id: string, data: IPurchasePO) => {
-    return patch(`/purchasePo/${id}`, data);
+  return patch(`/purchasePo/${id}`, data);
 };
 
 export const deletePurchasePO = (id: string) => {
-    return delete_(`/purchasePo/${id}`);
+  return delete_(`/purchasePo/${id}`);
 };
 
 export const getPurchasePOLines = (PurchasePOId: string) => {
-    return get(`/lineitem`, { params: { PurchasePOId } });
+  return get(`/lineitem`, { params: { PurchasePOId } });
 };
 
 export const createPurchasePOLine = (id: string, data: ILineItem) => {
-    return post(`/purchasePo/${id}/lineitem`, data);
+  return post(`/purchasePo/${id}/lineitem`, data);
 };
 
 export const acknowledgePurchasePO = (poId: string) => {
-    return post(`/purchasepo/${poId}/acknowledge`, {});
+  return post(`/purchasepo/${poId}/acknowledge`, {});
 };
 
 export const updatePurchasePOLine = (id: string, data: ILineItem) => {
-    return patch(`/lineitem/${id}`, data);
+  return patch(`/lineitem/${id}`, data);
 };
 
 export const deletePurchasePOLine = (id: string) => {
-    return delete_(`/lineitem/${id}`);
+  return delete_(`/lineitem/${id}`);
 };

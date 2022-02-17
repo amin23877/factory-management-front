@@ -6,18 +6,20 @@ import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { GridColumns } from "@material-ui/data-grid";
+import useSWR, { mutate } from "swr";
 
-import BaseDataGrid from "../../../app/BaseDataGrid";
-import NoteModal from "../../../common/NoteModal";
-import DocumentModal from "../../../common/DocumentModal";
-import { updatePurchasePO, IPurchasePO } from "../../../api/purchasePO";
-import { BasePaper } from "../../../app/Paper";
-import Button from "../../../app/Button";
-import { AddressesForm, UpdateForm, MoreInfoForm, VendorForm } from "./Forms";
-import Snack from "../../../app/Snack";
-import { formatTimestampToDate } from "../../../logic/date";
-import { getModifiedValues } from "../../../logic/utils";
+import BaseDataGrid from "app/BaseDataGrid";
+import { BasePaper } from "app/Paper";
+import Button from "app/Button";
+import Toast from "app/Toast";
+import NoteModal from "common/NoteModal";
+import DocumentModal from "common/DocumentModal";
 import { DocumentsDataGrid, NotesDataGrid } from "common/DataGrids";
+import { updatePurchasePO, IPurchasePO } from "api/purchasePO";
+import { formatTimestampToDate } from "logic/date";
+import { getModifiedValues } from "logic/utils";
+import { ILineItem } from "api/lineItem";
+import { AddressesForm, UpdateForm, MoreInfoForm, VendorForm } from "./Forms";
 
 const style = {
   border: "1px solid gray ",
@@ -26,29 +28,13 @@ const style = {
   margin: "3px 0px 10px 5px ",
 };
 
-export default function Details({
-  initialValues,
-  onDone,
-  lines,
-  onLineSelected,
-  notes,
-  docs,
-  onNoteSelected,
-  onDocumentSelected,
-}: {
-  initialValues: IPurchasePO;
-  onDone: () => void;
-  lines: any[];
-  notes: any;
-  docs: any;
-  onNoteSelected: (d: any) => void;
-  onDocumentSelected: (d: any) => void;
-  onLineSelected: (v: any) => void;
-}) {
+export default function Details({ selectedPO, onDone }: { selectedPO: IPurchasePO; onDone?: () => void }) {
+  const phone = useMediaQuery("(max-width:900px)");
+  const { data: lines } = useSWR<{ result: ILineItem[]; total: number }>(`/lineitem?po=${selectedPO.id}`);
+
   const [activeTab, setActiveTab] = useState(0);
   const [activeMoreTab, setActiveMoreTab] = useState(0);
-  const [snack, setSnack] = useState(false);
-  const [msg, setMsg] = useState("");
+
   const [noteModal, setNoteModal] = useState(false);
   const [docModal, setDocModal] = useState(false);
 
@@ -90,43 +76,31 @@ export default function Details({
 
   const handleSubmit = async (d: any) => {
     try {
-      if (initialValues.id && d.status) {
-        const resp = await updatePurchasePO(initialValues.id, getModifiedValues(d, initialValues));
-        if (resp) {
-          setMsg("Record updated");
-          setSnack(true);
-          onDone();
-        }
+      if (selectedPO.id && d.status) {
+        await updatePurchasePO(selectedPO.id, getModifiedValues(d, selectedPO));
+        Toast("Purchase Order updated.", "success");
+        mutate("/po");
       }
     } catch (error) {
       console.log(error);
     }
   };
-  const phone = useMediaQuery("(max-width:900px)");
 
   return (
     <>
-      {initialValues && initialValues.id && (
-        <NoteModal itemId={initialValues.id} model="purchasePO" open={noteModal} onClose={() => setNoteModal(false)} />
+      {selectedPO && selectedPO.id && (
+        <NoteModal itemId={selectedPO.id} model="purchasePO" open={noteModal} onClose={() => setNoteModal(false)} />
       )}
-      {initialValues && initialValues.id && (
-        <DocumentModal
-          itemId={initialValues.id}
-          model="purchasePO"
-          open={docModal}
-          onClose={() => setDocModal(false)}
-        />
+      {selectedPO && selectedPO.id && (
+        <DocumentModal itemId={selectedPO.id} model="purchasePO" open={docModal} onClose={() => setDocModal(false)} />
       )}
-      <Snack open={snack} onClose={() => setSnack(false)}>
-        {msg}
-      </Snack>
       <Box
         display="grid"
         gridTemplateColumns={phone ? "1fr" : "3fr 4fr"}
         gridGap={10}
         height={phone ? "" : "calc(100vh - 160px)"}
       >
-        <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+        <Formik initialValues={selectedPO} onSubmit={handleSubmit}>
           {({ values, handleChange, handleBlur, errors, setFieldValue }) => (
             <Box display="flex" flexDirection="column" height={phone ? "" : "100%"} gridGap={10}>
               <Box>
@@ -191,9 +165,11 @@ export default function Details({
           </Tabs>
           {activeTab === 0 && (
             <BaseDataGrid
-              rows={lines}
+              rows={lines?.result || []}
               cols={LICols}
-              onRowSelected={(d) => onLineSelected(d)}
+              onRowSelected={(d) => {
+                // TODO: edit line item
+              }}
               height={"calc(100% - 60px)"}
             />
           )}
@@ -209,8 +185,10 @@ export default function Details({
               </Button>
               <DocumentsDataGrid
                 model="po"
-                recordId={initialValues?.id || ""}
-                onDocumentSelected={onDocumentSelected}
+                recordId={selectedPO?.id || ""}
+                onDocumentSelected={(d) => {
+                  // TODO: edit document
+                }}
               />
             </Fragment>
           )}
@@ -218,7 +196,9 @@ export default function Details({
             <BaseDataGrid
               rows={[]}
               cols={receivedCols}
-              onRowSelected={(d) => onLineSelected(d)}
+              onRowSelected={(d) => {
+                // TODO: edit line item
+              }}
               height={"calc(100% - 60px)"}
             />
           )}
@@ -232,7 +212,13 @@ export default function Details({
               >
                 + Add Note
               </Button>
-              <NotesDataGrid model="po" recordId={initialValues?.id || ""} onNoteSelected={onNoteSelected} />
+              <NotesDataGrid
+                model="po"
+                recordId={selectedPO?.id || ""}
+                onNoteSelected={(d) => {
+                  // TODO: edit note
+                }}
+              />
             </Fragment>
           )}
         </BasePaper>

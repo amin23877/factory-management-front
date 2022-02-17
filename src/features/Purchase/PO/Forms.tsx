@@ -22,12 +22,12 @@ import { BasePaper } from "../../../app/Paper";
 
 import { getPPOTypes } from "../../../api/purchasePoType";
 import {
-    AddRounded,
-    CheckRounded,
-    ClearRounded,
-    DeleteRounded,
-    MoreVertRounded,
-    WarningRounded,
+  AddRounded,
+  CheckRounded,
+  ClearRounded,
+  DeleteRounded,
+  MoreVertRounded,
+  WarningRounded,
 } from "@material-ui/icons";
 
 import { getContacts, IContact } from "../../../api/contact";
@@ -59,1445 +59,1380 @@ import { getServiceCategories } from "../../../api/serviceCategories";
 import { getServiceClasses } from "../../../api/serviceClass";
 
 export const DocumentForm = ({
-    createdPO,
-    data,
-    onDone,
+  createdPO,
+  data,
+  onDone,
 }: {
-    onDone: () => void;
-    data: IPurchasePOComplete;
-    createdPO: IPurchasePO;
+  onDone: () => void;
+  data: IPurchasePOComplete;
+  createdPO: IPurchasePO;
 }) => {
-    const divToPrint = useRef<HTMLElement | null>();
-    const [contact, setContact] = useState<IContact>();
-    const [vendor, setVendor] = useState<IVendor>();
-    const [requester, setRequester] = useState<IEmployee>();
+  const divToPrint = useRef<HTMLElement | null>();
+  const [contact, setContact] = useState<IContact>();
+  const [vendor, setVendor] = useState<IVendor>();
+  const [requester, setRequester] = useState<IEmployee>();
 
-    const [canSave, setCanSave] = useState(false);
-    const [isUploading, setIsUploading] = useState(false);
+  const [canSave, setCanSave] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
-    let sum = 0;
-    data.lines.forEach((l) => (sum += l.price * l.quantity));
+  let sum = 0;
+  data.lines.forEach((l) => (sum += l.price * l.quantity));
 
+  useEffect(() => {
     const setData = async () => {
-        try {
-            const contacts = await getContacts();
-            const vendors = await getVendors();
-            const emps = await getAllEmployees();
+      try {
+        //   const contacts = await getContacts();
+        const vendors = await getVendors();
+        //   const emps = await getAllEmployees();
 
-            let fcontact = contacts.find((c: any) => c.id === data.ContactId);
-            setContact(fcontact);
+        //   let fcontact = contacts.find((c: any) => c.id === data.ContactId);
+        //   setContact(fcontact);
 
-            let fvendor = vendors.find((v: any) => v.id === data.VendorId);
-            setVendor(fvendor);
+        let fvendor = vendors.find((v: any) => v.id === data.VendorId);
+        setVendor(fvendor);
 
-            let femp = emps.find((e: any) => e.id === data.requester);
-            setRequester(femp);
+        //   let femp = emps.find((e: any) => e.id === data.requester);
+        //   setRequester(femp);
 
-            if (fcontact && fvendor && femp) {
-                setCanSave(true);
-            }
-        } catch (error) {
-            console.log(error);
+        if (fvendor) {
+          setCanSave(true);
         }
+      } catch (error) {
+        console.log(error);
+      }
     };
+    setData();
+  }, [data.VendorId]);
 
-    useEffect(() => {
-        setData();
-    }, []);
+  const handleSaveDocument = async () => {
+    try {
+      setCanSave(false);
+      setIsUploading(true);
+      if (divToPrint.current && createdPO.id) {
+        const generatedPdf = await exportPdf(divToPrint.current);
 
-    const handleSaveDocument = async () => {
-        try {
-            setCanSave(false);
-            setIsUploading(true);
-            if (divToPrint.current && createdPO.id) {
-                const generatedPdf = await exportPdf(divToPrint.current);
-
-                console.log(generatedPdf);
-                const resp = await createAModelDocument(
-                    "purchasePO",
-                    createdPO.id,
-                    generatedPdf,
-                    `${new Date().toJSON().slice(0, 19)} - ${createdPO.number}`,
-                    `PO_${createdPO.number}.pdf`
-                );
-                if (resp) {
-                    onDone();
-                }
-            }
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setCanSave(true);
-            setIsUploading(false);
+        console.log(generatedPdf);
+        const resp = await createAModelDocument(
+          "purchasePO",
+          createdPO.id,
+          generatedPdf,
+          `${new Date().toJSON().slice(0, 19)} - ${createdPO.number}`,
+          `PO_${createdPO.number}.pdf`
+        );
+        if (resp) {
+          onDone();
         }
-    };
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setCanSave(true);
+      setIsUploading(false);
+    }
+  };
 
-    return (
-        <Box>
-            <Typography>We made a pdf from your PO, now you can save it</Typography>
-            <div style={{ height: 400, overflowY: "auto" }}>
-                <div id="myMm" style={{ height: "1mm" }} />
-                <div
-                    id="divToPrint"
-                    ref={(e) => (divToPrint.current = e)}
-                    style={{
-                        backgroundColor: "#fff",
-                        color: "black",
-                        width: "835px",
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        minHeight: "1200px",
-                    }}
-                >
-                    <PurchasePO vendor={vendor as any} contact={contact as any} lines={data.lines} sum={sum} />
-                </div>
-            </div>
-            <Box textAlign="right">
-                <Button disabled={!canSave} kind="add" onClick={handleSaveDocument}>
-                    Save
-                </Button>
-                {isUploading && <LinearProgress />}
-            </Box>
-        </Box>
-    );
+  return (
+    <Box>
+      <Typography>We made a pdf from your PO, now you can save it</Typography>
+      <div style={{ height: 400, overflowY: "auto" }}>
+        <div id="myMm" style={{ height: "1mm" }} />
+        <div
+          id="divToPrint"
+          ref={(e) => (divToPrint.current = e)}
+          style={{
+            backgroundColor: "#fff",
+            color: "black",
+            width: "835px",
+            marginLeft: "auto",
+            marginRight: "auto",
+            minHeight: "1200px",
+          }}
+        >
+          <PurchasePO vendor={vendor as any} contact={contact as any} lines={data.lines} sum={sum} />
+        </div>
+      </div>
+      <Box textAlign="right">
+        <Button disabled={!canSave} kind="add" onClick={handleSaveDocument}>
+          Save
+        </Button>
+        {isUploading && <LinearProgress />}
+      </Box>
+    </Box>
+  );
 };
 
 export const FinalForm = ({
-    onDone,
-    onBack,
-    data,
+  onDone,
+  onBack,
+  data,
 }: {
-    onDone: (a: any) => void;
-    onBack: () => void;
-    data: IPurchasePOComplete;
+  onDone: (a: any) => void;
+  onBack: () => void;
+  data: IPurchasePOComplete;
 }) => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState<string>();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>();
 
-    const handleSubmit = async () => {
-        try {
-            // const { ContactId, requester, status, VendorId, lines } = data;
-            const { lines } = data;
-            let newLines = [...lines];
-            newLines.forEach(function (v: any) {
-                delete v.date;
-                delete v.id;
-                delete v.PurchasePOId;
-                delete v.PurchaseSOId;
-                delete v.QuoteId;
-                delete v.SOId;
-                delete v.updatedAt;
-            });
-            const resp = await createPurchasePOComplete({
-                ...data,
-                lines: newLines,
-            } as IPurchasePOComplete);
-            if (resp) {
-                console.log(resp);
-                onDone(resp);
-            }
-        } catch (error: any) {
-            console.log(error);
-            console.log(error.response.data.error);
-            setError(error.response.data.error);
-        } finally {
-            setLoading(false);
-        }
-    };
+  const handleSubmit = async () => {
+    try {
+      // const { ContactId, requester, status, VendorId, lines } = data;
+      const { lines } = data;
+      let newLines = [...lines];
+      newLines.forEach(function (v: any) {
+        delete v.date;
+        delete v.id;
+        delete v.PurchasePOId;
+        delete v.PurchaseSOId;
+        delete v.QuoteId;
+        delete v.SOId;
+        delete v.updatedAt;
+      });
+      const resp = await createPurchasePOComplete({
+        ...data,
+        lines: newLines,
+      } as IPurchasePOComplete);
+      if (resp) {
+        console.log(resp);
+        onDone(resp);
+      }
+    } catch (error: any) {
+      console.log(error);
+      console.log(error.response.data.error);
+      setError(error.response.data.error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    return (
-        <Box height="85%" display="flex" flexDirection="column">
-            <Typography variant="h5">Are you sure?</Typography>
-            <Typography variant="subtitle1" style={{ margin: "1em 0" }}>
-                If you finalize your Purchase order, You can't update it, So if you want to update it you should make
-                new version or add new one
-            </Typography>
-            {error && <Alert severity="error">{error}</Alert>}
-            {loading && <LinearProgress />}
-            <div style={{ flexGrow: 1 }} />
-            <Box display="flex" justifyContent="space-between" mt={4}>
-                <Button disabled={loading} onClick={onBack} color="secondary" variant="contained">
-                    Back to lines
-                </Button>
-                <Button disabled={loading} onClick={handleSubmit} color="primary" variant="contained">
-                    Finalize
-                </Button>
-            </Box>
-        </Box>
-    );
+  return (
+    <Box height="85%" display="flex" flexDirection="column">
+      <Typography variant="h5">Are you sure?</Typography>
+      <Typography variant="subtitle1" style={{ margin: "1em 0" }}>
+        If you finalize your Purchase order, You can't update it, So if you want to update it you should make new
+        version or add new one
+      </Typography>
+      {error && <Alert severity="error">{error}</Alert>}
+      {loading && <LinearProgress />}
+      <div style={{ flexGrow: 1 }} />
+      <Box display="flex" justifyContent="space-between" mt={4}>
+        <Button disabled={loading} onClick={onBack} color="secondary" variant="contained">
+          Back to lines
+        </Button>
+        <Button disabled={loading} onClick={handleSubmit} color="primary" variant="contained">
+          Finalize
+        </Button>
+      </Box>
+    </Box>
+  );
 };
+
 const style = {
-    padding: "10px 20px",
-    borderBottom: "1px solid whiteSmoke",
-    color: "white",
+  padding: "10px 20px",
+  borderBottom: "1px solid whiteSmoke",
+  color: "white",
 };
 const useStyle = makeStyles(() => ({
-    root: {
-        padding: "0px 16px",
-    },
+  root: {
+    padding: "0px 16px",
+  },
 }));
 export const LinesForm = ({
-    devices,
-    createdItems,
-    handleSubmit,
-    handleDelete,
-    handleAddService,
-    handleEdit,
+  devices,
+  createdItems,
+  handleSubmit,
+  handleDelete,
+  handleAddService,
+  handleEdit,
 }: {
-    devices?: IItem[];
-    createdItems: ILineItem[];
-    handleSubmit: (lineItem: ILineItem, item: IItem | undefined) => void;
-    handleDelete: (index: number) => void;
-    handleAddService: (lineItem: ILineItem, index: any, service: any, itemId?: string) => void;
-    handleEdit: (lineItem: ILineItem, index: any, item: any, belongsTo?: number, itemId?: string) => void;
+  devices?: IItem[];
+  createdItems: ILineItem[];
+  handleSubmit: (lineItem: ILineItem, item: IItem | undefined) => void;
+  handleDelete: (index: number) => void;
+  handleAddService: (lineItem: ILineItem, index: any, service: any, itemId?: string) => void;
+  handleEdit: (lineItem: ILineItem, index: any, item: any, belongsTo?: number, itemId?: string) => void;
 }) => {
-    const classes = useStyle();
+  const classes = useStyle();
 
-    const [selectedItem, setSelectedItem] = useState<IItem | undefined>();
-    const [addService, setAddService] = useState<string | undefined>(undefined);
-    const [addLineService, setAddLineService] = useState<Boolean>(false);
-    const [addOption, setAddOption] = useState<any>(false);
-    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-    const [anchorBEl, setAnchorBEl] = React.useState<HTMLButtonElement | null>(null);
-    const [index, setIndex] = React.useState<any>();
-    const [clickedItem, setClickedItem] = useState<any>();
-    const [edit, setEdit] = useState<any>();
-    const [displayItems, setDisplayItems] = useState<ILineItem[]>();
+  const [selectedItem, setSelectedItem] = useState<IItem | undefined>();
+  const [addService, setAddService] = useState<string | undefined>(undefined);
+  const [addLineService, setAddLineService] = useState<Boolean>(false);
+  const [addOption, setAddOption] = useState<any>(false);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const [anchorBEl, setAnchorBEl] = React.useState<HTMLButtonElement | null>(null);
+  const [index, setIndex] = React.useState<any>();
+  const [clickedItem, setClickedItem] = useState<any>();
+  const [edit, setEdit] = useState<any>();
+  const [displayItems, setDisplayItems] = useState<ILineItem[]>();
 
-    const handleClick = (e: any, id: any, i: any) => {
-        setClickedItem(id);
-        setIndex(i);
-        setAnchorEl(e.currentTarget);
-    };
+  const handleClick = (e: any, id: any, i: any) => {
+    setClickedItem(id);
+    setIndex(i);
+    setAnchorEl(e.currentTarget);
+  };
 
-    const handleClose = () => {
-        setAnchorEl(null);
-        setAnchorBEl(null);
-    };
-    const renderTable = () => {
-        let counter = 0;
-        const display = createdItems.map((item: any, i: number) => {
-            if (!item.belongsTo) {
-                counter++;
-            }
-            return { ...item, group: counter };
-        });
-        setDisplayItems(display);
-    };
-    useEffect(() => {
-        renderTable();
-    }, [createdItems]);
-
-    const open = Boolean(anchorEl);
-    const openB = Boolean(anchorBEl);
-    const id = open ? "simple-popover" : undefined;
-    const idB = openB ? "simple-popover" : undefined;
-    const schema = Yup.object().shape({
-        ItemId: Yup.string().required(),
-        quantity: Yup.number().required().min(1),
-        price: Yup.number().required(),
+  const handleClose = () => {
+    setAnchorEl(null);
+    setAnchorBEl(null);
+  };
+  const renderTable = () => {
+    let counter = 0;
+    const display = createdItems.map((item: any, i: number) => {
+      if (!item.belongsTo) {
+        counter++;
+      }
+      return { ...item, group: counter };
     });
-    const phone = useMediaQuery("(max-width:900px)");
+    setDisplayItems(display);
+  };
+  useEffect(() => {
+    renderTable();
+  }, [createdItems]);
 
-    return (
-        <BasePaper style={phone ? { height: "80vh", overflow: "auto" } : { overflow: "auto", height: "100%" }}>
-            <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                }}
-                transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                }}
-            >
-                <Box
-                    display="flex"
-                    flexDirection="column"
-                    style={{
-                        background: "#373a4d",
-                        cursor: "pointer",
-                    }}
+  const open = Boolean(anchorEl);
+  const openB = Boolean(anchorBEl);
+  const id = open ? "simple-popover" : undefined;
+  const idB = openB ? "simple-popover" : undefined;
+  const schema = Yup.object().shape({
+    ItemId: Yup.string().required(),
+    quantity: Yup.number().required().min(1),
+    price: Yup.number().required(),
+  });
+  const phone = useMediaQuery("(max-width:900px)");
+
+  return (
+    <BasePaper style={phone ? { height: "80vh", overflow: "auto" } : { overflow: "auto", height: "100%" }}>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <Box
+          display="flex"
+          flexDirection="column"
+          style={{
+            background: "#373a4d",
+            cursor: "pointer",
+          }}
+        >
+          <span
+            style={style}
+            onClick={(e) => {
+              setAddService(clickedItem.ItemId);
+              handleClose();
+            }}
+          >
+            Add Service
+          </span>
+          <span
+            style={style}
+            onClick={(e) => {
+              setAddOption(clickedItem.ItemId);
+              handleClose();
+            }}
+          >
+            Add Option
+          </span>
+          <span
+            style={style}
+            onClick={() => {
+              handleClose();
+              setEdit(clickedItem);
+            }}
+          >
+            Edit
+          </span>
+          <span
+            style={{ ...style, border: "none" }}
+            onClick={() => {
+              handleClose();
+              handleDelete(index);
+            }}
+          >
+            Delete
+          </span>
+        </Box>
+      </Popover>
+      <Popover
+        id={idB}
+        open={openB}
+        anchorEl={anchorBEl}
+        onClose={() => {
+          setAnchorBEl(null);
+        }}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <Box
+          display="flex"
+          flexDirection="column"
+          style={{
+            background: "#373a4d",
+            cursor: "pointer",
+          }}
+        >
+          <span
+            style={style}
+            onClick={() => {
+              handleClose();
+              setEdit(clickedItem);
+            }}
+          >
+            Edit
+          </span>
+          <span
+            style={{ ...style, border: "none" }}
+            onClick={() => {
+              handleClose();
+              handleDelete(index);
+            }}
+          >
+            Delete
+          </span>
+        </Box>
+      </Popover>
+      <Dialog
+        onClose={() => {
+          setAddLineService(false);
+        }}
+        open={Boolean(addLineService)}
+        title="Add Service"
+        maxWidth="xs"
+        fullWidth
+      >
+        <AddLineServiceForm
+          onClose={() => setAddLineService(false)}
+          handleAddService={(d: ILineItem, i: IItem) => {
+            handleSubmit(d, i);
+          }}
+        />
+      </Dialog>
+      <Dialog
+        onClose={() => {
+          setAddService(undefined);
+        }}
+        open={Boolean(addService)}
+        title="Add Service"
+        maxWidth="xs"
+        fullWidth
+      >
+        <AddServiceForm
+          onClose={() => setAddService(undefined)}
+          itemId={addService}
+          handleAddService={(d: ILineItem, i: IItem) => {
+            handleAddService(d, index + 1, i, addService);
+          }}
+          service
+        />
+      </Dialog>
+      <Dialog
+        onClose={() => {
+          setAddOption(false);
+        }}
+        open={addOption}
+        title="Add Option"
+        maxWidth="xs"
+        fullWidth
+      >
+        <AddServiceForm
+          onClose={() => setAddOption(false)}
+          itemId={addOption}
+          handleAddService={(d: ILineItem, i: IItem) => {
+            handleAddService(d, index + 1, i);
+          }}
+          option
+        />
+      </Dialog>
+      {edit && (
+        <Dialog
+          onClose={() => {
+            setEdit(false);
+          }}
+          open={edit}
+          title="Edit Line Item"
+          maxWidth="xs"
+          fullWidth
+        >
+          <AddServiceForm
+            edit={edit}
+            onClose={() => setEdit(false)}
+            handleAddService={(d: ILineItem, i: IItem, belongsTo?: number, itemId?: string) => {
+              handleEdit(d, index, i, belongsTo, itemId);
+            }}
+          />
+        </Dialog>
+      )}
+      <Box display="flex" width="100%" maxHeight="calc(100vh - 2300px)">
+        <Box flex={1}>
+          <Formik
+            initialValues={
+              selectedItem
+                ? ({
+                    price: selectedItem?.retailPrice,
+                    ItemId: selectedItem?.id,
+                    quantity: 1,
+                  } as ILineItem)
+                : ({} as ILineItem)
+            }
+            validationSchema={schema}
+            onSubmit={(values, { resetForm }) => {
+              handleSubmit(values, selectedItem);
+            }}
+            enableReinitialize={true}
+          >
+            {({ values, handleChange, setFieldValue, handleBlur, errors, resetForm }) => (
+              <Form>
+                <Button
+                  variant="outlined"
+                  onClick={() => {
+                    setAddLineService(true);
+                  }}
+                  style={{ marginBottom: "10px" }}
                 >
-                    <span
-                        style={style}
-                        onClick={(e) => {
-                            setAddService(clickedItem.ItemId);
-                            handleClose();
-                        }}
-                    >
-                        Add Service
-                    </span>
-                    <span
-                        style={style}
-                        onClick={(e) => {
-                            setAddOption(clickedItem.ItemId);
-                            handleClose();
-                        }}
-                    >
-                        Add Option
-                    </span>
-                    <span
-                        style={style}
-                        onClick={() => {
-                            handleClose();
-                            setEdit(clickedItem);
-                        }}
-                    >
-                        Edit
-                    </span>
-                    <span
-                        style={{ ...style, border: "none" }}
-                        onClick={() => {
-                            handleClose();
-                            handleDelete(index);
-                        }}
-                    >
-                        Delete
-                    </span>
-                </Box>
-            </Popover>
-            <Popover
-                id={idB}
-                open={openB}
-                anchorEl={anchorBEl}
-                onClose={() => {
-                    setAnchorBEl(null);
-                }}
-                anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                }}
-                transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                }}
-            >
-                <Box
-                    display="flex"
-                    flexDirection="column"
-                    style={{
-                        background: "#373a4d",
-                        cursor: "pointer",
-                    }}
-                >
-                    <span
-                        style={style}
-                        onClick={() => {
-                            handleClose();
-                            setEdit(clickedItem);
-                        }}
-                    >
-                        Edit
-                    </span>
-                    <span
-                        style={{ ...style, border: "none" }}
-                        onClick={() => {
-                            handleClose();
-                            handleDelete(index);
-                        }}
-                    >
-                        Delete
-                    </span>
-                </Box>
-            </Popover>
-            <Dialog
-                onClose={() => {
-                    setAddLineService(false);
-                }}
-                open={Boolean(addLineService)}
-                title="Add Service"
-                maxWidth="xs"
-                fullWidth
-            >
-                <AddLineServiceForm
-                    onClose={() => setAddLineService(false)}
-                    handleAddService={(d: ILineItem, i: IItem) => {
-                        handleSubmit(d, i);
-                    }}
-                />
-            </Dialog>
-            <Dialog
-                onClose={() => {
-                    setAddService(undefined);
-                }}
-                open={Boolean(addService)}
-                title="Add Service"
-                maxWidth="xs"
-                fullWidth
-            >
-                <AddServiceForm
-                    onClose={() => setAddService(undefined)}
-                    itemId={addService}
-                    handleAddService={(d: ILineItem, i: IItem) => {
-                        handleAddService(d, index + 1, i, addService);
-                    }}
-                    service
-                />
-            </Dialog>
-            <Dialog
-                onClose={() => {
-                    setAddOption(false);
-                }}
-                open={addOption}
-                title="Add Option"
-                maxWidth="xs"
-                fullWidth
-            >
-                <AddServiceForm
-                    onClose={() => setAddOption(false)}
-                    itemId={addOption}
-                    handleAddService={(d: ILineItem, i: IItem) => {
-                        handleAddService(d, index + 1, i);
-                    }}
-                    option
-                />
-            </Dialog>
-            {edit && (
-                <Dialog
-                    onClose={() => {
-                        setEdit(false);
-                    }}
-                    open={edit}
-                    title="Edit Line Item"
-                    maxWidth="xs"
-                    fullWidth
-                >
-                    <AddServiceForm
-                        edit={edit}
-                        onClose={() => setEdit(false)}
-                        handleAddService={(d: ILineItem, i: IItem, belongsTo?: number, itemId?: string) => {
-                            handleEdit(d, index, i, belongsTo, itemId);
-                        }}
-                    />
-                </Dialog>
+                  Add Service
+                </Button>
+                <Table>
+                  <TableHead style={{ backgroundColor: "#373a4d", color: "white" }}>
+                    <TableRow>
+                      <TableCell style={{ color: "white" }}>Group</TableCell>
+                      <TableCell style={{ color: "white" }}>Sort</TableCell>
+                      <TableCell style={{ color: "white" }}>Part Number</TableCell>
+                      <TableCell style={{ color: "white" }}>Qty / period</TableCell>
+                      <TableCell style={{ color: "white" }}>Price</TableCell>
+                      <TableCell width={50} style={{ color: "white", padding: "2px" }}>
+                        Tax
+                      </TableCell>
+                      <TableCell width={80} style={{ color: "white", padding: "0px" }}>
+                        Total
+                      </TableCell>
+                      <TableCell width={50} style={{ color: "white" }}></TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell width={50}>
+                        <IconButton type="submit" style={{ padding: "0px", color: "green" }}>
+                          <AddRounded />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell width={50}></TableCell>
+                      <TableCell style={{ padding: "2px" }}>
+                        <LinkSelect
+                          filterLabel="no"
+                          path="/item?salesApproved=true&fru=false"
+                          value={typeof values.ItemId === "string" ? values.ItemId : values.ItemId?.id}
+                          label=""
+                          getOptionList={(resp) => (devices ? devices : resp?.result)}
+                          getOptionLabel={(item) => (devices ? item.number.no : item?.no)}
+                          getOptionValue={(item) => item?.id}
+                          onChange={(e, nv) => {
+                            setFieldValue("ItemId", devices ? nv.number.id : nv.id);
+                            setSelectedItem(nv);
+                          }}
+                          onBlur={handleBlur}
+                          url="/panel/inventory"
+                          error={Boolean(errors.ItemId)}
+                        />
+                      </TableCell>
+                      <TableCell width={90} style={{ padding: "2px" }}>
+                        <TextField
+                          type="number"
+                          name="quantity"
+                          value={values.quantity}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          error={Boolean(errors.quantity)}
+                        />
+                      </TableCell>
+                      <TableCell width={90} style={{ padding: "2px" }}>
+                        <TextField
+                          type="number"
+                          name="price"
+                          value={values.price}
+                          onChange={handleChange}
+                          onBlur={handleBlur}
+                          error={Boolean(errors.price)}
+                        />
+                      </TableCell>
+                      <TableCell style={{ padding: "2px" }}>
+                        <FormControlLabel
+                          style={{ width: "100%" }}
+                          checked={values.tax}
+                          label="Tax"
+                          name="tax"
+                          onChange={handleChange}
+                          control={<CheckBox />}
+                        />
+                      </TableCell>
+                      <TableCell style={{ padding: "0px" }}></TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                    {displayItems?.map((item: any, i: number) => {
+                      return (
+                        <TableRow style={item.belongsTo ? { background: "rgba(40,30,150,0.1)" } : {}}>
+                          <TableCell className={item.belongsTo ? classes.root : ""}>{item.group}</TableCell>
+                          <TableCell className={item.belongsTo ? classes.root : ""}>{item.sort}</TableCell>
+                          <TableCell className={item.belongsTo ? classes.root : ""} style={{ position: "relative" }}>
+                            <span>{item?.i?.no}</span>
+                            <span
+                              style={{
+                                color: "orange",
+                                position: "absolute",
+                                right: 0,
+                              }}
+                            >
+                              {!item?.i?.engineeringApproved && <WarningRounded />}
+                            </span>
+                          </TableCell>
+                          <TableCell className={item.belongsTo ? classes.root : ""}>{item.quantity}</TableCell>
+                          <TableCell>{item.price}</TableCell>
+                          <TableCell className={item.belongsTo ? classes.root : ""}>
+                            {item.tax ? <CheckRounded /> : <ClearRounded />}
+                          </TableCell>
+                          <TableCell className={item.belongsTo ? classes.root : ""}>
+                            {item.quantity * item.price}
+                          </TableCell>
+                          <TableCell className={item.belongsTo ? classes.root : ""}>
+                            {item.belongsTo ? (
+                              <span
+                                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                                  setClickedItem(item);
+                                  setIndex(i);
+                                  setAnchorBEl(e.currentTarget);
+                                }}
+                                style={{ cursor: "pointer" }}
+                              >
+                                <MoreVertRounded />
+                              </span>
+                            ) : (
+                              <span
+                                onClick={(e: React.MouseEvent<HTMLButtonElement>) => handleClick(e, item, i)}
+                                style={{ cursor: "pointer" }}
+                              >
+                                <MoreVertRounded />
+                              </span>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </Form>
             )}
-            <Box display="flex" width="100%" maxHeight="calc(100vh - 2300px)">
-                <Box flex={1}>
-                    <Formik
-                        initialValues={
-                            selectedItem
-                                ? ({
-                                      price: selectedItem?.retailPrice,
-                                      ItemId: selectedItem?.id,
-                                      quantity: 1,
-                                  } as ILineItem)
-                                : ({} as ILineItem)
-                        }
-                        validationSchema={schema}
-                        onSubmit={(values, { resetForm }) => {
-                            handleSubmit(values, selectedItem);
-                        }}
-                        enableReinitialize={true}
-                    >
-                        {({ values, handleChange, setFieldValue, handleBlur, errors, resetForm }) => (
-                            <Form>
-                                <Button
-                                    variant="outlined"
-                                    onClick={() => {
-                                        setAddLineService(true);
-                                    }}
-                                    style={{ marginBottom: "10px" }}
-                                >
-                                    Add Service
-                                </Button>
-                                <Table>
-                                    <TableHead style={{ backgroundColor: "#373a4d", color: "white" }}>
-                                        <TableRow>
-                                            <TableCell style={{ color: "white" }}>Group</TableCell>
-                                            <TableCell style={{ color: "white" }}>Sort</TableCell>
-                                            <TableCell style={{ color: "white" }}>Part Number</TableCell>
-                                            <TableCell style={{ color: "white" }}>Qty / period</TableCell>
-                                            <TableCell style={{ color: "white" }}>Price</TableCell>
-                                            <TableCell width={50} style={{ color: "white", padding: "2px" }}>
-                                                Tax
-                                            </TableCell>
-                                            <TableCell width={80} style={{ color: "white", padding: "0px" }}>
-                                                Total
-                                            </TableCell>
-                                            <TableCell width={50} style={{ color: "white" }}></TableCell>
-                                        </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                        <TableRow>
-                                            <TableCell width={50}>
-                                                <IconButton type="submit" style={{ padding: "0px", color: "green" }}>
-                                                    <AddRounded />
-                                                </IconButton>
-                                            </TableCell>
-                                            <TableCell width={50}></TableCell>
-                                            <TableCell style={{ padding: "2px" }}>
-                                                <LinkSelect
-                                                    filterLabel="no"
-                                                    path="/item?salesApproved=true&fru=false"
-                                                    value={
-                                                        typeof values.ItemId === "string"
-                                                            ? values.ItemId
-                                                            : values.ItemId?.id
-                                                    }
-                                                    label=""
-                                                    getOptionList={(resp) => (devices ? devices : resp?.result)}
-                                                    getOptionLabel={(item) => (devices ? item.number.no : item?.no)}
-                                                    getOptionValue={(item) => item?.id}
-                                                    onChange={(e, nv) => {
-                                                        setFieldValue("ItemId", devices ? nv.number.id : nv.id);
-                                                        setSelectedItem(nv);
-                                                    }}
-                                                    onBlur={handleBlur}
-                                                    url="/panel/inventory"
-                                                    error={Boolean(errors.ItemId)}
-                                                />
-                                            </TableCell>
-                                            <TableCell width={90} style={{ padding: "2px" }}>
-                                                <TextField
-                                                    type="number"
-                                                    name="quantity"
-                                                    value={values.quantity}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    error={Boolean(errors.quantity)}
-                                                />
-                                            </TableCell>
-                                            <TableCell width={90} style={{ padding: "2px" }}>
-                                                <TextField
-                                                    type="number"
-                                                    name="price"
-                                                    value={values.price}
-                                                    onChange={handleChange}
-                                                    onBlur={handleBlur}
-                                                    error={Boolean(errors.price)}
-                                                />
-                                            </TableCell>
-                                            <TableCell style={{ padding: "2px" }}>
-                                                <FormControlLabel
-                                                    style={{ width: "100%" }}
-                                                    checked={values.tax}
-                                                    label="Tax"
-                                                    name="tax"
-                                                    onChange={handleChange}
-                                                    control={<CheckBox />}
-                                                />
-                                            </TableCell>
-                                            <TableCell style={{ padding: "0px" }}></TableCell>
-                                            <TableCell></TableCell>
-                                        </TableRow>
-                                        {displayItems?.map((item: any, i: number) => {
-                                            return (
-                                                <TableRow
-                                                    style={item.belongsTo ? { background: "rgba(40,30,150,0.1)" } : {}}
-                                                >
-                                                    <TableCell className={item.belongsTo ? classes.root : ""}>
-                                                        {item.group}
-                                                    </TableCell>
-                                                    <TableCell className={item.belongsTo ? classes.root : ""}>
-                                                        {item.sort}
-                                                    </TableCell>
-                                                    <TableCell
-                                                        className={item.belongsTo ? classes.root : ""}
-                                                        style={{ position: "relative" }}
-                                                    >
-                                                        <span>{item?.i?.no}</span>
-                                                        <span
-                                                            style={{
-                                                                color: "orange",
-                                                                position: "absolute",
-                                                                right: 0,
-                                                            }}
-                                                        >
-                                                            {!item?.i?.engineeringApproved && <WarningRounded />}
-                                                        </span>
-                                                    </TableCell>
-                                                    <TableCell className={item.belongsTo ? classes.root : ""}>
-                                                        {item.quantity}
-                                                    </TableCell>
-                                                    <TableCell>{item.price}</TableCell>
-                                                    <TableCell className={item.belongsTo ? classes.root : ""}>
-                                                        {item.tax ? <CheckRounded /> : <ClearRounded />}
-                                                    </TableCell>
-                                                    <TableCell className={item.belongsTo ? classes.root : ""}>
-                                                        {item.quantity * item.price}
-                                                    </TableCell>
-                                                    <TableCell className={item.belongsTo ? classes.root : ""}>
-                                                        {item.belongsTo ? (
-                                                            <span
-                                                                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                                                                    setClickedItem(item);
-                                                                    setIndex(i);
-                                                                    setAnchorBEl(e.currentTarget);
-                                                                }}
-                                                                style={{ cursor: "pointer" }}
-                                                            >
-                                                                <MoreVertRounded />
-                                                            </span>
-                                                        ) : (
-                                                            <span
-                                                                onClick={(e: React.MouseEvent<HTMLButtonElement>) =>
-                                                                    handleClick(e, item, i)
-                                                                }
-                                                                style={{ cursor: "pointer" }}
-                                                            >
-                                                                <MoreVertRounded />
-                                                            </span>
-                                                        )}
-                                                    </TableCell>
-                                                </TableRow>
-                                            );
-                                        })}
-                                    </TableBody>
-                                </Table>
-                            </Form>
-                        )}
-                    </Formik>
-                </Box>
-            </Box>
-        </BasePaper>
-    );
+          </Formik>
+        </Box>
+      </Box>
+    </BasePaper>
+  );
 };
 
 export const AddLineServiceForm = ({ handleAddService, onClose }: { handleAddService: any; onClose: any }) => {
-    const [selectedItem, setSelectedItem] = useState<IItem | undefined>();
+  const [selectedItem, setSelectedItem] = useState<IItem | undefined>();
 
-    const handleSubmit = (d: any) => {
-        handleAddService(d, selectedItem);
-        onClose();
-    };
-    const schema = Yup.object().shape({
-        ItemId: Yup.string().required(),
-        quantity: Yup.number().required().min(1),
-        price: Yup.number().required(),
-    });
-    return (
-        <Box>
-            <Box display="flex">
-                <Box flex={1} mr={2}>
-                    <Formik
-                        initialValues={
-                            {
-                                price: selectedItem?.retailPrice,
-                                ItemId: selectedItem?.id,
-                                quantity: 1,
-                                ServiceClassId: undefined,
-                                ServiceCategoryId: undefined,
-                            } as any
-                        }
-                        validationSchema={schema}
-                        onSubmit={handleSubmit}
-                        enableReinitialize={true}
-                    >
-                        {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
-                            <Form>
-                                <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-                                    <FieldSelect
-                                        request={getServiceClasses}
-                                        itemTitleField="name"
-                                        itemValueField="id"
-                                        label="Class"
-                                        name="ServiceClassId"
-                                        value={
-                                            typeof values.ServiceClassId == "string"
-                                                ? values.ServiceClassId
-                                                : values.ServiceClassId?.id
-                                        }
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={Boolean(errors.ServiceClassId)}
-                                        fullWidth
-                                    />
-                                    <FieldSelect
-                                        request={getServiceCategories}
-                                        itemTitleField="name"
-                                        itemValueField="id"
-                                        label="Category"
-                                        name="ServiceCategoryId"
-                                        value={
-                                            typeof values.ServiceCategoryId == "string"
-                                                ? values.ServiceCategoryId
-                                                : values.ServiceCategoryId?.id
-                                        }
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={Boolean(errors.ServiceCategoryId)}
-                                        fullWidth
-                                    />
-                                    {values.ServiceCategoryId && values.ServiceClassId && (
-                                        <LinkSelect
-                                            filterLabel="no"
-                                            path={`/service?ServiceCategoryId=${values.ServiceCategoryId}&ServiceClassId=${values.ServiceClassId}`}
-                                            value={typeof values.ItemId === "string" ? values.ItemId : values.i?.id}
-                                            label={"Service"}
-                                            getOptionList={(resp) => resp.result}
-                                            getOptionLabel={(item) => item?.no}
-                                            getOptionValue={(item) => item?.id}
-                                            onChange={(e, nv) => {
-                                                setFieldValue("ItemId", nv.id);
-                                                setSelectedItem(nv);
-                                            }}
-                                            onBlur={handleBlur}
-                                            url={"/panel/service"}
-                                            error={Boolean(errors.ItemId)}
-                                        />
-                                    )}
-                                    <TextField
-                                        name="quantity"
-                                        label="Period"
-                                        value={values.quantity}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={Boolean(errors.quantity)}
-                                    />
-                                    <TextField
-                                        name="price"
-                                        label="Price"
-                                        value={values.price}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={Boolean(errors.price)}
-                                        InputLabelProps={{ shrink: true }}
-                                    />
+  const handleSubmit = (d: any) => {
+    handleAddService(d, selectedItem);
+    onClose();
+  };
+  const schema = Yup.object().shape({
+    ItemId: Yup.string().required(),
+    quantity: Yup.number().required().min(1),
+    price: Yup.number().required(),
+  });
+  return (
+    <Box>
+      <Box display="flex">
+        <Box flex={1} mr={2}>
+          <Formik
+            initialValues={
+              {
+                price: selectedItem?.retailPrice,
+                ItemId: selectedItem?.id,
+                quantity: 1,
+                ServiceClassId: undefined,
+                ServiceCategoryId: undefined,
+              } as any
+            }
+            validationSchema={schema}
+            onSubmit={handleSubmit}
+            enableReinitialize={true}
+          >
+            {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
+              <Form>
+                <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
+                  <FieldSelect
+                    request={getServiceClasses}
+                    itemTitleField="name"
+                    itemValueField="id"
+                    label="Class"
+                    name="ServiceClassId"
+                    value={typeof values.ServiceClassId == "string" ? values.ServiceClassId : values.ServiceClassId?.id}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.ServiceClassId)}
+                    fullWidth
+                  />
+                  <FieldSelect
+                    request={getServiceCategories}
+                    itemTitleField="name"
+                    itemValueField="id"
+                    label="Category"
+                    name="ServiceCategoryId"
+                    value={
+                      typeof values.ServiceCategoryId == "string"
+                        ? values.ServiceCategoryId
+                        : values.ServiceCategoryId?.id
+                    }
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.ServiceCategoryId)}
+                    fullWidth
+                  />
+                  {values.ServiceCategoryId && values.ServiceClassId && (
+                    <LinkSelect
+                      filterLabel="no"
+                      path={`/service?ServiceCategoryId=${values.ServiceCategoryId}&ServiceClassId=${values.ServiceClassId}`}
+                      value={typeof values.ItemId === "string" ? values.ItemId : values.i?.id}
+                      label={"Service"}
+                      getOptionList={(resp) => resp.result}
+                      getOptionLabel={(item) => item?.no}
+                      getOptionValue={(item) => item?.id}
+                      onChange={(e, nv) => {
+                        setFieldValue("ItemId", nv.id);
+                        setSelectedItem(nv);
+                      }}
+                      onBlur={handleBlur}
+                      url={"/panel/service"}
+                      error={Boolean(errors.ItemId)}
+                    />
+                  )}
+                  <TextField
+                    name="quantity"
+                    label="Period"
+                    value={values.quantity}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.quantity)}
+                  />
+                  <TextField
+                    name="price"
+                    label="Price"
+                    value={values.price}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.price)}
+                    InputLabelProps={{ shrink: true }}
+                  />
 
-                                    <Box display="flex" alignItems="center" justifyContent="center">
-                                        <Button style={{ margin: "0 0.5em" }} type="submit" kind="add">
-                                            Submit
-                                        </Button>
-                                    </Box>
-                                </Box>
-                            </Form>
-                        )}
-                    </Formik>
+                  <Box display="flex" alignItems="center" justifyContent="center">
+                    <Button style={{ margin: "0 0.5em" }} type="submit" kind="add">
+                      Submit
+                    </Button>
+                  </Box>
                 </Box>
-            </Box>
+              </Form>
+            )}
+          </Formik>
         </Box>
-    );
+      </Box>
+    </Box>
+  );
 };
+
 export const AddServiceForm = ({
-    itemId,
-    handleAddService,
-    onClose,
-    option,
-    edit,
-    service,
+  itemId,
+  handleAddService,
+  onClose,
+  option,
+  edit,
+  service,
 }: {
-    itemId?: any;
-    handleAddService: any;
-    onClose: any;
-    option?: boolean;
-    service?: boolean;
-    edit?: any;
+  itemId?: any;
+  handleAddService: any;
+  onClose: any;
+  option?: boolean;
+  service?: boolean;
+  edit?: any;
 }) => {
-    const [selectedItem, setSelectedItem] = useState<IItem | undefined>(edit?.i);
+  const [selectedItem, setSelectedItem] = useState<IItem | undefined>(edit?.i);
 
-    const handleSubmit = (d: ILineItem) => {
-        handleAddService(d, selectedItem, edit?.belongsTo, edit?.belongsToItemId);
-        onClose();
-    };
-    console.log({ edit });
-    const schema = Yup.object().shape({
-        ItemId: Yup.string().required(),
-        quantity: Yup.number().required().min(1),
-        price: Yup.number().required(),
-    });
-    return (
-        <Box>
-            <Box display="flex">
-                <Box flex={1} mr={2}>
-                    <Formik
-                        initialValues={
-                            edit
-                                ? ({
-                                      price: edit.price,
-                                      quantity: edit.quantity,
-                                      ItemId: selectedItem?.id,
-                                      tax: edit.tax,
-                                  } as ILineItem)
-                                : ({
-                                      price: selectedItem?.retailPrice,
-                                      ItemId: selectedItem?.id,
-                                      quantity: 1,
-                                  } as ILineItem)
-                        }
-                        validationSchema={schema}
-                        onSubmit={handleSubmit}
-                        enableReinitialize={true}
-                    >
-                        {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
-                            <Form>
-                                <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-                                    {edit ? (
-                                        edit.i.Category === "Service" || (edit.i.option && edit.belongsTo) ? (
-                                            <LinkSelect
-                                                filterLabel="no"
-                                                path={
-                                                    edit.i.option
-                                                        ? "/item?option=true"
-                                                        : `/item/${edit.belongsToItemId}/service`
-                                                }
-                                                value={typeof values.ItemId === "string" ? values.ItemId : values.i?.id}
-                                                label={edit.i.option ? "Option" : "Service"}
-                                                getOptionList={(resp) => (edit.i.option ? resp.result : resp)}
-                                                getOptionLabel={(item) => item?.no}
-                                                getOptionValue={(item) => item?.id}
-                                                onChange={(e, nv) => {
-                                                    setFieldValue("ItemId", nv.id);
-                                                    setSelectedItem(nv);
-                                                }}
-                                                onBlur={handleBlur}
-                                                url={edit.i.option ? "/panel/inventory" : "/panel/service"}
-                                                error={Boolean(errors.ItemId)}
-                                                choseItem={edit?.i}
-                                            />
-                                        ) : (
-                                            <LinkSelect
-                                                filterLabel="no"
-                                                path={"/item?salesApproved=true&fru=false"}
-                                                value={values.ItemId}
-                                                label="Item"
-                                                getOptionList={(resp) => resp.result}
-                                                getOptionLabel={(item) => item?.no}
-                                                getOptionValue={(item) => item?.id}
-                                                onChange={(e, nv) => {
-                                                    setFieldValue("ItemId", nv.id);
-                                                    setSelectedItem(nv);
-                                                }}
-                                                onBlur={handleBlur}
-                                                url={option ? "/panel/inventory" : "/panel/service"}
-                                                error={Boolean(errors.ItemId)}
-                                                choseItem={edit?.i}
-                                            />
-                                        )
-                                    ) : (
-                                        <LinkSelect
-                                            filterLabel="no"
-                                            path={option ? "/item?option=true" : `/item/${itemId}/service`}
-                                            value={typeof values.ItemId === "string" ? values.ItemId : values.i?.id}
-                                            label={option ? "Option" : "Service"}
-                                            getOptionList={(resp) => (option ? resp.result : resp)}
-                                            getOptionLabel={(item) => item?.no}
-                                            getOptionValue={(item) => item?.id}
-                                            onChange={(e, nv) => {
-                                                setFieldValue("ItemId", nv.id);
-                                                setSelectedItem(nv);
-                                            }}
-                                            onBlur={handleBlur}
-                                            url={option ? "/panel/inventory" : "/panel/service"}
-                                            error={Boolean(errors.ItemId)}
-                                        />
-                                    )}
-                                    <TextField
-                                        name="quantity"
-                                        label={service ? "Period" : "quantity"}
-                                        value={values.quantity}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={Boolean(errors.quantity)}
-                                    />
-                                    <TextField
-                                        name="price"
-                                        label="Price"
-                                        value={values.price}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        error={Boolean(errors.price)}
-                                        InputLabelProps={{ shrink: true }}
-                                    />
-                                    {edit?.belongsTo || !edit ? (
-                                        <TextField
-                                            name="sort"
-                                            label="Sort"
-                                            value={values.sort}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            error={Boolean(errors.sort)}
-                                        />
-                                    ) : (
-                                        <></>
-                                    )}
-                                    {!service && (
-                                        <FormControlLabel
-                                            style={{ width: "100%" }}
-                                            checked={values.tax}
-                                            label="Tax"
-                                            name="tax"
-                                            onChange={handleChange}
-                                            control={<CheckBox />}
-                                        />
-                                    )}
+  const handleSubmit = (d: ILineItem) => {
+    handleAddService(d, selectedItem, edit?.belongsTo, edit?.belongsToItemId);
+    onClose();
+  };
+  console.log({ edit });
+  const schema = Yup.object().shape({
+    ItemId: Yup.string().required(),
+    quantity: Yup.number().required().min(1),
+    price: Yup.number().required(),
+  });
+  return (
+    <Box>
+      <Box display="flex">
+        <Box flex={1} mr={2}>
+          <Formik
+            initialValues={
+              edit
+                ? ({
+                    price: edit.price,
+                    quantity: edit.quantity,
+                    ItemId: selectedItem?.id,
+                    tax: edit.tax,
+                  } as ILineItem)
+                : ({
+                    price: selectedItem?.retailPrice,
+                    ItemId: selectedItem?.id,
+                    quantity: 1,
+                  } as ILineItem)
+            }
+            validationSchema={schema}
+            onSubmit={handleSubmit}
+            enableReinitialize={true}
+          >
+            {({ values, handleChange, setFieldValue, handleBlur, errors }) => (
+              <Form>
+                <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
+                  {edit ? (
+                    edit.i.Category === "Service" || (edit.i.option && edit.belongsTo) ? (
+                      <LinkSelect
+                        filterLabel="no"
+                        path={edit.i.option ? "/item?option=true" : `/item/${edit.belongsToItemId}/service`}
+                        value={typeof values.ItemId === "string" ? values.ItemId : values.i?.id}
+                        label={edit.i.option ? "Option" : "Service"}
+                        getOptionList={(resp) => (edit.i.option ? resp.result : resp)}
+                        getOptionLabel={(item) => item?.no}
+                        getOptionValue={(item) => item?.id}
+                        onChange={(e, nv) => {
+                          setFieldValue("ItemId", nv.id);
+                          setSelectedItem(nv);
+                        }}
+                        onBlur={handleBlur}
+                        url={edit.i.option ? "/panel/inventory" : "/panel/service"}
+                        error={Boolean(errors.ItemId)}
+                        choseItem={edit?.i}
+                      />
+                    ) : (
+                      <LinkSelect
+                        filterLabel="no"
+                        path={"/item?salesApproved=true&fru=false"}
+                        value={values.ItemId}
+                        label="Item"
+                        getOptionList={(resp) => resp.result}
+                        getOptionLabel={(item) => item?.no}
+                        getOptionValue={(item) => item?.id}
+                        onChange={(e, nv) => {
+                          setFieldValue("ItemId", nv.id);
+                          setSelectedItem(nv);
+                        }}
+                        onBlur={handleBlur}
+                        url={option ? "/panel/inventory" : "/panel/service"}
+                        error={Boolean(errors.ItemId)}
+                        choseItem={edit?.i}
+                      />
+                    )
+                  ) : (
+                    <LinkSelect
+                      filterLabel="no"
+                      path={option ? "/item?option=true" : `/item/${itemId}/service`}
+                      value={typeof values.ItemId === "string" ? values.ItemId : values.i?.id}
+                      label={option ? "Option" : "Service"}
+                      getOptionList={(resp) => (option ? resp.result : resp)}
+                      getOptionLabel={(item) => item?.no}
+                      getOptionValue={(item) => item?.id}
+                      onChange={(e, nv) => {
+                        setFieldValue("ItemId", nv.id);
+                        setSelectedItem(nv);
+                      }}
+                      onBlur={handleBlur}
+                      url={option ? "/panel/inventory" : "/panel/service"}
+                      error={Boolean(errors.ItemId)}
+                    />
+                  )}
+                  <TextField
+                    name="quantity"
+                    label={service ? "Period" : "quantity"}
+                    value={values.quantity}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.quantity)}
+                  />
+                  <TextField
+                    name="price"
+                    label="Price"
+                    value={values.price}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    error={Boolean(errors.price)}
+                    InputLabelProps={{ shrink: true }}
+                  />
+                  {edit?.belongsTo || !edit ? (
+                    <TextField
+                      name="sort"
+                      label="Sort"
+                      value={values.sort}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      error={Boolean(errors.sort)}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                  {!service && (
+                    <FormControlLabel
+                      style={{ width: "100%" }}
+                      checked={values.tax}
+                      label="Tax"
+                      name="tax"
+                      onChange={handleChange}
+                      control={<CheckBox />}
+                    />
+                  )}
 
-                                    <Box display="flex" alignItems="center" justifyContent="center">
-                                        <Button
-                                            style={{ margin: "0 0.5em" }}
-                                            type="submit"
-                                            kind={edit ? "edit" : "add"}
-                                        >
-                                            {edit ? "save" : "Submit"}
-                                        </Button>
-                                    </Box>
-                                </Box>
-                            </Form>
-                        )}
-                    </Formik>
+                  <Box display="flex" alignItems="center" justifyContent="center">
+                    <Button style={{ margin: "0 0.5em" }} type="submit" kind={edit ? "edit" : "add"}>
+                      {edit ? "save" : "Submit"}
+                    </Button>
+                  </Box>
                 </Box>
-            </Box>
+              </Form>
+            )}
+          </Formik>
         </Box>
-    );
+      </Box>
+    </Box>
+  );
 };
 
 export const CreateForm = ({ onDone, data }: { data?: any; onDone: (data: IPurchasePOComplete) => void }) => {
-    const schema = Yup.object().shape({
-        // requester: Yup.string().required(),
-        // VendorId: Yup.string().required(),
-        // ContactId: Yup.string().required(),
-    });
+  const [activeMoreTab, setActiveMoreTab] = useState(0);
 
-    const handleSubmit = (d: any) => {
-        onDone(d);
-    };
-    const [activeMoreTab, setActiveMoreTab] = useState(0);
+  const handleSubmit = (d: any) => {
+    onDone(d);
+  };
 
-    return (
-        <Formik initialValues={data ? data : ({} as any)} validationSchema={schema} onSubmit={handleSubmit}>
-            {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
-                <Form>
-                    <Box display="flex">
-                        <BasePaper
-                            style={{
-                                boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
-                                height: "100%",
-                                flex: "2",
-                            }}
-                        >
-                            <Box
-                                display="grid"
-                                gridTemplateColumns="1fr 1fr"
-                                gridRowGap={10}
-                                gridColumnGap={10}
-                                flex={2}
-                            >
-                                <FieldSelect
-                                    request={getPPOTypes}
-                                    itemTitleField="name"
-                                    itemValueField="id"
-                                    name="PurchasePOTypeId"
-                                    label="PO Type"
-                                    fullWidth
-                                    onChange={handleChange}
-                                    value={
-                                        typeof values.PurchasePOTypeId === "string"
-                                            ? values.PurchasePOTypeId
-                                            : values.PurchasePOTypeId?.id
-                                    }
-                                    error={Boolean(errors.PurchasePOTypeId)}
-                                />
-                                <FieldSelect
-                                    itemValueField="id"
-                                    itemTitleField="number"
-                                    request={getSO}
-                                    name="SOId"
-                                    value={typeof values.SOId === "string" ? values.SOId : values.SOId?.id}
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    error={Boolean(errors.SOId)}
-                                    label="SO ID"
-                                />
-                                <FieldSelect
-                                    style={{ width: "100%" }}
-                                    request={getVendors}
-                                    itemTitleField="name"
-                                    itemValueField="id"
-                                    name="VendorId"
-                                    label="Vendor"
-                                    value={values.VendorId}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.VendorId)}
-                                />
-                                <TextField label="Approved By" value={values.approvedBy?.username} fullWidth disabled />
-
-                                <ArraySelect
-                                    items={[
-                                        "Quoted",
-                                        "Pending",
-                                        "Printed",
-                                        "Closed",
-                                        "Acknowledged",
-                                        "Shipped",
-                                        "Received",
-                                        "Canceled",
-                                        "On Hold",
-                                    ]}
-                                    name="status"
-                                    label="PO Status"
-                                    value={values.status}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.status)}
-                                    fullWidth
-                                />
-                                <TextField
-                                    name="terms"
-                                    label="Terms"
-                                    value={values.terms}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.terms)}
-                                    fullWidth
-                                />
-                                <TextField
-                                    style={{ gridColumnEnd: "span 2" }}
-                                    name="note"
-                                    value={values.note}
-                                    label="PO note"
-                                    multiline
-                                    rows={4}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                />
-                            </Box>
-                        </BasePaper>
-                        <Box flex={3}>
-                            <BasePaper
-                                style={{
-                                    boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
-                                    margin: "0 1em",
-                                    height: "100%",
-                                }}
-                            >
-                                <Tabs
-                                    textColor="primary"
-                                    value={activeMoreTab}
-                                    onChange={(e, nv) => setActiveMoreTab(nv)}
-                                    variant="scrollable"
-                                    style={{ maxWidth: 700 }}
-                                >
-                                    <Tab label="More Info" />
-                                    <Tab label="Addresses" />
-                                </Tabs>
-                                <Box>
-                                    {activeMoreTab === 0 && (
-                                        <MoreInfoForm
-                                            errors={errors}
-                                            values={values}
-                                            handleBlur={handleBlur}
-                                            handleChange={handleChange}
-                                            setFieldValue={setFieldValue}
-                                            addForm={true}
-                                        />
-                                    )}
-                                    {activeMoreTab === 1 && (
-                                        <AddressesForm
-                                            values={values}
-                                            handleBlur={handleBlur}
-                                            handleChange={handleChange}
-                                        />
-                                    )}
-                                </Box>
-                            </BasePaper>
-                        </Box>
-                    </Box>
-                    <Box style={{ display: "flex", width: "100%", justifyContent: "center" }}>
-                        <Button type="submit" kind="add" style={{ margin: "0.5em auto" }}>
-                            Next
-                        </Button>
-                    </Box>
-                </Form>
-            )}
-        </Formik>
-    );
-};
-
-export const UpdateForm = ({
-    values,
-    errors,
-    handleBlur,
-    handleChange,
-}: {
-    values: any;
-    handleChange: any;
-    handleBlur: any;
-    errors: any;
-}) => {
-    const phone = useMediaQuery("(max-width:900px)");
-
-    return (
-        <>
-            <Box
-                display="grid"
-                gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"}
-                gridRowGap={7}
-                gridColumnGap={7}
+  return (
+    <Formik initialValues={data ? data : ({} as any)} onSubmit={handleSubmit}>
+      {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
+        <Form>
+          <Box display="flex">
+            <BasePaper
+              style={{
+                boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
+                height: "100%",
+                flex: "2",
+              }}
             >
-                <TextField name="number" label="PO ID" value={values.number} disabled />
+              <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10} flex={2}>
                 <FieldSelect
-                    request={getPPOTypes}
-                    itemTitleField="name"
-                    itemValueField="id"
-                    name="PurchasePOTypeId"
-                    label="PO Type"
-                    fullWidth
-                    onChange={handleChange}
-                    value={
-                        typeof values.PurchasePOTypeId === "string"
-                            ? values.PurchasePOTypeId
-                            : values.PurchasePOTypeId?.id
-                    }
-                    error={Boolean(errors.PurchasePOTypeId)}
+                  request={getPPOTypes}
+                  itemTitleField="name"
+                  itemValueField="id"
+                  name="PurchasePOTypeId"
+                  label="PO Type"
+                  fullWidth
+                  onChange={handleChange}
+                  value={
+                    typeof values.PurchasePOTypeId === "string" ? values.PurchasePOTypeId : values.PurchasePOTypeId?.id
+                  }
+                  error={Boolean(errors.PurchasePOTypeId)}
                 />
-                <TextField label="So Number" value={values.SOId?.number} fullWidth disabled />
-                <TextField label="Vendor" value={values.VendorId?.name} fullWidth disabled />
+                <FieldSelect
+                  itemValueField="id"
+                  itemTitleField="number"
+                  request={getSO}
+                  name="SOId"
+                  value={typeof values.SOId === "string" ? values.SOId : values.SOId?.id}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  error={Boolean(errors.SOId)}
+                  label="SO ID"
+                />
+                <FieldSelect
+                  style={{ width: "100%" }}
+                  request={getVendors}
+                  itemTitleField="name"
+                  itemValueField="id"
+                  name="VendorId"
+                  label="Vendor"
+                  value={values.VendorId}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={Boolean(errors.VendorId)}
+                />
                 <TextField label="Approved By" value={values.approvedBy?.username} fullWidth disabled />
 
                 <ArraySelect
-                    items={[
-                        "Quoted",
-                        "Pending",
-                        "Printed",
-                        "Closed",
-                        "Acknowledged",
-                        "Shipped",
-                        "Received",
-                        "Canceled",
-                        "On Hold",
-                    ]}
-                    name="status"
-                    label="PO Status"
-                    value={values.status}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.status)}
-                    fullWidth
+                  items={[
+                    "Quoted",
+                    "Pending",
+                    "Printed",
+                    "Closed",
+                    "Acknowledged",
+                    "Shipped",
+                    "Received",
+                    "Canceled",
+                    "On Hold",
+                  ]}
+                  name="status"
+                  label="PO Status"
+                  value={values.status}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={Boolean(errors.status)}
+                  fullWidth
                 />
                 <TextField
-                    name="terms"
-                    label="Terms"
-                    value={values.terms}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.terms)}
-                    fullWidth
+                  name="terms"
+                  label="Terms"
+                  value={values.terms}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={Boolean(errors.terms)}
+                  fullWidth
                 />
-                <Paper
-                    style={
-                        phone
-                            ? {
-                                  paddingLeft: "0.5em",
-                                  backgroundColor: "#eee",
-                              }
-                            : {
-                                  paddingLeft: "0.5em",
-                                  backgroundColor: "#eee",
-                                  gridColumnEnd: "span 2",
-                              }
-                    }
+                <TextField
+                  style={{ gridColumnEnd: "span 2" }}
+                  name="note"
+                  value={values.note}
+                  label="PO note"
+                  multiline
+                  rows={4}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+              </Box>
+            </BasePaper>
+            <Box flex={3}>
+              <BasePaper
+                style={{
+                  boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
+                  margin: "0 1em",
+                  height: "100%",
+                }}
+              >
+                <Tabs
+                  textColor="primary"
+                  value={activeMoreTab}
+                  onChange={(e, nv) => setActiveMoreTab(nv)}
+                  variant="scrollable"
+                  style={{ maxWidth: 700 }}
                 >
-                    <FormControlLabel
-                        style={{ width: "100%" }}
-                        checked={values.approved}
-                        label="Approved"
-                        name="approved"
-                        onChange={handleChange}
-                        control={<CheckBox size="small" />}
+                  <Tab label="More Info" />
+                  <Tab label="Addresses" />
+                </Tabs>
+                <Box>
+                  {activeMoreTab === 0 && (
+                    <MoreInfoForm
+                      errors={errors}
+                      values={values}
+                      handleBlur={handleBlur}
+                      handleChange={handleChange}
+                      setFieldValue={setFieldValue}
+                      addForm={true}
                     />
-                </Paper>
-                <TextField
-                    style={phone ? { gridColumnEnd: "span 2" } : { gridColumnEnd: "span 3" }}
-                    value={values.publicNote}
-                    name="publicNote"
-                    label="Note"
-                    multiline
-                    rows={3}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
-                <TextField
-                    style={phone ? { gridColumnEnd: "span 2" } : { gridColumnEnd: "span 3" }}
-                    value={values.description}
-                    name="description"
-                    label="Description"
-                    multiline
-                    rows={3}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                />
+                  )}
+                  {activeMoreTab === 1 && (
+                    <AddressesForm values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                  )}
+                </Box>
+              </BasePaper>
             </Box>
-        </>
-    );
+          </Box>
+          <Box style={{ display: "flex", width: "100%", justifyContent: "center" }}>
+            <Button type="submit" kind="add" style={{ margin: "0.5em auto" }}>
+              Next
+            </Button>
+          </Box>
+        </Form>
+      )}
+    </Formik>
+  );
+};
+
+export const UpdateForm = ({
+  values,
+  errors,
+  handleBlur,
+  handleChange,
+}: {
+  values: any;
+  handleChange: any;
+  handleBlur: any;
+  errors: any;
+}) => {
+  const phone = useMediaQuery("(max-width:900px)");
+
+  return (
+    <>
+      <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"} gridRowGap={7} gridColumnGap={7}>
+        <TextField name="number" label="PO ID" value={values.number} disabled />
+        <FieldSelect
+          request={getPPOTypes}
+          itemTitleField="name"
+          itemValueField="id"
+          name="PurchasePOTypeId"
+          label="PO Type"
+          fullWidth
+          onChange={handleChange}
+          value={typeof values.PurchasePOTypeId === "string" ? values.PurchasePOTypeId : values.PurchasePOTypeId?.id}
+          error={Boolean(errors.PurchasePOTypeId)}
+        />
+        <TextField label="So Number" value={values.SOId?.number} fullWidth disabled />
+        <TextField label="Vendor" value={values.VendorId?.name} fullWidth disabled />
+        <TextField label="Approved By" value={values.approvedBy?.username} fullWidth disabled />
+
+        <ArraySelect
+          items={[
+            "Quoted",
+            "Pending",
+            "Printed",
+            "Closed",
+            "Acknowledged",
+            "Shipped",
+            "Received",
+            "Canceled",
+            "On Hold",
+          ]}
+          name="status"
+          label="PO Status"
+          value={values.status}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={Boolean(errors.status)}
+          fullWidth
+        />
+        <TextField
+          name="terms"
+          label="Terms"
+          value={values.terms}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={Boolean(errors.terms)}
+          fullWidth
+        />
+        <Paper
+          style={
+            phone
+              ? {
+                  paddingLeft: "0.5em",
+                  backgroundColor: "#eee",
+                }
+              : {
+                  paddingLeft: "0.5em",
+                  backgroundColor: "#eee",
+                  gridColumnEnd: "span 2",
+                }
+          }
+        >
+          <FormControlLabel
+            style={{ width: "100%" }}
+            checked={values.approved}
+            label="Approved"
+            name="approved"
+            onChange={handleChange}
+            control={<CheckBox size="small" />}
+          />
+        </Paper>
+        <TextField
+          style={phone ? { gridColumnEnd: "span 2" } : { gridColumnEnd: "span 3" }}
+          value={values.publicNote}
+          name="publicNote"
+          label="Note"
+          multiline
+          rows={3}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
+        <TextField
+          style={phone ? { gridColumnEnd: "span 2" } : { gridColumnEnd: "span 3" }}
+          value={values.description}
+          name="description"
+          label="Description"
+          multiline
+          rows={3}
+          onChange={handleChange}
+          onBlur={handleBlur}
+        />
+      </Box>
+    </>
+  );
 };
 
 export const MoreInfoForm = ({
-    values,
-    errors,
-    handleBlur,
-    handleChange,
-    setFieldValue,
-    addForm,
+  values,
+  errors,
+  handleBlur,
+  handleChange,
+  setFieldValue,
+  addForm,
 }: {
-    values: any;
-    handleChange: any;
-    handleBlur: any;
-    errors: any;
-    setFieldValue: any;
-    addForm?: boolean;
+  values: any;
+  handleChange: any;
+  handleBlur: any;
+  errors: any;
+  setFieldValue: any;
+  addForm?: boolean;
 }) => {
-    return (
-        <>
-            <Box my={2} display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10}>
-                {!addForm && <TextField label="PO Date" value={formatTimestampToDate(values.date)} disabled />}
-                <DateTimePicker
-                    size="small"
-                    value={values.acknowledgeDate}
-                    name="acknowledgeDate"
-                    label="َAck. Date"
-                    onChange={(date) => setFieldValue(" acknowledgeDate", date)}
-                    onBlur={handleBlur}
-                />
-                <DateTimePicker
-                    size="small"
-                    value={values.estShipDate}
-                    name="estShipDate"
-                    label="Estimated ship date"
-                    onChange={(date) => setFieldValue("estShipDate", date)}
-                    onBlur={handleBlur}
-                />
-                <DateTimePicker
-                    size="small"
-                    value={values.actShipDate}
-                    name="actShipDate"
-                    label="Actual ship date"
-                    onChange={(date) => setFieldValue("actShipDate", date)}
-                    onBlur={handleBlur}
-                />
-                {!addForm && (
-                    <TextField
-                        label="Approved Date"
-                        value={formatTimestampToDate(values.approvedDate)}
-                        fullWidth
-                        disabled
-                    />
-                )}
-                <DateTimePicker
-                    size="small"
-                    value={values.requiredBy}
-                    name="requiredBy"
-                    label="Required By"
-                    onChange={(date) => setFieldValue("requiredBy", date)}
-                    onBlur={handleBlur}
-                />
-                <DateTimePicker
-                    size="small"
-                    value={values.sentDate}
-                    name="sentDate"
-                    label="Date Sent"
-                    onChange={(date) => setFieldValue("sentDate", date)}
-                    onBlur={handleBlur}
-                />
-            </Box>
-        </>
-    );
+  return (
+    <>
+      <Box my={2} display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10}>
+        {!addForm && <TextField label="PO Date" value={formatTimestampToDate(values.date)} disabled />}
+        <DateTimePicker
+          size="small"
+          value={values.acknowledgeDate}
+          name="acknowledgeDate"
+          label="َAck. Date"
+          onChange={(date) => setFieldValue(" acknowledgeDate", date)}
+          onBlur={handleBlur}
+        />
+        <DateTimePicker
+          size="small"
+          value={values.estShipDate}
+          name="estShipDate"
+          label="Estimated ship date"
+          onChange={(date) => setFieldValue("estShipDate", date)}
+          onBlur={handleBlur}
+        />
+        <DateTimePicker
+          size="small"
+          value={values.actShipDate}
+          name="actShipDate"
+          label="Actual ship date"
+          onChange={(date) => setFieldValue("actShipDate", date)}
+          onBlur={handleBlur}
+        />
+        {!addForm && (
+          <TextField label="Approved Date" value={formatTimestampToDate(values.approvedDate)} fullWidth disabled />
+        )}
+        <DateTimePicker
+          size="small"
+          value={values.requiredBy}
+          name="requiredBy"
+          label="Required By"
+          onChange={(date) => setFieldValue("requiredBy", date)}
+          onBlur={handleBlur}
+        />
+        <DateTimePicker
+          size="small"
+          value={values.sentDate}
+          name="sentDate"
+          label="Date Sent"
+          onChange={(date) => setFieldValue("sentDate", date)}
+          onBlur={handleBlur}
+        />
+      </Box>
+    </>
+  );
 };
 
 export const AddressesForm = ({
-    handleChange,
-    handleBlur,
-    values,
+  handleChange,
+  handleBlur,
+  values,
 }: {
-    values: any;
-    handleChange: (a: any) => void;
-    handleBlur: (a: any) => void;
+  values: any;
+  handleChange: (a: any) => void;
+  handleBlur: (a: any) => void;
 }) => {
-    const [activeTab, setActiveTab] = useState(0);
-    const phone = useMediaQuery("(max-width:900px)");
+  const [activeTab, setActiveTab] = useState(0);
+  const phone = useMediaQuery("(max-width:900px)");
 
-    return (
-        <>
-            <Tabs
-                textColor="primary"
-                value={activeTab}
-                onChange={(e, nv) => setActiveTab(nv)}
-                variant="scrollable"
-                style={{ maxWidth: 600 }}
-            >
-                <Tab label="Billing Address" />
-                <Tab label="Shipping Address" />
-            </Tabs>
-            {activeTab === 0 && (
-                <Box
-                    my={1}
-                    display="grid"
-                    gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"}
-                    gridGap={10}
-                    gridRowGap={10}
-                >
-                    <TextField
-                        value={values.billingCompany}
-                        name="billingCompany"
-                        label="Company"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.billingAttn}
-                        name="billingAttn"
-                        label="Attn"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
+  return (
+    <>
+      <Tabs
+        textColor="primary"
+        value={activeTab}
+        onChange={(e, nv) => setActiveTab(nv)}
+        variant="scrollable"
+        style={{ maxWidth: 600 }}
+      >
+        <Tab label="Billing Address" />
+        <Tab label="Shipping Address" />
+      </Tabs>
+      {activeTab === 0 && (
+        <Box my={1} display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"} gridGap={10} gridRowGap={10}>
+          <TextField
+            value={values.billingCompany}
+            name="billingCompany"
+            label="Company"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <TextField
+            value={values.billingAttn}
+            name="billingAttn"
+            label="Attn"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
 
-                    <TextField
-                        value={values.billingAddress}
-                        name="billingAddress"
-                        label="Address"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.billingCity}
-                        name="billingCity"
-                        label="City"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.billingState}
-                        name="billingState"
-                        label="State"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.billingZipcode}
-                        name="billingZipcode"
-                        label="Zip Code"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.billingCountry}
-                        name="billingCountry"
-                        label="Country"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.billingPhone}
-                        name="billingPhone"
-                        label="Phone"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.billingEmail}
-                        name="billingEmail"
-                        label="Email"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        // style={{ gridColumnEnd: "span 2" }}
-                    />
-                </Box>
-            )}
-            {activeTab === 1 && (
-                <Box
-                    my={1}
-                    display="grid"
-                    gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"}
-                    gridGap={10}
-                    gridRowGap={10}
-                    gridColumnGap={10}
-                >
-                    <TextField
-                        value={values.shippingCompany}
-                        name="shippingCompany"
-                        label="Company"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.shippingAttn}
-                        name="shippingAttn"
-                        label="Attn"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.shippingAddress}
-                        label="Address"
-                        name="shippingAddress"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.shippingCity}
-                        name="shippingCity"
-                        label="City"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.shippingState}
-                        name="shippingState"
-                        label="State"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.shippingZipcode}
-                        name="shippingZipcode"
-                        label="Zip Code"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.shippingCountry}
-                        name="shippingCountry"
-                        label="Country"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.shippingPhone}
-                        name="shippingPhone"
-                        label="Phone"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                    />
-                    <TextField
-                        value={values.shippingEmail}
-                        name="shippingEmail"
-                        label="Email"
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        // style={{ gridColumnEnd: "span 2" }}
-                    />
-                </Box>
-            )}
-        </>
-    );
+          <TextField
+            value={values.billingAddress}
+            name="billingAddress"
+            label="Address"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <TextField
+            value={values.billingCity}
+            name="billingCity"
+            label="City"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <TextField
+            value={values.billingState}
+            name="billingState"
+            label="State"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <TextField
+            value={values.billingZipcode}
+            name="billingZipcode"
+            label="Zip Code"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <TextField
+            value={values.billingCountry}
+            name="billingCountry"
+            label="Country"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <TextField
+            value={values.billingPhone}
+            name="billingPhone"
+            label="Phone"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <TextField
+            value={values.billingEmail}
+            name="billingEmail"
+            label="Email"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            // style={{ gridColumnEnd: "span 2" }}
+          />
+        </Box>
+      )}
+      {activeTab === 1 && (
+        <Box
+          my={1}
+          display="grid"
+          gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"}
+          gridGap={10}
+          gridRowGap={10}
+          gridColumnGap={10}
+        >
+          <TextField
+            value={values.shippingCompany}
+            name="shippingCompany"
+            label="Company"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <TextField
+            value={values.shippingAttn}
+            name="shippingAttn"
+            label="Attn"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <TextField
+            value={values.shippingAddress}
+            label="Address"
+            name="shippingAddress"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <TextField
+            value={values.shippingCity}
+            name="shippingCity"
+            label="City"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <TextField
+            value={values.shippingState}
+            name="shippingState"
+            label="State"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <TextField
+            value={values.shippingZipcode}
+            name="shippingZipcode"
+            label="Zip Code"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <TextField
+            value={values.shippingCountry}
+            name="shippingCountry"
+            label="Country"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <TextField
+            value={values.shippingPhone}
+            name="shippingPhone"
+            label="Phone"
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+          <TextField
+            value={values.shippingEmail}
+            name="shippingEmail"
+            label="Email"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            // style={{ gridColumnEnd: "span 2" }}
+          />
+        </Box>
+      )}
+    </>
+  );
 };
 
 export const VendorForm = ({
-    handleChange,
-    handleBlur,
-    values,
+  handleChange,
+  handleBlur,
+  values,
 }: {
-    values: any;
-    handleChange: (a: any) => void;
-    handleBlur: (a: any) => void;
+  values: any;
+  handleChange: (a: any) => void;
+  handleBlur: (a: any) => void;
 }) => {
-    return (
-        <>
-            <Box my={1} display="grid" gridTemplateColumns=" 1fr 1fr" gridGap={10} gridRowGap={10}>
-                <TextField label="Vendor ID" value={values.VendorId?.number} fullWidth disabled />
-                <TextField label="Vendor Name" value={values.VendorId?.name} fullWidth disabled />
-                <TextField value={values.VendorId?.address} name="Address" label="Address" disabled />
-                <TextField value={values.VendorId?.state} name="State" label="State" disabled />
-                <TextField value={values.VendorId?.zipcode} name="ZipCode" label="Zip Code" disabled />
-                <TextField value={values.VendorId?.website} name="website" label="website" disabled />
-                <TextField value={values.contact?.lastName} name="contactPerson" label="Contact Person" disabled />
-                <TextField value={values.contact?.email} name="email" label="Email" disabled />
-                <TextField value={values.contact?.phone} name="phone" label="Phone" disabled />
-            </Box>
-        </>
-    );
+  return (
+    <>
+      <Box my={1} display="grid" gridTemplateColumns=" 1fr 1fr" gridGap={10} gridRowGap={10}>
+        <TextField label="Vendor ID" value={values.VendorId?.number} fullWidth disabled />
+        <TextField label="Vendor Name" value={values.VendorId?.name} fullWidth disabled />
+        <TextField value={values.VendorId?.address} name="Address" label="Address" disabled />
+        <TextField value={values.VendorId?.state} name="State" label="State" disabled />
+        <TextField value={values.VendorId?.zipcode} name="ZipCode" label="Zip Code" disabled />
+        <TextField value={values.VendorId?.website} name="website" label="website" disabled />
+        <TextField value={values.contact?.lastName} name="contactPerson" label="Contact Person" disabled />
+        <TextField value={values.contact?.email} name="email" label="Email" disabled />
+        <TextField value={values.contact?.phone} name="phone" label="Phone" disabled />
+      </Box>
+    </>
+  );
 };
