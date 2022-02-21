@@ -1,34 +1,34 @@
 import React, { useMemo, useRef, useState } from "react";
-import { Box, Grid, Tabs, Tab, LinearProgress, Typography, useMediaQuery } from "@material-ui/core";
+import { Box, Tabs, Tab, LinearProgress, Typography, useMediaQuery } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 
 import SalesReport from "./SalesReport";
 
-import Button from "../../../app/Button";
-import BaseDataGrid from "../../../app/BaseDataGrid";
-import { BasePaper } from "../../../app/Paper";
+import Button from "app/Button";
+import BaseDataGrid from "app/BaseDataGrid";
+import { BasePaper } from "app/Paper";
 
 import { Levels } from "../../Items/Forms";
 import { General, Photo } from "./Forms";
 import AddServiceModal from "./AddServiceModal";
 import UnitHistoryModal from "../../Unit/Modal";
 
-import { INote } from "../../../api/note";
-import { IDocument } from "../../../api/document";
-import { updateAnItem } from "../../../api/items";
-import { IBom } from "../../../api/bom";
+import { INote } from "api/note";
+import { IDocument } from "api/document";
+import { updateAnItem } from "api/items";
+import { IBom } from "api/bom";
 import Parts from "../../BOM/Parts";
-import { formatTimestampToDate } from "../../../logic/date";
-import { IUnitHistory } from "../../../api/units";
+import { formatTimestampToDate } from "logic/date";
+import { IUnitHistory } from "api/units";
 
-import Toast from "../../../app/Toast";
-import { exportPdf } from "../../../logic/pdf";
+import Toast from "app/Toast";
+import { exportPdf } from "logic/pdf";
 import { EditTaskModal } from "./TaskModal";
-import { getModifiedValues } from "../../../logic/utils";
+import { getModifiedValues } from "logic/utils";
 
-import DeviceQRCode from "../../../app/QRCode";
+import DeviceQRCode from "app/QRCode";
 
 function ItemsDetails({
   sales,
@@ -67,7 +67,7 @@ function ItemsDetails({
   const { data: docs } = useSWR<IDocument[]>(
     activeTab === 0 ? (selectedRow && selectedRow.id ? `/document/item/${selectedRow.id}` : null) : null
   );
-  const { data: boms } = useSWR<IBom[]>(
+  const { data: boms } = useSWR<{ result: IBom[]; total: number }>(
     activeTab === 1 ? (selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null) : null
   );
   const { data: services, mutate: mutateServices } = useSWR(
@@ -424,19 +424,19 @@ function ItemsDetails({
                       scrollButtons={phone ? "on" : "auto"}
                       style={phone ? { maxWidth: "calc(100vw - 63px)" } : { maxWidth: "50vw" }}
                     >
-                      <Tab label="Design documents" /> 0
-                      <Tab label="BOM" /> 1
-                      <Tab label="Services" /> 2
-                      <Tab label="Manufacturing" /> 3
-                      <Tab label="Evaluation" /> 4
-                      <Tab label="Test" /> 5
-                      <Tab label="Field Start-up" /> 6
-                      <Tab label="Label" /> 7
-                      <Tab label="Unit History" /> 8
-                      <Tab label="Sales Report" /> 9
-                      <Tab label="Quality Control" /> 10
-                      <Tab label="Notes" /> 11
-                      <Tab label="Auditing" /> 12
+                      <Tab label="Design documents" />
+                      <Tab label="BOM" />
+                      <Tab label="Services" />
+                      <Tab label="Manufacturing" />
+                      <Tab label="Evaluation" />
+                      <Tab label="Test" />
+                      <Tab label="Field Start-up" />
+                      <Tab label="Label" />
+                      <Tab label="Unit History" />
+                      <Tab label="Sales Report" />
+                      <Tab label="Quality Control" />
+                      <Tab label="Notes" />
+                      <Tab label="Auditing" />
                     </Tabs>
                   ) : (
                     <Tabs
@@ -474,7 +474,7 @@ function ItemsDetails({
                       <BaseDataGrid
                         height={"calc(100% - 60px)"}
                         cols={bomCols}
-                        rows={boms || []}
+                        rows={boms?.result || []}
                         onRowSelected={(d) => {
                           setBom(d);
                           setBomPartsModal(true);

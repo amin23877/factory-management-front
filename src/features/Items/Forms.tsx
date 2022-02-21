@@ -94,7 +94,6 @@ export const General = ({
               onChange={handleChange}
               control={<Checkbox size="small" />}
             />
-
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
@@ -131,7 +130,6 @@ export const General = ({
               onChange={handleChange}
               control={<Checkbox size="small" />}
             />
-
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
@@ -178,7 +176,6 @@ export const General = ({
               control={<Checkbox size="small" />}
             />
             <div style={{ display: "flex", gridColumnEnd: "span 2", alignItems: "center" }}>
-              {" "}
               <FormControlLabel
                 classes={{ label: classes.label }}
                 style={{ fontSize: "0.7rem" }}
@@ -200,6 +197,18 @@ export const General = ({
                 style={{ gridColumnEnd: "span 2", marginBottom: 10 }}
               />
             </div>
+            {device && (
+              <FormControlLabel
+                classes={{ label: classes.label }}
+                style={{ fontSize: "0.7rem" }}
+                checked={values.device}
+                label="Device"
+                name="device"
+                onChange={handleChange}
+                control={<Checkbox size="small" />}
+                disabled
+              />
+            )}
           </Box>
         </Paper>
         <TextField

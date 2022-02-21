@@ -1,8 +1,6 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { Box, IconButton, ListItem, Tabs, Tab, LinearProgress, useMediaQuery } from "@material-ui/core";
 import {
-  NoteRounded,
-  FileCopyRounded,
   AddRounded,
   DeleteRounded,
   PostAddRounded,
@@ -11,10 +9,11 @@ import {
   ListAltRounded,
   FindInPageRounded,
 } from "@material-ui/icons";
+import useSWR from "swr";
 
 import Confirm from "../../Modals/Confirm";
-import NoteModal from "../../../common/NoteModal";
-import DocumentModal from "../../../common/DocumentModal";
+import NoteModal from "common/NoteModal";
+import DocumentModal from "common/DocumentModal";
 import FieldNFilter from "../../ClusterAndLevel/Modal";
 import { AddItemModal } from "../../Items/ItemModals";
 
@@ -22,19 +21,18 @@ import DetailTab from "./Details";
 import AddTaskModal, { EditTaskModal } from "./TaskModal";
 import FlagModal from "./FlagModal";
 
-import List from "../../../app/SideUtilityList";
-import { BasePaper } from "../../../app/Paper";
+import List from "app/SideUtilityList";
+import { BasePaper } from "app/Paper";
 
-import { deleteAnItem, IItem } from "../../../api/items";
+import { deleteAnItem, IItem } from "api/items";
 
-import { splitLevelName } from "../../../logic/levels";
+import { splitLevelName } from "logic/levels";
 
-import DataGrid from "../../../app/NewDataGrid";
-import useSWR from "swr";
+import DataGrid from "app/NewDataGrid";
+import { ILevel } from "api/level";
 
 const Devices = ({ sales }: { sales?: boolean }) => {
-  const { data: fields } = useSWR("/field");
-  const { data: clusters } = useSWR("/filter");
+  const { data: levels } = useSWR<{ result: ILevel[]; total: number }>("/level");
 
   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
   const [finish, setFinish] = useState(false);
@@ -68,15 +66,16 @@ const Devices = ({ sales }: { sales?: boolean }) => {
     ];
 
     if (!sales) {
-      if (fields && clusters) {
-        fields.map((f: any) => res.splice(3, 0, { name: f.name, header: f.name, minWidth: 120 }));
-        clusters.map((f: any) => res.splice(3, 0, { name: f.name, header: splitLevelName(f.name), minWidth: 120 }));
+      if (levels && levels.result) {
+        levels?.result?.map((f: any) =>
+          res.splice(3, 0, { name: f.name, header: splitLevelName(f.name), minWidth: 120 })
+        );
         setFinish(true);
       }
     }
 
     return res;
-  }, [clusters, fields, sales]);
+  }, [levels, sales]);
 
   const handleDelete = useCallback(async () => {
     try {
@@ -157,9 +156,9 @@ const Devices = ({ sales }: { sales?: boolean }) => {
         />
       )}
       <AddItemModal
+        device
         open={addItemModal}
         onClose={() => setAddItemModal(false)}
-        device={true}
         initialValues={{ device: true } as IItem}
       />
       <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />

@@ -11,14 +11,14 @@ import { createItem, IItem } from "../../api/items";
 
 export const AddItemModal = ({
   open,
-  onClose,
   device,
   initialValues,
+  onClose,
 }: {
   open: boolean;
-  onClose: () => void;
   device?: boolean;
   initialValues?: IItem;
+  onClose: () => void;
 }) => {
   const [activeTab, setActiveTab] = useState(0);
 
@@ -39,7 +39,7 @@ export const AddItemModal = ({
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg" title="Add new item" fullScreen>
       <Box p={1}>
-        <Formik initialValues={initialValues ? initialValues : ({} as IItem)} onSubmit={handleSubmit}>
+        <Formik initialValues={initialValues ? initialValues : ({ device: true } as IItem)} onSubmit={handleSubmit}>
           {({ values, errors, handleChange, handleBlur, touched, isSubmitting, setFieldValue }) => (
             <Form>
               <Box display="flex">
