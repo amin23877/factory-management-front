@@ -18,7 +18,7 @@ import Paper from "@material-ui/core/Paper";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import { AddRounded, Check, Clear, LaptopWindows } from "@material-ui/icons";
+import { AddRounded, Check, Clear, EditRounded, LaptopWindows } from "@material-ui/icons";
 
 import Button from "app/Button";
 import { IBom, IBomRecord } from "api/bom";
@@ -80,7 +80,7 @@ export const useTableStyles = makeStyles((theme) => ({
   },
 }));
 
-function Row({ row, handleAddBomRecord }: { row: IBom; handleAddBomRecord: () => void }) {
+function Row({ row, onAddBomRecord, onEditBom }: { row: IBom; onAddBomRecord: () => void; onEditBom: () => void }) {
   let history = useHistory();
   const phone = useMediaQuery("(max-width:900px)");
   const { data: bomRecords } = useSWR<{ result: IBomRecord[]; total: number }>(`/bomrecord?BOMId=${row.id}`);
@@ -97,15 +97,20 @@ function Row({ row, handleAddBomRecord }: { row: IBom; handleAddBomRecord: () =>
           </IconButton>
         </TableCell>
         <TableCell>
-          <IconButton
-            onClick={() => {
-              phone
-                ? history.push(`/panel/bom/${row.id}/parts`)
-                : openRequestedSinglePopup({ url: `/panel/bom/${row.id}/parts` });
-            }}
-          >
-            <LaptopWindows />
-          </IconButton>
+          <Box display="flex">
+            <IconButton
+              onClick={() => {
+                phone
+                  ? history.push(`/panel/bom/${row.id}/parts`)
+                  : openRequestedSinglePopup({ url: `/panel/bom/${row.id}/parts` });
+              }}
+            >
+              <LaptopWindows />
+            </IconButton>
+            <IconButton onClick={onEditBom}>
+              <EditRounded />
+            </IconButton>
+          </Box>
         </TableCell>
         <TableCell component="th" scope="row">
           {/* {row.items} */}
@@ -124,7 +129,7 @@ function Row({ row, handleAddBomRecord }: { row: IBom; handleAddBomRecord: () =>
                 <Typography variant="h6" gutterBottom component="div">
                   BOM Parts
                 </Typography>
-                <IconButton onClick={handleAddBomRecord}>
+                <IconButton onClick={onAddBomRecord}>
                   <AddRounded />
                 </IconButton>
               </Box>
@@ -183,14 +188,17 @@ export default function ItemBomTable({ boms, item }: { boms?: IBom[]; item: IIte
 
   return (
     <>
-      <BomModal open={bomModal} onClose={() => setBomModal(false)} item={item} />
+      <BomModal open={bomModal} onClose={() => setBomModal(false)} item={item} initialValues={selectedBom} />
       {selectedBom && (
         <BomRecordModal open={bomRecordModal} onClose={() => setBomRecordModal(false)} bom={selectedBom} />
       )}
       <Button
         startIcon={<AddRounded />}
         variant="outlined"
-        onClick={() => setBomModal(true)}
+        onClick={() => {
+          setSelectedBom(undefined);
+          setBomModal(true);
+        }}
         style={{ marginBottom: 8 }}
       >
         BOM
@@ -215,7 +223,11 @@ export default function ItemBomTable({ boms, item }: { boms?: IBom[]; item: IIte
                 <Row
                   key={row.id}
                   row={row}
-                  handleAddBomRecord={() => {
+                  onEditBom={() => {
+                    setSelectedBom(row);
+                    setBomModal(true);
+                  }}
+                  onAddBomRecord={() => {
                     setSelectedBom(row);
                     setBomRecordModal(true);
                   }}

@@ -21,146 +21,142 @@ import { FindInPageRounded, ListAltRounded, LocalOfferRounded } from "@material-
 import DataGrid from "../../app/NewDataGrid";
 
 export default function ServiceIndex() {
-    const [activeTab, setActiveTab] = useState(0);
-    const [addService, setAddService] = useState(false);
-    const [serviceClassModal, setServiceClassModal] = useState(false);
-    const [categoryModal, setCategoryModal] = useState(false);
+  const [activeTab, setActiveTab] = useState(0);
+  const [addService, setAddService] = useState(false);
+  const [serviceClassModal, setServiceClassModal] = useState(false);
+  const [categoryModal, setCategoryModal] = useState(false);
 
-    const [selectedFS, setSelectedFS] = useState<IFieldService | undefined>();
+  const [selectedFS, setSelectedFS] = useState<IFieldService | undefined>();
 
-    const cols = [
-        { name: "no", header: "ID", minWidth: 200 },
-        { name: "name", header: "Name", flex: 1 },
-        {
-            name: "ServiceCategoryId",
-            header: "Category",
-            render: ({ data }: any) => data?.ServiceCategoryId?.name,
-            minWidth: 200,
-        },
-        {
-            name: "ServiceClassId",
-            header: "Class",
-            render: ({ data }: any) => data?.ServiceClassId?.name,
-            minWidth: 200,
-        },
-        { name: "retailPrice", header: "Price", type: "number", width: 150 },
-    ];
+  const cols = [
+    { name: "no", header: "ID", minWidth: 200 },
+    { name: "name", header: "Name", flex: 1 },
+    {
+      name: "ServiceCategoryId",
+      header: "Category",
+      render: ({ data }: any) => data?.ServiceCategoryId?.name,
+      minWidth: 200,
+    },
+    {
+      name: "ServiceClassId",
+      header: "Class",
+      render: ({ data }: any) => data?.ServiceClassId?.name,
+      minWidth: 200,
+    },
+    { name: "retailPrice", header: "Price", type: "number", width: 150 },
+  ];
 
-    return (
-        <Box display="flex" height="100%" flex={1}>
-            <BasePaper style={{ flex: 1 }}>
-                <AddServiceModal open={addService} onClose={() => setAddService(false)} onDone={() => {}} />
-                <OneFieldModal
-                    title="Add/Edit Service Classes"
-                    getUrl="/serviceClass"
-                    open={serviceClassModal}
-                    onClose={() => setServiceClassModal(false)}
-                    postRecord={createServiceClass}
-                    updateRecord={updateServiceClass}
-                    deleteRecord={deleteServiceClass}
-                />
-                <OneFieldModal
-                    title="Add/Edit Service Categories"
-                    getUrl="/serviceCategory"
-                    open={categoryModal}
-                    onClose={() => setCategoryModal(false)}
-                    postRecord={createServiceCategory}
-                    updateRecord={updateServiceCategory}
-                    deleteRecord={deleteServiceCategory}
-                />
+  return (
+    <Box display="flex" height="100%" flex={1}>
+      <BasePaper style={{ flex: 1 }}>
+        <AddServiceModal open={addService} onClose={() => setAddService(false)} onDone={() => {}} />
+        <OneFieldModal
+          title="Add/Edit Service Classes"
+          getUrl="/serviceClass"
+          open={serviceClassModal}
+          onClose={() => setServiceClassModal(false)}
+          postRecord={createServiceClass}
+          updateRecord={updateServiceClass}
+          deleteRecord={deleteServiceClass}
+        />
+        <OneFieldModal
+          title="Add/Edit Service Categories"
+          getUrl="/serviceCategory"
+          open={categoryModal}
+          onClose={() => setCategoryModal(false)}
+          postRecord={createServiceCategory}
+          updateRecord={updateServiceCategory}
+          deleteRecord={deleteServiceCategory}
+        />
 
-                <Box display="flex" alignItems="center">
-                    <Tabs
-                        value={activeTab}
-                        textColor="primary"
-                        onChange={(e, nv) => setActiveTab(nv)}
-                        style={{ marginBottom: 10 }}
+        <Box display="flex" alignItems="center">
+          <Tabs
+            value={activeTab}
+            textColor="primary"
+            onChange={(e, nv) => setActiveTab(nv)}
+            style={{ marginBottom: 10 }}
+          >
+            <Tab
+              icon={
+                <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> List
+                </span>
+              }
+              wrapped
+            />
+            <Tab
+              disabled={!selectedFS}
+              icon={
+                <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
+                </span>
+              }
+            />
+          </Tabs>
+          <Box marginLeft="auto">
+            <List>
+              <ListItem title="Add New Service">
+                <IconButton
+                  onClick={() => {
+                    setAddService(true);
+                    setSelectedFS(undefined);
+                    setActiveTab(0);
+                  }}
+                >
+                  <AddRounded />
+                </IconButton>
+              </ListItem>
+              {activeTab === 0 && (
+                <>
+                  <ListItem title="Classes">
+                    <IconButton
+                      onClick={() => {
+                        setServiceClassModal(true);
+                      }}
                     >
-                        <Tab
-                            icon={
-                                <span
-                                    style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
-                                >
-                                    <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> List
-                                </span>
-                            }
-                            wrapped
-                        />
-                        <Tab
-                            disabled={!selectedFS}
-                            icon={
-                                <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                    <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
-                                </span>
-                            }
-                        />
-                    </Tabs>
-                    <Box marginLeft="auto">
-                        <List>
-                            <ListItem title="Add New Service">
-                                <IconButton
-                                    onClick={() => {
-                                        setAddService(true);
-                                        setSelectedFS(undefined);
-                                        setActiveTab(0);
-                                    }}
-                                >
-                                    <AddRounded />
-                                </IconButton>
-                            </ListItem>
-                            {activeTab === 0 && (
-                                <>
-                                    <ListItem title="Classes">
-                                        <IconButton
-                                            onClick={() => {
-                                                setServiceClassModal(true);
-                                            }}
-                                        >
-                                            <LocalOfferRounded />
-                                        </IconButton>
-                                    </ListItem>
-                                    <ListItem title="Categories">
-                                        <IconButton
-                                            onClick={() => {
-                                                setCategoryModal(true);
-                                            }}
-                                        >
-                                            <CategoryRounded />
-                                        </IconButton>
-                                    </ListItem>
-                                </>
-                            )}
-                            {activeTab === 1 && (
-                                <ListItem title="Delete">
-                                    <IconButton>
-                                        <DeleteRounded />
-                                    </IconButton>
-                                </ListItem>
-                            )}
-                            <ListItem title="Print">
-                                <IconButton>
-                                    <PrintRounded />
-                                </IconButton>
-                            </ListItem>
-                        </List>
-                    </Box>
-                </Box>
-                <Box display="flex">
-                    {activeTab === 0 && (
-                        <DataGrid
-                            columns={cols}
-                            url="/service"
-                            onRowSelected={(fs) => {
-                                setSelectedFS(fs);
-                                setActiveTab(1);
-                            }}
-                        />
-                    )}
-                    {activeTab === 1 && selectedFS && (
-                        <FieldServiceDetails onDone={() => {}} selectedFieldService={selectedFS} />
-                    )}
-                </Box>
-            </BasePaper>
+                      <LocalOfferRounded />
+                    </IconButton>
+                  </ListItem>
+                  <ListItem title="Categories">
+                    <IconButton
+                      onClick={() => {
+                        setCategoryModal(true);
+                      }}
+                    >
+                      <CategoryRounded />
+                    </IconButton>
+                  </ListItem>
+                </>
+              )}
+              {activeTab === 1 && (
+                <ListItem title="Delete">
+                  <IconButton>
+                    <DeleteRounded />
+                  </IconButton>
+                </ListItem>
+              )}
+              <ListItem title="Print">
+                <IconButton>
+                  <PrintRounded />
+                </IconButton>
+              </ListItem>
+            </List>
+          </Box>
         </Box>
-    );
+        <Box display="flex">
+          {activeTab === 0 && (
+            <DataGrid
+              columns={cols}
+              url="/service"
+              onRowSelected={(fs) => {
+                setSelectedFS(fs);
+                setActiveTab(1);
+              }}
+            />
+          )}
+          {activeTab === 1 && selectedFS && <FieldServiceDetails onDone={() => {}} selectedFieldService={selectedFS} />}
+        </Box>
+      </BasePaper>
+    </Box>
+  );
 }

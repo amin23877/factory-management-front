@@ -10,7 +10,7 @@ import Button from "../../../app/Button";
 import BaseDataGrid from "../../../app/BaseDataGrid";
 import { BasePaper } from "../../../app/Paper";
 
-import { DynamicFilterAndFields } from "../../Items/Forms";
+import { Levels } from "../../Items/Forms";
 import { General, Photo } from "./Forms";
 import AddServiceModal from "./AddServiceModal";
 import UnitHistoryModal from "../../Unit/Modal";
@@ -400,7 +400,7 @@ function ItemsDetails({
                     </Box>
                   )}
                   {moreInfoTab === 2 && !sales && (
-                    <DynamicFilterAndFields
+                    <Levels
                       values={values}
                       handleChange={handleChange}
                       handleBlur={handleBlur}

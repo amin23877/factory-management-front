@@ -31,7 +31,7 @@ export default function Modal({ onClose, open }: { open: boolean; onClose: () =>
     () => [
       { field: "name", flex: 1 },
       { field: "clusterValueRef", flex: 1, headerName: "Cluster Value Reference" },
-      { field: "value", flex: 1 },
+      { field: "valid", headerName: "Valid Values", flex: 1 },
     ],
     []
   );

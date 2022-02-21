@@ -1,14 +1,15 @@
 import React from "react";
 import { Box, FormControlLabel, Checkbox } from "@material-ui/core";
 import { Form, Formik } from "formik";
+import { mutate } from "swr";
 
 import Dialog from "app/Dialog";
 import TextField from "app/TextField";
 import Button from "app/Button";
 
 import { addBom, IBom } from "api/bom";
-import { mutate } from "swr";
 import { IItem } from "api/items";
+import Confirm from "common/Confirm";
 
 export default function BOMModal({
   open,
@@ -21,6 +22,8 @@ export default function BOMModal({
   onClose: () => void;
   initialValues?: IBom;
 }) {
+  console.log({ initialValues });
+
   const handleSubmit = async (data: any) => {
     try {
       if (!initialValues) {
@@ -31,6 +34,18 @@ export default function BOMModal({
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleDelete = () => {
+    Confirm({
+      onConfirm: async () => {
+        try {
+          console.log("now you can delete bom");
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    });
   };
 
   return (
@@ -44,9 +59,14 @@ export default function BOMModal({
                 <TextField label="Name" {...getFieldProps("name")} />
                 <TextField label="Notes" {...getFieldProps("notes")} />
                 <FormControlLabel control={<Checkbox />} label="Current" {...getFieldProps("current")} />
-                <Button kind="add" type="submit">
+                <Button kind={initialValues?.id ? "edit" : "add"} type="submit">
                   Submit
                 </Button>
+                {initialValues?.id && (
+                  <Button kind="delete" onClick={handleDelete}>
+                    Delete
+                  </Button>
+                )}
               </Box>
             </Form>
           )}

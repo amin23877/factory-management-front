@@ -1,66 +1,70 @@
 * {
-    font-size: 0.8rem;
+  font-size: 0.8rem;
 }
 
 .MuiToolbar-root {
-    height: 54px !important;
-    padding: 0px;
+  height: 54px !important;
+  padding: 0px;
 }
 
 .MuiToolbar-regular {
-    min-height: 54px !important;
+  min-height: 54px !important;
 }
 
 .MuiListItemIcon-root {
-    width: 24px !important;
-    min-width: 24px !important;
-    margin-right: 24px;
+  width: 24px !important;
+  min-width: 24px !important;
+  margin-right: 24px;
 }
 
 .MuiListItemIcon-root > .MuiSvgIcon-root {
-    color: rgb(132, 132, 132);
+  color: rgb(132, 132, 132);
 }
 
 .MuiListItemText-root > .MuiTypography-body1 {
-    font-weight: 200;
+  font-weight: 200;
 }
 
 .Active > .MuiSvgIcon-root {
-    color: #fff !important;
+  color: #fff !important;
 }
 
 .Active > .MuiTypography-body1 {
-    color: #fff !important;
-    font-weight: 500;
+  color: #fff !important;
+  font-weight: 500;
 }
 
 .UpDownPNG {
-    box-sizing: border-box;
-    background-image: url("../assets/updown.png");
-    width: 150px;
-    height: 150px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+  box-sizing: border-box;
+  background-image: url("../assets/updown.png");
+  width: 150px;
+  height: 150px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 #external-events .fc-event,
 .fc-event-dragging {
-    background: #03a9f4;
-    border-radius: 0.2em;
-    text-align: center;
-    padding: 4px;
-    color: #fff;
-    margin: 4px 0;
+  background: #03a9f4;
+  border-radius: 0.2em;
+  text-align: center;
+  padding: 4px;
+  color: #fff;
+  margin: 4px 0;
 }
 
 .MuiPickersBasePicker-container .MuiToolbar-root {
-    padding: 3em 1em;
+  padding: 3em 1em;
 }
 
 .MuiSelect-outlined.MuiSelect-outlined {
-    font-size: 0.8rem;
+  font-size: 0.8rem;
 }
 .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] {
-    padding: 0px 65px 0px 5px !important;
+  padding: 0px 65px 0px 5px !important;
+}
+
+.swal2-container {
+  z-index: 9999 !important;
 }

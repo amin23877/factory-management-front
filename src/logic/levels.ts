@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
 
 import { IItem } from "../api/items";
-import { IField } from "../api/field";
+import { ILevel } from "../api/level";
 
 export const LEVEL_SEPARATOR = "__";
 
@@ -14,7 +14,7 @@ export const generateLevelName = (name: string): string => {
   return `${name}${LEVEL_SEPARATOR}${nanoid()}`;
 };
 
-export const getVisibilityState = (level: IField, item: IItem) => {
+export const getVisibilityState = (level: ILevel, item: IItem) => {
   if (level.all) {
     return true;
   }

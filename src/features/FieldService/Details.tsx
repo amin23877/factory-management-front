@@ -12,59 +12,54 @@ import { IFieldService, updateFieldService } from "../../api/fieldService";
 import Toast from "../../app/Toast";
 
 let schema = Yup.object().shape({
-    name: Yup.string().required(),
-    retailPrice: Yup.number().required(),
-    no: Yup.string().required(),
-    ServiceCategoryId: Yup.string().required(),
-    ServiceClassId: Yup.string().required(),
+  name: Yup.string().required(),
+  retailPrice: Yup.number().required(),
+  no: Yup.string().required(),
+  ServiceCategoryId: Yup.string().required(),
+  ServiceClassId: Yup.string().required(),
 });
 
 export default function FieldServiceDetails({
-    selectedFieldService,
-    onDone,
+  selectedFieldService,
+  onDone,
 }: {
-    selectedFieldService: IFieldService;
-    onDone: () => void;
+  selectedFieldService: IFieldService;
+  onDone: () => void;
 }) {
-    const handleSubmit = async (d: any) => {
-        try {
-            if (selectedFieldService.id) {
-                const resp = await updateFieldService(selectedFieldService.id, d);
-                if (resp) {
-                    Toast("Updated successfully !!!");
-                    onDone();
-                }
-            }
-        } catch (error) {
-            console.log(error);
+  const handleSubmit = async (d: any) => {
+    try {
+      if (selectedFieldService.id) {
+        const resp = await updateFieldService(selectedFieldService.id, d);
+        if (resp) {
+          Toast("Updated successfully !!!");
+          onDone();
         }
-    };
-    const phone = useMediaQuery("(max-width:900px)");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const phone = useMediaQuery("(max-width:900px)");
 
-    return (
-        <Box display="flex" style={{ gap: 5 }} flex={1} flexDirection={phone ? "column" : "row"}>
-            <BasePaper style={{ flex: 1 }}>
-                <Formik initialValues={selectedFieldService} onSubmit={handleSubmit} validationSchema={schema}>
-                    {({ values, handleBlur, handleChange, errors }) => (
-                        <Form>
-                            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-                                <FieldServiceForm
-                                    values={values}
-                                    handleChange={handleChange}
-                                    handleBlur={handleBlur}
-                                    errors={errors}
-                                />
-                                <Button type="submit" kind="edit">
-                                    Save
-                                </Button>
-                            </Box>
-                        </Form>
-                    )}
-                </Formik>
-            </BasePaper>
-            <BasePaper style={{ flex: 2 }}>
-                <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />
-            </BasePaper>
-        </Box>
-    );
+  return (
+    <Box display="flex" style={{ gap: 5 }} flex={1} flexDirection={phone ? "column" : "row"}>
+      <BasePaper style={{ flex: 1 }}>
+        <Formik initialValues={selectedFieldService} onSubmit={handleSubmit} validationSchema={schema}>
+          {({ values, handleBlur, handleChange, errors }) => (
+            <Form>
+              <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
+                <FieldServiceForm values={values} handleChange={handleChange} handleBlur={handleBlur} errors={errors} />
+                <Button type="submit" kind="edit">
+                  Save
+                </Button>
+              </Box>
+            </Form>
+          )}
+        </Formik>
+      </BasePaper>
+      <BasePaper style={{ flex: 2 }}>
+        <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />
+      </BasePaper>
+    </Box>
+  );
 }

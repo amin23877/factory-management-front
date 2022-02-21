@@ -10,7 +10,7 @@ import BaseDataGrid from "../../app/BaseDataGrid";
 import { BasePaper } from "../../app/Paper";
 import VendorsTable from "./VandorsTable";
 
-import { MoreInfo, Quantity, Shipping, General, LastUsed, Pricing } from "./Forms";
+import { MoreInfo, Quantity, Shipping, General, LastUsed, Pricing, Levels } from "./Forms";
 
 import ManualCountModal from "./ManualCountModal";
 import UpdateQuantityModal from "./Quantity";
@@ -359,7 +359,6 @@ function ItemsDetails({
                       </Button>
                     </Box>
                   )}
-
                   {moreInfoTab === 2 && (
                     <MoreInfo
                       values={values}
@@ -418,17 +417,16 @@ function ItemsDetails({
                       touched={touched}
                     />
                   )}
-                  {/* {moreInfoTab === 6 && (
-                    <DynamicFilterAndFields
+                  {moreInfoTab === 6 && (
+                    <Levels
                       values={values}
                       handleChange={handleChange}
                       handleBlur={handleBlur}
                       setFieldValue={setFieldValue}
                       errors={errors}
                       touched={touched}
-                      selectedItem={selectedRow}
                     />
-                  )} */}
+                  )}
                 </BasePaper>
               </Box>
               <BasePaper style={{ height: "100%" }}>

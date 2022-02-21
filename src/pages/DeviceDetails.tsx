@@ -10,7 +10,7 @@ import Button from "../app/Button";
 import BaseDataGrid from "../app/BaseDataGrid";
 import { BasePaper } from "../app/Paper";
 
-import { DynamicFilterAndFields } from "../features/Items/Forms";
+import { Levels } from "../features/Items/Forms";
 import { General, Photo } from "../features/Engineering/Devices/Forms";
 import AddServiceModal from "../features/FieldService/AddServiceModal";
 import UnitHistoryModal from "../features/Unit/Modal";
@@ -373,7 +373,7 @@ function DeviceDetails() {
                     </Box>
                   )}
                   {moreInfoTab === 2 && (
-                    <DynamicFilterAndFields
+                    <Levels
                       values={values}
                       handleChange={handleChange}
                       handleBlur={handleBlur}

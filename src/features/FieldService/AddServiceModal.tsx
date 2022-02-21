@@ -10,58 +10,58 @@ import { createFieldService, IFieldService } from "../../api/fieldService";
 import FieldServiceForm from "./Forms";
 
 export default function AddServiceModal({
-    open,
-    onClose,
-    onDone,
-    device,
+  open,
+  onClose,
+  onDone,
+  device,
 }: {
-    open: boolean;
-    onClose: () => void;
-    onDone: () => void;
-    device?: string;
+  open: boolean;
+  onClose: () => void;
+  onDone: () => void;
+  device?: string;
 }) {
-    let schema = Yup.object().shape({
-        name: Yup.string().required(),
-        retailPrice: Yup.number().required(),
-        no: Yup.string().required(),
-        ServiceCategoryId: Yup.string().required(),
-        ServiceClassId: Yup.string().required(),
-    });
+  let schema = Yup.object().shape({
+    name: Yup.string().required(),
+    retailPrice: Yup.number().required(),
+    no: Yup.string().required(),
+    ServiceCategoryId: Yup.string().required(),
+    ServiceClassId: Yup.string().required(),
+  });
 
-    const handleSubmit = async (data: any) => {
-        try {
-            const resp = await createFieldService(data);
-            if (resp) {
-                onDone();
-                onClose();
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
+  const handleSubmit = async (data: any) => {
+    try {
+      const resp = await createFieldService(data);
+      if (resp) {
+        onDone();
+        onClose();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    return (
-        <Dialog open={open} onClose={onClose} title="Add new field service" fullWidth maxWidth="sm">
-            <Box p={2}>
-                <Formik initialValues={{} as IFieldService} validationSchema={schema} onSubmit={handleSubmit}>
-                    {({ values, errors, handleChange, handleBlur }) => (
-                        <Form>
-                            <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-                                <FieldServiceForm
-                                    values={values}
-                                    handleChange={handleChange}
-                                    handleBlur={handleBlur}
-                                    errors={errors}
-                                    device={device}
-                                />
-                                <Button style={{ margin: "0.5em 0" }} type="submit" kind="add">
-                                    Save
-                                </Button>
-                            </Box>
-                        </Form>
-                    )}
-                </Formik>
-            </Box>
-        </Dialog>
-    );
+  return (
+    <Dialog open={open} onClose={onClose} title="Add new field service" fullWidth maxWidth="sm">
+      <Box p={2}>
+        <Formik initialValues={{} as IFieldService} validationSchema={schema} onSubmit={handleSubmit}>
+          {({ values, errors, handleChange, handleBlur }) => (
+            <Form>
+              <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
+                <FieldServiceForm
+                  values={values}
+                  handleChange={handleChange}
+                  handleBlur={handleBlur}
+                  errors={errors}
+                  device={device}
+                />
+                <Button style={{ margin: "0.5em 0" }} type="submit" kind="add">
+                  Save
+                </Button>
+              </Box>
+            </Form>
+          )}
+        </Formik>
+      </Box>
+    </Dialog>
+  );
 }

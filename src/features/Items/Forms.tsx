@@ -15,11 +15,9 @@ import TextField from "app/TextField";
 import Button from "app/Button";
 import DateTimePicker from "app/DateTimePicker";
 
-import { IFilter } from "api/filter";
-import { IField } from "api/field";
 import { formatTimestampToDate } from "logic/date";
-import Cluster from "./ClusterAndLevels/Cluster";
 import Level from "./ClusterAndLevels/Level";
+import { ILevel } from "api/level";
 
 const useStyles = makeStyles({
   label: {
@@ -81,9 +79,9 @@ export const General = ({
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.engineeringApproved}
+              checked={values.engineeringApproval}
               label="En. Ap."
-              name="engineeringApproved"
+              name="engineeringApproval"
               onChange={handleChange}
               control={<Checkbox size="small" />}
             />
@@ -127,9 +125,9 @@ export const General = ({
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.dontOrderPO}
+              checked={values.dontOrderOnPOs}
               label="Don't order on POs"
-              name="dontOrderPO"
+              name="dontOrderOnPOs"
               onChange={handleChange}
               control={<Checkbox size="small" />}
             />
@@ -635,22 +633,27 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
   );
 };
 
-export const DynamicFilterAndFields = ({ values = "", handleChange, handleBlur, selectedItem, device }: any) => {
-  const { data: filters } = useSWR<IFilter[]>("/filter");
-  const { data: fields } = useSWR<IField[]>("/field");
+export const Levels = ({ values, handleChange, handleBlur }: any) => {
+  const { data: levels } = useSWR<{ result: ILevel[]; total: number }>("/level");
 
-  if (!filters) {
+  if (!levels) {
     return <LinearProgress />;
   }
 
   return (
     <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
-      {filters?.map((filter) => (
-        <Cluster cluster={filter} device={device} handleBlur={handleBlur} handleChange={handleChange} values={values} />
-      ))}
+      <TextField
+        label="Cluster Value"
+        name="clusterValue"
+        placeholder="Cluster Value"
+        value={values.clusterValue}
+        onBlur={handleBlur}
+        onChange={handleChange}
+        style={{ gridColumn: "span 2" }}
+      />
       <Divider style={{ gridColumnEnd: "span 2" }} />
-      {fields?.map((field) => (
-        <Level level={field} device={device} handleBlur={handleBlur} handleChange={handleChange} values={values} />
+      {levels.result?.map((level) => (
+        <Level level={level} handleBlur={handleBlur} handleChange={handleChange} values={values} />
       ))}
     </Box>
   );
@@ -684,24 +687,6 @@ export const LastUsed = ({ values, errors, handleChange, handleBlur, touched, se
         onChange={handleChange}
         disabled
       />
-
-      {/* <TextField
-                name="minOrder"
-                label="Minimum Order Quantity Per Purchase"
-                placeholder="Minimum Order Quantity Per Purchase"
-                value={values.minOrder}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                style={{ gridColumnEnd: "span 2" }}
-            /> */}
-      {/* <TextField
-                name="lastCount"
-                label="Last Count"
-                placeholder="Last Count"
-                value={formatTimestampToDate(values.lastCount)}
-                onBlur={handleBlur}
-                onChange={handleChange}
-            /> */}
       <DateTimePicker
         value={values.lastCount}
         name="lastCount"

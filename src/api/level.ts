@@ -8,6 +8,8 @@ export interface ILevel {
   createdAt: number;
   updatedAt: number;
   __v: number;
+
+  [key: string]: any;
 }
 
 export const getLevels = () => {

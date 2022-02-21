@@ -10,7 +10,7 @@ import BaseDataGrid from "../app/BaseDataGrid";
 import { BasePaper } from "../app/Paper";
 import VendorsTable from "../features/Items/VandorsTable";
 
-import { MoreInfo, Quantity, Shipping, General, DynamicFilterAndFields, LastUsed } from "../features/Items/Forms";
+import { MoreInfo, Quantity, Shipping, General, Levels, LastUsed } from "../features/Items/Forms";
 import { SalesReport } from "../features/Items/Reports";
 
 import ManualCountModal from "../features/Items/ManualCountModal";
@@ -375,7 +375,7 @@ function ItemsDetails() {
                     </Box>
                   )}
                   {moreInfoTab === 6 && (
-                    <DynamicFilterAndFields
+                    <Levels
                       values={values}
                       handleChange={handleChange}
                       handleBlur={handleBlur}

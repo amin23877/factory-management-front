@@ -21,7 +21,7 @@ import { fileType } from "../../../logic/fileType";
 import DocumentModal from "../../../common/DocumentModal";
 import ShipmentModal, { EditShipModal } from "../../Modals/ShipmentModal";
 import { getModifiedValues } from "../../../logic/utils";
-import { DynamicFilterAndFields } from "../../Items/Forms";
+import { Levels } from "../../Items/Forms";
 import { IShipment } from "../../../api/shipment";
 
 const schema = Yup.object().shape({});
@@ -231,7 +231,7 @@ function Details({ unit }: { unit: IUnit }) {
                     />
                   )}
                   {infoActiveTab === 4 && (
-                    <DynamicFilterAndFields
+                    <Levels
                       values={values.item}
                       handleChange={handleChange}
                       handleBlur={handleBlur}
