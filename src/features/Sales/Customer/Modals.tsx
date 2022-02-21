@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Box, Step, StepLabel, Stepper } from "@material-ui/core";
 import { Form, Formik } from "formik";
 
-import Dialog from "../../../app/Dialog";
-import Button from "../../../app/Button";
+import Dialog from "app/Dialog";
+import Button from "app/Button";
+import Toast from "app/Toast";
 import { CommissionForm, GeneralForm, MoreInfoForm } from "./Forms";
 
-import { IClient, addClient } from "../../../api/client";
+import { IClient, addClient } from "api/client";
+import { mutate } from "swr";
 
 export default function AddCustomerModal({
   open,
@@ -15,7 +17,7 @@ export default function AddCustomerModal({
 }: {
   open: boolean;
   onClose: () => void;
-  onDone: () => void;
+  onDone?: () => void;
 }) {
   const [activeStep, setActiveStep] = useState(0);
 
@@ -27,8 +29,16 @@ export default function AddCustomerModal({
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleSubmit = (data: any) => {
-    console.log({ data });
+  const handleSubmit = async (data: any) => {
+    try {
+      await addClient(data);
+      Toast("Client created.", "success");
+      mutate("/client");
+      onDone && onDone();
+      onClose();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

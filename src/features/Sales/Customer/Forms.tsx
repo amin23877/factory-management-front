@@ -11,15 +11,12 @@ import {
   useMediaQuery,
 } from "@material-ui/core";
 
-import { FieldSelect } from "../../../app/Inputs";
-import TextField from "../../../app/TextField";
-import Button from "../../../app/Button";
+import { CacheFieldSelect } from "app/Inputs";
+import TextField from "app/TextField";
+import Button from "app/Button";
 
-import { editClient, getClients } from "../../../api/client";
-import { getCustomerTypes } from "../../../api/customerType";
-import { getAllEmployees } from "../../../api/employee";
-import Toast from "../../../app/Toast";
-// import CustomerTypeAutocomplete from "./ClientTypeAutocomplete";
+import { editClient } from "api/client";
+import Toast from "app/Toast";
 
 export const GeneralForm = ({
   values,
@@ -105,9 +102,9 @@ export const GeneralForm = ({
         gridRowGap={10}
         gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"}
       >
-        <FieldSelect
+        <CacheFieldSelect
+          url="/clientType"
           getOptionList={(resp) => resp.result}
-          request={getCustomerTypes}
           itemTitleField="name"
           itemValueField="id"
           name="CustomerTypeId"
@@ -199,10 +196,10 @@ export const GeneralForm = ({
           helperText={touched.email && errors.email && String(errors.email)}
           label="Main Email"
         />
-        <FieldSelect
+        <CacheFieldSelect
+          url="/employee"
           getOptionList={(resp) => resp.result}
           value={typeof values.supportStaff === "string" ? values.supportStaff : values.supportStaff?.id}
-          request={getAllEmployees}
           itemTitleField="username"
           itemValueField="id"
           keyField="id"
@@ -311,9 +308,9 @@ export const MoreInfoForm = ({
         helperText={touched.fax && errors.fax && String(errors.fax)}
         label="fax"
       />
-      <FieldSelect
+      <CacheFieldSelect
+        url="/client"
         getOptionList={(resp) => resp.result}
-        request={getClients}
         itemTitleField="name"
         itemValueField="id"
         name="parent"

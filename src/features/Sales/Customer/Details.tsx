@@ -23,6 +23,8 @@ import { ContactModal } from "../../Modals/ContactModal";
 import Toast from "../../../app/Toast";
 import { IDocument } from "../../../api/document";
 import { getModifiedValues } from "../../../logic/utils";
+import { IContact } from "api/contact";
+import { IActivity } from "api/activity";
 
 export default function ClientDetails({
   selectedRow,
@@ -36,10 +38,18 @@ export default function ClientDetails({
   const [activeTab, setActiveTab] = useState(0);
   const [activeSubTab, setActiveSubTab] = useState(0);
 
-  const { data: contacts } = useSWR<IDocument[]>(activeTab === 0 ? `/contact/customer/${selectedRow.id}` : null);
-  const { data: documents } = useSWR<IDocument[]>(activeTab === 1 ? `/document/customer/${selectedRow.id}` : null);
-  const { data: activities } = useSWR<IDocument[]>(activeTab === 2 ? `/activity/customer/${selectedRow.id}` : null);
-  const { data: notes } = useSWR<INote[]>(activeTab === 5 ? `/note/customer/${selectedRow.id}` : null);
+  const { data: contacts } = useSWR<{ result: IContact[]; total: number }>(
+    activeTab === 0 ? `/contact/customer/${selectedRow.id}` : null
+  );
+  const { data: documents } = useSWR<{ result: IDocument[]; total: number }>(
+    activeTab === 1 ? `/document/customer/${selectedRow.id}` : null
+  );
+  const { data: activities } = useSWR<{ result: IActivity[]; total: number }>(
+    activeTab === 2 ? `/activity/customer/${selectedRow.id}` : null
+  );
+  const { data: notes } = useSWR<{ result: INote[]; total: number }>(
+    activeTab === 5 ? `/note/customer/${selectedRow.id}` : null
+  );
 
   const [addNoteModal, setAddNoteModal] = useState(false);
   const [addDocModal, setAddDocModal] = useState(false);
@@ -246,7 +256,7 @@ export default function ClientDetails({
                       <BaseDataGrid
                         height="calc(100% - 100px)"
                         cols={contactsCols}
-                        rows={contacts || []}
+                        rows={contacts?.result || []}
                         onRowSelected={(c) => {}}
                       />
                     </>
@@ -265,7 +275,7 @@ export default function ClientDetails({
                       <BaseDataGrid
                         height="calc(100% - 100px)"
                         cols={docCols}
-                        rows={documents || []}
+                        rows={documents?.result || []}
                         onRowSelected={(v) => {}}
                       />
                     </>
@@ -274,7 +284,7 @@ export default function ClientDetails({
                     <BaseDataGrid
                       height="calc(100% - 60px)"
                       cols={activityCols}
-                      rows={activities || []}
+                      rows={activities?.result || []}
                       onRowSelected={() => {}}
                     />
                   )}
@@ -287,7 +297,7 @@ export default function ClientDetails({
                       <BaseDataGrid
                         height="calc(100% - 100px)"
                         cols={noteCols}
-                        rows={notes || []}
+                        rows={notes?.result || []}
                         onRowSelected={(v) => {}}
                       />
                     </>

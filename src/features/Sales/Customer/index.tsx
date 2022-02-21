@@ -50,7 +50,7 @@ export default function Customers() {
   return (
     <>
       <Confirm open={conf} onClose={() => setConf(false)} onConfirm={handleDelete} />
-      <AddCustomerModal open={addCustomerModal} onClose={() => setAddCustomerModal(false)} onDone={() => {}} />
+      <AddCustomerModal open={addCustomerModal} onClose={() => setAddCustomerModal(false)} />
       <CustomerTypeModal open={cTypeModal} onClose={() => setCTypeModal(false)} />
 
       <Box display="flex" alignItems="center" mb={1}>
