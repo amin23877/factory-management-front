@@ -4,28 +4,28 @@ import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { useParams } from "react-router-dom";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
-import { host } from "../host";
-import Button from "../app/Button";
-import BaseDataGrid from "../app/BaseDataGrid";
-import { BasePaper } from "../app/Paper";
-import VendorsTable from "../features/Items/VandorsTable";
 
-import { MoreInfo, Quantity, Shipping, General, Levels, LastUsed } from "../features/Items/Forms";
-import { SalesReport } from "../features/Items/Reports";
+import Button from "app/Button";
+import BaseDataGrid from "app/BaseDataGrid";
+import { BasePaper } from "app/Paper";
+import VendorsTable from "features/Items/VendorsTable";
 
-import ManualCountModal from "../features/Items/ManualCountModal";
-import UpdateQuantityModal from "../features/Items/Quantity";
+import { MoreInfo, Quantity, Shipping, General, Levels, LastUsed } from "features/Items/Forms";
+import { SalesReport } from "features/Items/Reports";
 
-import { INote } from "../api/note";
-import { IDocument } from "../api/document";
-import { updateAnItem, addImage, IItem } from "../api/items";
-import { IBom } from "../api/bom";
-import SOTable from "../features/Items/SOTable";
-import Toast from "../app/Toast";
-import UploadButton from "../app/FileUploader";
-import { exportPdf } from "../logic/pdf";
-import QRCode from "../app/QRCode";
-import { formatTimestampToDate } from "../logic/date";
+import ManualCountModal from "features/Items/ManualCountModal";
+import UpdateQuantityModal from "features/Items/Quantity";
+
+import { INote } from "api/note";
+import { IDocument } from "api/document";
+import { updateAnItem, addImage, IItem } from "api/items";
+import { IBom } from "api/bom";
+import SOTable from "features/Items/SOTable";
+import Toast from "app/Toast";
+import UploadButton from "app/FileUploader";
+import { exportPdf } from "logic/pdf";
+import QRCode from "app/QRCode";
+import { formatTimestampToDate } from "logic/date";
 
 function ItemsDetails() {
   const qrCode = useRef<HTMLElement | null>(null);
@@ -63,9 +63,6 @@ function ItemsDetails() {
   );
   const { data: boms } = useSWR<IBom[]>(
     activeTab === 3 ? (selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null) : null
-  );
-  const { data: vendors } = useSWR(
-    activeTab === 4 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/vendors` : null) : null
   );
 
   const { data: itemQuotes } = useSWR(
@@ -410,7 +407,7 @@ function ItemsDetails() {
           {activeTab === 1 && <BaseDataGrid cols={docCols} rows={docs || []} onRowSelected={() => {}} />}
           {activeTab === 2 && <BaseDataGrid cols={usesCols} rows={uses || []} onRowSelected={() => {}} />}
           {activeTab === 3 && <BaseDataGrid cols={bomCols} rows={boms || []} onRowSelected={() => {}} />}
-          {activeTab === 4 && <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => {}} />}
+          {activeTab === 4 && <VendorsTable selectedItem={selectedRow} />}
           {activeTab === 5 && <BaseDataGrid rows={itemQuotes || []} cols={QuoteCols} onRowSelected={() => {}} />}
           {activeTab === 6 && <SOTable rows={itemSOs} />}
           {activeTab === 7 && <BaseDataGrid cols={poCols} rows={itemPOs || []} onRowSelected={() => {}} />}

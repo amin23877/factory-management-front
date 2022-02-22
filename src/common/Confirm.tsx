@@ -1,7 +1,5 @@
 import Swal from "sweetalert2";
 
-const ConfirmDialog = Swal.mixin;
-
 export default function Confirm({ text, onConfirm }: { text?: string; onConfirm: () => void }) {
   Swal.fire({
     title: "Are you sure?",

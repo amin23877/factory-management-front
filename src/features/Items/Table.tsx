@@ -18,7 +18,7 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
         defaultWidth: 100,
       },
       {
-        name: "engineeringApproved",
+        name: "engineeringApproval",
         header: "Eng. Ap.",
         type: "boolean",
         defaultWidth: 100,

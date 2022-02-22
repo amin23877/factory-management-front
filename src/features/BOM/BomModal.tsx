@@ -7,8 +7,9 @@ import Dialog from "app/Dialog";
 import TextField from "app/TextField";
 import Button from "app/Button";
 
-import { addBom, IBom } from "api/bom";
+import { addBom, updateBom, IBom } from "api/bom";
 import { IItem } from "api/items";
+import { getModifiedValues } from "logic/utils";
 import Confirm from "common/Confirm";
 
 export default function BOMModal({
@@ -22,12 +23,14 @@ export default function BOMModal({
   onClose: () => void;
   initialValues?: IBom;
 }) {
-  console.log({ initialValues });
-
   const handleSubmit = async (data: any) => {
     try {
       if (!initialValues) {
         await addBom({ ...data, ItemId: item.id });
+        mutate(`/bom?ItemId=${item.id}`);
+        onClose();
+      } else {
+        await updateBom(initialValues.id, getModifiedValues(data, initialValues));
         mutate(`/bom?ItemId=${item.id}`);
         onClose();
       }

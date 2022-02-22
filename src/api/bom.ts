@@ -8,14 +8,30 @@ export interface IBom {
   notes: string;
   current: boolean;
   ItemId: IItem;
+  createdAt: number;
+  updatedAt: number;
+  __v: number;
 }
 
 export interface IBomRecord {
   id: string;
   BOMId: string;
+  usage: number;
+  fixedQty: boolean;
+  ItemId: {
+    id: string;
+    no: string;
+    usedInQuarter?: number | null;
+    usedInHalf?: number | null;
+    usedInYear?: number | null;
+  };
+  createdAt: number;
+  updatedAt: number;
+  __v: number;
+}
+
+export interface IBomRecordForm {
   ItemId: string;
-  ItemNo: string;
-  ItemName: string;
   usage: number;
   fixedQty: boolean;
 }

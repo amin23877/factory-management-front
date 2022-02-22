@@ -18,6 +18,7 @@ import DateTimePicker from "app/DateTimePicker";
 import { formatTimestampToDate } from "logic/date";
 import Level from "./ClusterAndLevels/Level";
 import { ILevel } from "api/level";
+import { IItem } from "api/items";
 
 const useStyles = makeStyles({
   label: {
@@ -25,7 +26,7 @@ const useStyles = makeStyles({
   },
 });
 interface IForm {
-  values: any;
+  values: IItem;
   errors: any;
   touched: any;
   handleChange: (e: any) => void;
@@ -130,7 +131,7 @@ export const General = ({
               onChange={handleChange}
               control={<Checkbox size="small" />}
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
               checked={values.buildToStock}
@@ -138,7 +139,7 @@ export const General = ({
               name="buildToStock"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-            />
+            /> */}
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
@@ -157,7 +158,7 @@ export const General = ({
               onChange={handleChange}
               control={<Checkbox size="small" />}
             />
-            <FormControlLabel
+            {/* <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
               checked={values.doNotDiscount}
@@ -174,7 +175,7 @@ export const General = ({
               name="doNotSplit"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-            />
+            /> */}
             <div style={{ display: "flex", gridColumnEnd: "span 2", alignItems: "center" }}>
               <FormControlLabel
                 classes={{ label: classes.label }}
@@ -278,14 +279,14 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
       gridColumnGap={10}
       gridRowGap={10}
     >
-      <TextField
+      {/* <TextField
         label="Version"
         name="version"
         placeholder="Version"
         value={values.version}
         onBlur={handleBlur}
         onChange={handleChange}
-      />
+      /> */}
       {/* <TextField
                 label="keywords"
                 name="keywords"
@@ -295,7 +296,7 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
                 onChange={handleChange}
                 style={{ marginBottom: 3 }}
             /> */}
-      <TextField
+      {/* <TextField
         label="Url"
         name="url"
         placeholder="Url"
@@ -303,7 +304,7 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
         onBlur={handleBlur}
         onChange={handleChange}
         style={{ marginBottom: 3 }}
-      />
+      /> */}
       <TextField
         label="Manufacturer"
         name="manufacturer"
@@ -335,18 +336,18 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
 
       <TextField
         label="Quickbook ID"
-        name="qbid"
+        name="qbId"
         placeholder="Quickbook ID"
-        value={values.qbid}
+        value={values.qbId}
         onBlur={handleBlur}
         onChange={handleChange}
         style={{ marginBottom: 3 }}
       />
       <TextField
         label="QB Type"
-        name="qbtype"
+        name="qbType"
         placeholder="QB Type"
-        value={values.qbtype}
+        value={values.qbType}
         onBlur={handleBlur}
         onChange={handleChange}
         style={{ marginBottom: 3 }}
@@ -452,11 +453,6 @@ export const Quantity = ({
   handleBlur,
   handleChange,
 }: IQForm) => {
-  // qtyOnHand -> ,
-  // qtyAvailable -> ,
-  // qtyOnOrder -> ,
-  // qtyAllocated -> ,
-  // qtyRemain -> ,
   const phone = useMediaQuery("(max-width:900px)");
 
   return (
@@ -471,35 +467,35 @@ export const Quantity = ({
         label="Total Quantity"
         placeholder="Total Quantity"
         name="total"
-        value={values.qtyOnHand + values.qtyOnOrder}
+        value={values.onHandQty + values.onOrderQty}
         disabled
       />
       <TextField
         label="Quantity on hand"
         placeholder="Quantity on hand"
-        name="qtyOnHand"
-        value={values.qtyOnHand}
+        name="onHandQty"
+        value={values.onHandQty}
         disabled
       />
       <TextField
         label="Quantity Available"
         placeholder="Quantity Available"
         name="qtyAvailable"
-        value={values.qtyOnHand - values.qtyAllocated}
+        value={values.onHandQty - values.allocatedQty}
         disabled
       />
       <TextField
         label="Quantity on order"
         placeholder="Quantity on order"
-        name="qtyOnOrder"
-        value={values.qtyOnOrder}
+        name="onOrderQty"
+        value={values.onOrderQty}
         disabled
       />
       <TextField
         label="Quantity allocated"
         placeholder="Quantity allocated"
-        name="qtyAllocated"
-        value={values.qtyAllocated}
+        name="allocatedQty"
+        value={values.allocatedQty}
         disabled
       />
       {/* <TextField
@@ -528,19 +524,19 @@ export const Quantity = ({
         onChange={handleChange}
         style={{ marginBottom: 3 }}
       />
-      <TextField
+      {/* <TextField
         label="FIFO Value"
         name="fifo"
         placeholder="FIFO Value"
         value={values.fifo}
         style={{ marginBottom: 3 }}
         disabled
-      />
+      /> */}
       <TextField
         label="QOH Value"
         name="qohVal"
         placeholder="QOH Value"
-        value={values.cost * values.qtyOnHand}
+        value={values.totalCost * values.onHandQty}
         disabled
         style={{ marginBottom: 3 }}
       />
@@ -594,14 +590,14 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                 onBlur={handleBlur}
                 onChange={handleChange}
             /> */}
-      <TextField
+      {/* <TextField
         label="shipping Lb"
         name="shippingLb"
         placeholder="shippingLb"
         value={values.shippingLb}
         onBlur={handleBlur}
         onChange={handleChange}
-      />
+      /> */}
       {/* <TextField
                 label="shipping Oz"
                 name="shippingOz"
@@ -610,7 +606,7 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
                 onBlur={handleBlur}
                 onChange={handleChange}
             /> */}
-      <TextField
+      {/* <TextField
         fullWidth
         label="size"
         placeholder="size"
@@ -637,7 +633,7 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: 
         value={values.recentCost}
         onBlur={handleBlur}
         onChange={handleChange}
-      />
+      /> */}
     </Box>
   );
 };
@@ -679,19 +675,19 @@ export const LastUsed = ({ values, errors, handleChange, handleBlur, touched, se
       gridColumnGap={10}
       gridRowGap={10}
     >
-      <TextField
+      {/* <TextField
         name="uom"
         label="Unit Of Measure"
         placeholder="Unit Of Measure"
         value={values.uom}
         onBlur={handleBlur}
         onChange={handleChange}
-      />
+      /> */}
       <TextField
-        name="lastUsedInBom"
+        name="lastUsedInJOB"
         placeholder="last Used In Bom"
         label="last Used In Bom"
-        value={values.lastUsedInBom}
+        value={values.lastUsedInJOB}
         onBlur={handleBlur}
         onChange={handleChange}
         disabled
@@ -706,27 +702,27 @@ export const LastUsed = ({ values, errors, handleChange, handleBlur, touched, se
       />
       <TextField
         label="last used in 90 days"
-        value={values.usedQuarter}
-        name="usedQuarter"
+        value={values.usedInQuarter}
+        name="usedInQuarter"
         onChange={handleChange}
         onBlur={handleBlur}
-        error={Boolean(errors.usedQuarter && touched.usedQuarter)}
+        error={Boolean(errors.usedInQuarter && touched.usedInQuarter)}
       />
       <TextField
         label="last used in 180 days"
-        value={values.usedHalf}
-        name="usedHalf"
+        value={values.usedInHalf}
+        name="usedInHalf"
         onChange={handleChange}
         onBlur={handleBlur}
-        error={Boolean(errors.usedHalf && touched.usedHalf)}
+        error={Boolean(errors.usedInHalf && touched.usedInHalf)}
       />
       <TextField
         label="last used in 360 days"
-        value={values.usedYear}
-        name="usedYear"
+        value={values.usedInYear}
+        name="usedInYear"
         onChange={handleChange}
         onBlur={handleBlur}
-        error={Boolean(errors.usedYear && touched.usedYear)}
+        error={Boolean(errors.usedInYear && touched.usedInYear)}
       />
     </Box>
   );

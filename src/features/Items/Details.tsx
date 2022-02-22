@@ -8,7 +8,7 @@ import { host } from "../../host";
 import Button from "../../app/Button";
 import BaseDataGrid from "../../app/BaseDataGrid";
 import { BasePaper } from "../../app/Paper";
-import VendorsTable from "./VandorsTable";
+import VendorsTable from "./VendorsTable";
 
 import { MoreInfo, Quantity, Shipping, General, LastUsed, Pricing, Levels } from "./Forms";
 
@@ -74,10 +74,6 @@ function ItemsDetails({
 
   const { data: boms } = useSWR<{ result: IBom[]; total: number }>(
     selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null
-  );
-
-  const { data: vendors } = useSWR(
-    activeTab === 1 ? (selectedRow && selectedRow.id ? `/vending?ItemId=${selectedRow.id}` : null) : null
   );
 
   // const { data: itemSOs } = useSWR(
@@ -303,7 +299,6 @@ function ItemsDetails({
                   {moreInfoTab === 0 && (
                     <Box
                       mt={1}
-                      height="100%"
                       display="flex"
                       justifyContent="center"
                       alignItems="center"
@@ -469,7 +464,7 @@ function ItemsDetails({
                     >
                       + Add Vendor
                     </Button>
-                    <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => {}} />
+                    <VendorsTable selectedItem={selectedRow} />
                   </div>
                 )}
                 {activeTab === 1 && boms && boms.result.length > 0 && (

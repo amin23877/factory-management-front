@@ -5,7 +5,7 @@ import { store } from "../store";
 import { getToken, StorageKey } from "./";
 import { host } from "../host";
 
-export const BaseUrl = `http://${host}/api/`;
+export const BaseUrl = `https://${host}/api/`;
 export const WebsiteUrl = "https://phazify.com/dspm";
 
 export const apiAgent = Axios.create({ baseURL: BaseUrl });

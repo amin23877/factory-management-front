@@ -18,12 +18,12 @@ import Paper from "@material-ui/core/Paper";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import { AddRounded, Check, Clear, EditRounded, LaptopWindows } from "@material-ui/icons";
+import { AddRounded, Check, Clear, EditRounded, LaptopWindows, VisibilityRounded } from "@material-ui/icons";
 
 import Button from "app/Button";
 import { IBom, IBomRecord } from "api/bom";
 import { IItem } from "api/items";
-// import { formatTimestampToDate } from "../../logic/date";
+import { formatTimestampToDate } from "../../logic/date";
 import { openRequestedSinglePopup } from "../../logic/window";
 
 import BomModal from "./BomModal";
@@ -116,7 +116,7 @@ function Row({ row, onAddBomRecord, onEditBom }: { row: IBom; onAddBomRecord: ()
           {/* {row.items} */}
         </TableCell>
         <TableCell align="right">{row.no}</TableCell>
-        {/* <TableCell align="right">{formatTimestampToDate(row.updatedAt)}</TableCell> */}
+        <TableCell align="right">{row.updatedAt ? formatTimestampToDate(row.updatedAt) : ""}</TableCell>
         <TableCell align="right">{row.name}</TableCell>
         <TableCell align="right">{row.notes}</TableCell>
         <TableCell align="right">{row.current ? <Check htmlColor="#888" /> : <Clear htmlColor="#888" />}</TableCell>
@@ -138,32 +138,30 @@ function Row({ row, onAddBomRecord, onEditBom }: { row: IBom; onAddBomRecord: ()
                   <TableHead>
                     <TableRow>
                       <TableCell>No</TableCell>
-                      <TableCell>Name</TableCell>
-                      <TableCell align="right">Uom</TableCell>
-                      <TableCell align="right">Location</TableCell>
                       <TableCell align="right">Usage</TableCell>
                       <TableCell align="right">Fixed QTY</TableCell>
+                      <TableCell></TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {bomRecords ? (
                       bomRecords.result.map((part) => (
-                        <TableRow
-                          key={part.id}
-                          onClick={() => {
-                            // history.push(`/panel/inventory/${part.ItemId.id}`);
-                          }}
-                        >
-                          {/* <TableCell component="th" scope="row">
+                        <TableRow key={part.id}>
+                          <TableCell component="th" scope="row">
                             {part.ItemId.no}
                           </TableCell>
-                          <TableCell>{part.ItemId.name}</TableCell>
-                          <TableCell align="right">{part?.uom}</TableCell>
-                          <TableCell align="right">{part?.location}</TableCell>
                           <TableCell align="right">{part.usage}</TableCell>
                           <TableCell align="right">
                             {part.fixedQty ? <Check htmlColor="#888" /> : <Clear htmlColor="#888" />}
-                          </TableCell> */}
+                          </TableCell>
+                          <TableCell>
+                            <IconButton>
+                              <EditRounded />
+                            </IconButton>
+                            <IconButton>
+                              <VisibilityRounded />
+                            </IconButton>
+                          </TableCell>
                         </TableRow>
                       ))
                     ) : (
