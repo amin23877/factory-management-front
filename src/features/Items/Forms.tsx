@@ -166,16 +166,16 @@ export const General = ({
               name="doNotDiscount"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-            />
+            />*/}
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.doNotSplit}
-              label="Do Not Split"
-              name="doNotSplit"
+              checked={values.bom}
+              label="BOM"
+              name="bom"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-            /> */}
+            />
             <div style={{ display: "flex", gridColumnEnd: "span 2", alignItems: "center" }}>
               <FormControlLabel
                 classes={{ label: classes.label }}
@@ -186,17 +186,19 @@ export const General = ({
                 onChange={handleChange}
                 control={<Checkbox size="small" />}
               />
-              <TextField
-                label="Archive Date"
-                value={formatTimestampToDate(values.archiveDate)}
-                name="archiveDate"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                error={Boolean(errors.archiveDate && touched.archiveDate)}
-                placeholder="archiveDate"
-                disabled
-                style={{ gridColumnEnd: "span 2", marginBottom: 10 }}
-              />
+              {values.archived && (
+                <TextField
+                  label="Archive Date"
+                  value={formatTimestampToDate(values.archiveDate)}
+                  name="archiveDate"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={Boolean(errors.archiveDate && touched.archiveDate)}
+                  placeholder="archiveDate"
+                  disabled
+                  style={{ gridColumnEnd: "span 2", marginBottom: 10 }}
+                />
+              )}
             </div>
             {device && (
               <FormControlLabel

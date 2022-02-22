@@ -4,10 +4,10 @@ import { GridColDef } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 
-import { host } from "../../host";
-import Button from "../../app/Button";
-import BaseDataGrid from "../../app/BaseDataGrid";
-import { BasePaper } from "../../app/Paper";
+import { host } from "host";
+import Button from "app/Button";
+import BaseDataGrid from "app/BaseDataGrid";
+import { BasePaper } from "app/Paper";
 import VendorsTable from "./VendorsTable";
 
 import { MoreInfo, Quantity, Shipping, General, LastUsed, Pricing, Levels } from "./Forms";
@@ -15,22 +15,22 @@ import { MoreInfo, Quantity, Shipping, General, LastUsed, Pricing, Levels } from
 import ManualCountModal from "./ManualCountModal";
 import UpdateQuantityModal from "./Quantity";
 
-import NoteModal from "../../common/NoteModal";
-import DocumentModal from "../../common/DocumentModal";
+import NoteModal from "common/NoteModal";
+import DocumentModal from "common/DocumentModal";
 import { VendorModal } from "../Modals/AddVendor";
 // import BOMModal from "../BOM/BomModal";
 import Parts from "../BOM/Parts";
 
-import { addImage, updateAnItem } from "../../api/items";
-import { IBom } from "../../api/bom";
+import { addImage, IItem, updateAnItem } from "api/items";
+import { IBom } from "api/bom";
 // import SOTable from "./SOTable";
-import UploadButton from "../../app/FileUploader";
-import { exportPdf } from "../../logic/pdf";
-// import { formatTimestampToDate } from "../../logic/date";
-import { getModifiedValues } from "../../logic/utils";
+import UploadButton from "app/FileUploader";
+import { exportPdf } from "logic/pdf";
+// import { formatTimestampToDate } from "logic/date";
+import { getModifiedValues } from "logic/utils";
 import ItemBomTable from "../BOM/ItemBomTable";
 
-import QRCode from "../../app/QRCode";
+import QRCode from "app/QRCode";
 import { DocumentsDataGrid, NotesDataGrid } from "common/DataGrids";
 import Toast from "app/Toast";
 
@@ -47,7 +47,7 @@ function ItemsDetails({
   onDocSelected,
   onDone,
 }: {
-  selectedRow: any;
+  selectedRow: IItem;
   onDone?: () => void;
   onNoteSelected: (a: any) => void;
   onDocSelected: (a: any) => void;
@@ -305,7 +305,8 @@ function ItemsDetails({
                       flexDirection="column"
                       gridGap={10}
                     >
-                      {selectedRow?.photo && (
+                      {/* TODO: Get first item photo from /photo and show it here */}
+                      {/* {selectedRow?.photo && (
                         <img
                           style={{
                             maxWidth: "100%",
@@ -316,7 +317,7 @@ function ItemsDetails({
                           alt=""
                           src={img ? img : `http://${host}${selectedRow?.photo}`}
                         />
-                      )}
+                      )} */}
                       <div
                         style={{
                           display: "flex",
@@ -434,7 +435,8 @@ function ItemsDetails({
                   style={phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" } : { marginBottom: "10px" }}
                 >
                   <Tab label="Document" />
-                  {boms?.result.length === 0 ? <Tab label="Vendor" /> : <Tab label="BOM" />}
+                  <Tab label="Vendor" />
+                  <Tab label="BOM" disabled={!selectedRow.bom} />
                   <Tab label="Sales order History" />
                   <Tab label="PO History" />
                   <Tab label="Usage" />
@@ -454,7 +456,7 @@ function ItemsDetails({
                     <DocumentsDataGrid model="item" recordId={selectedRow.id} onDocumentSelected={onDocSelected} />
                   </>
                 )}
-                {activeTab === 1 && boms?.result.length === 0 && (
+                {activeTab === 1 && (
                   <div style={{ maxWidth: "79vw", overflow: "auto" }}>
                     <Button
                       onClick={() => {
@@ -467,7 +469,7 @@ function ItemsDetails({
                     <VendorsTable selectedItem={selectedRow} />
                   </div>
                 )}
-                {activeTab === 1 && boms && boms.result.length > 0 && (
+                {activeTab === 2 && boms && (
                   <div style={{ maxWidth: "79vw", overflow: "auto" }}>
                     <ItemBomTable item={selectedRow} boms={boms.result} />
                   </div>

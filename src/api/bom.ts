@@ -20,6 +20,7 @@ export interface IBomRecord {
   fixedQty: boolean;
   ItemId: {
     id: string;
+    currentBOM?: string;
     no: string;
     usedInQuarter?: number | null;
     usedInHalf?: number | null;

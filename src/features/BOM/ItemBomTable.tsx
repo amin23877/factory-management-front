@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useMediaQuery } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
-import useSWR from "swr";
 
 import Box from "@material-ui/core/Box";
 import Collapse from "@material-ui/core/Collapse";
@@ -18,16 +17,17 @@ import Paper from "@material-ui/core/Paper";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import { AddRounded, Check, Clear, EditRounded, LaptopWindows, VisibilityRounded } from "@material-ui/icons";
+import { AddRounded, Check, Clear, EditRounded, LaptopWindows } from "@material-ui/icons";
 
 import Button from "app/Button";
-import { IBom, IBomRecord } from "api/bom";
+import { IBom } from "api/bom";
 import { IItem } from "api/items";
 import { formatTimestampToDate } from "../../logic/date";
 import { openRequestedSinglePopup } from "../../logic/window";
 
 import BomModal from "./BomModal";
 import BomRecordModal from "./BomRecordModal";
+import PartsTable from "./PartsTable";
 
 const useRowStyles = makeStyles({
   root: {
@@ -83,10 +83,8 @@ export const useTableStyles = makeStyles((theme) => ({
 function Row({ row, onAddBomRecord, onEditBom }: { row: IBom; onAddBomRecord: () => void; onEditBom: () => void }) {
   let history = useHistory();
   const phone = useMediaQuery("(max-width:900px)");
-  const { data: bomRecords } = useSWR<{ result: IBomRecord[]; total: number }>(`/bomrecord?BOMId=${row.id}`);
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
-  const tableClasses = useTableStyles();
 
   return (
     <>
@@ -133,43 +131,7 @@ function Row({ row, onAddBomRecord, onEditBom }: { row: IBom; onAddBomRecord: ()
                   <AddRounded />
                 </IconButton>
               </Box>
-              <TableContainer className={tableClasses.tableCont} style={{ maxHeight: 300 }}>
-                <Table className={tableClasses.root} size="small" aria-label="BOM Parts">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>No</TableCell>
-                      <TableCell align="right">Usage</TableCell>
-                      <TableCell align="right">Fixed QTY</TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {bomRecords ? (
-                      bomRecords.result.map((part) => (
-                        <TableRow key={part.id}>
-                          <TableCell component="th" scope="row">
-                            {part.ItemId.no}
-                          </TableCell>
-                          <TableCell align="right">{part.usage}</TableCell>
-                          <TableCell align="right">
-                            {part.fixedQty ? <Check htmlColor="#888" /> : <Clear htmlColor="#888" />}
-                          </TableCell>
-                          <TableCell>
-                            <IconButton>
-                              <EditRounded />
-                            </IconButton>
-                            <IconButton>
-                              <VisibilityRounded />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
-                      ))
-                    ) : (
-                      <LinearProgress />
-                    )}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+              <PartsTable bomId={row.id} />
             </Box>
           </Collapse>
         </TableCell>
