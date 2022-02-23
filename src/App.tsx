@@ -8,6 +8,8 @@ import { SWRConfig } from "swr";
 import { theme } from "./theme";
 import { useAppDispatch } from "./store";
 import { getCurrentEmployee } from "./features/Session/sessionsSlice";
+import { initializeMessaging } from "logic/notification";
+import { SocketProvider } from "logic/Socket/Provider";
 
 import "react-toastify/dist/ReactToastify.css";
 import "./styles/main.css";
@@ -16,7 +18,6 @@ import BaseRouter from "./Router";
 // Delete this after useing baseurl somewhere
 import * as config from "./api/config";
 import { get } from "./api";
-import { ChatSocketProvider } from "./logic/Chat/ChatContext";
 console.log(config.BaseUrl);
 // ---------------------------
 
@@ -28,6 +29,10 @@ function App() {
     dispatch(getCurrentEmployee());
   }, [dispatch]);
 
+  useEffect(() => {
+    initializeMessaging();
+  }, []);
+
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <SWRConfig value={{ fetcher: get }}>
@@ -35,9 +40,9 @@ function App() {
           <ThemeProvider theme={theme}>
             <CssBaseline />
 
-            <ChatSocketProvider>
+            <SocketProvider>
               <BaseRouter />
-            </ChatSocketProvider>
+            </SocketProvider>
           </ThemeProvider>
         </BrowserRouter>
       </SWRConfig>

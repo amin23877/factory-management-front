@@ -7,6 +7,7 @@ import { host } from "../host";
 
 export const BaseUrl = `https://${host}/api/`;
 export const WebsiteUrl = "https://phazify.com/dspm";
+export const SocketUrl = `https://${host}/`;
 
 export const apiAgent = Axios.create({ baseURL: BaseUrl });
 

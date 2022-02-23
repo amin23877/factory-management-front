@@ -1,32 +1,31 @@
 import { formatDate } from "../utils";
 
 export const extractEngAppData = (data: any[]) => {
-    let res: any[] = [];
-    let cnt = 0;
-    res = data.reduce((_, curVal) => {
-        return { [formatDate(curVal.date, "yy-MMMM-dd")]: ++cnt };
-    }, {});
+  let res: any[] = [];
+  let cnt = 0;
+  res = data.reduce((_, curVal) => {
+    return { [formatDate(curVal.date, "yy-MMMM-dd")]: ++cnt };
+  }, {});
 
-    res = Object.keys(res).map((k) => ({
-        date: k,
-        units: res[k as any],
-    }));
+  res = Object.keys(res).map((k) => ({
+    date: k,
+    units: res[k as any],
+  }));
 
-    return res;
+  return res;
 };
 
 export const extractFshData = (data: any[]) => {
-    let res: any[] = [];
-    let cnt = 0;
-    res = data.reduce((_, curVal) => {
-        return { [formatDate(curVal.fsh.date, "yy-MMMM-dd")]: ++cnt };
-    }, {});
+  let res: any[] = [];
+  let cnt = 0;
+  res = data.reduce((_, curVal) => {
+    return { [formatDate(curVal.fsh.date, "yy-MMMM-dd")]: ++cnt };
+  }, {});
 
-    res = Object.keys(res).map((k) => ({
-        date: k,
-        units: res[k as any],
-    }));
+  res = Object.keys(res).map((k) => ({
+    date: k,
+    units: res[k as any],
+  }));
 
-    console.log(res);
-    return res;
+  return res;
 };
