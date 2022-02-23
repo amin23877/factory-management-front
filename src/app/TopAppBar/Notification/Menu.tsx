@@ -35,7 +35,7 @@ export default function NotificationMenu({
           {notifications &&
             notifications.result.map((n, i) => (
               <ListItem key={i}>
-                <ListItemText primary={n.title} secondary={n.body} />
+                <ListItemText primary={n.title} secondary={n.type === "Engineering Approval" && n.data.ItemId} />
               </ListItem>
             ))}
         </List>

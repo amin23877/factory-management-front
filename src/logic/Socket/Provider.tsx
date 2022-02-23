@@ -5,6 +5,8 @@ import { selectFirebaseToken, selectSessionToken } from "../../features/Session/
 
 import SocketAgent from ".";
 import Notification from "../Notification/Adapter";
+import { notifyUser } from "logic/Notification/util";
+import { notificationType } from "api/notification";
 
 type contextType = {
   notification: Notification | null;
@@ -22,13 +24,18 @@ const useSocketProvider = () => {
   const employeeToken = useSelector(selectSessionToken);
   const firebaseToken = useSelector(selectFirebaseToken);
 
-  useEffect(() => {
-    if (employeeToken && firebaseToken) {
-      SocketAgent.getInstance().sendAuth({ employeeToken, firebaseToken });
-    }
-  }, [employeeToken, firebaseToken]);
-
   const notification = useMemo(() => new Notification(), []);
+
+  useEffect(() => {
+    if (employeeToken) {
+      SocketAgent.getInstance().sendAuth({ employeeToken, firebaseToken: firebaseToken || "no-token" });
+      if (!firebaseToken) {
+        notification.onNotification(({ title, body }: notificationType) => {
+          notifyUser({ title, body });
+        });
+      }
+    }
+  }, [employeeToken, firebaseToken, notification]);
 
   return { notification };
 };

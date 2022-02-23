@@ -1,8 +1,11 @@
 import { get } from ".";
 
 export interface notificationType {
-  title: string;
+  createDoc: boolean;
+  data: any;
   body: string;
+  title: string;
+  type: string;
 }
 
 export const sendNotificationTest = () => {
