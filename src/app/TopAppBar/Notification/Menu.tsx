@@ -1,7 +1,19 @@
 import React from "react";
-import { Box, LinearProgress, List, ListItem, ListItemText, Popover } from "@material-ui/core";
-import { notificationType } from "api/notification";
+import {
+  Box,
+  IconButton,
+  LinearProgress,
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+  Popover,
+} from "@material-ui/core";
 import useSWR from "swr";
+import { CheckRounded } from "@material-ui/icons";
+
+import Button from "app/Button";
+import { notificationType } from "api/notification";
 
 export default function NotificationMenu({
   open,
@@ -33,12 +45,20 @@ export default function NotificationMenu({
         {!notifications && <LinearProgress />}
         <List>
           {notifications &&
-            notifications.result.map((n, i) => (
+            notifications.result.slice(0, 6).map((n, i) => (
               <ListItem key={i}>
                 <ListItemText primary={n.title} secondary={n.type === "Engineering Approval" && n.data.ItemId} />
+                <ListItemSecondaryAction>
+                  <IconButton size="small">
+                    <CheckRounded />
+                  </IconButton>
+                </ListItemSecondaryAction>
               </ListItem>
             ))}
         </List>
+        <Button variant="outlined" fullWidth>
+          See More
+        </Button>
       </Box>
     </Popover>
   );
