@@ -1,24 +1,13 @@
 import React from "react";
-import { Button, Container } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 
-import UnderDev from "../app/UnderDevelopment";
-
-import { sendNotificationTest } from "api/notification";
+import GroupLineItemTable from "components/GroupLineItemTable";
+// import UnderDev from "../app/UnderDevelopment";
 
 export default function Settings() {
   return (
     <Container>
-      <Button
-        variant="contained"
-        onClick={() => {
-          sendNotificationTest()
-            .then((d) => console.log(d))
-            .catch((e) => console.log(e));
-        }}
-      >
-        Send test notification
-      </Button>
-      {/* <UnderDev /> */}
+      <GroupLineItemTable />
     </Container>
   );
 }
