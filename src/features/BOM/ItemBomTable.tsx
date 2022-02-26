@@ -83,7 +83,7 @@ export const useTableStyles = makeStyles((theme) => ({
 function Row({ row, handleAddBomRecord }: { row: IBom; handleAddBomRecord: () => void }) {
   let history = useHistory();
   const phone = useMediaQuery("(max-width:900px)");
-  const { data: bomRecords } = useSWR<{ result: IBomRecord[]; total: number }>(`/bomrecord?BOMId=${row.id}`);
+  const { data: bomRecords } = useSWR<IBomRecord[]>(`/bomrecord?BOMId=${row.id}`);
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
   const tableClasses = useTableStyles();
@@ -142,7 +142,7 @@ function Row({ row, handleAddBomRecord }: { row: IBom; handleAddBomRecord: () =>
                   </TableHead>
                   <TableBody>
                     {bomRecords ? (
-                      bomRecords.result.map((part) => (
+                      bomRecords.map((part) => (
                         <TableRow
                           key={part.id}
                           onClick={() => {

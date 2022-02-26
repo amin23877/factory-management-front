@@ -72,9 +72,7 @@ function ItemsDetails({
   const [moreInfoTab, setMoreInfoTab] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
 
-  const { data: boms } = useSWR<{ result: IBom[]; total: number }>(
-    selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null
-  );
+  const { data: boms } = useSWR<IBom[]>(selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null);
 
   const { data: vendors } = useSWR(
     activeTab === 1 ? (selectedRow && selectedRow.id ? `/vending?ItemId=${selectedRow.id}` : null) : null
@@ -404,7 +402,7 @@ function ItemsDetails({
                         setFieldValue={setFieldValue}
                         errors={errors}
                         touched={touched}
-                        boms={boms?.result.length === 0 ? false : true}
+                        boms={boms?.length === 0 ? false : true}
                       />
                     </div>
                   )}
@@ -441,7 +439,7 @@ function ItemsDetails({
                   style={phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" } : { marginBottom: "10px" }}
                 >
                   <Tab label="Document" />
-                  {boms?.result.length === 0 ? <Tab label="Vendor" /> : <Tab label="BOM" />}
+                  {boms?.length === 0 ? <Tab label="Vendor" /> : <Tab label="BOM" />}
                   <Tab label="Sales order History" />
                   <Tab label="PO History" />
                   <Tab label="Usage" />
@@ -461,7 +459,7 @@ function ItemsDetails({
                     <DocumentsDataGrid model="item" recordId={selectedRow.id} onDocumentSelected={onDocSelected} />
                   </>
                 )}
-                {activeTab === 1 && boms?.result.length === 0 && (
+                {activeTab === 1 && boms?.length === 0 && (
                   <div style={{ maxWidth: "79vw", overflow: "auto" }}>
                     <Button
                       onClick={() => {
@@ -474,9 +472,9 @@ function ItemsDetails({
                     <VendorsTable selectedItem={selectedRow} rows={vendors || []} onRowSelected={() => {}} />
                   </div>
                 )}
-                {activeTab === 1 && boms && boms.result.length > 0 && (
+                {activeTab === 1 && boms && boms.length > 0 && (
                   <div style={{ maxWidth: "79vw", overflow: "auto" }}>
-                    <ItemBomTable item={selectedRow} boms={boms.result} />
+                    <ItemBomTable item={selectedRow} boms={boms} />
                   </div>
                 )}
                 {/* {activeTab === 2 && itemSOs && <SOTable rows={itemSOs} />} */}
