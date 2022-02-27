@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Box from "@material-ui/core/Box";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -7,34 +7,110 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/styles";
 
 import Button from "app/Button";
-import useGroupedLineItems from "./useGroupedLineItems";
+// import useGroupedLineItems from "./useGroupedLineItems";
 import AddDeviceModal from "./AddDeviceModal";
 import AddOptionModal from "./AddOptionModal";
 import AddServiceModal from "./AddServiceModal";
 import Row from "./Group";
 import EditGroupUnitModal from "./EditGroupUnitModal";
 
+import Confirm from "common/Confirm";
+
 // TODO: maybe some day use Drag and Drop and make groups draggable
 // TODO: also you can make line items draggable that user can drag and drop an item to another group
 
-export default function GroupLineItemTable() {
-  const {
-    groups,
-    selectedGroup,
-    setSelectedGroup,
-    addGroup,
-    deleteGroup,
-    addLineItemToGroup,
-    editLineItem,
-    deleteLineItem,
-    changeGroupUnitId,
-  } = useGroupedLineItems();
+const useStyles = makeStyles({
+  root: {
+    "& .MuiTableHead-root": {
+      backgroundColor: "#2d2d2d",
+    },
+    "& .MuiTableHead-root .MuiTableCell-root ": {
+      color: "white",
+    },
+  },
+});
+
+export default function GroupLineItemTable({
+  groups,
+  setGroups,
+}: {
+  groups: any[];
+  setGroups: (groups: any[]) => void;
+}) {
+  // const [groups, setGroups] = useState<any[]>([]);
+  const [selectedGroup, setSelectedGroup] = useState<number>();
+
+  const addGroup = useCallback(() => {
+    setGroups([...groups, []]);
+  }, [groups, setGroups]);
+
+  const deleteGroup = useCallback(
+    (index: number) => {
+      setGroups(groups.filter((_, i) => i !== index));
+    },
+    [groups, setGroups]
+  );
+
+  const addLineItemToGroup = useCallback(
+    (groupIndex: number, data: any) => {
+      const temp = groups.concat();
+      if (data.type === "device" && temp[groupIndex].some((l: any) => l.type === "device")) {
+        return;
+      }
+      temp[groupIndex].push(data);
+
+      setGroups(temp);
+    },
+    [groups, setGroups]
+  );
+
+  const editLineItem = useCallback(
+    (groupIndex: number, lineItemIndex: number, data: any) => {
+      const temp = groups.concat();
+      temp[groupIndex][lineItemIndex] = data;
+
+      setGroups(temp);
+    },
+    [groups, setGroups]
+  );
+
+  const deleteLineItem = useCallback(
+    (groupIndex: number, lineItemIndex: number) => {
+      const temp = groups.concat();
+      if (temp[groupIndex][lineItemIndex].type === "device") {
+        Confirm({
+          text: "Delete device of group will delete the whole group",
+          onConfirm: () => {
+            deleteGroup(groupIndex);
+          },
+        });
+      } else {
+        temp[groupIndex] = temp[groupIndex].filter((_: any, i: number) => i !== lineItemIndex);
+      }
+
+      setGroups(temp);
+    },
+    [deleteGroup, groups, setGroups]
+  );
+
+  const changeGroupUnitId = useCallback(
+    (groupIndex: number, UnitId?: string) => {
+      const temp = groups.concat();
+      temp[groupIndex] = temp[groupIndex].map((li: any) => ({ ...li, UnitId }));
+
+      setGroups(temp);
+    },
+    [groups, setGroups]
+  );
+
   const [addDeviceModal, setAddDeviceModal] = useState(false);
   const [addServiceModal, setAddServiceModal] = useState(false);
   const [addOptionModal, setAddOptionModal] = useState(false);
   const [editUnitGroupModal, setEditUnitGroupModal] = useState(false);
+  const classes = useStyles();
 
   return (
     <>
@@ -86,13 +162,10 @@ export default function GroupLineItemTable() {
           <Button variant="outlined" onClick={() => addGroup()}>
             Add Group
           </Button>
-          <Button variant="outlined" onClick={() => console.log({ groups })}>
-            Submit
-          </Button>
         </Box>
       </Paper>
       <TableContainer component={Paper}>
-        <Table aria-label="collapsible table">
+        <Table aria-label="collapsible table" className={classes.root}>
           <TableHead>
             <TableRow>
               <TableCell width={50} />

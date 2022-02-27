@@ -45,7 +45,9 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
   const [selectedNote, setSelectedNote] = useState<INote>();
   const [selectedDoc, setSelectedDoc] = useState<IDocument>();
 
-  const { data: lineItems } = useSWR<ILineItem[]>(activeTab === 0 ? `/lineitem?QuoteId=${selectedQuote.id}` : null);
+  const { data: lineItems } = useSWR<{ result: ILineItem[]; total: number }>(
+    activeTab === 0 ? `/lineitem?QuoteId=${selectedQuote.id}` : null
+  );
   // const { data: lineServices } = useSWR<ILineService[]>(
   //     activeTab === 1 ? `/lineservice?QuoteId=${selectedQuote.id}` : null
   // );
@@ -56,11 +58,16 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
     () => [
       { field: "index", headerName: "Sort" },
       { field: "ItemId", headerName: "Part Number", valueFormatter: (r) => r.row?.ItemId?.name, width: 200 },
-      { field: "description", headerName: "Description", flex: 1 },
-      { field: "quantity", headerName: "QTY", width: 90 },
+      // { field: "description", headerName: "Description", flex: 1 },
+      { field: "qty", headerName: "QTY", width: 90 },
       { field: "price", headerName: "Price", width: 100 },
       { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
-      { field: "total", headerName: "Total", valueFormatter: (r) => r.row?.price * r.row?.quantity, width: 200 },
+      {
+        field: "total",
+        headerName: "Total",
+        valueFormatter: (r) => Number(r.row?.price) * Number(r.row?.qty),
+        width: 200,
+      },
     ],
     []
   );
@@ -205,7 +212,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
               <BaseDataGrid
                 height=" calc(100% - 100px)"
                 cols={LICols}
-                rows={lineItems || []}
+                rows={lineItems?.result || []}
                 onRowSelected={(r) => {
                   setSelectedLI(r);
                   setLineItemModal(true);

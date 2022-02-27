@@ -67,7 +67,7 @@ export const DocumentForm = ({
       setIsUploading(false);
     }
   };
-  console.log(createdQoute);
+
   return (
     <Box>
       <Typography>We made a pdf from your Quote, now you can save it</Typography>
