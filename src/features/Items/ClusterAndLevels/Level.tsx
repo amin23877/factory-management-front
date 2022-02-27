@@ -15,14 +15,18 @@ export default function Level({
   handleChange: any;
   handleBlur: any;
 }) {
-  return (
-    <ArraySelect
-      items={level.valid || []}
-      name={level.name}
-      label={splitLevelName(level.name)}
-      onChange={handleChange}
-      onBlur={handleBlur}
-      value={values[level.name]}
-    />
-  );
+  if (values?.clusterValue === level?.clusterValueRef) {
+    return (
+      <ArraySelect
+        items={level.valid || []}
+        name={level.name}
+        label={splitLevelName(level.name)}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        value={values[level.name] || values?.levels[level.name] || ""}
+      />
+    );
+  }
+
+  return <></>;
 }

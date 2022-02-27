@@ -436,7 +436,7 @@ function ItemsDetails({
                 >
                   <Tab label="Document" />
                   <Tab label="Vendor" />
-                  <Tab label="BOM" disabled={!selectedRow.bom} />
+                  <Tab label="BOM" disabled={!values.bom} />
                   <Tab label="Sales order History" />
                   <Tab label="PO History" />
                   <Tab label="Usage" />

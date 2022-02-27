@@ -15,32 +15,29 @@ import {
   makeStyles,
   useMediaQuery,
 } from "@material-ui/core";
-import DateTimePicker from "../../../app/DateTimePicker";
 
-import TextField from "../../../app/TextField";
-import { FieldSelect, ArraySelect } from "../../../app/Inputs";
-import Button from "../../../app/Button";
-import LinkSelect from "../../../app/Inputs/LinkFields";
+import DateTimePicker from "app/DateTimePicker";
+import TextField from "app/TextField";
+import { FieldSelect, ArraySelect, CacheFieldSelect } from "app/Inputs";
+import Button from "app/Button";
+import LinkSelect from "app/Inputs/LinkFields";
 
-import { getAllEmployees } from "../../../api/employee";
-import { getAllModelContact, getContacts } from "../../../api/contact";
-import { getClients } from "../../../api/client";
-import { getAddresses } from "../../../api/address";
-import { getPhones } from "../../../api/phone";
-import { getEmails } from "../../../api/emailAddress";
-import { getProjects } from "../../../api/project";
-import { getQuoteById, getQuotes } from "../../../api/quote";
-import { getTickets } from "../../../api/ticket";
-import { ISO, ISOComplete } from "../../../api/so";
-import { createAModelDocument } from "../../../api/document";
+import { getAllEmployees } from "api/employee";
+import { getAllModelContact } from "api/contact";
+import { getClients } from "api/client";
+import { getProjects } from "api/project";
+import { getQuoteById, getQuotes } from "api/quote";
+import { getTickets } from "api/ticket";
+import { ISO, ISOComplete } from "api/so";
+import { createAModelDocument } from "api/document";
 
-import { exportPdf } from "../../../logic/pdf";
-import { formatTimestampToDate } from "../../../logic/date";
+import { exportPdf } from "logic/pdf";
+import { formatTimestampToDate } from "logic/date";
 
-import SOCus from "../../../PDFTemplates/SOCus";
-import SORep from "../../../PDFTemplates/SORep";
-import SOAcc from "../../../PDFTemplates/SOAcc";
-import { getPO } from "../../../api/po";
+import SOCus from "PDFTemplates/SOCus";
+import SORep from "PDFTemplates/SORep";
+import SOAcc from "PDFTemplates/SOAcc";
+import { getPO } from "api/po";
 
 const useStyles = makeStyles({
   checkboxLabel: {
@@ -870,9 +867,9 @@ export const BillingTab = ({
 }) => {
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10}>
-      <FieldSelect
+      <CacheFieldSelect
         value={values.billing ? values.billing : ""}
-        request={getAddresses}
+        url="/address"
         itemTitleField="address"
         itemValueField="id"
         keyField="id"
@@ -880,9 +877,9 @@ export const BillingTab = ({
         label="Address"
         onChange={handleChange}
       />
-      <FieldSelect
+      <CacheFieldSelect
         value={values.billingContact ? values.billingContact : ""}
-        request={getContacts}
+        url="/contact"
         itemTitleField="lastName"
         itemValueField="id"
         keyField="id"
@@ -890,9 +887,9 @@ export const BillingTab = ({
         label="Contact"
         onChange={handleChange}
       />
-      <FieldSelect
+      <CacheFieldSelect
         value={values.billingPhone ? values.billingPhone : ""}
-        request={getPhones}
+        url="/phone"
         itemTitleField="phone"
         itemValueField="id"
         keyField="id"
@@ -900,15 +897,14 @@ export const BillingTab = ({
         label="Phone"
         onChange={handleChange}
       />
-      <FieldSelect
+      <CacheFieldSelect
         value={values.billingEmail ? values.billingEmail : ""}
-        request={getEmails}
+        url="/email"
         itemTitleField="email"
         itemValueField="id"
         keyField="id"
         name="billingEmail"
-        label="
-                Email"
+        label="Email"
         onChange={handleChange}
       />
       <FormControl>

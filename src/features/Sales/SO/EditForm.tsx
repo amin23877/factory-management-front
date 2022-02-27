@@ -126,12 +126,10 @@ export const FinalForm = ({
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async () => {
-    // console.log({ data });
     setLoading(true);
     try {
       const resp = await createSOComplete(data);
       if (resp) {
-        console.log(resp);
         onDone(resp);
       }
     } catch (error) {

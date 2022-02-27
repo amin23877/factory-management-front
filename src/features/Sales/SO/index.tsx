@@ -38,6 +38,8 @@ export default function SalesOrderPanel() {
   const [selectedLS, setSelectedLS] = useState<ILineService>();
   const [selectedSO, setSelectedSO] = useState<ISO>();
 
+  const [refresh, setRefresh] = useState<number>(0);
+
   const handleDelete = async () => {
     try {
       if (selectedSO && selectedSO.id) {
@@ -95,7 +97,15 @@ export default function SalesOrderPanel() {
         />
       )}
 
-      <AddSOModal open={addSo} onClose={() => setAddSo(false)} onDone={() => mutate("/so")} />
+      <AddSOModal
+        open={addSo}
+        onClose={() => setAddSo(false)}
+        onDone={() => {
+          mutate("/so");
+          setRefresh((prev) => prev + 1);
+        }}
+      />
+
       <Confirm
         open={confirm}
         onClose={() => setConfirm(false)}
@@ -168,6 +178,7 @@ export default function SalesOrderPanel() {
         </Tabs>
         {activeTab === 0 && (
           <Datagrid
+            refresh={refresh}
             onRowSelected={(d) => {
               setSelectedSO(d);
               setActiveTab(1);

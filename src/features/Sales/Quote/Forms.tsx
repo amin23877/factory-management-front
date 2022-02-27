@@ -10,23 +10,22 @@ import {
   Radio,
   useMediaQuery,
 } from "@material-ui/core";
-import DateTimePicker from "../../../app/DateTimePicker";
+import DateTimePicker from "app/DateTimePicker";
 
-import TextField from "../../../app/TextField";
-import Button from "../../../app/Button";
-import { FieldSelect, ArraySelect } from "../../../app/Inputs";
-import { getAllEmployees } from "../../../api/employee";
-import { getProjects } from "../../../api/project";
-import { getItems } from "../../../api/items";
-import { exportPdf } from "../../../logic/pdf";
-import { getTickets } from "../../../api/ticket";
-import QuotePDF from "../../../PDFTemplates/Quote";
-import { createAModelDocument } from "../../../api/document";
-import { IQuoteComplete } from "../../../api/quote";
-// import { getContacts } from "../../../api/contact";
-import { getClients, IClient } from "../../../api/client";
-import LinkSelect from "../../../app/Inputs/LinkFields";
-import { getSO } from "../../../api/so";
+import TextField from "app/TextField";
+import Button from "app/Button";
+import { FieldSelect, ArraySelect, CacheFieldSelect } from "app/Inputs";
+import LinkSelect from "app/Inputs/LinkFields";
+
+import { getItems } from "api/items";
+import { getTickets } from "api/ticket";
+import { createAModelDocument } from "api/document";
+import { IQuoteComplete } from "api/quote";
+// import { getContacts } from "api/contact";
+import { getClients, IClient } from "api/client";
+import { getSO } from "api/so";
+import { exportPdf } from "logic/pdf";
+import QuotePDF from "PDFTemplates/Quote";
 
 export const DocumentForm = ({
   onDone,
@@ -85,7 +84,7 @@ export const DocumentForm = ({
             minHeight: "1200px",
           }}
         >
-          <QuotePDF data={data} createdQuote={createdQoute} />
+          <QuotePDF createdQuote={createdQoute} />
         </div>
       </div>
       <Box
@@ -264,7 +263,7 @@ export const GeneralForm = ({
           onBlur={handleBlur}
         />
         <TextField value={values.location} name="location" label="Location" onChange={handleChange} />
-        <LinkSelect
+        {/* <LinkSelect
           filterLabel="name"
           path="/project"
           value={typeof values.ProjectId === "string" ? values.ProjectId : values.ProjectId}
@@ -278,10 +277,10 @@ export const GeneralForm = ({
           }}
           onBlur={handleBlur}
           url="/panel/project"
-        />
-        <FieldSelect
+        /> */}
+        <CacheFieldSelect
           value={typeof values.salesperson === "string" ? values.salesperson : values.salesperson?.id}
-          request={getAllEmployees}
+          url="/employee"
           itemTitleField="username"
           itemValueField="id"
           keyField="id"

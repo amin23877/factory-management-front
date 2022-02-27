@@ -99,14 +99,6 @@ export default function AddSOModal({
           </Box>
         )}
         {step === 1 && (
-          // <LinesForm
-          //     data={so}
-          //     onBack={() => setStep(0)}
-          //     onDone={(items: any) => {
-          //         setSO((prev: any) => ({ ...prev, lines: items }));
-          //         setStep(2);
-          //     }}
-          // />
           <div>
             <GroupLineItemTable groups={groups} setGroups={(g) => setGroups(g)} />
             <Box display="flex" justifyContent="space-between">

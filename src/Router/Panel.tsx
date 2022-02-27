@@ -38,6 +38,7 @@ const Purchase = React.lazy(() => import("../pages/Purchase"));
 const Production = React.lazy(() => import("../pages/Production"));
 const ShippingAndReceiVing = React.lazy(() => import("../pages/ShippingAndReceiVing"));
 const Engineering = React.lazy(() => import("../pages/Engineering"));
+const Notification = React.lazy(() => import("../pages/Notification"));
 const Page404 = React.lazy(() => import("../pages/404"));
 
 const ItemDetails = React.lazy(() => import("../pages/ItemDetails"));
@@ -252,6 +253,7 @@ export default function PanelRouter() {
                 <Route exact path="/panel/production" component={Production} />
                 <Route exact path="/panel/shipping" component={ShippingAndReceiVing} />
                 <Route exact path="/panel/engineering" component={Engineering} />
+                <Route exact path="/panel/notification" component={Notification} />
 
                 <Route exact path="/panel/inventory/:itemId" component={ItemDetails} />
                 <Route exact path="/panel/engineering/:deviceId" component={DeviceDetails} />

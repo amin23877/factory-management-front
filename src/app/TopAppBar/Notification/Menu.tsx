@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import useSWR from "swr";
 import { CheckRounded } from "@material-ui/icons";
+import { Link } from "react-router-dom";
 
 import Button from "app/Button";
 import { notificationType } from "api/notification";
@@ -56,9 +57,11 @@ export default function NotificationMenu({
               </ListItem>
             ))}
         </List>
-        <Button variant="outlined" fullWidth>
-          See More
-        </Button>
+        <Link to="/panel/notification">
+          <Button variant="outlined" fullWidth>
+            See More
+          </Button>
+        </Link>
       </Box>
     </Popover>
   );

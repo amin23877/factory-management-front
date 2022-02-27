@@ -1,29 +1,31 @@
 import React, { useMemo, useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
+import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
-import Button from "../../../app/Button";
-import { BasePaper } from "../../../app/Paper";
+import Button from "app/Button";
+import { BasePaper } from "app/Paper";
+import DataGrid from "app/NewDataGrid";
 
 import Confirm from "../../Modals/Confirm";
 import EditTab from "./EditTab";
 import AddQuote from "./AddQuote";
-import DataGrid from "../../../app/NewDataGrid";
 import ReqQuoteModal from "./ReqQuote/Modals";
 import EmailModal from "../../Email/Modal";
 
-import { deleteQuote, IQuote } from "../../../api/quote";
-import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
+import { deleteQuote, IQuote } from "api/quote";
 
 export default function QuotePanel() {
   // interface del any
-  const [selectedQuote, setSelectedQuote] = useState<IQuote | any>({ id: "", QuoteRequestId: "" });
+  const [selectedQuote, setSelectedQuote] = useState<IQuote | any>();
   const [activeTab, setActiveTab] = useState(0);
   const [addQ, setAddQ] = useState(false);
   const [reqQuote, setReqQuote] = useState(false);
   const [compQ] = useState<any>();
   const [confirm, setConfirm] = useState(false);
   const [emailModal, setEmailModal] = useState(false);
+
+  const [refresh, setRefresh] = useState<number>(0);
 
   const handleDelete = async () => {
     try {
@@ -85,7 +87,16 @@ export default function QuotePanel() {
   return (
     <>
       <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
-      {addQ && <AddQuote open={addQ} onClose={() => setAddQ(false)} initialData={compQ || {}} onDone={() => {}} />}
+      {addQ && (
+        <AddQuote
+          open={addQ}
+          onClose={() => setAddQ(false)}
+          initialData={compQ || {}}
+          onDone={() => {
+            setRefresh((prev) => prev + 1);
+          }}
+        />
+      )}
       <ReqQuoteModal open={reqQuote} onClose={() => setReqQuote(false)} />
       <EmailModal open={emailModal} onClose={() => setEmailModal(false)} />
       <Box display="flex" alignItems="center" style={{ gap: 10 }} mb={1}>
@@ -103,11 +114,9 @@ export default function QuotePanel() {
         </Button>
 
         {selectedQuote ? (
-          <div>
-            <Button kind="delete" onClick={() => setConfirm(true)} disabled={!selectedQuote}>
-              Delete Quote
-            </Button>
-          </div>
+          <Button kind="delete" onClick={() => setConfirm(true)} disabled={!selectedQuote}>
+            Delete Quote
+          </Button>
         ) : (
           <>
             <Button variant="outlined" onClick={() => setReqQuote(true)} style={{ padding: "5px 10px" }}>
@@ -148,6 +157,7 @@ export default function QuotePanel() {
         </Tabs>
         {activeTab === 0 && (
           <DataGrid
+            refresh={refresh}
             onRowSelected={(d) => {
               setSelectedQuote(d);
               setActiveTab(1);

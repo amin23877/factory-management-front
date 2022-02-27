@@ -149,12 +149,14 @@ function NewDataGrid({
   style,
   url,
   initParams,
+  refresh,
 }: {
   onRowSelected: (row: any) => void;
   columns: any[];
   style?: any;
   url: string;
   initParams?: ParameterType;
+  refresh?: number;
 }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [columnsState, setColumnsState] = useState<any[]>(columns.map((c) => ({ ...c, visible: true })));
@@ -269,7 +271,8 @@ function NewDataGrid({
         return { data: [], count: 0 };
       }
     },
-    [initParams, url]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [initParams, url, refresh]
   );
 
   const handleToggleVisible = (index: number, visible: boolean) => {

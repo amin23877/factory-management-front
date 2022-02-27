@@ -25,7 +25,7 @@ type formInitialValuesType = Omit<Partial<ILevel>, "valid"> & {
 
 export default function Modal({ onClose, open }: { open: boolean; onClose: () => void }) {
   const [selectedLevel, setSelectedLevel] = useState<ILevel>();
-  const { data: levels } = useSWR("/level");
+  const { data: levels, mutate } = useSWR("/level");
 
   const cols = useMemo<GridColumns>(
     () => [
@@ -48,6 +48,8 @@ export default function Modal({ onClose, open }: { open: boolean; onClose: () =>
       }
     } catch (error) {
       Toast("An error ocurred", "error");
+    } finally {
+      mutate();
     }
   };
 

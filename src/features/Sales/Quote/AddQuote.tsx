@@ -1,18 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Box, Button, Step, StepLabel, Stepper, useMediaQuery } from "@material-ui/core";
 
-import Dialog from "../../../app/Dialog";
+import Dialog from "app/Dialog";
 
-import { LinesForm } from "../../Purchase/PO/Forms";
+// import { LinesForm } from "../../Purchase/PO/Forms";
 import General from "./General";
 import { FinalForm } from "./EditForm";
 import { DocumentForm } from "./Forms";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
-import { createQuoteComplete, IQuote } from "../../../api/quote";
-import { ILineItem } from "../../../api/lineItem";
-import { IItem } from "../../../api/items";
+import { createQuoteComplete, IQuote } from "api/quote";
 import GroupLineItemTable from "components/GroupLineItemTable";
 
 const schema = Yup.object().shape({
@@ -39,63 +37,24 @@ export default function AddQuote({
   const [quote, setQuote] = useState<any>(initialData);
   const [createdQuote, setCreatedQuote] = useState<IQuote>();
   const [loading, setLoading] = useState(false);
-
-  const [createdItems, setCreatedItems] = useState(quote?.lines ? quote.lines : []);
   const [groups, setGroups] = useState<any[]>([]);
-
-  const handleAddItem = (d: ILineItem, i: IItem | undefined) => {
-    if (d) {
-      setCreatedItems((prev: any) => prev.concat({ ...d, i }));
-    }
-  };
-  const handleEdit = (d: ILineItem, index: number, i: any, belongsTo?: number, itemId?: string) => {
-    if (d) {
-      const newArray = createdItems.slice();
-      if (belongsTo) {
-        newArray[index] = { ...d, i, belongsTo: belongsTo, belongsToItemId: itemId };
-      } else {
-        newArray[index] = { ...d, i };
-      }
-      setCreatedItems(newArray);
-    }
-  };
-  const handleAddService = (d: ILineItem, index: any, i: any, itemId?: string) => {
-    if (d) {
-      let first = createdItems.slice(0, index);
-      let second = createdItems.slice(index);
-      setCreatedItems(first.concat({ ...d, i, belongsTo: index, belongsToItemId: itemId }, second));
-    }
-  };
-  const handleDeleteItem = async (index: number) => {
-    setCreatedItems((prev: any) => prev.filter((item: any, ind: number) => ind !== index));
-  };
 
   const handleNext = async () => {
     if (activeStep === 0) {
-      //   const res = [...createdItems];
-      //   res.forEach((_line, index) => {
-      //     res[index].services = res[index].services?.map((s: any) => ({
-      //       ServiceId: s.id,
-      //       price: s.price,
-      //       quantity: 1,
-      //     }));
-      //   });
-      //   let entry = new Date(ref?.current?.values?.entryDate);
-      //   let exp = new Date(ref?.current?.values?.expireDate);
       setQuote((d: any) => ({
         ...d,
         lines: groups,
         ...ref?.current?.values,
       }));
+
       setActiveStep((prev) => prev + 1);
-      //   console.log({ values: ref?.current?.values, groups });
     } else if (activeStep === 1) {
       try {
         setLoading(true);
         const resp = await createQuoteComplete(quote);
         if (resp) {
           onDone();
-          setCreatedQuote(resp);
+          setCreatedQuote({ ...resp, lines: groups });
           setActiveStep((prev) => prev + 1);
         }
       } catch (error) {
@@ -156,14 +115,6 @@ export default function AddQuote({
                 </Form>
               )}
             </Formik>
-            {/* <LinesForm
-                            handleEdit={handleEdit}
-                            devices={initialData?.devices}
-                            createdItems={createdItems}
-                            handleSubmit={handleAddItem}
-                            handleDelete={handleDeleteItem}
-                            handleAddService={handleAddService}
-                        /> */}
             <div>
               <GroupLineItemTable groups={groups} setGroups={(g) => setGroups(g)} />
             </div>
