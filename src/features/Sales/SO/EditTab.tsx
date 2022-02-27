@@ -20,6 +20,7 @@ import DocumentModal from "../../../common/DocumentModal";
 
 import { openRequestedSinglePopup } from "../../../logic/window";
 import { useHistory } from "react-router";
+import { lineItemType } from "components/GroupLineItemTable/useGroupedLineItems";
 
 const style = {
   border: "1px solid gray ",
@@ -47,7 +48,7 @@ export default function EditTab({
 
   const history = useHistory();
 
-  const { data: lineItems } = useSWR(
+  const { data: lineItems } = useSWR<{ result: lineItemType[]; total: number }>(
     selectedSo && selectedSo.id && activeTab === 0 ? `/lineitem?SOId=${selectedSo.id}` : null
   );
 
@@ -235,7 +236,7 @@ export default function EditTab({
           {activeTab === 0 && (
             <BaseDataGrid
               cols={LICols}
-              rows={lineItems || []}
+              rows={lineItems?.result || []}
               onRowSelected={(r) => {
                 phone
                   ? history.push(`/panel/engineering/${r?.ItemId?.id}`)
