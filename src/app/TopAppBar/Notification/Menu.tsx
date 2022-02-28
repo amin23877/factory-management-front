@@ -48,7 +48,7 @@ export default function NotificationMenu({
           {notifications &&
             notifications.result.slice(0, 6).map((n, i) => (
               <ListItem key={i}>
-                <ListItemText primary={n.title} secondary={n.type === "Engineering Approval" && n.data.ItemId} />
+                <ListItemText primary={n.title} secondary={n.type === "Engineering Approval" && n?.data?.ItemId} />
                 <ListItemSecondaryAction>
                   <IconButton size="small">
                     <CheckRounded />

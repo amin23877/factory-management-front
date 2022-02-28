@@ -1,23 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box, Button, Step, StepLabel, Stepper, useMediaQuery } from "@material-ui/core";
+import { Box, Button, Step, StepLabel, Stepper, Tab, Tabs, useMediaQuery } from "@material-ui/core";
+import { Formik, Form } from "formik";
 
 import Dialog from "app/Dialog";
+import { BasePaper } from "app/Paper";
 
-// import { LinesForm } from "../../Purchase/PO/Forms";
-import General from "./General";
+import General from "./Forms/General";
+import Entities from "./Forms/Entities";
 import { FinalForm } from "./EditForm";
 import { DocumentForm } from "./Forms";
-import { Formik, Form } from "formik";
-import * as Yup from "yup";
 
 import { createQuoteComplete, IQuote } from "api/quote";
 import GroupLineItemTable from "components/GroupLineItemTable";
-
-const schema = Yup.object().shape({
-  // requester: Yup.string().required(),
-  // ClientId: Yup.string().required(),
-  // salesperson: Yup.string().required(),
-});
 
 export default function AddQuote({
   open,
@@ -38,14 +32,25 @@ export default function AddQuote({
   const [createdQuote, setCreatedQuote] = useState<IQuote>();
   const [loading, setLoading] = useState(false);
   const [groups, setGroups] = useState<any[]>([]);
+  const [activeTab, setActiveTab] = useState(0);
 
   const handleNext = async () => {
     if (activeStep === 0) {
-      setQuote((d: any) => ({
-        ...d,
-        lines: groups,
-        ...ref?.current?.values,
-      }));
+      if (ref?.current?.values?.entryDate || ref?.current?.values?.expireDate) {
+        setQuote((d: any) => ({
+          ...d,
+          lines: groups,
+          ...ref?.current?.values,
+          entryDate: Number(new Date(ref?.current?.values?.entryDate)),
+          expireDate: Number(new Date(ref?.current?.values?.expireDate)),
+        }));
+      } else {
+        setQuote((d: any) => ({
+          ...d,
+          lines: groups,
+          ...ref?.current?.values,
+        }));
+      }
 
       setActiveStep((prev) => prev + 1);
     } else if (activeStep === 1) {
@@ -97,21 +102,30 @@ export default function AddQuote({
             gridTemplateColumns={phone ? "1fr" : "1fr 1fr"}
             height={phone ? "auto" : "100%"}
           >
-            <Formik
-              innerRef={ref}
-              initialValues={{ ...initialData } as IQuote}
-              validationSchema={schema}
-              onSubmit={() => {}}
-            >
-              {({ handleChange, handleBlur, values, setFieldValue }) => (
+            <Formik innerRef={ref} initialValues={{ ...initialData } as IQuote} onSubmit={() => {}}>
+              {({ getFieldProps }) => (
                 <Form>
-                  <General
-                    add={true}
-                    handleChange={handleChange}
-                    handleBlur={handleBlur}
-                    values={values}
-                    setFieldValue={setFieldValue}
-                  />
+                  <Box display="flex" flexDirection="column" height="100%" gridGap={10}>
+                    <BasePaper>
+                      <General getFieldProps={getFieldProps} />
+                    </BasePaper>
+                    <BasePaper style={{ height: "100%" }}>
+                      <Tabs
+                        value={activeTab}
+                        onChange={(e, nv) => setActiveTab(nv)}
+                        variant="scrollable"
+                        style={{ maxWidth: 500 }}
+                        textColor="primary"
+                      >
+                        <Tab label="Entities" />
+                        <Tab label="Commission" />
+                      </Tabs>
+                      {activeTab === 0 && <Entities getFieldProps={getFieldProps} />}
+                      {/* {activeTab === 1 && (
+                        <CommissionTab values={values} handleBlur={handleBlur} handleChange={handleChange} add={add} />
+                      )} */}
+                    </BasePaper>
+                  </Box>
                 </Form>
               )}
             </Formik>

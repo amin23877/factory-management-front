@@ -4,7 +4,6 @@ import { GridColDef } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 
-import { host } from "host";
 import Button from "app/Button";
 import BaseDataGrid from "app/BaseDataGrid";
 import { BasePaper } from "app/Paper";
@@ -54,7 +53,7 @@ function ItemsDetails({
 }) {
   const qrCode = useRef<HTMLElement | null>(null);
 
-  const [img, setImg] = useState<any>();
+  // const [img, setImg] = useState<any>();
 
   const handleFileChange = async (e: any) => {
     if (selectedRow && selectedRow.id) {
@@ -62,11 +61,11 @@ function ItemsDetails({
         return;
       }
       let file = e.target.files[0];
-      let url = URL.createObjectURL(file);
-      const resp = await addImage(selectedRow.id, file);
-      if (resp) {
-        setImg(url);
-      }
+      // let url = URL.createObjectURL(file);
+      await addImage(selectedRow.id, file);
+      // if (resp) {
+      //   setImg(url);
+      // }
     }
   };
   const [moreInfoTab, setMoreInfoTab] = useState(0);

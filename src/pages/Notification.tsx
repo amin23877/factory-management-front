@@ -20,7 +20,9 @@ import { notificationType } from "api/notification";
 function getNotificationBody(notification: notificationType) {
   switch (notification.type) {
     case "Engineering Approval":
-      return `${notification.body} ${notification?.data?.ItemId ? `- Item Number:${notification?.data?.ItemId}` : ""}`;
+      return `${notification.body} ${
+        notification?.data && notification?.data?.ItemId ? `- Item Number:${notification?.data?.ItemId}` : ""
+      }`;
     default:
       return "";
   }

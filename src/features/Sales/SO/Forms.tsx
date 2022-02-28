@@ -154,7 +154,7 @@ export const GeneralForm = ({
         <TextField
           value={values.invoiceNumber}
           name="invoiceNumber"
-          label={values.invoiceLabel}
+          label={values.invoiceLabel || "Invoice"}
           onChange={handleChange}
           onBlur={handleBlur}
         />

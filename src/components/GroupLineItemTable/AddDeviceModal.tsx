@@ -32,6 +32,10 @@ export default function AddDeviceModal({
                 onChange={(e) => {
                   setFieldValue("ItemId", (e.target.value as any).id);
                   setFieldValue("ItemObject", e.target.value);
+                  if (e.target.value && (e.target.value as any).isUnit) {
+                    setFieldValue("unit", (e.target.value as any).isUnit);
+                    setFieldValue("standardWarranty", true);
+                  }
                 }}
                 required
               >

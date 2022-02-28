@@ -263,12 +263,11 @@ export const GeneralForm = ({
           onBlur={handleBlur}
         />
         <TextField value={values.location} name="location" label="Location" onChange={handleChange} />
-        {/* <LinkSelect
+        <LinkSelect
           filterLabel="name"
           path="/project"
           value={typeof values.ProjectId === "string" ? values.ProjectId : values.ProjectId}
           label="Project Name"
-          request={getProjects}
           getOptionList={(resp) => resp?.result}
           getOptionLabel={(project) => project?.name}
           getOptionValue={(project) => project?.id}
@@ -277,7 +276,7 @@ export const GeneralForm = ({
           }}
           onBlur={handleBlur}
           url="/panel/project"
-        /> */}
+        />
         <CacheFieldSelect
           value={typeof values.salesperson === "string" ? values.salesperson : values.salesperson?.id}
           url="/employee"
@@ -368,14 +367,13 @@ export const EntitiesTab = ({
   const [rep, setRep] = useState<IClient>();
   const [client, setClient] = useState<IClient>();
   return (
-    <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr "} gridColumnGap={5} pt="12px">
+    <Box display="grid" gridTemplateColumns={"1fr 1fr"} gridColumnGap={5} pt="12px">
       <Box mb={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={7}>
         <LinkSelect
           filterLabel="name"
-          path="/customer"
+          path="/client"
           value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
           label="rep / Agency"
-          request={getClients}
           getOptionList={(resp) => resp?.result}
           getOptionLabel={(cus) => cus?.name}
           getOptionValue={(cus) => cus?.id}
@@ -386,52 +384,32 @@ export const EntitiesTab = ({
           onBlur={handleBlur}
           url="/panel/customer"
         />
-        {/* <TextField
-          value={rep?.address}
-          label="Address"
-          disabled
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
         <TextField
-          value={rep?.city}
-          name="city"
-          label="City"
+          value={values.requesterName}
+          name="requesterName"
+          label="Requester Name"
           onChange={handleChange}
           onBlur={handleBlur}
-          InputLabelProps={{
-            shrink: true,
-          }}
-          disabled
         />
         <TextField
-          value={rep?.state}
-          name="state"
-          label="State"
+          value={values.requesterMail}
+          name="requesterMail"
+          label="Requester Mail"
           onChange={handleChange}
           onBlur={handleBlur}
-          disabled
-          InputLabelProps={{
-            shrink: true,
-          }}
         />
         <TextField
-          value={rep?.zipcode}
-          name="zipCode"
-          label="Zip Code"
+          value={values.requesterPhone}
+          name="requesterPhone"
+          label="Requester Phone"
           onChange={handleChange}
           onBlur={handleBlur}
-          disabled
-          InputLabelProps={{
-            shrink: true,
-          }}
-        /> */}
+        />
       </Box>
       <Box mb={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={7}>
         <LinkSelect
           filterLabel="name"
-          path="/customer"
+          path="/client"
           value={typeof values.client === "string" ? values.client : values.client?.id}
           label="Client"
           request={getClients}
@@ -489,36 +467,6 @@ export const EntitiesTab = ({
             shrink: true,
           }}
         />
-      </Box>
-      <Box
-        style={phone ? { gridColumnEnd: "span 2" } : {}}
-        display="grid"
-        gridTemplateColumns={phone ? "1fr 1fr" : " 1fr "}
-        gridGap={7}
-        gridRowGap={7}
-      >
-        <TextField
-          value={values.requesterName}
-          name="requesterName"
-          label="Requester Name"
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        <TextField
-          value={values.requesterMail}
-          name="requesterMail"
-          label="Requester Mail"
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        <TextField
-          value={values.requesterPhone}
-          name="requesterPhone"
-          label="Requester Phone"
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        <div style={{ height: "80px", width: "100%" }}></div>
       </Box>
     </Box>
   );

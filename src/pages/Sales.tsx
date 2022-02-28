@@ -14,7 +14,7 @@ import Clients from "../features/Sales/Customer";
 import { usePortal } from "../logic/PortalContext";
 
 export default function Sales() {
-  const [activeTab, setActiveTab] = useState(3);
+  const [activeTab, setActiveTab] = useState(5);
   const [tabText, setTabText] = useState("Quotes");
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 

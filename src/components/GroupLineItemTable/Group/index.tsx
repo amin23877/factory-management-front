@@ -54,6 +54,10 @@ export default function Group({
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
 
+  const groupAlreadyHasDevice = () => {
+    return row.some((l: any) => l.type === "device");
+  };
+
   return (
     <>
       <TableRow className={classes.root}>
@@ -88,9 +92,11 @@ export default function Group({
                 <Typography variant="h6" gutterBottom component="div">
                   Line Items
                 </Typography>
-                <Button variant="outlined" onClick={onAddDevice}>
-                  Add Device
-                </Button>
+                {!groupAlreadyHasDevice() && (
+                  <Button variant="outlined" onClick={onAddDevice}>
+                    Add Device
+                  </Button>
+                )}
                 <Button variant="outlined" onClick={onAddService}>
                   Add Service
                 </Button>

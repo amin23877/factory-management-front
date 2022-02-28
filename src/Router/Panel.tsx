@@ -260,6 +260,7 @@ export default function PanelRouter() {
                 <Route exact path="/panel/production/:unitNumber" component={UnitDetails} />
                 <Route exact path="/panel/quote/:quoteNumber" component={QuoteDetails} />
                 <Route exact path="/panel/so/:soNumber" component={SODetails} />
+                {/* TODO: change customer to client, everywhere, there are links to this page */}
                 <Route exact path="/panel/customer/:cusNumber" component={CustomerDetails} />
 
                 <Route exact path="/panel/bom/:bomId/parts" component={BomParts} />
