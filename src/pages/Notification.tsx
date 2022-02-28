@@ -16,16 +16,36 @@ import { ArrowForwardRounded, DeleteRounded, FolderRounded } from "@material-ui/
 import useSWR from "swr";
 
 import { notificationType } from "api/notification";
+import { Link } from "react-router-dom";
 
 function getNotificationBody(notification: notificationType) {
   switch (notification.type) {
     case "Engineering Approval":
       return `${notification.body} ${
-        notification?.data && notification?.data?.ItemId ? `- Item Number:${notification?.data?.ItemId}` : ""
+        Object.keys(notification?.data).length > 0 ? `- Item Number:${notification?.data?.no}` : ""
+      }`;
+    case "Purchasing Required":
+      return `${notification.body} ${
+        Object.keys(notification?.data).length > 0 ? `- Item Number:${notification?.data?.no}` : ""
       }`;
     default:
       return "";
   }
+}
+
+function getNotificationLink(notification: notificationType) {
+  if (notification.type === "Engineering Approval" && notification?.data?.id) {
+    return `/panel/inventory/${notification?.data?.id}`;
+  } else if (notification.type === "Purchasing Required") {
+    return `/panel/sales`;
+  }
+
+  return null;
+}
+
+function getNotificationDate(notification: notificationType) {
+  const date = new Date(notification.createdAt);
+  return date.toLocaleDateString() + " " + date.toLocaleTimeString();
 }
 
 export default function Notification() {
@@ -47,15 +67,19 @@ export default function Notification() {
                   </ListItemAvatar>
                   <ListItemText
                     primary={`${notification.type} - ${notification.title}`}
-                    secondary={getNotificationBody(notification)}
+                    secondary={getNotificationDate(notification) + " / " + getNotificationBody(notification)}
                   />
                   <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete">
+                    <IconButton edge="end" aria-label="delete" style={{ marginRight: "2em" }}>
                       <DeleteRounded />
                     </IconButton>
-                    <IconButton edge="end" aria-label="go forward">
-                      <ArrowForwardRounded />
-                    </IconButton>
+                    {getNotificationLink(notification) && (
+                      <Link to={getNotificationLink(notification) as string}>
+                        <IconButton edge="end" aria-label="go forward">
+                          <ArrowForwardRounded />
+                        </IconButton>
+                      </Link>
+                    )}
                   </ListItemSecondaryAction>
                 </ListItem>
               ))}
