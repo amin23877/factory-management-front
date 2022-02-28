@@ -937,7 +937,7 @@ export const CreateForm = ({ onDone, data }: { data?: any; onDone: (data: IPurch
               }}
             >
               <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10} flex={2}>
-                <FieldSelect
+                {/* <FieldSelect
                   request={getPPOTypes}
                   itemTitleField="name"
                   itemValueField="id"
@@ -949,7 +949,7 @@ export const CreateForm = ({ onDone, data }: { data?: any; onDone: (data: IPurch
                     typeof values.PurchasePOTypeId === "string" ? values.PurchasePOTypeId : values.PurchasePOTypeId?.id
                   }
                   error={Boolean(errors.PurchasePOTypeId)}
-                />
+                /> */}
                 <FieldSelect
                   itemValueField="id"
                   itemTitleField="number"
