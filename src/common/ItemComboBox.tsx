@@ -2,7 +2,7 @@ import React, { useState, useCallback, useMemo, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import useSWR from "swr";
+// import useSWR from "swr";
 
 import { IItem } from "api/items";
 import { get } from "api";
@@ -23,7 +23,7 @@ export default function ItemComboBox({
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const response = await get(query ? `/item?startswithno=${query}` : `/item`);
+        const response = await get(query ? `/item?startsWithno=${query}` : `/item`);
         setOptions(response.result);
       } catch (error) {
         console.log(error);
