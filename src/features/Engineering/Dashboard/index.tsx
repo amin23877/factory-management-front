@@ -11,6 +11,7 @@ import Reports from "./Report";
 import { FieldModal, PurchaseModal } from "./Modals";
 import { formatTimestampToDate } from "../../../logic/date";
 import { useHistory } from "react-router-dom";
+import { engineeringApprovalType } from "api/engineering";
 
 export default function EngineeringDashboard() {
   const history = useHistory();
@@ -21,11 +22,12 @@ export default function EngineeringDashboard() {
   const [selectedField, setSelectedField] = useState();
   const [selectedPurchase, setSelectedPurchase] = useState();
 
-  const { data: engAp } = useSWR("/engapp");
-  const { data: FSH } = useSWR("/fsh"); // Field Service Help
-  const { data: PQ } = useSWR("/pq"); // purchasing question
-  const { data: GQ } = useSWR("/gq"); //general question
-  const { data: QCCase } = useSWR("/qccase"); //general question
+  const { data: engAp } = useSWR<{ result: engineeringApprovalType[]; total: number }>("/engapp"); // Engineering Approvals
+  const { data: FSH } = useSWR<{ result: any[]; total: number }>("/fsh"); // Field Service Help
+  const { data: PQ } = useSWR<{ result: any[]; total: number }>("/pq"); // purchasing question
+  const { data: GQ } = useSWR<{ result: any[]; total: number }>("/gq"); //general question
+  const { data: QCCase } = useSWR<{ result: any[]; total: number }>("/qccase"); //general question
+  // SO	Unite	DeviceID Note	Eng.Ap	Priority
 
   const EACols = useMemo<GridColumns>(
     () => [
@@ -34,7 +36,7 @@ export default function EngineeringDashboard() {
         headerName: "Date",
         type: "date",
         width: 180,
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
+        valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
       },
       { field: "so", headerName: "SO", flex: 1 },
       { field: "unit", headerName: "Unit", flex: 1 },
@@ -164,7 +166,7 @@ export default function EngineeringDashboard() {
         {/* /panel/engineering/:deviceId */}
         {activeTab === 1 && (
           <BaseDataGrid
-            rows={engAp || []}
+            rows={engAp?.result || []}
             cols={EACols}
             onRowSelected={(d) => {
               history.push(`/panel/engineering/${d.ItemId.id}`);
@@ -174,7 +176,7 @@ export default function EngineeringDashboard() {
         )}
         {activeTab === 2 && (
           <BaseDataGrid
-            rows={FSH ? FSH.map((item: any, i: any) => ({ ...item, id: i })) : []}
+            rows={FSH?.result ? FSH.result.map((item: any, i: any) => ({ ...item, id: i })) : []}
             cols={FSCols}
             onRowSelected={(d) => {
               setSelectedField(d);
@@ -185,7 +187,7 @@ export default function EngineeringDashboard() {
         )}
         {activeTab === 3 && (
           <BaseDataGrid
-            rows={PQ || []}
+            rows={PQ?.result || []}
             cols={PCols}
             onRowSelected={(d) => {
               setSelectedPurchase(d);
@@ -195,10 +197,10 @@ export default function EngineeringDashboard() {
           />
         )}
         {activeTab === 4 && (
-          <BaseDataGrid rows={GQ || []} cols={QuestionCols} onRowSelected={() => {}} height={"78.7vh"} />
+          <BaseDataGrid rows={GQ?.result || []} cols={QuestionCols} onRowSelected={() => {}} height={"78.7vh"} />
         )}
         {activeTab === 5 && (
-          <BaseDataGrid rows={QCCase || []} cols={QCCols} onRowSelected={() => {}} height={"78.7vh"} />
+          <BaseDataGrid rows={QCCase?.result || []} cols={QCCols} onRowSelected={() => {}} height={"78.7vh"} />
         )}
       </BasePaper>
     </Box>

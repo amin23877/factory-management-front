@@ -24,19 +24,18 @@ export const fetcher = async (url: string) => {
 
 export const get = async (path: string, config?: AxiosRequestConfig) => {
   const onSuccess = (response: AxiosResponse<any>) => {
+    if (typeof response.data === "string") {
+      throw new Error("The response of this API endpoint is string");
+    }
     return response.data;
   };
 
   const onError = (error: any) => {
-    console.error("Get Request Failed:", error.config);
-
     if (error.response) {
-      console.error("Status:", error.response.status);
-      console.error("Data:", error.response.data);
+      console.error({ response: error.response, config: error.config });
       toast.error(error.response.data.error);
-      console.error("Headers:", error.response.headers);
     } else {
-      console.error("Error Message ---------------:", error.message);
+      console.error("Error Message: ", error.message);
     }
 
     return Promise.reject(error.response || error.message);

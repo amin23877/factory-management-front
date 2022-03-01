@@ -73,6 +73,7 @@ function ItemsDetails({
   const { data: services, mutate: mutateServices } = useSWR(
     activeTab === 2 ? (selectedRow && selectedRow.id ? `item/${selectedRow.id}/service` : null) : null
   );
+
   const { data: manSteps } = useSWR(
     activeTab === 3
       ? selectedRow && selectedRow.id
