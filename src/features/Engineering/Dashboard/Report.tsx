@@ -2,20 +2,21 @@ import React, { useMemo, useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import useSWR from "swr";
 
-import { BasePaper } from "../../../app/Paper";
-import BaseLineChart from "../../../app/Chart/LineChart";
-// import { extractEngAppData, extractFshData } from "../../../logic/reports/dashboard";
+import { BasePaper } from "app/Paper";
+import BaseLineChart from "app/Chart/LineChart";
+import { extractEngAppData } from "logic/reports/dashboard";
 
 export default function Report() {
   const [activeTab, setActiveTab] = useState(0);
 
-  const { data: engApp } = useSWR(activeTab === 0 ? "/engapp" : null);
-  const { data: fsh } = useSWR(activeTab === 2 ? "/fsh" : null);
+  const { data: engApp } = useSWR<{ result: any[]; total: number }>(
+    activeTab === 0 ? "/notification?type=Engineering Approval" : null
+  );
 
-  //   const engAppData = useMemo(() => (engApp && engApp.length ? extractEngAppData(engApp) : []), [engApp]);
-  //   const fshData = useMemo(() => (fsh && fsh.length ? extractFshData(fsh) : []), [fsh]);
-  const engAppData = useMemo(() => [], []);
-  const fshData = useMemo(() => [], []);
+  const engAppData = useMemo(
+    () => (engApp && engApp?.result?.length ? extractEngAppData(engApp.result) : []),
+    [engApp]
+  );
 
   return (
     <Box height="78.7vh">
@@ -35,7 +36,9 @@ export default function Report() {
         )}
         {activeTab === 1 && <Box flex={1}></Box>}
         {activeTab === 2 && (
-          <Box flex={1}>{fshData && <BaseLineChart data={fshData} xDataKey="date" barDataKey="units" />}</Box>
+          <Box flex={1}>
+            <BaseLineChart data={[]} xDataKey="date" barDataKey="units" />
+          </Box>
         )}
         {activeTab === 3 && <Box flex={1}></Box>}
         {activeTab === 4 && <Box flex={1}></Box>}
