@@ -111,11 +111,21 @@ export default function EditTab({
     () => [
       { field: "sort", headerName: "Sort", width: 80 },
       { field: "itemNo", headerName: "Part Number", valueFormatter: (r) => r.row?.ItemId?.no, width: 200 },
-      { field: "itemDescription", headerName: "Description", width: 150 },
-      { field: "quantity", headerName: "QTY", width: 90 },
+      {
+        field: "itemDescription",
+        headerName: "Description",
+        valueFormatter: (r) => r.row?.ItemId?.description,
+        width: 150,
+      },
+      { field: "qty", headerName: "QTY", width: 90 },
       { field: "price", headerName: "Price", width: 100 },
       { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
-      { field: "total", headerName: "Total", valueFormatter: (r) => r.row?.price * r.row?.quantity, width: 80 },
+      {
+        field: "total",
+        headerName: "Total",
+        valueFormatter: (r) => Number(r.row?.price) * Number(r.row?.qty),
+        width: 80,
+      },
       { field: "invoice", headerName: "Invoice", width: 100 },
     ],
     []

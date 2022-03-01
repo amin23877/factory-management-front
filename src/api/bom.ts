@@ -22,6 +22,8 @@ export interface IBomRecord {
     id: string;
     currentBOM?: string;
     no: string;
+    name?: string;
+    description?: string;
     usedInQuarter?: number | null;
     usedInHalf?: number | null;
     usedInYear?: number | null;

@@ -24,10 +24,10 @@ export const fetcher = async (url: string) => {
 
 export const get = async (path: string, config?: AxiosRequestConfig) => {
   const onSuccess = (response: AxiosResponse<any>) => {
-    if (typeof response.data === "string") {
-      throw new Error("The response of this API endpoint is string");
+    if (response.headers && response.headers["content-type"].indexOf("application/json") !== -1) {
+      return response.data;
     }
-    return response.data;
+    throw new Error(`The response of this API endpoint is not JSON, URL: ${response.config.url}`);
   };
 
   const onError = (error: any) => {

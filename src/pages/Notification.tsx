@@ -14,9 +14,9 @@ import {
 } from "@material-ui/core";
 import { ArrowForwardRounded, DeleteRounded, FolderRounded } from "@material-ui/icons";
 import useSWR from "swr";
-
-import { notificationType } from "api/notification";
 import { Link } from "react-router-dom";
+
+import { notificationType, toggleSeenNotification } from "api/notification";
 
 function getNotificationBody(notification: notificationType) {
   switch (notification.type) {
@@ -49,7 +49,16 @@ function getNotificationDate(notification: notificationType) {
 }
 
 export default function Notification() {
-  const { data: notifications } = useSWR<{ result: notificationType[]; total: number }>("/notification");
+  const { data: notifications, mutate } = useSWR<{ result: notificationType[]; total: number }>("/notification");
+
+  const handleSeen = async (id: string) => {
+    try {
+      await toggleSeenNotification(id);
+      mutate();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Container>
@@ -70,7 +79,12 @@ export default function Notification() {
                     secondary={getNotificationDate(notification) + " / " + getNotificationBody(notification)}
                   />
                   <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete" style={{ marginRight: "2em" }}>
+                    <IconButton
+                      onClick={() => handleSeen(notification.id)}
+                      edge="end"
+                      aria-label="delete"
+                      style={{ marginRight: "2em" }}
+                    >
                       <DeleteRounded />
                     </IconButton>
                     {getNotificationLink(notification) && (

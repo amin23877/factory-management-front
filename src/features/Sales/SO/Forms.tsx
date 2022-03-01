@@ -133,7 +133,6 @@ export const GeneralForm = ({
         gridRowGap={10}
       >
         <TextField value={values.number} name="number" label="SO NO." onChange={handleChange} onBlur={handleBlur} />
-
         <LinkSelect
           path="/quote"
           filterLabel="number"
@@ -150,7 +149,6 @@ export const GeneralForm = ({
           onBlur={handleBlur}
           url="/panel/quote"
         />
-
         <TextField
           value={values.invoiceNumber}
           name="invoiceNumber"
@@ -167,7 +165,7 @@ export const GeneralForm = ({
           }}
           path="/service"
           filterLabel="name"
-          getOptionList={(resp) => resp}
+          getOptionList={(resp) => resp?.result}
           getOptionLabel={(warranty) => warranty?.name}
           getOptionValue={(warranty) => warranty?.id}
           onChange={(e, nv) => {
@@ -176,7 +174,6 @@ export const GeneralForm = ({
           onBlur={handleBlur}
           url="/panel/warranty"
         />
-
         <LinkSelect
           value={typeof values.ProjectId === "string" ? values.ProjectId : values.ProjectId}
           label="Project Name"

@@ -35,7 +35,7 @@ function App() {
 
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <SWRConfig value={{ fetcher: get }}>
+      <SWRConfig value={{ fetcher: get, errorRetryCount: 3 }}>
         <BrowserRouter>
           <ThemeProvider theme={theme}>
             <CssBaseline />

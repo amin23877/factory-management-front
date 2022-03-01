@@ -8,8 +8,11 @@ import { openRequestedSinglePopup } from "logic/window";
 function ShowBomRecordsButton({ bomRecord }: { bomRecord: IBomRecord }) {
   if (bomRecord?.ItemId?.currentBOM) {
     return (
-      <IconButton onClick={() => openRequestedSinglePopup({ url: `/panel/bom/${bomRecord.ItemId.currentBOM}/parts` })}>
-        <VisibilityRounded />
+      <IconButton
+        size="small"
+        onClick={() => openRequestedSinglePopup({ url: `/panel/bom/${bomRecord.ItemId.currentBOM}/parts` })}
+      >
+        <VisibilityRounded fontSize="small" />
       </IconButton>
     );
   }

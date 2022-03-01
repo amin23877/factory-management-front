@@ -119,23 +119,24 @@ export default function GroupLineItemTable({
         onClose={() => setAddDeviceModal(false)}
         onSubmit={(data) => {
           if (selectedGroup !== undefined) {
-            console.log({ AddDeviceModal: data });
-
             addLineItemToGroup(selectedGroup, data);
             setAddDeviceModal(false);
           }
         }}
       />
-      <AddServiceModal
-        open={addServiceModal}
-        onClose={() => setAddServiceModal(false)}
-        onSubmit={(data) => {
-          if (selectedGroup !== undefined) {
-            addLineItemToGroup(selectedGroup, data);
-            setAddServiceModal(false);
-          }
-        }}
-      />
+      {selectedGroup !== undefined && (
+        <AddServiceModal
+          open={addServiceModal}
+          onClose={() => setAddServiceModal(false)}
+          deviceId={groups[selectedGroup]?.find((li: any) => li.type === "device")?.ItemId}
+          onSubmit={(data) => {
+            if (selectedGroup !== undefined) {
+              addLineItemToGroup(selectedGroup, data);
+              setAddServiceModal(false);
+            }
+          }}
+        />
+      )}
       <AddOptionModal
         open={addOptionModal}
         onClose={() => setAddOptionModal(false)}
@@ -165,7 +166,7 @@ export default function GroupLineItemTable({
         </Box>
       </Paper>
       <TableContainer component={Paper}>
-        <Table aria-label="collapsible table" className={classes.root}>
+        <Table size="small" className={classes.root}>
           <TableHead>
             <TableRow>
               <TableCell width={50} />
@@ -195,6 +196,8 @@ export default function GroupLineItemTable({
                   setAddOptionModal(true);
                 }}
                 onAddService={() => {
+                  console.log({ i });
+
                   setSelectedGroup(i);
                   setAddServiceModal(true);
                 }}

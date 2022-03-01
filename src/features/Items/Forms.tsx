@@ -281,32 +281,6 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
       gridColumnGap={10}
       gridRowGap={10}
     >
-      {/* <TextField
-        label="Version"
-        name="version"
-        placeholder="Version"
-        value={values.version}
-        onBlur={handleBlur}
-        onChange={handleChange}
-      /> */}
-      {/* <TextField
-                label="keywords"
-                name="keywords"
-                placeholder="keywords"
-                value={values.keywords}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                style={{ marginBottom: 3 }}
-            /> */}
-      {/* <TextField
-        label="Url"
-        name="url"
-        placeholder="Url"
-        value={values.url}
-        onBlur={handleBlur}
-        onChange={handleChange}
-        style={{ marginBottom: 3 }}
-      /> */}
       <TextField
         label="Manufacturer"
         name="manufacturer"
@@ -314,7 +288,6 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
         value={values.manufacturer}
         onBlur={handleBlur}
         onChange={handleChange}
-        style={{ marginBottom: 3 }}
       />
       <TextField
         label="Man. Product No."
@@ -323,9 +296,7 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
         value={values.manufacturerProductNumber}
         onBlur={handleBlur}
         onChange={handleChange}
-        style={{ marginBottom: 3 }}
       />
-
       <TextField
         label="Lead Time"
         name="leadTime"
@@ -333,9 +304,7 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
         value={values.leadTime}
         onBlur={handleBlur}
         onChange={handleChange}
-        style={{ marginBottom: 3 }}
       />
-
       <TextField
         label="Quickbook ID"
         name="qbId"
@@ -343,7 +312,6 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
         value={values.qbId}
         onBlur={handleBlur}
         onChange={handleChange}
-        style={{ marginBottom: 3 }}
       />
       <TextField
         label="QB Type"
@@ -352,7 +320,22 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
         value={values.qbType}
         onBlur={handleBlur}
         onChange={handleChange}
-        style={{ marginBottom: 3 }}
+      />
+      <TextField
+        label="Type"
+        name="type"
+        placeholder="Type"
+        value={values.type}
+        onBlur={handleBlur}
+        onChange={handleChange}
+      />
+      <TextField
+        label="Category"
+        name="category"
+        placeholder="category"
+        value={values.category}
+        onBlur={handleBlur}
+        onChange={handleChange}
       />
     </Box>
   );

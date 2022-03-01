@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, Step, StepLabel, Stepper } from "@material-ui/core";
+import { useFormik } from "formik";
 
 import Dialog from "app/Dialog";
 import Button from "app/Button";
@@ -28,8 +29,16 @@ export default function AddSOModal({
   const [so, setSO] = useState(initialData);
   const [groups, setGroups] = useState<any[]>([]);
   const [createdSO, setCreatedSO] = useState<ISO>();
+
+  const { values, handleChange, handleBlur, setValues, setFieldValue, handleSubmit } = useFormik({
+    initialValues: {} as any,
+    onSubmit(data) {
+      setSO((prev) => ({ ...prev, ...data }));
+      setStep(1);
+    },
+  });
   const { data: quoteLineItems } = useSWR<{ result: any[]; total: number }>(
-    so && so.QuoteId ? `/lineitem?QuoteId=${so.QuoteId}` : null
+    values.QuoteId ? `/lineitem?QuoteId=${values.QuoteId}` : null
   );
 
   useEffect(() => {
@@ -71,14 +80,11 @@ export default function AddSOModal({
   }, [initialData]);
 
   return (
-    <Dialog closeOnClickOut={false} onClose={onClose} open={open} title="Add new Sales order" fullWidth maxWidth="md">
+    <Dialog closeOnClickOut={false} onClose={onClose} open={open} title="Add new Sales order" fullWidth maxWidth="lg">
       <Box p={2} height={600}>
         <Stepper activeStep={step}>
           <Step>
             <StepLabel>General information</StepLabel>
-          </Step>
-          <Step>
-            <StepLabel> Line items</StepLabel>
           </Step>
           <Step>
             <StepLabel>Final</StepLabel>
@@ -88,41 +94,36 @@ export default function AddSOModal({
           </Step>
         </Stepper>
         {step === 0 && (
-          <Box my={1}>
+          <Box display="grid" gridTemplateColumns="2fr 3fr" gridGap={10} my={1}>
             <General
-              data={so}
-              onDone={(d) => {
-                setSO((prev) => ({ ...prev, ...d }));
-                setStep(1);
-              }}
+              values={values}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              setFieldValue={setFieldValue}
+              setValues={setValues}
             />
+            <Box>
+              <GroupLineItemTable groups={values.lines || groups || []} setGroups={(g) => setFieldValue("lines", g)} />
+              <Box textAlign="right">
+                <Button onClick={() => handleSubmit()} variant="contained" color="primary">
+                  Next
+                </Button>
+              </Box>
+            </Box>
           </Box>
         )}
-        {step === 1 && (
-          <div>
-            <GroupLineItemTable groups={groups} setGroups={(g) => setGroups(g)} />
-            <Box display="flex" justifyContent="space-between">
-              <Button variant="contained" color="primary" onClick={() => setStep(0)}>
-                Previous
-              </Button>
-              <Button variant="contained" color="primary" onClick={() => setStep(2)}>
-                Next
-              </Button>
-            </Box>
-          </div>
-        )}
-        {step === 2 && so && (
+        {step === 1 && so && (
           <FinalForm
-            data={{ ...so, lines: groups }}
+            data={so}
             onBack={() => setStep(1)}
             onDone={(data) => {
-              setStep(3);
+              setStep(2);
               onDone();
               setCreatedSO(data);
             }}
           />
         )}
-        {step === 3 ? (
+        {step === 2 ? (
           createdSO && so ? (
             <DocumentForm
               onDone={() => {

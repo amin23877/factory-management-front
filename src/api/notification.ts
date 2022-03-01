@@ -1,4 +1,4 @@
-import { get } from ".";
+import { get, patch } from ".";
 
 export interface notificationType {
   id: string;
@@ -18,4 +18,8 @@ export const sendNotificationTest = () => {
 
 export const getNotifications = () => {
   return get("/notification");
+};
+
+export const toggleSeenNotification = (id: string) => {
+  return patch(`/notification/${id}`, { seen: true });
 };

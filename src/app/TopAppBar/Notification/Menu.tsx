@@ -14,7 +14,7 @@ import { CheckRounded } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 
 import Button from "app/Button";
-import { notificationType } from "api/notification";
+import { notificationType, toggleSeenNotification } from "api/notification";
 
 export default function NotificationMenu({
   open,
@@ -25,7 +25,17 @@ export default function NotificationMenu({
   anchorEl: HTMLElement | null;
   onClose: () => void;
 }) {
-  const { data: notifications } = useSWR<{ result: notificationType[]; total: number }>("/notification");
+  const { data: notifications, mutate } =
+    useSWR<{ result: notificationType[]; total: number }>("/notification?unseen=true");
+
+  const handleSeen = async (id: string) => {
+    try {
+      await toggleSeenNotification(id);
+      mutate();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Popover
@@ -50,7 +60,7 @@ export default function NotificationMenu({
               <ListItem key={i}>
                 <ListItemText primary={n.title} secondary={n.type === "Engineering Approval" && n?.data?.ItemId} />
                 <ListItemSecondaryAction>
-                  <IconButton size="small">
+                  <IconButton size="small" onClick={() => handleSeen(n.id)}>
                     <CheckRounded />
                   </IconButton>
                 </ListItemSecondaryAction>

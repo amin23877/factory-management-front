@@ -77,7 +77,9 @@ export default function LinkField({
         if (limit && limit > 0) {
           setOptions(data.slice(0, limit) || []);
         } else {
-          setOptions(getOptionList(data) || []);
+          if (getOptionList(data).length) {
+            setOptions(getOptionList(data) || []);
+          }
         }
       })
       .catch((e) => console.log(e));

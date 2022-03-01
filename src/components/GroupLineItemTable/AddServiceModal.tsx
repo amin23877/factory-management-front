@@ -1,42 +1,46 @@
 import React from "react";
-import { Box, Checkbox, FormControlLabel } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { Formik, Form } from "formik";
 
 import Dialog from "app/Dialog";
 import Button from "app/Button";
 import TextField from "app/TextField";
-import { CacheFieldSelect } from "app/Inputs";
+import LinkSelect from "app/Inputs/LinkFields";
 
 export default function AddServiceModal({
   open,
+  deviceId,
   onClose,
   onSubmit,
 }: {
   open: boolean;
+  deviceId: string;
   onClose: () => void;
   onSubmit: (data: any) => void;
 }) {
   return (
     <Dialog title="Add Service" open={open} onClose={onClose}>
-      <Formik initialValues={{}} onSubmit={(data) => onSubmit({ ...data, type: "service" })}>
-        {({ getFieldProps, setFieldValue }) => (
+      <Formik initialValues={{} as any} onSubmit={(data) => onSubmit({ ...data, type: "service" })}>
+        {({ getFieldProps, setFieldValue, values }) => (
           <Form>
             <Box display="flex" flexDirection="column" style={{ gap: 8 }}>
-              <CacheFieldSelect
+              <LinkSelect
+                value={values.ServiceId}
+                choseItem={values.ServiceId}
                 label="Service"
-                url="/service"
-                itemTitleField="no"
-                itemValueField="id"
-                getOptionList={(resp) => resp?.result || []}
-                onChange={(e) => {
-                  setFieldValue("ServiceId", e.target.value);
-                  setFieldValue("ServiceObject", e.target.value);
+                path={`/item/${deviceId}`}
+                filterLabel="name"
+                getOptionList={(resp) => resp?.services || []}
+                getOptionLabel={(item) => item?.name || item?.no || "No-Name"}
+                getOptionValue={(item) => item?.id}
+                onChange={(e, nv) => {
+                  setFieldValue("ServiceId", nv.id);
+                  setFieldValue("ServiceObject", nv);
                 }}
-                required
+                url="/panel/service"
               />
               <TextField type="number" label="Quantity" {...getFieldProps("qty")} required />
               <TextField type="number" label="Price" {...getFieldProps("price")} required />
-              <FormControlLabel label="Unit" control={<Checkbox />} {...getFieldProps("unit")} />
               <Button type="submit" kind="add">
                 Add
               </Button>

@@ -72,15 +72,15 @@ export default function Group({
         <TableCell>
           <Box display="flex" alignItems="center">
             <Typography>{row[0]?.UnitId || "No-Unit"}</Typography>
-            <IconButton onClick={onEditUnit}>
-              <EditRounded />
+            <IconButton size="small" onClick={onEditUnit}>
+              <EditRounded fontSize="small" />
             </IconButton>
           </Box>
         </TableCell>
         <TableCell>{calculateGroupTotal(row)}</TableCell>
         <TableCell>
-          <IconButton onClick={onDeleteGroup}>
-            <DeleteRounded />
+          <IconButton size="small" onClick={onDeleteGroup}>
+            <DeleteRounded fontSize="small" />
           </IconButton>
         </TableCell>
       </TableRow>
@@ -97,12 +97,16 @@ export default function Group({
                     Add Device
                   </Button>
                 )}
-                <Button variant="outlined" onClick={onAddService}>
-                  Add Service
-                </Button>
-                <Button variant="outlined" onClick={onAddOption}>
-                  Add Option
-                </Button>
+                {groupAlreadyHasDevice() && (
+                  <>
+                    <Button variant="outlined" onClick={onAddService}>
+                      Add Service
+                    </Button>
+                    <Button variant="outlined" onClick={onAddOption}>
+                      Add Option
+                    </Button>
+                  </>
+                )}
               </Box>
               <Table size="small" aria-label="purchases">
                 <TableHead>
@@ -136,8 +140,8 @@ export default function Group({
                       </TableCell>
                       <TableCell>{Number(lineItem.qty) * Number(lineItem.price)}</TableCell>
                       <TableCell>
-                        <IconButton onClick={() => onDeleteLineItem(i)}>
-                          <DeleteRounded />
+                        <IconButton size="small" onClick={() => onDeleteLineItem(i)}>
+                          <DeleteRounded fontSize="small" />
                         </IconButton>
                       </TableCell>
                     </TableRow>

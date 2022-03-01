@@ -70,21 +70,25 @@ export default function PartsTable({ bomId, onEdit }: { bomId: string; onEdit?: 
 
   return (
     <TableContainer className={tableClasses.tableCont} component={Paper}>
-      <Table className={tableClasses.root} aria-label="simple table">
+      <Table size="small" className={tableClasses.root}>
         <TableHead>
           <TableRow>
-            <TableCell>NO.</TableCell>
-            <TableCell>Usage</TableCell>
-            <TableCell>Fixed Qty</TableCell>
-            <TableCell></TableCell>
+            <TableCell width={100}>NO.</TableCell>
+            <TableCell width={140}>Name</TableCell>
+            <TableCell>Description</TableCell>
+            <TableCell width={100}>Usage</TableCell>
+            <TableCell width={100}>Fixed Qty</TableCell>
+            <TableCell width={onEdit ? 90 : 60}></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {bomRecords.result.map((row) => (
             <TableRow key={row.id}>
               <TableCell component="th" scope="row">
-                {row.ItemId.no}
+                {row?.ItemId?.no}
               </TableCell>
+              <TableCell>{row?.ItemId?.name}</TableCell>
+              <TableCell>{row?.ItemId?.description}</TableCell>
               <TableCell>{row.usage}</TableCell>
               <TableCell>{row.fixedQty}</TableCell>
               <TableCell>

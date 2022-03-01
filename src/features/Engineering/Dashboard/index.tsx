@@ -22,12 +22,14 @@ export default function EngineeringDashboard() {
   const [selectedField, setSelectedField] = useState();
   const [selectedPurchase, setSelectedPurchase] = useState();
 
-  const { data: engAp } = useSWR<{ result: engineeringApprovalType[]; total: number }>("/engapp"); // Engineering Approvals
-  const { data: FSH } = useSWR<{ result: any[]; total: number }>("/fsh"); // Field Service Help
+  // const { data: engAp } = useSWR<{ result: engineeringApprovalType[]; total: number }>("/engapp"); // Engineering Approvals
+  const { data: engAp } = useSWR<{ result: engineeringApprovalType[]; total: number }>(
+    "/notification?type=Engineering Approval"
+  );
   const { data: PQ } = useSWR<{ result: any[]; total: number }>("/pq"); // purchasing question
+  const { data: FSH } = useSWR<{ result: any[]; total: number }>("/fsh"); // Field Service Help
   const { data: GQ } = useSWR<{ result: any[]; total: number }>("/gq"); //general question
   const { data: QCCase } = useSWR<{ result: any[]; total: number }>("/qccase"); //general question
-  // SO	Unite	DeviceID Note	Eng.Ap	Priority
 
   const EACols = useMemo<GridColumns>(
     () => [
