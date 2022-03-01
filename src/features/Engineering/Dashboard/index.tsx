@@ -171,7 +171,7 @@ export default function EngineeringDashboard() {
             rows={engAp?.result || []}
             cols={EACols}
             onRowSelected={(d) => {
-              history.push(`/panel/engineering/${d.ItemId.id}`);
+              history.push(`/panel/engineering/${d.data.id}`);
             }}
             height={"78.7vh"}
           />

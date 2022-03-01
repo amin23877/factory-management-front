@@ -112,6 +112,14 @@ export default function GroupLineItemTable({
   const [editUnitGroupModal, setEditUnitGroupModal] = useState(false);
   const classes = useStyles();
 
+  const getSelectedGroupDeviceId = () => {
+    if (selectedGroup !== undefined) {
+      return groups[selectedGroup]?.find((li: any) => li.type === "device")?.ItemId;
+    }
+
+    return undefined;
+  };
+
   return (
     <>
       <AddDeviceModal
@@ -124,19 +132,17 @@ export default function GroupLineItemTable({
           }
         }}
       />
-      {selectedGroup !== undefined && (
-        <AddServiceModal
-          open={addServiceModal}
-          onClose={() => setAddServiceModal(false)}
-          deviceId={groups[selectedGroup]?.find((li: any) => li.type === "device")?.ItemId}
-          onSubmit={(data) => {
-            if (selectedGroup !== undefined) {
-              addLineItemToGroup(selectedGroup, data);
-              setAddServiceModal(false);
-            }
-          }}
-        />
-      )}
+      <AddServiceModal
+        open={addServiceModal}
+        onClose={() => setAddServiceModal(false)}
+        deviceId={getSelectedGroupDeviceId()}
+        onSubmit={(data) => {
+          if (selectedGroup !== undefined) {
+            addLineItemToGroup(selectedGroup, data);
+            setAddServiceModal(false);
+          }
+        }}
+      />
       <AddOptionModal
         open={addOptionModal}
         onClose={() => setAddOptionModal(false)}

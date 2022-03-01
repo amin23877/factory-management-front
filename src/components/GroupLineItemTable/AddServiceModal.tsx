@@ -14,10 +14,22 @@ export default function AddServiceModal({
   onSubmit,
 }: {
   open: boolean;
-  deviceId: string;
+  deviceId?: string;
   onClose: () => void;
   onSubmit: (data: any) => void;
 }) {
+  console.log({ deviceId });
+
+  const getOptionList = (resp: any) => {
+    if (deviceId) {
+      return resp?.services || [];
+    } else if (!deviceId) {
+      return resp?.result || [];
+    }
+
+    return [];
+  };
+
   return (
     <Dialog title="Add Service" open={open} onClose={onClose}>
       <Formik initialValues={{} as any} onSubmit={(data) => onSubmit({ ...data, type: "service" })}>
@@ -28,9 +40,9 @@ export default function AddServiceModal({
                 value={values.ServiceId}
                 choseItem={values.ServiceId}
                 label="Service"
-                path={`/item/${deviceId}`}
+                path={deviceId ? `/item/${deviceId}` : "/service"}
                 filterLabel="name"
-                getOptionList={(resp) => resp?.services || []}
+                getOptionList={getOptionList}
                 getOptionLabel={(item) => item?.name || item?.no || "No-Name"}
                 getOptionValue={(item) => item?.id}
                 onChange={(e, nv) => {

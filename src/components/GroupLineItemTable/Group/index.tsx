@@ -97,16 +97,12 @@ export default function Group({
                     Add Device
                   </Button>
                 )}
-                {groupAlreadyHasDevice() && (
-                  <>
-                    <Button variant="outlined" onClick={onAddService}>
-                      Add Service
-                    </Button>
-                    <Button variant="outlined" onClick={onAddOption}>
-                      Add Option
-                    </Button>
-                  </>
-                )}
+                <Button variant="outlined" onClick={onAddService}>
+                  Add Service
+                </Button>
+                <Button variant="outlined" onClick={onAddOption}>
+                  Add Option
+                </Button>
               </Box>
               <Table size="small" aria-label="purchases">
                 <TableHead>
