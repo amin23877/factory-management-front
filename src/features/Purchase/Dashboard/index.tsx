@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
 
@@ -36,6 +36,9 @@ export default function Dashboard() {
 
   return (
     <Container>
+      <Typography variant="h4" style={{ marginBottom: "1em" }}>
+        Purchasing Required List
+      </Typography>
       <BaseDataGrid cols={cols} rows={purchasingRequiredItems?.result || []} />
     </Container>
   );

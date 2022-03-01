@@ -1,12 +1,17 @@
 import { formatDate } from "../utils";
 
+const dateFormat = "yyyy-MMMM-dd";
+
 export const extractEngAppData = (data: any[]) => {
   const init = data.reduce((prev, cur) => {
-    return { ...prev, [formatDate(cur.createdAt, "yy-MMMM-dd")]: 0 };
+    return { ...prev, [formatDate(cur.createdAt, dateFormat)]: 0 };
   }, {});
 
   const generated = data.reduce((prev, cur) => {
-    return { ...prev, [formatDate(cur.createdAt, "yy-MMMM-dd")]: prev[formatDate(cur.createdAt, "yy-MMMM-dd")] + 1 };
+    return {
+      ...prev,
+      [formatDate(cur.createdAt, dateFormat)]: prev[formatDate(cur.createdAt, dateFormat)] + 1,
+    };
   }, init);
 
   const res = Object.keys(generated).map((k: any) => ({ date: k, units: generated[k] }));
