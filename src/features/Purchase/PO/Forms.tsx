@@ -112,13 +112,13 @@ export const DocumentForm = ({
         const generatedPdf = await exportPdf(divToPrint.current);
 
         console.log(generatedPdf);
-        const resp = await createAModelDocument(
-          "purchasePO",
-          createdPO.id,
-          generatedPdf,
-          `${new Date().toJSON().slice(0, 19)} - ${createdPO.number}`,
-          `PO_${createdPO.number}.pdf`
-        );
+        const resp = await createAModelDocument({
+          model: "purchasePO",
+          id: createdPO.id,
+          file: generatedPdf,
+          description: `${new Date().toJSON().slice(0, 19)} - ${createdPO.number}`,
+          name: `PO_${createdPO.number}.pdf`,
+        });
         if (resp) {
           onDone();
         }

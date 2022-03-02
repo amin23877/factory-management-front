@@ -45,7 +45,7 @@ export default function QuotePanel() {
   const columns = useMemo(
     () => [
       {
-        name: "entryDate",
+        name: "createdAt",
         header: "Date",
         type: "date",
         minWidth: 100,

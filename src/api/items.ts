@@ -104,6 +104,8 @@ export interface IItem {
   evaluateTime: number;
   testTime: number;
   laborCost: number;
+
+  services: any[];
 }
 
 export const AddItemInitialValues = {};

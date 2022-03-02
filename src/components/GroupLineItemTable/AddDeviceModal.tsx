@@ -32,18 +32,22 @@ export default function AddDeviceModal({
                 getOptionLabel={(item) => item?.no || item?.name || "No-Name"}
                 getOptionValue={(item) => item?.id}
                 onChange={(e, nv) => {
-                  console.log({ nv });
                   setFieldValue("ItemId", nv.id);
                   setFieldValue("ItemObject", nv);
-                  if (nv.isUnit) {
-                    setFieldValue("unit", nv.isUnit);
-                    setFieldValue("standardWarranty", true);
-                  }
+                  setFieldValue("price", nv.retailPrice);
+                  setFieldValue("unit", nv.isUnit);
+                  setFieldValue("standardWarranty", nv.isUnit);
                 }}
                 url="/panel/engineering"
               />
               <TextField type="number" label="Quantity" {...getFieldProps("qty")} required />
-              <TextField type="number" label="Price" {...getFieldProps("price")} required />
+              <TextField
+                type="number"
+                label="Price"
+                {...getFieldProps("price")}
+                required
+                InputLabelProps={{ shrink: true }}
+              />
               <FormControlLabel label="Unit" control={<Checkbox />} {...getFieldProps("unit")} />
               <FormControlLabel
                 label="Standard Warranty"

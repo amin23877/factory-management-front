@@ -19,6 +19,7 @@ export type lineItemType = {
   type: "device" | "option" | "service";
   ItemObject?: IItem;
   ServiceObject?: any;
+  serviceProgramItemNo?: string;
 };
 
 // TODO: maybe some day make this hook a context, Provide it for all the table and remove the props, Then enjoy the beauty :)

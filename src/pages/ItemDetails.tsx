@@ -332,7 +332,7 @@ function ItemsDetails() {
                   )}
                   {moreInfoTab === 4 && (
                     <Box mt={1} display="grid" gridTemplateColumns="1fr" gridGap={10}>
-                      {/* {selectedRow?.photo && (
+                      {img && (
                         <img
                           style={{
                             maxWidth: "100%",
@@ -341,9 +341,9 @@ function ItemsDetails() {
                             margin: "0px auto",
                           }}
                           alt=""
-                          src={img ? img : `http://${host}${selectedRow?.photo}`}
+                          src={img ? img : ""}
                         />
-                      )} */}
+                      )}
                       <UploadButton onChange={handleFileChange} accept="image/*" />
                     </Box>
                   )}

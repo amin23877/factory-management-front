@@ -1019,33 +1019,33 @@ export const DocumentForm = ({
       setIsUploading(true);
       if (divToPrintAcc.current && createdSO?.id) {
         const generatedAccPdf = await exportPdf(divToPrintAcc.current);
-        await createAModelDocument(
-          "so",
-          createdSO.id,
-          generatedAccPdf,
-          `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
-          `SO_ACC_${createdSO.number}.pdf`
-        );
+        await createAModelDocument({
+          model: "so",
+          id: createdSO.id,
+          file: generatedAccPdf,
+          description: `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
+          name: `SO_ACC_${createdSO.number}.pdf`,
+        });
       }
       if (divToPrintRep.current) {
         const generatedRepPdf = await exportPdf(divToPrintRep.current);
-        await createAModelDocument(
-          "so",
-          createdSO.id,
-          generatedRepPdf,
-          `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
-          `SO_REP_${createdSO.number}.pdf`
-        );
+        await createAModelDocument({
+          model: "so",
+          id: createdSO.id,
+          file: generatedRepPdf,
+          description: `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
+          name: `SO_REP_${createdSO.number}.pdf`,
+        });
       }
       if (divToPrintCus.current) {
         const generatedCusPdf = await exportPdf(divToPrintCus.current);
-        await createAModelDocument(
-          "so",
-          createdSO.id,
-          generatedCusPdf,
-          `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
-          `SO_CUS_${createdSO.number}.pdf`
-        );
+        await createAModelDocument({
+          model: "so",
+          id: createdSO.id,
+          file: generatedCusPdf,
+          description: `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
+          name: `SO_CUS_${createdSO.number}.pdf`,
+        });
       }
     } catch (error) {
       console.log(error);

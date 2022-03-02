@@ -1,14 +1,15 @@
 import React, { useRef } from "react";
-import { Box, TextField, useMediaQuery } from "@material-ui/core";
+import { Box, useMediaQuery } from "@material-ui/core";
 import { Formik, Form } from "formik";
 
-import Dialog from "../app/Dialog";
-import Button from "../app/Button";
-import { host } from "../host";
+import Dialog from "app/Dialog";
+import Button from "app/Button";
+import TextField from "app/TextField";
+import { host } from "host";
 
-import { createAModelDocument, updateAModelDocument, deleteAModelDocument, IDocument } from "../api/document";
+import { createAModelDocument, updateAModelDocument, deleteAModelDocument, IDocument } from "api/document";
 import PhotoSizeSelectActualOutlinedIcon from "@material-ui/icons/PhotoSizeSelectActualOutlined";
-import PDFPreview from "../components/PDFPreview";
+import PDFPreview from "components/PDFPreview";
 import { mutate } from "swr";
 
 interface IDocumentModal {
@@ -49,7 +50,7 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
         mutateDocuments(model, itemId);
         onClose();
       } else {
-        await createAModelDocument(model, itemId as any, values.file, values.description);
+        await createAModelDocument({ model, id: itemId, ...values });
 
         onDone && onDone();
         mutateDocuments(model, itemId);
@@ -105,14 +106,30 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
                     ""
                   )}
                 </div>
-
+                <TextField
+                  style={{ marginBottom: "20px" }}
+                  fullWidth
+                  value={values.name}
+                  name="name"
+                  label="Name"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                <TextField
+                  style={{ marginBottom: "20px" }}
+                  fullWidth
+                  value={values.number}
+                  name="number"
+                  label="Number"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
                 <TextField
                   style={{ marginBottom: "20px" }}
                   fullWidth
                   value={values.description}
                   name="description"
                   label="Description"
-                  variant="outlined"
                   multiline
                   rows={4}
                   onChange={handleChange}

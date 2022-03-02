@@ -34,11 +34,18 @@ export default function AddOptionModal({
                 onChange={(e, nv) => {
                   setFieldValue("ItemId", nv.id);
                   setFieldValue("ItemObject", nv);
+                  setFieldValue("price", nv.retailPrice);
                 }}
                 url="/panel/item"
               />
               <TextField type="number" label="Quantity" {...getFieldProps("qty")} required />
-              <TextField type="number" label="Price" {...getFieldProps("price")} required />
+              <TextField
+                type="number"
+                label="Price"
+                {...getFieldProps("price")}
+                required
+                InputLabelProps={{ shrink: true }}
+              />
               <Button type="submit" kind="add">
                 Add
               </Button>

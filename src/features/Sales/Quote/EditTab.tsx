@@ -108,17 +108,21 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
       {
         field: "date",
         headerName: "Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
+        valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
         width: 120,
       },
       {
-        field: "EmployeeId",
+        field: "creator",
         headerName: "Creator",
-        valueFormatter: (params) => params.row?.employee?.username,
         width: 120,
       },
       { field: "name", headerName: "Name", flex: 1 },
-      { field: "id", headerName: "ID", width: 200 },
+      {
+        field: "id",
+        headerName: "ID",
+        width: 100,
+        valueFormatter: (params) => params?.row?.no || selectedQuote?.number,
+      },
       { field: "description", headerName: "Description", flex: 1 },
       {
         field: "type",
@@ -127,7 +131,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
         width: 120,
       },
     ],
-    []
+    [selectedQuote?.number]
   );
 
   const quoteHistoryCols = useMemo<GridColumns>(

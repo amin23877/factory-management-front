@@ -18,6 +18,8 @@ import Row from "./Group";
 import EditGroupUnitModal from "./EditGroupUnitModal";
 
 import Confirm from "common/Confirm";
+import { get } from "api";
+import { IItem } from "api/items";
 
 // TODO: maybe some day use Drag and Drop and make groups draggable
 // TODO: also you can make line items draggable that user can drag and drop an item to another group
@@ -120,6 +122,25 @@ export default function GroupLineItemTable({
     return undefined;
   };
 
+  const generateServiceProgramOptionLineItem = async (item: IItem) => {
+    try {
+      const resp = await get(`/item/${item.id}`);
+      if (resp && selectedGroup !== undefined) {
+        const text = resp?.services?.map((s: any) => s?.description).join("\n");
+
+        console.log({ resp, text });
+
+        addLineItemToGroup(selectedGroup, {
+          text,
+          serviceProgramItemNo: item.no,
+          type: "service",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <AddDeviceModal
@@ -128,6 +149,7 @@ export default function GroupLineItemTable({
         onSubmit={(data) => {
           if (selectedGroup !== undefined) {
             addLineItemToGroup(selectedGroup, data);
+            generateServiceProgramOptionLineItem(data.ItemObject);
             setAddDeviceModal(false);
           }
         }}

@@ -18,8 +18,6 @@ export default function AddServiceModal({
   onClose: () => void;
   onSubmit: (data: any) => void;
 }) {
-  console.log({ deviceId });
-
   const getOptionList = (resp: any) => {
     if (deviceId) {
       return resp?.services || [];
@@ -48,11 +46,18 @@ export default function AddServiceModal({
                 onChange={(e, nv) => {
                   setFieldValue("ServiceId", nv.id);
                   setFieldValue("ServiceObject", nv);
+                  setFieldValue("price", nv.price);
                 }}
                 url="/panel/service"
               />
               <TextField type="number" label="Quantity" {...getFieldProps("qty")} required />
-              <TextField type="number" label="Price" {...getFieldProps("price")} required />
+              <TextField
+                type="number"
+                label="Price"
+                {...getFieldProps("price")}
+                required
+                InputLabelProps={{ shrink: true }}
+              />
               <Button type="submit" kind="add">
                 Add
               </Button>

@@ -45,13 +45,13 @@ export const DocumentForm = ({
       setIsUploading(true);
       if (divToPrint.current && createdQoute.id) {
         const generatedPdf = await exportPdf(divToPrint.current);
-        const resp = await createAModelDocument(
-          "quote",
-          createdQoute.id,
-          generatedPdf,
-          `${new Date().toJSON().slice(0, 19)} - ${createdQoute.number}`,
-          `Quote_${createdQoute.number}.pdf`
-        );
+        const resp = await createAModelDocument({
+          model: "quote",
+          id: createdQoute.id,
+          file: generatedPdf,
+          description: `${new Date().toJSON().slice(0, 19)} - ${createdQoute.number}`,
+          name: `Quote_${createdQoute.number}.pdf`,
+        });
         if (resp) {
           onDone();
         } else {
@@ -363,7 +363,7 @@ export const EntitiesTab = ({
   handleBlur: (a: any) => void;
   setFieldValue: any;
 }) => {
-  const phone = useMediaQuery("(max-width:900px)");
+  // const phone = useMediaQuery("(max-width:900px)");
   const [rep, setRep] = useState<IClient>();
   const [client, setClient] = useState<IClient>();
   return (

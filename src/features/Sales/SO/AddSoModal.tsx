@@ -27,10 +27,9 @@ export default function AddSOModal({
 }) {
   const [step, setStep] = useState(0);
   const [so, setSO] = useState(initialData);
-  const [groups, setGroups] = useState<any[]>([]);
   const [createdSO, setCreatedSO] = useState<ISO>();
 
-  const { values, handleChange, handleBlur, setValues, setFieldValue, handleSubmit } = useFormik({
+  const { values, handleChange, handleBlur, setValues, setFieldValue, handleSubmit, resetForm } = useFormik({
     initialValues: {} as any,
     onSubmit(data) {
       setSO((prev) => ({ ...prev, ...data }));
@@ -66,12 +65,12 @@ export default function AddSOModal({
           }
         }
 
-        setGroups(newGroups);
+        setFieldValue("lines", newGroups);
       } catch (error) {
         console.log({ error });
       }
     }
-  }, [quoteLineItems]);
+  }, [quoteLineItems, setFieldValue]);
 
   useEffect(() => {
     if (initialData) {
@@ -80,7 +79,16 @@ export default function AddSOModal({
   }, [initialData]);
 
   return (
-    <Dialog closeOnClickOut={false} onClose={onClose} open={open} title="Add new Sales order" fullWidth maxWidth="lg">
+    <Dialog
+      closeOnClickOut={false}
+      onClose={() => {
+        resetForm();
+        onClose();
+      }}
+      open={open}
+      title="Add new Sales order"
+      fullScreen
+    >
       <Box p={2} height={600}>
         <Stepper activeStep={step}>
           <Step>
@@ -103,7 +111,7 @@ export default function AddSOModal({
               setValues={setValues}
             />
             <Box>
-              <GroupLineItemTable groups={values.lines || groups || []} setGroups={(g) => setFieldValue("lines", g)} />
+              <GroupLineItemTable groups={values.lines || []} setGroups={(g) => setFieldValue("lines", g)} />
               <Box textAlign="right">
                 <Button onClick={() => handleSubmit()} variant="contained" color="primary">
                   Next

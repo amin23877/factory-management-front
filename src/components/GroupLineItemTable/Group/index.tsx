@@ -26,7 +26,7 @@ const useRowStyles = makeStyles({
 
 function calculateGroupTotal(row: any[]) {
   return row.reduce((prev, cur) => {
-    return prev + Number(cur.price) * Number(cur.qty);
+    return prev + (Number(cur.price) * Number(cur.qty) || 0);
   }, 0);
 }
 
@@ -120,7 +120,11 @@ export default function Group({
                   {row.map((lineItem, i) => (
                     <TableRow key={i}>
                       <TableCell>{lineItem.type}</TableCell>
-                      <TableCell>{lineItem.ItemObject?.no}</TableCell>
+                      <TableCell title={lineItem?.text}>
+                        {lineItem.ItemObject?.no || (
+                          <strong>{`Service Program Option for ${lineItem.serviceProgramItemNo}`}</strong>
+                        )}
+                      </TableCell>
                       <TableCell>{lineItem.standardWarranty && <CheckRounded />}</TableCell>
                       <TableCell>
                         <CustomCell
@@ -134,7 +138,7 @@ export default function Group({
                           onChange={(v) => onEditLineItem(i, { ...lineItem, price: Number(v) })}
                         />
                       </TableCell>
-                      <TableCell>{Number(lineItem.qty) * Number(lineItem.price)}</TableCell>
+                      <TableCell>{Number(lineItem.qty) * Number(lineItem.price) || ""}</TableCell>
                       <TableCell>
                         <IconButton size="small" onClick={() => onDeleteLineItem(i)}>
                           <DeleteRounded fontSize="small" />

@@ -17,7 +17,7 @@ import UnitHistoryModal from "../../Unit/Modal";
 
 import { INote } from "api/note";
 import { IDocument } from "api/document";
-import { updateAnItem } from "api/items";
+import { IItem, updateAnItem } from "api/items";
 import { IBom } from "api/bom";
 import Parts from "../../BOM/Parts";
 import { formatTimestampToDate } from "logic/date";
@@ -68,10 +68,13 @@ function ItemsDetails({
     activeTab === 0 ? (selectedRow && selectedRow.id ? `/document/item/${selectedRow.id}` : null) : null
   );
   const { data: boms } = useSWR<{ result: IBom[]; total: number }>(
-    activeTab === 1 ? (selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null) : null
+    activeTab === 0 ? (selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null) : null
   );
-  const { data: services, mutate: mutateServices } = useSWR(
-    activeTab === 2 ? (selectedRow && selectedRow.id ? `item/${selectedRow.id}/service` : null) : null
+  // const { data: services, mutate: mutateServices } = useSWR(
+  //   activeTab === 2 ? (selectedRow && selectedRow.id ? `item/${selectedRow.id}/service` : null) : null
+  // );
+  const { data: itemObject, mutate: mutateServices } = useSWR<IItem>(
+    activeTab === 1 ? (selectedRow && selectedRow.id ? `item/${selectedRow.id}` : null) : null
   );
 
   const { data: manSteps } = useSWR(
@@ -490,7 +493,7 @@ function ItemsDetails({
                         <BaseDataGrid
                           height={"calc(100% - 100px)"}
                           cols={serviceCols}
-                          rows={services || []}
+                          rows={itemObject?.services || []}
                           onRowSelected={(d) => {}}
                         />
                       </>
@@ -592,7 +595,7 @@ function ItemsDetails({
                         <BaseDataGrid
                           height={"calc(100% - 100px)"}
                           cols={serviceCols}
-                          rows={services || []}
+                          rows={itemObject?.services || []}
                           onRowSelected={(d) => {}}
                         />
                       </>
