@@ -42,6 +42,7 @@ export default function QuotePanel() {
       console.log(error);
     }
   };
+
   const columns = useMemo(
     () => [
       {

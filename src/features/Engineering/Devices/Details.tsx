@@ -351,19 +351,17 @@ function ItemsDetails({
                     errors={errors}
                     touched={touched}
                   />
-                  {!sales && (
-                    <Box
-                      style={{
-                        width: "100%",
-                        display: "flex",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Button style={{ margin: "0.5em auto", width: "200px" }} kind="edit" type="submit">
-                        Save
-                      </Button>
-                    </Box>
-                  )}
+                  <Box
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Button style={{ margin: "0.5em auto", width: "200px" }} kind="edit" type="submit">
+                      Save
+                    </Button>
+                  </Box>
                 </BasePaper>
                 <BasePaper style={{ flex: 1, overflowY: "auto" }}>
                   <Tabs
