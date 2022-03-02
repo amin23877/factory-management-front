@@ -125,7 +125,7 @@ export default function GroupLineItemTable({
   const generateServiceProgramOptionLineItem = async (item: IItem) => {
     try {
       const resp = await get(`/item/${item.id}`);
-      if (resp && selectedGroup !== undefined) {
+      if (resp && selectedGroup !== undefined && resp?.services?.length > 0) {
         const text = resp?.services?.map((s: any) => s?.description).join("\n");
 
         console.log({ resp, text });
@@ -134,6 +134,8 @@ export default function GroupLineItemTable({
           text,
           serviceProgramItemNo: item.no,
           type: "service",
+          price: 0,
+          qty: 1,
         });
       }
     } catch (error) {

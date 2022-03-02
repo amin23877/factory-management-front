@@ -93,8 +93,10 @@ export default function QuotePanel() {
           open={addQ}
           onClose={() => setAddQ(false)}
           initialData={compQ || {}}
-          onDone={() => {
-            setRefresh((prev) => prev + 1);
+          onDone={(quote) => {
+            // setRefresh((prev) => prev + 1);
+            setSelectedQuote(quote);
+            setActiveTab(1);
           }}
         />
       )}

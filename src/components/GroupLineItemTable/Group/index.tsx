@@ -127,16 +127,20 @@ export default function Group({
                       </TableCell>
                       <TableCell>{lineItem.standardWarranty && <CheckRounded />}</TableCell>
                       <TableCell>
-                        <CustomCell
-                          value={lineItem.qty}
-                          onChange={(v) => onEditLineItem(i, { ...lineItem, qty: Number(v) })}
-                        />
+                        {!lineItem.serviceProgramItemNo && (
+                          <CustomCell
+                            value={lineItem.qty}
+                            onChange={(v) => onEditLineItem(i, { ...lineItem, qty: Number(v) })}
+                          />
+                        )}
                       </TableCell>
                       <TableCell>
-                        <CustomCell
-                          value={lineItem.price}
-                          onChange={(v) => onEditLineItem(i, { ...lineItem, price: Number(v) })}
-                        />
+                        {!lineItem.serviceProgramItemNo && (
+                          <CustomCell
+                            value={lineItem.price}
+                            onChange={(v) => onEditLineItem(i, { ...lineItem, price: Number(v) })}
+                          />
+                        )}
                       </TableCell>
                       <TableCell>{Number(lineItem.qty) * Number(lineItem.price) || ""}</TableCell>
                       <TableCell>

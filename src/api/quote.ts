@@ -1,3 +1,4 @@
+import { lineItemType } from "components/GroupLineItemTable/useGroupedLineItems";
 import { get, patch, post, delete_ } from ".";
 
 import { IClient } from "./client";
@@ -43,12 +44,12 @@ export interface IQuote {
   totalAmount: number;
   lineItemRecords: ILineItem[];
   lineServiceRecords: ILineService[];
+  lines: lineItemType[];
   __v: number;
 }
 
 export interface IQuoteComplete extends IQuote {
-  lines: ILineItem[];
-  lineServices: ILineService[];
+  lines: lineItemType[];
 }
 
 export const createQuoteLineService = (quoteId: string, data: ILineService) => {

@@ -2,6 +2,8 @@ import React, { Fragment } from "react";
 import { makeStyles } from "@material-ui/core";
 import { IQuoteComplete } from "../api/quote";
 
+import dspmlogo from "assets/pdf/dspmlogo.png";
+
 const useStyles = makeStyles({
   header: {
     width: "100%",
@@ -97,6 +99,7 @@ const useStyles = makeStyles({
     margin: "0px 5px",
   },
 });
+
 export default function QuotePDF({ createdQuote }: { createdQuote: IQuoteComplete }) {
   const classes = useStyles();
   let total = 0;
@@ -126,7 +129,9 @@ export default function QuotePDF({ createdQuote }: { createdQuote: IQuoteComplet
           </div>
         </div>
         <div className={classes.right}>
-          <div style={{ marginLeft: "auto" }}>LOGO</div>
+          <div style={{ marginLeft: "auto" }}>
+            <img src={dspmlogo} alt="DSPM" />
+          </div>
           <div>
             <h1>Representative Quote</h1>
           </div>
@@ -158,8 +163,7 @@ export default function QuotePDF({ createdQuote }: { createdQuote: IQuoteComplet
             color: "white",
           }}
         >
-          {" "}
-          2021{" "}
+          2021
         </div>
       </div>
       <div className={classes.onePage}>
@@ -167,7 +171,7 @@ export default function QuotePDF({ createdQuote }: { createdQuote: IQuoteComplet
           <div>LOGO</div>
           <div>
             <div>Quoted By :</div>
-            <div>{createdQuote?.EmployeeId?.username} //check</div>
+            <div>{createdQuote?.EmployeeId?.username}</div>
           </div>
           <div className={classes.pfe}>
             <div style={{ fontSize: "x-large", fontWeight: "bold", color: "teal" }}>Quote</div>

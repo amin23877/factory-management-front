@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { MutableRefObject, useRef, useState } from "react";
 import {
   LinearProgress,
   Typography,
@@ -28,47 +28,14 @@ import { exportPdf } from "logic/pdf";
 import QuotePDF from "PDFTemplates/Quote";
 
 export const DocumentForm = ({
-  onDone,
-  createdQoute,
   data,
+  divToPrint,
 }: {
-  onDone: () => void;
-  createdQoute: any;
   data: IQuoteComplete;
+  divToPrint: MutableRefObject<HTMLElement | null>;
 }) => {
-  const divToPrint = useRef<HTMLElement | null>(null);
-
-  const [isUploading, setIsUploading] = useState(false);
-
-  const handleSaveDocument = async () => {
-    try {
-      setIsUploading(true);
-      if (divToPrint.current && createdQoute.id) {
-        const generatedPdf = await exportPdf(divToPrint.current);
-        const resp = await createAModelDocument({
-          model: "quote",
-          id: createdQoute.id,
-          file: generatedPdf,
-          description: `${new Date().toJSON().slice(0, 19)} - ${createdQoute.number}`,
-          name: `Quote_${createdQoute.number}.pdf`,
-        });
-        if (resp) {
-          onDone();
-        } else {
-          console.log("else");
-        }
-      } else {
-        console.log(createdQoute.id);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
   return (
-    <Box>
+    <Box margin="0 auto">
       <Typography>We made a pdf from your Quote, now you can save it</Typography>
       <div style={{ height: "calc(100vh - 240px)", overflowY: "auto" }}>
         <div id="myMm" style={{ height: "1mm" }} />
@@ -84,10 +51,10 @@ export const DocumentForm = ({
             minHeight: "1200px",
           }}
         >
-          <QuotePDF createdQuote={createdQoute} />
+          <QuotePDF createdQuote={data} />
         </div>
       </div>
-      <Box
+      {/* <Box
         textAlign="right"
         width="100%"
         display="flex"
@@ -96,16 +63,15 @@ export const DocumentForm = ({
         flexDirection="column"
         alignItems="center"
       >
-        {/* {isUploading && <LinearProgress />} */}
         {isUploading && (
           <div style={{ width: "100%", height: "20px" }}>
             <LinearProgress />
           </div>
         )}
-        <Button kind="add" onClick={handleSaveDocument} disabled={isUploading}>
+        <Button type="submit" kind="add" onClick={handleSaveDocument} disabled={isUploading}>
           Save Document
         </Button>
-      </Box>
+      </Box> */}
     </Box>
   );
 };

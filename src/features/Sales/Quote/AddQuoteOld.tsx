@@ -102,7 +102,7 @@ export default function AddQuote({
             gridTemplateColumns={phone ? "1fr" : "1fr 1fr"}
             height={phone ? "auto" : "100%"}
           >
-            <Formik innerRef={ref} initialValues={{ ...initialData } as IQuote} onSubmit={() => {}}>
+            <Formik innerRef={ref} initialValues={{ ...initialData, lines: [] } as IQuote} onSubmit={() => {}}>
               {({ getFieldProps }) => (
                 <Form>
                   <Box display="flex" flexDirection="column" height="100%" gridGap={10}>
@@ -136,14 +136,15 @@ export default function AddQuote({
         )}
         {activeStep === 1 && quote && <FinalForm loading={loading} />}
         {activeStep === 2 && createdQuote && (
-          <DocumentForm
-            data={quote}
-            createdQoute={createdQuote}
-            onDone={() => {
-              onClose();
-              onDone();
-            }}
-          />
+          <></>
+          // <DocumentForm
+          //   data={quote}
+          //   createdQuote={createdQuote}
+          //   onDone={() => {
+          //     onClose();
+          //     onDone();
+          //   }}
+          // />
         )}
         {activeStep !== 2 && (
           <Box
