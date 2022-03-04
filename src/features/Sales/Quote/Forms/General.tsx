@@ -2,8 +2,17 @@ import React from "react";
 import { Box } from "@material-ui/core";
 
 import TextField from "app/TextField";
+import LinkField from "app/Inputs/LinkFields";
 
-export default function General({ getFieldProps }: { getFieldProps: any }) {
+export default function General({
+  values,
+  setFieldValue,
+  getFieldProps,
+}: {
+  getFieldProps: any;
+  values: any;
+  setFieldValue: any;
+}) {
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" gridGap={10}>
       <TextField
@@ -18,13 +27,34 @@ export default function General({ getFieldProps }: { getFieldProps: any }) {
         InputLabelProps={{ shrink: true }}
         {...getFieldProps("expireDate")}
       />
-      <TextField label="Quote Number" {...getFieldProps("no")} />
-      <TextField label="SO Number" {...getFieldProps("SOId")} />
-      <TextField label="Project Name" {...getFieldProps("ProjectId")} />
-      <TextField label="Location" {...getFieldProps("location")} />
+      <LinkField
+        value={values.ProjectId}
+        choseItem={values.ProjectId}
+        label="Project"
+        path="/project"
+        filterLabel="name"
+        getOptionList={(resp) => resp?.result}
+        getOptionLabel={(item) => item?.no || item?.name || "No-Name"}
+        getOptionValue={(item) => item?.id}
+        onChange={(e, nv) => {
+          setFieldValue("ProjectId", nv.id);
+          setFieldValue("location", nv?.location);
+        }}
+      />
+      <TextField label="Location" {...getFieldProps("location")} disabled />
       <TextField label="Lead Time" {...getFieldProps("leadTime")} />
-      <TextField label="Sales Person" {...getFieldProps("salesperson")} />
-      <TextField label="Notes" {...getFieldProps("notes")} />
+      <LinkField
+        value={values.salesPerson}
+        choseItem={values.salesPerson}
+        label="Sales Person"
+        path="/employee"
+        filterLabel="username"
+        getOptionList={(resp) => resp}
+        getOptionLabel={(item) => item?.username || item?.name || "No-Name"}
+        getOptionValue={(item) => item?.id}
+        onChange={(e, nv) => setFieldValue("salesPerson", nv.id)}
+      />
+      <TextField label="Notes" {...getFieldProps("notes")} style={{ gridColumn: "span 3" }} />
     </Box>
   );
 }

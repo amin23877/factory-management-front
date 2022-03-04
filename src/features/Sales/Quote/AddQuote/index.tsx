@@ -74,9 +74,15 @@ export default function AddQuote({
 
   const handleSubmit = async (data: any, { setSubmitting }: any) => {
     try {
+      // console.log({ data });
+
       // TODO: test when quote is created but document is not saved
       setSubmitting(true);
-      const quoteResp = await createQuoteComplete(data);
+      const quoteResp = await createQuoteComplete({
+        ...data,
+        entryDate: Number(new Date(data.entryDate)),
+        expireDate: Number(new Date(data.expireDate)),
+      });
       if (quoteResp && quoteResp.id) {
         if (divToPrint.current && quoteResp.id) {
           const generatedPdf = await exportPdf(divToPrint.current);

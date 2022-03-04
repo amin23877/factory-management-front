@@ -6,9 +6,9 @@ import Dialog from "app/Dialog";
 import { BasePaper } from "app/Paper";
 
 import General from "./Forms/General";
-import Entities from "./Forms/Entities";
+// import Entities from "./Forms/Entities";
 import { FinalForm } from "./EditForm";
-import { DocumentForm } from "./Forms";
+// import { DocumentForm } from "./Forms";
 
 import { createQuoteComplete, IQuote } from "api/quote";
 import GroupLineItemTable from "components/GroupLineItemTable";
@@ -83,7 +83,7 @@ export default function AddQuote({
 
   return (
     <Dialog onClose={onClose} closeOnClickOut={false} open={open} title="Add New Quote" fullScreen maxWidth="md">
-      <Box px={phone ? 0 : 2} height={activeStep !== 2 ? "100%" : "90vh"} display="flex" flexDirection="column">
+      {/* <Box px={phone ? 0 : 2} height={activeStep !== 2 ? "100%" : "90vh"} display="flex" flexDirection="column">
         <Stepper activeStep={activeStep}>
           <Step>
             <StepLabel>{phone ? "" : "General Information"}</StepLabel>
@@ -121,9 +121,9 @@ export default function AddQuote({
                         <Tab label="Commission" />
                       </Tabs>
                       {activeTab === 0 && <Entities getFieldProps={getFieldProps} />}
-                      {/* {activeTab === 1 && (
+                      {activeTab === 1 && (
                         <CommissionTab values={values} handleBlur={handleBlur} handleChange={handleChange} add={add} />
-                      )} */}
+                      )}
                     </BasePaper>
                   </Box>
                 </Form>
@@ -136,15 +136,15 @@ export default function AddQuote({
         )}
         {activeStep === 1 && quote && <FinalForm loading={loading} />}
         {activeStep === 2 && createdQuote && (
-          <></>
-          // <DocumentForm
-          //   data={quote}
-          //   createdQuote={createdQuote}
-          //   onDone={() => {
-          //     onClose();
-          //     onDone();
-          //   }}
-          // />
+          
+          <DocumentForm
+            data={quote}
+            createdQuote={createdQuote}
+            onDone={() => {
+              onClose();
+              onDone();
+            }}
+          />
         )}
         {activeStep !== 2 && (
           <Box
@@ -167,7 +167,7 @@ export default function AddQuote({
             <div style={{ flex: 1 }}></div>
           </Box>
         )}
-      </Box>
+      </Box> */}
     </Dialog>
   );
 }

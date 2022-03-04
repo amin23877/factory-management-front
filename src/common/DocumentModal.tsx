@@ -27,6 +27,7 @@ const mutateDocuments = (type: string, id: string) => {
 
 export default function DocumentModal({ open, onClose, model, itemId, onDone, docData }: IDocumentModal) {
   const fileUploader = useRef<HTMLInputElement | null>();
+  const phone = useMediaQuery("(max-width:900px)");
 
   const deleteDocument = async () => {
     try {
@@ -62,7 +63,6 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
       setSubmitting(false);
     }
   };
-  const phone = useMediaQuery("(max-width:900px)");
 
   return (
     <Dialog open={open} onClose={onClose} fullScreen title={`${docData ? "Edit" : "Add"} Document to ${model}`}>
@@ -99,7 +99,12 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
                   ) : // <p>ads</p>
 
                   docData ? (
-                    <a rel="noopener noreferrer" target="_blank" href={docData.path.slice(0)}>
+                    <a
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      download={docData.path.search("blob") > -1 ? "document.pdf" : "document"}
+                      href={docData.path.slice(0)}
+                    >
                       Download previous file
                     </a>
                   ) : (

@@ -23,7 +23,7 @@ export default function GeneralStep({
     <Box display="grid" gridGap={10} gridTemplateColumns={phone ? "1fr" : "1fr 1fr"} height={phone ? "auto" : "100%"}>
       <Box display="flex" flexDirection="column" height="100%" gridGap={10}>
         <BasePaper>
-          <General getFieldProps={getFieldProps} />
+          <General values={values} setFieldValue={setFieldValue} getFieldProps={getFieldProps} />
         </BasePaper>
         <BasePaper style={{ height: "100%" }}>
           <Tabs
@@ -36,7 +36,7 @@ export default function GeneralStep({
             <Tab label="Entities" />
             <Tab label="Commission" />
           </Tabs>
-          {activeTab === 0 && <Entities getFieldProps={getFieldProps} />}
+          {activeTab === 0 && <Entities values={values} setFieldValue={setFieldValue} getFieldProps={getFieldProps} />}
         </BasePaper>
       </Box>
       <div>
