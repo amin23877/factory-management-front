@@ -10,7 +10,10 @@ import General from "../MainForm";
 import { FinalForm } from "../EditForm";
 import { DocumentForm } from "./DocumentStep";
 
-import { ISO, ISOComplete } from "api/so";
+import { ISOComplete, createSOComplete } from "api/so";
+import { createAModelDocument } from "api/document";
+import { exportPdf } from "logic/pdf";
+
 import GroupLineItemTable from "components/GroupLineItemTable";
 
 export default function AddSOModal({
@@ -22,7 +25,7 @@ export default function AddSOModal({
   initialData?: ISOComplete;
   open: boolean;
   onClose: () => void;
-  onDone: () => void;
+  onDone: (createdSO: any) => void;
 }) {
   const [step, setStep] = useState(0);
   // const [so, setSO] = useState(initialData);
@@ -42,10 +45,46 @@ export default function AddSOModal({
     getFieldProps,
   } = useFormik({
     initialValues: {} as any,
-    onSubmit(data) {
-      console.log({ data });
-
-      // setSO((prev) => ({ ...prev, ...data }));
+    async onSubmit(data, { setSubmitting }) {
+      try {
+        const createdSO = await createSOComplete(data);
+        if (accRef.current && createdSO?.id) {
+          const generatedAccPdf = await exportPdf(accRef.current);
+          await createAModelDocument({
+            model: "so",
+            id: createdSO.id,
+            file: generatedAccPdf,
+            description: `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
+            name: `SO_ACC_${createdSO.number}.pdf`,
+          });
+        }
+        if (repRef.current) {
+          const generatedRepPdf = await exportPdf(repRef.current);
+          await createAModelDocument({
+            model: "so",
+            id: createdSO.id,
+            file: generatedRepPdf,
+            description: `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
+            name: `SO_REP_${createdSO.number}.pdf`,
+          });
+        }
+        if (cusRef.current) {
+          const generatedCusPdf = await exportPdf(cusRef.current);
+          await createAModelDocument({
+            model: "so",
+            id: createdSO.id,
+            file: generatedCusPdf,
+            description: `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
+            name: `SO_CUS_${createdSO.number}.pdf`,
+          });
+        }
+        onDone(createdSO);
+        onClose();
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setSubmitting(false);
+      }
     },
   });
   const { data: quoteLineItems } = useSWR<{ result: any[]; total: number }>(

@@ -1,5 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
+import dspmlogo from "assets/pdf/dspmlogo.png";
 
 const useStyles = makeStyles({
   divider: {
@@ -78,7 +79,9 @@ export default function SOCus({ data }: { data: any }) {
   return (
     <div>
       <div className={classes.divider}>
-        <div className={classes.logo}>LOGO</div>
+        <div className={classes.logo}>
+          <img src={dspmlogo} alt="DSPM" />
+        </div>
         <div className={classes.topTableContainer}>
           <th className={classes.topTableHead}>ACCOUNTING SALES COPY</th>
           <table className={classes.topTable}>

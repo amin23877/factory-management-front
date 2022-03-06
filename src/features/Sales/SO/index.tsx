@@ -101,9 +101,11 @@ export default function SalesOrderPanel() {
         <AddSOModal
           open={addSo}
           onClose={() => setAddSo(false)}
-          onDone={() => {
+          onDone={(createdSO) => {
             mutate("/so");
             setRefresh((prev) => prev + 1);
+            setSelectedSO(createdSO)
+            setActiveTab(1)
           }}
         />
       )}
