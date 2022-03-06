@@ -114,30 +114,22 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
   );
 }
 
-export const FinalForm = ({
-  onDone,
-  onBack,
-  data,
-}: {
-  onDone: (a: any) => void;
-  onBack: () => void;
-  data: ISOComplete;
-}) => {
-  const [loading, setLoading] = useState(false);
+export const FinalForm = ({ onDone, onBack }: { onDone: (a: any) => void; onBack: () => void }) => {
+  // const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async () => {
-    setLoading(true);
-    try {
-      const resp = await createSOComplete(data);
-      if (resp) {
-        onDone(resp);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const handleSubmit = async () => {
+  //   setLoading(true);
+  //   try {
+  //     const resp = await createSOComplete(data);
+  //     if (resp) {
+  //       onDone(resp);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <>
@@ -147,7 +139,7 @@ export const FinalForm = ({
           If you finalize your Purchase order, You can't update it, So if you want to update it you should make new
           version or add new one
         </Typography>
-        {loading && <LinearProgress />}
+        {/* {loading && <LinearProgress />}
         <div style={{ flexGrow: 1 }} />
         <Box display="flex" justifyContent="space-between" mt={4}>
           <Button disabled={loading} onClick={onBack} color="secondary" variant="contained">
@@ -156,7 +148,7 @@ export const FinalForm = ({
           <Button onClick={handleSubmit} color="primary" variant="contained">
             Finalize
           </Button>
-        </Box>
+        </Box> */}
       </Box>
     </>
   );

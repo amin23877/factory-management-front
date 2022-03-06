@@ -25,7 +25,7 @@ import NoteModal from "../../../common/NoteModal";
 import DocumentModal from "../../../common/DocumentModal";
 import { INote } from "../../../api/note";
 import { IDocument } from "../../../api/document";
-import AddSOModal from "../../Sales/SO/AddSoModal";
+import AddSOModal from "../../Sales/SO/AddSoModalOld";
 import AddQuote from "../../Sales/Quote/AddQuote";
 import AddTagModal from "./AddTag";
 import AddStatusModal from "./AddStatus";

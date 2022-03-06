@@ -190,12 +190,7 @@ export const GeneralForm = ({
           url="/panel/project"
         />
 
-        <TextField
-          value={values.projectLocation}
-          name="projectLocationlocation"
-          label="Project Location"
-          onChange={handleChange}
-        />
+        <TextField value={values.projectLocation} name="projectLocation" label="Project Location" disabled />
         <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} />
         <TextField
           value={values.acknowledgeDate}
@@ -249,19 +244,18 @@ export const EntitiesForm = ({
     <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"} gridColumnGap={10} mt="5px">
       <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} my={1}>
         <LinkSelect
-          value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
+          value={typeof values.RepId === "string" ? values.RepId : values.RepId?.id}
           label="rep / Agency"
-          path="/customer"
+          path="/rep"
           filterLabel="name"
-          request={getClients}
           getOptionList={(resp) => resp?.result}
           getOptionLabel={(cus) => cus?.name}
           getOptionValue={(cus) => cus?.id}
           onChange={(e, nv) => {
-            setFieldValue("repOrAgency", nv?.id);
+            setFieldValue("RepId", nv?.id);
           }}
           onBlur={handleBlur}
-          url="/panel/customer"
+          url="/panel/rep"
         />
         <TextField value={values.repOrAgency?.address} label="Address" disabled />
         <TextField
@@ -293,7 +287,6 @@ export const EntitiesForm = ({
         <LinkSelect
           value={typeof values.client === "string" ? values.client : values.client?.id}
           label="Client"
-          request={getClients}
           getOptionList={(resp) => resp?.result}
           getOptionLabel={(cus) => cus?.name}
           getOptionValue={(cus) => cus?.id}
@@ -301,8 +294,8 @@ export const EntitiesForm = ({
             setFieldValue("client", nv?.id);
           }}
           onBlur={handleBlur}
-          url="/panel/customer"
-          path="/customer"
+          url="/panel/client"
+          path="/client"
           filterLabel="name"
         />
         <TextField
@@ -339,28 +332,11 @@ export const EntitiesForm = ({
         />
       </Box>
       <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} my={1}>
-        <TextField
-          value={values.requesterName}
-          name="requesterName"
-          label="requesterName"
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        <TextField
-          value={values.requesterMail}
-          name="requesterMail"
-          label="requesterMail"
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        <TextField
-          value={values.requesterPhone}
-          name="requesterPhone"
-          label="requesterPhone"
-          onChange={handleChange}
-          onBlur={handleBlur}
-        />
-        <div style={{ height: "80px", width: "100%" }}></div>
+        <TextField disabled label="Requester" />
+        <TextField disabled label="Email" />
+        <TextField disabled label="Phone" />
+        <TextField disabled label="Fax" />
+        <div style={{ height: 33 }} />
       </Box>
       <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} my={1}>
         <FieldSelect
@@ -368,8 +344,8 @@ export const EntitiesForm = ({
           name="twentyFourContact"
           request={
             typeof values.client === "string"
-              ? () => getAllModelContact("customer", values.client)
-              : () => getAllModelContact("customer", values.client?.id)
+              ? () => getAllModelContact("client", values.client)
+              : () => getAllModelContact("client", values.client?.id)
           }
           itemTitleField="lastName"
           itemValueField="id"
@@ -383,8 +359,8 @@ export const EntitiesForm = ({
           name="twentyFourContact"
           request={
             typeof values.client === "string"
-              ? () => getAllModelContact("customer", values.client)
-              : () => getAllModelContact("customer", values.client?.id)
+              ? () => getAllModelContact("client", values.client)
+              : () => getAllModelContact("client", values.client?.id)
           }
           itemTitleField="phone"
           itemValueField="id"
@@ -398,8 +374,8 @@ export const EntitiesForm = ({
           name="twentyFourContact"
           request={
             typeof values.client === "string"
-              ? () => getAllModelContact("customer", values.client)
-              : () => getAllModelContact("customer", values.client?.id)
+              ? () => getAllModelContact("client", values.client)
+              : () => getAllModelContact("client", values.client?.id)
           }
           itemTitleField="email"
           itemValueField="id"
@@ -845,7 +821,7 @@ export const ShippingForm = ({
       <TextField
         value={values.freightTerm}
         name="freightTerm"
-        label="Freigh Terms"
+        label="Freight Terms"
         onChange={handleChange}
         onBlur={handleBlur}
       />
@@ -998,20 +974,20 @@ export const TermsTab = ({
 };
 
 export const DocumentForm = ({
-  onDone,
-  createdSO,
   data,
+  createdSO,
+  onDone,
 }: {
-  onDone: () => void;
-  createdSO: ISO;
   data: ISOComplete;
+  createdSO: any;
+  onDone: () => void;
 }) => {
   const divToPrintAcc = useRef<HTMLElement | null>(null);
   const divToPrintRep = useRef<HTMLElement | null>(null);
   const divToPrintCus = useRef<HTMLElement | null>(null);
 
-  // const classes = useStyles();
-  // const [canSave, setCanSave] = useState(false);
+  const classes = useStyles();
+  const [canSave, setCanSave] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
   const handleSaveDocument = async () => {

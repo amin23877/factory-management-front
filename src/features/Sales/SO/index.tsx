@@ -14,7 +14,7 @@ import DocumentModal from "../../../common/DocumentModal";
 import LineItemModal from "../../LineItem";
 import LineServiceModal from "../../LineService";
 import EditTab from "./EditTab";
-import AddSOModal from "./AddSoModal";
+import AddSOModal from "./AddSo";
 
 import { deleteSO, ISO } from "../../../api/so";
 import { ILineItem } from "../../../api/lineItem";
@@ -97,14 +97,16 @@ export default function SalesOrderPanel() {
         />
       )}
 
-      <AddSOModal
-        open={addSo}
-        onClose={() => setAddSo(false)}
-        onDone={() => {
-          mutate("/so");
-          setRefresh((prev) => prev + 1);
-        }}
-      />
+      {addSo && (
+        <AddSOModal
+          open={addSo}
+          onClose={() => setAddSo(false)}
+          onDone={() => {
+            mutate("/so");
+            setRefresh((prev) => prev + 1);
+          }}
+        />
+      )}
 
       <Confirm
         open={confirm}

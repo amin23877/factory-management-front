@@ -89,7 +89,7 @@ export default function AddSOModal({
       title="Add new Sales order"
       fullScreen
     >
-      <Box p={2} height={600}>
+      {/* <Box p={2} height={600}>
         <Stepper activeStep={step}>
           <Step>
             <StepLabel>General information</StepLabel>
@@ -154,7 +154,7 @@ export default function AddSOModal({
         ) : (
           <></>
         )}
-      </Box>
+      </Box> */}
     </Dialog>
   );
 }
