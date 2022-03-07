@@ -29,6 +29,7 @@ import { EditTaskModal } from "./TaskModal";
 import { getModifiedValues } from "logic/utils";
 
 import DeviceQRCode from "app/QRCode";
+import ItemBomTable from "features/BOM/ItemBomTable";
 
 function ItemsDetails({
   sales,
@@ -178,17 +179,17 @@ function ItemsDetails({
     []
   );
 
-  const bomCols = useMemo<GridColDef[]>(
-    () => [
-      { field: "items", headerName: "Items", width: 80 },
-      { field: "revision", headerName: "Revision" },
-      { field: "date", headerName: "Revision Date", type: "date", width: 180 },
-      { field: "name", headerName: "BOM Name", width: 180 },
-      { field: "note", headerName: "Note", flex: 1 },
-      { field: "current", headerName: "Current", type: "boolean" },
-    ],
-    []
-  );
+  // const bomCols = useMemo<GridColDef[]>(
+  //   () => [
+  //     { field: "items", headerName: "Items", width: 80 },
+  //     { field: "revision", headerName: "Revision" },
+  //     { field: "date", headerName: "Revision Date", type: "date", width: 180 },
+  //     { field: "name", headerName: "BOM Name", width: 180 },
+  //     { field: "note", headerName: "Note", flex: 1 },
+  //     { field: "current", headerName: "Current", type: "boolean" },
+  //   ],
+  //   []
+  // );
   const manCols = useMemo<GridColDef[]>(
     () => [
       {
@@ -473,15 +474,18 @@ function ItemsDetails({
                       </>
                     )}
                     {activeTab === 1 && (
-                      <BaseDataGrid
-                        height={"calc(100% - 60px)"}
-                        cols={bomCols}
-                        rows={boms?.result || []}
-                        onRowSelected={(d) => {
-                          setBom(d);
-                          setBomPartsModal(true);
-                        }}
-                      />
+                      // <BaseDataGrid
+                      //   height={"calc(100% - 60px)"}
+                      //   cols={bomCols}
+                      //   rows={boms?.result || []}
+                      //   onRowSelected={(d) => {
+                      //     setBom(d);
+                      //     setBomPartsModal(true);
+                      //   }}
+                      // />
+                      <div style={{ maxWidth: "79vw", overflow: "auto" }}>
+                        <ItemBomTable item={selectedRow} boms={boms?.result || []} />
+                      </div>
                     )}
                     {activeTab === 2 && (
                       <>

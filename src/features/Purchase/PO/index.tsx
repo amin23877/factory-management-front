@@ -86,15 +86,17 @@ function Index() {
   return (
     <>
       <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
-      <AddPOModal
-        initialData={compPo}
-        open={addPO}
-        onClose={() => setAddPO(false)}
-        onDone={() => {
-          setActiveTab(0);
-          setLines([]);
-        }}
-      />
+      {addPO && (
+        <AddPOModal
+          initialData={compPo}
+          open={addPO}
+          onClose={() => setAddPO(false)}
+          onDone={() => {
+            setActiveTab(0);
+            setLines([]);
+          }}
+        />
+      )}
       <PurchasePOTypeModal open={addType} onClose={() => setAddType(false)} />
 
       <BasePaper>

@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
 import CheckBox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import TextField from "../../../app/TextField";
+import { makeStyles } from "@material-ui/styles";
 
 import Table from "@material-ui/core/Table";
 import TableRow from "@material-ui/core/TableRow";
@@ -17,120 +17,41 @@ import { Tabs, Tab, useMediaQuery, Popover } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import Alert from "@material-ui/lab/Alert";
-
-import { BasePaper } from "../../../app/Paper";
-
-import { getPPOTypes } from "../../../api/purchasePoType";
-import {
-  AddRounded,
-  CheckRounded,
-  ClearRounded,
-  DeleteRounded,
-  MoreVertRounded,
-  WarningRounded,
-} from "@material-ui/icons";
-
-import { getContacts, IContact } from "../../../api/contact";
-import { getAllEmployees, IEmployee } from "../../../api/employee";
-import { IPurchasePOComplete, createPurchasePOComplete, IPurchasePO } from "../../../api/purchasePO";
-import { getVendors, IVendor } from "../../../api/vendor";
-import { ILineItem } from "../../../api/lineItem";
-import { createAModelDocument } from "../../../api/document";
-
-import { FieldSelect, ArraySelect } from "../../../app/Inputs";
-import Button from "../../../app/Button";
 import { LinearProgress } from "@material-ui/core";
+import { AddRounded, CheckRounded, ClearRounded, MoreVertRounded, WarningRounded } from "@material-ui/icons";
 
-import { exportPdf } from "../../../logic/pdf";
+import { BasePaper } from "app/Paper";
+import TextField from "app/TextField";
+import { FieldSelect, ArraySelect, CacheFieldSelect } from "app/Inputs";
+import Button from "app/Button";
+import DateTimePicker from "app/DateTimePicker";
+import LinkSelect from "app/Inputs/LinkFields";
+import Dialog from "app/Dialog";
 
-import "../../../styles/splash.css";
-import { getSO } from "../../../api/so";
+import { getPPOTypes } from "api/purchasePoType";
+import { IPurchasePOComplete, createPurchasePOComplete } from "api/purchasePO";
+import { getVendors } from "api/vendor";
+import { ILineItem } from "api/lineItem";
+import { getSO } from "api/so";
+import { IItem } from "api/items";
+import { getServiceCategories } from "api/serviceCategories";
+import { getServiceClasses } from "api/serviceClass";
 
-import PurchasePO from "../../../PDFTemplates/PurchasePO";
-import { formatTimestampToDate } from "../../../logic/date";
-import DateTimePicker from "../../../app/DateTimePicker";
-import { IItem } from "../../../api/items";
-import "../../../styles/main.css";
-import LinkSelect from "../../../app/Inputs/LinkFields";
-import Dialog from "../../../app/Dialog";
-import { getItemService } from "../../../api/fieldService";
-import { makeStyles } from "@material-ui/styles";
-import { getServiceCategories } from "../../../api/serviceCategories";
-import { getServiceClasses } from "../../../api/serviceClass";
+import { formatTimestampToDate } from "logic/date";
+
+import "styles/splash.css";
+import "styles/main.css";
+
+import PurchasePO from "PDFTemplates/PurchasePO";
+import LinkField from "app/Inputs/LinkFields";
 
 export const DocumentForm = ({
-  createdPO,
   data,
-  onDone,
+  divToPrint,
 }: {
-  onDone: () => void;
   data: IPurchasePOComplete;
-  createdPO: IPurchasePO;
+  divToPrint: React.MutableRefObject<HTMLElement | null>;
 }) => {
-  const divToPrint = useRef<HTMLElement | null>();
-  const [contact, setContact] = useState<IContact>();
-  const [vendor, setVendor] = useState<IVendor>();
-  const [requester, setRequester] = useState<IEmployee>();
-
-  const [canSave, setCanSave] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
-
-  let sum = 0;
-  data.lines.forEach((l) => (sum += l.price * l.quantity));
-
-  useEffect(() => {
-    const setData = async () => {
-      try {
-        //   const contacts = await getContacts();
-        const vendors = await getVendors();
-        //   const emps = await getAllEmployees();
-
-        //   let fcontact = contacts.find((c: any) => c.id === data.ContactId);
-        //   setContact(fcontact);
-
-        let fvendor = vendors.find((v: any) => v.id === data.VendorId);
-        setVendor(fvendor);
-
-        //   let femp = emps.find((e: any) => e.id === data.requester);
-        //   setRequester(femp);
-
-        if (fvendor) {
-          setCanSave(true);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    setData();
-  }, [data.VendorId]);
-
-  const handleSaveDocument = async () => {
-    try {
-      setCanSave(false);
-      setIsUploading(true);
-      if (divToPrint.current && createdPO.id) {
-        const generatedPdf = await exportPdf(divToPrint.current);
-
-        console.log(generatedPdf);
-        const resp = await createAModelDocument({
-          model: "purchasePO",
-          id: createdPO.id,
-          file: generatedPdf,
-          description: `${new Date().toJSON().slice(0, 19)} - ${createdPO.number}`,
-          name: `PO_${createdPO.number}.pdf`,
-        });
-        if (resp) {
-          onDone();
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setCanSave(true);
-      setIsUploading(false);
-    }
-  };
-
   return (
     <Box>
       <Typography>We made a pdf from your PO, now you can save it</Typography>
@@ -148,61 +69,49 @@ export const DocumentForm = ({
             minHeight: "1200px",
           }}
         >
-          <PurchasePO vendor={vendor as any} contact={contact as any} lines={data.lines} sum={sum} />
+          <PurchasePO
+            vendor={{ name: "test vendor" } as any}
+            contact={{ firstName: "test", lastName: "testtest" } as any}
+            lines={data.lines}
+            sum={0}
+          />
         </div>
       </div>
-      <Box textAlign="right">
-        <Button disabled={!canSave} kind="add" onClick={handleSaveDocument}>
-          Save
-        </Button>
-        {isUploading && <LinearProgress />}
-      </Box>
     </Box>
   );
 };
 
-export const FinalForm = ({
-  onDone,
-  onBack,
-  data,
-}: {
-  onDone: (a: any) => void;
-  onBack: () => void;
-  data: IPurchasePOComplete;
-}) => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string>();
-
-  const handleSubmit = async () => {
-    try {
-      // const { ContactId, requester, status, VendorId, lines } = data;
-      const { lines } = data;
-      let newLines = [...lines];
-      newLines.forEach(function (v: any) {
-        delete v.date;
-        delete v.id;
-        delete v.PurchasePOId;
-        delete v.PurchaseSOId;
-        delete v.QuoteId;
-        delete v.SOId;
-        delete v.updatedAt;
-      });
-      const resp = await createPurchasePOComplete({
-        ...data,
-        lines: newLines,
-      } as IPurchasePOComplete);
-      if (resp) {
-        console.log(resp);
-        onDone(resp);
-      }
-    } catch (error: any) {
-      console.log(error);
-      console.log(error.response.data.error);
-      setError(error.response.data.error);
-    } finally {
-      setLoading(false);
-    }
-  };
+export const FinalForm = () => {
+  // const handleSubmit = async () => {
+  //   try {
+  //     // const { ContactId, requester, status, VendorId, lines } = data;
+  //     const { lines } = data;
+  //     let newLines = [...lines];
+  //     newLines.forEach(function (v: any) {
+  //       delete v.date;
+  //       delete v.id;
+  //       delete v.PurchasePOId;
+  //       delete v.PurchaseSOId;
+  //       delete v.QuoteId;
+  //       delete v.SOId;
+  //       delete v.updatedAt;
+  //     });
+  //     const resp = await createPurchasePOComplete({
+  //       ...data,
+  //       lines: newLines,
+  //     } as IPurchasePOComplete);
+  //     if (resp) {
+  //       console.log(resp);
+  //       onDone(resp);
+  //     }
+  //   } catch (error: any) {
+  //     console.log(error);
+  //     console.log(error.response.data.error);
+  //     setError(error.response.data.error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <Box height="85%" display="flex" flexDirection="column">
@@ -211,17 +120,6 @@ export const FinalForm = ({
         If you finalize your Purchase order, You can't update it, So if you want to update it you should make new
         version or add new one
       </Typography>
-      {error && <Alert severity="error">{error}</Alert>}
-      {loading && <LinearProgress />}
-      <div style={{ flexGrow: 1 }} />
-      <Box display="flex" justifyContent="space-between" mt={4}>
-        <Button disabled={loading} onClick={onBack} color="secondary" variant="contained">
-          Back to lines
-        </Button>
-        <Button disabled={loading} onClick={handleSubmit} color="primary" variant="contained">
-          Finalize
-        </Button>
-      </Box>
     </Box>
   );
 };
@@ -917,149 +815,135 @@ export const AddServiceForm = ({
   );
 };
 
-export const CreateForm = ({ onDone, data }: { data?: any; onDone: (data: IPurchasePOComplete) => void }) => {
+export const CreateForm = ({
+  errors,
+  values,
+  handleBlur,
+  handleChange,
+  setFieldValue,
+}: {
+  values: any;
+  handleChange: any;
+  handleBlur: any;
+  errors: any;
+  setFieldValue: any;
+}) => {
   const [activeMoreTab, setActiveMoreTab] = useState(0);
 
-  const handleSubmit = (d: any) => {
-    onDone(d);
-  };
-
   return (
-    <Formik initialValues={data ? data : ({} as any)} onSubmit={handleSubmit}>
-      {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
-        <Form>
-          <Box display="flex">
-            <BasePaper
-              style={{
-                boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
-                height: "100%",
-                flex: "2",
-              }}
-            >
-              <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10} flex={2}>
-                {/* <FieldSelect
-                  request={getPPOTypes}
-                  itemTitleField="name"
-                  itemValueField="id"
-                  name="PurchasePOTypeId"
-                  label="PO Type"
-                  fullWidth
-                  onChange={handleChange}
-                  value={
-                    typeof values.PurchasePOTypeId === "string" ? values.PurchasePOTypeId : values.PurchasePOTypeId?.id
-                  }
-                  error={Boolean(errors.PurchasePOTypeId)}
-                /> */}
-                <FieldSelect
-                  itemValueField="id"
-                  itemTitleField="number"
-                  request={getSO}
-                  name="SOId"
-                  value={typeof values.SOId === "string" ? values.SOId : values.SOId?.id}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  error={Boolean(errors.SOId)}
-                  label="SO ID"
-                />
-                <FieldSelect
-                  style={{ width: "100%" }}
-                  request={getVendors}
-                  itemTitleField="name"
-                  itemValueField="id"
-                  name="VendorId"
-                  label="Vendor"
-                  value={values.VendorId}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={Boolean(errors.VendorId)}
-                />
-                <TextField label="Approved By" value={values.approvedBy?.username} fullWidth disabled />
-
-                <ArraySelect
-                  items={[
-                    "Quoted",
-                    "Pending",
-                    "Printed",
-                    "Closed",
-                    "Acknowledged",
-                    "Shipped",
-                    "Received",
-                    "Canceled",
-                    "On Hold",
-                  ]}
-                  name="status"
-                  label="PO Status"
-                  value={values.status}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={Boolean(errors.status)}
-                  fullWidth
-                />
-                <TextField
-                  name="terms"
-                  label="Terms"
-                  value={values.terms}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={Boolean(errors.terms)}
-                  fullWidth
-                />
-                <TextField
-                  style={{ gridColumnEnd: "span 2" }}
-                  name="note"
-                  value={values.note}
-                  label="PO note"
-                  multiline
-                  rows={4}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-              </Box>
-            </BasePaper>
-            <Box flex={3}>
-              <BasePaper
-                style={{
-                  boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
-                  margin: "0 1em",
-                  height: "100%",
-                }}
-              >
-                <Tabs
-                  textColor="primary"
-                  value={activeMoreTab}
-                  onChange={(e, nv) => setActiveMoreTab(nv)}
-                  variant="scrollable"
-                  style={{ maxWidth: 700 }}
-                >
-                  <Tab label="More Info" />
-                  <Tab label="Addresses" />
-                </Tabs>
-                <Box>
-                  {activeMoreTab === 0 && (
-                    <MoreInfoForm
-                      errors={errors}
-                      values={values}
-                      handleBlur={handleBlur}
-                      handleChange={handleChange}
-                      setFieldValue={setFieldValue}
-                      addForm={true}
-                    />
-                  )}
-                  {activeMoreTab === 1 && (
-                    <AddressesForm values={values} handleBlur={handleBlur} handleChange={handleChange} />
-                  )}
-                </Box>
-              </BasePaper>
-            </Box>
+    <Box display="flex">
+      <BasePaper
+        style={{
+          boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
+          height: "100%",
+          flex: "2",
+        }}
+      >
+        <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10} flex={2}>
+          <LinkField
+            value={typeof values.SOId === "string" ? values.SOId : values.SOId?.id}
+            choseItem={typeof values.SOId === "string" ? values.SOId : values.SOId?.id}
+            label="SO Number"
+            path="/so"
+            filterLabel="no"
+            getOptionList={(resp) => resp?.result}
+            getOptionLabel={(item) => item?.no || "No-Number"}
+            getOptionValue={(item) => item?.id}
+            onChange={(e, nv) => {
+              setFieldValue("SOId", nv.id);
+            }}
+            url="/panel/sales/so"
+          />
+          <LinkField
+            value={values.VendorId}
+            choseItem={values.VendorId}
+            label="Vendor"
+            path="/vendor"
+            filterLabel="name"
+            getOptionList={(resp) => resp?.result}
+            getOptionLabel={(item) => item?.name || "No-Number"}
+            getOptionValue={(item) => item?.id}
+            onChange={(e, nv) => {
+              setFieldValue("VendorId", nv.id);
+            }}
+            url="/panel/purchase/vendor"
+          />
+          <TextField label="Approved By" value={values.approvedBy?.username} fullWidth disabled />
+          <ArraySelect
+            items={[
+              "Quoted",
+              "Pending",
+              "Printed",
+              "Closed",
+              "Acknowledged",
+              "Shipped",
+              "Received",
+              "Canceled",
+              "On Hold",
+            ]}
+            name="status"
+            label="PO Status"
+            value={values.status}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={Boolean(errors.status)}
+            fullWidth
+          />
+          <TextField
+            name="terms"
+            label="Terms"
+            value={values.terms}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={Boolean(errors.terms)}
+            fullWidth
+          />
+          <TextField
+            style={{ gridColumnEnd: "span 2" }}
+            name="note"
+            value={values.note}
+            label="PO note"
+            multiline
+            rows={4}
+            onChange={handleChange}
+            onBlur={handleBlur}
+          />
+        </Box>
+        <BasePaper
+          style={{
+            boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px",
+            height: "100%",
+          }}
+        >
+          <Tabs
+            textColor="primary"
+            value={activeMoreTab}
+            onChange={(e, nv) => setActiveMoreTab(nv)}
+            variant="scrollable"
+            style={{ maxWidth: 700 }}
+          >
+            <Tab label="More Info" />
+            <Tab label="Addresses" />
+          </Tabs>
+          <Box>
+            {activeMoreTab === 0 && (
+              <MoreInfoForm
+                errors={errors}
+                values={values}
+                handleBlur={handleBlur}
+                handleChange={handleChange}
+                setFieldValue={setFieldValue}
+                addForm={true}
+              />
+            )}
+            {activeMoreTab === 1 && (
+              <AddressesForm values={values} handleBlur={handleBlur} handleChange={handleChange} />
+            )}
           </Box>
-          <Box style={{ display: "flex", width: "100%", justifyContent: "center" }}>
-            <Button type="submit" kind="add" style={{ margin: "0.5em auto" }}>
-              Next
-            </Button>
-          </Box>
-        </Form>
-      )}
-    </Formik>
+        </BasePaper>
+      </BasePaper>
+      <Box flex={3}></Box>
+    </Box>
   );
 };
 
