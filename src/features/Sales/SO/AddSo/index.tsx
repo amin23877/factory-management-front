@@ -87,6 +87,7 @@ export default function AddSOModal({
       }
     },
   });
+
   const { data: quoteLineItems } = useSWR<{ result: any[]; total: number }>(
     values.QuoteId ? `/lineitem?QuoteId=${values.QuoteId}` : null
   );
@@ -122,6 +123,7 @@ export default function AddSOModal({
       }
     }
   }, [quoteLineItems, setFieldValue]);
+  console.log(values.lines);
 
   // useEffect(() => {
   //   if (initialData) {

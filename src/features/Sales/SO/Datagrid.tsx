@@ -5,7 +5,7 @@ import DataGrid from "app/NewDataGrid";
 
 const columns = [
   {
-    name: "date",
+    name: "createdAt",
     header: "Date",
     minWidth: 100,
     type: "date",

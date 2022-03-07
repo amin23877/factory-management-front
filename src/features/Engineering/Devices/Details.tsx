@@ -31,7 +31,7 @@ import { getModifiedValues } from "logic/utils";
 import DeviceQRCode from "app/QRCode";
 import ItemBomTable from "features/BOM/ItemBomTable";
 
-function ItemsDetails({
+function DeviceDetails({
   sales,
   selectedRow,
   onNoteSelected,
@@ -623,4 +623,4 @@ function ItemsDetails({
     </>
   );
 }
-export default ItemsDetails;
+export default DeviceDetails;
