@@ -14,7 +14,7 @@ build:
   script:
     - npm i
     - echo "export const host = 'ts.digitalphocus.ir'" > src/host.js
-    - NODE_OPTIONS=--max_old_space_size=1024; npm run build
+    - NODE_OPTIONS=--max_old_space_size=1000; npm run build
     - mkdir build
     - zip -r build.zip build
     - ls
