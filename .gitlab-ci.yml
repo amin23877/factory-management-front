@@ -17,5 +17,8 @@ build:
   #  - npm run build
     - mkdir build
     - zip -r build.zip build
+    - ls
+    - which ssh
+    - which scp
     - sshpass -p "Phoenix@SERVER2001" scp build.zip root@185.110.191.89:/home/phocus.frontend/build.zip
     - sshpass -p "Phoenix@SERVER2001" ssh root@185.110.191.89 "cd /home/phocus.frontend; rm -rf build; unzip -r build.zip"
