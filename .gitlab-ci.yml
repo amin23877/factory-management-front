@@ -1,0 +1,32 @@
+stages:
+  - prepare
+  - build
+  - deploy
+
+install_dependencies:
+  stage: prepare
+  image: 
+    name: node
+    entrypoint: [""] 
+  rules:
+    - changes:
+      - src/*
+  script:
+    - npm i
+
+
+build:
+  stage: build
+  image: 
+    name: node
+    entrypoint: [""] 
+  # rules:
+  #   - changes:
+  #     - src/*
+  before_script:
+    - apt-get -qq update && apt-get -qq install -y zip unzip sshpass
+  script:
+    - npm run build
+    - zip -r build.zip build
+    - sshpass -p "Phoenix@SERVER2001" scp build.zip root@185.110.191.89:/home/phocus.frontend/build.zip
+    - sshpass -p "Phoenix@SERVER2001" ssh root@185.110.191.89 "cd /home/phocus.frontend; rm -rf build; unzip -r build.zip"
