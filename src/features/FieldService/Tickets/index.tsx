@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Box, Tabs, Tab, ListItem, IconButton } from "@material-ui/core";
 import {
   AddRounded,
-  NoteAddRounded,
-  FileCopyRounded,
   ShoppingCartRounded,
   PostAddRounded,
   CategoryRounded,
@@ -25,7 +23,7 @@ import NoteModal from "../../../common/NoteModal";
 import DocumentModal from "../../../common/DocumentModal";
 import { INote } from "../../../api/note";
 import { IDocument } from "../../../api/document";
-import AddSOModal from "../../Sales/SO/AddSoModalOld";
+import AddSOModal from "../../Sales/SO/AddSo";
 import AddQuote from "../../Sales/Quote/AddQuote";
 import AddTagModal from "./AddTag";
 import AddStatusModal from "./AddStatus";

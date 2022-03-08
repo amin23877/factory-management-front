@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Box, Step, StepLabel, Stepper } from "@material-ui/core";
 import { useFormik } from "formik";
-import useSWR from "swr";
 
 import Dialog from "app/Dialog";
 import Button from "app/Button";
@@ -15,6 +14,7 @@ import { createAModelDocument } from "api/document";
 import { exportPdf } from "logic/pdf";
 
 import GroupLineItemTable from "components/GroupLineItemTable";
+import { get } from "api";
 
 export default function AddSOModal({
   open,
@@ -28,7 +28,6 @@ export default function AddSOModal({
   onDone: (createdSO: any) => void;
 }) {
   const [step, setStep] = useState(0);
-  // const [so, setSO] = useState(initialData);
   const accRef = useRef<HTMLElement | null>(null);
   const repRef = useRef<HTMLElement | null>(null);
   const cusRef = useRef<HTMLElement | null>(null);
@@ -44,7 +43,7 @@ export default function AddSOModal({
     isSubmitting,
     getFieldProps,
   } = useFormik({
-    initialValues: {} as any,
+    initialValues: initialData || ({} as any),
     async onSubmit(data, { setSubmitting }) {
       try {
         const createdSO = await createSOComplete(data);
@@ -88,54 +87,51 @@ export default function AddSOModal({
     },
   });
 
-  const { data: quoteLineItems } = useSWR<{ result: any[]; total: number }>(
-    values.QuoteId ? `/lineitem?QuoteId=${values.QuoteId}` : null
-  );
-
   useEffect(() => {
-    if (quoteLineItems && quoteLineItems.result) {
+    const generateQuoteGroups = async () => {
       try {
-        const newGroups = [];
-        for (const line of quoteLineItems.result) {
-          if (newGroups[line.group - 1]) {
-            if (line.ItemId) {
-              newGroups[line.group - 1].push({
-                ...line,
-                ItemObject: line.ItemId,
-                ItemId: line.ItemId.id,
-                type: "device",
-              });
+        if (!values.QuoteId) {
+          return;
+        }
+        const resp = await get(`/lineitem?QuoteId=${values.QuoteId}`);
+        if (resp && resp?.result) {
+          const newGroups = [];
+          for (const line of resp.result) {
+            if (newGroups[line.group - 1]) {
+              if (line.ItemId) {
+                newGroups[line.group - 1].push({
+                  ...line,
+                  ItemObject: line.ItemId,
+                  ItemId: line.ItemId.id,
+                  type: "device",
+                });
+              } else {
+                newGroups[line.group - 1].push(line);
+              }
             } else {
-              newGroups[line.group - 1].push(line);
-            }
-          } else {
-            if (line.ItemId) {
-              newGroups.push([{ ...line, ItemObject: line.ItemId, ItemId: line.ItemId.id, type: "device" }]);
-            } else {
-              newGroups.push([line]);
+              if (line.ItemId) {
+                newGroups.push([{ ...line, ItemObject: line.ItemId, ItemId: line.ItemId.id, type: "device" }]);
+              } else {
+                newGroups.push([line]);
+              }
             }
           }
+
+          setFieldValue("lines", newGroups);
         }
-
-        setFieldValue("lines", newGroups);
       } catch (error) {
-        console.log({ error });
+        console.log(error);
       }
-    }
-  }, [quoteLineItems, setFieldValue]);
-  console.log(values.lines);
+    };
 
-  // useEffect(() => {
-  //   if (initialData) {
-  //     setSO(initialData);
-  //   }
-  // }, [initialData]);
+    generateQuoteGroups();
+  }, [setFieldValue, values.QuoteId]);
 
   return (
     <Dialog
       closeOnClickOut={false}
       onClose={() => {
-        resetForm();
+        resetForm({ values: {} as any });
         onClose();
       }}
       open={open}
@@ -166,7 +162,13 @@ export default function AddSOModal({
                 getFieldProps={getFieldProps}
               />
               <Box>
-                <GroupLineItemTable groups={values.lines || []} setGroups={(g) => setFieldValue("lines", g)} />
+                <GroupLineItemTable
+                  groups={values.lines || []}
+                  setGroups={(g) => {
+                    console.log("Called from GroupLineItemTable");
+                    setFieldValue("lines", g);
+                  }}
+                />
               </Box>
             </Box>
           )}

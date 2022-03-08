@@ -29,41 +29,6 @@ export default function AddQuote({
   const [activeStep, setActiveStep] = useState(0);
   const phone = useMediaQuery("(max-width:900px)");
 
-  // const handleNext = async () => {
-  //   if (activeStep === 0) {
-  //     if (ref?.current?.values?.entryDate || ref?.current?.values?.expireDate) {
-  //       setQuote((d: any) => ({
-  //         ...d,
-  //         lines: groups,
-  //         ...ref?.current?.values,
-  //         entryDate: Number(new Date(ref?.current?.values?.entryDate)),
-  //         expireDate: Number(new Date(ref?.current?.values?.expireDate)),
-  //       }));
-  //     } else {
-  //       setQuote((d: any) => ({
-  //         ...d,
-  //         lines: groups,
-  //         ...ref?.current?.values,
-  //       }));
-  //     }
-
-  //     setActiveStep((prev) => prev + 1);
-  //   } else if (activeStep === 1) {
-  //     try {
-  //       setLoading(true);
-  //       const resp = await createQuoteComplete(quote);
-  //       if (resp) {
-  //         onDone();
-  //         setCreatedQuote({ ...resp, lines: groups });
-  //         setActiveStep((prev) => prev + 1);
-  //       }
-  //     } catch (error) {
-  //       console.log(error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
-  // };
   const handleNext = () => {
     setActiveStep((prev) => prev + 1);
   };
@@ -74,8 +39,6 @@ export default function AddQuote({
 
   const handleSubmit = async (data: any, { setSubmitting }: any) => {
     try {
-      // console.log({ data });
-
       // TODO: test when quote is created but document is not saved
       setSubmitting(true);
       const quoteResp = await createQuoteComplete({
