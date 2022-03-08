@@ -13,6 +13,7 @@ build:
     - apt-get -qq update && apt-get -qq install -y zip unzip sshpass
   script:
     - npm i
+    - echo "export const host = 'ts.digitalphocus.ir'" > src/host.js
     - npm run build
     - zip -r build.zip build
     - sshpass -p "Phoenix@SERVER2001" scp build.zip root@185.110.191.89:/home/phocus.frontend/build.zip
