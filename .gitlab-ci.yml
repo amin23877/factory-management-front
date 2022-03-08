@@ -3,9 +3,9 @@ stages:
 
 build:
   stage: build
-  image: 
+  image:
     name: node:lts-stretch
-    entrypoint: [""] 
+    entrypoint: [""]
   # rules:
   #   - changes:
   #     - src/*
@@ -14,13 +14,13 @@ build:
   script:
     - npm i
     - echo "export const host = 'ts.digitalphocus.ir'" > src/host.js
-    - NODE_OPTIONS=--max_old_space_size=1000; npm run build
+    - NODE_OPTIONS=--max_old_space_size=2048; npm run build
     - mkdir build
     - zip -r build.zip build
     - ls
     - which ssh
     - which scp
-    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
     - eval $(ssh-agent -s)
     - ssh-add <(echo "$SSH_PRIVATE_KEY")
     - mkdir -p ~/.ssh
