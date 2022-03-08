@@ -246,9 +246,16 @@ function NewDataGrid({
       data: any[];
       count: number;
     }> => {
+      console.log({
+        filterValue,
+        limit,
+        sortInfo,
+        skip,
+      });
+
       let params: any = { ...initParams };
       for (const fv of filterValue) {
-        if (fv.value) {
+        if (fv.value !== null && fv.value !== undefined && fv.value !== "") {
           params[getOperator(fv.operator) + fv.name] = fv.value;
         }
       }
