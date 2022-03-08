@@ -12,7 +12,7 @@ build:
   before_script:
     - apt-get -qq update && apt-get -qq install -y zip unzip sshpass
   script:
-    - npm i
+  #  - npm i
     - echo "export const host = 'ts.digitalphocus.ir'" > src/host.js
   #  - npm run build
     - mkdir build
