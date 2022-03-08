@@ -4,7 +4,7 @@ stages:
 build:
   stage: build
   image: 
-    name: node
+    name: node:lts-stretch
     entrypoint: [""] 
   # rules:
   #   - changes:
