@@ -26,4 +26,4 @@ build:
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - scp build.zip root@185.110.191.89:/home/phocus.frontend/build.zip
-    - ssh root@185.110.191.89 "cd /home/phocus.frontend; rm -rf build; unzip -r build.zip"
+    - ssh root@185.110.191.89 "cd /home/phocus.frontend; rm -rf build; unzip build.zip"
