@@ -145,16 +145,17 @@ export default function AddSOModal({
   }, [setFieldValue, values.QuoteId]);
 
   useEffect(() => {
+    function handleBeforeUnLoad(e: any) {
+      e.preventDefault();
+      e.returnValue = "";
+    }
     if (isSubmitting) {
-      window.addEventListener("beforeunload", function (e) {
-        e.preventDefault();
-        e.returnValue = "";
-      });
+      window.addEventListener("beforeunload", handleBeforeUnLoad);
     } else if (!isSubmitting || !open) {
-      window.addEventListener("beforeunload", () => {});
+      window.removeEventListener("beforeunload", handleBeforeUnLoad);
     }
 
-    return () => window.addEventListener("beforeunload", () => {});
+    return () => window.removeEventListener("beforeunload", handleBeforeUnLoad);
   }, [isSubmitting, open]);
 
   return (
