@@ -67,7 +67,7 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
   return (
     <Dialog open={open} onClose={onClose} fullScreen title={`${docData ? "Edit" : "Add"} Document to ${model}`}>
       <Box height="82vh" m={3} display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 300px"} gridColumnGap={10}>
-        <Box>{docData?.path && <PDFPreview height="100%" pdf={`http://${host}` + docData?.path} />}</Box>
+        <Box>{docData?.path && <PDFPreview height="100%" pdf={host + docData?.path} />}</Box>
         <Formik initialValues={docData ? docData : ({} as IDocument)} onSubmit={handleSubmit}>
           {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
             <Form>

@@ -28,6 +28,14 @@ export default function AddSOModal({
   onDone: (createdSO: any) => void;
 }) {
   const [step, setStep] = useState(0);
+  const [status, setStatus] = useState<
+    | "Creating SO"
+    | "Uploading Accounting Document"
+    | "Uploading Representative Document"
+    | "Uploading Customer Document"
+    | ""
+  >("");
+  const [progress, setProgress] = useState(0);
   const accRef = useRef<HTMLElement | null>(null);
   const repRef = useRef<HTMLElement | null>(null);
   const cusRef = useRef<HTMLElement | null>(null);
@@ -46,8 +54,12 @@ export default function AddSOModal({
     initialValues: initialData || ({} as any),
     async onSubmit(data, { setSubmitting }) {
       try {
-        const createdSO = await createSOComplete(data);
+        setProgress(0);
+        setStatus("Creating SO");
+        const createdSO: any = await createSOComplete(data);
+        setProgress(25);
         if (accRef.current && createdSO?.id) {
+          setStatus("Uploading Accounting Document");
           const generatedAccPdf = await exportPdf(accRef.current);
           await createAModelDocument({
             model: "so",
@@ -56,8 +68,10 @@ export default function AddSOModal({
             description: `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
             name: `SO_ACC_${createdSO.number}.pdf`,
           });
+          setProgress(50);
         }
         if (repRef.current) {
+          setStatus("Uploading Representative Document");
           const generatedRepPdf = await exportPdf(repRef.current);
           await createAModelDocument({
             model: "so",
@@ -66,8 +80,10 @@ export default function AddSOModal({
             description: `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
             name: `SO_REP_${createdSO.number}.pdf`,
           });
+          setProgress(75);
         }
         if (cusRef.current) {
+          setStatus("Uploading Customer Document");
           const generatedCusPdf = await exportPdf(cusRef.current);
           await createAModelDocument({
             model: "so",
@@ -76,6 +92,7 @@ export default function AddSOModal({
             description: `${new Date().toJSON().slice(0, 19)} - ${createdSO.number}`,
             name: `SO_CUS_${createdSO.number}.pdf`,
           });
+          setProgress(100);
         }
         onDone(createdSO);
         onClose();
@@ -127,12 +144,27 @@ export default function AddSOModal({
     generateQuoteGroups();
   }, [setFieldValue, values.QuoteId]);
 
+  useEffect(() => {
+    if (isSubmitting) {
+      window.addEventListener("beforeunload", function (e) {
+        e.preventDefault();
+        e.returnValue = "";
+      });
+    } else {
+      window.addEventListener("beforeunload", () => {});
+    }
+
+    return () => window.addEventListener("beforeunload", () => {});
+  }, [isSubmitting]);
+
   return (
     <Dialog
       closeOnClickOut={false}
       onClose={() => {
-        resetForm({ values: {} as any });
-        onClose();
+        if (!isSubmitting) {
+          resetForm({ values: {} as any });
+          onClose();
+        }
       }}
       open={open}
       title="Add new Sales order"
@@ -174,7 +206,14 @@ export default function AddSOModal({
           )}
           {step === 1 && values && <FinalForm onBack={() => setStep(1)} onDone={(data) => setStep(2)} />}
           {step === 2 && values && (
-            <DocumentForm data={values} accRef={accRef} repRef={repRef} cusRef={cusRef} isUploading={isSubmitting} />
+            <DocumentForm
+              status={status}
+              progress={progress}
+              data={values}
+              accRef={accRef}
+              repRef={repRef}
+              cusRef={cusRef}
+            />
           )}
         </Box>
         <Box display="flex" alignItems="center" justifyContent="space-between">

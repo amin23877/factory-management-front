@@ -12,7 +12,7 @@ import Dashboard from "features/Purchase/Dashboard";
 import { usePortal } from "logic/PortalContext";
 
 export default function Purchase() {
-  const [activeTab, setActiveTab] = useState(2);
+  const [activeTab, setActiveTab] = useState(0);
   const [tabText, setTabText] = useState("Purchase Order");
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 

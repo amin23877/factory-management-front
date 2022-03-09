@@ -9,16 +9,18 @@ import { ISOComplete } from "api/so";
 
 export const DocumentForm = ({
   data,
-  isUploading,
   accRef,
   cusRef,
   repRef,
+  status,
+  progress,
 }: {
   data: ISOComplete;
-  isUploading: boolean;
   accRef: React.MutableRefObject<HTMLElement | null>;
   repRef: React.MutableRefObject<HTMLElement | null>;
   cusRef: React.MutableRefObject<HTMLElement | null>;
+  status: string;
+  progress: number;
 }) => {
   // const divToPrintAcc = useRef<HTMLElement | null>(null);
   // const divToPrintRep = useRef<HTMLElement | null>(null);
@@ -121,7 +123,10 @@ export const DocumentForm = ({
         </div>
       </div>
 
-      <Box textAlign="right">{isUploading && <LinearProgress />}</Box>
+      <Box>
+        <Typography style={{ textAlign: "center", margin: "0.5em 0" }}>{status}</Typography>
+        <LinearProgress variant="determinate" value={progress} />
+      </Box>
     </Box>
   );
 };
