@@ -11,8 +11,8 @@ build:
   #     - src/*
   before_script:
     - apt-get -qq update && apt-get -qq install -y zip unzip sshpass
-  script:
     - npm i
+  script:
     - echo "export const host = 'https://ts.digitalphocus.ir'" > src/host.ts
     - NODE_OPTIONS=--max_old_space_size=1000; npm run build
     - mkdir build
