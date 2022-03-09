@@ -12,10 +12,11 @@ import {
   Typography,
   IconButton,
 } from "@material-ui/core";
-import { ArrowForwardRounded, DeleteRounded, FolderRounded } from "@material-ui/icons";
-import useSWR from "swr";
+import { ArrowForwardRounded, CheckRounded, FolderRounded } from "@material-ui/icons";
+import { useSWRInfinite } from "swr";
 import { Link } from "react-router-dom";
 
+import Button from "app/Button";
 import { notificationType, toggleSeenNotification } from "api/notification";
 
 function getNotificationBody(notification: notificationType) {
@@ -35,7 +36,7 @@ function getNotificationBody(notification: notificationType) {
 
 function getNotificationLink(notification: notificationType) {
   if (notification.type === "Engineering Approval" && notification?.data?.id) {
-    return `/panel/inventory/${notification?.data?.id}`;
+    return `/panel/inventory/${notification?.data?.id?.id}`;
   } else if (notification.type === "Purchasing Required") {
     return `/panel/purchase`;
   }
@@ -49,7 +50,12 @@ function getNotificationDate(notification: notificationType) {
 }
 
 export default function Notification() {
-  const { data: notifications, mutate } = useSWR<{ result: notificationType[]; total: number }>("/notification");
+  // const { data: notifications, mutate } = useSWR<{ result: notificationType[]; total: number }>("/notification");
+  const { data, mutate, setSize, size } = useSWRInfinite<{ result: notificationType[]; total: number }>(
+    (index) => `/notification?sort=createdAt&order=DESC&unseen=true&page=${index + 1}`
+  );
+  const notifications = data ? data.map((d) => d.result).flat() : [];
+  const canLoadMore = data && data.length > 0 ? notifications.length !== data[0].total : false;
 
   const handleSeen = async (id: string) => {
     try {
@@ -67,7 +73,7 @@ export default function Notification() {
         <Paper>
           <Box>
             <List>
-              {notifications?.result.map((notification) => (
+              {notifications?.map((notification) => (
                 <ListItem key={notification.id}>
                   <ListItemAvatar>
                     <Avatar>
@@ -85,7 +91,7 @@ export default function Notification() {
                       aria-label="delete"
                       style={{ marginRight: "2em" }}
                     >
-                      <DeleteRounded />
+                      <CheckRounded />
                     </IconButton>
                     {getNotificationLink(notification) && (
                       <Link to={getNotificationLink(notification) as string}>
@@ -98,6 +104,9 @@ export default function Notification() {
                 </ListItem>
               ))}
             </List>
+            <Button disabled={!canLoadMore} fullWidth variant="outlined" onClick={() => setSize(size + 1)}>
+              See More
+            </Button>
           </Box>
         </Paper>
       </Box>

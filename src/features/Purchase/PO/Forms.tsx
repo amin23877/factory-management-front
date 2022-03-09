@@ -168,17 +168,17 @@ export const LinesForm = ({
     setAnchorEl(null);
     setAnchorBEl(null);
   };
-  const renderTable = () => {
-    let counter = 0;
-    const display = createdItems.map((item: any, i: number) => {
-      if (!item.belongsTo) {
-        counter++;
-      }
-      return { ...item, group: counter };
-    });
-    setDisplayItems(display);
-  };
   useEffect(() => {
+    const renderTable = () => {
+      let counter = 0;
+      const display = createdItems.map((item: any, i: number) => {
+        if (!item.belongsTo) {
+          counter++;
+        }
+        return { ...item, group: counter };
+      });
+      setDisplayItems(display);
+    };
     renderTable();
   }, [createdItems]);
 
