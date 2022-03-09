@@ -150,12 +150,12 @@ export default function AddSOModal({
         e.preventDefault();
         e.returnValue = "";
       });
-    } else {
+    } else if (!isSubmitting || !open) {
       window.addEventListener("beforeunload", () => {});
     }
 
     return () => window.addEventListener("beforeunload", () => {});
-  }, [isSubmitting]);
+  }, [isSubmitting, open]);
 
   return (
     <Dialog

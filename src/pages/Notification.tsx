@@ -12,11 +12,12 @@ import {
   Typography,
   IconButton,
 } from "@material-ui/core";
-import { ArrowForwardRounded, CheckRounded, FolderRounded } from "@material-ui/icons";
+import { ArrowForwardRounded, CheckRounded, FolderRounded, FilterListRounded } from "@material-ui/icons";
 import { useSWRInfinite } from "swr";
 import { Link } from "react-router-dom";
 
 import Button from "app/Button";
+import TextField from "app/TextField";
 import { notificationType, toggleSeenNotification } from "api/notification";
 
 function getNotificationBody(notification: notificationType) {
@@ -72,6 +73,21 @@ export default function Notification() {
       <Box mt={2}>
         <Paper>
           <Box>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              style={{
+                paddingLeft: "1.5em",
+                paddingTop: "1em",
+                paddingRight: 4,
+              }}
+            >
+              <TextField name="search" label="Search..." />
+              <IconButton>
+                <FilterListRounded />
+              </IconButton>
+            </Box>
             <List>
               {notifications?.map((notification) => (
                 <ListItem key={notification.id}>
