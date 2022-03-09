@@ -15,12 +15,12 @@ build:
   script:
     - echo "export const host = 'https://ts.digitalphocus.ir'" > src/host.ts
     - NODE_OPTIONS=--max_old_space_size=1000; npm run build
-    - mkdir build
     - zip -r build.zip build
-    - ls
-    - which ssh
-    - which scp
-    - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
+    # - mkdir build
+    # - ls
+    # - which ssh
+    # - which scp
+    # - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
     - eval $(ssh-agent -s)
     - ssh-add <(echo "$SSH_PRIVATE_KEY")
     - mkdir -p ~/.ssh
