@@ -38,8 +38,8 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
   const [selectedContact, setSelectedContact] = useState<IContact>();
 
   const itemCols: GridColDef[] = [
-    { field: "ItemId", headerName: "Item NO.", valueFormatter: (r) => r.row?.item?.no, width: 120 },
-    { field: "ItemName", headerName: "Item Name", valueFormatter: (r) => r.row?.item?.name, flex: 1 },
+    { field: "ItemId", headerName: "Item NO.", valueFormatter: (r) => r.row?.ItemId?.no, width: 120 },
+    { field: "ItemName", headerName: "Item Name", valueFormatter: (r) => r.row?.ItemId?.name, flex: 1 },
     {
       field: "vendorPartName",
       headerName: "Vendor P.NO.",
@@ -48,10 +48,10 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
     },
     { field: "vendorSKU", headerName: "Vendor SKU", width: 120, valueFormatter: (r) => r.row?.vending?.vendorSKU },
     { field: "Last Lead", width: 120, valueFormatter: (r) => r.row?.vending?.leadTime },
-    { field: "QOH", width: 100, valueFormatter: (r) => r.row?.item?.qtyOnHand },
+    { field: "QOH", width: 100, valueFormatter: (r) => r.row?.ItemId?.qtyOnHand },
     { field: "Cost", width: 100, valueFormatter: (r) => r.row?.vending?.cost },
-    { field: "Inventory Val.", width: 130, valueFormatter: (r) => r.row?.item?.qohValue },
-    { field: "Min Order", valueFormatter: (r) => r.row?.item.minOrder, width: 100 },
+    { field: "Inventory Val.", width: 130, valueFormatter: (r) => r.row?.ItemId?.qohValue },
+    { field: "Min Order", valueFormatter: (r) => r.row?.ItemId?.minOrder, width: 100 },
   ];
   const noteCols = useMemo<GridColumns>(
     () => [
@@ -174,12 +174,12 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
             scrollButtons={phone ? "on" : "auto"}
             style={phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "1em" } : { marginBottom: "1em" }}
           >
-            <Tab label="Items" /> 0
-            <Tab label="Documents" /> 1
-            <Tab label="Contacts" /> 2
-            <Tab label="PO History" /> 3
-            <Tab label="Notes" /> 4
-            <Tab label="Auditing" /> 5
+            <Tab label="Items" />
+            <Tab label="Documents" />
+            <Tab label="Contacts" />
+            <Tab label="PO History" />
+            <Tab label="Notes" />
+            <Tab label="Auditing" />
           </Tabs>
           {activeTab === 0 && (
             <BaseDataGrid

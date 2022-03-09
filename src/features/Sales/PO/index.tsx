@@ -23,7 +23,7 @@ import DataGrid from "../../../app/NewDataGrid";
 
 export default function POPanel() {
   const [activeTab, setActiveTab] = useState(0);
-  const [selectedPO, setSelectedPO] = useState<IPO>({ id: "" });
+  const [selectedPO, setSelectedPO] = useState<IPO>({ id: "" } as IPO);
   // const [pos, setPos] = useState([]);
   const [addPo, setAddPo] = useState(false);
   const [confirm, setConfirm] = useState(false);

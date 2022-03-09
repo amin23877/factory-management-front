@@ -16,23 +16,19 @@ import Paper from "@material-ui/core/Paper";
 import { Tabs, Tab, useMediaQuery, Popover } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
-import Alert from "@material-ui/lab/Alert";
-import { LinearProgress } from "@material-ui/core";
 import { AddRounded, CheckRounded, ClearRounded, MoreVertRounded, WarningRounded } from "@material-ui/icons";
 
 import { BasePaper } from "app/Paper";
 import TextField from "app/TextField";
-import { FieldSelect, ArraySelect, CacheFieldSelect } from "app/Inputs";
+import { FieldSelect, ArraySelect } from "app/Inputs";
 import Button from "app/Button";
 import DateTimePicker from "app/DateTimePicker";
 import LinkSelect from "app/Inputs/LinkFields";
 import Dialog from "app/Dialog";
 
 import { getPPOTypes } from "api/purchasePoType";
-import { IPurchasePOComplete, createPurchasePOComplete } from "api/purchasePO";
-import { getVendors } from "api/vendor";
+import { IPurchasePOComplete } from "api/purchasePO";
 import { ILineItem } from "api/lineItem";
-import { getSO } from "api/so";
 import { IItem } from "api/items";
 import { getServiceCategories } from "api/serviceCategories";
 import { getServiceClasses } from "api/serviceClass";
@@ -942,7 +938,6 @@ export const CreateForm = ({
           </Box>
         </BasePaper>
       </BasePaper>
-      <Box flex={3}></Box>
     </Box>
   );
 };

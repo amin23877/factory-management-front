@@ -1,12 +1,16 @@
 import React, { useRef, useState } from "react";
-import { Box, Step, StepLabel, Stepper, Typography } from "@material-ui/core";
+import { Box, LinearProgress, Step, StepLabel, Stepper, Typography } from "@material-ui/core";
 import { useFormik } from "formik";
 
 import Dialog from "app/Dialog";
-import { CreateForm, FinalForm, DocumentForm } from "./Forms";
+import { CreateForm, FinalForm, DocumentForm } from "../Forms";
 import Button from "app/Button";
 
 import { IPurchasePOComplete } from "api/purchasePO";
+import LineItems from "./LineItems";
+import { createPO } from "api/po";
+import { exportPdf } from "logic/pdf";
+import { createAModelDocument } from "api/document";
 
 export default function AddPOModal({
   open,
@@ -20,14 +24,41 @@ export default function AddPOModal({
   onDone: () => void;
 }) {
   const divToPrint = useRef<HTMLElement | null>(null);
+  const [status, setStatus] = useState<"Creating PO" | "Uploading Document" | "">("");
+  const [progress, setProgress] = useState(0);
   const [step, setStep] = useState(0);
 
-  const { values, errors, handleChange, handleBlur, setFieldValue, isSubmitting, handleSubmit } = useFormik({
-    initialValues: {} as any,
-    onSubmit(data) {
-      console.log({ data });
-    },
-  });
+  const { values, errors, handleChange, handleBlur, setFieldValue, isSubmitting, handleSubmit, setSubmitting } =
+    useFormik({
+      initialValues: initialData || ({} as any),
+      async onSubmit(data) {
+        try {
+          if (divToPrint.current) {
+            setStatus("Creating PO");
+            setProgress(0);
+            const resp = await createPO(data);
+            if (resp) {
+              setStatus("Uploading Document");
+              setProgress(50);
+              const generatedRepPdf = await exportPdf(divToPrint.current);
+              await createAModelDocument({
+                model: "po",
+                id: resp.id,
+                file: generatedRepPdf,
+                description: `${new Date().toJSON().slice(0, 19)} - ${resp.number}`,
+                name: `PO_${resp.number}.pdf`,
+              });
+              onDone();
+              onClose();
+            }
+          }
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setSubmitting(false);
+        }
+      },
+    });
 
   return (
     <Dialog open={open} title="Add new purchase order" fullScreen onClose={onClose}>
@@ -60,10 +91,19 @@ export default function AddPOModal({
                 />
               </Box>
             </Box>
+            <Box flex={1}>
+              <LineItems lines={values.lines} vendorId={values.VendorId} setFieldValue={setFieldValue} />
+            </Box>
           </Box>
         )}
-        {step === 2 && <FinalForm />}
-        {step === 3 && <DocumentForm divToPrint={divToPrint} data={values} />}
+        {step === 1 && <FinalForm />}
+        {step === 2 && <DocumentForm divToPrint={divToPrint} data={values} />}
+        {step === 2 && isSubmitting && (
+          <Box>
+            <Typography style={{ textAlign: "center", margin: "0.5em 0" }}>{status}</Typography>
+            <LinearProgress variant="determinate" value={progress} />
+          </Box>
+        )}
         <Box
           display="flex"
           alignItems="center"

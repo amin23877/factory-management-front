@@ -1,146 +1,128 @@
 import React from "react";
-import { Box } from "@material-ui/core";
+import { Box, Checkbox, FormControlLabel } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import { mutate } from "swr";
 
-import Dialog from "../../../../app/Dialog";
-import TextField from "../../../../app/TextField";
-import Button from "../../../../app/Button";
-import { FieldSelect } from "../../../../app/Inputs";
+import Dialog from "app/Dialog";
+import TextField from "app/TextField";
+import Button from "app/Button";
+import LinkField from "app/Inputs/LinkFields";
 
-import { IVendor } from "../../../../api/vendor";
-import { createVending, deleteVending, updateVending } from "../../../../api/vending";
-import { getItems } from "../../../../api/items";
+import { IVendor } from "api/vendor";
+import { createVending, deleteVending, updateVending } from "api/vending";
 
 const schema = Yup.object().shape({
-    serialNo: Yup.string().required(),
-    ItemId: Yup.string().required(),
-    leadTime: Yup.number().required(),
-    // lastCheckedPrice: Yup.number().required(),
+  ItemId: Yup.string().required(),
+  leadTime: Yup.number().required(),
 });
 
 export default function VendingModal({
-    open,
-    onClose,
-    onDone,
-    vendor,
-    initialValues,
+  open,
+  onClose,
+  onDone,
+  vendor,
+  initialValues,
 }: {
-    initialValues?: any;
-    open: boolean;
-    vendor: IVendor;
-    onClose: () => void;
-    onDone?: () => void;
+  initialValues?: any;
+  open: boolean;
+  vendor: IVendor;
+  onClose: () => void;
+  onDone?: () => void;
 }) {
-    const handleDelete = async () => {
-        try {
-            if (initialValues && initialValues.id) {
-                const resp = await deleteVending(initialValues?.id);
-                if (resp) {
-                    onDone && onDone();
-                    onClose();
-                    mutate(`/vendor/${vendor.id}/items`);
-                }
-            }
-        } catch (error) {
-            console.log(error);
+  const handleDelete = async () => {
+    try {
+      if (initialValues && initialValues.id) {
+        const resp = await deleteVending(initialValues?.id);
+        if (resp) {
+          onDone && onDone();
+          onClose();
+          mutate(`/vendor/${vendor.id}/items`);
         }
-    };
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    const handleSubmit = async (d: any) => {
-        try {
-            if (initialValues && initialValues.id) {
-                const resp = await updateVending(initialValues.id, d);
-                if (resp) {
-                    onDone && onDone();
-                    onClose();
-                    mutate(`/vendor/${vendor.id}/items`);
-                }
-            } else {
-                await createVending({ ...d, VendorId: vendor.id });
-                onDone && onDone();
-                onClose();
-                mutate(`/vendor/${vendor.id}/items`);
-            }
-        } catch (error) {
-            console.log(error);
+  const handleSubmit = async (d: any) => {
+    try {
+      if (initialValues && initialValues.id) {
+        const resp = await updateVending(initialValues.id, d);
+        if (resp) {
+          onDone && onDone();
+          onClose();
+          mutate(`/vendor/${vendor.id}/items`);
         }
-    };
+      } else {
+        await createVending({ ...d, VendorId: vendor.id });
+        onDone && onDone();
+        onClose();
+        mutate(`/vendor/${vendor.id}/items`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    return (
-        <Dialog title={initialValues?.id ? "Edit Item" : `Add New Item `} open={open} onClose={onClose}>
-            <Box p={2}>
-                <Formik initialValues={initialValues || {}} validationSchema={schema} onSubmit={handleSubmit}>
-                    {({ values, errors, handleChange, handleBlur }: any) => (
-                        <Form>
-                            <Box display="grid" gridTemplateColumns="auto auto" gridColumnGap="0.5em" gridRowGap={8}>
-                                <TextField
-                                    name="number"
-                                    label="Vendor Number"
-                                    value={values.number}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.number)}
-                                />
-                                <TextField
-                                    name="leadTime"
-                                    label="Lead Time"
-                                    value={values.leadTime}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.leadTime)}
-                                />
-                                <TextField
-                                    name="cost"
-                                    label="Cost"
-                                    value={values.cost}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.cost)}
-                                    type="number"
-                                />
-                                <TextField
-                                    name="comment"
-                                    label="Comment"
-                                    value={values.comment}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.comment)}
-                                />
-                                <FieldSelect
-                                    style={{ gridColumnEnd: "span 2" }}
-                                    request={getItems}
-                                    getOptionList={(data) => data.result}
-                                    itemTitleField="name"
-                                    itemValueField="id"
-                                    name="ItemId"
-                                    label="Item"
-                                    value={values.ItemId}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.ItemId)}
-                                />
-                            </Box>
-                            <Box display="flex" alignItems="center">
-                                <Button
-                                    fullWidth
-                                    type="submit"
-                                    kind={initialValues?.id ? "edit" : "add"}
-                                    style={{ margin: "0.5em 0" }}
-                                >
-                                    {initialValues?.id ? "Save" : "submit"}
-                                </Button>
-                                {initialValues && initialValues.id && (
-                                    <Button kind="delete" style={{ margin: "0.5em" }} onClick={handleDelete}>
-                                        Delete
-                                    </Button>
-                                )}
-                            </Box>
-                        </Form>
-                    )}
-                </Formik>
-            </Box>
-        </Dialog>
-    );
+  return (
+    <Dialog title={initialValues?.id ? "Edit Vendor's Item" : `Add New Item to Vendor`} open={open} onClose={onClose}>
+      <Box p={2}>
+        <Formik initialValues={initialValues || {}} validationSchema={schema} onSubmit={handleSubmit}>
+          {({ values, errors, handleChange, handleBlur, setFieldValue, getFieldProps }) => (
+            <Form>
+              <Box display="grid" gridTemplateColumns="auto auto" gridColumnGap="0.5em" gridRowGap={8}>
+                <LinkField
+                  filterLabel="no"
+                  getOptionLabel={(item) => item?.no || item?.name || "No-Number"}
+                  getOptionList={(resp) => resp?.result || []}
+                  getOptionValue={(item) => item.id}
+                  path="/item"
+                  value={values.ItemId}
+                  onChange={(e, nv) => setFieldValue("ItemId", nv.id)}
+                  placeholder="Item"
+                />
+                <TextField
+                  name="vendorPartName"
+                  label="Vendor Part Name"
+                  value={values.vendorPartName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={Boolean(errors.vendorPartName)}
+                />
+                <TextField
+                  name="leadTime"
+                  label="Lead Time"
+                  value={values.leadTime}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={Boolean(errors.leadTime)}
+                />
+                <TextField
+                  name="vendorSKU"
+                  label="Vendor SKU"
+                  value={values.vendorSKU}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={Boolean(errors.vendorSKU)}
+                  type="number"
+                />
+                <FormControlLabel label="Preferred" control={<Checkbox />} {...getFieldProps("preferred")} />
+              </Box>
+              <Box display="flex" alignItems="center">
+                <Button fullWidth type="submit" kind={initialValues?.id ? "edit" : "add"} style={{ margin: "0.5em 0" }}>
+                  {initialValues?.id ? "Save" : "submit"}
+                </Button>
+                {initialValues && initialValues.id && (
+                  <Button kind="delete" style={{ margin: "0.5em" }} onClick={handleDelete}>
+                    Delete
+                  </Button>
+                )}
+              </Box>
+            </Form>
+          )}
+        </Formik>
+      </Box>
+    </Dialog>
+  );
 }

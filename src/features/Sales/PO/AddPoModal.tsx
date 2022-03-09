@@ -47,7 +47,7 @@ export default function AddPOModal({
   return (
     <Dialog open={open} onClose={onClose} title={"Add new Purchase Order"}>
       <Box m={1}>
-        <Formik validationSchema={schema} initialValues={{} as IPO} onSubmit={handleSubmit}>
+        <Formik validationSchema={schema} initialValues={{} as any} onSubmit={handleSubmit}>
           {({ values, handleChange, handleBlur, errors, touched, setFieldValue }) => (
             <Form>
               <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
