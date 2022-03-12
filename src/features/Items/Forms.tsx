@@ -200,18 +200,24 @@ export const General = ({
                 />
               )}
             </div>
-            {device && (
-              <FormControlLabel
-                classes={{ label: classes.label }}
-                style={{ fontSize: "0.7rem" }}
-                checked={values.device}
-                label="Device"
-                name="device"
-                onChange={handleChange}
-                control={<Checkbox size="small" />}
-                disabled
-              />
-            )}
+            <FormControlLabel
+              classes={{ label: classes.label }}
+              style={{ fontSize: "0.7rem" }}
+              checked={values.device}
+              label="Device"
+              name="device"
+              onChange={handleChange}
+              control={<Checkbox size="small" />}
+            />
+            <FormControlLabel
+              classes={{ label: classes.label }}
+              style={{ fontSize: "0.7rem" }}
+              checked={values.assembly}
+              label="Assembly"
+              name="assembly"
+              onChange={handleChange}
+              control={<Checkbox size="small" />}
+            />
           </Box>
         </Paper>
         <TextField

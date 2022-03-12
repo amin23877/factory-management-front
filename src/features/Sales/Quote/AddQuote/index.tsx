@@ -1,16 +1,18 @@
 import React, { useRef, useState } from "react";
 import { Box, Button, Step, StepLabel, Stepper, useMediaQuery } from "@material-ui/core";
 import { Formik, Form } from "formik";
+import { useSelector } from "react-redux";
 
 import Dialog from "app/Dialog";
 
+import GeneralStep from "./General";
 import { FinalForm } from "../EditForm";
 import { DocumentForm } from "../Forms";
+import { selectSession } from "../../../Session/sessionsSlice";
 
 import { createQuoteComplete, IQuote } from "api/quote";
-import GeneralStep from "./General";
-import { exportPdf } from "logic/pdf";
 import { createAModelDocument } from "api/document";
+import { exportPdf } from "logic/pdf";
 
 export default function AddQuote({
   open,
@@ -28,6 +30,7 @@ export default function AddQuote({
   const divToPrint = useRef<HTMLElement | null>(null);
   const [activeStep, setActiveStep] = useState(0);
   const phone = useMediaQuery("(max-width:900px)");
+  const session = useSelector(selectSession);
 
   const handleNext = () => {
     setActiveStep((prev) => prev + 1);
@@ -82,7 +85,10 @@ export default function AddQuote({
             <StepLabel>{phone ? "" : "Document"}</StepLabel>
           </Step>
         </Stepper>
-        <Formik initialValues={{ ...initialData, lines: [] } as IQuote} onSubmit={handleSubmit}>
+        <Formik
+          initialValues={{ ...initialData, salesPerson: session.session.id, lines: [] } as IQuote}
+          onSubmit={handleSubmit}
+        >
           {({ getFieldProps, values, setFieldValue, isSubmitting, handleSubmit }) => (
             <Box display="flex" height="85%">
               <Form style={{ width: "100%" }}>

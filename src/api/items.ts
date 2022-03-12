@@ -159,3 +159,11 @@ export interface IQuantity {
 export const updateItemQuantity = (ItemId: string, data: IQuantity) => {
   return patch(`/item/${ItemId}/qty`, data);
 };
+
+export const convertToItem = (serviceId: string) => {
+  return patch(`/service/${serviceId}/convert`, {});
+};
+
+export const convertToService = (itemId: string) => {
+  return patch(`/item/${itemId}/convert`, {});
+};

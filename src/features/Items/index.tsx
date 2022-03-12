@@ -21,7 +21,7 @@ import ItemTable from "./Table";
 import { BasePaper } from "../../app/Paper";
 
 const Items = () => {
-  const [selectedItem, setSelectedItem] = useState<IItem>();
+  const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
 
   const [activeTab, setActiveTab] = useState(0);
   const [selectedNote, setSelectedNote] = useState<any>();
@@ -142,6 +142,8 @@ const Items = () => {
           )}
           {activeTab === 1 && selectedItem && (
             <ItemsDetails
+              setSelectedItem={(r) => setSelectedItem(r)}
+              setIndexActiveTab={(t) => setActiveTab(t)}
               selectedRow={selectedItem}
               onDocSelected={(d) => {
                 setSelectedDoc(d);

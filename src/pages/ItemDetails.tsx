@@ -156,6 +156,8 @@ function ItemsDetailsPage() {
           )}
           {activeTab === 1 && selectedItem && (
             <ItemsDetails
+              setIndexActiveTab={(t) => setActiveTab(t)}
+              setSelectedItem={(item) => setSelectedItem(item)}
               selectedRow={selectedItem}
               onDocSelected={(d) => {
                 setSelectedDoc(d);

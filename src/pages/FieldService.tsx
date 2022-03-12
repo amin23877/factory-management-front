@@ -15,87 +15,87 @@ const UP = React.lazy(() => import("../features/FieldService/UP"));
 const Vendors = React.lazy(() => import("../features/Purchase/Vendor"));
 
 export default function FieldService() {
-    const [activeTab, setActiveTab] = useState(0);
-    const [tabText, setTabText] = useState("Dashboard");
-    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+  const [activeTab, setActiveTab] = useState(2);
+  const [tabText, setTabText] = useState("Dashboard");
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
-    const handleClick = (event: any) => {
-        setAnchorEl(event.currentTarget);
-    };
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
 
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-    const open = Boolean(anchorEl);
-    const id = open ? "simple-popover" : undefined;
-    const portals = usePortal();
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+  const portals = usePortal();
 
-    return (
-        <>
-            <Portal container={portals.topAppBar ? (portals.topAppBar as any).current : null}>
-                <div
-                    onClick={handleClick}
-                    style={{
-                        color: "inherit",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        marginRight: "20px",
-                        cursor: "pointer",
-                    }}
-                >
-                    {tabText} {anchorEl ? <KeyboardArrowUpRounded /> : <KeyboardArrowDownRounded />}
-                </div>
-                <Popover
-                    id={id}
-                    open={open}
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "left",
-                    }}
-                    transformOrigin={{
-                        vertical: "top",
-                        horizontal: "left",
-                    }}
-                >
-                    <MyTabs
-                        value={activeTab}
-                        textColor="primary"
-                        onChange={(e: any, nv) => {
-                            setActiveTab(nv);
-                            setTabText(e.target.textContent);
-                            handleClose();
-                        }}
-                        orientation="vertical"
-                    >
-                        <MyTab label="Dashboard" />
-                        <MyTab label="FRU" />
-                        <MyTab label="Services" />
-                        <MyTab label="Tickets" />
-                        <MyTab label="Tasks" />
-                        <MyTab label="Units" />
-                        <MyTab label="RMA" />
-                        <MyTab label="UP" />
-                        <MyTab label="Vendor Tech" />
-                    </MyTabs>
-                </Popover>
-            </Portal>
-            <Box display="flex">
-                <Box flex={1}>
-                    <Suspense fallback={<LinearProgress />}>
-                        {activeTab === 1 && <FRUs />}
-                        {activeTab === 2 && <ServiceIndex />}
-                        {activeTab === 3 && <Tickets />}
-                        {activeTab === 4 && <Tasks />}
-                        {activeTab === 5 && <Units />}
-                        {activeTab === 7 && <UP />}
-                        {activeTab === 8 && <Vendors tech />}
-                    </Suspense>
-                </Box>
-            </Box>
-        </>
-    );
+  return (
+    <>
+      <Portal container={portals.topAppBar ? (portals.topAppBar as any).current : null}>
+        <div
+          onClick={handleClick}
+          style={{
+            color: "inherit",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            marginRight: "20px",
+            cursor: "pointer",
+          }}
+        >
+          {tabText} {anchorEl ? <KeyboardArrowUpRounded /> : <KeyboardArrowDownRounded />}
+        </div>
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+        >
+          <MyTabs
+            value={activeTab}
+            textColor="primary"
+            onChange={(e: any, nv) => {
+              setActiveTab(nv);
+              setTabText(e.target.textContent);
+              handleClose();
+            }}
+            orientation="vertical"
+          >
+            <MyTab label="Dashboard" />
+            <MyTab label="FRU" />
+            <MyTab label="Services" />
+            <MyTab label="Tickets" />
+            <MyTab label="Tasks" />
+            <MyTab label="Units" />
+            <MyTab label="RMA" />
+            <MyTab label="UP" />
+            <MyTab label="Vendor Tech" />
+          </MyTabs>
+        </Popover>
+      </Portal>
+      <Box display="flex">
+        <Box flex={1}>
+          <Suspense fallback={<LinearProgress />}>
+            {activeTab === 1 && <FRUs />}
+            {activeTab === 2 && <ServiceIndex />}
+            {activeTab === 3 && <Tickets />}
+            {activeTab === 4 && <Tasks />}
+            {activeTab === 5 && <Units />}
+            {activeTab === 7 && <UP />}
+            {activeTab === 8 && <Vendors tech />}
+          </Suspense>
+        </Box>
+      </Box>
+    </>
+  );
 }

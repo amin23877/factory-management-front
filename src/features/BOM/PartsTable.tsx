@@ -15,7 +15,8 @@ import useSWR from "swr";
 
 import { IBomRecord } from "api/bom";
 import ShowBomRecordsButton from "./ShowBomRecordsButton";
-import { EditRounded } from "@material-ui/icons";
+import { DetailsRounded, EditRounded } from "@material-ui/icons";
+import { Link } from "react-router-dom";
 
 export const useTableStyles = makeStyles((theme) => ({
   tableCont: {
@@ -78,7 +79,7 @@ export default function PartsTable({ bomId, onEdit }: { bomId: string; onEdit?: 
             <TableCell>Description</TableCell>
             <TableCell width={100}>Usage</TableCell>
             <TableCell width={100}>Fixed Qty</TableCell>
-            <TableCell width={onEdit ? 90 : 60}></TableCell>
+            <TableCell width={onEdit ? 130 : 100}></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -97,6 +98,11 @@ export default function PartsTable({ bomId, onEdit }: { bomId: string; onEdit?: 
                     <EditRounded />
                   </IconButton>
                 )}
+                <Link to={`/panel/inventory/${row?.ItemId?.id}`}>
+                  <IconButton>
+                    <DetailsRounded />
+                  </IconButton>
+                </Link>
                 <ShowBomRecordsButton bomRecord={row} />
               </TableCell>
             </TableRow>

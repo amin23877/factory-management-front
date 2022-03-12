@@ -26,7 +26,7 @@ export default function ServiceIndex() {
   const [serviceClassModal, setServiceClassModal] = useState(false);
   const [categoryModal, setCategoryModal] = useState(false);
 
-  const [selectedFS, setSelectedFS] = useState<IFieldService | undefined>();
+  const [selectedFS, setSelectedFS] = useState<IFieldService | null>(null);
 
   const cols = [
     { name: "no", header: "ID", minWidth: 200 },
@@ -99,7 +99,7 @@ export default function ServiceIndex() {
                 <IconButton
                   onClick={() => {
                     setAddService(true);
-                    setSelectedFS(undefined);
+                    setSelectedFS(null);
                     setActiveTab(0);
                   }}
                 >
@@ -154,7 +154,13 @@ export default function ServiceIndex() {
               }}
             />
           )}
-          {activeTab === 1 && selectedFS && <FieldServiceDetails onDone={() => {}} selectedFieldService={selectedFS} />}
+          {activeTab === 1 && selectedFS && (
+            <FieldServiceDetails
+              selectedFieldService={selectedFS}
+              setIndexActiveTab={(t) => setActiveTab(t)}
+              setSelectedFieldService={(fs) => setSelectedFS(fs)}
+            />
+          )}
         </Box>
       </BasePaper>
     </Box>

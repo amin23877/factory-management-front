@@ -20,7 +20,7 @@ import { VendorModal } from "../Modals/AddVendor";
 // import BOMModal from "../BOM/BomModal";
 import Parts from "../BOM/Parts";
 
-import { addImage, IItem, updateAnItem } from "api/items";
+import { addImage, convertToService, IItem, updateAnItem } from "api/items";
 import { IBom } from "api/bom";
 // import SOTable from "./SOTable";
 import UploadButton from "app/FileUploader";
@@ -31,6 +31,7 @@ import ItemBomTable from "../BOM/ItemBomTable";
 
 import QRCode from "app/QRCode";
 import { DocumentsDataGrid, NotesDataGrid } from "common/DataGrids";
+import Confirm from "common/Confirm";
 import Toast from "app/Toast";
 
 const style = {
@@ -44,12 +45,14 @@ function ItemsDetails({
   selectedRow,
   onNoteSelected,
   onDocSelected,
-  onDone,
+  setIndexActiveTab,
+  setSelectedItem,
 }: {
   selectedRow: IItem;
-  onDone?: () => void;
   onNoteSelected: (a: any) => void;
   onDocSelected: (a: any) => void;
+  setIndexActiveTab: (t: number) => void;
+  setSelectedItem: (item: any) => void;
 }) {
   const qrCode = useRef<HTMLElement | null>(null);
 
@@ -71,7 +74,9 @@ function ItemsDetails({
   const [moreInfoTab, setMoreInfoTab] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
 
-  const { data: boms } = useSWR<IBom[]>(selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null);
+  const { data: boms } = useSWR<{ result: IBom[]; total: number }>(
+    selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null
+  );
 
   // const { data: itemSOs } = useSWR(
   //   activeTab === 2 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/so` : null) : null
@@ -222,6 +227,27 @@ function ItemsDetails({
       console.log(error);
     }
   };
+
+  const handleConvertToService = async () => {
+    try {
+      await Confirm({
+        text: "You are going to make this item a service",
+        onConfirm: async () => {
+          try {
+            await convertToService(selectedRow.id);
+            setSelectedItem(null);
+            setIndexActiveTab(0);
+            Toast("Item converted to Service", "success");
+          } catch (error) {
+            console.log(error);
+          }
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   if (!selectedRow) {
     return <LinearProgress />;
   }
@@ -292,6 +318,7 @@ function ItemsDetails({
                     <Tab label="Pricing" />
                     <Tab label="Shipping" />
                     <Tab label="Clusters and Levels" />
+                    <Tab label="Convert" />
                   </Tabs>
                   {moreInfoTab === 0 && (
                     <Box
@@ -388,6 +415,9 @@ function ItemsDetails({
                   )}
                   {moreInfoTab === 4 && (
                     <div style={{ maxWidth: "83vw" }}>
+                      <Button variant="outlined" style={{ marginBottom: 10 }}>
+                        Add Pricing
+                      </Button>
                       <BaseDataGrid rows={selectedRow?.pricing || []} cols={pricingCols} height={220} pagination />
                       <Pricing
                         values={values}
@@ -396,7 +426,7 @@ function ItemsDetails({
                         setFieldValue={setFieldValue}
                         errors={errors}
                         touched={touched}
-                        boms={boms?.length === 0 ? false : true}
+                        boms={boms?.result?.length === 0 ? false : true}
                       />
                     </div>
                   )}
@@ -419,6 +449,13 @@ function ItemsDetails({
                       errors={errors}
                       touched={touched}
                     />
+                  )}
+                  {moreInfoTab === 7 && (
+                    <Box textAlign="center">
+                      <Button kind="add" onClick={handleConvertToService}>
+                        Convert to Service
+                      </Button>
+                    </Box>
                   )}
                 </BasePaper>
               </Box>
@@ -468,7 +505,7 @@ function ItemsDetails({
                 )}
                 {activeTab === 2 && boms && (
                   <div style={{ maxWidth: "79vw", overflow: "auto" }}>
-                    <ItemBomTable item={selectedRow} boms={boms} />
+                    <ItemBomTable item={selectedRow} boms={boms?.result || []} />
                   </div>
                 )}
                 {/* {activeTab === 2 && itemSOs && <SOTable rows={itemSOs} />} */}
