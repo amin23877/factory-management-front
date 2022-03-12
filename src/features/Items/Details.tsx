@@ -71,9 +71,7 @@ function ItemsDetails({
   const [moreInfoTab, setMoreInfoTab] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
 
-  const { data: boms } = useSWR<{ result: IBom[]; total: number }>(
-    selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null
-  );
+  const { data: boms } = useSWR<IBom[]>(selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null);
 
   // const { data: itemSOs } = useSWR(
   //   activeTab === 2 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/so` : null) : null
@@ -398,7 +396,7 @@ function ItemsDetails({
                         setFieldValue={setFieldValue}
                         errors={errors}
                         touched={touched}
-                        boms={boms?.result.length === 0 ? false : true}
+                        boms={boms?.length === 0 ? false : true}
                       />
                     </div>
                   )}
@@ -470,7 +468,7 @@ function ItemsDetails({
                 )}
                 {activeTab === 2 && boms && (
                   <div style={{ maxWidth: "79vw", overflow: "auto" }}>
-                    <ItemBomTable item={selectedRow} boms={boms.result} />
+                    <ItemBomTable item={selectedRow} boms={boms} />
                   </div>
                 )}
                 {/* {activeTab === 2 && itemSOs && <SOTable rows={itemSOs} />} */}
