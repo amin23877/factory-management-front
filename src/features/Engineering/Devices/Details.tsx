@@ -75,7 +75,7 @@ function DeviceDetails({
   //   activeTab === 2 ? (selectedRow && selectedRow.id ? `item/${selectedRow.id}/service` : null) : null
   // );
   const { data: itemObject, mutate: mutateServices } = useSWR<IItem>(
-    activeTab === 1 ? (selectedRow && selectedRow.id ? `item/${selectedRow.id}` : null) : null
+    selectedRow && selectedRow.id ? `/item/${selectedRow.id}` : null
   );
 
   const { data: manSteps } = useSWR(
@@ -116,19 +116,17 @@ function DeviceDetails({
       { field: "no", headerName: "ID", width: 150 },
       { field: "name", headerName: "Name", flex: 1 },
       {
-        field: "ServiceCategoryId",
-        headerName: "Category",
-        valueFormatter: (params) => params.row?.ServiceCategoryId?.name,
+        field: "class",
+        headerName: "Class",
         width: 120,
       },
       {
-        field: "ServiceClassId",
-        headerName: "Class",
-        valueFormatter: (params) => params.row?.ServiceClassId?.name,
+        field: "type",
+        headerName: "Type",
 
         width: 120,
       },
-      { field: "retailPrice", headerName: "Price", width: 90 },
+      { field: "price", headerName: "Price", width: 90 },
     ],
     []
   );
@@ -321,7 +319,7 @@ function DeviceDetails({
       )}
       {bom && <Parts open={bomPartsModal} onClose={() => setBomPartsModal(false)} bom={bom} />}
       <AddServiceModal
-        device={selectedRow.id}
+        device={selectedRow}
         open={AddService}
         onClose={() => setAddService(false)}
         onDone={() => {

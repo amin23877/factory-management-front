@@ -11,21 +11,18 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 
-import TextField from "../../app/TextField";
-import { FieldSelect } from "../../app/Inputs";
-import Button from "../../app/Button";
-import Snack from "../../app/Snack";
+import TextField from "app/TextField";
+import { FieldSelect } from "app/Inputs";
+import Button from "app/Button";
+import Snack from "app/Snack";
 
-import { ILineItem, getALineItem } from "../../api/lineItem";
+import { ILineItem, getALineItem } from "api/lineItem";
 import {
   addServiceToLineitem,
   getFieldServices,
-  IFieldService,
   removeServiceFromLineitem,
   // updateFieldService,
-} from "../../api/fieldService";
-import { getServiceClasses } from "../../api/serviceClass";
-import { getServiceCategories } from "../../api/serviceCategories";
+} from "api/fieldService";
 
 export const LineItemFSForm = ({ LineItem }: { LineItem: ILineItem }) => {
   const [snack, setSnack] = useState(false);
@@ -157,7 +154,7 @@ export default function FieldServiceForm({
   values,
   device,
 }: {
-  values: IFieldService;
+  values: any;
   handleChange: any;
   handleBlur: any;
   errors: any;
@@ -183,38 +180,32 @@ export default function FieldServiceForm({
         error={Boolean(errors.name)}
         fullWidth
       />
-      <FieldSelect
-        request={getServiceClasses}
-        itemTitleField="name"
-        itemValueField="id"
-        label="Class"
-        name="ServiceClassId"
-        value={typeof values.ServiceClassId == "string" ? values.ServiceClassId : values.ServiceClassId?.id}
+      <TextField
+        label="Type"
+        name="type"
+        value={values.type}
         onChange={handleChange}
         onBlur={handleBlur}
-        error={Boolean(errors.ServiceClassId)}
+        error={Boolean(errors.type)}
         fullWidth
       />
-      <FieldSelect
-        request={getServiceCategories}
-        itemTitleField="name"
-        itemValueField="id"
-        label="Category"
-        name="ServiceCategoryId"
-        value={typeof values.ServiceCategoryId == "string" ? values.ServiceCategoryId : values.ServiceCategoryId?.id}
+      <TextField
+        label="Class"
+        name="class"
+        value={values.class}
         onChange={handleChange}
         onBlur={handleBlur}
-        error={Boolean(errors.ServiceCategoryId)}
+        error={Boolean(errors.class)}
         fullWidth
       />
       <TextField
         label="Price"
-        name="retailPrice"
+        name="price"
         type="number"
-        value={values.retailPrice}
+        value={values.price}
         onChange={handleChange}
         onBlur={handleBlur}
-        error={Boolean(errors.retailPrice)}
+        error={Boolean(errors.price)}
         fullWidth
       />
       <TextField

@@ -3,7 +3,15 @@ import { LinearProgress } from "@material-ui/core";
 
 import DataGrid from "../../app/NewDataGrid";
 
-function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
+function ItemTable({
+  onRowSelected,
+  onSelectionChange,
+  refresh,
+}: {
+  onRowSelected: (r: any) => void;
+  onSelectionChange: (c: any) => void;
+  refresh?: number;
+}) {
   const [finish, setFinish] = useState(false);
 
   const columns = useMemo(() => {
@@ -91,7 +99,14 @@ function ItemTable({ onRowSelected }: { onRowSelected: (r: any) => void }) {
   return (
     <>
       {finish ? (
-        <DataGrid columns={columns} url="/item" onRowSelected={onRowSelected} />
+        <DataGrid
+          refresh={refresh}
+          checkboxColumn
+          onSelectionChange={onSelectionChange}
+          columns={columns}
+          url="/item"
+          onRowSelected={onRowSelected}
+        />
       ) : (
         <div style={{ width: "100%" }}>
           <LinearProgress />

@@ -74,9 +74,10 @@ export default function QuotePanel() {
       },
       {
         name: "quotedBy",
+        type: "string",
         header: "Quoted By",
         minWidth: 100,
-        render: ({ data }: any) => data.salesperson?.username,
+        render: ({ data }: any) => data.salesPerson?.username,
       },
       { name: "so", header: "SO", minWidth: 100, render: ({ data }) => data.SOId?.number },
       { name: "status", header: "Status", minWidth: 100 },

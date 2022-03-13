@@ -25,6 +25,7 @@ function ItemsDetailsPage() {
   const { itemId } = useParams<{ itemId: string }>();
   const { data: defaultItem } = useSWR<IItem>(itemId ? `/item/${itemId}` : null);
   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
+  const [itemSelection, setItemSelection] = useState();
 
   const [activeTab, setActiveTab] = useState(0);
   const [selectedNote, setSelectedNote] = useState<any>();
@@ -148,6 +149,7 @@ function ItemsDetailsPage() {
         <Box display="flex" flex={1}>
           {activeTab === 0 && (
             <ItemTable
+              onSelectionChange={({ selected }) => setItemSelection(selected)}
               onRowSelected={(r) => {
                 setSelectedItem(r as any);
                 setActiveTab(1);

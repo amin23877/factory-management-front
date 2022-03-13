@@ -4,24 +4,27 @@ import { AddRounded, DeleteRounded, FindInPageRounded, ListAltRounded, PostAddRo
 import { mutate } from "swr";
 
 import Confirm from "../Modals/Confirm";
-import NoteModal from "../../common/NoteModal";
-import DocumentModal from "../../common/DocumentModal";
+import NoteModal from "common/NoteModal";
+import DocumentModal from "common/DocumentModal";
+import ConfirmDialog from "common/Confirm";
 
 import { AddItemModal } from "./ItemModals";
 import ItemsDetails from "./Details";
 
-import { deleteAnItem, IItem } from "../../api/items";
+import { deleteAnItem, IItem, convertToService } from "api/items";
 
-import List from "../../app/SideUtilityList";
+import List from "app/SideUtilityList";
+import { BasePaper } from "app/Paper";
+import Button from "app/Button";
 
-// import FieldNFilter from "../ClusterAndLevel/Modal";
 import LevelsModal from "../Level/Modal";
 
 import ItemTable from "./Table";
-import { BasePaper } from "../../app/Paper";
 
 const Items = () => {
   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
+  const [itemSelection, setItemSelection] = useState();
+  const [refresh, setRefresh] = useState<number>(0);
 
   const [activeTab, setActiveTab] = useState(0);
   const [selectedNote, setSelectedNote] = useState<any>();
@@ -47,6 +50,29 @@ const Items = () => {
       console.log(error);
     }
   }, [selectedItem]);
+
+  const handleConvertItems = async () => {
+    try {
+      if (itemSelection && Object.keys(itemSelection || {}).length > 0) {
+        ConfirmDialog({
+          text: `You are going to convert ${Object.keys(itemSelection || {}).length} items to service`,
+          onConfirm: async () => {
+            try {
+              for (const id of Object.keys(itemSelection || {})) {
+                await convertToService(id);
+              }
+            } catch (error) {
+              console.log(error);
+            } finally {
+              setRefresh((p) => p + 1);
+            }
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -90,7 +116,14 @@ const Items = () => {
 
       <BasePaper style={{ height: "100%" }}>
         <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1}>
-          <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+          <Tabs
+            value={activeTab}
+            textColor="primary"
+            onChange={(e, nv) => {
+              setItemSelection(undefined);
+              setActiveTab(nv);
+            }}
+          >
             <Tab
               icon={
                 <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -109,6 +142,11 @@ const Items = () => {
             />
           </Tabs>
           <div style={{ flexGrow: 1 }} />
+          {itemSelection && Object.keys(itemSelection || {}).length > 0 && (
+            <Button kind="add" onClick={handleConvertItems} style={{ margin: "0 8px" }}>
+              Convert Selection to Service
+            </Button>
+          )}
           <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <ListItem>
               <IconButton title="Add item" onClick={() => setAddItemModal(true)}>
@@ -134,8 +172,13 @@ const Items = () => {
         <Box display="flex" flex={1}>
           {activeTab === 0 && (
             <ItemTable
+              refresh={refresh}
+              onSelectionChange={({ selected }) => {
+                setItemSelection(selected);
+              }}
               onRowSelected={(r) => {
                 setSelectedItem(r as any);
+                setItemSelection(undefined);
                 setActiveTab(1);
               }}
             />
@@ -143,7 +186,10 @@ const Items = () => {
           {activeTab === 1 && selectedItem && (
             <ItemsDetails
               setSelectedItem={(r) => setSelectedItem(r)}
-              setIndexActiveTab={(t) => setActiveTab(t)}
+              setIndexActiveTab={(t) => {
+                setItemSelection(undefined);
+                setActiveTab(t);
+              }}
               selectedRow={selectedItem}
               onDocSelected={(d) => {
                 setSelectedDoc(d);

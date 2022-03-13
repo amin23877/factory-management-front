@@ -25,6 +25,7 @@ import { get } from "../api";
 
 import { formatTimestampToDate } from "../logic/date";
 import { ParameterType } from "../logic/utils";
+import { TypeOnSelectionChangeArg } from "@inovua/reactdatagrid-community/types/TypeDataGridProps";
 
 window.moment = moment;
 
@@ -144,12 +145,14 @@ const filterTypes = {
 };
 
 function NewDataGrid({
-  onRowSelected,
   columns,
   style,
   url,
   initParams,
   refresh,
+  checkboxColumn,
+  onRowSelected,
+  onSelectionChange,
 }: {
   onRowSelected: (row: any) => void;
   columns: any[];
@@ -157,6 +160,8 @@ function NewDataGrid({
   url: string;
   initParams?: ParameterType;
   refresh?: number;
+  checkboxColumn?: boolean;
+  onSelectionChange?: (config: TypeOnSelectionChangeArg) => void;
 }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [columnsState, setColumnsState] = useState<any[]>(columns.map((c) => ({ ...c, visible: true })));
@@ -209,7 +214,7 @@ function NewDataGrid({
               formatTimestampToDate(value),
           };
         }
-        if (r.type === "string" || !r.type) {
+        if ((r.type === "string" || !r.type) && !r.render) {
           r = {
             ...r,
             render: ({ value }: { value: any }) => (
@@ -246,13 +251,6 @@ function NewDataGrid({
       data: any[];
       count: number;
     }> => {
-      console.log({
-        filterValue,
-        limit,
-        sortInfo,
-        skip,
-      });
-
       let params: any = { ...initParams };
       for (const fv of filterValue) {
         if (fv.value !== null && fv.value !== undefined && fv.value !== "") {
@@ -354,6 +352,8 @@ function NewDataGrid({
         </Box>
       </Menu>
       <ReactDataGrid
+        checkboxColumn={checkboxColumn}
+        onSelectionChange={onSelectionChange}
         idProperty="id"
         rowHeight={20}
         columns={cols}

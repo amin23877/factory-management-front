@@ -32,18 +32,16 @@ export default function ServiceIndex() {
     { name: "no", header: "ID", minWidth: 200 },
     { name: "name", header: "Name", flex: 1 },
     {
-      name: "ServiceCategoryId",
-      header: "Category",
-      render: ({ data }: any) => data?.ServiceCategoryId?.name,
+      name: "type",
+      header: "Type",
       minWidth: 200,
     },
     {
-      name: "ServiceClassId",
+      name: "class",
       header: "Class",
-      render: ({ data }: any) => data?.ServiceClassId?.name,
       minWidth: 200,
     },
-    { name: "retailPrice", header: "Price", type: "number", width: 150 },
+    { name: "price", header: "Price", type: "number", width: 150 },
   ];
 
   return (
