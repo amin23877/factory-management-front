@@ -37,7 +37,7 @@ export interface IItem {
   // end detail section
 
   // start pricing section
-  pricing: { label: string; price: number; nonCommissionable: boolean }[];
+  pricing: { id?: string; label: string; price: number; nonCommissionable: boolean }[];
   engineeringApproval: boolean;
   bom: boolean;
   option: boolean;

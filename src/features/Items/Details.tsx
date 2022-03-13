@@ -1,15 +1,14 @@
-import React, { useMemo, useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { Box, Tabs, Tab, LinearProgress, Typography, useMediaQuery } from "@material-ui/core";
-import { GridColDef } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 
 import Button from "app/Button";
-import BaseDataGrid from "app/BaseDataGrid";
 import { BasePaper } from "app/Paper";
 import VendorsTable from "./VendorsTable";
 
-import { MoreInfo, Quantity, Shipping, General, LastUsed, Pricing, Levels } from "./Forms";
+import { MoreInfo, Quantity, Shipping, General, LastUsed, Levels } from "./Forms";
+import PricingTab from "./Pricing";
 
 import ManualCountModal from "./ManualCountModal";
 import UpdateQuantityModal from "./Quantity";
@@ -202,15 +201,6 @@ function ItemsDetails({
   //   []
   // );
 
-  const pricingCols = useMemo<GridColDef[]>(
-    () => [
-      { field: "label", headerName: "Label", flex: 1 },
-      { field: "price", headerName: "Price", flex: 1 },
-      { field: "nonCommissionable", headerName: "no Com.", flex: 1, type: "boolean" },
-    ],
-    []
-  );
-
   const handleSubmit = async (data: any, { setSubmitting }: any) => {
     try {
       if (selectedRow && selectedRow.id) {
@@ -298,7 +288,7 @@ function ItemsDetails({
                     </Button>
                   </div>
                 </BasePaper>
-                <BasePaper style={{ flex: 1 }}>
+                <BasePaper style={{ flex: 1, margin: 8 }}>
                   <Tabs
                     value={moreInfoTab}
                     variant="scrollable"
@@ -414,21 +404,16 @@ function ItemsDetails({
                     </>
                   )}
                   {moreInfoTab === 4 && (
-                    <div style={{ maxWidth: "83vw" }}>
-                      <Button variant="outlined" style={{ marginBottom: 10 }}>
-                        Add Pricing
-                      </Button>
-                      <BaseDataGrid rows={selectedRow?.pricing || []} cols={pricingCols} height={220} pagination />
-                      <Pricing
-                        values={values}
-                        handleChange={handleChange}
-                        handleBlur={handleBlur}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
-                        touched={touched}
-                        boms={boms?.result?.length === 0 ? false : true}
-                      />
-                    </div>
+                    <PricingTab
+                      itemId={selectedRow.id}
+                      boms={boms}
+                      errors={errors}
+                      touched={touched}
+                      values={values}
+                      handleBlur={handleBlur}
+                      handleChange={handleChange}
+                      setFieldValue={setFieldValue}
+                    />
                   )}
                   {moreInfoTab === 5 && (
                     <Shipping
