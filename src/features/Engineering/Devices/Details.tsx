@@ -62,6 +62,7 @@ function DeviceDetails({
 
   const [selectedStep] = useState<any>();
   const [selectedUnit, setSelectedUnit] = useState<IUnitHistory>();
+  const [selectedService, setSelectedService] = useState<any>();
 
   const [stepModal, setStepModal] = useState(false);
 
@@ -69,8 +70,9 @@ function DeviceDetails({
     activeTab === 0 ? (selectedRow && selectedRow.id ? `/document/item/${selectedRow.id}` : null) : null
   );
   const { data: boms } = useSWR<{ result: IBom[]; total: number }>(
-    activeTab === 0 ? (selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null) : null
+    selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null
   );
+
   // const { data: services, mutate: mutateServices } = useSWR(
   //   activeTab === 2 ? (selectedRow && selectedRow.id ? `item/${selectedRow.id}/service` : null) : null
   // );
@@ -322,8 +324,9 @@ function DeviceDetails({
         device={selectedRow}
         open={AddService}
         onClose={() => setAddService(false)}
+        initialValues={selectedService}
         onDone={() => {
-          mutateServices();
+          setSelectedService(undefined);
         }}
       />
       {selectedUnit && (
@@ -494,7 +497,10 @@ function DeviceDetails({
                           height={"calc(100% - 100px)"}
                           cols={serviceCols}
                           rows={itemObject?.services || []}
-                          onRowSelected={(d) => {}}
+                          onRowSelected={(d) => {
+                            setSelectedService(d);
+                            setAddService(true);
+                          }}
                         />
                       </>
                     )}

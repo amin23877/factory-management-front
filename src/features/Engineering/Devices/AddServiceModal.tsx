@@ -16,6 +16,23 @@ const schema = Yup.object().shape({
   class: Yup.string().required(),
 });
 
+function validateService({ deviceServices, service }: { deviceServices: any[]; service: any }) {
+  const stats = [...deviceServices, { type: service.type }].reduce((prev, cur) => {
+    if (prev[cur.type]) {
+      return { ...prev, [cur.type]: prev[cur.type] + 1 };
+    }
+    return { ...prev, [cur.type]: 1 };
+  }, []);
+
+  for (const type in stats) {
+    if (stats[type] > 1) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 export default function AddServiceModal({
   open,
   onClose,
@@ -33,14 +50,28 @@ export default function AddServiceModal({
 
   const handleSubmit = async (data: any) => {
     try {
-      if (initialValues) {
-      } else {
-        console.log(data);
-        const newServices = [...data.serviceClasses, data];
-        await updateAnItem(device.id, { serviceClasses: newServices });
+      if (initialValues && initialValues.id) {
+        const index = device?.serviceClassses?.findIndex(
+          (sc: any) => sc.type === initialValues.type && sc.class === initialValues.class
+        );
 
-        onDone();
-        onClose();
+        if (index > -1) {
+          const newServices = device.serviceClassses.concat();
+          newServices[index] = data;
+          await updateAnItem(device.id, { serviceClasses: newServices });
+
+          onDone();
+          onClose();
+        }
+      } else {
+        if (validateService({ deviceServices: device.serviceClassses || [], service: data })) {
+          const newServices = data?.serviceClasses?.concat() || [];
+          newServices.push(data);
+          await updateAnItem(device.id, { serviceClassses: newServices });
+
+          onDone();
+          onClose();
+        }
       }
     } catch (error) {
       console.log(error);
@@ -49,10 +80,32 @@ export default function AddServiceModal({
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      const newServices = device?.serviceClassses?.filter(
+        (sv: any) => sv.type !== initialValues.type && sv.class !== initialValues.class
+      );
+      await updateAnItem(device.id, { serviceClassses: newServices });
+
+      onDone();
+      onClose();
+    } catch (error) {
+      console.log(error);
+    } finally {
+      mutate(`/item/${device.id}`);
+    }
+  };
+
   return (
-    <Dialog open={open} onClose={onClose} title="Add Service" fullWidth maxWidth="sm">
+    <Dialog
+      open={open}
+      onClose={onClose}
+      title={initialValues && initialValues.id ? "" : "Add Service"}
+      fullWidth
+      maxWidth="sm"
+    >
       <Box p={2}>
-        <Formik initialValues={{} as any} validationSchema={schema} onSubmit={handleSubmit}>
+        <Formik initialValues={initialValues || ({} as any)} validationSchema={schema} onSubmit={handleSubmit}>
           {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
             <Form>
               <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
@@ -70,37 +123,20 @@ export default function AddServiceModal({
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {/* <FieldSelect
-                  request={getServiceCategories}
-                  itemTitleField="name"
-                  itemValueField="id"
-                  label="Category"
-                  name="ServiceCategoryId"
-                  value={
-                    typeof values.ServiceCategoryId == "string"
-                      ? values.ServiceCategoryId
-                      : values.ServiceCategoryId?.id
-                  }
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={Boolean(errors.ServiceCategoryId)}
-                  fullWidth
-                /> */}
-                {/* <FieldSelect
-                  request={getServiceClasses}
-                  itemTitleField="name"
-                  itemValueField="id"
-                  label="Class"
-                  name="ServiceClassId"
-                  value={typeof values.ServiceClassId == "string" ? values.ServiceClassId : values.ServiceClassId?.id}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={Boolean(errors.ServiceClassId)}
-                  fullWidth
-                /> */}
-                <Button style={{ margin: "0.5em 0" }} type="submit" kind="add">
-                  Save
-                </Button>
+                {initialValues && initialValues.id ? (
+                  <>
+                    <Button style={{ margin: "0.5em 0" }} type="submit" kind="edit">
+                      Edit
+                    </Button>
+                    <Button style={{ margin: "0.5em 0" }} kind="delete" onClick={handleDelete}>
+                      Delete
+                    </Button>
+                  </>
+                ) : (
+                  <Button style={{ margin: "0.5em 0" }} type="submit" kind="add">
+                    Save
+                  </Button>
+                )}
               </Box>
             </Form>
           )}

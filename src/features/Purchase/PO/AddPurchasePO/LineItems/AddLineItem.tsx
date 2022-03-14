@@ -33,10 +33,10 @@ export default function AddLineItem({
               <Box display="flex" flexDirection="column" style={{ gap: 10 }}>
                 <LinkField
                   filterLabel="no"
-                  getOptionLabel={(item) => item?.no || item?.name || "No-Number"}
-                  getOptionList={(resp) => resp?.result || []}
+                  getOptionLabel={(item) => item?.ItemId?.no || item?.ItemId?.name || "No-Number"}
+                  getOptionList={(resp) => resp || []}
                   getOptionValue={(item) => item.id}
-                  path={`/item/${vendorId}/vending`}
+                  path={`/vendor/${vendorId}/items`}
                   value={values.ItemId}
                   onChange={(e, nv) => {
                     setFieldValue("ItemId", nv.id);
