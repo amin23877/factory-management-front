@@ -116,6 +116,8 @@ export default function AddSOModal({
           for (const line of resp.result) {
             if (newGroups[line.group - 1]) {
               if (line.ItemId) {
+                console.log({ line });
+
                 newGroups[line.group - 1].push({
                   ...line,
                   ItemObject: line.ItemId,
@@ -195,13 +197,7 @@ export default function AddSOModal({
                 getFieldProps={getFieldProps}
               />
               <Box>
-                <GroupLineItemTable
-                  groups={values.lines || []}
-                  setGroups={(g) => {
-                    console.log("Called from GroupLineItemTable");
-                    setFieldValue("lines", g);
-                  }}
-                />
+                <GroupLineItemTable groups={values.lines || []} setGroups={(g) => setFieldValue("lines", g)} />
               </Box>
             </Box>
           )}
