@@ -958,22 +958,22 @@ export const UpdateForm = ({
   return (
     <>
       <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"} gridRowGap={7} gridColumnGap={7}>
-        <TextField name="number" label="PO ID" value={values.number} disabled />
-        <FieldSelect
+        <TextField name="number" label="PO Number" value={values.number} disabled />
+        <TextField name="type" label="PO Type" value={values.type} onChange={handleChange} onBlur={handleBlur} />
+        {/* <FieldSelect
           request={getPPOTypes}
           itemTitleField="name"
           itemValueField="id"
-          name="PurchasePOTypeId"
+          name="type"
           label="PO Type"
           fullWidth
           onChange={handleChange}
-          value={typeof values.PurchasePOTypeId === "string" ? values.PurchasePOTypeId : values.PurchasePOTypeId?.id}
-          error={Boolean(errors.PurchasePOTypeId)}
-        />
+          value={typeof values.type === "string" ? values.type : values.type?.id}
+          error={Boolean(errors.type)}
+        /> */}
         <TextField label="So Number" value={values.SOId?.number} fullWidth disabled />
         <TextField label="Vendor" value={values.VendorId?.name} fullWidth disabled />
         <TextField label="Approved By" value={values.approvedBy?.username} fullWidth disabled />
-
         <ArraySelect
           items={[
             "Quoted",

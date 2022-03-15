@@ -23,7 +23,7 @@ export default function AddLineItem({
     <Dialog title="Add Line Item" open={open} onClose={onClose}>
       <Box>
         <Formik
-          initialValues={{} as lineItemType}
+          initialValues={{} as any}
           onSubmit={(d) => {
             onAdd(d);
           }}
@@ -35,12 +35,13 @@ export default function AddLineItem({
                   filterLabel="no"
                   getOptionLabel={(item) => item?.ItemId?.no || item?.ItemId?.name || "No-Number"}
                   getOptionList={(resp) => resp || []}
-                  getOptionValue={(item) => item.id}
+                  getOptionValue={(item) => item._id}
                   path={`/vendor/${vendorId}/items`}
                   value={values.ItemId}
+                  choseItem={values.ItemObject}
                   onChange={(e, nv) => {
-                    setFieldValue("ItemId", nv.id);
-                    setFieldValue("ItemObject", nv);
+                    setFieldValue("ItemId", nv?.ItemId?._id);
+                    setFieldValue("ItemObject", nv?.ItemId);
                   }}
                 />
                 <TextField type="number" label="Quantity" {...getFieldProps("quantity")} />

@@ -30,6 +30,7 @@ import { getModifiedValues } from "logic/utils";
 
 import DeviceQRCode from "app/QRCode";
 import ItemBomTable from "features/BOM/ItemBomTable";
+import PricingTab from "features/Items/Pricing";
 
 function DeviceDetails({
   sales,
@@ -376,6 +377,7 @@ function DeviceDetails({
                   >
                     <Tab label="Image" />
                     <Tab label="QR Code" />
+                    <Tab label="Pricing" />
                     {!sales && <Tab label="Clusters and Levels" />}
                   </Tabs>
                   {moreInfoTab === 0 && <Photo device={selectedRow} />}
@@ -403,7 +405,21 @@ function DeviceDetails({
                       </Button>
                     </Box>
                   )}
-                  {moreInfoTab === 2 && !sales && (
+                  {moreInfoTab === 2 && (
+                    <Box>
+                      <PricingTab
+                        errors={errors}
+                        handleBlur={handleBlur}
+                        handleChange={handleChange}
+                        itemId={selectedRow.id}
+                        setFieldValue={setFieldValue}
+                        touched={touched}
+                        values={values}
+                        boms={boms || { result: [], total: 0 }}
+                      />
+                    </Box>
+                  )}
+                  {moreInfoTab === 3 && !sales && (
                     <Levels
                       values={values}
                       handleChange={handleChange}

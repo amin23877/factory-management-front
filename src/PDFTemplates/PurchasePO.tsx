@@ -14,6 +14,8 @@ export default function PurchasePO({
   lines: any;
   sum: any;
 }) {
+  console.log({ lines });
+
   return (
     <div>
       <div
@@ -123,9 +125,9 @@ export default function PurchasePO({
           }}
         >
           {/* <th style={{ borderRight: "1px solid black" }}>Item</th> */}
-          <th style={{ width: "46%" }}> Item Description</th>
+          <th style={{ width: "46%" }}>Item Description</th>
           <th style={{ width: "20%" }}>Qty</th>
-          <th style={{ width: "17%" }}>Price</th>
+          <th style={{ width: "17%" }}>Cost</th>
           <th style={{ width: "17%" }}>Amount</th>
         </tr>
         {lines.map((l: any, index: any) => (
@@ -137,10 +139,12 @@ export default function PurchasePO({
             }}
           >
             {/* <td>{l.ItemId}</td> */}
-            <td style={{ width: "46%", borderRight: "2px solid #416364 ", verticalAlign: "top" }}>{l.description}</td>
-            <td style={{ width: "20%", borderRight: "2px solid #416364 ", verticalAlign: "top" }}>{l.quantity}</td>
-            <td style={{ width: "17%", borderRight: "2px solid #416364 ", verticalAlign: "top" }}>{l.price}</td>
-            <td style={{ width: "17%", verticalAlign: "top" }}> {l.quantity * l.price} </td>
+            <td style={{ width: "46%", borderRight: "2px solid #416364 ", verticalAlign: "top" }}>
+              {l?.ItemObject?.description}
+            </td>
+            <td style={{ width: "20%", borderRight: "2px solid #416364 ", verticalAlign: "top" }}>{l?.quantity}</td>
+            <td style={{ width: "17%", borderRight: "2px solid #416364 ", verticalAlign: "top" }}>{l?.cost}</td>
+            <td style={{ width: "17%", verticalAlign: "top" }}> {l.quantity * l.cost} </td>
           </tr>
         ))}
         <tr style={{ width: "100%", display: "flex", justifyContent: "space-between", flexGrow: 1 }}>

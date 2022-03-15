@@ -1,25 +1,28 @@
 import React, { Fragment, useMemo, useState } from "react";
-import { Formik } from "formik";
-
 import { useMediaQuery } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { GridColumns } from "@material-ui/data-grid";
 import useSWR, { mutate } from "swr";
+import { Formik } from "formik";
 
+import { AddressesForm, UpdateForm, MoreInfoForm, VendorForm } from "./Forms";
 import BaseDataGrid from "app/BaseDataGrid";
 import { BasePaper } from "app/Paper";
 import Button from "app/Button";
 import Toast from "app/Toast";
 import NoteModal from "common/NoteModal";
 import DocumentModal from "common/DocumentModal";
-import { DocumentsDataGrid, NotesDataGrid } from "common/DataGrids";
+import { NotesDataGrid } from "common/DataGrids";
+
 import { updatePurchasePO, IPurchasePO } from "api/purchasePO";
+import { ILineItem } from "api/lineItem";
+import { IDocument } from "api/document";
+
+import { fileType } from "logic/fileType";
 import { formatTimestampToDate } from "logic/date";
 import { getModifiedValues } from "logic/utils";
-import { ILineItem } from "api/lineItem";
-import { AddressesForm, UpdateForm, MoreInfoForm, VendorForm } from "./Forms";
 
 const style = {
   border: "1px solid gray ",
@@ -31,10 +34,12 @@ const style = {
 export default function Details({ selectedPO, onDone }: { selectedPO: IPurchasePO; onDone?: () => void }) {
   const phone = useMediaQuery("(max-width:900px)");
   const { data: lines } = useSWR<{ result: ILineItem[]; total: number }>(`/lineitem?po=${selectedPO.id}`);
+  const { data: docs } = useSWR<IDocument[]>(`/document/po/${selectedPO.id}`);
 
   const [activeTab, setActiveTab] = useState(0);
   const [activeMoreTab, setActiveMoreTab] = useState(0);
 
+  const [selectedDcoument, setSelectedDcoument] = useState<IDocument>();
   const [noteModal, setNoteModal] = useState(false);
   const [docModal, setDocModal] = useState(false);
 
@@ -74,6 +79,32 @@ export default function Details({ selectedPO, onDone }: { selectedPO: IPurchaseP
     []
   );
 
+  const docCols = useMemo<GridColumns>(
+    () => [
+      {
+        field: "date",
+        headerName: "Date",
+        valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+        width: 120,
+      },
+      {
+        field: "creator",
+        headerName: "Creator",
+        width: 120,
+      },
+      { field: "name", headerName: "Name", flex: 1 },
+      { field: "id", headerName: "ID", width: 200, valueFormatter: () => selectedPO.number },
+      { field: "description", headerName: "Description", flex: 1 },
+      {
+        field: "type",
+        headerName: "File Type",
+        valueFormatter: (params) => fileType(params.row?.path),
+        width: 120,
+      },
+    ],
+    [selectedPO.number]
+  );
+
   const handleSubmit = async (d: any) => {
     try {
       if (selectedPO.id && d.status) {
@@ -92,7 +123,13 @@ export default function Details({ selectedPO, onDone }: { selectedPO: IPurchaseP
         <NoteModal itemId={selectedPO.id} model="purchasePO" open={noteModal} onClose={() => setNoteModal(false)} />
       )}
       {selectedPO && selectedPO.id && (
-        <DocumentModal itemId={selectedPO.id} model="purchasePO" open={docModal} onClose={() => setDocModal(false)} />
+        <DocumentModal
+          itemId={selectedPO.id}
+          model="purchasePO"
+          docData={selectedDcoument}
+          open={docModal}
+          onClose={() => setDocModal(false)}
+        />
       )}
       <Box
         display="grid"
@@ -156,7 +193,6 @@ export default function Details({ selectedPO, onDone }: { selectedPO: IPurchaseP
             scrollButtons={phone ? "on" : "auto"}
             style={phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "1em" } : { marginBottom: "1em" }}
           >
-            {/* Line Items	Documents	Receiving	Notes	Auditing */}
             <Tab label="Line items" />
             <Tab label="Documents" />
             <Tab label="Receiving" />
@@ -183,12 +219,14 @@ export default function Details({ selectedPO, onDone }: { selectedPO: IPurchaseP
               >
                 + Add Document
               </Button>
-              <DocumentsDataGrid
-                model="po"
-                recordId={selectedPO?.id || ""}
-                onDocumentSelected={(d) => {
-                  // TODO: edit document
+              <BaseDataGrid
+                cols={docCols}
+                rows={docs || []}
+                onRowSelected={(r) => {
+                  setSelectedDcoument(r);
+                  setDocModal(true);
                 }}
+                height={"calc(100% - 100px)"}
               />
             </Fragment>
           )}
