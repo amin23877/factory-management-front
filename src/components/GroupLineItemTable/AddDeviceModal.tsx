@@ -1,5 +1,6 @@
 import React from "react";
 import { Box, Checkbox, FormControlLabel } from "@material-ui/core";
+import { Autocomplete } from "@material-ui/lab";
 import { Formik, Form } from "formik";
 
 import Dialog from "app/Dialog";
@@ -18,7 +19,14 @@ export default function AddDeviceModal({
 }) {
   return (
     <Dialog title="Add Device" open={open} onClose={onClose}>
-      <Formik initialValues={{} as any} onSubmit={(data) => onSubmit({ ...data, type: "device" })}>
+      <Formik
+        initialValues={{} as any}
+        onSubmit={(data) => {
+          console.log({ ...data, type: "device" });
+
+          // onSubmit({ ...data, type: "device" })
+        }}
+      >
         {({ getFieldProps, setFieldValue, values }) => (
           <Form>
             <Box display="flex" flexDirection="column" style={{ gap: 8 }}>
@@ -41,13 +49,27 @@ export default function AddDeviceModal({
                 url="/panel/engineering"
               />
               <TextField type="number" label="Quantity" {...getFieldProps("qty")} required />
-              <TextField
+              <Autocomplete
+                freeSolo
+                options={values?.ItemObject?.pricing || []}
+                getOptionLabel={(r: any) => `${r?.price}`}
+                inputValue={`${values?.price}`}
+                onInputChange={(e, nv) => {
+                  setFieldValue("price", nv);
+                }}
+                // value={values?.priceObject}
+                // onChange={(e, nv: any) => {
+                //   setFieldValue("priceObject", nv);
+                // }}
+                renderInput={(p) => <TextField {...p} label="Price" />}
+              />
+              {/* <TextField
                 type="number"
                 label="Price"
                 {...getFieldProps("price")}
                 required
                 InputLabelProps={{ shrink: true }}
-              />
+              /> */}
               <FormControlLabel label="Unit" control={<Checkbox />} {...getFieldProps("unit")} />
               <FormControlLabel
                 label="Standard Warranty"
