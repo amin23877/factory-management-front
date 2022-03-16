@@ -34,6 +34,7 @@ export default function EditForm({ initialValues }: { initialValues: repType }) 
             <TextField type="number" label="Regular Commission" {...getFieldProps("regularCommission")} />
             <TextField type="number" label="Overage Commission" {...getFieldProps("overageCommission")} />
             <LinkField
+              label="Sales Person"
               filterLabel="username"
               getOptionLabel={(o) => o?.username || ""}
               getOptionList={(res) => res}
