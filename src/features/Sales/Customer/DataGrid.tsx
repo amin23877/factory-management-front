@@ -8,7 +8,7 @@ const cols = [
   {
     name: "number",
     width: 90,
-    header: "ID",
+    header: "Number",
   },
   {
     name: "name",
@@ -16,20 +16,35 @@ const cols = [
     header: "Name",
   },
   {
-    name: "state",
+    name: "location",
     minWidth: 120,
-    header: "State",
+    header: "Location",
   },
   {
-    name: "city",
+    name: "size",
     minWidth: 120,
-    header: "City",
+    header: "Size",
   },
   {
-    name: "zipcode",
-    header: "Zip Code",
-    width: 90,
+    name: "website",
+    minWidth: 120,
+    header: "Website",
   },
+  // {
+  //   name: "state",
+  //   minWidth: 120,
+  //   header: "State",
+  // },
+  // {
+  //   name: "city",
+  //   minWidth: 120,
+  //   header: "City",
+  // },
+  // {
+  //   name: "zipcode",
+  //   header: "Zip Code",
+  //   width: 90,
+  // },
   // {
   //     name: "productLine",
   //     minWidth: 120,
@@ -48,27 +63,31 @@ const cols = [
     render: ({ data }: any) => data?.contact?.firstName,
     hide: true,
   },
-
+  {
+    name: "fax",
+    header: "Fax",
+    minWidth: 130,
+  },
+  {
+    name: "ext",
+    header: "Ext",
+    minWidth: 130,
+  },
   {
     name: "phone",
     header: "Phone",
     minWidth: 150,
   },
   {
-    name: "email",
-    header: "Email",
-    minWidth: 150,
-    hide: true,
+    name: "type",
+    header: "Type",
+    width: 100,
   },
   {
-    name: "Type",
+    name: "approved",
+    header: "Approved",
     width: 100,
-    render: ({ data }: any) => data?.CustomerTypeId?.name,
-  },
-  {
-    name: "status",
-    width: 100,
-    header: "Status",
+    type: "boolean",
   },
 ];
 
