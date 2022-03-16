@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { Box, Tabs, Tab, useMediaQuery, IconButton } from "@material-ui/core";
-import { ListAltRounded, FindInPageRounded, AddRounded } from "@material-ui/icons";
+import { Box, Tabs, Tab, useMediaQuery } from "@material-ui/core";
+import { ListAltRounded, FindInPageRounded } from "@material-ui/icons";
 
 import AddRep from "./AddRep";
 import Details from "./Details";
 import { BasePaper } from "app/Paper";
 import NewDataGrid from "app/NewDataGrid";
+import Button from "app/Button";
 
 import { repType } from "api/rep";
 
@@ -88,7 +89,7 @@ export default function RepIndex() {
     <>
       <AddRep open={addRep} onClose={() => setAddRep(false)} onDone={() => setRefresh((p) => p + 1)} />
       <BasePaper>
-        <Box mb={1} display="flex">
+        <Box mb={1} display="flex" alignItems="center">
           <Tabs
             value={activeTab}
             onChange={(e, nv) => setActiveTab(nv)}
@@ -121,9 +122,9 @@ export default function RepIndex() {
             />
           </Tabs>
           <div style={{ flex: 1 }}></div>
-          <IconButton onClick={() => setAddRep(true)}>
-            <AddRounded />
-          </IconButton>
+          <Button kind="add" onClick={() => setAddRep(true)}>
+            Add
+          </Button>
         </Box>
         {activeTab === 0 && (
           <NewDataGrid
