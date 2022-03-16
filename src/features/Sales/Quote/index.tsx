@@ -32,7 +32,7 @@ export default function QuotePanel() {
       if (selectedQuote && selectedQuote.id) {
         const resp = await deleteQuote(selectedQuote.id);
         if (resp) {
-          // mutateQuotes();
+          setRefresh((p) => p + 1);
         }
         setConfirm(false);
         setSelectedQuote(undefined);
@@ -124,7 +124,7 @@ export default function QuotePanel() {
         ) : (
           <>
             <Button variant="outlined" onClick={() => setReqQuote(true)} style={{ padding: "5px 10px" }}>
-              Requestes
+              Requests
             </Button>
             <Button variant="outlined" onClick={() => setEmailModal(true)} style={{ padding: "5px 10px" }}>
               Send Email

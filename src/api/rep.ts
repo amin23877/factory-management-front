@@ -1,6 +1,7 @@
-import { post } from ".";
+import { patch, post } from ".";
 
 export type repType = {
+  id: string;
   name: string;
   AddressId: string;
   phone: string;
@@ -17,4 +18,8 @@ export type repType = {
 
 export const createRep = (data: repType) => {
   return post("/rep", data);
+};
+
+export const updateRep = (id: string, data: Partial<repType>) => {
+  return patch(`/rep/${id}`, data);
 };

@@ -56,17 +56,23 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
 
   const LICols = useMemo<GridColumns>(
     () => [
-      { field: "index", headerName: "Sort" },
-      { field: "ItemId", headerName: "Part Number", valueFormatter: (r) => r.row?.ItemId?.name, width: 200 },
+      // { field: "index", headerName: "Sort" },
+      {
+        field: "ItemId",
+        headerName: "Part Number",
+        valueFormatter: ({ row }) => row?.ItemId?.name || row?.text,
+        flex: 1,
+      },
       // { field: "description", headerName: "Description", flex: 1 },
-      { field: "qty", headerName: "QTY", width: 90 },
-      { field: "price", headerName: "Price", width: 100 },
-      { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
+      { field: "qty", headerName: "QTY", width: 70 },
+      { field: "price", headerName: "Price", width: 70, disableColumnMenu: true },
+      { field: "tax", headerName: "Tax", type: "boolean", width: 70 },
       {
         field: "total",
         headerName: "Total",
         valueFormatter: (r) => Number(r.row?.price) * Number(r.row?.qty),
-        width: 200,
+        width: 70,
+        disableColumnMenu: true,
       },
     ],
     []

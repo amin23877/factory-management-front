@@ -841,9 +841,9 @@ export const CreateForm = ({
             choseItem={typeof values.SOId === "string" ? values.SOId : values.SOId?.id}
             label="SO Number"
             path="/so"
-            filterLabel="no"
+            filterLabel="number"
             getOptionList={(resp) => resp?.result}
-            getOptionLabel={(item) => item?.no || "No-Number"}
+            getOptionLabel={(item) => item?.number || "No-Number"}
             getOptionValue={(item) => item?.id}
             onChange={(e, nv) => {
               setFieldValue("SOId", nv.id);

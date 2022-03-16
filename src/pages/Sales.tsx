@@ -11,11 +11,12 @@ import DevicesPanel from "features/Engineering/Devices";
 import Dashboard from "features/Sales/Dashboard";
 import Calls from "features/Sales/Call";
 import Clients from "features/Sales/Customer";
+import Reps from "features/Sales/Rep";
 
 import { usePortal } from "logic/PortalContext";
 
 export default function Sales() {
-  const [activeTab, setActiveTab] = useState(3);
+  const [activeTab, setActiveTab] = useState(6);
   const [tabText, setTabText] = useState("Sales Orders");
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
@@ -77,7 +78,8 @@ export default function Sales() {
             <MyTab label="Quotes" />
             <MyTab label="Customer POs" />
             <MyTab label="Sales Orders" />
-            <MyTab label="Customers" />
+            <MyTab label="Clients" />
+            <MyTab label="Reps" />
           </MyTabs>
         </Popover>
       </Portal>
@@ -90,6 +92,7 @@ export default function Sales() {
           {activeTab === 4 && <PurchaseOrderPanel />}
           {activeTab === 5 && <SalesOrderPanel />}
           {activeTab === 6 && <Clients />}
+          {activeTab === 7 && <Reps />}
         </Box>
       </Box>
     </>

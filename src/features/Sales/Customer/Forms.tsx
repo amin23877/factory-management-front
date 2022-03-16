@@ -134,6 +134,15 @@ export const GeneralForm = ({
           label="Name"
         />
         <TextField
+          name="location"
+          value={values.location}
+          onBlur={handleBlur}
+          onChange={handleChange}
+          error={Boolean(errors.location && touched.location)}
+          helperText={touched.location && errors.location && String(errors.location)}
+          label="Location"
+        />
+        <TextField
           name="address"
           value={values.address}
           onBlur={handleBlur}
@@ -179,42 +188,31 @@ export const GeneralForm = ({
           label="Country"
         />
         <TextField
+          name="ext"
+          value={values.ext}
+          onBlur={handleBlur}
+          onChange={handleChange}
+          error={Boolean(errors.ext && touched.ext)}
+          helperText={touched.ext && errors.ext && String(errors.ext)}
+          label="Ext"
+        />
+        <TextField
           name="phone"
           value={values.phone}
           onBlur={handleBlur}
           onChange={handleChange}
           error={Boolean(errors.phone && touched.phone)}
           helperText={touched.phone && errors.phone && String(errors.phone)}
-          label="Main Phone"
+          label="Phone"
         />
         <TextField
-          name="email"
-          value={values.email}
+          name="qbid"
+          value={values.qbid}
           onBlur={handleBlur}
           onChange={handleChange}
-          error={Boolean(errors.email && touched.email)}
-          helperText={touched.email && errors.email && String(errors.email)}
-          label="Main Email"
-        />
-        <CacheFieldSelect
-          url="/employee"
-          getOptionList={(resp) => resp.result}
-          value={typeof values.supportStaff === "string" ? values.supportStaff : values.supportStaff?.id}
-          itemTitleField="username"
-          itemValueField="id"
-          keyField="id"
-          name="supportStaff"
-          label="Sales person"
-          onChange={handleChange}
-        />
-        <TextField
-          name="productLine"
-          value={values.productLine}
-          onBlur={handleBlur}
-          onChange={handleChange}
-          error={Boolean(errors.productLine && touched.productLine)}
-          helperText={touched.productLine && errors.productLine && String(errors.productLine)}
-          label="Product Line"
+          error={Boolean(errors.qbid && touched.qbid)}
+          helperText={touched.qbid && errors.qbid && String(errors.qbid)}
+          label="Quick Book ID"
         />
         <FormControl
           style={

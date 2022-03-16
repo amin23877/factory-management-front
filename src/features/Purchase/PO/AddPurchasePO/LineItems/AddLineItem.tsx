@@ -46,7 +46,12 @@ export default function AddLineItem({
                 />
                 <TextField type="number" label="Quantity" {...getFieldProps("quantity")} />
                 <TextField type="number" label="Cost" {...getFieldProps("cost")} />
-                <TextField label="Vendor ETA" {...getFieldProps("vendorETA")} />
+                <TextField
+                  type="datetime-local"
+                  label="Vendor ETA"
+                  {...getFieldProps("vendorETA")}
+                  InputLabelProps={{ shrink: true }}
+                />
                 <TextField label="Notes" {...getFieldProps("notes")} multiline rows={3} />
                 <FormControlLabel label="Tax" control={<Checkbox />} {...getFieldProps("tax")} />
                 <Button type="submit" kind="add">

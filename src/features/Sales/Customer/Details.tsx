@@ -38,17 +38,15 @@ export default function ClientDetails({
   const [activeTab, setActiveTab] = useState(0);
   const [activeSubTab, setActiveSubTab] = useState(0);
 
-  const { data: contacts } = useSWR<{ result: IContact[]; total: number }>(
-    activeTab === 0 ? `/contact/customer/${selectedRow.id}` : null
-  );
+  const { data: contacts } = useSWR<IContact[]>(activeTab === 0 ? `/contact/client/${selectedRow.id}` : null);
   const { data: documents } = useSWR<{ result: IDocument[]; total: number }>(
-    activeTab === 1 ? `/document/customer/${selectedRow.id}` : null
+    activeTab === 1 ? `/document/client/${selectedRow.id}` : null
   );
   const { data: activities } = useSWR<{ result: IActivity[]; total: number }>(
-    activeTab === 2 ? `/activity/customer/${selectedRow.id}` : null
+    activeTab === 2 ? `/activity/client/${selectedRow.id}` : null
   );
   const { data: notes } = useSWR<{ result: INote[]; total: number }>(
-    activeTab === 5 ? `/note/customer/${selectedRow.id}` : null
+    activeTab === 5 ? `/note/client/${selectedRow.id}` : null
   );
 
   const [addNoteModal, setAddNoteModal] = useState(false);
@@ -141,14 +139,9 @@ export default function ClientDetails({
 
   return (
     <Box>
-      <ContactModal itemId={selectedRow?.id} model="customer" open={addContact} onClose={() => setAddContact(false)} />
-      <NoteModal itemId={selectedRow?.id} model="customer" open={addNoteModal} onClose={() => setAddNoteModal(false)} />
-      <DocumentModal
-        open={addDocModal}
-        onClose={() => setAddDocModal(false)}
-        itemId={selectedRow?.id}
-        model="customer"
-      />
+      <ContactModal itemId={selectedRow?.id} model="client" open={addContact} onClose={() => setAddContact(false)} />
+      <NoteModal itemId={selectedRow?.id} model="client" open={addNoteModal} onClose={() => setAddNoteModal(false)} />
+      <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={selectedRow?.id} model="client" />
 
       <Formik initialValues={selectedRow} onSubmit={handleSubmit}>
         {({ values, errors, touched, handleChange, handleBlur }) => (
@@ -256,7 +249,7 @@ export default function ClientDetails({
                       <BaseDataGrid
                         height="calc(100% - 100px)"
                         cols={contactsCols}
-                        rows={contacts?.result || []}
+                        rows={contacts || []}
                         onRowSelected={(c) => {}}
                       />
                     </>
