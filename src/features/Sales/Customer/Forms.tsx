@@ -9,6 +9,7 @@ import {
   FormControl,
   Paper,
   useMediaQuery,
+  LinearProgress,
 } from "@material-ui/core";
 
 import { CacheFieldSelect } from "app/Inputs";
@@ -17,6 +18,7 @@ import Button from "app/Button";
 
 import { editClient } from "api/client";
 import Toast from "app/Toast";
+import useSWR from "swr";
 
 export const GeneralForm = ({
   values,
@@ -134,6 +136,15 @@ export const GeneralForm = ({
           label="Name"
         />
         <TextField
+          name="qbid"
+          value={values.qbid}
+          onBlur={handleBlur}
+          onChange={handleChange}
+          error={Boolean(errors.qbid && touched.qbid)}
+          helperText={touched.qbid && errors.qbid && String(errors.qbid)}
+          label="Quick Book ID"
+        />
+        <TextField
           name="location"
           value={values.location}
           onBlur={handleBlur}
@@ -141,51 +152,7 @@ export const GeneralForm = ({
           error={Boolean(errors.location && touched.location)}
           helperText={touched.location && errors.location && String(errors.location)}
           label="Location"
-        />
-        <TextField
-          name="address"
-          value={values.address}
-          onBlur={handleBlur}
-          onChange={handleChange}
-          error={Boolean(errors.address && touched.address)}
-          helperText={touched.address && errors.address && String(errors.address)}
-          label="Address"
-        />
-        <TextField
-          name="state"
-          value={values.state}
-          onBlur={handleBlur}
-          onChange={handleChange}
-          error={Boolean(errors.state && touched.state)}
-          helperText={touched.state && errors.state && String(errors.state)}
-          label="State"
-        />
-        <TextField
-          name="city"
-          value={values.city}
-          onBlur={handleBlur}
-          onChange={handleChange}
-          error={Boolean(errors.city && touched.city)}
-          helperText={touched.city && errors.city && String(errors.city)}
-          label="City"
-        />
-        <TextField
-          name="zipcode"
-          value={values.zipcode}
-          onBlur={handleBlur}
-          onChange={handleChange}
-          error={Boolean(errors.zipcode && touched.zipcode)}
-          helperText={touched.zipcode && errors.zipcode && String(errors.zipcode)}
-          label="Zip Code"
-        />
-        <TextField
-          name="country"
-          value={values.country}
-          onBlur={handleBlur}
-          onChange={handleChange}
-          error={Boolean(errors.country && touched.country)}
-          helperText={touched.country && errors.country && String(errors.country)}
-          label="Country"
+          style={{ gridColumn: "span 2" }}
         />
         <TextField
           name="ext"
@@ -204,15 +171,6 @@ export const GeneralForm = ({
           error={Boolean(errors.phone && touched.phone)}
           helperText={touched.phone && errors.phone && String(errors.phone)}
           label="Phone"
-        />
-        <TextField
-          name="qbid"
-          value={values.qbid}
-          onBlur={handleBlur}
-          onChange={handleChange}
-          error={Boolean(errors.qbid && touched.qbid)}
-          helperText={touched.qbid && errors.qbid && String(errors.qbid)}
-          label="Quick Book ID"
         />
         <FormControl
           style={
@@ -331,29 +289,18 @@ export const MoreInfoForm = ({
   );
 };
 
-export const MainContactForm = ({
-  values,
-  touched,
-  errors,
-  handleBlur,
-  handleChange,
-}: {
-  values: any;
-  errors: any;
-  touched: any;
-  handleBlur: any;
-  handleChange: any;
-}) => {
+export const MainContactForm = ({ selectedRow }: { selectedRow: any }) => {
+  const { data } = useSWR(`/contact/client/${selectedRow.id}`);
+
+  if (!data) {
+    return <LinearProgress />;
+  }
+
   return (
     <Box my={2} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr">
-      {/* // مقادیرش باید تصحیح شه */}
-      <TextField
-        value={`${values.contact?.firstName} ${values.contact?.lastName}`}
-        label=" Main Contact Name"
-        disabled
-      />
-      <TextField value={values.contact?.phone} label="Main Contact Phone" disabled />
-      <TextField value={values.contact?.email} label="Main Contact Email" disabled />
+      <TextField value={`${data[0]?.firstName} ${data[0]?.lastName}`} label=" Main Contact Name" disabled />
+      <TextField value={data[0]?.phones[0]?.phone} label="Main Contact Phone" disabled />
+      <TextField value={data[0]?.emails[0]?.email} label="Main Contact Email" disabled />
     </Box>
   );
 };

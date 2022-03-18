@@ -13,9 +13,9 @@ import { IContact } from "api/contact";
 const columns: GridColumns = [
   { field: "firstName", headerName: "First Name", width: 110 },
   { field: "lastName", headerName: "Last Name" },
-  { field: "phone", headerName: "Phone" },
-  { field: "ext", headerName: "Ext" },
-  { field: "email", headerName: "Email", flex: 1 },
+  { field: "phone", headerName: "Phone", valueFormatter: ({ row }) => row?.phones[0]?.phone },
+  { field: "ext", headerName: "Ext", valueFormatter: ({ row }) => row?.phones[0]?.ext },
+  { field: "email", headerName: "Email", flex: 1, valueFormatter: ({ row }) => row?.emails[0]?.email },
   { field: "title", headerName: "Title" },
   { field: "department", headerName: "Department", width: 120 },
   { field: "main", headerName: "Main", type: "boolean" },
@@ -40,7 +40,7 @@ export default function ContactTab({ itemId, model }: { model: string; itemId: s
         <Button
           variant="outlined"
           startIcon={<AddRounded />}
-          style={{ margin: "0.5em 0" }}
+          style={{ margin: "4px 0" }}
           onClick={() => setAddModal(true)}
         >
           Add

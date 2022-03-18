@@ -192,15 +192,7 @@ export default function ClientDetails({
                           touched={touched}
                         />
                       )}
-                      {activeSubTab === 1 && (
-                        <MainContactForm
-                          values={values}
-                          errors={errors}
-                          handleBlur={handleBlur}
-                          handleChange={handleChange}
-                          touched={touched}
-                        />
-                      )}
+                      {activeSubTab === 1 && <MainContactForm selectedRow={selectedRow} />}
                       {activeSubTab === 2 && (
                         <CommissionForm
                           values={values}

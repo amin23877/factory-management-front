@@ -8,11 +8,11 @@ import {
   ThumbDownAltRounded,
 } from "@material-ui/icons";
 
-import Button from "../../../app/Button";
-import { BasePaper } from "../../../app/Paper";
-import Toast from "../../../app/Toast";
+import Button from "app/Button";
+import { BasePaper } from "app/Paper";
+import Toast from "app/Toast";
 
-import { deleteClient, IClient } from "../../../api/client";
+import { deleteClient, IClient } from "api/client";
 
 import AddCustomerModal from "./Modals";
 import CustomerTypeModal from "./CustomerType";
@@ -67,7 +67,7 @@ export default function Customers() {
               }}
             >
               <AddRounded />
-              Add Customer
+              Add Client
             </Button>
             <Button kind="add" onClick={() => setCTypeModal(true)} style={{ margin: "0 0.5em" }}>
               Add Type
@@ -76,7 +76,7 @@ export default function Customers() {
         )}
         {selectedRow && activeTab === 3 && (
           <Button onClick={() => setConf(true)} kind="delete">
-            Delete Customer
+            Delete Client
           </Button>
         )}
       </Box>

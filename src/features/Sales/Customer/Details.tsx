@@ -5,25 +5,27 @@ import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 
 import { CommissionForm, GeneralForm, MainContactForm, MoreInfoForm } from "./Forms";
-import Button from "../../../app/Button";
-import { BasePaper } from "../../../app/Paper";
-import BaseDataGrid from "../../../app/BaseDataGrid";
+import Button from "app/Button";
+import { BasePaper } from "app/Paper";
+import BaseDataGrid from "app/BaseDataGrid";
+import ContactTab from "common/ContactTab";
+import AddressTab from "common/Address/Tab";
 
-import { editClient, IClient } from "../../../api/client";
-import { INote } from "../../../api/note";
+import { editClient, IClient } from "api/client";
+import { INote } from "api/note";
 
 import SOTable from "../../Items/SOTable";
 
-import { formatTimestampToDate } from "../../../logic/date";
-import { fileType } from "../../../logic/fileType";
+import { formatTimestampToDate } from "logic/date";
+import { fileType } from "logic/fileType";
 
-import NoteModal from "../../../common/NoteModal";
-import DocumentModal from "../../../common/DocumentModal";
+import NoteModal from "common/NoteModal";
+import DocumentModal from "common/DocumentModal";
 import { ContactModal } from "../../Modals/ContactModal";
-import Toast from "../../../app/Toast";
-import { IDocument } from "../../../api/document";
-import { getModifiedValues } from "../../../logic/utils";
-import { IContact } from "api/contact";
+import Toast from "app/Toast";
+import { IDocument } from "api/document";
+import { getModifiedValues } from "logic/utils";
+
 import { IActivity } from "api/activity";
 
 export default function ClientDetails({
@@ -38,7 +40,6 @@ export default function ClientDetails({
   const [activeTab, setActiveTab] = useState(0);
   const [activeSubTab, setActiveSubTab] = useState(0);
 
-  const { data: contacts } = useSWR<IContact[]>(activeTab === 0 ? `/contact/client/${selectedRow.id}` : null);
   const { data: documents } = useSWR<{ result: IDocument[]; total: number }>(
     activeTab === 1 ? `/document/client/${selectedRow.id}` : null
   );
@@ -56,8 +57,8 @@ export default function ClientDetails({
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     try {
       await editClient(selectedRow.id, getModifiedValues(values, selectedRow));
-      mutate("/customer");
-      mutate("/customer?approved=false");
+      mutate("/client");
+      mutate("/client?approved=false");
       setSubmitting(false);
 
       Toast("Record updated", "success");
@@ -124,17 +125,6 @@ export default function ClientDetails({
     []
   );
 
-  const contactsCols = [
-    { field: "firstName", headerName: "First Name", width: 110 },
-    { field: "lastName", headerName: "Last Name" },
-    { field: "phone", headerName: "Phone" },
-    { field: "ext", headerName: "Ext" },
-    { field: "email", headerName: "Email", flex: 1 },
-    { field: "title", headerName: "Title" },
-    { field: "department", headerName: "Department", width: 120 },
-    { field: "main", headerName: "Main", type: "boolean" },
-    { field: "active", headerName: "Active", type: "boolean" },
-  ];
   const phone = useMediaQuery("(max-width:900px)");
 
   return (
@@ -195,15 +185,7 @@ export default function ClientDetails({
                           touched={touched}
                         />
                       )}
-                      {activeSubTab === 1 && (
-                        <MainContactForm
-                          values={values}
-                          errors={errors}
-                          handleBlur={handleBlur}
-                          handleChange={handleChange}
-                          touched={touched}
-                        />
-                      )}
+                      {activeSubTab === 1 && <MainContactForm selectedRow={selectedRow} />}
                       {activeSubTab === 2 && (
                         <CommissionForm
                           values={values}
@@ -233,27 +215,10 @@ export default function ClientDetails({
                     <Tab label="Sales History" />
                     <Tab label="Work Orders" />
                     <Tab label="Notes" />
+                    <Tab label="Addresses" />
                     <Tab label="Auditing" />
                   </Tabs>
-                  {activeTab === 0 && (
-                    <>
-                      <Button
-                        onClick={() => {
-                          setAddContact(true);
-                        }}
-                        variant="outlined"
-                        style={{ marginBottom: "10px" }}
-                      >
-                        + Add Contact
-                      </Button>
-                      <BaseDataGrid
-                        height="calc(100% - 100px)"
-                        cols={contactsCols}
-                        rows={contacts || []}
-                        onRowSelected={(c) => {}}
-                      />
-                    </>
-                  )}
+                  {activeTab === 0 && <ContactTab itemId={selectedRow.id} model="client" />}
                   {activeTab === 1 && (
                     <>
                       <Button
@@ -295,6 +260,7 @@ export default function ClientDetails({
                       />
                     </>
                   )}
+                  {activeTab === 6 && <AddressTab model="client" itemId={selectedRow.id} />}
                 </BasePaper>
               </Box>
             </Box>
