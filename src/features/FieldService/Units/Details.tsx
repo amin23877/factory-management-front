@@ -2,27 +2,27 @@ import React, { useMemo, useState, Fragment } from "react";
 import { Box, Tabs, Tab, useMediaQuery } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import useSWR, { mutate } from "swr";
-import { host } from "../../../host";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
 
 import { General, Status, Expense, Shipping } from "./Forms";
 
-import Button from "../../../app/Button";
-import { BasePaper } from "../../../app/Paper";
-import BaseDataGrid from "../../../app/BaseDataGrid";
+import Button from "app/Button";
+import { BasePaper } from "app/Paper";
+import BaseDataGrid from "app/BaseDataGrid";
 
-import { IUnit, updateUnit } from "../../../api/units";
+import { IUnit, updateUnit } from "api/units";
 
-import { Formik, Form } from "formik";
-import * as Yup from "yup";
-import Toast from "../../../app/Toast";
-import { IDocument } from "../../../api/document";
-import { formatTimestampToDate } from "../../../logic/date";
-import { fileType } from "../../../logic/fileType";
-import DocumentModal from "../../../common/DocumentModal";
+import Toast from "app/Toast";
+import { formatTimestampToDate } from "logic/date";
+
 import ShipmentModal, { EditShipModal } from "../../Modals/ShipmentModal";
-import { getModifiedValues } from "../../../logic/utils";
+import { getModifiedValues } from "logic/utils";
 import { Levels } from "../../Items/Forms";
-import { IShipment } from "../../../api/shipment";
+import { IShipment } from "api/shipment";
+
+import DocumentTab from "common/Document/Tab";
+import NotesTab from "common/Note/Tab";
 
 const schema = Yup.object().shape({});
 
@@ -41,13 +41,11 @@ function Details({ unit }: { unit: IUnit }) {
 
   const [infoActiveTab, setInfoActiveTab] = useState(0);
   const [gridActiveTab, setGridActiveTab] = useState(0);
-  const [addDocModal, setAddDocModal] = useState(false);
   const [addShipModal, setAddShipModal] = useState(false);
   const [editShip, setEditShip] = useState(false);
   const [selectedShip, setSelectedShip] = useState<IShipment>();
 
   const { data: unitBoms } = useSWR(gridActiveTab === 2 ? `/ubom?UnitId=${unit.id}` : null);
-  const { data: documents } = useSWR<IDocument[]>(gridActiveTab === 3 ? `/document/unit/${unit.id}` : null);
   const { data: shipments } = useSWR(gridActiveTab === 4 ? `/shipment?UnitId=${unit.id}` : null);
 
   const bomCols = useMemo<GridColDef[]>(
@@ -99,32 +97,7 @@ function Details({ unit }: { unit: IUnit }) {
     ],
     []
   );
-  const docCols = useMemo<GridColumns>(
-    () => [
-      {
-        field: "date",
-        headerName: "Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-        width: 120,
-      },
-      {
-        field: "EmployeeId",
-        headerName: "Creator",
-        valueFormatter: (params) => params.row?.employee?.username,
-        width: 120,
-      },
-      { field: "name", headerName: "Name", flex: 1 },
-      { field: "id", headerName: "ID", width: 200 },
-      { field: "description", headerName: "Description", flex: 1 },
-      {
-        field: "type",
-        headerName: "File Type",
-        valueFormatter: (params) => fileType(params.row?.path),
-        width: 120,
-      },
-    ],
-    []
-  );
+
   const SOICols = useMemo<GridColumns>(
     () => [
       { field: "Option Number", valueFormatter: (params) => params.row?.ItemId?.no, flex: 1 },
@@ -136,7 +109,6 @@ function Details({ unit }: { unit: IUnit }) {
 
   return (
     <>
-      <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={unit?.id} model="unit" />
       {unit && unit.id && <ShipmentModal open={addShipModal} onClose={() => setAddShipModal(false)} unitId={unit.id} />}
       {unit && unit.id && selectedShip && (
         <EditShipModal open={editShip} onClose={() => setEditShip(false)} unitId={unit.id} init={selectedShip} />
@@ -274,25 +246,7 @@ function Details({ unit }: { unit: IUnit }) {
           {gridActiveTab === 2 && (
             <BaseDataGrid cols={bomCols} rows={unitBoms || []} onRowSelected={(r) => {}} height="67.3vh" />
           )}
-          {gridActiveTab === 3 && (
-            <>
-              <Button
-                onClick={() => {
-                  setAddDocModal(true);
-                }}
-                variant="outlined"
-                style={{ marginBottom: "10px" }}
-              >
-                + Add Document
-              </Button>
-              <BaseDataGrid
-                height={"63.2vh"}
-                cols={docCols}
-                rows={documents && documents.length ? documents : []}
-                onRowSelected={(v) => {}}
-              />
-            </>
-          )}
+          {gridActiveTab === 3 && <DocumentTab itemId={unit.id} model="unit" />}
           {gridActiveTab === 4 && (
             <>
               <Button
@@ -317,6 +271,7 @@ function Details({ unit }: { unit: IUnit }) {
           )}
           {gridActiveTab === 6 && <BaseDataGrid cols={SOICols} rows={[]} onRowSelected={(r) => {}} height="67.3vh" />}
           {gridActiveTab === 7 && <BaseDataGrid cols={fshCols} rows={[]} onRowSelected={(r) => {}} height="67.3vh" />}
+          {gridActiveTab === 8 && <NotesTab itemId={unit.id} model="unit" />}
         </BasePaper>
       </Box>
     </>

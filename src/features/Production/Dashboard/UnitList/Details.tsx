@@ -10,24 +10,21 @@ import QRCode from "./QRCode";
 import { General, UnitInfo } from "./Forms";
 import UnitWorkFlow, { ProductionWorkFlow } from "./WorkFlows";
 
-import DocumentModal from "../../../../common/DocumentModal";
+import DocumentTab from "common/Document/Tab";
 import Confirm from "../../../Modals/Confirm";
-import { host } from "../../../../host";
-import Button from "../../../../app/Button";
-import { BasePaper } from "../../../../app/Paper";
-import BaseDataGrid from "../../../../app/BaseDataGrid";
-import UploadButton from "../../../../app/FileUploader";
-import Toast from "../../../../app/Toast";
+import { host } from "host";
+import Button from "app/Button";
+import { BasePaper } from "app/Paper";
+import BaseDataGrid from "app/BaseDataGrid";
+import UploadButton from "app/FileUploader";
+import Toast from "app/Toast";
 
-import { IUnit, updateUnit } from "../../../../api/units";
-import { IDocument } from "../../../../api/document";
-import { deleteOption, IOption } from "../../../../api/options";
-import { addImage, deleteImage } from "../../../../api/units";
+import { IUnit, updateUnit } from "api/units";
+import { deleteOption, IOption } from "api/options";
+import { addImage, deleteImage } from "api/units";
 
-import { formatTimestampToDate } from "../../../../logic/date";
-import { fileType } from "../../../../logic/fileType";
-import { getModifiedValues } from "../../../../logic/utils";
-import { openRequestedSinglePopup } from "../../../../logic/window";
+import { getModifiedValues } from "logic/utils";
+import { openRequestedSinglePopup } from "logic/window";
 
 const schema = Yup.object().shape({
   // laborCost: Yup.number().required(),
@@ -54,7 +51,6 @@ function Details({ unit }: { unit: IUnit }) {
 
   const [infoActiveTab, setInfoActiveTab] = useState(0);
   const [gridActiveTab, setGridActiveTab] = useState(0);
-  const [addDocModal, setAddDocModal] = useState(false);
   const [selectedOption, setSelectedOption] = useState<IOption>();
   const [confirm, setConfirm] = useState(false);
   const [addOption, setAddOption] = useState(false);
@@ -104,7 +100,7 @@ function Details({ unit }: { unit: IUnit }) {
         : null
       : null
   );
-  const { data: documents } = useSWR<IDocument[]>(gridActiveTab === 1 ? `/document/unit/${unit.id}` : null);
+
   const { data: unitBoms } = useSWR(gridActiveTab === 2 ? `/ubom?UnitId=${unit.id}` : null);
 
   const bomCols = useMemo<GridColDef[]>(
@@ -141,37 +137,10 @@ function Details({ unit }: { unit: IUnit }) {
     ],
     []
   );
-  const docCols = useMemo<GridColumns>(
-    () => [
-      {
-        field: "date",
-        headerName: "Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-        width: 120,
-      },
-      {
-        field: "EmployeeId",
-        headerName: "Creator",
-        valueFormatter: (params) => params.row?.employee?.username,
-        width: 120,
-      },
-      { field: "name", headerName: "Name", flex: 1 },
-      { field: "id", headerName: "ID", width: 200 },
-      { field: "description", headerName: "Description", flex: 1 },
-      {
-        field: "type",
-        headerName: "File Type",
-        valueFormatter: (params) => fileType(params.row?.path),
-        width: 120,
-      },
-    ],
-    []
-  );
 
   return (
     <>
       <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDeleteOption} />
-      <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={unit?.id} model="unit" />
       <Formik initialValues={unit as IUnit} validationSchema={schema} onSubmit={handleSubmit}>
         {({ values, errors, handleChange, handleBlur, isSubmitting, setFieldValue, touched }) => (
           <Form>
@@ -294,24 +263,7 @@ function Details({ unit }: { unit: IUnit }) {
             <BaseDataGrid cols={warCols} rows={warranties?.result || []} onRowSelected={(d) => {}} />
           </Box>
         )}
-        {gridActiveTab === 1 && (
-          <>
-            <Button
-              onClick={() => {
-                setAddDocModal(true);
-              }}
-              variant="outlined"
-            >
-              + Add Document
-            </Button>
-            <BaseDataGrid
-              height={250}
-              cols={docCols}
-              rows={documents && documents.length ? documents : []}
-              onRowSelected={(v) => {}}
-            />
-          </>
-        )}
+        {gridActiveTab === 1 && <DocumentTab itemId={unit.id} model="unit" />}
         {gridActiveTab === 2 && (
           <BaseDataGrid
             cols={bomCols}

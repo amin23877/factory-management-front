@@ -6,7 +6,7 @@ import useSWR from "swr";
 
 import Button from "app/Button";
 import BaseDataGrid from "app/BaseDataGrid";
-import { ContactModal } from "features/Modals/ContactModal";
+import ContactModal from "./Modal";
 
 import { IContact } from "api/contact";
 

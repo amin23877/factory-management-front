@@ -4,22 +4,21 @@ import { mutate } from "swr";
 import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Button from "../../../app/Button";
+import Button from "app/Button";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
 import Confirm from "../../Modals/Confirm";
-import NoteModal from "../../../common/NoteModal";
-import DocumentModal from "../../../common/DocumentModal";
+
 import LineItemModal from "../../LineItem";
 import LineServiceModal from "../../LineService";
 import EditTab from "./EditTab";
 import AddSOModal from "./AddSo";
 
-import { deleteSO, ISO } from "../../../api/so";
-import { ILineItem } from "../../../api/lineItem";
-import { ILineService } from "../../../api/lineService";
-import { BasePaper } from "../../../app/Paper";
+import { deleteSO, ISO } from "api/so";
+import { ILineItem } from "api/lineItem";
+import { ILineService } from "api/lineService";
+import { BasePaper } from "app/Paper";
 import Datagrid from "./Datagrid";
 
 export default function SalesOrderPanel() {
@@ -27,13 +26,9 @@ export default function SalesOrderPanel() {
 
   const [confirm, setConfirm] = useState(false);
   const [addSo, setAddSo] = useState(false);
-  const [noteModal, setNoteModal] = useState(false);
-  const [docModal, setDocModal] = useState(false);
   const [lineItemModal, setLineItemModal] = useState(false);
   const [lineServiceModal, setLineServiceModal] = useState(false);
 
-  const [selectedNote, setSelectedNote] = useState<any>();
-  const [selectedDoc, setSelectedDoc] = useState<any>();
   const [selectedLI, setSelectedLI] = useState<ILineItem>();
   const [selectedLS, setSelectedLS] = useState<ILineService>();
   const [selectedSO, setSelectedSO] = useState<ISO>();
@@ -78,25 +73,6 @@ export default function SalesOrderPanel() {
           mutateField="SOId"
         />
       )}
-      {selectedSO && selectedSO.id && (
-        <NoteModal
-          open={noteModal}
-          onClose={() => setNoteModal(false)}
-          itemId={selectedSO.id}
-          model="so"
-          noteData={selectedNote}
-        />
-      )}
-      {selectedSO && selectedSO.id && (
-        <DocumentModal
-          open={docModal}
-          onClose={() => setDocModal(false)}
-          itemId={selectedSO.id}
-          model="so"
-          docData={selectedDoc}
-        />
-      )}
-
       {addSo && (
         <AddSOModal
           open={addSo}
@@ -104,12 +80,11 @@ export default function SalesOrderPanel() {
           onDone={(createdSO) => {
             mutate("/so");
             setRefresh((prev) => prev + 1);
-            setSelectedSO(createdSO)
-            setActiveTab(1)
+            setSelectedSO(createdSO);
+            setActiveTab(1);
           }}
         />
       )}
-
       <Confirm
         open={confirm}
         onClose={() => setConfirm(false)}
@@ -199,14 +174,6 @@ export default function SalesOrderPanel() {
             onLineItemSelected={(d) => {
               setSelectedLI(d);
               // setLineItemModal(true);
-            }}
-            onNoteSelected={(d) => {
-              setSelectedNote(d);
-              setNoteModal(true);
-            }}
-            onDocSelected={(d) => {
-              setSelectedDoc(d);
-              setDocModal(true);
             }}
           />
         )}

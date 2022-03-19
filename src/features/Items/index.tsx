@@ -4,8 +4,6 @@ import { AddRounded, DeleteRounded, FindInPageRounded, ListAltRounded, PostAddRo
 import { mutate } from "swr";
 
 import Confirm from "../Modals/Confirm";
-import NoteModal from "common/NoteModal";
-import DocumentModal from "common/DocumentModal";
 import ConfirmDialog from "common/Confirm";
 
 import { AddItemModal } from "./ItemModals";
@@ -27,15 +25,9 @@ const Items = () => {
   const [refresh, setRefresh] = useState<number>(0);
 
   const [activeTab, setActiveTab] = useState(0);
-  const [selectedNote, setSelectedNote] = useState<any>();
-  const [selectedDoc, setSelectedDoc] = useState<any>();
 
   const [addItemModal, setAddItemModal] = useState(false);
   const [deleteItemModal, setDeleteItemModal] = useState(false);
-  const [editNoteModal, setEditNoteModal] = useState(false);
-  const [editDocModal, setEditDocModal] = useState(false);
-  const [addNoteModal, setAddNoteModal] = useState(false);
-  const [addDocModal, setAddDocModal] = useState(false);
   const [levelsModal, setLevelsModal] = useState(false);
 
   const handleDelete = useCallback(async () => {
@@ -76,40 +68,6 @@ const Items = () => {
 
   return (
     <>
-      {selectedNote && selectedItem && selectedItem.id && (
-        <NoteModal
-          noteData={selectedNote}
-          itemId={selectedItem.id as any}
-          model="item"
-          open={editNoteModal}
-          onClose={() => setEditNoteModal(false)}
-        />
-      )}
-      {selectedDoc && selectedItem && selectedItem.id && (
-        <DocumentModal
-          open={editDocModal}
-          itemId={selectedItem.id as any}
-          model="item"
-          onClose={() => setEditDocModal(false)}
-          docData={selectedDoc}
-        />
-      )}
-      {selectedItem && selectedItem.id && (
-        <NoteModal
-          itemId={selectedItem.id as any}
-          model="item"
-          open={addNoteModal}
-          onClose={() => setAddNoteModal(false)}
-        />
-      )}
-      {selectedItem && selectedItem.id && (
-        <DocumentModal
-          open={addDocModal}
-          onClose={() => setAddDocModal(false)}
-          itemId={selectedItem.id as any}
-          model="item"
-        />
-      )}
       <AddItemModal open={addItemModal} onClose={() => setAddItemModal(false)} />
       <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
       <LevelsModal open={levelsModal} onClose={() => setLevelsModal(false)} />
@@ -191,14 +149,6 @@ const Items = () => {
                 setActiveTab(t);
               }}
               selectedRow={selectedItem}
-              onDocSelected={(d) => {
-                setSelectedDoc(d);
-                setEditDocModal(true);
-              }}
-              onNoteSelected={(d) => {
-                setSelectedNote(d);
-                setEditNoteModal(true);
-              }}
             />
           )}
         </Box>

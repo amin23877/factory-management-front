@@ -15,8 +15,6 @@ import { General, Photo } from "./Forms";
 import AddServiceModal from "./AddServiceModal";
 import UnitHistoryModal from "../../Unit/Modal";
 
-import { INote } from "api/note";
-import { IDocument } from "api/document";
 import { IItem, updateAnItem } from "api/items";
 import { IBom } from "api/bom";
 import Parts from "../../BOM/Parts";
@@ -31,27 +29,21 @@ import { getModifiedValues } from "logic/utils";
 import DeviceQRCode from "app/QRCode";
 import ItemBomTable from "features/BOM/ItemBomTable";
 import PricingTab from "features/Items/Pricing";
+import DocumentTab from "common/Document/Tab";
+import NoteTab from "common/Note/Tab";
 
 function DeviceDetails({
   sales,
   selectedRow,
-  onNoteSelected,
-  onDocSelected,
   onStepSelected,
   onFlagSelected,
   onDone,
-  addNote,
-  addDoc,
 }: {
   sales?: boolean;
   selectedRow: any;
   onDone?: () => void;
-  onNoteSelected: (a: any) => void;
-  onDocSelected: (a: any) => void;
   onStepSelected: (a: any) => void;
   onFlagSelected: (a: any) => void;
-  addNote: (a: any) => void;
-  addDoc: (a: any) => void;
 }) {
   const qrCode = useRef<HTMLElement | null>(null);
 
@@ -67,19 +59,11 @@ function DeviceDetails({
 
   const [stepModal, setStepModal] = useState(false);
 
-  const { data: docs } = useSWR<IDocument[]>(
-    activeTab === 0 ? (selectedRow && selectedRow.id ? `/document/item/${selectedRow.id}` : null) : null
-  );
   const { data: boms } = useSWR<{ result: IBom[]; total: number }>(
     selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null
   );
 
-  // const { data: services, mutate: mutateServices } = useSWR(
-  //   activeTab === 2 ? (selectedRow && selectedRow.id ? `item/${selectedRow.id}/service` : null) : null
-  // );
-  const { data: itemObject, mutate: mutateServices } = useSWR<IItem>(
-    selectedRow && selectedRow.id ? `/item/${selectedRow.id}` : null
-  );
+  const { data: itemObject } = useSWR<IItem>(selectedRow && selectedRow.id ? `/item/${selectedRow.id}` : null);
 
   const { data: manSteps } = useSWR(
     activeTab === 3
@@ -108,9 +92,6 @@ function DeviceDetails({
   const { data: flags } = useSWR(
     activeTab === 10 ? (selectedRow && selectedRow.id ? `/qccase/item/${selectedRow.id}` : null) : null
   );
-  const { data: notes } = useSWR<INote[]>(
-    activeTab === 11 ? (selectedRow && selectedRow.id ? `/note/item/${selectedRow.id}` : null) : null
-  );
 
   const [bomPartsModal, setBomPartsModal] = useState(false);
 
@@ -134,25 +115,6 @@ function DeviceDetails({
     []
   );
 
-  const noteCols = useMemo<GridColumns>(
-    () => [
-      {
-        field: "date",
-        headerName: "Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-        width: 120,
-      },
-      {
-        field: "creator",
-        headerName: "Creator",
-        width: 180,
-        valueFormatter: (params) => params.row?.EmployeeId?.username,
-      },
-      { field: "subject", headerName: "Subject", width: 300 },
-      { field: "note", headerName: "Note", flex: 1 },
-    ],
-    []
-  );
   const flagCols = useMemo(
     () => [
       { field: "date", headerName: "Date", flex: 2 },
@@ -167,30 +129,6 @@ function DeviceDetails({
     []
   );
 
-  const docCols = useMemo(
-    () => [
-      { field: "file", headerName: "File" },
-      { field: "date", headerName: "Date", width: 180, type: "date" },
-      { field: "EmployeeId", headerName: "Creator", flex: 1 },
-      { field: "name", headerName: "File Name", flex: 1 },
-      { field: "id", headerName: "File ID", flex: 1 },
-      { field: "description", headerName: "Description", flex: 1 },
-      { field: "type", headerName: "File Type" },
-    ],
-    []
-  );
-
-  // const bomCols = useMemo<GridColDef[]>(
-  //   () => [
-  //     { field: "items", headerName: "Items", width: 80 },
-  //     { field: "revision", headerName: "Revision" },
-  //     { field: "date", headerName: "Revision Date", type: "date", width: 180 },
-  //     { field: "name", headerName: "BOM Name", width: 180 },
-  //     { field: "note", headerName: "Note", flex: 1 },
-  //     { field: "current", headerName: "Current", type: "boolean" },
-  //   ],
-  //   []
-  // );
   const manCols = useMemo<GridColDef[]>(
     () => [
       {
@@ -477,29 +415,8 @@ function DeviceDetails({
                 </Box>
                 {!sales ? (
                   <>
-                    {activeTab === 0 && (
-                      <>
-                        <Button onClick={addDoc} variant="outlined" style={{ marginBottom: "10px" }}>
-                          Add Document
-                        </Button>
-                        <BaseDataGrid
-                          height={"calc(100% - 100px)"}
-                          cols={docCols}
-                          rows={docs || []}
-                          onRowSelected={() => {}}
-                        />
-                      </>
-                    )}
+                    {activeTab === 0 && <DocumentTab itemId={selectedRow.id} model="item" />}
                     {activeTab === 1 && (
-                      // <BaseDataGrid
-                      //   height={"calc(100% - 60px)"}
-                      //   cols={bomCols}
-                      //   rows={boms?.result || []}
-                      //   onRowSelected={(d) => {
-                      //     setBom(d);
-                      //     setBomPartsModal(true);
-                      //   }}
-                      // />
                       <div style={{ maxWidth: "79vw", overflow: "auto" }}>
                         <ItemBomTable item={selectedRow} boms={boms?.result || []} />
                       </div>
@@ -587,30 +504,11 @@ function DeviceDetails({
                         onRowSelected={onFlagSelected}
                       />
                     )}
-                    {activeTab === 11 && (
-                      <>
-                        <Button onClick={addNote} variant="outlined" style={{ marginBottom: "10px" }}>
-                          Add Note
-                        </Button>
-                        <BaseDataGrid
-                          height={"calc()100% - 60px"}
-                          cols={noteCols}
-                          rows={notes || []}
-                          onRowSelected={onNoteSelected}
-                        />
-                      </>
-                    )}
+                    {activeTab === 11 && <NoteTab itemId={selectedRow.id} model="item" />}
                   </>
                 ) : (
                   <>
-                    {activeTab === 0 && (
-                      <BaseDataGrid
-                        height={"calc(100% - 60px)"}
-                        cols={docCols}
-                        rows={docs || []}
-                        onRowSelected={() => {}}
-                      />
-                    )}
+                    {activeTab === 0 && <DocumentTab itemId={selectedRow.id} model="item" />}
 
                     {activeTab === 1 && (
                       <>
@@ -625,14 +523,7 @@ function DeviceDetails({
 
                     {activeTab === 2 && <SalesReport />}
 
-                    {activeTab === 3 && (
-                      <BaseDataGrid
-                        height={"calc()100% - 60px"}
-                        cols={noteCols}
-                        rows={notes || []}
-                        onRowSelected={onNoteSelected}
-                      />
-                    )}
+                    {activeTab === 3 && <NoteTab itemId={selectedRow.id} model="item" />}
                   </>
                 )}
               </BasePaper>

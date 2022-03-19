@@ -8,22 +8,17 @@ import { CommissionForm, GeneralForm, MainContactForm, MoreInfoForm } from "./Fo
 import Button from "app/Button";
 import { BasePaper } from "app/Paper";
 import BaseDataGrid from "app/BaseDataGrid";
-import ContactTab from "common/ContactTab";
-import AddressTab from "common/Address/Tab";
 
 import { editClient, IClient } from "api/client";
-import { INote } from "api/note";
 
 import SOTable from "../../Items/SOTable";
 
-import { formatTimestampToDate } from "logic/date";
-import { fileType } from "logic/fileType";
+import NoteTab from "common/Note/Tab";
+import DocumentTab from "common/Document/Tab";
+import ContactTab from "common/Contact/Tab";
+import AddressTab from "common/Address/Tab";
 
-import NoteModal from "common/NoteModal";
-import DocumentModal from "common/DocumentModal";
-import { ContactModal } from "../../Modals/ContactModal";
 import Toast from "app/Toast";
-import { IDocument } from "api/document";
 import { getModifiedValues } from "logic/utils";
 
 import { IActivity } from "api/activity";
@@ -40,19 +35,11 @@ export default function ClientDetails({
   const [activeTab, setActiveTab] = useState(0);
   const [activeSubTab, setActiveSubTab] = useState(0);
 
-  const { data: documents } = useSWR<{ result: IDocument[]; total: number }>(
-    activeTab === 1 ? `/document/client/${selectedRow.id}` : null
-  );
+  const phone = useMediaQuery("(max-width:900px)");
+
   const { data: activities } = useSWR<{ result: IActivity[]; total: number }>(
     activeTab === 2 ? `/activity/client/${selectedRow.id}` : null
   );
-  const { data: notes } = useSWR<{ result: INote[]; total: number }>(
-    activeTab === 5 ? `/note/client/${selectedRow.id}` : null
-  );
-
-  const [addNoteModal, setAddNoteModal] = useState(false);
-  const [addDocModal, setAddDocModal] = useState(false);
-  const [addContact, setAddContact] = useState(false);
 
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     try {
@@ -78,61 +65,9 @@ export default function ClientDetails({
     ],
     []
   );
-  const noteCols = useMemo<GridColumns>(
-    () => [
-      {
-        field: "date",
-        headerName: "Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-        width: 120,
-      },
-      {
-        field: "creator",
-        headerName: "Creator",
-        width: 180,
-        valueFormatter: (params) => params.row?.EmployeeId?.username,
-      },
-      { field: "subject", headerName: "Subject", width: 300 },
-      { field: "note", headerName: "Note", flex: 1 },
-    ],
-    []
-  );
-
-  const docCols = useMemo<GridColumns>(
-    () => [
-      {
-        field: "date",
-        headerName: "Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-        width: 120,
-      },
-      {
-        field: "EmployeeId",
-        headerName: "Creator",
-        valueFormatter: (params) => params.row?.employee?.username,
-        width: 120,
-      },
-      { field: "name", headerName: "Name", flex: 1 },
-      { field: "id", headerName: "ID", width: 200 },
-      { field: "description", headerName: "Description", flex: 1 },
-      {
-        field: "type",
-        headerName: "File Type",
-        valueFormatter: (params) => fileType(params.row?.path),
-        width: 120,
-      },
-    ],
-    []
-  );
-
-  const phone = useMediaQuery("(max-width:900px)");
 
   return (
     <Box>
-      <ContactModal itemId={selectedRow?.id} model="client" open={addContact} onClose={() => setAddContact(false)} />
-      <NoteModal itemId={selectedRow?.id} model="client" open={addNoteModal} onClose={() => setAddNoteModal(false)} />
-      <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={selectedRow?.id} model="client" />
-
       <Formik initialValues={selectedRow} onSubmit={handleSubmit}>
         {({ values, errors, touched, handleChange, handleBlur }) => (
           <Form>
@@ -219,25 +154,7 @@ export default function ClientDetails({
                     <Tab label="Auditing" />
                   </Tabs>
                   {activeTab === 0 && <ContactTab itemId={selectedRow.id} model="client" />}
-                  {activeTab === 1 && (
-                    <>
-                      <Button
-                        onClick={() => {
-                          setAddDocModal(true);
-                        }}
-                        variant="outlined"
-                        style={{ marginBottom: "10px" }}
-                      >
-                        + Add Document
-                      </Button>
-                      <BaseDataGrid
-                        height="calc(100% - 100px)"
-                        cols={docCols}
-                        rows={documents?.result || []}
-                        onRowSelected={(v) => {}}
-                      />
-                    </>
-                  )}
+                  {activeTab === 1 && <DocumentTab itemId={selectedRow.id} model="client" />}
                   {activeTab === 2 && (
                     <BaseDataGrid
                       height="calc(100% - 60px)"
@@ -247,19 +164,7 @@ export default function ClientDetails({
                     />
                   )}
                   {activeTab === 3 && <SOTable rows={[]} />}
-                  {activeTab === 5 && (
-                    <>
-                      <Button onClick={() => setAddNoteModal(true)} variant="outlined" style={{ marginBottom: "10px" }}>
-                        + Add Note
-                      </Button>
-                      <BaseDataGrid
-                        height="calc(100% - 100px)"
-                        cols={noteCols}
-                        rows={notes?.result || []}
-                        onRowSelected={(v) => {}}
-                      />
-                    </>
-                  )}
+                  {activeTab === 5 && <NoteTab itemId={selectedRow.id} model="client" />}
                   {activeTab === 6 && <AddressTab model="client" itemId={selectedRow.id} />}
                 </BasePaper>
               </Box>

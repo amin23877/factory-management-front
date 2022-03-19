@@ -4,47 +4,32 @@ import { GridColumns } from "@material-ui/data-grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import useSWR from "swr";
+import { useHistory } from "react-router";
 
-import Button from "../../../app/Button";
-import BaseDataGrid from "../../../app/BaseDataGrid";
-import { BasePaper } from "../../../app/Paper";
+import BaseDataGrid from "app/BaseDataGrid";
+import { BasePaper } from "app/Paper";
 
 import EditForm from "./EditForm";
 
-import { ISO } from "../../../api/so";
-import { formatTimestampToDate } from "../../../logic/date";
-import { fileType } from "../../../logic/fileType";
+import { ISO } from "api/so";
 
-import NoteModal from "../../../common/NoteModal";
-import DocumentModal from "../../../common/DocumentModal";
+import { formatTimestampToDate } from "logic/date";
+import NoteTab from "common/Note/Tab";
+import DocumentTab from "common/Document/Tab";
 
-import { openRequestedSinglePopup } from "../../../logic/window";
-import { useHistory } from "react-router";
+import { openRequestedSinglePopup } from "logic/window";
 import { lineItemType } from "components/GroupLineItemTable/useGroupedLineItems";
-
-const style = {
-  border: "1px solid gray ",
-  borderRadius: "4px",
-  padding: "5px 10px",
-  margin: "3px 0px 10px 5px ",
-};
 
 export default function EditTab({
   selectedSo,
   onLineItemSelected,
   onLineServiceSelected,
-  onNoteSelected,
-  onDocSelected,
 }: {
   selectedSo: ISO;
   onLineItemSelected: (a: any) => void;
   onLineServiceSelected: (a: any) => void;
-  onNoteSelected: (a: any) => void;
-  onDocSelected: (a: any) => void;
 }) {
   const [activeTab, setActiveTab] = useState(0);
-  const [addNote, setAddNote] = useState(false);
-  const [addDoc, setAddDoc] = useState(false);
 
   const history = useHistory();
 
@@ -56,59 +41,6 @@ export default function EditTab({
 
   const { data: documents } = useSWR(
     selectedSo && selectedSo.id && activeTab === 2 ? `/document/so/${selectedSo.id}` : null
-  );
-
-  const { data: notes } = useSWR(selectedSo && selectedSo.id && activeTab === 0 ? `/note/so/${selectedSo.id}` : null);
-
-  const noteCols = useMemo<GridColumns>(
-    () => [
-      {
-        field: "date",
-        headerName: "Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-        width: 120,
-      },
-      {
-        field: "creator",
-        headerName: "Creator",
-        width: 180,
-        valueFormatter: (params) => params.row?.EmployeeId?.username,
-      },
-      { field: "subject", headerName: "Subject", width: 300 },
-      { field: "note", headerName: "Note", flex: 1 },
-    ],
-    []
-  );
-
-  const docCols = useMemo<GridColumns>(
-    () => [
-      {
-        field: "date",
-        headerName: "Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
-        width: 120,
-      },
-      {
-        field: "creator",
-        headerName: "Creator",
-        width: 120,
-      },
-      { field: "name", headerName: "Name", flex: 1 },
-      {
-        field: "id",
-        headerName: "ID",
-        width: 100,
-        valueFormatter: (params) => params?.row?.no || selectedSo?.number,
-      },
-      { field: "description", headerName: "Description", flex: 1 },
-      {
-        field: "type",
-        headerName: "File Type",
-        valueFormatter: (params) => fileType(params.row?.path),
-        width: 120,
-      },
-    ],
-    [selectedSo?.number]
   );
 
   const LICols = useMemo<GridColumns>(
@@ -216,113 +148,71 @@ export default function EditTab({
   const phone = useMediaQuery("(max-width:900px)");
 
   return (
-    <>
-      {selectedSo && selectedSo.id && (
-        <NoteModal open={addNote} onClose={() => setAddNote(false)} itemId={selectedSo.id} model="so" />
-      )}
-      {selectedSo && selectedSo.id && (
-        <DocumentModal open={addDoc} onClose={() => setAddDoc(false)} itemId={selectedSo.id} model="so" />
-      )}
-      <Box
-        display="grid"
-        gridGap={10}
-        gridTemplateColumns={phone ? "1fr" : "3fr 4fr"}
-        height={phone ? "" : "calc(100vh - 200px)"}
-      >
-        <EditForm selectedSo={selectedSo} />
-        <BasePaper style={{ paddingTop: "0px" }}>
-          <Tabs
-            style={!phone ? { marginBottom: "10px" } : { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" }}
-            textColor="primary"
-            value={activeTab}
-            onChange={(e, nv) => setActiveTab(nv)}
-            variant="scrollable"
-          >
-            <Tab label="Line Items" /> 0
-            <Tab label="Units" /> 1
-            <Tab label="Documents" /> 2
-            <Tab label="Activities" /> 3
-            <Tab label="Shipment" /> 4
-            <Tab label="Field Services" /> 5
-            <Tab label="Notes" /> 6
-            <Tab label="Auditing" />
-          </Tabs>
-          {activeTab === 0 && (
-            <BaseDataGrid
-              cols={LICols}
-              rows={lineItems?.result || []}
-              onRowSelected={(r) => {
-                phone
-                  ? history.push(`/panel/engineering/${r?.ItemId?.id}`)
-                  : openRequestedSinglePopup({ url: `/panel/engineering/${r?.ItemId?.id}` });
-              }}
-              height="calc(100% - 60px)"
-            />
-          )}
-          {activeTab === 1 && (
-            <BaseDataGrid
-              cols={unitCols}
-              rows={units?.result || []}
-              onRowSelected={(r) => {
-                phone
-                  ? history.push(`/panel/production/${r.id}`)
-                  : openRequestedSinglePopup({ url: `/panel/production/${r.id}` });
-              }}
-              height="calc(100% - 60px)"
-            />
-          )}
-          {activeTab === 2 && (
-            <>
-              <Button
-                onClick={() => {
-                  setAddDoc(true);
-                }}
-                style={style}
-              >
-                + Add Document
-              </Button>
-              <BaseDataGrid
-                cols={docCols}
-                rows={documents || []}
-                onRowSelected={onDocSelected}
-                height=" calc(100% - 100px)"
-              />
-            </>
-          )}
-          {activeTab === 3 && (
-            <BaseDataGrid
-              cols={activityCols}
-              rows={documents || []}
-              onRowSelected={() => {}}
-              height="calc(100% - 60px)"
-            />
-          )}
-          {activeTab === 4 && (
-            <BaseDataGrid cols={shipCols} rows={documents || []} onRowSelected={() => {}} height="calc(100% - 60px)" />
-          )}
-          {activeTab === 5 && (
-            <BaseDataGrid cols={FSCols} rows={[]} onRowSelected={onLineServiceSelected} height="calc(100% - 60px)" />
-          )}
-          {activeTab === 6 && (
-            <>
-              <Button
-                onClick={() => {
-                  setAddNote(true);
-                }}
-                style={style}
-              >
-                + Add Note
-              </Button>
-              <BaseDataGrid
-                cols={noteCols}
-                rows={notes || []}
-                onRowSelected={onNoteSelected}
-                height=" calc(100% - 100px)"
-              />
-            </>
-          )}
-        </BasePaper>
-      </Box>
-    </>
+    <Box
+      display="grid"
+      gridGap={10}
+      gridTemplateColumns={phone ? "1fr" : "3fr 4fr"}
+      height={phone ? "" : "calc(100vh - 200px)"}
+    >
+      <EditForm selectedSo={selectedSo} />
+      <BasePaper style={{ paddingTop: "0px" }}>
+        <Tabs
+          style={!phone ? { marginBottom: "10px" } : { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" }}
+          textColor="primary"
+          value={activeTab}
+          onChange={(e, nv) => setActiveTab(nv)}
+          variant="scrollable"
+        >
+          <Tab label="Line Items" />
+          <Tab label="Units" />
+          <Tab label="Documents" />
+          <Tab label="Activities" />
+          <Tab label="Shipment" />
+          <Tab label="Field Services" />
+          <Tab label="Notes" />
+          <Tab label="Auditing" />
+        </Tabs>
+        {activeTab === 0 && (
+          <BaseDataGrid
+            cols={LICols}
+            rows={lineItems?.result || []}
+            onRowSelected={(r) => {
+              phone
+                ? history.push(`/panel/engineering/${r?.ItemId?.id}`)
+                : openRequestedSinglePopup({ url: `/panel/engineering/${r?.ItemId?.id}` });
+            }}
+            height="calc(100% - 60px)"
+          />
+        )}
+        {activeTab === 1 && (
+          <BaseDataGrid
+            cols={unitCols}
+            rows={units?.result || []}
+            onRowSelected={(r) => {
+              phone
+                ? history.push(`/panel/production/${r.id}`)
+                : openRequestedSinglePopup({ url: `/panel/production/${r.id}` });
+            }}
+            height="calc(100% - 60px)"
+          />
+        )}
+        {activeTab === 2 && <DocumentTab itemId={selectedSo.id} model="so" />}
+        {activeTab === 3 && (
+          <BaseDataGrid
+            cols={activityCols}
+            rows={documents || []}
+            onRowSelected={() => {}}
+            height="calc(100% - 60px)"
+          />
+        )}
+        {activeTab === 4 && (
+          <BaseDataGrid cols={shipCols} rows={documents || []} onRowSelected={() => {}} height="calc(100% - 60px)" />
+        )}
+        {activeTab === 5 && (
+          <BaseDataGrid cols={FSCols} rows={[]} onRowSelected={onLineServiceSelected} height="calc(100% - 60px)" />
+        )}
+        {activeTab === 6 && <NoteTab itemId={selectedSo.id} model="so" />}
+      </BasePaper>
+    </Box>
   );
 }

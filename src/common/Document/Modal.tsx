@@ -16,7 +16,7 @@ interface IDocumentModal {
   open: boolean;
   model: string;
   itemId: string;
-  docData?: any;
+  data?: any;
   onDone?: () => void;
   onClose: () => void;
 }
@@ -25,14 +25,14 @@ const mutateDocuments = (type: string, id: string) => {
   return mutate(`/document/${type}/${id}`);
 };
 
-export default function DocumentModal({ open, onClose, model, itemId, onDone, docData }: IDocumentModal) {
+export default function DocumentModal({ open, onClose, model, itemId, onDone, data }: IDocumentModal) {
   const fileUploader = useRef<HTMLInputElement | null>();
   const phone = useMediaQuery("(max-width:900px)");
 
   const deleteDocument = async () => {
     try {
-      if (docData && docData.id) {
-        await deleteAModelDocument(docData.id);
+      if (data && data.id) {
+        await deleteAModelDocument(data.id);
         onDone && onDone();
         mutateDocuments(model, itemId);
         onClose();
@@ -44,8 +44,8 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
 
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     try {
-      if (docData && docData.id) {
-        await updateAModelDocument(docData.id, values.file, values.description);
+      if (data && data.id) {
+        await updateAModelDocument(data.id, values.file, values.description);
 
         onDone && onDone();
         mutateDocuments(model, itemId);
@@ -65,10 +65,10 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
   };
 
   return (
-    <Dialog open={open} onClose={onClose} fullScreen title={`${docData ? "Edit" : "Add"} Document to ${model}`}>
+    <Dialog open={open} onClose={onClose} fullScreen title={`${data ? "Edit" : "Add"} Document to ${model}`}>
       <Box height="82vh" m={3} display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 300px"} gridColumnGap={10}>
-        <Box>{docData?.path && <PDFPreview height="100%" pdf={host + docData?.path} />}</Box>
-        <Formik initialValues={docData ? docData : ({} as IDocument)} onSubmit={handleSubmit}>
+        <Box>{data?.path && <PDFPreview height="100%" pdf={host + data?.path} />}</Box>
+        <Formik initialValues={data ? data : ({} as IDocument)} onSubmit={handleSubmit}>
           {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
             <Form>
               <Box display="flex" justifyContent="center" alignItems="center" flexDirection="column">
@@ -98,12 +98,12 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
                     String((values.file as any).name)
                   ) : // <p>ads</p>
 
-                  docData ? (
+                  data ? (
                     <a
                       rel="noopener noreferrer"
                       target="_blank"
-                      download={docData.path.search("blob") > -1 ? "document.pdf" : "document"}
-                      href={docData.path.slice(0)}
+                      download={data.path.search("blob") > -1 ? "document.pdf" : "document"}
+                      href={data.path.slice(0)}
                     >
                       Download previous file
                     </a>
@@ -141,10 +141,10 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, do
                   onBlur={handleBlur}
                 />
                 <Box style={{ display: "flex", width: "100%" }}>
-                  <Button type="submit" kind={docData ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
+                  <Button type="submit" kind={data ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
                     Save
                   </Button>
-                  {docData && (
+                  {data && (
                     <Button
                       style={{ marginLeft: "1em" }}
                       onClick={deleteDocument}

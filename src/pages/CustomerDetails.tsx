@@ -3,7 +3,7 @@ import { GridColumns } from "@material-ui/data-grid";
 import { Box, Tabs, Tab, LinearProgress } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
-// import * as Yup from "yup";
+import { useParams } from "react-router";
 
 import { CommissionForm, GeneralForm, MainContactForm, MoreInfoForm } from "features/Sales/Customer/Forms";
 import Button from "app/Button";
@@ -11,44 +11,25 @@ import { BasePaper } from "app/Paper";
 import BaseDataGrid from "app/BaseDataGrid";
 
 import { editClient, IClient } from "api/client";
-import { INote } from "api/note";
 
 import SOTable from "features/Items/SOTable";
 
-import { formatTimestampToDate } from "logic/date";
-import { fileType } from "logic/fileType";
+import NoteTab from "common/Note/Tab";
+import DocumentTab from "common/Document/Tab";
+import ContactTab from "common/Contact/Tab";
 
-import NoteModal from "common/NoteModal";
-import DocumentModal from "common/DocumentModal";
-import { ContactModal } from "features/Modals/ContactModal";
 import Toast from "app/Toast";
 import { IDocument } from "api/document";
 import { getModifiedValues } from "logic/utils";
-import { useParams } from "react-router";
 
-export default function ClientDetails({
-  // selectedRow,
-  req,
-  changeTab,
-}: {
-  // selectedRow: IClient;
-  req?: any;
-  changeTab: (a: number) => void;
-}) {
+export default function ClientDetails({ req, changeTab }: { req?: any; changeTab: (a: number) => void }) {
   const { cusNumber } = useParams<{ cusNumber: string }>();
   const { data: selectedRow } = useSWR<IClient>(cusNumber ? `/customer/${cusNumber}` : null);
 
   const [activeTab, setActiveTab] = useState(0);
   const [activeSubTab, setActiveSubTab] = useState(0);
 
-  const { data: contacts } = useSWR<IDocument[]>(activeTab === 0 ? `/contact/customer/${selectedRow?.id}` : null);
-  const { data: documents } = useSWR<IDocument[]>(activeTab === 1 ? `/document/customer/${selectedRow?.id}` : null);
   const { data: activities } = useSWR<IDocument[]>(activeTab === 2 ? `/activity/customer/${selectedRow?.id}` : null);
-  const { data: notes } = useSWR<INote[]>(activeTab === 5 ? `/note/customer/${selectedRow?.id}` : null);
-
-  const [addNoteModal, setAddNoteModal] = useState(false);
-  const [addDocModal, setAddDocModal] = useState(false);
-  const [addContact, setAddContact] = useState(false);
 
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     try {
@@ -75,78 +56,13 @@ export default function ClientDetails({
     ],
     []
   );
-  const noteCols = useMemo<GridColumns>(
-    () => [
-      {
-        field: "date",
-        headerName: "Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-        width: 120,
-      },
-      {
-        field: "creator",
-        headerName: "Creator",
-        width: 180,
-        valueFormatter: (params) => params.row?.EmployeeId?.username,
-      },
-      { field: "subject", headerName: "Subject", width: 300 },
-      { field: "note", headerName: "Note", flex: 1 },
-    ],
-    []
-  );
 
-  const docCols = useMemo<GridColumns>(
-    () => [
-      {
-        field: "date",
-        headerName: "Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-        width: 120,
-      },
-      {
-        field: "EmployeeId",
-        headerName: "Creator",
-        valueFormatter: (params) => params.row?.employee?.username,
-        width: 120,
-      },
-      { field: "name", headerName: "Name", flex: 1 },
-      { field: "id", headerName: "ID", width: 200 },
-      { field: "description", headerName: "Description", flex: 1 },
-      {
-        field: "type",
-        headerName: "File Type",
-        valueFormatter: (params) => fileType(params.row?.path),
-        width: 120,
-      },
-    ],
-    []
-  );
-
-  const contactsCols = [
-    { field: "firstName", headerName: "First Name", width: 110 },
-    { field: "lastName", headerName: "Last Name" },
-    { field: "phone", headerName: "Phone" },
-    { field: "ext", headerName: "Ext" },
-    { field: "email", headerName: "Email", flex: 1 },
-    { field: "title", headerName: "Title" },
-    { field: "department", headerName: "Department", width: 120 },
-    { field: "main", headerName: "Main", type: "boolean" },
-    { field: "active", headerName: "Active", type: "boolean" },
-  ];
   if (!selectedRow) {
     return <LinearProgress />;
   }
+
   return (
     <Box>
-      <ContactModal itemId={selectedRow?.id} model="customer" open={addContact} onClose={() => setAddContact(false)} />
-      <NoteModal itemId={selectedRow?.id} model="customer" open={addNoteModal} onClose={() => setAddNoteModal(false)} />
-      <DocumentModal
-        open={addDocModal}
-        onClose={() => setAddDocModal(false)}
-        itemId={selectedRow?.id}
-        model="customer"
-      />
-
       <Formik initialValues={selectedRow} onSubmit={handleSubmit}>
         {({ values, errors, touched, handleChange, handleBlur }) => (
           <Form>
@@ -217,37 +133,8 @@ export default function ClientDetails({
                   <Tab label="Auditing" />
                 </Tabs>
                 <BasePaper>
-                  {activeTab === 0 && (
-                    <>
-                      <Button
-                        onClick={() => {
-                          setAddContact(true);
-                        }}
-                        variant="outlined"
-                      >
-                        + Add Contact
-                      </Button>
-                      <BaseDataGrid
-                        height="58.5vh"
-                        cols={contactsCols}
-                        rows={contacts || []}
-                        onRowSelected={(c) => {}}
-                      />
-                    </>
-                  )}
-                  {activeTab === 1 && (
-                    <>
-                      <Button
-                        onClick={() => {
-                          setAddDocModal(true);
-                        }}
-                        variant="outlined"
-                      >
-                        + Add Document
-                      </Button>
-                      <BaseDataGrid height="58.5vh" cols={docCols} rows={documents || []} onRowSelected={(v) => {}} />
-                    </>
-                  )}
+                  {activeTab === 0 && <ContactTab itemId={selectedRow.id} model="client" />}
+                  {activeTab === 1 && <DocumentTab itemId={selectedRow.id} model="client" />}
                   {activeTab === 2 && (
                     <BaseDataGrid
                       height="62.5vh"
@@ -257,14 +144,7 @@ export default function ClientDetails({
                     />
                   )}
                   {activeTab === 3 && <SOTable rows={[]} />}
-                  {activeTab === 5 && (
-                    <>
-                      <Button onClick={() => setAddNoteModal(true)} variant="outlined">
-                        + Add Note
-                      </Button>
-                      <BaseDataGrid height="58.5vh" cols={noteCols} rows={notes || []} onRowSelected={(v) => {}} />
-                    </>
-                  )}
+                  {activeTab === 5 && <NoteTab itemId={selectedRow.id} model="client" />}
                 </BasePaper>
               </Box>
             </Box>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import Box from "@material-ui/core/Box";
 import ListItem from "@material-ui/core/ListItem";
@@ -7,40 +7,27 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { AddRounded, DeleteRounded, FindInPageRounded, ListAltRounded, PrintRounded } from "@material-ui/icons";
 
-import List from "../../../app/SideUtilityList";
-import DataGrid from "../../../app/NewDataGrid";
-import NoteModal from "../../../common/NoteModal";
-import DocumentsModal from "../../../common/DocumentModal";
+import List from "app/SideUtilityList";
+import DataGrid from "app/NewDataGrid";
 import AddPQuoteModal from "./AddPQuoteModal";
 import Details from "./Details";
 
-import { deletePurchaseQuote, IPurchaseQuote } from "../../../api/purchaseQuote";
+import { deletePurchaseQuote, IPurchaseQuote } from "api/purchaseQuote";
 import Confirm from "../../Modals/Confirm";
-import { getAllModelNotes } from "../../../api/note";
-import { getAllModelDocuments } from "../../../api/document";
-import { BasePaper } from "../../../app/Paper";
+
+import { BasePaper } from "app/Paper";
 
 function Index() {
   const [activeTab, setActiveTab] = useState(0);
   const [addPQ, setAddPQ] = useState(false);
   const [confirm, setConfirm] = useState(false);
-  // const [pqs, setPqs] = useState([]);
 
-  const [noteModal, setNoteModal] = useState(false);
-  const [docModal, setDocModal] = useState(false);
-  const [notes, setNotes] = useState([]);
-  const [docs, setDocs] = useState([]);
-
-  const [selNote, setSelNote] = useState<any>();
-  const [selDoc, setSelDoc] = useState<any>();
-  // TODO: Delete default selectedPurchaseQuote after one pquote added - for dev purposes
   const [selPQ, setSelPQ] = useState<IPurchaseQuote | undefined>({
     id: "",
     requester: "",
     ContactId: "",
     VendorId: "",
   });
-  // Date	Quote Number	Vendor	SO 	Staff	Contact
 
   const cols = [
     {
@@ -56,15 +43,6 @@ function Index() {
     { name: "contactName", headerName: "Contact", minWidth: 90 },
   ];
 
-  // const refreshPQs = async () => {
-  //     try {
-  //         const resp = await getPurchaseQuotes();
-  //         resp && setPqs(resp);
-  //     } catch (error) {
-  //         console.log(error);
-  //     }
-  // };
-
   const handleDelete = async () => {
     try {
       if (selPQ && selPQ.id) {
@@ -79,39 +57,6 @@ function Index() {
     }
   };
 
-  const refreshNotes = async () => {
-    try {
-      if (selPQ && selPQ.id) {
-        const resp = await getAllModelNotes("purchaseQuote", selPQ.id);
-        resp && !resp.error && setNotes(resp);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const refreshDocs = async () => {
-    try {
-      if (selPQ && selPQ.id) {
-        const resp = await getAllModelDocuments("purchaseQuote", selPQ.id);
-        resp && !resp.error && setDocs(resp);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    if (activeTab === 1) {
-      refreshNotes();
-      refreshDocs();
-    }
-  }, [activeTab]);
-
-  useEffect(() => {
-    // refreshPQs();
-  }, []);
-
   return (
     <>
       <AddPQuoteModal open={addPQ} onClose={() => setAddPQ(false)} onDone={() => {}} />
@@ -121,26 +66,6 @@ function Index() {
           onClose={() => setConfirm(false)}
           onConfirm={handleDelete}
           text={`Are you sure? You are going to delete purchase quote ${selPQ?.number}`}
-        />
-      )}
-      {selPQ && selPQ.id && (
-        <NoteModal
-          itemId={selPQ.id}
-          model="purchaseQuote"
-          open={noteModal}
-          onClose={() => setNoteModal(false)}
-          noteData={selNote}
-          onDone={refreshNotes}
-        />
-      )}
-      {selPQ && selPQ.id && (
-        <DocumentsModal
-          itemId={selPQ.id}
-          model="purchaseQuote"
-          open={docModal}
-          onClose={() => setDocModal(false)}
-          docData={selDoc}
-          onDone={refreshDocs}
         />
       )}
       <BasePaper>
@@ -214,22 +139,7 @@ function Index() {
                 }}
               />
             )}
-            {activeTab === 1 && selPQ && (
-              <Details
-                initialValues={selPQ}
-                onDone={() => {}}
-                notes={notes}
-                docs={docs}
-                onNoteSelected={(d) => {
-                  setSelNote(d);
-                  setNoteModal(true);
-                }}
-                onDocumentSelected={(d) => {
-                  setSelDoc(d);
-                  setDocModal(true);
-                }}
-              />
-            )}
+            {activeTab === 1 && selPQ && <Details initialValues={selPQ} onDone={() => {}} />}
           </Box>
         </Box>
       </BasePaper>

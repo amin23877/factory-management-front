@@ -13,8 +13,7 @@ import useSWR from "swr";
 import { useParams } from "react-router-dom";
 
 import Confirm from "features/Modals/Confirm";
-import NoteModal from "common/NoteModal";
-import DocumentModal from "common/DocumentModal";
+
 import FieldNFilter from "features/ClusterAndLevel/Modal";
 import { AddItemModal } from "features/Items/ItemModals";
 
@@ -42,20 +41,14 @@ const Devices = ({ sales }: { sales?: boolean }) => {
   const [finish, setFinish] = useState(false);
 
   const [activeTab, setActiveTab] = useState(0);
-  const [selectedNote, setSelectedNote] = useState<any>();
-  const [selectedDoc, setSelectedDoc] = useState<any>();
   const [selectedStep, setSelectedStep] = useState<any>();
   const [selectedFlag, setSelectedFlag] = useState<any>();
 
   const [addItemModal, setAddItemModal] = useState(false);
   const [addStepModal, setAddStepModal] = useState(false);
   const [deleteItemModal, setDeleteItemModal] = useState(false);
-  const [editNoteModal, setEditNoteModal] = useState(false);
-  const [editDocModal, setEditDocModal] = useState(false);
   const [editStepModal, setEditStepModal] = useState(false);
   const [editFlagModal, setEditFlagModal] = useState(false);
-  const [addNoteModal, setAddNoteModal] = useState(false);
-  const [addDocModal, setAddDocModal] = useState(false);
 
   const [flagModalOpen, setFlagModalOpen] = useState(false);
   const [FieldNFilterModal, setFieldNFilterModal] = useState(false);
@@ -123,16 +116,6 @@ const Devices = ({ sales }: { sales?: boolean }) => {
           onClose={() => setAddStepModal(false)}
         />
       )}
-
-      {selectedDoc && selectedItem && selectedItem.id && (
-        <DocumentModal
-          open={editDocModal}
-          itemId={selectedItem.id as any}
-          model="item"
-          onClose={() => setEditDocModal(false)}
-          docData={selectedDoc}
-        />
-      )}
       {selectedFlag && selectedItem && selectedItem.id && (
         <FlagModal
           open={editFlagModal}
@@ -142,32 +125,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
         />
       )}
       {selectedItem && selectedItem.id && (
-        <DocumentModal
-          open={addDocModal}
-          onClose={() => setAddDocModal(false)}
-          itemId={selectedItem.id as any}
-          model="item"
-        />
-      )}
-      {selectedItem && selectedItem.id && (
         <FlagModal open={flagModalOpen} onClose={() => setFlagModalOpen(false)} itemId={selectedItem.id as any} />
-      )}
-      {selectedItem && selectedItem.id && (
-        <NoteModal
-          itemId={selectedItem.id as any}
-          model="item"
-          open={addNoteModal}
-          onClose={() => setAddNoteModal(false)}
-        />
-      )}
-      {selectedNote && selectedItem && selectedItem.id && (
-        <NoteModal
-          noteData={selectedNote}
-          itemId={selectedItem.id as any}
-          model="item"
-          open={editNoteModal}
-          onClose={() => setEditNoteModal(false)}
-        />
       )}
       <AddItemModal
         device
@@ -265,19 +223,9 @@ const Devices = ({ sales }: { sales?: boolean }) => {
           )}
           {activeTab === 1 && (
             <DetailTab
-              addNote={() => setAddNoteModal(true)}
-              addDoc={() => setAddDocModal(true)}
               sales={sales}
               onDone={() => {}}
               selectedRow={selectedItem}
-              onDocSelected={(d) => {
-                setSelectedDoc(d);
-                setEditDocModal(true);
-              }}
-              onNoteSelected={(d) => {
-                setSelectedNote(d);
-                setEditNoteModal(true);
-              }}
               onStepSelected={(d) => {
                 setSelectedStep(d);
                 setEditStepModal(true);

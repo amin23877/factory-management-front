@@ -10,7 +10,7 @@ import Button from "app/Button";
 
 import { createAModelContact, deleteAModelContact, updateAModelContact, IContact } from "api/contact";
 
-export const ContactModal = ({
+export default function ContactModal({
   open,
   onClose,
   model,
@@ -24,7 +24,7 @@ export const ContactModal = ({
   itemId: string;
   data?: IContact;
   onDone?: () => void;
-}) => {
+}) {
   const handleDelete = () => {
     if (data?.id) {
       deleteAModelContact(data.id)
@@ -92,33 +92,6 @@ export const ContactModal = ({
                   value={values.lastName}
                   label="Last Name"
                 />
-                {/* <TextField
-                                    name="phone"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    error={Boolean(errors.phone && touched.phone)}
-                                    helperText={errors.phone && touched.phone}
-                                    value={values.phone}
-                                    label="Phone"
-                                />
-                                <TextField
-                                    name="ext"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    error={Boolean(errors.ext && touched.ext)}
-                                    helperText={errors.ext && touched.ext}
-                                    value={values.ext}
-                                    label="Ext"
-                                />
-                                <TextField
-                                    name="email"
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    error={Boolean(errors.email && touched.email)}
-                                    helperText={errors.email && touched.email}
-                                    value={values.email}
-                                    label="Email"
-                    />*/}
                 <TextField
                   name="title"
                   onBlur={handleBlur}
@@ -137,12 +110,6 @@ export const ContactModal = ({
                   value={values.department}
                   label="Department"
                 />
-                {/* <FormControlLabel
-                  name="main"
-                  onChange={handleChange}
-                  label="Main"
-                  control={<Checkbox checked={values.main} />}
-                /> */}
                 <FormControlLabel
                   name="active"
                   onChange={handleChange}
@@ -164,4 +131,4 @@ export const ContactModal = ({
       </Box>
     </Dialog>
   );
-};
+}

@@ -10,30 +10,23 @@ import {
   FindInPageRounded,
   ListAltRounded,
 } from "@material-ui/icons";
-import { mutate } from "swr";
 
 import Table from "./Table";
 import Details from "./Details";
 
-import List from "../../../app/SideUtilityList";
+import List from "app/SideUtilityList";
 import TicketModal from "./Modals";
 
-import { ITicket } from "../../../api/ticket";
-import NoteModal from "../../../common/NoteModal";
-import DocumentModal from "../../../common/DocumentModal";
-import { INote } from "../../../api/note";
-import { IDocument } from "../../../api/document";
+import { ITicket } from "api/ticket";
 import AddSOModal from "../../Sales/SO/AddSo";
 import AddQuote from "../../Sales/Quote/AddQuote";
 import AddTagModal from "./AddTag";
 import AddStatusModal from "./AddStatus";
 import AddCategoryModal from "./AddCategory";
-import { BasePaper } from "../../../app/Paper";
+import { BasePaper } from "app/Paper";
 
 export default function Tickets() {
   const [ticketModal, setTicketModal] = useState(false);
-  const [noteModal, setNoteModal] = useState(false);
-  const [documentModal, setDocumentModal] = useState(false);
   const [soModal, setSoModal] = useState(false);
   const [quoteModal, setQuoteModal] = useState(false);
   const [tagModal, setTagModal] = useState(false);
@@ -41,32 +34,10 @@ export default function Tickets() {
   const [categoryModal, setCategoryModal] = useState(false);
 
   const [selectedJob, setSelectedJob] = useState<ITicket>();
-  const [selectedNote, setSelectedNote] = useState<INote>();
-  const [selectedDocument, setSelectedDocument] = useState<IDocument>();
   const [activeTab, setActiveTab] = useState(0);
 
   return (
     <>
-      {selectedJob && (
-        <NoteModal
-          open={noteModal}
-          onClose={() => setNoteModal(false)}
-          model="ticket"
-          itemId={selectedJob.id}
-          noteData={selectedNote}
-          onDone={() => mutate(`/note/ticket/${selectedJob.id}`)}
-        />
-      )}
-      {selectedJob && (
-        <DocumentModal
-          open={documentModal}
-          onClose={() => setDocumentModal(false)}
-          model="ticket"
-          itemId={selectedJob.id}
-          docData={selectedDocument}
-          onDone={() => mutate(`/document/ticket/${selectedJob.id}`)}
-        />
-      )}
       {selectedJob && (
         <AddSOModal
           open={soModal}
@@ -181,19 +152,7 @@ export default function Tickets() {
               }}
             />
           )}
-          {activeTab === 1 && selectedJob && (
-            <Details
-              initialValue={selectedJob}
-              onNoteSelected={(n) => {
-                setSelectedNote(n);
-                setNoteModal(true);
-              }}
-              onDocumentSelected={(d) => {
-                setSelectedDocument(d);
-                setDocumentModal(true);
-              }}
-            />
-          )}
+          {activeTab === 1 && selectedJob && <Details initialValue={selectedJob} />}
         </Box>
       </BasePaper>
     </>

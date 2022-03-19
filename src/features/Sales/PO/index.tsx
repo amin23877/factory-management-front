@@ -1,39 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 
-import { getPO, deletePO, IPO } from "../../../api/po";
-import { getAllModelNotes } from "../../../api/note";
-import { getAllModelDocuments } from "../../../api/document";
+import { deletePO, IPO } from "api/po";
 
 import Confirm from "../../Modals/Confirm";
-import NoteModal from "../../../common/NoteModal";
-import DocModal from "../../../common/DocumentModal";
-import Button from "../../../app/Button";
+import Button from "app/Button";
 
 import Details from "./Details";
 import AddPOModal from "./AddPoModal";
-import { BasePaper } from "../../../app/Paper";
+import { BasePaper } from "app/Paper";
 
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
-import DataGrid from "../../../app/NewDataGrid";
+import DataGrid from "app/NewDataGrid";
 
 export default function POPanel() {
   const [activeTab, setActiveTab] = useState(0);
   const [selectedPO, setSelectedPO] = useState<IPO>({ id: "" } as IPO);
-  // const [pos, setPos] = useState([]);
   const [addPo, setAddPo] = useState(false);
   const [confirm, setConfirm] = useState(false);
-  const [notes, setNotes] = useState([]);
-  const [docs, setDocs] = useState([]);
-
-  const [noteModal, setNoteModal] = useState(false);
-  const [docModal, setDocModal] = useState(false);
-  const [selectedNote, setSelectedNote] = useState<any>();
-  const [selectedDoc, setSelectedDoc] = useState<any>();
 
   const poCols = [
     {
@@ -59,54 +47,11 @@ export default function POPanel() {
     { name: "status", headerName: "Status", minWidth: 110 },
   ];
 
-  // const refreshPOs = async () => {
-  //     try {
-  //         const resp = await getPO();
-  //         setPos(resp);
-  //     } catch (error) {
-  //         console.log(error);
-  //     }
-  // };
-
-  const refreshNotes = async () => {
-    try {
-      if (selectedPO && selectedPO.id) {
-        const resp = await getAllModelNotes("po", selectedPO.id as any);
-        setNotes(resp);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const refreshDocs = async () => {
-    try {
-      if (selectedPO && selectedPO.id) {
-        const resp = await getAllModelDocuments("po", selectedPO.id as any);
-        setDocs(resp);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // useEffect(() => {
-  //     refreshPOs();
-  // }, []);
-
-  useEffect(() => {
-    if (activeTab === 1) {
-      refreshNotes();
-      refreshDocs();
-    }
-  }, [activeTab]);
-
   const handleDelete = async () => {
     try {
       if (selectedPO && selectedPO.id) {
         const resp = await deletePO(selectedPO.id as any);
         if (resp) {
-          // refreshPOs();
           setActiveTab(0);
         }
       }
@@ -119,27 +64,6 @@ export default function POPanel() {
 
   return (
     <Box>
-      {selectedPO && selectedPO.id && (
-        <NoteModal
-          open={noteModal}
-          onClose={() => setNoteModal(false)}
-          itemId={selectedPO.id as any}
-          model="po"
-          noteData={selectedNote}
-          onDone={refreshNotes}
-        />
-      )}
-      {selectedPO && selectedPO.id && (
-        <DocModal
-          open={docModal}
-          onClose={() => setDocModal(false)}
-          itemId={selectedPO.id}
-          model="po"
-          docData={selectedDoc}
-          onDone={refreshDocs}
-        />
-      )}
-
       <AddPOModal open={addPo} onClose={() => setAddPo(false)} onDone={() => {}} />
       <Confirm
         open={confirm}
@@ -196,22 +120,7 @@ export default function POPanel() {
             }}
           />
         )}
-        {activeTab === 1 && selectedPO && (
-          <Details
-            poData={selectedPO}
-            onDone={() => {}}
-            onNoteSelected={(d) => {
-              setSelectedNote(d);
-              setNoteModal(true);
-            }}
-            onDocSelected={(d) => {
-              setSelectedDoc(d);
-              setDocModal(true);
-            }}
-            notes={notes}
-            docs={docs}
-          />
-        )}
+        {activeTab === 1 && selectedPO && <Details poData={selectedPO} onDone={() => {}} />}
       </BasePaper>
     </Box>
   );

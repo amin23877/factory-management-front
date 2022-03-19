@@ -1,26 +1,22 @@
 import React, { useMemo, useState } from "react";
 import { Tabs, Tab, Box, makeStyles, useMediaQuery } from "@material-ui/core";
-import { GridColDef, GridColumns } from "@material-ui/data-grid";
+import { GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
 
-import BaseDataGrid from "../../../app/BaseDataGrid";
-import Button from "../../../app/Button";
+import BaseDataGrid from "app/BaseDataGrid";
+import { BasePaper } from "app/Paper";
+import Button from "app/Button";
 
 import EditForm from "./EditForm";
 
-import NoteModal from "../../../common/NoteModal";
-import DocumentModal from "../../../common/DocumentModal";
+import NoteTab from "common/Note/Tab";
+import DocumentTab from "common/Document/Tab";
 
-import { IQuote } from "../../../api/quote";
-import { INote } from "../../../api/note";
-import { IDocument } from "../../../api/document";
-import { ILineItem } from "../../../api/lineItem";
-import { ILineService } from "../../../api/lineService";
-import { formatTimestampToDate } from "../../../logic/date";
-import { fileType } from "../../../logic/fileType";
+import { IQuote } from "api/quote";
+import { ILineItem } from "api/lineItem";
+import { ILineService } from "api/lineService";
 import LineItemModal from "../../LineItem";
 import LineServiceModal from "../../LineService";
-import { BasePaper } from "../../../app/Paper";
 
 const useStyle = makeStyles({
   btn: {
@@ -35,25 +31,15 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
   const classes = useStyle();
   const [activeTab, setActiveTab] = useState(0);
 
-  const [noteModal, setNoteModal] = useState(false);
-  const [documentModal, setDocumentModal] = useState(false);
   const [lineItemModal, setLineItemModal] = useState(false);
   const [lineServiceModal, setLineServiceModal] = useState(false);
 
   const [selectedLI, setSelectedLI] = useState<ILineItem>();
   const [selectedLS, setSelectedLS] = useState<ILineService>();
-  const [selectedNote, setSelectedNote] = useState<INote>();
-  const [selectedDoc, setSelectedDoc] = useState<IDocument>();
 
   const { data: lineItems } = useSWR<{ result: ILineItem[]; total: number }>(
     activeTab === 0 ? `/lineitem?QuoteId=${selectedQuote.id}` : null
   );
-  // const { data: lineServices } = useSWR<ILineService[]>(
-  //     activeTab === 1 ? `/lineservice?QuoteId=${selectedQuote.id}` : null
-  // );
-  const { data: documents } = useSWR<IDocument[]>(activeTab === 2 ? `/document/quote/${selectedQuote.id}` : null);
-  const { data: notes } = useSWR<INote[]>(activeTab === 4 ? `/note/quote/${selectedQuote.id}` : null);
-
   const LICols = useMemo<GridColumns>(
     () => [
       // { field: "index", headerName: "Sort" },
@@ -89,57 +75,6 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
     []
   );
 
-  const noteCols = useMemo<GridColumns>(
-    () => [
-      {
-        field: "date",
-        headerName: "Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-        width: 120,
-      },
-      {
-        field: "creator",
-        headerName: "Creator",
-        width: 180,
-        valueFormatter: (params) => params.row?.EmployeeId?.username,
-      },
-      { field: "subject", headerName: "Subject", width: 300 },
-      { field: "note", headerName: "Note", flex: 1 },
-    ],
-    []
-  );
-
-  const docCols = useMemo<GridColDef[]>(
-    () => [
-      {
-        field: "date",
-        headerName: "Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
-        width: 120,
-      },
-      {
-        field: "creator",
-        headerName: "Creator",
-        width: 120,
-      },
-      { field: "name", headerName: "Name", flex: 1 },
-      {
-        field: "id",
-        headerName: "ID",
-        width: 100,
-        valueFormatter: (params) => params?.row?.no || selectedQuote?.number,
-      },
-      { field: "description", headerName: "Description", flex: 1 },
-      {
-        field: "type",
-        headerName: "File Type",
-        valueFormatter: (params) => fileType(params.row?.path),
-        width: 120,
-      },
-    ],
-    [selectedQuote?.number]
-  );
-
   const quoteHistoryCols = useMemo<GridColumns>(
     () => [
       { field: "startTime", headerName: "Entry Date", width: 150, type: "date" },
@@ -155,20 +90,6 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
 
   return (
     <>
-      <NoteModal
-        itemId={selectedQuote.id}
-        model="quote"
-        open={noteModal}
-        noteData={selectedNote}
-        onClose={() => setNoteModal(false)}
-      />
-      <DocumentModal
-        itemId={selectedQuote.id}
-        model="quote"
-        open={documentModal}
-        docData={selectedDoc}
-        onClose={() => setDocumentModal(false)}
-      />
       <LineItemModal
         record="quote"
         recordId={selectedQuote?.id}
@@ -253,53 +174,11 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
               />
             </>
           )}
-          {activeTab === 2 && (
-            <>
-              <Button
-                onClick={() => {
-                  setSelectedDoc(undefined);
-                  setDocumentModal(true);
-                }}
-                className={classes.btn}
-              >
-                + Add Document
-              </Button>
-              <BaseDataGrid
-                height=" calc(100% - 100px)"
-                cols={docCols}
-                rows={documents || []}
-                onRowSelected={(r) => {
-                  setSelectedDoc(r);
-                  setDocumentModal(true);
-                }}
-              />
-            </>
-          )}
+          {activeTab === 2 && <DocumentTab itemId={selectedQuote.id} model="quote" />}
           {activeTab === 3 && (
             <BaseDataGrid cols={quoteHistoryCols} rows={[]} onRowSelected={() => {}} height=" calc(100% - 57px)" />
           )}
-          {activeTab === 4 && (
-            <>
-              <Button
-                onClick={() => {
-                  setSelectedNote(undefined);
-                  setNoteModal(true);
-                }}
-                className={classes.btn}
-              >
-                + Add Note
-              </Button>
-              <BaseDataGrid
-                cols={noteCols}
-                rows={notes || []}
-                onRowSelected={(r) => {
-                  setSelectedNote(r);
-                  setNoteModal(true);
-                }}
-                height=" calc(100% - 100px)"
-              />
-            </>
-          )}
+          {activeTab === 4 && <NoteTab itemId={selectedQuote.id} model="quote" />}
           {activeTab === 5 && <div>Auditing</div>}
         </BasePaper>
       </Box>

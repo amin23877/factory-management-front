@@ -9,23 +9,20 @@ import useSWR from "swr";
 import { General, UnitInfo, Warranty, BatteryInfo } from "./Forms";
 import UnitWorkFlow, { ProductionWorkFlow } from "../UnitList/WorkFlows";
 
-import Button from "../../../../app/Button";
-import { BasePaper } from "../../../../app/Paper";
-import BaseDataGrid from "../../../../app/BaseDataGrid";
-import Toast from "../../../../app/Toast";
+import Button from "app/Button";
+import { BasePaper } from "app/Paper";
+import BaseDataGrid from "app/BaseDataGrid";
+import Toast from "app/Toast";
 
 import Confirm from "../../../Modals/Confirm";
-import DocumentModal from "../../../../common/DocumentModal";
+import DocumentTab from "common/Document/Tab";
 
-import { formatTimestampToDate } from "../../../../logic/date";
-import { fileType } from "../../../../logic/fileType";
-import { getModifiedValues } from "../../../../logic/utils";
+import { getModifiedValues } from "logic/utils";
 
-// import { addOption, deleteOption, IOption } from "../../../../api/options";
-// import { IUnit, updateUnit } from "../../../../api/units";
-import { deleteOption, IOption } from "../../../../api/options";
-import { IDocument } from "../../../../api/document";
-import { ITicket, updateTicket } from "../../../../api/ticket";
+// import { addOption, deleteOption, IOption } from "api/options";
+// import { IUnit, updateUnit } from "api/units";
+import { deleteOption, IOption } from "api/options";
+import { ITicket, updateTicket } from "api/ticket";
 
 const schema = Yup.object().shape({});
 
@@ -45,10 +42,8 @@ function ServiceDetails({ ticket }: { ticket: ITicket }) {
 
   const [infoActiveTab, setInfoActiveTab] = useState(0);
   const [gridActiveTab, setGridActiveTab] = useState(0);
-  const [addDocModal, setAddDocModal] = useState(false);
   const [selectedOption, setSelectedOption] = useState<IOption>();
   const [confirm, setConfirm] = useState(false);
-  const [addOption, setAddOption] = useState(false);
 
   const handleDeleteOption = async () => {
     try {
@@ -63,7 +58,6 @@ function ServiceDetails({ ticket }: { ticket: ITicket }) {
     }
   };
 
-  const { data: documents } = useSWR<IDocument[]>(gridActiveTab === 1 ? `/document/unit/${ticket.ItemId.id}` : null);
   const { data: unitBoms } = useSWR(`/ubom?UnitId=${ticket.ItemId.id}`);
 
   const bomCols = useMemo<GridColDef[]>(
@@ -88,37 +82,10 @@ function ServiceDetails({ ticket }: { ticket: ITicket }) {
     ],
     []
   );
-  const docCols = useMemo<GridColumns>(
-    () => [
-      {
-        field: "date",
-        headerName: "Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-        width: 120,
-      },
-      {
-        field: "EmployeeId",
-        headerName: "Creator",
-        valueFormatter: (params) => params.row?.employee?.username,
-        width: 120,
-      },
-      { field: "name", headerName: "Name", flex: 1 },
-      { field: "id", headerName: "ID", width: 200 },
-      { field: "description", headerName: "Description", flex: 1 },
-      {
-        field: "type",
-        headerName: "File Type",
-        valueFormatter: (params) => fileType(params.row?.path),
-        width: 120,
-      },
-    ],
-    []
-  );
 
   return (
     <BasePaper>
       <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDeleteOption} />
-      <DocumentModal open={addDocModal} onClose={() => setAddDocModal(false)} itemId={ticket.ItemId.id} model="unit" />
       <Formik initialValues={ticket} validationSchema={schema} onSubmit={handleSubmit}>
         {({ values, errors, handleChange, handleBlur, isSubmitting, setFieldValue, touched }) => (
           <Form>
@@ -161,7 +128,7 @@ function ServiceDetails({ ticket }: { ticket: ITicket }) {
                 )}
                 {infoActiveTab === 1 && (
                   <>
-                    <Button kind="add" onClick={() => setAddOption(true)}>
+                    <Button kind="add" onClick={() => {}}>
                       add Option
                     </Button>
                     <Button
@@ -213,24 +180,7 @@ function ServiceDetails({ ticket }: { ticket: ITicket }) {
           <Tab label="Forms" />
           <Tab label="Time logs" />
         </Tabs>
-        {gridActiveTab === 0 && (
-          <>
-            <Button
-              onClick={() => {
-                setAddDocModal(true);
-              }}
-              variant="outlined"
-            >
-              + Add Document
-            </Button>
-            <BaseDataGrid
-              height={250}
-              cols={docCols}
-              rows={documents && documents.length ? documents : []}
-              onRowSelected={(v) => {}}
-            />
-          </>
-        )}
+        {gridActiveTab === 0 && <DocumentTab itemId={ticket.id} model="ticket" />}
         {gridActiveTab === 1 && (
           <BaseDataGrid
             cols={bomCols}

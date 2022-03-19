@@ -13,8 +13,8 @@ import PricingTab from "./Pricing";
 import ManualCountModal from "./ManualCountModal";
 import UpdateQuantityModal from "./Quantity";
 
-import NoteModal from "common/NoteModal";
-import DocumentModal from "common/DocumentModal";
+import NotesTab from "common/Note/Tab";
+import DocumentTab from "common/Document/Tab";
 import { VendorModal } from "../Modals/AddVendor";
 // import BOMModal from "../BOM/BomModal";
 import Parts from "../BOM/Parts";
@@ -29,7 +29,6 @@ import { getModifiedValues } from "logic/utils";
 import ItemBomTable from "../BOM/ItemBomTable";
 
 import QRCode from "app/QRCode";
-import { DocumentsDataGrid, NotesDataGrid } from "common/DataGrids";
 import Confirm from "common/Confirm";
 import Toast from "app/Toast";
 
@@ -42,14 +41,10 @@ const style = {
 
 function ItemsDetails({
   selectedRow,
-  onNoteSelected,
-  onDocSelected,
   setIndexActiveTab,
   setSelectedItem,
 }: {
   selectedRow: IItem;
-  onNoteSelected: (a: any) => void;
-  onDocSelected: (a: any) => void;
   setIndexActiveTab: (t: number) => void;
   setSelectedItem: (item: any) => void;
 }) {
@@ -90,8 +85,6 @@ function ItemsDetails({
 
   const [manualCountModal, setManualCountModal] = useState(false);
   const [quantityModal, setQuantityModal] = useState(false);
-  const [addNoteModal, setAddNoteModal] = useState(false);
-  const [addDocModal, setAddDocModal] = useState(false);
   const [addVendorModal, setAddVendorModal] = useState(false);
   const [bomPartsModal, setBomPartsModal] = useState(false);
   const [selectedBom] = useState<IBom>();
@@ -244,18 +237,6 @@ function ItemsDetails({
 
   return (
     <>
-      <NoteModal
-        itemId={selectedRow.id as any}
-        model="item"
-        open={addNoteModal}
-        onClose={() => setAddNoteModal(false)}
-      />
-      <DocumentModal
-        open={addDocModal}
-        onClose={() => setAddDocModal(false)}
-        itemId={selectedRow.id as any}
-        model="item"
-      />
       <VendorModal open={addVendorModal} onClose={() => setAddVendorModal(false)} itemId={selectedRow.id as any} />
       {selectedBom && <Parts open={bomPartsModal} onClose={() => setBomPartsModal(false)} bom={selectedBom} />}
       <ManualCountModal open={manualCountModal} onClose={() => setManualCountModal(false)} itemId={selectedRow.id} />
@@ -462,19 +443,7 @@ function ItemsDetails({
                   <Tab label="Note" />
                   <Tab label="Auditing" />
                 </Tabs>
-                {activeTab === 0 && (
-                  <>
-                    <Button
-                      onClick={() => {
-                        setAddDocModal(true);
-                      }}
-                      style={style}
-                    >
-                      + Add Document
-                    </Button>
-                    <DocumentsDataGrid model="item" recordId={selectedRow.id} onDocumentSelected={onDocSelected} />
-                  </>
-                )}
+                {activeTab === 0 && <DocumentTab itemId={selectedRow.id} model="item" />}
                 {activeTab === 1 && (
                   <div style={{ maxWidth: "79vw", overflow: "auto" }}>
                     <Button
@@ -510,20 +479,8 @@ function ItemsDetails({
                     height={"calc(100% - 60px)"}
                   />
                 )} */}
-                {activeTab === 5 && (
-                  <>
-                    <Button
-                      onClick={() => {
-                        setAddNoteModal(true);
-                      }}
-                      style={style}
-                    >
-                      + Add Note
-                    </Button>
-                    <NotesDataGrid model="item" recordId={selectedRow.id} onNoteSelected={onNoteSelected} />
-                  </>
-                )}
-                {activeTab === 6 && <div>Auditing</div>}
+                {activeTab === 6 && <NotesTab itemId={selectedRow.id} model="item" />}
+                {activeTab === 7 && <div>Auditing</div>}
               </BasePaper>
             </Box>
           </Form>

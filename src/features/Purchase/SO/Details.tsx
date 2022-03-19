@@ -6,32 +6,26 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { GridColDef } from "@material-ui/data-grid";
 
-import BaseDataGrid from "../../../app/BaseDataGrid";
+import BaseDataGrid from "app/BaseDataGrid";
 
-import { updatePurchaseSO, IPurchaseSO } from "../../../api/purchaseSO";
-import { BasePaper } from "../../../app/Paper";
-import Button from "../../../app/Button";
+import { updatePurchaseSO, IPurchaseSO } from "api/purchaseSO";
+import { BasePaper } from "app/Paper";
+import Button from "app/Button";
 import EditForm from "./Forms";
-import Snack from "../../../app/Snack";
-import { DocumentsDataGrid, NotesDataGrid } from "common/DataGrids";
+import Snack from "app/Snack";
+
+import DocumentTab from "common/Document/Tab";
+import NoteTab from "common/Note/Tab";
 
 export default function Details({
   initialValues,
   onDone,
   lines,
-  notes,
-  docs,
-  onNoteSelected,
-  onDocumentSelected,
   onLineSelected,
 }: {
   initialValues: IPurchaseSO;
   onDone: () => void;
   lines: any[];
-  notes: any;
-  docs: any;
-  onNoteSelected: (d: any) => void;
-  onDocumentSelected: (d: any) => void;
   onLineSelected: (v: any) => void;
 }) {
   const [activeTab, setActiveTab] = useState(0);
@@ -97,12 +91,8 @@ export default function Details({
         {activeTab === 0 && (
           <BaseDataGrid rows={lines} cols={lineCols} onRowSelected={(d) => onLineSelected(d)} height={300} />
         )}
-        {activeTab === 1 && (
-          <NotesDataGrid model="so" recordId={initialValues.id || ""} onNoteSelected={onNoteSelected} />
-        )}
-        {activeTab === 2 && (
-          <DocumentsDataGrid model="so" recordId={initialValues.id || ""} onDocumentSelected={onDocumentSelected} />
-        )}
+        {activeTab === 1 && <NoteTab itemId={initialValues.id} model="purchaseSo" />}
+        {activeTab === 2 && <DocumentTab itemId={initialValues.id} model="purchaseSo" />}
       </BasePaper>
     </Box>
   );

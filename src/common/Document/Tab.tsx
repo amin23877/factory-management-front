@@ -1,64 +1,55 @@
 import React, { useState } from "react";
 import { Box } from "@material-ui/core";
-import { GridColumns } from "@material-ui/data-grid";
 import { AddRounded } from "@material-ui/icons";
+import { GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
 
 import Button from "app/Button";
 import BaseDataGrid from "app/BaseDataGrid";
-import DocumentModal from "./DocumentModal";
 
 import { formatTimestampToDate } from "logic/date";
+import { INote } from "api/note";
+import DocumentModal from "./Modal";
 import { fileType } from "logic/fileType";
 
 const columns: GridColumns = [
   {
     field: "date",
     headerName: "Date",
-    valueFormatter: ({ row }) => formatTimestampToDate(row?.createdAt),
+    valueFormatter: (params) => formatTimestampToDate(params.row?.date),
     width: 120,
   },
   {
-    field: "creator",
+    field: "EmployeeId",
     headerName: "Creator",
+    valueFormatter: (params) => params.row?.employee?.username,
     width: 120,
   },
   { field: "name", headerName: "Name", flex: 1 },
-  {
-    field: "id",
-    headerName: "ID",
-    width: 100,
-    valueFormatter: ({ row }) => row?.no,
-  },
+  { field: "number", headerName: "Number", width: 200 },
   { field: "description", headerName: "Description", flex: 1 },
   {
     field: "type",
     headerName: "File Type",
-    valueFormatter: ({ row }) => fileType(row?.path),
+    valueFormatter: (params) => fileType(params.row?.path),
     width: 120,
   },
 ];
 
 export default function DocumentTab({ itemId, model }: { model: string; itemId: string }) {
   const { data } = useSWR(`/document/${model}/${itemId}`);
-  const [modal, setModal] = useState(false);
-  const [selectedDocument, setSelectedDocument] = useState();
+  const [addModal, setAddModal] = useState(false);
+  const [selected, setSelected] = useState<INote>();
 
   return (
     <>
-      <DocumentModal
-        open={modal}
-        onClose={() => setModal(false)}
-        model={model}
-        itemId={itemId}
-        docData={selectedDocument}
-      />
+      <DocumentModal open={addModal} onClose={() => setAddModal(false)} model={model} itemId={itemId} data={selected} />
       <Box>
         <Button
           variant="outlined"
           startIcon={<AddRounded />}
-          style={{ margin: "0.5em 0" }}
-          onClick={() => setModal(true)}
+          style={{ margin: "4px 0" }}
+          onClick={() => setAddModal(true)}
         >
           Add
         </Button>
@@ -66,8 +57,8 @@ export default function DocumentTab({ itemId, model }: { model: string; itemId: 
           cols={columns}
           rows={data || []}
           onRowSelected={(r) => {
-            setSelectedDocument(r);
-            setModal(true);
+            setSelected(r);
+            setAddModal(true);
           }}
         />
       </Box>

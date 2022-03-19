@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Grid, Tab, Tabs } from "@material-ui/core";
 
-import ContactTab from "common/ContactTab";
-import NoteTab from "common/NoteTab";
-import DocumentTab from "common/DocumentTab";
+import ContactTab from "common/Contact/Tab";
+import NoteTab from "common/Note/Tab";
+import DocumentTab from "common/Document/Tab";
+
 import Form from "./Form";
 import { BasePaper } from "app/Paper";
 

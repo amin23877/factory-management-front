@@ -20,7 +20,7 @@ interface INoteModal {
   onClose: () => void;
   model: string;
   itemId: string;
-  noteData?: INote;
+  data?: INote;
   onDone?: () => void;
 }
 
@@ -28,11 +28,11 @@ const mutateNotes = (type: string, id: string) => {
   return mutate(`/note/${type}/${id}`);
 };
 
-export default function NoteModal({ open, onClose, model, itemId, noteData, onDone }: INoteModal) {
+export default function NoteModal({ open, onClose, model, itemId, data, onDone }: INoteModal) {
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     try {
-      if (noteData && noteData?.id) {
-        await updateAModelNote(noteData?.id, values);
+      if (data && data?.id) {
+        await updateAModelNote(data?.id, values);
 
         onDone && onDone();
         mutateNotes(model, itemId);
@@ -53,8 +53,8 @@ export default function NoteModal({ open, onClose, model, itemId, noteData, onDo
 
   const handleDelete = async () => {
     try {
-      if (noteData && noteData.id) {
-        await deleteAModelNote(noteData.id);
+      if (data && data.id) {
+        await deleteAModelNote(data.id);
 
         onDone && onDone();
         mutateNotes(model, itemId);
@@ -66,10 +66,10 @@ export default function NoteModal({ open, onClose, model, itemId, noteData, onDo
   };
 
   return (
-    <Dialog open={open} onClose={onClose} title={`${noteData?.id ? "Edit" : "Add"} a note to ${model}`}>
+    <Dialog open={open} onClose={onClose} title={`${data?.id ? "Edit" : "Add"} a note to ${model}`}>
       <Box m={3}>
         <Formik
-          initialValues={noteData ? noteData : ({} as INote)}
+          initialValues={data ? data : ({} as INote)}
           validationSchema={AddModelNoteSchema}
           onSubmit={handleSubmit}
         >
@@ -108,10 +108,10 @@ export default function NoteModal({ open, onClose, model, itemId, noteData, onDo
                 />
               </Box>
               <Box my={2} textAlign="center" display="flex" alignItems="center">
-                <Button type="submit" style={{ flex: 1 }} disabled={isSubmitting} kind={noteData ? "edit" : "add"}>
+                <Button type="submit" style={{ flex: 1 }} disabled={isSubmitting} kind={data ? "edit" : "add"}>
                   Save
                 </Button>
-                {noteData && (
+                {data && (
                   <Button kind="delete" style={{ margin: "0 1em" }} onClick={handleDelete}>
                     Delete
                   </Button>

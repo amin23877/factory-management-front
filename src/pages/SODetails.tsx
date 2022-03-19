@@ -4,8 +4,8 @@ import { GridColumns } from "@material-ui/data-grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import useSWR from "swr";
+import { useParams } from "react-router";
 
-import Button from "../app/Button";
 import BaseDataGrid from "../app/BaseDataGrid";
 import { BasePaper } from "../app/Paper";
 
@@ -13,90 +13,23 @@ import EditForm from "../features/Sales/SO/EditForm";
 
 import { ISO } from "../api/so";
 import { formatTimestampToDate } from "../logic/date";
-import { fileType } from "../logic/fileType";
 
-import NoteModal from "../common/NoteModal";
-import DocumentModal from "../common/DocumentModal";
-import { useParams } from "react-router";
-
-const style = {
-  border: "1px solid gray ",
-  borderRadius: "4px",
-  padding: "5px 10px",
-  margin: "3px 0px 10px 5px ",
-};
+import NoteTab from "common/Note/Tab";
+import DocumentTab from "common/Document/Tab";
 
 export default function EditTab({
-  // selectedSo,
   onLineItemSelected,
   onLineServiceSelected,
-  onNoteSelected,
-  onDocSelected,
 }: {
-  // selectedSo: ISO;
   onLineItemSelected: (a: any) => void;
   onLineServiceSelected: (a: any) => void;
-  onNoteSelected: (a: any) => void;
-  onDocSelected: (a: any) => void;
 }) {
   const { soNumber } = useParams<{ soNumber: string }>();
   const { data: selectedSo } = useSWR<ISO>(soNumber ? `/so/${soNumber}` : null);
 
-  const { data: notes } = useSWR(selectedSo && selectedSo.id ? `/note/so/${selectedSo.id}` : null);
-  const { data: documents } = useSWR(selectedSo && selectedSo.id ? `/document/so/${selectedSo.id}` : null);
   const { data: lineItems } = useSWR(selectedSo && selectedSo.id ? `/lineitem?SOId=${selectedSo.id}` : null);
-  // const { data: lineServices } = useSWR(selectedSo && selectedSo.id ? `/lineservice?SOId=${selectedSo.id}` : null);
 
   const [activeTab, setActiveTab] = useState(0);
-  const [addNote, setAddNote] = useState(false);
-  const [addDoc, setAddDoc] = useState(false);
-
-  const noteCols = useMemo<GridColumns>(
-    () => [
-      {
-        field: "date",
-        headerName: "Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-        width: 120,
-      },
-      {
-        field: "creator",
-        headerName: "Creator",
-        width: 180,
-        valueFormatter: (params) => params.row?.EmployeeId?.username,
-      },
-      { field: "subject", headerName: "Subject", width: 300 },
-      { field: "note", headerName: "Note", flex: 1 },
-    ],
-    []
-  );
-
-  const docCols = useMemo<GridColumns>(
-    () => [
-      {
-        field: "date",
-        headerName: "Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-        width: 120,
-      },
-      {
-        field: "EmployeeId",
-        headerName: "Creator",
-        valueFormatter: (params) => params.row?.employee?.username,
-        width: 120,
-      },
-      { field: "name", headerName: "Name", flex: 1 },
-      { field: "id", headerName: "ID", width: 200 },
-      { field: "description", headerName: "Description", flex: 1 },
-      {
-        field: "type",
-        headerName: "File Type",
-        valueFormatter: (params) => fileType(params.row?.path),
-        width: 120,
-      },
-    ],
-    []
-  );
 
   const LICols = useMemo<GridColumns>(
     () => [
@@ -190,79 +123,43 @@ export default function EditTab({
     return <LinearProgress />;
   }
   return (
-    <>
-      {selectedSo && selectedSo.id && (
-        <NoteModal open={addNote} onClose={() => setAddNote(false)} itemId={selectedSo.id} model="so" />
-      )}
-      {selectedSo && selectedSo.id && (
-        <DocumentModal open={addDoc} onClose={() => setAddDoc(false)} itemId={selectedSo.id} model="so" />
-      )}
-      <Box pb="8px" display="flex" style={{ gap: 10 }}>
-        <Box flex={3}>
-          <EditForm selectedSo={selectedSo} />
-        </Box>
-        <Box flex={4}>
-          <Tabs
-            style={{ margin: "1em 0" }}
-            textColor="primary"
-            value={activeTab}
-            onChange={(e, nv) => setActiveTab(nv)}
-            variant="scrollable"
-          >
-            <Tab label="Line Items" />
-            <Tab label="Units" />
-            <Tab label="Documents" />
-            <Tab label="Activities" />
-            <Tab label="Shipment" />
-            <Tab label="Field Services" />
-            <Tab label="Notes" />
-            <Tab label="Auditing" />
-          </Tabs>
-          <BasePaper style={{ height: "85%" }}>
-            {activeTab === 0 && (
-              <BaseDataGrid cols={LICols} rows={lineItems || []} onRowSelected={onLineItemSelected} height="100%" />
-            )}
-            {activeTab === 1 && (
-              <BaseDataGrid cols={unitCols} rows={lineItems || []} onRowSelected={onLineItemSelected} height="100%" />
-            )}
-            {activeTab === 2 && (
-              <>
-                <Button
-                  onClick={() => {
-                    setAddDoc(true);
-                  }}
-                  style={style}
-                >
-                  + Add Document
-                </Button>
-                <BaseDataGrid cols={docCols} rows={documents || []} onRowSelected={onDocSelected} height="90%" />
-              </>
-            )}
-            {activeTab === 3 && (
-              <BaseDataGrid cols={activityCols} rows={documents || []} onRowSelected={() => {}} height="100%" />
-            )}
-            {activeTab === 4 && (
-              <BaseDataGrid cols={shipCols} rows={documents || []} onRowSelected={() => {}} height="100%" />
-            )}
-            {activeTab === 5 && (
-              <BaseDataGrid cols={FSCols} rows={[]} onRowSelected={onLineServiceSelected} height="100%" />
-            )}
-            {activeTab === 6 && (
-              <>
-                <Button
-                  onClick={() => {
-                    setAddNote(true);
-                  }}
-                  style={style}
-                >
-                  + Add Note
-                </Button>
-                <BaseDataGrid cols={noteCols} rows={notes || []} onRowSelected={onNoteSelected} height="90%" />
-              </>
-            )}
-          </BasePaper>
-        </Box>
+    <Box pb="8px" display="flex" style={{ gap: 10 }}>
+      <Box flex={3}>
+        <EditForm selectedSo={selectedSo} />
       </Box>
-    </>
+      <Box flex={4}>
+        <Tabs
+          style={{ margin: "1em 0" }}
+          textColor="primary"
+          value={activeTab}
+          onChange={(e, nv) => setActiveTab(nv)}
+          variant="scrollable"
+        >
+          <Tab label="Line Items" />
+          <Tab label="Units" />
+          <Tab label="Documents" />
+          <Tab label="Activities" />
+          <Tab label="Shipment" />
+          <Tab label="Field Services" />
+          <Tab label="Notes" />
+          <Tab label="Auditing" />
+        </Tabs>
+        <BasePaper style={{ height: "85%" }}>
+          {activeTab === 0 && (
+            <BaseDataGrid cols={LICols} rows={lineItems || []} onRowSelected={onLineItemSelected} height="100%" />
+          )}
+          {activeTab === 1 && (
+            <BaseDataGrid cols={unitCols} rows={lineItems || []} onRowSelected={onLineItemSelected} height="100%" />
+          )}
+          {activeTab === 2 && <DocumentTab itemId={selectedSo.id} model="so" />}
+          {activeTab === 3 && <BaseDataGrid cols={activityCols} rows={[]} onRowSelected={() => {}} height="100%" />}
+          {activeTab === 4 && <BaseDataGrid cols={shipCols} rows={[]} onRowSelected={() => {}} height="100%" />}
+          {activeTab === 5 && (
+            <BaseDataGrid cols={FSCols} rows={[]} onRowSelected={onLineServiceSelected} height="100%" />
+          )}
+          {activeTab === 6 && <NoteTab itemId={selectedSo.id} model="so" />}
+        </BasePaper>
+      </Box>
+    </Box>
   );
 }

@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import { Box } from "@material-ui/core";
-import { GridColumns } from "@material-ui/data-grid";
 import { AddRounded } from "@material-ui/icons";
+import { GridColumns } from "@material-ui/data-grid";
+import useSWR from "swr";
 
-import NoteModal from "./NoteModal";
 import Button from "app/Button";
 import BaseDataGrid from "app/BaseDataGrid";
 
 import { formatTimestampToDate } from "logic/date";
-import useSWR from "swr";
+import { INote } from "api/note";
+import NoteModal from "./Modal";
 
 const columns: GridColumns = [
   {
@@ -29,18 +30,18 @@ const columns: GridColumns = [
 
 export default function NoteTab({ itemId, model }: { model: string; itemId: string }) {
   const { data } = useSWR(`/note/${model}/${itemId}`);
-  const [modal, setModal] = useState(false);
-  const [selectedNote, setSelectedNote] = useState();
+  const [addModal, setAddModal] = useState(false);
+  const [selected, setSelected] = useState<INote>();
 
   return (
     <>
-      <NoteModal open={modal} onClose={() => setModal(false)} model={model} itemId={itemId} noteData={selectedNote} />
+      <NoteModal open={addModal} onClose={() => setAddModal(false)} model={model} itemId={itemId} data={selected} />
       <Box>
         <Button
           variant="outlined"
           startIcon={<AddRounded />}
-          style={{ margin: "0.5em 0" }}
-          onClick={() => setModal(true)}
+          style={{ margin: "4px 0" }}
+          onClick={() => setAddModal(true)}
         >
           Add
         </Button>
@@ -48,8 +49,8 @@ export default function NoteTab({ itemId, model }: { model: string; itemId: stri
           cols={columns}
           rows={data || []}
           onRowSelected={(r) => {
-            setSelectedNote(r);
-            setModal(true);
+            setSelected(r);
+            setAddModal(true);
           }}
         />
       </Box>

@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { Tabs, Tab, Box, makeStyles, LinearProgress } from "@material-ui/core";
-import { GridColDef, GridColumns } from "@material-ui/data-grid";
+import { GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
 
 import BaseDataGrid from "../app/BaseDataGrid";
@@ -9,16 +9,12 @@ import { useParams } from "react-router-dom";
 
 import EditForm from "../features/Sales/Quote/EditForm";
 
-import NoteModal from "../common/NoteModal";
-import DocumentModal from "../common/DocumentModal";
+import NoteTab from "common/Note/Tab";
+import DocumentTab from "common/Document/Tab";
 
 import { IQuote } from "../api/quote";
-import { INote } from "../api/note";
-import { IDocument } from "../api/document";
 import { ILineItem } from "../api/lineItem";
 import { ILineService } from "../api/lineService";
-import { formatTimestampToDate } from "../logic/date";
-import { fileType } from "../logic/fileType";
 import LineItemModal from "../features/LineItem";
 import LineServiceModal from "../features/LineService";
 
@@ -38,15 +34,11 @@ export default function EditTab() {
   const classes = useStyle();
   const [activeTab, setActiveTab] = useState(0);
 
-  const [noteModal, setNoteModal] = useState(false);
-  const [documentModal, setDocumentModal] = useState(false);
   const [lineItemModal, setLineItemModal] = useState(false);
   const [lineServiceModal, setLineServiceModal] = useState(false);
 
   const [selectedLI, setSelectedLI] = useState<ILineItem>();
   const [selectedLS, setSelectedLS] = useState<ILineService>();
-  const [selectedNote, setSelectedNote] = useState<INote>();
-  const [selectedDoc, setSelectedDoc] = useState<IDocument>();
 
   const { data: lineItems } = useSWR<ILineItem[]>(
     activeTab === 0 && selectedQuote ? `/lineitem?QuoteId=${selectedQuote.id}` : null
@@ -54,11 +46,6 @@ export default function EditTab() {
   const { data: lineServices } = useSWR<ILineService[]>(
     activeTab === 1 && selectedQuote ? `/lineservice?QuoteId=${selectedQuote.id}` : null
   );
-  const { data: documents } = useSWR<IDocument[]>(
-    activeTab === 2 && selectedQuote ? `/document/quote/${selectedQuote.id}` : null
-  );
-  const { data: notes } = useSWR<INote[]>(activeTab === 4 && selectedQuote ? `/note/quote/${selectedQuote.id}` : null);
-
   const LICols = useMemo<GridColumns>(
     () => [
       { field: "index", headerName: "Sort" },
@@ -83,53 +70,6 @@ export default function EditTab() {
     []
   );
 
-  const noteCols = useMemo<GridColumns>(
-    () => [
-      {
-        field: "date",
-        headerName: "Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-        width: 120,
-      },
-      {
-        field: "creator",
-        headerName: "Creator",
-        width: 180,
-        valueFormatter: (params) => params.row?.EmployeeId?.username,
-      },
-      { field: "subject", headerName: "Subject", width: 300 },
-      { field: "note", headerName: "Note", flex: 1 },
-    ],
-    []
-  );
-
-  const docCols = useMemo<GridColDef[]>(
-    () => [
-      {
-        field: "date",
-        headerName: "Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
-        width: 120,
-      },
-      {
-        field: "EmployeeId",
-        headerName: "Creator",
-        valueFormatter: (params) => params.row?.employee?.username,
-        width: 120,
-      },
-      { field: "name", headerName: "Name", flex: 1 },
-      { field: "id", headerName: "ID", width: 200 },
-      { field: "description", headerName: "Description", flex: 1 },
-      {
-        field: "type",
-        headerName: "File Type",
-        valueFormatter: (params) => fileType(params.row?.path),
-        width: 120,
-      },
-    ],
-    []
-  );
-
   const quoteHistoryCols = useMemo<GridColumns>(
     () => [
       { field: "startTime", headerName: "Entry Date", width: 150, type: "date" },
@@ -146,20 +86,6 @@ export default function EditTab() {
   }
   return (
     <Box>
-      <NoteModal
-        itemId={selectedQuote.id}
-        model="quote"
-        open={noteModal}
-        noteData={selectedNote}
-        onClose={() => setNoteModal(false)}
-      />
-      <DocumentModal
-        itemId={selectedQuote.id}
-        model="quote"
-        open={documentModal}
-        docData={selectedDoc}
-        onClose={() => setDocumentModal(false)}
-      />
       <LineItemModal
         record="quote"
         recordId={selectedQuote?.id}
@@ -231,51 +157,9 @@ export default function EditTab() {
             />
           </>
         )}
-        {activeTab === 2 && (
-          <>
-            <Button
-              onClick={() => {
-                setSelectedDoc(undefined);
-                setDocumentModal(true);
-              }}
-              className={classes.btn}
-            >
-              + Add Document
-            </Button>
-            <BaseDataGrid
-              cols={docCols}
-              rows={documents || []}
-              onRowSelected={(r) => {
-                setSelectedDoc(r);
-                setDocumentModal(true);
-              }}
-              height={300}
-            />
-          </>
-        )}
+        {activeTab === 2 && <DocumentTab itemId={selectedQuote.id} model="quote" />}
         {activeTab === 3 && <BaseDataGrid cols={quoteHistoryCols} rows={[]} onRowSelected={() => {}} height={300} />}
-        {activeTab === 4 && (
-          <>
-            <Button
-              onClick={() => {
-                setSelectedNote(undefined);
-                setNoteModal(true);
-              }}
-              className={classes.btn}
-            >
-              + Add Note
-            </Button>
-            <BaseDataGrid
-              cols={noteCols}
-              rows={notes || []}
-              onRowSelected={(r) => {
-                setSelectedNote(r);
-                setNoteModal(true);
-              }}
-              height={300}
-            />
-          </>
-        )}
+        {activeTab === 4 && <NoteTab itemId={selectedQuote.id} model="quote" />}
         {activeTab === 5 && <div>Auditing</div>}
       </Box>
     </Box>
