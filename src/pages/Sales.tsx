@@ -1,19 +1,20 @@
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import { Box, Portal, Popover } from "@material-ui/core";
 import { KeyboardArrowDownRounded, KeyboardArrowUpRounded } from "@material-ui/icons";
 
 import { MyTabs, MyTab } from "app/Tabs";
-
-import QuotePanel from "features/Sales/Quote";
-import SalesOrderPanel from "features/Sales/SO";
-import PurchaseOrderPanel from "features/Sales/PO";
-import DevicesPanel from "features/Engineering/Devices";
-import Dashboard from "features/Sales/Dashboard";
-import Calls from "features/Sales/Call";
-import Clients from "features/Sales/Customer";
-import Reps from "features/Sales/Rep";
+import MyBackdrop from "app/Backdrop";
 
 import { usePortal } from "logic/PortalContext";
+
+const QuotePanel = React.lazy(() => import("features/Sales/Quote"));
+const SalesOrderPanel = React.lazy(() => import("features/Sales/SO"));
+const PurchaseOrderPanel = React.lazy(() => import("features/Sales/PO"));
+const DevicesPanel = React.lazy(() => import("features/Engineering/Devices"));
+const Dashboard = React.lazy(() => import("features/Sales/Dashboard"));
+const Calls = React.lazy(() => import("features/Sales/Call"));
+const Clients = React.lazy(() => import("features/Sales/Customer"));
+const Reps = React.lazy(() => import("features/Sales/Rep"));
 
 export default function Sales() {
   const [activeTab, setActiveTab] = useState(6);
@@ -85,14 +86,16 @@ export default function Sales() {
       </Portal>
       <Box display="flex">
         <Box flex={1}>
-          {activeTab === 0 && <Calls />}
-          {activeTab === 1 && <Dashboard />}
-          {activeTab === 2 && <DevicesPanel sales={true} />}
-          {activeTab === 3 && <QuotePanel />}
-          {activeTab === 4 && <PurchaseOrderPanel />}
-          {activeTab === 5 && <SalesOrderPanel />}
-          {activeTab === 6 && <Clients />}
-          {activeTab === 7 && <Reps />}
+          <Suspense fallback={<MyBackdrop />}>
+            {activeTab === 0 && <Calls />}
+            {activeTab === 1 && <Dashboard />}
+            {activeTab === 2 && <DevicesPanel sales={true} />}
+            {activeTab === 3 && <QuotePanel />}
+            {activeTab === 4 && <PurchaseOrderPanel />}
+            {activeTab === 5 && <SalesOrderPanel />}
+            {activeTab === 6 && <Clients />}
+            {activeTab === 7 && <Reps />}
+          </Suspense>
         </Box>
       </Box>
     </>

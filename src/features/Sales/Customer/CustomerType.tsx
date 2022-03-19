@@ -1,16 +1,13 @@
 import React, { useState } from "react";
-import { Box, IconButton, List, ListItem, ListItemSecondaryAction, ListItemText } from "@material-ui/core";
-import { DeleteRounded, EditRounded } from "@material-ui/icons";
+import { Box } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import useSWR from "swr";
 
-import Dialog from "../../../app/Dialog";
-import TextField from "../../../app/TextField";
-import Button from "../../../app/Button";
-import Toast from "../../../app/Toast";
+import Dialog from "app/Dialog";
+import Toast from "app/Toast";
 
-import { ICustomerType, addCustomerType, deleteCustomerType, editCustomerType } from "../../../api/customerType";
+import { ICustomerType, addCustomerType, deleteCustomerType, editCustomerType } from "api/customerType";
 import Confirm from "../../Modals/Confirm";
 
 const schema = Yup.object().shape({

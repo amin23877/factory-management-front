@@ -42,12 +42,6 @@ const columns = [
     header: "Product Line",
   },
   {
-    name: "supportStaff",
-    minWidth: 120,
-    header: "Support Staff",
-    render: ({ data }: any) => data?.supportStaff?.username,
-  },
-  {
     name: "contact",
     header: "Main Contact",
     minWidth: 130,

@@ -15,7 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./styles/main.css";
 import BaseRouter from "./Router";
 
-// Delete this after useing baseurl somewhere
+// Delete this after using baseurl somewhere
 import * as config from "./api/config";
 import { get } from "./api";
 console.log(config.BaseUrl);

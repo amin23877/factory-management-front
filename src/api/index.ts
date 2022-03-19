@@ -5,12 +5,8 @@ import { toast } from "react-toastify";
 export const StorageKey = "phocus_session";
 
 export const getToken = () => {
-  const emp = localStorage.getItem(StorageKey);
-  if (emp) {
-    return emp;
-  } else {
-    return null;
-  }
+  const token = localStorage.getItem(StorageKey);
+  return token || null;
 };
 
 export const fetcher = async (url: string) => {
