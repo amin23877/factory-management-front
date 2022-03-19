@@ -53,33 +53,6 @@ export default function Customers() {
       <AddCustomerModal open={addCustomerModal} onClose={() => setAddCustomerModal(false)} />
       <CustomerTypeModal open={cTypeModal} onClose={() => setCTypeModal(false)} />
 
-      <Box display="flex" alignItems="center" mb={1}>
-        {activeTab !== 3 && (
-          <>
-            <Button
-              onClick={() => setAddCustomerModal(true)}
-              style={{
-                backgroundColor: "#1a73e8",
-                color: "#fff",
-                margin: "0 0.5em",
-                padding: " 6px 15px",
-                boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-              }}
-            >
-              <AddRounded />
-              Add Client
-            </Button>
-            <Button kind="add" onClick={() => setCTypeModal(true)} style={{ margin: "0 0.5em" }}>
-              Add Type
-            </Button>
-          </>
-        )}
-        {selectedRow && activeTab === 3 && (
-          <Button onClick={() => setConf(true)} kind="delete">
-            Delete Client
-          </Button>
-        )}
-      </Box>
       <Grid container style={{ marginRight: "1px" }}>
         <Grid item xs={12}>
           <BasePaper>
@@ -145,6 +118,33 @@ export default function Customers() {
                 />
               </Tabs>
               <div style={{ flex: 1 }}></div>
+              <Box display="flex" alignItems="center" mb={1}>
+                {activeTab !== 3 && (
+                  <>
+                    <Button
+                      onClick={() => setAddCustomerModal(true)}
+                      style={{
+                        backgroundColor: "#1a73e8",
+                        color: "#fff",
+                        margin: "0 0.5em",
+                        padding: " 6px 15px",
+                        boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+                      }}
+                    >
+                      <AddRounded />
+                      Add Client
+                    </Button>
+                    <Button kind="add" onClick={() => setCTypeModal(true)} style={{ margin: "0 0.5em" }}>
+                      Add Type
+                    </Button>
+                  </>
+                )}
+                {selectedRow && activeTab === 3 && (
+                  <Button onClick={() => setConf(true)} kind="delete">
+                    Delete Client
+                  </Button>
+                )}
+              </Box>
             </Box>
             {activeTab === 0 && (
               <CustomerDataGrid

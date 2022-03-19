@@ -31,6 +31,7 @@ const sessionSlice = createSlice({
       localStorage.removeItem(StorageKey);
       state.status = "Unauthorized";
       state.session = null;
+      window.location.reload();
     },
     setFirebaseToken(state, action) {
       state.firebaseToken = action.payload;

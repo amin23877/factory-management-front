@@ -1,6 +1,5 @@
-import React, { MutableRefObject, useRef, useState } from "react";
+import React, { MutableRefObject, useState } from "react";
 import {
-  LinearProgress,
   Typography,
   Box,
   FormControl,
@@ -19,12 +18,10 @@ import LinkSelect from "app/Inputs/LinkFields";
 
 import { getItems } from "api/items";
 import { getTickets } from "api/ticket";
-import { createAModelDocument } from "api/document";
 import { IQuoteComplete } from "api/quote";
-// import { getContacts } from "api/contact";
 import { getClients, IClient } from "api/client";
 import { getSO } from "api/so";
-import { exportPdf } from "logic/pdf";
+
 import QuotePDF from "PDFTemplates/Quote";
 
 export const DocumentForm = ({

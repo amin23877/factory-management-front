@@ -12,7 +12,7 @@ export default function ItemComboBox({
   onChange,
 }: {
   value?: IItem | string;
-  onChange: (newValue: IItem | null) => void;
+  onChange?: (newValue: IItem | null) => void;
 }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState<string | null>(null);
@@ -51,13 +51,13 @@ export default function ItemComboBox({
       onClose={() => {
         setOpen(false);
       }}
-      getOptionSelected={(option, value) => option.id === (value?.id || "")}
+      getOptionSelected={(option, value) => option.id === (value?.id || value || "")}
       getOptionLabel={(option) => option.no || option.name || "No-Number"}
       options={options || []}
       loading={loading}
       defaultValue={getValue()}
       value={getValue()}
-      onChange={(e, nv) => onChange(nv)}
+      onChange={(e, nv) => onChange && onChange(nv)}
       onInputChange={(e, v) => setQuery(v)}
       renderInput={(params) => (
         <TextField
