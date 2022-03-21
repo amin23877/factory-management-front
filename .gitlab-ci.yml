@@ -13,9 +13,9 @@ build:
     - apt-get -qq update && apt-get -qq install -y zip unzip sshpass
     - npm i
   script:
-    - echo "export const host = 'https://ts.digitalphocus.ir'" > src/host.ts
-    - NODE_OPTIONS=--max_old_space_size=1000; npm run build
-    - zip -r build.zip build
+    # - echo "export const host = 'https://ts.digitalphocus.ir'" > src/host.ts
+    # - NODE_OPTIONS=--max_old_space_size=1000; npm run build
+    # - zip -r build.zip build
     # - mkdir build
     # - ls
     # - which ssh
@@ -25,5 +25,5 @@ build:
     - ssh-add <(echo "$SSH_PRIVATE_KEY")
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - scp build.zip root@185.110.191.89:/home/phocus.frontend/build.zip
-    - ssh root@185.110.191.89 "cd /home/phocus.frontend; rm -rf build; unzip -A build.zip"
+    - ssh "cd /home/phocus.frontend; git reset --hard; git pull; npm ci; sed -i 's/ForkTsCheckerWebpackPlugin.DEFAULT_MEMORY_LIMIT = 2048/ForkTsCheckerWebpackPlugin.DEFAULT_MEMORY_LIMIT = 512/g' node_modules/fork-ts-checker-webpack-plugin/lib/index.js"
+    - npm run build
