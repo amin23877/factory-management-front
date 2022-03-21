@@ -25,5 +25,5 @@ build:
     - ssh-add <(echo "$SSH_PRIVATE_KEY")
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - ssh "cd /home/phocus.frontend; git reset --hard; git pull; npm ci; sed -i 's/ForkTsCheckerWebpackPlugin.DEFAULT_MEMORY_LIMIT = 2048/ForkTsCheckerWebpackPlugin.DEFAULT_MEMORY_LIMIT = 512/g' node_modules/fork-ts-checker-webpack-plugin/lib/index.js"
+    - ssh root@185.110.191.89 "cd /home/phocus.frontend; git reset --hard; git pull; npm ci; sed -i 's/ForkTsCheckerWebpackPlugin.DEFAULT_MEMORY_LIMIT = 2048/ForkTsCheckerWebpackPlugin.DEFAULT_MEMORY_LIMIT = 512/g' node_modules/fork-ts-checker-webpack-plugin/lib/index.js"
     - npm run build
