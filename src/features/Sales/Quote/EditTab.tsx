@@ -123,7 +123,6 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
             style={phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" } : { marginBottom: "10px" }}
           >
             <Tab label="Line Item" />
-            <Tab label="Line Services" />
             <Tab label="Document" />
             <Tab label="Quote history" />
             <Tab label="Note" />
@@ -151,35 +150,12 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
               />
             </>
           )}
-
-          {activeTab === 1 && (
-            <>
-              <Button
-                onClick={() => {
-                  setSelectedLS(undefined);
-                  setLineServiceModal(true);
-                }}
-                className={classes.btn}
-              >
-                + Add Line Service
-              </Button>
-              <BaseDataGrid
-                height=" calc(100% - 100px)"
-                cols={LSCols}
-                rows={[]}
-                onRowSelected={(r) => {
-                  setSelectedLS(r);
-                  setLineServiceModal(true);
-                }}
-              />
-            </>
-          )}
-          {activeTab === 2 && <DocumentTab itemId={selectedQuote.id} model="quote" />}
-          {activeTab === 3 && (
+          {activeTab === 1 && <DocumentTab itemId={selectedQuote.id} model="quote" />}
+          {activeTab === 2 && (
             <BaseDataGrid cols={quoteHistoryCols} rows={[]} onRowSelected={() => {}} height=" calc(100% - 57px)" />
           )}
-          {activeTab === 4 && <NoteTab itemId={selectedQuote.id} model="quote" />}
-          {activeTab === 5 && <div>Auditing</div>}
+          {activeTab === 3 && <NoteTab itemId={selectedQuote.id} model="quote" />}
+          {activeTab === 4 && <div>Auditing</div>}
         </BasePaper>
       </Box>
     </>

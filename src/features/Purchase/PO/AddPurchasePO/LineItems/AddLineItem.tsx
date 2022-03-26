@@ -25,7 +25,7 @@ export default function AddLineItem({
         <Formik
           initialValues={{} as any}
           onSubmit={(d) => {
-            onAdd(d);
+            onAdd({ ...d, vendorETA: Number(new Date(d.vendorETA)) });
           }}
         >
           {({ getFieldProps, setFieldValue, values }) => (

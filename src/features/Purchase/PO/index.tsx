@@ -14,17 +14,17 @@ import {
   FindInPageRounded,
 } from "@material-ui/icons";
 
-import List from "../../../app/SideUtilityList";
+import List from "app/SideUtilityList";
 
-import { BasePaper } from "../../../app/Paper";
-import DataGrid from "../../../app/NewDataGrid";
+import { BasePaper } from "app/Paper";
+import DataGrid from "app/NewDataGrid";
 
 import AddPOModal from "./AddPurchasePO";
 import Details from "./Details";
 
 import PurchasePOTypeModal from "./PurchasePoType";
-import { deletePurchasePO, IPurchasePO } from "../../../api/purchasePO";
-import { ILineItem } from "../../../api/lineItem";
+import { deletePurchasePO, IPurchasePO } from "api/purchasePO";
+import { ILineItem } from "api/lineItem";
 import Confirm from "features/Modals/Confirm";
 
 function Index() {
@@ -33,6 +33,7 @@ function Index() {
   const [addType, setAddType] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [lines, setLines] = useState<ILineItem[]>([]);
+  const [refresh, setRefresh] = useState(0);
 
   const [selectedPO, setSelectedPO] = useState<IPurchasePO>();
   const [compPo, setCompPo] = useState<any>();
@@ -94,6 +95,7 @@ function Index() {
           onDone={() => {
             setActiveTab(0);
             setLines([]);
+            setRefresh((p) => p + 1);
           }}
         />
       )}
@@ -182,6 +184,7 @@ function Index() {
             </Box>
             {activeTab === 0 && (
               <DataGrid
+                refresh={refresh}
                 style={{ minHeight: "calc(100vh - 160px)" }}
                 columns={cols}
                 url="/po"

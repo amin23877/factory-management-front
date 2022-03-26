@@ -20,6 +20,7 @@ import { ILineItem } from "api/lineItem";
 
 import { formatTimestampToDate } from "logic/date";
 import { getModifiedValues } from "logic/utils";
+import ReceivingTab from "./Receiving";
 
 export default function Details({ selectedPO, onDone }: { selectedPO: IPurchasePO; onDone?: () => void }) {
   const phone = useMediaQuery("(max-width:900px)");
@@ -157,16 +158,7 @@ export default function Details({ selectedPO, onDone }: { selectedPO: IPurchaseP
             />
           )}
           {activeTab === 1 && <DocumentsTab itemId={selectedPO.id} model="purchasePo" />}
-          {activeTab === 2 && (
-            <BaseDataGrid
-              rows={[]}
-              cols={receivedCols}
-              onRowSelected={(d) => {
-                // TODO: edit line item
-              }}
-              height={"calc(100% - 60px)"}
-            />
-          )}
+          {activeTab === 2 && <ReceivingTab />}
           {activeTab === 3 && <NotesTab itemId={selectedPO.id} model="purchasePo" />}
         </BasePaper>
       </Box>

@@ -19,6 +19,7 @@ import { formatTimestampToDate } from "logic/date";
 import Level from "./ClusterAndLevels/Level";
 import { ILevel } from "api/level";
 import { IItem } from "api/items";
+import LinkField from "app/Inputs/LinkFields";
 
 const useStyles = makeStyles({
   label: {
@@ -378,7 +379,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
         disabled
       />
       {!boms ? (
-        <div style={phone ? { gridColumnEnd: "span 2" } : {}}>
+        <div style={phone ? { gridColumnEnd: "span 2", display: "flex" } : { display: "flex" }}>
           <FormControlLabel
             style={{ fontSize: "0.7rem" }}
             checked={values.overrideUse}
@@ -388,6 +389,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
             control={<Checkbox />}
           />
           <TextField
+            type="number"
             label="Override"
             name="override"
             placeholder="Override"
@@ -553,78 +555,50 @@ export const Quantity = ({
   );
 };
 
-export const Shipping = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
+export const Shipping = ({ values, errors, handleChange, handleBlur, touched, setFieldValue }: IForm) => {
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10} mt={1}>
-      {/* <TextField
-                style={{ gridColumnEnd: "span 2" }}
-                label="Last shipping fee"
-                name="lastShippingFee"
-                placeholder="Last shipping fee"
-                value={values.lastShippingFee}
-                onBlur={handleBlur}
-                onChange={handleChange}
-            />
-            <TextField
-                label="weight Lb"
-                name="weightLb"
-                placeholder="weightLb"
-                value={values.weightLb}
-                onBlur={handleBlur}
-                onChange={handleChange}
-            />
-            <TextField
-                label="weight Oz"
-                name="weightOz"
-                placeholder="weightOz"
-                value={values.weightOz}
-                onBlur={handleBlur}
-                onChange={handleChange}
-            /> */}
-      {/* <TextField
-        label="shipping Lb"
-        name="shippingLb"
-        placeholder="shippingLb"
-        value={values.shippingLb}
-        onBlur={handleBlur}
-        onChange={handleChange}
-      /> */}
-      {/* <TextField
-                label="shipping Oz"
-                name="shippingOz"
-                placeholder="shippingOz"
-                value={values.shippingOz}
-                onBlur={handleBlur}
-                onChange={handleChange}
-            /> */}
-      {/* <TextField
-        fullWidth
-        label="size"
-        placeholder="size"
-        name="size"
-        onChange={handleChange}
-        onBlur={handleBlur}
-        error={Boolean(errors.size && touched.size)}
-        value={values.size}
+      <LinkField
+        label="Preferred Vendor"
+        filterLabel="name"
+        getOptionLabel={(i) => i?.name || ""}
+        getOptionList={(r) => r?.result || []}
+        getOptionValue={(i) => i.id}
+        path="/vendor"
+        choseItem={values.preferredVendor}
+        value={values.preferredVendor}
+        onChange={(e, nv) => setFieldValue("preferredVendor", nv.id)}
       />
       <TextField
-        fullWidth
-        label="Last Ordered Qty"
-        placeholder="Last Ordered Qty"
-        name="lastOrderedQty"
-        onChange={handleChange}
+        type="number"
+        label="Weight"
+        name="weight"
+        placeholder="Weight"
+        value={values.weight}
         onBlur={handleBlur}
-        error={Boolean(errors.lastOrderedQty && touched.lastOrderedQty)}
-        value={values.lastOrderedQty}
+        onChange={handleChange}
       />
-      <TextField
-        label="Recent cost"
-        name="recentCost"
-        placeholder="recentCost"
-        value={values.recentCost}
-        onBlur={handleBlur}
+      <FormControlLabel
+        checked={values.notShippable}
+        label="Not Shippable"
+        name="notShippable"
         onChange={handleChange}
-      /> */}
+        control={<Checkbox size="small" />}
+      />
+      <FormControlLabel
+        checked={values.shippingChecklistRequired}
+        label="Shipping Checklist Required"
+        name="shippingChecklistRequired"
+        onChange={handleChange}
+        control={<Checkbox size="small" />}
+      />
+      <FormControlLabel
+        checked={values.shippableOnBOM}
+        label="Shippable On BOM"
+        name="shippableOnBOM"
+        onChange={handleChange}
+        control={<Checkbox size="small" />}
+      />
     </Box>
   );
 };

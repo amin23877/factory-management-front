@@ -14,8 +14,6 @@ export default function PurchasePO({
   lines: any;
   sum: any;
 }) {
-  console.log({ lines });
-
   return (
     <div>
       <div

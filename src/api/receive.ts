@@ -1,13 +1,13 @@
-import { post } from "."
+import { post } from ".";
 
 export type receiveType = {
-    PurchasePOId:string;
-    LineItemRecordId:string;
-    ItemId:string;
-    quantity:number,
-    EmployeeId:string;
-}
+  id: string;
+  POLineItemId: string;
+  POId: string;
+  quantity: number;
+  ItemId: string;
+};
 
-export const postReceive = (data:{quantity:number, LineItemRecordId:string}) => {
-    return post('/receive', data);
-}
+export const postReceive = (data: receiveType) => {
+  return post("/receive", data);
+};

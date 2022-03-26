@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { Tabs, Tab, Box, Typography, LinearProgress, useMediaQuery } from "@material-ui/core";
+import { Tabs, Tab, Box, Typography, useMediaQuery } from "@material-ui/core";
 
 import { Form, Formik } from "formik";
 
-import Button from "../../../app/Button";
+// import Button from "app/Button";
 import { AccountingForm, AddressesForm, ApprovalForm, EntitiesForm, GeneralForm, ShippingForm } from "./Forms";
-import { ISO, editSO, createSOComplete, ISOComplete } from "../../../api/so";
-import { BasePaper } from "../../../app/Paper";
-import Toast from "../../../app/Toast";
+import { ISO, editSO } from "api/so";
+import { BasePaper } from "app/Paper";
+import Toast from "app/Toast";
 import { mutate } from "swr";
-import { getModifiedValues } from "../../../logic/utils";
+import { getModifiedValues } from "logic/utils";
 
 export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
   const [activeTab, setActiveTab] = useState(0);
@@ -44,11 +44,11 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                 handleChange={handleChange}
                 setFieldValue={setFieldValue}
               />
-              <Box textAlign="center" mt={1}>
+              {/* <Box textAlign="center" mt={1}>
                 <Button style={{ width: "200px" }} disabled={isSubmitting} type="submit" kind="edit">
                   Save
                 </Button>
-              </Box>
+              </Box> */}
             </BasePaper>
             <BasePaper style={{ flex: 1 }}>
               <Tabs

@@ -87,6 +87,7 @@ export default function EditTab({
     ],
     []
   );
+
   const FSCols = useMemo<GridColumns>(
     () => [
       {
@@ -109,6 +110,7 @@ export default function EditTab({
     ],
     []
   );
+
   const activityCols = useMemo<GridColumns>(
     () => [
       { field: "startTime", headerName: "Entry Date", width: 150, type: "date" },
@@ -120,6 +122,7 @@ export default function EditTab({
     ],
     []
   );
+
   const shipCols = useMemo<GridColumns>(
     () => [
       {
@@ -145,6 +148,7 @@ export default function EditTab({
     ],
     []
   );
+
   const phone = useMediaQuery("(max-width:900px)");
 
   return (
@@ -206,7 +210,7 @@ export default function EditTab({
           />
         )}
         {activeTab === 4 && (
-          <BaseDataGrid cols={shipCols} rows={documents || []} onRowSelected={() => {}} height="calc(100% - 60px)" />
+          <BaseDataGrid cols={shipCols} rows={[]} onRowSelected={() => {}} height="calc(100% - 60px)" />
         )}
         {activeTab === 5 && (
           <BaseDataGrid cols={FSCols} rows={[]} onRowSelected={onLineServiceSelected} height="calc(100% - 60px)" />

@@ -6,8 +6,10 @@ import logo from "assets/splogo.png";
 
 import "../styles/splash.css";
 
+const phoneWidth = 600;
+
 function Wrapper({ children }: { children: ReactNode }) {
-  const isPhone = useMediaQuery("(max-width: 400px)");
+  const isPhone = useMediaQuery(`(max-width: ${phoneWidth}px)`);
 
   if (isPhone) {
     return <div>{children}</div>;
@@ -21,7 +23,7 @@ function Wrapper({ children }: { children: ReactNode }) {
 }
 
 export default function SplashScreen() {
-  const isPhone = useMediaQuery("(max-width: 400px)");
+  const isPhone = useMediaQuery(`(max-width: ${phoneWidth}px)`);
 
   return (
     <div className="splash-bg">
