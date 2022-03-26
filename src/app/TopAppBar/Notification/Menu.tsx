@@ -39,6 +39,7 @@ export default function NotificationMenu({
 
   return (
     <Popover
+      id="notification-menu"
       open={open}
       anchorEl={anchorEl}
       onClose={onClose}

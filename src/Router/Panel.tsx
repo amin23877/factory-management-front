@@ -181,6 +181,7 @@ export default function PanelRouter() {
               </IconButton>
             ) : (
               <IconButton
+                id="open-drawer-button"
                 color="inherit"
                 aria-label="open drawer"
                 onClick={handleDrawerOpen}
