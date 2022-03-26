@@ -5,20 +5,19 @@ import AddRounded from "@material-ui/icons/AddRounded";
 import DeleteRounded from "@material-ui/icons/DeleteRounded";
 import PrintRounded from "@material-ui/icons/PrintRounded";
 import CategoryRounded from "@material-ui/icons/CategoryRounded";
-
-import List from "../../app/SideUtilityList";
-
-import AddServiceModal from "../../features/FieldService/AddServiceModal";
-import FieldServiceDetails from "../../features/FieldService/Details";
-
-import { IFieldService } from "../../api/fieldService";
-import { createServiceClass, deleteServiceClass, updateServiceClass } from "../../api/serviceClass";
-import { createServiceCategory, deleteServiceCategory, updateServiceCategory } from "../../api/serviceCategories";
-
-import OneFieldModal from "../../components/OneFieldModal";
-import { BasePaper } from "../../app/Paper";
 import { FindInPageRounded, ListAltRounded, LocalOfferRounded } from "@material-ui/icons";
-import DataGrid from "../../app/NewDataGrid";
+
+import List from "app/SideUtilityList";
+import { BasePaper } from "app/Paper";
+import DataGrid from "app/NewDataGrid";
+// import OneFieldModal from "components/OneFieldModal";
+
+import AddServiceModal from "features/FieldService/AddServiceModal";
+import FieldServiceDetails from "features/FieldService/Details";
+
+import { IFieldService } from "api/fieldService";
+// import { createServiceClass, deleteServiceClass, updateServiceClass } from "api/serviceClass";
+// import { createServiceCategory, deleteServiceCategory, updateServiceCategory } from "api/serviceCategories";
 
 export default function ServiceIndex() {
   const [activeTab, setActiveTab] = useState(0);
@@ -48,7 +47,7 @@ export default function ServiceIndex() {
     <Box display="flex" height="100%" flex={1}>
       <BasePaper style={{ flex: 1 }}>
         <AddServiceModal open={addService} onClose={() => setAddService(false)} onDone={() => {}} />
-        <OneFieldModal
+        {/* <OneFieldModal
           title="Add/Edit Service Classes"
           getUrl="/serviceClass"
           open={serviceClassModal}
@@ -65,7 +64,7 @@ export default function ServiceIndex() {
           postRecord={createServiceCategory}
           updateRecord={updateServiceCategory}
           deleteRecord={deleteServiceCategory}
-        />
+        /> */}
 
         <Box display="flex" alignItems="center">
           <Tabs

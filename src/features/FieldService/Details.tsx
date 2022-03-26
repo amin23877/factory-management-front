@@ -15,10 +15,10 @@ import { convertToItem } from "api/items";
 
 let schema = Yup.object().shape({
   name: Yup.string().required(),
-  retailPrice: Yup.number().required(),
   no: Yup.string().required(),
-  ServiceCategoryId: Yup.string().required(),
-  ServiceClassId: Yup.string().required(),
+  class: Yup.string().required(),
+  type: Yup.string().required(),
+  price: Yup.string().required(),
 });
 
 export default function FieldServiceDetails({
@@ -37,7 +37,7 @@ export default function FieldServiceDetails({
       if (selectedFieldService.id) {
         const resp = await updateFieldService(selectedFieldService.id, d);
         if (resp) {
-          Toast("Updated successfully !!!");
+          Toast("Updated successfully !!!", "success");
         }
       }
     } catch (error) {

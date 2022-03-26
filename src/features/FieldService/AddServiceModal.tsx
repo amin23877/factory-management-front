@@ -9,6 +9,14 @@ import Dialog from "../../app/Dialog";
 import { createFieldService, IFieldService } from "../../api/fieldService";
 import FieldServiceForm from "./Forms";
 
+let schema = Yup.object().shape({
+  name: Yup.string().required(),
+  no: Yup.string().required(),
+  class: Yup.string().required(),
+  type: Yup.string().required(),
+  price: Yup.string().required(),
+});
+
 export default function AddServiceModal({
   open,
   onClose,
@@ -20,14 +28,6 @@ export default function AddServiceModal({
   onDone: () => void;
   device?: string;
 }) {
-  let schema = Yup.object().shape({
-    name: Yup.string().required(),
-    retailPrice: Yup.number().required(),
-    no: Yup.string().required(),
-    ServiceCategoryId: Yup.string().required(),
-    ServiceClassId: Yup.string().required(),
-  });
-
   const handleSubmit = async (data: any) => {
     try {
       const resp = await createFieldService(data);
