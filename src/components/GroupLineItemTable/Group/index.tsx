@@ -60,9 +60,9 @@ export default function Group({
 
   return (
     <>
-      <TableRow className={classes.root}>
+      <TableRow className={`${classes.root} group-line`}>
         <TableCell>
-          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
+          <IconButton className="group-collapsible" aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
             {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
           </IconButton>
         </TableCell>
@@ -118,7 +118,7 @@ export default function Group({
                 </TableHead>
                 <TableBody>
                   {row.map((lineItem, i) => (
-                    <TableRow key={i}>
+                    <TableRow className="group-lineitem-table-row" key={i}>
                       <TableCell>{lineItem.type}</TableCell>
                       <TableCell title={lineItem?.text}>
                         {lineItem.ItemObject?.no || (

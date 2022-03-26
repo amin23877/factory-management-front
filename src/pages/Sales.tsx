@@ -30,13 +30,13 @@ export default function Sales() {
   };
 
   const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
   const portals = usePortal();
 
   return (
     <>
       <Portal container={portals.topAppBar ? (portals.topAppBar as any).current : null}>
         <div
+          id="top-menu-button"
           onClick={handleClick}
           style={{
             color: "inherit",
@@ -50,7 +50,7 @@ export default function Sales() {
           {tabText} {anchorEl ? <KeyboardArrowUpRounded /> : <KeyboardArrowDownRounded />}
         </div>
         <Popover
-          id={id}
+          id="top-menu-list"
           open={open}
           anchorEl={anchorEl}
           onClose={handleClose}

@@ -77,7 +77,7 @@ function PricingAutocomplete({
         <label className={classes.label} {...getInputLabelProps()}>
           Price
         </label>
-        <input className={classes.input} {...getInputProps()} />
+        <input name="price" className={classes.input} {...getInputProps()} />
       </div>
       {groupedOptions.length > 0 ? (
         <ul className={classes.listbox} {...getListboxProps()}>
@@ -104,8 +104,9 @@ export default function AddDeviceModal({
       <Formik initialValues={{} as any} onSubmit={(data) => onSubmit({ ...data, type: "device" })}>
         {({ getFieldProps, setFieldValue, values }) => (
           <Form>
-            <Box display="flex" flexDirection="column" style={{ gap: 8 }}>
+            <Box id="add-device-form" display="flex" flexDirection="column" style={{ gap: 8 }}>
               <LinkSelect
+                placeholder="Item"
                 value={values.ItemId}
                 choseItem={values.ItemId}
                 label="Item"
