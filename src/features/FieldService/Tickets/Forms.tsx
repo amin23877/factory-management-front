@@ -1,21 +1,22 @@
 import React, { useState } from "react";
 import { Box, FormControlLabel, Checkbox, useMediaQuery } from "@material-ui/core";
-import DateTimePicker from "../../../app/DateTimePicker";
-
-import Button from "../../../app/Button";
-import { FieldSelect } from "../../../app/Inputs";
-
-import { getPO } from "../../../api/po";
-import { getTicketStatus } from "../../../api/ticketStatus";
-import { getTicketTags } from "../../../api/ticketTag";
-import { getTicketCategory } from "../../../api/ticketCategory";
-import TextField from "../../../app/TextField";
-import { getAllEmployees } from "../../../api/employee";
-import LinkSelect from "../../../app/Inputs/LinkFields";
-import { formatTimestampToDate } from "../../../logic/date";
-import { getAllModelContact } from "../../../api/contact";
-import { getClients } from "../../../api/client";
 import useSWR from "swr";
+
+import DateTimePicker from "app/DateTimePicker";
+import Button from "app/Button";
+import { FieldSelect } from "app/Inputs";
+import TextField from "app/TextField";
+import LinkSelect from "app/Inputs/LinkFields";
+
+import { getPO } from "api/po";
+import { getClients } from "api/client";
+import { getTicketTags } from "api/ticketTag";
+import { getAllEmployees } from "api/employee";
+import { getAllModelContact } from "api/contact";
+import { getTicketStatus } from "api/ticketStatus";
+import { getTicketCategory } from "api/ticketCategory";
+
+import { formatTimestampToDate } from "logic/date";
 
 export default function TicketForm({
   values,
@@ -33,7 +34,7 @@ export default function TicketForm({
   setFieldValue: (a: any, b: any) => void;
 }) {
   const phone = useMediaQuery("(max-width:900px)");
-  const { data: item } = useSWR(`/item/${values.UnitId?.ItemId}`);
+  const { data: item } = useSWR(values.UnitId?.ItemId ? `/item/${values.UnitId?.ItemId}` : null);
 
   return (
     <>
@@ -93,7 +94,7 @@ export default function TicketForm({
         />
         <TextField name="number" value={values.number} label="Ticket Number" disabled />
         <LinkSelect
-          value={values.UnitId.SOId}
+          value={values?.UnitId?.SOId}
           label="SO ID"
           path="/so"
           filterLabel="number"
@@ -106,22 +107,22 @@ export default function TicketForm({
           onBlur={handleBlur}
           url="/panel/so"
           disabled
-          choseItem={{ id: values.UnitId.SOId, number: values.originalSONo }}
+          choseItem={{ id: values?.UnitId?.SOId, number: values.originalSONo }}
         />
         <LinkSelect
           filterLabel="no"
           path="/item"
-          value={values.UnitId.ItemId}
+          value={values?.UnitId?.ItemId}
           label="Device"
           getOptionList={(resp) => resp.result}
           getOptionLabel={(item) => item?.no}
           getOptionValue={(item) => item?.id}
           url="/panel/inventory"
           disabled
-          choseItem={{ id: values.UnitId.ItemId, no: item?.no }}
+          choseItem={{ id: values?.UnitId?.ItemId, no: item?.no }}
         />
         <LinkSelect
-          value={values.UnitId.id}
+          value={values?.UnitId?.id}
           label="Unit"
           path="/unit"
           filterLabel="number"
@@ -206,7 +207,7 @@ export default function TicketForm({
         {!values.id ? (
           <>
             <Button type="submit" kind="edit" style={{ marginRight: "0.5em", width: "200px" }}>
-              Book a job
+              Add
             </Button>
           </>
         ) : (
