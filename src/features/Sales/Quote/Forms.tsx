@@ -8,6 +8,7 @@ import {
   RadioGroup,
   Radio,
   useMediaQuery,
+  LinearProgress,
 } from "@material-ui/core";
 import DateTimePicker from "app/DateTimePicker";
 
@@ -27,9 +28,13 @@ import QuotePDF from "PDFTemplates/Quote";
 export const DocumentForm = ({
   data,
   divToPrint,
+  isUploading,
+  status,
 }: {
   data: IQuoteComplete;
   divToPrint: MutableRefObject<HTMLElement | null>;
+  isUploading: boolean;
+  status: string;
 }) => {
   return (
     <Box margin="0 auto">
@@ -51,7 +56,7 @@ export const DocumentForm = ({
           <QuotePDF createdQuote={data} />
         </div>
       </div>
-      {/* <Box
+      <Box
         textAlign="right"
         width="100%"
         display="flex"
@@ -62,13 +67,13 @@ export const DocumentForm = ({
       >
         {isUploading && (
           <div style={{ width: "100%", height: "20px" }}>
+            <Typography id="quote-status" style={{ margin: "4px 0", textAlign: "center" }}>
+              {status}
+            </Typography>
             <LinearProgress />
           </div>
         )}
-        <Button type="submit" kind="add" onClick={handleSaveDocument} disabled={isUploading}>
-          Save Document
-        </Button>
-      </Box> */}
+      </Box>
     </Box>
   );
 };
@@ -326,9 +331,8 @@ export const EntitiesTab = ({
   handleBlur: (a: any) => void;
   setFieldValue: any;
 }) => {
-  // const phone = useMediaQuery("(max-width:900px)");
-  const [rep, setRep] = useState<IClient>();
   const [client, setClient] = useState<IClient>();
+
   return (
     <Box display="grid" gridTemplateColumns={"1fr 1fr"} gridColumnGap={5} pt="12px">
       <Box mb={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={7}>
@@ -342,7 +346,6 @@ export const EntitiesTab = ({
           getOptionValue={(cus) => cus?.id}
           onChange={(e, nv) => {
             setFieldValue("repOrAgency", nv?.id);
-            setRep(nv);
           }}
           onBlur={handleBlur}
           url="/panel/customer"

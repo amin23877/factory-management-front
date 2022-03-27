@@ -5,10 +5,10 @@ describe("Quote", () => {
     });
   });
 
-  it.only("Should create a Quote", () => {
+  it("Should create a Quote", () => {
     cy.intercept("https://ts.digitalphocus.ir/api/item?startsWithno=002-0053").as("get-item");
     cy.intercept("POST", "https://ts.digitalphocus.ir/api/quote").as("quote");
-    cy.intercept("POST", "https://ts.digitalphocus.ir/api/document**").as("document");
+    cy.intercept("POST", "https://ts.digitalphocus.ir/api/document/**").as("document");
 
     cy.visit("/panel/sales");
     cy.get("#top-menu-button").click();
@@ -40,6 +40,11 @@ describe("Quote", () => {
     cy.get("button").contains("Finalize").click();
 
     cy.wait("@quote");
-    cy.wait("@document");
+    cy.get("#quote-status", { timeout: 10000 }).should("contain", "Uploading PDF");
+    cy.wait("@document", { timeout: 20000 });
+
+    cy.get(".MuiTab-textColorPrimary.Mui-selected").should("exist");
+    cy.get("input[name=leadTime]").should("have.value", "14");
+    cy.get(".MuiDataGrid-root .MuiDataGrid-row").should("have.length", 1);
   });
 });

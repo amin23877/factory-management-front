@@ -29,6 +29,8 @@ export default function AddQuote({
 }) {
   const divToPrint = useRef<HTMLElement | null>(null);
   const [activeStep, setActiveStep] = useState(0);
+  const [isUploading, setIsUploading] = useState(false);
+  const [status, setStatus] = useState<"Creating Quote" | "Creating PDF" | "Uploading PDF" | "">("");
   const phone = useMediaQuery("(max-width:900px)");
   const session = useSelector(selectSession);
 
@@ -43,6 +45,8 @@ export default function AddQuote({
   const handleSubmit = async (data: any, { setSubmitting }: any) => {
     try {
       // TODO: test when quote is created but document is not saved
+      setStatus("Creating PDF");
+      setIsUploading(true);
       setSubmitting(true);
       const quoteResp = await createQuoteComplete({
         ...data,
@@ -51,7 +55,9 @@ export default function AddQuote({
       });
       if (quoteResp && quoteResp.id) {
         if (divToPrint.current && quoteResp.id) {
+          setStatus("Creating PDF");
           const generatedPdf = await exportPdf(divToPrint.current);
+          setStatus("Uploading PDF");
           await createAModelDocument({
             model: "quote",
             id: quoteResp.id,
@@ -67,6 +73,8 @@ export default function AddQuote({
     } catch (error) {
       console.log(error);
     } finally {
+      setStatus("");
+      setIsUploading(false);
       setSubmitting(false);
     }
   };
@@ -96,7 +104,9 @@ export default function AddQuote({
                   <GeneralStep values={values} setFieldValue={setFieldValue} getFieldProps={getFieldProps} />
                 )}
                 {activeStep === 1 && <FinalForm loading={isSubmitting} />}
-                {activeStep === 2 && <DocumentForm data={values} divToPrint={divToPrint} />}
+                {activeStep === 2 && (
+                  <DocumentForm data={values} divToPrint={divToPrint} status={status} isUploading={isUploading} />
+                )}
                 <Box display="flex" alignItems="center">
                   <Button variant="contained" disabled={isSubmitting || activeStep === 0} onClick={handleBack}>
                     Back
