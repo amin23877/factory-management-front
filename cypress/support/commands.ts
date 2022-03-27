@@ -10,9 +10,11 @@
 //
 //
 // -- This is a parent command --
-Cypress.Commands.add("login", (username, password) => {
-  cy.request("POST", "https://ts.digitalphocus.ir/api/employee/login", { username, password }).then(({ body }) => {
-    localStorage.setItem("phocus_session", body.token);
+Cypress.Commands.add("login", () => {
+  cy.fixture("auth").then(({ username, password }) => {
+    cy.request("POST", "https://ts.digitalphocus.ir/api/employee/login", { username, password }).then(({ body }) => {
+      localStorage.setItem("phocus_session", body.token);
+    });
   });
 });
 //

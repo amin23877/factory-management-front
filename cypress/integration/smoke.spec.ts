@@ -1,6 +1,6 @@
 describe("Smoke Test", () => {
   it("Should load and can be logged in", () => {
-    cy.intercept("POST", "https://ts.digitalphocus.ir/api/employee/login").as("login");
+    cy.intercept("POST", Cypress.env("apiUrl") + "/employee/login").as("login");
     cy.visit("/");
     cy.get("input[name=username]").type("employee");
     cy.get("input[name=password]").type("employee{enter}");
@@ -12,8 +12,8 @@ describe("Smoke Test", () => {
 
   context("Logged In", () => {
     beforeEach(() => {
-      cy.intercept("GET", "https://ts.digitalphocus.ir/api/notification?unseen=true").as("notification");
-      cy.login("employee", "employee");
+      cy.intercept("GET", Cypress.env("apiUrl") + "/notification?unseen=true").as("notification");
+      cy.login();
       cy.visit("/panel");
     });
 

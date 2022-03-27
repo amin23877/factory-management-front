@@ -1,14 +1,12 @@
 describe("Quote", () => {
   beforeEach(() => {
-    cy.fixture("auth").then((data) => {
-      cy.login(data.username, data.password);
-    });
+    cy.login();
   });
 
   it("Should create a Quote", () => {
-    cy.intercept("https://ts.digitalphocus.ir/api/item?startsWithno=002-0053").as("get-item");
-    cy.intercept("POST", "https://ts.digitalphocus.ir/api/quote").as("quote");
-    cy.intercept("POST", "https://ts.digitalphocus.ir/api/document/**").as("document");
+    cy.intercept(Cypress.env("apiUrl") + "/item?startsWithno=002-0053").as("get-item");
+    cy.intercept("POST", Cypress.env("apiUrl") + "/quote").as("quote");
+    cy.intercept("POST", Cypress.env("apiUrl") + "/document/**").as("document");
 
     cy.visit("/panel/sales");
     cy.get("#top-menu-button").click();
