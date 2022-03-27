@@ -3,14 +3,14 @@ import { Box, useMediaQuery } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
-import Button from "../../app/Button";
 import FieldServiceForm from "./Forms";
-import BaseDataGrid from "../../app/BaseDataGrid";
-import { BasePaper } from "../../app/Paper";
-
-import { IFieldService, updateFieldService } from "../../api/fieldService";
-import Toast from "../../app/Toast";
+import Toast from "app/Toast";
+import Button from "app/Button";
+import { BasePaper } from "app/Paper";
+// import BaseDataGrid from "app/BaseDataGrid";
 import Confirm from "common/Confirm";
+
+import { IFieldService, updateFieldService } from "api/fieldService";
 import { convertToItem } from "api/items";
 
 let schema = Yup.object().shape({
@@ -85,9 +85,7 @@ export default function FieldServiceDetails({
           Convert To Item
         </Button>
       </BasePaper>
-      <BasePaper style={{ flex: 2 }}>
-        <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} />
-      </BasePaper>
+      <BasePaper style={{ flex: 2 }}>{/* <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} /> */}</BasePaper>
     </Box>
   );
 }

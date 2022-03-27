@@ -1,4 +1,4 @@
-import { post } from ".";
+import { delete_, post } from ".";
 
 export type receiveType = {
   id: string;
@@ -8,6 +8,14 @@ export type receiveType = {
   ItemId: string;
 };
 
-export const postReceive = (data: receiveType) => {
+export const createReceive = (data: receiveType) => {
   return post("/receive", data);
+};
+
+export const updateReceive = (id: string, data: Partial<receiveType>) => {
+  return post(`/receive/${id}`, data);
+};
+
+export const deleteReceive = (id: string) => {
+  return delete_(`/receive/${id}`);
 };

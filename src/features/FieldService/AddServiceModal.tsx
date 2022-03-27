@@ -46,7 +46,7 @@ export default function AddServiceModal({
         <Formik initialValues={{} as IFieldService} validationSchema={schema} onSubmit={handleSubmit}>
           {({ values, errors, handleChange, handleBlur }) => (
             <Form>
-              <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
+              <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
                 <FieldServiceForm
                   values={values}
                   handleChange={handleChange}
@@ -54,7 +54,7 @@ export default function AddServiceModal({
                   errors={errors}
                   device={device}
                 />
-                <Button style={{ margin: "0.5em 0" }} type="submit" kind="add">
+                <Button style={{ margin: "0.5em 0", gridColumnStart: "span 2" }} type="submit" kind="add">
                   Save
                 </Button>
               </Box>

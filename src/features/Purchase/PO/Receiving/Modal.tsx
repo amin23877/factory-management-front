@@ -7,21 +7,57 @@ import TextField from "app/TextField";
 import Button from "app/Button";
 import LinkField from "app/Inputs/LinkFields";
 
-import { receiveType } from "api/receive";
+import { createReceive, deleteReceive, receiveType, updateReceive } from "api/receive";
+import { getModifiedValues } from "logic/utils";
 
 export default function Modal({
   open,
   initialValues,
   onClose,
+  onDone,
 }: {
   initialValues?: receiveType;
   open: boolean;
   onClose: () => void;
+  onDone?: () => void;
 }) {
+  const handleSubmit = async (data: any) => {
+    try {
+      if (initialValues && initialValues.id) {
+        const reqData = getModifiedValues(data, initialValues);
+        // await updateReceive(initialValues.id, reqData);
+        onDone && onDone();
+        onClose();
+
+        console.log({ data: reqData });
+      } else {
+        // await createReceive(data);
+        onDone && onDone();
+        onClose();
+
+        console.log({ data });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      if (initialValues && initialValues.id) {
+        await deleteReceive(initialValues.id);
+        onDone && onDone();
+        onClose();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Dialog title="Add Receiving" open={open} onClose={onClose}>
       <Box m={1}>
-        <Formik initialValues={initialValues || ({} as receiveType)} onSubmit={() => {}}>
+        <Formik initialValues={initialValues || ({} as receiveType)} onSubmit={handleSubmit}>
           {({ getFieldProps, values, setFieldValue }) => (
             <Form>
               <Box display="flex" flexDirection="column" style={{ gap: 8 }}>
@@ -48,9 +84,20 @@ export default function Modal({
                   onChange={(e, nv) => setFieldValue("POLineItemId", nv.id)}
                 />
                 <TextField label="Quantity" {...getFieldProps("quantity")} />
-                <Button kind="add" type="submit">
-                  Submit
-                </Button>
+                {initialValues && initialValues.id ? (
+                  <Button kind="add" type="submit">
+                    Submit
+                  </Button>
+                ) : (
+                  <>
+                    <Button kind="edit" type="submit">
+                      Save
+                    </Button>
+                    <Button kind="delete" onClick={handleDelete}>
+                      Delete
+                    </Button>
+                  </>
+                )}
               </Box>
             </Form>
           )}
