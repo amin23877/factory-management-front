@@ -28,6 +28,7 @@ export default function ReceivingTab({ POId }: { POId: string }) {
   return (
     <>
       <Modal
+        POId={POId}
         open={modal}
         onClose={() => {
           setSelectedReceive(undefined);

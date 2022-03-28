@@ -6,6 +6,7 @@ export type receiveType = {
   POId: string;
   quantity: number;
   ItemId: string;
+  POLineItemObject?: any;
 };
 
 export const createReceive = (data: receiveType) => {

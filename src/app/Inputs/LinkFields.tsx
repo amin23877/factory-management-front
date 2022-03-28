@@ -109,6 +109,7 @@ export default function LinkField({
 
       v && v[filterLabel] && setRefresh(v[filterLabel]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [value]);
 
   return (

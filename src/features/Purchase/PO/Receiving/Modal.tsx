@@ -12,27 +12,31 @@ import { getModifiedValues } from "logic/utils";
 
 export default function Modal({
   open,
+  POId,
   initialValues,
   onClose,
   onDone,
 }: {
-  initialValues?: receiveType;
   open: boolean;
+  POId: string;
+  initialValues?: receiveType;
   onClose: () => void;
   onDone?: () => void;
 }) {
   const handleSubmit = async (data: any) => {
     try {
-      if (initialValues && initialValues.id) {
-        const reqData = getModifiedValues(data, initialValues);
-        await updateReceive(initialValues.id, reqData);
-        onDone && onDone();
-        onClose();
-      } else {
-        await createReceive(data);
-        onDone && onDone();
-        onClose();
-      }
+      console.log({ data });
+
+      // if (initialValues && initialValues.id) {
+      //   const reqData = getModifiedValues(data, initialValues);
+      //   await updateReceive(initialValues.id, reqData);
+      //   onDone && onDone();
+      //   onClose();
+      // } else {
+      //   await createReceive(data);
+      //   onDone && onDone();
+      //   onClose();
+      // }
     } catch (error) {
       console.log(error);
     }
@@ -53,11 +57,11 @@ export default function Modal({
   return (
     <Dialog title="Add Receiving" open={open} onClose={onClose}>
       <Box m={1}>
-        <Formik initialValues={initialValues || ({} as receiveType)} onSubmit={handleSubmit}>
+        <Formik initialValues={initialValues || ({ POId } as receiveType)} onSubmit={handleSubmit}>
           {({ getFieldProps, values, setFieldValue }) => (
             <Form>
               <Box display="flex" flexDirection="column" style={{ gap: 8 }}>
-                <LinkField
+                {/* <LinkField
                   label="PO"
                   filterLabel="number"
                   getOptionLabel={(i) => i.number || "No-Number"}
@@ -69,18 +73,37 @@ export default function Modal({
                   onChange={(e, nv) => {
                     setFieldValue("POId", nv.id);
                   }}
-                />
+                /> */}
+                {/* <LinkField
+                  placeholder="Item"
+                  value={values.POLineItemId}
+                  choseItem={values.POLineItemId}
+                  label="Item"
+                  path="/item"
+                  filterLabel="no"
+                  getOptionList={(resp) => resp?.result}
+                  getOptionLabel={(item) => item?.no || item?.name || "No-Name"}
+                  getOptionValue={(item) => item?.id}
+                  onChange={(e, nv) => {
+                    setFieldValue("POLineItemId", nv.id);
+                  }}
+                  url="/panel/engineering"
+                /> */}
+                {/* TODO: Fix this link select with unpaginated api, local search and deep linked accessor */}
                 <LinkField
+                  url="/panel/inventory"
                   label="PO Line Item"
-                  filterLabel="number"
-                  getOptionLabel={(i) => i?.ItemId?.number || i?.ItemId?.name || "No-Number"}
-                  getOptionList={(r) => r?.result || []}
-                  getOptionValue={(i) => i.id}
-                  path={values.POId ? `/polineitem?POId=${values.POId}` : "/polineitem"}
+                  filterLabel="no"
                   choseItem={values.POLineItemId}
                   value={values.POLineItemId}
-                  onChange={(e, nv) => setFieldValue("POLineItemId", nv.id)}
-                  disabled={!values.POId || values.POId === ""}
+                  getOptionLabel={(i) => i?.ItemId?.no || i?.ItemId?.name || "No-Number"}
+                  getOptionList={(r) => r?.result || []}
+                  getOptionValue={(i) => i?.id}
+                  path={`/polineitem?POId=${POId}`}
+                  onChange={(e, nv) => {
+                    setFieldValue("POLineItemId", nv.id);
+                  }}
+                  // disabled={!values.POId || values.POId === ""}
                 />
                 <TextField label="Quantity" {...getFieldProps("quantity")} />
                 {initialValues && initialValues.id ? (
