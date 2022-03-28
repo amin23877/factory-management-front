@@ -31,9 +31,9 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
       valueFormatter: (r) => r.row?.vending?.vendorPartName,
     },
     { field: "vendorSKU", headerName: "Vendor SKU", width: 120, valueFormatter: (r) => r.row?.vending?.vendorSKU },
-    { field: "Last Lead", width: 120, valueFormatter: (r) => r.row?.vending?.leadTime },
-    { field: "QOH", width: 100, valueFormatter: (r) => r.row?.ItemId?.qtyOnHand },
-    { field: "Cost", width: 100, valueFormatter: (r) => r.row?.vending?.cost },
+    { field: "lastLeadTime", headerName: "Last Lead", width: 120 },
+    { field: "QOH", width: 100, valueFormatter: (r) => r.row?.ItemId?.onHandQty },
+    { field: "lastOrderCost", headerName: "Cost", width: 100 },
     { field: "Inventory Val.", width: 130, valueFormatter: (r) => r.row?.ItemId?.qohValue },
     { field: "Min Order", valueFormatter: (r) => r.row?.ItemId?.minOrder, width: 100 },
   ];

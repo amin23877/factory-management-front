@@ -25,18 +25,16 @@ export default function Modal({
 }) {
   const handleSubmit = async (data: any) => {
     try {
-      console.log({ data });
-
-      // if (initialValues && initialValues.id) {
-      //   const reqData = getModifiedValues(data, initialValues);
-      //   await updateReceive(initialValues.id, reqData);
-      //   onDone && onDone();
-      //   onClose();
-      // } else {
-      //   await createReceive(data);
-      //   onDone && onDone();
-      //   onClose();
-      // }
+      if (initialValues && initialValues.id) {
+        const reqData = getModifiedValues(data, initialValues);
+        await updateReceive(initialValues.id, reqData);
+        onDone && onDone();
+        onClose();
+      } else {
+        await createReceive(data);
+        onDone && onDone();
+        onClose();
+      }
     } catch (error) {
       console.log(error);
     }

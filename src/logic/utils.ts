@@ -44,6 +44,6 @@ export const generateQuery = (params: ParameterType) => {
   return queryArray.join("&");
 };
 
-export const sleep = (ms: number) => {
+export const sleep = (ms: number = 100) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };

@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Checkbox, FormControlLabel, Paper, Tab, Tabs, useMediaQuery } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { mutate } from "swr";
+import useSWR, { mutate } from "swr";
 
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
@@ -149,6 +149,10 @@ export const AddVendorForm = ({ onDone, tech }: { initialValues?: any; onDone: (
 };
 
 export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any; onDone?: () => void }) => {
+  const phone = useMediaQuery("(max-width:900px)");
+  const { data: contacts } = useSWR(initialValues?.id ? `/contact/vendor/${initialValues?.id}` : null);
+  const mainContact = contacts && contacts.length > 0 ? contacts.find((c: any) => c.main) : null;
+
   const handleSubmit = async (d: any, { setSubmitting }: any) => {
     try {
       if (initialValues.id) {
@@ -162,7 +166,6 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
       setSubmitting(false);
     }
   };
-  const phone = useMediaQuery("(max-width:900px)");
 
   return (
     <Formik initialValues={initialValues} validationSchema={schema} onSubmit={handleSubmit}>
@@ -197,16 +200,23 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                 gridRowGap={10}
                 gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"}
               >
-                <FieldSelect
+                {/* <FieldSelect
                   request={getVendorTypes}
                   itemTitleField="name"
                   itemValueField="id"
-                  name="VendorTypeId"
+                  name="type"
                   label="Type"
                   fullWidth
                   onChange={handleChange}
-                  value={typeof values.VendorTypeId === "string" ? values.VendorTypeId : values.VendorTypeId?.id}
-                  error={Boolean(errors.VendorTypeId)}
+                  value={typeof values.type === "string" ? values.type : values.type?.id}
+                  error={Boolean(errors.type)}
+                /> */}
+                <TextField
+                  label="Type"
+                  value={values.type}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={Boolean(errors.type)}
                 />
                 <TextField
                   name="number"
@@ -266,12 +276,12 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                   error={Boolean(errors.state)}
                 />
                 <TextField
-                  name="zipcode"
+                  name="zip"
                   label="Zip code"
-                  value={values.zipcode}
+                  value={values.zip}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={Boolean(errors.zipcode)}
+                  error={Boolean(errors.zip)}
                 />
                 <TextField
                   name="website"
@@ -306,20 +316,22 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                 </Button>
               </Box>
             </BasePaper>
-            <BasePaper style={{ flex: 1 }}>
-              <Tabs value={0} style={{ margin: "0.5em 0" }} textColor="primary">
-                <Tab label="Main Contact" />
-              </Tabs>
-              <Box mt={2} display="grid" gridRowGap={10} gridColumnGap={10} gridTemplateColumns="1fr 1fr">
-                <TextField label="Name" value={`${values.mcFirstName}  ${values.mcLastName}`} disabled />
-                <TextField label="Phone" value={values.mcPhone} disabled />
-                <TextField label="EXT" value={values.mcExt} disabled />
-                <TextField label="Email" value={values.mcEmail} disabled />
-                <TextField label="Office Hours" value={values.officeHours} disabled />
-                <TextField label="Department" value={values.mcDepartment} disabled />
-                <TextField label="Title" value={values.mcTitle} disabled />
-              </Box>
-            </BasePaper>
+            {mainContact && (
+              <BasePaper style={{ flex: 1 }}>
+                <Tabs value={0} style={{ margin: "0.5em 0" }} textColor="primary">
+                  <Tab label="Main Contact" />
+                </Tabs>
+                <Box mt={2} display="grid" gridRowGap={10} gridColumnGap={10} gridTemplateColumns="1fr 1fr">
+                  <TextField label="Name" value={`${mainContact?.firstName} ${mainContact?.lastName}`} disabled />
+                  <TextField label="Phone" value={mainContact?.phones[0]?.phone} disabled />
+                  {/* <TextField label="EXT" value={values.mcExt} disabled /> */}
+                  <TextField label="Email" value={mainContact?.emails[0]?.email} disabled />
+                  {/* <TextField label="Office Hours" value={values.officeHours} disabled /> */}
+                  <TextField label="Department" value={mainContact?.department} disabled />
+                  <TextField label="Title" value={mainContact?.title} disabled style={{ gridColumnStart: "span 2" }} />
+                </Box>
+              </BasePaper>
+            )}
           </Box>
         </Form>
       )}
