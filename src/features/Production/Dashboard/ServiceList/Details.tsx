@@ -48,7 +48,7 @@ function ServiceDetails({ ticket }: { ticket: ITicket }) {
   const handleDeleteOption = async () => {
     try {
       if (selectedOption) {
-        const resp = await deleteOption(ticket.ItemId.id, selectedOption.ItemId.id);
+        const resp = await deleteOption(ticket?.ItemId?.id, selectedOption?.ItemId?.id);
         if (resp) {
           Toast("Unit updated", "success");
         }
@@ -58,7 +58,7 @@ function ServiceDetails({ ticket }: { ticket: ITicket }) {
     }
   };
 
-  const { data: unitBoms } = useSWR(`/ubom?UnitId=${ticket.ItemId.id}`);
+  const { data: unitBoms } = useSWR(ticket.ItemId ? `/ubom?UnitId=${ticket?.ItemId?.id}` : null);
 
   const bomCols = useMemo<GridColDef[]>(
     () => [
@@ -171,7 +171,7 @@ function ServiceDetails({ ticket }: { ticket: ITicket }) {
       </Formik>
       <h1 style={{ marginLeft: "3em" }}>Unit Work Flow</h1>
       <UnitWorkFlow />
-      <ProductionWorkFlow unitId={ticket.ItemId.id} stepper={ticket.productionStatus} />
+      <ProductionWorkFlow unitId={ticket?.ItemId?.id} stepper={ticket.productionStatus} />
       <BasePaper>
         <Tabs value={gridActiveTab} onChange={(e, nv) => setGridActiveTab(nv)}>
           <Tab label="Documents" />

@@ -181,9 +181,13 @@ export default function EditTab({
             cols={LICols}
             rows={lineItems?.result || []}
             onRowSelected={(r) => {
-              phone
-                ? history.push(`/panel/engineering/${r?.ItemId?.id}`)
-                : openRequestedSinglePopup({ url: `/panel/engineering/${r?.ItemId?.id}` });
+              if (phone && (r.ServiceId || r.ItemId)) {
+                history.push(r.ServiceId ? `/panel/service/${r.ServiceId}` : `/panel/engineering/${r?.ItemId?.id}`);
+              } else if (!phone && (r.ServiceId || r.ItemId)) {
+                openRequestedSinglePopup({
+                  url: r.ServiceId ? `/panel/service/${r.ServiceId}` : `/panel/engineering/${r?.ItemId?.id}`,
+                });
+              }
             }}
             height="calc(100% - 60px)"
           />

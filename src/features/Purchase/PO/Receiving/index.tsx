@@ -8,9 +8,10 @@ import Button from "app/Button";
 import BaseDataGrid from "app/BaseDataGrid";
 
 import { formatTimestampToDate } from "logic/date";
+import useSWR from "swr";
 
 const cols: GridColumns = [
-  { field: "Date", valueFormatter: (r) => formatTimestampToDate(r.row.ItemId?.date), width: 200 },
+  { field: "Date", valueFormatter: (r) => formatTimestampToDate(r.row?.createdAt), width: 200 },
   { field: "ItemId", headerName: "Item Number", valueFormatter: (r) => r.row.ItemId.number, width: 200 },
   { field: "ItemId", headerName: "Item Name", valueFormatter: (r) => r.row.ItemId.name, width: 200 },
   { field: "vendor", headerName: "Vendor P. NO.", flex: 1 },
@@ -19,12 +20,22 @@ const cols: GridColumns = [
   { field: "note", headerName: "Note", width: 200 },
 ];
 
-export default function ReceivingTab() {
+export default function ReceivingTab({ POId }: { POId: string }) {
+  const { data, mutate } = useSWR(`/receive?POId=${POId}`);
   const [modal, setModal] = useState(false);
+  const [selectedReceive, setSelectedReceive] = useState<any>();
 
   return (
     <>
-      <Modal open={modal} onClose={() => setModal(false)} />
+      <Modal
+        open={modal}
+        onClose={() => {
+          setSelectedReceive(undefined);
+          setModal(false);
+        }}
+        initialValues={selectedReceive}
+        onDone={() => mutate()}
+      />
       <Box>
         <Button
           variant="outlined"
@@ -35,10 +46,11 @@ export default function ReceivingTab() {
           Add
         </Button>
         <BaseDataGrid
-          rows={[]}
+          rows={data?.result || []}
           cols={cols}
           onRowSelected={(d) => {
-            // TODO: edit line item
+            setSelectedReceive(d);
+            setModal(true);
           }}
           height={400}
         />

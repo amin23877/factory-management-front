@@ -16,17 +16,17 @@ const columns: GridColumns = [
   {
     field: "date",
     headerName: "Date",
-    valueFormatter: (params) => formatTimestampToDate(params.row?.date),
+    valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
     width: 120,
   },
   {
-    field: "EmployeeId",
+    field: "creator",
     headerName: "Creator",
-    valueFormatter: (params) => params.row?.employee?.username,
+    // valueFormatter: (params) => params.row?.employee?.username,
     width: 120,
   },
   { field: "name", headerName: "Name", flex: 1 },
-  { field: "number", headerName: "Number", width: 200 },
+  { field: "number", headerName: "Number", width: 100 },
   { field: "description", headerName: "Description", flex: 1 },
   {
     field: "type",

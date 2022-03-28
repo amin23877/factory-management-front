@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Box, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
 import AddRounded from "@material-ui/icons/AddRounded";
@@ -10,22 +10,36 @@ import { FindInPageRounded, ListAltRounded, LocalOfferRounded } from "@material-
 import List from "app/SideUtilityList";
 import { BasePaper } from "app/Paper";
 import DataGrid from "app/NewDataGrid";
-// import OneFieldModal from "components/OneFieldModal";
 
 import AddServiceModal from "features/FieldService/AddServiceModal";
 import FieldServiceDetails from "features/FieldService/Details";
 
 import { IFieldService } from "api/fieldService";
-// import { createServiceClass, deleteServiceClass, updateServiceClass } from "api/serviceClass";
-// import { createServiceCategory, deleteServiceCategory, updateServiceCategory } from "api/serviceCategories";
+import { get } from "api";
 
-export default function ServiceIndex() {
+export default function ServiceIndex({ serviceId }: { serviceId?: string }) {
   const [activeTab, setActiveTab] = useState(0);
   const [addService, setAddService] = useState(false);
   const [serviceClassModal, setServiceClassModal] = useState(false);
   const [categoryModal, setCategoryModal] = useState(false);
 
   const [selectedFS, setSelectedFS] = useState<IFieldService | null>(null);
+
+  useEffect(() => {
+    if (serviceId) {
+      get(`/service/${serviceId}`)
+        .then((d) => {
+          setSelectedFS(d);
+          setActiveTab(1);
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+    } else {
+      setActiveTab(0);
+      setSelectedFS(null);
+    }
+  }, [serviceId]);
 
   const cols = [
     { name: "no", header: "ID", minWidth: 200 },
@@ -47,25 +61,6 @@ export default function ServiceIndex() {
     <Box display="flex" height="100%" flex={1}>
       <BasePaper style={{ flex: 1 }}>
         <AddServiceModal open={addService} onClose={() => setAddService(false)} onDone={() => {}} />
-        {/* <OneFieldModal
-          title="Add/Edit Service Classes"
-          getUrl="/serviceClass"
-          open={serviceClassModal}
-          onClose={() => setServiceClassModal(false)}
-          postRecord={createServiceClass}
-          updateRecord={updateServiceClass}
-          deleteRecord={deleteServiceClass}
-        />
-        <OneFieldModal
-          title="Add/Edit Service Categories"
-          getUrl="/serviceCategory"
-          open={categoryModal}
-          onClose={() => setCategoryModal(false)}
-          postRecord={createServiceCategory}
-          updateRecord={updateServiceCategory}
-          deleteRecord={deleteServiceCategory}
-        /> */}
-
         <Box display="flex" alignItems="center">
           <Tabs
             value={activeTab}

@@ -25,17 +25,13 @@ export default function Modal({
     try {
       if (initialValues && initialValues.id) {
         const reqData = getModifiedValues(data, initialValues);
-        // await updateReceive(initialValues.id, reqData);
+        await updateReceive(initialValues.id, reqData);
         onDone && onDone();
         onClose();
-
-        console.log({ data: reqData });
       } else {
-        // await createReceive(data);
+        await createReceive(data);
         onDone && onDone();
         onClose();
-
-        console.log({ data });
       }
     } catch (error) {
       console.log(error);
@@ -70,7 +66,9 @@ export default function Modal({
                   path="/po"
                   choseItem={values.POId}
                   value={values.POId}
-                  onChange={(e, nv) => setFieldValue("POId", nv.id)}
+                  onChange={(e, nv) => {
+                    setFieldValue("POId", nv.id);
+                  }}
                 />
                 <LinkField
                   label="PO Line Item"
@@ -78,17 +76,14 @@ export default function Modal({
                   getOptionLabel={(i) => i?.ItemId?.number || i?.ItemId?.name || "No-Number"}
                   getOptionList={(r) => r?.result || []}
                   getOptionValue={(i) => i.id}
-                  path="/po"
+                  path={values.POId ? `/polineitem?POId=${values.POId}` : "/polineitem"}
                   choseItem={values.POLineItemId}
                   value={values.POLineItemId}
                   onChange={(e, nv) => setFieldValue("POLineItemId", nv.id)}
+                  disabled={!values.POId || values.POId === ""}
                 />
                 <TextField label="Quantity" {...getFieldProps("quantity")} />
                 {initialValues && initialValues.id ? (
-                  <Button kind="add" type="submit">
-                    Submit
-                  </Button>
-                ) : (
                   <>
                     <Button kind="edit" type="submit">
                       Save
@@ -97,6 +92,10 @@ export default function Modal({
                       Delete
                     </Button>
                   </>
+                ) : (
+                  <Button kind="add" type="submit">
+                    Submit
+                  </Button>
                 )}
               </Box>
             </Form>

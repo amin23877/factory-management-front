@@ -1,33 +1,25 @@
-import React, { useMemo } from "react";
-import { ITicket } from "../../../../api/ticket";
-import DataGrid from "../../../../app/NewDataGrid";
+import React from "react";
+
+import DataGrid from "app/NewDataGrid";
+
+import { ITicket } from "api/ticket";
+
+const cols = [
+  { name: "no", header: "ID", minWidth: 200 },
+  { name: "name", header: "Name", flex: 1 },
+  {
+    name: "type",
+    header: "Type",
+    minWidth: 200,
+  },
+  {
+    name: "class",
+    header: "Class",
+    minWidth: 200,
+  },
+  { name: "price", header: "Price", type: "number", width: 150 },
+];
 
 export default function Table({ onRowSelected }: { onRowSelected: (row: ITicket) => void }) {
-    const cols = useMemo(
-        () => [
-            {
-                name: "date",
-                header: "Date",
-                type: "date",
-                width: 120,
-            },
-            {
-                name: "SO NO",
-                render: ({ data }: any) => data?.LineServiceRecordId?.SOId,
-                width: 120,
-            },
-            { name: "Assign", flex: 1 },
-            { name: "Ticket NO", width: 120 },
-            { name: "Ticket Name", flex: 1 },
-            { name: "Unit", render: ({ data }: any) => data?.ItemId?.no, width: 150 },
-            { name: "Client", width: 150 },
-            { name: "Rep", width: 100 },
-            { name: "Package", width: 80 },
-            { name: "status", header: "Status", width: 80 },
-            { name: "productionStatus", header: "Prod. Status", width: 100 },
-        ],
-        []
-    );
-
-    return <DataGrid columns={cols} url="/ticket" onRowSelected={onRowSelected} />;
+  return <DataGrid columns={cols} url="/service" onRowSelected={onRowSelected} />;
 }

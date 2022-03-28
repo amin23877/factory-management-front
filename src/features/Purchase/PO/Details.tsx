@@ -18,29 +18,15 @@ import DocumentsTab from "common/Document/Tab";
 import { updatePurchasePO, IPurchasePO } from "api/purchasePO";
 import { ILineItem } from "api/lineItem";
 
-import { formatTimestampToDate } from "logic/date";
 import { getModifiedValues } from "logic/utils";
 import ReceivingTab from "./Receiving";
 
 export default function Details({ selectedPO, onDone }: { selectedPO: IPurchasePO; onDone?: () => void }) {
   const phone = useMediaQuery("(max-width:900px)");
-  const { data: lines } = useSWR<{ result: ILineItem[]; total: number }>(`/lineitem?po=${selectedPO.id}`);
+  const { data: lines } = useSWR<{ result: ILineItem[]; total: number }>(`/polineitem?POId=${selectedPO.id}`);
 
   const [activeTab, setActiveTab] = useState(0);
   const [activeMoreTab, setActiveMoreTab] = useState(0);
-
-  const receivedCols = useMemo<GridColumns>(
-    () => [
-      { field: "Date", valueFormatter: (r) => formatTimestampToDate(r.row.ItemId?.date), width: 200 },
-      { field: "ItemId", headerName: "Item Number", valueFormatter: (r) => r.row.ItemId.number, width: 200 },
-      { field: "ItemId", headerName: "Item Name", valueFormatter: (r) => r.row.ItemId.name, width: 200 },
-      { field: "vendor", headerName: "Vendor P. NO.", flex: 1 },
-      { field: "quantity", headerName: "QTY", width: 90 },
-      { field: "uom", headerName: "UOM", width: 100 },
-      { field: "note", headerName: "Note", width: 200 },
-    ],
-    []
-  );
 
   const LICols = useMemo<GridColumns>(
     () => [
@@ -51,16 +37,21 @@ export default function Details({ selectedPO, onDone }: { selectedPO: IPurchaseP
         valueFormatter: (r) => r.row.ItemId?.vendorPartNumber,
         width: 120,
       },
-      { field: "quantity", headerName: "QTY", width: 90 },
+      { field: "orderedQuantity", headerName: "QTY", width: 90 },
       {
         field: "UOM",
         valueFormatter: (r) => r.row.ItemId?.uom,
         width: 100,
       },
-      { field: "price", headerName: "Cost", width: 100 }, //check
-      { field: "total", headerName: "Total", valueFormatter: (r) => r.row?.price * r.row.quantity, width: 100 },
-      { field: "Status", valueFormatter: (r) => r.row?.PurchasePOId?.status, width: 100 },
-      { field: "Note", valueFormatter: (r) => r.row?.PurchasePOId?.note, width: 100 },
+      { field: "cost", headerName: "Cost", width: 100 },
+      {
+        field: "total",
+        headerName: "Total",
+        valueFormatter: (r) => Number(r.row?.cost) * Number(r.row?.orderedQuantity),
+        width: 100,
+      },
+      { field: "Status", headerName: "Status", width: 100 },
+      { field: "notes", headerName: "Notes", width: 100 },
     ],
     []
   );
@@ -158,7 +149,7 @@ export default function Details({ selectedPO, onDone }: { selectedPO: IPurchaseP
             />
           )}
           {activeTab === 1 && <DocumentsTab itemId={selectedPO.id} model="purchasePo" />}
-          {activeTab === 2 && <ReceivingTab />}
+          {activeTab === 2 && <ReceivingTab POId={selectedPO.id} />}
           {activeTab === 3 && <NotesTab itemId={selectedPO.id} model="purchasePo" />}
         </BasePaper>
       </Box>
