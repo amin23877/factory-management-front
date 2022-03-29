@@ -6,6 +6,9 @@ import GroupLineItemTable from "components/GroupLineItemTable";
 
 import General from "../Forms/General";
 import Entities from "../Forms/Entities";
+import Addresses from "../Forms/Addresses";
+import Status from "../Forms/Status";
+import Metrics from "../Forms/Metrics";
 
 export default function GeneralStep({
   values,
@@ -34,9 +37,14 @@ export default function GeneralStep({
             textColor="primary"
           >
             <Tab label="Entities" />
-            <Tab label="Commission" />
+            <Tab label="Addresses" />
+            <Tab label="Status" />
+            <Tab label="Metrics" />
           </Tabs>
           {activeTab === 0 && <Entities values={values} setFieldValue={setFieldValue} getFieldProps={getFieldProps} />}
+          {activeTab === 1 && <Addresses getFieldProps={getFieldProps} />}
+          {activeTab === 2 && <Status getFieldProps={getFieldProps} />}
+          {activeTab === 3 && <Metrics getFieldProps={getFieldProps} />}
         </BasePaper>
       </Box>
       <div>

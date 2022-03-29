@@ -52,6 +52,8 @@ export default function AddQuote({
         ...data,
         entryDate: Number(new Date(data.entryDate)),
         expireDate: Number(new Date(data.expireDate)),
+        sentDate: Number(new Date(data.sentDate)),
+        estimatedShipDate: Number(new Date(data.estimatedShipDate)),
       });
       if (quoteResp && quoteResp.id) {
         if (divToPrint.current && quoteResp.id) {

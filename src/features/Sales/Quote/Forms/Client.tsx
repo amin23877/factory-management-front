@@ -16,7 +16,7 @@ export default function Client({
   const [selectedClient, setSelectedClient] = useState<any>();
 
   return (
-    <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={5}>
+    <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={8}>
       <LinkField
         value={values.ClientId}
         choseItem={values.ClientId}
@@ -31,13 +31,22 @@ export default function Client({
           setFieldValue("ClientId", nv.id);
         }}
       />
-      <TextField disabled label="Phone" value={selectedClient?.phone} />
-      <TextField disabled label="Ext" value={selectedClient?.ext} />
-      <TextField disabled label="Email" value={selectedClient?.email} />
+      <TextField disabled label="Phone" value={selectedClient?.phone} InputLabelProps={{ shrink: true }} />
+      <TextField disabled label="Ext" value={selectedClient?.ext} InputLabelProps={{ shrink: true }} />
+      <TextField disabled label="Email" value={selectedClient?.email} InputLabelProps={{ shrink: true }} />
       {/* <TextField disabled label="Unit Pricing Level" value={selectedClient?.phone} /> */}
-      <TextField disabled label="24 Hr Cont." />
-      <FormControlLabel label="No Tax Client" control={<Checkbox />} />
-      <FormControlLabel label="Call 24 hours before delivery" control={<Checkbox />} />
+      <TextField
+        disabled
+        label="24 Hr Cont."
+        style={{ gridColumnStart: "span 2" }}
+        InputLabelProps={{ shrink: true }}
+      />
+      <FormControlLabel label="No Tax Client" control={<Checkbox />} style={{ gridColumnStart: "span 2" }} />
+      <FormControlLabel
+        label="Call 24 hours before delivery"
+        control={<Checkbox />}
+        style={{ gridColumnStart: "span 2" }}
+      />
     </Box>
   );
 }

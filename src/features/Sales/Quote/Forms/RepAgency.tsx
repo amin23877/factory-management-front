@@ -4,19 +4,11 @@ import { Box } from "@material-ui/core";
 import TextField from "app/TextField";
 import LinkField from "app/Inputs/LinkFields";
 
-export default function RepAgency({
-  getFieldProps,
-  values,
-  setFieldValue,
-}: {
-  getFieldProps: any;
-  values: any;
-  setFieldValue: any;
-}) {
+export default function RepAgency({ values, setFieldValue }: { getFieldProps: any; values: any; setFieldValue: any }) {
   const [selectedRep, setSelectedRep] = useState<any>();
 
   return (
-    <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={5}>
+    <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={8}>
       <LinkField
         value={values.RepId}
         choseItem={values.RepId}
@@ -31,10 +23,11 @@ export default function RepAgency({
           setFieldValue("RepId", nv.id);
         }}
       />
-      <TextField disabled label="Address" value={selectedRep?.AddressId.address} />
-      <TextField disabled label="City" value={selectedRep?.AddressId.city} />
-      <TextField disabled label="Street" value={selectedRep?.AddressId.state} />
-      <TextField disabled label="ZIP" value={selectedRep?.AddressId.zip} />
+      <TextField disabled label="Address" value={selectedRep?.address} InputLabelProps={{ shrink: true }} />
+      <TextField disabled label="City" value={selectedRep?.city} InputLabelProps={{ shrink: true }} />
+      <TextField disabled label="Country" value={selectedRep?.country} InputLabelProps={{ shrink: true }} />
+      <TextField disabled label="State" value={selectedRep?.state} InputLabelProps={{ shrink: true }} />
+      <TextField disabled label="ZIP" value={selectedRep?.zip} InputLabelProps={{ shrink: true }} />
     </Box>
   );
 }

@@ -7,7 +7,7 @@ export default function Requester({ getFieldProps }: { getFieldProps: any }) {
   // TODO: Requester is Rep's Contact
 
   return (
-    <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={5}>
+    <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={8}>
       <TextField disabled label="Requester" />
       <TextField disabled label="Email" />
       <TextField disabled label="Phone" />
