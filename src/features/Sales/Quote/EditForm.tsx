@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import { Tabs, Tab, Box, Typography, LinearProgress, useMediaQuery } from "@material-ui/core";
 import { Form, Formik } from "formik";
-import { mutate } from "swr";
 
-import Button from "../../../app/Button";
-import { BasePaper } from "../../../app/Paper";
-import { CommissionTab, EntitiesTab, GeneralForm } from "./Forms";
+import { BasePaper } from "app/Paper";
+import { GeneralForm } from "./Forms";
 
-import { createQuoteComplete, IQuote, updateQuote } from "../../../api/quote";
-import Toast from "../../../app/Toast";
-import { getModifiedValues } from "../../../logic/utils";
+import { IQuote } from "api/quote";
+// import Toast from "app/Toast";
+// import { getModifiedValues } from "logic/utils";
+import Entities from "./Forms/Entities";
+import Addresses from "./Forms/Addresses";
+import Status from "./Forms/Status";
+import Metrics from "./Forms/Metrics";
 
 export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
   const [activeTab, setActiveTab] = useState(0);
@@ -30,7 +32,7 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
 
   return (
     <Formik initialValues={selectedQuote} onSubmit={() => {}}>
-      {({ handleChange, handleBlur, values, isSubmitting, setFieldValue }) => (
+      {({ handleChange, handleBlur, values, getFieldProps, setFieldValue }) => (
         <Form>
           <Box display="flex" flexDirection="column" style={phone ? { gap: 10 } : { gap: 7, height: "100%" }}>
             <BasePaper>
@@ -56,18 +58,17 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
                 style={{ maxWidth: 700 }}
               >
                 <Tab label="Entities" />
-                <Tab label="Commission" />
+                <Tab label="Addresses" />
+                <Tab label="Status" />
+                <Tab label="Metrics" />
               </Tabs>
 
               {activeTab === 0 && (
-                <EntitiesTab
-                  values={values}
-                  handleBlur={handleBlur}
-                  handleChange={handleChange}
-                  setFieldValue={setFieldValue}
-                />
+                <Entities values={values} setFieldValue={setFieldValue} getFieldProps={getFieldProps} />
               )}
-              {activeTab === 1 && <CommissionTab values={values} handleBlur={handleBlur} handleChange={handleChange} />}
+              {activeTab === 1 && <Addresses getFieldProps={getFieldProps} />}
+              {activeTab === 2 && <Status getFieldProps={getFieldProps} />}
+              {activeTab === 3 && <Metrics getFieldProps={getFieldProps} />}
             </BasePaper>
           </Box>
         </Form>

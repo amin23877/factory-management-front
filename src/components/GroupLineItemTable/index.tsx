@@ -128,8 +128,6 @@ export default function GroupLineItemTable({
       if (resp && selectedGroup !== undefined && resp?.services?.length > 0) {
         const text = resp?.services?.map((s: any) => s?.description).join("\n");
 
-        console.log({ resp, text });
-
         addLineItemToGroup(selectedGroup, {
           text,
           serviceProgramItemNo: item.no,
