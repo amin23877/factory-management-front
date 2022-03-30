@@ -1,40 +1,44 @@
 import React, { useState, useEffect } from "react";
-import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
+import TextField from "app/TextField";
 import { get } from "api";
 
-const useValue = (initial?: string | any) => {
+const useValue = ({ initial, url }: { initial?: string | any; url: string }) => {
   const [value, setValue] = useState(initial);
 
   useEffect(() => {
     if (typeof initial === "string") {
-      get(`/item/${initial}`)
+      get(`${url}/${initial}`)
         .then((d) => setValue(d))
         .catch((e) => console.log(e));
     }
-  }, [initial]);
+  }, []);
 
   return [value, setValue];
 };
 
 export default function AsyncCombo({
   url,
+  label,
   value,
   filterBy,
+  valueUrl,
   onChange,
   getOptionLabel,
   getOptionSelected,
 }: {
   url: string;
+  label?: string;
   value?: any | string;
   filterBy: string;
+  valueUrl?: string;
   onChange?: (e: any, nv: any) => void;
   getOptionLabel: (o: any) => string;
   getOptionSelected: (o: any, v: any) => boolean;
 }) {
-  const [selectedValue, setSelectedValue] = useValue(value);
+  const [selectedValue, setSelectedValue] = useValue({ initial: value, url: valueUrl || url });
   const [inputValue, setInputValue] = useState<string>();
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<any[]>([]);
@@ -97,9 +101,7 @@ export default function AsyncCombo({
       renderInput={(params) => (
         <TextField
           {...params}
-          label="Item"
-          variant="outlined"
-          size="small"
+          label={label}
           InputProps={{
             ...params.InputProps,
             endAdornment: (
