@@ -45,10 +45,15 @@ export default function EditTab({
 
   const LICols = useMemo<GridColumns>(
     () => [
-      { field: "sort", headerName: "Sort", width: 80 },
-      { field: "itemNo", headerName: "Part Number", valueFormatter: (r) => r.row?.ItemId?.no, width: 200 },
+      { field: "group", headerName: "Sort", width: 80 },
       {
-        field: "itemDescription",
+        field: "itemNo",
+        headerName: "Part Number",
+        valueFormatter: (r) => r.row?.ItemId?.no || r.row?.text,
+        width: 200,
+      },
+      {
+        field: "description",
         headerName: "Description",
         valueFormatter: (r) => r.row?.ItemId?.description,
         width: 150,

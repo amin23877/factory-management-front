@@ -51,6 +51,8 @@ export default function Group({
   onDeleteLineItem: (lineIndex: number) => void;
   onEditLineItem: (lineIndex: number, data: Partial<lineItemType>) => void;
 }) {
+  console.log(row);
+
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
 
@@ -121,7 +123,7 @@ export default function Group({
                     <TableRow className="group-lineitem-table-row" key={i}>
                       <TableCell>{lineItem.type}</TableCell>
                       <TableCell title={lineItem?.text}>
-                        {lineItem.ItemObject?.no || (
+                        {lineItem.ItemObject?.no || lineItem?.ServiceObject?.no || (
                           <strong>{`Service Program Option for ${lineItem.serviceProgramItemNo}`}</strong>
                         )}
                       </TableCell>

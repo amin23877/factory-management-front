@@ -761,14 +761,15 @@ export const ApprovalForm = ({
           onBlur={handleBlur}
           items={[]}
         />
-        <ArraySelect
+        <TextField value={values.status} name="status" label="Status" onChange={handleChange} onBlur={handleBlur} />
+        {/* <ArraySelect
           value={values.status}
           name="status"
           label="Status"
           onChange={handleChange}
           onBlur={handleBlur}
           items={["New", "Pending", "Fulfilled", "Shipped"]}
-        />
+        /> */}
       </Box>
     </>
   );
