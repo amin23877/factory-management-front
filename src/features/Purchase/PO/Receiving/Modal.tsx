@@ -69,8 +69,8 @@ export default function Modal({
                   filterBy="ItemId.no"
                   value={values.POLineItemId}
                   getOptionLabel={(i) => i?.ItemId?.no || "No-Number"}
-                  getOptionSelected={(o, v) => o.id === v.id}
-                  onChange={(e, nv) => setFieldValue("POLineItemId", nv.id)}
+                  getOptionSelected={(o, v) => o?.id === v?.id}
+                  onChange={(e, nv) => setFieldValue("POLineItemId", nv?.id)}
                 />
                 <TextField label="Quantity" {...getFieldProps("quantity")} />
                 {initialValues && initialValues.id ? (
