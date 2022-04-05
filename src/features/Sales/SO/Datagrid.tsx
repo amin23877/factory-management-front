@@ -11,10 +11,10 @@ const columns = [
     type: "date",
   },
   { name: "number", header: "SO ID", minWidth: 100 },
-  { name: "Client", minWidth: 100, render: ({ data }: any) => data?.client?.name },
+  { name: "Client", minWidth: 100, render: ({ data }: any) => data?.ClientId?.name },
   { name: "description", header: "Description", minWidth: 150 },
-  { name: "Rep", minWidth: 130, render: ({ data }: any) => data?.repOrAgency?.name },
-  { name: "state", header: "State", minWidth: 120, render: ({ data }: any) => data?.repOrAgency?.state },
+  { name: "Rep", minWidth: 130, render: ({ data }: any) => data?.RepId?.name },
+  { name: "state", header: "State", minWidth: 120, render: ({ data }: any) => data?.RepId?.state },
 
   {
     name: "estimatedShipDate",

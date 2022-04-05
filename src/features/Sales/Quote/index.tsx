@@ -56,14 +56,14 @@ export default function QuotePanel() {
         name: "client",
         header: "Client",
         minWidth: 100,
-        render: ({ data }: any) => data.client?.name,
+        render: ({ data }: any) => data?.ClientId?.name,
       },
-      { name: "rep", header: "Rep", minWidth: 100, render: ({ data }: any) => data.repOrAgency?.name },
+      { name: "rep", header: "Rep", minWidth: 100, render: ({ data }: any) => data.RepId?.name },
       {
         name: "state",
         header: "State",
         minWidth: 100,
-        render: ({ data }: any) => data.repOrAgency?.state,
+        render: ({ data }: any) => data.RepId?.state,
       },
       { name: "requesterName", header: "Requester", minWidth: 100 },
       {
