@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Tab, Tabs } from "@material-ui/core";
-import { GridColumns } from "@material-ui/data-grid";
 
 import { formatTimestampToDate } from "logic/date";
 import { BasePaper } from "app/Paper";
@@ -11,44 +10,52 @@ function getStatus({ data }: any) {
   if (!data) {
     return { status: "Need To Purchase", qty: 0 };
   }
-  const availableQty = Number(data.onHandQty || 0) - Number(data.allocatedQty || 0);
+  const availableQty = Number(data?.id?.onHandQty || 0) - Number(data?.id?.allocatedQty || 0);
   if (data.quantity < availableQty) {
-    return { status: "On Hand", qty: Number(data.onHandQty || 0) };
+    return { status: "On Hand", qty: Number(data?.id?.onHandQty || 0) };
   }
-  if (data.quantity < data.onOrderQty) {
-    return { status: "On Order", qty: Number(data.onOrderQty || 0) };
+  if (data.quantity < data?.id?.onOrderQty) {
+    return { status: "On Order", qty: Number(data?.id?.onOrderQty || 0) };
   }
   return { status: "Need To Purchase", qty: Number(data.quantity || 0) };
 }
 
-const cols: GridColumns = [
+const cols = [
   {
-    field: "date",
-    headerName: "Date",
-    type: "date",
+    name: "date",
+    header: "Date",
+    type: "string",
     width: 120,
-    valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+    render: ({ data }: any) => formatTimestampToDate(data?.createdAt),
   },
-  { field: "so", headerName: "SO Number", width: 120 },
-  { field: "unit", headerName: "Unit Number", width: 120 },
-  { field: "itemNo", headerName: "Item Number", width: 120, valueFormatter: (params) => params?.row?.data?.no },
-  { field: "itemName", headerName: "Item Name", width: 120, valueFormatter: (params) => params?.row?.data?.no },
+  { name: "so", header: "SO Number", width: 120 },
+  { name: "unit", header: "Unit Number", width: 120 },
+  { name: "itemNo", header: "Item Number", type: "string", width: 120, render: ({ data }: any) => data?.data?.no },
+  { name: "itemName", header: "Item Name", type: "string", width: 120, render: ({ data }: any) => data?.data?.name },
   {
-    field: "itemDescription",
-    headerName: "Item Description",
-    width: 180,
-    valueFormatter: (params) => params?.row?.data?.no,
+    name: "itemDescription",
+    header: "Item Description",
+    type: "string",
+    flex: 1,
+    render: ({ data }: any) => data?.data?.id?.description,
   },
   {
-    field: "qtyUsed",
-    headerName: "Qty Used",
+    name: "qtyUsed",
+    header: "Qty Used",
+    type: "string",
     width: 120,
-    valueFormatter: (params) => params?.row?.data?.quantity || 0,
+    render: ({ data }: any) => data?.data?.quantity || 0,
   },
-  { field: "status", headerName: "Status", width: 120, valueFormatter: (p) => getStatus(p?.row).status },
-  { field: "statusQty", headerName: "Status Qty", width: 120, valueFormatter: (p) => getStatus(p?.row).qty },
-  { field: "qtyRemain", headerName: "Qty Remain", width: 120 },
-  { field: "dateExpected", headerName: "Date Expected", width: 120 },
+  { name: "status", header: "Status", type: "string", width: 120, render: ({ data }: any) => getStatus(data).status },
+  {
+    name: "statusQty",
+    header: "Status Qty",
+    type: "string",
+    width: 120,
+    render: ({ data }: any) => getStatus(data).qty,
+  },
+  { name: "qtyRemain", header: "Qty Remain", type: "string", width: 120 },
+  { name: "dateExpected", header: "Date Expected", type: "string", width: 120 },
 ];
 
 export default function Dashboard() {

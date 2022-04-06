@@ -1,85 +1,85 @@
 import React, { useMemo } from "react";
 import useSWR from "swr";
 
-import PieChart from "../../../app/Chart/PieChart";
-import BaseLineChart from "../../../app/Chart/LineChart";
+import PieChart from "app/Chart/PieChart";
+import BaseLineChart from "app/Chart/LineChart";
 
-import { ISO } from "../../../api/so";
+import { ISO } from "api/so";
 
 import {
-    extractClientPieChartData,
-    extractDevicesSales,
-    extractSalesLocation,
-    extractSalesRep,
-    extractSalesVsWeek,
-} from "../../../logic/reports/sales";
+  extractClientPieChartData,
+  extractDevicesSales,
+  extractSalesLocation,
+  extractSalesRep,
+  extractSalesVsWeek,
+} from "logic/reports/sales";
 
 export function ClientPie() {
-    const { data: SOs } = useSWR<{ result: ISO[] }>("/so");
+  const { data: SOs } = useSWR<{ result: ISO[] }>("/so");
 
-    const chartData = useMemo(() => {
-        if (SOs) {
-            return extractClientPieChartData(SOs.result);
-        } else {
-            return [];
-        }
-    }, [SOs]);
+  const chartData = useMemo(() => {
+    if (SOs) {
+      return extractClientPieChartData(SOs.result);
+    } else {
+      return [];
+    }
+  }, [SOs]);
 
-    return <PieChart data={chartData} dataKey="value" height={250} />;
+  return <PieChart data={chartData} dataKey="value" height={250} />;
 }
 
 export function SalesVsWeek() {
-    const { data: SOs } = useSWR<{ result: ISO[] }>("/so");
+  const { data: SOs } = useSWR<{ result: ISO[] }>("/so");
 
-    const chartData = useMemo(() => {
-        if (SOs) {
-            return extractSalesVsWeek(SOs.result);
-        } else {
-            return [];
-        }
-    }, [SOs]);
+  const chartData = useMemo(() => {
+    if (SOs) {
+      return extractSalesVsWeek(SOs.result);
+    } else {
+      return [];
+    }
+  }, [SOs]);
 
-    return <BaseLineChart height={250} data={chartData} xDataKey="week" barDataKey="totalAmount" />;
+  return <BaseLineChart height={250} data={chartData} xDataKey="week" barDataKey="totalAmount" />;
 }
 
 export function DevicesPie() {
-    const { data: units } = useSWR("/unit");
+  const { data: units } = useSWR("/unit");
 
-    const chartData = useMemo(() => {
-        if (units) {
-            return extractDevicesSales(units.result);
-        } else {
-            return [];
-        }
-    }, [units]);
+  const chartData = useMemo(() => {
+    if (units) {
+      return extractDevicesSales(units.result);
+    } else {
+      return [];
+    }
+  }, [units]);
 
-    return <PieChart data={chartData} dataKey="value" height={250} />;
+  return <PieChart data={chartData} dataKey="value" height={250} />;
 }
 
 export function SalesLocationPie() {
-    const { data: salesOrders } = useSWR("/so");
+  const { data: salesOrders } = useSWR("/so");
 
-    const chartData = useMemo(() => {
-        if (salesOrders) {
-            return extractSalesLocation(salesOrders.result);
-        } else {
-            return [];
-        }
-    }, [salesOrders]);
+  const chartData = useMemo(() => {
+    if (salesOrders) {
+      return extractSalesLocation(salesOrders.result);
+    } else {
+      return [];
+    }
+  }, [salesOrders]);
 
-    return <PieChart data={chartData} dataKey="value" height={250} />;
+  return <PieChart data={chartData} dataKey="value" height={250} />;
 }
 
 export function SalesRepPie() {
-    const { data: salesOrders } = useSWR("/so");
+  const { data: salesOrders } = useSWR("/so");
 
-    const chartData = useMemo(() => {
-        if (salesOrders) {
-            return extractSalesRep(salesOrders.result);
-        } else {
-            return [];
-        }
-    }, [salesOrders]);
+  const chartData = useMemo(() => {
+    if (salesOrders) {
+      return extractSalesRep(salesOrders.result);
+    } else {
+      return [];
+    }
+  }, [salesOrders]);
 
-    return <PieChart data={chartData} dataKey="value" height={250} />;
+  return <PieChart data={chartData} dataKey="value" height={250} />;
 }

@@ -7,12 +7,12 @@ import MyBackdrop from "app/Backdrop";
 
 import { usePortal } from "logic/PortalContext";
 
-const QuotePanel = React.lazy(() => import("features/Sales/Quote"));
-const SalesOrderPanel = React.lazy(() => import("features/Sales/SO"));
-const PurchaseOrderPanel = React.lazy(() => import("features/Sales/PO"));
-const DevicesPanel = React.lazy(() => import("features/Engineering/Devices"));
-const Dashboard = React.lazy(() => import("features/Sales/Dashboard"));
 const Calls = React.lazy(() => import("features/Sales/Call"));
+const Dashboard = React.lazy(() => import("features/Sales/Dashboard"));
+const DevicesPanel = React.lazy(() => import("features/Engineering/Devices"));
+const QuotePanel = React.lazy(() => import("features/Sales/Quote"));
+const PurchaseOrderPanel = React.lazy(() => import("features/Sales/PO"));
+const SalesOrderPanel = React.lazy(() => import("features/Sales/SO"));
 const Clients = React.lazy(() => import("features/Sales/Customer"));
 const Reps = React.lazy(() => import("features/Sales/Rep"));
 

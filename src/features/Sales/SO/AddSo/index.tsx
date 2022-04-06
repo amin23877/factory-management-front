@@ -201,7 +201,7 @@ export default function AddSOModal({
               </Box>
             </Box>
           )}
-          {step === 1 && values && <FinalForm onBack={() => setStep(1)} onDone={(data) => setStep(2)} />}
+          {step === 1 && values && <FinalForm />}
           {step === 2 && values && (
             <DocumentForm
               status={status}

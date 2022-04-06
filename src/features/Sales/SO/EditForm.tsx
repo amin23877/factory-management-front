@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { Tabs, Tab, Box, Typography, useMediaQuery } from "@material-ui/core";
-
 import { Form, Formik } from "formik";
+import { mutate } from "swr";
 
-// import Button from "app/Button";
-import { AccountingForm, AddressesForm, ApprovalForm, GeneralForm, ShippingForm } from "./Forms";
-import EntitiesForm from "./Forms/Entities";
+import { GeneralForm } from "./Forms";
+// import EntitiesForm from "./Forms/Entities";
 import { ISO, editSO } from "api/so";
 import { BasePaper } from "app/Paper";
 import Toast from "app/Toast";
-import { mutate } from "swr";
 import { getModifiedValues } from "logic/utils";
+import Shipping from "./Forms/Shipping";
+import Billing from "./Forms/Billing";
+import Approvals from "./Forms/Approvals";
+import Entities from "./Forms/Entities";
 
 export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
   const [activeTab, setActiveTab] = useState(0);
@@ -34,7 +36,7 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
 
   return (
     <Formik initialValues={selectedSo} onSubmit={handleSubmit}>
-      {({ handleChange, handleBlur, values, setValues, isSubmitting, setFieldValue }) => (
+      {({ handleChange, handleBlur, values, setValues, getFieldProps, setFieldValue }) => (
         <Form>
           <Box display="flex" flexDirection="column" style={phone ? { gap: 10 } : { gap: 10, height: "100%" }}>
             <BasePaper>
@@ -60,13 +62,23 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                 style={phone ? { maxWidth: "calc(100vw - 80px)" } : { maxWidth: 700 }}
               >
                 <Tab label="Approvals" />
-                <Tab label="Accounting" />
-                <Tab label="Shipping" />
                 <Tab label="Entities" />
-                <Tab label="Addresses" />
+                <Tab label="Shipping" />
+                <Tab label="Billing" />
               </Tabs>
               <Box>
-                {activeTab === 0 && (
+                {activeTab === 0 && <Approvals getFieldProps={getFieldProps} />}
+                {activeTab === 1 && (
+                  <Entities
+                    values={values}
+                    handleChange={handleChange}
+                    handleBlur={handleBlur}
+                    setFieldValue={setFieldValue}
+                  />
+                )}
+                {activeTab === 2 && <Shipping getFieldProps={getFieldProps} />}
+                {activeTab === 3 && <Billing getFieldProps={getFieldProps} />}
+                {/* {activeTab === 0 && (
                   <ApprovalForm
                     setFieldValue={setFieldValue}
                     values={values}
@@ -105,7 +117,7 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                     handleBlur={handleBlur}
                     handleChange={handleChange}
                   />
-                )}
+                )} */}
               </Box>
             </BasePaper>
           </Box>
@@ -115,42 +127,14 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
   );
 }
 
-export const FinalForm = ({ onDone, onBack }: { onDone: (a: any) => void; onBack: () => void }) => {
-  // const [loading, setLoading] = useState(false);
-
-  // const handleSubmit = async () => {
-  //   setLoading(true);
-  //   try {
-  //     const resp = await createSOComplete(data);
-  //     if (resp) {
-  //       onDone(resp);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
-
+export const FinalForm = () => {
   return (
-    <>
-      <Box height="85%" display="flex" flexDirection="column">
-        <Typography variant="h5">Are you sure?</Typography>
-        <Typography variant="subtitle1" style={{ margin: "1em 0" }}>
-          If you finalize your Purchase order, You can't update it, So if you want to update it you should make new
-          version or add new one
-        </Typography>
-        {/* {loading && <LinearProgress />}
-        <div style={{ flexGrow: 1 }} />
-        <Box display="flex" justifyContent="space-between" mt={4}>
-          <Button disabled={loading} onClick={onBack} color="secondary" variant="contained">
-            Back to lines
-          </Button>
-          <Button onClick={handleSubmit} color="primary" variant="contained">
-            Finalize
-          </Button>
-        </Box> */}
-      </Box>
-    </>
+    <Box height="85%" display="flex" flexDirection="column">
+      <Typography variant="h5">Are you sure?</Typography>
+      <Typography variant="subtitle1" style={{ margin: "1em 0" }}>
+        If you finalize your Purchase order, You can't update it, So if you want to update it you should make new
+        version or add new one
+      </Typography>
+    </Box>
   );
 };
