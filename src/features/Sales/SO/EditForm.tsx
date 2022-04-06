@@ -4,7 +4,8 @@ import { Tabs, Tab, Box, Typography, useMediaQuery } from "@material-ui/core";
 import { Form, Formik } from "formik";
 
 // import Button from "app/Button";
-import { AccountingForm, AddressesForm, ApprovalForm, EntitiesForm, GeneralForm, ShippingForm } from "./Forms";
+import { AccountingForm, AddressesForm, ApprovalForm, GeneralForm, ShippingForm } from "./Forms";
+import EntitiesForm from "./Forms/Entities";
 import { ISO, editSO } from "api/so";
 import { BasePaper } from "app/Paper";
 import Toast from "app/Toast";
