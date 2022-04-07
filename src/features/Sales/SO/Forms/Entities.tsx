@@ -1,8 +1,9 @@
 import React from "react";
-import { Box, TextField, useMediaQuery } from "@material-ui/core";
+import { Box, useMediaQuery } from "@material-ui/core";
 
 import { getAllModelContact } from "api/contact";
 import { FieldSelect } from "app/Inputs";
+import TextField from "app/TextField";
 import LinkField from "app/Inputs/LinkFields";
 
 export default function Entities({
@@ -20,7 +21,7 @@ export default function Entities({
 
   return (
     <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"} gridColumnGap={10} mt="5px">
-      <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} my={1}>
+      <Box display="flex" flexDirection="column" style={{ gap: 10 }} my={1}>
         <LinkField
           value={typeof values.RepId === "string" ? values.RepId : values.RepId?.id}
           label="rep / Agency"
@@ -61,7 +62,7 @@ export default function Entities({
           disabled
         />
       </Box>
-      <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} my={1}>
+      <Box display="flex" flexDirection="column" style={{ gap: 10 }} my={1}>
         <LinkField
           value={typeof values.client === "string" ? values.client : values.client?.id}
           label="Client"
@@ -109,14 +110,15 @@ export default function Entities({
           disabled
         />
       </Box>
-      <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} my={1}>
+      <Box display="flex" flexDirection="column" style={{ gap: 10 }} my={1}>
         <TextField disabled label="Requester" />
         <TextField disabled label="Email" />
         <TextField disabled label="Phone" />
         <TextField disabled label="Fax" />
-        <div style={{ height: 33 }} />
+        <div />
+        <div />
       </Box>
-      <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} my={1}>
+      <Box display="flex" flexDirection="column" style={{ gap: 10 }} my={1}>
         <FieldSelect
           label="24 Hour Contact"
           name="twentyFourContact"
@@ -162,7 +164,6 @@ export default function Entities({
           onBlur={handleBlur}
           disabled
         />
-        <div style={{ height: "80px", width: "100%" }}></div>
       </Box>
     </Box>
   );

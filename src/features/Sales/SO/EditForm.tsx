@@ -3,12 +3,12 @@ import { Tabs, Tab, Box, Typography, useMediaQuery } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import { mutate } from "swr";
 
-import { GeneralForm } from "./Forms";
-// import EntitiesForm from "./Forms/Entities";
-import { ISO, editSO } from "api/so";
 import { BasePaper } from "app/Paper";
 import Toast from "app/Toast";
+import { ISO, editSO } from "api/so";
 import { getModifiedValues } from "logic/utils";
+
+import { GeneralForm } from "./Forms";
 import Shipping from "./Forms/Shipping";
 import Billing from "./Forms/Billing";
 import Approvals from "./Forms/Approvals";
@@ -47,11 +47,6 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                 handleChange={handleChange}
                 setFieldValue={setFieldValue}
               />
-              {/* <Box textAlign="center" mt={1}>
-                <Button style={{ width: "200px" }} disabled={isSubmitting} type="submit" kind="edit">
-                  Save
-                </Button>
-              </Box> */}
             </BasePaper>
             <BasePaper style={{ flex: 1 }}>
               <Tabs
@@ -66,8 +61,8 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                 <Tab label="Shipping" />
                 <Tab label="Billing" />
               </Tabs>
-              <Box>
-                {activeTab === 0 && <Approvals getFieldProps={getFieldProps} />}
+              <Box pt={2}>
+                {activeTab === 0 && <Approvals values={values} getFieldProps={getFieldProps} />}
                 {activeTab === 1 && (
                   <Entities
                     values={values}

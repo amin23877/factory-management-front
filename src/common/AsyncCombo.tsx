@@ -25,6 +25,7 @@ export default function AsyncCombo({
   value,
   filterBy,
   valueUrl,
+  disabled,
   onChange,
   getOptionLabel,
   getOptionSelected,
@@ -34,6 +35,7 @@ export default function AsyncCombo({
   value?: any | string;
   filterBy: string;
   valueUrl?: string;
+  disabled?: boolean;
   onChange?: (e: any, nv: any) => void;
   getOptionLabel: (o: any) => string;
   getOptionSelected: (o: any, v: any) => boolean;
@@ -98,6 +100,7 @@ export default function AsyncCombo({
       onInputChange={(e, nv) => {
         setInputValue(nv);
       }}
+      disabled={disabled}
       renderInput={(params) => (
         <TextField
           {...params}
