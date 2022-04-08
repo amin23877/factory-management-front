@@ -11,9 +11,9 @@ export default function Approvals({ getFieldProps, values }: { getFieldProps: an
       <TextField label="Customer PO#" {...getFieldProps("customerPONumber")} />
       <TextField
         label="PO Received Date"
-        type="datetime-local"
+        type="date"
         InputLabelProps={{ shrink: true }}
-        {...getFieldProps("poReceivedDate")}
+        value={new Date(values.poReceivedDate).toISOString().slice(0, 10)}
       />
       <AsyncCombo
         label="PO Received By"
@@ -34,33 +34,33 @@ export default function Approvals({ getFieldProps, values }: { getFieldProps: an
       <TextField label="status" {...getFieldProps("status")} />
       <TextField
         label="Estimated Ship Date"
-        type="datetime-local"
+        type="date"
         InputLabelProps={{ shrink: true }}
-        {...getFieldProps("estimatedShipDate")}
+        value={new Date(values?.estimatedShipDate).toISOString().slice(0, 10)}
       />
       <TextField
         label="Original Ship Date"
-        type="datetime-local"
+        type="date"
         InputLabelProps={{ shrink: true }}
-        {...getFieldProps("originalShipDate")}
+        value={new Date(values?.originalShipDate).toISOString().slice(0, 10)}
       />
       <TextField
         label="Actual Ship Date"
-        type="datetime-local"
+        type="date"
         InputLabelProps={{ shrink: true }}
-        {...getFieldProps("actualShipDate")}
+        value={new Date(values?.actualShipDate).toISOString().slice(0, 10)}
       />
       <TextField
         label="Released To Production Date"
-        type="datetime-local"
+        type="date"
         InputLabelProps={{ shrink: true }}
-        {...getFieldProps("releasedToProductionDate")}
+        value={new Date(values?.releasedToProductionDate).toISOString().slice(0, 10)}
       />
       <TextField
         label="To Be InvoicedDate"
-        type="datetime-local"
+        type="date"
         InputLabelProps={{ shrink: true }}
-        {...getFieldProps("toBeInvoicedDate")}
+        value={new Date(values?.toBeInvoicedDate).toISOString().slice(0, 10)}
       />
       <FormControlLabel label="Expedite" control={<Checkbox />} {...getFieldProps("expedite")} />
     </Box>
