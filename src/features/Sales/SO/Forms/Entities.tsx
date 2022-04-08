@@ -5,6 +5,7 @@ import { getAllModelContact } from "api/contact";
 import { FieldSelect } from "app/Inputs";
 import TextField from "app/TextField";
 import LinkField from "app/Inputs/LinkFields";
+import AsyncCombo from "common/AsyncCombo";
 
 export default function Entities({
   handleChange,
@@ -22,23 +23,20 @@ export default function Entities({
   return (
     <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"} gridColumnGap={10} mt="5px">
       <Box display="flex" flexDirection="column" style={{ gap: 10 }} my={1}>
-        <LinkField
-          value={typeof values.RepId === "string" ? values.RepId : values.RepId?.id}
-          label="rep / Agency"
-          path="/rep"
-          filterLabel="name"
-          getOptionList={(resp) => resp?.result}
-          getOptionLabel={(cus) => cus?.name}
-          getOptionValue={(cus) => cus?.id}
+        <AsyncCombo
+          label="Rep / Agency"
+          filterBy="name"
+          getOptionLabel={(o) => o?.name}
+          getOptionSelected={(o, v) => o.id === v.id}
+          url="/rep"
+          value={values.RepId}
           onChange={(e, nv) => {
             setFieldValue("RepId", nv?.id);
           }}
-          onBlur={handleBlur}
-          url="/panel/rep"
         />
-        <TextField value={values.repOrAgency?.address} label="Address" disabled />
+        <TextField value={values.RepId?.address} label="Address" disabled />
         <TextField
-          value={values.repOrAgency?.city}
+          value={values.RepId?.city}
           name="city"
           label="City"
           onChange={handleChange}
@@ -46,7 +44,7 @@ export default function Entities({
           disabled
         />
         <TextField
-          value={values.repOrAgency?.state}
+          value={values.RepId?.state}
           name="state"
           label="State"
           onChange={handleChange}
@@ -54,7 +52,7 @@ export default function Entities({
           disabled
         />
         <TextField
-          value={values.repOrAgency?.zipcode}
+          value={values.RepId?.zipcode}
           name="zipCode"
           label="Zip Code"
           onChange={handleChange}
@@ -63,19 +61,16 @@ export default function Entities({
         />
       </Box>
       <Box display="flex" flexDirection="column" style={{ gap: 10 }} my={1}>
-        <LinkField
-          value={typeof values.client === "string" ? values.client : values.client?.id}
+        <AsyncCombo
           label="Client"
-          getOptionList={(resp) => resp?.result}
-          getOptionLabel={(cus) => cus?.name}
-          getOptionValue={(cus) => cus?.id}
+          filterBy="name"
+          getOptionLabel={(o) => o?.name}
+          getOptionSelected={(o, v) => o.id === v.id}
+          url="/client"
+          value={values.ClientId}
           onChange={(e, nv) => {
-            setFieldValue("client", nv?.id);
+            setFieldValue("ClientId", nv?.id);
           }}
-          onBlur={handleBlur}
-          url="/panel/client"
-          path="/client"
-          filterLabel="name"
         />
         <TextField
           value={values.contact?.lastName}
@@ -119,7 +114,11 @@ export default function Entities({
         <div />
       </Box>
       <Box display="flex" flexDirection="column" style={{ gap: 10 }} my={1}>
-        <FieldSelect
+        <TextField disabled label="24 Hour Contact" value={values.twentyFourContact} />
+        <TextField disabled label="24 Hour Contact Print" value={values.twentyFourContactPrint} />
+        <TextField disabled label="24 Hour Contact Email" value={values.twentyFourEmail} />
+
+        {/* <FieldSelect
           label="24 Hour Contact"
           name="twentyFourContact"
           request={
@@ -163,7 +162,7 @@ export default function Entities({
           onChange={handleChange}
           onBlur={handleBlur}
           disabled
-        />
+        /> */}
       </Box>
     </Box>
   );
