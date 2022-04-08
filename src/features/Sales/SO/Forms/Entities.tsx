@@ -1,10 +1,10 @@
 import React from "react";
 import { Box, useMediaQuery } from "@material-ui/core";
 
-import { getAllModelContact } from "api/contact";
-import { FieldSelect } from "app/Inputs";
+// import { getAllModelContact } from "api/contact";
+// import { FieldSelect } from "app/Inputs";
 import TextField from "app/TextField";
-import LinkField from "app/Inputs/LinkFields";
+// import LinkField from "app/Inputs/LinkFields";
 import AsyncCombo from "common/AsyncCombo";
 
 export default function Entities({
@@ -106,7 +106,18 @@ export default function Entities({
         />
       </Box>
       <Box display="flex" flexDirection="column" style={{ gap: 10 }} my={1}>
-        <TextField disabled label="Requester" />
+        <AsyncCombo
+          label="Rep / Agency"
+          filterBy="name"
+          getOptionLabel={(o) => o?.name}
+          getOptionSelected={(o, v) => o.id === v.id}
+          url="/rep"
+          value={values.RepId}
+          onChange={(e, nv) => {
+            setFieldValue("RepId", nv?.id);
+          }}
+        />
+        {/* <TextField disabled label="Requester" /> */}
         <TextField disabled label="Email" />
         <TextField disabled label="Phone" />
         <TextField disabled label="Fax" />
