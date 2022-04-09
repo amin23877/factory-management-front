@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 
 import PieChart from "app/Chart/PieChart";
@@ -6,40 +6,62 @@ import BaseLineChart from "app/Chart/LineChart";
 
 import { ISO } from "api/so";
 
-import {
-  extractClientPieChartData,
-  extractDevicesSales,
-  extractSalesLocation,
-  extractSalesRep,
-  extractSalesVsWeek,
-} from "logic/reports/sales";
+import { extractDevicesSales, extractSalesVsWeek } from "logic/reports/sales";
+import { post, get } from "api";
 
 export function ClientPie() {
-  const { data: SOs } = useSWR<{ result: ISO[] }>("/so");
+  const [chartData, setChartData] = useState<any[]>([]);
 
-  const chartData = useMemo(() => {
-    if (SOs) {
-      return extractClientPieChartData(SOs.result);
-    } else {
-      return [];
-    }
-  }, [SOs]);
+  useEffect(() => {
+    const generate = async () => {
+      try {
+        const rawData = await post("/report", {
+          model: "sos",
+          field: "ClientId",
+          afterPopulation: { from: "clients", as: "client" },
+        });
 
-  return <PieChart data={chartData} dataKey="value" height={250} />;
+        setChartData(rawData.slice(1, 30).map((i: any) => ({ name: i.client[0]?.name, count: i.count })));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    generate();
+  }, []);
+
+  return <PieChart data={chartData} dataKey="count" height={250} />;
 }
 
 export function SalesVsWeek() {
-  const { data: SOs } = useSWR<{ result: ISO[] }>("/so");
+  const [SOs, setSOs] = useState<any[]>([]);
 
-  const chartData = useMemo(() => {
-    if (SOs) {
-      return extractSalesVsWeek(SOs.result);
-    } else {
-      return [];
-    }
-  }, [SOs]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const date = new Date();
+      const nowDate = Number(date);
+      const endMonthDate = Number(date.setDate(date.getDate() - 30));
+      try {
+        const resp = await get(`/so?mindate=${endMonthDate}&maxdate=${nowDate}&pageSize=10000`);
+        setSOs(resp);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-  return <BaseLineChart height={250} data={chartData} xDataKey="week" barDataKey="totalAmount" />;
+    fetchData();
+  }, []);
+
+  // const chartData = useMemo(() => {
+  //   if (SOs) {
+  //     return extractSalesVsWeek(SOs.result);
+  //   } else {
+  //     return [];
+  //   }
+  // }, [SOs]);
+
+  // return <BaseLineChart height={250} data={chartData} xDataKey="week" barDataKey="totalAmount" />;
+  return <></>;
 }
 
 export function DevicesPie() {
@@ -57,29 +79,49 @@ export function DevicesPie() {
 }
 
 export function SalesLocationPie() {
-  const { data: salesOrders } = useSWR("/so");
+  const [chartData, setChartData] = useState<any[]>([]);
 
-  const chartData = useMemo(() => {
-    if (salesOrders) {
-      return extractSalesLocation(salesOrders.result);
-    } else {
-      return [];
-    }
-  }, [salesOrders]);
+  useEffect(() => {
+    const generate = async () => {
+      try {
+        const rawData = await post("/report", {
+          model: "sos",
+          beforePopulations: [{ from: "projects", as: "project", localField: "ProjectId" }],
+          field: "project.location",
+        });
 
-  return <PieChart data={chartData} dataKey="value" height={250} />;
+        setChartData(rawData.slice(1, 30).map((i: any) => ({ name: i._id[0], count: i.count })));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    generate();
+  }, []);
+
+  return <PieChart data={(chartData as any) || []} dataKey="count" height={250} />;
 }
 
 export function SalesRepPie() {
-  const { data: salesOrders } = useSWR("/so");
+  const [chartData, setChartData] = useState<any[]>([]);
 
-  const chartData = useMemo(() => {
-    if (salesOrders) {
-      return extractSalesRep(salesOrders.result);
-    } else {
-      return [];
-    }
-  }, [salesOrders]);
+  useEffect(() => {
+    const generate = async () => {
+      try {
+        const rawData = await post("/report", {
+          model: "sos",
+          field: "RepId",
+          afterPopulation: { from: "reps", as: "rep" },
+        });
 
-  return <PieChart data={chartData} dataKey="value" height={250} />;
+        setChartData(rawData.slice(1, 30).map((i: any) => ({ name: i.rep[0]?.name, count: i.count })));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    generate();
+  }, []);
+
+  return <PieChart data={chartData} dataKey="count" height={250} />;
 }

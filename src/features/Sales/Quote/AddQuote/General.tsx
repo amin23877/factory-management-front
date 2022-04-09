@@ -44,7 +44,7 @@ export default function GeneralStep({
           {activeTab === 0 && <Entities values={values} setFieldValue={setFieldValue} getFieldProps={getFieldProps} />}
           {activeTab === 1 && <Addresses getFieldProps={getFieldProps} />}
           {activeTab === 2 && <Status getFieldProps={getFieldProps} />}
-          {activeTab === 3 && <Metrics getFieldProps={getFieldProps} />}
+          {activeTab === 3 && <Metrics values={values} getFieldProps={getFieldProps} />}
         </BasePaper>
       </Box>
       <div>

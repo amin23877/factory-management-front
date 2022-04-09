@@ -13,7 +13,7 @@ export default function Client({
   values: any;
   setFieldValue: any;
 }) {
-  const [selectedClient, setSelectedClient] = useState<any>();
+  const [selectedClient, setSelectedClient] = useState<any>(values?.ClientId);
 
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={8}>

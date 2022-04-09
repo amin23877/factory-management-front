@@ -68,7 +68,7 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
               )}
               {activeTab === 1 && <Addresses getFieldProps={getFieldProps} />}
               {activeTab === 2 && <Status getFieldProps={getFieldProps} />}
-              {activeTab === 3 && <Metrics getFieldProps={getFieldProps} />}
+              {activeTab === 3 && <Metrics values={values} getFieldProps={getFieldProps} />}
             </BasePaper>
           </Box>
         </Form>

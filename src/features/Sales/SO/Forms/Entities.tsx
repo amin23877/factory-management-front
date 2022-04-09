@@ -6,6 +6,7 @@ import { Box, useMediaQuery } from "@material-ui/core";
 import TextField from "app/TextField";
 // import LinkField from "app/Inputs/LinkFields";
 import AsyncCombo from "common/AsyncCombo";
+import useSWR from "swr";
 
 export default function Entities({
   handleChange,
@@ -19,6 +20,9 @@ export default function Entities({
   setFieldValue: any;
 }) {
   const phone = useMediaQuery("(max-width:900px)");
+  const { data: contacts } = useSWR(values?.ClientId?.id ? `/contact/client/${values?.ClientId?.id}` : null);
+  const contact = contacts?.filter((c: any) => c.main).length > 0 ? contacts?.filter((c: any) => c.main)[0] : undefined;
+  console.log({ contacts, contact });
 
   return (
     <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"} gridColumnGap={10} mt="5px">
@@ -73,37 +77,31 @@ export default function Entities({
           }}
         />
         <TextField
-          value={values.contact?.lastName}
+          value={contact ? `${contact?.firstName} ${contact?.lastName}` : ""}
           name="contactName"
           label="Contact Name"
-          onChange={handleChange}
-          onBlur={handleBlur}
           disabled
         />
         <TextField
-          value={values.contact?.email}
+          value={contact?.emails?.length > 0 ? contact?.emails[0].email : ""}
           name="email"
           label="Email"
-          onChange={handleChange}
-          onBlur={handleBlur}
           disabled
         />
         <TextField
-          value={values.contact?.lastName}
+          value={contact?.phones?.length > 0 ? contact?.phones[0].phone : ""}
           name="phone"
           label="Phone"
-          onChange={handleChange}
-          onBlur={handleBlur}
           disabled
         />
-        <TextField
+        {/* <TextField
           value={values.unitPricingLevel}
           name="Unit Pricing Level"
           label="Unit Pricing Level"
           onChange={handleChange}
           onBlur={handleBlur}
           disabled
-        />
+        /> */}
       </Box>
       <Box display="flex" flexDirection="column" style={{ gap: 10 }} my={1}>
         <AsyncCombo
@@ -117,10 +115,9 @@ export default function Entities({
             setFieldValue("RepId", nv?.id);
           }}
         />
-        {/* <TextField disabled label="Requester" /> */}
-        <TextField disabled label="Email" />
-        <TextField disabled label="Phone" />
-        <TextField disabled label="Fax" />
+        <TextField disabled label="Email" value={values?.RepId?.email} />
+        <TextField disabled label="Phone" value={values?.RepId?.phone} />
+        <TextField disabled label="City" value={values?.RepId?.city} />
         <div />
         <div />
       </Box>

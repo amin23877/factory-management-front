@@ -5,7 +5,7 @@ import TextField from "app/TextField";
 import LinkField from "app/Inputs/LinkFields";
 
 export default function RepAgency({ values, setFieldValue }: { getFieldProps: any; values: any; setFieldValue: any }) {
-  const [selectedRep, setSelectedRep] = useState<any>();
+  const [selectedRep, setSelectedRep] = useState<any>(values?.RepId);
 
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={8}>
