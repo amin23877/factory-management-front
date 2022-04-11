@@ -59,7 +59,7 @@ export default function Dashboard() {
   return (
     <Box display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 1fr"} gridGap={10}>
       <BasePaper style={phone ? {} : { gridColumnEnd: "span 2" }}>
-        <Typography variant="subtitle1">Sales Per Week</Typography>
+        <Typography variant="subtitle1">Sales Per Week(Last 30 days)</Typography>
         <SalesVsWeek />
       </BasePaper>
 

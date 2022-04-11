@@ -1,12 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
+import getWeekOfMonth from "date-fns/getWeekOfMonth";
 
 import PieChart from "app/Chart/PieChart";
 import BaseLineChart from "app/Chart/LineChart";
 
-import { ISO } from "api/so";
-
-import { extractDevicesSales, extractSalesVsWeek } from "logic/reports/sales";
+import { extractDevicesSales } from "logic/reports/sales";
 import { post, get } from "api";
 
 export function ClientPie() {
@@ -43,7 +42,24 @@ export function SalesVsWeek() {
       const endMonthDate = Number(date.setDate(date.getDate() - 30));
       try {
         const resp = await get(`/so?mindate=${endMonthDate}&maxdate=${nowDate}&pageSize=10000`);
-        setSOs(resp);
+        const chartData = resp.result.reduce((prev: any, cur: any) => {
+          if (cur.date) {
+            const week = getWeekOfMonth(cur.date);
+            const index = prev.findIndex((i: any) => i.name === week);
+            if (index > -1) {
+              let temp = prev.concat();
+              temp[index] = { name: week, count: prev[index].count + 1 };
+              return temp;
+            } else {
+              return prev.concat({ name: week, count: 0 });
+            }
+          } else {
+            return prev;
+          }
+        }, []);
+        console.log({ chartData });
+
+        setSOs(chartData);
       } catch (error) {
         console.log(error);
       }
@@ -52,16 +68,7 @@ export function SalesVsWeek() {
     fetchData();
   }, []);
 
-  // const chartData = useMemo(() => {
-  //   if (SOs) {
-  //     return extractSalesVsWeek(SOs.result);
-  //   } else {
-  //     return [];
-  //   }
-  // }, [SOs]);
-
-  // return <BaseLineChart height={250} data={chartData} xDataKey="week" barDataKey="totalAmount" />;
-  return <></>;
+  return <BaseLineChart height={250} data={SOs} xDataKey="name" barDataKey="count" />;
 }
 
 export function DevicesPie() {
