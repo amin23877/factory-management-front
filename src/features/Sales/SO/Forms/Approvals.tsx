@@ -5,6 +5,13 @@ import { FormControlLabel, Checkbox } from "@material-ui/core";
 import TextField from "app/TextField";
 import AsyncCombo from "common/AsyncCombo";
 
+function formatDateValue(v: any) {
+  if (v) {
+    return new Date(v).toISOString().slice(0, 10);
+  }
+  return null;
+}
+
 export default function Approvals({ getFieldProps, values }: { getFieldProps: any; values?: any }) {
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" gridTemplateRows="repeat(4, 1fr)" gridGap={8}>
@@ -13,7 +20,7 @@ export default function Approvals({ getFieldProps, values }: { getFieldProps: an
         label="PO Received Date"
         type="date"
         InputLabelProps={{ shrink: true }}
-        value={new Date(values.poReceivedDate).toISOString().slice(0, 10)}
+        value={formatDateValue(values?.poReceivedDate)}
       />
       <AsyncCombo
         label="PO Received By"
@@ -36,31 +43,31 @@ export default function Approvals({ getFieldProps, values }: { getFieldProps: an
         label="Estimated Ship Date"
         type="date"
         InputLabelProps={{ shrink: true }}
-        value={new Date(values?.estimatedShipDate).toISOString().slice(0, 10)}
+        value={formatDateValue(values?.estimatedShipDate)}
       />
       <TextField
         label="Original Ship Date"
         type="date"
         InputLabelProps={{ shrink: true }}
-        value={new Date(values?.originalShipDate).toISOString().slice(0, 10)}
+        value={formatDateValue(values?.originalShipDate)}
       />
       <TextField
         label="Actual Ship Date"
         type="date"
         InputLabelProps={{ shrink: true }}
-        value={new Date(values?.actualShipDate).toISOString().slice(0, 10)}
+        value={formatDateValue(values?.actualShipDate)}
       />
       <TextField
         label="Released To Production Date"
         type="date"
         InputLabelProps={{ shrink: true }}
-        value={new Date(values?.releasedToProductionDate).toISOString().slice(0, 10)}
+        value={formatDateValue(values?.releasedToProductionDate)}
       />
       <TextField
         label="To Be InvoicedDate"
         type="date"
         InputLabelProps={{ shrink: true }}
-        value={new Date(values?.toBeInvoicedDate).toISOString().slice(0, 10)}
+        value={formatDateValue(values?.toBeInvoicedDate)}
       />
       <FormControlLabel label="Expedite" control={<Checkbox />} {...getFieldProps("expedite")} />
     </Box>

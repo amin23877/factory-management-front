@@ -29,7 +29,7 @@ export function ClientPie() {
     generate();
   }, []);
 
-  return <PieChart data={chartData} dataKey="count" height={250} />;
+  return <PieChart legend data={chartData} dataKey="count" height={250} />;
 }
 
 export function SalesVsWeek() {
@@ -82,7 +82,7 @@ export function DevicesPie() {
     }
   }, [units]);
 
-  return <PieChart data={chartData} dataKey="value" height={250} />;
+  return <PieChart legend data={chartData} dataKey="value" height={250} />;
 }
 
 export function SalesLocationPie() {
@@ -106,7 +106,7 @@ export function SalesLocationPie() {
     generate();
   }, []);
 
-  return <PieChart data={(chartData as any) || []} dataKey="count" height={250} />;
+  return <PieChart legend data={(chartData as any) || []} dataKey="count" height={250} />;
 }
 
 export function SalesRepPie() {
@@ -130,5 +130,5 @@ export function SalesRepPie() {
     generate();
   }, []);
 
-  return <PieChart data={chartData} dataKey="count" height={250} />;
+  return <PieChart legend data={chartData} dataKey="count" height={250} />;
 }

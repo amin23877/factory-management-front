@@ -121,11 +121,19 @@ export const GeneralForm = ({
           onChange={handleChange}
           disabled
         />
+        <TextField
+          style={{ gridColumn: "span 2" }}
+          value={values.freightTerms}
+          name="freightTerms"
+          label="Freight Terms"
+          onChange={handleChange}
+          disabled
+        />
         <Paper
           style={{
             padding: "0 0.5em 0 1em",
             backgroundColor: "#eee",
-            gridColumnEnd: "span 2",
+            gridColumnEnd: "span 4",
           }}
         >
           <FormControlLabel

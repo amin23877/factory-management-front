@@ -20,7 +20,7 @@ export default function Entities({
         <Typography style={{ marginBottom: 5 }}>Rep/Agency</Typography>
         <RepAgency values={values} setFieldValue={setFieldValue} getFieldProps={getFieldProps} />
         <Typography style={{ marginTop: 10, marginBottom: 5 }}>Requester</Typography>
-        <Requester getFieldProps={getFieldProps} />
+        <Requester values={values} setFieldValue={setFieldValue} getFieldProps={getFieldProps} />
       </Box>
       <Box py={1}>
         <Typography style={{ marginBottom: 5 }}>Client</Typography>

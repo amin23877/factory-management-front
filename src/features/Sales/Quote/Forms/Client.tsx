@@ -3,6 +3,7 @@ import { Box, Checkbox, FormControlLabel } from "@material-ui/core";
 
 import TextField from "app/TextField";
 import LinkField from "app/Inputs/LinkFields";
+import useSWR from "swr";
 
 export default function Client({
   getFieldProps,
@@ -13,6 +14,8 @@ export default function Client({
   values: any;
   setFieldValue: any;
 }) {
+  const { data: contacts } = useSWR(values?.ClientId?.id ? `/contact/client/${values?.ClientId?.id}` : null);
+  const contact = contacts?.filter((c: any) => c.main).length > 0 ? contacts?.filter((c: any) => c.main)[0] : undefined;
   const [selectedClient, setSelectedClient] = useState<any>(values?.ClientId);
 
   return (
@@ -31,10 +34,18 @@ export default function Client({
           setFieldValue("ClientId", nv.id);
         }}
       />
-      <TextField disabled label="Phone" value={selectedClient?.phone} InputLabelProps={{ shrink: true }} />
-      <TextField disabled label="Ext" value={selectedClient?.ext} InputLabelProps={{ shrink: true }} />
-      <TextField disabled label="Email" value={selectedClient?.email} InputLabelProps={{ shrink: true }} />
-      {/* <TextField disabled label="Unit Pricing Level" value={selectedClient?.phone} /> */}
+      <TextField
+        value={contact?.emails?.length > 0 ? contact?.emails[0].email : ""}
+        name="email"
+        label="Email"
+        disabled
+      />
+      <TextField
+        value={contact?.phones?.length > 0 ? contact?.phones[0].phone : ""}
+        name="phone"
+        label="Phone"
+        disabled
+      />
       <TextField
         disabled
         label="24 Hr Cont."
