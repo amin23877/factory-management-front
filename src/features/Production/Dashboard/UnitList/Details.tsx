@@ -50,7 +50,7 @@ function Details({ unit }: { unit: IUnit }) {
     }
   };
 
-  const [infoActiveTab, setInfoActiveTab] = useState(0);
+  const [infoActiveTab, setInfoActiveTab] = useState(2);
   const [gridActiveTab, setGridActiveTab] = useState(0);
   const [selectedOption, setSelectedOption] = useState<IOption>();
   const [confirm, setConfirm] = useState(false);
@@ -267,12 +267,18 @@ function Details({ unit }: { unit: IUnit }) {
         {gridActiveTab === 1 && <DocumentTab itemId={unit.id} model="unit" />}
         {gridActiveTab === 2 && (
           <BaseDataGrid
+            getRowClassName={({ row }) => {
+              if (row?.parent) {
+                return "nested";
+              }
+              return "";
+            }}
             cols={jobRecordsCols}
             rows={unitJobRecords ? unitJobRecords.map((j, i) => ({ ...j, id: i })) : []}
             onRowSelected={(r) => {
               phone
-                ? history.push(`/panel/job/${unit.id}`)
-                : openRequestedSinglePopup({ url: `/panel/job/${unit.id}` });
+                ? history.push(`/panel/inventory/${unit?.ItemId?.id}`)
+                : openRequestedSinglePopup({ url: `/panel/inventory/${unit?.ItemId?.id}` });
             }}
           />
         )}

@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
-import { DataGrid, GridToolbar } from "@material-ui/data-grid";
+import { DataGrid, GridRowParams, GridToolbar } from "@material-ui/data-grid";
 
 export const useDataGridStyles = makeStyles({
   root: {
@@ -25,6 +25,12 @@ export const useDataGridStyles = makeStyles({
     "& .MuiDataGrid-sortIcon": {
       fill: "white",
     },
+    "& .nested": {
+      backgroundColor: "#d7d7d7",
+      "&:hover": {
+        backgroundColor: "#c0c0c0",
+      },
+    },
   },
 });
 
@@ -36,9 +42,18 @@ interface IBaseDataGrid {
   loading?: boolean;
   pagination?: boolean;
   filter?: boolean;
+  getRowClassName?: (params: GridRowParams) => string;
 }
 
-export default function BaseDataGrid({ onRowSelected, rows, cols, height, pagination, filter }: IBaseDataGrid) {
+export default function BaseDataGrid({
+  onRowSelected,
+  getRowClassName,
+  rows,
+  cols,
+  height,
+  pagination,
+  filter,
+}: IBaseDataGrid) {
   const classes = useDataGridStyles();
 
   return (
@@ -49,6 +64,7 @@ export default function BaseDataGrid({ onRowSelected, rows, cols, height, pagina
       }}
     >
       <DataGrid
+        getRowClassName={getRowClassName}
         density="compact"
         components={!filter ? {} : { Toolbar: GridToolbar }}
         className={classes.root}

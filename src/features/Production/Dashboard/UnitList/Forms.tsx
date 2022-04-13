@@ -30,6 +30,14 @@ export const General = ({
     <>
       <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
         <TextField
+          label="Serial"
+          value={values?.serial}
+          name="serial"
+          error={Boolean(errors.serial && touched.serial)}
+          placeholder="Serial"
+          disabled
+        />
+        <TextField
           label="Status"
           name="status"
           value={values.status}
