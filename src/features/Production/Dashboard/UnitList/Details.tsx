@@ -108,9 +108,9 @@ function Details({ unit }: { unit: IUnit }) {
     () => [
       { headerName: "No.", field: "no", width: 80 },
       { field: "Line", width: 80 },
-      { field: "Component NO.", valueFormatter: ({ row }) => row?.ItemNo, width: 180 },
-      { field: "Component Name", valueFormatter: ({ row }) => row?.ItemName, flex: 1 },
-      // { field: "Component Location", flex: 1 },
+      { field: "Parent", valueFormatter: ({ row }) => row?.parent?.no, width: 180 },
+      { field: "Component NO.", valueFormatter: ({ row }) => row?.ItemId?.no, width: 180 },
+      { field: "Component Name", valueFormatter: ({ row }) => row?.ItemId?.name, flex: 1 },
       // { field: "UM", width: 120 },
       { field: "usage", headerName: "QTY", width: 120 },
       { field: "Note", width: 200 },
@@ -224,7 +224,7 @@ function Details({ unit }: { unit: IUnit }) {
                     >
                       Delete Option
                     </Button>
-                    <BaseDataGrid rows={[]} cols={optionCols} onRowSelected={() => {}} />
+                    <BaseDataGrid rows={[]} cols={optionCols} onRowSelected={() => {}} height={200} />
                   </Fragment>
                 )}
               </BasePaper>
