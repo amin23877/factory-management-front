@@ -1,6 +1,6 @@
 import React, { useMemo, useState, Fragment } from "react";
 import { Box, Tabs, Tab, useMediaQuery } from "@material-ui/core";
-import { GridColDef, GridColumns } from "@material-ui/data-grid";
+import { GridColumns } from "@material-ui/data-grid";
 import { useHistory } from "react-router";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
@@ -22,6 +22,7 @@ import Toast from "app/Toast";
 import { IUnit, updateUnit } from "api/units";
 import { deleteOption, IOption } from "api/options";
 import { addImage, deleteImage } from "api/units";
+import { jobRecordType } from "api/job";
 
 import { getModifiedValues } from "logic/utils";
 import { openRequestedSinglePopup } from "logic/window";
@@ -95,23 +96,23 @@ function Details({ unit }: { unit: IUnit }) {
 
   const { data: warranties } = useSWR(
     gridActiveTab === 0
-      ? unit && unit?.ItemId?.id
-        ? `/service?ItemId=${unit?.ItemId?.id}&ServiceFamilyId=60efd0bcca0feadc84be6618`
+      ? unit && unit?.ItemId
+        ? `/service?ItemId=${unit?.ItemId}&ServiceFamilyId=60efd0bcca0feadc84be6618`
         : null
       : null
   );
 
-  const { data: unitBoms } = useSWR(gridActiveTab === 2 ? `/ubom?UnitId=${unit.id}` : null);
+  const { data: unitJobRecords } = useSWR<jobRecordType[]>(gridActiveTab === 2 ? `/unit/${unit.id}/jobrecords` : null);
 
-  const bomCols = useMemo<GridColDef[]>(
+  const jobRecordsCols = useMemo<GridColumns>(
     () => [
       { headerName: "No.", field: "no", width: 80 },
       { field: "Line", width: 80 },
-      { field: "Component", width: 180 },
-      { field: "Component Name", width: 180 },
-      { field: "Component Location", flex: 1 },
-      { field: "UM", width: 120 },
-      { field: "QTY", width: 120 },
+      { field: "Component NO.", valueFormatter: ({ row }) => row?.ItemNo, width: 180 },
+      { field: "Component Name", valueFormatter: ({ row }) => row?.ItemName, flex: 1 },
+      // { field: "Component Location", flex: 1 },
+      // { field: "UM", width: 120 },
+      { field: "usage", headerName: "QTY", width: 120 },
       { field: "Note", width: 200 },
     ],
     []
@@ -223,7 +224,7 @@ function Details({ unit }: { unit: IUnit }) {
                     >
                       Delete Option
                     </Button>
-                    <BaseDataGrid rows={unit.options || []} cols={optionCols} onRowSelected={() => {}} />
+                    <BaseDataGrid rows={[]} cols={optionCols} onRowSelected={() => {}} />
                   </Fragment>
                 )}
               </BasePaper>
@@ -239,7 +240,7 @@ function Details({ unit }: { unit: IUnit }) {
           </BasePaper>
         </>
       )}
-      <ProductionWorkFlow unitId={unit.id} stepper={unit.productionStatus} />
+      <ProductionWorkFlow unitId={unit.id} stepper={unit.status} />
       <BasePaper>
         <Tabs
           value={gridActiveTab}
@@ -251,7 +252,7 @@ function Details({ unit }: { unit: IUnit }) {
         >
           <Tab label="Warranties" />
           <Tab label="Documents" />
-          <Tab label="BOM" />
+          <Tab label="JOB" />
           <Tab label="Photos" />
           <Tab label="Wire List" />
           <Tab label="Forms" />
@@ -266,12 +267,12 @@ function Details({ unit }: { unit: IUnit }) {
         {gridActiveTab === 1 && <DocumentTab itemId={unit.id} model="unit" />}
         {gridActiveTab === 2 && (
           <BaseDataGrid
-            cols={bomCols}
-            rows={unitBoms || []}
+            cols={jobRecordsCols}
+            rows={unitJobRecords ? unitJobRecords.map((j, i) => ({ ...j, id: i })) : []}
             onRowSelected={(r) => {
               phone
-                ? history.push(`/panel/ubom/${r.id}/parts`)
-                : openRequestedSinglePopup({ url: `/panel/ubom/${r.id}/parts` });
+                ? history.push(`/panel/job/${unit.id}`)
+                : openRequestedSinglePopup({ url: `/panel/job/${unit.id}` });
             }}
           />
         )}

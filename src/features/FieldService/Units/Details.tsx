@@ -204,13 +204,13 @@ function Details({ unit }: { unit: IUnit }) {
                   )}
                   {infoActiveTab === 4 && (
                     <Levels
-                      values={values.item}
+                      values={values?.ItemId}
                       handleChange={handleChange}
                       handleBlur={handleBlur}
                       setFieldValue={setFieldValue}
                       errors={errors}
                       touched={touched}
-                      selectedItem={unit?.item}
+                      selectedItem={unit?.ItemId}
                     />
                   )}
                 </BasePaper>

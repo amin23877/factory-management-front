@@ -267,7 +267,7 @@ export default function PanelRouter() {
                 <Route exact path="/panel/customer/:cusNumber" component={CustomerDetails} />
 
                 <Route exact path="/panel/bom/:bomId/parts" component={BomParts} />
-                <Route exact path="/panel/ubom/:bomId/parts" component={JobParts} />
+                <Route exact path="/panel/job/:unitId" component={JobParts} />
 
                 <Route exact path="*" component={Page404} />
               </Switch>

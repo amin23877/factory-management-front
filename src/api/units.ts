@@ -4,62 +4,59 @@ import { IItem } from "./items";
 import { ISO } from "./so";
 
 export interface IUnit {
-    id: string;
-    assignee: string[];
-    status: string;
-    seen: boolean;
-    number: string | number;
-    LineItemRecordId: string;
-    ItemId: IItem;
-    dueDate: number;
-    item: IItem;
-    so: ISO;
-    laborTime: string;
-    laborCost: number;
-    totalCost: number;
-    bomCost: number;
-    productionStatus: string;
-    options: any[];
-    photo: any[];
-    data: any;
-    serialNumber: string;
-    SOId: string | null;
+  id: string;
+  recId: string;
+  SOId: string;
+  ItemId: IItem;
+  JOBId: string;
+  number: string;
+  serial: string;
+  name: string;
+  deviceType: string;
+  manufacturer: string;
+  model: string;
+  serviceTag: string;
+  location: string;
+  status: string;
+  RepId: string;
+  description: string;
+  productFamily: string;
 }
 
 export interface IUnitHistory {
-    itemno: string;
-    item: IItem;
-    unit: IUnit;
-    id: string;
-    estimatedShipDate: string;
-    actualShipDate: string;
-    serialNumber: string;
-    status: string;
-    warrantyStatus: string;
-    warrantyEndDate: string;
-    sonumber: string;
-    soid: string;
-    so: ISO;
-    SODate: number;
+  itemno: string;
+  item: IItem;
+  unit: IUnit;
+  id: string;
+  estimatedShipDate: string;
+  actualShipDate: string;
+  serialNumber: string;
+  status: string;
+  warrantyStatus: string;
+  warrantyEndDate: string;
+  sonumber: string;
+  soid: string;
+  so: ISO;
+  SODate: number;
 }
 
 export const addImage = (unitId: string, file: any) => {
-    const data = new FormData();
-    data.append("photo", file);
-    return post(`/unit/${unitId}/photo`, data);
+  const data = new FormData();
+  data.append("photo", file);
+  return post(`/unit/${unitId}/photo`, data);
 };
 export const deleteImage = (unitId: string, data: any) => {
-    return delete_(`/unit/${unitId}/photo`, null, data);
+  return delete_(`/unit/${unitId}/photo`, null, data);
 };
 
 export const updateUnit = (id: string, data: any) => {
-    if (data.dueDate) {
-        let date = new Date(data.dueDate);
-        data.dueDate = date.getTime();
-    }
-    return patch(`/unit/${id}`, data);
+  if (data.dueDate) {
+    let date = new Date(data.dueDate);
+    data.dueDate = date.getTime();
+  }
+  return patch(`/unit/${id}`, data);
 };
 
 export const getAllUnits = () => {
-    return get("/unit");
+  return get("/unit");
 };
