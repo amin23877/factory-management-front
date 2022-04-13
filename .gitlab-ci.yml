@@ -1,32 +1,32 @@
-stages:
-  - build
+# stages:
+#   - build
 
-build:
-  stage: build
-  image:
-    name: node:lts-stretch
-    entrypoint: [""]
-  # rules:
-  #   - changes:
-  #     - src/*
-  # before_script:
-  #   - apt-get -qq update && apt-get -qq install -y zip unzip sshpass
-  #   - npm i
-  script:
-    # - echo "export const host = 'https://ts.digitalphocus.ir'" > src/host.ts
-    # - NODE_OPTIONS=--max_old_space_size=1000; npm run build
-    # - zip -r build.zip build
-    # - mkdir build
-    # - ls
-    # - which ssh
-    # - which scp
-    - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
-    - eval $(ssh-agent -s)
-    - ssh-add <(echo "$SSH_PRIVATE_KEY")
-    - mkdir -p ~/.ssh
-    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-    - ssh root@185.110.191.89 "cd /home/phocus.frontend; git reset --hard; git pull; npm ci; sed -i 's/ForkTsCheckerWebpackPlugin.DEFAULT_MEMORY_LIMIT = 2048/ForkTsCheckerWebpackPlugin.DEFAULT_MEMORY_LIMIT = 512/g' node_modules/fork-ts-checker-webpack-plugin/lib/index.js"
-    - ssh root@185.110.191.89 "systemctl stop mongod"
-    - ssh root@185.110.191.89 "cd /home/phocus.frontend; node --max-old-space-size=512 node_modules/.bin/react-scripts build"
-    - ssh root@185.110.191.89 "systemctl start mongod"
+# build:
+#   stage: build
+#   image:
+#     name: node:lts-stretch
+#     entrypoint: [""]
+# rules:
+#   - changes:
+#     - src/*
+# before_script:
+#   - apt-get -qq update && apt-get -qq install -y zip unzip sshpass
+#   - npm i
+# script:
+# - echo "export const host = 'https://ts.digitalphocus.ir'" > src/host.ts
+# - NODE_OPTIONS=--max_old_space_size=1000; npm run build
+# - zip -r build.zip build
+# - mkdir build
+# - ls
+# - which ssh
+# - which scp
+# - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
+# - eval $(ssh-agent -s)
+# - ssh-add <(echo "$SSH_PRIVATE_KEY")
+# - mkdir -p ~/.ssh
+# - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+# - ssh root@185.110.191.89 "cd /home/phocus.frontend; git reset --hard; git pull; npm ci; sed -i 's/ForkTsCheckerWebpackPlugin.DEFAULT_MEMORY_LIMIT = 2048/ForkTsCheckerWebpackPlugin.DEFAULT_MEMORY_LIMIT = 512/g' node_modules/fork-ts-checker-webpack-plugin/lib/index.js"
+# - ssh root@185.110.191.89 "systemctl stop mongod"
+# - ssh root@185.110.191.89 "cd /home/phocus.frontend; node --max-old-space-size=512 node_modules/.bin/react-scripts build"
+# - ssh root@185.110.191.89 "systemctl start mongod"
 
