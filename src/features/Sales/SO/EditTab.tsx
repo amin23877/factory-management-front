@@ -76,9 +76,8 @@ export default function EditTab({
     () => [
       { field: "number", headerName: "Unit ID", width: 100 },
       {
-        field: "serialNumber",
+        field: "number",
         headerName: "Unit Serial No.",
-        valueFormatter: (r) => r.row?.device?.number,
         width: 130,
       },
       { field: "description", headerName: "Description", flex: 1 },
@@ -87,7 +86,7 @@ export default function EditTab({
         field: "shipDate",
         headerName: "Estimated SD.",
         width: 150,
-        valueFormatter: (params) => formatTimestampToDate(params.row?.shipDate),
+        valueFormatter: (params) => formatTimestampToDate(params.row?.SOId?.estimatedShipDate),
       },
     ],
     []

@@ -13,7 +13,8 @@ export default function Requester({
   setFieldValue: any;
   getFieldProps: any;
 }) {
-  // TODO: Requester is Rep's Contact
+  const email = values.requester?.emails?.length > 0 ? values.requester?.emails[0].email : "";
+  const phone = values.requester?.phones?.length > 0 ? values.requester?.phones[0].phone : "";
 
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={8}>
@@ -28,10 +29,8 @@ export default function Requester({
           setFieldValue("RepId", nv?.id);
         }}
       />
-      {/* <TextField disabled label="Requester" /> */}
-      <TextField disabled label="Email" />
-      <TextField disabled label="Phone" />
-      <TextField disabled label="Fax" />
+      <TextField disabled label="Email" value={email} />
+      <TextField disabled label="Phone" value={phone} />
     </Box>
   );
 }

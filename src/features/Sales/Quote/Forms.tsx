@@ -24,6 +24,7 @@ import { getClients, IClient } from "api/client";
 import { getSO } from "api/so";
 
 import QuotePDF from "PDFTemplates/Quote";
+import AsyncCombo from "common/AsyncCombo";
 
 export const DocumentForm = ({
   data,
@@ -245,15 +246,13 @@ export const GeneralForm = ({
           onBlur={handleBlur}
           url="/panel/project"
         />
-        <CacheFieldSelect
-          value={typeof values.salesperson === "string" ? values.salesperson : values.salesperson?.id}
-          url="/employee"
-          itemTitleField="username"
-          itemValueField="id"
-          keyField="id"
-          name="salesperson"
+        <AsyncCombo
           label="Sales person"
-          onChange={handleChange}
+          filterBy="username"
+          getOptionLabel={(e) => e?.username}
+          getOptionSelected={(o, v) => o.id === v.id}
+          url="/employee"
+          value={values.salesPerson}
         />
         <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} />
         <TextField

@@ -1,11 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
-import useSWR from "swr";
+import React, { useEffect, useState } from "react";
 import getWeekOfMonth from "date-fns/getWeekOfMonth";
 
 import PieChart from "app/Chart/PieChart";
 import BaseLineChart from "app/Chart/LineChart";
 
-import { extractDevicesSales } from "logic/reports/sales";
 import { post, get } from "api";
 
 export function ClientPie() {
@@ -72,17 +70,29 @@ export function SalesVsWeek() {
 }
 
 export function DevicesPie() {
-  const { data: units } = useSWR("/unit");
+  const [chartData, setChartData] = useState<any[]>([]);
 
-  const chartData = useMemo(() => {
-    if (units) {
-      return extractDevicesSales(units.result);
-    } else {
-      return [];
-    }
-  }, [units]);
+  useEffect(() => {
+    const generate = async () => {
+      try {
+        const rawData = await post("/report", {
+          model: "units",
+          field: "item.no",
+          beforePopulations: [{ from: "items", as: "item", localField: "ItemId" }],
+        });
 
-  return <PieChart legend data={chartData} dataKey="value" height={250} />;
+        console.log(rawData.slice(1, 30).map((i: any) => ({ name: i._id[0], count: i.count })));
+
+        setChartData(rawData.slice(1, 30).map((i: any) => ({ name: i._id[0], count: i.count })));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    generate();
+  }, []);
+
+  return <PieChart legend data={chartData} dataKey="count" height={250} />;
 }
 
 export function SalesLocationPie() {

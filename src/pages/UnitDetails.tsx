@@ -1,96 +1,94 @@
-import React, { useMemo, useState } from "react";
-import { Box, Typography, Tabs, Tab, LinearProgress } from "@material-ui/core";
-import { GridColDef } from "@material-ui/data-grid";
+import React, { useEffect, useState } from "react";
+import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
+import { Tabs, Tab, Box } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 import useSWR from "swr";
 
-import QRCode from "../features/Production/Dashboard/UnitList/QRCode";
-import UnitInfo from "../features/Production/Dashboard/UnitList/UnitInfo";
-import { General as ItemGeneral } from "../features/Items/Forms";
-import { GeneralForm as SOGeneral } from "../features/Sales/SO/Forms";
+import UnitTable from "features/Production/Dashboard/UnitList/Table";
+import UnitDetails from "features/Production/Dashboard/UnitList/Details";
+import ServiceTable from "features/Production/Dashboard/ServiceList/Table";
+import TicketDetails from "features/Production/Dashboard/ServiceList/Details";
+import { BasePaper } from "app/Paper";
 
-import { BasePaper } from "../app/Paper";
-import BaseDataGrid from "../app/BaseDataGrid";
+import { IUnit } from "api/units";
+import { ITicket } from "api/ticket";
 
-import { IUnit } from "../api/units";
-
-export default function UnitDetails() {
+function UnitDetailsPage() {
   const { unitNumber } = useParams<{ unitNumber: string }>();
+  const { data: defaultUnit } = useSWR<IUnit>(unitNumber ? `/unit/${unitNumber}` : null);
 
-  const { data: unit } = useSWR<{ result: IUnit[]; total: number }>(
-    unitNumber ? `/unit?serialNumber=${unitNumber}` : null
-  );
-  const { data: unitBoms } = useSWR(
-    unit && unit.result && unit.result.length > 0 ? `/ubom?UnitId=${unit.result[0].id}` : null
-  );
+  const [activeTab, setActiveTab] = useState(0);
+  const [selectedUnit, setSelectedUnit] = useState<IUnit | null>(null);
+  const [selectedTicket, setSelectedTicket] = useState<ITicket | null>(null);
 
-  const [infoActiveTab, setInfoActiveTab] = useState(0);
-  const [gridActiveTab, setGridActiveTab] = useState(0);
+  useEffect(() => {
+    if (defaultUnit && selectedUnit === null) {
+      setSelectedUnit(defaultUnit);
+      setActiveTab(2);
+    }
+  }, [defaultUnit, selectedUnit]);
 
-  const bomCols = useMemo<GridColDef[]>(
-    () => [
-      { field: "number", headerName: "Serial No." },
-      { field: "laborCost", headerName: "Labor Cost" },
-      { field: "dueDate", headerName: "Due Date", flex: 1 },
-      { field: "status", headerName: "Status" },
-    ],
-    []
-  );
-
-  if (!(unit && unit.result && unit.result.length > 0)) {
-    return <LinearProgress />;
+  if (!unitNumber) {
+    return <></>;
   }
-
   return (
-    // <Container>
-    <>
-      <Box mb={2} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
-        <BasePaper>
-          <Typography variant="h5">Unit Info</Typography>
-          <UnitInfo unit={unit.result[0]} />
-        </BasePaper>
-        <BasePaper>
-          <Tabs value={infoActiveTab} onChange={(e, nv) => setInfoActiveTab(nv)}>
-            <Tab label="Item" />
-            <Tab label="SO" disabled={!unit.result[0].SOId} />
-            <Tab label="QR Code" />
-          </Tabs>
-          {infoActiveTab === 0 && (
-            <ItemGeneral
-              values={unit.result[0].ItemId}
-              errors={{}}
-              touched={{}}
-              handleBlur={() => {}}
-              handleChange={() => {}}
-              setFieldValue={() => {}}
-            />
-          )}
-          {infoActiveTab === 1 && (
-            <SOGeneral
-              setFieldValue={() => {}}
-              values={unit.result[0].SOId}
-              onChangeInit={() => {}}
-              handleBlur={() => {}}
-              handleChange={() => {}}
-            />
-          )}
-          {infoActiveTab === 2 && <QRCode unit={unit.result[0]} />}
-        </BasePaper>
-      </Box>
-      <BasePaper>
-        <Tabs value={gridActiveTab} onChange={(e, nv) => setGridActiveTab(nv)}>
-          <Tab label="Warranties" />
-          <Tab label="Documents" />
-          <Tab label="Notes" />
-          <Tab label="BOM" />
-          <Tab label="QC Items" />
-          <Tab label="Field service" />
-          <Tab label="Time logs" />
-          <Tab label="Auditing" />
+    <BasePaper>
+      <Box display="flex">
+        <Tabs
+          value={activeTab}
+          onChange={(e, nv) => setActiveTab(nv)}
+          textColor="primary"
+          style={{ marginBottom: "10px" }}
+        >
+          <Tab
+            icon={
+              <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <ListAltRounded style={{ marginRight: "5px" }} /> Unit List
+              </span>
+            }
+            wrapped
+          />
+          <Tab
+            icon={
+              <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <ListAltRounded style={{ marginRight: "5px" }} /> Service List
+              </span>
+            }
+            wrapped
+          />
+          <Tab
+            disabled={!(selectedTicket || selectedUnit)}
+            icon={
+              <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <FindInPageRounded style={{ marginRight: "5px" }} /> Details
+              </span>
+            }
+          />
         </Tabs>
-        {gridActiveTab === 3 && <BaseDataGrid cols={bomCols} rows={unitBoms || []} onRowSelected={() => {}} />}
-      </BasePaper>
-    </>
-    // </Container>
+        <div style={{ flex: 1 }}></div>
+      </Box>
+      {activeTab === 0 && (
+        <UnitTable
+          onRowSelected={(u) => {
+            setSelectedTicket(null);
+            setActiveTab(2);
+            setSelectedUnit(u);
+          }}
+        />
+      )}
+      {activeTab === 1 && (
+        <ServiceTable
+          onRowSelected={(t) => {
+            setSelectedUnit(null);
+            setSelectedTicket(t);
+            setActiveTab(2);
+          }}
+        />
+      )}
+      {activeTab === 2 && selectedUnit && <UnitDetails unit={selectedUnit} />}
+      {activeTab === 2 && selectedTicket && <TicketDetails ticket={selectedTicket} />}
+    </BasePaper>
   );
 }
+
+export default UnitDetailsPage;

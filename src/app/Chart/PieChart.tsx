@@ -5,7 +5,6 @@ const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#F43B86", "#0F52BA"
 
 const renderLegend = (props: any) => {
   const { payload } = props;
-  console.log({ props });
 
   return (
     <ul>

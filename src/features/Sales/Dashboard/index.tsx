@@ -10,47 +10,47 @@ import { ClientPie, DevicesPie, SalesLocationPie, SalesRepPie, SalesVsWeek } fro
 import { formatTimestampToDate } from "logic/date";
 
 export default function Dashboard() {
-  const { data: inProgressSOs } = useSWR(`/so?progress=true`);
+  const { data: inProgressSOs } = useSWR(`/unit?startsWithstatus=In Production`);
 
   const cols = useMemo<GridColumns>(
     () => [
       {
         field: "date",
         headerName: "Date",
-        valueFormatter: (params: any) => formatTimestampToDate(params.row?.date),
+        valueFormatter: (params: any) => formatTimestampToDate(params.row?.SOId?.date),
         width: 100,
       },
       { field: "number", headerName: "SO ID", width: 100 },
-      { field: "Client", width: 130, valueGetter: (data) => (data.row.ClientId ? data.row.ClientId.name : "") },
+      { field: "Client", width: 130, valueGetter: (data) => data.row?.SOId?.ClientId?.name },
       { field: "description", headerName: "Description", width: 150 },
-      { field: "Rep", width: 130, valueGetter: (data) => (data.row.ClientId ? data.row.ClientId.name : "") },
-      { field: "state", headerName: "State", width: 120 },
+      { field: "Rep", width: 130, valueGetter: (data) => data.row?.SOId?.RepId?.name },
+      { field: "state", headerName: "State", width: 120, valueGetter: (data) => data.row?.SOId?.RepId?.state },
       {
         field: "originalShipDate",
         headerName: "Original SD.",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.originalShippingDate),
+        valueFormatter: (params) => formatTimestampToDate(params.row?.SOId?.originalShipDate),
         width: 120,
       },
       {
         field: "estimatedShipDate",
         headerName: "Estimated SD.",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.estimatedShippingDate),
+        valueFormatter: (params) => formatTimestampToDate(params.row?.SOId?.estimatedShipDate),
         width: 120,
       },
       {
         field: "actualShipDate",
         headerName: "Actual SD.",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.actualShippingDate),
+        valueFormatter: (params) => formatTimestampToDate(params.row?.SOId?.actualShipDate),
         width: 120,
       },
       { field: "invoice", headerName: "Invoice", width: 120 },
       { field: "status", headerName: "Status", width: 120 },
-      {
-        field: "total",
-        headerName: "Total Amount",
-        valueFormatter: (params) => params.row?.cost * params.row?.quantity,
-        width: 120,
-      },
+      // {
+      //   field: "total",
+      //   headerName: "Total Amount",
+      //   valueFormatter: (params) => params.row?.cost * params.row?.quantity,
+      //   width: 120,
+      // },
     ],
     []
   );

@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-
+import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 import { Tabs, Tab, Box } from "@material-ui/core";
 
 import UnitTable from "./UnitList/Table";
 import UnitDetails from "./UnitList/Details";
-import { IUnit } from "../../../api/units";
 import ServiceTable from "./ServiceList/Table";
 import TicketDetails from "./ServiceList/Details";
+import { BasePaper } from "app/Paper";
 
-import { ITicket } from "../../../api/ticket";
-import { BasePaper } from "../../../app/Paper";
-import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
+import { IUnit } from "api/units";
+import { ITicket } from "api/ticket";
 
 function Index() {
   const [activeTab, setActiveTab] = useState(0);

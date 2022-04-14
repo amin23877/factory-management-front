@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Checkbox, FormControlLabel } from "@material-ui/core";
+import useSWR from "swr";
 
 import TextField from "app/TextField";
-import LinkField from "app/Inputs/LinkFields";
-import useSWR from "swr";
+import AsyncCombo from "common/AsyncCombo";
 
 export default function Client({
   getFieldProps,
@@ -16,23 +16,16 @@ export default function Client({
 }) {
   const { data: contacts } = useSWR(values?.ClientId?.id ? `/contact/client/${values?.ClientId?.id}` : null);
   const contact = contacts?.filter((c: any) => c.main).length > 0 ? contacts?.filter((c: any) => c.main)[0] : undefined;
-  const [selectedClient, setSelectedClient] = useState<any>(values?.ClientId);
 
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={8}>
-      <LinkField
-        value={values.ClientId}
-        choseItem={values.ClientId}
+      <AsyncCombo
         label="Client"
-        path="/client"
-        filterLabel="name"
-        getOptionList={(resp) => resp?.result}
-        getOptionLabel={(item) => item?.no || item?.name || "No-Name"}
-        getOptionValue={(item) => item?.id}
-        onChange={(e, nv) => {
-          setSelectedClient(nv);
-          setFieldValue("ClientId", nv.id);
-        }}
+        value={values.ClientId}
+        filterBy="name"
+        getOptionLabel={(c) => c?.name}
+        getOptionSelected={(o, v) => o.id === v.id}
+        url="/client"
       />
       <TextField
         value={contact?.emails?.length > 0 ? contact?.emails[0].email : ""}

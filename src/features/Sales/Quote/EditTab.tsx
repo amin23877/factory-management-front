@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { Tabs, Tab, Box, makeStyles, useMediaQuery } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
+import { useHistory } from "react-router-dom";
 import useSWR from "swr";
 
 import BaseDataGrid from "app/BaseDataGrid";
@@ -18,6 +19,8 @@ import { ILineService } from "api/lineService";
 import LineItemModal from "../../LineItem";
 import LineServiceModal from "../../LineService";
 
+import { openRequestedSinglePopup } from "logic/window";
+
 const useStyle = makeStyles({
   btn: {
     border: "1px solid gray ",
@@ -29,6 +32,7 @@ const useStyle = makeStyles({
 
 export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
   const classes = useStyle();
+  const history = useHistory();
   const [activeTab, setActiveTab] = useState(0);
 
   const [lineItemModal, setLineItemModal] = useState(false);
@@ -46,7 +50,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
       {
         field: "ItemId",
         headerName: "Part Number",
-        valueFormatter: ({ row }) => row?.ItemId?.name || row?.text,
+        valueFormatter: ({ row }) => row?.ItemId?.name || row?.text || row?.no,
         flex: 1,
       },
       // { field: "description", headerName: "Description", flex: 1 },
@@ -144,8 +148,11 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
                 cols={LICols}
                 rows={lineItems?.result || []}
                 onRowSelected={(r) => {
-                  setSelectedLI(r);
-                  setLineItemModal(true);
+                  if (r?.ItemId?.id) {
+                    phone
+                      ? history.push(`/panel/inventory/${r?.ItemId?.id}`)
+                      : openRequestedSinglePopup({ url: `/panel/inventory/${r?.ItemId?.id}` });
+                  }
                 }}
               />
             </>
