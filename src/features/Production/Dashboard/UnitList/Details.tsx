@@ -26,6 +26,7 @@ import { jobRecordType } from "api/job";
 
 import { getModifiedValues } from "logic/utils";
 import { openRequestedSinglePopup } from "logic/window";
+import { formatTimestampToDate } from "logic/date";
 
 const schema = Yup.object().shape({
   // laborCost: Yup.number().required(),
@@ -109,8 +110,8 @@ function Details({ unit }: { unit: IUnit }) {
       { headerName: "No.", field: "no", width: 80 },
       { field: "Line", width: 80 },
       { field: "Parent", valueFormatter: ({ row }) => row?.parent?.no, width: 180 },
-      { field: "Component NO.", valueFormatter: ({ row }) => row?.ItemId?.no, width: 180 },
-      { field: "Component Name", valueFormatter: ({ row }) => row?.ItemId?.name, flex: 1 },
+      { field: "Component NO.", valueFormatter: ({ row }) => row?.ItemId?.no || row?.itemNo, width: 180 },
+      { field: "Component Name", valueFormatter: ({ row }) => row?.ItemId?.name || row?.itemName, flex: 1 },
       // { field: "UM", width: 120 },
       { field: "usage", headerName: "QTY", width: 120 },
       { field: "Note", width: 200 },
@@ -120,9 +121,16 @@ function Details({ unit }: { unit: IUnit }) {
 
   const warCols = useMemo<GridColumns>(
     () => [
-      { field: "date", headerName: "Date", type: "date", width: 120 },
-      { field: "number", headerName: "Warranty Number", width: 160 },
+      {
+        field: "createdAt",
+        headerName: "Date",
+        valueFormatter: ({ row }) => formatTimestampToDate(row.createdAt),
+        width: 120,
+      },
+      { field: "no", headerName: "Warranty Number", width: 160 },
       { field: "name", headerName: "Name", width: 160 },
+      { field: "class", headerName: "Class", width: 160 },
+      { field: "type", headerName: "Type", width: 160 },
       { field: "description", headerName: "Note", flex: 1 },
       { field: "term", headerName: "Term", flex: 1 },
       { field: "status", headerName: "Status", width: 150 },
@@ -293,7 +301,7 @@ function Details({ unit }: { unit: IUnit }) {
               <UploadButton onChange={handleFileChange} accept="image/*" />
             </div>
             <div>
-              {photo &&
+              {/* {photo &&
                 photo.photo[0] &&
                 photo.photo.map((url: string) => (
                   <>
@@ -311,7 +319,7 @@ function Details({ unit }: { unit: IUnit }) {
                       delete
                     </Button>
                   </>
-                ))}
+                ))} */}
             </div>
           </>
         )}

@@ -49,7 +49,7 @@ export default function EditTab({
       {
         field: "itemNo",
         headerName: "Part Number",
-        valueFormatter: (r) => r.row?.ItemId?.no || r.row?.text,
+        valueFormatter: (r) => r.row?.ItemId?.no || r.row?.text || r?.row?.itemNo,
         width: 200,
       },
       {
