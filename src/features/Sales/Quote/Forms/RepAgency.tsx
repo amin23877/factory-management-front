@@ -2,32 +2,61 @@ import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 
 import TextField from "app/TextField";
-import LinkField from "app/Inputs/LinkFields";
+import AsyncCombo from "common/AsyncCombo";
 
 export default function RepAgency({ values, setFieldValue }: { getFieldProps: any; values: any; setFieldValue: any }) {
   const [selectedRep, setSelectedRep] = useState<any>(values?.RepId);
 
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={8}>
-      <LinkField
-        value={values.RepId}
-        choseItem={values.RepId}
+      <AsyncCombo
         label="Rep"
-        path="/rep"
-        filterLabel="name"
-        getOptionList={(resp) => resp?.result}
-        getOptionLabel={(item) => item?.no || item?.name || "No-Name"}
-        getOptionValue={(item) => item?.id}
+        filterBy="name"
+        getOptionLabel={(o) => o?.name}
+        getOptionSelected={(o, v) => o.id === v.id}
+        url="/rep"
+        value={values.RepId}
+        error={!(values.RepId || selectedRep)}
         onChange={(e, nv) => {
+          setFieldValue("RepId", nv);
           setSelectedRep(nv);
-          setFieldValue("RepId", nv.id);
         }}
       />
-      <TextField disabled label="Address" value={selectedRep?.address} InputLabelProps={{ shrink: true }} />
-      <TextField disabled label="City" value={selectedRep?.city} InputLabelProps={{ shrink: true }} />
-      <TextField disabled label="Country" value={selectedRep?.country} InputLabelProps={{ shrink: true }} />
-      <TextField disabled label="State" value={selectedRep?.state} InputLabelProps={{ shrink: true }} />
-      <TextField disabled label="ZIP" value={selectedRep?.zip} InputLabelProps={{ shrink: true }} />
+      <TextField
+        disabled
+        label="Address"
+        value={selectedRep?.address}
+        InputLabelProps={{ shrink: true }}
+        error={!selectedRep?.address}
+      />
+      <TextField
+        disabled
+        label="City"
+        value={selectedRep?.city}
+        InputLabelProps={{ shrink: true }}
+        error={!selectedRep?.city}
+      />
+      <TextField
+        disabled
+        label="Country"
+        value={selectedRep?.country}
+        InputLabelProps={{ shrink: true }}
+        error={!selectedRep?.country}
+      />
+      <TextField
+        disabled
+        label="State"
+        value={selectedRep?.state}
+        InputLabelProps={{ shrink: true }}
+        error={!selectedRep?.state}
+      />
+      <TextField
+        disabled
+        label="ZIP"
+        value={selectedRep?.zip}
+        InputLabelProps={{ shrink: true }}
+        error={!selectedRep?.zip}
+      />
     </Box>
   );
 }

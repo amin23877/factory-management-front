@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box } from "@material-ui/core";
 
 import TextField from "app/TextField";
 import AsyncCombo from "common/AsyncCombo";
+
+function getField(field: string, requester?: any) {
+  if (!requester) {
+    return "";
+  }
+  console.log(requester);
+
+  if (requester[field + "s"]?.length > 0) {
+    return requester[field + "s"][0][field];
+  }
+  return "";
+}
 
 export default function Requester({
   values,
@@ -13,24 +25,35 @@ export default function Requester({
   setFieldValue: any;
   getFieldProps: any;
 }) {
-  const email = values.requester?.emails?.length > 0 ? values.requester?.emails[0].email : "";
-  const phone = values.requester?.phones?.length > 0 ? values.requester?.phones[0].phone : "";
+  const [selectedRequester, setSelectedRequester] = useState();
+  // const email = values.requester?.emails?.length > 0 ? values.requester?.emails[0].email : "";
+  // const phone = values.requester?.phones?.length > 0 ? values.requester?.phones[0].phone : "";
+  const email =
+    values.requester && values.requester?.id
+      ? getField("email", values.requester)
+      : getField("email", selectedRequester);
+  const phone =
+    values.requester && values.requester?.id
+      ? getField("phone", values.requester)
+      : getField("phone", selectedRequester);
 
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={8}>
       <AsyncCombo
-        label="Rep / Agency"
+        label="Requester"
         filterBy="name"
-        getOptionLabel={(o) => o?.name || "No Name"}
+        getOptionLabel={(o) => `${o?.firstName} ${o?.lastName}` || "No Name"}
         getOptionSelected={(o, v) => o.id === v.id}
-        url="/rep"
-        value={values?.RepId}
+        url={values?.RepId ? `/contact/rep/${values?.RepId?.id}` : ""}
+        value={values?.requester}
         onChange={(e, nv) => {
-          setFieldValue("RepId", nv?.id);
+          setSelectedRequester(nv);
+          setFieldValue("requester", nv?.id);
         }}
+        error={!values.requester}
       />
-      <TextField disabled label="Email" value={email} />
-      <TextField disabled label="Phone" value={phone} />
+      <TextField disabled label="Email" value={email} error={!email} />
+      <TextField disabled label="Phone" value={phone} error={!phone} />
     </Box>
   );
 }

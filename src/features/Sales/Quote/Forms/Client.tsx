@@ -14,8 +14,11 @@ export default function Client({
   values: any;
   setFieldValue: any;
 }) {
-  const { data: contacts } = useSWR(values?.ClientId?.id ? `/contact/client/${values?.ClientId?.id}` : null);
+  const clientId = values?.ClientId?.id || values?.ClientId || null;
+  const { data: contacts } = useSWR(clientId ? `/contact/client/${clientId}` : null);
   const contact = contacts?.filter((c: any) => c.main).length > 0 ? contacts?.filter((c: any) => c.main)[0] : undefined;
+  const email = contact?.emails?.length > 0 ? contact?.emails[0].email : "";
+  const phone = contact?.phones?.length > 0 ? contact?.phones[0].phone : "";
 
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={8}>
@@ -26,19 +29,11 @@ export default function Client({
         getOptionLabel={(c) => c?.name}
         getOptionSelected={(o, v) => o.id === v.id}
         url="/client"
+        error={!values.ClientId}
+        onChange={(e, nv) => setFieldValue("ClientId", nv?.id)}
       />
-      <TextField
-        value={contact?.emails?.length > 0 ? contact?.emails[0].email : ""}
-        name="email"
-        label="Email"
-        disabled
-      />
-      <TextField
-        value={contact?.phones?.length > 0 ? contact?.phones[0].phone : ""}
-        name="phone"
-        label="Phone"
-        disabled
-      />
+      <TextField value={email} name="email" label="Email" disabled error={!email} />
+      <TextField value={phone} name="phone" label="Phone" disabled error={!phone} />
       <TextField
         disabled
         label="24 Hr Cont."

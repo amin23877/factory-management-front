@@ -107,8 +107,8 @@ function Details({ unit }: { unit: IUnit }) {
 
   const jobRecordsCols = useMemo<GridColumns>(
     () => [
-      { headerName: "No.", field: "no", width: 80 },
-      { field: "Line", width: 80 },
+      // { headerName: "No.", field: "no", width: 80 },
+      // { field: "Line", width: 80 },
       { field: "Parent", valueFormatter: ({ row }) => row?.parent?.no, width: 180 },
       { field: "Component NO.", valueFormatter: ({ row }) => row?.ItemId?.no || row?.itemNo, width: 180 },
       { field: "Component Name", valueFormatter: ({ row }) => row?.ItemId?.name || row?.itemName, flex: 1 },

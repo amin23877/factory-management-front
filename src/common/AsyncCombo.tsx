@@ -23,6 +23,7 @@ export default function AsyncCombo({
   url,
   label,
   value,
+  error,
   filterBy,
   valueUrl,
   disabled,
@@ -32,6 +33,7 @@ export default function AsyncCombo({
 }: {
   url: string;
   label?: string;
+  error?: boolean;
   value?: any | string;
   filterBy: string;
   valueUrl?: string;
@@ -61,7 +63,7 @@ export default function AsyncCombo({
         );
 
         if (active) {
-          setOptions(response.result);
+          setOptions(response?.result || response);
         }
       } catch (error) {
         console.log(error);
@@ -105,6 +107,7 @@ export default function AsyncCombo({
         <TextField
           {...params}
           label={label}
+          error={error}
           InputProps={{
             ...params.InputProps,
             endAdornment: (

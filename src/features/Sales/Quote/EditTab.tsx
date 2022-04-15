@@ -50,7 +50,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
       {
         field: "ItemId",
         headerName: "Part Number",
-        valueFormatter: ({ row }) => row?.ItemId?.name || row?.text || row?.no,
+        valueFormatter: ({ row }) => row?.ItemId?.no || row?.text || row?.no,
         flex: 1,
       },
       // { field: "description", headerName: "Description", flex: 1 },
