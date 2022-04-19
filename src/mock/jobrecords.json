@@ -1,0 +1,2064 @@
+[
+  {
+    "_id": "6255993092cfdc268ae875d8",
+    "recId": "8C13C7E4-6D56-1548-A06E-DDE5D85418B7",
+    "usage": 2,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.044Z",
+    "updatedAt": "2022-04-12T15:22:24.050Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728147ff0b01be3f89160",
+      "no": "009-0105-00",
+      "name": "Xfrmr Auto 1.5KVA 120 Vin 230 Vout, \"UL RECOGNIZED\" ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "622728cc7ff0b01be3f91c58",
+      "no": "CMEL-875W-120-120-90",
+      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae875e9",
+    "recId": "D7577E08-1EE8-1E4E-B1CA-8D064E8C4953",
+    "usage": 4,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.061Z",
+    "updatedAt": "2022-04-12T15:22:24.068Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728187ff0b01be3f893ac",
+      "no": "011-0003-00",
+      "name": "TERMINAL BLOCK, GREY, 20-6AWG, M 10/10",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "622728cc7ff0b01be3f91c58",
+      "no": "CMEL-875W-120-120-90",
+      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae875fa",
+    "recId": "506CAF5D-BF36-C34B-A4C4-C80751B032DF",
+    "usage": 2,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.078Z",
+    "updatedAt": "2022-04-12T15:22:24.086Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728187ff0b01be3f893b6",
+      "no": "011-0006-00",
+      "name": "TERMINAL BLOCK, GREEN/YELLOW, 20-6 AWG, M 10/10",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "622728cc7ff0b01be3f91c58",
+      "no": "CMEL-875W-120-120-90",
+      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae8760b",
+    "recId": "67CE3FF7-85A6-994F-B9E1-A36C7D1D7CC4",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.096Z",
+    "updatedAt": "2022-04-12T15:22:24.102Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728187ff0b01be3f893de",
+      "no": "011-0020-00",
+      "name": "TERMINAL BLOCK, GREY, MULTI-RAIL END STOP    0103 002.26",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "622728cc7ff0b01be3f91c58",
+      "no": "CMEL-875W-120-120-90",
+      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae8761c",
+    "recId": "9BE3FE00-6780-7343-8D7B-7DEC09BAE7B0",
+    "usage": 2,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.111Z",
+    "updatedAt": "2022-04-12T15:22:24.117Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728197ff0b01be3f89460",
+      "no": "011-0042-00",
+      "name": "TERMINAL BLOCK, GREY,  M 16/12 END SECTION COVER",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "622728cc7ff0b01be3f91c58",
+      "no": "CMEL-875W-120-120-90",
+      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae8762d",
+    "recId": "3E4E9781-8A29-7A49-BA78-D48DA4B61F2A",
+    "usage": 2,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.127Z",
+    "updatedAt": "2022-04-12T15:22:24.133Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227283b7ff0b01be3f8ab11",
+      "no": "047-0054-02",
+      "name": "Battery Jumper, 14\" OAL, #8 AWG. 5/16\" Ring Lugs",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "622728cc7ff0b01be3f91c58",
+      "no": "CMEL-875W-120-120-90",
+      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae8763e",
+    "recId": "57C9BDD3-4320-FD4E-AF6B-B95A1C874F55",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.145Z",
+    "updatedAt": "2022-04-12T15:22:24.151Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "622728cc7ff0b01be3f91c58",
+      "no": "CMEL-875W-120-120-90",
+      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87650",
+    "recId": "D4994D47-F50B-FB47-B06A-22E8E8DB4D78",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.167Z",
+    "updatedAt": "2022-04-12T15:22:24.171Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "622728cc7ff0b01be3f91c58",
+      "no": "CMEL-875W-120-120-90",
+      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87661",
+    "recId": "808089AE-C0B7-7546-9611-70C8B5422896",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.184Z",
+    "updatedAt": "2022-04-12T15:22:24.188Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227286b7ff0b01be3f8ca14",
+      "no": "047-0181-00",
+      "name": "Wirelist, Micro Elite 525W-1050W, 120Vin, 120Vout, Power Wiring ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "622728cc7ff0b01be3f91c58",
+      "no": "CMEL-875W-120-120-90",
+      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87672",
+    "recId": "0D233B57-EF37-F944-A0EF-FEA34233DA8F",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.201Z",
+    "updatedAt": "2022-04-12T15:22:24.204Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227282c7ff0b01be3f8a100",
+      "no": "035-0058-00",
+      "name": "Breaker, 1P, 10A , 277 VAC, D Curve",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "622728cc7ff0b01be3f91c58",
+      "no": "CMEL-875W-120-120-90",
+      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87683",
+    "recId": "2ACB2B21-FE39-B448-AAB1-805FBDC4AFB8",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.215Z",
+    "updatedAt": "2022-04-12T15:22:24.220Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227282f7ff0b01be3f8a2b8",
+      "no": "035-0110-00",
+      "name": "BREAKER, 1P, 16A, 277V, D CURVE",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "622728cc7ff0b01be3f91c58",
+      "no": "CMEL-875W-120-120-90",
+      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87696",
+    "recId": "AC1193C2-156A-944C-834F-59874DE20208",
+    "usage": 4,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.229Z",
+    "updatedAt": "2022-04-12T15:22:24.236Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728217ff0b01be3f899c6",
+      "no": "025-0003-00",
+      "name": "BATTERY, 12V, 55 AH, VRLA",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "622728cc7ff0b01be3f91c58",
+      "no": "CMEL-875W-120-120-90",
+      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae876a1",
+    "recId": "E4F4E4A8-89C7-5246-8734-0FD6A8B76EA6",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.245Z",
+    "updatedAt": "2022-04-12T15:22:24.251Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227280a7ff0b01be3f88a78",
+      "no": "005-0060-00",
+      "name": "PCBA Main Micro 2000VA",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae876ac",
+    "recId": "749E1B86-875B-9F43-BD1D-2C9B20169460",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.259Z",
+    "updatedAt": "2022-04-12T15:22:24.263Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227280a7ff0b01be3f88a82",
+      "no": "005-0061-00",
+      "name": "PCB display assy MIcro 2000VA",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae876b7",
+    "recId": "B73DC9C9-ECC3-D04C-AB00-D9D00F52346A",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.275Z",
+    "updatedAt": "2022-04-12T15:22:24.278Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227281f7ff0b01be3f8987c",
+      "no": "020-0020-00",
+      "name": "Fan Micro Unit",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae876c2",
+    "recId": "47DAF0BB-7642-8E48-B8E7-D4F09816FA99",
+    "usage": 4,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.290Z",
+    "updatedAt": "2022-04-12T15:22:24.293Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728487ff0b01be3f8b34c",
+      "no": "051-0007-00",
+      "name": "TYE WRAPS, 7\", Black           WT07B",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae876cd",
+    "recId": "9D7A0FE1-2DA6-384C-B044-3029833C9A10",
+    "usage": 4,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.304Z",
+    "updatedAt": "2022-04-12T15:22:24.307Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728487ff0b01be3f8b36a",
+      "no": "051-0008-00",
+      "name": "TYE WRAPS, 4\", Black             WT04B",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae876d8",
+    "recId": "D1D183AD-F245-1A40-A164-D63EF65C572A",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.317Z",
+    "updatedAt": "2022-04-12T15:22:24.320Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728497ff0b01be3f8b3ec",
+      "no": "051-0022-00",
+      "name": "Tape, Water Indicator, 3M 5557, 1/'2\" dia. Circle",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae876e3",
+    "recId": "422C4CF4-3A69-AA40-9569-F429044515EF",
+    "usage": 2,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.329Z",
+    "updatedAt": "2022-04-12T15:22:24.335Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227284b7ff0b01be3f8b54a",
+      "no": "052-0044-00",
+      "name": "Bracket, L, 7/8\" x 7/8\" x 1/2\"W, Steel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae876ee",
+    "recId": "73570C03-D946-5F4F-A495-75E3641D5D05",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.344Z",
+    "updatedAt": "2022-04-12T15:22:24.350Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227284b7ff0b01be3f8b554",
+      "no": "052-0048-00",
+      "name": "Bracket, Battery Terminal Block Mount",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae876f9",
+    "recId": "CBCA358C-570B-1748-A568-1FE4CCD5D4A5",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.360Z",
+    "updatedAt": "2022-04-12T15:22:24.363Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728587ff0b01be3f8bda5",
+      "no": "057-0201-01",
+      "name": "Label, Hold Button On/Off",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87704",
+    "recId": "44EC67DE-B6A0-5146-A233-A2567CF10A25",
+    "usage": 3,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.375Z",
+    "updatedAt": "2022-04-12T15:22:24.379Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728187ff0b01be3f893de",
+      "no": "011-0020-00",
+      "name": "TERMINAL BLOCK, GREY, MULTI-RAIL END STOP    0103 002.26",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae8770f",
+    "recId": "BF2E8337-86E6-9847-AC19-EFA3E7887C1B",
+    "usage": 2,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.394Z",
+    "updatedAt": "2022-04-12T15:22:24.399Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227283a7ff0b01be3f8a9fe",
+      "no": "046-0003-00",
+      "name": "DIN RAIL, 35 MM, 78\"IN LONG 0.0128252 (6.5')",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae8771a",
+    "recId": "05820BD3-D8D8-CA4E-97B4-42447A66F2B9",
+    "usage": 7,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.409Z",
+    "updatedAt": "2022-04-12T15:22:24.412Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728437ff0b01be3f8b055",
+      "no": "049-0012-00",
+      "name": "STANDOFF, HEX, NYLON, PCB MOUNT, 1/4\"H X 1/2\" L w / 632screw",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87725",
+    "recId": "6FA5DA63-47C9-0F41-9A18-3F7F2605359F",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.423Z",
+    "updatedAt": "2022-04-12T15:22:24.426Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227283e7ff0b01be3f8ad11",
+      "no": "047-0302-00",
+      "name": "Micro 3 Wire Assy White - For LED PCB",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87730",
+    "recId": "B1139060-10CE-194E-81DA-B7703CA10594",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.437Z",
+    "updatedAt": "2022-04-12T15:22:24.440Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227283e7ff0b01be3f8ad1b",
+      "no": "047-0303-00",
+      "name": "Micro 4 Wire Assy White - For LED PCB",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae8773b",
+    "recId": "B04EF3E9-0DE6-A84C-B999-D13E6FF2AB73",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.451Z",
+    "updatedAt": "2022-04-12T15:22:24.455Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728447ff0b01be3f8b0b7",
+      "no": "050-0006-09",
+      "name": "2 kw, 120 vin/vout, Sillicon Rubber 20x20x12 mm, 3k, 6K, 10K",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87746",
+    "recId": "DC5BE0E8-4748-274F-9D9A-C8E8B8001169",
+    "usage": 8,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.461Z",
+    "updatedAt": "2022-04-12T15:22:24.467Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728337ff0b01be3f8a570",
+      "no": "038-0004-00",
+      "name": "SCREW, #6-32 X 1/4\" PAN HEAD MACHINE, ZINC PLTD  M06C025PPSZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87751",
+    "recId": "F93CC74D-8A43-C74F-9CEA-C51F1ECF2969",
+    "usage": 6,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.475Z",
+    "updatedAt": "2022-04-12T15:22:24.477Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728337ff0b01be3f8a584",
+      "no": "038-0006-00",
+      "name": "SCREW, #8-32 X 1/2\" PHILLIPS PH MACHINE, ZINC     M08C050PPS",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae8775c",
+    "recId": "002B1AB1-6304-4F4A-8D18-14394E484F97",
+    "usage": 6,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.488Z",
+    "updatedAt": "2022-04-12T15:22:24.491Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728337ff0b01be3f8a598",
+      "no": "038-0007-00",
+      "name": "SCREW, #10-32 X 1/2\" PHILLIPS MACHINE, PH, ZINC    M10F050PP",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87767",
+    "recId": "1AB4132E-DF24-F14E-9627-5F6D8308A122",
+    "usage": 4,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.501Z",
+    "updatedAt": "2022-04-12T15:22:24.506Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728367ff0b01be3f8a756",
+      "no": "039-0008-00",
+      "name": "WASHER, #10, SPLIT LOCK",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87772",
+    "recId": "5BA142BE-2A23-6A41-944F-8FB0E63D55EF",
+    "usage": 5,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.516Z",
+    "updatedAt": "2022-04-12T15:22:24.520Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728367ff0b01be3f8a760",
+      "no": "039-0009-00",
+      "name": "WASHER,  #6, SPLIT LOCK",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae8777d",
+    "recId": "AD8A8216-18B0-E64B-810B-F9ADCD39B774",
+    "usage": 5,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.527Z",
+    "updatedAt": "2022-04-12T15:22:24.532Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728367ff0b01be3f8a76a",
+      "no": "039-0010-00",
+      "name": "Washer, #6, SAE, Flat, Steel, Zinc                   W06FSZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87788",
+    "recId": "2474DFBF-AA2F-514E-A4C0-34CDF47E05C2",
+    "usage": 4,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.540Z",
+    "updatedAt": "2022-04-12T15:22:24.546Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728367ff0b01be3f8a7ce",
+      "no": "039-0016-00",
+      "name": "Washer, #8, SAE, Flat, Steel, Zinc          W08FSZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87793",
+    "recId": "344B1792-C8B3-8046-8819-C930095FA244",
+    "usage": 6,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.556Z",
+    "updatedAt": "2022-04-12T15:22:24.559Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728367ff0b01be3f8a7d8",
+      "no": "039-0017-00",
+      "name": "Washer, #8, Split, Steel, Zinc",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae8779e",
+    "recId": "2BC16CD9-F5B7-9940-99BF-4EF5CDFE2243",
+    "usage": 2,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.571Z",
+    "updatedAt": "2022-04-12T15:22:24.574Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728407ff0b01be3f8ae57",
+      "no": "048-0011-00",
+      "name": "LUG, RING, INSULATED, 1/4\", 12-10AWG TVY25R",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae877a9",
+    "recId": "0E8BD5A1-0F16-EE48-A85B-FB9DBB7FCF5A",
+    "usage": 2,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.584Z",
+    "updatedAt": "2022-04-12T15:22:24.587Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728187ff0b01be3f893c0",
+      "no": "011-0011-00",
+      "name": "TERMINAL BLOCK, 12 AWG,1 Position, with DIN RAIL",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae877b4",
+    "recId": "854FB463-80E9-CE4E-93A0-334AC550E52E",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.596Z",
+    "updatedAt": "2022-04-12T15:22:24.602Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728507ff0b01be3f8b8c5",
+      "no": "053-0028-13",
+      "name": "Plate, Micro Elite, 1.5K  Comp Mounting w/pems 18ga, GALV",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae877bf",
+    "recId": "BD34B85E-34CA-EF45-AEB7-170945BD94B2",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.612Z",
+    "updatedAt": "2022-04-12T15:22:24.618Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728457ff0b01be3f8b161",
+      "no": "050-0007-16",
+      "name": "Bushing, Snap, Interlock Housing, .866 X .45\",       USED ONLY IN 6k, 10k kits",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae877ca",
+    "recId": "AC9816D0-E40F-4E48-A018-436939E6EA11",
+    "usage": 4,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.626Z",
+    "updatedAt": "2022-04-12T15:22:24.629Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728407ff0b01be3f8aea7",
+      "no": "048-0020-04",
+      "name": "LUG, RING, INSULATED, 5/16\", 8 AWG",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae877d5",
+    "recId": "81A2D5D2-36E1-B944-B264-BD39BA363C75",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.640Z",
+    "updatedAt": "2022-04-12T15:22:24.643Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728177ff0b01be3f8935c",
+      "no": "010-1031-01",
+      "name": "SWITCH, BYPASS, Mini, 2 pole,  25 AMP, 600 VAC",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae877e0",
+    "recId": "C277165C-5540-3840-B037-C20B96BC9957",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.653Z",
+    "updatedAt": "2022-04-12T15:22:24.656Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728517ff0b01be3f8b97d",
+      "no": "053-2022-02",
+      "name": "Bracket, Bypass Switch Mounting, Universal, MINI",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae877eb",
+    "recId": "0A25DF26-966D-0446-BAEA-0E1EA6327CA9",
+    "usage": 4,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.662Z",
+    "updatedAt": "2022-04-12T15:22:24.668Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227281b7ff0b01be3f895b2",
+      "no": "017-0001-00",
+      "name": "WIRE, 600V, 10 AWG, BLACK  UL1015, 500ft per spool",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae877f7",
+    "recId": "59991F09-B8E2-BD4E-B93C-FED024D10D59",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.677Z",
+    "updatedAt": "2022-04-12T15:22:24.681Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728497ff0b01be3f8b3e2",
+      "no": "051-0021-00",
+      "name": "Foam Top&Bottom, 2\" Frame x 4\"Thick, MINI PACKAGING",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87803",
+    "recId": "DB10F5D0-31AD-C242-B986-DE2A90C2F01B",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.692Z",
+    "updatedAt": "2022-04-12T15:22:24.694Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728497ff0b01be3f8b3ec",
+      "no": "051-0022-00",
+      "name": "Tape, Water Indicator, 3M 5557, 1/'2\" dia. Circle",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae8780f",
+    "recId": "6F7C3C4D-82BC-D543-8209-61A273FB3C92",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.706Z",
+    "updatedAt": "2022-04-12T15:22:24.709Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227285b7ff0b01be3f8bfad",
+      "no": "061-0012-00",
+      "name": "Envelope, 9' x 12 \",Vinyl open top  (50/bx)",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae8781b",
+    "recId": "14B4887D-45DC-BB48-8EFC-D7A624929C44",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.722Z",
+    "updatedAt": "2022-04-12T15:22:24.724Z",
+    "__v": 0,
+    "ItemName": "Cone, Cardboard, Shipping, 3D Do Not Stack",
+    "ItemNo": "061-0023-00",
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87827",
+    "recId": "F2077C9F-404F-CD4C-AE39-6485B67C2543",
+    "usage": 6,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.735Z",
+    "updatedAt": "2022-04-12T15:22:24.740Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227285d7ff0b01be3f8c0e3",
+      "no": "062-0006-00",
+      "name": "Banding, Poly Plastic, 1/2\" x 0.015\"X 9000' Blk",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87833",
+    "recId": "ECA6063D-CC04-2042-8883-6B2FA9AD5C69",
+    "usage": 2,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.751Z",
+    "updatedAt": "2022-04-12T15:22:24.755Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227285d7ff0b01be3f8c0ed",
+      "no": "062-0007-00",
+      "name": "Banding, Metal Buckle, 1/2\"(used w/plastic banding straps)",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae8783f",
+    "recId": "A9CDF13D-CAE1-2C40-BDCB-071D9629CCEC",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.763Z",
+    "updatedAt": "2022-04-12T15:22:24.768Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728537ff0b01be3f8ba83",
+      "no": "057-0001-15",
+      "name": "Label, ETL/Intertek, UL listed 924 and 1778",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae8784b",
+    "recId": "CFD413A9-3936-E74D-BE7A-17FABAC5BA01",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.776Z",
+    "updatedAt": "2022-04-12T15:22:24.779Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728537ff0b01be3f8ba97",
+      "no": "057-0001-17",
+      "name": "Label, ETL WARNING ARC FLASH PPE-NFPA 70E REQ,SELF-ADH-250RL",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87857",
+    "recId": "FAF08A63-8B55-4142-B1C7-7A9A2ECA12F5",
+    "usage": 6,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.790Z",
+    "updatedAt": "2022-04-12T15:22:24.792Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728557ff0b01be3f8bbcf",
+      "no": "057-0078-00",
+      "name": "Label, Base, Nameplate, Tyton # TAG78T1-795",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87863",
+    "recId": "DDC0CDAB-498D-2C42-8BD4-704F7BD292D2",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.803Z",
+    "updatedAt": "2022-04-12T15:22:24.806Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728557ff0b01be3f8bbff",
+      "no": "057-0097-00",
+      "name": "Label, Emergency Circuit \"RED\" Vinyl ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae8786f",
+    "recId": "D086A1B0-5EF4-094D-BAD9-DAA3D8BA6346",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.819Z",
+    "updatedAt": "2022-04-12T15:22:24.823Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728667ff0b01be3f8c5ea",
+      "no": "075-0000-00",
+      "name": "Test Procedure, MICRO/MICRO Elite",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae8787b",
+    "recId": "627EDAEB-DAD6-4B43-A998-66361F9DA951",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.835Z",
+    "updatedAt": "2022-04-12T15:22:24.838Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728517ff0b01be3f8b925",
+      "no": "053-0038-00",
+      "name": "Cabinet, NEMA 1, Micro Elite, 1KW ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87887",
+    "recId": "3F774651-ABD5-524E-8C60-90BA0CF4E3E9",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.851Z",
+    "updatedAt": "2022-04-12T15:22:24.853Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227286b7ff0b01be3f8c9e0",
+      "no": "018-1005-00",
+      "name": "MICRO Elite User's Manual 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87893",
+    "recId": "9BB3BEC2-3D62-6D4F-94F4-8EE2175D5074",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.864Z",
+    "updatedAt": "2022-04-12T15:22:24.869Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227286b7ff0b01be3f8c9f4",
+      "no": "047-0180-00",
+      "name": "Assy, Harness, Micro Elite PCB Input/Output",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae8789f",
+    "recId": "BE4BF766-114C-0D4D-AEDF-156B18BAD51A",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.880Z",
+    "updatedAt": "2022-04-12T15:22:24.886Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227286b7ff0b01be3f8c9ea",
+      "no": "074-1005-00",
+      "name": "MICRO Elite Maintenance Manual 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae878ab",
+    "recId": "6066EE35-17C2-D246-A06C-DC021CA98674",
+    "usage": 68,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.895Z",
+    "updatedAt": "2022-04-12T15:22:24.900Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227281b7ff0b01be3f895c6",
+      "no": "017-0003-00",
+      "name": "WIRE, 600V, 12 AWG, WHITE, UL1015",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae878b7",
+    "recId": "1E0C3BCD-E944-1446-A838-26F6F3B2160B",
+    "usage": 68,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.911Z",
+    "updatedAt": "2022-04-12T15:22:24.914Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227281b7ff0b01be3f895d0",
+      "no": "017-0004-00",
+      "name": "WIRE, 600V, 12 AWG, BLACK, UL1015",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae878c3",
+    "recId": "B6FFB7F9-3CF9-7141-832A-B937B1FACF70",
+    "usage": 4,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.924Z",
+    "updatedAt": "2022-04-12T15:22:24.926Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227283a7ff0b01be3f8a9fe",
+      "no": "046-0003-00",
+      "name": "DIN RAIL, 35 MM, 78\"IN LONG 0.0128252 (6.5')",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae878cf",
+    "recId": "A9417F25-9998-314F-BFA0-CF1C9E909ED1",
+    "usage": 2,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.938Z",
+    "updatedAt": "2022-04-12T15:22:24.941Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728497ff0b01be3f8b450",
+      "no": "052-0013-00",
+      "name": "Bracket, 45 Degree, Din Rail Mounting",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae878db",
+    "recId": "571998E7-ABD0-1C49-ACED-57E297EC329B",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.952Z",
+    "updatedAt": "2022-04-12T15:22:24.954Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728407ff0b01be3f8ae61",
+      "no": "048-0013-00",
+      "name": "LUG, COMPRESSION, 2 POSITION, 1/0 to 14 awg",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae878e6",
+    "recId": "A5A442FE-1AE9-BB4C-A1D3-E5E1B3C12B87",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.961Z",
+    "updatedAt": "2022-04-12T15:22:24.966Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728257ff0b01be3f89c36",
+      "no": "030-0005-01",
+      "name": "CONNECTOR, PLUG, PLASTIC, MALE kit, 4 PIN, WHITE  UL94V-0",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9f4",
+      "no": "047-0180-00",
+      "name": "Assy, Harness, Micro Elite PCB Input/Output",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae878f1",
+    "recId": "EA489208-1CE4-954C-845E-688EA29C8085",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.974Z",
+    "updatedAt": "2022-04-12T15:22:24.977Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728257ff0b01be3f89c4a",
+      "no": "030-0006-01",
+      "name": "CONNECTOR, RECEPTACLE, PLASTIC, FEMALE, 4 PIN, WHITE  UL 94V",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9f4",
+      "no": "047-0180-00",
+      "name": "Assy, Harness, Micro Elite PCB Input/Output",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae878fc",
+    "recId": "D2B2372A-720C-9742-9D92-C3A694A25175",
+    "usage": 4,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.987Z",
+    "updatedAt": "2022-04-12T15:22:24.989Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728337ff0b01be3f8a552",
+      "no": "037-0001-00",
+      "name": "PIN, METAL, MALE, 1 PIN",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9f4",
+      "no": "047-0180-00",
+      "name": "Assy, Harness, Micro Elite PCB Input/Output",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993092cfdc268ae87907",
+    "recId": "83147055-8717-544D-9CD2-800137C04EFE",
+    "usage": 4,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:24.999Z",
+    "updatedAt": "2022-04-12T15:22:25.003Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728337ff0b01be3f8a55c",
+      "no": "037-0002-00",
+      "name": "PIN, METAL, FEMALE, 1 PIN",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9f4",
+      "no": "047-0180-00",
+      "name": "Assy, Harness, Micro Elite PCB Input/Output",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993192cfdc268ae87912",
+    "recId": "F9919D0E-D3E9-1545-9703-B27D0C6CC959",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:25.014Z",
+    "updatedAt": "2022-04-12T15:22:25.019Z",
+    "__v": 0,
+    "ItemName": "Micro Input Wire Assy L & N Wires",
+    "ItemNo": "047-0300-00",
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9f4",
+      "no": "047-0180-00",
+      "name": "Assy, Harness, Micro Elite PCB Input/Output",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993192cfdc268ae8791d",
+    "recId": "3630E1B4-D803-234C-9D68-99A87CF386AC",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:25.034Z",
+    "updatedAt": "2022-04-12T15:22:25.039Z",
+    "__v": 0,
+    "ItemName": "Micro Output Wire Assy L & N Wires",
+    "ItemNo": "047-0301-00",
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9f4",
+      "no": "047-0180-00",
+      "name": "Assy, Harness, Micro Elite PCB Input/Output",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993192cfdc268ae87928",
+    "recId": "A0E321F6-C328-AE4E-99F9-B574C690B542",
+    "usage": 60,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:25.049Z",
+    "updatedAt": "2022-04-12T15:22:25.053Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227281b7ff0b01be3f895c6",
+      "no": "017-0003-00",
+      "name": "WIRE, 600V, 12 AWG, WHITE, UL1015",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9f4",
+      "no": "047-0180-00",
+      "name": "Assy, Harness, Micro Elite PCB Input/Output",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993192cfdc268ae87933",
+    "recId": "B565C7B7-7EFC-AD47-A096-227D33AF0D37",
+    "usage": 60,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:25.060Z",
+    "updatedAt": "2022-04-12T15:22:25.063Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227281b7ff0b01be3f895d0",
+      "no": "017-0004-00",
+      "name": "WIRE, 600V, 12 AWG, BLACK, UL1015",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9f4",
+      "no": "047-0180-00",
+      "name": "Assy, Harness, Micro Elite PCB Input/Output",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993192cfdc268ae8793e",
+    "recId": "42156092-B226-4D45-AAAD-739A0D598ACD",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:25.074Z",
+    "updatedAt": "2022-04-12T15:22:25.076Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227286b7ff0b01be3f8c9fc",
+      "no": "047-0180-01",
+      "name": "Wire List, Harness Assembly, Micro Elite, PCB Input/Output",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9f4",
+      "no": "047-0180-00",
+      "name": "Assy, Harness, Micro Elite PCB Input/Output",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993192cfdc268ae87949",
+    "recId": "C2ED5E55-EF1B-A341-B275-23204A91F910",
+    "usage": 24,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:25.086Z",
+    "updatedAt": "2022-04-12T15:22:25.089Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227281b7ff0b01be3f895b2",
+      "no": "017-0001-00",
+      "name": "WIRE, 600V, 10 AWG, BLACK  UL1015, 500ft per spool",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9f4",
+      "no": "047-0180-00",
+      "name": "Assy, Harness, Micro Elite PCB Input/Output",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993192cfdc268ae87954",
+    "recId": "BE0855E0-0B4D-2C46-88FC-CA325CD77E9C",
+    "usage": 24,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:25.097Z",
+    "updatedAt": "2022-04-12T15:22:25.102Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227281b7ff0b01be3f895bc",
+      "no": "017-0002-00",
+      "name": "WIRE, 600V, 10 AWG, RED  UL1015, 500ft per spool",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9f4",
+      "no": "047-0180-00",
+      "name": "Assy, Harness, Micro Elite PCB Input/Output",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993192cfdc268ae8795f",
+    "recId": "D94E8A34-C928-4446-AF7C-03EDE9B7A1BB",
+    "usage": 24,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:25.110Z",
+    "updatedAt": "2022-04-12T15:22:25.112Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227281b7ff0b01be3f895e4",
+      "no": "017-0009-00",
+      "name": "WIRE, 600V, 12 AWG, GREEN/YELLOW, UL1015, 300 Ft per spool",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9f4",
+      "no": "047-0180-00",
+      "name": "Assy, Harness, Micro Elite PCB Input/Output",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993192cfdc268ae8796a",
+    "recId": "423D6AE4-494F-AB46-8087-CDF85F191FDF",
+    "usage": 2,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:25.123Z",
+    "updatedAt": "2022-04-12T15:22:25.126Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227283f7ff0b01be3f8adf3",
+      "no": "048-0003-00",
+      "name": "LUG, RING, #10, YELLOW 12-10 AWG   TVY10R",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9f4",
+      "no": "047-0180-00",
+      "name": "Assy, Harness, Micro Elite PCB Input/Output",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993192cfdc268ae87975",
+    "recId": "EC31C2B1-4AD1-2644-BB39-1A103E301B00",
+    "usage": 10,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:25.139Z",
+    "updatedAt": "2022-04-12T15:22:25.141Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728407ff0b01be3f8ae75",
+      "no": "048-0017-00",
+      "name": "FERRULE, 12 GAUGE, SINGLE, Grey",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9f4",
+      "no": "047-0180-00",
+      "name": "Assy, Harness, Micro Elite PCB Input/Output",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993192cfdc268ae87980",
+    "recId": "A80B1FD3-AA1F-164D-901D-0223DB5CD479",
+    "usage": 10,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:25.151Z",
+    "updatedAt": "2022-04-12T15:22:25.156Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728427ff0b01be3f8af65",
+      "no": "048-0035-00",
+      "name": "FERRULE, # 18 GAUGE, SINGLE, Yellow Small",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9f4",
+      "no": "047-0180-00",
+      "name": "Assy, Harness, Micro Elite PCB Input/Output",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993192cfdc268ae8798b",
+    "recId": "A7B96CD3-8C5D-BD49-B6D0-E60C5F7421B2",
+    "usage": 2,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:25.176Z",
+    "updatedAt": "2022-04-12T15:22:25.185Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728427ff0b01be3f8afa1",
+      "no": "048-0043-00",
+      "name": "FERRULE, # 14 GAUGE, SINGLE, Blue",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9f4",
+      "no": "047-0180-00",
+      "name": "Assy, Harness, Micro Elite PCB Input/Output",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255993192cfdc268ae87996",
+    "recId": "8ED94230-FBC4-0747-8AC0-C797CAB30C58",
+    "usage": 4,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:25.206Z",
+    "updatedAt": "2022-04-12T15:22:25.211Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "622728427ff0b01be3f8afc9",
+      "no": "048-0051-00",
+      "name": "Lug, Ring, INSULATED, #5/16, 10 AWG",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255993092cfdc268ae875cb",
+    "parent": {
+      "_id": "6227286b7ff0b01be3f8c9f4",
+      "no": "047-0180-00",
+      "name": "Assy, Harness, Micro Elite PCB Input/Output",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  }
+]

@@ -45,18 +45,18 @@ function Details({ unit }: { unit: IUnit }) {
   const [editShip, setEditShip] = useState(false);
   const [selectedShip, setSelectedShip] = useState<IShipment>();
 
-  const { data: unitBoms } = useSWR(gridActiveTab === 2 ? `/ubom?UnitId=${unit.id}` : null);
+  const { data: jobrecords } = useSWR(gridActiveTab === 2 ? `/unit/${unit.id}/jobrecords` : null);
   const { data: shipments } = useSWR(gridActiveTab === 4 ? `/shipment?UnitId=${unit.id}` : null);
 
-  const bomCols = useMemo<GridColDef[]>(
+  const jobrecordsCols = useMemo<GridColDef[]>(
     () => [
       { field: "Line", width: 80 },
-      { field: "Component", width: 180 },
-      { field: "Component Name", width: 180 },
-      { field: "Component Location", flex: 1 },
-      { field: "UM", width: 120 },
-      { field: "QTY", width: 120 },
-      { field: "Note", width: 200 },
+      { field: "Component", valueFormatter: ({ row }) => row?.ItemId?.no, width: 180 },
+      { field: "Component Name", valueFormatter: ({ row }) => row?.ItemId?.name, width: 180 },
+      { field: "Component Location", valueFormatter: ({ row }) => row?.ItemId?.location, width: 180 },
+      { field: "UM", valueFormatter: ({ row }) => row?.ItemId?.unitOfMeasure, width: 120 },
+      { field: "QTY", valueFormatter: ({ row }) => row?.usage, width: 120 },
+      { field: "Note", valueFormatter: ({ row }) => row?.note, width: 200 },
     ],
     []
   );
@@ -244,7 +244,12 @@ function Details({ unit }: { unit: IUnit }) {
             </Box>
           )}
           {gridActiveTab === 2 && (
-            <BaseDataGrid cols={bomCols} rows={unitBoms || []} onRowSelected={(r) => {}} height="67.3vh" />
+            <BaseDataGrid
+              cols={jobrecordsCols}
+              rows={jobrecords?.map((j: any, i: any) => ({ ...j, id: i })) || []}
+              onRowSelected={(r) => {}}
+              height="67.3vh"
+            />
           )}
           {gridActiveTab === 3 && <DocumentTab itemId={unit.id} model="unit" />}
           {gridActiveTab === 4 && (

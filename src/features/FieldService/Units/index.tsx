@@ -19,32 +19,32 @@ export default function Unit() {
       header: "Device",
       flex: 1,
       minWidth: 120,
-      render: ({ data }: any) => data?.item?.no,
+      render: ({ data }: any) => data?.ItemId?.no,
     },
     {
       name: "EST.S.D",
-      render: ({ data }: any) => formatTimestampToDate(data?.so?.estimatedShipDate),
+      render: ({ data }: any) => formatTimestampToDate(data?.SOId?.estimatedShipDate),
       minWidth: 120,
     },
     {
       name: "Act.S.D.",
-      render: ({ data }: any) => formatTimestampToDate(data?.so?.actualShipDate),
+      render: ({ data }: any) => formatTimestampToDate(data?.SOId?.actualShipDate),
       minWidth: 120,
     },
     { name: "status", header: "Status", minWidth: 100 },
     { name: "warrantyStatus", header: "Warranty Status", minWidth: 150 },
-    { name: "warrantyEndDate", header: "warranty End Date", minWidth: 150 },
+    { name: "warrantyEndDate", header: "Warranty End Date", minWidth: 150 },
     {
       name: "SO NO.",
       header: "SO NO.",
       minWidth: 90,
-      render: ({ data }: any) => data?.so?.number,
+      render: ({ data }: any) => data?.SOId?.number,
     },
     {
       name: "SO Date",
       header: "SO Date",
       minWidth: 100,
-      render: ({ data }: any) => formatTimestampToDate(data?.so?.date),
+      render: ({ data }: any) => formatTimestampToDate(data?.SOId?.date),
     },
   ];
 
