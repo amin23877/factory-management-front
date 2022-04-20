@@ -51,8 +51,8 @@ function Details({ unit }: { unit: IUnit }) {
   const jobrecordsCols = useMemo<GridColDef[]>(
     () => [
       { field: "Line", width: 80 },
-      { field: "Component", valueFormatter: ({ row }) => row?.ItemId?.no, width: 180 },
-      { field: "Component Name", valueFormatter: ({ row }) => row?.ItemId?.name, width: 180 },
+      { field: "Component", valueFormatter: ({ row }) => row?.ItemId?.no || row?.ItemNo, width: 180 },
+      { field: "Component Name", valueFormatter: ({ row }) => row?.ItemId?.name || row?.ItemName, width: 180 },
       { field: "Component Location", valueFormatter: ({ row }) => row?.ItemId?.location, width: 180 },
       { field: "UM", valueFormatter: ({ row }) => row?.ItemId?.unitOfMeasure, width: 120 },
       { field: "QTY", valueFormatter: ({ row }) => row?.usage, width: 120 },
