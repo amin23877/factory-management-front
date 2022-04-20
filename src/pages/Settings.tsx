@@ -7,32 +7,41 @@ import { groupBy } from "logic/utils";
 
 export default function Settings() {
   useEffect(() => {
-    const unitNumber = "CMEL-875W-120-120-90";
-    const mainComponents = jobRecords.filter((j) => j.parent?.no === unitNumber);
-    const withoutParent = jobRecords.filter((j) => !j?.parent);
+    const unitNumber = "CMEL-525W-120-120-90";
+    const grouped = Array.from(groupBy(jobRecords, (j) => j.parent?.no || "No Parent"));
+
+    const mainComponentsGroup = grouped.find((g) => g[0] === unitNumber);
+    const mainComponents = mainComponentsGroup ? mainComponentsGroup[1] : [];
+
+    const withoutParentGroup = grouped.find((g) => g[0] === "No-Parent");
+    const withoutParent = withoutParentGroup ? withoutParentGroup[1] : [];
+
     let all: any[] = [];
     for (const c of mainComponents) {
       all.push(c, ...jobRecords.filter((j) => j.parent?.no === c?.ItemId?.no));
     }
     all.push(...withoutParent);
-    console.log({ all, mainComponents, jobRecords });
 
-    console.log(Array.from(groupBy(jobRecords, (j) => j.parent?.no || "No Parent")));
+    let seen = false;
+    for (const g of grouped) {
+      seen = false;
+      for (const j of all) {
+        if (j?.parent?.no === g[0]) {
+          seen = true;
+        }
+      }
+      if (!seen) {
+        all = all.concat(g[1]);
+      }
+    }
+
+    console.log({ grouped, jobRecords });
   }, []);
-  // useEffect(() => {
-  //   const parents = jobRecords.filter((j) => !j.parent || j.parent === null);
-  //   const children = parents.map((p) => jobRecords.filter((j) => j.parent?._id === p?.ItemId?._id));
-  //   let parentWithChildren:any;
-  //     for(const parent of parents){
-  //       for(const record of jobRecords){
-  //         if(parentWithChildren[parent!!.ItemId!!.no]){
-  //           parentWithChildren[parent!!.ItemId!!.no].push(record);
-  //         }
 
-  //       }
-  //     }
-  //   console.log({ jobRecords, children, parents });
-  // }, []);
+  useEffect(() => {
+    const found = jobRecords.find((j) => j.ItemId?.no === "OE3-8KW-208Y/120-208Y/120-90");
+    console.log({ found });
+  }, []);
 
   return <Container>{/* <UnderDev /> */}</Container>;
 }

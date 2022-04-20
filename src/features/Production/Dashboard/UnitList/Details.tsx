@@ -12,7 +12,7 @@ import UnitWorkFlow, { ProductionWorkFlow } from "./WorkFlows";
 
 import DocumentTab from "common/Document/Tab";
 import Confirm from "../../../Modals/Confirm";
-import { host } from "host";
+// import { host } from "host";
 import Button from "app/Button";
 import { BasePaper } from "app/Paper";
 import BaseDataGrid from "app/BaseDataGrid";
@@ -24,7 +24,7 @@ import { deleteOption, IOption } from "api/options";
 import { addImage, deleteImage } from "api/units";
 import { jobRecordType } from "api/job";
 
-import { getModifiedValues } from "logic/utils";
+import { getModifiedValues, groupBy } from "logic/utils";
 import { openRequestedSinglePopup } from "logic/window";
 import { formatTimestampToDate } from "logic/date";
 
@@ -34,6 +34,53 @@ const schema = Yup.object().shape({
   // dueDate: Yup.string().required(),
   // assignee: Yup.string().required(),
 });
+
+function sortJobRecords({ unitNumber, jobRecords }: { unitNumber: string; jobRecords: any[] }) {
+  const grouped = Array.from(groupBy(jobRecords, (j) => j.parent?.no || "No Parent"));
+
+  const mainComponentsGroup = grouped.find((g) => g[0] === unitNumber);
+  const mainComponents = mainComponentsGroup ? mainComponentsGroup[1] : [];
+
+  const withoutParentGroup = grouped.find((g) => g[0] === "No-Parent");
+  const withoutParent = withoutParentGroup ? withoutParentGroup[1] : [];
+
+  let all: any[] = [];
+  for (const c of mainComponents) {
+    all.push(c, ...jobRecords.filter((j) => j.parent?.no === c?.ItemId?.no));
+  }
+  all.push(...withoutParent);
+
+  let seen = false;
+  for (const g of grouped) {
+    seen = false;
+    for (const j of all) {
+      if (j?.parent?.no === g[0]) {
+        seen = true;
+      }
+    }
+    if (!seen) {
+      all = all.concat(g[1]);
+    }
+  }
+
+  return all;
+}
+
+function getUnitWorkflowStep(status: string) {
+  const steps = [
+    "Quote",
+    "Sales Order",
+    "Engineering",
+    "Purchasing",
+    "Manufacturing",
+    "Evaluation",
+    "Test",
+    "Shipped",
+    "Accounting",
+  ];
+
+  return steps.findIndex((s) => s === status);
+}
 
 function Details({ unit }: { unit: IUnit }) {
   let history = useHistory();
@@ -57,7 +104,7 @@ function Details({ unit }: { unit: IUnit }) {
   const [confirm, setConfirm] = useState(false);
   const [addOption, setAddOption] = useState(false);
   const [img, setImg] = useState<any>();
-  const { data: photo } = useSWR(`/unit/${unit.id}`);
+  // const { data: photo } = useSWR(`/unit/${unit.id}`);
 
   const handleFileChange = async (e: any) => {
     if (unit.id) {
@@ -104,17 +151,21 @@ function Details({ unit }: { unit: IUnit }) {
   );
 
   const { data: unitJobRecords } = useSWR<jobRecordType[]>(gridActiveTab === 2 ? `/unit/${unit.id}/jobrecords` : null);
+  const sortedJobRecords = sortJobRecords({ unitNumber: unit?.ItemId?.no, jobRecords: unitJobRecords || [] });
 
   const jobRecordsCols = useMemo<GridColumns>(
     () => [
-      // { headerName: "No.", field: "no", width: 80 },
-      // { field: "Line", width: 80 },
-      { field: "Parent", valueFormatter: ({ row }) => row?.parent?.no, width: 180 },
-      { field: "Component NO.", valueFormatter: ({ row }) => row?.ItemId?.no || row?.itemNo, width: 180 },
-      { field: "Component Name", valueFormatter: ({ row }) => row?.ItemId?.name || row?.itemName, flex: 1 },
-      // { field: "UM", width: 120 },
+      { field: "Line", width: 80 },
+      { field: "Component NO.", valueFormatter: ({ row }) => row?.ItemId?.no || row?.ItemNo, width: 180 },
+      { field: "Component Name", valueFormatter: ({ row }) => row?.ItemId?.name || row?.ItemName, flex: 1 },
+      {
+        field: "Component Location",
+        valueFormatter: ({ row }) => row?.ItemId?.location || row?.ItemLocation,
+        width: 180,
+      },
+      { field: "UM", valueFormatter: ({ row }) => row?.ItemId?.unitOfMeasure, width: 120 },
       { field: "usage", headerName: "QTY", width: 120 },
-      { field: "Note", width: 200 },
+      { field: "Note", valueFormatter: ({ row }) => row?.note, width: 200 },
     ],
     []
   );
@@ -244,7 +295,7 @@ function Details({ unit }: { unit: IUnit }) {
         <>
           <BasePaper style={{ marginBottom: "10px" }}>
             <h1 style={{ marginLeft: "3em" }}>Unit Work Flow</h1>
-            <UnitWorkFlow />
+            <UnitWorkFlow step={getUnitWorkflowStep(unit.status)} />
           </BasePaper>
         </>
       )}
@@ -276,13 +327,13 @@ function Details({ unit }: { unit: IUnit }) {
         {gridActiveTab === 2 && (
           <BaseDataGrid
             getRowClassName={({ row }) => {
-              if (row?.parent) {
+              if (row?.parent && row?.parent?.no !== unit?.ItemId?.no) {
                 return "nested";
               }
               return "";
             }}
             cols={jobRecordsCols}
-            rows={unitJobRecords ? unitJobRecords.map((j, i) => ({ ...j, id: i })) : []}
+            rows={sortedJobRecords ? sortedJobRecords.map((j, i) => ({ ...j, id: i })) : []}
             onRowSelected={(r) => {
               phone
                 ? history.push(`/panel/inventory/${unit?.ItemId?.id}`)

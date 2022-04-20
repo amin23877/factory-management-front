@@ -1,11 +1,11 @@
 [
   {
-    "_id": "6255993092cfdc268ae875d8",
-    "recId": "8C13C7E4-6D56-1548-A06E-DDE5D85418B7",
+    "_id": "6255992e92cfdc268ae871dc",
+    "recId": "DD35B9DF-9AFD-DD45-8F70-AA48C7FE19E7",
     "usage": 2,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.044Z",
-    "updatedAt": "2022-04-12T15:22:24.050Z",
+    "createdAt": "2022-04-12T15:22:22.789Z",
+    "updatedAt": "2022-04-12T15:22:22.792Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728147ff0b01be3f89160",
@@ -15,23 +15,23 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
-      "_id": "622728cc7ff0b01be3f91c58",
-      "no": "CMEL-875W-120-120-90",
-      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "_id": "622728e07ff0b01be3f93169",
+      "no": "CMEL-525W-120-120-90",
+      "name": "Micro Elite 525W-120 volts input, 120 volts output, 1-pase, 60 HZ",
       "usedInQuarter": null,
       "usedInHalf": null,
       "usedInYear": null
     }
   },
   {
-    "_id": "6255993092cfdc268ae875e9",
-    "recId": "D7577E08-1EE8-1E4E-B1CA-8D064E8C4953",
+    "_id": "6255992e92cfdc268ae871ee",
+    "recId": "FF09AE86-EFCB-BF40-82EE-0B8E5EC13944",
     "usage": 4,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.061Z",
-    "updatedAt": "2022-04-12T15:22:24.068Z",
+    "createdAt": "2022-04-12T15:22:22.803Z",
+    "updatedAt": "2022-04-12T15:22:22.807Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728187ff0b01be3f893ac",
@@ -41,23 +41,23 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
-      "_id": "622728cc7ff0b01be3f91c58",
-      "no": "CMEL-875W-120-120-90",
-      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "_id": "622728e07ff0b01be3f93169",
+      "no": "CMEL-525W-120-120-90",
+      "name": "Micro Elite 525W-120 volts input, 120 volts output, 1-pase, 60 HZ",
       "usedInQuarter": null,
       "usedInHalf": null,
       "usedInYear": null
     }
   },
   {
-    "_id": "6255993092cfdc268ae875fa",
-    "recId": "506CAF5D-BF36-C34B-A4C4-C80751B032DF",
+    "_id": "6255992e92cfdc268ae87200",
+    "recId": "2C16756A-E7E4-5749-8DDB-C208C06DFFFC",
     "usage": 2,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.078Z",
-    "updatedAt": "2022-04-12T15:22:24.086Z",
+    "createdAt": "2022-04-12T15:22:22.819Z",
+    "updatedAt": "2022-04-12T15:22:22.822Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728187ff0b01be3f893b6",
@@ -67,23 +67,23 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
-      "_id": "622728cc7ff0b01be3f91c58",
-      "no": "CMEL-875W-120-120-90",
-      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "_id": "622728e07ff0b01be3f93169",
+      "no": "CMEL-525W-120-120-90",
+      "name": "Micro Elite 525W-120 volts input, 120 volts output, 1-pase, 60 HZ",
       "usedInQuarter": null,
       "usedInHalf": null,
       "usedInYear": null
     }
   },
   {
-    "_id": "6255993092cfdc268ae8760b",
-    "recId": "67CE3FF7-85A6-994F-B9E1-A36C7D1D7CC4",
+    "_id": "6255992e92cfdc268ae87212",
+    "recId": "C88E703E-E5FD-D94E-8F36-A1C325BE27C6",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.096Z",
-    "updatedAt": "2022-04-12T15:22:24.102Z",
+    "createdAt": "2022-04-12T15:22:22.836Z",
+    "updatedAt": "2022-04-12T15:22:22.839Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728187ff0b01be3f893de",
@@ -93,23 +93,23 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
-      "_id": "622728cc7ff0b01be3f91c58",
-      "no": "CMEL-875W-120-120-90",
-      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "_id": "622728e07ff0b01be3f93169",
+      "no": "CMEL-525W-120-120-90",
+      "name": "Micro Elite 525W-120 volts input, 120 volts output, 1-pase, 60 HZ",
       "usedInQuarter": null,
       "usedInHalf": null,
       "usedInYear": null
     }
   },
   {
-    "_id": "6255993092cfdc268ae8761c",
-    "recId": "9BE3FE00-6780-7343-8D7B-7DEC09BAE7B0",
+    "_id": "6255992e92cfdc268ae87224",
+    "recId": "9D21E08B-D35F-604F-9AA2-DB7658A49D0A",
     "usage": 2,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.111Z",
-    "updatedAt": "2022-04-12T15:22:24.117Z",
+    "createdAt": "2022-04-12T15:22:22.850Z",
+    "updatedAt": "2022-04-12T15:22:22.854Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728197ff0b01be3f89460",
@@ -119,179 +119,23 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
-      "_id": "622728cc7ff0b01be3f91c58",
-      "no": "CMEL-875W-120-120-90",
-      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "_id": "622728e07ff0b01be3f93169",
+      "no": "CMEL-525W-120-120-90",
+      "name": "Micro Elite 525W-120 volts input, 120 volts output, 1-pase, 60 HZ",
       "usedInQuarter": null,
       "usedInHalf": null,
       "usedInYear": null
     }
   },
   {
-    "_id": "6255993092cfdc268ae8762d",
-    "recId": "3E4E9781-8A29-7A49-BA78-D48DA4B61F2A",
+    "_id": "6255992e92cfdc268ae87238",
+    "recId": "7176190F-D010-9848-9124-BB07CE8ED356",
     "usage": 2,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.127Z",
-    "updatedAt": "2022-04-12T15:22:24.133Z",
-    "__v": 0,
-    "ItemId": {
-      "_id": "6227283b7ff0b01be3f8ab11",
-      "no": "047-0054-02",
-      "name": "Battery Jumper, 14\" OAL, #8 AWG. 5/16\" Ring Lugs",
-      "usedInQuarter": null,
-      "usedInHalf": null,
-      "usedInYear": null
-    },
-    "JOBId": "6255993092cfdc268ae875cb",
-    "parent": {
-      "_id": "622728cc7ff0b01be3f91c58",
-      "no": "CMEL-875W-120-120-90",
-      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
-      "usedInQuarter": null,
-      "usedInHalf": null,
-      "usedInYear": null
-    }
-  },
-  {
-    "_id": "6255993092cfdc268ae8763e",
-    "recId": "57C9BDD3-4320-FD4E-AF6B-B95A1C874F55",
-    "usage": 1,
-    "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.145Z",
-    "updatedAt": "2022-04-12T15:22:24.151Z",
-    "__v": 0,
-    "ItemId": {
-      "_id": "6227286b7ff0b01be3f8c9cd",
-      "no": "002-0120-00",
-      "name": "Assy, Micro Elite 525W - 1050W Panel",
-      "usedInQuarter": null,
-      "usedInHalf": null,
-      "usedInYear": null
-    },
-    "JOBId": "6255993092cfdc268ae875cb",
-    "parent": {
-      "_id": "622728cc7ff0b01be3f91c58",
-      "no": "CMEL-875W-120-120-90",
-      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
-      "usedInQuarter": null,
-      "usedInHalf": null,
-      "usedInYear": null
-    }
-  },
-  {
-    "_id": "6255993092cfdc268ae87650",
-    "recId": "D4994D47-F50B-FB47-B06A-22E8E8DB4D78",
-    "usage": 1,
-    "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.167Z",
-    "updatedAt": "2022-04-12T15:22:24.171Z",
-    "__v": 0,
-    "ItemId": {
-      "_id": "6227286b7ff0b01be3f8c9d5",
-      "no": "002-0701-00",
-      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
-      "usedInQuarter": null,
-      "usedInHalf": null,
-      "usedInYear": null
-    },
-    "JOBId": "6255993092cfdc268ae875cb",
-    "parent": {
-      "_id": "622728cc7ff0b01be3f91c58",
-      "no": "CMEL-875W-120-120-90",
-      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
-      "usedInQuarter": null,
-      "usedInHalf": null,
-      "usedInYear": null
-    }
-  },
-  {
-    "_id": "6255993092cfdc268ae87661",
-    "recId": "808089AE-C0B7-7546-9611-70C8B5422896",
-    "usage": 1,
-    "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.184Z",
-    "updatedAt": "2022-04-12T15:22:24.188Z",
-    "__v": 0,
-    "ItemId": {
-      "_id": "6227286b7ff0b01be3f8ca14",
-      "no": "047-0181-00",
-      "name": "Wirelist, Micro Elite 525W-1050W, 120Vin, 120Vout, Power Wiring ",
-      "usedInQuarter": null,
-      "usedInHalf": null,
-      "usedInYear": null
-    },
-    "JOBId": "6255993092cfdc268ae875cb",
-    "parent": {
-      "_id": "622728cc7ff0b01be3f91c58",
-      "no": "CMEL-875W-120-120-90",
-      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
-      "usedInQuarter": null,
-      "usedInHalf": null,
-      "usedInYear": null
-    }
-  },
-  {
-    "_id": "6255993092cfdc268ae87672",
-    "recId": "0D233B57-EF37-F944-A0EF-FEA34233DA8F",
-    "usage": 1,
-    "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.201Z",
-    "updatedAt": "2022-04-12T15:22:24.204Z",
-    "__v": 0,
-    "ItemId": {
-      "_id": "6227282c7ff0b01be3f8a100",
-      "no": "035-0058-00",
-      "name": "Breaker, 1P, 10A , 277 VAC, D Curve",
-      "usedInQuarter": null,
-      "usedInHalf": null,
-      "usedInYear": null
-    },
-    "JOBId": "6255993092cfdc268ae875cb",
-    "parent": {
-      "_id": "622728cc7ff0b01be3f91c58",
-      "no": "CMEL-875W-120-120-90",
-      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
-      "usedInQuarter": null,
-      "usedInHalf": null,
-      "usedInYear": null
-    }
-  },
-  {
-    "_id": "6255993092cfdc268ae87683",
-    "recId": "2ACB2B21-FE39-B448-AAB1-805FBDC4AFB8",
-    "usage": 1,
-    "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.215Z",
-    "updatedAt": "2022-04-12T15:22:24.220Z",
-    "__v": 0,
-    "ItemId": {
-      "_id": "6227282f7ff0b01be3f8a2b8",
-      "no": "035-0110-00",
-      "name": "BREAKER, 1P, 16A, 277V, D CURVE",
-      "usedInQuarter": null,
-      "usedInHalf": null,
-      "usedInYear": null
-    },
-    "JOBId": "6255993092cfdc268ae875cb",
-    "parent": {
-      "_id": "622728cc7ff0b01be3f91c58",
-      "no": "CMEL-875W-120-120-90",
-      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
-      "usedInQuarter": null,
-      "usedInHalf": null,
-      "usedInYear": null
-    }
-  },
-  {
-    "_id": "6255993092cfdc268ae87696",
-    "recId": "AC1193C2-156A-944C-834F-59874DE20208",
-    "usage": 4,
-    "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.229Z",
-    "updatedAt": "2022-04-12T15:22:24.236Z",
+    "createdAt": "2022-04-12T15:22:22.863Z",
+    "updatedAt": "2022-04-12T15:22:22.869Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728217ff0b01be3f899c6",
@@ -301,23 +145,205 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
-      "_id": "622728cc7ff0b01be3f91c58",
-      "no": "CMEL-875W-120-120-90",
-      "name": "Micro Elite 875W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "_id": "622728e07ff0b01be3f93169",
+      "no": "CMEL-525W-120-120-90",
+      "name": "Micro Elite 525W-120 volts input, 120 volts output, 1-pase, 60 HZ",
       "usedInQuarter": null,
       "usedInHalf": null,
       "usedInYear": null
     }
   },
   {
-    "_id": "6255993092cfdc268ae876a1",
-    "recId": "E4F4E4A8-89C7-5246-8734-0FD6A8B76EA6",
+    "_id": "6255992e92cfdc268ae8724a",
+    "recId": "FEC0CF42-A56C-D845-B12E-DB0FCABDFFCE",
+    "usage": 2,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:22.879Z",
+    "updatedAt": "2022-04-12T15:22:22.886Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227283b7ff0b01be3f8ab11",
+      "no": "047-0054-02",
+      "name": "Battery Jumper, 14\" OAL, #8 AWG. 5/16\" Ring Lugs",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255992e92cfdc268ae871ce",
+    "parent": {
+      "_id": "622728e07ff0b01be3f93169",
+      "no": "CMEL-525W-120-120-90",
+      "name": "Micro Elite 525W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255992e92cfdc268ae8725c",
+    "recId": "E09CAED2-6241-DA40-A0C0-204787813099",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.245Z",
-    "updatedAt": "2022-04-12T15:22:24.251Z",
+    "createdAt": "2022-04-12T15:22:22.900Z",
+    "updatedAt": "2022-04-12T15:22:22.903Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227286b7ff0b01be3f8c9cd",
+      "no": "002-0120-00",
+      "name": "Assy, Micro Elite 525W - 1050W Panel",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255992e92cfdc268ae871ce",
+    "parent": {
+      "_id": "622728e07ff0b01be3f93169",
+      "no": "CMEL-525W-120-120-90",
+      "name": "Micro Elite 525W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255992e92cfdc268ae8726f",
+    "recId": "E662B0D3-C6FA-3742-B675-C495FF43B066",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:22.917Z",
+    "updatedAt": "2022-04-12T15:22:22.922Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227286b7ff0b01be3f8c9d5",
+      "no": "002-0701-00",
+      "name": "Micro Elite Hardware Assembly, All DSPM Models 525W - 1050W",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255992e92cfdc268ae871ce",
+    "parent": {
+      "_id": "622728e07ff0b01be3f93169",
+      "no": "CMEL-525W-120-120-90",
+      "name": "Micro Elite 525W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255992e92cfdc268ae87281",
+    "recId": "7B5AED5A-3AC4-7E45-858D-8EF6584E11F3",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:22.936Z",
+    "updatedAt": "2022-04-12T15:22:22.940Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227286b7ff0b01be3f8ca04",
+      "no": "058-1020-00",
+      "name": "Drawing, Battery Diagram, Micro Elite 525W ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255992e92cfdc268ae871ce",
+    "parent": {
+      "_id": "622728e07ff0b01be3f93169",
+      "no": "CMEL-525W-120-120-90",
+      "name": "Micro Elite 525W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255992e92cfdc268ae87293",
+    "recId": "5640FCFB-6917-4744-9E59-07673E35BAF2",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:22.953Z",
+    "updatedAt": "2022-04-12T15:22:22.956Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227286b7ff0b01be3f8ca14",
+      "no": "047-0181-00",
+      "name": "Wirelist, Micro Elite 525W-1050W, 120Vin, 120Vout, Power Wiring ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255992e92cfdc268ae871ce",
+    "parent": {
+      "_id": "622728e07ff0b01be3f93169",
+      "no": "CMEL-525W-120-120-90",
+      "name": "Micro Elite 525W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255992e92cfdc268ae872a5",
+    "recId": "A87150FF-7684-4F4E-A59A-9FE2CFB7DD04",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:22.968Z",
+    "updatedAt": "2022-04-12T15:22:22.973Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227282b7ff0b01be3f8a0b0",
+      "no": "035-0049-00",
+      "name": "BREAKER, 1P, 6A, 277V, D CURVE",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255992e92cfdc268ae871ce",
+    "parent": {
+      "_id": "622728e07ff0b01be3f93169",
+      "no": "CMEL-525W-120-120-90",
+      "name": "Micro Elite 525W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255992e92cfdc268ae872b7",
+    "recId": "5F3431A4-D258-714A-941E-57B1152643B3",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:22.984Z",
+    "updatedAt": "2022-04-12T15:22:22.987Z",
+    "__v": 0,
+    "ItemId": {
+      "_id": "6227282c7ff0b01be3f8a100",
+      "no": "035-0058-00",
+      "name": "Breaker, 1P, 10A , 277 VAC, D Curve",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    },
+    "JOBId": "6255992e92cfdc268ae871ce",
+    "parent": {
+      "_id": "622728e07ff0b01be3f93169",
+      "no": "CMEL-525W-120-120-90",
+      "name": "Micro Elite 525W-120 volts input, 120 volts output, 1-pase, 60 HZ",
+      "usedInQuarter": null,
+      "usedInHalf": null,
+      "usedInYear": null
+    }
+  },
+  {
+    "_id": "6255992e92cfdc268ae872c2",
+    "recId": "107B32A8-51B0-0D4D-A7E6-81AB2B900D44",
+    "usage": 1,
+    "fixedQty": false,
+    "createdAt": "2022-04-12T15:22:22.996Z",
+    "updatedAt": "2022-04-12T15:22:23.002Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227280a7ff0b01be3f88a78",
@@ -327,7 +353,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -338,12 +364,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae876ac",
-    "recId": "749E1B86-875B-9F43-BD1D-2C9B20169460",
+    "_id": "6255992f92cfdc268ae872cd",
+    "recId": "06F284D7-72B8-044D-9C08-E096818D684E",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.259Z",
-    "updatedAt": "2022-04-12T15:22:24.263Z",
+    "createdAt": "2022-04-12T15:22:23.010Z",
+    "updatedAt": "2022-04-12T15:22:23.017Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227280a7ff0b01be3f88a82",
@@ -353,7 +379,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -364,12 +390,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae876b7",
-    "recId": "B73DC9C9-ECC3-D04C-AB00-D9D00F52346A",
+    "_id": "6255992f92cfdc268ae872d8",
+    "recId": "6751507C-F4C1-654F-A503-2E67E34E40D5",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.275Z",
-    "updatedAt": "2022-04-12T15:22:24.278Z",
+    "createdAt": "2022-04-12T15:22:23.025Z",
+    "updatedAt": "2022-04-12T15:22:23.028Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227281f7ff0b01be3f8987c",
@@ -379,7 +405,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -390,12 +416,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae876c2",
-    "recId": "47DAF0BB-7642-8E48-B8E7-D4F09816FA99",
+    "_id": "6255992f92cfdc268ae872e3",
+    "recId": "F55A7914-F927-5245-BEDF-CB23A510E0D2",
     "usage": 4,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.290Z",
-    "updatedAt": "2022-04-12T15:22:24.293Z",
+    "createdAt": "2022-04-12T15:22:23.040Z",
+    "updatedAt": "2022-04-12T15:22:23.044Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728487ff0b01be3f8b34c",
@@ -405,7 +431,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -416,12 +442,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae876cd",
-    "recId": "9D7A0FE1-2DA6-384C-B044-3029833C9A10",
+    "_id": "6255992f92cfdc268ae872ee",
+    "recId": "7AF79FF6-7B7A-2641-A73C-07DA88BBB33D",
     "usage": 4,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.304Z",
-    "updatedAt": "2022-04-12T15:22:24.307Z",
+    "createdAt": "2022-04-12T15:22:23.055Z",
+    "updatedAt": "2022-04-12T15:22:23.058Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728487ff0b01be3f8b36a",
@@ -431,7 +457,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -442,12 +468,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae876d8",
-    "recId": "D1D183AD-F245-1A40-A164-D63EF65C572A",
+    "_id": "6255992f92cfdc268ae872f9",
+    "recId": "46846312-A98D-D944-B790-943FE6BF7037",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.317Z",
-    "updatedAt": "2022-04-12T15:22:24.320Z",
+    "createdAt": "2022-04-12T15:22:23.068Z",
+    "updatedAt": "2022-04-12T15:22:23.070Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728497ff0b01be3f8b3ec",
@@ -457,7 +483,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -468,12 +494,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae876e3",
-    "recId": "422C4CF4-3A69-AA40-9569-F429044515EF",
+    "_id": "6255992f92cfdc268ae87304",
+    "recId": "6A87DD01-FFD6-7944-92A9-647D954A3F3A",
     "usage": 2,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.329Z",
-    "updatedAt": "2022-04-12T15:22:24.335Z",
+    "createdAt": "2022-04-12T15:22:23.079Z",
+    "updatedAt": "2022-04-12T15:22:23.084Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227284b7ff0b01be3f8b54a",
@@ -483,7 +509,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -494,12 +520,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae876ee",
-    "recId": "73570C03-D946-5F4F-A495-75E3641D5D05",
+    "_id": "6255992f92cfdc268ae8730f",
+    "recId": "8A560AEE-30C3-D44E-8D4A-137A6B1FBCE0",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.344Z",
-    "updatedAt": "2022-04-12T15:22:24.350Z",
+    "createdAt": "2022-04-12T15:22:23.093Z",
+    "updatedAt": "2022-04-12T15:22:23.098Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227284b7ff0b01be3f8b554",
@@ -509,7 +535,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -520,12 +546,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae876f9",
-    "recId": "CBCA358C-570B-1748-A568-1FE4CCD5D4A5",
+    "_id": "6255992f92cfdc268ae8731a",
+    "recId": "6B4AD46C-667D-174D-8226-719BC7559556",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.360Z",
-    "updatedAt": "2022-04-12T15:22:24.363Z",
+    "createdAt": "2022-04-12T15:22:23.116Z",
+    "updatedAt": "2022-04-12T15:22:23.120Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728587ff0b01be3f8bda5",
@@ -535,7 +561,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -546,12 +572,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae87704",
-    "recId": "44EC67DE-B6A0-5146-A233-A2567CF10A25",
+    "_id": "6255992f92cfdc268ae87325",
+    "recId": "E15FB407-345A-804E-996F-3099694C9FE5",
     "usage": 3,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.375Z",
-    "updatedAt": "2022-04-12T15:22:24.379Z",
+    "createdAt": "2022-04-12T15:22:23.130Z",
+    "updatedAt": "2022-04-12T15:22:23.135Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728187ff0b01be3f893de",
@@ -561,7 +587,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -572,12 +598,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae8770f",
-    "recId": "BF2E8337-86E6-9847-AC19-EFA3E7887C1B",
+    "_id": "6255992f92cfdc268ae87330",
+    "recId": "FF63D581-1B48-9946-B16B-609CE24957F6",
     "usage": 2,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.394Z",
-    "updatedAt": "2022-04-12T15:22:24.399Z",
+    "createdAt": "2022-04-12T15:22:23.145Z",
+    "updatedAt": "2022-04-12T15:22:23.158Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227283a7ff0b01be3f8a9fe",
@@ -587,7 +613,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -598,12 +624,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae8771a",
-    "recId": "05820BD3-D8D8-CA4E-97B4-42447A66F2B9",
+    "_id": "6255992f92cfdc268ae8733b",
+    "recId": "866CA96A-5F10-D446-8309-CDD7D5D2E368",
     "usage": 7,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.409Z",
-    "updatedAt": "2022-04-12T15:22:24.412Z",
+    "createdAt": "2022-04-12T15:22:23.170Z",
+    "updatedAt": "2022-04-12T15:22:23.173Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728437ff0b01be3f8b055",
@@ -613,7 +639,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -624,12 +650,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae87725",
-    "recId": "6FA5DA63-47C9-0F41-9A18-3F7F2605359F",
+    "_id": "6255992f92cfdc268ae87346",
+    "recId": "6C3F61D6-8CC0-874F-9DA4-D5BC0D1EFD82",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.423Z",
-    "updatedAt": "2022-04-12T15:22:24.426Z",
+    "createdAt": "2022-04-12T15:22:23.186Z",
+    "updatedAt": "2022-04-12T15:22:23.189Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227283e7ff0b01be3f8ad11",
@@ -639,7 +665,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -650,12 +676,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae87730",
-    "recId": "B1139060-10CE-194E-81DA-B7703CA10594",
+    "_id": "6255992f92cfdc268ae87351",
+    "recId": "FD7D0425-04E1-F346-B988-54344D5BF5E8",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.437Z",
-    "updatedAt": "2022-04-12T15:22:24.440Z",
+    "createdAt": "2022-04-12T15:22:23.205Z",
+    "updatedAt": "2022-04-12T15:22:23.209Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227283e7ff0b01be3f8ad1b",
@@ -665,7 +691,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -676,12 +702,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae8773b",
-    "recId": "B04EF3E9-0DE6-A84C-B999-D13E6FF2AB73",
+    "_id": "6255992f92cfdc268ae8735c",
+    "recId": "627F716F-C13F-8849-8D81-0505E0DAF36F",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.451Z",
-    "updatedAt": "2022-04-12T15:22:24.455Z",
+    "createdAt": "2022-04-12T15:22:23.222Z",
+    "updatedAt": "2022-04-12T15:22:23.225Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728447ff0b01be3f8b0b7",
@@ -691,7 +717,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -702,12 +728,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae87746",
-    "recId": "DC5BE0E8-4748-274F-9D9A-C8E8B8001169",
+    "_id": "6255992f92cfdc268ae87367",
+    "recId": "C9432E09-D5C7-5947-BE5C-17B6FA7B6A25",
     "usage": 8,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.461Z",
-    "updatedAt": "2022-04-12T15:22:24.467Z",
+    "createdAt": "2022-04-12T15:22:23.235Z",
+    "updatedAt": "2022-04-12T15:22:23.239Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728337ff0b01be3f8a570",
@@ -717,7 +743,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -728,12 +754,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae87751",
-    "recId": "F93CC74D-8A43-C74F-9CEA-C51F1ECF2969",
+    "_id": "6255992f92cfdc268ae87372",
+    "recId": "038140EF-D8AC-3347-AD68-61821BE15330",
     "usage": 6,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.475Z",
-    "updatedAt": "2022-04-12T15:22:24.477Z",
+    "createdAt": "2022-04-12T15:22:23.249Z",
+    "updatedAt": "2022-04-12T15:22:23.253Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728337ff0b01be3f8a584",
@@ -743,7 +769,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -754,12 +780,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae8775c",
-    "recId": "002B1AB1-6304-4F4A-8D18-14394E484F97",
+    "_id": "6255992f92cfdc268ae8737d",
+    "recId": "89C6FA14-57B1-A04B-ADBE-EE269CC5F01A",
     "usage": 6,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.488Z",
-    "updatedAt": "2022-04-12T15:22:24.491Z",
+    "createdAt": "2022-04-12T15:22:23.262Z",
+    "updatedAt": "2022-04-12T15:22:23.268Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728337ff0b01be3f8a598",
@@ -769,7 +795,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -780,12 +806,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae87767",
-    "recId": "1AB4132E-DF24-F14E-9627-5F6D8308A122",
+    "_id": "6255992f92cfdc268ae87388",
+    "recId": "8A8F26CC-A39B-B147-9F5C-D089C359CDF5",
     "usage": 4,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.501Z",
-    "updatedAt": "2022-04-12T15:22:24.506Z",
+    "createdAt": "2022-04-12T15:22:23.275Z",
+    "updatedAt": "2022-04-12T15:22:23.282Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728367ff0b01be3f8a756",
@@ -795,7 +821,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -806,12 +832,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae87772",
-    "recId": "5BA142BE-2A23-6A41-944F-8FB0E63D55EF",
+    "_id": "6255992f92cfdc268ae87393",
+    "recId": "4CA9AB1F-7061-1D42-96F0-E7C8B3A3571E",
     "usage": 5,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.516Z",
-    "updatedAt": "2022-04-12T15:22:24.520Z",
+    "createdAt": "2022-04-12T15:22:23.293Z",
+    "updatedAt": "2022-04-12T15:22:23.300Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728367ff0b01be3f8a760",
@@ -821,7 +847,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -832,12 +858,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae8777d",
-    "recId": "AD8A8216-18B0-E64B-810B-F9ADCD39B774",
+    "_id": "6255992f92cfdc268ae8739e",
+    "recId": "759188C8-9F11-584B-9BA9-AAA07A38C7C3",
     "usage": 5,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.527Z",
-    "updatedAt": "2022-04-12T15:22:24.532Z",
+    "createdAt": "2022-04-12T15:22:23.310Z",
+    "updatedAt": "2022-04-12T15:22:23.313Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728367ff0b01be3f8a76a",
@@ -847,7 +873,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -858,12 +884,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae87788",
-    "recId": "2474DFBF-AA2F-514E-A4C0-34CDF47E05C2",
+    "_id": "6255992f92cfdc268ae873a9",
+    "recId": "46002625-084B-2644-9C38-E38DC3279B4B",
     "usage": 4,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.540Z",
-    "updatedAt": "2022-04-12T15:22:24.546Z",
+    "createdAt": "2022-04-12T15:22:23.323Z",
+    "updatedAt": "2022-04-12T15:22:23.329Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728367ff0b01be3f8a7ce",
@@ -873,7 +899,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -884,12 +910,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae87793",
-    "recId": "344B1792-C8B3-8046-8819-C930095FA244",
+    "_id": "6255992f92cfdc268ae873b4",
+    "recId": "66340946-C0E9-B046-BFD3-B3C8D80A2E8A",
     "usage": 6,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.556Z",
-    "updatedAt": "2022-04-12T15:22:24.559Z",
+    "createdAt": "2022-04-12T15:22:23.341Z",
+    "updatedAt": "2022-04-12T15:22:23.344Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728367ff0b01be3f8a7d8",
@@ -899,7 +925,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -910,12 +936,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae8779e",
-    "recId": "2BC16CD9-F5B7-9940-99BF-4EF5CDFE2243",
+    "_id": "6255992f92cfdc268ae873bf",
+    "recId": "25E1AE6C-EC66-6049-87AC-90F16DC5A65D",
     "usage": 2,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.571Z",
-    "updatedAt": "2022-04-12T15:22:24.574Z",
+    "createdAt": "2022-04-12T15:22:23.356Z",
+    "updatedAt": "2022-04-12T15:22:23.360Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728407ff0b01be3f8ae57",
@@ -925,7 +951,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -936,12 +962,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae877a9",
-    "recId": "0E8BD5A1-0F16-EE48-A85B-FB9DBB7FCF5A",
+    "_id": "6255992f92cfdc268ae873ca",
+    "recId": "219DA1FC-DC28-3948-8256-ED5F8C4948A3",
     "usage": 2,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.584Z",
-    "updatedAt": "2022-04-12T15:22:24.587Z",
+    "createdAt": "2022-04-12T15:22:23.372Z",
+    "updatedAt": "2022-04-12T15:22:23.375Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728187ff0b01be3f893c0",
@@ -951,7 +977,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -962,12 +988,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae877b4",
-    "recId": "854FB463-80E9-CE4E-93A0-334AC550E52E",
+    "_id": "6255992f92cfdc268ae873d5",
+    "recId": "D1CEF596-E531-B243-AD15-4EC759BC2EFE",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.596Z",
-    "updatedAt": "2022-04-12T15:22:24.602Z",
+    "createdAt": "2022-04-12T15:22:23.385Z",
+    "updatedAt": "2022-04-12T15:22:23.388Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728507ff0b01be3f8b8c5",
@@ -977,7 +1003,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -988,12 +1014,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae877bf",
-    "recId": "BD34B85E-34CA-EF45-AEB7-170945BD94B2",
+    "_id": "6255992f92cfdc268ae873e0",
+    "recId": "0ED9507B-635A-5749-B9FF-8C4F6DD0CA1D",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.612Z",
-    "updatedAt": "2022-04-12T15:22:24.618Z",
+    "createdAt": "2022-04-12T15:22:23.397Z",
+    "updatedAt": "2022-04-12T15:22:23.403Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728457ff0b01be3f8b161",
@@ -1003,7 +1029,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -1014,12 +1040,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae877ca",
-    "recId": "AC9816D0-E40F-4E48-A018-436939E6EA11",
+    "_id": "6255992f92cfdc268ae873eb",
+    "recId": "8D7F2823-5773-0C4D-9210-5BD24F560308",
     "usage": 4,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.626Z",
-    "updatedAt": "2022-04-12T15:22:24.629Z",
+    "createdAt": "2022-04-12T15:22:23.410Z",
+    "updatedAt": "2022-04-12T15:22:23.415Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728407ff0b01be3f8aea7",
@@ -1029,7 +1055,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -1040,12 +1066,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae877d5",
-    "recId": "81A2D5D2-36E1-B944-B264-BD39BA363C75",
+    "_id": "6255992f92cfdc268ae873f6",
+    "recId": "55810EDB-2802-5F48-94D5-2A2D5A58D720",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.640Z",
-    "updatedAt": "2022-04-12T15:22:24.643Z",
+    "createdAt": "2022-04-12T15:22:23.423Z",
+    "updatedAt": "2022-04-12T15:22:23.426Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728177ff0b01be3f8935c",
@@ -1055,7 +1081,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -1066,12 +1092,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae877e0",
-    "recId": "C277165C-5540-3840-B037-C20B96BC9957",
+    "_id": "6255992f92cfdc268ae87401",
+    "recId": "67DAAC3F-3424-AD42-816C-4B8020B5E8E1",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.653Z",
-    "updatedAt": "2022-04-12T15:22:24.656Z",
+    "createdAt": "2022-04-12T15:22:23.437Z",
+    "updatedAt": "2022-04-12T15:22:23.440Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728517ff0b01be3f8b97d",
@@ -1081,7 +1107,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -1092,12 +1118,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae877eb",
-    "recId": "0A25DF26-966D-0446-BAEA-0E1EA6327CA9",
+    "_id": "6255992f92cfdc268ae8740c",
+    "recId": "158ACFBC-3873-BA44-B1A5-796CCD928210",
     "usage": 4,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.662Z",
-    "updatedAt": "2022-04-12T15:22:24.668Z",
+    "createdAt": "2022-04-12T15:22:23.450Z",
+    "updatedAt": "2022-04-12T15:22:23.453Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227281b7ff0b01be3f895b2",
@@ -1107,7 +1133,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9cd",
       "no": "002-0120-00",
@@ -1118,12 +1144,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae877f7",
-    "recId": "59991F09-B8E2-BD4E-B93C-FED024D10D59",
+    "_id": "6255992f92cfdc268ae87418",
+    "recId": "21669537-B0AA-994E-B10B-C24525693377",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.677Z",
-    "updatedAt": "2022-04-12T15:22:24.681Z",
+    "createdAt": "2022-04-12T15:22:23.461Z",
+    "updatedAt": "2022-04-12T15:22:23.468Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728497ff0b01be3f8b3e2",
@@ -1133,7 +1159,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1144,12 +1170,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae87803",
-    "recId": "DB10F5D0-31AD-C242-B986-DE2A90C2F01B",
+    "_id": "6255992f92cfdc268ae87424",
+    "recId": "4C7A62BA-BF1F-7C40-8729-F52D86A98D86",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.692Z",
-    "updatedAt": "2022-04-12T15:22:24.694Z",
+    "createdAt": "2022-04-12T15:22:23.478Z",
+    "updatedAt": "2022-04-12T15:22:23.484Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728497ff0b01be3f8b3ec",
@@ -1159,7 +1185,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1170,12 +1196,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae8780f",
-    "recId": "6F7C3C4D-82BC-D543-8209-61A273FB3C92",
+    "_id": "6255992f92cfdc268ae87430",
+    "recId": "F1E8D735-AF11-2941-A933-7431F888FBEB",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.706Z",
-    "updatedAt": "2022-04-12T15:22:24.709Z",
+    "createdAt": "2022-04-12T15:22:23.492Z",
+    "updatedAt": "2022-04-12T15:22:23.495Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227285b7ff0b01be3f8bfad",
@@ -1185,7 +1211,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1196,16 +1222,16 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae8781b",
-    "recId": "14B4887D-45DC-BB48-8EFC-D7A624929C44",
+    "_id": "6255992f92cfdc268ae8743c",
+    "recId": "115A814C-16F7-A742-8CF7-53F51C4933A4",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.722Z",
-    "updatedAt": "2022-04-12T15:22:24.724Z",
+    "createdAt": "2022-04-12T15:22:23.509Z",
+    "updatedAt": "2022-04-12T15:22:23.512Z",
     "__v": 0,
     "ItemName": "Cone, Cardboard, Shipping, 3D Do Not Stack",
     "ItemNo": "061-0023-00",
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1216,12 +1242,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae87827",
-    "recId": "F2077C9F-404F-CD4C-AE39-6485B67C2543",
+    "_id": "6255992f92cfdc268ae87448",
+    "recId": "E77F0F7E-8DCE-6545-BE9E-7D689880C4B3",
     "usage": 6,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.735Z",
-    "updatedAt": "2022-04-12T15:22:24.740Z",
+    "createdAt": "2022-04-12T15:22:23.525Z",
+    "updatedAt": "2022-04-12T15:22:23.528Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227285d7ff0b01be3f8c0e3",
@@ -1231,7 +1257,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1242,12 +1268,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae87833",
-    "recId": "ECA6063D-CC04-2042-8883-6B2FA9AD5C69",
+    "_id": "6255992f92cfdc268ae87454",
+    "recId": "CEE5E04F-C5AB-C548-86C2-E64DF0CCFA96",
     "usage": 2,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.751Z",
-    "updatedAt": "2022-04-12T15:22:24.755Z",
+    "createdAt": "2022-04-12T15:22:23.543Z",
+    "updatedAt": "2022-04-12T15:22:23.550Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227285d7ff0b01be3f8c0ed",
@@ -1257,7 +1283,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1268,12 +1294,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae8783f",
-    "recId": "A9CDF13D-CAE1-2C40-BDCB-071D9629CCEC",
+    "_id": "6255992f92cfdc268ae87460",
+    "recId": "A6AE71A1-4BDA-E14A-B9A2-48901E99C5E7",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.763Z",
-    "updatedAt": "2022-04-12T15:22:24.768Z",
+    "createdAt": "2022-04-12T15:22:23.559Z",
+    "updatedAt": "2022-04-12T15:22:23.565Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728537ff0b01be3f8ba83",
@@ -1283,7 +1309,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1294,12 +1320,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae8784b",
-    "recId": "CFD413A9-3936-E74D-BE7A-17FABAC5BA01",
+    "_id": "6255992f92cfdc268ae8746c",
+    "recId": "F6177247-5EC3-D14F-BDDC-D143D24FAC4A",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.776Z",
-    "updatedAt": "2022-04-12T15:22:24.779Z",
+    "createdAt": "2022-04-12T15:22:23.576Z",
+    "updatedAt": "2022-04-12T15:22:23.581Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728537ff0b01be3f8ba97",
@@ -1309,7 +1335,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1320,12 +1346,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae87857",
-    "recId": "FAF08A63-8B55-4142-B1C7-7A9A2ECA12F5",
+    "_id": "6255992f92cfdc268ae87478",
+    "recId": "074DEAEE-89C8-5345-B1F3-4372450BDC4B",
     "usage": 6,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.790Z",
-    "updatedAt": "2022-04-12T15:22:24.792Z",
+    "createdAt": "2022-04-12T15:22:23.594Z",
+    "updatedAt": "2022-04-12T15:22:23.601Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728557ff0b01be3f8bbcf",
@@ -1335,7 +1361,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1346,12 +1372,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae87863",
-    "recId": "DDC0CDAB-498D-2C42-8BD4-704F7BD292D2",
+    "_id": "6255992f92cfdc268ae87484",
+    "recId": "77E562FE-C268-ED4D-8D42-D89C713A5A0D",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.803Z",
-    "updatedAt": "2022-04-12T15:22:24.806Z",
+    "createdAt": "2022-04-12T15:22:23.610Z",
+    "updatedAt": "2022-04-12T15:22:23.614Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728557ff0b01be3f8bbff",
@@ -1361,7 +1387,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1372,12 +1398,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae8786f",
-    "recId": "D086A1B0-5EF4-094D-BAD9-DAA3D8BA6346",
+    "_id": "6255992f92cfdc268ae87490",
+    "recId": "A7066892-97D0-5C4A-B3D9-94A8143A5824",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.819Z",
-    "updatedAt": "2022-04-12T15:22:24.823Z",
+    "createdAt": "2022-04-12T15:22:23.626Z",
+    "updatedAt": "2022-04-12T15:22:23.631Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728667ff0b01be3f8c5ea",
@@ -1387,7 +1413,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1398,12 +1424,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae8787b",
-    "recId": "627EDAEB-DAD6-4B43-A998-66361F9DA951",
+    "_id": "6255992f92cfdc268ae8749c",
+    "recId": "7C785E13-2822-634B-A0F0-333D48A1CDE5",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.835Z",
-    "updatedAt": "2022-04-12T15:22:24.838Z",
+    "createdAt": "2022-04-12T15:22:23.643Z",
+    "updatedAt": "2022-04-12T15:22:23.647Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728517ff0b01be3f8b925",
@@ -1413,7 +1439,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1424,12 +1450,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae87887",
-    "recId": "3F774651-ABD5-524E-8C60-90BA0CF4E3E9",
+    "_id": "6255992f92cfdc268ae874a8",
+    "recId": "AD5B7691-8321-754B-8E62-E4F337CD087C",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.851Z",
-    "updatedAt": "2022-04-12T15:22:24.853Z",
+    "createdAt": "2022-04-12T15:22:23.658Z",
+    "updatedAt": "2022-04-12T15:22:23.661Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227286b7ff0b01be3f8c9e0",
@@ -1439,7 +1465,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1450,12 +1476,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae87893",
-    "recId": "9BB3BEC2-3D62-6D4F-94F4-8EE2175D5074",
+    "_id": "6255992f92cfdc268ae874b4",
+    "recId": "91FB890A-E755-894F-A0E0-025F1B246D56",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.864Z",
-    "updatedAt": "2022-04-12T15:22:24.869Z",
+    "createdAt": "2022-04-12T15:22:23.673Z",
+    "updatedAt": "2022-04-12T15:22:23.676Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227286b7ff0b01be3f8c9f4",
@@ -1465,7 +1491,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1476,12 +1502,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae8789f",
-    "recId": "BE4BF766-114C-0D4D-AEDF-156B18BAD51A",
+    "_id": "6255992f92cfdc268ae874c0",
+    "recId": "EC69ECC7-4399-9B49-B4FC-275A3831D604",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.880Z",
-    "updatedAt": "2022-04-12T15:22:24.886Z",
+    "createdAt": "2022-04-12T15:22:23.688Z",
+    "updatedAt": "2022-04-12T15:22:23.692Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227286b7ff0b01be3f8c9ea",
@@ -1491,7 +1517,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1502,12 +1528,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae878ab",
-    "recId": "6066EE35-17C2-D246-A06C-DC021CA98674",
+    "_id": "6255992f92cfdc268ae874cc",
+    "recId": "201F4B4D-D3DF-404F-BEE6-E9C8E4A5F6D2",
     "usage": 68,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.895Z",
-    "updatedAt": "2022-04-12T15:22:24.900Z",
+    "createdAt": "2022-04-12T15:22:23.704Z",
+    "updatedAt": "2022-04-12T15:22:23.708Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227281b7ff0b01be3f895c6",
@@ -1517,7 +1543,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1528,12 +1554,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae878b7",
-    "recId": "1E0C3BCD-E944-1446-A838-26F6F3B2160B",
+    "_id": "6255992f92cfdc268ae874d8",
+    "recId": "B6CDADDF-D582-D248-B82B-26BEEAB0FE43",
     "usage": 68,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.911Z",
-    "updatedAt": "2022-04-12T15:22:24.914Z",
+    "createdAt": "2022-04-12T15:22:23.720Z",
+    "updatedAt": "2022-04-12T15:22:23.723Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227281b7ff0b01be3f895d0",
@@ -1543,7 +1569,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1554,12 +1580,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae878c3",
-    "recId": "B6FFB7F9-3CF9-7141-832A-B937B1FACF70",
+    "_id": "6255992f92cfdc268ae874e4",
+    "recId": "A52F1502-239E-C74F-9947-8A5FBD4300E5",
     "usage": 4,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.924Z",
-    "updatedAt": "2022-04-12T15:22:24.926Z",
+    "createdAt": "2022-04-12T15:22:23.734Z",
+    "updatedAt": "2022-04-12T15:22:23.737Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227283a7ff0b01be3f8a9fe",
@@ -1569,7 +1595,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1580,12 +1606,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae878cf",
-    "recId": "A9417F25-9998-314F-BFA0-CF1C9E909ED1",
+    "_id": "6255992f92cfdc268ae874f0",
+    "recId": "4C9410E2-AB72-DC4F-B414-F136C3FFE3DB",
     "usage": 2,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.938Z",
-    "updatedAt": "2022-04-12T15:22:24.941Z",
+    "createdAt": "2022-04-12T15:22:23.749Z",
+    "updatedAt": "2022-04-12T15:22:23.753Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728497ff0b01be3f8b450",
@@ -1595,7 +1621,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1606,12 +1632,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae878db",
-    "recId": "571998E7-ABD0-1C49-ACED-57E297EC329B",
+    "_id": "6255992f92cfdc268ae874fc",
+    "recId": "ACEC8836-C42A-CB48-935E-F384F09250FD",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.952Z",
-    "updatedAt": "2022-04-12T15:22:24.954Z",
+    "createdAt": "2022-04-12T15:22:23.763Z",
+    "updatedAt": "2022-04-12T15:22:23.769Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728407ff0b01be3f8ae61",
@@ -1621,7 +1647,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9d5",
       "no": "002-0701-00",
@@ -1632,12 +1658,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae878e6",
-    "recId": "A5A442FE-1AE9-BB4C-A1D3-E5E1B3C12B87",
+    "_id": "6255992f92cfdc268ae87507",
+    "recId": "16B88FC5-8A04-0042-9EAE-75492F96DF5C",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.961Z",
-    "updatedAt": "2022-04-12T15:22:24.966Z",
+    "createdAt": "2022-04-12T15:22:23.777Z",
+    "updatedAt": "2022-04-12T15:22:23.783Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728257ff0b01be3f89c36",
@@ -1647,7 +1673,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9f4",
       "no": "047-0180-00",
@@ -1658,12 +1684,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae878f1",
-    "recId": "EA489208-1CE4-954C-845E-688EA29C8085",
+    "_id": "6255992f92cfdc268ae87512",
+    "recId": "91FF9817-FFCE-514F-990F-EBEE0CFAD833",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.974Z",
-    "updatedAt": "2022-04-12T15:22:24.977Z",
+    "createdAt": "2022-04-12T15:22:23.792Z",
+    "updatedAt": "2022-04-12T15:22:23.796Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728257ff0b01be3f89c4a",
@@ -1673,7 +1699,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9f4",
       "no": "047-0180-00",
@@ -1684,12 +1710,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae878fc",
-    "recId": "D2B2372A-720C-9742-9D92-C3A694A25175",
+    "_id": "6255992f92cfdc268ae8751d",
+    "recId": "C82FDEE0-7C9A-1243-B529-8136F0311A97",
     "usage": 4,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.987Z",
-    "updatedAt": "2022-04-12T15:22:24.989Z",
+    "createdAt": "2022-04-12T15:22:23.810Z",
+    "updatedAt": "2022-04-12T15:22:23.816Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728337ff0b01be3f8a552",
@@ -1699,7 +1725,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9f4",
       "no": "047-0180-00",
@@ -1710,12 +1736,12 @@
     }
   },
   {
-    "_id": "6255993092cfdc268ae87907",
-    "recId": "83147055-8717-544D-9CD2-800137C04EFE",
+    "_id": "6255992f92cfdc268ae87528",
+    "recId": "9785373F-6EC5-6343-BA90-52C3753498FC",
     "usage": 4,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:24.999Z",
-    "updatedAt": "2022-04-12T15:22:25.003Z",
+    "createdAt": "2022-04-12T15:22:23.827Z",
+    "updatedAt": "2022-04-12T15:22:23.832Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728337ff0b01be3f8a55c",
@@ -1725,7 +1751,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9f4",
       "no": "047-0180-00",
@@ -1736,16 +1762,16 @@
     }
   },
   {
-    "_id": "6255993192cfdc268ae87912",
-    "recId": "F9919D0E-D3E9-1545-9703-B27D0C6CC959",
+    "_id": "6255992f92cfdc268ae87533",
+    "recId": "CC1F88D0-5AA8-0C4E-BD57-EBEE6FD97A20",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:25.014Z",
-    "updatedAt": "2022-04-12T15:22:25.019Z",
+    "createdAt": "2022-04-12T15:22:23.844Z",
+    "updatedAt": "2022-04-12T15:22:23.851Z",
     "__v": 0,
     "ItemName": "Micro Input Wire Assy L & N Wires",
     "ItemNo": "047-0300-00",
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9f4",
       "no": "047-0180-00",
@@ -1756,16 +1782,16 @@
     }
   },
   {
-    "_id": "6255993192cfdc268ae8791d",
-    "recId": "3630E1B4-D803-234C-9D68-99A87CF386AC",
+    "_id": "6255992f92cfdc268ae8753e",
+    "recId": "F16BC00B-655A-FF4F-BA0C-84CF7976C7C0",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:25.034Z",
-    "updatedAt": "2022-04-12T15:22:25.039Z",
+    "createdAt": "2022-04-12T15:22:23.863Z",
+    "updatedAt": "2022-04-12T15:22:23.869Z",
     "__v": 0,
     "ItemName": "Micro Output Wire Assy L & N Wires",
     "ItemNo": "047-0301-00",
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9f4",
       "no": "047-0180-00",
@@ -1776,12 +1802,12 @@
     }
   },
   {
-    "_id": "6255993192cfdc268ae87928",
-    "recId": "A0E321F6-C328-AE4E-99F9-B574C690B542",
+    "_id": "6255992f92cfdc268ae87549",
+    "recId": "AB1F8C66-A6D1-014B-BC3C-7ADEBC106E89",
     "usage": 60,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:25.049Z",
-    "updatedAt": "2022-04-12T15:22:25.053Z",
+    "createdAt": "2022-04-12T15:22:23.877Z",
+    "updatedAt": "2022-04-12T15:22:23.881Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227281b7ff0b01be3f895c6",
@@ -1791,7 +1817,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9f4",
       "no": "047-0180-00",
@@ -1802,12 +1828,12 @@
     }
   },
   {
-    "_id": "6255993192cfdc268ae87933",
-    "recId": "B565C7B7-7EFC-AD47-A096-227D33AF0D37",
+    "_id": "6255992f92cfdc268ae87554",
+    "recId": "E131836F-094F-154C-80E6-675D2E3CC30D",
     "usage": 60,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:25.060Z",
-    "updatedAt": "2022-04-12T15:22:25.063Z",
+    "createdAt": "2022-04-12T15:22:23.891Z",
+    "updatedAt": "2022-04-12T15:22:23.894Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227281b7ff0b01be3f895d0",
@@ -1817,7 +1843,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9f4",
       "no": "047-0180-00",
@@ -1828,12 +1854,12 @@
     }
   },
   {
-    "_id": "6255993192cfdc268ae8793e",
-    "recId": "42156092-B226-4D45-AAAD-739A0D598ACD",
+    "_id": "6255992f92cfdc268ae8755f",
+    "recId": "C17F170B-BFCD-8940-BAB2-A2E1E6EC0EBE",
     "usage": 1,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:25.074Z",
-    "updatedAt": "2022-04-12T15:22:25.076Z",
+    "createdAt": "2022-04-12T15:22:23.905Z",
+    "updatedAt": "2022-04-12T15:22:23.908Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227286b7ff0b01be3f8c9fc",
@@ -1843,7 +1869,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9f4",
       "no": "047-0180-00",
@@ -1854,12 +1880,12 @@
     }
   },
   {
-    "_id": "6255993192cfdc268ae87949",
-    "recId": "C2ED5E55-EF1B-A341-B275-23204A91F910",
+    "_id": "6255992f92cfdc268ae8756a",
+    "recId": "2DD10C92-E683-3349-A52D-4202CC0AAB95",
     "usage": 24,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:25.086Z",
-    "updatedAt": "2022-04-12T15:22:25.089Z",
+    "createdAt": "2022-04-12T15:22:23.919Z",
+    "updatedAt": "2022-04-12T15:22:23.922Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227281b7ff0b01be3f895b2",
@@ -1869,7 +1895,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9f4",
       "no": "047-0180-00",
@@ -1880,12 +1906,12 @@
     }
   },
   {
-    "_id": "6255993192cfdc268ae87954",
-    "recId": "BE0855E0-0B4D-2C46-88FC-CA325CD77E9C",
+    "_id": "6255992f92cfdc268ae87575",
+    "recId": "0D43F678-B13F-3C4D-9CAF-72AC239C4B20",
     "usage": 24,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:25.097Z",
-    "updatedAt": "2022-04-12T15:22:25.102Z",
+    "createdAt": "2022-04-12T15:22:23.930Z",
+    "updatedAt": "2022-04-12T15:22:23.936Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227281b7ff0b01be3f895bc",
@@ -1895,7 +1921,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9f4",
       "no": "047-0180-00",
@@ -1906,12 +1932,12 @@
     }
   },
   {
-    "_id": "6255993192cfdc268ae8795f",
-    "recId": "D94E8A34-C928-4446-AF7C-03EDE9B7A1BB",
+    "_id": "6255992f92cfdc268ae87580",
+    "recId": "4C890C34-844A-0B44-9541-353ABA9ED54B",
     "usage": 24,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:25.110Z",
-    "updatedAt": "2022-04-12T15:22:25.112Z",
+    "createdAt": "2022-04-12T15:22:23.943Z",
+    "updatedAt": "2022-04-12T15:22:23.946Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227281b7ff0b01be3f895e4",
@@ -1921,7 +1947,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9f4",
       "no": "047-0180-00",
@@ -1932,12 +1958,12 @@
     }
   },
   {
-    "_id": "6255993192cfdc268ae8796a",
-    "recId": "423D6AE4-494F-AB46-8087-CDF85F191FDF",
+    "_id": "6255992f92cfdc268ae8758b",
+    "recId": "5199EE70-7704-4D43-AD25-C5076F8C7507",
     "usage": 2,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:25.123Z",
-    "updatedAt": "2022-04-12T15:22:25.126Z",
+    "createdAt": "2022-04-12T15:22:23.958Z",
+    "updatedAt": "2022-04-12T15:22:23.961Z",
     "__v": 0,
     "ItemId": {
       "_id": "6227283f7ff0b01be3f8adf3",
@@ -1947,7 +1973,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9f4",
       "no": "047-0180-00",
@@ -1958,12 +1984,12 @@
     }
   },
   {
-    "_id": "6255993192cfdc268ae87975",
-    "recId": "EC31C2B1-4AD1-2644-BB39-1A103E301B00",
+    "_id": "6255992f92cfdc268ae87596",
+    "recId": "7F70CC38-16F8-0D47-84BB-E5D1BC6D3E81",
     "usage": 10,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:25.139Z",
-    "updatedAt": "2022-04-12T15:22:25.141Z",
+    "createdAt": "2022-04-12T15:22:23.972Z",
+    "updatedAt": "2022-04-12T15:22:23.975Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728407ff0b01be3f8ae75",
@@ -1973,7 +1999,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9f4",
       "no": "047-0180-00",
@@ -1984,12 +2010,12 @@
     }
   },
   {
-    "_id": "6255993192cfdc268ae87980",
-    "recId": "A80B1FD3-AA1F-164D-901D-0223DB5CD479",
+    "_id": "6255992f92cfdc268ae875a1",
+    "recId": "A98E1AA9-BB47-B34D-9131-F98682A1F934",
     "usage": 10,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:25.151Z",
-    "updatedAt": "2022-04-12T15:22:25.156Z",
+    "createdAt": "2022-04-12T15:22:23.987Z",
+    "updatedAt": "2022-04-12T15:22:23.991Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728427ff0b01be3f8af65",
@@ -1999,7 +2025,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9f4",
       "no": "047-0180-00",
@@ -2010,12 +2036,12 @@
     }
   },
   {
-    "_id": "6255993192cfdc268ae8798b",
-    "recId": "A7B96CD3-8C5D-BD49-B6D0-E60C5F7421B2",
+    "_id": "6255993092cfdc268ae875ac",
+    "recId": "911E078B-3C3E-634B-A2AB-6EDA7DA24BC2",
     "usage": 2,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:25.176Z",
-    "updatedAt": "2022-04-12T15:22:25.185Z",
+    "createdAt": "2022-04-12T15:22:24.003Z",
+    "updatedAt": "2022-04-12T15:22:24.006Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728427ff0b01be3f8afa1",
@@ -2025,7 +2051,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9f4",
       "no": "047-0180-00",
@@ -2036,12 +2062,12 @@
     }
   },
   {
-    "_id": "6255993192cfdc268ae87996",
-    "recId": "8ED94230-FBC4-0747-8AC0-C797CAB30C58",
+    "_id": "6255993092cfdc268ae875b7",
+    "recId": "F69366C8-2931-2B43-9F88-A58B4FBF5EB3",
     "usage": 4,
     "fixedQty": false,
-    "createdAt": "2022-04-12T15:22:25.206Z",
-    "updatedAt": "2022-04-12T15:22:25.211Z",
+    "createdAt": "2022-04-12T15:22:24.018Z",
+    "updatedAt": "2022-04-12T15:22:24.021Z",
     "__v": 0,
     "ItemId": {
       "_id": "622728427ff0b01be3f8afc9",
@@ -2051,7 +2077,7 @@
       "usedInHalf": null,
       "usedInYear": null
     },
-    "JOBId": "6255993092cfdc268ae875cb",
+    "JOBId": "6255992e92cfdc268ae871ce",
     "parent": {
       "_id": "6227286b7ff0b01be3f8c9f4",
       "no": "047-0180-00",

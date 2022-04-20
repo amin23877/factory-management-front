@@ -48,12 +48,6 @@ export const sleep = (ms: number = 100) => {
   return new Promise((resolve) => setTimeout(resolve, ms));
 };
 
-// export const groupBy = (xs: any, key: any) => {
-//   return xs.reduce((rv: any, x: any) => {
-//     (rv[x[key]] = rv[x[key]] || []).push(x);
-//     return rv;
-//   }, {});
-// };
 /**
  * @description
  * Takes an Array<V>, and a grouping function,
