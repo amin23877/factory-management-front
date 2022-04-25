@@ -31,6 +31,18 @@ export const useDataGridStyles = makeStyles({
         backgroundColor: "#c0c0c0",
       },
     },
+    "& .blue": {
+      backgroundColor: "#568ff8",
+      "&:hover": {
+        backgroundColor: "#85b0ff",
+      },
+    },
+    "& .orange": {
+      backgroundColor: "#ffa742",
+      "&:hover": {
+        backgroundColor: "#ffbe73",
+      },
+    },
   },
 });
 

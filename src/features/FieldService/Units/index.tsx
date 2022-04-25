@@ -15,6 +15,11 @@ export default function Unit() {
 
   const cols = [
     {
+      name: "number",
+      header: "Unit NO.",
+      minWidth: 120,
+    },
+    {
       name: "Device",
       header: "Device",
       flex: 1,
