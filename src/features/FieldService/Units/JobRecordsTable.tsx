@@ -62,16 +62,26 @@ const getRowClassNameOld = ({ row, unit }: any) => {
   return "";
 };
 
+const getItemNumber = (jb: any) => jb?.ItemId?.no || jb?.ItemNo;
+const getParentNumber = (jb: any) => jb?.parent?.no || jb?.parentNo;
+
 const getRowClassName = ({ groups, row, unit }: { groups: any[]; row: any; unit: IUnit }) => {
   const deviceNo = unit?.ItemId?.no;
-  const rowParent = row?.parent?.no || row?.parentNo || "";
   const groupNumbers = groups.filter((g) => g[0] !== deviceNo).map((g: any) => g[0]) || [];
-  const mainComponents = groups.find((g) => g[0] === deviceNo)[1].map((c: any) => c?.ItemId?.no || c?.ItemNo) || [];
+  const mainComponents = groups.find((g) => g[0] === deviceNo)[1].map((c: any) => getItemNumber(c)) || [];
+  const subAssembly = groupNumbers.filter((g) => !mainComponents.includes(g));
 
-  if (groupNumbers.includes(row?.ItemId?.no || row?.ItemNo)) {
-    return "";
+  if (mainComponents.includes(getParentNumber(row))) {
+    return "blue";
+  } else if (subAssembly.includes(getParentNumber(row))) {
+    return "orange";
   }
-  return "nested";
+  return "";
+
+  // if (groupNumbers.includes(row?.ItemId?.no || row?.ItemNo)) {
+  //   return "";
+  // }
+  // return "nested";
   // if (rowParent === unit?.ItemId?.no) {
   //   // Main Component
   //   return "white";
@@ -91,6 +101,7 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
 
   const jobrecordsCols = useMemo<GridColumns>(
     () => [
+      { field: "Parent", valueFormatter: ({ row }) => row?.parent?.no || row?.parentNo, width: 180 },
       { field: "Line", width: 80 },
       {
         field: "Component",
@@ -109,11 +120,12 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
   return (
     <BaseDataGrid
       cols={jobrecordsCols}
-      rows={jobRecordsSorted?.all?.map((j: any, i: any) => ({ ...j, id: i })) || []}
+      rows={jobrecords?.map((j: any, i: any) => ({ ...j, id: i })) || []}
+      // rows={jobRecordsSorted?.all?.map((j: any, i: any) => ({ ...j, id: i })) || []}
       // getRowClassName={({ row }) =>
       //   getRowClassName(jobRecordsSorted.grouped || [], unit.ItemId.no, row?.parent?.no || row?.parentNo)
       // }
-      getRowClassName={({ row }) => getRowClassName({ groups: jobRecordsSorted?.grouped || [], unit, row })}
+      // getRowClassName={({ row }) => getRowClassName({ groups: jobRecordsSorted?.grouped || [], unit, row })}
       onRowSelected={(r) => {}}
       height="67.3vh"
     />
