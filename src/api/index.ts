@@ -79,7 +79,7 @@ export const delete_ = async (path: string, params: AxiosRequestConfig["params"]
   }
 };
 
-export async function post(path: string, data: any, params?: any) {
+export async function post<T>(path: string, data: any, params?: any) {
   let headers = {
     "Content-Type": "application/json",
   };
@@ -104,7 +104,7 @@ export async function post(path: string, data: any, params?: any) {
   };
 
   try {
-    const response = await apiAgent.post(path, data, {
+    const response = await apiAgent.post<T>(path, data, {
       headers,
       params,
     });

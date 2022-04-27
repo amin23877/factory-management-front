@@ -16,21 +16,18 @@ import UpdateQuantityModal from "./Quantity";
 import NotesTab from "common/Note/Tab";
 import DocumentTab from "common/Document/Tab";
 import { VendorModal } from "../Modals/AddVendor";
-// import BOMModal from "../BOM/BomModal";
 import Parts from "../BOM/Parts";
 
-import { addImage, convertToService, IItem, updateAnItem } from "api/items";
+import { convertToService, IItem, updateAnItem } from "api/items";
 import { IBom } from "api/bom";
-// import SOTable from "./SOTable";
-import UploadButton from "app/FileUploader";
 import { exportPdf } from "logic/pdf";
-// import { formatTimestampToDate } from "logic/date";
 import { getModifiedValues } from "logic/utils";
 import ItemBomTable from "../BOM/ItemBomTable";
 
 import QRCode from "app/QRCode";
 import Confirm from "common/Confirm";
 import Toast from "app/Toast";
+import PhotoTab from "common/PhotoTab";
 
 const style = {
   border: "1px solid gray ",
@@ -49,22 +46,6 @@ function ItemsDetails({
   setSelectedItem: (item: any) => void;
 }) {
   const qrCode = useRef<HTMLElement | null>(null);
-
-  // const [img, setImg] = useState<any>();
-
-  const handleFileChange = async (e: any) => {
-    if (selectedRow && selectedRow.id) {
-      if (!e.target.files) {
-        return;
-      }
-      let file = e.target.files[0];
-      // let url = URL.createObjectURL(file);
-      await addImage(selectedRow.id, file);
-      // if (resp) {
-      //   setImg(url);
-      // }
-    }
-  };
   const [moreInfoTab, setMoreInfoTab] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
 
@@ -291,39 +272,7 @@ function ItemsDetails({
                     <Tab label="Clusters and Levels" />
                     <Tab label="Convert" />
                   </Tabs>
-                  {moreInfoTab === 0 && (
-                    <Box
-                      mt={1}
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      flexDirection="column"
-                      gridGap={10}
-                    >
-                      {/* TODO: Get first item photo from /photo and show it here */}
-                      {/* {selectedRow?.photo && (
-                        <img
-                          style={{
-                            maxWidth: "100%",
-                            height: "auto",
-                            maxHeight: 400,
-                            margin: "0px auto",
-                          }}
-                          alt=""
-                          src={img ? img : `http://${host}${selectedRow?.photo}`}
-                        />
-                      )} */}
-                      <div
-                        style={{
-                          display: "flex",
-                          width: "100%",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <UploadButton onChange={handleFileChange} accept="image/*" />
-                      </div>
-                    </Box>
-                  )}
+                  {moreInfoTab === 0 && <PhotoTab model="item" id={selectedRow.id} />}
                   {moreInfoTab === 1 && (
                     <Box display="flex" justifyContent="space-around" alignItems="center" maxWidth="83vw">
                       <div ref={(e) => (qrCode.current = e)}>

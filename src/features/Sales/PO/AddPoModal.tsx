@@ -14,7 +14,7 @@ import { getContacts } from "../../../api/contact";
 import { getClients } from "../../../api/client";
 import { getAllEmployees } from "../../../api/employee";
 import { getProjects } from "../../../api/project";
-import FileUploader from "../../../app/FileUploader";
+import FileUploader from "../../../app/UploadButton";
 
 const schema = Yup.object().shape({
   // name: Yup.string().required(),

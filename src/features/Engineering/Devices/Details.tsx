@@ -11,7 +11,7 @@ import BaseDataGrid from "app/BaseDataGrid";
 import { BasePaper } from "app/Paper";
 
 import { Levels } from "../../Items/Forms";
-import { General, Photo } from "./Forms";
+import { General } from "./Forms";
 import AddServiceModal from "./AddServiceModal";
 import UnitHistoryModal from "../../Unit/Modal";
 
@@ -31,6 +31,7 @@ import ItemBomTable from "features/BOM/ItemBomTable";
 import PricingTab from "features/Items/Pricing";
 import DocumentTab from "common/Document/Tab";
 import NoteTab from "common/Note/Tab";
+import PhotoTab from "common/PhotoTab";
 
 function DeviceDetails({
   sales,
@@ -318,7 +319,7 @@ function DeviceDetails({
                     <Tab label="Pricing" />
                     {!sales && <Tab label="Clusters and Levels" />}
                   </Tabs>
-                  {moreInfoTab === 0 && <Photo device={selectedRow} />}
+                  {moreInfoTab === 0 && <PhotoTab model="item" id={selectedRow.id} />}
                   {moreInfoTab === 1 && (
                     <Box display="flex" justifyContent="space-around" alignItems="center" maxWidth="83vw">
                       <div ref={(e) => (qrCode.current = e)}>

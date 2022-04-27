@@ -16,7 +16,7 @@ import Confirm from "../../../Modals/Confirm";
 import Button from "app/Button";
 import { BasePaper } from "app/Paper";
 import BaseDataGrid from "app/BaseDataGrid";
-import UploadButton from "app/FileUploader";
+import UploadButton from "app/UploadButton";
 import Toast from "app/Toast";
 
 import { IUnit, updateUnit } from "api/units";
