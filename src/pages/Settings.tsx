@@ -23,117 +23,39 @@ const getItemNumber = (jb: any) => jb?.ItemId?.no || jb?.ItemNo;
 const getParentNumber = (jb: any) => jb?.parent?.no || jb?.parentNo;
 
 export default function Settings() {
-  // useEffect(() => {
-  //   const recursive = (root:any[], jobRecords:any[]) => {
-  //     let child:any[] = [];
-  //     for(const jb of jobRecords){
-  //       if()
-  //     }
-  //   }
+  useEffect(() => {
+    const deviceNo = "SEMIC-300W-120-120-90";
+    const grouped = Array.from(groupBy(jobRecords, (i) => i.parentRec || deviceNo));
 
-  //   const deviceNumber = "DE1-10KW-120-120-120";
+    const mainComponentsIndex = grouped.findIndex((g) => g[0] === deviceNo);
+    const mainComponentsGroup = mainComponentsIndex > -1 ? grouped[mainComponentsIndex] : [];
+    const mainComponents = mainComponentsGroup[1] || [];
+    let all: any[] = [];
 
-  // },[])
-  // useEffect(() => {
-  //   const deviceNumber = "DE1-10KW-120-120-120";
-  //   const all: any[] = [];
-  //   let jbCopy = jobRecords.concat();
+    for (const c of mainComponents) {
+      all.push(c);
 
-  //   let cnt = 0;
-  //   for (const jb of jbCopy) {
-  //     let indexStart = -1,
-  //       indexEnd = -1;
-  //     if (getParentNumber(jb) === deviceNumber) {
-  //       indexStart = jbCopy.slice(cnt + 1).findIndex((j) => getParentNumber(j) === getItemNumber(jb));
-  //       indexEnd = jbCopy.slice(cnt + 1).findIndex((j) => getParentNumber(j) === deviceNumber);
-  //       console.log(jbCopy.slice(cnt));
+      const childrenIndex = grouped.findIndex((g) => g[0] === c._id);
+      const children = childrenIndex > -1 ? grouped[childrenIndex] : null;
+      if (children && children[1].length > 0) {
+        all.push(...children[1]);
+        grouped.splice(childrenIndex, 1);
+      }
+    }
+    grouped.splice(mainComponentsIndex, 1);
 
-  //       all.push(...jbCopy.slice(indexStart, indexEnd));
-  //       // jbCopy = jbCopy.concat(jbCopy.slice(0, indexStart), jbCopy.slice(indexEnd));
-  //     }
+    if (grouped.length > 0) {
+      for (const g of grouped) {
+        const parentIndex = all.findIndex((i) => i._id === g[0]);
 
-  //     cnt++;
-  //     indexStart = -1;
-  //     indexEnd = -1;
-  //   }
+        if (parentIndex > -1) {
+          all = [...all.slice(0, parentIndex), ...g[1], ...all.slice(parentIndex)];
+        }
+      }
+    }
 
-  //   console.log({ all });
-  // }, []);
-  // useEffect(() => {
-  //   const deviceNumber = "DE1-10KW-120-120-120";
-  //   const grouped = Array.from(groupBy(jobRecords, (j) => j.parent?.no || j?.parentNo || "No Parent"));
-  //   const groupNumbers = grouped.map((g) => g[0]);
-
-  //   const mainComponentsGroup = grouped.find((g) => g[0] === deviceNumber) || [];
-  //   const mainComponentsNumber = mainComponentsGroup[1]?.map((c) => getItemNumber(c));
-
-  //   const diff = groupNumbers.filter((x) => !mainComponentsNumber?.includes(x))?.filter((x) => x !== deviceNumber);
-
-  //   const all: any[] = [];
-
-  //   for (const mc of mainComponentsGroup[1] || []) {
-  //     const group = grouped.find((g) => g[0] === getItemNumber(mc)) || [];
-  //     all.push(mc, ...(group[1] || []));
-  //   }
-
-  //   console.log({
-  //     grouped,
-  //     // diff,
-  //     // groupNumbers,
-  //     // mainComponentsNumber,
-  //     // grouped,
-  //     // all: all.map((s) => ({ itemNo: s.ItemId?.no || s.ItemNo, parentNo: s.parent?.no || s.parentNo })),
-  //   });
-  // }, []);
-  // useEffect(() => {
-  //   const unitNumber = "DE1-10KW-120-120-120";
-  //   const sorted: any[] = [];
-  //   const jbCopy = jobRecords.concat();
-
-  //   for (const jb of jbCopy) {
-  //     // const sortedIndex = sorted.findIndex(i => isEqual(i, jb))
-  //     const parentIndex = sorted.findIndex((i) => getItemNumber(i) === getParentNumber(jb));
-  //     if (parentIndex > -1) {
-  //       sorted.splice(parentIndex, 0, jb);
-  //     } else {
-  //       sorted.push(jb);
-  //     }
-  //   }
-  //   console.log({
-  //     sorted: sorted.map((s) => ({ itemNo: s.ItemId?.no || s.ItemNo, parentNo: s.parent?.no || s.parentNo })),
-  //     grouped,
-  //   });
-  // }, []);
-  // useEffect(() => {
-  //   const unitNumber = "DE1-10KW-120-120-120";
-
-  //   const mainComponentsGroup = grouped.find((g) => g[0] === unitNumber);
-  //   const mainComponents = mainComponentsGroup ? mainComponentsGroup[1] : [];
-
-  //   const withoutParentGroup = grouped.find((g) => g[0] === "No-Parent");
-  //   const withoutParent = withoutParentGroup ? withoutParentGroup[1] : [];
-
-  //   let all: any[] = [];
-  //   for (const c of mainComponents) {
-  //     all.push(c, ...jobRecords.filter((j) => j.parent?.no === c?.ItemId?.no));
-  //   }
-  //   all.push(...withoutParent);
-
-  //   let seen = false;
-  //   for (const g of grouped) {
-  //     seen = false;
-  //     for (const j of all) {
-  //       if (j?.parent?.no === g[0]) {
-  //         seen = true;
-  //       }
-  //     }
-  //     if (!seen) {
-  //       all = all.concat(g[1]);
-  //     }
-  //   }
-
-  //   console.log({ grouped, jobRecords, all });
-  // }, []);
+    console.log({ all });
+  }, []);
 
   return (
     <Container>
