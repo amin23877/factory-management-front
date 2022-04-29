@@ -24,7 +24,7 @@ import { IShipment } from "api/shipment";
 
 import DocumentTab from "common/Document/Tab";
 import NotesTab from "common/Note/Tab";
-import JobRecordsTable from "./JobRecordsTable";
+import JobRecordsTable from "../../../common/JobRecordsTable";
 
 const schema = Yup.object().shape({});
 
@@ -250,21 +250,7 @@ function Details({ unit }: { unit: IUnit }) {
               <BaseDataGrid cols={warCols} rows={[]} onRowSelected={(d) => {}} height="67.3vh" />
             </Box>
           )}
-          {gridActiveTab === 2 && (
-            <JobRecordsTable unit={unit} />
-            // <BaseDataGrid
-            //   cols={jobrecordsCols}
-            //   rows={jobRecordsSorted?.all?.map((j: any, i: any) => ({ ...j, id: i })) || []}
-            // getRowClassName={({ row }) => {
-            //   if (row?.parent && row?.parent?.no !== unit?.ItemId?.no) {
-            //     return "nested";
-            //   }
-            //   return "";
-            // }}
-            //   onRowSelected={(r) => {}}
-            //   height="67.3vh"
-            // />
-          )}
+          {gridActiveTab === 2 && <JobRecordsTable unit={unit} />}
           {gridActiveTab === 3 && <DocumentTab itemId={unit.id} model="unit" />}
           {gridActiveTab === 4 && (
             <>

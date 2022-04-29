@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { Tabs, Tab } from "@material-ui/core";
+import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
-import { BasePaper } from "../../../app/Paper";
-
+import DataGrid from "app/NewDataGrid";
+import { BasePaper } from "app/Paper";
 import Details from "./Details";
 
-import { formatTimestampToDate } from "../../../logic/date";
-import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
-import DataGrid from "../../../app/NewDataGrid";
+import { formatTimestampToDate } from "logic/date";
 
 export default function Unit() {
   const [activeTab, setActiveTab] = useState(0);

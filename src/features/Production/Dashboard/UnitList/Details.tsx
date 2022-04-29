@@ -1,7 +1,6 @@
 import React, { useMemo, useState, Fragment } from "react";
 import { Box, Tabs, Tab, useMediaQuery } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
-import { useHistory } from "react-router";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 import * as Yup from "yup";
@@ -22,11 +21,10 @@ import Toast from "app/Toast";
 import { IUnit, updateUnit } from "api/units";
 import { deleteOption, IOption } from "api/options";
 import { addImage, deleteImage } from "api/units";
-import { jobRecordType } from "api/job";
 
-import { getModifiedValues, groupBy } from "logic/utils";
-import { openRequestedSinglePopup } from "logic/window";
+import { getModifiedValues } from "logic/utils";
 import { formatTimestampToDate } from "logic/date";
+import JobRecordsTable from "common/JobRecordsTable";
 
 const schema = Yup.object().shape({
   // laborCost: Yup.number().required(),
@@ -34,37 +32,6 @@ const schema = Yup.object().shape({
   // dueDate: Yup.string().required(),
   // assignee: Yup.string().required(),
 });
-
-function sortJobRecords({ unitNumber, jobRecords }: { unitNumber: string; jobRecords: any[] }) {
-  const grouped = Array.from(groupBy(jobRecords, (j) => j.parent?.no || "No Parent"));
-
-  const mainComponentsGroup = grouped.find((g) => g[0] === unitNumber);
-  const mainComponents = mainComponentsGroup ? mainComponentsGroup[1] : [];
-
-  const withoutParentGroup = grouped.find((g) => g[0] === "No-Parent");
-  const withoutParent = withoutParentGroup ? withoutParentGroup[1] : [];
-
-  let all: any[] = [];
-  for (const c of mainComponents) {
-    all.push(c, ...jobRecords.filter((j) => j.parent?.no === c?.ItemId?.no));
-  }
-  all.push(...withoutParent);
-
-  let seen = false;
-  for (const g of grouped) {
-    seen = false;
-    for (const j of all) {
-      if (j?.parent?.no === g[0]) {
-        seen = true;
-      }
-    }
-    if (!seen) {
-      all = all.concat(g[1]);
-    }
-  }
-
-  return all;
-}
 
 function getUnitWorkflowStep(status: string) {
   const steps = [
@@ -83,7 +50,6 @@ function getUnitWorkflowStep(status: string) {
 }
 
 function Details({ unit }: { unit: IUnit }) {
-  let history = useHistory();
   const phone = useMediaQuery("(max-width:900px)");
 
   const handleSubmit = async (data: any) => {
@@ -148,26 +114,6 @@ function Details({ unit }: { unit: IUnit }) {
         ? `/service?ItemId=${unit?.ItemId}&ServiceFamilyId=60efd0bcca0feadc84be6618`
         : null
       : null
-  );
-
-  const { data: unitJobRecords } = useSWR<jobRecordType[]>(gridActiveTab === 2 ? `/unit/${unit.id}/jobrecords` : null);
-  const sortedJobRecords = sortJobRecords({ unitNumber: unit?.ItemId?.no, jobRecords: unitJobRecords || [] });
-
-  const jobRecordsCols = useMemo<GridColumns>(
-    () => [
-      { field: "Line", width: 80 },
-      { field: "Component NO.", valueFormatter: ({ row }) => row?.ItemId?.no || row?.ItemNo, width: 180 },
-      { field: "Component Name", valueFormatter: ({ row }) => row?.ItemId?.name || row?.ItemName, flex: 1 },
-      {
-        field: "Component Location",
-        valueFormatter: ({ row }) => row?.ItemId?.location || row?.ItemLocation,
-        width: 180,
-      },
-      { field: "UM", valueFormatter: ({ row }) => row?.ItemId?.unitOfMeasure, width: 120 },
-      { field: "usage", headerName: "QTY", width: 120 },
-      { field: "Note", valueFormatter: ({ row }) => row?.note, width: 200 },
-    ],
-    []
   );
 
   const warCols = useMemo<GridColumns>(
@@ -325,21 +271,22 @@ function Details({ unit }: { unit: IUnit }) {
         )}
         {gridActiveTab === 1 && <DocumentTab itemId={unit.id} model="unit" />}
         {gridActiveTab === 2 && (
-          <BaseDataGrid
-            getRowClassName={({ row }) => {
-              if (row?.parent && row?.parent?.no !== unit?.ItemId?.no) {
-                return "nested";
-              }
-              return "";
-            }}
-            cols={jobRecordsCols}
-            rows={sortedJobRecords ? sortedJobRecords.map((j, i) => ({ ...j, id: i })) : []}
-            onRowSelected={(r) => {
-              phone
-                ? history.push(`/panel/inventory/${unit?.ItemId?.id}`)
-                : openRequestedSinglePopup({ url: `/panel/inventory/${unit?.ItemId?.id}` });
-            }}
-          />
+          <JobRecordsTable unit={unit} />
+          // <BaseDataGrid
+          //   getRowClassName={({ row }) => {
+          //     if (row?.parent && row?.parent?.no !== unit?.ItemId?.no) {
+          //       return "nested";
+          //     }
+          //     return "";
+          //   }}
+          //   cols={jobRecordsCols}
+          //   rows={sortedJobRecords ? sortedJobRecords.map((j, i) => ({ ...j, id: i })) : []}
+          //   onRowSelected={(r) => {
+          //     phone
+          //       ? history.push(`/panel/inventory/${unit?.ItemId?.id}`)
+          //       : openRequestedSinglePopup({ url: `/panel/inventory/${unit?.ItemId?.id}` });
+          //   }}
+          // />
         )}
         {gridActiveTab === 3 && (
           <>

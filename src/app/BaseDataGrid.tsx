@@ -20,27 +20,27 @@ export const useDataGridStyles = makeStyles({
     },
     "& .Mui-selected": {
       boxShadow: " rgba(149, 157, 165, 0.2) 0px 8px 24px",
-      backgroundColor: "#fff !important",
+      backgroundColor: "no-value",
     },
     "& .MuiDataGrid-sortIcon": {
       fill: "white",
     },
     "& .nested": {
-      backgroundColor: "#d7d7d7",
+      backgroundColor: "#d7d7d7 !important",
       "&:hover": {
-        backgroundColor: "#c0c0c0",
+        backgroundColor: "#c0c0c0 !important",
       },
     },
     "& .blue": {
-      backgroundColor: "#568ff8",
+      backgroundColor: "#a5c2f7 !important",
       "&:hover": {
-        backgroundColor: "#85b0ff",
+        backgroundColor: "#85b0ff !important",
       },
     },
     "& .orange": {
-      backgroundColor: "#ffa742",
+      backgroundColor: "#ffc888 !important",
       "&:hover": {
-        backgroundColor: "#ffbe73",
+        backgroundColor: "#ffbe73 !important",
       },
     },
   },

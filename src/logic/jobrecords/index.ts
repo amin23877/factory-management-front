@@ -1,33 +1,35 @@
 import { groupBy } from "logic/utils";
 
 export function sortJobRecordsByParent({ deviceNumber, jobRecords }: { deviceNumber: string; jobRecords: any[] }) {
-  // const deviceNumber = "DE1-10KW-120-120-120";
-  const grouped = Array.from(groupBy(jobRecords, (j) => j.parent?.no || j?.parentNo || "No Parent"));
+  // const deviceNo = "SEMIC-300W-120-120-90";
+  const grouped = Array.from(groupBy(jobRecords, (i) => i.parentRec || deviceNumber));
 
-  const mainComponentsGroup = grouped.find((g) => g[0] === deviceNumber);
-  const mainComponents = mainComponentsGroup ? mainComponentsGroup[1] : [];
-
-  const withoutParentGroup = grouped.find((g) => g[0] === "No-Parent");
-  const withoutParent = withoutParentGroup ? withoutParentGroup[1] : [];
-
+  const mainComponentsIndex = grouped.findIndex((g) => g[0] === deviceNumber);
+  const mainComponentsGroup = mainComponentsIndex > -1 ? grouped[mainComponentsIndex] : [];
+  const mainComponents = mainComponentsGroup[1] || [];
   let all: any[] = [];
-  for (const c of mainComponents) {
-    all.push(c, ...jobRecords.filter((j) => j.parent?.no === c?.ItemId?.no));
-  }
-  all.push(...withoutParent);
 
-  let seen = false;
-  for (const g of grouped) {
-    seen = false;
-    for (const j of all) {
-      if (j?.parent?.no === g[0]) {
-        seen = true;
+  for (const c of mainComponents) {
+    all.push(c);
+
+    const childrenIndex = grouped.findIndex((g) => g[0] === c._id);
+    const children = childrenIndex > -1 ? grouped[childrenIndex] : null;
+    if (children && children[1].length > 0) {
+      all.push(...children[1]);
+      grouped.splice(childrenIndex, 1);
+    }
+  }
+  grouped.splice(mainComponentsIndex, 1);
+
+  if (grouped.length > 0) {
+    for (const g of grouped) {
+      const parentIndex = all.findIndex((i) => i._id === g[0]);
+
+      if (parentIndex > -1) {
+        all = [...all.slice(0, parentIndex + 1), ...g[1], ...all.slice(parentIndex + 1)];
       }
     }
-    if (!seen) {
-      all = all.concat(g[1]);
-    }
   }
 
-  return { grouped, all };
+  return all;
 }
