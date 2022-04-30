@@ -15,7 +15,7 @@ export default function Unit() {
   const cols = [
     {
       name: "number",
-      header: "Unit NO.",
+      header: "Device Id",
       minWidth: 120,
     },
     {
