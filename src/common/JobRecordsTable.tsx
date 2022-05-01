@@ -8,9 +8,9 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import useSWR from "swr";
 
 import { IUnit } from "api/units";
-import { sortJobRecordsByParent } from "logic/jobrecords";
+import { createJobRecordsTree, findParentsRecursive, generateParentNumbersRecursive } from "logic/jobrecords";
 import { openRequestedSinglePopup } from "logic/window";
-import { groupBy } from "logic/utils";
+// import { groupBy } from "logic/utils";
 
 // import BaseDataGrid from "app/BaseDataGrid";
 // import { GridColumns } from "@material-ui/data-grid";
@@ -87,14 +87,16 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
   const history = useHistory();
   const classes = useStyle();
   const { data: jobrecords } = useSWR(`/unit/${unit.id}/jobrecords`);
-  const jobRecordsGrouped = useMemo(
-    () => Array.from(groupBy(jobrecords || [], (i: any) => i.parentRec || unit.ItemId.no)) || [],
-    [jobrecords, unit.ItemId.no]
-  );
-  const mainComponents = jobRecordsGrouped?.find((g: any) => g[0] === unit.ItemId?.no);
+  const [expandedComponents, setExpandedComponents] = useState<string[]>([]);
+  console.log({ expandedComponents });
+
   const jobRecordsSorted = useMemo(
     () =>
-      sortJobRecordsByParent({ deviceNumber: unit.ItemId.no, jobRecords: jobrecords || [] })?.map((data) => ({
+      createJobRecordsTree({
+        deviceNumber: unit.ItemId.no,
+        jobRecords: jobrecords || [],
+        expanded: expandedComponents,
+      })?.list.map((data) => ({
         Line: data?.line,
         Component: data?.ItemId?.no || data?.ItemNo,
         "Component Name": data?.ItemId?.name || data?.ItemName,
@@ -104,20 +106,17 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
         Note: data?.note,
         ...data,
       })) || [],
-    [jobrecords, unit.ItemId.no]
+    [expandedComponents, jobrecords, unit.ItemId.no]
   );
-
-  const componentWithChildren = useMemo(() => {
-    const indexes = jobRecordsSorted?.map((j, i) => j?.parent?.no === unit.ItemId.no && i).filter((i) => i !== false);
-    const components = [];
-    if (indexes.length > 0) {
-      console.log({ indexes, jobRecordsSorted });
-    }
-
-    return [];
-  }, [jobRecordsSorted, unit.ItemId.no]);
-
-  const [expandedComponents, setExpandedComponents] = useState<string[]>([]);
+  const jobRecordsTree = useMemo(
+    () =>
+      createJobRecordsTree({
+        deviceNumber: unit.ItemId.no,
+        jobRecords: jobrecords || [],
+        expanded: expandedComponents,
+      })?.tree || [],
+    [expandedComponents, jobrecords, unit.ItemId.no]
+  );
 
   const handleRowSelect = useCallback(
     (r: any) => {
@@ -131,6 +130,20 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
     },
     [history, phone]
   );
+
+  const toggleComponent = (jobRecord: any) => {
+    const result = findParentsRecursive({ _id: unit.ItemId?.no, children: jobRecordsTree }, jobRecord._id) || [];
+    const numbers = generateParentNumbersRecursive(result);
+    console.log({ numbers });
+
+    setExpandedComponents((prev) => {
+      if (prev.find((p) => p === jobRecord._id)) {
+        return prev.filter((p) => p !== jobRecord._id);
+      } else {
+        return [...prev, jobRecord._id];
+      }
+    });
+  };
 
   const jobrecordsCols = useMemo(
     () => [
@@ -147,10 +160,13 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
         header: "   ",
         width: 50,
         render: ({ data }: any) => {
-          const index = mainComponents ? mainComponents[1].findIndex((c) => c._id === data._id) : -1;
-          if (index > -1 && jobRecordsGrouped) {
-            return (
-              <button>
+          if (data.children && data.children.length > 0) {
+            return expandedComponents.find((c) => c === data._id) ? (
+              <button onClick={() => toggleComponent(data)}>
+                <KeyboardArrowUpIcon style={{ fontSize: "1.3em" }} />
+              </button>
+            ) : (
+              <button onClick={() => toggleComponent(data)}>
                 <KeyboardArrowDownIcon style={{ fontSize: "1.3em" }} />
               </button>
             );
@@ -188,7 +204,7 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
       },
       { name: "Note", width: 200 },
     ],
-    [handleRowSelect, mainComponents]
+    [expandedComponents, handleRowSelect]
   );
 
   return (
