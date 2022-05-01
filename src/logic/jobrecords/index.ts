@@ -33,20 +33,13 @@ export function sortJobRecordsByParent({ deviceNumber, jobRecords }: { deviceNum
   return all;
 }
 
-function visit({ children = [], ...object }: any, parents: string[]): any {
-  if (children.length === 0) {
+export function generateParentNumbersRecursive(object: any, result: string[]) {
+  result.push(object._id);
+  if (!object.children) {
     return;
   }
 
-  parents.push(object._id);
-  return visit(object.children, parents);
-}
-
-export function generateParentNumbersRecursive(object: any) {
-  const parents: string[] = [];
-  visit(object, parents);
-
-  return parents;
+  generateParentNumbersRecursive(object.children, result);
 }
 
 export function findParentsRecursive({ children = [], ...object }: any, id: string) {

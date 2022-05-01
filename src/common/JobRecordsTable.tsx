@@ -88,7 +88,6 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
   const classes = useStyle();
   const { data: jobrecords } = useSWR(`/unit/${unit.id}/jobrecords`);
   const [expandedComponents, setExpandedComponents] = useState<string[]>([]);
-  console.log({ expandedComponents });
 
   const jobRecordsSorted = useMemo(
     () =>
@@ -117,6 +116,7 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
       })?.tree || [],
     [expandedComponents, jobrecords, unit.ItemId.no]
   );
+  console.log({ jobRecordsTree });
 
   const handleRowSelect = useCallback(
     (r: any) => {
@@ -133,8 +133,9 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
 
   const toggleComponent = (jobRecord: any) => {
     const result = findParentsRecursive({ _id: unit.ItemId?.no, children: jobRecordsTree }, jobRecord._id) || [];
-    const numbers = generateParentNumbersRecursive(result);
-    console.log({ numbers });
+    const numbers: string[] = [];
+    generateParentNumbersRecursive(result, numbers);
+    console.log({ numbers, result });
 
     setExpandedComponents((prev) => {
       if (prev.find((p) => p === jobRecord._id)) {
