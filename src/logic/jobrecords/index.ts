@@ -33,13 +33,15 @@ export function sortJobRecordsByParent({ deviceNumber, jobRecords }: { deviceNum
   return all;
 }
 
-export function generateParentNumbersRecursive(object: any, result: string[]) {
-  result.push(object._id);
-  if (!object.children) {
-    return;
+export function generateParentNumbersRecursive(list: any) {
+  let tmp = [list];
+  let result: string[] = [];
+  while (tmp) {
+    result.push(tmp[0]._id);
+    tmp = tmp[0].children;
   }
 
-  generateParentNumbersRecursive(object.children, result);
+  return result;
 }
 
 export function findParentsRecursive({ children = [], ...object }: any, id: string) {
@@ -49,6 +51,19 @@ export function findParentsRecursive({ children = [], ...object }: any, id: stri
     children.some((o: any) => (result = findParentsRecursive(o, id))) &&
     Object.assign({}, object, { children: [result] })
   );
+}
+
+export function findChildren(list: any) {
+  let tmp = [list];
+  let result: string[] = [];
+  let childrenIds: string[] = [];
+  while (tmp) {
+    childrenIds = tmp[0].children ? tmp[0].children?.map((c: any) => c._id) : [];
+    result.push(tmp[0]._id, ...childrenIds);
+    tmp = tmp[0].children;
+  }
+
+  return result;
 }
 
 function recursiveFind({
@@ -96,6 +111,8 @@ export function createJobRecordsTree({
     if (children && children[1].length > 0) {
       tree.push({ ...c, children: children[1] });
       grouped.splice(childrenIndex, 1);
+    } else {
+      tree.push(c);
     }
   }
   grouped.splice(mainComponentsIndex, 1);
@@ -118,6 +135,11 @@ export function createJobRecordsTree({
   }
 
   list.push(...tree);
+  const handleSuccess = (result: any, index: any) => {
+    const children = result.children || [];
+    list = [...list.slice(0, index + 1), ...children, ...list.slice(index + 1)];
+  };
+
   if (expanded.length > 0) {
     for (const c of expanded) {
       const index = list.findIndex((j) => j._id === c);
@@ -125,10 +147,7 @@ export function createJobRecordsTree({
         deviceNumber,
         jobRecords: tree,
         id: c,
-        onSuccess: (result: any) => {
-          const children = result.children || [];
-          list = [...list.slice(0, index + 1), ...children, ...list.slice(index + 1)];
-        },
+        onSuccess: (result: any) => handleSuccess(result, index),
       });
     }
   }

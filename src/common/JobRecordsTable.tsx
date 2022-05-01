@@ -8,7 +8,7 @@ import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import useSWR from "swr";
 
 import { IUnit } from "api/units";
-import { createJobRecordsTree, findParentsRecursive, generateParentNumbersRecursive } from "logic/jobrecords";
+import { createJobRecordsTree, findChildren } from "logic/jobrecords";
 import { openRequestedSinglePopup } from "logic/window";
 // import { groupBy } from "logic/utils";
 
@@ -107,16 +107,6 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
       })) || [],
     [expandedComponents, jobrecords, unit.ItemId.no]
   );
-  const jobRecordsTree = useMemo(
-    () =>
-      createJobRecordsTree({
-        deviceNumber: unit.ItemId.no,
-        jobRecords: jobrecords || [],
-        expanded: expandedComponents,
-      })?.tree || [],
-    [expandedComponents, jobrecords, unit.ItemId.no]
-  );
-  console.log({ jobRecordsTree });
 
   const handleRowSelect = useCallback(
     (r: any) => {
@@ -131,20 +121,17 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
     [history, phone]
   );
 
-  const toggleComponent = (jobRecord: any) => {
-    const result = findParentsRecursive({ _id: unit.ItemId?.no, children: jobRecordsTree }, jobRecord._id) || [];
-    const numbers: string[] = [];
-    generateParentNumbersRecursive(result, numbers);
-    console.log({ numbers, result });
+  const toggleComponent = useCallback((jobRecord: any) => {
+    const numbers = findChildren(jobRecord);
 
     setExpandedComponents((prev) => {
       if (prev.find((p) => p === jobRecord._id)) {
-        return prev.filter((p) => p !== jobRecord._id);
+        return prev.filter((p) => !numbers.includes(p));
       } else {
         return [...prev, jobRecord._id];
       }
     });
-  };
+  }, []);
 
   const jobrecordsCols = useMemo(
     () => [
@@ -205,7 +192,7 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
       },
       { name: "Note", width: 200 },
     ],
-    [expandedComponents, handleRowSelect]
+    [expandedComponents, handleRowSelect, toggleComponent]
   );
 
   return (
