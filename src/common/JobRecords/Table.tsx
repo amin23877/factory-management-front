@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { useMediaQuery, makeStyles, Tooltip } from "@material-ui/core";
+import { useMediaQuery, makeStyles, Tooltip, Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
@@ -10,6 +10,8 @@ import useSWR from "swr";
 import { IUnit } from "api/units";
 import { createJobRecordsTree, findChildren } from "logic/jobrecords";
 import { openRequestedSinglePopup } from "logic/window";
+import { AddRounded } from "@material-ui/icons";
+import AddModal from "./AddModal";
 // import { groupBy } from "logic/utils";
 
 // import BaseDataGrid from "app/BaseDataGrid";
@@ -88,6 +90,7 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
   const classes = useStyle();
   const { data: jobrecords } = useSWR(`/unit/${unit.id}/jobrecords`);
   const [expandedComponents, setExpandedComponents] = useState<string[]>([]);
+  const [addModal, setAddModal] = useState(false);
 
   const jobRecordsSorted = useMemo(
     () =>
@@ -196,7 +199,11 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
   );
 
   return (
-    <div style={{ display: "flex", height: "68vh" }}>
+    <div style={{ display: "flex", height: "68vh", flexDirection: "column" }}>
+      <AddModal open={addModal} onClose={() => setAddModal(false)} />
+      <Button variant="outlined" startIcon={<AddRounded />} onClick={() => setAddModal(true)}>
+        Add
+      </Button>
       <ReactDataGrid
         className={classes.root}
         columns={jobrecordsCols}
@@ -206,12 +213,5 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
         pagination
       />
     </div>
-    // <BaseDataGrid
-    //   cols={jobrecordsCols}
-    //   rows={jobRecordsSorted?.map((j: any, i: any) => ({ ...j, id: i })) || []}
-    //   getRowClassName={({ row }) => getRowClassName({ row, jobRecords: jobRecordsSorted, unit })}
-    //   onRowSelected={handleRowSelect}
-    //   height="67.3vh"
-    // />
   );
 }

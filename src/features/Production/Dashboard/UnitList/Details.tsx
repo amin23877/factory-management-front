@@ -24,7 +24,7 @@ import { addImage, deleteImage } from "api/units";
 
 import { getModifiedValues } from "logic/utils";
 import { formatTimestampToDate } from "logic/date";
-import JobRecordsTable from "common/JobRecordsTable";
+import JobRecordsTable from "common/JobRecords/Table";
 
 const schema = Yup.object().shape({
   // laborCost: Yup.number().required(),

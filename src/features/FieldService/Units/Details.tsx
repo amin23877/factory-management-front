@@ -16,7 +16,6 @@ import { IUnit, updateUnit } from "api/units";
 import Toast from "app/Toast";
 import { formatTimestampToDate } from "logic/date";
 import { getModifiedValues } from "logic/utils";
-// import { sortJobRecordsByParent } from "logic/jobrecords";
 
 import ShipmentModal, { EditShipModal } from "../../Modals/ShipmentModal";
 import { Levels } from "../../Items/Forms";
@@ -24,7 +23,7 @@ import { IShipment } from "api/shipment";
 
 import DocumentTab from "common/Document/Tab";
 import NotesTab from "common/Note/Tab";
-import JobRecordsTable from "../../../common/JobRecordsTable";
+import JobRecordsTable from "common/JobRecords/Table";
 
 const schema = Yup.object().shape({});
 
@@ -48,25 +47,6 @@ function Details({ unit }: { unit: IUnit }) {
   const [selectedShip, setSelectedShip] = useState<IShipment>();
 
   const { data: shipments } = useSWR(gridActiveTab === 4 ? `/shipment?UnitId=${unit.id}` : null);
-
-  // const { data: jobrecords } = useSWR(gridActiveTab === 2 ? `/unit/${unit.id}/jobrecords` : null);
-  // const jobRecordsSorted = sortJobRecordsByParent({ deviceNumber: unit.ItemId.no, jobRecords: jobrecords || [] }) || [];
-  // const jobrecordsCols = useMemo<GridColDef[]>(
-  //   () => [
-  //     { field: "Line", width: 80 },
-  //     {
-  //       field: "Component",
-  //       valueFormatter: ({ row }) => row?.ItemId?.no || row?.ItemNo,
-  //       width: 180,
-  //     },
-  //     { field: "Component Name", valueFormatter: ({ row }) => row?.ItemId?.name || row?.ItemName, width: 180 },
-  //     { field: "Component Location", valueFormatter: ({ row }) => row?.ItemId?.location, width: 180 },
-  //     { field: "UM", valueFormatter: ({ row }) => row?.ItemId?.unitOfMeasure, width: 120 },
-  //     { field: "QTY", valueFormatter: ({ row }) => row?.usage, width: 120 },
-  //     { field: "Note", valueFormatter: ({ row }) => row?.note, width: 200 },
-  //   ],
-  //   []
-  // );
 
   const warCols = useMemo<GridColumns>(
     () => [
