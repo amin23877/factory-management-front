@@ -3,15 +3,24 @@ import { useMediaQuery, makeStyles, Tooltip, Button } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import {
+  AddRounded,
+  LockRounded,
+  LockOpenRounded,
+  CreateRounded,
+  ClearRounded,
+  SearchRounded,
+  KeyboardArrowUp,
+  KeyboardArrowDown,
+} from "@material-ui/icons";
 import useSWR from "swr";
 
 import { IUnit } from "api/units";
 import { createJobRecordsTree, findChildren } from "logic/jobrecords";
 import { openRequestedSinglePopup } from "logic/window";
-import { AddRounded } from "@material-ui/icons";
 import AddModal from "./AddModal";
+import Toast from "app/Toast";
+import { updateJobRecord } from "api/jobrecord";
 // import { groupBy } from "logic/utils";
 
 // import BaseDataGrid from "app/BaseDataGrid";
@@ -88,9 +97,10 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
   const phone = useMediaQuery("(max-width:400px)");
   const history = useHistory();
   const classes = useStyle();
-  const { data: jobrecords } = useSWR(`/unit/${unit.id}/jobrecords`);
+  const { data: jobrecords, mutate: mutateJobRecords } = useSWR(`/unit/${unit.id}/jobrecords`);
   const [expandedComponents, setExpandedComponents] = useState<string[]>([]);
   const [addModal, setAddModal] = useState(false);
+  const [lock, setLock] = useState(true);
 
   const jobRecordsSorted = useMemo(
     () =>
@@ -136,15 +146,36 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
     });
   }, []);
 
+  const handleUpdate = async ({ id, value, usage }: { id: string; value: number; usage: number }) => {
+    try {
+      if (Number(usage) === Number(value) || isNaN(value) || isNaN(usage)) {
+        Toast("Please enter a valid number", "error");
+        return;
+      }
+
+      await updateJobRecord(id, { usage: value });
+      Toast(`Job Record Updated`, "success");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      mutateJobRecords();
+    }
+  };
+
   const jobrecordsCols = useMemo(
     () => [
       // { name: "Parent", render: ({ data }: any) => data?.parent?.no || data?.parentNo, width: 180, hidden: true },
-      { name: "Line", width: 80 },
+      { name: "Line", width: 80, editable: false },
       {
         name: "",
         header: "   ",
         width: 50,
-        render: ({ data }: any) => <button onClick={() => handleRowSelect(data)}>🔍</button>,
+        render: ({ data }: any) => (
+          <button onClick={() => handleRowSelect(data)}>
+            <SearchRounded style={{ fontSize: "1.3em" }} />
+          </button>
+        ),
+        editable: false,
       },
       {
         name: "",
@@ -154,20 +185,22 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
           if (data.children && data.children.length > 0) {
             return expandedComponents.find((c) => c === data._id) ? (
               <button onClick={() => toggleComponent(data)}>
-                <KeyboardArrowUpIcon style={{ fontSize: "1.3em" }} />
+                <KeyboardArrowUp style={{ fontSize: "1.3em" }} />
               </button>
             ) : (
               <button onClick={() => toggleComponent(data)}>
-                <KeyboardArrowDownIcon style={{ fontSize: "1.3em" }} />
+                <KeyboardArrowDown style={{ fontSize: "1.3em" }} />
               </button>
             );
           }
           return;
         },
+        editable: false,
       },
       {
         name: "Component",
         width: 100,
+        editable: false,
       },
       {
         name: "Component Name",
@@ -177,34 +210,60 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
           </Tooltip>
         ),
         width: 180,
+        editable: false,
       },
-      { name: "Component Location", width: 180 },
-      { name: "UM", width: 80 },
+      { name: "Component Location", width: 180, editable: false },
+      { name: "UM", width: 80, editable: false },
       { name: "QTY", width: 80 },
       {
         name: "",
         header: "   ",
         width: 50,
-        render: ({ data }: any) => <button>✏</button>,
+        render: ({ data }: any) => (
+          <button disabled={lock}>
+            <CreateRounded style={{ fontSize: "1.3em" }} />
+          </button>
+        ),
+        editable: false,
       },
       {
         name: "",
         header: "   ",
         width: 50,
-        render: ({ data }: any) => <button>❌</button>,
+        render: ({ data }: any) => (
+          <button disabled={lock}>
+            <ClearRounded style={{ fontSize: "1.3em" }} />
+          </button>
+        ),
+        editable: false,
       },
-      { name: "Note", width: 200 },
+      { name: "Note", width: 200, editable: false },
     ],
-    [expandedComponents, handleRowSelect, toggleComponent]
+    [expandedComponents, handleRowSelect, lock, toggleComponent]
   );
 
   return (
     <div style={{ display: "flex", height: "68vh", flexDirection: "column" }}>
       <AddModal open={addModal} onClose={() => setAddModal(false)} />
-      <Button variant="outlined" startIcon={<AddRounded />} onClick={() => setAddModal(true)}>
-        Add
-      </Button>
+      <div style={{ display: "flex" }}>
+        <Button
+          disabled={lock}
+          fullWidth
+          variant="outlined"
+          startIcon={<AddRounded />}
+          onClick={() => setAddModal(true)}
+        >
+          Add
+        </Button>
+        <Button onClick={() => setLock((p) => !p)} variant="contained" color={lock ? "primary" : "secondary"}>
+          {lock ? <LockRounded /> : <LockOpenRounded />}
+        </Button>
+      </div>
       <ReactDataGrid
+        onEditComplete={({ columnId, value, data }: any) =>
+          columnId === "QTY" && handleUpdate({ id: data?._id, usage: data.usage, value })
+        }
+        editable={!lock}
         className={classes.root}
         columns={jobrecordsCols}
         dataSource={jobRecordsSorted}
