@@ -19,7 +19,8 @@ import { createJobRecordsTree, findChildren } from "logic/jobrecords";
 import { openRequestedSinglePopup } from "logic/window";
 import AddModal from "./AddModal";
 import Toast from "app/Toast";
-import { updateJobRecord } from "api/jobrecord";
+import Confirm from "common/Confirm";
+import { updateJobRecord, deleteJobRecord } from "api/jobrecord";
 // import { groupBy } from "logic/utils";
 
 // import BaseDataGrid from "app/BaseDataGrid";
@@ -103,13 +104,13 @@ function ExpandButton({
 }) {
   if (data.children && data.children.length > 0) {
     return expandedComponents.find((c) => c === data._id) ? (
-      <button onClick={() => toggleComponent(data)}>
-        <KeyboardArrowUp style={{ fontSize: "1.3em" }} />
-      </button>
+      <div onClick={() => toggleComponent(data)}>
+        <KeyboardArrowUp style={{ fontSize: "1.8rem", color: "#426792", cursor: "pointer" }} />
+      </div>
     ) : (
-      <button onClick={() => toggleComponent(data)}>
-        <KeyboardArrowDown style={{ fontSize: "1.3em" }} />
-      </button>
+      <div onClick={() => toggleComponent(data)}>
+        <KeyboardArrowDown style={{ fontSize: "1.8rem", color: "#426792", cursor: "pointer" }} />
+      </div>
     );
   }
   return <></>;
@@ -184,35 +185,50 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
     }
   };
 
+  const handleDelete = useCallback(
+    (id: string) => {
+      Confirm({
+        text: "If you delete this record, all of it's children will be removed too",
+        onConfirm: async () => {
+          try {
+            await deleteJobRecord(id);
+          } catch (error) {
+            console.log(error);
+          } finally {
+            mutateJobRecords();
+          }
+        },
+      });
+    },
+    [mutateJobRecords]
+  );
+
   const jobrecordsCols = useMemo(
     () => [
       {
         name: "Line",
-        defaultWidth: 100,
-        editable: false,
-        render: ({ data }: any) => (
-          <Box display="flex" alignItems="center" style={{ gap: 4 }}>
-            <p>{data?.Line}</p>
-            <button onClick={() => handleRowSelect(data)}>
-              <SearchRounded style={{ fontSize: "1.3em" }} />
-            </button>
-            <ExpandButton data={data} expandedComponents={expandedComponents} toggleComponent={toggleComponent} />
-          </Box>
-        ),
-      },
-      {
-        name: "Component",
-        defaultWidth: 120,
+        defaultWidth: 80,
         editable: false,
       },
       {
         name: "Component Name",
-        render: ({ value }: any) => (
-          <Tooltip title={value}>
-            <span>{String(value)}</span>
-          </Tooltip>
+        render: ({ value, data }: any) => (
+          <Box display="flex" alignItems="center" style={{ gap: 4 }}>
+            <div onClick={() => handleRowSelect(data)}>
+              <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
+            </div>
+            <ExpandButton data={data} expandedComponents={expandedComponents} toggleComponent={toggleComponent} />
+            <Tooltip title={value}>
+              <span>{String(value)}</span>
+            </Tooltip>
+          </Box>
         ),
         defaultWidth: 180,
+        editable: false,
+      },
+      {
+        name: "Component",
+        defaultWidth: 120,
         editable: false,
       },
       { name: "Component Location", defaultWidth: 180, editable: false },
@@ -224,15 +240,15 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
         editable: false,
         render: ({ data }: any) => (
           <Box display="flex" alignItems="center" style={{ gap: 4 }}>
-            <p>{data?.note}</p>
-            <button disabled={lock}>
-              <ClearRounded style={{ fontSize: "1.3em" }} />
-            </button>
+            <p style={{ flexGrow: 1 }}>{data?.note}</p>
+            <div onClick={() => handleDelete(data._id)}>
+              <ClearRounded style={{ fontSize: "1.8rem", color: lock ? "#ccc" : "#e71414", cursor: "pointer" }} />
+            </div>
           </Box>
         ),
       },
     ],
-    [expandedComponents, handleRowSelect, lock, toggleComponent]
+    [expandedComponents, handleDelete, handleRowSelect, lock, toggleComponent]
   );
 
   return (
