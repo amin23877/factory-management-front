@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { useMediaQuery, makeStyles, Tooltip, Button } from "@material-ui/core";
+import { useMediaQuery, makeStyles, Tooltip, Button, Box } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
@@ -7,7 +7,6 @@ import {
   AddRounded,
   LockRounded,
   LockOpenRounded,
-  CreateRounded,
   ClearRounded,
   SearchRounded,
   KeyboardArrowUp,
@@ -93,6 +92,29 @@ const filterValues = [
   { name: "Note", type: "string", value: "", operator: "startsWith" },
 ];
 
+function ExpandButton({
+  data,
+  expandedComponents,
+  toggleComponent,
+}: {
+  data: any;
+  expandedComponents: string[];
+  toggleComponent: any;
+}) {
+  if (data.children && data.children.length > 0) {
+    return expandedComponents.find((c) => c === data._id) ? (
+      <button onClick={() => toggleComponent(data)}>
+        <KeyboardArrowUp style={{ fontSize: "1.3em" }} />
+      </button>
+    ) : (
+      <button onClick={() => toggleComponent(data)}>
+        <KeyboardArrowDown style={{ fontSize: "1.3em" }} />
+      </button>
+    );
+  }
+  return <></>;
+}
+
 export default function JobRecordsTable({ unit }: { unit: IUnit }) {
   const phone = useMediaQuery("(max-width:400px)");
   const history = useHistory();
@@ -164,42 +186,23 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
 
   const jobrecordsCols = useMemo(
     () => [
-      // { name: "Parent", render: ({ data }: any) => data?.parent?.no || data?.parentNo, width: 180, hidden: true },
-      { name: "Line", width: 80, editable: false },
       {
-        name: "",
-        header: "   ",
-        width: 50,
+        name: "Line",
+        defaultWidth: 100,
+        editable: false,
         render: ({ data }: any) => (
-          <button onClick={() => handleRowSelect(data)}>
-            <SearchRounded style={{ fontSize: "1.3em" }} />
-          </button>
+          <Box display="flex" alignItems="center" style={{ gap: 4 }}>
+            <p>{data?.Line}</p>
+            <button onClick={() => handleRowSelect(data)}>
+              <SearchRounded style={{ fontSize: "1.3em" }} />
+            </button>
+            <ExpandButton data={data} expandedComponents={expandedComponents} toggleComponent={toggleComponent} />
+          </Box>
         ),
-        editable: false,
-      },
-      {
-        name: "",
-        header: "   ",
-        width: 50,
-        render: ({ data }: any) => {
-          if (data.children && data.children.length > 0) {
-            return expandedComponents.find((c) => c === data._id) ? (
-              <button onClick={() => toggleComponent(data)}>
-                <KeyboardArrowUp style={{ fontSize: "1.3em" }} />
-              </button>
-            ) : (
-              <button onClick={() => toggleComponent(data)}>
-                <KeyboardArrowDown style={{ fontSize: "1.3em" }} />
-              </button>
-            );
-          }
-          return;
-        },
-        editable: false,
       },
       {
         name: "Component",
-        width: 100,
+        defaultWidth: 120,
         editable: false,
       },
       {
@@ -209,35 +212,25 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
             <span>{String(value)}</span>
           </Tooltip>
         ),
-        width: 180,
+        defaultWidth: 180,
         editable: false,
       },
-      { name: "Component Location", width: 180, editable: false },
-      { name: "UM", width: 80, editable: false },
-      { name: "QTY", width: 80 },
+      { name: "Component Location", defaultWidth: 180, editable: false },
+      { name: "UM", defaultWidth: 80, editable: false },
+      { name: "QTY", defaultWidth: 80 },
       {
-        name: "",
-        header: "   ",
-        width: 50,
-        render: ({ data }: any) => (
-          <button disabled={lock}>
-            <CreateRounded style={{ fontSize: "1.3em" }} />
-          </button>
-        ),
+        name: "Note",
+        flex: 1,
         editable: false,
-      },
-      {
-        name: "",
-        header: "   ",
-        width: 50,
         render: ({ data }: any) => (
-          <button disabled={lock}>
-            <ClearRounded style={{ fontSize: "1.3em" }} />
-          </button>
+          <Box display="flex" alignItems="center" style={{ gap: 4 }}>
+            <p>{data?.note}</p>
+            <button disabled={lock}>
+              <ClearRounded style={{ fontSize: "1.3em" }} />
+            </button>
+          </Box>
         ),
-        editable: false,
       },
-      { name: "Note", width: 200, editable: false },
     ],
     [expandedComponents, handleRowSelect, lock, toggleComponent]
   );
