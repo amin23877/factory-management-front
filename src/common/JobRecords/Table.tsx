@@ -122,7 +122,7 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
   const classes = useStyle();
   const { data: jobrecords, mutate: mutateJobRecords } = useSWR(`/unit/${unit.id}/jobrecords`);
   const [expandedComponents, setExpandedComponents] = useState<string[]>([]);
-  const [addModal, setAddModal] = useState(false);
+  const [addModal, setAddModal] = useState(true);
   const [lock, setLock] = useState(true);
 
   const jobRecordsSorted = useMemo(
@@ -253,7 +253,7 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
 
   return (
     <div style={{ display: "flex", height: "68vh", flexDirection: "column" }}>
-      <AddModal open={addModal} onClose={() => setAddModal(false)} />
+      <AddModal unit={unit} open={addModal} onClose={() => setAddModal(false)} />
       <div style={{ display: "flex" }}>
         <Button
           disabled={lock}
