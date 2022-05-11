@@ -122,8 +122,9 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
   const classes = useStyle();
   const { data: jobrecords, mutate: mutateJobRecords } = useSWR(`/unit/${unit.id}/jobrecords`);
   const [expandedComponents, setExpandedComponents] = useState<string[]>([]);
-  const [addModal, setAddModal] = useState(true);
+  const [addModal, setAddModal] = useState(false);
   const [lock, setLock] = useState(true);
+  const [parent, setParent] = useState<{ _id: string; Component: string }>();
 
   const jobRecordsSorted = useMemo(
     () =>
@@ -214,8 +215,20 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
         name: "Component Name",
         render: ({ value, data }: any) => (
           <Box display="flex" alignItems="center" style={{ gap: 4 }}>
-            <div onClick={() => handleRowSelect(data)}>
-              <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
+            <div
+              onClick={() => {
+                if (!lock) {
+                  setParent(data);
+                  setAddModal(true);
+                }
+              }}
+            >
+              <AddRounded
+                style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "green", cursor: lock ? "auto" : "pointer" }}
+              />
+            </div>
+            <div onClick={() => !lock && handleRowSelect(data)}>
+              <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: lock ? "auto" : "pointer" }} />
             </div>
             <ExpandButton data={data} expandedComponents={expandedComponents} toggleComponent={toggleComponent} />
             <Tooltip title={value}>
@@ -253,7 +266,7 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
 
   return (
     <div style={{ display: "flex", height: "68vh", flexDirection: "column" }}>
-      <AddModal unit={unit} open={addModal} onClose={() => setAddModal(false)} />
+      <AddModal parent={parent} unit={unit} open={addModal} onClose={() => setAddModal(false)} />
       <div style={{ display: "flex" }}>
         <Button
           disabled={lock}
