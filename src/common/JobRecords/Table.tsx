@@ -66,8 +66,8 @@ const useStyle = makeStyles({
 });
 
 const getRowClassName = ({ jobRecords, row, unit }: { jobRecords: any[]; row: any; unit: IUnit }) => {
-  if (row.parentRec) {
-    const parent = jobRecords.find((j) => j._id === row.parentRec);
+  if (row.parentRec?._id) {
+    const parent = jobRecords.find((j) => j._id === row.parentRec?._id);
     if (parent && (parent.parent?.no === unit.ItemId.no || parent.parentNo === unit.ItemId.no)) {
       return "blue";
     } else {

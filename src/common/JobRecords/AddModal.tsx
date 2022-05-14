@@ -24,7 +24,17 @@ import { createJobRecord } from "api/jobrecord";
 import { IUnit } from "api/units";
 import { mutate } from "swr";
 
-export default function AddModal({ unit, parent, open, onClose }: { unit: IUnit; parent?: { _id: string, Component: string }, open: boolean; onClose: () => void }) {
+export default function AddModal({
+  unit,
+  parent,
+  open,
+  onClose,
+}: {
+  unit: IUnit;
+  parent?: { _id: string; Component: string };
+  open: boolean;
+  onClose: () => void;
+}) {
   const [selectedItems, setSelectedItems] = useState<{ item: IItem; usage: number }[]>([]);
   const [itemName, setItemName] = useState<string>();
   const [itemNo, setItemNo] = useState<string>();
@@ -94,14 +104,14 @@ export default function AddModal({ unit, parent, open, onClose }: { unit: IUnit;
       //   parent: parent?._id || unit.id,
       //   usage: selectedItems[0].usage,
       // });
-      
+
       await Promise.all(
         selectedItems.map(async (item) => {
           try {
             await createJobRecord({
               ItemId: item.item.id,
               JOBId: unit.JOBId,
-              parent: parent?._id || unit.id,
+              parentRec: parent?._id || null,
               usage: item.usage,
             });
           } catch (error) {
@@ -114,13 +124,19 @@ export default function AddModal({ unit, parent, open, onClose }: { unit: IUnit;
     } catch (error) {
       console.log(error);
     } finally {
-      mutate(`/unit/${unit.id}/jobrecords`)
+      mutate(`/unit/${unit.id}/jobrecords`);
       setCreating(false);
     }
   };
 
   return (
-    <Dialog title={parent ? `Add Job Record to ${parent.Component}` : "Add Job Record"} open={open} onClose={onClose} fullWidth maxWidth="lg">
+    <Dialog
+      title={parent ? `Add Job Record to ${parent.Component}` : "Add Job Record"}
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="lg"
+    >
       <Box style={{ margin: "0.5em 2em", gap: 8 }} display="flex" height={600}>
         <Box flex={3}>
           <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gap: 8 }} mb={2}>

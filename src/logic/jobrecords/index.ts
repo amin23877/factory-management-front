@@ -1,7 +1,7 @@
 import { groupBy } from "logic/utils";
 
 export function sortJobRecordsByParent({ deviceNumber, jobRecords }: { deviceNumber: string; jobRecords: any[] }) {
-  const grouped = Array.from(groupBy(jobRecords, (i) => i.parentRec || deviceNumber));
+  const grouped = Array.from(groupBy(jobRecords, (i) => i?.parentRec?._id || deviceNumber));
 
   const mainComponentsIndex = grouped.findIndex((g) => g[0] === deviceNumber);
   const mainComponentsGroup = mainComponentsIndex > -1 ? grouped[mainComponentsIndex] : [];
@@ -97,7 +97,7 @@ export function createJobRecordsTree({
   jobRecords: any[];
   expanded: string[];
 }) {
-  const grouped = Array.from(groupBy(jobRecords, (i) => i.parentRec || deviceNumber));
+  const grouped = Array.from(groupBy(jobRecords, (i) => i?.parentRec?._id || deviceNumber));
 
   const mainComponentsIndex = grouped.findIndex((g) => g[0] === deviceNumber);
   const mainComponentsGroup = mainComponentsIndex > -1 ? grouped[mainComponentsIndex] : [];

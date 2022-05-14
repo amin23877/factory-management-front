@@ -8,6 +8,6 @@ export const deleteJobRecord = (id: string) => {
   return delete_(`/jobrecord/${id}`);
 };
 
-export const createJobRecord = (data: { JOBId: string; parent: string; ItemId: string; usage: number }) => {
+export const createJobRecord = (data: { JOBId: string; parentRec: string | null; ItemId: string; usage: number }) => {
   return post(`/jobrecord`, data);
 };
