@@ -44,6 +44,7 @@ function Details({ unit }: { unit: IUnit }) {
   const [gridActiveTab, setGridActiveTab] = useState(0);
   const [addShipModal, setAddShipModal] = useState(false);
   const [editShip, setEditShip] = useState(false);
+  const [lock, setLock] = useState(true);
   const [selectedShip, setSelectedShip] = useState<IShipment>();
 
   const { data: shipments } = useSWR(gridActiveTab === 4 ? `/shipment?UnitId=${unit.id}` : null);
@@ -115,7 +116,7 @@ function Details({ unit }: { unit: IUnit }) {
                     setFieldValue={setFieldValue}
                   />
                   <Box textAlign="center" my={1} width="100%">
-                    <Button disabled={isSubmitting} kind="edit" type="submit" style={{ width: "100%" }}>
+                    <Button disabled={isSubmitting || lock} kind="edit" type="submit" style={{ width: "100%" }}>
                       Save
                     </Button>
                   </Box>
@@ -230,7 +231,7 @@ function Details({ unit }: { unit: IUnit }) {
               <BaseDataGrid cols={warCols} rows={[]} onRowSelected={(d) => {}} height="67.3vh" />
             </Box>
           )}
-          {gridActiveTab === 2 && <JobRecordsTable unit={unit} />}
+          {gridActiveTab === 2 && <JobRecordsTable unit={unit} lock={lock} setLock={setLock} />}
           {gridActiveTab === 3 && <DocumentTab itemId={unit.id} model="unit" />}
           {gridActiveTab === 4 && (
             <>

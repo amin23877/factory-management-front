@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   IconButton,
   List,
@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import { DeleteRounded, AddRounded, RemoveRounded } from "@material-ui/icons";
-import { DataGrid } from "@material-ui/data-grid";
+import { DataGrid, GridColumns } from "@material-ui/data-grid";
 
 import Dialog from "app/Dialog";
 import TextField from "app/TextField";
@@ -62,18 +62,27 @@ export default function AddModal({
     return () => clearTimeout(t);
   }, [itemName, itemNo, keywords, page]);
 
-  const handleAddItem = (item: IItem) => {
-    const index = selectedItems.findIndex((i) => i.item.id === item.id);
-    if (index > -1) {
-      setSelectedItems((p) => {
-        const temp = p.concat();
-        temp[index] = { ...temp[index], usage: temp[index].usage + 1 };
-        return temp;
-      });
-    } else {
-      setSelectedItems((p) => p.concat([{ item, usage: 1 }]));
+  useEffect(() => {
+    if (!open) {
+      setSelectedItems([]);
     }
-  };
+  }, [open]);
+
+  const handleAddItem = useCallback(
+    (item: IItem) => {
+      const index = selectedItems.findIndex((i) => i.item.id === item.id);
+      if (index > -1) {
+        setSelectedItems((p) => {
+          const temp = p.concat();
+          temp[index] = { ...temp[index], usage: temp[index].usage + 1 };
+          return temp;
+        });
+      } else {
+        setSelectedItems((p) => p.concat([{ item, usage: 1 }]));
+      }
+    },
+    [selectedItems]
+  );
 
   const handleRemove = (item: IItem) => {
     const index = selectedItems.findIndex((i) => i.item.id === item.id);
@@ -98,12 +107,6 @@ export default function AddModal({
   const handleSubmit = async () => {
     try {
       setCreating(true);
-      // console.log({selectedItems, parent},{
-      //   ItemId: selectedItems[0].item.id,
-      //   JOBId: unit.JOBId,
-      //   parent: parent?._id || unit.id,
-      //   usage: selectedItems[0].usage,
-      // });
 
       await Promise.all(
         selectedItems.map(async (item) => {
@@ -129,6 +132,47 @@ export default function AddModal({
     }
   };
 
+  const cols = useMemo<GridColumns>(
+    () => [
+      {
+        headerName: "Component Name",
+        field: "name",
+        width: 140,
+        renderCell: (p: any) => (
+          <Tooltip title={String(p.value)}>
+            <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 140 }}>
+              {String(p.value)}
+            </span>
+          </Tooltip>
+        ),
+      },
+      { field: "no", headerName: "Component", width: 140 },
+      {
+        field: "description",
+        flex: 1,
+        renderCell: (p: any) => (
+          <Box display="flex" alignItems="center" flex={1}>
+            <Tooltip title={String(p.value)} style={{ flexGrow: 1 }}>
+              <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 200 }}>
+                {String(p.value)}
+              </span>
+            </Tooltip>
+            <Button
+              color="secondary"
+              disabled={creating}
+              variant="contained"
+              style={{ marginLeft: "auto" }}
+              onClick={() => handleAddItem(p.row as IItem)}
+            >
+              Add
+            </Button>
+          </Box>
+        ),
+      },
+    ],
+    [creating, handleAddItem]
+  );
+
   return (
     <Dialog
       title={parent ? `Add Job Record to ${parent.Component}` : "Add Job Record"}
@@ -137,7 +181,7 @@ export default function AddModal({
       fullWidth
       maxWidth="lg"
     >
-      <Box style={{ margin: "0.5em 2em", gap: 8 }} display="flex" height={600}>
+      <Box style={{ margin: "0.5em 2em", gap: 8 }} display="flex" height="75vh">
         <Box flex={3}>
           <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gap: 8 }} mb={2}>
             <TextField
@@ -161,44 +205,7 @@ export default function AddModal({
           </Box>
           <div style={{ height: "90%" }}>
             <DataGrid
-              columns={[
-                {
-                  field: "name",
-                  renderCell: (p) => (
-                    <Tooltip title={String(p.value)}>
-                      <span
-                        style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 80 }}
-                      >
-                        {String(p.value)}
-                      </span>
-                    </Tooltip>
-                  ),
-                },
-                { field: "no" },
-                {
-                  field: "description",
-                  flex: 1,
-                  renderCell: (p) => (
-                    <Box display="flex" alignItems="center" flex={1}>
-                      <Tooltip title={String(p.value)} style={{ flexGrow: 1 }}>
-                        <span
-                          style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 200 }}
-                        >
-                          {String(p.value)}
-                        </span>
-                      </Tooltip>
-                      <Button
-                        disabled={creating}
-                        variant="contained"
-                        style={{ marginLeft: "auto" }}
-                        onClick={() => handleAddItem(p.row as IItem)}
-                      >
-                        Add
-                      </Button>
-                    </Box>
-                  ),
-                },
-              ]}
+              columns={cols}
               rows={items.data || []}
               pagination
               paginationMode="server"
@@ -212,7 +219,7 @@ export default function AddModal({
             <Typography variant="h6" style={{ padding: 8, paddingTop: 16 }}>
               Selected Items
             </Typography>
-            <List style={{ height: "85%", overflow: "auto" }}>
+            <List style={{ height: "80%", overflow: "auto" }}>
               {selectedItems.map((i) => (
                 <ListItem key={i.item.id}>
                   <ListItemText primary={i.item.no} secondary={i.item.name} />

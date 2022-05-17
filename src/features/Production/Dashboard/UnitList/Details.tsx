@@ -70,6 +70,7 @@ function Details({ unit }: { unit: IUnit }) {
   const [confirm, setConfirm] = useState(false);
   const [addOption, setAddOption] = useState(false);
   const [img, setImg] = useState<any>();
+  const [lock, setLock] = useState(true);
   // const { data: photo } = useSWR(`/unit/${unit.id}`);
 
   const handleFileChange = async (e: any) => {
@@ -270,24 +271,7 @@ function Details({ unit }: { unit: IUnit }) {
           </Box>
         )}
         {gridActiveTab === 1 && <DocumentTab itemId={unit.id} model="unit" />}
-        {gridActiveTab === 2 && (
-          <JobRecordsTable unit={unit} />
-          // <BaseDataGrid
-          //   getRowClassName={({ row }) => {
-          //     if (row?.parent && row?.parent?.no !== unit?.ItemId?.no) {
-          //       return "nested";
-          //     }
-          //     return "";
-          //   }}
-          //   cols={jobRecordsCols}
-          //   rows={sortedJobRecords ? sortedJobRecords.map((j, i) => ({ ...j, id: i })) : []}
-          //   onRowSelected={(r) => {
-          //     phone
-          //       ? history.push(`/panel/inventory/${unit?.ItemId?.id}`)
-          //       : openRequestedSinglePopup({ url: `/panel/inventory/${unit?.ItemId?.id}` });
-          //   }}
-          // />
-        )}
+        {gridActiveTab === 2 && <JobRecordsTable unit={unit} lock={lock} setLock={setLock} />}
         {gridActiveTab === 3 && (
           <>
             <div

@@ -116,14 +116,22 @@ function ExpandButton({
   return <></>;
 }
 
-export default function JobRecordsTable({ unit }: { unit: IUnit }) {
+export default function JobRecordsTable({
+  unit,
+  lock,
+  setLock,
+}: {
+  unit: IUnit;
+  lock: boolean;
+  setLock: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
+  // const [lock, setLock] = useState(true);
   const phone = useMediaQuery("(max-width:400px)");
   const history = useHistory();
   const classes = useStyle();
   const { data: jobrecords, mutate: mutateJobRecords } = useSWR(`/unit/${unit.id}/jobrecords`);
   const [expandedComponents, setExpandedComponents] = useState<string[]>([]);
   const [addModal, setAddModal] = useState(false);
-  const [lock, setLock] = useState(true);
   const [parent, setParent] = useState<{ _id: string; Component: string }>();
 
   const jobRecordsSorted = useMemo(
@@ -227,8 +235,8 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
                 style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "green", cursor: lock ? "auto" : "pointer" }}
               />
             </div>
-            <div onClick={() => !lock && handleRowSelect(data)}>
-              <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: lock ? "auto" : "pointer" }} />
+            <div onClick={() => handleRowSelect(data)}>
+              <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
             </div>
             <ExpandButton data={data} expandedComponents={expandedComponents} toggleComponent={toggleComponent} />
             <Tooltip title={value}>
