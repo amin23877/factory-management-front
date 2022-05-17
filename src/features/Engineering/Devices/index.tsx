@@ -12,8 +12,9 @@ import {
 import useSWR from "swr";
 
 import Confirm from "../../Modals/Confirm";
-import FieldNFilter from "../../ClusterAndLevel/Modal";
 import { AddItemModal } from "../../Items/ItemModals";
+
+import LevelModal from "common/Level/Modal";
 
 import DetailTab from "./Details";
 import AddTaskModal, { EditTaskModal } from "./TaskModal";
@@ -46,7 +47,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
   const [editFlagModal, setEditFlagModal] = useState(false);
 
   const [flagModalOpen, setFlagModalOpen] = useState(false);
-  const [FieldNFilterModal, setFieldNFilterModal] = useState(false);
+  const [levelModal, setLevelModal] = useState(false);
 
   const gridColumns = useMemo(() => {
     let res = [
@@ -119,8 +120,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
         initialValues={{ device: true } as IItem}
       />
       <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
-
-      <FieldNFilter open={FieldNFilterModal} onClose={() => setFieldNFilterModal(false)} />
+      <LevelModal open={levelModal} onClose={() => setLevelModal(false)} />
 
       <Box display="flex" justifyContent="flex-end" alignItems="center" my={1}>
         <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
@@ -152,7 +152,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                   </IconButton>
                 </ListItem>
                 <ListItem>
-                  <IconButton title="Cluster and level" onClick={() => setFieldNFilterModal(true)}>
+                  <IconButton title="Levels" onClick={() => setLevelModal(true)}>
                     <PostAddRounded />
                   </IconButton>
                 </ListItem>

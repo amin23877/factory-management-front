@@ -15,7 +15,7 @@ import List from "app/SideUtilityList";
 import { BasePaper } from "app/Paper";
 import Button from "app/Button";
 
-import LevelsModal from "../Level/Modal";
+import LevelsModal from "common/Level/Modal";
 
 import ItemTable from "./Table";
 
