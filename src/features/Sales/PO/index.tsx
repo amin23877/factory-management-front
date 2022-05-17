@@ -5,7 +5,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import AddRoundedIcon from "@material-ui/icons/AddRounded";
 
-import { deletePO, IPO } from "api/po";
+import { deleteCustomerPo, customerPoType } from "api/customerPo";
 
 import Confirm from "../../Modals/Confirm";
 import Button from "app/Button";
@@ -19,7 +19,7 @@ import DataGrid from "app/NewDataGrid";
 
 export default function POPanel() {
   const [activeTab, setActiveTab] = useState(0);
-  const [selectedPO, setSelectedPO] = useState<IPO>({ id: "" } as IPO);
+  const [selectedPO, setSelectedPO] = useState<customerPoType>();
   const [addPo, setAddPo] = useState(false);
   const [confirm, setConfirm] = useState(false);
 
@@ -50,7 +50,7 @@ export default function POPanel() {
   const handleDelete = async () => {
     try {
       if (selectedPO && selectedPO.id) {
-        const resp = await deletePO(selectedPO.id as any);
+        const resp = await deleteCustomerPo(selectedPO.id);
         if (resp) {
           setActiveTab(0);
         }
@@ -69,7 +69,8 @@ export default function POPanel() {
         open={confirm}
         onClose={() => setConfirm(false)}
         onConfirm={handleDelete}
-        text={`Are you sure, You are going to delete PO with number ${selectedPO?.number}`}
+        // text={`Are you sure, You are going to delete PO with number ${selectedPO?.number}`}
+        text={`Are you sure, You are going to delete this Customer PO`}
       />
 
       <Box mb={1} display="flex" alignItems="center">
@@ -111,7 +112,7 @@ export default function POPanel() {
         </Tabs>
         {activeTab === 0 && (
           <DataGrid
-            url="/po"
+            url="/customerPo"
             columns={poCols}
             onRowSelected={(d) => {
               setSelectedPO(d);

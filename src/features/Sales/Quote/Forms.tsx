@@ -10,11 +10,11 @@ import {
   useMediaQuery,
   LinearProgress,
 } from "@material-ui/core";
-import DateTimePicker from "app/DateTimePicker";
 
+import DateTimePicker from "app/DateTimePicker";
 import TextField from "app/TextField";
 import Button from "app/Button";
-import { FieldSelect, ArraySelect, CacheFieldSelect } from "app/Inputs";
+import { FieldSelect, ArraySelect } from "app/Inputs";
 import LinkSelect from "app/Inputs/LinkFields";
 
 import { getItems } from "api/items";
@@ -25,6 +25,8 @@ import { getSO } from "api/so";
 
 import QuotePDF from "PDFTemplates/Quote";
 import AsyncCombo from "common/AsyncCombo";
+
+import AddPoModal from "../PO/AddPoModal";
 
 export const DocumentForm = ({
   data,
@@ -188,10 +190,18 @@ export const GeneralForm = ({
   handleBlur: (a: any) => void;
   setFieldValue: any;
 }) => {
+  const [addPo, setAddPo] = useState(false);
   const phone = useMediaQuery("(max-width:900px)");
 
   return (
     <>
+      <AddPoModal
+        open={addPo}
+        onClose={() => setAddPo(false)}
+        onDone={() => {}}
+        initialValues={{ QuoteId: values.id }}
+      />
+
       <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"} gridColumnGap={5} gridRowGap={10}>
         {edit && <TextField label="Quote ID" value={values.number} disabled />}
         {/* {edit && <TextField label="SO ID" value={values.number} style={{ width: "100%" }} disabled />} */}
@@ -255,6 +265,9 @@ export const GeneralForm = ({
           value={values.salesPerson}
         />
         <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} />
+        <Button kind="edit" onClick={() => setAddPo(true)}>
+          Create Customer PO
+        </Button>
         <TextField
           value={values.note}
           style={phone ? { gridColumnEnd: "span 2" } : { gridColumnEnd: "span 3" }}

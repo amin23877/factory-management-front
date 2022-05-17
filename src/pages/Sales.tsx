@@ -17,7 +17,7 @@ const Clients = React.lazy(() => import("features/Sales/Customer"));
 const Reps = React.lazy(() => import("features/Sales/Rep"));
 
 export default function Sales() {
-  const [activeTab, setActiveTab] = useState(5);
+  const [activeTab, setActiveTab] = useState(3);
   const [tabText, setTabText] = useState("Sales Orders");
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 

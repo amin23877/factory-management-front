@@ -1,44 +1,51 @@
 import React, { useState } from "react";
-import { Typography } from "@material-ui/core";
+import { LinearProgress, Typography } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
-import Dialog from "../../../app/Dialog";
-import TextField from "../../../app/TextField";
-import Button from "../../../app/Button";
-import { FieldSelect } from "../../../app/Inputs";
+import Dialog from "app/Dialog";
+import TextField from "app/TextField";
+import Button from "app/Button";
+import FileUploader from "app/UploadButton";
 
-import { createPO, IPO } from "../../../api/po";
-import { getContacts } from "../../../api/contact";
-import { getClients } from "../../../api/client";
-import { getAllEmployees } from "../../../api/employee";
-import { getProjects } from "../../../api/project";
-import FileUploader from "../../../app/UploadButton";
+import AsyncCombo from "common/AsyncCombo";
+
+import { createCustomerPo, customerPoType } from "api/customerPo";
+import { createAModelDocument } from "api/document";
 
 const schema = Yup.object().shape({
   // name: Yup.string().required(),
 });
+
 export default function AddPOModal({
   open,
+  initialValues,
   onClose,
   onDone,
 }: {
   open: boolean;
+  initialValues?: Partial<customerPoType>;
   onClose: () => void;
   onDone: () => void;
 }) {
+  const [status, setStatus] = useState<"" | "Creating Customer PO" | "Uploading File">("");
   const [fileName, setFileName] = useState("");
 
   const handleSubmit = async (data: any, { setSubmitting }: any) => {
     try {
-      const resp = await createPO(data);
-      if (resp) {
+      setStatus("Creating Customer PO");
+      const resp = await createCustomerPo(data);
+      if (resp && resp.id && data.file) {
+        setStatus("Uploading File");
+        await createAModelDocument({ model: "salesPo", id: resp.id, file: data.file, description: resp.number });
+
         onClose();
       }
     } catch (error) {
       console.log(error);
     } finally {
+      setStatus("");
       onDone();
       setSubmitting(false);
     }
@@ -47,7 +54,11 @@ export default function AddPOModal({
   return (
     <Dialog open={open} onClose={onClose} title={"Add new Purchase Order"}>
       <Box m={1}>
-        <Formik validationSchema={schema} initialValues={{} as any} onSubmit={handleSubmit}>
+        <Formik
+          validationSchema={schema}
+          initialValues={initialValues || ({} as customerPoType)}
+          onSubmit={handleSubmit}
+        >
           {({ values, handleChange, handleBlur, errors, touched, setFieldValue }) => (
             <Form>
               <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
@@ -62,73 +73,74 @@ export default function AddPOModal({
                 />
                 {fileName && <Typography variant="caption">{fileName}</Typography>}
                 <TextField
-                  name="senderNumber"
-                  label="Sender Number"
-                  value={values.senderNumber}
+                  name="number"
+                  label="Customer PO Number"
+                  value={values?.number}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={Boolean(errors.senderNumber && touched.senderNumber)}
-                  helperText={errors.senderNumber}
+                  error={Boolean(errors?.number && touched?.number)}
+                  helperText={errors?.number}
                 />
-                <FieldSelect
-                  label="Contact"
-                  name="ContactId"
-                  request={getContacts}
-                  itemTitleField="lastName"
-                  itemValueField="id"
-                  value={values.ContactId}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={Boolean(errors.ContactId && touched.ContactId)}
+                <AsyncCombo
+                  label="SO Number"
+                  url="/so"
+                  filterBy="number"
+                  getOptionLabel={(o) => o?.number || "No-Number"}
+                  getOptionSelected={(o, v) => o?.id === v?.id}
+                  onChange={(e, nv) => setFieldValue("SOId", nv.id)}
+                  value={values?.SOId}
                 />
-                <FieldSelect
+                <AsyncCombo
+                  label="Quote Number"
+                  url="/quote"
+                  filterBy="number"
+                  getOptionLabel={(o) => o?.number || "No-Number"}
+                  getOptionSelected={(o, v) => o?.id === v?.id}
+                  onChange={(e, nv) => setFieldValue("QuoteId", nv.id)}
+                  value={values?.QuoteId}
+                />
+                <AsyncCombo
+                  label="Rep"
+                  url="/rep"
+                  filterBy="name"
+                  getOptionLabel={(o) => o?.name || "No-Name"}
+                  getOptionSelected={(o, v) => o?.id === v?.id}
+                  onChange={(e, nv) => setFieldValue("RepId", nv.id)}
+                  value={values?.RepId}
+                />
+                <AsyncCombo
+                  label="Requester"
+                  url={values?.RepId ? `/contact/rep/${(values?.RepId as any)?.id || values?.RepId}` : "/contact"}
+                  filterBy="lastName"
+                  getOptionLabel={(o) => `${o?.firstName} ${o?.lastName}`}
+                  getOptionSelected={(o, v) => o?.id === v?.id}
+                  onChange={(e, nv) => setFieldValue("requester", nv.id)}
+                  value={values?.requester}
+                />
+                <AsyncCombo
                   label="Client"
-                  name="ClientId"
-                  request={getClients}
-                  itemTitleField="name"
-                  itemValueField="id"
-                  value={values.ClientId}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={Boolean(errors.ClientId && touched.ClientId)}
+                  url={"/client"}
+                  filterBy="name"
+                  getOptionLabel={(o) => o?.name || "No-Name"}
+                  getOptionSelected={(o, v) => o?.id === v?.id}
+                  onChange={(e, nv) => setFieldValue("ClientId", nv.id)}
+                  value={values?.ClientId}
                 />
-                <FieldSelect
-                  label="Employee"
-                  name="EmployeeId"
-                  request={getAllEmployees}
-                  itemTitleField="username"
-                  itemValueField="id"
-                  value={values.EmployeeId}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={Boolean(errors.EmployeeId && touched.EmployeeId)}
-                />
-                <FieldSelect
-                  label="Project"
-                  name="ProjectId"
-                  request={getProjects}
-                  itemTitleField="name"
-                  itemValueField="id"
-                  value={values.ProjectId}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={Boolean(errors.ProjectId && touched.ProjectId)}
-                />
-                <FieldSelect
-                  request={getAllEmployees}
-                  itemTitleField="username"
-                  itemValueField="id"
-                  label="Reciever"
-                  name="reciever"
-                  value={values.reciever}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  error={Boolean(errors.reciever && touched.reciever)}
+                <AsyncCombo
+                  label="Contact"
+                  url={"/contact"}
+                  filterBy="lastName"
+                  getOptionLabel={(o) => `${o?.firstName} ${o?.lastName}`}
+                  getOptionSelected={(o, v) => o?.id === v?.id}
+                  onChange={(e, nv) => setFieldValue("contact", nv.id)}
+                  value={values?.contact}
                 />
 
                 <Button type="submit" fullWidth kind="add">
                   Add
                 </Button>
+                {status !== "" && <LinearProgress />}
+                {status !== "" && <Typography>{status}</Typography>}
               </Box>
             </Form>
           )}

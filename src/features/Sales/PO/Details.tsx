@@ -10,10 +10,10 @@ import DocumentTab from "common/Document/Tab";
 
 import BaseDataGrid from "app/BaseDataGrid";
 
-import { IPO } from "api/po";
+import { customerPoType } from "api/customerPo";
 import { BasePaper } from "app/Paper";
 
-export default function Details({ poData, onDone }: { poData: IPO; onDone: () => void }) {
+export default function Details({ poData, onDone }: { poData: customerPoType; onDone: () => void }) {
   const [activeTab, setActiveTab] = useState(0);
   const phone = useMediaQuery("(max-width:900px)");
 
