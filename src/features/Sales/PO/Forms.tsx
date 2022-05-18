@@ -6,7 +6,6 @@ import TextField from "app/TextField";
 import { FieldSelect } from "app/Inputs";
 import AsyncCombo from "common/AsyncCombo";
 
-import { getClients } from "api/client";
 import { getAllModelContact } from "api/contact";
 
 export const GeneralForm = ({

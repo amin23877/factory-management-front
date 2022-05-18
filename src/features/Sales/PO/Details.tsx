@@ -1,34 +1,31 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import { Box, useMediaQuery } from "@material-ui/core";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import { GridColumns } from "@material-ui/data-grid";
 
 import EditForm from "./EditForm";
 import NoteTab from "common/Note/Tab";
 import DocumentTab from "common/Document/Tab";
-
-import BaseDataGrid from "app/BaseDataGrid";
+import { BasePaper } from "app/Paper";
 
 import { customerPoType } from "api/customerPo";
-import { BasePaper } from "app/Paper";
 
 export default function Details({ poData, onDone }: { poData: customerPoType; onDone: () => void }) {
   const [activeTab, setActiveTab] = useState(0);
   const phone = useMediaQuery("(max-width:900px)");
 
-  const LICols = useMemo<GridColumns>(
-    () => [
-      { field: "index", headerName: "Sort" },
-      { field: "ItemId", headerName: "Part Number", valueFormatter: (r) => r.row.ItemId?.name, width: 200 },
-      { field: "description", headerName: "Description", flex: 1 },
-      { field: "quantity", headerName: "QTY", width: 90 },
-      { field: "price", headerName: "Price", width: 100 },
-      { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
-      { field: "total", headerName: "Total", valueFormatter: (r) => r.row?.price * r.row.quantity, width: 200 },
-    ],
-    []
-  );
+  // const LICols = useMemo<GridColumns>(
+  //   () => [
+  //     { field: "index", headerName: "Sort" },
+  //     { field: "ItemId", headerName: "Part Number", valueFormatter: (r) => r.row.ItemId?.name, width: 200 },
+  //     { field: "description", headerName: "Description", flex: 1 },
+  //     { field: "quantity", headerName: "QTY", width: 90 },
+  //     { field: "price", headerName: "Price", width: 100 },
+  //     { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
+  //     { field: "total", headerName: "Total", valueFormatter: (r) => r.row?.price * r.row.quantity, width: 200 },
+  //   ],
+  //   []
+  // );
 
   return (
     <Box
