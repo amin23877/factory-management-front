@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
+import useSWR from "swr";
 
-import TextField from "../../../app/TextField";
-import { FieldSelect } from "../../../app/Inputs";
-import LinkSelect from "../../../app/Inputs/LinkFields";
+import TextField from "app/TextField";
+import { FieldSelect } from "app/Inputs";
+import AsyncCombo from "common/AsyncCombo";
 
-import { getSO } from "../../../api/so";
-import { getClients } from "../../../api/client";
-import { getAllModelContact } from "../../../api/contact";
+import { getClients } from "api/client";
+import { getAllModelContact } from "api/contact";
 
 export const GeneralForm = ({
   handleChange,
@@ -22,8 +22,6 @@ export const GeneralForm = ({
   onChangeInit: (data: any) => void;
   setFieldValue: any;
 }) => {
-  const [selectedSO, setSelectedSO] = useState<string>();
-
   return (
     <>
       <Box display="grid" gridTemplateColumns="1fr  1fr" gridColumnGap={10} gridRowGap={10}>
@@ -35,22 +33,25 @@ export const GeneralForm = ({
           onBlur={handleBlur}
         />
         <TextField value={values.SOId?.issuedBy?.username} label="SO Issued By" disabled />
-        <LinkSelect
-          path="/so"
-          filterLabel="number"
-          value={typeof values.SOId === "string" ? values.SOId : values.SOId}
-          label="SO ID"
-          request={getSO}
-          getOptionList={(resp) => resp?.result}
-          getOptionLabel={(so) => so?.number}
-          getOptionValue={(so) => so?.id}
-          onChange={(e, nv) => {
-            setFieldValue("SOId", nv?.id);
-            setSelectedSO(nv?.id);
-          }}
-          onBlur={handleBlur}
-          url="/panel/so"
-          style={{ gridColumnEnd: "span 2" }}
+        <AsyncCombo
+          label="SO Id"
+          filterBy="number"
+          getOptionLabel={(o) => o?.number || "No-Number"}
+          getOptionSelected={(o, v) => o.id === v.id}
+          url="/so"
+          onChange={(e, nv) => setFieldValue("SOId", nv?.id)}
+          value={values.SOId}
+          style={{ flex: 1, gridColumn: "span 2" }}
+        />
+        <AsyncCombo
+          label="Quote Id"
+          filterBy="number"
+          getOptionLabel={(o) => o?.number || "No-Number"}
+          getOptionSelected={(o, v) => o.id === v.id}
+          url="/quote"
+          onChange={(e, nv) => setFieldValue("QuoteId", nv?.id)}
+          value={values.QuoteId}
+          style={{ flex: 1, gridColumn: "span 2" }}
         />
       </Box>
     </>
@@ -68,23 +69,35 @@ export const EntitiesForm = ({
   handleBlur: (a: any) => void;
   setFieldValue: any;
 }) => {
+  const [selectedRep, setSelectedRep] = useState<any>(values.RepId);
+
+  const clientId = values?.ClientId?.id || values?.ClientId || null;
+  const { data: contacts } = useSWR(clientId ? `/contact/client/${clientId}` : null);
+  const contact = contacts?.filter((c: any) => c.main).length > 0 ? contacts?.filter((c: any) => c.main)[0] : undefined;
+  const firstName = contact?.firstName;
+  const lastName = contact?.lastName;
+  const email = contact?.emails?.length > 0 ? contact?.emails[0].email : "";
+  const phone = contact?.phones?.length > 0 ? contact?.phones[0].phone : "";
+
   return (
     <>
       <Box my={1} display="grid" gridTemplateColumns="1fr 1fr 1fr 1fr" gridColumnGap={10}>
         <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
-          <FieldSelect
-            value={typeof values.repOrAgency === "string" ? values.repOrAgency : values.repOrAgency?.id}
-            request={getClients}
-            itemTitleField="name"
-            itemValueField="id"
-            name="repOrAgency"
-            label="rep/ Agency"
-            onChange={handleChange}
-            onBlur={handleBlur}
+          <AsyncCombo
+            label="Rep/Agency"
+            filterBy="name"
+            getOptionLabel={(o) => o?.name}
+            getOptionSelected={(o, v) => o?.id === v?.id}
+            url="/rep"
+            value={values.RepId}
+            onChange={(e, nv) => {
+              setFieldValue("RepId", nv?.id);
+              setSelectedRep(nv);
+            }}
           />
-          <TextField value={values.repOrAgency?.address} label="Address" disabled />
+          <TextField value={selectedRep?.address} label="Address" disabled />
           <TextField
-            value={values.repOrAgency?.city}
+            value={selectedRep?.city}
             name="city"
             label="City"
             onChange={handleChange}
@@ -92,7 +105,7 @@ export const EntitiesForm = ({
             disabled
           />
           <TextField
-            value={values.repOrAgency?.state}
+            value={selectedRep?.state}
             name="state"
             label="State"
             onChange={handleChange}
@@ -100,7 +113,7 @@ export const EntitiesForm = ({
             disabled
           />
           <TextField
-            value={values.repOrAgency?.zipcode}
+            value={selectedRep?.zip}
             name="zipCode"
             label="Zip Code"
             onChange={handleChange}
@@ -110,70 +123,51 @@ export const EntitiesForm = ({
         </Box>
         <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
           <TextField
-            value={values.requesterName}
+            value={(values.requester?.firstName || "") + " " + (values.requester?.lastName || "")}
             name="requesterName"
-            label="requesterName"
+            label="Requester Name"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled
           />
           <TextField
-            value={values.requesterMail}
+            value={values.requester?.emails?.length > 0 ? values.requester?.emails[0]?.email : ""}
             name="requesterMail"
-            label="requesterMail"
+            label="Requester Mail"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled
           />
           <TextField
-            value={values.requesterPhone}
+            value={values.requester?.phones?.length > 0 ? values.requester?.phones[0]?.phone : ""}
             name="requesterPhone"
-            label="requesterPhone"
+            label="Requester Phone"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled
           />
           <TextField style={{ opacity: 0 }} />
           <TextField style={{ opacity: 0 }} />
         </Box>
         <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
-          {/* <TextField
-                    value={values.client}
-                    name="client"
-                    label="Client"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                /> */}
-          <FieldSelect
-            value={typeof values.client === "string" ? values.client : values.client?.id}
-            request={getClients}
-            itemTitleField="name"
-            itemValueField="id"
-            name="client"
-            label="Client"
-            onChange={handleChange}
+          <AsyncCombo
+            filterBy="name"
+            getOptionLabel={(o) => o?.name}
+            getOptionSelected={(o, v) => o?.id === v?.id}
+            url="/client"
+            value={values?.ClientId}
+            onChange={(e, nv) => setFieldValue("ClientId", nv)}
           />
           <TextField
-            value={values.contact?.lastName}
+            value={(firstName || "") + " " + (lastName || "")}
             name="contactName"
             label="Contact Name"
             onChange={handleChange}
             onBlur={handleBlur}
             disabled
           />
-          <TextField
-            value={values.contact?.email}
-            name="email"
-            label="Email"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            disabled
-          />
-          <TextField
-            value={values.contact?.lastName}
-            name="phone"
-            label="Phone"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            disabled
-          />
+          <TextField value={email} name="email" label="Email" onChange={handleChange} onBlur={handleBlur} disabled />
+          <TextField value={phone} name="phone" label="Phone" onChange={handleChange} onBlur={handleBlur} disabled />
           <TextField
             value={values.unitPricingLevel}
             name="Unit Pricing Level"

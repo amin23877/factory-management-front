@@ -87,7 +87,7 @@ export default function AddPOModal({
                   filterBy="number"
                   getOptionLabel={(o) => o?.number || "No-Number"}
                   getOptionSelected={(o, v) => o?.id === v?.id}
-                  onChange={(e, nv) => setFieldValue("SOId", nv.id)}
+                  onChange={(e, nv) => setFieldValue("SOId", nv?.id)}
                   value={values?.SOId}
                 />
                 <AsyncCombo
@@ -96,7 +96,7 @@ export default function AddPOModal({
                   filterBy="number"
                   getOptionLabel={(o) => o?.number || "No-Number"}
                   getOptionSelected={(o, v) => o?.id === v?.id}
-                  onChange={(e, nv) => setFieldValue("QuoteId", nv.id)}
+                  onChange={(e, nv) => setFieldValue("QuoteId", nv?.id)}
                   value={values?.QuoteId}
                 />
                 <AsyncCombo
@@ -105,7 +105,7 @@ export default function AddPOModal({
                   filterBy="name"
                   getOptionLabel={(o) => o?.name || "No-Name"}
                   getOptionSelected={(o, v) => o?.id === v?.id}
-                  onChange={(e, nv) => setFieldValue("RepId", nv.id)}
+                  onChange={(e, nv) => setFieldValue("RepId", nv?.id)}
                   value={values?.RepId}
                 />
                 <AsyncCombo
@@ -114,7 +114,7 @@ export default function AddPOModal({
                   filterBy="lastName"
                   getOptionLabel={(o) => `${o?.firstName} ${o?.lastName}`}
                   getOptionSelected={(o, v) => o?.id === v?.id}
-                  onChange={(e, nv) => setFieldValue("requester", nv.id)}
+                  onChange={(e, nv) => setFieldValue("requester", nv?.id)}
                   value={values?.requester}
                 />
                 <AsyncCombo
@@ -123,16 +123,18 @@ export default function AddPOModal({
                   filterBy="name"
                   getOptionLabel={(o) => o?.name || "No-Name"}
                   getOptionSelected={(o, v) => o?.id === v?.id}
-                  onChange={(e, nv) => setFieldValue("ClientId", nv.id)}
+                  onChange={(e, nv) => setFieldValue("ClientId", nv?.id)}
                   value={values?.ClientId}
                 />
                 <AsyncCombo
                   label="Contact"
-                  url={"/contact"}
+                  url={
+                    values?.ClientId ? `/contact/rep/${(values?.ClientId as any)?.id || values?.ClientId}` : "/contact"
+                  }
                   filterBy="lastName"
                   getOptionLabel={(o) => `${o?.firstName} ${o?.lastName}`}
                   getOptionSelected={(o, v) => o?.id === v?.id}
-                  onChange={(e, nv) => setFieldValue("contact", nv.id)}
+                  onChange={(e, nv) => setFieldValue("contact", nv?.id)}
                   value={values?.contact}
                 />
 

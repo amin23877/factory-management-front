@@ -3,8 +3,7 @@ import { Box, Tabs, Tab, useMediaQuery } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
-import { AddressesForm, GeneralForm } from "./Forms";
-import EntitiesForm from "../SO/Forms/Entities";
+import { AddressesForm, GeneralForm, EntitiesForm } from "./Forms";
 import Button from "app/Button";
 import { BasePaper } from "app/Paper";
 import Toast from "app/Toast";
@@ -65,7 +64,7 @@ export default function EditForm({ poData, onDone }: { poData: customerPoType; o
                   style={{ maxWidth: 700 }}
                 >
                   <Tab label="Entities" />
-                  <Tab label="Addresses" />
+                  {/* <Tab label="Addresses" /> */}
                 </Tabs>
                 <Box>
                   {activeTab === 0 && (

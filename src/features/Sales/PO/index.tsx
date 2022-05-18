@@ -22,6 +22,7 @@ export default function POPanel() {
   const [selectedPO, setSelectedPO] = useState<customerPoType>();
   const [addPo, setAddPo] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const [refresh, setRefresh] = useState(0);
 
   const poCols = [
     {
@@ -64,7 +65,7 @@ export default function POPanel() {
 
   return (
     <Box>
-      <AddPOModal open={addPo} onClose={() => setAddPo(false)} onDone={() => {}} />
+      <AddPOModal open={addPo} onClose={() => setAddPo(false)} onDone={() => setRefresh((p) => p + 1)} />
       <Confirm
         open={confirm}
         onClose={() => setConfirm(false)}
@@ -112,12 +113,12 @@ export default function POPanel() {
         </Tabs>
         {activeTab === 0 && (
           <DataGrid
+            refresh={refresh}
             url="/customerPo"
             columns={poCols}
             onRowSelected={(d) => {
               setSelectedPO(d);
               setActiveTab(1);
-              console.log(d);
             }}
           />
         )}

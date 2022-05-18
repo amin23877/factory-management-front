@@ -46,14 +46,14 @@ export default function Details({ poData, onDone }: { poData: customerPoType; on
           onChange={(e, nv) => setActiveTab(nv)}
           variant="scrollable"
         >
-          <Tab label="Line Items" />
+          {/* <Tab label="Line Items" /> */}
           <Tab label="Documents" />
           <Tab label="Notes" />
           <Tab label="Auditing" />
         </Tabs>
-        {activeTab === 0 && <BaseDataGrid cols={LICols} rows={[]} height="calc(100% - 60px)" />}
-        {activeTab === 1 && <DocumentTab itemId={poData.id} model="salesPo" />}
-        {activeTab === 2 && <NoteTab itemId={poData.id} model="salesPo" />}
+        {/* {activeTab === 0 && <BaseDataGrid cols={LICols} rows={[]} height="calc(100% - 60px)" />} */}
+        {activeTab === 0 && <DocumentTab itemId={poData.id} model="salesPo" />}
+        {activeTab === 1 && <NoteTab itemId={poData.id} model="salesPo" />}
       </BasePaper>
     </Box>
   );

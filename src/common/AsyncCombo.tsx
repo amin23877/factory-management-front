@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, CSSProperties } from "react";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Box, IconButton } from "@material-ui/core";
@@ -28,6 +28,7 @@ export default function AsyncCombo({
   value,
   path,
   error,
+  style,
   filterBy,
   valueUrl,
   disabled,
@@ -40,6 +41,7 @@ export default function AsyncCombo({
   path?: string;
   error?: boolean;
   value?: any | string;
+  style?: CSSProperties;
   filterBy: string;
   valueUrl?: string;
   disabled?: boolean;
@@ -86,7 +88,7 @@ export default function AsyncCombo({
   }, [filterBy, inputValue, open, url]);
 
   return (
-    <Box>
+    <Box style={style}>
       {path && (
         <IconButton
           onClick={() => history.push(`/panel${path}/${selectedValue?.id}`)}
