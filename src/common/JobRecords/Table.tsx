@@ -221,6 +221,7 @@ export default function JobRecordsTable({
       },
       {
         name: "Component Name",
+        header: "Item Name",
         render: ({ value, data }: any) => (
           <Box display="flex" alignItems="center" style={{ gap: 4 }}>
             <div
@@ -244,15 +245,16 @@ export default function JobRecordsTable({
             </Tooltip>
           </Box>
         ),
-        defaultWidth: 180,
+        defaultWidth: 240,
         editable: false,
       },
       {
         name: "Component",
+        header: "Item NO.",
         defaultWidth: 120,
         editable: false,
       },
-      { name: "Component Location", defaultWidth: 180, editable: false },
+      { name: "Item Location", defaultWidth: 180, editable: false },
       { name: "UM", defaultWidth: 80, editable: false },
       { name: "QTY", defaultWidth: 80 },
       {

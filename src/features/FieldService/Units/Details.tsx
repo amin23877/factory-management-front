@@ -41,7 +41,7 @@ function Details({ unit }: { unit: IUnit }) {
   };
 
   const [infoActiveTab, setInfoActiveTab] = useState(0);
-  const [gridActiveTab, setGridActiveTab] = useState(0);
+  const [gridActiveTab, setGridActiveTab] = useState(2);
   const [addShipModal, setAddShipModal] = useState(false);
   const [editShip, setEditShip] = useState(false);
   const [lock, setLock] = useState(true);
