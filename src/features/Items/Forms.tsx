@@ -21,6 +21,8 @@ import { ILevel } from "api/level";
 import { IItem } from "api/items";
 import LinkField from "app/Inputs/LinkFields";
 
+import ItemTypeCombo from "common/ItemTypeCombo";
+
 const useStyles = makeStyles({
   label: {
     fontSize: "0.8rem",
@@ -44,6 +46,8 @@ interface IQForm extends IForm {
   handleUpdateQuantity?: () => void;
 }
 
+const types = ["option", "device", "assembly", "part", "fru"];
+
 export const General = ({
   isSubmitting,
   values,
@@ -56,6 +60,21 @@ export const General = ({
 }: IForm) => {
   const classes = useStyles();
   const phone = useMediaQuery("(max-width:900px)");
+  const itemTypes = types.map((t) => (values as any)[t] && { value: t }).filter((t) => t);
+
+  const handleItemTypeChange: ((e: any, nv: { value: string }[]) => void) | undefined = (e, nv) => {
+    const typeMap = types.map((t) => {
+      if (nv.find((vt) => vt.value === t)) {
+        return { key: t, value: true };
+      }
+
+      return { key: t, value: false };
+    });
+
+    typeMap.forEach((t) => {
+      setFieldValue(t.key, t.value);
+    });
+  };
 
   return (
     <>
@@ -141,7 +160,7 @@ export const General = ({
               onChange={handleChange}
               control={<Checkbox size="small" />}
             /> */}
-            <FormControlLabel
+            {/* <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
               checked={values.option}
@@ -149,7 +168,7 @@ export const General = ({
               name="option"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-            />
+            /> */}
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
@@ -201,7 +220,7 @@ export const General = ({
                 />
               )}
             </div>
-            <FormControlLabel
+            {/* <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
               checked={values.device}
@@ -218,9 +237,10 @@ export const General = ({
               name="assembly"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-            />
+            /> */}
           </Box>
         </Paper>
+        <ItemTypeCombo value={itemTypes} onChange={handleItemTypeChange} style={{ gridColumnEnd: "span 4" }} />
         <TextField
           style={{ gridColumnEnd: "span 2" }}
           label="no"
