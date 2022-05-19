@@ -62,16 +62,18 @@ export default function AddPOModal({
           {({ values, handleChange, handleBlur, errors, touched, setFieldValue }) => (
             <Form>
               <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-                <FileUploader
-                  onChange={(e: any) => {
-                    if (e.target.files) {
-                      setFieldValue("file", e.target.files[0]);
+                <Box textAlign="center">
+                  <FileUploader
+                    onChange={(e: any) => {
+                      if (e.target.files) {
+                        setFieldValue("file", e.target.files[0]);
 
-                      setFileName(e.target.files[0].name);
-                    }
-                  }}
-                />
-                {fileName && <Typography variant="caption">{fileName}</Typography>}
+                        setFileName(e.target.files[0].name);
+                      }
+                    }}
+                  />
+                  {fileName && <Typography variant="caption">{fileName}</Typography>}
+                </Box>
                 <TextField
                   name="number"
                   label="Customer PO Number"
@@ -81,7 +83,7 @@ export default function AddPOModal({
                   error={Boolean(errors?.number && touched?.number)}
                   helperText={errors?.number}
                 />
-                <AsyncCombo
+                {/* <AsyncCombo
                   label="SO Number"
                   url="/so"
                   filterBy="number"
@@ -89,7 +91,7 @@ export default function AddPOModal({
                   getOptionSelected={(o, v) => o?.id === v?.id}
                   onChange={(e, nv) => setFieldValue("SOId", nv?.id)}
                   value={values?.SOId}
-                />
+                /> */}
                 <AsyncCombo
                   label="Quote Number"
                   url="/quote"
@@ -99,7 +101,7 @@ export default function AddPOModal({
                   onChange={(e, nv) => setFieldValue("QuoteId", nv?.id)}
                   value={values?.QuoteId}
                 />
-                <AsyncCombo
+                {/* <AsyncCombo
                   label="Rep"
                   url="/rep"
                   filterBy="name"
@@ -136,8 +138,7 @@ export default function AddPOModal({
                   getOptionSelected={(o, v) => o?.id === v?.id}
                   onChange={(e, nv) => setFieldValue("contact", nv?.id)}
                   value={values?.contact}
-                />
-
+                /> */}
                 <Button type="submit" fullWidth kind="add">
                   Add
                 </Button>
