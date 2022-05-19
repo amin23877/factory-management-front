@@ -220,6 +220,12 @@ export default function JobRecordsTable({
         editable: false,
       },
       {
+        name: "Component",
+        header: "Item NO.",
+        defaultWidth: 120,
+        editable: false,
+      },
+      {
         name: "Component Name",
         header: "Item Name",
         render: ({ value, data }: any) => (
@@ -241,20 +247,20 @@ export default function JobRecordsTable({
             </div>
             <ExpandButton data={data} expandedComponents={expandedComponents} toggleComponent={toggleComponent} />
             <Tooltip title={value}>
-              <span>{String(value)}</span>
+              <span style={{ fontSize: "0.7rem" }}>{String(value)}</span>
             </Tooltip>
           </Box>
         ),
-        defaultWidth: 240,
+        defaultWidth: 350,
         editable: false,
       },
       {
-        name: "Component",
-        header: "Item NO.",
-        defaultWidth: 120,
+        name: "Item Location",
+        header: () => <span style={{ fontSize: "0.7rem" }}>Item Location</span>,
+        defaultWidth: 110,
         editable: false,
+        showColumnMenuTool: false,
       },
-      { name: "Item Location", defaultWidth: 180, editable: false },
       { name: "UM", defaultWidth: 80, editable: false },
       { name: "QTY", defaultWidth: 80 },
       {

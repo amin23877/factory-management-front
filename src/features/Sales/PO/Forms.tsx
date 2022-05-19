@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
-import useSWR from "swr";
+// import useSWR from "swr";
 
 import TextField from "app/TextField";
-import { FieldSelect } from "app/Inputs";
+// import { FieldSelect } from "app/Inputs";
 import AsyncCombo from "common/AsyncCombo";
 
-import { getAllModelContact } from "api/contact";
+// import { getAllModelContact } from "api/contact";
 
 export const GeneralForm = ({
   handleChange,
@@ -32,7 +32,7 @@ export const GeneralForm = ({
           onBlur={handleBlur}
         />
         <TextField value={values.SOId?.issuedBy?.username} label="SO Issued By" disabled />
-        <AsyncCombo
+        {/* <AsyncCombo
           label="SO Id"
           filterBy="number"
           getOptionLabel={(o) => o?.number || "No-Number"}
@@ -41,7 +41,7 @@ export const GeneralForm = ({
           onChange={(e, nv) => setFieldValue("SOId", nv?.id)}
           value={values.SOId}
           style={{ flex: 1, gridColumn: "span 2" }}
-        />
+        /> */}
         <AsyncCombo
           label="Quote Id"
           filterBy="number"
@@ -70,13 +70,13 @@ export const EntitiesForm = ({
 }) => {
   const [selectedRep, setSelectedRep] = useState<any>(values.RepId);
 
-  const clientId = values?.ClientId?.id || values?.ClientId || null;
-  const { data: contacts } = useSWR(clientId ? `/contact/client/${clientId}` : null);
-  const contact = contacts?.filter((c: any) => c.main).length > 0 ? contacts?.filter((c: any) => c.main)[0] : undefined;
-  const firstName = contact?.firstName;
-  const lastName = contact?.lastName;
-  const email = contact?.emails?.length > 0 ? contact?.emails[0].email : "";
-  const phone = contact?.phones?.length > 0 ? contact?.phones[0].phone : "";
+  // const clientId = values?.ClientId?.id || values?.ClientId || null;
+  // const { data: contacts } = useSWR(clientId ? `/contact/client/${clientId}` : null);
+  // const contact = contacts?.filter((c: any) => c.main).length > 0 ? contacts?.filter((c: any) => c.main)[0] : undefined;
+  // const firstName = contact?.firstName;
+  // const lastName = contact?.lastName;
+  // const email = contact?.emails?.length > 0 ? contact?.emails[0].email : "";
+  // const phone = contact?.phones?.length > 0 ? contact?.phones[0].phone : "";
 
   return (
     <>
@@ -148,7 +148,7 @@ export const EntitiesForm = ({
           <TextField style={{ opacity: 0 }} />
           <TextField style={{ opacity: 0 }} />
         </Box>
-        <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
+        {/* <Box my={1} display="grid" gridTemplateColumns=" 1fr " gridRowGap={10}>
           <AsyncCombo
             filterBy="name"
             getOptionLabel={(o) => o?.name}
@@ -231,7 +231,7 @@ export const EntitiesForm = ({
 
           <TextField style={{ opacity: 0 }} />
           <TextField style={{ opacity: 0 }} />
-        </Box>
+        </Box> */}
       </Box>
     </>
   );

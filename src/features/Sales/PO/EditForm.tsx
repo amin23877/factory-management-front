@@ -55,7 +55,7 @@ export default function EditForm({ poData, onDone }: { poData: customerPoType; o
                   </Button>
                 </Box>
               </BasePaper>
-              <BasePaper style={{ flex: 1 }}>
+              {/* <BasePaper style={{ flex: 1 }}>
                 <Tabs
                   textColor="primary"
                   value={activeTab}
@@ -64,7 +64,7 @@ export default function EditForm({ poData, onDone }: { poData: customerPoType; o
                   style={{ maxWidth: 700 }}
                 >
                   <Tab label="Entities" />
-                  {/* <Tab label="Addresses" /> */}
+                  <Tab label="Addresses" />
                 </Tabs>
                 <Box>
                   {activeTab === 0 && (
@@ -84,7 +84,7 @@ export default function EditForm({ poData, onDone }: { poData: customerPoType; o
                     />
                   )}
                 </Box>
-              </BasePaper>
+              </BasePaper> */}
             </Box>
           </Form>
         )}
