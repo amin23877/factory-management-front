@@ -14,26 +14,24 @@ export default function ItemTypeCombo({
   return (
     <Autocomplete
       style={style}
-      multiple
+      // multiple
       options={itemTypes}
-      getOptionLabel={(option) => option.value}
-      defaultValue={[]}
+      getOptionLabel={(option) => option?.title || "No-Title"}
+      // defaultValue={[]}
       filterSelectedOptions
-      onChange={onChange}
-      value={value || []}
-      renderInput={(params) => (
-        <TextField {...params} variant="outlined" label="Item Types" placeholder="You can select multiple types" />
-      )}
+      onChange={(e, nv) => onChange && onChange(e, nv ? [nv] : [])}
+      value={value ? value[0] : null}
+      renderInput={(params) => <TextField {...params} variant="outlined" label="Item Type" />}
     />
   );
 }
 
-type itemType = { value: string };
+type itemType = { value: string; title?: string };
 
 const itemTypes = [
-  { value: "option" },
-  { value: "device" },
-  { value: "assembly" },
-  { value: "fru" },
-  { value: "part" },
+  { value: "option", title: "Option" },
+  { value: "device", title: "Device" },
+  { value: "assembly", title: "Assembly" },
+  { value: "fru", title: "FRU" },
+  { value: "part", title: "Part" },
 ];

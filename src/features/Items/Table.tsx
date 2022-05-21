@@ -49,8 +49,13 @@ function ItemTable({
       {
         name: "option",
         header: "Option",
-        type: "boolean",
         defaultWidth: 100,
+        render: ({ data }: any) => {
+          const types = ["option", "device", "assembly", "part", "fru"];
+          const itemTypes = types.map((t) => (data as any)[t] && { value: t }).filter((t) => t);
+
+          return itemTypes?.find((t) => t)?.value || "";
+        },
       },
       { name: "qtyOnHand", header: "QOH.", minWidth: 80, type: "number" },
       { name: "qtyRemain", header: " Remain", minWidth: 80, type: "number" },
