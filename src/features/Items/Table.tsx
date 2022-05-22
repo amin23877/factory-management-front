@@ -48,7 +48,7 @@ function ItemTable({
       { name: "location", header: "Location", minWidth: 100 },
       {
         name: "option",
-        header: "Option",
+        header: "Item Type",
         defaultWidth: 100,
         render: ({ data }: any) => {
           const types = ["option", "device", "assembly", "part", "fru"];

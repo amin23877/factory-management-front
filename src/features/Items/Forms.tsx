@@ -46,7 +46,13 @@ interface IQForm extends IForm {
   handleUpdateQuantity?: () => void;
 }
 
-const types = ["option", "device", "assembly", "part", "fru"];
+const types = [
+  { value: "option", title: "Option" },
+  { value: "device", title: "Device" },
+  { value: "assembly", title: "Assembly" },
+  { value: "part", title: "Part" },
+  { value: "fru", title: "FRU" },
+];
 
 export const General = ({
   isSubmitting,
@@ -60,15 +66,15 @@ export const General = ({
 }: IForm) => {
   const classes = useStyles();
   const phone = useMediaQuery("(max-width:900px)");
-  const itemTypes = types.map((t) => (values as any)[t] && { value: t }).filter((t) => t);
+  const itemTypes = types.map((t) => (values as any)[t.value] && { value: t.value, title: t.title }).filter((t) => t);
 
   const handleItemTypeChange: ((e: any, nv: { value: string }[]) => void) | undefined = (e, nv) => {
     const typeMap = types.map((t) => {
-      if (nv.find((vt) => vt.value === t)) {
-        return { key: t, value: true };
+      if (nv.find((vt) => vt.value === t.value)) {
+        return { key: t.value, value: true };
       }
 
-      return { key: t, value: false };
+      return { key: t.value, value: false };
     });
 
     typeMap.forEach((t) => {
