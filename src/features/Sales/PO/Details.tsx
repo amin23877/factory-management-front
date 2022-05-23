@@ -9,23 +9,12 @@ import DocumentTab from "common/Document/Tab";
 import { BasePaper } from "app/Paper";
 
 import { customerPoType } from "api/customerPo";
+import { useLock } from "common/Lock";
 
 export default function Details({ poData, onDone }: { poData: customerPoType; onDone: () => void }) {
   const [activeTab, setActiveTab] = useState(0);
   const phone = useMediaQuery("(max-width:900px)");
-
-  // const LICols = useMemo<GridColumns>(
-  //   () => [
-  //     { field: "index", headerName: "Sort" },
-  //     { field: "ItemId", headerName: "Part Number", valueFormatter: (r) => r.row.ItemId?.name, width: 200 },
-  //     { field: "description", headerName: "Description", flex: 1 },
-  //     { field: "quantity", headerName: "QTY", width: 90 },
-  //     { field: "price", headerName: "Price", width: 100 },
-  //     { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
-  //     { field: "total", headerName: "Total", valueFormatter: (r) => r.row?.price * r.row.quantity, width: 200 },
-  //   ],
-  //   []
-  // );
+  const { lock } = useLock();
 
   return (
     <Box
@@ -49,8 +38,8 @@ export default function Details({ poData, onDone }: { poData: customerPoType; on
           <Tab label="Auditing" />
         </Tabs>
         {/* {activeTab === 0 && <BaseDataGrid cols={LICols} rows={[]} height="calc(100% - 60px)" />} */}
-        {activeTab === 0 && <DocumentTab itemId={poData.id} model="salesPo" />}
-        {activeTab === 1 && <NoteTab itemId={poData.id} model="salesPo" />}
+        {activeTab === 0 && <DocumentTab itemId={poData.id} model="salesPo" lock={lock} />}
+        {activeTab === 1 && <NoteTab itemId={poData.id} model="salesPo" lock={lock} />}
       </BasePaper>
     </Box>
   );

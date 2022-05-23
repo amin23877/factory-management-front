@@ -28,7 +28,7 @@ const columns: GridColumns = [
   { field: "note", headerName: "Note", flex: 1 },
 ];
 
-export default function NoteTab({ itemId, model }: { model: string; itemId: string }) {
+export default function NoteTab({ itemId, model, lock }: { model: string; itemId: string; lock?: boolean }) {
   const { data } = useSWR(`/note/${model}/${itemId}`);
   const [addModal, setAddModal] = useState(false);
   const [selected, setSelected] = useState<INote>();
@@ -42,6 +42,7 @@ export default function NoteTab({ itemId, model }: { model: string; itemId: stri
           startIcon={<AddRounded />}
           style={{ margin: "4px 0" }}
           onClick={() => setAddModal(true)}
+          disabled={lock}
         >
           Add
         </Button>
@@ -49,8 +50,10 @@ export default function NoteTab({ itemId, model }: { model: string; itemId: stri
           cols={columns}
           rows={data || []}
           onRowSelected={(r) => {
-            setSelected(r);
-            setAddModal(true);
+            if (!lock) {
+              setSelected(r);
+              setAddModal(true);
+            }
           }}
         />
       </Box>

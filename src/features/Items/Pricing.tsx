@@ -23,6 +23,7 @@ export default function PricingTab({
   setFieldValue,
   touched,
   values,
+  lock,
 }: {
   itemId: string;
   values: any;
@@ -32,6 +33,7 @@ export default function PricingTab({
   errors: any;
   touched: any;
   boms?: { result: any[]; total: number };
+  lock?: boolean;
 }) {
   const [addPricing, setAddPricing] = useState(false);
   const [selectedPricing, setSelectedPricing] = useState<pricingType>();
@@ -51,6 +53,7 @@ export default function PricingTab({
         <Button
           variant="outlined"
           style={{ marginBottom: 10 }}
+          disabled={lock}
           onClick={() => {
             setSelectedPricing(undefined);
             setAddPricing(true);

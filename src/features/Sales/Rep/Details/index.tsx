@@ -4,6 +4,7 @@ import { Grid, Tab, Tabs } from "@material-ui/core";
 import ContactTab from "common/Contact/Tab";
 import NoteTab from "common/Note/Tab";
 import DocumentTab from "common/Document/Tab";
+import { useLock } from "common/Lock";
 
 import Form from "./Form";
 import { BasePaper } from "app/Paper";
@@ -12,6 +13,7 @@ import { repType } from "api/rep";
 
 export default function RepDetails({ selectedRep }: { selectedRep: repType }) {
   const [activeTab, setActiveTab] = useState(0);
+  const { lock } = useLock();
 
   return (
     <Grid container spacing={2}>
@@ -32,9 +34,9 @@ export default function RepDetails({ selectedRep }: { selectedRep: repType }) {
             <Tab label="Leads" />
             <Tab label="Auditing" />
           </Tabs>
-          {activeTab === 0 && <ContactTab model="rep" itemId={selectedRep.id} />}
-          {activeTab === 1 && <NoteTab model="rep" itemId={selectedRep.id} />}
-          {activeTab === 2 && <DocumentTab model="rep" itemId={selectedRep.id} />}
+          {activeTab === 0 && <ContactTab model="rep" itemId={selectedRep.id} lock={lock} />}
+          {activeTab === 1 && <NoteTab model="rep" itemId={selectedRep.id} lock={lock} />}
+          {activeTab === 2 && <DocumentTab model="rep" itemId={selectedRep.id} lock={lock} />}
         </BasePaper>
       </Grid>
     </Grid>

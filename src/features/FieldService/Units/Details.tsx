@@ -25,6 +25,8 @@ import DocumentTab from "common/Document/Tab";
 import NotesTab from "common/Note/Tab";
 import JobRecordsTable from "common/JobRecords/Table";
 
+import { useLock, LockButton } from "common/Lock";
+
 const schema = Yup.object().shape({});
 
 function Details({ unit }: { unit: IUnit }) {
@@ -44,9 +46,9 @@ function Details({ unit }: { unit: IUnit }) {
   const [gridActiveTab, setGridActiveTab] = useState(2);
   const [addShipModal, setAddShipModal] = useState(false);
   const [editShip, setEditShip] = useState(false);
-  const [lock, setLock] = useState(true);
   const [selectedShip, setSelectedShip] = useState<IShipment>();
 
+  const { lock, setLock } = useLock();
   const { data: shipments } = useSWR(gridActiveTab === 4 ? `/shipment?UnitId=${unit.id}` : null);
 
   const warCols = useMemo<GridColumns>(
@@ -115,10 +117,11 @@ function Details({ unit }: { unit: IUnit }) {
                     handleChange={handleChange}
                     setFieldValue={setFieldValue}
                   />
-                  <Box textAlign="center" my={1} width="100%">
-                    <Button disabled={isSubmitting || lock} kind="edit" type="submit" style={{ width: "100%" }}>
+                  <Box textAlign="center" my={1} width="100%" display="flex">
+                    <Button disabled={isSubmitting || lock} kind="edit" type="submit" style={{ flex: 3 }}>
                       Save
                     </Button>
+                    <LockButton />
                   </Box>
                 </BasePaper>
                 <BasePaper style={{ flex: 1 }}>

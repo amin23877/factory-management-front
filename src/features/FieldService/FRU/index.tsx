@@ -25,16 +25,19 @@ export default function FRU() {
         name: "salesApproved",
         header: "Sales Ap.",
         type: "boolean",
+        defaultWidth: 100,
       },
       {
         name: "engineeringApproved",
         header: "Eng. Ap.",
         type: "boolean",
+        defaultWidth: 100,
       },
       {
         name: "shippingApproved",
         header: "Ship Ap.",
         type: "boolean",
+        defaultWidth: 100,
       },
       {
         name: "prefVendor",
@@ -134,7 +137,7 @@ export default function FRU() {
           <DataGrid
             url="/item"
             columns={fruDevicesColumns}
-            initParams={{ device: true, "containProduct Family": "FRU" }}
+            initParams={{ fru: true }}
             onRowSelected={(d) => {
               setSelectedUnitFru(undefined);
               setSelectedItemFru(d);

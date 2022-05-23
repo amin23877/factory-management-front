@@ -22,7 +22,7 @@ const columns: GridColumns = [
   { field: "active", headerName: "Active", type: "boolean" },
 ];
 
-export default function ContactTab({ itemId, model }: { model: string; itemId: string }) {
+export default function ContactTab({ itemId, model, lock }: { model: string; itemId: string; lock?: boolean }) {
   const { data } = useSWR(`/contact/${model}/${itemId}`);
   const [addModal, setAddModal] = useState(false);
   const [selectedContact, setSelectedContact] = useState<IContact>();
@@ -42,6 +42,7 @@ export default function ContactTab({ itemId, model }: { model: string; itemId: s
           startIcon={<AddRounded />}
           style={{ margin: "4px 0" }}
           onClick={() => setAddModal(true)}
+          disabled={lock}
         >
           Add
         </Button>
@@ -49,8 +50,10 @@ export default function ContactTab({ itemId, model }: { model: string; itemId: s
           cols={columns}
           rows={data || []}
           onRowSelected={(r) => {
-            setSelectedContact(r);
-            setAddModal(true);
+            if (!lock) {
+              setSelectedContact(r);
+              setAddModal(true);
+            }
           }}
         />
       </Box>

@@ -9,8 +9,11 @@ import LinkField from "app/Inputs/LinkFields";
 
 import { updateRep, repType } from "api/rep";
 import { getModifiedValues } from "logic/utils";
+import { useLock, LockButton } from "common/Lock";
 
 export default function EditForm({ initialValues }: { initialValues: repType }) {
+  const { lock } = useLock();
+
   const handleSubmit = async (data: any) => {
     try {
       const modifiedData = getModifiedValues(data, initialValues);
@@ -52,9 +55,12 @@ export default function EditForm({ initialValues }: { initialValues: repType }) 
               </RadioGroup>
             </FormControl>
             <FormControlLabel control={<Checkbox />} label="Active" {...getFieldProps("active")} />
-            <Button type="submit" kind="edit" style={{ gridColumn: "span 2" }}>
-              Submit
-            </Button>
+            <Box display="flex" style={{ gridColumnEnd: "span 2" }}>
+              <Button type="submit" kind="edit" disabled={lock} fullWidth>
+                Submit
+              </Button>
+              <LockButton />
+            </Box>
           </Box>
         </Form>
       )}

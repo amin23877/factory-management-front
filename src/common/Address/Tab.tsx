@@ -18,7 +18,7 @@ const columns: GridColumns = [
   { field: "country", headerName: "Country", width: 100 },
 ];
 
-export default function AddressTab({ itemId, model }: { model: string; itemId: string }) {
+export default function AddressTab({ itemId, model, lock }: { model: string; itemId: string; lock?: boolean }) {
   const { data } = useSWR(`/address/${model}/${itemId}`);
   const [modal, setModal] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState<IAddress>();
@@ -32,6 +32,7 @@ export default function AddressTab({ itemId, model }: { model: string; itemId: s
           startIcon={<AddRounded />}
           style={{ margin: "0.5em 0" }}
           onClick={() => setModal(true)}
+          disabled={lock}
         >
           Add
         </Button>
@@ -39,8 +40,10 @@ export default function AddressTab({ itemId, model }: { model: string; itemId: s
           cols={columns}
           rows={data || []}
           onRowSelected={(r) => {
-            setSelectedAddress(r);
-            setModal(true);
+            if (!lock) {
+              setSelectedAddress(r);
+              setModal(true);
+            }
           }}
         />
       </Box>

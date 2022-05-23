@@ -8,7 +8,7 @@ import { addPhoto, deletePhoto, photoType } from "api/photo";
 import Confirm from "./Confirm";
 import UploadButton from "app/UploadButton";
 
-export default function PhotoTab({ id, model }: { model: string; id: string }) {
+export default function PhotoTab({ id, model, lock }: { model: string; id: string; lock?: boolean }) {
   const { data: photos, mutate: mutatePhotos } = useSWR<photoType[]>(`/photo/${model}/${id}`);
   const [img, setImg] = useState<any>();
 
@@ -49,6 +49,7 @@ export default function PhotoTab({ id, model }: { model: string; id: string }) {
           <IconButton
             onClick={() => handleDeletePhoto(photos[0].id)}
             style={{ position: "absolute", background: "#dbdbdb", right: 0, padding: 4 }}
+            disabled={lock}
           >
             <DeleteRounded />
           </IconButton>
@@ -71,7 +72,7 @@ export default function PhotoTab({ id, model }: { model: string; id: string }) {
           justifyContent: "center",
         }}
       >
-        <UploadButton onChange={handleFileChange} accept="image/*" />
+        <UploadButton onChange={handleFileChange} accept="image/*" disabled={lock} />
       </div>
     </Box>
   );

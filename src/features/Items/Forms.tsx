@@ -1,23 +1,12 @@
 import React from "react";
-import {
-  makeStyles,
-  Box,
-  FormControlLabel,
-  Checkbox,
-  LinearProgress,
-  Divider,
-  Paper,
-  useMediaQuery,
-} from "@material-ui/core";
-import useSWR from "swr";
+import { makeStyles, Box, FormControlLabel, Checkbox, Divider, Paper, useMediaQuery } from "@material-ui/core";
 
 import TextField from "app/TextField";
 import Button from "app/Button";
 import DateTimePicker from "app/DateTimePicker";
 
 import { formatTimestampToDate } from "logic/date";
-import Level from "./ClusterAndLevels/Level";
-import { ILevel } from "api/level";
+
 import { IItem } from "api/items";
 import LinkField from "app/Inputs/LinkFields";
 
@@ -630,10 +619,8 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched, se
 };
 
 export const Levels = ({ values, handleChange, handleBlur }: any) => {
-  const { data: levels } = useSWR<{ result: ILevel[]; total: number }>("/level");
-
-  if (!levels) {
-    return <LinearProgress />;
+  if (!values.levels && Object.keys(values.levels).length > 0) {
+    return <></>;
   }
 
   return (
@@ -648,8 +635,16 @@ export const Levels = ({ values, handleChange, handleBlur }: any) => {
         style={{ gridColumn: "span 2" }}
       />
       <Divider style={{ gridColumnEnd: "span 2" }} />
-      {levels.result?.map((level) => (
-        <Level level={level} handleBlur={handleBlur} handleChange={handleChange} values={values} />
+      {Object.keys(values.levels).map((level: any) => (
+        <TextField
+          label={level}
+          name={level}
+          placeholder={level}
+          defaultValue={values[level] || values.levels[level]}
+          value={values[level]}
+          onBlur={handleBlur}
+          onChange={handleChange}
+        />
       ))}
     </Box>
   );

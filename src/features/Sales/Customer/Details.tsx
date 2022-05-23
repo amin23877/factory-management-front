@@ -17,6 +17,7 @@ import NoteTab from "common/Note/Tab";
 import DocumentTab from "common/Document/Tab";
 import ContactTab from "common/Contact/Tab";
 import AddressTab from "common/Address/Tab";
+import { useLock, LockButton } from "common/Lock";
 
 import Toast from "app/Toast";
 import { getModifiedValues } from "logic/utils";
@@ -36,6 +37,7 @@ export default function ClientDetails({
   const [activeSubTab, setActiveSubTab] = useState(0);
 
   const phone = useMediaQuery("(max-width:900px)");
+  const { lock } = useLock();
 
   const { data: activities } = useSWR<{ result: IActivity[]; total: number }>(
     activeTab === 2 ? `/activity/client/${selectedRow.id}` : null
@@ -91,10 +93,11 @@ export default function ClientDetails({
                       cId={selectedRow.id}
                       changeTab={changeTab}
                     />
-                    <Box textAlign="center" style={{ width: "100%" }}>
-                      <Button type="submit" kind="edit" style={{ width: "100%" }}>
+                    <Box display="flex" textAlign="center" style={{ width: "100%" }}>
+                      <Button type="submit" kind="edit" style={{ width: "100%" }} disabled={lock}>
                         Save
                       </Button>
+                      <LockButton />
                     </Box>
                   </BasePaper>
                   <BasePaper style={{ height: "100%", flex: 1 }}>
@@ -153,8 +156,8 @@ export default function ClientDetails({
                     <Tab label="Addresses" />
                     <Tab label="Auditing" />
                   </Tabs>
-                  {activeTab === 0 && <ContactTab itemId={selectedRow.id} model="client" />}
-                  {activeTab === 1 && <DocumentTab itemId={selectedRow.id} model="client" />}
+                  {activeTab === 0 && <ContactTab itemId={selectedRow.id} model="client" lock={lock} />}
+                  {activeTab === 1 && <DocumentTab itemId={selectedRow.id} model="client" lock={lock} />}
                   {activeTab === 2 && (
                     <BaseDataGrid
                       height="calc(100% - 60px)"
@@ -164,8 +167,8 @@ export default function ClientDetails({
                     />
                   )}
                   {activeTab === 3 && <SOTable rows={[]} />}
-                  {activeTab === 5 && <NoteTab itemId={selectedRow.id} model="client" />}
-                  {activeTab === 6 && <AddressTab model="client" itemId={selectedRow.id} />}
+                  {activeTab === 5 && <NoteTab itemId={selectedRow.id} model="client" lock={lock} />}
+                  {activeTab === 6 && <AddressTab model="client" itemId={selectedRow.id} lock={lock} />}
                 </BasePaper>
               </Box>
             </Box>

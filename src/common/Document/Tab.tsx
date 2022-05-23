@@ -36,7 +36,7 @@ const columns: GridColumns = [
   },
 ];
 
-export default function DocumentTab({ itemId, model }: { model: string; itemId: string }) {
+export default function DocumentTab({ itemId, model, lock }: { model: string; itemId: string; lock?: boolean }) {
   const { data } = useSWR(`/document/${model}/${itemId}`);
   const [addModal, setAddModal] = useState(false);
   const [selected, setSelected] = useState<INote>();
@@ -50,6 +50,7 @@ export default function DocumentTab({ itemId, model }: { model: string; itemId: 
           startIcon={<AddRounded />}
           style={{ margin: "4px 0" }}
           onClick={() => setAddModal(true)}
+          disabled={lock}
         >
           Add
         </Button>
@@ -57,8 +58,10 @@ export default function DocumentTab({ itemId, model }: { model: string; itemId: 
           cols={columns}
           rows={data || []}
           onRowSelected={(r) => {
-            setSelected(r);
-            setAddModal(true);
+            if (!lock) {
+              setSelected(r);
+              setAddModal(true);
+            }
           }}
         />
       </Box>

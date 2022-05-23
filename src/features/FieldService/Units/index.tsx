@@ -7,6 +7,7 @@ import { BasePaper } from "app/Paper";
 import Details from "./Details";
 
 import { formatTimestampToDate } from "logic/date";
+import { LockProvider } from "common/Lock";
 
 export default function Unit() {
   const [activeTab, setActiveTab] = useState(0);
@@ -53,36 +54,39 @@ export default function Unit() {
   ];
 
   return (
-    <BasePaper style={{ height: "100%" }}>
-      <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)} style={{ marginBottom: 10 }}>
-        <Tab
-          icon={
-            <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> List
-            </span>
-          }
-          wrapped
-        />
-        <Tab
-          disabled={!selectedUnit}
-          icon={
-            <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
-            </span>
-          }
-        />
-      </Tabs>
-      {activeTab === 0 && (
-        <DataGrid
-          url="/unit"
-          columns={cols}
-          onRowSelected={(d) => {
-            setSelectedUnit(d);
-            setActiveTab(1);
-          }}
-        />
-      )}
-      {activeTab === 1 && selectedUnit && <Details unit={selectedUnit} />}
-    </BasePaper>
+    <LockProvider>
+      <BasePaper style={{ height: "100%" }}>
+        <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)} style={{ marginBottom: 10 }}>
+          <Tab
+            icon={
+              <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> List
+              </span>
+            }
+            wrapped
+          />
+          <Tab
+            disabled={!selectedUnit}
+            icon={
+              <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
+              </span>
+            }
+          />
+        </Tabs>
+        {activeTab === 0 && (
+          <DataGrid
+            url="/unit"
+            initParams={{ fru: false }}
+            columns={cols}
+            onRowSelected={(d) => {
+              setSelectedUnit(d);
+              setActiveTab(1);
+            }}
+          />
+        )}
+        {activeTab === 1 && selectedUnit && <Details unit={selectedUnit} />}
+      </BasePaper>
+    </LockProvider>
   );
 }

@@ -7,10 +7,12 @@ const UploadButton = ({
   onChange,
   accept,
   multiple,
+  disabled,
 }: {
   onChange?: ChangeEventHandler<HTMLInputElement>;
   multiple?: boolean;
   accept?: string;
+  disabled?: boolean;
 }) => {
   const fileUploader = useRef<HTMLInputElement | null>(null);
 
@@ -31,6 +33,7 @@ const UploadButton = ({
           variant="contained"
           onClick={() => fileUploader.current?.click()}
           startIcon={<PhotoCamera />}
+          disabled={disabled}
         >
           Upload
         </Button>

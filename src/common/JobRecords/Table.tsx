@@ -3,15 +3,7 @@ import { useMediaQuery, makeStyles, Tooltip, Button, Box } from "@material-ui/co
 import { useHistory } from "react-router-dom";
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
-import {
-  AddRounded,
-  LockRounded,
-  LockOpenRounded,
-  ClearRounded,
-  SearchRounded,
-  KeyboardArrowUp,
-  KeyboardArrowDown,
-} from "@material-ui/icons";
+import { AddRounded, ClearRounded, SearchRounded, KeyboardArrowUp, KeyboardArrowDown } from "@material-ui/icons";
 import useSWR from "swr";
 
 import { IUnit } from "api/units";
@@ -21,10 +13,6 @@ import AddModal from "./AddModal";
 import Toast from "app/Toast";
 import Confirm from "common/Confirm";
 import { updateJobRecord, deleteJobRecord } from "api/jobrecord";
-// import { groupBy } from "logic/utils";
-
-// import BaseDataGrid from "app/BaseDataGrid";
-// import { GridColumns } from "@material-ui/data-grid";
 
 const useStyle = makeStyles({
   root: {
@@ -292,9 +280,6 @@ export default function JobRecordsTable({
           onClick={() => setAddModal(true)}
         >
           Add
-        </Button>
-        <Button onClick={() => setLock((p) => !p)} variant="contained" color={lock ? "primary" : "secondary"}>
-          {lock ? <LockRounded /> : <LockOpenRounded />}
         </Button>
       </div>
       <ReactDataGrid

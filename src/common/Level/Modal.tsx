@@ -1,14 +1,13 @@
 import React, { useMemo, useState } from "react";
-import { GridColumns } from "@material-ui/data-grid";
 import { Box } from "@material-ui/core";
-import useSWR from "swr";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
 import MyForm from "./Form";
 import Toast from "app/Toast";
 import MyDialog from "app/Dialog";
-import BaseDataGrid from "app/BaseDataGrid";
+// import BaseDataGrid from "app/BaseDataGrid";
+import NewDataGrid from "app/NewDataGrid";
 
 import { createLevel, editLevel, ILevel } from "api/level";
 import { getModifiedValues } from "logic/utils";
@@ -24,14 +23,14 @@ type formInitialValuesType = Omit<Partial<ILevel>, "valid"> & {
 };
 
 export default function Modal({ onClose, open }: { open: boolean; onClose: () => void }) {
+  const [refresh, setRefresh] = useState(0);
   const [selectedLevel, setSelectedLevel] = useState<ILevel>();
-  const { data: levels, mutate } = useSWR("/level");
 
-  const cols = useMemo<GridColumns>(
+  const cols = useMemo(
     () => [
-      { field: "name", flex: 1 },
-      { field: "clusterValueRef", flex: 1, headerName: "Cluster Value Reference" },
-      { field: "valid", headerName: "Valid Values", flex: 1 },
+      { name: "name", flex: 1 },
+      { name: "clusterValueRef", flex: 1, header: "Cluster Value Reference" },
+      { name: "valid", header: "Valid Values", flex: 1 },
     ],
     []
   );
@@ -49,7 +48,7 @@ export default function Modal({ onClose, open }: { open: boolean; onClose: () =>
     } catch (error) {
       Toast("An error ocurred", "error");
     } finally {
-      mutate();
+      setRefresh((p) => p + 1);
     }
   };
 
@@ -61,10 +60,11 @@ export default function Modal({ onClose, open }: { open: boolean; onClose: () =>
             <Form>
               <MyForm handleBlur={handleBlur} handleChange={handleChange} resetForm={resetForm} values={values} />
               <Box mt={1}>
-                <BaseDataGrid
-                  height="360px"
-                  cols={cols}
-                  rows={levels?.result || []}
+                <NewDataGrid
+                  columns={cols}
+                  url="/level"
+                  style={{ height: 360 }}
+                  refresh={refresh}
                   onRowSelected={(r) => {
                     setSelectedLevel(r);
                     setValues(r);

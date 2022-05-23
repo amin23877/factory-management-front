@@ -32,6 +32,7 @@ import PricingTab from "features/Items/Pricing";
 import DocumentTab from "common/Document/Tab";
 import NoteTab from "common/Note/Tab";
 import PhotoTab from "common/PhotoTab";
+import { LockButton, useLock } from "common/Lock";
 
 function DeviceDetails({
   sales,
@@ -242,6 +243,7 @@ function DeviceDetails({
     }
   };
   const phone = useMediaQuery("(max-width:900px)");
+  const { lock } = useLock();
 
   if (!selectedRow) {
     return <LinearProgress />;
@@ -300,9 +302,10 @@ function DeviceDetails({
                       justifyContent: "center",
                     }}
                   >
-                    <Button style={{ margin: "0.5em auto", width: "200px" }} kind="edit" type="submit">
+                    <Button style={{ margin: "0.5em auto", width: "200px" }} kind="edit" type="submit" disabled={lock}>
                       Save
                     </Button>
+                    <LockButton />
                   </Box>
                 </BasePaper>
                 <BasePaper style={{ flex: 1, overflowY: "auto" }}>
@@ -319,7 +322,7 @@ function DeviceDetails({
                     <Tab label="Pricing" />
                     {!sales && <Tab label="Clusters and Levels" />}
                   </Tabs>
-                  {moreInfoTab === 0 && <PhotoTab model="item" id={selectedRow.id} />}
+                  {moreInfoTab === 0 && <PhotoTab lock={lock} model="item" id={selectedRow.id} />}
                   {moreInfoTab === 1 && (
                     <Box display="flex" justifyContent="space-around" alignItems="center" maxWidth="83vw">
                       <div ref={(e) => (qrCode.current = e)}>
@@ -347,6 +350,7 @@ function DeviceDetails({
                   {moreInfoTab === 2 && (
                     <Box>
                       <PricingTab
+                        lock={lock}
                         errors={errors}
                         handleBlur={handleBlur}
                         handleChange={handleChange}
@@ -416,7 +420,7 @@ function DeviceDetails({
                 </Box>
                 {!sales ? (
                   <>
-                    {activeTab === 0 && <DocumentTab itemId={selectedRow.id} model="item" />}
+                    {activeTab === 0 && <DocumentTab itemId={selectedRow.id} model="item" lock={lock} />}
                     {activeTab === 1 && (
                       <div style={{ maxWidth: "79vw", overflow: "auto" }}>
                         <ItemBomTable item={selectedRow} boms={boms?.result || []} />
@@ -505,12 +509,11 @@ function DeviceDetails({
                         onRowSelected={onFlagSelected}
                       />
                     )}
-                    {activeTab === 11 && <NoteTab itemId={selectedRow.id} model="item" />}
+                    {activeTab === 11 && <NoteTab itemId={selectedRow.id} model="item" lock={lock} />}
                   </>
                 ) : (
                   <>
-                    {activeTab === 0 && <DocumentTab itemId={selectedRow.id} model="item" />}
-
+                    {activeTab === 0 && <DocumentTab itemId={selectedRow.id} model="item" lock={lock} />}
                     {activeTab === 1 && (
                       <>
                         <BaseDataGrid
@@ -521,10 +524,8 @@ function DeviceDetails({
                         />
                       </>
                     )}
-
                     {activeTab === 2 && <SalesReport />}
-
-                    {activeTab === 3 && <NoteTab itemId={selectedRow.id} model="item" />}
+                    {activeTab === 3 && <NoteTab itemId={selectedRow.id} model="item" lock={lock} />}
                   </>
                 )}
               </BasePaper>

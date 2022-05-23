@@ -1,9 +1,11 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import { Box, Portal, Popover } from "@material-ui/core";
 import { KeyboardArrowDownRounded, KeyboardArrowUpRounded } from "@material-ui/icons";
 
 import { MyTabs, MyTab } from "app/Tabs";
 import MyBackdrop from "app/Backdrop";
+
+import { useLock } from "common/Lock";
 
 import { usePortal } from "logic/PortalContext";
 
@@ -31,6 +33,11 @@ export default function Sales() {
 
   const open = Boolean(anchorEl);
   const portals = usePortal();
+  const { setLock } = useLock();
+
+  useEffect(() => {
+    setLock(true);
+  }, [setLock]);
 
   return (
     <>
@@ -69,6 +76,7 @@ export default function Sales() {
             onChange={(e: any, nv) => {
               setActiveTab(nv);
               setTabText(e.target.textContent);
+              setLock(true);
               handleClose();
             }}
             orientation="vertical"

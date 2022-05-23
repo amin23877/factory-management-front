@@ -1,9 +1,8 @@
-import React, { useState } from "react";
-import { Box, Tabs, Tab, useMediaQuery } from "@material-ui/core";
+import React from "react";
+import { Box, useMediaQuery } from "@material-ui/core";
 import { Form, Formik } from "formik";
-import * as Yup from "yup";
 
-import { AddressesForm, GeneralForm, EntitiesForm } from "./Forms";
+import { GeneralForm } from "./Forms";
 import Button from "app/Button";
 import { BasePaper } from "app/Paper";
 import Toast from "app/Toast";
@@ -11,12 +10,11 @@ import Toast from "app/Toast";
 import { getModifiedValues } from "logic/utils";
 import { updateCustomerPo, customerPoType } from "api/customerPo";
 
-const schema = Yup.object().shape({
-  // name: Yup.string().required(),
-});
+import { useLock, LockButton } from "common/Lock";
 
 export default function EditForm({ poData, onDone }: { poData: customerPoType; onDone: () => void }) {
-  const [activeTab, setActiveTab] = useState(0);
+  const phone = useMediaQuery("(max-width:900px)");
+  const { lock } = useLock();
 
   const handleSubmit = async (data: any, { setSubmitting }: any) => {
     try {
@@ -33,11 +31,9 @@ export default function EditForm({ poData, onDone }: { poData: customerPoType; o
     }
   };
 
-  const phone = useMediaQuery("(max-width:900px)");
-
   return (
     <Box>
-      <Formik validationSchema={schema} initialValues={poData} onSubmit={handleSubmit}>
+      <Formik initialValues={poData} onSubmit={handleSubmit}>
         {({ values, handleChange, handleBlur, setValues, setFieldValue, isSubmitting }) => (
           <Form style={{ height: "100%" }}>
             <Box display="flex" flexDirection="column" style={phone ? { gap: 10 } : { gap: 10, height: "100%" }}>
@@ -50,41 +46,12 @@ export default function EditForm({ poData, onDone }: { poData: customerPoType; o
                   setFieldValue={setFieldValue}
                 />
                 <Box display="flex" justifyContent="center" style={{ width: "100%" }} my={1}>
-                  <Button disabled={isSubmitting} type="submit" kind="edit" style={{ width: "100%" }}>
+                  <Button disabled={isSubmitting || lock} type="submit" kind="edit" style={{ width: "100%" }}>
                     Save
                   </Button>
+                  <LockButton />
                 </Box>
               </BasePaper>
-              {/* <BasePaper style={{ flex: 1 }}>
-                <Tabs
-                  textColor="primary"
-                  value={activeTab}
-                  onChange={(e, nv) => setActiveTab(nv)}
-                  variant="scrollable"
-                  style={{ maxWidth: 700 }}
-                >
-                  <Tab label="Entities" />
-                  <Tab label="Addresses" />
-                </Tabs>
-                <Box>
-                  {activeTab === 0 && (
-                    <EntitiesForm
-                      setFieldValue={setFieldValue}
-                      values={values}
-                      handleBlur={handleBlur}
-                      handleChange={handleChange}
-                    />
-                  )}
-                  {activeTab === 1 && (
-                    <AddressesForm
-                      setFieldValue={setFieldValue}
-                      values={values}
-                      handleBlur={handleBlur}
-                      handleChange={handleChange}
-                    />
-                  )}
-                </Box>
-              </BasePaper> */}
             </Box>
           </Form>
         )}
