@@ -3,13 +3,13 @@ stages:
 
 build:
   stage: build
-rules:
+  rules:
   - changes:
       - src/*
-before_script:
+  before_script:
   - apt-get -qq update && apt-get -qq install -y zip unzip sshpass
   - npm i
-script:
+  script:
   - echo "export const host = 'https://ts.digitalphocus.ir'" > src/host.ts
   - NODE_OPTIONS=--max_old_space_size=1000; npm run build
   - zip -r build.zip build
