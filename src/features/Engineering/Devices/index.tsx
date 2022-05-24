@@ -51,7 +51,11 @@ const Devices = ({ sales }: { sales?: boolean }) => {
 
   const gridColumns = useMemo(() => {
     let res = [
-      { name: "no", header: "Device Number", minWidth: 120 },
+      {
+        name: "no",
+        header: "Device Number",
+        minWidth: 120,
+      },
       { name: "name", header: "Name", flex: 1, minWidth: 200 },
       { name: "description", header: "Description", flex: 2, minWidth: 200 },
       { name: "leadTime", header: "Lead Time", minWidth: 120 },
