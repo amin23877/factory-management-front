@@ -3,9 +3,6 @@ stages:
 
 build:
   stage: build
-  image:
-    name: node:lts-stretch
-    entrypoint: [""]
 rules:
   - changes:
       - src/*
