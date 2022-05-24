@@ -31,6 +31,7 @@ import DataGrid from "app/NewDataGrid";
 import { ILevel } from "api/level";
 
 const Devices = ({ sales }: { sales?: boolean }) => {
+  // something
   const { data: levels } = useSWR<{ result: ILevel[]; total: number }>("/level");
 
   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
