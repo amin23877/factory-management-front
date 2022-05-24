@@ -4,7 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { SWRConfig } from "swr";
-// delete later
+
 import { theme } from "./theme";
 import { useAppDispatch } from "./store";
 import { getCurrentEmployee } from "./features/Session/sessionsSlice";
