@@ -1,8 +1,11 @@
 import React from "react";
-import { Container, Typography } from "@material-ui/core";
+import { Container, Typography, Box } from "@material-ui/core";
 import { useParams } from "react-router-dom";
 
+import Button from "app/Button";
 import PartsTable from "features/BOM/PartsTable";
+
+import { LockButton } from "common/Lock";
 
 function Parts() {
   const { bomId } = useParams<{ bomId: string }>();
@@ -15,6 +18,11 @@ function Parts() {
 
   return (
     <Container>
+      <Box display="flex" alignItems="center" mb={1}>
+        <Button kind="add">Add Part</Button>
+        <div style={{ flexGrow: 1 }} />
+        <LockButton />
+      </Box>
       <PartsTable bomId={bomId} />
     </Container>
   );

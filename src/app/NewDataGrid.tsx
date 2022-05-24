@@ -29,7 +29,7 @@ import { TypeOnSelectionChangeArg } from "@inovua/reactdatagrid-community/types/
 
 window.moment = moment;
 
-const useStyle = makeStyles({
+export const useStyle = makeStyles({
   root: {
     "& .InovuaReactDataGrid__column-header": {
       background: "#202731",
@@ -153,6 +153,7 @@ function NewDataGrid({
   checkboxColumn,
   onRowSelected,
   onSelectionChange,
+  onDataFetched,
 }: {
   onRowSelected: (row: any) => void;
   columns: any[];
@@ -162,6 +163,7 @@ function NewDataGrid({
   refresh?: number;
   checkboxColumn?: boolean;
   onSelectionChange?: (config: TypeOnSelectionChangeArg) => void;
+  onDataFetched?: (data: any) => void;
 }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [columnsState, setColumnsState] = useState<any[]>(columns.map((c) => ({ ...c, visible: true })));
@@ -270,9 +272,11 @@ function NewDataGrid({
 
       try {
         const d = await get(url, { params });
+        onDataFetched && onDataFetched(d);
         return { data: d.result, count: d.total };
       } catch (e) {
         console.log(e);
+        onDataFetched && onDataFetched([]);
         return { data: [], count: 0 };
       }
     },

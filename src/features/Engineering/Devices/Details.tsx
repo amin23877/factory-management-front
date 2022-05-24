@@ -61,7 +61,7 @@ function DeviceDetails({
 
   const [stepModal, setStepModal] = useState(false);
 
-  const { data: boms } = useSWR<{ result: IBom[]; total: number }>(
+  const { data: boms, mutate: mutateBoms } = useSWR<{ result: IBom[]; total: number }>(
     selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null
   );
 
@@ -296,13 +296,14 @@ function DeviceDetails({
                     touched={touched}
                   />
                   <Box
+                    mt={2}
                     style={{
                       width: "100%",
                       display: "flex",
                       justifyContent: "center",
                     }}
                   >
-                    <Button style={{ margin: "0.5em auto", width: "200px" }} kind="edit" type="submit" disabled={lock}>
+                    <Button style={{ margin: "0 auto", width: "200px" }} kind="edit" type="submit" disabled={lock}>
                       Save
                     </Button>
                     <LockButton />
@@ -423,7 +424,7 @@ function DeviceDetails({
                     {activeTab === 0 && <DocumentTab itemId={selectedRow.id} model="item" lock={lock} />}
                     {activeTab === 1 && (
                       <div style={{ maxWidth: "79vw", overflow: "auto" }}>
-                        <ItemBomTable item={selectedRow} boms={boms?.result || []} />
+                        <ItemBomTable item={selectedRow} boms={boms?.result || []} mutateBoms={mutateBoms} />
                       </div>
                     )}
                     {activeTab === 2 && (

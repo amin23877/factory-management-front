@@ -1,150 +1,139 @@
-import React, { useState } from "react";
+import React, { useMemo, useState, useCallback } from "react";
 import { useMediaQuery } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 
+import DataGrid from "@inovua/reactdatagrid-community";
+import { useStyle } from "app/NewDataGrid";
+
 import Box from "@material-ui/core/Box";
-import Collapse from "@material-ui/core/Collapse";
-import IconButton from "@material-ui/core/IconButton";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Typography from "@material-ui/core/Typography";
-import Paper from "@material-ui/core/Paper";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
-import { AddRounded, Check, Clear, EditRounded, LaptopWindows } from "@material-ui/icons";
+import { AddRounded, DeleteRounded, EditRounded, SearchRounded } from "@material-ui/icons";
 
 import Button from "app/Button";
-import { IBom } from "api/bom";
+import { deleteBom, IBom } from "api/bom";
 import { IItem } from "api/items";
 import { formatTimestampToDate } from "../../logic/date";
 import { openRequestedSinglePopup } from "../../logic/window";
 
 import BomModal from "./BomModal";
 import BomRecordModal from "./BomRecordModal";
-import PartsTable from "./PartsTable";
+import { useLock } from "common/Lock";
+import Confirm from "common/Confirm";
 
-const useRowStyles = makeStyles({
-  root: {
-    "& > *": {
-      borderBottom: "unset",
-    },
+const defaultFilterValues = [
+  { name: "items", value: null, operator: "gt", type: "number" },
+  { name: "no", value: "", operator: "startsWith", type: "string" },
+  { name: "revDate", value: "", operator: "startsWith", type: "string" },
+  { name: "name", value: "", operator: "startsWith", type: "string" },
+  { name: "notes", value: "", operator: "startsWith", type: "string" },
+  {
+    name: "current",
+    value: "",
+    type: "boolean",
+    operator: "startsWith",
   },
-});
+];
 
-export const useTableStyles = makeStyles((theme) => ({
-  tableCont: {
-    borderRadius: 10,
-    maxHeight: 550,
-  },
-  root: {
-    backgroundColor: "#f9f9f9",
-    border: "none",
-    borderRadius: 15,
-    "& .MuiTableHead-root": {
-      position: ["sticky", "-webkit-sticky"],
-      top: 0,
-    },
-    "& .MuiTableRow-head, .MuiTableCell-stickyHeader": {
-      backgroundColor: "#202731",
-    },
-    "& .MuiTableCell-head": {
-      cursor: "pointer",
-      color: "#fff",
-      border: "1px solid #333b44",
-    },
-    "& .MuiTableSortLabel-icon ": {
-      fill: "white",
-    },
-
-    "& tbody .MuiTableCell-root": {
-      border: "1px solid #dddddd",
-      fontSize: "0.700rem",
-    },
-    "& .MuiButton-root": {
-      fontSize: "0.700rem",
-    },
-
-    "& .Mui-selected": {
-      boxShadow: " rgba(149, 157, 165, 0.2) 0px 8px 24px",
-      backgroundColor: "#fff !important",
-    },
-    "& .MuiDataGrid-sortIcon": {
-      fill: "white",
-    },
-  },
-}));
-
-function Row({ row, onAddBomRecord, onEditBom }: { row: IBom; onAddBomRecord: () => void; onEditBom: () => void }) {
-  let history = useHistory();
-  const phone = useMediaQuery("(max-width:900px)");
-  const [open, setOpen] = React.useState(false);
-  const classes = useRowStyles();
-
-  return (
-    <>
-      <TableRow className={classes.root}>
-        <TableCell>
-          <IconButton aria-label="expand BOM row" size="small" onClick={() => setOpen(!open)}>
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
-        <TableCell>
-          <Box display="flex">
-            <IconButton
-              onClick={() => {
-                phone
-                  ? history.push(`/panel/bom/${row.id}/parts`)
-                  : openRequestedSinglePopup({ url: `/panel/bom/${row.id}/parts` });
-              }}
-            >
-              <LaptopWindows />
-            </IconButton>
-            <IconButton onClick={onEditBom}>
-              <EditRounded />
-            </IconButton>
-          </Box>
-        </TableCell>
-        <TableCell component="th" scope="row">
-          {/* {row.items} */}
-        </TableCell>
-        <TableCell align="right">{row.no}</TableCell>
-        <TableCell align="right">{row.updatedAt ? formatTimestampToDate(row.updatedAt) : ""}</TableCell>
-        <TableCell align="right">{row.name}</TableCell>
-        <TableCell align="right">{row.notes}</TableCell>
-        <TableCell align="right">{row.current ? <Check htmlColor="#888" /> : <Clear htmlColor="#888" />}</TableCell>
-      </TableRow>
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={8}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box margin={1}>
-              <Box display="flex" alignItems="center">
-                <Typography variant="h6" gutterBottom component="div">
-                  BOM Parts
-                </Typography>
-                <IconButton onClick={onAddBomRecord}>
-                  <AddRounded />
-                </IconButton>
-              </Box>
-              <PartsTable bomId={row.id} />
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-    </>
-  );
-}
-
-export default function ItemBomTable({ boms, item }: { boms?: IBom[]; item: IItem }) {
+export default function ItemBomTable({
+  boms,
+  item,
+  mutateBoms,
+}: {
+  boms?: IBom[];
+  item: IItem;
+  mutateBoms: () => void;
+}) {
   const [bomModal, setBomModal] = useState(false);
   const [bomRecordModal, setBomRecordModal] = useState(false);
   const [selectedBom, setSelectedBom] = useState<IBom>();
-  const classes = useTableStyles();
+
+  const classes = useStyle();
+  const history = useHistory();
+  const phone = useMediaQuery("(max-width:900px)");
+  const { lock } = useLock();
+
+  const handleDelete = useCallback(
+    (id: string) => {
+      Confirm({
+        onConfirm: async () => {
+          try {
+            await deleteBom(id);
+          } catch (error) {
+            console.log(error);
+          } finally {
+            mutateBoms();
+          }
+        },
+      });
+    },
+    [mutateBoms]
+  );
+
+  const columns = useMemo(
+    () => [
+      {
+        name: "actions",
+        header: "",
+        defaultWidth: 80,
+        render: ({ data }: any) => {
+          return (
+            <Box display="flex" alignItems="center" style={{ gap: 4 }}>
+              <div
+                onClick={() => {
+                  if (phone) {
+                    history.push(`/panel/bom/${data.id}/parts`);
+                  } else {
+                    openRequestedSinglePopup({ url: `/panel/bom/${data.id}/parts` });
+                  }
+                }}
+              >
+                <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
+              </div>
+              <div
+                onClick={() => {
+                  if (!lock) {
+                    setSelectedBom(data);
+                    setBomModal(true);
+                  }
+                }}
+              >
+                <EditRounded
+                  style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#426792", cursor: lock ? "auto" : "pointer" }}
+                />
+              </div>
+            </Box>
+          );
+        },
+      },
+      { name: "items", header: "Items", defaultWidth: 100 },
+      { header: "Rev No.", name: "no", defaultWidth: 100 },
+      {
+        header: "Revision Date",
+        name: "revDate",
+        render: ({ data }: any) => formatTimestampToDate(data.updatedAt) || "",
+      },
+      { header: "Name", name: "name" },
+      { header: "Note", name: "notes", flex: 1 },
+      {
+        header: "Current",
+        name: "current",
+        type: "boolean",
+        defaultWidth: 100,
+        render: ({ value, data }: any) => {
+          return (
+            <div>
+              <span>{value}</span>
+              <div onClick={() => handleDelete(data.id)}>
+                <DeleteRounded
+                  style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#e71414", cursor: lock ? "auto" : "pointer" }}
+                />
+              </div>
+            </div>
+          );
+        },
+      },
+    ],
+    [handleDelete, history, lock, phone]
+  );
 
   return (
     <>
@@ -160,45 +149,17 @@ export default function ItemBomTable({ boms, item }: { boms?: IBom[]; item: IIte
           setBomModal(true);
         }}
         style={{ marginBottom: 8 }}
+        disabled={lock}
       >
         BOM
       </Button>
-      <TableContainer className={classes.tableCont} component={Paper} style={{ maxHeight: 700, minHeight: 500 }}>
-        <Table className={classes.root} size="small" aria-label="collapsible BOM table">
-          <TableHead>
-            <TableRow>
-              <TableCell />
-              <TableCell />
-              <TableCell>Items</TableCell>
-              <TableCell align="right">Rev. No.</TableCell>
-              <TableCell align="right">Revision Date</TableCell>
-              <TableCell align="right">Name</TableCell>
-              <TableCell align="right">Note</TableCell>
-              <TableCell align="right">Current</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {boms ? (
-              boms.map((row) => (
-                <Row
-                  key={row.id}
-                  row={row}
-                  onEditBom={() => {
-                    setSelectedBom(row);
-                    setBomModal(true);
-                  }}
-                  onAddBomRecord={() => {
-                    setSelectedBom(row);
-                    setBomRecordModal(true);
-                  }}
-                />
-              ))
-            ) : (
-              <LinearProgress />
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <DataGrid
+        className={classes.root}
+        columns={columns}
+        dataSource={boms || []}
+        defaultFilterValue={defaultFilterValues}
+        style={{ height: "100%" }}
+      />
     </>
   );
 }

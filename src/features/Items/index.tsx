@@ -16,6 +16,7 @@ import { BasePaper } from "app/Paper";
 import Button from "app/Button";
 
 import LevelsModal from "common/Level/Modal";
+import { useLock } from "common/Lock";
 
 import ItemTable from "./Table";
 
@@ -29,6 +30,7 @@ const Items = () => {
   const [addItemModal, setAddItemModal] = useState(false);
   const [deleteItemModal, setDeleteItemModal] = useState(false);
   const [levelsModal, setLevelsModal] = useState(false);
+  const { lock } = useLock();
 
   const handleDelete = useCallback(async () => {
     try {
@@ -101,7 +103,7 @@ const Items = () => {
           </Tabs>
           <div style={{ flexGrow: 1 }} />
           {itemSelection && Object.keys(itemSelection || {}).length > 0 && (
-            <Button kind="add" onClick={handleConvertItems} style={{ margin: "0 8px" }}>
+            <Button disabled={lock} kind="add" onClick={handleConvertItems} style={{ margin: "0 8px" }}>
               Convert Selection to Service
             </Button>
           )}

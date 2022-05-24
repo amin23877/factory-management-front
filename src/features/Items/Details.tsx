@@ -28,6 +28,7 @@ import QRCode from "app/QRCode";
 import Confirm from "common/Confirm";
 import Toast from "app/Toast";
 import PhotoTab from "common/PhotoTab";
+import { useLock, LockButton } from "common/Lock";
 
 const style = {
   border: "1px solid gray ",
@@ -49,7 +50,7 @@ function ItemsDetails({
   const [moreInfoTab, setMoreInfoTab] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
 
-  const { data: boms } = useSWR<{ result: IBom[]; total: number }>(
+  const { data: boms, mutate: mutateBoms } = useSWR<{ result: IBom[]; total: number }>(
     selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null
   );
 
@@ -70,6 +71,7 @@ function ItemsDetails({
   const [bomPartsModal, setBomPartsModal] = useState(false);
   const [selectedBom] = useState<IBom>();
   const phone = useMediaQuery("(max-width:900px)");
+  const { lock } = useLock();
 
   // const poCols = useMemo<GridColDef[]>(
   //   () => [
@@ -244,10 +246,19 @@ function ItemsDetails({
                     errors={errors}
                     touched={touched}
                   />
-                  <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
-                    <Button style={{ width: "200px", marginTop: "10px" }} kind="edit" type="submit">
+                  <div
+                    style={{
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginTop: 8,
+                    }}
+                  >
+                    <Button disabled={lock} style={{ width: "200px" }} kind="edit" type="submit">
                       Save
                     </Button>
+                    <LockButton />
                   </div>
                 </BasePaper>
                 <BasePaper style={{ flex: 1, margin: 8 }}>
@@ -272,7 +283,7 @@ function ItemsDetails({
                     <Tab label="Clusters and Levels" />
                     <Tab label="Convert" />
                   </Tabs>
-                  {moreInfoTab === 0 && <PhotoTab model="item" id={selectedRow.id} />}
+                  {moreInfoTab === 0 && <PhotoTab model="item" id={selectedRow.id} lock={lock} />}
                   {moreInfoTab === 1 && (
                     <Box display="flex" justifyContent="space-around" alignItems="center" maxWidth="83vw">
                       <div ref={(e) => (qrCode.current = e)}>
@@ -343,6 +354,7 @@ function ItemsDetails({
                       handleBlur={handleBlur}
                       handleChange={handleChange}
                       setFieldValue={setFieldValue}
+                      lock={lock}
                     />
                   )}
                   {moreInfoTab === 5 && (
@@ -392,7 +404,7 @@ function ItemsDetails({
                   <Tab label="Note" />
                   <Tab label="Auditing" />
                 </Tabs>
-                {activeTab === 0 && <DocumentTab itemId={selectedRow.id} model="item" />}
+                {activeTab === 0 && <DocumentTab itemId={selectedRow.id} model="item" lock={lock} />}
                 {activeTab === 1 && (
                   <div style={{ maxWidth: "79vw", overflow: "auto" }}>
                     <Button
@@ -407,8 +419,8 @@ function ItemsDetails({
                   </div>
                 )}
                 {activeTab === 2 && boms && (
-                  <div style={{ maxWidth: "79vw", overflow: "auto" }}>
-                    <ItemBomTable item={selectedRow} boms={boms?.result || []} />
+                  <div style={{ maxWidth: "79vw", overflow: "auto", height: "85%" }}>
+                    <ItemBomTable item={selectedRow} boms={boms?.result || []} mutateBoms={mutateBoms} />
                   </div>
                 )}
                 {/* {activeTab === 2 && itemSOs && <SOTable rows={itemSOs} />} */}
@@ -428,7 +440,7 @@ function ItemsDetails({
                     height={"calc(100% - 60px)"}
                   />
                 )} */}
-                {activeTab === 6 && <NotesTab itemId={selectedRow.id} model="item" />}
+                {activeTab === 6 && <NotesTab itemId={selectedRow.id} model="item" lock={lock} />}
                 {activeTab === 7 && <div>Auditing</div>}
               </BasePaper>
             </Box>

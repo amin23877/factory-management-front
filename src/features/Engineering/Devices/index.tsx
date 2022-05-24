@@ -35,7 +35,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
   const { data: levels } = useSWR<{ result: ILevel[]; total: number }>("/level");
 
   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
-  const [finish, setFinish] = useState(false);
+  const [finish, setFinish] = useState(true);
 
   const [activeTab, setActiveTab] = useState(0);
   const [selectedStep, setSelectedStep] = useState<any>();
@@ -50,30 +50,18 @@ const Devices = ({ sales }: { sales?: boolean }) => {
   const [flagModalOpen, setFlagModalOpen] = useState(false);
   const [levelModal, setLevelModal] = useState(false);
 
-  const gridColumns = useMemo(() => {
-    let res = [
-      {
-        name: "no",
-        header: "Device Number",
-        minWidth: 120,
-      },
-      { name: "name", header: "Name", flex: 1, minWidth: 200 },
-      { name: "description", header: "Description", flex: 2, minWidth: 200 },
-      { name: "leadTime", header: "Lead Time", minWidth: 120 },
-      { name: "retailPrice", header: "Price", minWidth: 120, type: "number" },
-    ];
-
-    if (!sales) {
-      if (levels && levels.result) {
-        levels?.result?.map((f: any) =>
-          res.splice(3, 0, { name: f.name, header: splitLevelName(f.name), minWidth: 120 })
-        );
-        setFinish(true);
-      }
-    }
-
-    return res;
-  }, [levels, sales]);
+  const [gridColumns, setGridColumns] = useState<any[]>([
+    {
+      name: "no",
+      header: "Device Number",
+      minWidth: 120,
+    },
+    { name: "name", header: "Name", flex: 1, minWidth: 200 },
+    { name: "description", header: "Description", flex: 2, minWidth: 200 },
+    { name: "leadTime", header: "Lead Time", minWidth: 120 },
+    { name: "retailPrice", header: "Price", minWidth: 120, type: "number" },
+  ]);
+  const [counter, setCounter] = useState(0);
 
   const handleDelete = useCallback(async () => {
     try {
@@ -86,6 +74,28 @@ const Devices = ({ sales }: { sales?: boolean }) => {
     }
   }, [selectedItem]);
   const phone = useMediaQuery("(max-width:900px)");
+
+  const handleDataFetched = (data: any) => {
+    // console.log("handleDataFetched");
+    // if (counter === 0 && data && data.result) {
+    //   const levelsSet = new Set<string>();
+    //   let levels: string[] = [];
+    //   data.result.forEach((item: any) => {
+    //     Object.keys(item?.levels || [])?.forEach((level: any) => {
+    //       levelsSet.add(level);
+    //     });
+    //   });
+    //   levels = Array.from(levelsSet);
+    //   const levelColumns = levels
+    //     .filter((l) => !gridColumns.find((c) => c.name === l))
+    //     .map((l) => {
+    //       return { name: l, defaultWidth: 150 };
+    //     });
+    //   const res = [...gridColumns.slice(0, 4), ...levelColumns, ...gridColumns.slice(4)];
+    //   setGridColumns(res);
+    //   setCounter((p) => p + 1);
+    // }
+  };
 
   return (
     <BasePaper>
@@ -199,6 +209,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                     style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 165px)" }}
                     url="/item"
                     initParams={{ device: true, fru: false }}
+                    onDataFetched={handleDataFetched}
                     onRowSelected={(r) => {
                       setSelectedItem(r as any);
                       setActiveTab(1);

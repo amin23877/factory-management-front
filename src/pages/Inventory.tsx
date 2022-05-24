@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Portal, Popover } from "@material-ui/core";
 import { KeyboardArrowDownRounded, KeyboardArrowUpRounded } from "@material-ui/icons";
 
@@ -8,6 +8,7 @@ import Items from "features/Items";
 import { MyTabs, MyTab } from "app/Tabs";
 
 import { usePortal } from "logic/PortalContext";
+import { useLock } from "common/Lock";
 
 const Inventory = () => {
   const [activeTab, setActiveTab] = useState(1);
@@ -25,6 +26,12 @@ const Inventory = () => {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   const portals = usePortal();
+  const { setLock } = useLock();
+
+  useEffect(() => {
+    setLock(true);
+  }, [setLock]);
+
   return (
     <>
       <Portal container={portals.topAppBar ? (portals.topAppBar as any).current : null}>
