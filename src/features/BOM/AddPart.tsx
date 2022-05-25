@@ -21,21 +21,20 @@ import Toast from "app/Toast";
 
 import { get } from "api";
 import { IItem } from "api/items";
-import { IUnit } from "api/units";
-import { createJobRecord } from "api/jobrecord";
+import { addBomRecord } from "api/bom";
 
 import { useCart } from "common/Cart/hooks";
 
-export default function AddModal({
-  unit,
-  parent,
+export default function AddPartModal({
+  bomId,
   open,
   onClose,
+  onDone,
 }: {
-  unit: IUnit;
-  parent?: { _id: string; Component: string };
+  bomId: string;
   open: boolean;
   onClose: () => void;
+  onDone?: () => void;
 }) {
   const { handleAddItem, handleDeleteItem, handleRemove, selectedItems, setSelectedItems } = useCart<IItem>({
     isEqual: (a, b) => a.id === b.id,
@@ -51,14 +50,8 @@ export default function AddModal({
 
   useEffect(() => {
     const t = setTimeout(() => {
-      const queryObj = {
-        ...(itemName && { startsWithname: itemName }),
-        ...(itemNo && { startsWithno: itemNo }),
-        ...(keywords && { containDescription: keywords }),
-        page: String(page),
-      };
-      const query = new URLSearchParams(queryObj);
-      get(`/item?${query}`)
+      const params = { startsWithname: itemName, startsWithno: itemNo, containDescription: keywords, page };
+      get("/item", { params })
         .then((d) => {
           setItems({ data: d.result || [], count: d.total || 0 });
         })
@@ -81,12 +74,11 @@ export default function AddModal({
       await Promise.all(
         selectedItems.map(async (item) => {
           try {
-            await createJobRecord({
+            await addBomRecord({
               ItemId: item.item.id,
-              JOBId: unit.JOBId,
-              parentRec: parent?._id || null,
+              BOMId: bomId,
               usage: item.usage,
-            });
+            } as any);
           } catch (error) {
             console.log(error);
           }
@@ -97,7 +89,8 @@ export default function AddModal({
     } catch (error) {
       console.log(error);
     } finally {
-      mutate(`/unit/${unit.id}/jobrecords`);
+      mutate(`/bomrecord?BOMId=${bomId}`);
+      onDone && onDone();
       setCreating(false);
     }
   };
@@ -144,13 +137,7 @@ export default function AddModal({
   );
 
   return (
-    <Dialog
-      title={parent ? `Add Job Record to ${parent.Component}` : "Add Job Record"}
-      open={open}
-      onClose={onClose}
-      fullWidth
-      maxWidth="lg"
-    >
+    <Dialog title={`Add BOM Record to`} open={open} onClose={onClose} fullWidth maxWidth="lg">
       <Box style={{ margin: "0.5em 2em", gap: 8 }} display="flex" height="75vh">
         <Box flex={3}>
           <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gap: 8 }} mb={2}>
