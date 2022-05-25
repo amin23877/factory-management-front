@@ -28,9 +28,14 @@ export default function Modal({ onClose, open }: { open: boolean; onClose: () =>
 
   const cols = useMemo(
     () => [
-      { name: "name", flex: 1 },
+      { name: "name", flex: 1, render: ({ data }: any) => data.name.split("__")[0] },
       { name: "clusterValueRef", flex: 1, header: "Cluster Value Reference" },
-      { name: "valid", header: "Valid Values", flex: 1 },
+      {
+        name: "valid",
+        header: "Valid Values",
+        flex: 1,
+        render: ({ data }: any) => data.valid.join(","),
+      },
     ],
     []
   );
@@ -38,6 +43,7 @@ export default function Modal({ onClose, open }: { open: boolean; onClose: () =>
   const handleSubmit = async (data: any) => {
     try {
       if (data.id) {
+        data = { ...data, name: data.name + "__" + data.clusterValueRef };
         const modified = getModifiedValues(data, selectedLevel);
         await editLevel(data.id, modified);
         Toast("Level updated.", "success");
@@ -58,7 +64,13 @@ export default function Modal({ onClose, open }: { open: boolean; onClose: () =>
         <Formik validationSchema={schema} initialValues={{} as formInitialValuesType} onSubmit={handleSubmit}>
           {({ resetForm, values, handleChange, handleBlur, setValues }) => (
             <Form>
-              <MyForm handleBlur={handleBlur} handleChange={handleChange} resetForm={resetForm} values={values} />
+              <MyForm
+                handleBlur={handleBlur}
+                handleChange={handleChange}
+                resetForm={resetForm}
+                values={values}
+                setRefresh={setRefresh}
+              />
               <Box mt={1}>
                 <NewDataGrid
                   columns={cols}
