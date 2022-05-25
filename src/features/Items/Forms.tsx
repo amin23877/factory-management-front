@@ -619,7 +619,7 @@ export const Shipping = ({ values, errors, handleChange, handleBlur, touched, se
 };
 
 export const Levels = ({ values, handleChange, handleBlur }: any) => {
-  if (!values?.levels && Object.keys(values?.levels)?.length > 0) {
+  if (!values?.levels || Object.keys(values?.levels)?.length > 0) {
     return <></>;
   }
 
