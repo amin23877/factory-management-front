@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from "react";
 import { LinearProgress } from "@material-ui/core";
+import SelectFilter from "@inovua/reactdatagrid-community/SelectFilter";
 
-import DataGrid from "../../app/NewDataGrid";
+import DataGrid from "app/NewDataGrid";
 
 function ItemTable({
   onRowSelected,
@@ -47,9 +48,21 @@ function ItemTable({
       { name: "cost", header: "Cost", minWidth: 80, type: "number" },
       { name: "location", header: "Location", minWidth: 100 },
       {
-        name: "option",
+        name: "itemType",
         header: "Item Type",
         defaultWidth: 100,
+        defaultOperator: "eq",
+        filterEditor: SelectFilter,
+        filterEditorProps: {
+          multiple: false,
+          dataSource: [
+            { id: "option", label: "Option" },
+            { id: "device", label: "Device" },
+            { id: "assembly", label: "Assembly" },
+            { id: "part", label: "Part" },
+            { id: "fru", label: "Fru" },
+          ],
+        },
         render: ({ data }: any) => {
           const types = ["option", "device", "assembly", "part", "fru"];
           const itemTypes = types.map((t) => (data as any)[t] && { value: t }).filter((t) => t);

@@ -238,9 +238,9 @@ function NewDataGrid({
   }, [columnsState]);
 
   const defaultFilterValue = useMemo(() => {
-    let res = columns.map(({ name, type }) => ({
+    let res = columns.map(({ name, type, defaultOperator }) => ({
       name,
-      operator: type ? "eq" : "startsWith",
+      operator: defaultOperator || type ? "eq" : "startsWith",
       type: type ? type : "string",
       value: type === "date" ? "" : undefined,
     }));
@@ -261,7 +261,11 @@ function NewDataGrid({
       let params: any = { ...initParams };
       for (const fv of filterValue) {
         if (fv.value !== null && fv.value !== undefined && fv.value !== "") {
-          params[getOperator(fv.operator) + fv.name] = fv.value;
+          if (fv.name === "itemType") {
+            params[fv.value] = true;
+          } else {
+            params[getOperator(fv.operator) + fv.name] = fv.value;
+          }
         }
       }
       if (limit) {
