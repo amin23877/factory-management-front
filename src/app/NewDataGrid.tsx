@@ -205,9 +205,9 @@ function NewDataGrid({
           r = {
             ...r,
             filterEditor: NumberFilter,
-            render: ({ value }: { value: any }) => (
-              <Tooltip title={value}>
-                <div>{value}</div>
+            render: ({ value="" }: { value: any }) => (
+              <Tooltip title={value || ""}>
+                <div>{value || ""}</div>
               </Tooltip>
             ),
           };
@@ -224,9 +224,9 @@ function NewDataGrid({
         if ((r.type === "string" || !r.type) && !r.render) {
           r = {
             ...r,
-            render: ({ value }: { value: any }) => (
-              <Tooltip title={value}>
-                <div>{value}</div>
+            render: ({ value="" }: { value: any }) => (
+              <Tooltip title={value || ""}>
+                <div>{value || ""}</div>
               </Tooltip>
             ),
           };

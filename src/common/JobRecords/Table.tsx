@@ -7,12 +7,14 @@ import { AddRounded, ClearRounded, SearchRounded, KeyboardArrowUp, KeyboardArrow
 import useSWR from "swr";
 
 import { IUnit } from "api/units";
+import { updateJobRecord, deleteJobRecord } from "api/jobrecord";
 import { createJobRecordsTree, findChildren } from "logic/jobrecords";
 import { openRequestedSinglePopup } from "logic/window";
+
 import AddModal from "./AddModal";
 import Toast from "app/Toast";
 import Confirm from "common/Confirm";
-import { updateJobRecord, deleteJobRecord } from "api/jobrecord";
+import { LockButton } from "common/Lock";
 
 const useStyle = makeStyles({
   root: {
@@ -281,6 +283,7 @@ export default function JobRecordsTable({
         >
           Add
         </Button>
+        <LockButton />
       </div>
       <ReactDataGrid
         onEditComplete={({ columnId, value, data }: any) =>

@@ -50,119 +50,119 @@ const Devices = ({ sales }: { sales?: boolean }) => {
   const [flagModalOpen, setFlagModalOpen] = useState(false);
   const [levelModal, setLevelModal] = useState(false);
 
-  const [gridColumns, setGridColumns] = useState<any[]>([
-    {
-      name: "no",
-      header: "Device Number",
-      minWidth: 120,
-    },
-    { name: "name", header: "Name", flex: 1, minWidth: 200 },
-    { name: "description", header: "Description", flex: 2, minWidth: 200 },
-    {
-      name: "Battery Cabinet Quantity",
-      header: "B.C.QTY",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Battery Cabinet Quantity" + "__" + keys[0].split("__")[1]];
+  const gridColumns = useMemo<any[]>(
+    () => [
+      {
+        name: "no",
+        header: "Device Number",
+        minWidth: 120,
       },
-    },
-    {
-      name: "Battery Cabinet",
-      header: "B.C.",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Battery Cabinet" + "__" + keys[0].split("__")[1]];
+      { name: "name", header: "Name", flex: 1, minWidth: 200 },
+      { name: "description", header: "Description", flex: 2, minWidth: 200 },
+      {
+        name: "Battery Cabinet Quantity",
+        header: "B.C.QTY",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          let keys = Object.keys(data?.levels || []);
+          return data?.levels["Battery Cabinet Quantity" + "__" + keys[0].split("__")[1]];
+        },
       },
-    },
-    {
-      name: "Battery Run-Time",
-      header: "B. Run Time",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Battery Run-Time" + "__" + keys[0].split("__")[1]];
+      {
+        name: "Battery Cabinet",
+        header: "B.C.",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          let keys = Object.keys(data?.levels || []);
+          return data?.levels["Battery Cabinet" + "__" + keys[0].split("__")[1]];
+        },
       },
-    },
-    {
-      name: "Enclosure Type",
-      header: "Enclosure Type",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Enclosure Type" + "__" + keys[0].split("__")[1]];
+      {
+        name: "Battery Run-Time",
+        header: "B. Run Time",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          let keys = Object.keys(data?.levels || []);
+          return data?.levels["Battery Run-Time" + "__" + keys[0].split("__")[1]];
+        },
       },
-    },
-    {
-      name: "Input Voltage",
-      header: "Input Voltage",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Input Voltage" + "__" + keys[0].split("__")[1]];
+      {
+        name: "Enclosure Type",
+        header: "Enclosure Type",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          let keys = Object.keys(data?.levels || []);
+          return data?.levels["Enclosure Type" + "__" + keys[0].split("__")[1]];
+        },
       },
-    },
-    {
-      name: "Inverter Cabinet Size",
-      header: "I.C. Size",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Inverter Cabinet Size" + "__" + keys[0].split("__")[1]];
+      {
+        name: "Input Voltage",
+        header: "Input Voltage",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          let keys = Object.keys(data?.levels || []);
+          return data?.levels["Input Voltage" + "__" + keys[0].split("__")[1]];
+        },
       },
-    },
-    {
-      name: "Inverter Type",
-      header: "Inverter Type",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Inverter Type" + "__" + keys[0].split("__")[1]];
+      {
+        name: "Inverter Cabinet Size",
+        header: "I.C. Size",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          let keys = Object.keys(data?.levels || []);
+          return data?.levels["Inverter Cabinet Size" + "__" + keys[0].split("__")[1]];
+        },
       },
-    },
-    {
-      name: "Main Cabinet Quantity",
-      header: "Main Cabinet QTY",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Main Cabinet Quantity" + "__" + keys[0].split("__")[1]];
+      {
+        name: "Inverter Type",
+        header: "Inverter Type",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          let keys = Object.keys(data?.levels || []);
+          return data?.levels["Inverter Type" + "__" + keys[0].split("__")[1]];
+        },
       },
-    },
-    {
-      name: "Output Type",
-      header: "Output Type",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Output Type" + "__" + keys[0].split("__")[1]];
+      {
+        name: "Main Cabinet Quantity",
+        header: "Main Cabinet QTY",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          let keys = Object.keys(data?.levels || []);
+          return data?.levels["Main Cabinet Quantity" + "__" + keys[0].split("__")[1]];
+        },
       },
-    },
-    {
-      name: "Output Voltage",
-      header: "Output Voltage",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Output Voltage" + "__" + keys[0].split("__")[1]];
-
+      {
+        name: "Output Type",
+        header: "Output Type",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          let keys = Object.keys(data?.levels || []);
+          return data?.levels["Output Type" + "__" + keys[0].split("__")[1]];
+        },
       },
-    },
-    {
-      name: "Power Rating",
-      header: "Power Rating",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Power Rating" + "__" + keys[0].split("__")[1]];
-
+      {
+        name: "Output Voltage",
+        header: "Output Voltage",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          let keys = Object.keys(data?.levels || []);
+          return data?.levels["Output Voltage" + "__" + keys[0].split("__")[1]];
+        },
       },
-    },
-    { name: "leadTime", header: "Lead Time", minWidth: 120 },
-    { name: "retailPrice", header: "Price", minWidth: 120, type: "number" },
-  ]);
-  const [counter, setCounter] = useState(0);
+      {
+        name: "Power Rating",
+        header: "Power Rating",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          let keys = Object.keys(data?.levels || []);
+          return data?.levels["Power Rating" + "__" + keys[0].split("__")[1]];
+        },
+      },
+      { name: "leadTime", header: "Lead Time", minWidth: 120 },
+      { name: "retailPrice", header: "Price", minWidth: 120, type: "number" },
+    ],
+    []
+  );
 
   const handleDelete = useCallback(async () => {
     try {
