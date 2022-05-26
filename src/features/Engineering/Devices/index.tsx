@@ -63,8 +63,12 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       header: "B.C.QTY",
       minWidth: 120,
       render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Battery Cabinet Quantity" + "__" + keys[0].split("__")[1]];
+        if (data.levels) {
+          let keys = Object.keys(data?.levels);
+          return data.levels["Battery Cabinet Quantity" + "__" + keys[0].split("__")[1]];
+        } else {
+          return "-";
+        }
       },
     },
     {
@@ -72,8 +76,12 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       header: "B.C.",
       minWidth: 120,
       render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Battery Cabinet" + "__" + keys[0].split("__")[1]];
+        if (data.levels) {
+          let keys = Object.keys(data?.levels);
+          return data.levels["Battery Cabinet" + "__" + keys[0].split("__")[1]];
+        } else {
+          return "-";
+        }
       },
     },
     {
@@ -81,8 +89,12 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       header: "B. Run Time",
       minWidth: 120,
       render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Battery Run-Time" + "__" + keys[0].split("__")[1]];
+        if (data.levels) {
+          let keys = Object.keys(data?.levels);
+          return data.levels["Battery Run-Time" + "__" + keys[0].split("__")[1]];
+        } else {
+          return "-";
+        }
       },
     },
     {
@@ -90,8 +102,12 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       header: "Enclosure Type",
       minWidth: 120,
       render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Enclosure Type" + "__" + keys[0].split("__")[1]];
+        if (data.levels) {
+          let keys = Object.keys(data?.levels);
+          return data.levels["Enclosure Type" + "__" + keys[0].split("__")[1]];
+        } else {
+          return "-";
+        }
       },
     },
     {
@@ -99,8 +115,12 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       header: "Input Voltage",
       minWidth: 120,
       render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Input Voltage" + "__" + keys[0].split("__")[1]];
+        if (data.levels) {
+          let keys = Object.keys(data?.levels);
+          return data.levels["Input Voltage" + "__" + keys[0].split("__")[1]];
+        } else {
+          return "-";
+        }
       },
     },
     {
@@ -108,8 +128,12 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       header: "I.C. Size",
       minWidth: 120,
       render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Inverter Cabinet Size" + "__" + keys[0].split("__")[1]];
+        if (data.levels) {
+          let keys = Object.keys(data?.levels);
+          return data.levels["Inverter Cabinet Size" + "__" + keys[0].split("__")[1]];
+        } else {
+          return "-";
+        }
       },
     },
     {
@@ -117,8 +141,12 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       header: "Inverter Type",
       minWidth: 120,
       render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Inverter Type" + "__" + keys[0].split("__")[1]];
+        if (data.levels) {
+          let keys = Object.keys(data?.levels);
+          return data.levels["Inverter Type" + "__" + keys[0].split("__")[1]];
+        } else {
+          return "-";
+        }
       },
     },
     {
@@ -126,8 +154,12 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       header: "Main Cabinet QTY",
       minWidth: 120,
       render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Main Cabinet Quantity" + "__" + keys[0].split("__")[1]];
+        if (data.levels) {
+          let keys = Object.keys(data?.levels);
+          return data.levels["Main Cabinet Quantity" + "__" + keys[0].split("__")[1]];
+        } else {
+          return "-";
+        }
       },
     },
     {
@@ -135,8 +167,12 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       header: "Output Type",
       minWidth: 120,
       render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Output Type" + "__" + keys[0].split("__")[1]];
+        if (data.levels) {
+          let keys = Object.keys(data?.levels);
+          return data.levels["Output Type" + "__" + keys[0].split("__")[1]];
+        } else {
+          return "-";
+        }
       },
     },
     {
@@ -144,9 +180,12 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       header: "Output Voltage",
       minWidth: 120,
       render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Output Voltage" + "__" + keys[0].split("__")[1]];
-
+        if (data.levels) {
+          let keys = Object.keys(data?.levels);
+          return data.levels["Output Voltage" + "__" + keys[0].split("__")[1]];
+        } else {
+          return "-";
+        }
       },
     },
     {
@@ -154,9 +193,12 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       header: "Power Rating",
       minWidth: 120,
       render: ({ data }: any) => {
-        let keys = Object.keys(data?.levels);
-        return data.levels["Power Rating" + "__" + keys[0].split("__")[1]];
-
+        if (data.levels) {
+          let keys = Object.keys(data?.levels);
+          return data.levels["Power Rating" + "__" + keys[0].split("__")[1]];
+        } else {
+          return "-";
+        }
       },
     },
     { name: "leadTime", header: "Lead Time", minWidth: 120 },
