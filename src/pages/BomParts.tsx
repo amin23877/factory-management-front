@@ -59,7 +59,8 @@ function Parts() {
         editable: false,
         render: ({ data }: any) => {
           return (
-            <div style={{ display: "flex", justifyContent: "end" }}>
+            <div style={{ display: "flex", justifyContent: "end", gap: 4 }}>
+              <ShowBomRecordsButton bomRecord={data} />
               <div
                 onClick={() => {
                   if (phone) {
@@ -72,7 +73,6 @@ function Parts() {
                 <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
               </div>
               <div
-                style={{ margin: "0 10px" }}
                 onClick={() => {
                   if (!lock) {
                     handleDelete(data.id);
@@ -83,7 +83,6 @@ function Parts() {
                   style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#e71414", cursor: lock ? "auto" : "pointer" }}
                 />
               </div>
-              <ShowBomRecordsButton bomRecord={data} />
             </div>
           );
         },

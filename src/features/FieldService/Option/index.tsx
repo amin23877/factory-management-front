@@ -1,22 +1,22 @@
 import React, { useMemo, useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
-
-import { BasePaper } from "../../../app/Paper";
-
-import { formatTimestampToDate } from "../../../logic/date";
-import DataGrid from "../../../app/NewDataGrid";
-
-import UnitDetails from "../Units/Details";
-import DeviceDetails from "../../../features/Engineering/Devices/Details";
-import { IUnit } from "../../../api/units";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
-export default function FRU() {
+import { BasePaper } from "app/Paper";
+
+import { formatTimestampToDate } from "logic/date";
+import DataGrid from "app/NewDataGrid";
+
+import UnitDetails from "../Units/Details";
+import DeviceDetails from "features/Engineering/Devices/Details";
+import { IUnit } from "api/units";
+
+export default function Options() {
   const [activeTab, setActiveTab] = useState(0);
   const [selectedUnitFru, setSelectedUnitFru] = useState<IUnit>();
   const [selectedItemFru, setSelectedItemFru] = useState<any>();
 
-  const fruDevicesColumns = useMemo(
+  const optionDevicesColumns = useMemo(
     () => [
       { name: "no", header: "Number", minWidth: 100 },
       { name: "name", header: "Name", minWidth: 180 },
@@ -81,22 +81,22 @@ export default function FRU() {
     []
   );
 
-  const fruUnitsColumns = [
+  const optionUnitsColumns = [
     {
       name: "number",
-      header: "FRU Number",
+      header: "Option Number",
       minWidth: 150,
       // render: ({ data }: any) => data?.item?.no,
     },
     {
       name: "name",
-      header: "FRU Name",
+      header: "Option Name",
       minWidth: 200,
       //  render: ({ data }: any) => data?.item?.name
     },
     {
       name: "description",
-      header: "FRU Description",
+      header: "Option Description",
       flex: 1,
       render: ({ data }: any) => data?.item?.description,
     },
@@ -141,8 +141,8 @@ export default function FRU() {
         {activeTab === 0 && (
           <DataGrid
             url="/item"
-            columns={fruDevicesColumns}
-            initParams={{ fru: true }}
+            columns={optionDevicesColumns}
+            initParams={{ option: true }}
             onRowSelected={(d) => {
               setSelectedUnitFru(undefined);
               setSelectedItemFru(d);
@@ -153,8 +153,8 @@ export default function FRU() {
         {activeTab === 1 && (
           <DataGrid
             url="/unit"
-            initParams={{ fru: true }}
-            columns={fruUnitsColumns}
+            initParams={{ option: true }}
+            columns={optionUnitsColumns}
             onRowSelected={(d) => {
               setSelectedItemFru(undefined);
               setSelectedUnitFru(d);

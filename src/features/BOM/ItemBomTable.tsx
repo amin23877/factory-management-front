@@ -68,31 +68,17 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
         defaultWidth: 80,
         render: ({ data }: any) => {
           return (
-            <Box display="flex" alignItems="center" style={{ gap: 4 }}>
-              <div
-                onClick={() => {
-                  if (phone) {
-                    history.push(`/panel/bom/${data.id}/parts`);
-                  } else {
-                    openRequestedSinglePopup({ url: `/panel/bom/${data.id}/parts` });
-                  }
-                }}
-              >
-                <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
-              </div>
-              <div
-                onClick={() => {
-                  if (!lock) {
-                    setSelectedBom(data);
-                    setBomModal(true);
-                  }
-                }}
-              >
-                <EditRounded
-                  style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#426792", cursor: lock ? "auto" : "pointer" }}
-                />
-              </div>
-            </Box>
+            <div
+              onClick={() => {
+                if (phone) {
+                  history.push(`/panel/bom/${data.id}/parts`);
+                } else {
+                  openRequestedSinglePopup({ url: `/panel/bom/${data.id}/parts` });
+                }
+              }}
+            >
+              <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
+            </div>
           );
         },
       },
@@ -114,11 +100,25 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
           return (
             <div>
               <span>{value}</span>
-              <div onClick={() => handleDelete(data.id)}>
-                <DeleteRounded
-                  style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#e71414", cursor: lock ? "auto" : "pointer" }}
-                />
-              </div>
+              <Box display="flex" alignItems="center" style={{ gap: 4 }}>
+                <div
+                  onClick={() => {
+                    if (!lock) {
+                      setSelectedBom(data);
+                      setBomModal(true);
+                    }
+                  }}
+                >
+                  <EditRounded
+                    style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#426792", cursor: lock ? "auto" : "pointer" }}
+                  />
+                </div>
+                <div onClick={() => handleDelete(data.id)}>
+                  <DeleteRounded
+                    style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#e71414", cursor: lock ? "auto" : "pointer" }}
+                  />
+                </div>
+              </Box>
             </div>
           );
         },

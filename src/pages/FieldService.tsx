@@ -6,6 +6,7 @@ import { MyTabs, MyTab } from "../app/Tabs";
 
 import { usePortal } from "../logic/PortalContext";
 
+const Options = React.lazy(() => import("../features/FieldService/Option"));
 const FRUs = React.lazy(() => import("../features/FieldService/FRU"));
 const ServiceIndex = React.lazy(() => import("../features/FieldService"));
 const Tickets = React.lazy(() => import("../features/FieldService/Tickets"));
@@ -80,6 +81,7 @@ export default function FieldService() {
             <MyTab label="RMA" />
             <MyTab label="UP" />
             <MyTab label="Vendor Tech" />
+            <MyTab label="Options" />
           </MyTabs>
         </Popover>
       </Portal>
@@ -93,6 +95,7 @@ export default function FieldService() {
             {activeTab === 5 && <Units />}
             {activeTab === 7 && <UP />}
             {activeTab === 8 && <Vendors tech />}
+            {activeTab === 9 && <Options />}
           </Suspense>
         </Box>
       </Box>

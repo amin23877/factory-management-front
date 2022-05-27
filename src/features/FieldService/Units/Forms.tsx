@@ -4,6 +4,7 @@ import DateTimePicker from "app/DateTimePicker";
 
 import TextField from "app/TextField";
 import { formatTimestampToDate } from "logic/date";
+import { useLock } from "common/Lock";
 
 interface IForm {
   values: any;
@@ -16,6 +17,8 @@ interface IForm {
   device?: boolean;
 }
 export const General = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
+  const { lock } = useLock();
+
   return (
     <>
       <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
@@ -28,7 +31,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched }: I
           error={Boolean(errors.name && touched.name)}
           value={values?.name}
           style={{ gridColumnEnd: "span 2" }}
-          disabled
+          disabled={lock}
         />
         <TextField
           multiline
@@ -40,7 +43,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched }: I
           onChange={handleChange}
           onBlur={handleBlur}
           value={values?.description}
-          disabled
+          disabled={lock}
         />
         <TextField
           label="Serial Number"
@@ -50,7 +53,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched }: I
           onBlur={handleBlur}
           error={Boolean(errors.no && touched.no)}
           placeholder="Serial Number"
-          disabled
+          disabled={lock}
         />
         <TextField
           label="Status"
@@ -60,6 +63,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched }: I
           onChange={handleChange}
           onBlur={handleBlur}
           error={Boolean(errors.status)}
+          disabled={lock}
         />
         <TextField
           label="Number"
@@ -69,7 +73,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched }: I
           onBlur={handleBlur}
           error={Boolean(errors.number && touched.number)}
           value={values.number}
-          disabled
+          disabled={lock}
         />
         <TextField
           label="SO"
@@ -96,6 +100,8 @@ export const Status = ({
   setFieldValue,
   device,
 }: IForm) => {
+  const { lock } = useLock();
+
   return (
     <>
       <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
@@ -106,28 +112,28 @@ export const Status = ({
           label="Warranty exp date"
           onChange={(date) => setFieldValue("warrantyExpDate", date)}
           onBlur={handleBlur}
+          disabled={lock}
         />
         <TextField
           value={formatTimestampToDate(values?.SOId?.date)}
           name="purchaseDate"
           label="purchase date"
           onBlur={handleBlur}
-          disabled
+          disabled={lock}
         />
         <TextField
           value={formatTimestampToDate(values?.SOId?.estimatedShipDate)}
           name="estimatedShipDate"
           label="Estimated ship date"
           onBlur={handleBlur}
-          disabled
+          disabled={lock}
         />
-
         <TextField
           value={formatTimestampToDate(values?.SOId?.actualShipDate)}
           name="actualShipDate"
           label="Actual ship date"
           onBlur={handleBlur}
-          disabled
+          disabled={lock}
         />
         <DateTimePicker
           value={values.estimatedLeadTime}
@@ -135,6 +141,7 @@ export const Status = ({
           label="Estimated Lead time"
           onChange={(date) => setFieldValue("estimatedLeadTime", date)}
           onBlur={handleBlur}
+          disabled={lock}
         />
         <DateTimePicker
           value={values.actualLeadTime}
@@ -142,6 +149,7 @@ export const Status = ({
           label="Actual Lead Time"
           onChange={(date) => setFieldValue("actualLeadTime", date)}
           onBlur={handleBlur}
+          disabled={lock}
         />
       </Box>
     </>
@@ -158,6 +166,8 @@ export const Expense = ({
   setFieldValue,
   device,
 }: IForm) => {
+  const { lock } = useLock();
+
   return (
     <>
       <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
@@ -169,7 +179,7 @@ export const Expense = ({
           onBlur={handleBlur}
           error={Boolean(errors.itemLaborTime && touched.itemLaborTime)}
           placeholder="Item Labor Time"
-          disabled
+          disabled={lock}
         />
         <TextField
           label="Item Labor Cost"
@@ -179,7 +189,7 @@ export const Expense = ({
           onBlur={handleBlur}
           error={Boolean(errors.itemLaborCost && touched.itemLaborCost)}
           placeholder="Item Labor Cost"
-          disabled
+          disabled={lock}
         />
         <TextField
           label="Item BOM Cost"
@@ -189,6 +199,7 @@ export const Expense = ({
           onBlur={handleBlur}
           error={Boolean(errors.bomCost && touched.bomCost)}
           placeholder="Item BOM Cost"
+          disabled={lock}
         />
         <TextField
           label="Item Total Cost"
@@ -197,7 +208,7 @@ export const Expense = ({
           onBlur={handleBlur}
           error={Boolean(errors.ItemId?.cost && touched.ItemId?.cost)}
           placeholder="Item Total Cost"
-          disabled
+          disabled={lock}
         />
       </Box>
     </>
@@ -214,6 +225,8 @@ export const Shipping = ({
   setFieldValue,
   device,
 }: IForm) => {
+  const { lock } = useLock();
+
   return (
     <>
       <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
@@ -225,6 +238,7 @@ export const Shipping = ({
           onBlur={handleBlur}
           error={Boolean(errors.entity && touched.entity)}
           placeholder="Entity"
+          disabled={lock}
         />
         <TextField
           label="Shipping Address"
@@ -234,6 +248,7 @@ export const Shipping = ({
           onBlur={handleBlur}
           error={Boolean(errors?.SOId?.shippingAddress && touched?.SOId?.shippingAddress)}
           placeholder="Shipping Address"
+          disabled={lock}
         />
         <TextField
           label="Contact Person"
@@ -243,6 +258,7 @@ export const Shipping = ({
           onBlur={handleBlur}
           error={Boolean(errors.contactPerson && touched.contactPerson)}
           placeholder="Contact Person"
+          disabled={lock}
         />
         <TextField
           label="Contact Person Email"
@@ -252,6 +268,7 @@ export const Shipping = ({
           onBlur={handleBlur}
           error={Boolean(errors.contactPersonEmail && touched.contactPersonEmail)}
           placeholder="Contact Person Email"
+          disabled={lock}
         />
         <TextField
           label="Contact Person Phone Number"
@@ -261,6 +278,7 @@ export const Shipping = ({
           onBlur={handleBlur}
           error={Boolean(errors.contactPersonPhone && touched.contactPersonPhone)}
           placeholder="Contact Person Phone Number"
+          disabled={lock}
         />
         <TextField
           label="Unit Location"
@@ -270,6 +288,7 @@ export const Shipping = ({
           onBlur={handleBlur}
           error={Boolean(errors.unitLocation && touched.unitLocation)}
           placeholder="Unit Location"
+          disabled={lock}
         />
       </Box>
     </>

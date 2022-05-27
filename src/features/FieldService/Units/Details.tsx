@@ -48,7 +48,7 @@ function Details({ unit }: { unit: IUnit }) {
   const [editShip, setEditShip] = useState(false);
   const [selectedShip, setSelectedShip] = useState<IShipment>();
 
-  const { lock, setLock } = useLock();
+  const { lock } = useLock();
   const { data: shipments } = useSWR(gridActiveTab === 4 ? `/shipment?UnitId=${unit.id}` : null);
 
   const warCols = useMemo<GridColumns>(
