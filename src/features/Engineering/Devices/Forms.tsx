@@ -1,10 +1,11 @@
 import React, { useRef, useState } from "react";
 import { Box, Checkbox, FormControlLabel, Paper, useMediaQuery } from "@material-ui/core";
 
-import Button from "../../../app/Button";
-import TextField from "../../../app/TextField";
-import { addImage } from "../../../api/items";
-import { host } from "../../../host";
+import Button from "app/Button";
+import TextField from "app/TextField";
+import { addImage } from "api/items";
+import { host } from "host";
+import { useLock } from "common/Lock";
 
 interface IForm {
   values: any;
@@ -68,6 +69,7 @@ export const Photo = ({ device }: { device: any }) => {
 
 export const General = ({ values, errors, handleChange, handleBlur, touched, sales }: IForm) => {
   const phone = useMediaQuery("(max-width:900px)");
+  const { lock } = useLock();
 
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10}>
@@ -99,7 +101,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
           name="active"
           onChange={handleChange}
           control={<Checkbox size="small" />}
-          disabled={sales}
+          disabled={sales || lock}
         />
         <FormControlLabel
           checked={values.obsolete}
@@ -107,7 +109,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
           name="obsolete"
           onChange={handleChange}
           control={<Checkbox size="small" />}
-          disabled={sales}
+          disabled={sales || lock}
         />
         <FormControlLabel
           checked={values.rndOnly}
@@ -115,7 +117,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
           name="rndOnly"
           onChange={handleChange}
           control={<Checkbox size="small" />}
-          disabled={sales}
+          disabled={sales || lock}
         />
         <FormControlLabel
           checked={values.salesApproved}
@@ -123,7 +125,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
           name="salesApproved"
           onChange={handleChange}
           control={<Checkbox size="small" />}
-          disabled={sales}
+          disabled={sales || lock}
         />
         <FormControlLabel
           checked={values.engineeringApproved}
@@ -131,7 +133,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
           name="engineeringApproved"
           onChange={handleChange}
           control={<Checkbox size="small" />}
-          disabled={sales}
+          disabled={sales || lock}
         />
       </Paper>
       <TextField
@@ -152,7 +154,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
         onBlur={handleBlur}
         error={Boolean(errors.name && touched.name)}
         value={values.name}
-        disabled={sales}
+        disabled={sales || lock}
       />
       <TextField
         multiline
@@ -164,7 +166,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
         onChange={handleChange}
         onBlur={handleBlur}
         value={values.description}
-        disabled={sales}
+        disabled={sales || lock}
       />
       <TextField
         label="Lead Time"
@@ -174,6 +176,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
         onBlur={handleBlur}
         error={Boolean(errors.leadTime && touched.leadTime)}
         value={values.leadTime}
+        disabled={sales || lock}
       />
       <TextField
         label="Price"
@@ -182,6 +185,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
         onBlur={handleBlur}
         error={Boolean(errors.retailPrice && touched.retailPrice)}
         value={values.retailPrice}
+        disabled={sales || lock}
       />
     </Box>
   );

@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { Box, IconButton, ListItem, Tabs, Tab, LinearProgress, useMediaQuery } from "@material-ui/core";
+import { Box, IconButton, ListItem, Tabs, Tab, useMediaQuery } from "@material-ui/core";
 import {
   AddRounded,
   DeleteRounded,
@@ -9,7 +9,6 @@ import {
   ListAltRounded,
   FindInPageRounded,
 } from "@material-ui/icons";
-import useSWR from "swr";
 
 import Confirm from "../../Modals/Confirm";
 import { AddItemModal } from "../../Items/ItemModals";
@@ -22,21 +21,12 @@ import FlagModal from "./FlagModal";
 
 import List from "app/SideUtilityList";
 import { BasePaper } from "app/Paper";
+import DataGrid from "app/NewDataGrid";
 
 import { deleteAnItem, IItem } from "api/items";
 
-import { splitLevelName } from "logic/levels";
-
-import DataGrid from "app/NewDataGrid";
-import { ILevel } from "api/level";
-
 const Devices = ({ sales }: { sales?: boolean }) => {
-  // something
-  const { data: levels } = useSWR<{ result: ILevel[]; total: number }>("/level");
-
   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
-  const [finish, setFinish] = useState(true);
-
   const [activeTab, setActiveTab] = useState(0);
   const [selectedStep, setSelectedStep] = useState<any>();
   const [selectedFlag, setSelectedFlag] = useState<any>();
@@ -49,161 +39,165 @@ const Devices = ({ sales }: { sales?: boolean }) => {
 
   const [flagModalOpen, setFlagModalOpen] = useState(false);
   const [levelModal, setLevelModal] = useState(false);
+  const phone = useMediaQuery("(max-width:900px)");
 
-  const [gridColumns, setGridColumns] = useState<any[]>([
-    {
-      name: "no",
-      header: "Device Number",
-      minWidth: 120,
-    },
-    { name: "name", header: "Name", flex: 1, minWidth: 200 },
-    { name: "description", header: "Description", flex: 2, minWidth: 200 },
-    {
-      name: "Battery Cabinet Quantity",
-      header: "B.C.QTY",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        if (data.levels) {
-          let keys = Object.keys(data?.levels);
-          return data.levels["Battery Cabinet Quantity" + "__" + keys[0].split("__")[1]];
-        } else {
-          return "-";
-        }
+  const gridColumns = useMemo<any[]>(
+    () => [
+      {
+        name: "no",
+        header: "Device Number",
+        minWidth: 120,
       },
-    },
-    {
-      name: "Battery Cabinet",
-      header: "B.C.",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        if (data.levels) {
-          let keys = Object.keys(data?.levels);
-          return data.levels["Battery Cabinet" + "__" + keys[0].split("__")[1]];
-        } else {
-          return "-";
-        }
+      { name: "name", header: "Name", flex: 1, minWidth: 200 },
+      { name: "description", header: "Description", flex: 2, minWidth: 200 },
+      {
+        name: "Battery Cabinet Quantity",
+        header: "B.C.QTY",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          if (data.levels) {
+            let keys = Object.keys(data?.levels);
+            return data.levels["Battery Cabinet Quantity__" + keys[0].split("__")[1]];
+          } else {
+            return "-";
+          }
+        },
       },
-    },
-    {
-      name: "Battery Run-Time",
-      header: "B. Run Time",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        if (data.levels) {
-          let keys = Object.keys(data?.levels);
-          return data.levels["Battery Run-Time" + "__" + keys[0].split("__")[1]];
-        } else {
-          return "-";
-        }
+      {
+        name: "Battery Cabinet",
+        header: "B.C.",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          if (data.levels) {
+            let keys = Object.keys(data?.levels);
+            return data.levels["Battery Cabinet__" + keys[0].split("__")[1]];
+          } else {
+            return "-";
+          }
+        },
       },
-    },
-    {
-      name: "Enclosure Type",
-      header: "Enclosure Type",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        if (data.levels) {
-          let keys = Object.keys(data?.levels);
-          return data.levels["Enclosure Type" + "__" + keys[0].split("__")[1]];
-        } else {
-          return "-";
-        }
+      {
+        name: "Battery Run-Time",
+        header: "B. Run Time",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          if (data.levels) {
+            let keys = Object.keys(data?.levels);
+            return data.levels["Battery Run-Time__" + keys[0].split("__")[1]];
+          } else {
+            return "-";
+          }
+        },
       },
-    },
-    {
-      name: "Input Voltage",
-      header: "Input Voltage",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        if (data.levels) {
-          let keys = Object.keys(data?.levels);
-          return data.levels["Input Voltage" + "__" + keys[0].split("__")[1]];
-        } else {
-          return "-";
-        }
+      {
+        name: "Enclosure Type",
+        header: "Enclosure Type",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          if (data.levels) {
+            let keys = Object.keys(data?.levels);
+            return data.levels["Enclosure Type__" + keys[0].split("__")[1]];
+          } else {
+            return "-";
+          }
+        },
       },
-    },
-    {
-      name: "Inverter Cabinet Size",
-      header: "I.C. Size",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        if (data.levels) {
-          let keys = Object.keys(data?.levels);
-          return data.levels["Inverter Cabinet Size" + "__" + keys[0].split("__")[1]];
-        } else {
-          return "-";
-        }
+      {
+        name: "Input Voltage",
+        header: "Input Voltage",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          if (data.levels) {
+            let keys = Object.keys(data?.levels);
+            return data.levels["Input Voltage__" + keys[0].split("__")[1]];
+          } else {
+            return "-";
+          }
+        },
       },
-    },
-    {
-      name: "Inverter Type",
-      header: "Inverter Type",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        if (data.levels) {
-          let keys = Object.keys(data?.levels);
-          return data.levels["Inverter Type" + "__" + keys[0].split("__")[1]];
-        } else {
-          return "-";
-        }
+      {
+        name: "Inverter Cabinet Size",
+        header: "I.C. Size",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          if (data.levels) {
+            let keys = Object.keys(data?.levels);
+            return data.levels["Inverter Cabinet Size__" + keys[0].split("__")[1]];
+          } else {
+            return "-";
+          }
+        },
       },
-    },
-    {
-      name: "Main Cabinet Quantity",
-      header: "Main Cabinet QTY",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        if (data.levels) {
-          let keys = Object.keys(data?.levels);
-          return data.levels["Main Cabinet Quantity" + "__" + keys[0].split("__")[1]];
-        } else {
-          return "-";
-        }
+      {
+        name: "Inverter Type",
+        header: "Inverter Type",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          if (data.levels) {
+            let keys = Object.keys(data?.levels);
+            return data.levels["Inverter Type__" + keys[0].split("__")[1]];
+          } else {
+            return "-";
+          }
+        },
       },
-    },
-    {
-      name: "Output Type",
-      header: "Output Type",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        if (data.levels) {
-          let keys = Object.keys(data?.levels);
-          return data.levels["Output Type" + "__" + keys[0].split("__")[1]];
-        } else {
-          return "-";
-        }
+      {
+        name: "Main Cabinet Quantity",
+        header: "Main Cabinet QTY",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          if (data.levels) {
+            let keys = Object.keys(data?.levels);
+            return data.levels["Main Cabinet Quantity__" + keys[0].split("__")[1]];
+          } else {
+            return "-";
+          }
+        },
       },
-    },
-    {
-      name: "Output Voltage",
-      header: "Output Voltage",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        if (data.levels) {
-          let keys = Object.keys(data?.levels);
-          return data.levels["Output Voltage" + "__" + keys[0].split("__")[1]];
-        } else {
-          return "-";
-        }
+      {
+        name: "Output Type",
+        header: "Output Type",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          if (data.levels) {
+            let keys = Object.keys(data?.levels);
+            return data.levels["Output Type__" + keys[0].split("__")[1]];
+          } else {
+            return "-";
+          }
+        },
       },
-    },
-    {
-      name: "Power Rating",
-      header: "Power Rating",
-      minWidth: 120,
-      render: ({ data }: any) => {
-        if (data.levels) {
-          let keys = Object.keys(data?.levels);
-          return data.levels["Power Rating" + "__" + keys[0].split("__")[1]];
-        } else {
-          return "-";
-        }
+      {
+        name: "Output Voltage",
+        header: "Output Voltage",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          if (data.levels) {
+            let keys = Object.keys(data?.levels);
+            return data.levels["Output Voltage__" + keys[0].split("__")[1]];
+          } else {
+            return "-";
+          }
+        },
       },
-    },
-    { name: "leadTime", header: "Lead Time", minWidth: 120 },
-    { name: "retailPrice", header: "Price", minWidth: 120, type: "number" },
-  ]);
+      {
+        name: "Power Rating",
+        header: "Power Rating",
+        minWidth: 120,
+        render: ({ data }: any) => {
+          if (data.levels) {
+            let keys = Object.keys(data?.levels);
+            return data.levels["Power Rating__" + keys[0].split("__")[1]];
+          } else {
+            return "-";
+          }
+        },
+      },
+      { name: "leadTime", header: "Lead Time", minWidth: 120 },
+      { name: "retailPrice", header: "Price", minWidth: 120, type: "number" },
+    ],
+    []
+  );
 
   const handleDelete = useCallback(async () => {
     try {
@@ -215,29 +209,6 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       console.log(error);
     }
   }, [selectedItem]);
-  const phone = useMediaQuery("(max-width:900px)");
-
-  const handleDataFetched = (data: any) => {
-    // console.log("handleDataFetched");
-    // if (counter === 0 && data && data.result) {
-    //   const levelsSet = new Set<string>();
-    //   let levels: string[] = [];
-    //   data.result.forEach((item: any) => {
-    //     Object.keys(item?.levels || [])?.forEach((level: any) => {
-    //       levelsSet.add(level);
-    //     });
-    //   });
-    //   levels = Array.from(levelsSet);
-    //   const levelColumns = levels
-    //     .filter((l) => !gridColumns.find((c) => c.name === l))
-    //     .map((l) => {
-    //       return { name: l, defaultWidth: 150 };
-    //     });
-    //   const res = [...gridColumns.slice(0, 4), ...levelColumns, ...gridColumns.slice(4)];
-    //   setGridColumns(res);
-    //   setCounter((p) => p + 1);
-    // }
-  };
 
   return (
     <BasePaper>
@@ -278,7 +249,6 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       />
       <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
       <LevelModal open={levelModal} onClose={() => setLevelModal(false)} />
-
       <Box display="flex" justifyContent="flex-end" alignItems="center" my={1}>
         <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
           <Tab
@@ -340,29 +310,19 @@ const Devices = ({ sales }: { sales?: boolean }) => {
           </List>
         )}
       </Box>
-
       <Box display="flex" alignItems="flex-start" mt={1}>
         <Box flex={1}>
           {activeTab === 0 && (
-            <>
-              <Box>
-                {finish || sales ? (
-                  <DataGrid
-                    style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 165px)" }}
-                    url="/item"
-                    initParams={{ device: true, fru: false }}
-                    onDataFetched={handleDataFetched}
-                    onRowSelected={(r) => {
-                      setSelectedItem(r as any);
-                      setActiveTab(1);
-                    }}
-                    columns={gridColumns}
-                  />
-                ) : (
-                  <LinearProgress />
-                )}
-              </Box>
-            </>
+            <DataGrid
+              style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 165px)" }}
+              url="/item"
+              initParams={{ device: true, fru: false }}
+              onRowSelected={(r) => {
+                setSelectedItem(r as any);
+                setActiveTab(1);
+              }}
+              columns={gridColumns}
+            />
           )}
           {activeTab === 1 && (
             <DetailTab

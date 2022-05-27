@@ -16,7 +16,7 @@ import { openRequestedSinglePopup } from "../../logic/window";
 
 import BomModal from "./BomModal";
 import BomRecordModal from "./BomRecordModal";
-import { useLock } from "common/Lock";
+import { useLock, LockButton, LockProvider } from "common/Lock";
 import Confirm from "common/Confirm";
 
 const defaultFilterValues = [
@@ -33,15 +33,7 @@ const defaultFilterValues = [
   },
 ];
 
-export default function ItemBomTable({
-  boms,
-  item,
-  mutateBoms,
-}: {
-  boms?: IBom[];
-  item: IItem;
-  mutateBoms: () => void;
-}) {
+function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: IItem; mutateBoms: () => void }) {
   const [bomModal, setBomModal] = useState(false);
   const [bomRecordModal, setBomRecordModal] = useState(false);
   const [selectedBom, setSelectedBom] = useState<IBom>();
@@ -141,18 +133,21 @@ export default function ItemBomTable({
       {selectedBom && (
         <BomRecordModal open={bomRecordModal} onClose={() => setBomRecordModal(false)} bom={selectedBom} />
       )}
-      <Button
-        startIcon={<AddRounded />}
-        variant="outlined"
-        onClick={() => {
-          setSelectedBom(undefined);
-          setBomModal(true);
-        }}
-        style={{ marginBottom: 8 }}
-        disabled={lock}
-      >
-        BOM
-      </Button>
+      <Box display="flex" alignItems="center">
+        <Button
+          startIcon={<AddRounded />}
+          variant="outlined"
+          onClick={() => {
+            setSelectedBom(undefined);
+            setBomModal(true);
+          }}
+          style={{ marginBottom: 8, marginRight: "auto" }}
+          disabled={lock}
+        >
+          BOM
+        </Button>
+        <LockButton />
+      </Box>
       <DataGrid
         className={classes.root}
         columns={columns}
@@ -161,5 +156,21 @@ export default function ItemBomTable({
         style={{ height: "100%" }}
       />
     </>
+  );
+}
+
+export default function ItemBomTable({
+  boms,
+  item,
+  mutateBoms,
+}: {
+  boms?: IBom[];
+  item: IItem;
+  mutateBoms: () => void;
+}) {
+  return (
+    <LockProvider>
+      <ItemBomTableContent boms={boms} item={item} mutateBoms={mutateBoms} />
+    </LockProvider>
   );
 }

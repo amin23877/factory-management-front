@@ -156,8 +156,8 @@ export default function ClientDetails({
                     <Tab label="Addresses" />
                     <Tab label="Auditing" />
                   </Tabs>
-                  {activeTab === 0 && <ContactTab itemId={selectedRow.id} model="client" lock={lock} />}
-                  {activeTab === 1 && <DocumentTab itemId={selectedRow.id} model="client" lock={lock} />}
+                  {activeTab === 0 && <ContactTab itemId={selectedRow.id} model="client" />}
+                  {activeTab === 1 && <DocumentTab itemId={selectedRow.id} model="client" />}
                   {activeTab === 2 && (
                     <BaseDataGrid
                       height="calc(100% - 60px)"
@@ -167,8 +167,8 @@ export default function ClientDetails({
                     />
                   )}
                   {activeTab === 3 && <SOTable rows={[]} />}
-                  {activeTab === 5 && <NoteTab itemId={selectedRow.id} model="client" lock={lock} />}
-                  {activeTab === 6 && <AddressTab model="client" itemId={selectedRow.id} lock={lock} />}
+                  {activeTab === 5 && <NoteTab itemId={selectedRow.id} model="client" />}
+                  {activeTab === 6 && <AddressTab model="client" itemId={selectedRow.id} />}
                 </BasePaper>
               </Box>
             </Box>

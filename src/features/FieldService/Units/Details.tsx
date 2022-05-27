@@ -239,7 +239,7 @@ function Details({ unit }: { unit: IUnit }) {
                 <BaseDataGrid cols={warCols} rows={[]} onRowSelected={(d) => {}} height="67.3vh" />
               </Box>
             )}
-            {gridActiveTab === 2 && <JobRecordsTable unit={unit} lock={lock} setLock={setLock} />}
+            {gridActiveTab === 2 && <JobRecordsTable unit={unit} />}
             {gridActiveTab === 3 && <DocumentTab itemId={unit.id} model="unit" />}
             {gridActiveTab === 4 && (
               <>

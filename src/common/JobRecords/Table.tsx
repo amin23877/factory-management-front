@@ -14,7 +14,7 @@ import { openRequestedSinglePopup } from "logic/window";
 import AddModal from "./AddModal";
 import Toast from "app/Toast";
 import Confirm from "common/Confirm";
-import { LockButton } from "common/Lock";
+import { LockButton, useLock } from "common/Lock";
 
 const useStyle = makeStyles({
   root: {
@@ -106,16 +106,7 @@ function ExpandButton({
   return <></>;
 }
 
-export default function JobRecordsTable({
-  unit,
-  lock,
-  setLock,
-}: {
-  unit: IUnit;
-  lock: boolean;
-  setLock: React.Dispatch<React.SetStateAction<boolean>>;
-}) {
-  // const [lock, setLock] = useState(true);
+export default function JobRecordsTable({ unit }: { unit: IUnit }) {
   const phone = useMediaQuery("(max-width:400px)");
   const history = useHistory();
   const classes = useStyle();
@@ -123,6 +114,7 @@ export default function JobRecordsTable({
   const [expandedComponents, setExpandedComponents] = useState<string[]>([]);
   const [addModal, setAddModal] = useState(false);
   const [parent, setParent] = useState<{ _id: string; Component: string }>();
+  const { lock, setLock } = useLock();
 
   const jobRecordsSorted = useMemo(
     () =>

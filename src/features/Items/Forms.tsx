@@ -11,6 +11,7 @@ import { IItem } from "api/items";
 import LinkField from "app/Inputs/LinkFields";
 
 import ItemTypeCombo from "common/ItemTypeCombo";
+import { useLock } from "common/Lock";
 
 const useStyles = makeStyles({
   label: {
@@ -365,6 +366,7 @@ export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: 
 
 export const Pricing = ({ values, errors, handleChange, handleBlur, touched, boms }: IForm) => {
   const phone = useMediaQuery("(max-width:900px)");
+  const { lock } = useLock();
 
   return (
     <Box mt={1} display="grid" gridTemplateColumns="auto auto" gridColumnGap={10} gridRowGap={10}>
@@ -376,8 +378,8 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
         onBlur={handleBlur}
         onChange={handleChange}
         style={{ marginBottom: 3 }}
+        disabled={lock}
       />
-
       <TextField
         label="retail price"
         name="retailPrice"
@@ -386,6 +388,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
         onBlur={handleBlur}
         onChange={handleChange}
         style={{ marginBottom: 3 }}
+        disabled={lock}
       />
       <TextField
         label="Total Cost"
@@ -402,6 +405,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
             label=" "
             onChange={handleChange}
             control={<Checkbox />}
+            disabled={lock}
           />
           <TextField
             type="number"
@@ -412,12 +416,11 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
             onBlur={handleBlur}
             onChange={handleChange}
             style={{ marginBottom: 3 }}
-            disabled={!values.overrideUse}
+            disabled={!values.overrideUse || lock}
           />
         </div>
       ) : (
         <>
-          {" "}
           <TextField
             label=" Bom Total Part Cost"
             name="bomCost"
@@ -426,7 +429,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
             onBlur={handleBlur}
             onChange={handleChange}
             style={{ marginBottom: 3 }}
-            disabled
+            disabled={lock}
           />
           <div style={phone ? { gridColumnEnd: "span 2" } : {}}>
             <FormControlLabel
@@ -436,6 +439,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
               label=" "
               onChange={handleChange}
               control={<Checkbox />}
+              disabled={lock}
             />
             <TextField
               label=" Bom Cost Estimate"
@@ -445,6 +449,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
               onBlur={handleBlur}
               onChange={handleChange}
               style={{ marginBottom: 3 }}
+              disabled={lock}
             />
           </div>
         </>

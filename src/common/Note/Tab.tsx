@@ -4,12 +4,14 @@ import { AddRounded } from "@material-ui/icons";
 import { GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
 
+import NoteModal from "./Modal";
 import Button from "app/Button";
 import BaseDataGrid from "app/BaseDataGrid";
 
 import { formatTimestampToDate } from "logic/date";
 import { INote } from "api/note";
-import NoteModal from "./Modal";
+
+import { LockButton, LockProvider, useLock } from "../Lock";
 
 const columns: GridColumns = [
   {
@@ -28,24 +30,28 @@ const columns: GridColumns = [
   { field: "note", headerName: "Note", flex: 1 },
 ];
 
-export default function NoteTab({ itemId, model, lock }: { model: string; itemId: string; lock?: boolean }) {
+function NoteTabContent({ itemId, model }: { model: string; itemId: string }) {
   const { data } = useSWR(`/note/${model}/${itemId}`);
   const [addModal, setAddModal] = useState(false);
   const [selected, setSelected] = useState<INote>();
+  const { lock } = useLock();
 
   return (
     <>
       <NoteModal open={addModal} onClose={() => setAddModal(false)} model={model} itemId={itemId} data={selected} />
       <Box>
-        <Button
-          variant="outlined"
-          startIcon={<AddRounded />}
-          style={{ margin: "4px 0" }}
-          onClick={() => setAddModal(true)}
-          disabled={lock}
-        >
-          Add
-        </Button>
+        <Box display="flex" alignItems="center">
+          <Button
+            variant="outlined"
+            startIcon={<AddRounded />}
+            style={{ margin: "4px 0", marginRight: "auto" }}
+            onClick={() => setAddModal(true)}
+            disabled={lock}
+          >
+            Add
+          </Button>
+          <LockButton />
+        </Box>
         <BaseDataGrid
           cols={columns}
           rows={data || []}
@@ -58,5 +64,13 @@ export default function NoteTab({ itemId, model, lock }: { model: string; itemId
         />
       </Box>
     </>
+  );
+}
+
+export default function NoteTab({ itemId, model }: { model: string; itemId: string }) {
+  return (
+    <LockProvider>
+      <NoteTabContent itemId={itemId} model={model} />
+    </LockProvider>
   );
 }

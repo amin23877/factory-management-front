@@ -34,9 +34,9 @@ export default function RepDetails({ selectedRep }: { selectedRep: repType }) {
             <Tab label="Leads" />
             <Tab label="Auditing" />
           </Tabs>
-          {activeTab === 0 && <ContactTab model="rep" itemId={selectedRep.id} lock={lock} />}
-          {activeTab === 1 && <NoteTab model="rep" itemId={selectedRep.id} lock={lock} />}
-          {activeTab === 2 && <DocumentTab model="rep" itemId={selectedRep.id} lock={lock} />}
+          {activeTab === 0 && <ContactTab model="rep" itemId={selectedRep.id} />}
+          {activeTab === 1 && <NoteTab model="rep" itemId={selectedRep.id} />}
+          {activeTab === 2 && <DocumentTab model="rep" itemId={selectedRep.id} />}
         </BasePaper>
       </Grid>
     </Grid>

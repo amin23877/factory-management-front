@@ -8,6 +8,8 @@ import Button from "app/Button";
 import BaseDataGrid from "app/BaseDataGrid";
 import { IItem } from "api/items";
 
+import { useLock } from "common/Lock";
+
 const pricingCols = [
   { field: "label", headerName: "Label", flex: 1 },
   { field: "price", headerName: "Price", flex: 1 },
@@ -23,7 +25,6 @@ export default function PricingTab({
   setFieldValue,
   touched,
   values,
-  lock,
 }: {
   itemId: string;
   values: any;
@@ -33,11 +34,11 @@ export default function PricingTab({
   errors: any;
   touched: any;
   boms?: { result: any[]; total: number };
-  lock?: boolean;
 }) {
   const [addPricing, setAddPricing] = useState(false);
   const [selectedPricing, setSelectedPricing] = useState<pricingType>();
   const { data } = useSWR<IItem>(`/item/${itemId}`);
+  const { lock } = useLock();
 
   return (
     <>
@@ -67,8 +68,10 @@ export default function PricingTab({
           height={220}
           pagination
           onRowSelected={(r) => {
-            setSelectedPricing(r);
-            setAddPricing(true);
+            if (!lock) {
+              setSelectedPricing(r);
+              setAddPricing(true);
+            }
           }}
         />
         <Pricing

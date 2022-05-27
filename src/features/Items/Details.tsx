@@ -283,7 +283,7 @@ function ItemsDetails({
                     <Tab label="Clusters and Levels" />
                     <Tab label="Convert" />
                   </Tabs>
-                  {moreInfoTab === 0 && <PhotoTab model="item" id={selectedRow.id} lock={lock} />}
+                  {moreInfoTab === 0 && <PhotoTab model="item" id={selectedRow.id} />}
                   {moreInfoTab === 1 && (
                     <Box display="flex" justifyContent="space-around" alignItems="center" maxWidth="83vw">
                       <div ref={(e) => (qrCode.current = e)}>
@@ -354,7 +354,6 @@ function ItemsDetails({
                       handleBlur={handleBlur}
                       handleChange={handleChange}
                       setFieldValue={setFieldValue}
-                      lock={lock}
                     />
                   )}
                   {moreInfoTab === 5 && (
@@ -404,7 +403,7 @@ function ItemsDetails({
                   <Tab label="Note" />
                   <Tab label="Auditing" />
                 </Tabs>
-                {activeTab === 0 && <DocumentTab itemId={selectedRow.id} model="item" lock={lock} />}
+                {activeTab === 0 && <DocumentTab itemId={selectedRow.id} model="item" />}
                 {activeTab === 1 && (
                   <div style={{ maxWidth: "79vw", overflow: "auto" }}>
                     <Button
@@ -440,7 +439,7 @@ function ItemsDetails({
                     height={"calc(100% - 60px)"}
                   />
                 )} */}
-                {activeTab === 6 && <NotesTab itemId={selectedRow.id} model="item" lock={lock} />}
+                {activeTab === 6 && <NotesTab itemId={selectedRow.id} model="item" />}
                 {activeTab === 7 && <div>Auditing</div>}
               </BasePaper>
             </Box>

@@ -271,7 +271,7 @@ function Details({ unit }: { unit: IUnit }) {
           </Box>
         )}
         {gridActiveTab === 1 && <DocumentTab itemId={unit.id} model="unit" />}
-        {gridActiveTab === 2 && <JobRecordsTable unit={unit} lock={lock} setLock={setLock} />}
+        {gridActiveTab === 2 && <JobRecordsTable unit={unit} />}
         {gridActiveTab === 3 && (
           <>
             <div
