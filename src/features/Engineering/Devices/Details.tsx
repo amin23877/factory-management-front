@@ -27,11 +27,11 @@ import { getModifiedValues } from "logic/utils";
 
 import DeviceQRCode from "app/QRCode";
 import ItemBomTable from "features/BOM/ItemBomTable";
-import PricingTab from "features/Items/Pricing";
+import PricingTab from "common/Pricing";
 import DocumentTab from "common/Document/Tab";
 import NoteTab from "common/Note/Tab";
 import PhotoTab from "common/PhotoTab";
-import { LockButton, useLock } from "common/Lock";
+import { LockButton } from "common/Lock";
 
 function DeviceDetails({
   sales,
@@ -239,7 +239,7 @@ function DeviceDetails({
     }
   };
   const phone = useMediaQuery("(max-width:900px)");
-  const { lock } = useLock();
+  // const { lock } = useLock();
 
   if (!selectedRow) {
     return <LinearProgress />;
@@ -298,9 +298,9 @@ function DeviceDetails({
                       justifyContent: "center",
                     }}
                   >
-                    <Button style={{ margin: "0 auto", width: "200px" }} kind="edit" type="submit" disabled={lock}>
+                    {/* <Button style={{ margin: "0 auto", width: "200px" }} kind="edit" type="submit" disabled={lock}>
                       Save
-                    </Button>
+                    </Button> */}
                     <LockButton />
                   </Box>
                 </BasePaper>
@@ -345,12 +345,9 @@ function DeviceDetails({
                   )}
                   {moreInfoTab === 2 && (
                     <PricingTab
-                      errors={errors}
                       handleBlur={handleBlur}
                       handleChange={handleChange}
                       itemId={selectedRow.id}
-                      setFieldValue={setFieldValue}
-                      touched={touched}
                       values={values}
                       boms={boms || { result: [], total: 0 }}
                     />

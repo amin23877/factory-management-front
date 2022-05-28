@@ -77,7 +77,7 @@ export default function Unit() {
         {activeTab === 0 && (
           <DataGrid
             url="/unit"
-            initParams={{ fru: false }}
+            initParams={{ fru: false, option: false }}
             columns={cols}
             onRowSelected={(d) => {
               setSelectedUnit(d);
