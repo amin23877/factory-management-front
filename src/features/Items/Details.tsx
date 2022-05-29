@@ -29,6 +29,7 @@ import Confirm from "common/Confirm";
 import Toast from "app/Toast";
 import PhotoTab from "common/PhotoTab";
 import { useLock, LockButton } from "common/Lock";
+import AuditTable from "common/Audit";
 
 const style = {
   border: "1px solid gray ",
@@ -440,7 +441,7 @@ function ItemsDetails({
                   />
                 )} */}
                 {activeTab === 6 && <NotesTab itemId={selectedRow.id} model="item" />}
-                {activeTab === 7 && <div>Auditing</div>}
+                {activeTab === 7 && <AuditTable itemId={selectedRow.id} model="Item" />}
               </BasePaper>
             </Box>
           </Form>

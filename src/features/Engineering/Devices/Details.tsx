@@ -10,7 +10,6 @@ import Button from "app/Button";
 import BaseDataGrid from "app/BaseDataGrid";
 import { BasePaper } from "app/Paper";
 
-import { Levels } from "../../Items/Forms";
 import { General } from "./Forms";
 import AddServiceModal from "./AddServiceModal";
 import UnitHistoryModal from "../../Unit/Modal";
@@ -31,7 +30,9 @@ import PricingTab from "common/Pricing";
 import DocumentTab from "common/Document/Tab";
 import NoteTab from "common/Note/Tab";
 import PhotoTab from "common/PhotoTab";
+import LevelsTab from "common/Level/Tab";
 import { LockButton } from "common/Lock";
+import AuditTable from "common/Audit";
 
 function DeviceDetails({
   sales,
@@ -353,16 +354,7 @@ function DeviceDetails({
                     />
                   )}
                   {moreInfoTab === 3 && !sales && (
-                    <Levels
-                      values={values}
-                      handleChange={handleChange}
-                      handleBlur={handleBlur}
-                      setFieldValue={setFieldValue}
-                      errors={errors}
-                      touched={touched}
-                      selectedItem={selectedRow}
-                      device={true}
-                    />
+                    <LevelsTab values={values} handleChange={handleChange} handleBlur={handleBlur} />
                   )}
                 </BasePaper>
               </Box>
@@ -500,6 +492,7 @@ function DeviceDetails({
                       />
                     )}
                     {activeTab === 11 && <NoteTab itemId={selectedRow.id} model="item" />}
+                    {activeTab === 12 && <AuditTable itemId={selectedRow.id} model="Item" />}
                   </>
                 ) : (
                   <>
