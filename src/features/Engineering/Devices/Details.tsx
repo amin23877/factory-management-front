@@ -299,9 +299,9 @@ function DeviceDetails({
                       justifyContent: "center",
                     }}
                   >
-                    {/* <Button style={{ margin: "0 auto", width: "200px" }} kind="edit" type="submit" disabled={lock}>
+                    <Button style={{ display: "none", margin: "0 auto", width: "200px" }} kind="edit" type="submit">
                       Save
-                    </Button> */}
+                    </Button>
                     <LockButton />
                   </Box>
                 </BasePaper>
@@ -354,7 +354,12 @@ function DeviceDetails({
                     />
                   )}
                   {moreInfoTab === 3 && !sales && (
-                    <LevelsTab values={values} handleChange={handleChange} handleBlur={handleBlur} />
+                    <LevelsTab
+                      values={values}
+                      handleChange={handleChange}
+                      handleBlur={handleBlur}
+                      setFieldValue={setFieldValue}
+                    />
                   )}
                 </BasePaper>
               </Box>
