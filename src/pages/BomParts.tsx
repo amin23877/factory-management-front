@@ -121,7 +121,7 @@ function Parts() {
       <AddPartModal open={open} onClose={() => setOpen(false)} bomId={bomId} onDone={() => setRefresh((p) => p + 1)} />
       <Container>
         <Box display="flex" alignItems="center" mb={1}>
-          <Button kind="add" onClick={() => setOpen(true)}>
+          <Button kind="add" onClick={() => setOpen(true)} disabled={lock}>
             Add Part
           </Button>
           <div style={{ flexGrow: 1 }} />

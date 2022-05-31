@@ -4,6 +4,7 @@ import { FormControlLabel, Checkbox } from "@material-ui/core";
 
 import TextField from "app/TextField";
 import AsyncCombo from "common/AsyncCombo";
+import { useLock, LockProvider, LockButton } from "common/Lock";
 
 function formatDateValue(v: any) {
   if (v) {
@@ -12,15 +13,27 @@ function formatDateValue(v: any) {
   return null;
 }
 
-export default function Approvals({ getFieldProps, values }: { getFieldProps: any; values?: any }) {
+function ApprovalsContent({ getFieldProps, values }: { getFieldProps: any; values?: any }) {
+  const { lock } = useLock();
+
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" gridTemplateRows="repeat(4, 1fr)" gridGap={8}>
-      <TextField label="Customer PO#" {...getFieldProps("customerPONumber")} />
+      <Box style={{ gridColumn: "span 2", display: "flex", alignItems: "center" }}>
+        <TextField
+          label="Customer PO#"
+          {...getFieldProps("customerPONumber")}
+          style={{ marginRight: 8 }}
+          fullWidth
+          disabled={lock}
+        />
+        <LockButton />
+      </Box>
       <TextField
         label="PO Received Date"
         type="date"
         InputLabelProps={{ shrink: true }}
         value={formatDateValue(values?.poReceivedDate)}
+        disabled={lock}
       />
       <AsyncCombo
         label="PO Received By"
@@ -29,6 +42,7 @@ export default function Approvals({ getFieldProps, values }: { getFieldProps: an
         getOptionSelected={(o, v) => o.id === v.id}
         url="/employee"
         value={values?.poReceivedBy}
+        disabled={lock}
       />
       <AsyncCombo
         label="SO Issued By"
@@ -37,39 +51,53 @@ export default function Approvals({ getFieldProps, values }: { getFieldProps: an
         getOptionSelected={(o, v) => o.id === v.id}
         url="/employee"
         value={values?.soIssuedBy}
+        disabled={lock}
       />
-      <TextField label="status" {...getFieldProps("status")} />
+      <TextField label="status" {...getFieldProps("status")} disabled={lock} />
       <TextField
         label="Estimated Ship Date"
         type="date"
         InputLabelProps={{ shrink: true }}
         value={formatDateValue(values?.estimatedShipDate)}
+        disabled={lock}
       />
       <TextField
         label="Original Ship Date"
         type="date"
         InputLabelProps={{ shrink: true }}
         value={formatDateValue(values?.originalShipDate)}
+        disabled={lock}
       />
       <TextField
         label="Actual Ship Date"
         type="date"
         InputLabelProps={{ shrink: true }}
         value={formatDateValue(values?.actualShipDate)}
+        disabled={lock}
       />
       <TextField
         label="Released To Production Date"
         type="date"
         InputLabelProps={{ shrink: true }}
         value={formatDateValue(values?.releasedToProductionDate)}
+        disabled={lock}
       />
       <TextField
         label="To Be InvoicedDate"
         type="date"
         InputLabelProps={{ shrink: true }}
         value={formatDateValue(values?.toBeInvoicedDate)}
+        disabled={lock}
       />
-      <FormControlLabel label="Expedite" control={<Checkbox />} {...getFieldProps("expedite")} />
+      <FormControlLabel label="Expedite" control={<Checkbox />} {...getFieldProps("expedite")} disabled={lock} />
     </Box>
+  );
+}
+
+export default function Approvals({ getFieldProps, values }: { getFieldProps: any; values?: any }) {
+  return (
+    <LockProvider>
+      <ApprovalsContent getFieldProps={getFieldProps} values={values} />
+    </LockProvider>
   );
 }
