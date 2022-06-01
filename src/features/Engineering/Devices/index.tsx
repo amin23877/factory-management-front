@@ -9,7 +9,6 @@ import {
   ListAltRounded,
   FindInPageRounded,
 } from "@material-ui/icons";
-import useSWR from "swr";
 
 import Confirm from "../../Modals/Confirm";
 import { AddItemModal } from "../../Items/ItemModals";
@@ -19,7 +18,6 @@ import LevelModal from "common/Level/Modal";
 import DetailTab from "./Details";
 import AddTaskModal, { EditTaskModal } from "./TaskModal";
 import FlagModal from "./FlagModal";
-import ClusterChips from "./ClusterChips";
 
 import List from "app/SideUtilityList";
 import DataGrid from "app/NewDataGrid";
@@ -27,10 +25,9 @@ import { BasePaper } from "app/Paper";
 
 import { deleteAnItem, IItem } from "api/items";
 import { clusterType } from "api/cluster";
+import AsyncCombo from "common/AsyncCombo";
 
 const Devices = ({ sales }: { sales?: boolean }) => {
-  const { data: clusters } = useSWR<{ result: clusterType[]; total: number }>(`/cluster`);
-
   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
   const [activeTab, setActiveTab] = useState(0);
   const [selectedStep, setSelectedStep] = useState<any>();
@@ -317,17 +314,17 @@ const Devices = ({ sales }: { sales?: boolean }) => {
           </List>
         )}
       </Box>
-      <ClusterChips
-        clusters={clusters?.result || []}
-        onClick={(c) => {
-          if (selectedCluster && selectedCluster.id === c.id) {
-            setSelectedCluster(undefined);
-            return;
-          }
-          setSelectedCluster(c);
-        }}
-        active={selectedCluster}
-      />
+      {activeTab === 0 && (
+        <AsyncCombo
+          url="/cluster"
+          filterBy="clusterValue"
+          getOptionLabel={(o) => o?.clusterValue}
+          getOptionSelected={(o, v) => o?.id === v?.id}
+          value={selectedCluster}
+          onChange={(e, nv) => setSelectedCluster(nv)}
+          style={{ maxWidth: 300 }}
+        />
+      )}
       <Box display="flex" alignItems="flex-start" mt={1}>
         <Box flex={1}>
           {activeTab === 0 && (

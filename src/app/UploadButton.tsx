@@ -31,7 +31,7 @@ const UploadButton = ({
         <Button
           color="primary"
           variant="contained"
-          onClick={() => fileUploader.current?.click()}
+          onClick={() => !disabled && fileUploader.current?.click()}
           startIcon={<PhotoCamera />}
           disabled={disabled}
         >
