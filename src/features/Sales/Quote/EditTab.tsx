@@ -1,12 +1,9 @@
 import React, { useMemo, useState } from "react";
-import { Tabs, Tab, Box, makeStyles, useMediaQuery } from "@material-ui/core";
+import { Tabs, Tab, Box, useMediaQuery } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
-import { useHistory } from "react-router-dom";
-import useSWR from "swr";
 
 import BaseDataGrid from "app/BaseDataGrid";
 import { BasePaper } from "app/Paper";
-import Button from "app/Button";
 
 import EditForm from "./EditForm";
 
@@ -15,69 +12,16 @@ import DocumentTab from "common/Document/Tab";
 
 import { IQuote } from "api/quote";
 import { ILineItem } from "api/lineItem";
-import { ILineService } from "api/lineService";
 import LineItemModal from "../../LineItem";
-import LineServiceModal from "../../LineService";
 
-import { openRequestedSinglePopup } from "logic/window";
-
-const useStyle = makeStyles({
-  btn: {
-    border: "1px solid gray ",
-    borderRadius: "4px",
-    padding: "5px 10px",
-    margin: "0px 0px 10px 5px ",
-  },
-});
+import LineItems from "./LineItem";
 
 export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
-  const classes = useStyle();
-  const history = useHistory();
+  const phone = useMediaQuery("(max-width:900px)");
+
   const [activeTab, setActiveTab] = useState(0);
-
   const [lineItemModal, setLineItemModal] = useState(false);
-  const [lineServiceModal, setLineServiceModal] = useState(false);
-
   const [selectedLI, setSelectedLI] = useState<ILineItem>();
-  const [selectedLS, setSelectedLS] = useState<ILineService>();
-
-  const { data: lineItems } = useSWR<{ result: ILineItem[]; total: number }>(
-    activeTab === 0 ? `/lineitem?QuoteId=${selectedQuote.id}` : null
-  );
-  const LICols = useMemo<GridColumns>(
-    () => [
-      // { field: "index", headerName: "Sort" },
-      {
-        field: "ItemId",
-        headerName: "Part Number",
-        valueFormatter: ({ row }) => row?.ItemId?.no || row?.text || row?.no,
-        flex: 1,
-      },
-      // { field: "description", headerName: "Description", flex: 1 },
-      { field: "qty", headerName: "QTY", width: 70 },
-      { field: "price", headerName: "Price", width: 70, disableColumnMenu: true },
-      { field: "tax", headerName: "Tax", type: "boolean", width: 70 },
-      {
-        field: "total",
-        headerName: "Total",
-        valueFormatter: (r) => Number(r.row?.price) * Number(r.row?.qty),
-        width: 70,
-        disableColumnMenu: true,
-      },
-    ],
-    []
-  );
-
-  // const LSCols = useMemo<GridColumns>(
-  //   () => [
-  //     { field: "ServiceId", headerName: "Service", valueFormatter: (r) => r.row?.ServiceId?.name, flex: 1 },
-  //     // { field: "LineItemRecordId",  width: 200 },
-  //     { field: "quantity", headerName: "Quantity", width: 100 },
-  //     { field: "price", headerName: "Price", width: 100 },
-  //     { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
-  //   ],
-  //   []
-  // );
 
   const quoteHistoryCols = useMemo<GridColumns>(
     () => [
@@ -90,7 +34,6 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
     ],
     []
   );
-  const phone = useMediaQuery("(max-width:900px)");
 
   return (
     <>
@@ -102,14 +45,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
         mutateField="QuoteId"
         selectedLine={selectedLI}
       />
-      <LineServiceModal
-        record="quote"
-        recordId={selectedQuote?.id}
-        open={lineServiceModal}
-        onClose={() => setLineServiceModal(false)}
-        mutateField="QuoteId"
-        selectedLine={selectedLS}
-      />
+
       <Box
         display="grid"
         gridGap={10}
@@ -133,29 +69,13 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
             <Tab label="Auditing" />
           </Tabs>
           {activeTab === 0 && (
-            <>
-              <Button
-                onClick={() => {
-                  setSelectedLI(undefined);
-                  setLineItemModal(true);
-                }}
-                className={classes.btn}
-              >
-                + Add Line Item
-              </Button>
-              <BaseDataGrid
-                height=" calc(100% - 100px)"
-                cols={LICols}
-                rows={lineItems?.result || []}
-                onRowSelected={(r) => {
-                  if (r?.ItemId?.id) {
-                    phone
-                      ? history.push(`/panel/inventory/${r?.ItemId?.id}`)
-                      : openRequestedSinglePopup({ url: `/panel/inventory/${r?.ItemId?.id}` });
-                  }
-                }}
-              />
-            </>
+            <LineItems
+              quote={selectedQuote}
+              onAddLineItem={() => {
+                setSelectedLI(undefined);
+                setLineItemModal(true);
+              }}
+            />
           )}
           {activeTab === 1 && <DocumentTab itemId={selectedQuote.id} model="quote" />}
           {activeTab === 2 && (

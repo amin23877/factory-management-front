@@ -52,12 +52,12 @@ const columns = [
   {
     name: "phone",
     header: "Phone",
-    minWidth: 150,
+    flex: 1,
   },
   {
     name: "email",
     header: "Email",
-    minWidth: 150,
+    flex: 1,
     hide: true,
   },
   {

@@ -11,14 +11,15 @@ import {
   useMediaQuery,
   LinearProgress,
 } from "@material-ui/core";
+import useSWR from "swr";
 
 import { CacheFieldSelect } from "app/Inputs";
 import TextField from "app/TextField";
 import Button from "app/Button";
+import Toast from "app/Toast";
+import { useLock } from "common/Lock";
 
 import { editClient } from "api/client";
-import Toast from "app/Toast";
-import useSWR from "swr";
 
 export const GeneralForm = ({
   values,
@@ -39,6 +40,9 @@ export const GeneralForm = ({
   cId: string;
   changeTab: (a: number) => void;
 }) => {
+  const { lock } = useLock();
+  const phone = useMediaQuery("(max-width:900px)");
+
   const handleApprove = async () => {
     const resp = await editClient(cId, { approved: true });
     if (resp) {
@@ -54,7 +58,6 @@ export const GeneralForm = ({
       changeTab(2);
     }
   };
-  const phone = useMediaQuery("(max-width:900px)");
 
   return (
     <>
@@ -76,13 +79,14 @@ export const GeneralForm = ({
           label="Active"
           onChange={handleChange}
           onBlur={handleBlur}
+          disabled={lock}
         />
         {req ? (
           <Fragment>
-            <Button kind="add" onClick={handleApprove}>
+            <Button kind="add" onClick={handleApprove} disabled={lock}>
               Approve
             </Button>
-            <Button kind="delete" onClick={handleReject}>
+            <Button kind="delete" onClick={handleReject} disabled={lock}>
               Reject
             </Button>
           </Fragment>
@@ -94,6 +98,7 @@ export const GeneralForm = ({
             label="Approved"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={lock}
           />
         )}
       </Paper>
@@ -115,6 +120,7 @@ export const GeneralForm = ({
           onChange={handleChange}
           value={typeof values.CustomerTypeId === "string" ? values.CustomerTypeId : values.CustomerTypeId?.id}
           error={Boolean(errors.CustomerTypeId)}
+          disabled={lock}
         />
         <TextField
           name="number"
@@ -134,6 +140,7 @@ export const GeneralForm = ({
           error={Boolean(errors.name && touched.name)}
           helperText={touched.name && errors.name && String(errors.name)}
           label="Name"
+          disabled={lock}
         />
         <TextField
           name="qbid"
@@ -143,6 +150,7 @@ export const GeneralForm = ({
           error={Boolean(errors.qbid && touched.qbid)}
           helperText={touched.qbid && errors.qbid && String(errors.qbid)}
           label="Quick Book ID"
+          disabled={lock}
         />
         <TextField
           name="location"
@@ -153,6 +161,7 @@ export const GeneralForm = ({
           helperText={touched.location && errors.location && String(errors.location)}
           label="Location"
           style={{ gridColumn: "span 2" }}
+          disabled={lock}
         />
         <TextField
           name="ext"
@@ -162,6 +171,7 @@ export const GeneralForm = ({
           error={Boolean(errors.ext && touched.ext)}
           helperText={touched.ext && errors.ext && String(errors.ext)}
           label="Ext"
+          disabled={lock}
         />
         <TextField
           name="phone"
@@ -171,6 +181,7 @@ export const GeneralForm = ({
           error={Boolean(errors.phone && touched.phone)}
           helperText={touched.phone && errors.phone && String(errors.phone)}
           label="Phone"
+          disabled={lock}
         />
         <FormControl
           style={
@@ -185,10 +196,10 @@ export const GeneralForm = ({
           }
         >
           <FormLabel style={{ marginRight: "10px" }}>Size</FormLabel>
-          <RadioGroup row name="size" value={values.size} onChange={handleChange} style={{}}>
-            <FormControlLabel value="small" control={<Radio size="small" />} label="Small" />
-            <FormControlLabel value="medium" control={<Radio size="small" />} label="Medium" />
-            <FormControlLabel value="large" control={<Radio size="small" />} label="Large" />
+          <RadioGroup row name="size" value={values.size} onChange={handleChange}>
+            <FormControlLabel value="small" control={<Radio size="small" />} label="Small" disabled={lock} />
+            <FormControlLabel value="medium" control={<Radio size="small" />} label="Medium" disabled={lock} />
+            <FormControlLabel value="large" control={<Radio size="small" />} label="Large" disabled={lock} />
           </RadioGroup>
         </FormControl>
       </Box>
@@ -209,6 +220,7 @@ export const MoreInfoForm = ({
   handleBlur: any;
   handleChange: any;
 }) => {
+  const { lock } = useLock();
   const phone = useMediaQuery("(max-width:900px)");
 
   return (
@@ -227,6 +239,7 @@ export const MoreInfoForm = ({
         error={Boolean(errors.website && touched.website)}
         helperText={touched.website && errors.website && String(errors.website)}
         label="website"
+        disabled={lock}
       />
       <TextField
         name="linkedIn"
@@ -236,6 +249,7 @@ export const MoreInfoForm = ({
         error={Boolean(errors.linkedIn && touched.linkedIn)}
         helperText={touched.linkedIn && errors.linkedIn && String(errors.linkedIn)}
         label="linkedIn"
+        disabled={lock}
       />
       <TextField
         name="facebook"
@@ -245,6 +259,7 @@ export const MoreInfoForm = ({
         error={Boolean(errors.facebook && touched.facebook)}
         helperText={touched.facebook && errors.facebook && String(errors.facebook)}
         label="facebook"
+        disabled={lock}
       />
       <TextField
         name="instagram"
@@ -254,6 +269,7 @@ export const MoreInfoForm = ({
         error={Boolean(errors.instagram && touched.instagram)}
         helperText={touched.instagram && errors.instagram && String(errors.instagram)}
         label="instagram"
+        disabled={lock}
       />
       <TextField
         name="fax"
@@ -263,6 +279,7 @@ export const MoreInfoForm = ({
         error={Boolean(errors.fax && touched.fax)}
         helperText={touched.fax && errors.fax && String(errors.fax)}
         label="fax"
+        disabled={lock}
       />
       <CacheFieldSelect
         url="/client"
@@ -275,6 +292,7 @@ export const MoreInfoForm = ({
         onChange={handleChange}
         value={typeof values.parent === "string" ? values.parent : values.parent?.id}
         error={Boolean(errors.parent)}
+        disabled={lock}
       />
       <TextField
         name="refferedBy"
@@ -284,6 +302,7 @@ export const MoreInfoForm = ({
         error={Boolean(errors.refferedBy && touched.refferedBy)}
         helperText={touched.refferedBy && errors.refferedBy && String(errors.refferedBy)}
         label="referred By"
+        disabled={lock}
       />
     </Box>
   );
@@ -298,7 +317,7 @@ export const MainContactForm = ({ selectedRow }: { selectedRow: any }) => {
 
   return (
     <Box my={2} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr">
-      <TextField value={`${data[0]?.firstName} ${data[0]?.lastName}`} label=" Main Contact Name" disabled />
+      <TextField value={`${data[0]?.firstName || ""} ${data[0]?.lastName || ""}`} label=" Main Contact Name" disabled />
       <TextField value={data[0]?.phones[0]?.phone} label="Main Contact Phone" disabled />
       <TextField value={data[0]?.emails[0]?.email} label="Main Contact Email" disabled />
     </Box>
@@ -318,6 +337,8 @@ export const CommissionForm = ({
   handleBlur: any;
   handleChange: any;
 }) => {
+  const { lock } = useLock();
+
   return (
     <Box my={2} display="grid" gridColumnGap={10} gridRowGap={10} gridTemplateColumns="1fr">
       <TextField
@@ -333,6 +354,7 @@ export const CommissionForm = ({
         }
         label=" Regular Commision Percentage"
         type="number"
+        disabled={lock}
       />
       <TextField
         name="overageCommissionPercentage"
@@ -347,6 +369,7 @@ export const CommissionForm = ({
         }
         label="Overage Commission Percentage"
         type="number"
+        disabled={lock}
       />
     </Box>
   );

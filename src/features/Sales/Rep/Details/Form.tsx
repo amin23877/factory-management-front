@@ -29,13 +29,23 @@ export default function EditForm({ initialValues }: { initialValues: repType }) 
       {({ getFieldProps, values, setFieldValue }) => (
         <Form>
           <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={8}>
-            <TextField label="Name" {...getFieldProps("name")} />
-            <TextField label="Phone" {...getFieldProps("phone")} />
-            <TextField label="Ext" {...getFieldProps("ext")} />
-            <TextField label="Email" {...getFieldProps("email")} />
-            <TextField label="Product Line" {...getFieldProps("productLine")} />
-            <TextField type="number" label="Regular Commission" {...getFieldProps("regularCommission")} />
-            <TextField type="number" label="Overage Commission" {...getFieldProps("overageCommission")} />
+            <TextField label="Name" {...getFieldProps("name")} disabled={lock} />
+            <TextField label="Phone" {...getFieldProps("phone")} disabled={lock} />
+            <TextField label="Ext" {...getFieldProps("ext")} disabled={lock} />
+            <TextField label="Email" {...getFieldProps("email")} disabled={lock} />
+            <TextField label="Product Line" {...getFieldProps("productLine")} disabled={lock} />
+            <TextField
+              type="number"
+              label="Regular Commission"
+              {...getFieldProps("regularCommission")}
+              disabled={lock}
+            />
+            <TextField
+              type="number"
+              label="Overage Commission"
+              {...getFieldProps("overageCommission")}
+              disabled={lock}
+            />
             <LinkField
               label="Sales Person"
               filterLabel="username"
@@ -45,18 +55,19 @@ export default function EditForm({ initialValues }: { initialValues: repType }) 
               path="/employee"
               value={values.salesPerson}
               onChange={(c, nv) => setFieldValue("salesPerson", nv.id)}
+              disabled={lock}
             />
             <FormControl>
               <FormLabel>Type</FormLabel>
               <RadioGroup {...getFieldProps("type")}>
-                <FormControlLabel control={<Radio />} value="Rep" label="Rep" />
-                <FormControlLabel control={<Radio />} value="OEM" label="OEM" />
-                <FormControlLabel control={<Radio />} value="Buy/Resell" label="Buy/Resell" />
+                <FormControlLabel control={<Radio />} value="Rep" label="Rep" disabled={lock} />
+                <FormControlLabel control={<Radio />} value="OEM" label="OEM" disabled={lock} />
+                <FormControlLabel control={<Radio />} value="Buy/Resell" label="Buy/Resell" disabled={lock} />
               </RadioGroup>
             </FormControl>
-            <FormControlLabel control={<Checkbox />} label="Active" {...getFieldProps("active")} />
+            <FormControlLabel control={<Checkbox />} label="Active" {...getFieldProps("active")} disabled={lock} />
             <Box display="flex" style={{ gridColumnEnd: "span 2" }}>
-              <Button type="submit" kind="edit" disabled={lock} fullWidth>
+              <Button type="submit" kind="edit" disabled={lock} fullWidth style={{ display: "none" }}>
                 Submit
               </Button>
               <LockButton />

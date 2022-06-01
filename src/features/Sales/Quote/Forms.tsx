@@ -27,6 +27,7 @@ import QuotePDF from "PDFTemplates/Quote";
 import AsyncCombo from "common/AsyncCombo";
 
 import AddPoModal from "../PO/AddPoModal";
+import { useLock } from "common/Lock";
 
 export const DocumentForm = ({
   data,
@@ -192,6 +193,7 @@ export const GeneralForm = ({
 }) => {
   const [addPo, setAddPo] = useState(false);
   const phone = useMediaQuery("(max-width:900px)");
+  const { lock } = useLock();
 
   return (
     <>
@@ -220,7 +222,7 @@ export const GeneralForm = ({
             }}
             onBlur={handleBlur}
             url="/panel/so"
-            disabled
+            disabled={lock}
           />
         )}
         <DateTimePicker
@@ -231,6 +233,7 @@ export const GeneralForm = ({
           label="Entry Date"
           onChange={(date) => setFieldValue("entryDate", date)}
           onBlur={handleBlur}
+          disabled={lock}
         />
         <DateTimePicker
           style={{ fontSize: "0.8rem" }}
@@ -240,8 +243,9 @@ export const GeneralForm = ({
           label="Expire Date"
           onChange={(date) => setFieldValue("expireDate", date)}
           onBlur={handleBlur}
+          disabled={lock}
         />
-        <TextField value={values.location} name="location" label="Location" onChange={handleChange} />
+        <TextField value={values.location} name="location" label="Location" onChange={handleChange} disabled={lock} />
         <LinkSelect
           filterLabel="name"
           path="/project"
@@ -255,6 +259,7 @@ export const GeneralForm = ({
           }}
           onBlur={handleBlur}
           url="/panel/project"
+          disabled={lock}
         />
         <AsyncCombo
           label="Sales person"
@@ -263,9 +268,10 @@ export const GeneralForm = ({
           getOptionSelected={(o, v) => o.id === v.id}
           url="/employee"
           value={values.salesPerson}
+          disabled={lock}
         />
-        <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} />
-        <Button kind="edit" onClick={() => setAddPo(true)}>
+        <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} disabled={lock} />
+        <Button kind="edit" onClick={() => setAddPo(true)} disabled={lock}>
           Create Customer PO
         </Button>
         <TextField
@@ -276,6 +282,7 @@ export const GeneralForm = ({
           onChange={handleChange}
           multiline
           rows={3}
+          disabled={lock}
         />
       </Box>
     </>

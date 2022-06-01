@@ -3,6 +3,7 @@ import { Box } from "@material-ui/core";
 
 import TextField from "app/TextField";
 import AsyncCombo from "common/AsyncCombo";
+import { useLock } from "common/Lock";
 
 function getField(field: string, requester?: any) {
   if (!requester) {
@@ -26,8 +27,7 @@ export default function Requester({
   getFieldProps: any;
 }) {
   const [selectedRequester, setSelectedRequester] = useState();
-  // const email = values.requester?.emails?.length > 0 ? values.requester?.emails[0].email : "";
-  // const phone = values.requester?.phones?.length > 0 ? values.requester?.phones[0].phone : "";
+  const { lock } = useLock();
   const email =
     values.requester && values.requester?.id
       ? getField("email", values.requester)
@@ -51,6 +51,7 @@ export default function Requester({
           setFieldValue("requester", nv?.id);
         }}
         error={!values.requester}
+        disabled={lock}
       />
       <TextField disabled label="Email" value={email} error={!email} />
       <TextField disabled label="Phone" value={phone} error={!phone} />

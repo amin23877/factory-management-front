@@ -4,6 +4,7 @@ import useSWR from "swr";
 
 import TextField from "app/TextField";
 import AsyncCombo from "common/AsyncCombo";
+import { useLock } from "common/Lock";
 
 export default function Client({
   getFieldProps,
@@ -20,6 +21,8 @@ export default function Client({
   const email = contact?.emails?.length > 0 ? contact?.emails[0].email : "";
   const phone = contact?.phones?.length > 0 ? contact?.phones[0].phone : "";
 
+  const { lock } = useLock();
+
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={8}>
       <AsyncCombo
@@ -31,6 +34,7 @@ export default function Client({
         url="/client"
         error={!values.ClientId}
         onChange={(e, nv) => setFieldValue("ClientId", nv?.id)}
+        disabled={lock}
       />
       <TextField value={email} name="email" label="Email" disabled error={!email} />
       <TextField value={phone} name="phone" label="Phone" disabled error={!phone} />

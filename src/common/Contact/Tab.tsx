@@ -9,6 +9,7 @@ import BaseDataGrid from "app/BaseDataGrid";
 import ContactModal from "./Modal";
 
 import { IContact } from "api/contact";
+import { LockButton, LockProvider, useLock } from "common/Lock";
 
 const columns: GridColumns = [
   { field: "firstName", headerName: "First Name", width: 110 },
@@ -22,8 +23,9 @@ const columns: GridColumns = [
   { field: "active", headerName: "Active", type: "boolean" },
 ];
 
-export default function ContactTab({ itemId, model, lock }: { model: string; itemId: string; lock?: boolean }) {
+function ContactTabContent({ itemId, model }: { model: string; itemId: string }) {
   const { data } = useSWR(`/contact/${model}/${itemId}`);
+  const { lock } = useLock();
   const [addModal, setAddModal] = useState(false);
   const [selectedContact, setSelectedContact] = useState<IContact>();
 
@@ -37,15 +39,18 @@ export default function ContactTab({ itemId, model, lock }: { model: string; ite
         data={selectedContact}
       />
       <Box>
-        <Button
-          variant="outlined"
-          startIcon={<AddRounded />}
-          style={{ margin: "4px 0" }}
-          onClick={() => setAddModal(true)}
-          disabled={lock}
-        >
-          Add
-        </Button>
+        <Box display="flex" alignItems="center">
+          <Button
+            variant="outlined"
+            startIcon={<AddRounded />}
+            style={{ margin: "4px 0", marginRight: "auto" }}
+            onClick={() => setAddModal(true)}
+            disabled={lock}
+          >
+            Add
+          </Button>
+          <LockButton />
+        </Box>
         <BaseDataGrid
           cols={columns}
           rows={data || []}
@@ -58,5 +63,13 @@ export default function ContactTab({ itemId, model, lock }: { model: string; ite
         />
       </Box>
     </>
+  );
+}
+
+export default function ContactTab({ itemId, model }: { model: string; itemId: string }) {
+  return (
+    <LockProvider>
+      <ContactTabContent itemId={itemId} model={model} />
+    </LockProvider>
   );
 }

@@ -101,7 +101,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
           name="active"
           onChange={handleChange}
           control={<Checkbox size="small" />}
-          disabled={sales || lock}
+          disabled={lock}
         />
         <FormControlLabel
           checked={values.obsolete}
@@ -109,7 +109,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
           name="obsolete"
           onChange={handleChange}
           control={<Checkbox size="small" />}
-          disabled={sales || lock}
+          disabled={lock}
         />
         <FormControlLabel
           checked={values.rndOnly}
@@ -117,7 +117,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
           name="rndOnly"
           onChange={handleChange}
           control={<Checkbox size="small" />}
-          disabled={sales || lock}
+          disabled={lock}
         />
         <FormControlLabel
           checked={values.salesApproved}
@@ -125,7 +125,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
           name="salesApproved"
           onChange={handleChange}
           control={<Checkbox size="small" />}
-          disabled={sales || lock}
+          disabled={lock}
         />
         <FormControlLabel
           checked={values.engineeringApproved}
@@ -133,7 +133,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
           name="engineeringApproved"
           onChange={handleChange}
           control={<Checkbox size="small" />}
-          disabled={sales || lock}
+          disabled={lock}
         />
       </Paper>
       <TextField
@@ -154,7 +154,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
         onBlur={handleBlur}
         error={Boolean(errors.name && touched.name)}
         value={values.name}
-        disabled={sales || lock}
+        disabled={lock}
       />
       <TextField
         multiline
@@ -166,7 +166,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
         onChange={handleChange}
         onBlur={handleBlur}
         value={values.description}
-        disabled={sales || lock}
+        disabled={lock}
       />
       <TextField
         label="Lead Time"
@@ -176,7 +176,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
         onBlur={handleBlur}
         error={Boolean(errors.leadTime && touched.leadTime)}
         value={values.leadTime}
-        disabled={sales || lock}
+        disabled={lock}
       />
       <TextField
         label="Price"
@@ -185,7 +185,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
         onBlur={handleBlur}
         error={Boolean(errors.retailPrice && touched.retailPrice)}
         value={values.retailPrice}
-        disabled={sales || lock}
+        disabled={lock}
       />
     </Box>
   );

@@ -9,6 +9,7 @@ import BaseDataGrid from "app/BaseDataGrid";
 import Modal from "./Modal";
 
 import { IAddress } from "api/address";
+import { LockButton, LockProvider, useLock } from "common/Lock";
 
 const columns: GridColumns = [
   { field: "address", headerName: "Address", flex: 1 },
@@ -18,8 +19,9 @@ const columns: GridColumns = [
   { field: "country", headerName: "Country", width: 100 },
 ];
 
-export default function AddressTab({ itemId, model, lock }: { model: string; itemId: string; lock?: boolean }) {
+function AddressTabContent({ itemId, model }: { model: string; itemId: string }) {
   const { data } = useSWR(`/address/${model}/${itemId}`);
+  const { lock } = useLock();
   const [modal, setModal] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState<IAddress>();
 
@@ -27,15 +29,18 @@ export default function AddressTab({ itemId, model, lock }: { model: string; ite
     <>
       <Modal open={modal} onClose={() => setModal(false)} model={model} itemId={itemId} data={selectedAddress} />
       <Box>
-        <Button
-          variant="outlined"
-          startIcon={<AddRounded />}
-          style={{ margin: "0.5em 0" }}
-          onClick={() => setModal(true)}
-          disabled={lock}
-        >
-          Add
-        </Button>
+        <Box display="flex" alignItems="center">
+          <Button
+            variant="outlined"
+            startIcon={<AddRounded />}
+            style={{ margin: "0.5em 0", marginRight: "auto" }}
+            onClick={() => setModal(true)}
+            disabled={lock}
+          >
+            Add
+          </Button>
+          <LockButton />
+        </Box>
         <BaseDataGrid
           cols={columns}
           rows={data || []}
@@ -48,5 +53,13 @@ export default function AddressTab({ itemId, model, lock }: { model: string; ite
         />
       </Box>
     </>
+  );
+}
+
+export default function AddressTab({ itemId, model }: { model: string; itemId: string }) {
+  return (
+    <LockProvider>
+      <AddressTabContent itemId={itemId} model={model} />
+    </LockProvider>
   );
 }

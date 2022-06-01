@@ -1,37 +1,41 @@
 import React, { useState } from "react";
 import { Tabs, Tab, Box, Typography, LinearProgress, useMediaQuery } from "@material-ui/core";
 import { Form, Formik } from "formik";
+import { mutate } from "swr";
 
+import Toast from "app/Toast";
 import { BasePaper } from "app/Paper";
-import { GeneralForm } from "./Forms";
+import Button from "app/Button";
 
-import { IQuote } from "api/quote";
-// import Toast from "app/Toast";
-// import { getModifiedValues } from "logic/utils";
+import { GeneralForm } from "./Forms";
 import Entities from "./Forms/Entities";
 import Addresses from "./Forms/Addresses";
 import Status from "./Forms/Status";
 import Metrics from "./Forms/Metrics";
 
+import { IQuote, updateQuote } from "api/quote";
+import { getModifiedValues } from "logic/utils";
+import { LockButton } from "common/Lock";
+
 export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
   const [activeTab, setActiveTab] = useState(0);
   const phone = useMediaQuery("(max-width:900px)");
 
-  // const handleSubmit = async (data: IQuote, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
-  //   try {
-  //     if (selectedQuote?.id) {
-  //       await updateQuote(selectedQuote.id, getModifiedValues(data, selectedQuote));
-  //       mutate("/quote");
+  const handleSubmit = async (data: IQuote, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
+    try {
+      if (selectedQuote?.id) {
+        await updateQuote(selectedQuote.id, getModifiedValues(data, selectedQuote));
+        mutate("/quote");
 
-  //       Toast("Record updated successfully", "success");
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+        Toast("Record updated successfully", "success");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
-    <Formik initialValues={selectedQuote} onSubmit={() => {}}>
+    <Formik initialValues={selectedQuote} onSubmit={handleSubmit}>
       {({ handleChange, handleBlur, values, getFieldProps, setFieldValue }) => (
         <Form>
           <Box display="flex" flexDirection="column" style={phone ? { gap: 10 } : { gap: 7, height: "100%" }}>
@@ -43,11 +47,12 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
                 handleBlur={handleBlur}
                 handleChange={handleChange}
               />
-              {/* <Box display="flex" justifyContent="center" mt={1} style={{ width: "100%" }}>
-                <Button disabled={isSubmitting} type="submit" kind="edit" style={{ width: "100%" }}>
+              <Box display="flex" justifyContent="center" mt={1} style={{ width: "100%" }}>
+                <LockButton />
+                <Button type="submit" kind="edit" style={{ width: "100%", display: "none" }}>
                   Save
                 </Button>
-              </Box> */}
+              </Box>
             </BasePaper>
             <BasePaper style={{ flex: 1 }}>
               <Tabs

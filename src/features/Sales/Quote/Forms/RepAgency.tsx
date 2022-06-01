@@ -3,9 +3,11 @@ import { Box } from "@material-ui/core";
 
 import TextField from "app/TextField";
 import AsyncCombo from "common/AsyncCombo";
+import { useLock } from "common/Lock";
 
 export default function RepAgency({ values, setFieldValue }: { getFieldProps: any; values: any; setFieldValue: any }) {
   const [selectedRep, setSelectedRep] = useState<any>(values?.RepId);
+  const { lock } = useLock();
 
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={8}>
@@ -21,6 +23,7 @@ export default function RepAgency({ values, setFieldValue }: { getFieldProps: an
           setFieldValue("RepId", nv);
           setSelectedRep(nv);
         }}
+        disabled={lock}
       />
       <TextField
         disabled

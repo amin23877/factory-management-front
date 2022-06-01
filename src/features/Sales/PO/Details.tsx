@@ -9,12 +9,10 @@ import DocumentTab from "common/Document/Tab";
 import { BasePaper } from "app/Paper";
 
 import { customerPoType } from "api/customerPo";
-import { useLock } from "common/Lock";
 
 export default function Details({ poData, onDone }: { poData: customerPoType; onDone: () => void }) {
   const [activeTab, setActiveTab] = useState(0);
   const phone = useMediaQuery("(max-width:900px)");
-  const { lock } = useLock();
 
   return (
     <Box
@@ -32,12 +30,10 @@ export default function Details({ poData, onDone }: { poData: customerPoType; on
           onChange={(e, nv) => setActiveTab(nv)}
           variant="scrollable"
         >
-          {/* <Tab label="Line Items" /> */}
           <Tab label="Documents" />
           <Tab label="Notes" />
           <Tab label="Auditing" />
         </Tabs>
-        {/* {activeTab === 0 && <BaseDataGrid cols={LICols} rows={[]} height="calc(100% - 60px)" />} */}
         {activeTab === 0 && <DocumentTab itemId={poData.id} model="salesPo" />}
         {activeTab === 1 && <NoteTab itemId={poData.id} model="salesPo" />}
       </BasePaper>

@@ -94,7 +94,7 @@ export default function ClientDetails({
                       changeTab={changeTab}
                     />
                     <Box display="flex" textAlign="center" style={{ width: "100%" }}>
-                      <Button type="submit" kind="edit" style={{ width: "100%" }} disabled={lock}>
+                      <Button type="submit" kind="edit" style={{ width: "100%", display: "none" }} disabled={lock}>
                         Save
                       </Button>
                       <LockButton />
