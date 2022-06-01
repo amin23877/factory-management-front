@@ -9,6 +9,7 @@ import {
   ListAltRounded,
   FindInPageRounded,
 } from "@material-ui/icons";
+import useSWR from "swr";
 
 import Confirm from "../../Modals/Confirm";
 import { AddItemModal } from "../../Items/ItemModals";
@@ -18,18 +19,23 @@ import LevelModal from "common/Level/Modal";
 import DetailTab from "./Details";
 import AddTaskModal, { EditTaskModal } from "./TaskModal";
 import FlagModal from "./FlagModal";
+import ClusterChips from "./ClusterChips";
 
 import List from "app/SideUtilityList";
-import { BasePaper } from "app/Paper";
 import DataGrid from "app/NewDataGrid";
+import { BasePaper } from "app/Paper";
 
 import { deleteAnItem, IItem } from "api/items";
+import { clusterType } from "api/cluster";
 
 const Devices = ({ sales }: { sales?: boolean }) => {
+  const { data: clusters } = useSWR<{ result: clusterType[]; total: number }>(`/cluster`);
+
   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
   const [activeTab, setActiveTab] = useState(0);
   const [selectedStep, setSelectedStep] = useState<any>();
   const [selectedFlag, setSelectedFlag] = useState<any>();
+  const [selectedCluster, setSelectedCluster] = useState<clusterType>();
 
   const [addItemModal, setAddItemModal] = useState(false);
   const [addStepModal, setAddStepModal] = useState(false);
@@ -50,6 +56,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       },
       { name: "name", header: "Name", flex: 1, minWidth: 200 },
       { name: "description", header: "Description", flex: 2, minWidth: 200 },
+      { name: "bom", header: "BOM", type: "boolean", defaultFilterValue: undefined, defaultWidth: 80 },
       {
         name: "Battery Cabinet Quantity",
         header: "B.C.QTY",
@@ -310,13 +317,24 @@ const Devices = ({ sales }: { sales?: boolean }) => {
           </List>
         )}
       </Box>
+      <ClusterChips
+        clusters={clusters?.result || []}
+        onClick={(c) => {
+          if (selectedCluster && selectedCluster.id === c.id) {
+            setSelectedCluster(undefined);
+            return;
+          }
+          setSelectedCluster(c);
+        }}
+        active={selectedCluster}
+      />
       <Box display="flex" alignItems="flex-start" mt={1}>
         <Box flex={1}>
           {activeTab === 0 && (
             <DataGrid
               style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 165px)" }}
               url="/item"
-              initParams={{ device: true, fru: false }}
+              initParams={{ device: true, fru: false, clusterId: selectedCluster?.id || undefined }}
               onRowSelected={(r) => {
                 setSelectedItem(r as any);
                 setActiveTab(1);

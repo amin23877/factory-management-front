@@ -7,11 +7,8 @@ import ClusterModal from "../../Cluster/Modal";
 
 import { BasePaper } from "app/Paper";
 import NewDataGrid from "app/NewDataGrid";
-import Button from "app/Button";
 
-import Confirm from "common/Confirm";
-
-import { clusterType, deleteCluster } from "api/cluster";
+import { clusterType } from "api/cluster";
 
 const columns = [
   { name: "clusterValue", header: "Cluster (Model)" },
@@ -25,23 +22,6 @@ function BOM() {
   const [refresh, setRefresh] = useState(0);
   const [selectedRow, setSelectedRow] = useState<clusterType>();
   const [clusterModal, setClusterModal] = useState(false);
-
-  const handleDelete = () => {
-    Confirm({
-      onConfirm: async () => {
-        try {
-          if (selectedRow && selectedRow.id) {
-            await deleteCluster(selectedRow.id);
-
-            setSelectedRow(undefined);
-            setActiveTab(0);
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      },
-    });
-  };
 
   return (
     <>
@@ -75,15 +55,6 @@ function BOM() {
               }
             />
           </Tabs>
-
-          <Button kind="add" onClick={() => setClusterModal(true)} style={{ marginRight: 8 }}>
-            Add Cluster
-          </Button>
-          {selectedRow && activeTab === 1 && (
-            <Button kind="delete" onClick={handleDelete}>
-              Delete Cluster
-            </Button>
-          )}
         </Box>
         {activeTab === 0 && (
           <NewDataGrid

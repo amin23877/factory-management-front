@@ -52,7 +52,7 @@ function Parts() {
         editable: false,
       },
       { name: "usage", header: "Usage", defaultWidth: 100, editor: NumericEditor },
-      { name: "fixedQty", header: "Fixed Qty", defaultWidth: 100, editor: BoolEditor },
+      { name: "fixedQty", header: "Fixed Qty", type: "boolean", defaultWidth: 100, editor: BoolEditor },
       {
         name: "actions",
         header: "",

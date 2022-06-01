@@ -9,6 +9,8 @@ import Project from "../features/Engineering/Projects";
 import BOM from "../features/Engineering/BOM";
 import Monitoring from "../features/Engineering/Monitoring";
 import Dashboard from "../features/Engineering/Dashboard";
+import FRU from "../features/Engineering/FRU";
+import Option from "../features/Engineering/Option";
 
 import { usePortal } from "../logic/PortalContext";
 
@@ -73,6 +75,8 @@ export default function Engineering() {
             <MyTab label="Devices BOM" />
             <MyTab label="Monitoring" />
             <MyTab label="Projects" />
+            <MyTab label="FRU" />
+            <MyTab label="Option" />
           </MyTabs>
         </Popover>
       </Portal>
@@ -83,6 +87,8 @@ export default function Engineering() {
           {activeTab === 2 && <BOM />}
           {activeTab === 3 && <Monitoring />}
           {activeTab === 4 && <Project />}
+          {activeTab === 5 && <FRU />}
+          {activeTab === 6 && <Option />}
         </Box>
       </Box>
     </>

@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 
 import NewDataGrid from "app/NewDataGrid";
 import Button from "app/Button";
@@ -75,10 +75,8 @@ function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
         onDone={() => setRefresh((p) => p + 1)}
       />
       <Box display="flex" alignItems="center">
-        <Typography variant="h5" style={{ marginBottom: 8, marginRight: "auto" }}>
-          Levels
-        </Typography>
-        <Button kind="add" onClick={() => setLevelsModal(true)}>
+        <div style={{ marginBottom: 8, marginRight: "auto" }} />
+        <Button kind="add" onClick={() => setLevelsModal(true)} disabled={lock}>
           Add Level
         </Button>
         <LockButton />

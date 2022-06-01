@@ -9,6 +9,7 @@ import Confirm from "./Confirm";
 import UploadButton from "app/UploadButton";
 
 import { LockButton, LockProvider, useLock } from "common/Lock";
+import Toast from "app/Toast";
 
 function PhotoTabContent({ id, model }: { model: string; id: string }) {
   const { data: photos, mutate: mutatePhotos } = useSWR<photoType[]>(`/photo/${model}/${id}`);
@@ -22,8 +23,10 @@ function PhotoTabContent({ id, model }: { model: string; id: string }) {
       }
       let file = e.target.files[0];
       let url = URL.createObjectURL(file);
-      await addPhoto({ model: "item", id, photo: file });
+      await addPhoto({ model, id, photo: file });
       setImg(url);
+
+      Toast("Photo uploaded", "success");
     } catch (error) {
       console.log(error);
     } finally {
@@ -36,6 +39,8 @@ function PhotoTabContent({ id, model }: { model: string; id: string }) {
       onConfirm: async () => {
         try {
           await deletePhoto(id);
+
+          Toast("Photo deleted", "success");
         } catch (error) {
           console.log(error);
         } finally {
