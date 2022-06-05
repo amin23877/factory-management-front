@@ -32,6 +32,7 @@ export default function AsyncCombo({
   filterBy,
   valueUrl,
   disabled,
+  defaultParams,
   onChange,
   getOptionLabel,
   getOptionSelected,
@@ -45,6 +46,7 @@ export default function AsyncCombo({
   filterBy: string;
   valueUrl?: string;
   disabled?: boolean;
+  defaultParams?: any;
   onChange?: (e: any, nv: any) => void;
   getOptionLabel: (o: any) => string;
   getOptionSelected: (o: any, v: any) => boolean;
@@ -67,9 +69,10 @@ export default function AsyncCombo({
     const t = setTimeout(async () => {
       try {
         setLoading(true);
-        const response = await get(
-          inputValue && inputValue !== "" ? `${url}?startsWith${filterBy}=${inputValue}` : url
-        );
+        // const response = await get(
+        //   inputValue && inputValue !== "" ? `${url}?startsWith${filterBy}=${inputValue}` : url
+        // );
+        const response = await get(url, { params: { [`startsWith${filterBy}`]: inputValue, ...defaultParams } });
 
         if (active) {
           setOptions(response?.result || response);
@@ -85,7 +88,7 @@ export default function AsyncCombo({
       clearTimeout(t);
       active = false;
     };
-  }, [filterBy, inputValue, open, url]);
+  }, [defaultParams, filterBy, inputValue, open, url]);
 
   return (
     <Box style={style}>

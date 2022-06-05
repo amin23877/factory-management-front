@@ -5,6 +5,7 @@ export type clusterType = {
   clusterValue: string;
   deviceName: string;
   description: string;
+  class: string;
   createdAt: number;
   updatedAt: number;
   __v: number;

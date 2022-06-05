@@ -15,7 +15,8 @@ import List from "app/SideUtilityList";
 import { BasePaper } from "app/Paper";
 import Button from "app/Button";
 
-import LevelsModal from "common/Level/Modal";
+// import LevelsModal from "common/Level/Modal";
+import ClusterModal from "common/Cluster/Modal";
 import { useLock } from "common/Lock";
 
 import ItemTable from "./Table";
@@ -29,7 +30,7 @@ const Items = () => {
 
   const [addItemModal, setAddItemModal] = useState(false);
   const [deleteItemModal, setDeleteItemModal] = useState(false);
-  const [levelsModal, setLevelsModal] = useState(false);
+  const [clusterModal, setClusterModal] = useState(false);
   const { lock } = useLock();
 
   const handleDelete = useCallback(async () => {
@@ -72,7 +73,8 @@ const Items = () => {
     <>
       <AddItemModal open={addItemModal} onClose={() => setAddItemModal(false)} />
       <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
-      <LevelsModal open={levelsModal} onClose={() => setLevelsModal(false)} />
+      {/* <LevelsModal open={levelsModal} onClose={() => setLevelsModal(false)} /> */}
+      <ClusterModal open={clusterModal} onClose={() => setClusterModal(false)} />
 
       <BasePaper style={{ height: "100%" }}>
         <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1}>
@@ -123,7 +125,7 @@ const Items = () => {
               </IconButton>
             </ListItem>
             <ListItem>
-              <IconButton title="Cluster and level" onClick={() => setLevelsModal(true)}>
+              <IconButton title="Cluster and level" onClick={() => setClusterModal(true)}>
                 <PostAddRounded />
               </IconButton>
             </ListItem>

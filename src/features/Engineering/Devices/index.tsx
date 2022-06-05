@@ -318,6 +318,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
         <AsyncCombo
           url="/cluster"
           filterBy="clusterValue"
+          defaultParams={{ class: "device" }}
           getOptionLabel={(o) => o?.clusterValue}
           getOptionSelected={(o, v) => o?.id === v?.id}
           value={selectedCluster}

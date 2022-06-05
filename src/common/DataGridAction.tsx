@@ -23,20 +23,27 @@ function Icon({ icon, style }: { icon: iconsType; style?: React.CSSProperties })
 export default function DataGridAction({
   icon,
   activeColor,
+  controlledLock,
   onClick,
 }: {
-  onClick?: () => void;
   icon: iconsType;
   activeColor?: string;
+  controlledLock?: boolean;
+  onClick?: () => void;
 }) {
   const { lock } = useLock();
+  const finalLock = controlledLock !== undefined ? controlledLock : lock;
   const color = activeColor || "#426792";
 
   return (
     <div onClick={onClick}>
       <Icon
         icon={icon}
-        style={{ fontSize: "1.8rem", color: lock ? "#ccc" : color, cursor: lock ? "auto" : "pointer" }}
+        style={{
+          fontSize: "1.8rem",
+          color: finalLock ? "#ccc" : color,
+          cursor: finalLock ? "auto" : "pointer",
+        }}
       />
     </div>
   );
