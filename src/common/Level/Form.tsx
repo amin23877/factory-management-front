@@ -12,6 +12,7 @@ import Confirm from "common/Confirm";
 import { createLevel, editLevel, deleteLevel, ILevel } from "api/level";
 import { getModifiedValues } from "logic/utils";
 import { clusterType } from "api/cluster";
+import AsyncCombo from "common/AsyncCombo";
 
 const schema = Yup.object().shape({
   name: Yup.string().required(),
@@ -65,8 +66,12 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
   };
 
   return (
-    <Formik validationSchema={schema} initialValues={{} as formInitialValuesType} onSubmit={handleSubmit}>
-      {({ resetForm, values, handleChange, handleBlur, setValues }) => (
+    <Formik
+      validationSchema={schema}
+      initialValues={cluster ? ({ clusterId: cluster } as any) : ({} as formInitialValuesType)}
+      onSubmit={handleSubmit}
+    >
+      {({ resetForm, values, handleChange, handleBlur, setFieldValue, setValues }) => (
         <Form>
           <Box
             display="grid"
@@ -82,7 +87,17 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
               placeholder="Name"
               InputLabelProps={{ shrink: true }}
             />
-            <TextField
+            <AsyncCombo
+              url="/cluster"
+              label="Cluster Value"
+              filterBy="clusterValue"
+              getOptionLabel={(o) => o?.clusterValue}
+              getOptionSelected={(o, v) => o?.id === v?.id}
+              value={values.clusterId}
+              onChange={(e, nv) => setFieldValue("clusterId", nv)}
+              disabled={Boolean(cluster && cluster?.id)}
+            />
+            {/* <TextField
               name="clusterValueRef"
               value={values.clusterValueRef}
               onChange={handleChange}
@@ -90,7 +105,7 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
               placeholder="Cluster Value "
               label="Cluster Value"
               InputLabelProps={{ shrink: true }}
-            />
+            /> */}
             <TextField
               name="valid"
               value={values.valid}
@@ -148,7 +163,7 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
               columns={cols}
               url="/level"
               initParams={{ clusterId: cluster?.id }}
-              style={{ height: 360 }}
+              style={{ height: 450 }}
               refresh={refresh}
               onRowSelected={(r) => {
                 setSelectedLevel(r);

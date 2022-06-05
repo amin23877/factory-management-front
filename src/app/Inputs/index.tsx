@@ -80,9 +80,11 @@ interface IOS extends StandardTextFieldProps {
 }
 export const ObjectSelect = ({ inputStyle, items, itemTitleField, itemValueField, keyField, ...props }: IOS) => {
   const classes = useStyle();
+  
   return (
     <TextField
       {...props}
+      value={props.value}
       select
       style={{ ...props.style, fontSize: "0.8rem", height: "100%" }}
       InputProps={{ inputProps: { style: { lineHeight: "1em" } } }}

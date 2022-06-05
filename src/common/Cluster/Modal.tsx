@@ -72,7 +72,11 @@ export default function ClusterModal({ open, onClose }: { open: boolean; onClose
         <Tab label="Levels" disabled={!selectedCluster} />
       </Tabs>
       {activeTab === 0 && (
-        <Formik validationSchema={schema} initialValues={{} as Partial<clusterType>} onSubmit={handleSubmit}>
+        <Formik
+          validationSchema={schema}
+          initialValues={{ class: "device" } as Partial<clusterType>}
+          onSubmit={handleSubmit}
+        >
           {({ getFieldProps, values, setFieldValue, resetForm, setValues }) => (
             <Form>
               <Box my={2}>
@@ -95,7 +99,11 @@ export default function ClusterModal({ open, onClose }: { open: boolean; onClose
           )}
         </Formik>
       )}
-      {activeTab === 1 && <LevelForm cluster={selectedCluster} />}
+      {activeTab === 1 && (
+        <Box my={2}>
+          <LevelForm cluster={selectedCluster} />
+        </Box>
+      )}
     </Dialog>
   );
 }

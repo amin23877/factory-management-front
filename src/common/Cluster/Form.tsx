@@ -51,7 +51,7 @@ export default function ClusterForm({
   };
 
   return (
-    <Box display="grid" gridTemplateColumns={values?.id ? "repeat(7, 1fr)" : "repeat(5, 1fr)"} gridGap={10}>
+    <Box display="grid" gridTemplateColumns={"repeat(4, 1fr)"} gridGap={10}>
       <ObjectSelect
         label="Item Type"
         items={itemTypes}
@@ -59,38 +59,48 @@ export default function ClusterForm({
         itemValueField="value"
         value={values.class}
         onChange={(e) => setFieldValue("class", e.target.value)}
-        inputProps={{ shrink: true }}
+        InputLabelProps={{ shrink: true }}
+        disabled={Boolean(values.id)}
       />
-      <TextField label="Cluster Value" {...getFieldProps("clusterValue")} inputProps={{ shrink: true }} />
-      <TextField label="Cluster Name" {...getFieldProps("deviceName")} inputProps={{ shrink: true }} />
-      <TextField label="Description" {...getFieldProps("description")} inputProps={{ shrink: true }} />
-      <Button kind={values && values?.id ? "edit" : "add"} type="submit">
-        Save
-      </Button>
-      {values && values.id && (
-        <Button kind="delete" onClick={handleDelete}>
-          Delete
+      <TextField label="Cluster Value" {...getFieldProps("clusterValue")} InputLabelProps={{ shrink: true }} />
+      <TextField label="Cluster Name" {...getFieldProps("deviceName")} InputLabelProps={{ shrink: true }} />
+      <Box display="flex" alignItems="center" style={{ gap: 8 }}>
+        <Button kind={values && values?.id ? "edit" : "add"} type="submit">
+          Save
         </Button>
-      )}
-      {values && values.id && (
-        <Button
-          variant="outlined"
-          onClick={() => {
-            resetForm({
-              values: {
-                id: undefined,
-                class: "",
-                clusterValue: "",
-                clusterName: "",
-                description: "",
-                deviceName: "",
-              },
-            } as any);
-          }}
-        >
-          Cancel
-        </Button>
-      )}
+        {values && values.id && (
+          <Button kind="delete" onClick={handleDelete}>
+            Delete
+          </Button>
+        )}
+        {values && values.id && (
+          <Button
+            variant="outlined"
+            onClick={() => {
+              resetForm({
+                values: {
+                  id: undefined,
+                  class: "",
+                  clusterValue: "",
+                  clusterName: "",
+                  description: "",
+                  deviceName: "",
+                },
+              } as any);
+            }}
+          >
+            Cancel
+          </Button>
+        )}
+      </Box>
+      <TextField
+        label="Description"
+        multiline
+        rows={2}
+        {...getFieldProps("description")}
+        InputLabelProps={{ shrink: true }}
+        style={{ gridColumn: "span 4" }}
+      />
     </Box>
   );
 }
