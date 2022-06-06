@@ -33,6 +33,7 @@ export default function AsyncCombo({
   valueUrl,
   disabled,
   defaultParams,
+  placeholder,
   onChange,
   getOptionLabel,
   getOptionSelected,
@@ -47,6 +48,7 @@ export default function AsyncCombo({
   valueUrl?: string;
   disabled?: boolean;
   defaultParams?: any;
+  placeholder?: string;
   onChange?: (e: any, nv: any) => void;
   getOptionLabel: (o: any) => string;
   getOptionSelected: (o: any, v: any) => boolean;
@@ -101,6 +103,7 @@ export default function AsyncCombo({
         </IconButton>
       )}
       <Autocomplete
+        placeholder={placeholder}
         style={{ width: path ? "84%" : "100%", marginLeft: "auto" }}
         open={open}
         onOpen={() => {

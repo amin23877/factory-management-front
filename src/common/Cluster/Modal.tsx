@@ -42,6 +42,7 @@ export default function ClusterModal({ open, onClose }: { open: boolean; onClose
 
   const columns = useMemo(
     () => [
+      { name: "class", header: "Item Type" },
       { name: "clusterValue", header: "Cluster (Model)" },
       { name: "deviceName", header: "Device Name" },
       { name: "description", header: "Description", flex: 1 },
