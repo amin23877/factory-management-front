@@ -71,9 +71,6 @@ export default function AsyncCombo({
     const t = setTimeout(async () => {
       try {
         setLoading(true);
-        // const response = await get(
-        //   inputValue && inputValue !== "" ? `${url}?startsWith${filterBy}=${inputValue}` : url
-        // );
         const response = await get(url, { params: { [`startsWith${filterBy}`]: inputValue, ...defaultParams } });
 
         if (active) {

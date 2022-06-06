@@ -80,13 +80,13 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       { name: "name", header: "Name", flex: 1, minWidth: 200 },
       { name: "description", header: "Description", flex: 2, minWidth: 200 },
       { name: "bom", header: "BOM", type: "boolean", defaultFilterValue: undefined, defaultWidth: 80 },
-      ...additionalLevels,
+      ...(selectedCluster ? additionalLevels : []),
       { name: "leadTime", header: "Lead Time", minWidth: 120 },
       { name: "retailPrice", header: "Price", minWidth: 120, type: "number" },
     ];
 
     return res;
-  }, []);
+  }, [selectedCluster]);
 
   const handleDelete = useCallback(async () => {
     try {
@@ -249,138 +249,3 @@ const Devices = ({ sales }: { sales?: boolean }) => {
 };
 
 export default Devices;
-
-/*
-{
-        name: "Battery Cabinet Quantity",
-        header: "B.C.QTY",
-        minWidth: 120,
-        render: ({ data }: any) => {
-          if (data.levels) {
-            return data.levels["Battery Cabinet Quantity"];
-          } else {
-            return "-";
-          }
-        },
-      },
-      {
-        name: "Battery Cabinet",
-        header: "B.C.",
-        minWidth: 120,
-        render: ({ data }: any) => {
-          if (data.levels) {
-            return data.levels["Battery Cabinet"];
-          } else {
-            return "-";
-          }
-        },
-      },
-      {
-        name: "Battery Run-Time",
-        header: "B. Run Time",
-        minWidth: 120,
-        render: ({ data }: any) => {
-          if (data.levels) {
-            return data.levels["Battery Run-Time"];
-          } else {
-            return "-";
-          }
-        },
-      },
-      {
-        name: "Enclosure Type",
-        header: "Enclosure Type",
-        minWidth: 120,
-        render: ({ data }: any) => {
-          if (data.levels) {
-            return data.levels["Enclosure Type"];
-          } else {
-            return "-";
-          }
-        },
-      },
-      {
-        name: "Input Voltage",
-        header: "Input Voltage",
-        minWidth: 120,
-        render: ({ data }: any) => {
-          if (data.levels) {
-            return data.levels["Input Voltage"];
-          } else {
-            return "-";
-          }
-        },
-      },
-      {
-        name: "Inverter Cabinet Size",
-        header: "I.C. Size",
-        minWidth: 120,
-        render: ({ data }: any) => {
-          if (data.levels) {
-            return data.levels["Inverter Cabinet Size"];
-          } else {
-            return "-";
-          }
-        },
-      },
-      {
-        name: "Inverter Type",
-        header: "Inverter Type",
-        minWidth: 120,
-        render: ({ data }: any) => {
-          if (data.levels) {
-            return data.levels["Inverter Type"];
-          } else {
-            return "-";
-          }
-        },
-      },
-      {
-        name: "Main Cabinet Quantity",
-        header: "Main Cabinet QTY",
-        minWidth: 120,
-        render: ({ data }: any) => {
-          if (data.levels) {
-            return data.levels["Main Cabinet Quantity"];
-          } else {
-            return "-";
-          }
-        },
-      },
-      {
-        name: "Output Type",
-        header: "Output Type",
-        minWidth: 120,
-        render: ({ data }: any) => {
-          if (data.levels) {
-            return data.levels["Output Type"];
-          } else {
-            return "-";
-          }
-        },
-      },
-      {
-        name: "Output Voltage",
-        header: "Output Voltage",
-        minWidth: 120,
-        render: ({ data }: any) => {
-          if (data.levels) {
-            return data.levels["Output Voltage"];
-          } else {
-            return "-";
-          }
-        },
-      },
-      {
-        name: "Power Rating",
-        header: "Power Rating",
-        minWidth: 120,
-        render: ({ data }: any) => {
-          if (data.levels) {
-            return data.levels["Power Rating"];
-          } else {
-            return "-";
-          }
-        },
-      },
-*/

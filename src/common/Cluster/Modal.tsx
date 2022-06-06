@@ -2,17 +2,18 @@ import React, { useMemo, useState } from "react";
 import { Tabs, Tab, Box } from "@material-ui/core";
 import { mutate } from "swr";
 import { Formik, Form } from "formik";
+import SelectFilter from "@inovua/reactdatagrid-community/SelectFilter";
 
 import ClusterForm from "./Form";
 import Dialog from "app/Dialog";
 import NewDataGrid from "app/NewDataGrid";
 import Toast from "app/Toast";
+import DataGridAction from "common/DataGridAction";
+import LevelForm from "common/Level/Form";
 
 import { clusterType, createCluster, updateCluster } from "api/cluster";
 import { getModifiedValues } from "logic/utils";
 import { schema } from "api/ticket";
-import DataGridAction from "common/DataGridAction";
-import LevelForm from "common/Level/Form";
 
 export default function ClusterModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [activeTab, setActiveTab] = useState(0);
@@ -42,7 +43,22 @@ export default function ClusterModal({ open, onClose }: { open: boolean; onClose
 
   const columns = useMemo(
     () => [
-      { name: "class", header: "Item Type" },
+      {
+        name: "class",
+        header: "Item Type",
+        defaultOperator: "eq",
+        filterEditor: SelectFilter,
+        filterEditorProps: {
+          multiple: false,
+          dataSource: [
+            { id: "option", label: "Option" },
+            { id: "device", label: "Device" },
+            { id: "assembly", label: "Assembly" },
+            { id: "part", label: "Part" },
+            { id: "fru", label: "Fru" },
+          ],
+        },
+      },
       { name: "clusterValue", header: "Cluster (Model)" },
       { name: "deviceName", header: "Device Name" },
       { name: "description", header: "Description", flex: 1 },
