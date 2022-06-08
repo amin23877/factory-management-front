@@ -98,7 +98,6 @@ export default function Options() {
       name: "description",
       header: "Option Description",
       flex: 1,
-      render: ({ data }: any) => data?.item?.description,
     },
     {
       name: "Lead Time",

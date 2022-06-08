@@ -98,7 +98,6 @@ export default function FRU() {
       name: "description",
       header: "FRU Description",
       flex: 1,
-      render: ({ data }: any) => data?.item?.description,
     },
     {
       name: "Lead Time",

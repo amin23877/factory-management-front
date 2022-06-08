@@ -12,6 +12,7 @@ import {
 
 import Confirm from "../../Modals/Confirm";
 import { AddItemModal } from "../../Items/ItemModals";
+import UnitDetails from "../../FieldService/Units/Details";
 
 import ClusterModal from "common/Cluster/Modal";
 
@@ -26,6 +27,8 @@ import { BasePaper } from "app/Paper";
 import { deleteAnItem, IItem } from "api/items";
 import { clusterType } from "api/cluster";
 import AsyncCombo from "common/AsyncCombo";
+import { IUnit } from "api/units";
+import { formatTimestampToDate } from "logic/date";
 
 const additionalLevels = [
   { name: "Battery Cabinet Quantity", label: "B.C.QTY" },
@@ -55,6 +58,7 @@ const additionalLevels = [
 
 const Devices = ({ sales }: { sales?: boolean }) => {
   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
+  const [selectedUnit, setSelectedUnit] = useState<IUnit>();
   const [activeTab, setActiveTab] = useState(0);
   const [selectedStep, setSelectedStep] = useState<any>();
   const [selectedFlag, setSelectedFlag] = useState<any>();
@@ -69,6 +73,31 @@ const Devices = ({ sales }: { sales?: boolean }) => {
   const [flagModalOpen, setFlagModalOpen] = useState(false);
   const [levelModal, setLevelModal] = useState(false);
   const phone = useMediaQuery("(max-width:900px)");
+
+  const unitColumns = [
+    {
+      name: "number",
+      header: "Number",
+      minWidth: 150,
+    },
+    {
+      name: "name",
+      header: "Name",
+      minWidth: 200,
+    },
+    {
+      name: "description",
+      header: "Description",
+      flex: 1,
+    },
+    {
+      name: "Lead Time",
+      render: ({ data }: any) => formatTimestampToDate(data?.so?.leadTime),
+      minWidth: 120,
+    },
+
+    { name: "price", header: "Price", minWidth: 110, render: ({ data }: any) => data?.so?.price },
+  ];
 
   const gridColumns = useMemo<any[]>(() => {
     const res = [
@@ -140,7 +169,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       <ClusterModal open={levelModal} onClose={() => setLevelModal(false)} />
       <Box display="flex" justifyContent="flex-end" alignItems="center" my={1}>
         <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-          <Tab
+          {/* <Tab
             icon={
               <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                 <ListAltRounded style={{ marginRight: "5px" }} /> List
@@ -153,6 +182,30 @@ const Devices = ({ sales }: { sales?: boolean }) => {
             icon={
               <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <FindInPageRounded style={{ marginRight: "5px" }} /> Details
+              </span>
+            }
+          /> */}
+          <Tab
+            icon={
+              <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> Devices
+              </span>
+            }
+            wrapped
+          />
+          <Tab
+            icon={
+              <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> Units
+              </span>
+            }
+            wrapped
+          />
+          <Tab
+            disabled={!selectedUnit && !selectedItem}
+            icon={
+              <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
               </span>
             }
           />
@@ -215,7 +268,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       )}
       <Box display="flex" alignItems="flex-start" mt={1}>
         <Box flex={1}>
-          {activeTab === 0 && (
+          {/* {activeTab === 0 && (
             <DataGrid
               style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 165px)" }}
               url="/item"
@@ -228,6 +281,48 @@ const Devices = ({ sales }: { sales?: boolean }) => {
             />
           )}
           {activeTab === 1 && (
+            <DetailTab
+              sales={sales}
+              onDone={() => {}}
+              selectedRow={selectedItem}
+              onStepSelected={(d) => {
+                setSelectedStep(d);
+                setEditStepModal(true);
+              }}
+              onFlagSelected={(d) => {
+                setSelectedFlag(d);
+                setEditFlagModal(true);
+              }}
+            />
+          )} */}
+          {activeTab === 0 && (
+            <DataGrid
+              style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 215px)" }}
+              url="/item"
+              initParams={{ device: true, fru: false, clusterId: selectedCluster?.id || undefined }}
+              columns={gridColumns}
+              onRowSelected={(d) => {
+                setSelectedUnit(undefined);
+                setSelectedItem(d);
+                setActiveTab(2);
+              }}
+            />
+          )}
+          {activeTab === 1 && (
+            <DataGrid
+              style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 165px)" }}
+              url="/unit"
+              initParams={{ device: true }}
+              columns={unitColumns}
+              onRowSelected={(d) => {
+                setSelectedItem(null);
+                setSelectedUnit(d);
+                setActiveTab(2);
+              }}
+            />
+          )}
+          {activeTab === 2 && selectedUnit && <UnitDetails unit={selectedUnit} />}
+          {activeTab === 2 && selectedItem && (
             <DetailTab
               sales={sales}
               onDone={() => {}}
