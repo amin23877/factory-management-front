@@ -26,7 +26,7 @@ export default function AddOptionModal({
                 value={values.ItemId}
                 choseItem={values.ItemId}
                 label="Option"
-                path="/item?option=true"
+                path="/item?class=option"
                 filterLabel="name"
                 getOptionList={(resp) => resp?.result || []}
                 getOptionLabel={(item) => item?.name || item?.no || "No-Name"}

@@ -163,7 +163,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
         device
         open={addItemModal}
         onClose={() => setAddItemModal(false)}
-        initialValues={{ device: true } as IItem}
+        initialValues={{  class : "device" } as IItem}
       />
       <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
       <ClusterModal open={levelModal} onClose={() => setLevelModal(false)} />
@@ -272,7 +272,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
             <DataGrid
               style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 165px)" }}
               url="/item"
-              initParams={{ device: true, fru: false, clusterId: selectedCluster?.id || undefined }}
+              initParams={{  class : "device", fru: false, clusterId: selectedCluster?.id || undefined }}
               onRowSelected={(r) => {
                 setSelectedItem(r as any);
                 setActiveTab(1);
@@ -299,7 +299,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
             <DataGrid
               style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 215px)" }}
               url="/item"
-              initParams={{ device: true, fru: false, clusterId: selectedCluster?.id || undefined }}
+              initParams={{ class: "device", clusterId: selectedCluster?.id || undefined }}
               columns={gridColumns}
               onRowSelected={(d) => {
                 setSelectedUnit(undefined);
@@ -312,7 +312,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
             <DataGrid
               style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 165px)" }}
               url="/unit"
-              initParams={{ device: true }}
+              initParams={{ class: "device" }}
               columns={unitColumns}
               onRowSelected={(d) => {
                 setSelectedItem(null);

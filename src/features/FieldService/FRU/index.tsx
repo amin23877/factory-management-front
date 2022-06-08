@@ -142,7 +142,7 @@ export default function FRU() {
           <DataGrid
             url="/item"
             columns={fruDevicesColumns}
-            initParams={{ fru: true }}
+            initParams={{  class : "fru" }}
             onRowSelected={(d) => {
               setSelectedUnitFru(undefined);
               setSelectedItemFru(d);
@@ -153,7 +153,7 @@ export default function FRU() {
         {activeTab === 1 && (
           <DataGrid
             url="/unit"
-            initParams={{ fru: true }}
+            initParams={{  class : "fru" }}
             columns={fruUnitsColumns}
             onRowSelected={(d) => {
               setSelectedItemFru(undefined);

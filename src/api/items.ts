@@ -34,6 +34,7 @@ export interface IItem {
   nonInventoryItem: boolean;
   dontTrackQoh: boolean;
   dontOrderOnPOs: boolean;
+  class: string;
   // end detail section
 
   // start pricing section

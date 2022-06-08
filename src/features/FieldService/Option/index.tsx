@@ -142,7 +142,7 @@ export default function Options() {
           <DataGrid
             url="/item"
             columns={optionDevicesColumns}
-            initParams={{ option: true }}
+            initParams={{  class : "option" }}
             onRowSelected={(d) => {
               setSelectedUnitFru(undefined);
               setSelectedItemFru(d);
@@ -153,7 +153,7 @@ export default function Options() {
         {activeTab === 1 && (
           <DataGrid
             url="/unit"
-            initParams={{ option: true }}
+            initParams={{  class : "option" }}
             columns={optionUnitsColumns}
             onRowSelected={(d) => {
               setSelectedItemFru(undefined);

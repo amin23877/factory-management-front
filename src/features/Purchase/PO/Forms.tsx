@@ -704,7 +704,7 @@ export const AddServiceForm = ({
                     edit.i.Category === "Service" || (edit.i.option && edit.belongsTo) ? (
                       <LinkSelect
                         filterLabel="no"
-                        path={edit.i.option ? "/item?option=true" : `/item/${edit.belongsToItemId}/service`}
+                        path={edit.i.option ? "/item?class=option" : `/item/${edit.belongsToItemId}/service`}
                         value={typeof values.ItemId === "string" ? values.ItemId : values.i?.id}
                         label={edit.i.option ? "Option" : "Service"}
                         getOptionList={(resp) => (edit.i.option ? resp.result : resp)}
