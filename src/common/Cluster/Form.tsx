@@ -9,6 +9,7 @@ import Toast from "app/Toast";
 import Confirm from "common/Confirm";
 
 import { deleteCluster } from "api/cluster";
+import { LockButton, useLock } from "common/Lock";
 
 const itemTypes = [
   { value: "option", title: "Option" },
@@ -50,6 +51,8 @@ export default function ClusterForm({
     });
   };
 
+  const { lock } = useLock();
+
   return (
     <Box display="grid" gridTemplateColumns={"repeat(4, 1fr)"} gridGap={10}>
       <ObjectSelect
@@ -60,22 +63,34 @@ export default function ClusterForm({
         value={values.class}
         onChange={(e) => setFieldValue("class", e.target.value)}
         InputLabelProps={{ shrink: true }}
-        disabled={Boolean(values.id)}
+        disabled={lock || Boolean(values.id)}
       />
-      <TextField label="Cluster Value" {...getFieldProps("clusterValue")} InputLabelProps={{ shrink: true }} />
-      <TextField label="Cluster Name" {...getFieldProps("deviceName")} InputLabelProps={{ shrink: true }} />
+      <TextField
+        label="Cluster Value"
+        {...getFieldProps("clusterValue")}
+        InputLabelProps={{ shrink: true }}
+        disabled={lock}
+      />
+      <TextField
+        label="Cluster Name"
+        {...getFieldProps("deviceName")}
+        InputLabelProps={{ shrink: true }}
+        disabled={lock}
+      />
       <Box display="flex" alignItems="center" style={{ gap: 8 }}>
-        <Button kind={values && values?.id ? "edit" : "add"} type="submit">
+        <LockButton />
+        <Button kind={values && values?.id ? "edit" : "add"} type="submit" disabled={lock}>
           Save
         </Button>
         {values && values.id && (
-          <Button kind="delete" onClick={handleDelete}>
+          <Button kind="delete" onClick={handleDelete} disabled={lock}>
             Delete
           </Button>
         )}
         {values && values.id && (
           <Button
             variant="outlined"
+            disabled={lock}
             onClick={() => {
               resetForm({
                 values: {
@@ -100,6 +115,7 @@ export default function ClusterForm({
         {...getFieldProps("description")}
         InputLabelProps={{ shrink: true }}
         style={{ gridColumn: "span 4" }}
+        disabled={lock}
       />
     </Box>
   );

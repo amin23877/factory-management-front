@@ -13,7 +13,7 @@ import {
 import Confirm from "../../Modals/Confirm";
 import { AddItemModal } from "../../Items/ItemModals";
 
-import LevelModal from "common/Level/Modal";
+import ClusterModal from "common/Cluster/Modal";
 
 import DetailTab from "./Details";
 import AddTaskModal, { EditTaskModal } from "./TaskModal";
@@ -137,7 +137,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
         initialValues={{ device: true } as IItem}
       />
       <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
-      <LevelModal open={levelModal} onClose={() => setLevelModal(false)} />
+      <ClusterModal open={levelModal} onClose={() => setLevelModal(false)} />
       <Box display="flex" justifyContent="flex-end" alignItems="center" my={1}>
         <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
           <Tab

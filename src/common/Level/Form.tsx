@@ -13,6 +13,7 @@ import { createLevel, editLevel, deleteLevel, ILevel } from "api/level";
 import { getModifiedValues } from "logic/utils";
 import { clusterType } from "api/cluster";
 import AsyncCombo from "common/AsyncCombo";
+import { LockButton, useLock } from "common/Lock";
 
 const schema = Yup.object().shape({
   name: Yup.string().required(),
@@ -65,6 +66,8 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
     }
   };
 
+  const { lock } = useLock();
+
   return (
     <Formik
       validationSchema={schema}
@@ -86,6 +89,7 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
               label="Level Name"
               placeholder="Name"
               InputLabelProps={{ shrink: true }}
+              disabled={lock}
             />
             <AsyncCombo
               url="/cluster"
@@ -95,7 +99,7 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
               getOptionSelected={(o, v) => o?.id === v?.id}
               value={values.clusterId}
               onChange={(e, nv) => setFieldValue("clusterId", nv)}
-              disabled={Boolean(cluster && cluster?.id)}
+              disabled={lock || Boolean(cluster && cluster?.id)}
             />
             {/* <TextField
               name="clusterValueRef"
@@ -114,13 +118,18 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
               placeholder="Valid Values"
               label="Valid Values"
               InputLabelProps={{ shrink: true }}
+              disabled={lock}
             />
-            <Button kind={values && values.id ? "edit" : "add"} type="submit">
-              save
-            </Button>
+            <Box display="flex" style={{ gap: 5, width: "100%" }}>
+              <Button kind={values && values.id ? "edit" : "add"} type="submit" style={{ flex: 1 }} disabled={lock}>
+                save
+              </Button>
+              <LockButton />
+            </Box>
             {values && values.id && (
               <Button
                 kind="delete"
+                disabled={lock}
                 onClick={() => {
                   Confirm({
                     text: "Delete This Level ? ",

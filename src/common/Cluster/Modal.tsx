@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Tabs, Tab, Box } from "@material-ui/core";
 import { mutate } from "swr";
 import { Formik, Form } from "formik";
@@ -14,6 +14,7 @@ import LevelForm from "common/Level/Form";
 import { clusterType, createCluster, updateCluster } from "api/cluster";
 import { getModifiedValues } from "logic/utils";
 import { schema } from "api/ticket";
+import { useLock } from "common/Lock";
 
 export default function ClusterModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [activeTab, setActiveTab] = useState(0);
@@ -40,6 +41,8 @@ export default function ClusterModal({ open, onClose }: { open: boolean; onClose
       mutate("/cluster");
     }
   };
+
+  const { lock, setLock } = useLock();
 
   const columns = useMemo(
     () => [
@@ -70,16 +73,18 @@ export default function ClusterModal({ open, onClose }: { open: boolean; onClose
         render: ({ data }: any) => (
           <DataGridAction
             icon="view"
-            controlledLock={false}
+            controlledLock={lock}
             onClick={() => {
-              setSelectedCluster(data);
-              setActiveTab(1);
+              if (!lock) {
+                setSelectedCluster(data);
+                setActiveTab(1);
+              }
             }}
           />
         ),
       },
     ],
-    [setSelectedCluster]
+    [setSelectedCluster, lock]
   );
 
   return (
