@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Tabs, Tab, Box } from "@material-ui/core";
 import { mutate } from "swr";
 import { Formik, Form } from "formik";
@@ -78,18 +78,26 @@ export default function ClusterModal({ open, onClose }: { open: boolean; onClose
               if (!lock) {
                 setSelectedCluster(data);
                 setActiveTab(1);
+                setLock(true);
               }
             }}
           />
         ),
       },
     ],
-    [setSelectedCluster, lock]
+    [setSelectedCluster, lock, setLock]
   );
 
   return (
     <Dialog open={open} onClose={onClose} title={activeTab === 0 ? "Cluster" : "Level"} maxWidth="lg" fullWidth>
-      <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+      <Tabs
+        value={activeTab}
+        textColor="primary"
+        onChange={(e, nv) => {
+          setLock(true);
+          setActiveTab(nv);
+        }}
+      >
         <Tab label="Clusters" />
         <Tab label="Levels" disabled={!selectedCluster} />
       </Tabs>

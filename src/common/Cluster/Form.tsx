@@ -90,7 +90,6 @@ export default function ClusterForm({
         {values && values.id && (
           <Button
             variant="outlined"
-            disabled={lock}
             onClick={() => {
               resetForm({
                 values: {

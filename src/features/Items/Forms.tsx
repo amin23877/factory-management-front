@@ -11,7 +11,7 @@ import { IItem } from "api/items";
 import LinkField from "app/Inputs/LinkFields";
 
 import ItemTypeCombo from "common/ItemTypeCombo";
-import { useLock } from "common/Lock";
+import { LockButton, useLock } from "common/Lock";
 
 const useStyles = makeStyles({
   label: {
@@ -71,7 +71,7 @@ export const General = ({
       setFieldValue(t.key, t.value);
     });
   };
-
+  const { lock } = useLock();
   return (
     <>
       <Box display="grid" gridTemplateColumns={"1fr 1fr 1fr 1fr"} gridRowGap={10} gridColumnGap={10}>
@@ -92,6 +92,7 @@ export const General = ({
               onChange={handleChange}
               classes={{ label: classes.label }}
               control={<Checkbox size="small" />}
+              disabled={lock}
             />
             <FormControlLabel
               classes={{ label: classes.label }}
@@ -101,6 +102,7 @@ export const General = ({
               name="engineeringApproval"
               onChange={handleChange}
               control={<Checkbox size="small" />}
+              disabled={lock}
             />
             <FormControlLabel
               classes={{ label: classes.label }}
@@ -110,6 +112,7 @@ export const General = ({
               name="obsolete"
               onChange={handleChange}
               control={<Checkbox size="small" />}
+              disabled={lock}
             />
             <FormControlLabel
               classes={{ label: classes.label }}
@@ -119,6 +122,7 @@ export const General = ({
               name="nonInventoryItem"
               onChange={handleChange}
               control={<Checkbox size="small" />}
+              disabled={lock}
             />
             <FormControlLabel
               classes={{ label: classes.label }}
@@ -128,6 +132,7 @@ export const General = ({
               name="rndOnly"
               onChange={handleChange}
               control={<Checkbox size="small" />}
+              disabled={lock}
             />
             <FormControlLabel
               classes={{ label: classes.label }}
@@ -136,6 +141,7 @@ export const General = ({
               label="Don't Track QOH"
               name="dontTrackQoh"
               onChange={handleChange}
+              disabled={lock}
               control={<Checkbox size="small" />}
             />
             <FormControlLabel
@@ -146,25 +152,8 @@ export const General = ({
               name="dontOrderOnPOs"
               onChange={handleChange}
               control={<Checkbox size="small" />}
+              disabled={lock}
             />
-            {/* <FormControlLabel
-              classes={{ label: classes.label }}
-              style={{ fontSize: "0.7rem" }}
-              checked={values.buildToStock}
-              label="Build To Stock"
-              name="buildToStock"
-              onChange={handleChange}
-              control={<Checkbox size="small" />}
-            /> */}
-            {/* <FormControlLabel
-              classes={{ label: classes.label }}
-              style={{ fontSize: "0.7rem" }}
-              checked={values.option}
-              label="Option"
-              name="option"
-              onChange={handleChange}
-              control={<Checkbox size="small" />}
-            /> */}
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
@@ -173,16 +162,9 @@ export const General = ({
               name="taxable"
               onChange={handleChange}
               control={<Checkbox size="small" />}
+              disabled={lock}
             />
-            {/* <FormControlLabel
-              classes={{ label: classes.label }}
-              style={{ fontSize: "0.7rem" }}
-              checked={values.doNotDiscount}
-              label="Do Not Discount"
-              name="doNotDiscount"
-              onChange={handleChange}
-              control={<Checkbox size="small" />}
-            />*/}
+
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
@@ -191,6 +173,7 @@ export const General = ({
               name="bom"
               onChange={handleChange}
               control={<Checkbox size="small" />}
+              disabled={lock}
             />
             <div style={{ display: "flex", gridColumnEnd: "span 2", alignItems: "center" }}>
               <FormControlLabel
@@ -201,6 +184,7 @@ export const General = ({
                 name="archived"
                 onChange={handleChange}
                 control={<Checkbox size="small" />}
+                disabled={lock}
               />
               {values.archived && (
                 <TextField
@@ -216,27 +200,14 @@ export const General = ({
                 />
               )}
             </div>
-            {/* <FormControlLabel
-              classes={{ label: classes.label }}
-              style={{ fontSize: "0.7rem" }}
-              checked={values.device}
-              label="Device"
-              name="device"
-              onChange={handleChange}
-              control={<Checkbox size="small" />}
-            />
-            <FormControlLabel
-              classes={{ label: classes.label }}
-              style={{ fontSize: "0.7rem" }}
-              checked={values.assembly}
-              label="Assembly"
-              name="assembly"
-              onChange={handleChange}
-              control={<Checkbox size="small" />}
-            /> */}
           </Box>
         </Paper>
-        <ItemTypeCombo value={itemTypes} onChange={handleItemTypeChange} style={{ gridColumnEnd: "span 4" }} />
+        <ItemTypeCombo
+          value={itemTypes}
+          onChange={handleItemTypeChange}
+          style={{ gridColumnEnd: "span 4" }}
+          disabled={lock}
+        />
         <TextField
           style={{ gridColumnEnd: "span 2" }}
           label="no"
@@ -246,6 +217,7 @@ export const General = ({
           onBlur={handleBlur}
           error={Boolean(errors.no && touched.no)}
           placeholder="no"
+          disabled={lock}
         />
         <TextField
           style={{ gridColumnEnd: "span 2" }}
@@ -256,6 +228,7 @@ export const General = ({
           onBlur={handleBlur}
           error={Boolean(errors.name && touched.name)}
           value={values.name}
+          disabled={lock}
         />
         <TextField
           multiline
@@ -267,100 +240,21 @@ export const General = ({
           onChange={handleChange}
           onBlur={handleBlur}
           value={values.description}
+          disabled={lock}
         />
-        {/* <TextField
-                    style={{ gridColumnEnd: "span 2" }}
-                    label="Category"
-                    value={values.Category}
-                    name="Category"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.Category && touched.Category)}
-                    placeholder="Category"
-                />
-                <TextField
-                    style={{ gridColumnEnd: "span 2" }}
-                    label="Type"
-                    value={values.Type}
-                    name="Type"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    error={Boolean(errors.Type && touched.Type)}
-                    placeholder="Type"
-                /> */}
       </Box>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 8,
+        }}
+      >
+        <LockButton />
+      </div>
     </>
-  );
-};
-
-export const MoreInfo = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
-  const phone = useMediaQuery("(max-width:900px)");
-
-  return (
-    <Box
-      mt={1}
-      display="grid"
-      gridTemplateColumns={phone ? "auto auto" : "auto auto auto"}
-      gridColumnGap={10}
-      gridRowGap={10}
-    >
-      <TextField
-        label="Manufacturer"
-        name="manufacturer"
-        placeholder="Manufacturer"
-        value={values.manufacturer}
-        onBlur={handleBlur}
-        onChange={handleChange}
-      />
-      <TextField
-        label="Man. Product No."
-        name="manufacturerProductNumber"
-        placeholder="Man. Product No."
-        value={values.manufacturerProductNumber}
-        onBlur={handleBlur}
-        onChange={handleChange}
-      />
-      <TextField
-        label="Lead Time"
-        name="leadTime"
-        placeholder="Lead Time"
-        value={values.leadTime}
-        onBlur={handleBlur}
-        onChange={handleChange}
-      />
-      <TextField
-        label="Quickbook ID"
-        name="qbId"
-        placeholder="Quickbook ID"
-        value={values.qbId}
-        onBlur={handleBlur}
-        onChange={handleChange}
-      />
-      <TextField
-        label="QB Type"
-        name="qbType"
-        placeholder="QB Type"
-        value={values.qbType}
-        onBlur={handleBlur}
-        onChange={handleChange}
-      />
-      <TextField
-        label="Type"
-        name="type"
-        placeholder="Type"
-        value={values.type}
-        onBlur={handleBlur}
-        onChange={handleChange}
-      />
-      <TextField
-        label="Category"
-        name="category"
-        placeholder="category"
-        value={values.category}
-        onBlur={handleBlur}
-        onChange={handleChange}
-      />
-    </Box>
   );
 };
 

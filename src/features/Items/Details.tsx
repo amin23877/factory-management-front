@@ -7,7 +7,8 @@ import Button from "app/Button";
 import { BasePaper } from "app/Paper";
 import VendorsTable from "./VendorsTable";
 
-import { MoreInfo, Quantity, Shipping, General, LastUsed, Levels } from "./Forms";
+import { Quantity, Shipping, General, LastUsed, Levels } from "./Forms";
+import MoreInfo from "./Forms/MoreInfo";
 import PricingTab from "./Pricing";
 
 import ManualCountModal from "./ManualCountModal";
@@ -227,7 +228,7 @@ function ItemsDetails({
       <UpdateQuantityModal open={quantityModal} onClose={() => setQuantityModal(false)} itemId={selectedRow.id} />
 
       <Formik initialValues={selectedRow} onSubmit={handleSubmit}>
-        {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
+        {({ values, errors, touched, handleChange, handleBlur, setFieldValue, getFieldProps }) => (
           <Form style={{ flex: 1, display: "flex" }}>
             <Box
               display="grid"
@@ -247,20 +248,6 @@ function ItemsDetails({
                     errors={errors}
                     touched={touched}
                   />
-                  <div
-                    style={{
-                      width: "100%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "center",
-                      marginTop: 8,
-                    }}
-                  >
-                    <Button disabled={lock} style={{ width: "200px" }} kind="edit" type="submit">
-                      Save
-                    </Button>
-                    <LockButton />
-                  </div>
                 </BasePaper>
                 <BasePaper style={{ flex: 1, margin: 8 }}>
                   <Tabs
@@ -311,16 +298,7 @@ function ItemsDetails({
                       </Button>
                     </Box>
                   )}
-                  {moreInfoTab === 2 && (
-                    <MoreInfo
-                      values={values}
-                      handleChange={handleChange}
-                      handleBlur={handleBlur}
-                      setFieldValue={setFieldValue}
-                      errors={errors}
-                      touched={touched}
-                    />
-                  )}
+                  {moreInfoTab === 2 && <MoreInfo values={values} getFieldProps={getFieldProps} />}
                   {moreInfoTab === 3 && (
                     <>
                       <LastUsed

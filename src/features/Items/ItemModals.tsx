@@ -5,7 +5,8 @@ import { mutate } from "swr";
 
 import Button from "../../app/Button";
 import Dialog from "../../app/Dialog";
-import { General, MoreInfo, Pricing, Shipping } from "./Forms";
+import { General, Pricing, Shipping } from "./Forms";
+import MoreInfo from "./Forms/MoreInfo";
 
 import { createItem, IItem } from "../../api/items";
 
@@ -39,8 +40,8 @@ export const AddItemModal = ({
   return (
     <Dialog open={open} onClose={onClose} maxWidth="lg" title="Add new item" fullScreen>
       <Box p={1}>
-        <Formik initialValues={initialValues ? initialValues : ({  class : "device" } as IItem)} onSubmit={handleSubmit}>
-          {({ values, errors, handleChange, handleBlur, touched, isSubmitting, setFieldValue }) => (
+        <Formik initialValues={initialValues ? initialValues : ({ class: "device" } as IItem)} onSubmit={handleSubmit}>
+          {({ values, errors, handleChange, handleBlur, touched, isSubmitting, setFieldValue, getFieldProps }) => (
             <Form>
               <Box display="flex">
                 <Box flex={2}>
@@ -64,17 +65,7 @@ export const AddItemModal = ({
                     <Tab label="Pricing" />
                     <Tab label="Shipping" />
                   </Tabs>
-                  {activeTab === 0 && (
-                    <MoreInfo
-                      errors={errors}
-                      handleBlur={handleBlur}
-                      handleChange={handleChange}
-                      setFieldValue={setFieldValue}
-                      touched={touched}
-                      values={values}
-                      isSubmitting={isSubmitting}
-                    />
-                  )}
+                  {activeTab === 0 && <MoreInfo getFieldProps={getFieldProps} values={values} />}
                   {activeTab === 1 && (
                     <Pricing
                       errors={errors}

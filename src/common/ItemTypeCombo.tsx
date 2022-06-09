@@ -6,9 +6,11 @@ export default function ItemTypeCombo({
   value,
   style,
   onChange,
+  disabled,
 }: {
   value?: itemType[];
   style?: CSSProperties;
+  disabled?: boolean;
   onChange?: (e: any, nv: itemType[]) => void;
 }) {
   return (
@@ -18,6 +20,7 @@ export default function ItemTypeCombo({
       options={itemTypes}
       getOptionLabel={(option) => option?.title || "No-Title"}
       // defaultValue={[]}
+      disabled={disabled}
       filterSelectedOptions
       onChange={(e, nv) => onChange && onChange(e, nv ? [nv] : [])}
       value={value ? value[0] : null}

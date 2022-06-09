@@ -118,7 +118,7 @@ const Items = () => {
             <ListItem>
               <IconButton
                 title="Delete item"
-                disabled={!selectedItem}
+                disabled={lock || !selectedItem}
                 onClick={() => selectedItem && selectedItem?.id && setDeleteItemModal(true)}
               >
                 <DeleteRounded />
