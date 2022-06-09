@@ -264,7 +264,7 @@ function NewDataGrid({
       for (const fv of filterValue) {
         if (fv.value !== null && fv.value !== undefined && fv.value !== "") {
           if (fv.name === "itemType") {
-            params[fv.value] = true;
+            params.class = fv.value;
           } else {
             params[getOperator(fv.operator) + fv.name] = fv.value;
           }
