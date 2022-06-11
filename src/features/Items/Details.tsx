@@ -7,9 +7,13 @@ import Button from "app/Button";
 import { BasePaper } from "app/Paper";
 import VendorsTable from "./VendorsTable";
 
-import { Quantity, Shipping, General, LastUsed, Levels } from "./Forms";
+import { General } from "./Forms";
 import MoreInfo from "./Forms/MoreInfo";
-import PricingTab from "./Pricing";
+import LastUsed from "./Forms/LastUsed";
+import Quantity from "./Forms/Quantity";
+import PricingTab from "./Forms/Pricing";
+import Shipping from "./Forms/Shipping";
+import Levels from "./Forms/Levels";
 
 import ManualCountModal from "./ManualCountModal";
 import UpdateQuantityModal from "./Quantity";
@@ -29,7 +33,7 @@ import QRCode from "app/QRCode";
 import Confirm from "common/Confirm";
 import Toast from "app/Toast";
 import PhotoTab from "common/PhotoTab";
-import { useLock, LockButton } from "common/Lock";
+import { useLock } from "common/Lock";
 import AuditTable from "common/Audit";
 
 const style = {
@@ -301,49 +305,21 @@ function ItemsDetails({
                   {moreInfoTab === 2 && <MoreInfo values={values} getFieldProps={getFieldProps} />}
                   {moreInfoTab === 3 && (
                     <>
-                      <LastUsed
-                        values={values}
-                        handleChange={handleChange}
-                        handleBlur={handleBlur}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
-                        touched={touched}
-                      />
+                      <LastUsed values={values} getFieldProps={getFieldProps} setFieldValue={setFieldValue} />
                       <hr style={{ width: "100%" }} />
                       <Quantity
+                        getFieldProps={getFieldProps}
                         values={values}
-                        handleChange={handleChange}
-                        handleBlur={handleBlur}
-                        setFieldValue={setFieldValue}
-                        errors={errors}
-                        touched={touched}
-                        itemId={selectedRow.id}
                         handleManualCount={() => setManualCountModal(true)}
                         handleUpdateQuantity={() => setQuantityModal(true)}
                       />
                     </>
                   )}
                   {moreInfoTab === 4 && (
-                    <PricingTab
-                      itemId={selectedRow.id}
-                      boms={boms}
-                      errors={errors}
-                      touched={touched}
-                      values={values}
-                      handleBlur={handleBlur}
-                      handleChange={handleChange}
-                      setFieldValue={setFieldValue}
-                    />
+                    <PricingTab itemId={selectedRow.id} boms={boms} values={values} getFieldProps={getFieldProps} />
                   )}
                   {moreInfoTab === 5 && (
-                    <Shipping
-                      values={values}
-                      handleChange={handleChange}
-                      handleBlur={handleBlur}
-                      setFieldValue={setFieldValue}
-                      errors={errors}
-                      touched={touched}
-                    />
+                    <Shipping values={values} getFieldProps={getFieldProps} setFieldValue={setFieldValue} />
                   )}
                   {moreInfoTab === 6 && (
                     <Levels
@@ -357,7 +333,7 @@ function ItemsDetails({
                   )}
                   {moreInfoTab === 7 && (
                     <Box textAlign="center">
-                      <Button kind="add" onClick={handleConvertToService}>
+                      <Button kind="add" onClick={handleConvertToService} disabled={lock}>
                         Convert to Service
                       </Button>
                     </Box>

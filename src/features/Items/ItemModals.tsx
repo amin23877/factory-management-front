@@ -5,8 +5,9 @@ import { mutate } from "swr";
 
 import Button from "../../app/Button";
 import Dialog from "../../app/Dialog";
-import { General, Pricing, Shipping } from "./Forms";
+import { General, Pricing } from "./Forms";
 import MoreInfo from "./Forms/MoreInfo";
+import Shipping from "./Forms/Shipping";
 
 import { createItem, IItem } from "../../api/items";
 
@@ -78,15 +79,7 @@ export const AddItemModal = ({
                     />
                   )}
                   {activeTab === 2 && (
-                    <Shipping
-                      errors={errors}
-                      handleBlur={handleBlur}
-                      handleChange={handleChange}
-                      setFieldValue={setFieldValue}
-                      touched={touched}
-                      values={values}
-                      isSubmitting={isSubmitting}
-                    />
+                    <Shipping getFieldProps={getFieldProps} setFieldValue={setFieldValue} values={values} />
                   )}
                 </Box>
               </Box>
