@@ -29,7 +29,7 @@ import QRCode from "app/QRCode";
 import Confirm from "common/Confirm";
 import Toast from "app/Toast";
 import PhotoTab from "common/PhotoTab";
-import { useLock, LockButton } from "common/Lock";
+// import { useLock } from "common/Lock";
 import AuditTable from "common/Audit";
 
 const style = {
@@ -73,7 +73,7 @@ function ItemsDetails({
   const [bomPartsModal, setBomPartsModal] = useState(false);
   const [selectedBom] = useState<IBom>();
   const phone = useMediaQuery("(max-width:900px)");
-  const { lock } = useLock();
+  // const { lock } = useLock();
 
   // const poCols = useMemo<GridColDef[]>(
   //   () => [
@@ -183,6 +183,7 @@ function ItemsDetails({
     try {
       if (selectedRow && selectedRow.id) {
         const reqData = getModifiedValues(data, selectedRow);
+
         const resp = await updateAnItem(selectedRow.id, reqData);
         if (resp) {
           setSubmitting(false);
@@ -248,6 +249,9 @@ function ItemsDetails({
                     errors={errors}
                     touched={touched}
                   />
+                  <button type="submit" style={{ display: "none" }}>
+                    submit
+                  </button>
                 </BasePaper>
                 <BasePaper style={{ flex: 1, margin: 8 }}>
                   <Tabs

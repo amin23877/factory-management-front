@@ -8,22 +8,22 @@ export default function ItemTypeCombo({
   onChange,
   disabled,
 }: {
-  value?: itemType[];
+  value?: itemType;
   style?: CSSProperties;
   disabled?: boolean;
-  onChange?: (e: any, nv: itemType[]) => void;
+  onChange?: (e: any, nv: itemType | null) => void;
 }) {
   return (
     <Autocomplete
       style={style}
       // multiple
+      // defaultValue={[]}
       options={itemTypes}
       getOptionLabel={(option) => option?.title || "No-Title"}
-      // defaultValue={[]}
       disabled={disabled}
       filterSelectedOptions
-      onChange={(e, nv) => onChange && onChange(e, nv ? [nv] : [])}
-      value={value ? value[0] : null}
+      onChange={(e, nv) => onChange && onChange(e, nv)}
+      value={value}
       renderInput={(params) => <TextField {...params} variant="outlined" label="Item Type" />}
     />
   );
