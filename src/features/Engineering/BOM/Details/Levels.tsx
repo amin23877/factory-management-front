@@ -82,6 +82,7 @@ function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
         <LockButton />
       </Box>
       <NewDataGrid
+        style={{ height: "64vh" }}
         editable={!lock}
         rowHeight={30}
         url={`/level?clusterId=${selectedRow.id}`}

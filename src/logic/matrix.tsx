@@ -94,7 +94,7 @@ export const extractColumns = ({ tableData, levels }: { tableData: IMatrix; leve
 
 export const extractLevels = (tableData: IMatrix) => {
   const levels = new Set<string>();
-  Object.keys(tableData[0]).forEach((k) => k !== "device" && levels.add(k));
+  tableData[0] && Object.keys(tableData[0]).forEach((k) => k !== "device" && levels.add(k));
 
   return Array.from(levels);
 };

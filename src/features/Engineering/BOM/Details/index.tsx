@@ -3,6 +3,7 @@ import { Box, Tab, Tabs } from "@material-ui/core";
 
 import Form from "./Form";
 import Levels from "./Levels";
+import MatrixTable from "../Table";
 import { BasePaper } from "app/Paper";
 import PhotoTab from "common/PhotoTab";
 
@@ -27,6 +28,7 @@ export default function Details({ selectedRow }: { selectedRow: clusterType }) {
           <Tab label="matrix" />
         </Tabs>
         {activeTab === 0 && <Levels selectedRow={selectedRow} />}
+        {activeTab === 1 && <MatrixTable cluster={selectedRow} />}
       </BasePaper>
     </Box>
   );
