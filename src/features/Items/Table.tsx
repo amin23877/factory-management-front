@@ -48,7 +48,7 @@ function ItemTable({
       { name: "cost", header: "Cost", minWidth: 80, type: "number" },
       { name: "location", header: "Location", minWidth: 100 },
       {
-        name: "itemType",
+        name: "class",
         header: "Item Type",
         defaultWidth: 100,
         defaultOperator: "eq",
@@ -63,12 +63,12 @@ function ItemTable({
             { id: "fru", label: "Fru" },
           ],
         },
-        render: ({ data }: any) => {
-          const types = ["option", "device", "assembly", "part", "fru"];
-          const itemTypes = types.map((t) => (data as any)[t] && { value: t }).filter((t) => t);
+        // render: ({ data }: any) => {
+        //   const types = ["option", "device", "assembly", "part", "fru"];
+        //   const itemTypes = types.map((t) => (data as any)[t] && { value: t }).filter((t) => t);
 
-          return itemTypes?.find((t) => t)?.value || "";
-        },
+        //   return itemTypes?.find((t) => t)?.value || "";
+        // },
       },
       { name: "qtyOnHand", header: "QOH.", minWidth: 80, type: "number" },
       { name: "qtyRemain", header: " Remain", minWidth: 80, type: "number" },
