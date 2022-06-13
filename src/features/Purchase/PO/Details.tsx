@@ -20,6 +20,7 @@ import { ILineItem } from "api/lineItem";
 
 import { getModifiedValues } from "logic/utils";
 import ReceivingTab from "./Receiving";
+import { LockButton, LockProvider } from "common/Lock";
 
 export default function Details({ selectedPO, onDone }: { selectedPO: IPurchasePO; onDone?: () => void }) {
   const phone = useMediaQuery("(max-width:900px)");
@@ -82,10 +83,8 @@ export default function Details({ selectedPO, onDone }: { selectedPO: IPurchaseP
               <Box>
                 <BasePaper>
                   <UpdateForm values={values} errors={errors} handleBlur={handleBlur} handleChange={handleChange} />
-                  <Box display="flex" width="100%" justifyContent="center" alignItems="center">
-                    <Button style={{ marginTop: "1em", width: "200px" }} type="submit" kind="edit">
-                      Save
-                    </Button>
+                  <Box display="flex" width="100%" justifyContent="center" alignItems="center" mt={1}>
+                    <LockButton />
                   </Box>
                 </BasePaper>
               </Box>
@@ -104,19 +103,25 @@ export default function Details({ selectedPO, onDone }: { selectedPO: IPurchaseP
                 </Tabs>
                 <Box>
                   {activeMoreTab === 0 && (
-                    <MoreInfoForm
-                      errors={errors}
-                      values={values}
-                      handleBlur={handleBlur}
-                      handleChange={handleChange}
-                      setFieldValue={setFieldValue}
-                    />
+                    <LockProvider>
+                      <MoreInfoForm
+                        errors={errors}
+                        values={values}
+                        handleBlur={handleBlur}
+                        handleChange={handleChange}
+                        setFieldValue={setFieldValue}
+                      />
+                    </LockProvider>
                   )}
                   {activeMoreTab === 1 && (
-                    <VendorForm values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                    <LockProvider>
+                      <VendorForm values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                    </LockProvider>
                   )}
                   {activeMoreTab === 2 && (
-                    <AddressesForm values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                    <LockProvider>
+                      <AddressesForm values={values} handleBlur={handleBlur} handleChange={handleChange} />
+                    </LockProvider>
                   )}
                 </Box>
               </BasePaper>

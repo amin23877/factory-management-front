@@ -26,6 +26,7 @@ import PurchasePOTypeModal from "./PurchasePoType";
 import { deletePurchasePO, IPurchasePO } from "api/purchasePO";
 import { ILineItem } from "api/lineItem";
 import Confirm from "features/Modals/Confirm";
+import { useLock } from "common/Lock";
 
 function Index() {
   const [activeTab, setActiveTab] = useState(0);
@@ -37,6 +38,7 @@ function Index() {
 
   const [selectedPO, setSelectedPO] = useState<IPurchasePO>();
   const [compPo, setCompPo] = useState<any>();
+  const { lock, setLock } = useLock();
 
   const cols = useMemo(
     () => [
@@ -109,7 +111,10 @@ function Index() {
                 textColor="primary"
                 style={{ marginBottom: "1em" }}
                 value={activeTab}
-                onChange={(e, nv) => setActiveTab(nv)}
+                onChange={(e, nv) => {
+                  setActiveTab(nv);
+                  setLock(true);
+                }}
               >
                 <Tab
                   // label="List"
@@ -150,12 +155,12 @@ function Index() {
                     </IconButton>
                   </ListItem>
                   <ListItem>
-                    <IconButton onClick={() => setConfirm(true)}>
+                    <IconButton onClick={() => setConfirm(true)} disabled={lock}>
                       <DeleteRounded />
                     </IconButton>
                   </ListItem>
                   <ListItem>
-                    <IconButton onClick={() => setAddType(true)} title="Add PO Types">
+                    <IconButton onClick={() => setAddType(true)} title="Add PO Types" disabled={lock}>
                       <LocalOfferRounded />
                     </IconButton>
                   </ListItem>
@@ -168,6 +173,7 @@ function Index() {
                             setAddPO(true);
                           }}
                           title="Add new PO based on this PO"
+                          disabled={lock}
                         >
                           <PostAddRounded />
                         </IconButton>

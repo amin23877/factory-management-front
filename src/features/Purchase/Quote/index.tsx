@@ -16,11 +16,13 @@ import { deletePurchaseQuote, IPurchaseQuote } from "api/purchaseQuote";
 import Confirm from "../../Modals/Confirm";
 
 import { BasePaper } from "app/Paper";
+import { useLock } from "common/Lock";
 
 function Index() {
   const [activeTab, setActiveTab] = useState(0);
   const [addPQ, setAddPQ] = useState(false);
   const [confirm, setConfirm] = useState(false);
+  const { lock, setLock } = useLock();
 
   const [selPQ, setSelPQ] = useState<IPurchaseQuote | undefined>({
     id: "",
@@ -76,7 +78,10 @@ function Index() {
                 style={{ marginBottom: "1em" }}
                 textColor="primary"
                 value={activeTab}
-                onChange={(e, nv) => setActiveTab(nv)}
+                onChange={(e, nv) => {
+                  setActiveTab(nv);
+                  setLock(true);
+                }}
               >
                 <Tab
                   icon={
@@ -116,7 +121,7 @@ function Index() {
                     </IconButton>
                   </ListItem>
                   <ListItem>
-                    <IconButton onClick={() => setConfirm(true)}>
+                    <IconButton onClick={() => setConfirm(true)} disabled={lock}>
                       <DeleteRounded />
                     </IconButton>
                   </ListItem>

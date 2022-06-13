@@ -11,6 +11,7 @@ import { BasePaper } from "../../../app/Paper";
 
 import { createVendor, updateVendor } from "../../../api/vendor";
 import { getVendorTypes } from "../../../api/vendorType";
+import { LockButton, useLock } from "common/Lock";
 
 const schema = Yup.object().shape({
   name: Yup.string().required(),
@@ -152,7 +153,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
   const phone = useMediaQuery("(max-width:900px)");
   const { data: contacts } = useSWR(initialValues?.id ? `/contact/vendor/${initialValues?.id}` : null);
   const mainContact = contacts && contacts.length > 0 ? contacts.find((c: any) => c.main) : null;
-
+  const { lock } = useLock();
   const handleSubmit = async (d: any, { setSubmitting }: any) => {
     try {
       if (initialValues.id) {
@@ -190,6 +191,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                   control={<Checkbox checked={Boolean(values.active)} size="small" />}
                   label="Active"
                   onChange={handleChange}
+                  disabled={lock}
                   onBlur={handleBlur}
                 />
               </Paper>
@@ -200,23 +202,13 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                 gridRowGap={10}
                 gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"}
               >
-                {/* <FieldSelect
-                  request={getVendorTypes}
-                  itemTitleField="name"
-                  itemValueField="id"
-                  name="type"
-                  label="Type"
-                  fullWidth
-                  onChange={handleChange}
-                  value={typeof values.type === "string" ? values.type : values.type?.id}
-                  error={Boolean(errors.type)}
-                /> */}
                 <TextField
                   label="Type"
                   value={values.type}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={Boolean(errors.type)}
+                  disabled={lock}
                 />
                 <TextField
                   name="number"
@@ -234,6 +226,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={Boolean(errors.name)}
+                  disabled={lock}
                 />
                 <TextField
                   name="address"
@@ -242,6 +235,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={Boolean(errors.address)}
+                  disabled={lock}
                 />
                 <TextField
                   name="address2"
@@ -250,6 +244,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={Boolean(errors.address2)}
+                  disabled={lock}
                 />
                 <TextField
                   name="country"
@@ -258,6 +253,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={Boolean(errors.country)}
+                  disabled={lock}
                 />
                 <TextField
                   name="city"
@@ -265,6 +261,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                   value={values.city}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  disabled={lock}
                   error={Boolean(errors.city)}
                 />
                 <TextField
@@ -273,6 +270,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                   value={values.state}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  disabled={lock}
                   error={Boolean(errors.state)}
                 />
                 <TextField
@@ -282,6 +280,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={Boolean(errors.zip)}
+                  disabled={lock}
                 />
                 <TextField
                   name="website"
@@ -290,6 +289,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={Boolean(errors.website)}
+                  disabled={lock}
                 />
                 <TextField
                   name="terms"
@@ -297,6 +297,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                   value={values.terms}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  disabled={lock}
                   error={Boolean(errors.terms)}
                 />
                 <TextField
@@ -304,6 +305,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                   value={values.note}
                   name="note"
                   label="Note"
+                  disabled={lock}
                   multiline
                   rows={3}
                   onChange={handleChange}
@@ -311,9 +313,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                 />
               </Box>
               <Box style={{ display: "flex", justifyContent: "center" }}>
-                <Button type="submit" kind="edit" style={{ margin: "0.6em", width: "200px" }}>
-                  Save
-                </Button>
+                <LockButton />
               </Box>
             </BasePaper>
             {mainContact && (
@@ -324,9 +324,7 @@ export const UpdateVendorForm = ({ initialValues, onDone }: { initialValues: any
                 <Box mt={2} display="grid" gridRowGap={10} gridColumnGap={10} gridTemplateColumns="1fr 1fr">
                   <TextField label="Name" value={`${mainContact?.firstName} ${mainContact?.lastName}`} disabled />
                   <TextField label="Phone" value={mainContact?.phones[0]?.phone} disabled />
-                  {/* <TextField label="EXT" value={values.mcExt} disabled /> */}
                   <TextField label="Email" value={mainContact?.emails[0]?.email} disabled />
-                  {/* <TextField label="Office Hours" value={values.officeHours} disabled /> */}
                   <TextField label="Department" value={mainContact?.department} disabled />
                   <TextField label="Title" value={mainContact?.title} disabled style={{ gridColumnStart: "span 2" }} />
                 </Box>

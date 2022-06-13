@@ -104,11 +104,11 @@ const Items = () => {
             />
           </Tabs>
           <div style={{ flexGrow: 1 }} />
-          {itemSelection && Object.keys(itemSelection || {}).length > 0 && (
+          {/* {itemSelection && Object.keys(itemSelection || {}).length > 0 && (
             <Button disabled={lock} kind="add" onClick={handleConvertItems} style={{ margin: "0 8px" }}>
               Convert Selection to Service
             </Button>
-          )}
+          )} */}
           <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <ListItem>
               <IconButton title="Add item" onClick={() => setAddItemModal(true)}>
