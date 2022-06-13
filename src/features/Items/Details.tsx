@@ -273,7 +273,7 @@ function ItemsDetails({
                     <Tab label="Pricing" />
                     <Tab label="Shipping" />
                     <Tab label="Clusters and Levels" />
-                    <Tab label="Convert" />
+                    {/* <Tab label="Convert" /> */}
                   </Tabs>
                   {moreInfoTab === 0 && <PhotoTab model="item" id={selectedRow.id} />}
                   {moreInfoTab === 1 && (
@@ -305,13 +305,12 @@ function ItemsDetails({
                   {moreInfoTab === 2 && <MoreInfo values={values} getFieldProps={getFieldProps} />}
                   {moreInfoTab === 3 && (
                     <>
-                      <LastUsed values={values} getFieldProps={getFieldProps} setFieldValue={setFieldValue} />
-                      <hr style={{ width: "100%" }} />
                       <Quantity
                         getFieldProps={getFieldProps}
                         values={values}
                         handleManualCount={() => setManualCountModal(true)}
                         handleUpdateQuantity={() => setQuantityModal(true)}
+                        setFieldValue={setFieldValue}
                       />
                     </>
                   )}
@@ -331,13 +330,13 @@ function ItemsDetails({
                       touched={touched}
                     />
                   )}
-                  {moreInfoTab === 7 && (
+                  {/* {moreInfoTab === 7 && (
                     <Box textAlign="center">
                       <Button kind="add" onClick={handleConvertToService} disabled={lock}>
                         Convert to Service
                       </Button>
                     </Box>
-                  )}
+                  )} */}
                 </BasePaper>
               </Box>
               <BasePaper style={{ height: "100%" }}>
