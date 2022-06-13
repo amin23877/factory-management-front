@@ -17,10 +17,11 @@ import NoteTab from "common/Note/Tab";
 import DocumentsTab from "common/Document/Tab";
 import BaseDataGrid from "app/BaseDataGrid";
 import { formatTimestampToDate } from "logic/date";
+import { LockButton, useLock } from "common/Lock";
 
 export default function Details({ onDone, initialValues }: { onDone?: () => void; initialValues: IPurchaseQuote }) {
   const [activeTab, setActiveTab] = useState(0);
-
+  const { lock } = useLock();
   const LICols = useMemo<GridColumns>(
     () => [
       { field: "ItemId", headerName: "Item No.", valueFormatter: (r) => r.row.ItemId.no, width: 120 },
@@ -75,6 +76,7 @@ export default function Details({ onDone, initialValues }: { onDone?: () => void
                   onChange={handleChange}
                   onBlur={handleBlur}
                   style={{ gridColumnEnd: "span 2" }}
+                  disabled={lock}
                 />
                 <TextField
                   name="date"
@@ -95,6 +97,7 @@ export default function Details({ onDone, initialValues }: { onDone?: () => void
                   onBlur={handleBlur}
                   value={typeof values.VendorId === "string" ? values.VendorId : values.VendorId?.id}
                   error={Boolean(errors.VendorId)}
+                  disabled={lock}
                 />
                 <FieldSelect
                   request={getVendors}
@@ -128,6 +131,7 @@ export default function Details({ onDone, initialValues }: { onDone?: () => void
                   label="Company Name"
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  disabled={lock}
                 />
                 <TextField
                   name="companyWebsite"
@@ -135,6 +139,7 @@ export default function Details({ onDone, initialValues }: { onDone?: () => void
                   label="Company Website"
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  disabled={lock}
                 />
                 <TextField
                   name="contactName"
@@ -142,6 +147,7 @@ export default function Details({ onDone, initialValues }: { onDone?: () => void
                   label="Contact Name"
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  disabled={lock}
                 />
                 <TextField
                   name="contactNumber"
@@ -149,12 +155,11 @@ export default function Details({ onDone, initialValues }: { onDone?: () => void
                   label="Contact Number"
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  disabled={lock}
                 />
               </Box>
               <Box display="flex" justifyContent="center" alignItems="center">
-                <Button style={{ width: "200px" }} type="submit" kind="edit">
-                  Save
-                </Button>
+                <LockButton />
               </Box>
             </Form>
           )}

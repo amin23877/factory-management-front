@@ -26,7 +26,6 @@ import DateTimePicker from "app/DateTimePicker";
 import LinkSelect from "app/Inputs/LinkFields";
 import Dialog from "app/Dialog";
 
-import { getPPOTypes } from "api/purchasePoType";
 import { IPurchasePOComplete } from "api/purchasePO";
 import { ILineItem } from "api/lineItem";
 import { IItem } from "api/items";
@@ -40,6 +39,7 @@ import "styles/main.css";
 
 import PurchasePO from "PDFTemplates/PurchasePO";
 import LinkField from "app/Inputs/LinkFields";
+import { LockButton, useLock } from "common/Lock";
 
 export const DocumentForm = ({
   data,
@@ -954,23 +954,19 @@ export const UpdateForm = ({
   errors: any;
 }) => {
   const phone = useMediaQuery("(max-width:900px)");
-
+  const { lock } = useLock();
   return (
     <>
       <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"} gridRowGap={7} gridColumnGap={7}>
         <TextField name="number" label="PO Number" value={values.number} disabled />
-        <TextField name="type" label="PO Type" value={values.type} onChange={handleChange} onBlur={handleBlur} />
-        {/* <FieldSelect
-          request={getPPOTypes}
-          itemTitleField="name"
-          itemValueField="id"
+        <TextField
           name="type"
           label="PO Type"
-          fullWidth
+          value={values.type}
           onChange={handleChange}
-          value={typeof values.type === "string" ? values.type : values.type?.id}
-          error={Boolean(errors.type)}
-        /> */}
+          onBlur={handleBlur}
+          disabled={lock}
+        />
         <TextField label="So Number" value={values.SOId?.number} fullWidth disabled />
         <TextField label="Vendor" value={values.VendorId?.name} fullWidth disabled />
         <TextField label="Approved By" value={values.approvedBy?.username} fullWidth disabled />
@@ -993,6 +989,7 @@ export const UpdateForm = ({
           onBlur={handleBlur}
           error={Boolean(errors.status)}
           fullWidth
+          disabled={lock}
         />
         <TextField
           name="terms"
@@ -1002,6 +999,7 @@ export const UpdateForm = ({
           onBlur={handleBlur}
           error={Boolean(errors.terms)}
           fullWidth
+          disabled={lock}
         />
         <Paper
           style={
@@ -1022,6 +1020,7 @@ export const UpdateForm = ({
             checked={values.approved}
             label="Approved"
             name="approved"
+            disabled={lock}
             onChange={handleChange}
             control={<CheckBox size="small" />}
           />
@@ -1031,6 +1030,7 @@ export const UpdateForm = ({
           value={values.publicNote}
           name="publicNote"
           label="Note"
+          disabled={lock}
           multiline
           rows={3}
           onChange={handleChange}
@@ -1042,6 +1042,7 @@ export const UpdateForm = ({
           name="description"
           label="Description"
           multiline
+          disabled={lock}
           rows={3}
           onChange={handleChange}
           onBlur={handleBlur}
@@ -1066,9 +1067,11 @@ export const MoreInfoForm = ({
   setFieldValue: any;
   addForm?: boolean;
 }) => {
+  const { lock } = useLock();
   return (
     <>
       <Box my={2} display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10}>
+        <LockButton />
         {!addForm && <TextField label="PO Date" value={formatTimestampToDate(values.date)} disabled />}
         <DateTimePicker
           size="small"
@@ -1077,6 +1080,7 @@ export const MoreInfoForm = ({
           label="َAck. Date"
           onChange={(date) => setFieldValue(" acknowledgeDate", date)}
           onBlur={handleBlur}
+          disabled={lock}
         />
         <DateTimePicker
           size="small"
@@ -1085,6 +1089,7 @@ export const MoreInfoForm = ({
           label="Estimated ship date"
           onChange={(date) => setFieldValue("estShipDate", date)}
           onBlur={handleBlur}
+          disabled={lock}
         />
         <DateTimePicker
           size="small"
@@ -1093,6 +1098,7 @@ export const MoreInfoForm = ({
           label="Actual ship date"
           onChange={(date) => setFieldValue("actShipDate", date)}
           onBlur={handleBlur}
+          disabled={lock}
         />
         {!addForm && (
           <TextField label="Approved Date" value={formatTimestampToDate(values.approvedDate)} fullWidth disabled />
@@ -1104,6 +1110,7 @@ export const MoreInfoForm = ({
           label="Required By"
           onChange={(date) => setFieldValue("requiredBy", date)}
           onBlur={handleBlur}
+          disabled={lock}
         />
         <DateTimePicker
           size="small"
@@ -1112,6 +1119,7 @@ export const MoreInfoForm = ({
           label="Date Sent"
           onChange={(date) => setFieldValue("sentDate", date)}
           onBlur={handleBlur}
+          disabled={lock}
         />
       </Box>
     </>
@@ -1129,19 +1137,26 @@ export const AddressesForm = ({
 }) => {
   const [activeTab, setActiveTab] = useState(0);
   const phone = useMediaQuery("(max-width:900px)");
+  const { lock, setLock } = useLock();
 
   return (
     <>
-      <Tabs
-        textColor="primary"
-        value={activeTab}
-        onChange={(e, nv) => setActiveTab(nv)}
-        variant="scrollable"
-        style={{ maxWidth: 600 }}
-      >
-        <Tab label="Billing Address" />
-        <Tab label="Shipping Address" />
-      </Tabs>
+      <Box display="flex" justifyContent="space-between">
+        <Tabs
+          textColor="primary"
+          value={activeTab}
+          onChange={(e, nv) => {
+            setActiveTab(nv);
+            setLock(true);
+          }}
+          variant="scrollable"
+          style={{ maxWidth: 600 }}
+        >
+          <Tab label="Billing Address" />
+          <Tab label="Shipping Address" />
+        </Tabs>
+        <LockButton />
+      </Box>
       {activeTab === 0 && (
         <Box my={1} display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"} gridGap={10} gridRowGap={10}>
           <TextField
@@ -1150,6 +1165,7 @@ export const AddressesForm = ({
             label="Company"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={lock}
           />
           <TextField
             value={values.billingAttn}
@@ -1157,6 +1173,7 @@ export const AddressesForm = ({
             label="Attn"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={lock}
           />
 
           <TextField
@@ -1165,6 +1182,7 @@ export const AddressesForm = ({
             label="Address"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={lock}
           />
           <TextField
             value={values.billingCity}
@@ -1172,6 +1190,7 @@ export const AddressesForm = ({
             label="City"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={lock}
           />
           <TextField
             value={values.billingState}
@@ -1179,6 +1198,7 @@ export const AddressesForm = ({
             label="State"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={lock}
           />
           <TextField
             value={values.billingZipcode}
@@ -1186,6 +1206,7 @@ export const AddressesForm = ({
             label="Zip Code"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={lock}
           />
           <TextField
             value={values.billingCountry}
@@ -1193,6 +1214,7 @@ export const AddressesForm = ({
             label="Country"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={lock}
           />
           <TextField
             value={values.billingPhone}
@@ -1200,6 +1222,7 @@ export const AddressesForm = ({
             label="Phone"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={lock}
           />
           <TextField
             value={values.billingEmail}
@@ -1207,6 +1230,8 @@ export const AddressesForm = ({
             label="Email"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={lock}
+
             // style={{ gridColumnEnd: "span 2" }}
           />
         </Box>
@@ -1226,6 +1251,7 @@ export const AddressesForm = ({
             label="Company"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={lock}
           />
           <TextField
             value={values.shippingAttn}
@@ -1233,6 +1259,7 @@ export const AddressesForm = ({
             label="Attn"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={lock}
           />
           <TextField
             value={values.shippingAddress}
@@ -1240,6 +1267,7 @@ export const AddressesForm = ({
             name="shippingAddress"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={lock}
           />
           <TextField
             value={values.shippingCity}
@@ -1247,6 +1275,7 @@ export const AddressesForm = ({
             label="City"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={lock}
           />
           <TextField
             value={values.shippingState}
@@ -1254,6 +1283,7 @@ export const AddressesForm = ({
             label="State"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={lock}
           />
           <TextField
             value={values.shippingZipcode}
@@ -1261,6 +1291,7 @@ export const AddressesForm = ({
             label="Zip Code"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={lock}
           />
           <TextField
             value={values.shippingCountry}
@@ -1268,6 +1299,7 @@ export const AddressesForm = ({
             label="Country"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={lock}
           />
           <TextField
             value={values.shippingPhone}
@@ -1275,6 +1307,7 @@ export const AddressesForm = ({
             label="Phone"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={lock}
           />
           <TextField
             value={values.shippingEmail}
@@ -1282,6 +1315,8 @@ export const AddressesForm = ({
             label="Email"
             onChange={handleChange}
             onBlur={handleBlur}
+            disabled={lock}
+
             // style={{ gridColumnEnd: "span 2" }}
           />
         </Box>

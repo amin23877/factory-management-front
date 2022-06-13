@@ -10,12 +10,13 @@ import PurchaseQuote from "features/Purchase/Quote";
 import Dashboard from "features/Purchase/Dashboard";
 
 import { usePortal } from "logic/PortalContext";
+import { useLock } from "common/Lock";
 
 export default function Purchase() {
   const [activeTab, setActiveTab] = useState(2);
   const [tabText, setTabText] = useState("Purchase Order");
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-
+  const { setLock } = useLock();
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
@@ -63,6 +64,7 @@ export default function Purchase() {
             onChange={(e: any, nv) => {
               setActiveTab(nv);
               setTabText(e.target.textContent);
+              setLock(true);
               handleClose();
             }}
             orientation="vertical"

@@ -24,6 +24,7 @@ import VendorTypeModal from "./VendorType";
 import DataGrid from "../../../app/NewDataGrid";
 import { mutate } from "swr";
 import { BasePaper } from "../../../app/Paper";
+import { useLock } from "common/Lock";
 
 export default function Vendors({ tech }: { tech: boolean }) {
   const [activeTab, setActiveTab] = useState(0);
@@ -33,7 +34,7 @@ export default function Vendors({ tech }: { tech: boolean }) {
   const [addType, setAddType] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [vendingModal, setVendingModal] = useState(false);
-
+  const { lock, setLock } = useLock();
   const handleDelete = async () => {
     try {
       if (selectedVendor && selectedVendor.id) {
@@ -88,7 +89,10 @@ export default function Vendors({ tech }: { tech: boolean }) {
               <Tabs
                 style={{ marginBottom: 10 }}
                 value={activeTab}
-                onChange={(e, nv) => setActiveTab(nv)}
+                onChange={(e, nv) => {
+                  setActiveTab(nv);
+                  setLock(true);
+                }}
                 textColor="primary"
               >
                 <Tab
@@ -123,17 +127,25 @@ export default function Vendors({ tech }: { tech: boolean }) {
                     </IconButton>
                   </ListItem>
                   <ListItem>
-                    <IconButton disabled={!selectedVendor} onClick={() => setConfirm(true)} title="delete Vendor">
+                    <IconButton
+                      disabled={!selectedVendor || lock}
+                      onClick={() => setConfirm(true)}
+                      title="delete Vendor"
+                    >
                       <DeleteRounded />
                     </IconButton>
                   </ListItem>
                   <ListItem>
-                    <IconButton onClick={() => setAddType(true)} title="Add VendorType">
+                    <IconButton onClick={() => setAddType(true)} title="Add VendorType" disabled={lock}>
                       <LocalOfferRounded />
                     </IconButton>
                   </ListItem>
                   <ListItem>
-                    <IconButton disabled={!selectedVendor} onClick={() => setVendingModal(true)} title="Add Item">
+                    <IconButton
+                      disabled={!selectedVendor || lock}
+                      onClick={() => setVendingModal(true)}
+                      title="Add Item"
+                    >
                       <PostAdd />
                     </IconButton>
                   </ListItem>
