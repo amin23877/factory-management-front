@@ -12,6 +12,7 @@ import Confirm from "common/Confirm";
 
 import { IFieldService, updateFieldService } from "api/fieldService";
 import { convertToItem } from "api/items";
+import { LockButton, LockProvider } from "common/Lock";
 
 let schema = Yup.object().shape({
   name: Yup.string().required(),
@@ -72,18 +73,25 @@ export default function FieldServiceDetails({
         <Formik initialValues={selectedFieldService} onSubmit={handleSubmit} validationSchema={schema}>
           {({ values, handleBlur, handleChange, errors }) => (
             <Form>
-              <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-                <FieldServiceForm values={values} handleChange={handleChange} handleBlur={handleBlur} errors={errors} />
-                <Button type="submit" kind="edit">
-                  Save
-                </Button>
-              </Box>
+              <LockProvider>
+                <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
+                  <FieldServiceForm
+                    values={values}
+                    handleChange={handleChange}
+                    handleBlur={handleBlur}
+                    errors={errors}
+                  />
+                  <Box textAlign="center" my={1} width="100%" display="flex" justifyContent={"center"}>
+                    <LockButton />
+                  </Box>
+                </Box>
+              </LockProvider>
             </Form>
           )}
         </Formik>
-        <Button onClick={handleConvertToItem} kind="add" fullWidth style={{ marginTop: 10 }}>
+        {/* <Button onClick={handleConvertToItem} kind="add" fullWidth style={{ marginTop: 10 }}>
           Convert To Item
-        </Button>
+        </Button> */}
       </BasePaper>
       <BasePaper style={{ flex: 2 }}>{/* <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} /> */}</BasePaper>
     </Box>

@@ -19,6 +19,7 @@ import Confirm from "../features/Modals/Confirm";
 import phazifyLogo from "../assets/phazify.png";
 import phocusLogo from "../assets/logo.png";
 import drawerBg from "../assets/sidebar.png";
+import { useLock } from "common/Lock";
 
 const drawerItems = [
   {
@@ -337,7 +338,7 @@ const MainDrawer = ({ width, closeThis }: { width?: number; closeThis: () => voi
   const classes = useStyles();
   const location = useLocation();
   const dispatch = useDispatch();
-
+  const { setLock } = useLock();
   const handleLogout = () => {
     dispatch(logout());
 
@@ -370,7 +371,7 @@ const MainDrawer = ({ width, closeThis }: { width?: number; closeThis: () => voi
           <CustomScrollbars style={{ height: 700 }}>
             <List style={{ marginBottom: "auto", paddingTop: "2px" }}>
               {drawerItems.map((item, i) => (
-                <div style={location.pathname === item.link ? adstyle : dstyle}>
+                <div style={location.pathname === item.link ? adstyle : dstyle} onClick={() => setLock(true)}>
                   <Link key={i} to={item.link} style={{ textDecoration: "none", border: "none", outline: "none" }}>
                     <ListItem
                       style={{

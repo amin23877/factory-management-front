@@ -48,7 +48,7 @@ function Details({ unit }: { unit: IUnit }) {
   const [editShip, setEditShip] = useState(false);
   const [selectedShip, setSelectedShip] = useState<IShipment>();
 
-  const { lock } = useLock();
+  const { setLock } = useLock();
   const { data: shipments } = useSWR(gridActiveTab === 4 ? `/shipment?UnitId=${unit.id}` : null);
 
   const warCols = useMemo<GridColumns>(
@@ -104,69 +104,68 @@ function Details({ unit }: { unit: IUnit }) {
         <EditShipModal open={editShip} onClose={() => setEditShip(false)} unitId={unit.id} init={selectedShip} />
       )}
       <Box display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 2fr"} gridGap={10} height="calc(100vh - 160px)">
-        <LockProvider>
-          <Formik initialValues={unit as IUnit} validationSchema={schema} onSubmit={handleSubmit}>
-            {({ values, errors, handleChange, handleBlur, isSubmitting, setFieldValue, touched }) => (
-              <Form>
-                <Box display="flex" flexDirection="column" gridGap={10} height={phone ? "" : "100%"}>
-                  <BasePaper>
-                    <General
-                      values={values}
-                      errors={errors}
-                      touched={touched}
-                      handleBlur={handleBlur}
-                      handleChange={handleChange}
-                      setFieldValue={setFieldValue}
-                    />
-                    <Box textAlign="center" my={1} width="100%" display="flex">
-                      <Button disabled={isSubmitting || lock} kind="edit" type="submit" style={{ flex: 3 }}>
-                        Save
-                      </Button>
-                      <LockButton />
-                    </Box>
-                  </BasePaper>
-                  <BasePaper style={{ flex: 1 }}>
-                    <Tabs
-                      textColor="primary"
-                      value={infoActiveTab}
-                      onChange={(e, nv) => setInfoActiveTab(nv)}
-                      variant="scrollable"
-                      scrollButtons={phone ? "on" : "auto"}
-                      style={
-                        phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" } : { marginBottom: "10px" }
-                      }
-                    >
-                      <Tab label="Image" />
-                      <Tab label="Status" />
-                      <Tab label="Expense" />
-                      <Tab label="Shipping" />
-                      <Tab label="Cluster & Level" />
-                    </Tabs>
-                    {infoActiveTab === 0 && (
-                      <Box
-                        mt={1}
-                        height="100%"
-                        display="flex"
-                        justifyContent="center"
-                        alignItems="center"
-                        flexDirection="column"
-                        gridGap={10}
-                      >
-                        {/* {unit?.item?.photo && (
-                        <img
-                          style={{
-                            maxWidth: "100%",
-                            height: "auto",
-                            maxHeight: 400,
-                            margin: "0px auto",
-                          }}
-                          alt=""
-                          src={`http://${host}${unit?.item?.photo}`}
-                        />
-                      )} */}
-                      </Box>
-                    )}
-                    {infoActiveTab === 1 && (
+        <Formik initialValues={unit as IUnit} validationSchema={schema} onSubmit={handleSubmit}>
+          {({ values, errors, handleChange, handleBlur, isSubmitting, setFieldValue, touched }) => (
+            <Form>
+              <Box display="flex" flexDirection="column" gridGap={10} height={phone ? "" : "100%"}>
+                <BasePaper>
+                  <General
+                    values={values}
+                    errors={errors}
+                    touched={touched}
+                    handleBlur={handleBlur}
+                    handleChange={handleChange}
+                    setFieldValue={setFieldValue}
+                  />
+                  <Box textAlign="center" my={1} width="100%" display="flex" justifyContent={"center"}>
+                    <LockButton />
+                  </Box>
+                </BasePaper>
+                <BasePaper style={{ flex: 1 }}>
+                  <Tabs
+                    textColor="primary"
+                    value={infoActiveTab}
+                    onChange={(e, nv) => {
+                      setInfoActiveTab(nv);
+                      setLock(true);
+                    }}
+                    variant="scrollable"
+                    scrollButtons={phone ? "on" : "auto"}
+                    style={phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" } : { marginBottom: "10px" }}
+                  >
+                    <Tab label="Image" />
+                    <Tab label="Status" />
+                    <Tab label="Expense" />
+                    <Tab label="Shipping" />
+                    <Tab label="Cluster & Level" />
+                  </Tabs>
+                  {infoActiveTab === 0 && (
+                    <></>
+                    //   <Box
+                    //     mt={1}
+                    //     height="100%"
+                    //     display="flex"
+                    //     justifyContent="center"
+                    //     alignItems="center"
+                    //     flexDirection="column"
+                    //     gridGap={10}
+                    //   >
+                    //     {unit?.item?.photo && (
+                    //   <img
+                    //     style={{
+                    //       maxWidth: "100%",
+                    //       height: "auto",
+                    //       maxHeight: 400,
+                    //       margin: "0px auto",
+                    //     }}
+                    //     alt=""
+                    //     src={`http://${host}${unit?.item?.photo}`}
+                    //   />
+                    // )}
+                    //   </Box>
+                  )}
+                  {infoActiveTab === 1 && (
+                    <LockProvider>
                       <Status
                         values={values}
                         errors={errors}
@@ -175,8 +174,10 @@ function Details({ unit }: { unit: IUnit }) {
                         handleChange={handleChange}
                         setFieldValue={setFieldValue}
                       />
-                    )}
-                    {infoActiveTab === 2 && (
+                    </LockProvider>
+                  )}
+                  {infoActiveTab === 2 && (
+                    <LockProvider>
                       <Expense
                         values={values}
                         errors={errors}
@@ -185,8 +186,10 @@ function Details({ unit }: { unit: IUnit }) {
                         handleChange={handleChange}
                         setFieldValue={setFieldValue}
                       />
-                    )}
-                    {infoActiveTab === 3 && (
+                    </LockProvider>
+                  )}
+                  {infoActiveTab === 3 && (
+                    <LockProvider>
                       <Shipping
                         values={values}
                         errors={errors}
@@ -195,8 +198,10 @@ function Details({ unit }: { unit: IUnit }) {
                         handleChange={handleChange}
                         setFieldValue={setFieldValue}
                       />
-                    )}
-                    {infoActiveTab === 4 && (
+                    </LockProvider>
+                  )}
+                  {infoActiveTab === 4 && (
+                    <LockProvider>
                       <Levels
                         values={values?.ItemId}
                         handleChange={handleChange}
@@ -206,19 +211,22 @@ function Details({ unit }: { unit: IUnit }) {
                         touched={touched}
                         selectedItem={unit?.ItemId}
                       />
-                    )}
-                  </BasePaper>
-                </Box>
-              </Form>
-            )}
-          </Formik>
-        </LockProvider>
+                    </LockProvider>
+                  )}
+                </BasePaper>
+              </Box>
+            </Form>
+          )}
+        </Formik>
         <LockProvider>
           <BasePaper style={{ height: "100%" }}>
             <Tabs
               textColor="primary"
               value={gridActiveTab}
-              onChange={(e, nv) => setGridActiveTab(nv)}
+              onChange={(e, nv) => {
+                setGridActiveTab(nv);
+                setLock(true);
+              }}
               variant="scrollable"
               scrollButtons={phone ? "on" : "auto"}
               style={phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" } : { marginBottom: "10px" }}
