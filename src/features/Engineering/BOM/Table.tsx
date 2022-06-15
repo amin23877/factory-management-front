@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { LinearProgress, Box, makeStyles, Typography } from "@material-ui/core";
 import { EditRounded } from "@material-ui/icons";
 
 import DataGrid from "@inovua/reactdatagrid-community";
+import "@inovua/reactdatagrid-community/index.css";
 
 import AddPartModal from "./AddPartModal";
 import ChangePartModal from "./ChangePartModal";
@@ -14,18 +15,24 @@ import Toast from "app/Toast";
 import { getMatrix, postMatrixData, IMatrix } from "api/matrix";
 import {
   extractLevels,
+  extractColumns,
+  extractPartNames,
   generateDataGridColumns,
   generateDataGridFilterValues,
   generateRows,
-  extractColumns,
 } from "logic/matrix";
 import { clusterType } from "api/cluster";
+import Confirm from "common/Confirm";
+import { createItem } from "api/items";
 
 const useStyles = makeStyles({
   root: {
     "& .InovuaReactDataGrid__column-header": {
       background: "#202731",
       color: "#fff",
+    },
+    "& .no-device": {
+      background: "#cccccc !important",
     },
   },
 });
@@ -60,6 +67,20 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
   const [tableColumns, setTableColumns] = useState<any[]>([]);
   const [tableRows, setTableRows] = useState<any[]>([]);
   const [tableDefaultFilters, setTableDefaultFilters] = useState<any[] | null>(null);
+
+  const levels = useMemo(() => {
+    const exclude = ["fakeName", "device"];
+    if (tableData) {
+      const keySet = new Set<string>();
+      tableData.forEach((td) => {
+        Object.keys(td).forEach((k) => !exclude.includes(k) && keySet.add(k));
+      });
+
+      return Array.from(keySet);
+    }
+
+    return [];
+  }, [tableData]);
 
   const refreshTableData = useCallback(async () => {
     try {
@@ -144,10 +165,33 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
     setRenamePart(false);
   };
 
+  const handleAddDevice = useCallback((row: any) => {
+    Confirm({
+      text: `Device Number: ${row?.fakeName}`,
+      onConfirm: async () => {
+        try {
+          const data = JSON.parse(JSON.stringify(row));
+          delete data.id;
+          delete data.DeviceId;
+          await createItem({ ...data, no: data.fakeName });
+
+          Toast("Item created successfully", "success");
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    });
+  }, []);
+
   useEffect(() => {
     if (tableData) {
       const levels = extractLevels(tableData);
-      const columns = generateDataGridColumns(extractColumns({ tableData, levels }), handleChangePartName);
+      const parts = extractPartNames(tableData);
+      const columns = generateDataGridColumns(
+        extractColumns({ tableData, levels, parts }),
+        handleChangePartName,
+        handleAddDevice
+      );
       const rows = generateRows({ tableData, levels });
 
       const defaultFilterValues = generateDataGridFilterValues(extractColumns({ tableData, levels }));
@@ -156,7 +200,7 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
       setTableRows(rows);
       setTableDefaultFilters(defaultFilterValues);
     }
-  }, [handleChangePartName, tableData]);
+  }, [handleAddDevice, handleChangePartName, tableData]);
 
   const handleAddPart = (name: string) => {
     setTableColumns((prev) => {
@@ -206,8 +250,6 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
   };
 
   const submitChanges = async () => {
-    // console.log({ changes });
-
     try {
       await postMatrixData({ matrice: [...changes] });
       refreshTableData();
@@ -240,6 +282,29 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
     [tableRows]
   );
 
+  const handleDeleteCell = useCallback((data: ITableChangeRow & { rowId: number; partName: string }) => {
+    setChanges((prev) => {
+      let clone = prev?.concat();
+      const index = clone.findIndex((i) => i.device === data.device);
+
+      if (index < 0) {
+        clone.push(data);
+      } else {
+        clone[index].cells = data.cells;
+      }
+
+      return clone;
+    });
+    setTableRows((p: any) => {
+      const clone = p.concat();
+      clone[data.rowId][data.partName] = "";
+
+      return p;
+    });
+
+    setChangePart(false);
+  }, []);
+
   useEffect(() => {
     if (changes.length > 0) {
       window.onbeforeunload = function () {
@@ -270,11 +335,12 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
       <AddPartModal open={addPart} onClose={() => setAddPart(false)} onDone={handleAddPart} />
       {selectedRowName !== undefined && (
         <ChangePartModal
-          open={changePart}
-          onClose={() => setChangePart(false)}
-          partName={selectedRowName}
           row={selectedRow}
+          open={changePart}
+          partName={selectedRowName}
           onDone={handleChangePart}
+          onClose={() => setChangePart(false)}
+          onDelete={handleDeleteCell}
         />
       )}
 
@@ -295,12 +361,26 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
               dataSource={tableRows}
               defaultFilterValue={tableDefaultFilters}
               pagination
-              defaultLimit={250}
+              defaultLimit={5}
+              rowClassName={({ data }: any) => {
+                if (data?.DeviceId) {
+                  return "";
+                }
+
+                return "no-device";
+              }}
               // @ts-ignore
               onCellClick={(_, { data, id: partName }) => {
-                setSelectedRowName(partName);
-                setSelectedRow(data);
-                setChangePart(true);
+                if (
+                  partName !== "Device Number" &&
+                  partName !== "Device Description" &&
+                  data?.DeviceId &&
+                  !levels.includes(partName)
+                ) {
+                  setSelectedRowName(partName);
+                  setSelectedRow(data);
+                  setChangePart(true);
+                }
               }}
               pageSizes={[50, 100, 250, 500]}
             />
