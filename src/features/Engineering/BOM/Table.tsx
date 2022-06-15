@@ -361,7 +361,7 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
               dataSource={tableRows}
               defaultFilterValue={tableDefaultFilters}
               pagination
-              defaultLimit={5}
+              defaultLimit={250}
               rowClassName={({ data }: any) => {
                 if (data?.DeviceId) {
                   return "";
