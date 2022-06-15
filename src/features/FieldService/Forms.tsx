@@ -23,6 +23,7 @@ import {
   removeServiceFromLineitem,
   // updateFieldService,
 } from "api/fieldService";
+import { useLock } from "common/Lock";
 
 export const LineItemFSForm = ({ LineItem }: { LineItem: ILineItem }) => {
   const [snack, setSnack] = useState(false);
@@ -160,6 +161,7 @@ export default function FieldServiceForm({
   errors: any;
   device?: string;
 }) {
+  const { lock } = useLock();
   return (
     <>
       <TextField
@@ -170,6 +172,7 @@ export default function FieldServiceForm({
         onBlur={handleBlur}
         error={Boolean(errors.no)}
         fullWidth
+        disabled={lock}
       />
       <TextField
         label="Name"
@@ -179,6 +182,7 @@ export default function FieldServiceForm({
         onBlur={handleBlur}
         error={Boolean(errors.name)}
         fullWidth
+        disabled={lock}
       />
       <TextField
         label="Type"
@@ -188,6 +192,7 @@ export default function FieldServiceForm({
         onBlur={handleBlur}
         error={Boolean(errors.type)}
         fullWidth
+        disabled={lock}
       />
       <TextField
         label="Class"
@@ -197,6 +202,7 @@ export default function FieldServiceForm({
         onBlur={handleBlur}
         error={Boolean(errors.class)}
         fullWidth
+        disabled={lock}
       />
       <TextField
         label="Price"
@@ -207,6 +213,7 @@ export default function FieldServiceForm({
         onBlur={handleBlur}
         error={Boolean(errors.price)}
         fullWidth
+        disabled={lock}
       />
       <TextField
         label="Description"
@@ -218,6 +225,7 @@ export default function FieldServiceForm({
         onBlur={handleBlur}
         error={Boolean(errors.description)}
         fullWidth
+        disabled={lock}
       />
     </>
   );

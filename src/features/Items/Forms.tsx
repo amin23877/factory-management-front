@@ -360,6 +360,7 @@ export const Levels = ({ values, handleChange, handleBlur }: any) => {
 
   return (
     <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
+      <LockButton />
       <TextField
         label="Cluster Value"
         name="clusterValue"
