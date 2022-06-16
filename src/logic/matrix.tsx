@@ -2,6 +2,7 @@ import React from "react";
 import { Typography, Button } from "@material-ui/core";
 import { EditRounded } from "@material-ui/icons";
 import { IMatrix } from "../api/matrix";
+import DataGridAction from "common/DataGridAction";
 
 const defaultColumns = ["Device Number", "Device Description"];
 const excludeColumns = ["fakeName"];
@@ -48,7 +49,7 @@ export const generateDataGridColumns = (
         render: ({ value, data }: any) => (
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <span>{value}</span>
-            {!data?.DeviceId && <button onClick={() => onAddDevice(data)}>+</button>}
+            {!data?.DeviceId && <DataGridAction icon="add" controlledLock={false} onClick={() => onAddDevice(data)} />}
           </div>
         ),
       });

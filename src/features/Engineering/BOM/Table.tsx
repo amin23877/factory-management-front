@@ -165,23 +165,27 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
     setRenamePart(false);
   };
 
-  const handleAddDevice = useCallback((row: any) => {
-    Confirm({
-      text: `Device Number: ${row?.fakeName}`,
-      onConfirm: async () => {
-        try {
-          const data = JSON.parse(JSON.stringify(row));
-          delete data.id;
-          delete data.DeviceId;
-          await createItem({ ...data, no: data.fakeName });
+  const handleAddDevice = useCallback(
+    (row: any) => {
+      Confirm({
+        text: `Device Number: ${row?.fakeName}`,
+        onConfirm: async () => {
+          try {
+            const data = JSON.parse(JSON.stringify(row));
+            delete data.id;
+            delete data.DeviceId;
+            await createItem({ ...data, no: data.fakeName, class: "device", clusterId: cluster.id });
 
-          Toast("Item created successfully", "success");
-        } catch (error) {
-          console.log(error);
-        }
-      },
-    });
-  }, []);
+            Toast("Item created successfully", "success");
+            refreshTableData();
+          } catch (error) {
+            console.log(error);
+          }
+        },
+      });
+    },
+    [cluster.id, refreshTableData]
+  );
 
   useEffect(() => {
     if (tableData) {
