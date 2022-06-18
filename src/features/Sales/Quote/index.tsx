@@ -1,11 +1,17 @@
 import React, { useMemo, useState } from "react";
-import { Box, Tabs, Tab } from "@material-ui/core";
-import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
+import { Box, Tabs, Tab, ListItem, IconButton } from "@material-ui/core";
+import {
+  FindInPageRounded,
+  ListAltRounded,
+  AddRounded,
+  DeleteRounded,
+  PageviewRounded,
+  EmailRounded,
+} from "@material-ui/icons";
 
-import Button from "app/Button";
 import { BasePaper } from "app/Paper";
 import DataGrid from "app/NewDataGrid";
+import List from "app/SideUtilityList";
 
 import Confirm from "../../Modals/Confirm";
 import EditTab from "./EditTab";
@@ -108,62 +114,54 @@ export default function QuotePanel() {
       )}
       <ReqQuoteModal open={reqQuote} onClose={() => setReqQuote(false)} />
       <EmailModal open={emailModal} onClose={() => setEmailModal(false)} />
-      <Box display="flex" alignItems="center" style={{ gap: 10 }} mb={1}>
-        <Button
-          style={{
-            backgroundColor: "#1a73e8",
-            color: "#fff",
-            padding: " 6px 15px",
-            boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-          }}
-          onClick={() => setAddQ(true)}
-        >
-          <AddRoundedIcon />
-          Add Quote
-        </Button>
-
-        {selectedQuote ? (
-          <Button kind="delete" onClick={() => setConfirm(true)} disabled={!selectedQuote}>
-            Delete Quote
-          </Button>
-        ) : (
-          <>
-            <Button variant="outlined" onClick={() => setReqQuote(true)} style={{ padding: "5px 10px" }}>
-              Requests
-            </Button>
-            <Button variant="outlined" onClick={() => setEmailModal(true)} style={{ padding: "5px 10px" }}>
-              Send Email
-            </Button>
-          </>
-        )}
-
-        <div style={{ flexGrow: 1 }} />
-      </Box>
-
       <BasePaper>
-        <Tabs
-          value={activeTab}
-          textColor="primary"
-          onChange={(e, nv) => setActiveTab(nv)}
-          style={{ marginBottom: "10px" }}
-        >
-          <Tab
-            icon={
-              <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <ListAltRounded style={{ marginRight: "5px" }} /> List
-              </span>
-            }
-            wrapped
-          />
-          <Tab
-            disabled={!selectedQuote}
-            icon={
-              <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <FindInPageRounded style={{ marginRight: "5px" }} /> Details
-              </span>
-            }
-          />
-        </Tabs>
+        <Box my={1} display="flex" alignItems="center">
+          <Tabs
+            value={activeTab}
+            textColor="primary"
+            onChange={(e, nv) => setActiveTab(nv)}
+            style={{ marginRight: "auto" }}
+          >
+            <Tab
+              icon={
+                <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <ListAltRounded style={{ marginRight: "5px" }} /> List
+                </span>
+              }
+              wrapped
+            />
+            <Tab
+              disabled={!selectedQuote}
+              icon={
+                <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <FindInPageRounded style={{ marginRight: "5px" }} /> Details
+                </span>
+              }
+            />
+          </Tabs>
+          <List>
+            <ListItem>
+              <IconButton title="Add Quote" onClick={() => setAddQ(true)}>
+                <AddRounded />
+              </IconButton>
+            </ListItem>
+            <ListItem>
+              <IconButton title="Quote Requests" onClick={() => setReqQuote(true)}>
+                <PageviewRounded />
+              </IconButton>
+            </ListItem>
+            <ListItem>
+              <IconButton title="Send Email" onClick={() => setEmailModal(true)}>
+                <EmailRounded />
+              </IconButton>
+            </ListItem>
+            <ListItem>
+              <IconButton title="Delete Quote" onClick={() => setConfirm(true)} disabled={!selectedQuote}>
+                <DeleteRounded />
+              </IconButton>
+            </ListItem>
+          </List>
+        </Box>
         {activeTab === 0 && (
           <DataGrid
             refresh={refresh}

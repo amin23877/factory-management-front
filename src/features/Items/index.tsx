@@ -4,16 +4,16 @@ import { AddRounded, DeleteRounded, FindInPageRounded, ListAltRounded, PostAddRo
 import { mutate } from "swr";
 
 import Confirm from "../Modals/Confirm";
-import ConfirmDialog from "common/Confirm";
+// import ConfirmDialog from "common/Confirm";
 
 import { AddItemModal } from "./ItemModals";
 import ItemsDetails from "./Details";
 
-import { deleteAnItem, IItem, convertToService } from "api/items";
+import { deleteAnItem, IItem } from "api/items";
 
 import List from "app/SideUtilityList";
 import { BasePaper } from "app/Paper";
-import Button from "app/Button";
+// import Button from "app/Button";
 
 // import LevelsModal from "common/Level/Modal";
 import ClusterModal from "common/Cluster/Modal";
@@ -46,28 +46,28 @@ const Items = () => {
     }
   }, [selectedItem]);
 
-  const handleConvertItems = async () => {
-    try {
-      if (itemSelection && Object.keys(itemSelection || {}).length > 0) {
-        ConfirmDialog({
-          text: `You are going to convert ${Object.keys(itemSelection || {}).length} items to service`,
-          onConfirm: async () => {
-            try {
-              for (const id of Object.keys(itemSelection || {})) {
-                await convertToService(id);
-              }
-            } catch (error) {
-              console.log(error);
-            } finally {
-              setRefresh((p) => p + 1);
-            }
-          },
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const handleConvertItems = async () => {
+  //   try {
+  //     if (itemSelection && Object.keys(itemSelection || {}).length > 0) {
+  //       ConfirmDialog({
+  //         text: `You are going to convert ${Object.keys(itemSelection || {}).length} items to service`,
+  //         onConfirm: async () => {
+  //           try {
+  //             for (const id of Object.keys(itemSelection || {})) {
+  //               await convertToService(id);
+  //             }
+  //           } catch (error) {
+  //             console.log(error);
+  //           } finally {
+  //             setRefresh((p) => p + 1);
+  //           }
+  //         },
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <>

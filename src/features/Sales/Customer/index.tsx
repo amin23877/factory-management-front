@@ -1,16 +1,18 @@
 import React, { useState } from "react";
-import { Box, Grid, Tabs, Tab, useMediaQuery } from "@material-ui/core";
+import { Box, Grid, Tabs, Tab, useMediaQuery, ListItem, IconButton } from "@material-ui/core";
 import {
   AddRounded,
   FindInPageRounded,
   HelpOutlineRounded,
   ListAltRounded,
   ThumbDownAltRounded,
+  MenuRounded,
+  DeleteRounded,
 } from "@material-ui/icons";
 
-import Button from "app/Button";
 import { BasePaper } from "app/Paper";
 import Toast from "app/Toast";
+import List from "app/SideUtilityList";
 
 import { deleteClient, IClient } from "api/client";
 
@@ -119,31 +121,23 @@ export default function Customers() {
               </Tabs>
               <div style={{ flex: 1 }}></div>
               <Box display="flex" alignItems="center" mb={1}>
-                {activeTab !== 3 && (
-                  <>
-                    <Button
-                      onClick={() => setAddCustomerModal(true)}
-                      style={{
-                        backgroundColor: "#1a73e8",
-                        color: "#fff",
-                        margin: "0 0.5em",
-                        padding: " 6px 15px",
-                        boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-                      }}
-                    >
+                <List>
+                  <ListItem>
+                    <IconButton title="Add Client" onClick={() => setAddCustomerModal(true)}>
                       <AddRounded />
-                      Add Client
-                    </Button>
-                    <Button kind="add" onClick={() => setCTypeModal(true)} style={{ margin: "0 0.5em" }}>
-                      Add Type
-                    </Button>
-                  </>
-                )}
-                {selectedRow && activeTab === 3 && (
-                  <Button onClick={() => setConf(true)} kind="delete">
-                    Delete Client
-                  </Button>
-                )}
+                    </IconButton>
+                  </ListItem>
+                  <ListItem>
+                    <IconButton title="Add Type" onClick={() => setCTypeModal(true)}>
+                      <MenuRounded />
+                    </IconButton>
+                  </ListItem>
+                  <ListItem>
+                    <IconButton title="Delete Client" disabled={!selectedRow} onClick={() => setConf(true)}>
+                      <DeleteRounded />
+                    </IconButton>
+                  </ListItem>
+                </List>
               </Box>
             </Box>
             {activeTab === 0 && (

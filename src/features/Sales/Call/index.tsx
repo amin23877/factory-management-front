@@ -1,22 +1,20 @@
 import React, { useMemo, useState } from "react";
-import { Box, Tabs, Tab, useMediaQuery } from "@material-ui/core";
+import { Box, Tabs, Tab, ListItem, IconButton } from "@material-ui/core";
+import { ListAltRounded, FindInPageRounded, MenuRounded, DeleteRounded, AddRounded } from "@material-ui/icons";
 import { mutate } from "swr";
-
-import AddRoundedIcon from "@material-ui/icons/AddRounded";
-import { ListAltRounded, FindInPageRounded } from "@material-ui/icons";
 
 import Confirm from "../../Modals/Confirm";
 import OneFieldModal from "components/OneFieldModal";
 
 import { BasePaper } from "app/Paper";
-import Button from "app/Button";
+import List from "app/SideUtilityList";
+import DataGrid from "app/NewDataGrid";
 
 import Details from "./Details";
 import AddCallModal from "./CallModal";
 
 import { deleteCall } from "api/calls";
 import { addCallsTag, deleteCallsTag, editCallsTag } from "api/callsTags";
-import DataGrid from "app/NewDataGrid";
 
 export default function Calls() {
   const [activeTab, setActiveTab] = useState(0);
@@ -24,7 +22,6 @@ export default function Calls() {
   const [addCall, setAddCall] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [CTagModal, setCTagModal] = useState(false);
-  const phone = useMediaQuery("(max-width:900px)");
 
   const handleDelete = async () => {
     try {
@@ -95,67 +92,49 @@ export default function Calls() {
         onConfirm={handleDelete}
         text={`Are you sure, You are going to delete PO with number ${selectedCall?.number}`}
       />
-      <Box mb={1} display="flex" alignItems="center">
-        <Button
-          onClick={() => setAddCall(true)}
-          style={
-            phone
-              ? {
-                  backgroundColor: "rgb(25,117,228)",
-                  color: "#fff",
-                  margin: "0 0.5em 0 0",
-                  padding: "6px 10px",
-                  borderRadius: "0.5em",
-                  fontSize: "small",
-                }
-              : {
-                  backgroundColor: "rgb(25,117,228)",
-                  color: "#fff",
-                  margin: "0 0.5em 0 0",
-                  padding: "6px 25px",
-                  borderRadius: "0.5em",
-                  fontSize: "small",
-                }
-          }
-        >
-          <AddRoundedIcon />
-          Add Ticket
-        </Button>
-        <Button kind="add" onClick={() => setCTagModal(true)} style={{ margin: "0 0.5em 0 0" }}>
-          Add Tags
-        </Button>
-        {activeTab === 1 && (
-          <>
-            <Button
-              kind="delete"
-              disabled={!selectedCall}
-              onClick={() => setConfirm(true)}
-              style={{ margin: "0 0.5em 0 0" }}
-            >
-              Delete Ticket
-            </Button>
-          </>
-        )}
-      </Box>
       <BasePaper>
-        <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)} style={{ marginBottom: 10 }}>
-          <Tab
-            icon={
-              <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> List
-              </span>
-            }
-            wrapped
-          />
-          <Tab
-            disabled={!selectedCall}
-            icon={
-              <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
-              </span>
-            }
-          />
-        </Tabs>
+        <Box my={1} display="flex" alignItems="center">
+          <Tabs
+            value={activeTab}
+            textColor="primary"
+            onChange={(e, nv) => setActiveTab(nv)}
+            style={{ marginRight: "auto" }}
+          >
+            <Tab
+              icon={
+                <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> List
+                </span>
+              }
+              wrapped
+            />
+            <Tab
+              disabled={!selectedCall}
+              icon={
+                <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
+                </span>
+              }
+            />
+          </Tabs>
+          <List>
+            <ListItem>
+              <IconButton onClick={() => setAddCall(true)}>
+                <AddRounded />
+              </IconButton>
+            </ListItem>
+            <ListItem>
+              <IconButton onClick={() => setCTagModal(true)}>
+                <MenuRounded />
+              </IconButton>
+            </ListItem>
+            <ListItem>
+              <IconButton disabled={!selectedCall} onClick={() => setConfirm(true)}>
+                <DeleteRounded />
+              </IconButton>
+            </ListItem>
+          </List>
+        </Box>
         {activeTab === 0 && (
           <DataGrid
             onRowSelected={(d) => {
