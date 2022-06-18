@@ -174,7 +174,7 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
             const data = JSON.parse(JSON.stringify(row));
             delete data.id;
             delete data.DeviceId;
-            await createItem({ ...data, no: data.fakeName, class: "device", clusterId: cluster.id });
+            await createItem({ ...data, no: data["Device Number"], class: "device", clusterId: cluster.id });
 
             Toast("Item created successfully", "success");
             refreshTableData();

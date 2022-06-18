@@ -91,7 +91,7 @@ export default function SalesOrderPanel() {
         onConfirm={handleDelete}
         text={`Are you sure, You are going to delete SO with number ${selectedSO?.number}`}
       />
-      <BasePaper style={{ paddingTop: "0px" }}>
+      <BasePaper>
         <Box my={1} display="flex" alignItems="center">
           <Tabs
             value={activeTab}
