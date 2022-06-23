@@ -236,7 +236,7 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
     setAddPart(false);
   };
 
-  const handleChangePart = (d: ITableChangeRow) => {
+  const handleChangePart = (d: ITableChangeRow, part: any) => {
     setChanges((prev) => {
       let clone = prev?.concat();
       const index = clone.findIndex((i) => i.device === d.device);
@@ -245,6 +245,17 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
         clone.push(d);
       } else {
         clone[index].cells = [...clone[index].cells, ...d.cells];
+      }
+
+      return clone;
+    });
+
+    setTableRows((p: any) => {
+      const clone = p.concat();
+      if (clone[part.rowId]) {
+        clone[part.rowId][part.partName] = part?._itemNo;
+      } else {
+        clone[part.rowId] = { partName: part?._itemNo };
       }
 
       return clone;
@@ -303,7 +314,7 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
       const clone = p.concat();
       clone[data.rowId][data.partName] = "";
 
-      return p;
+      return clone;
     });
 
     setChangePart(false);
@@ -343,8 +354,8 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
           open={changePart}
           partName={selectedRowName}
           onDone={handleChangePart}
-          onClose={() => setChangePart(false)}
           onDelete={handleDeleteCell}
+          onClose={() => setChangePart(false)}
         />
       )}
 

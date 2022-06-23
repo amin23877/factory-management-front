@@ -3,6 +3,7 @@ import { Typography, Button } from "@material-ui/core";
 import { EditRounded } from "@material-ui/icons";
 import { IMatrix } from "../api/matrix";
 import DataGridAction from "common/DataGridAction";
+import { openRequestedSinglePopup } from "./window";
 
 const defaultColumns = ["Device Number", "Device Description"];
 const excludeColumns = ["fakeName"];
@@ -49,7 +50,17 @@ export const generateDataGridColumns = (
         render: ({ value, data }: any) => (
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <span>{value}</span>
-            {!data?.DeviceId && <DataGridAction icon="add" controlledLock={false} onClick={() => onAddDevice(data)} />}
+            {data?.DeviceId ? (
+              <div style={{ height: 22 }}>
+                <DataGridAction
+                  icon="view"
+                  controlledLock={false}
+                  onClick={() => openRequestedSinglePopup({ url: `/panel/inventory/${data?.DeviceId}` })}
+                />
+              </div>
+            ) : (
+              <DataGridAction icon="add" controlledLock={false} onClick={() => onAddDevice(data)} />
+            )}
           </div>
         ),
       });
