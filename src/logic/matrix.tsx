@@ -44,7 +44,7 @@ export const generateDataGridColumns = (
     if (defaultColumns.includes(c) && c === "Device Number") {
       dtCols.push({
         name: c,
-        defaultWidth: 240,
+        defaultWidth: 200,
         editable: false,
         header: <Typography variant="caption">{c}</Typography>,
         render: ({ value, data }: any) => (
@@ -67,14 +67,14 @@ export const generateDataGridColumns = (
     } else if (defaultColumns.includes(c) && c !== "Device Number") {
       dtCols.push({
         name: c,
-        minWidth: 150,
+        minWidth: 120,
         editable: false,
         header: <Typography variant="caption">{c}</Typography>,
       });
     } else {
       dtCols.push({
         name: c,
-        minWidth: 180,
+        minWidth: 100,
         editable: false,
         sortable: false,
         header: (

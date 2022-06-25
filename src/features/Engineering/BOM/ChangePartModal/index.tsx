@@ -31,7 +31,7 @@ function ChangePartModal({
   onDelete: (data: any) => void;
 }) {
   const [clusterId, setClusterId] = useState<string>();
-  const [itemClass, setItemClass] = useState<string>();
+  const [itemClass, setItemClass] = useState<string>("part");
   const [itemName, setItemName] = useState<string>();
   const [itemNo, setItemNo] = useState<string>();
   const [keywords, setKeywords] = useState<string>();
@@ -203,6 +203,7 @@ function ChangePartModal({
                 getOptionLabel={(o) => o?.clusterValue || "No-Name"}
                 getOptionSelected={(o, v) => o?.id === v?.id}
                 url="/cluster"
+                defaultParams={{ class: itemClass }}
                 value={clusterId}
                 onChange={(e, nv) => nv?.id && setClusterId(nv?.id)}
               />

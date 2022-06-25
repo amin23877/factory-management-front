@@ -10,11 +10,10 @@ import NewDataGrid from "app/NewDataGrid";
 import Toast from "app/Toast";
 import DataGridAction from "common/DataGridAction";
 import LevelForm from "common/Level/Form";
+import { useLock } from "common/Lock";
 
 import { clusterType, createCluster, updateCluster } from "api/cluster";
 import { getModifiedValues } from "logic/utils";
-import { schema } from "api/ticket";
-import { useLock } from "common/Lock";
 
 export default function ClusterModal({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [activeTab, setActiveTab] = useState(0);
@@ -102,11 +101,7 @@ export default function ClusterModal({ open, onClose }: { open: boolean; onClose
         <Tab label="Levels" disabled={!selectedCluster} />
       </Tabs>
       {activeTab === 0 && (
-        <Formik
-          validationSchema={schema}
-          initialValues={{ class: "device" } as Partial<clusterType>}
-          onSubmit={handleSubmit}
-        >
+        <Formik initialValues={{ class: "device" } as Partial<clusterType>} onSubmit={handleSubmit}>
           {({ getFieldProps, values, setFieldValue, resetForm, setValues }) => (
             <Form>
               <Box my={2}>
