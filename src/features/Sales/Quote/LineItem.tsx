@@ -18,7 +18,21 @@ const useStyle = makeStyles({
     padding: "5px 10px",
     margin: "0px 0px 10px 5px ",
   },
+  root: {
+    height: "100%",
+    "& .red": {
+      backgroundColor: "#F87474",
+    },
+    "& .blue": {
+      backgroundColor: "#9DD6DF",
+    },
+    "& .green": {
+      backgroundColor: "#AEDBCE",
+    },
+  },
 });
+
+const groupColors = ["red", "blue", "green"];
 
 function LineItemsContent({ quote, onAddLineItem }: { quote: IQuote; onAddLineItem: () => void }) {
   const classes = useStyle();
@@ -29,14 +43,12 @@ function LineItemsContent({ quote, onAddLineItem }: { quote: IQuote; onAddLineIt
 
   const LICols = useMemo<GridColumns>(
     () => [
-      // { field: "index", headerName: "Sort" },
       {
         field: "ItemId",
         headerName: "Part Number",
         valueFormatter: ({ row }) => row?.ItemId?.no || row?.text || row?.no,
         flex: 1,
       },
-      // { field: "description", headerName: "Description", flex: 1 },
       { field: "qty", headerName: "QTY", width: 70 },
       { field: "price", headerName: "Price", width: 70, disableColumnMenu: true },
       { field: "tax", headerName: "Tax", type: "boolean", width: 70 },
@@ -59,18 +71,24 @@ function LineItemsContent({ quote, onAddLineItem }: { quote: IQuote; onAddLineIt
         </Button>
         <LockButton />
       </Box>
-      <BaseDataGrid
-        height=" calc(100% - 100px)"
-        cols={LICols}
-        rows={lineItems?.result || []}
-        onRowSelected={(r) => {
-          if (r?.ItemId?.id) {
-            phone
-              ? history.push(`/panel/inventory/${r?.ItemId?.id}`)
-              : openRequestedSinglePopup({ url: `/panel/inventory/${r?.ItemId?.id}` });
-          }
-        }}
-      />
+      <div className={classes.root}>
+        <BaseDataGrid
+          height=" calc(100% - 100px)"
+          cols={LICols}
+          rows={lineItems?.result?.sort((a, b) => (a.group || 0) - (b.group || 0)) || []}
+          getRowClassName={({ row }) => {
+            const index = row.group ? row.group % groupColors.length : null;
+            return index ? groupColors[index] : "";
+          }}
+          onRowSelected={(r) => {
+            if (r?.ItemId?.id) {
+              phone
+                ? history.push(`/panel/inventory/${r?.ItemId?.id}`)
+                : openRequestedSinglePopup({ url: `/panel/inventory/${r?.ItemId?.id}` });
+            }
+          }}
+        />
+      </div>
     </>
   );
 }

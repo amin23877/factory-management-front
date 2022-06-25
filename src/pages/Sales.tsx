@@ -81,8 +81,8 @@ export default function Sales() {
             }}
             orientation="vertical"
           >
-            <MyTab label="Calls" />
             <MyTab label="Dashboard" />
+            <MyTab label="Calls" />
             <MyTab label="Devices" />
             <MyTab label="Quotes" />
             <MyTab label="Customer POs" />
@@ -95,8 +95,8 @@ export default function Sales() {
       <Box display="flex">
         <Box flex={1}>
           <Suspense fallback={<MyBackdrop />}>
-            {activeTab === 0 && <Calls />}
-            {activeTab === 1 && <Dashboard />}
+            {activeTab === 0 && <Dashboard />}
+            {activeTab === 1 && <Calls />}
             {activeTab === 2 && <DevicesPanel sales={true} />}
             {activeTab === 3 && <QuotePanel />}
             {activeTab === 4 && <PurchaseOrderPanel />}
