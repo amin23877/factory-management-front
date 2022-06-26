@@ -41,7 +41,7 @@ export default function ClusterModal({ open, onClose }: { open: boolean; onClose
     }
   };
 
-  const { lock, setLock } = useLock();
+  const { setLock } = useLock();
 
   const columns = useMemo(
     () => [
@@ -72,19 +72,16 @@ export default function ClusterModal({ open, onClose }: { open: boolean; onClose
         render: ({ data }: any) => (
           <DataGridAction
             icon="view"
-            controlledLock={lock}
+            controlledLock={false}
             onClick={() => {
-              if (!lock) {
-                setSelectedCluster(data);
-                setActiveTab(1);
-                setLock(true);
-              }
+              setSelectedCluster(data);
+              setActiveTab(1);
             }}
           />
         ),
       },
     ],
-    [setSelectedCluster, lock, setLock]
+    [setSelectedCluster]
   );
 
   return (

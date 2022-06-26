@@ -6,7 +6,7 @@ import DataGrid from "@inovua/reactdatagrid-community";
 import { useStyle } from "app/NewDataGrid";
 
 import Box from "@material-ui/core/Box";
-import { AddRounded, DeleteRounded, EditRounded, SearchRounded } from "@material-ui/icons";
+import { AddRounded, CheckRounded, ClearRounded, DeleteRounded, EditRounded, SearchRounded } from "@material-ui/icons";
 
 import Button from "app/Button";
 import { deleteBom, IBom } from "api/bom";
@@ -98,28 +98,26 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
         defaultWidth: 100,
         render: ({ value, data }: any) => {
           return (
-            <div>
-              <span>{value}</span>
-              <Box display="flex" alignItems="center" style={{ gap: 4 }}>
-                <div
-                  onClick={() => {
-                    if (!lock) {
-                      setSelectedBom(data);
-                      setBomModal(true);
-                    }
-                  }}
-                >
-                  <EditRounded
-                    style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#426792", cursor: lock ? "auto" : "pointer" }}
-                  />
-                </div>
-                <div onClick={() => handleDelete(data.id)}>
-                  <DeleteRounded
-                    style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#e71414", cursor: lock ? "auto" : "pointer" }}
-                  />
-                </div>
-              </Box>
-            </div>
+            <Box display="flex" alignItems="center" style={{ gap: 4 }}>
+              <span>{value ? <CheckRounded /> : <ClearRounded />}</span>
+              <div
+                onClick={() => {
+                  if (!lock) {
+                    setSelectedBom(data);
+                    setBomModal(true);
+                  }
+                }}
+              >
+                <EditRounded
+                  style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#426792", cursor: lock ? "auto" : "pointer" }}
+                />
+              </div>
+              <div onClick={() => handleDelete(data.id)}>
+                <DeleteRounded
+                  style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#e71414", cursor: lock ? "auto" : "pointer" }}
+                />
+              </div>
+            </Box>
           );
         },
       },

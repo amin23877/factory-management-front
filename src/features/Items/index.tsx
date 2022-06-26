@@ -23,9 +23,6 @@ import ItemTable from "./Table";
 
 const Items = () => {
   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
-  const [itemSelection, setItemSelection] = useState();
-  const [refresh, setRefresh] = useState<number>(0);
-
   const [activeTab, setActiveTab] = useState(0);
 
   const [addItemModal, setAddItemModal] = useState(false);
@@ -82,7 +79,6 @@ const Items = () => {
             value={activeTab}
             textColor="primary"
             onChange={(e, nv) => {
-              setItemSelection(undefined);
               setActiveTab(nv);
             }}
           >
@@ -134,13 +130,8 @@ const Items = () => {
         <Box display="flex" flex={1}>
           {activeTab === 0 && (
             <ItemTable
-              refresh={refresh}
-              onSelectionChange={({ selected }) => {
-                setItemSelection(selected);
-              }}
               onRowSelected={(r) => {
                 setSelectedItem(r as any);
-                setItemSelection(undefined);
                 setActiveTab(1);
               }}
             />
@@ -149,7 +140,6 @@ const Items = () => {
             <ItemsDetails
               setSelectedItem={(r) => setSelectedItem(r)}
               setIndexActiveTab={(t) => {
-                setItemSelection(undefined);
                 setActiveTab(t);
               }}
               selectedRow={selectedItem}

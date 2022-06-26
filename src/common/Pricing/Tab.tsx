@@ -47,7 +47,7 @@ export default function PricingTabContent({
           onClose={() => setAddPricing(false)}
         />
       )}
-      <div style={{ maxWidth: "83vw" }}>
+      <div>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Button
             variant="outlined"
@@ -75,7 +75,7 @@ export default function PricingTabContent({
           }}
         />
 
-        <Box mt={1} display="grid" gridTemplateColumns="auto auto" gridColumnGap={10} gridRowGap={10}>
+        <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr 1fr" gridColumnGap={10} gridRowGap={10}>
           <TextField
             label="Labor Cost"
             name="laborCost"
@@ -127,17 +127,28 @@ export default function PricingTabContent({
             </div>
           ) : (
             <>
-              <TextField
-                label=" Bom Total Part Cost"
-                name="bomCost"
-                placeholder=" Bom Total Part Cost"
-                value={values.bomCost}
-                onBlur={handleBlur}
-                onChange={handleChange}
-                style={{ marginBottom: 3 }}
-                disabled={lock}
-              />
-              <div style={phone ? { gridColumnEnd: "span 2" } : {}}>
+              <Box display="flex" alignItems="center" justifyContent="center">
+                <FormControlLabel
+                  style={{ fontSize: "0.7rem" }}
+                  checked={values.bomCostUse}
+                  name="bomCostUse"
+                  label=" "
+                  onChange={handleChange}
+                  control={<Checkbox />}
+                  disabled={lock}
+                />
+                <TextField
+                  label=" Bom Total Cost"
+                  name="bomCost"
+                  placeholder=" Bom Total Cost"
+                  value={values.bomCost}
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  style={{ marginBottom: 3 }}
+                  disabled={lock}
+                />
+              </Box>
+              <Box display="flex" alignItems="center" justifyContent="center">
                 <FormControlLabel
                   style={{ fontSize: "0.7rem" }}
                   checked={values.bomCostEstimateUse}
@@ -157,7 +168,7 @@ export default function PricingTabContent({
                   style={{ marginBottom: 3 }}
                   disabled={lock}
                 />
-              </div>
+              </Box>
             </>
           )}
         </Box>

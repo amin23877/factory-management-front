@@ -32,6 +32,8 @@ export default function ClusterForm({
   getFieldProps: any;
   onDone?: () => void;
 }) {
+  const { lock } = useLock();
+
   const handleDelete = () => {
     Confirm({
       onConfirm: async () => {
@@ -50,8 +52,6 @@ export default function ClusterForm({
       },
     });
   };
-
-  const { lock } = useLock();
 
   return (
     <Box display="grid" gridTemplateColumns={"repeat(4, 1fr)"} gridGap={10}>
