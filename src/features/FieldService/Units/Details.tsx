@@ -48,7 +48,7 @@ function Details({ unit }: { unit: IUnit }) {
   const [editShip, setEditShip] = useState(false);
   const [selectedShip, setSelectedShip] = useState<IShipment>();
 
-  const { lock } = useLock();
+  const { setLock } = useLock();
   const { data: shipments } = useSWR(gridActiveTab === 4 ? `/shipment?UnitId=${unit.id}` : null);
 
   const warCols = useMemo<GridColumns>(
@@ -127,7 +127,10 @@ function Details({ unit }: { unit: IUnit }) {
                   <Tabs
                     textColor="primary"
                     value={infoActiveTab}
-                    onChange={(e, nv) => setInfoActiveTab(nv)}
+                    onChange={(e, nv) => {
+                      setInfoActiveTab(nv);
+                      setLock(true);
+                    }}
                     variant="scrollable"
                     scrollButtons={phone ? "on" : "auto"}
                     style={phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" } : { marginBottom: "10px" }}
@@ -230,7 +233,10 @@ function Details({ unit }: { unit: IUnit }) {
             <Tabs
               textColor="primary"
               value={gridActiveTab}
-              onChange={(e, nv) => setGridActiveTab(nv)}
+              onChange={(e, nv) => {
+                setGridActiveTab(nv);
+                setLock(true);
+              }}
               variant="scrollable"
               scrollButtons={phone ? "on" : "auto"}
               style={phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" } : { marginBottom: "10px" }}

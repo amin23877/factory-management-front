@@ -4,7 +4,7 @@ import DateTimePicker from "app/DateTimePicker";
 
 import TextField from "app/TextField";
 import { formatTimestampToDate } from "logic/date";
-import { useLock } from "common/Lock";
+import { LockButton, useLock } from "common/Lock";
 
 interface IForm {
   values: any;
@@ -105,6 +105,7 @@ export const Status = ({
   return (
     <>
       <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
+        <LockButton />
         <DateTimePicker
           size="small"
           value={values.warrantyExpDate}
@@ -171,6 +172,7 @@ export const Expense = ({
   return (
     <>
       <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
+        <LockButton />
         <TextField
           label="Item Labor Time"
           value={values.itemLaborTime}
@@ -230,6 +232,7 @@ export const Shipping = ({
   return (
     <>
       <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
+        <LockButton />
         <TextField
           label="Entity"
           value={values.entity}
