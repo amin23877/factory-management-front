@@ -9,7 +9,6 @@ import VendorsTable from "./VendorsTable";
 
 import { General } from "./Forms";
 import MoreInfo from "./Forms/MoreInfo";
-import LastUsed from "./Forms/LastUsed";
 import Quantity from "./Forms/Quantity";
 import PricingTab from "./Forms/Pricing";
 import Shipping from "./Forms/Shipping";
@@ -33,7 +32,6 @@ import QRCode from "app/QRCode";
 import Confirm from "common/Confirm";
 import Toast from "app/Toast";
 import PhotoTab from "common/PhotoTab";
-import { useLock } from "common/Lock";
 import AuditTable from "common/Audit";
 
 const style = {
@@ -77,7 +75,6 @@ function ItemsDetails({
   const [bomPartsModal, setBomPartsModal] = useState(false);
   const [selectedBom] = useState<IBom>();
   const phone = useMediaQuery("(max-width:900px)");
-  const { lock } = useLock();
 
   // const poCols = useMemo<GridColDef[]>(
   //   () => [
