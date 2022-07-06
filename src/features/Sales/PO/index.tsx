@@ -1,21 +1,21 @@
 import React, { useState } from "react";
-
 import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import AddRoundedIcon from "@material-ui/icons/AddRounded";
-
-import { deleteCustomerPo, customerPoType } from "api/customerPo";
+import ListItem from "@material-ui/core/ListItem";
+import IconButton from "@material-ui/core/IconButton";
+import { AddRounded, DeleteRounded, FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
 import Confirm from "../../Modals/Confirm";
-import Button from "app/Button";
+
+import { BasePaper } from "app/Paper";
+import DataGrid from "app/NewDataGrid";
+import List from "app/SideUtilityList";
 
 import Details from "./Details";
 import AddPOModal from "./AddPoModal";
-import { BasePaper } from "app/Paper";
 
-import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
-import DataGrid from "app/NewDataGrid";
+import { deleteCustomerPo, customerPoType } from "api/customerPo";
 
 export default function POPanel() {
   const [activeTab, setActiveTab] = useState(0);
@@ -70,47 +70,46 @@ export default function POPanel() {
         open={confirm}
         onClose={() => setConfirm(false)}
         onConfirm={handleDelete}
-        // text={`Are you sure, You are going to delete PO with number ${selectedPO?.number}`}
         text={`Are you sure, You are going to delete this Customer PO`}
       />
-
-      <Box mb={1} display="flex" alignItems="center">
-        <Button
-          onClick={() => setAddPo(true)}
-          style={{
-            backgroundColor: "#1a73e8",
-            color: "#fff",
-            margin: "0 0.5em",
-            padding: " 6px 15px",
-            boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
-          }}
-        >
-          <AddRoundedIcon />
-          Add PO
-        </Button>
-        <Button kind="delete" disabled={!selectedPO} onClick={() => setConfirm(true)} style={{ margin: "0 0.5em" }}>
-          Delete PO
-        </Button>
-      </Box>
       <BasePaper>
-        <Tabs value={activeTab} style={{ marginBottom: 10 }} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-          <Tab
-            icon={
-              <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <ListAltRounded style={{ marginRight: "5px" }} /> List
-              </span>
-            }
-            wrapped
-          />
-          <Tab
-            disabled={!selectedPO}
-            icon={
-              <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <FindInPageRounded style={{ marginRight: "5px" }} /> Details
-              </span>
-            }
-          />
-        </Tabs>
+        <Box my={1} display="flex" alignItems="center">
+          <Tabs
+            value={activeTab}
+            textColor="primary"
+            onChange={(e, nv) => setActiveTab(nv)}
+            style={{ marginRight: "auto" }}
+          >
+            <Tab
+              icon={
+                <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <ListAltRounded style={{ marginRight: "5px" }} /> List
+                </span>
+              }
+              wrapped
+            />
+            <Tab
+              disabled={!selectedPO}
+              icon={
+                <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <FindInPageRounded style={{ marginRight: "5px" }} /> Details
+                </span>
+              }
+            />
+          </Tabs>
+          <List>
+            <ListItem>
+              <IconButton title="Add PO" onClick={() => setAddPo(true)}>
+                <AddRounded />
+              </IconButton>
+            </ListItem>
+            <ListItem>
+              <IconButton title="Delete PO" disabled={!selectedPO} onClick={() => setConfirm(true)}>
+                <DeleteRounded />
+              </IconButton>
+            </ListItem>
+          </List>
+        </Box>
         {activeTab === 0 && (
           <DataGrid
             refresh={refresh}

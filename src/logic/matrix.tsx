@@ -2,6 +2,11 @@ import React from "react";
 import { Typography, Button } from "@material-ui/core";
 import { EditRounded } from "@material-ui/icons";
 import { IMatrix } from "../api/matrix";
+import DataGridAction from "common/DataGridAction";
+import { openRequestedSinglePopup } from "./window";
+
+const defaultColumns = ["Device Number", "Device Description"];
+const excludeColumns = ["fakeName"];
 
 export const generateRows = ({ levels, tableData }: { tableData: IMatrix; levels: string[] }) => {
   return tableData.map((td, i) => {
@@ -11,12 +16,9 @@ export const generateRows = ({ levels, tableData }: { tableData: IMatrix; levels
     levels.forEach((l) => {
       tdLevels[l] = td[l];
     });
-    parts = [];
-    // parts = td.device?.recs
-    //   ? td.device.recs.map((rec: any, j: any) => ({ ...rec, name: rec?.name || `Part-${j}` }))
-    //   : [];
+    parts = td.device?.recs || [];
     parts.forEach((p: any) => {
-      tdParts[p.name] = p;
+      tdParts[p.name] = p?.ItemId?.no || p?.ItemNo || "";
     });
 
     return {
@@ -25,21 +27,54 @@ export const generateRows = ({ levels, tableData }: { tableData: IMatrix; levels
       ...tdParts,
       parts,
       DeviceId: (td.device as any)?._id || td.device?.id,
-      "Device Number": td.device?.no,
+      "Device Number": td.device?.no || td?.fakeName,
+      "Device Description": td.device?.name,
     };
   });
 };
 
-export const generateDataGridColumns = (columns: string[], onRename: (header: string) => void) => {
+export const generateDataGridColumns = (
+  columns: string[],
+  onRename: (header: string) => void,
+  onAddDevice: (d: any) => void
+) => {
   const dtCols: any = [];
-  const levels = ["Device Number", "power", "input", "output", "runtime"];
 
   columns.forEach((c) => {
-    if (!levels.includes(c)) {
+    if (defaultColumns.includes(c) && c === "Device Number") {
       dtCols.push({
         name: c,
-        render: ({ data }: any) => data[c]?.ItemId?.no,
-        minWidth: 180,
+        defaultWidth: 200,
+        editable: false,
+        header: <Typography variant="caption">{c}</Typography>,
+        render: ({ value, data }: any) => (
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span>{value}</span>
+            {data?.DeviceId ? (
+              <div style={{ height: 22 }}>
+                <DataGridAction
+                  icon="view"
+                  controlledLock={false}
+                  onClick={() => openRequestedSinglePopup({ url: `/panel/inventory/${data?.DeviceId}` })}
+                />
+              </div>
+            ) : (
+              <DataGridAction icon="add" controlledLock={false} onClick={() => onAddDevice(data)} />
+            )}
+          </div>
+        ),
+      });
+    } else if (defaultColumns.includes(c) && c !== "Device Number") {
+      dtCols.push({
+        name: c,
+        minWidth: 120,
+        editable: false,
+        header: <Typography variant="caption">{c}</Typography>,
+      });
+    } else {
+      dtCols.push({
+        name: c,
+        minWidth: 100,
         editable: false,
         sortable: false,
         header: (
@@ -50,13 +85,6 @@ export const generateDataGridColumns = (columns: string[], onRename: (header: st
             </Button>
           </div>
         ),
-      });
-    } else {
-      dtCols.push({
-        name: c,
-        minWidth: 150,
-        editable: false,
-        header: <Typography variant="caption">{c}</Typography>,
       });
     }
   });
@@ -74,37 +102,40 @@ export const generateDataGridFilterValues = (columns: string[]) => {
   return dtFilterValues;
 };
 
-export const extractColumns = ({ tableData, levels }: { tableData: IMatrix; levels?: string[] }) => {
+export const extractColumns = ({
+  tableData,
+  levels,
+  parts,
+}: {
+  tableData: IMatrix;
+  levels?: string[];
+  parts?: string[];
+}) => {
   const cols = new Set<string>();
-  cols.add("Device Number");
+  defaultColumns.forEach(cols.add, cols);
+
   if (levels) {
     levels.forEach((l) => cols.add(l));
   }
-  const hasDevice = tableData.filter((td) => td.device);
-  hasDevice.forEach((td) => {
-    // td.device?.recs?.forEach((rec: any, i: any) => {
-    //   if (rec?.name) {
-    //     cols.add(rec?.name);
-    //   }
-    // });
-  });
+  if (parts) {
+    parts.forEach((p) => cols.add(p));
+  }
+  excludeColumns.forEach(cols.delete, cols);
 
   return Array.from(cols);
 };
 
 export const extractLevels = (tableData: IMatrix) => {
   const levels = new Set<string>();
-  Object.keys(tableData[0]).forEach((k) => k !== "device" && levels.add(k));
+  tableData[0] && Object.keys(tableData[0]).forEach((k) => k !== "device" && levels.add(k));
 
   return Array.from(levels);
 };
 
 export const extractPartNames = (tableData: any[]) => {
   const parts = new Set<string>();
+  const data = tableData.map((item) => ({ ...(item?.device?.recs || []) }));
 
-  const datas = tableData.map((item) => ({ ...item.recs }));
-  // const datas = tableData.map((item) => ({ ...item.data }));
-
-  datas.forEach((data: any) => Object.keys(data).forEach((r: any) => parts.add(data[r].name)));
+  data.forEach((data: any) => Object.keys(data).forEach((r: any) => parts.add(data[r].name || "No-Name")));
   return Array.from(parts);
 };

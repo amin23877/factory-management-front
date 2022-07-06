@@ -4,16 +4,16 @@ import { AddRounded, DeleteRounded, FindInPageRounded, ListAltRounded, PostAddRo
 import { mutate } from "swr";
 
 import Confirm from "../Modals/Confirm";
-import ConfirmDialog from "common/Confirm";
+// import ConfirmDialog from "common/Confirm";
 
 import { AddItemModal } from "./ItemModals";
 import ItemsDetails from "./Details";
 
-import { deleteAnItem, IItem, convertToService } from "api/items";
+import { deleteAnItem, IItem } from "api/items";
 
 import List from "app/SideUtilityList";
 import { BasePaper } from "app/Paper";
-import Button from "app/Button";
+// import Button from "app/Button";
 
 // import LevelsModal from "common/Level/Modal";
 import ClusterModal from "common/Cluster/Modal";
@@ -23,9 +23,6 @@ import ItemTable from "./Table";
 
 const Items = () => {
   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
-  const [itemSelection, setItemSelection] = useState();
-  const [refresh, setRefresh] = useState<number>(0);
-
   const [activeTab, setActiveTab] = useState(0);
 
   const [addItemModal, setAddItemModal] = useState(false);
@@ -46,28 +43,28 @@ const Items = () => {
     }
   }, [selectedItem]);
 
-  const handleConvertItems = async () => {
-    try {
-      if (itemSelection && Object.keys(itemSelection || {}).length > 0) {
-        ConfirmDialog({
-          text: `You are going to convert ${Object.keys(itemSelection || {}).length} items to service`,
-          onConfirm: async () => {
-            try {
-              for (const id of Object.keys(itemSelection || {})) {
-                await convertToService(id);
-              }
-            } catch (error) {
-              console.log(error);
-            } finally {
-              setRefresh((p) => p + 1);
-            }
-          },
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const handleConvertItems = async () => {
+  //   try {
+  //     if (itemSelection && Object.keys(itemSelection || {}).length > 0) {
+  //       ConfirmDialog({
+  //         text: `You are going to convert ${Object.keys(itemSelection || {}).length} items to service`,
+  //         onConfirm: async () => {
+  //           try {
+  //             for (const id of Object.keys(itemSelection || {})) {
+  //               await convertToService(id);
+  //             }
+  //           } catch (error) {
+  //             console.log(error);
+  //           } finally {
+  //             setRefresh((p) => p + 1);
+  //           }
+  //         },
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <>
@@ -82,7 +79,6 @@ const Items = () => {
             value={activeTab}
             textColor="primary"
             onChange={(e, nv) => {
-              setItemSelection(undefined);
               setActiveTab(nv);
             }}
           >
@@ -134,13 +130,8 @@ const Items = () => {
         <Box display="flex" flex={1}>
           {activeTab === 0 && (
             <ItemTable
-              refresh={refresh}
-              onSelectionChange={({ selected }) => {
-                setItemSelection(selected);
-              }}
               onRowSelected={(r) => {
                 setSelectedItem(r as any);
-                setItemSelection(undefined);
                 setActiveTab(1);
               }}
             />
@@ -149,7 +140,6 @@ const Items = () => {
             <ItemsDetails
               setSelectedItem={(r) => setSelectedItem(r)}
               setIndexActiveTab={(t) => {
-                setItemSelection(undefined);
                 setActiveTab(t);
               }}
               selectedRow={selectedItem}

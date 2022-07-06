@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Box, IconButton, ListItem, Tabs, Tab, useMediaQuery } from "@material-ui/core";
 import {
   AddRounded,
@@ -29,7 +29,9 @@ import { clusterType } from "api/cluster";
 import AsyncCombo from "common/AsyncCombo";
 import { IUnit } from "api/units";
 import { formatTimestampToDate } from "logic/date";
+import { get } from "api";
 
+/*
 const additionalLevels = [
   { name: "Battery Cabinet Quantity", label: "B.C.QTY" },
   { name: "Battery Cabinet", label: "B.C." },
@@ -55,6 +57,7 @@ const additionalLevels = [
     }
   },
 }));
+*/
 
 const Devices = ({ sales }: { sales?: boolean }) => {
   const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
@@ -63,6 +66,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
   const [selectedStep, setSelectedStep] = useState<any>();
   const [selectedFlag, setSelectedFlag] = useState<any>();
   const [selectedCluster, setSelectedCluster] = useState<clusterType>();
+  const [additionalLevels, setAdditionalLevels] = useState<any[]>([]);
 
   const [addItemModal, setAddItemModal] = useState(false);
   const [addStepModal, setAddStepModal] = useState(false);
@@ -99,6 +103,34 @@ const Devices = ({ sales }: { sales?: boolean }) => {
     { name: "price", header: "Price", minWidth: 110, render: ({ data }: any) => data?.so?.price },
   ];
 
+  useEffect(() => {
+    const fetch = async () => {
+      try {
+        if (selectedCluster) {
+          const levels = await get(`/level`, { params: { clusterId: selectedCluster.id, pageSize: 20 } });
+          const result = levels.result?.map((l: any) => ({
+            name: l.name,
+            header: l.name,
+            minWidth: 120,
+            render: ({ data }: any) => {
+              if (data.levels && data.levels[l.name]) {
+                return data.levels[l.name];
+              } else {
+                return "-";
+              }
+            },
+          }));
+
+          setAdditionalLevels(result);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetch();
+  }, [selectedCluster]);
+
   const gridColumns = useMemo<any[]>(() => {
     const res = [
       {
@@ -109,13 +141,13 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       { name: "name", header: "Name", flex: 1, minWidth: 200 },
       { name: "description", header: "Description", flex: 2, minWidth: 200 },
       { name: "bom", header: "BOM", type: "boolean", defaultFilterValue: undefined, defaultWidth: 80 },
-      ...(selectedCluster ? additionalLevels : []),
+      ...(selectedCluster && additionalLevels ? additionalLevels : []),
       { name: "leadTime", header: "Lead Time", minWidth: 120 },
       { name: "retailPrice", header: "Price", minWidth: 120, type: "number" },
     ];
 
     return res;
-  }, [selectedCluster]);
+  }, [additionalLevels, selectedCluster]);
 
   const handleDelete = useCallback(async () => {
     try {
@@ -163,28 +195,12 @@ const Devices = ({ sales }: { sales?: boolean }) => {
         device
         open={addItemModal}
         onClose={() => setAddItemModal(false)}
-        initialValues={{  class : "device" } as IItem}
+        initialValues={{ class: "device" } as IItem}
       />
       <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
       <ClusterModal open={levelModal} onClose={() => setLevelModal(false)} />
       <Box display="flex" justifyContent="flex-end" alignItems="center" my={1}>
         <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
-          {/* <Tab
-            icon={
-              <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <ListAltRounded style={{ marginRight: "5px" }} /> List
-              </span>
-            }
-            wrapped
-          />
-          <Tab
-            disabled={!selectedItem}
-            icon={
-              <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <FindInPageRounded style={{ marginRight: "5px" }} /> Details
-              </span>
-            }
-          /> */}
           <Tab
             icon={
               <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -268,33 +284,6 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       )}
       <Box display="flex" alignItems="flex-start" mt={1}>
         <Box flex={1}>
-          {/* {activeTab === 0 && (
-            <DataGrid
-              style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 165px)" }}
-              url="/item"
-              initParams={{  class : "device", fru: false, clusterId: selectedCluster?.id || undefined }}
-              onRowSelected={(r) => {
-                setSelectedItem(r as any);
-                setActiveTab(1);
-              }}
-              columns={gridColumns}
-            />
-          )}
-          {activeTab === 1 && (
-            <DetailTab
-              sales={sales}
-              onDone={() => {}}
-              selectedRow={selectedItem}
-              onStepSelected={(d) => {
-                setSelectedStep(d);
-                setEditStepModal(true);
-              }}
-              onFlagSelected={(d) => {
-                setSelectedFlag(d);
-                setEditFlagModal(true);
-              }}
-            />
-          )} */}
           {activeTab === 0 && (
             <DataGrid
               style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 215px)" }}

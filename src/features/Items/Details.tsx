@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useMemo } from "react";
 import { Box, Tabs, Tab, LinearProgress, Typography, useMediaQuery } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
@@ -9,6 +9,10 @@ import VendorsTable from "./VendorsTable";
 
 import { General } from "./Forms";
 import MoreInfo from "./Forms/MoreInfo";
+<<<<<<< HEAD
+=======
+// import LastUsed from "./Forms/LastUsed";
+>>>>>>> 976481e1484322be732049c4df3a378e02d94a4a
 import Quantity from "./Forms/Quantity";
 import PricingTab from "./Forms/Pricing";
 import Shipping from "./Forms/Shipping";
@@ -22,17 +26,20 @@ import DocumentTab from "common/Document/Tab";
 import { VendorModal } from "../Modals/AddVendor";
 import Parts from "../BOM/Parts";
 
-import { convertToService, IItem, updateAnItem } from "api/items";
+import { IItem, updateAnItem } from "api/items";
 import { IBom } from "api/bom";
 import { exportPdf } from "logic/pdf";
 import { getModifiedValues } from "logic/utils";
 import ItemBomTable from "../BOM/ItemBomTable";
 
 import QRCode from "app/QRCode";
-import Confirm from "common/Confirm";
+// import Confirm from "common/Confirm";
 import Toast from "app/Toast";
 import PhotoTab from "common/PhotoTab";
 import AuditTable from "common/Audit";
+import BaseDataGrid from "app/BaseDataGrid";
+import { GridColumns } from "@material-ui/data-grid";
+import { formatTimestampToDate } from "logic/date";
 
 const style = {
   border: "1px solid gray ",
@@ -65,9 +72,9 @@ function ItemsDetails({
   // const { data: itemPOs } = useSWR(
   //   activeTab === 3 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/purchasepo` : null) : null
   // );
-  // const { data: itemUsage } = useSWR(
-  //   activeTab === 4 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/uses` : null) : null
-  // );
+  const { data: itemUsage } = useSWR<{ result: any[]; total: number }>(
+    activeTab === 5 ? (selectedRow && selectedRow.id ? `/usage?ItemId=${selectedRow.id}` : null) : null
+  );
 
   const [manualCountModal, setManualCountModal] = useState(false);
   const [quantityModal, setQuantityModal] = useState(false);
@@ -132,58 +139,59 @@ function ItemsDetails({
   //   []
   // );
 
-  // const usageCols = useMemo<GridColDef[]>(
-  //   () => [
-  //     {
-  //       field: "soDate",
-  //       headerName: "SO Date",
-  //       valueFormatter: (params) => formatTimestampToDate(params.row?.so.date),
-  //       flex: 1,
-  //     },
-  //     {
-  //       field: "unit",
-  //       headerName: "Unit",
-  //       valueFormatter: (params) => params.row?.unit.number,
-  //       flex: 1,
-  //     },
-  //     {
-  //       field: "deviceNumber",
-  //       headerName: "Device Number",
-  //       valueFormatter: (params) => params.row?.item.no,
-  //       flex: 1,
-  //     },
-  //     {
-  //       field: "so",
-  //       headerName: "SO",
-  //       valueFormatter: (params) => params.row?.so.number,
-  //       flex: 1,
-  //     },
-  //     {
-  //       field: "estShipDate",
-  //       headerName: "Est Shipping Date",
-  //       valueFormatter: (params) => params.row?.so.estimatedShipDate,
-  //       flex: 1,
-  //     },
-  //     {
-  //       field: "qty",
-  //       headerName: "QTY",
-  //       valueFormatter: (params) => params.row?.lir.quantity,
-  //       flex: 1,
-  //     },
-  //     {
-  //       field: "client",
-  //       headerName: "Client",
-  //       valueFormatter: (params) => params.row?.client.name,
-  //       flex: 1,
-  //     },
-  //   ],
-  //   []
-  // );
+  const usageCols = useMemo<GridColumns>(
+    () => [
+      {
+        field: "soDate",
+        headerName: "SO Date",
+        valueFormatter: (params) => formatTimestampToDate(params.row?.so.date),
+        flex: 1,
+      },
+      {
+        field: "unit",
+        headerName: "Unit",
+        valueFormatter: (params) => params.row?.unit.number,
+        flex: 1,
+      },
+      {
+        field: "deviceNumber",
+        headerName: "Device Number",
+        valueFormatter: (params) => params.row?.item.no,
+        flex: 1,
+      },
+      {
+        field: "so",
+        headerName: "SO",
+        valueFormatter: (params) => params.row?.so.number,
+        flex: 1,
+      },
+      {
+        field: "estShipDate",
+        headerName: "Est Shipping Date",
+        valueFormatter: (params) => params.row?.so.estimatedShipDate,
+        flex: 1,
+      },
+      {
+        field: "qty",
+        headerName: "QTY",
+        valueFormatter: (params) => params.row?.lir.quantity,
+        flex: 1,
+      },
+      {
+        field: "client",
+        headerName: "Client",
+        valueFormatter: (params) => params.row?.client.name,
+        flex: 1,
+      },
+    ],
+    []
+  );
 
   const handleSubmit = async (data: any, { setSubmitting }: any) => {
     try {
       if (selectedRow && selectedRow.id) {
         const reqData = getModifiedValues(data, selectedRow);
+
         const resp = await updateAnItem(selectedRow.id, reqData);
         if (resp) {
           setSubmitting(false);
@@ -197,25 +205,25 @@ function ItemsDetails({
     }
   };
 
-  const handleConvertToService = async () => {
-    try {
-      await Confirm({
-        text: "You are going to make this item a service",
-        onConfirm: async () => {
-          try {
-            await convertToService(selectedRow.id);
-            setSelectedItem(null);
-            setIndexActiveTab(0);
-            Toast("Item converted to Service", "success");
-          } catch (error) {
-            console.log(error);
-          }
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const handleConvertToService = async () => {
+  //   try {
+  //     await Confirm({
+  //       text: "You are going to make this item a service",
+  //       onConfirm: async () => {
+  //         try {
+  //           await convertToService(selectedRow.id);
+  //           setSelectedItem(null);
+  //           setIndexActiveTab(0);
+  //           Toast("Item converted to Service", "success");
+  //         } catch (error) {
+  //           console.log(error);
+  //         }
+  //       },
+  //     });
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   if (!selectedRow) {
     return <LinearProgress />;
@@ -249,6 +257,9 @@ function ItemsDetails({
                     errors={errors}
                     touched={touched}
                   />
+                  <button type="submit" style={{ display: "none" }}>
+                    submit
+                  </button>
                 </BasePaper>
                 <BasePaper style={{ flex: 1, margin: 8 }}>
                   <Tabs
@@ -373,8 +384,8 @@ function ItemsDetails({
                     <ItemBomTable item={selectedRow} boms={boms?.result || []} mutateBoms={mutateBoms} />
                   </div>
                 )}
-                {/* {activeTab === 2 && itemSOs && <SOTable rows={itemSOs} />} */}
-                {/* {activeTab === 3 && (
+                {/* {activeTab === 3 && itemSOs && <SOTable rows={itemSOs} />} */}
+                {/* {activeTab === 4 && (
                   <BaseDataGrid
                     cols={poCols}
                     rows={itemPOs ? itemPOs.map((i: any, index: string) => ({ ...i, id: index })) : []}
@@ -382,14 +393,14 @@ function ItemsDetails({
                     height={"calc(100% - 60px)"}
                   />
                 )} */}
-                {/* {activeTab === 4 && (
+                {activeTab === 5 && (
                   <BaseDataGrid
                     cols={usageCols}
-                    rows={itemUsage || []}
+                    rows={itemUsage?.result || []}
                     onRowSelected={() => {}}
                     height={"calc(100% - 60px)"}
                   />
-                )} */}
+                )}
                 {activeTab === 6 && <NotesTab itemId={selectedRow.id} model="item" />}
                 {activeTab === 7 && <AuditTable itemId={selectedRow.id} model="Item" />}
               </BasePaper>

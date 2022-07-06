@@ -175,9 +175,6 @@ function Details({ unit }: { unit: IUnit }) {
                         handleChange={handleChange}
                         setFieldValue={setFieldValue}
                       />
-                      <Box width="100%" display="flex" justifyContent="center" m="10px">
-                        <LockButton />
-                      </Box>
                     </LockProvider>
                   )}
                   {infoActiveTab === 2 && (
@@ -190,9 +187,6 @@ function Details({ unit }: { unit: IUnit }) {
                         handleChange={handleChange}
                         setFieldValue={setFieldValue}
                       />
-                      <Box width="100%" display="flex" justifyContent="center" m="10px">
-                        <LockButton />
-                      </Box>
                     </LockProvider>
                   )}
                   {infoActiveTab === 3 && (
@@ -205,9 +199,6 @@ function Details({ unit }: { unit: IUnit }) {
                         handleChange={handleChange}
                         setFieldValue={setFieldValue}
                       />
-                      <Box width="100%" display="flex" justifyContent="center" m="10px">
-                        <LockButton />
-                      </Box>
                     </LockProvider>
                   )}
                   {infoActiveTab === 4 && (

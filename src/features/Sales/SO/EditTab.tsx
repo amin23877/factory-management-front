@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Box, useMediaQuery } from "@material-ui/core";
+import { Box, useMediaQuery, makeStyles } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -20,6 +20,23 @@ import DocumentTab from "common/Document/Tab";
 import { openRequestedSinglePopup } from "logic/window";
 import { lineItemType } from "components/GroupLineItemTable/useGroupedLineItems";
 
+const useStyle = makeStyles({
+  root: {
+    height: "100%",
+    "& .red": {
+      backgroundColor: "#F87474",
+    },
+    "& .blue": {
+      backgroundColor: "#9DD6DF",
+    },
+    "& .green": {
+      backgroundColor: "#AEDBCE",
+    },
+  },
+});
+
+const groupColors = ["red", "blue", "green"];
+
 export default function EditTab({
   selectedSo,
   onLineItemSelected,
@@ -30,7 +47,7 @@ export default function EditTab({
   onLineServiceSelected: (a: any) => void;
 }) {
   const [activeTab, setActiveTab] = useState(0);
-
+  const classes = useStyle();
   const history = useHistory();
 
   const { data: lineItems } = useSWR<{ result: lineItemType[]; total: number }>(
@@ -181,20 +198,26 @@ export default function EditTab({
           <Tab label="Auditing" />
         </Tabs>
         {activeTab === 0 && (
-          <BaseDataGrid
-            cols={LICols}
-            rows={lineItems?.result || []}
-            onRowSelected={(r) => {
-              if (phone && (r.ServiceId || r.ItemId)) {
-                history.push(r.ServiceId ? `/panel/service/${r.ServiceId}` : `/panel/engineering/${r?.ItemId?.id}`);
-              } else if (!phone && (r.ServiceId || r.ItemId)) {
-                openRequestedSinglePopup({
-                  url: r.ServiceId ? `/panel/service/${r.ServiceId}` : `/panel/engineering/${r?.ItemId?.id}`,
-                });
-              }
-            }}
-            height="calc(100% - 60px)"
-          />
+          <div className={classes.root}>
+            <BaseDataGrid
+              cols={LICols}
+              rows={lineItems?.result || []}
+              getRowClassName={({ row }) => {
+                const index = row.group ? row.group % groupColors.length : null;
+                return index ? groupColors[index] : "";
+              }}
+              onRowSelected={(r) => {
+                if (phone && (r.ServiceId || r.ItemId)) {
+                  history.push(r.ServiceId ? `/panel/service/${r.ServiceId}` : `/panel/engineering/${r?.ItemId?.id}`);
+                } else if (!phone && (r.ServiceId || r.ItemId)) {
+                  openRequestedSinglePopup({
+                    url: r.ServiceId ? `/panel/service/${r.ServiceId}` : `/panel/engineering/${r?.ItemId?.id}`,
+                  });
+                }
+              }}
+              height="calc(100% - 60px)"
+            />
+          </div>
         )}
         {activeTab === 1 && (
           <BaseDataGrid

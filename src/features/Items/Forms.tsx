@@ -56,22 +56,22 @@ export const General = ({
 }: IForm) => {
   const classes = useStyles();
   const phone = useMediaQuery("(max-width:900px)");
-  const itemTypes = types.map((t) => (values as any)[t.value] && { value: t.value, title: t.title }).filter((t) => t);
-
-  const handleItemTypeChange: ((e: any, nv: { value: string }[]) => void) | undefined = (e, nv) => {
-    const typeMap = types.map((t) => {
-      if (nv.find((vt) => vt.value === t.value)) {
-        return { key: t.value, value: true };
-      }
-
-      return { key: t.value, value: false };
-    });
-
-    typeMap.forEach((t) => {
-      setFieldValue(t.key, t.value);
-    });
-  };
   const { lock } = useLock();
+  // const itemTypes = types.map((t) => (values as any)[t.value] && { value: t.value, title: t.title }).filter((t) => t);
+
+  // const handleItemTypeChange: ((e: any, nv: { value: string }[]) => void) | undefined = (e, nv) => {
+  //   const typeMap = types.map((t) => {
+  //     if (nv.find((vt) => vt.value === t.value)) {
+  //       return { key: t.value, value: true };
+  //     }
+
+  //     return { key: t.value, value: false };
+  //   });
+
+  //   typeMap.forEach((t) => {
+  //     setFieldValue(t.key, t.value);
+  //   });
+  // };
   return (
     <>
       <Box display="grid" gridTemplateColumns={"1fr 1fr 1fr 1fr"} gridRowGap={10} gridColumnGap={10}>
@@ -203,8 +203,9 @@ export const General = ({
           </Box>
         </Paper>
         <ItemTypeCombo
-          value={itemTypes}
-          onChange={handleItemTypeChange}
+          // value={itemTypes}
+          value={types.find((t) => t.value === values.class)}
+          onChange={(e, nv) => nv && setFieldValue("class", nv.value)}
           style={{ gridColumnEnd: "span 4" }}
           disabled={lock}
         />

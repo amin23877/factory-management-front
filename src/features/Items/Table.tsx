@@ -10,7 +10,7 @@ function ItemTable({
   refresh,
 }: {
   onRowSelected: (r: any) => void;
-  onSelectionChange: (c: any) => void;
+  onSelectionChange?: (c: any) => void;
   refresh?: number;
 }) {
   const [finish, setFinish] = useState(false);
