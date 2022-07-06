@@ -9,10 +9,6 @@ import VendorsTable from "./VendorsTable";
 
 import { General } from "./Forms";
 import MoreInfo from "./Forms/MoreInfo";
-<<<<<<< HEAD
-=======
-// import LastUsed from "./Forms/LastUsed";
->>>>>>> 976481e1484322be732049c4df3a378e02d94a4a
 import Quantity from "./Forms/Quantity";
 import PricingTab from "./Forms/Pricing";
 import Shipping from "./Forms/Shipping";
