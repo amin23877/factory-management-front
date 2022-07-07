@@ -42,11 +42,11 @@ function Parts() {
 
   const columns = useMemo(
     () => [
-      { name: "no", header: "NO.", render: ({ data }: any) => data?.ItemId?.no, editable: false },
-      { name: "name", header: "Name", render: ({ data }: any) => data?.ItemId?.name, editable: false },
+      { name: "no", header: "Item NO.", render: ({ data }: any) => data?.ItemId?.no, editable: false },
+      { name: "name", header: "Item Name", render: ({ data }: any) => data?.ItemId?.name, editable: false },
       {
         name: "description",
-        header: "Description",
+        header: "Item Description",
         flex: 1,
         render: ({ data }: any) => data?.ItemId?.description,
         editable: false,

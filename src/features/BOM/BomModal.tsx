@@ -55,13 +55,17 @@ export default function BOMModal({
     <Dialog open={open} onClose={onClose} title="BOM" maxWidth="xs" fullWidth>
       <Box>
         <Formik initialValues={initialValues || ({ name: item.no } as IBom)} onSubmit={handleSubmit}>
-          {({ getFieldProps }) => (
+          {({ getFieldProps, values }) => (
             <Form>
               <Box display="flex" flexDirection="column" style={{ gap: 8 }}>
                 <TextField label="NO" {...getFieldProps("no")} />
                 <TextField label="Name" {...getFieldProps("name")} />
                 <TextField label="Notes" {...getFieldProps("notes")} />
-                <FormControlLabel control={<Checkbox />} label="Current" {...getFieldProps("current")} />
+                <FormControlLabel
+                  control={<Checkbox checked={values.current} />}
+                  label="Current"
+                  {...getFieldProps("current")}
+                />
                 <Button kind={initialValues?.id ? "edit" : "add"} type="submit">
                   Submit
                 </Button>

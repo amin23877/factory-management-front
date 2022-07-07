@@ -10,7 +10,7 @@ import Toast from "app/Toast";
 import { getModifiedValues } from "logic/utils";
 import { updateCustomerPo, customerPoType } from "api/customerPo";
 
-import { useLock, LockButton } from "common/Lock";
+import { useLock, LockButton, LockProvider } from "common/Lock";
 
 export default function EditForm({ poData, onDone }: { poData: customerPoType; onDone: () => void }) {
   const phone = useMediaQuery("(max-width:900px)");
@@ -33,29 +33,28 @@ export default function EditForm({ poData, onDone }: { poData: customerPoType; o
 
   return (
     <Box>
-      <Formik initialValues={poData} onSubmit={handleSubmit}>
-        {({ values, handleChange, handleBlur, setValues, setFieldValue, isSubmitting }) => (
-          <Form style={{ height: "100%" }}>
-            <Box display="flex" flexDirection="column" style={phone ? { gap: 10 } : { gap: 10, height: "100%" }}>
-              <BasePaper>
-                <GeneralForm
-                  onChangeInit={setValues}
-                  values={values}
-                  handleBlur={handleBlur}
-                  handleChange={handleChange}
-                  setFieldValue={setFieldValue}
-                />
-                <Box display="flex" justifyContent="center" style={{ width: "100%" }} my={1}>
-                  <Button disabled={isSubmitting || lock} type="submit" kind="edit" style={{ width: "100%" }}>
-                    Save
-                  </Button>
-                  <LockButton />
-                </Box>
-              </BasePaper>
-            </Box>
-          </Form>
-        )}
-      </Formik>
+      <LockProvider>
+        <Formik initialValues={poData} onSubmit={handleSubmit}>
+          {({ values, handleChange, handleBlur, setValues, setFieldValue, isSubmitting }) => (
+            <Form style={{ height: "100%" }}>
+              <Box display="flex" flexDirection="column" style={phone ? { gap: 10 } : { gap: 10, height: "100%" }}>
+                <BasePaper>
+                  <GeneralForm
+                    onChangeInit={setValues}
+                    values={values}
+                    handleBlur={handleBlur}
+                    handleChange={handleChange}
+                    setFieldValue={setFieldValue}
+                  />
+                  <Box display="flex" justifyContent="center" style={{ width: "100%" }} my={1}>
+                    <LockButton />
+                  </Box>
+                </BasePaper>
+              </Box>
+            </Form>
+          )}
+        </Formik>
+      </LockProvider>
     </Box>
   );
 }

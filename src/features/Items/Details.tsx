@@ -36,6 +36,7 @@ import AuditTable from "common/Audit";
 import BaseDataGrid from "app/BaseDataGrid";
 import { GridColumns } from "@material-ui/data-grid";
 import { formatTimestampToDate } from "logic/date";
+import LevelsTab from "common/Level/Tab";
 
 const style = {
   border: "1px solid gray ",
@@ -138,45 +139,32 @@ function ItemsDetails({
   const usageCols = useMemo<GridColumns>(
     () => [
       {
-        field: "soDate",
-        headerName: "SO Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.so.date),
+        field: "soNumber",
+        headerName: "SO NO.",
+        valueFormatter: (params) => params.row?.SOId?.number,
         flex: 1,
       },
       {
         field: "unit",
-        headerName: "Unit",
-        valueFormatter: (params) => params.row?.unit.number,
+        headerName: "Unit NO.",
+        valueFormatter: (params) => params.row?.UnitId?.number,
         flex: 1,
       },
       {
-        field: "deviceNumber",
-        headerName: "Device Number",
-        valueFormatter: (params) => params.row?.item.no,
+        field: "unitName",
+        headerName: "Unit Name",
+        valueFormatter: (params) => params.row?.UnitId?.name,
         flex: 1,
       },
       {
-        field: "so",
-        headerName: "SO",
-        valueFormatter: (params) => params.row?.so.number,
+        field: "count",
+        headerName: "Usage",
         flex: 1,
       },
       {
-        field: "estShipDate",
-        headerName: "Est Shipping Date",
-        valueFormatter: (params) => params.row?.so.estimatedShipDate,
-        flex: 1,
-      },
-      {
-        field: "qty",
-        headerName: "QTY",
-        valueFormatter: (params) => params.row?.lir.quantity,
-        flex: 1,
-      },
-      {
-        field: "client",
-        headerName: "Client",
-        valueFormatter: (params) => params.row?.client.name,
+        field: "soDate",
+        headerName: "SO Date",
+        valueFormatter: (params) => formatTimestampToDate(params.row?.SOId?.createdAt),
         flex: 1,
       },
     ],
@@ -325,13 +313,11 @@ function ItemsDetails({
                     <Shipping values={values} getFieldProps={getFieldProps} setFieldValue={setFieldValue} />
                   )}
                   {moreInfoTab === 6 && (
-                    <Levels
+                    <LevelsTab
                       values={values}
                       handleChange={handleChange}
                       handleBlur={handleBlur}
                       setFieldValue={setFieldValue}
-                      errors={errors}
-                      touched={touched}
                     />
                   )}
                   {/* {moreInfoTab === 7 && (

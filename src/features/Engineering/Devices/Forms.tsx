@@ -137,8 +137,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
         />
       </Paper>
       <TextField
-        label="Device ID"
-        placeholder="Device ID"
+        label="Device NO."
         name="no"
         onChange={handleChange}
         onBlur={handleBlur}
@@ -179,12 +178,12 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
         disabled={lock}
       />
       <TextField
-        label="Price"
-        name="retailPrice"
+        label="Total Cost"
+        name="totalCost"
         onChange={handleChange}
         onBlur={handleBlur}
-        error={Boolean(errors.retailPrice && touched.retailPrice)}
-        value={values.retailPrice}
+        error={Boolean(errors.totalCost && touched.totalCost)}
+        value={values.totalCost}
         disabled={lock}
       />
     </Box>

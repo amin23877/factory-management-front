@@ -2,7 +2,9 @@ import React, { useMemo, useState, useCallback } from "react";
 import { useMediaQuery } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 
-import DataGrid from "@inovua/reactdatagrid-community";
+// import DataGrid from "@inovua/reactdatagrid-community";
+import DataGrid from "app/NewDataGrid";
+
 import { useStyle } from "app/NewDataGrid";
 
 import Box from "@material-ui/core/Box";
@@ -68,38 +70,18 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
         defaultWidth: 80,
         render: ({ data }: any) => {
           return (
-            <div
-              onClick={() => {
-                if (phone) {
-                  history.push(`/panel/bom/${data.id}/parts`);
-                } else {
-                  openRequestedSinglePopup({ url: `/panel/bom/${data.id}/parts` });
-                }
-              }}
-            >
-              <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
-            </div>
-          );
-        },
-      },
-      { name: "items", header: "Items", defaultWidth: 100 },
-      { header: "Rev No.", name: "no", defaultWidth: 100 },
-      {
-        header: "Revision Date",
-        name: "revDate",
-        render: ({ data }: any) => formatTimestampToDate(data.updatedAt) || "",
-      },
-      { header: "Name", name: "name" },
-      { header: "Note", name: "notes", flex: 1 },
-      {
-        header: "Current",
-        name: "current",
-        type: "boolean",
-        defaultWidth: 100,
-        render: ({ value, data }: any) => {
-          return (
             <Box display="flex" alignItems="center" style={{ gap: 4 }}>
-              <span>{value ? <CheckRounded /> : <ClearRounded />}</span>
+              <div
+                onClick={() => {
+                  if (phone) {
+                    history.push(`/panel/bom/${data.id}/parts`);
+                  } else {
+                    openRequestedSinglePopup({ url: `/panel/bom/${data.id}/parts` });
+                  }
+                }}
+              >
+                <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
+              </div>
               <div
                 onClick={() => {
                   if (!lock) {
@@ -120,6 +102,21 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
             </Box>
           );
         },
+      },
+      { name: "items", header: "Items", defaultWidth: 100 },
+      { header: "Rev No.", name: "no", defaultWidth: 100 },
+      {
+        header: "Revision Date",
+        name: "revDate",
+        render: ({ data }: any) => formatTimestampToDate(data.updatedAt) || "",
+      },
+      { header: "Name", name: "name" },
+      { header: "Note", name: "notes", flex: 1 },
+      {
+        header: "Current",
+        name: "current",
+        type: "boolean",
+        defaultWidth: 80,
       },
     ],
     [handleDelete, history, lock, phone]
@@ -146,13 +143,7 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
         </Button>
         <LockButton />
       </Box>
-      <DataGrid
-        className={classes.root}
-        columns={columns}
-        dataSource={boms || []}
-        defaultFilterValue={defaultFilterValues}
-        style={{ height: "100%" }}
-      />
+      <DataGrid columns={columns} url={`/bom?ItemId=${item.id}`} onRowSelected={() => {}} rowHeight={42} />
     </>
   );
 }

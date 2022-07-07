@@ -17,6 +17,7 @@ const PurchaseOrderPanel = React.lazy(() => import("features/Sales/PO"));
 const SalesOrderPanel = React.lazy(() => import("features/Sales/SO"));
 const Clients = React.lazy(() => import("features/Sales/Customer"));
 const Reps = React.lazy(() => import("features/Sales/Rep"));
+const Option = React.lazy(() => import("../features/Engineering/Option"));
 
 export default function Sales() {
   const [activeTab, setActiveTab] = useState(5);
@@ -89,6 +90,7 @@ export default function Sales() {
             <MyTab label="Sales Orders" />
             <MyTab label="Clients" />
             <MyTab label="Reps" />
+            <MyTab label="options" />
           </MyTabs>
         </Popover>
       </Portal>
@@ -103,6 +105,7 @@ export default function Sales() {
             {activeTab === 5 && <SalesOrderPanel />}
             {activeTab === 6 && <Clients />}
             {activeTab === 7 && <Reps />}
+            {activeTab === 8 && <Option />}
           </Suspense>
         </Box>
       </Box>
