@@ -129,7 +129,7 @@ export const GeneralForm = ({
           onChange={handleChange}
           error={Boolean(errors.number && touched.number)}
           helperText={touched.number && errors.number && String(errors.number)}
-          label="Customer ID"
+          label="Customer NO."
           disabled
         />
         <TextField
@@ -164,16 +164,6 @@ export const GeneralForm = ({
           disabled={lock}
         />
         <TextField
-          name="ext"
-          value={values.ext}
-          onBlur={handleBlur}
-          onChange={handleChange}
-          error={Boolean(errors.ext && touched.ext)}
-          helperText={touched.ext && errors.ext && String(errors.ext)}
-          label="Ext"
-          disabled={lock}
-        />
-        <TextField
           name="phone"
           value={values.phone}
           onBlur={handleBlur}
@@ -183,6 +173,17 @@ export const GeneralForm = ({
           label="Phone"
           disabled={lock}
         />
+        <TextField
+          name="ext"
+          value={values.ext}
+          onBlur={handleBlur}
+          onChange={handleChange}
+          error={Boolean(errors.ext && touched.ext)}
+          helperText={touched.ext && errors.ext && String(errors.ext)}
+          label="Ext"
+          disabled={lock}
+        />
+
         <FormControl
           style={
             phone

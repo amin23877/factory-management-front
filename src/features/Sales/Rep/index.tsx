@@ -53,11 +53,13 @@ const columns = [
     name: "phone",
     header: "Phone",
     flex: 1,
+    minWidth: 120,
   },
   {
     name: "email",
     header: "Email",
     flex: 1,
+    minWidth: 120,
     hide: true,
   },
   {

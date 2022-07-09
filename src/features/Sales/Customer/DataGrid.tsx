@@ -7,8 +7,8 @@ import DataGrid from "app/NewDataGrid";
 const cols = [
   {
     name: "number",
-    width: 90,
-    header: "Number",
+    minWidth: 100,
+    header: "Customer NO.",
   },
   {
     name: "name",
@@ -69,14 +69,14 @@ const cols = [
     minWidth: 130,
   },
   {
-    name: "ext",
-    header: "Ext",
-    minWidth: 130,
-  },
-  {
     name: "phone",
     header: "Phone",
     minWidth: 150,
+  },
+  {
+    name: "ext",
+    header: "Ext",
+    minWidth: 130,
   },
   {
     name: "type",

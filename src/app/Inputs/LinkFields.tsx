@@ -124,6 +124,7 @@ export default function LinkField({
       onBlur={props.onBlur}
       value={selectValue}
       freeSolo
+      disabled={disabled}
       closeIcon={() => <div style={{ display: "none" }}></div>}
       renderInput={(params) => {
         return (

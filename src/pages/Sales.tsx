@@ -20,7 +20,7 @@ const Reps = React.lazy(() => import("features/Sales/Rep"));
 const Option = React.lazy(() => import("../features/Engineering/Option"));
 
 export default function Sales() {
-  const [activeTab, setActiveTab] = useState(5);
+  const [activeTab, setActiveTab] = useState(6);
   const [tabText, setTabText] = useState("Sales Orders");
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
@@ -85,12 +85,12 @@ export default function Sales() {
             <MyTab label="Dashboard" />
             <MyTab label="Calls" />
             <MyTab label="Devices" />
+            <MyTab label="options" />
             <MyTab label="Quotes" />
             <MyTab label="Customer POs" />
             <MyTab label="Sales Orders" />
             <MyTab label="Clients" />
             <MyTab label="Reps" />
-            <MyTab label="options" />
           </MyTabs>
         </Popover>
       </Portal>
@@ -100,12 +100,12 @@ export default function Sales() {
             {activeTab === 0 && <Dashboard />}
             {activeTab === 1 && <Calls />}
             {activeTab === 2 && <DevicesPanel sales={true} />}
-            {activeTab === 3 && <QuotePanel />}
-            {activeTab === 4 && <PurchaseOrderPanel />}
-            {activeTab === 5 && <SalesOrderPanel />}
-            {activeTab === 6 && <Clients />}
-            {activeTab === 7 && <Reps />}
-            {activeTab === 8 && <Option />}
+            {activeTab === 3 && <Option />}
+            {activeTab === 4 && <QuotePanel />}
+            {activeTab === 5 && <PurchaseOrderPanel />}
+            {activeTab === 6 && <SalesOrderPanel />}
+            {activeTab === 7 && <Clients />}
+            {activeTab === 8 && <Reps />}
           </Suspense>
         </Box>
       </Box>

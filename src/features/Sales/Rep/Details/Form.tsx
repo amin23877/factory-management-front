@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Checkbox, FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from "@material-ui/core";
+import { Box, Checkbox, FormControl, FormControlLabel, FormLabel, Paper, Radio, RadioGroup } from "@material-ui/core";
 import { Formik, Form } from "formik";
 
 import Toast from "app/Toast";
@@ -28,6 +28,27 @@ export default function EditForm({ initialValues }: { initialValues: repType }) 
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
       {({ getFieldProps, values, setFieldValue }) => (
         <Form>
+          <Paper
+            style={{
+              margin: "0 0 2em 0",
+              padding: "0.5em",
+              backgroundColor: "#eee",
+              gridColumnEnd: "span 3",
+              display: "grid",
+              gridTemplateColumns: "1fr 1fr 1fr",
+              columnGap: "15px",
+            }}
+          >
+            <FormControl style={{ gridColumnEnd: "span 3" }}>
+              <FormLabel>Type</FormLabel>
+              <RadioGroup {...getFieldProps("type")} row>
+                <FormControlLabel control={<Radio />} value="Rep" label="Rep" disabled={lock} />
+                <FormControlLabel control={<Radio />} value="OEM" label="OEM" disabled={lock} />
+                <FormControlLabel control={<Radio />} value="Buy/Resell" label="Buy/Resell" disabled={lock} />
+              </RadioGroup>
+            </FormControl>
+            <FormControlLabel control={<Checkbox />} label="Active" {...getFieldProps("active")} disabled={lock} />
+          </Paper>
           <Box display="grid" gridTemplateColumns="1fr 1fr" gridGap={8}>
             <TextField label="Name" {...getFieldProps("name")} disabled={lock} />
             <TextField label="Phone" {...getFieldProps("phone")} disabled={lock} />
@@ -57,15 +78,7 @@ export default function EditForm({ initialValues }: { initialValues: repType }) 
               onChange={(c, nv) => setFieldValue("salesPerson", nv.id)}
               disabled={lock}
             />
-            <FormControl>
-              <FormLabel>Type</FormLabel>
-              <RadioGroup {...getFieldProps("type")}>
-                <FormControlLabel control={<Radio />} value="Rep" label="Rep" disabled={lock} />
-                <FormControlLabel control={<Radio />} value="OEM" label="OEM" disabled={lock} />
-                <FormControlLabel control={<Radio />} value="Buy/Resell" label="Buy/Resell" disabled={lock} />
-              </RadioGroup>
-            </FormControl>
-            <FormControlLabel control={<Checkbox />} label="Active" {...getFieldProps("active")} disabled={lock} />
+
             <Box display="flex" style={{ gridColumnEnd: "span 2" }}>
               <Button type="submit" kind="edit" disabled={lock} fullWidth style={{ display: "none" }}>
                 Submit
