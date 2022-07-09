@@ -1,5 +1,5 @@
-import React, { useMemo, useState, Fragment } from "react";
-import { Box, Tabs, Tab, useMediaQuery } from "@material-ui/core";
+import React, { useMemo, useState, Fragment, useRef } from "react";
+import { Box, Tabs, Tab, useMediaQuery, Typography } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 import useSWR, { mutate } from "swr";
 import { Formik, Form } from "formik";
@@ -18,14 +18,16 @@ import { formatTimestampToDate } from "logic/date";
 import { getModifiedValues } from "logic/utils";
 
 import ShipmentModal, { EditShipModal } from "../../Modals/ShipmentModal";
-import { Levels } from "../../Items/Forms";
 import { IShipment } from "api/shipment";
+import LevelsTab from "common/Level/Tab";
 
 import DocumentTab from "common/Document/Tab";
 import NotesTab from "common/Note/Tab";
 import JobRecordsTable from "common/JobRecords/Table";
+import DeviceQRCode from "app/QRCode";
 
 import { useLock, LockButton, LockProvider } from "common/Lock";
+import { exportPdf } from "logic/pdf";
 
 const schema = Yup.object().shape({});
 
@@ -41,6 +43,7 @@ function Details({ unit }: { unit: IUnit }) {
       console.log(e);
     }
   };
+  const qrCode = useRef<HTMLElement | null>(null);
 
   const [infoActiveTab, setInfoActiveTab] = useState(0);
   const [gridActiveTab, setGridActiveTab] = useState(2);
@@ -96,6 +99,7 @@ function Details({ unit }: { unit: IUnit }) {
     []
   );
   const phone = useMediaQuery("(max-width:900px)");
+  console.log(unit);
 
   return (
     <>
@@ -136,6 +140,7 @@ function Details({ unit }: { unit: IUnit }) {
                     style={phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "10px" } : { marginBottom: "10px" }}
                   >
                     <Tab label="Image" />
+                    <Tab label="UPC" />
                     <Tab label="Status" />
                     <Tab label="Expense" />
                     <Tab label="Shipping" />
@@ -166,6 +171,30 @@ function Details({ unit }: { unit: IUnit }) {
                     </Box>
                   )}
                   {infoActiveTab === 1 && (
+                    <Box display="flex" justifyContent="space-around" alignItems="center" maxWidth="83vw">
+                      <div ref={(e) => (qrCode.current = e)}>
+                        <DeviceQRCode
+                          value={JSON.stringify({
+                            type: "device",
+                            no: unit.ItemId.no,
+                          })}
+                        />
+                        <Typography variant="subtitle1">Device Number: {unit.ItemId.no}</Typography>
+                        <Typography variant="subtitle1">Device Name: {unit.ItemId.name}</Typography>
+                      </div>
+                      <Button
+                        variant="contained"
+                        onClick={async () => {
+                          if (qrCode.current) {
+                            await exportPdf(qrCode.current);
+                          }
+                        }}
+                      >
+                        Print
+                      </Button>
+                    </Box>
+                  )}
+                  {infoActiveTab === 2 && (
                     <LockProvider>
                       <Status
                         values={values}
@@ -177,7 +206,7 @@ function Details({ unit }: { unit: IUnit }) {
                       />
                     </LockProvider>
                   )}
-                  {infoActiveTab === 2 && (
+                  {infoActiveTab === 3 && (
                     <LockProvider>
                       <Expense
                         values={values}
@@ -189,7 +218,7 @@ function Details({ unit }: { unit: IUnit }) {
                       />
                     </LockProvider>
                   )}
-                  {infoActiveTab === 3 && (
+                  {infoActiveTab === 4 && (
                     <LockProvider>
                       <Shipping
                         values={values}
@@ -201,16 +230,14 @@ function Details({ unit }: { unit: IUnit }) {
                       />
                     </LockProvider>
                   )}
-                  {infoActiveTab === 4 && (
+                  {infoActiveTab === 5 && (
                     <LockProvider>
-                      <Levels
-                        values={values?.ItemId}
+                      <LevelsTab
+                        itemType={unit.ItemId.class}
+                        values={values}
                         handleChange={handleChange}
                         handleBlur={handleBlur}
                         setFieldValue={setFieldValue}
-                        errors={errors}
-                        touched={touched}
-                        selectedItem={unit?.ItemId}
                       />
                     </LockProvider>
                   )}

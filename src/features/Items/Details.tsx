@@ -314,6 +314,7 @@ function ItemsDetails({
                   )}
                   {moreInfoTab === 6 && (
                     <LevelsTab
+                      itemType={selectedRow.class}
                       values={values}
                       handleChange={handleChange}
                       handleBlur={handleBlur}

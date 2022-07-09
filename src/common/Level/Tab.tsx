@@ -8,6 +8,7 @@ import useSWR from "swr";
 import { ILevel } from "api/level";
 
 function LevelsTabContent({
+  itemType,
   values,
   handleChange,
   handleBlur,
@@ -17,6 +18,7 @@ function LevelsTabContent({
   handleChange: any;
   handleBlur: any;
   setFieldValue: any;
+  itemType: string;
 }) {
   const { lock } = useLock();
   const clusterIdString = values?.clusterId
@@ -34,7 +36,7 @@ function LevelsTabContent({
         filterBy="clusterValue"
         getOptionLabel={(o) => o?.clusterValue || "No-Name"}
         getOptionSelected={(o, v) => o?.id === v?.id}
-        url="/cluster"
+        url={`/cluster?class=${itemType}`}
         disabled={lock}
         label="Cluster Value"
         onChange={(e, nv) => setFieldValue("clusterId", nv?.id)}
@@ -64,15 +66,18 @@ export default function LevelsTab({
   handleChange,
   handleBlur,
   setFieldValue,
+  itemType,
 }: {
   values: any;
   handleChange: any;
   handleBlur: any;
   setFieldValue: any;
+  itemType: string;
 }) {
   return (
     <LockProvider>
       <LevelsTabContent
+        itemType={itemType}
         values={values}
         handleChange={handleChange}
         handleBlur={handleBlur}

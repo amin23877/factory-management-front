@@ -13,6 +13,7 @@ import Button from "app/Button";
 import { BasePaper } from "app/Paper";
 import DeviceQRCode from "app/QRCode";
 import BaseDataGrid from "app/BaseDataGrid";
+import DataGrid from "app/NewDataGrid";
 
 import { General } from "./Forms";
 import AddServiceModal from "./AddServiceModal";
@@ -84,9 +85,6 @@ function DeviceDetails({
         ? `/engineering/fieldstartup/task?ItemId=${selectedRow.id}`
         : null
       : null
-  );
-  const { data: uniteHistory } = useSWR(
-    activeTab === 8 ? (selectedRow && selectedRow.id ? `/unitehistory` : null) : null
   );
 
   const { data: flags } = useSWR(
@@ -194,31 +192,27 @@ function DeviceDetails({
     []
   );
 
-  const unitHistoryCols = useMemo<GridColDef[]>(
+  const unitHistoryCols = useMemo(
     () => [
+      { name: "SOId", header: "SO NO.", flex: 1 },
       {
-        field: "estimatedShipDate",
-        headerName: "Estimated Ship Date",
+        name: "SODate",
+        header: "SO Date",
+        render: ({ data }: any) => formatTimestampToDate(data.so.date),
+        flex: 1,
+        type: "date",
+      },
+      { name: "serialNumber", header: "Device NO.", flex: 1 },
+      {
+        name: "estimatedShipDate",
+        header: "Estimated Ship Date",
         flex: 1,
         disableColumnMenu: true,
       },
-      { field: "actualShipDate", headerName: "Actual Ship Date", flex: 1 },
-      { field: "serialNumber", headerName: "Device Serial NO.", flex: 1 },
-      { field: "status", headerName: "Status", flex: 1 },
-      {
-        field: "warrantyStatus",
-        headerName: "Warranty Status",
-        type: "boolean",
-        flex: 1,
-      },
-      { field: "warrantyEndDate", headerName: "Warranty End Date", flex: 1 },
-      { field: "SOId", headerName: "SO ID", flex: 1 },
-      {
-        field: "SODate",
-        headerName: "SO Date",
-        valueFormatter: (r) => formatTimestampToDate(r.row.so.date),
-        flex: 1,
-      },
+      { name: "actualShipDate", header: "Actual Ship Date", flex: 1 },
+      { name: "status", header: "Status", flex: 1 },
+      { name: "price", header: "Price", flex: 1 },
+      { name: "cost", header: "Cost", flex: 1 },
     ],
     []
   );
@@ -314,7 +308,7 @@ function DeviceDetails({
                     onChange={(e, v) => setMoreInfoTab(v)}
                   >
                     <Tab label="Image" />
-                    <Tab label="QR Code" />
+                    <Tab label="UPC" />
                     <Tab label="Pricing" />
                     {!sales && <Tab label="Clusters and Levels" />}
                   </Tabs>
@@ -358,6 +352,7 @@ function DeviceDetails({
                       handleChange={handleChange}
                       handleBlur={handleBlur}
                       setFieldValue={setFieldValue}
+                      itemType={selectedRow.class}
                     />
                   )}
                 </BasePaper>
@@ -373,19 +368,19 @@ function DeviceDetails({
                       scrollButtons={phone ? "on" : "auto"}
                       style={phone ? { maxWidth: "calc(100vw - 63px)" } : { maxWidth: "50vw" }}
                     >
-                      <Tab label="Design documents" />
-                      <Tab label="BOM" />
-                      <Tab label="Services" />
-                      <Tab label="Manufacturing" />
-                      <Tab label="Evaluation" />
-                      <Tab label="Test" />
-                      <Tab label="Field Start-up" />
-                      <Tab label="Label" />
-                      <Tab label="Unit History" />
-                      <Tab label="Sales Report" />
-                      <Tab label="Quality Control" />
-                      <Tab label="Notes" />
-                      <Tab label="Auditing" />
+                      <Tab label="Design documents" /> 0
+                      <Tab label="BOM" /> 1
+                      <Tab label="Services" /> 2
+                      <Tab label="Manufacturing" /> 3
+                      <Tab label="Evaluation" /> 4
+                      <Tab label="Test" /> 5
+                      <Tab label="Field Start-up" /> 6
+                      <Tab label="Label" /> 7
+                      <Tab label="Unit History" /> 8
+                      <Tab label="Sales Report" /> 9
+                      <Tab label="Quality Control" /> 10
+                      <Tab label="Notes" /> 11
+                      <Tab label="Auditing" /> 12
                     </Tabs>
                   ) : (
                     <Tabs
@@ -469,17 +464,17 @@ function DeviceDetails({
                       />
                     )}
                     {activeTab === 8 && (
-                      <BaseDataGrid
-                        height={"calc()100% - 60px"}
-                        cols={unitHistoryCols}
-                        rows={
-                          uniteHistory
-                            ? uniteHistory.map((item: any, i: any) => ({
-                                id: i,
-                                ...item,
-                              }))
-                            : []
-                        }
+                      <DataGrid
+                        columns={unitHistoryCols}
+                        url={""}
+                        // rows={
+                        //   uniteHistory
+                        //     ? uniteHistory.map((item: any, i: any) => ({
+                        //         id: i,
+                        //         ...item,
+                        //       }))
+                        //     : []
+                        // }
                         onRowSelected={(d) => {
                           setSelectedUnit(d);
                           setUnitHistoryModal(true);
