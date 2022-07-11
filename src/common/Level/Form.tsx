@@ -9,11 +9,12 @@ import TextField from "app/TextField";
 import NewDataGrid from "app/NewDataGrid";
 import Confirm from "common/Confirm";
 import AsyncCombo from "common/AsyncCombo";
-import { LockButton, useLock } from "common/Lock";
+import { LockButton, LockProvider, useLock } from "common/Lock";
 
 import { clusterType } from "api/cluster";
 import { createLevel, editLevel, deleteLevel, ILevel } from "api/level";
 import { getModifiedValues } from "logic/utils";
+import ValidValuesForm from "./ValidValues";
 
 const schema = Yup.object().shape({
   name: Yup.string().required(),
@@ -23,10 +24,16 @@ const schema = Yup.object().shape({
 type formInitialValuesType = Omit<Partial<ILevel>, "valid"> & {
   valid: string;
 };
+export interface IVals {
+  value: string;
+  UOM: string;
+  id?: string;
+}
 
 export default function LevelForm({ cluster }: { cluster?: clusterType }) {
   const [refresh, setRefresh] = useState(0);
   const [selectedLevel, setSelectedLevel] = useState<ILevel>();
+  const [vals, setVals] = useState<IVals[]>([]);
 
   const { lock } = useLock();
 
@@ -53,6 +60,8 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
     onSubmit: handleFormSubmit,
   });
 
+  const [open, setOpen] = useState(false);
+
   const handleDelete = () => {
     Confirm({
       text: "Delete This Level ? ",
@@ -76,6 +85,9 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
 
   return (
     <form onSubmit={handleSubmit}>
+      <LockProvider>
+        <ValidValuesForm open={open} onClose={() => setOpen(false)} vals={vals} setVals={setVals} />
+      </LockProvider>
       <Box display="grid" gridTemplateColumns={values.id ? "1fr 1fr 1fr 1fr 1fr 1fr" : "1fr 1fr 1fr 1fr"} gridGap={5}>
         <TextField
           name="name"
@@ -106,6 +118,13 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
           label="Valid Values"
           InputLabelProps={{ shrink: true }}
           disabled={lock}
+          onClick={() => {
+            setOpen(true);
+          }}
+          onKeyDown={(e) => {
+            e.preventDefault();
+            setOpen(true);
+          }}
         />
         <Box display="flex" style={{ gap: 5, width: "100%" }}>
           <Button kind={values && values.id ? "edit" : "add"} type="submit" style={{ flex: 1 }} disabled={lock}>

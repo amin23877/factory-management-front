@@ -152,8 +152,12 @@ function ItemsDetails({
       },
       {
         field: "unitName",
-        headerName: "Unit Name",
-        valueFormatter: (params) => params.row?.UnitId?.name,
+        headerName: "Device NO.",
+        valueFormatter: (params) => {
+          let serial = params.row?.UnitId?.serial.split("-");
+          serial.pop();
+          return serial.join("-");
+        },
         flex: 1,
       },
       {

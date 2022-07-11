@@ -128,22 +128,24 @@ const Items = () => {
           </List>
         </Box>
         <Box display="flex" flex={1}>
-          {activeTab === 0 && (
+          <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
             <ItemTable
               onRowSelected={(r) => {
                 setSelectedItem(r as any);
                 setActiveTab(1);
               }}
             />
-          )}
-          {activeTab === 1 && selectedItem && (
-            <ItemsDetails
-              setSelectedItem={(r) => setSelectedItem(r)}
-              setIndexActiveTab={(t) => {
-                setActiveTab(t);
-              }}
-              selectedRow={selectedItem}
-            />
+          </div>
+          {selectedItem && (
+            <div style={activeTab !== 1 ? { display: "none" } : {}}>
+              <ItemsDetails
+                setSelectedItem={(r) => setSelectedItem(r)}
+                setIndexActiveTab={(t) => {
+                  setActiveTab(t);
+                }}
+                selectedRow={selectedItem}
+              />
+            </div>
           )}
         </Box>
       </BasePaper>
