@@ -18,7 +18,7 @@ import ValidValuesForm from "./ValidValues";
 
 const schema = Yup.object().shape({
   name: Yup.string().required(),
-  valid: Yup.string().required(),
+  valid: Yup.array().required(),
 });
 
 type formInitialValuesType = Omit<Partial<ILevel>, "valid"> & {
@@ -26,7 +26,7 @@ type formInitialValuesType = Omit<Partial<ILevel>, "valid"> & {
 };
 export interface IVals {
   value: string;
-  UOM: string;
+  uom: string;
   id?: string;
 }
 
@@ -86,7 +86,7 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
   return (
     <form onSubmit={handleSubmit}>
       <LockProvider>
-        <ValidValuesForm open={open} onClose={() => setOpen(false)} vals={vals} setVals={setVals} />
+        <ValidValuesForm open={open} onClose={() => setOpen(false)} setValuesParent={setValues} valuesParent={values} />
       </LockProvider>
       <Box display="grid" gridTemplateColumns={values.id ? "1fr 1fr 1fr 1fr 1fr 1fr" : "1fr 1fr 1fr 1fr"} gridGap={5}>
         <TextField
@@ -111,7 +111,9 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
         />
         <TextField
           name="valid"
-          value={values.valid}
+          value={
+            Array.isArray(values.valid) ? values?.valid?.map((val: IVals) => val.value + " " + val.uom).join(" , ") : ""
+          }
           onChange={handleChange}
           onBlur={handleBlur}
           placeholder="Valid Values"
@@ -182,7 +184,11 @@ const LevelsDataGrid = React.memo(
           name: "valid",
           header: "Valid Values",
           flex: 1,
-          render: ({ data }: any) => data.valid.join(","),
+          render: ({ data }: any) => {
+            let temp = data.valid;
+            temp = temp.map((val: IVals) => val.value + " " + val.uom);
+            return temp.join(",");
+          },
         },
       ],
       []

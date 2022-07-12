@@ -3,50 +3,48 @@ import { Box } from "@material-ui/core";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import Toast from "app/Toast";
 import Button from "app/Button";
 import TextField from "app/TextField";
-import Confirm from "common/Confirm";
 import { LockButton, useLock } from "common/Lock";
 
-import { deleteLevel, ILevel } from "api/level";
+import { ILevel } from "api/level";
 import MyDialog from "app/Dialog";
 import { IVals } from "./Form";
 
 const schema = Yup.object().shape({
   value: Yup.string().required(),
-  UOM: Yup.string().required(),
+  uom: Yup.string().required(),
 });
 
 export default function ValidValuesForm({
   open,
   onClose,
-  vals,
-  setVals,
+  valuesParent,
+  setValuesParent,
 }: {
   open: boolean;
   onClose: () => void;
-  vals: IVals[];
-  setVals: Dispatch<SetStateAction<IVals[]>>;
+  valuesParent: any;
+  setValuesParent: any;
 }) {
   const [selectedValue, setSelectedValue] = useState<ILevel>();
-  const [validValues, setValidValues] = useState<IVals[]>(vals);
+  const [validValues, setValidValues] = useState<IVals[]>(valuesParent.valid);
   const [refresh, setRefresh] = useState(0);
   const { lock } = useLock();
 
   const handleFormSubmit = (data: any) => {
     if (selectedValue) {
       let temp = validValues;
-      temp[selectedValue.index].UOM = data.UOM;
+      temp[selectedValue.index].uom = data.uom;
       temp[selectedValue.index].value = data.value;
       setValidValues(temp);
-      setVals(temp);
+      setValuesParent((p: any) => ({ ...p, valid: temp }));
       setRefresh((p) => p + 1);
     } else {
-      let temp = validValues;
+      let temp = validValues ? validValues : [];
       temp.push({ ...data, id: temp.length });
       setValidValues(temp);
-      setVals(temp);
+      setValuesParent((p: any) => ({ ...p, valid: temp }));
       setRefresh((p) => p + 1);
     }
   };
@@ -63,7 +61,7 @@ export default function ValidValuesForm({
       return index !== selectedValue?.index;
     });
     setValidValues(newArr);
-    setVals(newArr);
+    setValuesParent((p: any) => ({ ...p, valid: newArr }));
     setRefresh((p) => p + 1);
   };
 
@@ -88,8 +86,8 @@ export default function ValidValuesForm({
             disabled={lock}
           />
           <TextField
-            name="UOM"
-            value={values.UOM}
+            name="uom"
+            value={values.uom}
             onChange={handleChange}
             onBlur={handleBlur}
             placeholder="UOM"
@@ -113,7 +111,7 @@ export default function ValidValuesForm({
               variant="outlined"
               onClick={() => {
                 resetForm({
-                  values: { value: "", UOM: "" },
+                  values: { value: "", uom: "" },
                 });
                 setSelectedValue(undefined);
               }}
@@ -124,7 +122,7 @@ export default function ValidValuesForm({
         </Box>
         <Box mt={1}>
           <ValidValuesDataGrid
-            vals={validValues}
+            valuesParent={validValues}
             setValues={setValues}
             setSelectedValue={setSelectedValue}
             refresh={refresh}
@@ -137,13 +135,13 @@ export default function ValidValuesForm({
 
 const ValidValuesDataGrid = React.memo(
   ({
-    vals,
+    valuesParent,
     setSelectedValue,
     refresh,
     setValues,
   }: {
     setSelectedValue: any;
-    vals: IVals[];
+    valuesParent: IVals[];
     refresh: any;
     setValues: (v: any) => void;
   }) => {
@@ -155,28 +153,29 @@ const ValidValuesDataGrid = React.memo(
               <td style={{ padding: "10px", border: "1px solid #eee" }}>Value</td>
               <td style={{ padding: "10px", border: "1px solid #eee" }}>UOM</td>
             </tr>
-            {vals.map((val, index) => (
-              <tr>
-                <td
-                  onClick={() => {
-                    setSelectedValue({ ...val, index: index });
-                    setValues(val);
-                  }}
-                  style={{ padding: "10px", border: "1px solid #eee", cursor: "pointer" }}
-                >
-                  {val.value}
-                </td>
-                <td
-                  onClick={() => {
-                    setSelectedValue({ ...val, index: index });
-                    setValues(val);
-                  }}
-                  style={{ padding: "10px", border: "1px solid #eee", cursor: "pointer" }}
-                >
-                  {val.UOM}
-                </td>
-              </tr>
-            ))}
+            {Array.isArray(valuesParent) &&
+              valuesParent.map((val, index) => (
+                <tr>
+                  <td
+                    onClick={() => {
+                      setSelectedValue({ ...val, index: index });
+                      setValues(val);
+                    }}
+                    style={{ padding: "10px", border: "1px solid #eee", cursor: "pointer" }}
+                  >
+                    {val.value}
+                  </td>
+                  <td
+                    onClick={() => {
+                      setSelectedValue({ ...val, index: index });
+                      setValues(val);
+                    }}
+                    style={{ padding: "10px", border: "1px solid #eee", cursor: "pointer" }}
+                  >
+                    {val.uom}
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </Box>

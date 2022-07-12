@@ -466,7 +466,7 @@ function DeviceDetails({
                     {activeTab === 8 && (
                       <DataGrid
                         columns={unitHistoryCols}
-                        url={""}
+                        url={`/unit?ItemId=${selectedRow.id}`}
                         // rows={
                         //   uniteHistory
                         //     ? uniteHistory.map((item: any, i: any) => ({
