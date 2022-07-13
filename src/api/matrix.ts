@@ -17,7 +17,7 @@ export interface IPart {
 
 export type IMatrixRow = {
   device?: IItem & { recs?: any[] };
-  [key: string]: string | number | boolean | IItem | IVals | undefined;
+  [key: string]: string | number | boolean | IItem | undefined;
 };
 
 export type IMatrix = IMatrixRow[];
