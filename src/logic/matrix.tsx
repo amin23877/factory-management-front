@@ -8,13 +8,17 @@ import { openRequestedSinglePopup } from "./window";
 const defaultColumns = ["Device Number", "Device Description"];
 const excludeColumns = ["fakeName"];
 
-export const generateRows = ({ levels, tableData }: { tableData: IMatrix; levels: string[] }) => {
-  return tableData.map((td, i) => {
+export const generateRows = ({ levels, tableData }: { tableData: any; levels: string[] }) => {
+  return tableData.map((td: any, i: number) => {
     let tdLevels: any = {},
       tdParts: any = [],
       parts: any = [];
     levels.forEach((l) => {
-      tdLevels[l] = td[l];
+      if (typeof td[l] !== "string" || "number") {
+        tdLevels[l] = td[l]?.value + " " + td[l]?.uom;
+      } else {
+        tdLevels[l] = td[l];
+      }
     });
     parts = td.device?.recs || [];
     parts.forEach((p: any) => {

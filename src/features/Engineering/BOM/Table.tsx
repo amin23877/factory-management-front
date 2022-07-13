@@ -373,6 +373,7 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
               className={classes.root}
               rowHeight={20}
               columns={tableColumns}
+              // dataSource={[]}
               dataSource={tableRows}
               defaultFilterValue={tableDefaultFilters}
               pagination

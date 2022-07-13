@@ -1,3 +1,4 @@
+import { IVals } from "common/Level/Form";
 import { get, patch, post } from ".";
 import { IItem } from "./items";
 
@@ -16,7 +17,7 @@ export interface IPart {
 
 export type IMatrixRow = {
   device?: IItem & { recs?: any[] };
-  [key: string]: string | number | boolean | IItem | undefined;
+  [key: string]: string | number | boolean | IItem | IVals | undefined;
 };
 
 export type IMatrix = IMatrixRow[];

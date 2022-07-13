@@ -14,6 +14,7 @@ import LevelModal from "../../../Level/Modal";
 import { splitLevelName } from "logic/levels";
 import { clusterType } from "api/cluster";
 import { deleteLevel, editLevel } from "api/level";
+import { IVals } from "common/Level/Form";
 
 function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
   const [levelModal, setLevelsModal] = useState(false);
@@ -49,7 +50,16 @@ function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
   const columns = useMemo(
     () => [
       { name: "name", header: "Name", render: ({ value }: any) => splitLevelName(value) },
-      { name: "valid", header: "Valid Values", render: ({ value }: any) => value.join(","), flex: 1 },
+      {
+        name: "valid",
+        header: "Valid Values",
+        render: ({ data }: any) => {
+          let temp = data.valid;
+          temp = temp.map((val: IVals) => val.value + " " + val.uom);
+          return temp.join(",");
+        },
+        flex: 1,
+      },
       { name: "createdAt", header: "Date", type: "date", editable: false },
       {
         name: "actions",
