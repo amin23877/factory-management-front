@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box } from "@material-ui/core";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -31,6 +31,9 @@ export default function ValidValuesForm({
   const [validValues, setValidValues] = useState<IVals[]>(valuesParent.valid);
   const [refresh, setRefresh] = useState(0);
   const { lock } = useLock();
+  useEffect(() => {
+    setValidValues(valuesParent.valid);
+  }, [valuesParent]);
 
   const handleFormSubmit = (data: any) => {
     if (selectedValue) {
