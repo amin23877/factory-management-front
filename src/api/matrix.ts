@@ -1,4 +1,3 @@
-import { IVals } from "common/Level/Form";
 import { get, patch, post } from ".";
 import { IItem } from "./items";
 
