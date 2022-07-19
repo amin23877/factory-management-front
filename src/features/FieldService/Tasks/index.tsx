@@ -110,8 +110,8 @@ export default function Tasks() {
                         <Box my={2} textAlign="center" borderBottom="2px solid #cccc">
                             <Button onClick={handleAddTaskClick}>Add new task</Button>
                         </Box>
-                        <div id="external-events" ref={(e) => (draggableEvents.current = e)}>
-                            {tasks.map(
+                        {/* <div id="external-events" ref={(e) => (draggableEvents.current = e)}>
+                            {tasks?.map(
                                 (e) =>
                                     !e.deadline && (
                                         <div className="fc-event" title={e.name} key={e.id} id={e.id}>
@@ -119,7 +119,7 @@ export default function Tasks() {
                                         </div>
                                     )
                             )}
-                        </div>
+                        </div> */}
                     </Paper>
                 </Box>
                 <Box flex={11}>
