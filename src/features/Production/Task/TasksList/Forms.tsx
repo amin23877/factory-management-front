@@ -14,6 +14,7 @@ interface IForm {
   setFieldValue: any;
   isSubmitting?: boolean;
   device?: boolean;
+  unlock?: boolean;
 }
 
 export const General = ({
@@ -25,6 +26,7 @@ export const General = ({
   touched,
   setFieldValue,
   device,
+  unlock,
 }: IForm) => {
   const { lock } = useLock();
   return (
@@ -49,7 +51,7 @@ export const General = ({
             onChange={handleChange}
             onBlur={handleBlur}
             style={{ gridColumnEnd: "span 3" }}
-            disabled={lock}
+            disabled={lock && !unlock}
           />
         </Paper>
         <ArraySelect
@@ -60,12 +62,12 @@ export const General = ({
           value={values.type}
           onChange={handleChange}
           onBlur={handleBlur}
-          disabled={lock}
+          disabled={lock && !unlock}
           error={Boolean(errors.type)}
           style={{ gridColumnEnd: "span 3" }}
         />
         <TextField
-          disabled={lock}
+          disabled={lock && !unlock}
           label="title"
           value={values.title}
           name="title"
@@ -85,7 +87,7 @@ export const General = ({
           placeholder="instruction"
           multiline
           rows={4}
-          disabled={lock}
+          disabled={lock && !unlock}
           style={{ gridColumnEnd: "span 3" }}
         />
       </Box>

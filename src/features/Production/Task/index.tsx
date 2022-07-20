@@ -13,12 +13,15 @@ import { ITask } from "api/task";
 import List from "app/SideUtilityList";
 import Toast from "app/Toast";
 import { mutate } from "swr";
+import AddTaskListModal from "./TasksList/AddModal";
+import { LockProvider } from "common/Lock";
 
 function Index() {
   const [activeTab, setActiveTab] = useState(0);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const [selectedTaskList, setSelectedTaskList] = useState<ITaskList | null>(null);
   const [addTaskListModal, setAddTaskListModal] = useState(false);
+  const [refresh, setRefresh] = useState(0);
 
   const handleDelete = () => {
     Confirm({
@@ -34,89 +37,97 @@ function Index() {
         } finally {
           mutate("/task");
           setActiveTab(1);
-          setSelectedTaskList(null)
+          setSelectedTaskList(null);
         }
       },
     });
   };
 
   return (
-    <BasePaper>
-      <Box display="flex">
-        <Tabs
-          value={activeTab}
-          onChange={(e, nv) => setActiveTab(nv)}
-          textColor="primary"
-          style={{ marginBottom: "10px" }}
-        >
-          <Tab
-            icon={
-              <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <ListAltRounded style={{ marginRight: "5px" }} /> Tasks
-              </span>
-            }
-            wrapped
+    <>
+      <AddTaskListModal open={addTaskListModal} onClose={() => setAddTaskListModal(false)} setRefresh={setRefresh} />
+      <BasePaper>
+        <Box display="flex">
+          <Tabs
+            value={activeTab}
+            onChange={(e, nv) => setActiveTab(nv)}
+            textColor="primary"
+            style={{ marginBottom: "10px" }}
+          >
+            <Tab
+              icon={
+                <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <ListAltRounded style={{ marginRight: "5px" }} /> Tasks
+                </span>
+              }
+              wrapped
+            />
+            <Tab
+              icon={
+                <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <ListAltRounded style={{ marginRight: "5px" }} /> Tasks List
+                </span>
+              }
+              wrapped
+            />
+            <Tab
+              disabled={!(selectedTaskList || selectedTask)}
+              icon={
+                <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  <FindInPageRounded style={{ marginRight: "5px" }} /> Details
+                </span>
+              }
+            />
+          </Tabs>
+          <div style={{ flexGrow: 1 }} />
+          {true && (
+            <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
+              <>
+                <ListItem>
+                  <IconButton title="Add" onClick={() => setAddTaskListModal(true)}>
+                    <AddRounded />
+                  </IconButton>
+                </ListItem>
+                <ListItem>
+                  <IconButton
+                    title="Delete"
+                    onClick={() => selectedTaskList && selectedTaskList?.id && handleDelete()}
+                    disabled={!(selectedTask || selectedTaskList)}
+                  >
+                    <DeleteRounded />
+                  </IconButton>
+                </ListItem>
+              </>
+            </List>
+          )}
+        </Box>
+        {activeTab === 0 && (
+          <TasksTable
+          //   onRowSelected={(u) => {
+          //     setSelectedTaskList(null);
+          //     setActiveTab(2);
+          //     setSelectedTask(u);
+          //   }}
           />
-          <Tab
-            icon={
-              <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <ListAltRounded style={{ marginRight: "5px" }} /> Tasks List
-              </span>
-            }
-            wrapped
-          />
-          <Tab
-            disabled={!(selectedTaskList || selectedTask)}
-            icon={
-              <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <FindInPageRounded style={{ marginRight: "5px" }} /> Details
-              </span>
-            }
-          />
-        </Tabs>
-        <div style={{ flexGrow: 1 }} />
-        {true && (
-          <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
-            <>
-              <ListItem>
-                <IconButton title="Add" onClick={() => activeTab === 1 && setAddTaskListModal(true)}>
-                  <AddRounded />
-                </IconButton>
-              </ListItem>
-              <ListItem>
-                <IconButton
-                  title="Delete"
-                  onClick={() => selectedTaskList && selectedTaskList?.id && handleDelete()}
-                  disabled={!(selectedTask || selectedTaskList)}
-                >
-                  <DeleteRounded />
-                </IconButton>
-              </ListItem>
-            </>
-          </List>
         )}
-      </Box>
-      {activeTab === 0 && (
-        <TasksTable
-        //   onRowSelected={(u) => {
-        //     setSelectedTaskList(null);
-        //     setActiveTab(2);
-        //     setSelectedTask(u);
-        //   }}
-        />
-      )}
-      {activeTab === 1 && (
-        <TasksListTable
-          onRowSelected={(t) => {
-            setSelectedTask(null);
-            setSelectedTaskList(t);
-            setActiveTab(2);
-          }}
-        />
-      )}
-      {/* {activeTab === 2 && selectedTask && <UnitDetails unit={selectedTask} />} */}
-      {activeTab === 2 && selectedTaskList && <TasksListDetail taskList={selectedTaskList} />}
-    </BasePaper>
+        {activeTab === 1 && (
+          <TasksListTable
+            refresh={refresh}
+            onRowSelected={(t) => {
+              setSelectedTask(null);
+              setSelectedTaskList(t);
+              setActiveTab(2);
+            }}
+          />
+        )}
+        {/* {activeTab === 2 && selectedTask && <UnitDetails unit={selectedTask} />} */}
+        {activeTab === 2 && selectedTaskList && (
+          <LockProvider>
+            <TasksListDetail taskList={selectedTaskList} />
+          </LockProvider>
+        )}
+      </BasePaper>
+    </>
   );
 }
 

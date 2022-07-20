@@ -3,7 +3,7 @@ import React from "react";
 import DataGrid from "app/NewDataGrid";
 import { ITaskList } from "api/taskList";
 
-function Table({ onRowSelected }: { onRowSelected: (row: ITaskList) => void }) {
+function Table({ onRowSelected, refresh }: { onRowSelected: (row: ITaskList) => void; refresh: number }) {
   const tasksCols = [
     {
       name: "type",
@@ -25,12 +25,6 @@ function Table({ onRowSelected }: { onRowSelected: (row: ITaskList) => void }) {
       type: "string",
     },
     {
-      name: "relatedPart",
-      header: "Related Part",
-      minWidth: 120,
-      type: "string",
-    },
-    {
       name: "builtToStock",
       header: "B.T.S",
       width: 60,
@@ -40,7 +34,7 @@ function Table({ onRowSelected }: { onRowSelected: (row: ITaskList) => void }) {
 
   return (
     <>
-      <DataGrid columns={tasksCols} url="/task" onRowSelected={onRowSelected} />
+      <DataGrid columns={tasksCols} url="/task" onRowSelected={onRowSelected} refresh={refresh} />
     </>
   );
 }
