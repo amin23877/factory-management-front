@@ -33,6 +33,7 @@ import PhotoTab from "common/PhotoTab";
 import LevelsTab from "common/Level/Tab";
 import { LockButton } from "common/Lock";
 import AuditTable from "common/Audit";
+import AddProcessModal from "./Process/AddProcessModal";
 
 function DeviceDetails({
   sales,
@@ -52,6 +53,9 @@ function DeviceDetails({
   const [moreInfoTab, setMoreInfoTab] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
   const [AddService, setAddService] = useState(false);
+  const [addProcess, setAddProcess] = useState(false);
+  const [type, setType] = useState<string | null>(null);
+
   const [unitHistoryModal, setUnitHistoryModal] = useState(false);
 
   const [selectedStep] = useState<any>();
@@ -69,20 +73,24 @@ function DeviceDetails({
   const { data: manSteps } = useSWR(
     activeTab === 3
       ? selectedRow && selectedRow.id
-        ? `/engineering/manufacturing/task?ItemId=${selectedRow.id}`
+        ? `/process?ItemId=${selectedRow.id}&type=manufacturing`
         : null
       : null
   );
   const { data: evalSteps } = useSWR(
-    activeTab === 4 ? (selectedRow && selectedRow.id ? `/engineering/eval/task?ItemId=${selectedRow.id}` : null) : null
+    activeTab === 4
+      ? selectedRow && selectedRow.id
+        ? `/process?ItemId=${selectedRow.id}&type=evaluation`
+        : null
+      : null
   );
   const { data: testSteps } = useSWR(
-    activeTab === 5 ? (selectedRow && selectedRow.id ? `/engineering/test/task?ItemId=${selectedRow.id}` : null) : null
+    activeTab === 5 ? (selectedRow && selectedRow.id ? `/process?ItemId=${selectedRow.id}&type=test` : null) : null
   );
   const { data: fieldSteps } = useSWR(
     activeTab === 6
       ? selectedRow && selectedRow.id
-        ? `/engineering/fieldstartup/task?ItemId=${selectedRow.id}`
+        ? `/process?ItemId=${selectedRow.id}&type=fieldStartUp`
         : null
       : null
   );
@@ -125,39 +133,10 @@ function DeviceDetails({
     []
   );
 
-  const manCols = useMemo<GridColDef[]>(
+  const processCols = useMemo<GridColDef[]>(
     () => [
-      {
-        field: "priority",
-        headerName: "Priority",
-        width: 70,
-        disableColumnMenu: true,
-      },
-      { field: "name", headerName: "Name", flex: 2 },
-      { field: "id", headerName: "ID", width: 160, disableColumnMenu: true },
-      { field: "description", headerName: "Description", flex: 2 },
-      { field: "document", headerName: "Document", flex: 2 },
-      {
-        field: "hours",
-        headerName: " Hours",
-        width: 70,
-        disableColumnMenu: true,
-      },
-      {
-        field: "buildToStock",
-        headerName: "Build To Stock",
-        type: "boolean",
-        width: 100,
-        disableColumnMenu: true,
-      },
-      {
-        field: "engAP",
-        headerName: "Eng AP.",
-        type: "boolean",
-        width: 70,
-        disableColumnMenu: true,
-      },
-      { field: "desc", headerName: "Note", width: 100 },
+      { field: "title", headerName: "Title", width: 120 },
+      { field: "description", headerName: "Description", flex: 1 },
     ],
     []
   );
@@ -263,7 +242,17 @@ function DeviceDetails({
       {selectedUnit && (
         <UnitHistoryModal open={unitHistoryModal} onClose={() => setUnitHistoryModal(false)} unit={selectedUnit} />
       )}
-
+      {type && (
+        <AddProcessModal
+          open={addProcess}
+          onClose={() => {
+            setType(null);
+            setAddProcess(false);
+          }}
+          type={type}
+          ItemId={selectedRow.id}
+        />
+      )}
       <Formik initialValues={selectedRow} onSubmit={handleSubmit}>
         {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
           <Form>
@@ -424,44 +413,92 @@ function DeviceDetails({
                       </>
                     )}
                     {activeTab === 3 && (
-                      <BaseDataGrid
-                        height={"calc(100% - 60px)"}
-                        cols={manCols}
-                        rows={manSteps || []}
-                        onRowSelected={(d) => {
-                          onStepSelected({ ...d, tab: 0 });
-                        }}
-                      />
+                      <>
+                        <Button
+                          onClick={() => {
+                            setAddProcess(true);
+                            setType("manufacturing");
+                          }}
+                          variant="outlined"
+                          style={{ marginBottom: "10px" }}
+                        >
+                          Add Process
+                        </Button>
+                        <BaseDataGrid
+                          height={"calc(100% - 100px)"}
+                          cols={processCols}
+                          rows={manSteps?.result || []}
+                          onRowSelected={(d) => {
+                            onStepSelected({ ...d, tab: 0 });
+                          }}
+                        />
+                      </>
                     )}
                     {activeTab === 4 && (
-                      <BaseDataGrid
-                        height={"calc()100% - 60px"}
-                        cols={evalCols}
-                        rows={evalSteps || []}
-                        onRowSelected={(d) => {
-                          onStepSelected({ ...d, tab: 1 });
-                        }}
-                      />
+                      <>
+                        <Button
+                          onClick={() => {
+                            setAddProcess(true);
+                            setType("evaluation");
+                          }}
+                          variant="outlined"
+                          style={{ marginBottom: "10px" }}
+                        >
+                          Add Process
+                        </Button>
+                        <BaseDataGrid
+                          height={"calc(100% - 100px)"}
+                          cols={processCols}
+                          rows={evalSteps?.result || []}
+                          onRowSelected={(d) => {
+                            onStepSelected({ ...d, tab: 0 });
+                          }}
+                        />
+                      </>
                     )}
                     {activeTab === 5 && (
-                      <BaseDataGrid
-                        height={"calc()100% - 60px"}
-                        cols={evalCols}
-                        rows={testSteps || []}
-                        onRowSelected={(d) => {
-                          onStepSelected({ ...d, tab: 2 });
-                        }}
-                      />
+                      <>
+                        <Button
+                          onClick={() => {
+                            setAddProcess(true);
+                            setType("test");
+                          }}
+                          variant="outlined"
+                          style={{ marginBottom: "10px" }}
+                        >
+                          Add Process
+                        </Button>
+                        <BaseDataGrid
+                          height={"calc(100% - 100px)"}
+                          cols={processCols}
+                          rows={testSteps?.result || []}
+                          onRowSelected={(d) => {
+                            onStepSelected({ ...d, tab: 0 });
+                          }}
+                        />
+                      </>
                     )}
                     {activeTab === 6 && (
-                      <BaseDataGrid
-                        height={"calc()100% - 60px"}
-                        cols={evalCols}
-                        rows={fieldSteps || []}
-                        onRowSelected={(d) => {
-                          onStepSelected({ ...d, tab: 3 });
-                        }}
-                      />
+                      <>
+                        <Button
+                          onClick={() => {
+                            setAddProcess(true);
+                            setType("fieldStartUp");
+                          }}
+                          variant="outlined"
+                          style={{ marginBottom: "10px" }}
+                        >
+                          Add Process
+                        </Button>
+                        <BaseDataGrid
+                          height={"calc(100% - 100px)"}
+                          cols={processCols}
+                          rows={fieldSteps?.result || []}
+                          onRowSelected={(d) => {
+                            onStepSelected({ ...d, tab: 0 });
+                          }}
+                        />
+                      </>
                     )}
                     {activeTab === 8 && (
                       <DataGrid
