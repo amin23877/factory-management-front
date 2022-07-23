@@ -34,6 +34,8 @@ import LevelsTab from "common/Level/Tab";
 import { LockButton } from "common/Lock";
 import AuditTable from "common/Audit";
 import AddProcessModal from "./Process/AddProcessModal";
+import EditProcessModal from "./Process/EditProcessModal";
+import { IProcess } from "api/process";
 
 function DeviceDetails({
   sales,
@@ -54,6 +56,7 @@ function DeviceDetails({
   const [activeTab, setActiveTab] = useState(0);
   const [AddService, setAddService] = useState(false);
   const [addProcess, setAddProcess] = useState(false);
+  const [editProcess, setEditProcess] = useState(false);
   const [type, setType] = useState<string | null>(null);
 
   const [unitHistoryModal, setUnitHistoryModal] = useState(false);
@@ -61,6 +64,7 @@ function DeviceDetails({
   const [selectedStep] = useState<any>();
   const [selectedUnit, setSelectedUnit] = useState<IUnitHistory>();
   const [selectedService, setSelectedService] = useState<any>();
+  const [selectedProcess, setSelectedProcess] = useState<IProcess>();
 
   const [stepModal, setStepModal] = useState(false);
 
@@ -137,36 +141,6 @@ function DeviceDetails({
     () => [
       { field: "title", headerName: "Title", width: 120 },
       { field: "description", headerName: "Description", flex: 1 },
-    ],
-    []
-  );
-
-  const evalCols = useMemo<GridColDef[]>(
-    () => [
-      {
-        field: "priority",
-        headerName: "Priority",
-        width: 70,
-        disableColumnMenu: true,
-      },
-      { field: "name", headerName: "Name", flex: 2 },
-      { field: "id", headerName: "ID", width: 150, disableColumnMenu: true },
-      { field: "description", headerName: "Description", flex: 2 },
-      { field: "document", headerName: "Document", flex: 2 },
-      {
-        field: "hours",
-        headerName: " Hours",
-        width: 70,
-        disableColumnMenu: true,
-      },
-      {
-        field: "engAP",
-        headerName: "Eng AP.",
-        type: "boolean",
-        width: 70,
-        disableColumnMenu: true,
-      },
-      { field: "desc", headerName: "Note", width: 100 },
     ],
     []
   );
@@ -248,6 +222,19 @@ function DeviceDetails({
           onClose={() => {
             setType(null);
             setAddProcess(false);
+          }}
+          type={type}
+          ItemId={selectedRow.id}
+        />
+      )}
+      {type && selectedProcess && (
+        <EditProcessModal
+          process={selectedProcess}
+          open={editProcess}
+          onClose={() => {
+            setType(null);
+            setEditProcess(false);
+            setSelectedProcess(undefined);
           }}
           type={type}
           ItemId={selectedRow.id}
@@ -429,7 +416,9 @@ function DeviceDetails({
                           cols={processCols}
                           rows={manSteps?.result || []}
                           onRowSelected={(d) => {
-                            onStepSelected({ ...d, tab: 0 });
+                            setType("manufacturing");
+                            setSelectedProcess(d);
+                            setEditProcess(true);
                           }}
                         />
                       </>
@@ -451,7 +440,9 @@ function DeviceDetails({
                           cols={processCols}
                           rows={evalSteps?.result || []}
                           onRowSelected={(d) => {
-                            onStepSelected({ ...d, tab: 0 });
+                            setType("evaluation");
+                            setSelectedProcess(d);
+                            setEditProcess(true);
                           }}
                         />
                       </>
@@ -473,7 +464,9 @@ function DeviceDetails({
                           cols={processCols}
                           rows={testSteps?.result || []}
                           onRowSelected={(d) => {
-                            onStepSelected({ ...d, tab: 0 });
+                            setType("test");
+                            setSelectedProcess(d);
+                            setEditProcess(true);
                           }}
                         />
                       </>
@@ -495,7 +488,9 @@ function DeviceDetails({
                           cols={processCols}
                           rows={fieldSteps?.result || []}
                           onRowSelected={(d) => {
-                            onStepSelected({ ...d, tab: 0 });
+                            setType("fieldStartUp");
+                            setSelectedProcess(d);
+                            setEditProcess(true);
                           }}
                         />
                       </>
