@@ -136,7 +136,7 @@ export default function ServiceIndex({ serviceId }: { serviceId?: string }) {
           </Box>
         </Box>
         <Box display="flex">
-          {activeTab === 0 && (
+          <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
             <DataGrid
               columns={cols}
               url="/service"
@@ -145,7 +145,8 @@ export default function ServiceIndex({ serviceId }: { serviceId?: string }) {
                 setActiveTab(1);
               }}
             />
-          )}
+          </div>
+
           {activeTab === 1 && selectedFS && (
             <FieldServiceDetails
               selectedFieldService={selectedFS}

@@ -74,7 +74,7 @@ export default function Unit() {
             }
           />
         </Tabs>
-        {activeTab === 0 && (
+        <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
           <DataGrid
             url="/unit"
             initParams={{ class: "device" }}
@@ -84,7 +84,7 @@ export default function Unit() {
               setActiveTab(1);
             }}
           />
-        )}
+        </div>
         {activeTab === 1 && selectedUnit && <Details unit={selectedUnit} />}
       </BasePaper>
     </LockProvider>

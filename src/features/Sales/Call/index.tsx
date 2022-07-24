@@ -135,7 +135,7 @@ export default function Calls() {
             </ListItem>
           </List>
         </Box>
-        {activeTab === 0 && (
+        <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
           <DataGrid
             onRowSelected={(d) => {
               setSelectedCall(d);
@@ -144,7 +144,7 @@ export default function Calls() {
             url="/calls"
             columns={columns}
           />
-        )}
+        </div>
         {activeTab === 1 && selectedCall && <Details callsData={selectedCall} />}
       </BasePaper>
     </Box>

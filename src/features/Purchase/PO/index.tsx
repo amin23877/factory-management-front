@@ -188,7 +188,7 @@ function Index() {
                 </List>
               </Box>
             </Box>
-            {activeTab === 0 && (
+            <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
               <DataGrid
                 refresh={refresh}
                 style={{ minHeight: "calc(100vh - 160px)" }}
@@ -199,7 +199,7 @@ function Index() {
                   setActiveTab(1);
                 }}
               />
-            )}
+            </div>
             {activeTab === 1 && selectedPO && <Details selectedPO={selectedPO} />}
           </Box>
         </Box>

@@ -126,7 +126,7 @@ export default function RepIndex() {
             </ListItem>
           </List>
         </Box>
-        {activeTab === 0 && (
+        <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
           <NewDataGrid
             refresh={refresh}
             onRowSelected={(d) => {
@@ -136,7 +136,7 @@ export default function RepIndex() {
             url="/rep"
             columns={columns}
           />
-        )}
+        </div>
         {activeTab === 1 && selectedRep && <Details selectedRep={selectedRep} />}
       </BasePaper>
     </>

@@ -121,7 +121,7 @@ export default function Ship({ tab }: { tab: number }) {
             }
           />
         </Tabs>
-        {activeTab === 0 && (
+        <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
           <>
             <DataGrid
               url="/unit"
@@ -139,7 +139,7 @@ export default function Ship({ tab }: { tab: number }) {
               }}
             />
           </>
-        )}
+        </div>
         {activeTab === 1 && selectedShip && <Details unit={selectedShip} />}
       </BasePaper>
     </Box>

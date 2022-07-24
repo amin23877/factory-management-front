@@ -162,7 +162,7 @@ export default function QuotePanel() {
             </ListItem>
           </List>
         </Box>
-        {activeTab === 0 && (
+        <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
           <DataGrid
             refresh={refresh}
             onRowSelected={(d) => {
@@ -172,7 +172,7 @@ export default function QuotePanel() {
             url="/quote"
             columns={columns}
           />
-        )}
+        </div>
         {activeTab === 1 && selectedQuote && <EditTab selectedQuote={selectedQuote} />}
       </BasePaper>
     </>

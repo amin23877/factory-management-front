@@ -129,7 +129,7 @@ export default function SalesOrderPanel() {
             </ListItem>
           </List>
         </Box>
-        {activeTab === 0 && (
+        <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
           <Datagrid
             refresh={refresh}
             onRowSelected={(d) => {
@@ -137,7 +137,7 @@ export default function SalesOrderPanel() {
               setActiveTab(1);
             }}
           />
-        )}
+        </div>
         {activeTab === 1 && selectedSO && (
           <EditTab
             selectedSo={selectedSO}

@@ -144,14 +144,15 @@ export default function Tickets() {
           </Box>
         </Box>
         <Box display="flex" height="90%">
-          {activeTab === 0 && (
+          <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
             <Table
               onRowSelected={(r) => {
                 setSelectedJob(r);
                 setActiveTab(1);
               }}
             />
-          )}
+          </div>
+
           {activeTab === 1 && selectedJob && <Details initialValue={selectedJob} />}
         </Box>
       </BasePaper>

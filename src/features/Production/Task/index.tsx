@@ -101,7 +101,7 @@ function Index() {
             </List>
           )}
         </Box>
-        {activeTab === 0 && (
+        <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
           <TasksTable
           //   onRowSelected={(u) => {
           //     setSelectedTaskList(null);
@@ -109,8 +109,9 @@ function Index() {
           //     setSelectedTask(u);
           //   }}
           />
-        )}
-        {activeTab === 1 && (
+        </div>
+
+        <div style={activeTab !== 1 ? { display: "none" } : { flex: 1 }}>
           <TasksListTable
             refresh={refresh}
             onRowSelected={(t) => {
@@ -119,7 +120,8 @@ function Index() {
               setActiveTab(2);
             }}
           />
-        )}
+        </div>
+
         {/* {activeTab === 2 && selectedTask && <UnitDetails unit={selectedTask} />} */}
         {activeTab === 2 && selectedTaskList && (
           <LockProvider>

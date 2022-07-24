@@ -56,7 +56,7 @@ function BOM() {
             />
           </Tabs>
         </Box>
-        {activeTab === 0 && (
+        <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
           <NewDataGrid
             url="/cluster"
             columns={columns}
@@ -66,7 +66,7 @@ function BOM() {
               setActiveTab(1);
             }}
           />
-        )}
+        </div>
         {activeTab === 1 && selectedRow && <Details selectedRow={selectedRow} />}
       </BasePaper>
     </>

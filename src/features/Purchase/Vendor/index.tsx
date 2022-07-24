@@ -157,7 +157,7 @@ export default function Vendors({ tech }: { tech: boolean }) {
                 </List>
               </Box>
             </Box>
-            {activeTab === 0 && (
+            <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
               <DataGrid
                 style={{ minHeight: "calc(100vh - 160px)" }}
                 url="/vendor"
@@ -168,7 +168,8 @@ export default function Vendors({ tech }: { tech: boolean }) {
                   setActiveTab(1);
                 }}
               />
-            )}
+            </div>
+
             {activeTab === 1 && selectedVendor && <Details vendor={selectedVendor} />}
           </Box>
         </Box>

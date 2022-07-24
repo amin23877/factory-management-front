@@ -110,7 +110,7 @@ export default function POPanel() {
             </ListItem>
           </List>
         </Box>
-        {activeTab === 0 && (
+        <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
           <DataGrid
             refresh={refresh}
             url="/customerPo"
@@ -120,7 +120,8 @@ export default function POPanel() {
               setActiveTab(1);
             }}
           />
-        )}
+        </div>
+
         {activeTab === 1 && selectedPO && <Details poData={selectedPO} onDone={() => {}} />}
       </BasePaper>
     </Box>

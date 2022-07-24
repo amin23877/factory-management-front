@@ -140,7 +140,7 @@ export default function Customers() {
                 </List>
               </Box>
             </Box>
-            {activeTab === 0 && (
+            <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
               <CustomerDataGrid
                 url="/client"
                 onRowSelected={(v) => {
@@ -149,8 +149,9 @@ export default function Customers() {
                   setReq(false);
                 }}
               />
-            )}
-            {activeTab === 1 && (
+            </div>
+
+            <div style={activeTab !== 1 ? { display: "none" } : { flex: 1 }}>
               <CustomerDataGrid
                 url="/client"
                 params={{ approved: "null" }}
@@ -160,8 +161,9 @@ export default function Customers() {
                   setReq(true);
                 }}
               />
-            )}
-            {activeTab === 2 && (
+            </div>
+
+            <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
               <CustomerDataGrid
                 url="/client"
                 params={{ approved: false }}
@@ -171,7 +173,8 @@ export default function Customers() {
                   setReq(false);
                 }}
               />
-            )}
+            </div>
+
             {activeTab === 3 && selectedRow && (
               <Details selectedRow={selectedRow} req={req} changeTab={(i) => setActiveTab(i)} />
             )}

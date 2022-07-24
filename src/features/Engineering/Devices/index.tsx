@@ -284,7 +284,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       )}
       <Box display="flex" alignItems="flex-start" mt={1}>
         <Box flex={1}>
-          {activeTab === 0 && (
+          <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
             <DataGrid
               style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 215px)" }}
               url="/item"
@@ -296,8 +296,8 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                 setActiveTab(2);
               }}
             />
-          )}
-          {activeTab === 1 && (
+          </div>
+          <div style={activeTab !== 1 ? { display: "none" } : { flex: 1 }}>
             <DataGrid
               style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 165px)" }}
               url="/unit"
@@ -309,7 +309,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                 setActiveTab(2);
               }}
             />
-          )}
+          </div>
           {activeTab === 2 && selectedUnit && <UnitDetails unit={selectedUnit} />}
           {activeTab === 2 && selectedItem && (
             <DetailTab
