@@ -23,6 +23,7 @@ import Toast from "app/Toast";
 import { getModifiedValues } from "logic/utils";
 
 import { IActivity } from "api/activity";
+import AuditTable from "common/Audit";
 
 export default function ClientDetails({
   selectedRow,
@@ -169,6 +170,7 @@ export default function ClientDetails({
                   {activeTab === 3 && <SOTable rows={[]} />}
                   {activeTab === 5 && <NoteTab itemId={selectedRow.id} model="client" />}
                   {activeTab === 6 && <AddressTab model="client" itemId={selectedRow.id} />}
+                  {activeTab === 7 && <AuditTable itemId={selectedRow.id} />}
                 </BasePaper>
               </Box>
             </Box>

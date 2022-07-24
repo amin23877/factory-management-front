@@ -21,6 +21,7 @@ import { ILineItem } from "api/lineItem";
 import { getModifiedValues } from "logic/utils";
 import ReceivingTab from "./Receiving";
 import { LockButton, LockProvider } from "common/Lock";
+import AuditTable from "common/Audit";
 
 export default function Details({ selectedPO, onDone }: { selectedPO: IPurchasePO; onDone?: () => void }) {
   const phone = useMediaQuery("(max-width:900px)");
@@ -156,6 +157,7 @@ export default function Details({ selectedPO, onDone }: { selectedPO: IPurchaseP
           {activeTab === 1 && <DocumentsTab itemId={selectedPO.id} model="purchasePo" />}
           {activeTab === 2 && <ReceivingTab POId={selectedPO.id} />}
           {activeTab === 3 && <NotesTab itemId={selectedPO.id} model="purchasePo" />}
+          {activeTab === 4 && <AuditTable itemId={selectedPO.id} />}
         </BasePaper>
       </Box>
     </>

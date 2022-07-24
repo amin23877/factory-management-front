@@ -28,6 +28,7 @@ import DeviceQRCode from "app/QRCode";
 
 import { useLock, LockButton, LockProvider } from "common/Lock";
 import { exportPdf } from "logic/pdf";
+import AuditTable from "common/Audit";
 
 const schema = Yup.object().shape({});
 
@@ -302,6 +303,7 @@ function Details({ unit }: { unit: IUnit }) {
             {gridActiveTab === 6 && <BaseDataGrid cols={SOICols} rows={[]} onRowSelected={(r) => {}} height="67.3vh" />}
             {gridActiveTab === 7 && <BaseDataGrid cols={fshCols} rows={[]} onRowSelected={(r) => {}} height="67.3vh" />}
             {gridActiveTab === 8 && <NotesTab itemId={unit.id} model="unit" />}
+            {gridActiveTab === 9 && <AuditTable itemId={unit.id} />}
           </BasePaper>
         </LockProvider>
       </Box>

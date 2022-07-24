@@ -389,7 +389,7 @@ function ItemsDetails({
                   />
                 )}
                 {activeTab === 6 && <NotesTab itemId={selectedRow.id} model="item" />}
-                {activeTab === 7 && <AuditTable itemId={selectedRow.id} model="Item" />}
+                {activeTab === 7 && <AuditTable itemId={selectedRow.id} />}
               </BasePaper>
             </Box>
           </Form>

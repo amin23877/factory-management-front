@@ -523,7 +523,7 @@ function DeviceDetails({
                       />
                     )}
                     {activeTab === 11 && <NoteTab itemId={selectedRow.id} model="item" />}
-                    {activeTab === 12 && <AuditTable itemId={selectedRow.id} model="Item" />}
+                    {activeTab === 12 && <AuditTable itemId={selectedRow.id} />}
                   </>
                 ) : (
                   <>
@@ -540,6 +540,7 @@ function DeviceDetails({
                     )}
                     {activeTab === 2 && <SalesReport />}
                     {activeTab === 3 && <NoteTab itemId={selectedRow.id} model="item" />}
+                    {activeTab === 4 && <AuditTable itemId={selectedRow.id} />}
                   </>
                 )}
               </BasePaper>

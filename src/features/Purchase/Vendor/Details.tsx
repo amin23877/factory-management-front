@@ -14,6 +14,7 @@ import DocumentTab from "common/Document/Tab";
 import ContactTab from "common/Contact/Tab";
 
 import { IVendor } from "api/vendor";
+import AuditTable from "common/Audit";
 
 export default function VendorDetails({ vendor }: { vendor: IVendor }) {
   const [activeTab, setActiveTab] = useState(0);
@@ -99,6 +100,7 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
           <BaseDataGrid cols={POCols} rows={POs?.result || []} onRowSelected={() => {}} height="calc(100% - 60px)" />
         )}
         {activeTab === 4 && <NoteTab itemId={vendor.id} model="vendor" />}
+        {activeTab === 5 && <AuditTable itemId={vendor.id} />}
       </BasePaper>
     </Box>
   );

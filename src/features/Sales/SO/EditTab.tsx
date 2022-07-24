@@ -19,6 +19,7 @@ import DocumentTab from "common/Document/Tab";
 
 import { openRequestedSinglePopup } from "logic/window";
 import { lineItemType } from "components/GroupLineItemTable/useGroupedLineItems";
+import AuditTable from "common/Audit";
 
 const useStyle = makeStyles({
   root: {
@@ -247,6 +248,7 @@ export default function EditTab({
           <BaseDataGrid cols={FSCols} rows={[]} onRowSelected={onLineServiceSelected} height="calc(100% - 60px)" />
         )}
         {activeTab === 6 && <NoteTab itemId={selectedSo.id} model="so" />}
+        {activeTab === 7 && <AuditTable itemId={selectedSo.id} />}
       </BasePaper>
     </Box>
   );

@@ -3,9 +3,9 @@ import NewDataGrid from "app/NewDataGrid";
 import { ClearRounded, CheckRounded } from "@material-ui/icons";
 
 const columns = [
-  { name: "type", header: "Type" },
-  { name: "employee", header: "Employee", render: ({ data }: any) => data.EmployeeId.username },
-  { name: "createdAt", header: "Date", type: "date", flex: 1 },
+  { name: "type", header: "Type", maxWidth: 100 },
+  { name: "employee", header: "Employee", render: ({ data }: any) => data.EmployeeId.username, width: 120 },
+  { name: "createdAt", header: "Date", type: "date", maxWidth: 120 },
   { name: "change", header: "Change", render: ({ data }: any) => Object.keys(data?.change || {})[0] || "" },
   {
     name: "before",
@@ -36,6 +36,6 @@ const columns = [
   },
 ];
 
-export default function AuditTable({ itemId, model }: { model: "Item" | "SO" | "PO"; itemId: string }) {
-  return <NewDataGrid url={`/audit?col=${model}&docId=${itemId}`} columns={columns} onRowSelected={() => {}} />;
+export default function AuditTable({ itemId }: { itemId: string }) {
+  return <NewDataGrid url={`/audit?docId=${itemId}`} columns={columns} onRowSelected={() => {}} />;
 }

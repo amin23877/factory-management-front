@@ -15,6 +15,7 @@ import { ILineItem } from "api/lineItem";
 import LineItemModal from "../../LineItem";
 
 import LineItems from "./LineItem";
+import AuditTable from "common/Audit";
 
 export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
   const phone = useMediaQuery("(max-width:900px)");
@@ -82,7 +83,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
             <BaseDataGrid cols={quoteHistoryCols} rows={[]} onRowSelected={() => {}} height=" calc(100% - 57px)" />
           )}
           {activeTab === 3 && <NoteTab itemId={selectedQuote.id} model="quote" />}
-          {activeTab === 4 && <div>Auditing</div>}
+          {activeTab === 4 && <AuditTable itemId={selectedQuote.id} />}
         </BasePaper>
       </Box>
     </>

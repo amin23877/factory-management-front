@@ -9,6 +9,7 @@ import DocumentTab from "common/Document/Tab";
 import { BasePaper } from "app/Paper";
 
 import { customerPoType } from "api/customerPo";
+import AuditTable from "common/Audit";
 
 export default function Details({ poData, onDone }: { poData: customerPoType; onDone: () => void }) {
   const [activeTab, setActiveTab] = useState(0);
@@ -36,6 +37,7 @@ export default function Details({ poData, onDone }: { poData: customerPoType; on
         </Tabs>
         {activeTab === 0 && <DocumentTab itemId={poData.id} model="salesPo" />}
         {activeTab === 1 && <NoteTab itemId={poData.id} model="salesPo" />}
+        {activeTab === 2 && <AuditTable itemId={poData.id} />}
       </BasePaper>
     </Box>
   );

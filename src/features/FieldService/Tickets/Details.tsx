@@ -15,6 +15,7 @@ import { formatTimestampToDate } from "logic/date";
 
 import DocumentTab from "common/Document/Tab";
 import NotesTab from "common/Note/Tab";
+import AuditTable from "common/Audit";
 
 export default function Details({ initialValue }: { initialValue: ITicket }) {
   const [activeTab, setActiveTab] = useState(0);
@@ -185,6 +186,7 @@ export default function Details({ initialValue }: { initialValue: ITicket }) {
             <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} height={"calc(100% - 60px)"} />
           )}
           {activeTab === 5 && <NotesTab itemId={initialValue.id} model="ticket" />}
+          {activeTab === 6 && <AuditTable itemId={initialValue.id} />}
         </BasePaper>
       </Box>
     </>

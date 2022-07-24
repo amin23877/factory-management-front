@@ -18,6 +18,7 @@ import DocumentsTab from "common/Document/Tab";
 import BaseDataGrid from "app/BaseDataGrid";
 import { formatTimestampToDate } from "logic/date";
 import { LockButton, useLock } from "common/Lock";
+import AuditTable from "common/Audit";
 
 export default function Details({ onDone, initialValues }: { onDone?: () => void; initialValues: IPurchaseQuote }) {
   const [activeTab, setActiveTab] = useState(0);
@@ -182,11 +183,7 @@ export default function Details({ onDone, initialValues }: { onDone?: () => void
         {activeTab === 0 && <BaseDataGrid rows={[]} cols={LICols} height={"calc(100% - 60px)"} />}
         {activeTab === 1 && <DocumentsTab itemId={initialValues.id} model="purchaseQuote" />}
         {activeTab === 2 && <NoteTab itemId={initialValues.id} model="purchaseQuote" />}
-        {activeTab === 3 && (
-          <>
-            <div style={{ height: "68vh", width: "100%" }}></div>
-          </>
-        )}
+        {activeTab === 3 && <AuditTable itemId={initialValues.id} />}
       </BasePaper>
     </Box>
   );
