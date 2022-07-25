@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, useState } from "react";
 import { Box, Tabs, Tab, LinearProgress, Typography, useMediaQuery } from "@material-ui/core";
-import { GridColDef, GridColumns } from "@material-ui/data-grid";
+import { GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR from "swr";
 
@@ -33,9 +33,8 @@ import PhotoTab from "common/PhotoTab";
 import LevelsTab from "common/Level/Tab";
 import { LockButton } from "common/Lock";
 import AuditTable from "common/Audit";
-import AddProcessModal from "./Process/AddProcessModal";
-import EditProcessModal from "./Process/EditProcessModal";
-import { IProcess } from "api/process";
+import { AddRounded } from "@material-ui/icons";
+import ProcessTab from "./Tabs/ProcessTab";
 
 function DeviceDetails({
   sales,
@@ -51,20 +50,15 @@ function DeviceDetails({
   onFlagSelected: (a: any) => void;
 }) {
   const qrCode = useRef<HTMLElement | null>(null);
-
   const [moreInfoTab, setMoreInfoTab] = useState(0);
   const [activeTab, setActiveTab] = useState(0);
   const [AddService, setAddService] = useState(false);
-  const [addProcess, setAddProcess] = useState(false);
-  const [editProcess, setEditProcess] = useState(false);
-  const [type, setType] = useState<string | null>(null);
 
   const [unitHistoryModal, setUnitHistoryModal] = useState(false);
 
   const [selectedStep] = useState<any>();
   const [selectedUnit, setSelectedUnit] = useState<IUnitHistory>();
   const [selectedService, setSelectedService] = useState<any>();
-  const [selectedProcess, setSelectedProcess] = useState<IProcess>();
 
   const [stepModal, setStepModal] = useState(false);
 
@@ -73,31 +67,6 @@ function DeviceDetails({
   );
 
   const { data: itemObject } = useSWR<IItem>(selectedRow && selectedRow.id ? `/item/${selectedRow.id}` : null);
-
-  const { data: manSteps } = useSWR(
-    activeTab === 3
-      ? selectedRow && selectedRow.id
-        ? `/process?ItemId=${selectedRow.id}&type=manufacturing`
-        : null
-      : null
-  );
-  const { data: evalSteps } = useSWR(
-    activeTab === 4
-      ? selectedRow && selectedRow.id
-        ? `/process?ItemId=${selectedRow.id}&type=evaluation`
-        : null
-      : null
-  );
-  const { data: testSteps } = useSWR(
-    activeTab === 5 ? (selectedRow && selectedRow.id ? `/process?ItemId=${selectedRow.id}&type=test` : null) : null
-  );
-  const { data: fieldSteps } = useSWR(
-    activeTab === 6
-      ? selectedRow && selectedRow.id
-        ? `/process?ItemId=${selectedRow.id}&type=fieldStartUp`
-        : null
-      : null
-  );
 
   const { data: flags } = useSWR(
     activeTab === 10 ? (selectedRow && selectedRow.id ? `/qccase/item/${selectedRow.id}` : null) : null
@@ -133,14 +102,6 @@ function DeviceDetails({
       { field: "id", headerName: "ID", flex: 2 },
       { field: "note", headerName: "Note", flex: 4 },
       { field: "auditing", headerName: "Auditing", flex: 2 },
-    ],
-    []
-  );
-
-  const processCols = useMemo<GridColDef[]>(
-    () => [
-      { field: "title", headerName: "Title", width: 120 },
-      { field: "description", headerName: "Description", flex: 1 },
     ],
     []
   );
@@ -216,30 +177,7 @@ function DeviceDetails({
       {selectedUnit && (
         <UnitHistoryModal open={unitHistoryModal} onClose={() => setUnitHistoryModal(false)} unit={selectedUnit} />
       )}
-      {type && (
-        <AddProcessModal
-          open={addProcess}
-          onClose={() => {
-            setType(null);
-            setAddProcess(false);
-          }}
-          type={type}
-          ItemId={selectedRow.id}
-        />
-      )}
-      {type && selectedProcess && (
-        <EditProcessModal
-          process={selectedProcess}
-          open={editProcess}
-          onClose={() => {
-            setType(null);
-            setEditProcess(false);
-            setSelectedProcess(undefined);
-          }}
-          type={type}
-          ItemId={selectedRow.id}
-        />
-      )}
+
       <Formik initialValues={selectedRow} onSubmit={handleSubmit}>
         {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
           <Form>
@@ -385,8 +323,13 @@ function DeviceDetails({
                     )}
                     {activeTab === 2 && (
                       <>
-                        <Button onClick={() => setAddService(true)} variant="outlined" style={{ marginBottom: "10px" }}>
-                          Add Service
+                        <Button
+                          onClick={() => setAddService(true)}
+                          variant="outlined"
+                          style={{ marginBottom: "10px" }}
+                          startIcon={<AddRounded />}
+                        >
+                          Service
                         </Button>
                         <BaseDataGrid
                           height={"calc(100% - 100px)"}
@@ -399,102 +342,10 @@ function DeviceDetails({
                         />
                       </>
                     )}
-                    {activeTab === 3 && (
-                      <>
-                        <Button
-                          onClick={() => {
-                            setAddProcess(true);
-                            setType("manufacturing");
-                          }}
-                          variant="outlined"
-                          style={{ marginBottom: "10px" }}
-                        >
-                          Add Process
-                        </Button>
-                        <BaseDataGrid
-                          height={"calc(100% - 100px)"}
-                          cols={processCols}
-                          rows={manSteps?.result || []}
-                          onRowSelected={(d) => {
-                            setType("manufacturing");
-                            setSelectedProcess(d);
-                            setEditProcess(true);
-                          }}
-                        />
-                      </>
-                    )}
-                    {activeTab === 4 && (
-                      <>
-                        <Button
-                          onClick={() => {
-                            setAddProcess(true);
-                            setType("evaluation");
-                          }}
-                          variant="outlined"
-                          style={{ marginBottom: "10px" }}
-                        >
-                          Add Process
-                        </Button>
-                        <BaseDataGrid
-                          height={"calc(100% - 100px)"}
-                          cols={processCols}
-                          rows={evalSteps?.result || []}
-                          onRowSelected={(d) => {
-                            setType("evaluation");
-                            setSelectedProcess(d);
-                            setEditProcess(true);
-                          }}
-                        />
-                      </>
-                    )}
-                    {activeTab === 5 && (
-                      <>
-                        <Button
-                          onClick={() => {
-                            setAddProcess(true);
-                            setType("test");
-                          }}
-                          variant="outlined"
-                          style={{ marginBottom: "10px" }}
-                        >
-                          Add Process
-                        </Button>
-                        <BaseDataGrid
-                          height={"calc(100% - 100px)"}
-                          cols={processCols}
-                          rows={testSteps?.result || []}
-                          onRowSelected={(d) => {
-                            setType("test");
-                            setSelectedProcess(d);
-                            setEditProcess(true);
-                          }}
-                        />
-                      </>
-                    )}
-                    {activeTab === 6 && (
-                      <>
-                        <Button
-                          onClick={() => {
-                            setAddProcess(true);
-                            setType("fieldStartUp");
-                          }}
-                          variant="outlined"
-                          style={{ marginBottom: "10px" }}
-                        >
-                          Add Process
-                        </Button>
-                        <BaseDataGrid
-                          height={"calc(100% - 100px)"}
-                          cols={processCols}
-                          rows={fieldSteps?.result || []}
-                          onRowSelected={(d) => {
-                            setType("fieldStartUp");
-                            setSelectedProcess(d);
-                            setEditProcess(true);
-                          }}
-                        />
-                      </>
-                    )}
+                    {activeTab === 3 && <ProcessTab type={"manufacturing"} ItemId={selectedRow.id} />}
+                    {activeTab === 4 && <ProcessTab type={"evaluation"} ItemId={selectedRow.id} />}
+                    {activeTab === 5 && <ProcessTab type={"test"} ItemId={selectedRow.id} />}
+                    {activeTab === 6 && <ProcessTab type={"fieldStartUp"} ItemId={selectedRow.id} />}
                     {activeTab === 8 && (
                       <DataGrid
                         columns={unitHistoryCols}

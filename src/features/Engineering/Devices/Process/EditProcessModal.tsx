@@ -97,7 +97,6 @@ export default function EditProcessModal({ open, onClose, ItemId, process, type 
                     open={addTask}
                     onClose={() => {
                       setAddTask(false);
-                      onClose();
                     }}
                     ProcessId={process.id}
                     ItemId={ItemId}
@@ -108,7 +107,6 @@ export default function EditProcessModal({ open, onClose, ItemId, process, type 
                       open={editTask}
                       onClose={() => {
                         setAddTask(false);
-                        onClose();
                       }}
                       ProcessId={process.id}
                       ItemId={ItemId}

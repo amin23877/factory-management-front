@@ -52,7 +52,7 @@ export default function BOMModal({
   };
 
   return (
-    <Dialog open={open} onClose={onClose} title="BOM" maxWidth="xs" fullWidth>
+    <Dialog open={open} onClose={onClose} title={initialValues ? "Edit BOM" : "Add New BOM"} maxWidth="xs" fullWidth>
       <Box>
         <Formik initialValues={initialValues || ({ name: item.no } as IBom)} onSubmit={handleSubmit}>
           {({ getFieldProps, values }) => (

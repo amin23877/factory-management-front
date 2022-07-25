@@ -21,27 +21,6 @@ export const General = ({ values, errors, handleChange, handleBlur, touched }: I
   return (
     <>
       <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
-        <Paper
-          style={{
-            margin: "0.5em 0",
-            padding: "0.5em",
-            backgroundColor: "#eee",
-            gridColumnEnd: "span 3",
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            columnGap: "15px",
-          }}
-        >
-          <FormControlLabel
-            name="realeased"
-            value={values.realeased}
-            control={<Checkbox checked={Boolean(values.realeased)} />}
-            label="Released"
-            onChange={handleChange}
-            onBlur={handleBlur}
-            style={{ gridColumnEnd: "span 3" }}
-          />
-        </Paper>
         <TextField
           label="Title"
           value={values.title}
@@ -62,6 +41,15 @@ export const General = ({ values, errors, handleChange, handleBlur, touched }: I
           placeholder="Description"
           multiline
           rows={4}
+          style={{ gridColumnEnd: "span 3" }}
+        />
+        <FormControlLabel
+          name="realeased"
+          value={values.realeased}
+          control={<Checkbox checked={Boolean(values.realeased)} />}
+          label="Released"
+          onChange={handleChange}
+          onBlur={handleBlur}
           style={{ gridColumnEnd: "span 3" }}
         />
       </Box>

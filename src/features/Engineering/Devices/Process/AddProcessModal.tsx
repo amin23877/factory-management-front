@@ -33,7 +33,7 @@ export default function AddProcessModal({
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth title="Add New Process">
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth title={`Add New ${type} Process`}>
       <Formik initialValues={{} as IProcess} onSubmit={handleSubmit}>
         {({ errors, touched, values, handleChange, handleBlur, setFieldValue }) => (
           <Form>
