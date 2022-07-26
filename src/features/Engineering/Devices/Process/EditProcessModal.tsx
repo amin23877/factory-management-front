@@ -9,7 +9,7 @@ import Confirm from "common/Confirm";
 import { Formik, Form } from "formik";
 import { mutate } from "swr";
 import { General } from "./Forms";
-import SubProcessModal from "./TaskModal";
+import SubProcessModal from "./AddTaskModal";
 import Dialog from "app/Dialog";
 
 interface IEditTaskModal {
@@ -65,66 +65,25 @@ export default function EditProcessModal({ open, onClose, ItemId, process, type 
   };
 
   return (
-    <Dialog title={"Edit Process"} open={open} onClose={onClose} maxWidth="lg" fullWidth>
+    <Dialog title={"Edit Process"} open={open} onClose={onClose} maxWidth="xs" fullWidth>
       <Formik initialValues={process ? process : ({} as IProcess)} onSubmit={handleSubmit}>
         {({ values, handleBlur, handleChange, setFieldValue, isSubmitting, errors, touched }) => (
           <Form>
-            <Box display="grid" gridTemplateColumns={"1fr 1fr"} gridGap={10}>
-              <Box m={2} display="grid" gridTemplateColumns="1fr" gridGap={10}>
-                <General
-                  values={values}
-                  errors={errors}
-                  touched={touched}
-                  handleBlur={handleBlur}
-                  handleChange={handleChange}
-                  setFieldValue={setFieldValue}
-                />
-                <Box m={2} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
-                  <Button type="submit" disabled={isSubmitting} kind={"edit"} style={{ alignSelf: "center" }}>
-                    Save
-                  </Button>
-                  <Button onClick={handleDelete} kind="delete" disabled={isSubmitting} style={{ alignSelf: "center" }}>
-                    Delete
-                  </Button>
-                </Box>
-              </Box>
-              <Box>
-                <Box>
-                  <Button onClick={() => setAddTask(true)} kind="add" style={{ marginBottom: "10px" }}>
-                    Add Task
-                  </Button>
-                  <SubProcessModal
-                    open={addTask}
-                    onClose={() => {
-                      setAddTask(false);
-                    }}
-                    ProcessId={process.id}
-                    ItemId={ItemId}
-                    type={type}
-                  />
-                  {selectedTask && (
-                    <SubProcessModal
-                      open={editTask}
-                      onClose={() => {
-                        setAddTask(false);
-                      }}
-                      ProcessId={process.id}
-                      ItemId={ItemId}
-                      type={type}
-                      task={selectedTask}
-                    />
-                  )}
-
-                  <BaseDataGrid
-                    rows={process.tasks || []}
-                    cols={cols}
-                    onRowSelected={(d) => {
-                      setEditTask(true);
-                      setSelectedTask(d);
-                    }}
-                  />
-                </Box>
-              </Box>
+            <Box m={2} display="grid" gridTemplateColumns="1fr" gridGap={10}>
+              <General
+                values={values}
+                errors={errors}
+                touched={touched}
+                handleBlur={handleBlur}
+                handleChange={handleChange}
+                setFieldValue={setFieldValue}
+              />
+              <Button type="submit" disabled={isSubmitting} kind={"edit"} style={{ alignSelf: "center" }}>
+                Save
+              </Button>
+              <Button onClick={handleDelete} kind="delete" disabled={isSubmitting} style={{ alignSelf: "center" }}>
+                Delete
+              </Button>
             </Box>
           </Form>
         )}
