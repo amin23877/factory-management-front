@@ -9,8 +9,7 @@ import SubProcessModal from "./AddTaskModal";
 import Dialog from "app/Dialog";
 import useSWR, { mutate } from "swr";
 import ShowPartsModal from "./ShowPartsModal";
-import { ITaskList } from "api/taskList";
-import { el } from "date-fns/locale";
+
 
 interface IEditTaskModal {
   open: boolean;

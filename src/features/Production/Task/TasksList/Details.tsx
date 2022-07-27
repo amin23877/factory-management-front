@@ -2,7 +2,6 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Box, Tabs, Tab, Tooltip, Button } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import { mutate } from "swr";
-import * as Yup from "yup";
 
 import { General } from "./Forms";
 
