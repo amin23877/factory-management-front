@@ -8,6 +8,9 @@ import Button from "app/Button";
 import SubProcessModal from "./AddTaskModal";
 import Dialog from "app/Dialog";
 import useSWR, { mutate } from "swr";
+import ShowPartsModal from "./ShowPartsModal";
+import { ITaskList } from "api/taskList";
+import { el } from "date-fns/locale";
 
 interface IEditTaskModal {
   open: boolean;
@@ -19,8 +22,8 @@ interface IEditTaskModal {
 
 export default function TasksModal({ open, onClose, ItemId, process, type }: IEditTaskModal) {
   const [addTask, setAddTask] = useState(false);
-  const [editTask, setEditTask] = useState(false);
-  const [selectedTask, setSelectedTask] = useState();
+  const [showParts, setShowParts] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<any>();
   const [processTasks, setProcessTasks] = useState();
   const cols: GridColumns = [
     { field: "order", headerName: "Order", valueFormatter: ({ row }) => row?.majorStep + "." + row?.minorStep },
@@ -36,7 +39,13 @@ export default function TasksModal({ open, onClose, ItemId, process, type }: IEd
   useEffect(() => {
     if (tasks) {
       const temp = tasks?.tasks.slice();
-      temp.map((el: any, idx: number) => (el.id = idx));
+      temp.map((el: any, idx: number) => {
+        if (el._id) {
+          return (el.id = el._id);
+        } else {
+          return (el.id = idx);
+        }
+      });
       setProcessTasks(temp);
     }
   }, [tasks]);
@@ -52,7 +61,7 @@ export default function TasksModal({ open, onClose, ItemId, process, type }: IEd
               rows={processTasks || []}
               cols={cols}
               onRowSelected={(d) => {
-                setEditTask(true);
+                setShowParts(true);
                 setSelectedTask(d);
               }}
             />
@@ -69,14 +78,12 @@ export default function TasksModal({ open, onClose, ItemId, process, type }: IEd
         type={type}
       />
       {selectedTask && (
-        <SubProcessModal
-          open={editTask}
+        <ShowPartsModal
+          open={showParts}
           onClose={() => {
-            mutate(`/process/${process.id}`);
-            setAddTask(false);
+            setShowParts(false);
           }}
-          ProcessId={process.id}
-          type={type}
+          TaskId={selectedTask.task.id}
         />
       )}
     </>
