@@ -57,12 +57,10 @@ export const General = ({ values, errors, handleChange, handleBlur, touched }: I
   );
 };
 export const SubProcess = ({ values, errors, handleChange, handleBlur, touched, type, setFieldValue }: IForm) => {
-  console.log(values);
-
   return (
     <>
       <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
-        <LinkField
+        {/* <LinkField
           filterLabel="title"
           getOptionLabel={(item) => item?.title || "No-Number"}
           getOptionList={(resp) => resp.result || []}
@@ -74,27 +72,25 @@ export const SubProcess = ({ values, errors, handleChange, handleBlur, touched, 
             setFieldValue("TaskId", nv?.id);
           }}
           label="Task Title"
-        />
+        /> */}
         <TextField
           type="number"
-          label="Major"
+          label="Step"
           value={values.majorStep}
           name="majorStep"
           onChange={handleChange}
           onBlur={handleBlur}
           error={Boolean(errors.majorStep && touched.majorStep)}
-          placeholder="Major"
           style={{ gridColumnEnd: "span 3" }}
         />
         <TextField
           type="number"
-          label="Minor"
+          label="Sub Step"
           value={values.minorStep}
           name="minorStep"
           onChange={handleChange}
           onBlur={handleBlur}
           error={Boolean(errors.minorStep && touched.minorStep)}
-          placeholder="Minor"
           style={{ gridColumnEnd: "span 3" }}
         />
       </Box>

@@ -42,7 +42,7 @@ export default function TasksModal({ open, onClose, ItemId, process, type }: IEd
   }, [tasks]);
   return (
     <>
-      <Dialog title={"Process Tasks"} open={open} onClose={onClose} maxWidth="lg" fullWidth>
+      <Dialog title={`${type} Process Tasks`} open={open} onClose={onClose} maxWidth="lg" fullWidth>
         <Box display="grid" gridTemplateColumns={"1fr"} gridGap={10}>
           <Box>
             <Button onClick={() => setAddTask(true)} kind="add" style={{ marginBottom: "10px" }}>
@@ -66,7 +66,6 @@ export default function TasksModal({ open, onClose, ItemId, process, type }: IEd
           setAddTask(false);
         }}
         ProcessId={process.id}
-        ItemId={ItemId}
         type={type}
       />
       {selectedTask && (
@@ -77,9 +76,7 @@ export default function TasksModal({ open, onClose, ItemId, process, type }: IEd
             setAddTask(false);
           }}
           ProcessId={process.id}
-          ItemId={ItemId}
           type={type}
-          task={selectedTask}
         />
       )}
     </>

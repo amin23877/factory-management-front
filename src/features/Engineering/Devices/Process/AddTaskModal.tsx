@@ -1,69 +1,128 @@
-import { Box } from "@material-ui/core";
-import { changeSubProcess, createSubProcess, deleteSubProcess, ITask } from "api/process";
-import Button from "app/Button";
-import Toast from "app/Toast";
-import Confirm from "common/Confirm";
-import { Formik, Form } from "formik";
-import React from "react";
-import { mutate } from "swr";
-import { SubProcess } from "./Forms";
+import React, { useState } from "react";
+import {
+  IconButton,
+  List,
+  ListItem,
+  ListItemSecondaryAction,
+  ListItemText,
+  Paper,
+  Tooltip,
+  Typography,
+} from "@material-ui/core";
+import Box from "@material-ui/core/Box";
+import { AddRounded, DeleteRounded } from "@material-ui/icons";
+import DataGrid from "app/NewDataGrid";
+
 import Dialog from "app/Dialog";
+import Button from "app/Button";
 
-interface IEditTaskModal {
+import Toast from "app/Toast";
+import useSWR, { mutate } from "swr";
+import { createSubProcess, deleteSubProcess, IProcess, ITask } from "api/process";
+import Confirm from "common/Confirm";
+import { Form, Formik } from "formik";
+import { SubProcess } from "./Forms";
+
+export default function AddTaskModal({
+  open,
+  onClose,
+  ProcessId,
+  type,
+}: {
   open: boolean;
-  task?: ITask;
-  ProcessId: string;
   onClose: () => void;
+  ProcessId: string;
   type: string;
-  ItemId: string;
-}
+}) {
+  const [addTask, setAddTask] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<ITask>();
 
-export default function SubProcessModal({ open, onClose, ProcessId, task, type, ItemId }: IEditTaskModal) {
+  const { data: tasks } = useSWR<IProcess>(`/process/${ProcessId}`);
+
   const handleSubmit = (values: ITask, { setSubmitting }: any) => {
-    if (task && task.id) {
-      changeSubProcess(ProcessId, task.majorStep, task.minorStep, values)
+    if (selectedTask) {
+      createSubProcess(ProcessId, selectedTask.id as string, values)
         .then((d) => {
-          mutate(`/process?ItemId=${ItemId}&type=${type}`);
-          onClose();
-        })
-        .catch((e) => console.log(e))
-        .finally(() => setSubmitting(false));
-    } else {
-      createSubProcess(ProcessId, values.TaskId as string, values)
-        .then((d) => {
-          mutate(`/process?ItemId=${ItemId}&type=${type}`);
-          onClose();
+          mutate(`/process/${ProcessId}`);
+          setAddTask(false);
+          setSelectedTask(undefined);
         })
         .catch((e) => console.log(e))
         .finally(() => setSubmitting(false));
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = (i: ITask) => {
     Confirm({
       onConfirm: async () => {
         try {
-          if (task && ProcessId) {
-            await deleteSubProcess(ProcessId, task?.majorStep, task?.minorStep);
+          if (ProcessId) {
+            await deleteSubProcess(ProcessId, i?.majorStep, i?.minorStep);
             Toast("Process deleted", "success");
           }
         } catch (error) {
           console.log(error);
         } finally {
-          mutate(`/process?ItemId=${ItemId}&type=${type}`);
-          onClose();
+          mutate(`/process/${ProcessId}`);
         }
       },
     });
   };
+  const tasksCols = [
+    {
+      name: "title",
+      header: "Title",
+      type: "string",
+      render: ({ data }: any) => {
+        return (
+          <Box display="flex" alignItems="center" style={{ gap: 4 }}>
+            <div
+              onClick={() => {
+                setAddTask(true);
+                setSelectedTask(data);
+              }}
+            >
+              <AddRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
+            </div>
+            <div>
+              <Tooltip title={data.title}>
+                <span>{data.title}</span>
+              </Tooltip>
+            </div>
+          </Box>
+        );
+      },
+    },
+    {
+      name: "instruction",
+      header: "Instruction",
+      flex: 1,
+      type: "string",
+    },
+    {
+      name: "builtToStock",
+      header: "B.T.S",
+      width: 60,
+      type: "boolean",
+    },
+  ];
 
   return (
-    <Dialog title={"Edit Process"} open={open} onClose={onClose} maxWidth="xs" fullWidth>
-      <Formik initialValues={task ? task : ({} as ITask)} onSubmit={handleSubmit}>
-        {({ values, handleBlur, handleChange, setFieldValue, isSubmitting, errors, touched }) => (
-          <Form>
-            <Box display="grid" gridTemplateColumns={"1fr"} gridGap={10}>
-              <Box m={2} display="grid" gridTemplateColumns="1fr" gridGap={10}>
+    <Dialog title={`Add / Edit ${type} Tasks`} open={open} onClose={onClose} fullWidth maxWidth="lg">
+      {selectedTask && (
+        <Dialog
+          title={"Set Step"}
+          open={addTask}
+          onClose={() => {
+            setAddTask(false);
+            setSelectedTask(undefined);
+          }}
+          fullWidth
+          maxWidth="xs"
+        >
+          <Formik initialValues={{} as ITask} onSubmit={handleSubmit}>
+            {({ values, handleBlur, handleChange, setFieldValue, isSubmitting, errors, touched }) => (
+              <Form>
                 <SubProcess
                   values={values}
                   errors={errors}
@@ -71,33 +130,55 @@ export default function SubProcessModal({ open, onClose, ProcessId, task, type, 
                   handleBlur={handleBlur}
                   handleChange={handleChange}
                   setFieldValue={setFieldValue}
-                  type={type}
                 />
-                <Box m={2} display="grid" gridTemplateColumns={task ? "1fr 1fr" : "1fr"} gridGap={10}>
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    kind={task ? "edit" : "add"}
-                    style={{ alignSelf: "center" }}
-                  >
-                    Save
+                <Box width="100%" m={1} display="flex" justifyContent={"center"}>
+                  <Button type="submit" disabled={isSubmitting} kind={"add"} style={{ alignSelf: "center" }}>
+                    Submit
                   </Button>
-                  {task && (
-                    <Button
-                      onClick={handleDelete}
-                      kind="delete"
-                      disabled={isSubmitting}
-                      style={{ alignSelf: "center" }}
-                    >
-                      Delete
-                    </Button>
-                  )}
                 </Box>
-              </Box>
-            </Box>
-          </Form>
-        )}
-      </Formik>
+              </Form>
+            )}
+          </Formik>
+        </Dialog>
+      )}
+      <Box style={{ margin: "0.5em 2em", gap: 8 }} display="flex" height="75vh">
+        <Box flex={3}>
+          <div style={{ height: "90%" }}>
+            <DataGrid columns={tasksCols} url={`/task?type=${type}`} onRowSelected={() => {}} />
+          </div>
+        </Box>
+        <Box flex={2}>
+          <Paper style={{ height: "100%" }}>
+            <Typography variant="h6" style={{ padding: 8, paddingTop: 16 }}>
+              Selected Tasks
+            </Typography>
+            <List style={{ height: "80%", overflow: "auto" }}>
+              {tasks?.tasks &&
+                tasks?.tasks.map((i) => (
+                  <ListItem key={i.id}>
+                    <ListItemText
+                      primary={i.majorStep + "." + i.minorStep + " " + i.task?.title}
+                      secondary={i.task?.instruction}
+                    />
+                    <ListItemSecondaryAction>
+                      <Box display="flex" alignItems="center">
+                        <IconButton
+                          edge="end"
+                          aria-label="delete"
+                          onClick={() => {
+                            handleDelete(i);
+                          }}
+                        >
+                          <DeleteRounded />
+                        </IconButton>
+                      </Box>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                ))}
+            </List>
+          </Paper>
+        </Box>
+      </Box>
     </Dialog>
   );
 }
