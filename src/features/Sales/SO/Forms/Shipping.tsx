@@ -9,16 +9,7 @@ function ShippingContent({ getFieldProps }: { getFieldProps: any }) {
 
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 8 }}>
-      <Box display="flex" alignItems="center">
-        <TextField
-          label="Shipping Company"
-          {...getFieldProps("shippingCompany")}
-          fullWidth
-          style={{ marginRight: 8 }}
-          disabled={lock}
-        />
-        <LockButton />
-      </Box>
+      <TextField label="Shipping Company" {...getFieldProps("shippingCompany")} disabled={lock} />
       <TextField label="Shipping Attn" {...getFieldProps("shippingAttn")} disabled={lock} />
       <TextField label="Shipping Address" {...getFieldProps("shippingAddress")} disabled={lock} />
       <TextField label="Shipping City" {...getFieldProps("shippingCity")} disabled={lock} />
@@ -34,6 +25,7 @@ function ShippingContent({ getFieldProps }: { getFieldProps: any }) {
         {...getFieldProps("shippingWillCall")}
         disabled={lock}
       />
+      <LockButton />
     </Box>
   );
 }

@@ -24,19 +24,16 @@ import AuditTable from "common/Audit";
 const useStyle = makeStyles({
   root: {
     height: "100%",
-    "& .red": {
-      backgroundColor: "#F87474",
+    "& .white": {
+      backgroundColor: "#ffffff",
     },
-    "& .blue": {
-      backgroundColor: "#9DD6DF",
-    },
-    "& .green": {
-      backgroundColor: "#AEDBCE",
+    "& .gray": {
+      backgroundColor: "#e3e3e3",
     },
   },
 });
 
-const groupColors = ["red", "blue", "green"];
+const groupColors = ["white", "gray"];
 
 export default function EditTab({
   selectedSo,
@@ -63,7 +60,8 @@ export default function EditTab({
 
   const LICols = useMemo<GridColumns>(
     () => [
-      { field: "group", headerName: "Sort", width: 80 },
+      { field: "group", headerName: "Group", width: 80 },
+      { field: "line", headerName: "Sort", width: 70 },
       {
         field: "itemNo",
         headerName: "Part Number",

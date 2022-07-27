@@ -54,13 +54,14 @@ export const GeneralForm = ({
 }) => {
   const classes = useStyles();
   const phone = useMediaQuery("(max-width:900px)");
+  const tablet = useMediaQuery("(max-width:1500px)");
   const { lock } = useLock();
 
   return (
     <>
       <Box
         display="grid"
-        gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"}
+        gridTemplateColumns={phone ? "1fr 1fr" : tablet ? "1fr 1fr 1fr" : "1fr 1fr 1fr 1fr"}
         gridColumnGap={phone ? 5 : 10}
         gridRowGap={10}
       >
@@ -89,8 +90,17 @@ export const GeneralForm = ({
           onBlur={handleBlur}
           disabled={lock}
         />
+        <AsyncCombo
+          url="/service"
+          label="Warranty"
+          value={values.WarrantyId}
+          filterBy="name"
+          getOptionLabel={(q) => q?.name}
+          getOptionSelected={(o, v) => o.id === v.id}
+          disabled={lock}
+        />
         <TextField value={formatTimestampToDate(values.date)} name="date" label="SO Date" disabled={lock} />
-        <LinkSelect
+        {/* <LinkSelect
           value={typeof values.WarrantyId === "string" ? values.WarrantyId : values.WarrantyId}
           label="Warranty"
           request={async () => {
@@ -107,7 +117,7 @@ export const GeneralForm = ({
           onBlur={handleBlur}
           url="/panel/warranty"
           disabled={lock}
-        />
+        /> */}
         <AsyncCombo
           url="/project"
           label="Project"
@@ -117,7 +127,7 @@ export const GeneralForm = ({
           getOptionSelected={(o, v) => o.id === v.id}
           disabled={lock}
         />
-        <TextField value={values.ProjectId?.location} name="projectLocation" label="Project Location" disabled={lock} />
+        <TextField value={values.ProjectId?.location} name="projectLocation" label="Project Loc." disabled={lock} />
         <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} disabled={lock} />
         <TextField
           value={values.acknowledgeDate}
@@ -134,7 +144,6 @@ export const GeneralForm = ({
           disabled={lock}
         />
         <TextField
-          style={{ gridColumn: "span 2" }}
           value={values.freightTerms}
           name="freightTerms"
           label="Freight Terms"
@@ -145,7 +154,7 @@ export const GeneralForm = ({
           style={{
             padding: "0 0.5em 0 1em",
             backgroundColor: "#eee",
-            gridColumnEnd: "span 4",
+            gridColumnEnd: tablet ? "span 3" : "span 4",
           }}
         >
           <FormControlLabel
@@ -158,7 +167,7 @@ export const GeneralForm = ({
             disabled={lock}
           />
         </Paper>
-        <Box style={{ gridColumnEnd: "span 4", textAlign: "center" }}>
+        <Box style={{ gridColumnEnd: tablet ? "span 3" : "span 4", textAlign: "center" }}>
           <Button kind="add" type="submit" style={{ display: "none" }}>
             Save
           </Button>

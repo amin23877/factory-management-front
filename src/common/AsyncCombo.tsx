@@ -130,6 +130,7 @@ export default function AsyncCombo({
             {...params}
             label={label}
             error={error}
+            InputLabelProps={{ shrink: true }}
             InputProps={{
               ...params.InputProps,
               endAdornment: (

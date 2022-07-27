@@ -145,7 +145,7 @@ export default function LinkField({
                 display: "flex",
                 alignItems: "center",
                 fontSize: "small",
-                cursor: "pointer",
+                cursor: disabled ? "default" : "pointer",
                 padding: "0px 3px",
                 borderTop: "1px solid #ccc",
                 borderRadius: " 4px 0px 0px 4px",

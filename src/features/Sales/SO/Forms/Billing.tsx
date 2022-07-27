@@ -9,16 +9,8 @@ function BillingContent({ getFieldProps }: { getFieldProps: any }) {
 
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 8 }}>
-      <Box gridColumn="span 2" display="flex" alignItems="center">
-        <TextField
-          label="Billing Company"
-          {...getFieldProps("billingCompany")}
-          fullWidth
-          disabled={lock}
-          style={{ marginRight: 8 }}
-        />
-        <LockButton />
-      </Box>
+      <LockButton />
+      <TextField label="Billing Company" {...getFieldProps("billingCompany")} disabled={lock} />
       <TextField label="Billing Attn" {...getFieldProps("billingAttn")} disabled={lock} />
       <TextField label="Billing Address" {...getFieldProps("billingAddress")} disabled={lock} />
       <TextField label="Billing City" {...getFieldProps("billingCity")} disabled={lock} />

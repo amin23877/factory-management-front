@@ -18,16 +18,8 @@ function ApprovalsContent({ getFieldProps, values }: { getFieldProps: any; value
 
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" gridTemplateRows="repeat(4, 1fr)" gridGap={8}>
-      <Box style={{ gridColumn: "span 2", display: "flex", alignItems: "center" }}>
-        <TextField
-          label="Customer PO#"
-          {...getFieldProps("customerPONumber")}
-          style={{ marginRight: 8 }}
-          fullWidth
-          disabled={lock}
-        />
-        <LockButton />
-      </Box>
+      <LockButton />
+      <TextField label="Customer PO#" {...getFieldProps("customerPONumber")} disabled={lock} />
       <TextField
         label="PO Received Date"
         type="date"
@@ -76,7 +68,7 @@ function ApprovalsContent({ getFieldProps, values }: { getFieldProps: any; value
         disabled={lock}
       />
       <TextField
-        label="Released To Production Date"
+        label="Released Date"
         type="date"
         InputLabelProps={{ shrink: true }}
         value={formatDateValue(values?.releasedToProductionDate)}
