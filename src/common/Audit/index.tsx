@@ -12,26 +12,20 @@ const columns = [
     header: "Before",
     type: "string",
     render: ({ data }: any) => {
-      const changeKey = Object.keys(data?.change || {})[0] || "";
-
-      if (typeof data.change[changeKey]?.before === "boolean") {
-        return data.change[changeKey]?.before ? <CheckRounded /> : <ClearRounded />;
+      if (typeof data.change?.before === "boolean") {
+        return data.change?.before ? <CheckRounded /> : <ClearRounded />;
       }
-
-      return <span>{`${data.change[changeKey]?.before}`}</span>;
+      return <span>{`${data.change.before}`}</span>;
     },
   },
   {
     name: "after",
     header: "After",
     render: ({ data }: any) => {
-      const changeKey = Object.keys(data?.change || {})[0] || "";
-
-      if (typeof data.change[changeKey]?.after === "boolean") {
-        return data.change[changeKey]?.after ? <CheckRounded /> : <ClearRounded />;
+      if (typeof data.change?.after === "boolean") {
+        return data.change?.after ? <CheckRounded /> : <ClearRounded />;
       }
-
-      return <span>{`${data.change[changeKey]?.after}`}</span>;
+      return <span>{`${data.change?.after}`}</span>;
     },
   },
 ];

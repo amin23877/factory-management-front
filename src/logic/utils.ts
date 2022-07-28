@@ -72,3 +72,16 @@ export function groupBy<K, V>(list: Array<V>, keyGetter: (input: V) => K): Map<K
   });
   return map;
 }
+
+export function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export function CamelCaseToRegular(name: string) {
+  var words = name.match(/[A-Za-z][a-z]*/g) || [];
+  return words.map(capitalize).join(" ");
+}
+
+function capitalize(word: string) {
+  return word.charAt(0).toUpperCase() + word.substring(1);
+}

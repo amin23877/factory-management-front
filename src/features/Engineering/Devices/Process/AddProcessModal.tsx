@@ -9,6 +9,7 @@ import { mutate } from "swr";
 import { General } from "./Forms";
 import { Box } from "@material-ui/core";
 import { createProcess, IProcess } from "api/process";
+import { capitalizeFirstLetter } from "logic/utils";
 
 export default function AddProcessModal({
   open,
@@ -33,7 +34,13 @@ export default function AddProcessModal({
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth title={`Add New ${type} Process`}>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="sm"
+      fullWidth
+      title={`Add New ${capitalizeFirstLetter(type)} Process`}
+    >
       <Formik initialValues={{} as IProcess} onSubmit={handleSubmit}>
         {({ errors, touched, values, handleChange, handleBlur, setFieldValue }) => (
           <Form>

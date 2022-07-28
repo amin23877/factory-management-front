@@ -5,7 +5,6 @@ import Dialog from "app/Dialog";
 import Toast from "app/Toast";
 import Button from "app/Button";
 
-import { mutate } from "swr";
 import { General } from "./Forms";
 import { Box, Tooltip } from "@material-ui/core";
 import BaseDataGrid from "app/BaseDataGrid";
@@ -29,6 +28,10 @@ export default function AddTaskListModal({
 
   const handleSubmit = async (data: any) => {
     try {
+      let newType = data.type;
+      newType = newType.split(" ");
+      newType[0] = newType[0].toLowerCase();
+      data.type = newType.join("");
       await createTask({ ...data, relatedParts: items.map((i: any) => i.id) });
       Toast("Task added successfully", "success");
       setRefresh((refresh: number) => refresh + 1);

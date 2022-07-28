@@ -1,4 +1,4 @@
-import { Box } from "@material-ui/core";
+import { Box, Tooltip } from "@material-ui/core";
 import { AddRounded, DeleteRounded, EditRounded, SearchRounded } from "@material-ui/icons";
 import { deleteProcess, IProcess } from "api/process";
 import NewDataGrid from "app/NewDataGrid";
@@ -43,9 +43,9 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
   const processCols = useMemo(
     () => [
       {
-        name: "actions",
-        header: "",
-        defaultWidth: 80,
+        name: "title",
+        header: "Title",
+        minWidth: 200,
         render: ({ data }: any) => {
           return (
             <Box display="flex" alignItems="center" style={{ gap: 4 }}>
@@ -80,11 +80,15 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
                   style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#e71414", cursor: lock ? "auto" : "pointer" }}
                 />
               </div>
+              <div>
+                <Tooltip title={data.title}>
+                  <span>{data.title}</span>
+                </Tooltip>
+              </div>
             </Box>
           );
         },
       },
-      { name: "title", header: "Title", width: 120 },
       { name: "description", header: "Description", flex: 1 },
       { name: "realeased", header: "Released", width: 80, type: "boolean" },
       {

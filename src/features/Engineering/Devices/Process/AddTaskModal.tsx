@@ -22,6 +22,7 @@ import { createSubProcess, deleteSubProcess, IProcess, ITask } from "api/process
 import Confirm from "common/Confirm";
 import { Form, Formik } from "formik";
 import { SubProcess } from "./Forms";
+import { capitalizeFirstLetter } from "logic/utils";
 
 export default function AddTaskModal({
   open,
@@ -108,7 +109,13 @@ export default function AddTaskModal({
   ];
 
   return (
-    <Dialog title={`Add / Edit ${type} Tasks`} open={open} onClose={onClose} fullWidth maxWidth="lg">
+    <Dialog
+      title={`Add / Edit ${capitalizeFirstLetter(type)} Tasks`}
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="lg"
+    >
       {selectedTask && (
         <Dialog
           title={"Set Step"}
@@ -154,8 +161,8 @@ export default function AddTaskModal({
             </Typography>
             <List style={{ height: "80%", overflow: "auto" }}>
               {tasks?.tasks &&
-                tasks?.tasks.map((i) => (
-                  <ListItem key={i.id}>
+                tasks?.tasks.map((i, idx) => (
+                  <ListItem key={i.id} style={{ padding: "0px 16px", background: idx % 2 === 0 ? "white" : "#e3e3e3" }}>
                     <ListItemText
                       primary={i.majorStep + "." + i.minorStep + " " + i.task?.title}
                       secondary={i.task?.instruction}

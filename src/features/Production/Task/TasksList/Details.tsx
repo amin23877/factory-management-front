@@ -10,7 +10,7 @@ import Toast from "app/Toast";
 
 import DocumentTab from "common/Document/Tab";
 
-import { getModifiedValues } from "logic/utils";
+import { CamelCaseToRegular, getModifiedValues } from "logic/utils";
 
 import { changeTask, ITaskList } from "api/taskList";
 import { LockButton, useLock } from "common/Lock";
@@ -22,6 +22,10 @@ function ServiceDetails({ taskList }: { taskList: ITaskList }) {
   const handleSubmit = async (data: any) => {
     try {
       if (taskList.id) {
+        let newType = data.type;
+        newType = newType.split(" ");
+        newType[0] = newType[0].toLowerCase();
+        data.type = newType.join("");
         await changeTask(taskList.id, getModifiedValues(data, taskList));
         await mutate("/task");
         Toast("Updated successfully.", "success");
@@ -74,10 +78,20 @@ function ServiceDetails({ taskList }: { taskList: ITaskList }) {
   );
 
   return (
-    <Box display="grid" gridTemplateColumns="1fr 2fr " gridGap={10}>
-      <Formik initialValues={taskList} onSubmit={handleSubmit}>
-        {({ values, errors, handleChange, handleBlur, setFieldValue, touched }) => (
-          <Form>
+    <Formik
+      initialValues={{ ...taskList, type: CamelCaseToRegular(taskList.type) }}
+      onSubmit={handleSubmit}
+      enableReinitialize
+    >
+      {({ values, errors, handleChange, handleBlur, setFieldValue, touched, handleSubmit }) => (
+        <Form
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              handleSubmit();
+            }
+          }}
+        >
+          <Box display="grid" gridTemplateColumns="1fr 2fr " gridGap={10}>
             <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
               <BasePaper>
                 <General
@@ -93,35 +107,36 @@ function ServiceDetails({ taskList }: { taskList: ITaskList }) {
                 </Box>
               </BasePaper>
             </Box>
-          </Form>
-        )}
-      </Formik>
-      <BasePaper>
-        <Tabs value={gridActiveTab} onChange={(e, nv) => setGridActiveTab(nv)}>
-          <Tab label="parts" />
-          <Tab label="Documents" />
-        </Tabs>
-        {gridActiveTab === 0 && (
-          <Box mt={1}>
-            <Box mb={1} display="flex" justifyContent={"space-between"} width="100%">
-              <Button variant="outlined" onClick={() => setAddPart(true)} disabled={lock}>
-                Add / Edit Related Parts
-              </Button>
-            </Box>
-            <AddPartModal
-              open={addPart}
-              onClose={() => setAddPart(false)}
-              parts={parts}
-              setParts={setParts}
-              edit
-              taskListId={taskList.id}
-            />
-            <BaseDataGrid rows={items || []} cols={cols} />
+
+            <BasePaper>
+              <Tabs value={gridActiveTab} onChange={(e, nv) => setGridActiveTab(nv)}>
+                <Tab label="parts" />
+                <Tab label="Documents" />
+              </Tabs>
+              {gridActiveTab === 0 && (
+                <Box mt={1}>
+                  <Box mb={1} display="flex" justifyContent={"space-between"} width="100%">
+                    <Button variant="outlined" onClick={() => setAddPart(true)} disabled={lock}>
+                      Add / Edit Related Parts
+                    </Button>
+                  </Box>
+                  <AddPartModal
+                    open={addPart}
+                    onClose={() => setAddPart(false)}
+                    parts={parts}
+                    setParts={setParts}
+                    edit
+                    taskListId={taskList.id}
+                  />
+                  <BaseDataGrid rows={items || []} cols={cols} />
+                </Box>
+              )}
+              {gridActiveTab === 1 && <DocumentTab itemId={taskList.id} model="taskList" />}
+            </BasePaper>
           </Box>
-        )}
-        {gridActiveTab === 1 && <DocumentTab itemId={taskList.id} model="taskList" />}
-      </BasePaper>
-    </Box>
+        </Form>
+      )}
+    </Formik>
   );
 }
 

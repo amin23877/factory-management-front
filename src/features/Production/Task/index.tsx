@@ -81,7 +81,7 @@ function Index() {
           </Tabs>
           <div style={{ flexGrow: 1 }} />
           {true && (
-            <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
+            <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", margin: "5px" }}>
               <>
                 <ListItem>
                   <IconButton title="Add" onClick={() => setAddTaskListModal(true)}>

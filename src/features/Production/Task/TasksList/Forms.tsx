@@ -57,7 +57,7 @@ export const General = ({
         <ArraySelect
           fullWidth
           label="Type"
-          items={["manufacturing", "evaluation", "test", "fieldStartUp"]}
+          items={["Manufacturing", "Evaluation", "Test", "Field Start Up"]}
           name="type"
           value={values.type}
           onChange={handleChange}

@@ -9,7 +9,7 @@ import SubProcessModal from "./AddTaskModal";
 import Dialog from "app/Dialog";
 import useSWR, { mutate } from "swr";
 import ShowPartsModal from "./ShowPartsModal";
-
+import { capitalizeFirstLetter } from "logic/utils";
 
 interface IEditTaskModal {
   open: boolean;
@@ -50,7 +50,13 @@ export default function TasksModal({ open, onClose, ItemId, process, type }: IEd
   }, [tasks]);
   return (
     <>
-      <Dialog title={`${type} Process Tasks`} open={open} onClose={onClose} maxWidth="lg" fullWidth>
+      <Dialog
+        title={`${capitalizeFirstLetter(type + "")} Process Tasks`}
+        open={open}
+        onClose={onClose}
+        maxWidth="lg"
+        fullWidth
+      >
         <Box display="grid" gridTemplateColumns={"1fr"} gridGap={10}>
           <Box>
             <Button onClick={() => setAddTask(true)} kind="add" style={{ marginBottom: "10px" }}>

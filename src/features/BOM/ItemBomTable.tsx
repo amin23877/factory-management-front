@@ -1,5 +1,5 @@
 import React, { useMemo, useState, useCallback } from "react";
-import { useMediaQuery } from "@material-ui/core";
+import { Tooltip, useMediaQuery } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 
 // import DataGrid from "@inovua/reactdatagrid-community";
@@ -65,9 +65,9 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
   const columns = useMemo(
     () => [
       {
-        name: "actions",
-        header: "",
-        defaultWidth: 80,
+        name: "items",
+        header: "Items",
+        defaultWidth: 180,
         render: ({ data }: any) => {
           return (
             <Box display="flex" alignItems="center" style={{ gap: 4 }}>
@@ -99,11 +99,15 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
                   style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#e71414", cursor: lock ? "auto" : "pointer" }}
                 />
               </div>
+              <div>
+                <Tooltip title={data.items}>
+                  <span>{data.items}</span>
+                </Tooltip>
+              </div>
             </Box>
           );
         },
       },
-      { name: "items", header: "Items", defaultWidth: 100 },
       { header: "Rev No.", name: "no", defaultWidth: 100 },
       {
         header: "Revision Date",
