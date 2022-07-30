@@ -4,7 +4,7 @@ import { ClearRounded, CheckRounded } from "@material-ui/icons";
 
 const columns = [
   { name: "type", header: "Type", maxWidth: 100 },
-  { name: "employee", header: "Employee", render: ({ data }: any) => data.EmployeeId.username, width: 120 },
+  { name: "employee", header: "Employee", render: ({ data }: any) => data?.EmployeeId?.username, width: 120 },
   { name: "createdAt", header: "Date", type: "date", maxWidth: 120 },
   { name: "change", header: "Change", render: ({ data }: any) => Object.keys(data?.change || {})[0] || "" },
   {

@@ -47,12 +47,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
         selectedLine={selectedLI}
       />
 
-      <Box
-        display="grid"
-        gridGap={10}
-        gridTemplateColumns={phone ? "1fr" : "3fr 4fr"}
-        height={phone ? "" : "calc(100vh - 200px)"}
-      >
+      <Box display="grid" gridGap={10} gridTemplateColumns={phone ? "1fr" : "3fr 4fr"}>
         <EditForm selectedQuote={selectedQuote} />
         <BasePaper style={phone ? { height: "80vh" } : { height: "100%" }}>
           <Tabs

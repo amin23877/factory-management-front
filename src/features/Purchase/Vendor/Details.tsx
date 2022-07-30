@@ -63,12 +63,7 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
   const phone = useMediaQuery("(max-width:900px)");
 
   return (
-    <Box
-      display="grid"
-      gridGap={10}
-      gridTemplateColumns={phone ? "1fr" : "2fr 3fr"}
-      height={phone ? "" : "calc(100vh - 160px)"}
-    >
+    <Box display="grid" gridGap={10} gridTemplateColumns={phone ? "1fr" : "2fr 3fr"}>
       <UpdateVendorForm initialValues={vendor} />
       <BasePaper>
         <Tabs

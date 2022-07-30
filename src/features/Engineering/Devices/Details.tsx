@@ -181,12 +181,7 @@ function DeviceDetails({
       <Formik initialValues={selectedRow} onSubmit={handleSubmit}>
         {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
           <Form>
-            <Box
-              display="grid"
-              gridGap={10}
-              gridTemplateColumns={phone ? "1fr" : "5fr 7fr"}
-              height={phone ? "" : "calc(100vh - 165px)"}
-            >
+            <Box display="grid" gridGap={10} gridTemplateColumns={phone ? "1fr" : "5fr 7fr"}>
               <Box display="flex" flexDirection="column" style={phone ? { gap: 10 } : { gap: 10, height: "100%" }}>
                 <BasePaper>
                   <General

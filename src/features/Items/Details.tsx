@@ -233,7 +233,6 @@ function ItemsDetails({
               gridTemplateRows={phone ? "" : "1fr"}
               gridGap={10}
               flex={1}
-              height={phone ? "" : "calc(100vh - 160px)"}
             >
               <Box display="flex" flexDirection="column" gridGap={5} height={phone ? "" : "100%"}>
                 <BasePaper>

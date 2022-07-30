@@ -176,7 +176,7 @@ export default function EditTab({
       display="grid"
       gridGap={10}
       gridTemplateColumns={phone ? "1fr" : "3fr 4fr"}
-      height={phone ? "" : "calc(100vh - 200px)"}
+      // height={phone ? "" : "calc(100vh - 200px)"}
     >
       <EditForm selectedSo={selectedSo} />
       <BasePaper style={{ paddingTop: "0px" }}>

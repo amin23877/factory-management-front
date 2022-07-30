@@ -16,12 +16,7 @@ export default function Details({ poData, onDone }: { poData: customerPoType; on
   const phone = useMediaQuery("(max-width:900px)");
 
   return (
-    <Box
-      display="grid"
-      gridGap={10}
-      gridTemplateColumns={phone ? "1fr" : "3fr 4fr"}
-      height={phone ? "" : "calc(100vh - 200px)"}
-    >
+    <Box display="grid" gridGap={10} gridTemplateColumns={phone ? "1fr" : "3fr 4fr"}>
       <EditForm poData={poData} onDone={onDone} />
       <BasePaper>
         <Tabs

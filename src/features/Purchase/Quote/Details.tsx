@@ -7,7 +7,6 @@ import { GridColumns } from "@material-ui/data-grid";
 
 import TextField from "app/TextField";
 import { FieldSelect } from "app/Inputs";
-import Button from "app/Button";
 import { BasePaper } from "app/Paper";
 
 import { getVendors } from "api/vendor";
@@ -59,12 +58,7 @@ export default function Details({ onDone, initialValues }: { onDone?: () => void
   const phone = useMediaQuery("(max-width:900px)");
 
   return (
-    <Box
-      display="grid"
-      gridTemplateColumns={phone ? "1fr" : "1fr 3fr"}
-      height={phone ? "" : "calc(100vh - 155px)"}
-      gridGap={10}
-    >
+    <Box display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 3fr"} gridGap={10}>
       <BasePaper>
         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
           {({ values, errors, handleChange, handleBlur }: any) => (

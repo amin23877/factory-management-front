@@ -72,12 +72,7 @@ export default function Details({ selectedPO, onDone }: { selectedPO: IPurchaseP
 
   return (
     <>
-      <Box
-        display="grid"
-        gridTemplateColumns={phone ? "1fr" : "3fr 4fr"}
-        gridGap={10}
-        height={phone ? "" : "calc(100vh - 160px)"}
-      >
+      <Box display="grid" gridTemplateColumns={phone ? "1fr" : "3fr 4fr"} gridGap={10}>
         <Formik initialValues={selectedPO} onSubmit={handleSubmit}>
           {({ values, handleChange, handleBlur, errors, setFieldValue }) => (
             <Box display="flex" flexDirection="column" height={phone ? "" : "100%"} gridGap={10}>
