@@ -5,7 +5,7 @@ import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 import * as Yup from "yup";
 
-import QRCode from "./QRCode";
+import QRCode from "common/QRCode/UnitQRCode";
 import { General, UnitInfo } from "./Forms";
 import UnitWorkFlow, { ProductionWorkFlow } from "./WorkFlows";
 

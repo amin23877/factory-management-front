@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Box, Tabs, Tab, Tooltip, Button } from "@material-ui/core";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Box, Tabs, Tab, Tooltip, Button, useMediaQuery } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import { mutate } from "swr";
 
@@ -17,6 +17,9 @@ import { LockButton, useLock } from "common/Lock";
 import AddPartModal from "./AddPartModal";
 import BaseDataGrid from "app/BaseDataGrid";
 import { GridColumns } from "@material-ui/data-grid";
+import PhotoTab from "common/PhotoTab";
+import { useHistory } from "react-router-dom";
+import { openRequestedSinglePopup } from "logic/window";
 
 function ServiceDetails({ taskList }: { taskList: ITaskList }) {
   const handleSubmit = async (data: any) => {
@@ -36,10 +39,16 @@ function ServiceDetails({ taskList }: { taskList: ITaskList }) {
   };
 
   const [gridActiveTab, setGridActiveTab] = useState(0);
+  const [moreInfoTab, setMoreInfoTab] = useState(0);
+
   const [addPart, setAddPart] = useState(false);
   const [parts, setParts] = useState<any>(null);
   const [items, setItems] = useState<any>(taskList.relatedParts);
+
+  const history = useHistory();
+  const phone = useMediaQuery("(max-width:900px)");
   const { lock } = useLock();
+
   useEffect(() => {
     if (parts) {
       const newArray = parts?.map((item: any) => item.item);
@@ -77,6 +86,19 @@ function ServiceDetails({ taskList }: { taskList: ITaskList }) {
     []
   );
 
+  const handleRowSelect = useCallback(
+    (r: any) => {
+      const url = `/panel/inventory/${r?.id}`;
+      if (r.id && phone) {
+        history.push(url);
+      } else if (r.id && !phone) {
+        openRequestedSinglePopup({ url });
+      }
+      return;
+    },
+    [history, phone]
+  );
+
   return (
     <Formik
       initialValues={{ ...taskList, type: CamelCaseToRegular(taskList.type) }}
@@ -102,9 +124,22 @@ function ServiceDetails({ taskList }: { taskList: ITaskList }) {
                   handleChange={handleChange}
                   setFieldValue={setFieldValue}
                 />
-                <Box textAlign="center" my={1}>
+                <Box textAlign="center" mt={1}>
                   <LockButton />
                 </Box>
+              </BasePaper>
+              <BasePaper>
+                <Tabs
+                  value={moreInfoTab}
+                  variant="scrollable"
+                  scrollButtons={phone ? "on" : "auto"}
+                  style={phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: 16 } : { marginBottom: 16 }}
+                  textColor="primary"
+                  onChange={(e, v) => setMoreInfoTab(v)}
+                >
+                  <Tab label="Image" />
+                </Tabs>
+                {moreInfoTab === 0 && <PhotoTab model="task" id={taskList.id} />}
               </BasePaper>
             </Box>
 
@@ -128,10 +163,10 @@ function ServiceDetails({ taskList }: { taskList: ITaskList }) {
                     edit
                     taskListId={taskList.id}
                   />
-                  <BaseDataGrid rows={items || []} cols={cols} />
+                  <BaseDataGrid rows={items || []} onRowSelected={handleRowSelect} cols={cols} />
                 </Box>
               )}
-              {gridActiveTab === 1 && <DocumentTab itemId={taskList.id} model="taskList" />}
+              {gridActiveTab === 1 && <DocumentTab itemId={taskList.id} model="task" />}
             </BasePaper>
           </Box>
         </Form>

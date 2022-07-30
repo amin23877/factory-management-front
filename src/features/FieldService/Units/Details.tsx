@@ -29,6 +29,7 @@ import DeviceQRCode from "app/QRCode";
 import { useLock, LockButton, LockProvider } from "common/Lock";
 import { exportPdf } from "logic/pdf";
 import AuditTable from "common/Audit";
+import QRCode from "common/QRCode/UnitQRCode";
 
 const schema = Yup.object().shape({});
 
@@ -172,28 +173,29 @@ function Details({ unit }: { unit: IUnit }) {
                     </Box>
                   )}
                   {infoActiveTab === 1 && (
-                    <Box display="flex" justifyContent="space-around" alignItems="center" maxWidth="83vw">
-                      <div ref={(e) => (qrCode.current = e)}>
-                        <DeviceQRCode
-                          value={JSON.stringify({
-                            type: "device",
-                            no: unit.ItemId.no,
-                          })}
-                        />
-                        <Typography variant="subtitle1">Device Number: {unit.ItemId.no}</Typography>
-                        <Typography variant="subtitle1">Device Name: {unit.ItemId.name}</Typography>
-                      </div>
-                      <Button
-                        variant="contained"
-                        onClick={async () => {
-                          if (qrCode.current) {
-                            await exportPdf(qrCode.current);
-                          }
-                        }}
-                      >
-                        Print
-                      </Button>
-                    </Box>
+                    // <Box display="flex" justifyContent="space-around" alignItems="center" maxWidth="83vw">
+                    //   <div ref={(e) => (qrCode.current = e)}>
+                    //     <DeviceQRCode
+                    //       value={JSON.stringify({
+                    //         type: "device",
+                    //         no: unit.ItemId.no,
+                    //       })}
+                    //     />
+                    //     <Typography variant="subtitle1">Device Number: {unit.ItemId.no}</Typography>
+                    //     <Typography variant="subtitle1">Device Name: {unit.ItemId.name}</Typography>
+                    //   </div>
+                    //   <Button
+                    //     variant="contained"
+                    //     onClick={async () => {
+                    //       if (qrCode.current) {
+                    //         await exportPdf(qrCode.current);
+                    //       }
+                    //     }}
+                    //   >
+                    //     Print
+                    //   </Button>
+                    // </Box>
+                    <QRCode unit={unit} />
                   )}
                   {infoActiveTab === 2 && (
                     <LockProvider>
