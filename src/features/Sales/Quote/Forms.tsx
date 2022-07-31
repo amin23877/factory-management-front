@@ -272,7 +272,7 @@ export const GeneralForm = ({
         />
         <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} disabled={lock} />
         <Button kind="edit" onClick={() => setAddPo(true)} disabled={lock}>
-          Create Customer PO
+          Import PO
         </Button>
         <TextField
           value={values.note}

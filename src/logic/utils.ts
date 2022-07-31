@@ -77,7 +77,7 @@ export function capitalizeFirstLetter(string: string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-export function CamelCaseToRegular(name: string) {
+export function camelCaseToRegular(name: string) {
   var words = name.match(/[A-Za-z][a-z]*/g) || [];
   return words.map(capitalize).join(" ");
 }

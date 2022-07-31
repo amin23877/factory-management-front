@@ -56,27 +56,31 @@ function PhotoTabContent({ id, model }: { model: string; id: string }) {
         <LockButton />
       </Box>
       <Box mt={1} display="flex" justifyContent="center" alignItems="center" flexDirection="column" gridGap={10}>
-        {photos && photos.length > 0 && (
-          <Box position="relative">
-            <IconButton
-              onClick={() => handleDeletePhoto(photos[0].id)}
-              style={{ position: "absolute", background: "#dbdbdb", right: 0, padding: 4 }}
-              disabled={lock}
-            >
-              <DeleteRounded />
-            </IconButton>
-            <img
-              style={{
-                maxWidth: "100%",
-                height: "auto",
-                maxHeight: 100,
-                margin: "0px auto",
-              }}
-              alt=""
-              src={img ? img : `${host}${photos[0].path}`}
-            />
-          </Box>
-        )}
+        <Box display="flex" justifyContent="center" alignItems="center" gridGap={10} width="100%" flexWrap={"wrap"}>
+          {photos &&
+            photos.length > 0 &&
+            photos.map((photo) => (
+              <Box position="relative">
+                <IconButton
+                  onClick={() => handleDeletePhoto(photo.id)}
+                  style={{ position: "absolute", background: "#dbdbdb", right: 0, padding: 4 }}
+                  disabled={lock}
+                >
+                  <DeleteRounded />
+                </IconButton>
+                <img
+                  style={{
+                    maxWidth: "100%",
+                    height: "auto",
+                    maxHeight: 100,
+                    margin: "0px auto",
+                  }}
+                  alt=""
+                  src={img ? img : `${host}${photo.path}`}
+                />
+              </Box>
+            ))}
+        </Box>
         <div
           style={{
             display: "flex",

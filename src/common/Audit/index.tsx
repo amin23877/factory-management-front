@@ -1,12 +1,13 @@
 import React from "react";
 import NewDataGrid from "app/NewDataGrid";
 import { ClearRounded, CheckRounded } from "@material-ui/icons";
+import { camelCaseToRegular } from "logic/utils";
 
 const columns = [
   { name: "type", header: "Type", maxWidth: 100 },
   { name: "employee", header: "Employee", render: ({ data }: any) => data?.EmployeeId?.username, width: 120 },
   { name: "createdAt", header: "Date", type: "date", maxWidth: 120 },
-  { name: "change", header: "Change", render: ({ data }: any) => Object.keys(data?.change || {})[0] || "" },
+  { name: "change", header: "Change", render: ({ data }: any) => camelCaseToRegular(data.change?.field) },
   {
     name: "before",
     header: "Before",

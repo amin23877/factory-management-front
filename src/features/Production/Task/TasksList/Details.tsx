@@ -10,7 +10,7 @@ import Toast from "app/Toast";
 
 import DocumentTab from "common/Document/Tab";
 
-import { CamelCaseToRegular, getModifiedValues } from "logic/utils";
+import { camelCaseToRegular, getModifiedValues } from "logic/utils";
 
 import { changeTask, ITaskList } from "api/taskList";
 import { LockButton, useLock } from "common/Lock";
@@ -101,7 +101,7 @@ function ServiceDetails({ taskList }: { taskList: ITaskList }) {
 
   return (
     <Formik
-      initialValues={{ ...taskList, type: CamelCaseToRegular(taskList.type) }}
+      initialValues={{ ...taskList, type: camelCaseToRegular(taskList.type) }}
       onSubmit={handleSubmit}
       enableReinitialize
     >
