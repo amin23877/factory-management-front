@@ -75,12 +75,7 @@ export default function ClientDetails({
         {({ values, errors, touched, handleChange, handleBlur }) => (
           <Form>
             {/* <Box display="flex" style={{ gap: 10 }} flexDirection={phone ? "column" : "row"}> */}
-            <Box
-              display="grid"
-              gridGap={10}
-              gridTemplateColumns={phone ? "1fr" : "3fr 4fr"}
-              height={phone ? "" : "calc(100vh - 200px)"}
-            >
+            <Box display="grid" gridGap={10} gridTemplateColumns={phone ? "1fr" : "3fr 4fr"}>
               <Box>
                 <Box display="flex" flexDirection="column" style={phone ? { gap: 10 } : { gap: 10, height: "100%" }}>
                   <BasePaper>

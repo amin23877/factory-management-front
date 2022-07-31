@@ -11,6 +11,7 @@ import { getModifiedValues } from "logic/utils";
 import { GeneralForm } from "./Forms";
 import Shipping from "./Forms/Shipping";
 import Billing from "./Forms/Billing";
+import Summary from "./Forms/Summary";
 import Approvals from "./Forms/Approvals";
 import Entities from "./Forms/Entities";
 
@@ -56,14 +57,16 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                 variant="scrollable"
                 style={phone ? { maxWidth: "calc(100vw - 80px)" } : { maxWidth: 700 }}
               >
+                <Tab label="summary" />
                 <Tab label="Approvals" />
                 <Tab label="Entities" />
                 <Tab label="Shipping" />
                 <Tab label="Billing" />
               </Tabs>
               <Box pt={2}>
-                {activeTab === 0 && <Approvals values={values} getFieldProps={getFieldProps} />}
-                {activeTab === 1 && (
+                {activeTab === 0 && <Summary values={values} getFieldProps={getFieldProps} />}
+                {activeTab === 1 && <Approvals values={values} getFieldProps={getFieldProps} />}
+                {activeTab === 2 && (
                   <Entities
                     values={values}
                     handleChange={handleChange}
@@ -71,8 +74,8 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
                     setFieldValue={setFieldValue}
                   />
                 )}
-                {activeTab === 2 && <Shipping getFieldProps={getFieldProps} />}
-                {activeTab === 3 && <Billing getFieldProps={getFieldProps} />}
+                {activeTab === 3 && <Shipping getFieldProps={getFieldProps} />}
+                {activeTab === 4 && <Billing getFieldProps={getFieldProps} />}
                 {/* {activeTab === 0 && (
                   <ApprovalForm
                     setFieldValue={setFieldValue}

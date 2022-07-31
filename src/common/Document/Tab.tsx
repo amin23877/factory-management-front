@@ -64,10 +64,8 @@ function DocumentTabContent({ itemId, model }: { model: string; itemId: string }
           cols={columns}
           rows={data || []}
           onRowSelected={(r) => {
-            if (!lock) {
-              setSelected(r);
-              setAddModal(true);
-            }
+            setSelected(r);
+            setAddModal(true);
           }}
         />
       </Box>

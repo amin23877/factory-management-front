@@ -10,7 +10,7 @@ const columns = [
     minWidth: 100,
     type: "date",
   },
-  { name: "number", header: "SO ID", minWidth: 100 },
+  { name: "number", header: "SO NO.", minWidth: 100 },
   { name: "Client", minWidth: 100, render: ({ data }: any) => data?.ClientId?.name },
   { name: "description", header: "Description", minWidth: 150 },
   { name: "Rep", minWidth: 130, render: ({ data }: any) => data?.RepId?.name },

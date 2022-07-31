@@ -20,19 +20,16 @@ const useStyle = makeStyles({
   },
   root: {
     height: "100%",
-    "& .red": {
-      backgroundColor: "#F87474",
+    "& .white": {
+      backgroundColor: "#ffffff",
     },
-    "& .blue": {
-      backgroundColor: "#9DD6DF",
-    },
-    "& .green": {
-      backgroundColor: "#AEDBCE",
+    "& .gray": {
+      backgroundColor: "#e3e3e3",
     },
   },
 });
 
-const groupColors = ["red", "blue", "green"];
+const groupColors = ["gray", "white"];
 
 function LineItemsContent({ quote, onAddLineItem }: { quote: IQuote; onAddLineItem: () => void }) {
   const classes = useStyle();

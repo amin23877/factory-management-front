@@ -163,7 +163,7 @@ export default function Customers() {
               />
             </div>
 
-            <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
+            <div style={activeTab !== 2 ? { display: "none" } : { flex: 1 }}>
               <CustomerDataGrid
                 url="/client"
                 params={{ approved: false }}

@@ -42,6 +42,7 @@ export const GeneralForm = ({
 }) => {
   const { lock } = useLock();
   const phone = useMediaQuery("(max-width:900px)");
+  const tablet = useMediaQuery("(max-width:1500px)");
 
   const handleApprove = async () => {
     const resp = await editClient(cId, { approved: true });
@@ -101,13 +102,32 @@ export const GeneralForm = ({
             disabled={lock}
           />
         )}
+        <FormControl
+          style={
+            phone
+              ? { display: "flex", gridColumnEnd: "span 2", alignItems: "center", flexDirection: "row" }
+              : {
+                  display: "flex",
+                  gridColumnEnd: "span 4",
+                  alignItems: "center",
+                  flexDirection: "row",
+                }
+          }
+        >
+          <FormLabel style={{ marginRight: "10px" }}>Size</FormLabel>
+          <RadioGroup row name="size" value={values.size} onChange={handleChange}>
+            <FormControlLabel value="small" control={<Radio size="small" />} label="Small" disabled={lock} />
+            <FormControlLabel value="medium" control={<Radio size="small" />} label="Medium" disabled={lock} />
+            <FormControlLabel value="large" control={<Radio size="small" />} label="Large" disabled={lock} />
+          </RadioGroup>
+        </FormControl>
       </Paper>
       <Box
         mb={1}
         display="grid"
         gridColumnGap={10}
         gridRowGap={10}
-        gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"}
+        gridTemplateColumns={phone ? "1fr 1fr" : tablet ? "1fr 1fr 1fr" : "1fr 1fr 1fr 1fr"}
       >
         <CacheFieldSelect
           url="/clientType"
@@ -183,26 +203,6 @@ export const GeneralForm = ({
           label="Ext"
           disabled={lock}
         />
-
-        <FormControl
-          style={
-            phone
-              ? { display: "flex", gridColumnEnd: "span 2", alignItems: "center", flexDirection: "row" }
-              : {
-                  display: "flex",
-                  gridColumnEnd: "span 4",
-                  alignItems: "center",
-                  flexDirection: "row",
-                }
-          }
-        >
-          <FormLabel style={{ marginRight: "10px" }}>Size</FormLabel>
-          <RadioGroup row name="size" value={values.size} onChange={handleChange}>
-            <FormControlLabel value="small" control={<Radio size="small" />} label="Small" disabled={lock} />
-            <FormControlLabel value="medium" control={<Radio size="small" />} label="Medium" disabled={lock} />
-            <FormControlLabel value="large" control={<Radio size="small" />} label="Large" disabled={lock} />
-          </RadioGroup>
-        </FormControl>
       </Box>
     </>
   );
