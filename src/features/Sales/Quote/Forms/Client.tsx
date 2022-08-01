@@ -44,12 +44,6 @@ export default function Client({
         style={{ gridColumnStart: "span 2" }}
         InputLabelProps={{ shrink: true }}
       />
-      <FormControlLabel label="No Tax Client" control={<Checkbox />} style={{ gridColumnStart: "span 2" }} />
-      <FormControlLabel
-        label="Call 24 hours before delivery"
-        control={<Checkbox />}
-        style={{ gridColumnStart: "span 2" }}
-      />
     </Box>
   );
 }

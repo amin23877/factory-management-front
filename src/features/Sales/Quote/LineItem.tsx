@@ -62,8 +62,8 @@ function LineItemsContent({ quote, onAddLineItem }: { quote: IQuote; onAddLineIt
 
   return (
     <>
-      <Box display="flex" alignItems="center" justifyContent="space-between">
-        <Button onClick={onAddLineItem} className={classes.btn} disabled={lock}>
+      <Box display="flex" alignItems="center" justifyContent="space-between" mb={1}>
+        <Button onClick={onAddLineItem} variant="outlined" disabled={lock}>
           + Add Line Item
         </Button>
         <LockButton />

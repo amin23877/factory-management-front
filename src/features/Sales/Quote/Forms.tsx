@@ -9,6 +9,8 @@ import {
   Radio,
   useMediaQuery,
   LinearProgress,
+  Paper,
+  Checkbox,
 } from "@material-ui/core";
 
 import DateTimePicker from "app/DateTimePicker";
@@ -271,7 +273,7 @@ export const GeneralForm = ({
           disabled={lock}
         />
         <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} disabled={lock} />
-        <Button kind="edit" onClick={() => setAddPo(true)} disabled={lock}>
+        <Button variant="outlined" onClick={() => setAddPo(true)} disabled={lock}>
           Import PO
         </Button>
         <TextField
@@ -284,6 +286,17 @@ export const GeneralForm = ({
           rows={3}
           disabled={lock}
         />
+        <Paper
+          style={{
+            padding: "0 0.5em 0 1em",
+            backgroundColor: "#eee",
+            gridColumnEnd: "span 3",
+          }}
+        >
+          {" "}
+          <FormControlLabel label="No Tax Client" control={<Checkbox />} disabled={lock} />
+          <FormControlLabel label="Call 24 hours before delivery" control={<Checkbox />} disabled={lock} />
+        </Paper>
       </Box>
     </>
   );
