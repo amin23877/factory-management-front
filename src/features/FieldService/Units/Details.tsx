@@ -109,7 +109,7 @@ function Details({ unit }: { unit: IUnit }) {
       {unit && unit.id && selectedShip && (
         <EditShipModal open={editShip} onClose={() => setEditShip(false)} unitId={unit.id} init={selectedShip} />
       )}
-      <Box display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 2fr"} gridGap={10} height="calc(100vh - 160px)">
+      <Box display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 2fr"} gridGap={10}>
         <Formik initialValues={unit as IUnit} validationSchema={schema} onSubmit={handleSubmit}>
           {({ values, errors, handleChange, handleBlur, isSubmitting, setFieldValue, touched }) => (
             <Form>

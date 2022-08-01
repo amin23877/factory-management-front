@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Tabs, Tab, Box, useMediaQuery } from "@material-ui/core";
+import { Tabs, Tab, Box, useMediaQuery, makeStyles } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 
 import BaseDataGrid from "app/BaseDataGrid";
@@ -11,18 +11,36 @@ import NoteTab from "common/Note/Tab";
 import DocumentTab from "common/Document/Tab";
 
 import { IQuote } from "api/quote";
-import { ILineItem } from "api/lineItem";
-import LineItemModal from "../../LineItem";
 
-import LineItems from "./LineItem";
 import AuditTable from "common/Audit";
+import { lineItemType } from "components/GroupLineItemTable/useGroupedLineItems";
+import { openRequestedSinglePopup } from "logic/window";
+import useSWR from "swr";
+import { useHistory } from "react-router-dom";
 
 export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
   const phone = useMediaQuery("(max-width:900px)");
 
   const [activeTab, setActiveTab] = useState(0);
-  const [lineItemModal, setLineItemModal] = useState(false);
-  const [selectedLI, setSelectedLI] = useState<ILineItem>();
+
+  const { data: lineItems } = useSWR<{ result: lineItemType[]; total: number }>(
+    selectedQuote && selectedQuote.id && activeTab === 0 ? `/lineitem?SOId=${selectedQuote.id}` : null
+  );
+  const history = useHistory();
+
+  const useStyle = makeStyles({
+    root: {
+      height: "100%",
+      "& .white": {
+        backgroundColor: "#ffffff",
+      },
+      "& .gray": {
+        backgroundColor: "#e3e3e3",
+      },
+    },
+  });
+  const classes = useStyle();
+  const groupColors = ["white", "gray"];
 
   const quoteHistoryCols = useMemo<GridColumns>(
     () => [
@@ -35,18 +53,37 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
     ],
     []
   );
-
+  const LICols = useMemo<GridColumns>(
+    () => [
+      { field: "group", headerName: "Group", width: 80 },
+      { field: "line", headerName: "Sort", width: 70 },
+      {
+        field: "itemNo",
+        headerName: "Part Number",
+        valueFormatter: (r) => r.row?.ItemId?.no || r.row?.text || r?.row?.itemNo,
+        width: 200,
+      },
+      {
+        field: "description",
+        headerName: "Description",
+        valueFormatter: (r) => r.row?.ItemId?.description,
+        width: 150,
+      },
+      { field: "qty", headerName: "QTY", width: 90 },
+      { field: "price", headerName: "Price", width: 100 },
+      { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
+      {
+        field: "total",
+        headerName: "Total",
+        valueFormatter: (r) => Number(r.row?.price) * Number(r.row?.qty),
+        width: 80,
+      },
+      { field: "invoice", headerName: "Invoice", width: 100 },
+    ],
+    []
+  );
   return (
     <>
-      <LineItemModal
-        record="quote"
-        recordId={selectedQuote?.id}
-        open={lineItemModal}
-        onClose={() => setLineItemModal(false)}
-        mutateField="QuoteId"
-        selectedLine={selectedLI}
-      />
-
       <Box display="grid" gridGap={10} gridTemplateColumns={phone ? "1fr" : "3fr 4fr"}>
         <EditForm selectedQuote={selectedQuote} />
         <BasePaper style={phone ? { height: "80vh" } : { height: "100%" }}>
@@ -65,13 +102,33 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
             <Tab label="Auditing" />
           </Tabs>
           {activeTab === 0 && (
-            <LineItems
-              quote={selectedQuote}
-              onAddLineItem={() => {
-                setSelectedLI(undefined);
-                setLineItemModal(true);
-              }}
-            />
+            // <LineItems
+            //   quote={selectedQuote}
+            //   onAddLineItem={() => {
+            //     setSelectedLI(undefined);
+            //     setLineItemModal(true);
+            //   }}
+            // />
+            <div className={classes.root}>
+              <BaseDataGrid
+                cols={LICols}
+                rows={lineItems?.result || []}
+                getRowClassName={({ row }) => {
+                  const index = row.group ? row.group % groupColors.length : null;
+                  return index ? groupColors[index] : "";
+                }}
+                onRowSelected={(r) => {
+                  if (phone && (r.ServiceId || r.ItemId)) {
+                    history.push(r.ServiceId ? `/panel/service/${r.ServiceId}` : `/panel/engineering/${r?.ItemId?.id}`);
+                  } else if (!phone && (r.ServiceId || r.ItemId)) {
+                    openRequestedSinglePopup({
+                      url: r.ServiceId ? `/panel/service/${r.ServiceId}` : `/panel/engineering/${r?.ItemId?.id}`,
+                    });
+                  }
+                }}
+                height="calc(100% - 60px)"
+              />
+            </div>
           )}
           {activeTab === 1 && <DocumentTab itemId={selectedQuote.id} model="quote" />}
           {activeTab === 2 && (

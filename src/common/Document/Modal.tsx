@@ -11,6 +11,7 @@ import { createAModelDocument, updateAModelDocument, deleteAModelDocument, IDocu
 import PhotoSizeSelectActualOutlinedIcon from "@material-ui/icons/PhotoSizeSelectActualOutlined";
 import PDFPreview from "components/PDFPreview";
 import { mutate } from "swr";
+import { LockButton, LockProvider, useLock } from "common/Lock";
 
 interface IDocumentModal {
   open: boolean;
@@ -25,10 +26,10 @@ const mutateDocuments = (type: string, id: string) => {
   return mutate(`/document/${type}/${id}`);
 };
 
-export default function DocumentModal({ open, onClose, model, itemId, onDone, data }: IDocumentModal) {
+function DocumentModalContent({ open, onClose, model, itemId, onDone, data }: IDocumentModal) {
   const fileUploader = useRef<HTMLInputElement | null>();
   const phone = useMediaQuery("(max-width:900px)");
-
+  const { lock } = useLock();
   const deleteDocument = async () => {
     try {
       if (data && data.id) {
@@ -65,7 +66,7 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, da
   };
 
   return (
-    <Dialog open={open} onClose={onClose} fullScreen title={`${data ? "Edit" : "Add"} Document to ${model}`}>
+    <Dialog open={open} onClose={onClose} fullScreen title={`${data ? "Edit" : "Add"} Document`}>
       <Box height="82vh" m={3} display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 300px"} gridColumnGap={10}>
         <Box>{data?.path && <PDFPreview height="100%" pdf={host + data?.path} />}</Box>
         <Formik initialValues={data ? data : ({} as IDocument)} onSubmit={handleSubmit}>
@@ -82,12 +83,13 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, da
                   color="primary"
                   style={{
                     backgroundColor: "#fff",
-                    color: " rgb(43,140,255) ",
-                    border: "1px solid rgb(43,140,255) ",
+                    color: lock ? "#ccc" : "rgb(43,140,255) ",
+                    border: lock ? "1px solid #ccc" : "1px solid rgb(43,140,255) ",
                     width: "100%",
                   }}
                   variant="contained"
                   onClick={() => fileUploader.current?.click()}
+                  disabled={lock}
                 >
                   <PhotoSizeSelectActualOutlinedIcon style={{ marginRight: "7px" }} />
                   Upload file
@@ -119,6 +121,7 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, da
                   label="Name"
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  disabled={lock}
                 />
                 <TextField
                   style={{ marginBottom: "20px" }}
@@ -128,6 +131,7 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, da
                   label="Number"
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  disabled={lock}
                 />
                 <TextField
                   style={{ marginBottom: "20px" }}
@@ -139,9 +143,15 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, da
                   rows={4}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  disabled={lock}
                 />
                 <Box style={{ display: "flex", width: "100%" }}>
-                  <Button type="submit" kind={data ? "edit" : "add"} disabled={isSubmitting} style={{ flex: 1 }}>
+                  <Button
+                    type="submit"
+                    kind={data ? "edit" : "add"}
+                    disabled={isSubmitting || lock}
+                    style={{ flex: 1 }}
+                  >
                     Save
                   </Button>
                   {data && (
@@ -149,11 +159,14 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, da
                       style={{ marginLeft: "1em" }}
                       onClick={deleteDocument}
                       kind="delete"
-                      disabled={isSubmitting}
+                      disabled={isSubmitting || lock}
                     >
                       Delete
                     </Button>
                   )}
+                </Box>
+                <Box display={"flex"} justifyContent="center" alignItems={"center"} width="100%" mt={1}>
+                  <LockButton />
                 </Box>
               </Box>
             </Form>
@@ -161,5 +174,13 @@ export default function DocumentModal({ open, onClose, model, itemId, onDone, da
         </Formik>
       </Box>
     </Dialog>
+  );
+}
+
+export default function DocumentModal({ open, onClose, model, itemId, onDone, data }: IDocumentModal) {
+  return (
+    <LockProvider>
+      <DocumentModalContent open={open} onClose={onClose} model={model} itemId={itemId} onDone={onDone} data={data} />
+    </LockProvider>
   );
 }
