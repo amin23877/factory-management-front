@@ -34,6 +34,6 @@ export const createSubProcess = (id: string, TaskId: string, data: ITask) => {
   return post(`/process/${id}/step/${TaskId}`, data);
 };
 
-export const changeSubProcess = (id: string, major: number, minor: number, data: ITask) => {
+export const changeSubProcess = (id: string, major: number, minor: number, data: any) => {
   return patch(`/process/${id}/step/${major}/${minor}`, data);
 };
