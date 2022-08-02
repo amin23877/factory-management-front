@@ -110,15 +110,16 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
   return (
     <>
       {selectedProcess && (
-        <TasksModal
-          open={openTasksModal}
-          onClose={() => {
-            setOpenTasksModal(false);
-          }}
-          type={type}
-          ItemId={ItemId}
-          process={selectedProcess}
-        />
+        <LockProvider>
+          <TasksModal
+            open={openTasksModal}
+            onClose={() => {
+              setOpenTasksModal(false);
+            }}
+            type={type}
+            process={selectedProcess}
+          />
+        </LockProvider>
       )}
       <AddProcessModal
         open={addProcess}

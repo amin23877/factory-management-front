@@ -74,37 +74,40 @@ export default function AddTaskModal({
       name: "title",
       header: "Title",
       type: "string",
-      render: ({ data }: any) => {
-        return (
-          <Box display="flex" alignItems="center" style={{ gap: 4 }}>
-            <div
-              onClick={() => {
-                setAddTask(true);
-                setSelectedTask(data);
-              }}
-            >
-              <AddRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
-            </div>
-            <div>
-              <Tooltip title={data.title}>
-                <span>{data.title}</span>
-              </Tooltip>
-            </div>
-          </Box>
-        );
-      },
-    },
-    {
-      name: "instruction",
-      header: "Instruction",
-      flex: 1,
-      type: "string",
     },
     {
       name: "builtToStock",
       header: "B.T.S",
       width: 60,
       type: "boolean",
+    },
+    {
+      name: "instruction",
+      header: "Instruction",
+      flex: 1,
+      type: "string",
+      render: ({ data }: any) => {
+        return (
+          <Box display="flex" alignItems="center" style={{ gap: 4 }}>
+            <div>
+              <Tooltip title={data.instruction}>
+                <span>{data.instruction}</span>
+              </Tooltip>
+            </div>
+            <Button
+              color="secondary"
+              variant="contained"
+              style={{ marginLeft: "auto" }}
+              onClick={() => {
+                setAddTask(true);
+                setSelectedTask(data);
+              }}
+            >
+              Add
+            </Button>
+          </Box>
+        );
+      },
     },
   ];
 
@@ -150,12 +153,18 @@ export default function AddTaskModal({
       )}
       <Box style={{ margin: "0.5em 2em", gap: 8 }} display="flex" height="75vh">
         <Box flex={3}>
-          <div style={{ height: "90%" }}>
-            <DataGrid columns={tasksCols} url={`/task?type=${type}`} onRowSelected={() => {}} />
+          <div style={{ height: "100%" }}>
+            <DataGrid
+              columns={tasksCols}
+              url={`/task?type=${type}`}
+              onRowSelected={() => {}}
+              style={{ minHeight: "calc(100vh - 180px)" }}
+              rowHeight={48}
+            />
           </div>
         </Box>
         <Box flex={2}>
-          <Paper style={{ height: "100%" }}>
+          <Paper style={{ height: "calc(100vh - 180px)" }}>
             <Typography variant="h6" style={{ padding: 8, paddingTop: 16 }}>
               Selected Tasks
             </Typography>

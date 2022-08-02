@@ -15,22 +15,33 @@ import { capitalizeFirstLetter } from "logic/utils";
 import { DeleteRounded, SearchRounded } from "@material-ui/icons";
 import Confirm from "common/Confirm";
 import Toast from "app/Toast";
+import { LockButton, useLock } from "common/Lock";
 
 interface IEditTaskModal {
   open: boolean;
-  ItemId: string;
   process: IProcess;
   onClose: () => void;
   type: string;
 }
 
-export default function TasksModal({ open, onClose, ItemId, process, type }: IEditTaskModal) {
+export default function TasksModal({ open, onClose, process, type }: IEditTaskModal) {
+  const useStyles = makeStyles({
+    root: {
+      "& .InovuaReactDataGrid__column-header": {
+        background: "#202731",
+        color: "#fff",
+      },
+    },
+  });
+
   const [addTask, setAddTask] = useState(false);
   const [showParts, setShowParts] = useState(false);
   const [selectedTask, setSelectedTask] = useState<any>();
   const [processTasks, setProcessTasks] = useState<any[]>([]);
 
   const { data: tasks } = useSWR(`/process/${process.id}`);
+  const classes = useStyles();
+  const { lock } = useLock();
 
   const handleDelete = (i: ITask) => {
     Confirm({
@@ -62,21 +73,9 @@ export default function TasksModal({ open, onClose, ItemId, process, type }: IEd
     }
   };
 
-  const useStyles = makeStyles({
-    root: {
-      "& .InovuaReactDataGrid__column-header": {
-        background: "#202731",
-        color: "#fff",
-      },
-    },
-  });
-
-  const classes = useStyles();
-
   const cols = [
     {
       name: "order",
-      editable: true,
       header: "Order",
       render: ({ data }: any) => data?.majorStep + "." + data?.minorStep,
     },
@@ -89,7 +88,6 @@ export default function TasksModal({ open, onClose, ItemId, process, type }: IEd
     },
     {
       editable: false,
-
       name: "instruction",
       header: "Instruction",
       flex: 2,
@@ -110,24 +108,16 @@ export default function TasksModal({ open, onClose, ItemId, process, type }: IEd
             >
               <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
             </div>
-            {/* <div
+            <div
               onClick={() => {
                 if (!lock) {
-                  setEditProcess(true);
-                  setSelectedProcess(data);
+                  handleDelete(data);
                 }
               }}
             >
-              <EditRounded
-                style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#426792", cursor: lock ? "auto" : "pointer" }}
+              <DeleteRounded
+                style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#e71414", cursor: lock ? "auto" : "pointer" }}
               />
-            </div> */}
-            <div
-              onClick={() => {
-                handleDelete(data);
-              }}
-            >
-              <DeleteRounded style={{ fontSize: "1.6rem", color: "#e71414", cursor: "pointer" }} />
             </div>
           </Box>
         );
@@ -159,9 +149,12 @@ export default function TasksModal({ open, onClose, ItemId, process, type }: IEd
       >
         <Box display="grid" gridTemplateColumns={"1fr"} gridGap={10}>
           <Box>
-            <Button onClick={() => setAddTask(true)} kind="add" style={{ marginBottom: "10px" }}>
-              Add Task
-            </Button>
+            <Box display="flex" justifyContent={"space-between"} alignItems="center" width={"100%"}>
+              <Button onClick={() => setAddTask(true)} kind="add" style={{ marginBottom: "10px" }} disabled={lock}>
+                Add Task
+              </Button>
+              <LockButton />
+            </Box>
             <DataGrid
               className={classes.root}
               rowHeight={20}
@@ -178,7 +171,7 @@ export default function TasksModal({ open, onClose, ItemId, process, type }: IEd
               }}
               // @ts-ignore
               pageSizes={[50, 100, 250, 500]}
-              editable={true}
+              editable={!lock}
               onEditComplete={(params: any) => handleEdit({ data: params.data, value: params.value })}
             />
           </Box>

@@ -1,15 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box } from "@material-ui/core";
-import { GridColumns } from "@material-ui/data-grid";
 import { changeProcess, deleteProcess, IProcess } from "api/process";
-import BaseDataGrid from "app/BaseDataGrid";
 import Button from "app/Button";
 import Toast from "app/Toast";
 import Confirm from "common/Confirm";
 import { Formik, Form } from "formik";
 import { mutate } from "swr";
 import { General } from "./Forms";
-import SubProcessModal from "./AddTaskModal";
 import Dialog from "app/Dialog";
 
 interface IEditTaskModal {
@@ -21,21 +18,6 @@ interface IEditTaskModal {
 }
 
 export default function EditProcessModal({ open, onClose, ItemId, process, type }: IEditTaskModal) {
-  const [addTask, setAddTask] = useState(false);
-  const [editTask, setEditTask] = useState(false);
-  const [selectedTask, setSelectedTask] = useState();
-
-  const cols: GridColumns = [
-    { field: "order", headerName: "Order", valueFormatter: ({ row }) => row?.majorStep + "." + row?.minorStep },
-    { field: "title", headerName: "Title", valueFormatter: ({ row }) => row?.TaskId?.title },
-    {
-      field: "instructions",
-      headerName: "Instructions",
-      flex: 1,
-      valueFormatter: ({ row }) => row?.TaskId?.instructions,
-    },
-  ];
-
   const handleSubmit = (values: IProcess, { setSubmitting }: any) => {
     changeProcess(process.id, values)
       .then((d) => {
