@@ -8,13 +8,13 @@ import {
   Paper,
   makeStyles,
   useMediaQuery,
+  ButtonGroup,
+  Button,
 } from "@material-ui/core";
 
 // import DateTimePicker from "app/DateTimePicker";
 // import { FieldSelect, ArraySelect, CacheFieldSelect } from "app/Inputs";
 import TextField from "app/TextField";
-import Button from "app/Button";
-import LinkSelect from "app/Inputs/LinkFields";
 import AsyncCombo from "common/AsyncCombo";
 import { useLock, LockButton } from "common/Lock";
 
@@ -31,6 +31,7 @@ import { formatTimestampToDate } from "logic/date";
 import SOCus from "PDFTemplates/SOCus";
 import SORep from "PDFTemplates/SORep";
 import SOAcc from "PDFTemplates/SOAcc";
+import { LockOpenRounded } from "@material-ui/icons";
 // import { getPO } from "api/po";
 
 const useStyles = makeStyles({
@@ -55,7 +56,7 @@ export const GeneralForm = ({
   const classes = useStyles();
   const phone = useMediaQuery("(max-width:900px)");
   const tablet = useMediaQuery("(max-width:1500px)");
-  const { lock } = useLock();
+  const { lock, setLock } = useLock();
 
   return (
     <>
@@ -100,24 +101,7 @@ export const GeneralForm = ({
           disabled={lock}
         />
         <TextField value={formatTimestampToDate(values.date)} name="date" label="SO Date" disabled={lock} />
-        {/* <LinkSelect
-          value={typeof values.WarrantyId === "string" ? values.WarrantyId : values.WarrantyId}
-          label="Warranty"
-          request={async () => {
-            return [];
-          }}
-          path="/service"
-          filterLabel="name"
-          getOptionList={(resp) => resp?.result}
-          getOptionLabel={(warranty) => warranty?.name}
-          getOptionValue={(warranty) => warranty?.id}
-          onChange={(e, nv) => {
-            setFieldValue("WarrantyId", nv?.id);
-          }}
-          onBlur={handleBlur}
-          url="/panel/warranty"
-          disabled={lock}
-        /> */}
+
         <AsyncCombo
           url="/project"
           label="Project"
@@ -168,10 +152,29 @@ export const GeneralForm = ({
           />
         </Paper>
         <Box style={{ gridColumnEnd: tablet ? "span 3" : "span 4", textAlign: "center" }}>
-          <Button kind="add" type="submit" style={{ display: "none" }}>
-            Save
-          </Button>
-          <LockButton />
+          {!lock && (
+            <ButtonGroup variant="contained" color="primary" aria-label="split button">
+              <Button type="submit">save</Button>
+              <Button
+                color="primary"
+                size="small"
+                aria-controls={"split-button-menu"}
+                aria-expanded={"true"}
+                aria-label="select merge strategy"
+                aria-haspopup="menu"
+                onClick={() => {
+                  setLock((p) => !p);
+                }}
+              >
+                <LockOpenRounded />
+              </Button>
+            </ButtonGroup>
+            // <ButtonGroup variant="contained" color="primary" aria-label="split button">
+            //   <Button type="submit">Save</Button>
+            //   <LockButton />
+            // </ButtonGroup>
+          )}
+          {lock && <LockButton />}
         </Box>
       </Box>
     </>
@@ -287,7 +290,7 @@ export const DocumentForm = ({
       </div>
 
       <Box textAlign="right">
-        <Button disabled={isUploading} kind="add" onClick={handleSaveDocument}>
+        <Button disabled={isUploading} onClick={handleSaveDocument}>
           Save
         </Button>
         {isUploading && <LinearProgress />}

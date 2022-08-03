@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Box, makeStyles, Tooltip } from "@material-ui/core";
+import React, { useState } from "react";
+import { Box, Tooltip } from "@material-ui/core";
 import { changeSubProcess, deleteSubProcess, IProcess, ITask } from "api/process";
 
 import Button from "app/Button";
 
-import DataGrid from "@inovua/reactdatagrid-community";
-import "@inovua/reactdatagrid-community/index.css";
+import DataGrid from "app/NewDataGrid";
 
 import SubProcessModal from "./AddTaskModal";
 import Dialog from "app/Dialog";
-import useSWR, { mutate } from "swr";
 import ShowPartsModal from "./ShowPartsModal";
 import { capitalizeFirstLetter } from "logic/utils";
-import { DeleteRounded, SearchRounded } from "@material-ui/icons";
+import { ClearRounded, SearchRounded } from "@material-ui/icons";
 import Confirm from "common/Confirm";
 import Toast from "app/Toast";
 import { LockButton, useLock } from "common/Lock";
@@ -25,22 +23,11 @@ interface IEditTaskModal {
 }
 
 export default function TasksModal({ open, onClose, process, type }: IEditTaskModal) {
-  const useStyles = makeStyles({
-    root: {
-      "& .InovuaReactDataGrid__column-header": {
-        background: "#202731",
-        color: "#fff",
-      },
-    },
-  });
-
   const [addTask, setAddTask] = useState(false);
   const [showParts, setShowParts] = useState(false);
   const [selectedTask, setSelectedTask] = useState<any>();
-  const [processTasks, setProcessTasks] = useState<any[]>([]);
+  const [refresh, setRefresh] = useState(1);
 
-  const { data: tasks } = useSWR(`/process/${process.id}`);
-  const classes = useStyles();
   const { lock } = useLock();
 
   const handleDelete = (i: ITask) => {
@@ -52,7 +39,7 @@ export default function TasksModal({ open, onClose, process, type }: IEditTaskMo
         } catch (error) {
           console.log(error);
         } finally {
-          mutate(`/process/${process.id}`);
+          setRefresh((p) => p + 1);
         }
       },
     });
@@ -69,7 +56,7 @@ export default function TasksModal({ open, onClose, process, type }: IEditTaskMo
     } catch (error) {
       console.log(error);
     } finally {
-      mutate(`/process/${process.id}`);
+      setRefresh((p) => p + 1);
     }
   };
 
@@ -83,7 +70,7 @@ export default function TasksModal({ open, onClose, process, type }: IEditTaskMo
       editable: false,
       name: "title",
       header: "Title",
-      render: ({ data }: any) => data?.task?.title,
+      render: ({ data }: any) => data?.title,
       flex: 1,
     },
     {
@@ -95,8 +82,8 @@ export default function TasksModal({ open, onClose, process, type }: IEditTaskMo
         return (
           <Box display="flex" alignItems="center" style={{ gap: 4 }}>
             <div>
-              <Tooltip title={data.task?.instruction}>
-                <span>{data.task?.instruction}</span>
+              <Tooltip title={data.instruction}>
+                <span>{data.instruction}</span>
               </Tooltip>
             </div>
             <div style={{ flex: 1 }}></div>
@@ -115,7 +102,7 @@ export default function TasksModal({ open, onClose, process, type }: IEditTaskMo
                 }
               }}
             >
-              <DeleteRounded
+              <ClearRounded
                 style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#e71414", cursor: lock ? "auto" : "pointer" }}
               />
             </div>
@@ -124,20 +111,6 @@ export default function TasksModal({ open, onClose, process, type }: IEditTaskMo
       },
     },
   ];
-  useEffect(() => {
-    if (tasks) {
-      const temp = tasks?.tasks.slice();
-      temp.map((el: any, idx: number) => {
-        if (el._id) {
-          return (el.id = el._id);
-        } else {
-          return (el.id = idx);
-        }
-      });
-      setProcessTasks(temp);
-    }
-  }, [tasks]);
-
   return (
     <>
       <Dialog
@@ -156,22 +129,13 @@ export default function TasksModal({ open, onClose, process, type }: IEditTaskMo
               <LockButton />
             </Box>
             <DataGrid
-              className={classes.root}
               rowHeight={20}
               columns={cols}
-              dataSource={processTasks}
-              pagination
               style={{ minHeight: "450px" }}
-              defaultLimit={250}
-              rowClassName={({ data }: any) => {
-                if (data?.DeviceId) {
-                  return "";
-                }
-                return "no-device";
-              }}
-              // @ts-ignore
-              pageSizes={[50, 100, 250, 500]}
               editable={!lock}
+              url={`/process/${process.id}/tasks`}
+              onRowSelected={() => {}}
+              refresh={refresh}
               onEditComplete={(params: any) => handleEdit({ data: params.data, value: params.value })}
             />
           </Box>
@@ -180,7 +144,7 @@ export default function TasksModal({ open, onClose, process, type }: IEditTaskMo
       <SubProcessModal
         open={addTask}
         onClose={() => {
-          mutate(`/process/${process.id}`);
+          setRefresh((p) => p + 1);
           setAddTask(false);
         }}
         ProcessId={process.id}

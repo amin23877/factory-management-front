@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   IconButton,
   List,
@@ -10,8 +10,8 @@ import {
   Typography,
 } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
-import { AddRounded, DeleteRounded } from "@material-ui/icons";
-import DataGrid from "app/NewDataGrid";
+import { CheckRounded, ClearRounded, DeleteRounded } from "@material-ui/icons";
+import { DataGrid, GridColumns } from "@material-ui/data-grid";
 
 import Dialog from "app/Dialog";
 import Button from "app/Button";
@@ -23,6 +23,9 @@ import Confirm from "common/Confirm";
 import { Form, Formik } from "formik";
 import { SubProcess } from "./Forms";
 import { capitalizeFirstLetter } from "logic/utils";
+import TextField from "app/TextField";
+import { get } from "api";
+import { ITaskList } from "api/taskList";
 
 export default function AddTaskModal({
   open,
@@ -38,7 +41,24 @@ export default function AddTaskModal({
   const [addTask, setAddTask] = useState(false);
   const [selectedTask, setSelectedTask] = useState<ITask>();
 
+  const [taskTitle, setTaskTitle] = useState<string>();
+  const [taskInstructions, setTaskInstructions] = useState<string>();
+  const [keywords, setKeywords] = useState<string>();
+  const [page, setPage] = useState(1);
+  const [taskList, setTaskList] = useState<{ data: ITaskList[]; count: number }>({ data: [], count: 0 });
+
   const { data: tasks } = useSWR<IProcess>(`/process/${ProcessId}`);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const green = {
+    color: "#12AE25",
+    width: "100%",
+    display: "flex",
+    justifyContent: "center ",
+    alignItems: "center",
+  };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const red = { color: "#F53636", width: "100%", display: "flex", justifyContent: "center ", alignItems: "center" };
 
   const handleSubmit = (values: ITask, { setSubmitting }: any) => {
     if (selectedTask) {
@@ -69,47 +89,87 @@ export default function AddTaskModal({
       },
     });
   };
-  const tasksCols = [
-    {
-      name: "title",
-      header: "Title",
-      type: "string",
-    },
-    {
-      name: "builtToStock",
-      header: "B.T.S",
-      width: 60,
-      type: "boolean",
-    },
-    {
-      name: "instruction",
-      header: "Instruction",
-      flex: 1,
-      type: "string",
-      render: ({ data }: any) => {
-        return (
-          <Box display="flex" alignItems="center" style={{ gap: 4 }}>
-            <div>
-              <Tooltip title={data.instruction}>
-                <span>{data.instruction}</span>
-              </Tooltip>
-            </div>
+
+  useEffect(() => {
+    const t = setTimeout(() => {
+      const params = {
+        containtitle: taskTitle,
+        startsWithinstruction: taskInstructions,
+        containinstruction: keywords,
+        page,
+      };
+      get("/task", { params })
+        .then((d) => {
+          setTaskList({ data: d.result || [], count: d.total || 0 });
+        })
+        .catch((e) => console.log(e));
+    }, 250);
+
+    return () => clearTimeout(t);
+  }, [taskTitle, taskInstructions, keywords, page]);
+
+  const cols = useMemo<GridColumns>(
+    () => [
+      {
+        headerName: "Title",
+        field: "title",
+        width: 140,
+        renderCell: (p: any) => (
+          <Tooltip title={String(p.value)}>
+            <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 140 }}>
+              {String(p.value)}
+            </span>
+          </Tooltip>
+        ),
+      },
+      {
+        headerName: "B.T.S",
+        field: "builtToStock",
+        width: 100,
+        renderCell: (p: any) => (
+          <Tooltip title={String(p.value)}>
+            <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", width: 60 }}>
+              {p.value ? (
+                <div style={green}>
+                  <CheckRounded />
+                </div>
+              ) : (
+                <div style={red}>
+                  <ClearRounded />
+                </div>
+              )}
+            </span>
+          </Tooltip>
+        ),
+      },
+      {
+        field: "instruction",
+        headerName: "Instruction",
+        flex: 1,
+        renderCell: (p: any) => (
+          <Box display="flex" alignItems="center" flex={1}>
+            <Tooltip title={String(p.value)} style={{ flexGrow: 1 }}>
+              <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 200 }}>
+                {String(p.value)}
+              </span>
+            </Tooltip>
             <Button
               color="secondary"
               variant="contained"
               style={{ marginLeft: "auto" }}
               onClick={() => {
                 setAddTask(true);
-                setSelectedTask(data);
+                setSelectedTask(p.row);
               }}
             >
               Add
             </Button>
           </Box>
-        );
+        ),
       },
-    },
-  ];
+    ],
+    [green, red]
+  );
 
   return (
     <Dialog
@@ -153,18 +213,28 @@ export default function AddTaskModal({
       )}
       <Box style={{ margin: "0.5em 2em", gap: 8 }} display="flex" height="75vh">
         <Box flex={3}>
-          <div style={{ height: "100%" }}>
+          <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gap: 8 }} mb={2}>
+            <TextField style={{ flex: 1 }} label="Task Title" onChange={(e) => setTaskTitle(e.target.value)} />
+            <TextField
+              style={{ flex: 1 }}
+              label="Task Instructions"
+              onChange={(e) => setTaskInstructions(e.target.value)}
+            />
+            <TextField style={{ flex: 1 }} label="Keywords" onChange={(e) => setKeywords(e.target.value)} />
+          </Box>
+          <div style={{ height: "90%" }}>
             <DataGrid
-              columns={tasksCols}
-              url={`/task?type=${type}`}
-              onRowSelected={() => {}}
-              style={{ minHeight: "calc(100vh - 180px)" }}
-              rowHeight={48}
+              columns={cols}
+              rows={taskList.data || []}
+              pagination
+              paginationMode="server"
+              rowCount={taskList.count || 0}
+              onPageChange={({ page }) => setPage(page + 1)}
             />
           </div>
         </Box>
         <Box flex={2}>
-          <Paper style={{ height: "calc(100vh - 180px)" }}>
+          <Paper style={{ height: "calc(100vh - 193px)" }}>
             <Typography variant="h6" style={{ padding: 8, paddingTop: 16 }}>
               Selected Tasks
             </Typography>
