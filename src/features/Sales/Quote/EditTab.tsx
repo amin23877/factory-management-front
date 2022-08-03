@@ -24,7 +24,7 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
   const [activeTab, setActiveTab] = useState(0);
 
   const { data: lineItems } = useSWR<{ result: lineItemType[]; total: number }>(
-    selectedQuote && selectedQuote.id && activeTab === 0 ? `/lineitem?SOId=${selectedQuote.id}` : null
+    selectedQuote && selectedQuote.id && activeTab === 0 ? `/lineitem?QuoteId=${selectedQuote.id}` : null
   );
   const history = useHistory();
 

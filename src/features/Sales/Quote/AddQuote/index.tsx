@@ -99,11 +99,17 @@ export default function AddQuote({
           initialValues={{ ...initialData, salesPerson: session.session.id, lines: [] } as IQuote}
           onSubmit={handleSubmit}
         >
-          {({ getFieldProps, values, setFieldValue, isSubmitting, handleSubmit }) => (
+          {({ getFieldProps, values, setFieldValue, isSubmitting, handleSubmit, handleBlur, handleChange }) => (
             <Box display="flex" height="85%">
               <Form style={{ width: "100%" }}>
                 {activeStep === 0 && (
-                  <GeneralStep values={values} setFieldValue={setFieldValue} getFieldProps={getFieldProps} />
+                  <GeneralStep
+                    values={values}
+                    setFieldValue={setFieldValue}
+                    getFieldProps={getFieldProps}
+                    handleChange={handleChange}
+                    handleBlur={handleBlur}
+                  />
                 )}
                 {activeStep === 1 && <FinalForm loading={isSubmitting} />}
                 {activeStep === 2 && (

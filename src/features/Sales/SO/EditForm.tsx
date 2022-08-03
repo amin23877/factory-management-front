@@ -20,8 +20,13 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
 
   const handleSubmit = async (data: ISO, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
     try {
+      console.log(data);
+      console.log(selectedSo, "2");
+
       if (selectedSo.id) {
         const reqData = getModifiedValues(data, selectedSo);
+        console.log(reqData, "3");
+
         await editSO(selectedSo.id, reqData);
 
         setSubmitting(false);

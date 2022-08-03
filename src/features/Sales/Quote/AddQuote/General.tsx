@@ -5,7 +5,7 @@ import { BasePaper } from "app/Paper";
 import GroupLineItemTable from "components/GroupLineItemTable";
 
 import General from "../Forms/General";
-import Entities from "../Forms/Entities";
+import Entities from "../../SO/Forms/Entities";
 import Addresses from "../Forms/Addresses";
 import Status from "../Forms/Status";
 import Metrics from "../Forms/Metrics";
@@ -14,10 +14,14 @@ export default function GeneralStep({
   values,
   getFieldProps,
   setFieldValue,
+  handleChange,
+  handleBlur,
 }: {
+  handleChange: (a: any) => void;
+  handleBlur: (a: any) => void;
+  setFieldValue: any;
   getFieldProps: any;
   values: any;
-  setFieldValue: any;
 }) {
   const phone = useMediaQuery("(max-width:900px)");
   const [activeTab, setActiveTab] = useState(0);
@@ -41,7 +45,14 @@ export default function GeneralStep({
             <Tab label="Status" />
             <Tab label="Metrics" />
           </Tabs>
-          {activeTab === 0 && <Entities values={values} setFieldValue={setFieldValue} getFieldProps={getFieldProps} />}
+          {activeTab === 0 && (
+            <Entities
+              values={values}
+              handleChange={handleChange}
+              handleBlur={handleBlur}
+              setFieldValue={setFieldValue}
+            />
+          )}
           {activeTab === 1 && <Addresses getFieldProps={getFieldProps} />}
           {activeTab === 2 && <Status getFieldProps={getFieldProps} />}
           {activeTab === 3 && <Metrics values={values} getFieldProps={getFieldProps} />}
