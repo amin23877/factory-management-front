@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Tooltip } from "@material-ui/core";
+import { Box, Tooltip, useMediaQuery } from "@material-ui/core";
 import { changeSubProcess, deleteSubProcess, IProcess, ITask } from "api/process";
 
 import Button from "app/Button";
@@ -8,12 +8,13 @@ import DataGrid from "app/NewDataGrid";
 
 import SubProcessModal from "./AddTaskModal";
 import Dialog from "app/Dialog";
-import ShowPartsModal from "./ShowPartsModal";
 import { capitalizeFirstLetter } from "logic/utils";
 import { ClearRounded, SearchRounded } from "@material-ui/icons";
 import Confirm from "common/Confirm";
 import Toast from "app/Toast";
 import { LockButton, useLock } from "common/Lock";
+import { useHistory } from "react-router-dom";
+import { openRequestedSinglePopup } from "logic/window";
 
 interface IEditTaskModal {
   open: boolean;
@@ -24,11 +25,11 @@ interface IEditTaskModal {
 
 export default function TasksModal({ open, onClose, process, type }: IEditTaskModal) {
   const [addTask, setAddTask] = useState(false);
-  const [showParts, setShowParts] = useState(false);
-  const [selectedTask, setSelectedTask] = useState<any>();
   const [refresh, setRefresh] = useState(1);
 
   const { lock } = useLock();
+  const history = useHistory();
+  const phone = useMediaQuery("(max-width:900px)");
 
   const handleDelete = (i: ITask) => {
     Confirm({
@@ -89,8 +90,11 @@ export default function TasksModal({ open, onClose, process, type }: IEditTaskMo
             <div style={{ flex: 1 }}></div>
             <div
               onClick={() => {
-                setSelectedTask(data);
-                setShowParts(true);
+                if (phone) {
+                  history.push(`/panel/production/taskList/${data.id}`);
+                } else {
+                  openRequestedSinglePopup({ url: `/panel/production/taskList/${data.id}` });
+                }
               }}
             >
               <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
@@ -150,15 +154,6 @@ export default function TasksModal({ open, onClose, process, type }: IEditTaskMo
         ProcessId={process.id}
         type={type}
       />
-      {selectedTask && (
-        <ShowPartsModal
-          open={showParts}
-          onClose={() => {
-            setShowParts(false);
-          }}
-          TaskId={selectedTask.task.id}
-        />
-      )}
     </>
   );
 }
