@@ -36,7 +36,7 @@ export default function AddTaskListModal({
       newType = newType.split(" ");
       newType[0] = newType[0].toLowerCase();
       data.type = newType.join("");
-      const resp = await createTask({ ...data, relatedParts: items.map((i: any) => i.id) });
+      const resp = await createTask({ ...data, relatedParts: items?.map((i: any) => i.id) });
       if (resp && resp.id) {
         if (photos.length <= 0) {
           Toast("Task added successfully", "success");

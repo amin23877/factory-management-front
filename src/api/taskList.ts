@@ -6,7 +6,7 @@ export interface ITaskList {
   type: string;
   title: string;
   instruction: string;
-  relatedParts: string[] | IItem[];
+  relatedParts?: string[] | IItem[];
   builtToStock: boolean;
 }
 

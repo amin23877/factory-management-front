@@ -20,6 +20,7 @@ import { GridColumns } from "@material-ui/data-grid";
 import PhotoTab from "common/PhotoTab";
 import { useHistory } from "react-router-dom";
 import { openRequestedSinglePopup } from "logic/window";
+import { IItem } from "api/items";
 
 function ServiceDetails({ taskList }: { taskList: ITaskList }) {
   const handleSubmit = async (data: any) => {
@@ -57,9 +58,11 @@ function ServiceDetails({ taskList }: { taskList: ITaskList }) {
   }, [parts]);
 
   useEffect(() => {
-    let newArr: any[] = taskList.relatedParts.slice();
-    newArr.map((i) => (i.item = i));
-    setParts(newArr);
+    let newArr: any[] | undefined = taskList?.relatedParts?.slice();
+    if (newArr) {
+      newArr.map((i) => (i.item = i));
+      setParts(newArr);
+    }
   }, [taskList.relatedParts]);
 
   const cols = useMemo<GridColumns>(

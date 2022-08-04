@@ -72,7 +72,7 @@ export default function AddPartModal({
     if (!open && !edit) {
       setSelectedItems([]);
     }
-  }, [open, setSelectedItems]);
+  }, [open]);
 
   const handleSubmit = async () => {
     if (edit) {
@@ -93,6 +93,12 @@ export default function AddPartModal({
       onClose();
     }
   };
+
+  useEffect(() => {
+    if (parts) {
+      setParts([]);
+    }
+  }, []);
 
   useEffect(() => {
     if (parts) {
