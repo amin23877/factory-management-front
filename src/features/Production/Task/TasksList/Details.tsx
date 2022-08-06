@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Box, Tabs, Tab, Tooltip, Button, useMediaQuery } from "@material-ui/core";
 import { Formik, Form } from "formik";
-import { mutate } from "swr";
 
 import { General } from "./Forms";
 
@@ -20,9 +19,8 @@ import { GridColumns } from "@material-ui/data-grid";
 import PhotoTab from "common/PhotoTab";
 import { useHistory } from "react-router-dom";
 import { openRequestedSinglePopup } from "logic/window";
-import { IItem } from "api/items";
 
-function ServiceDetails({ taskList }: { taskList: ITaskList }) {
+function ServiceDetails({ taskList, setRefresh }: { taskList: ITaskList; setRefresh: any }) {
   const handleSubmit = async (data: any) => {
     try {
       if (taskList.id) {
@@ -31,7 +29,7 @@ function ServiceDetails({ taskList }: { taskList: ITaskList }) {
         newType[0] = newType[0].toLowerCase();
         data.type = newType.join("");
         await changeTask(taskList.id, getModifiedValues(data, taskList));
-        await mutate("/task");
+        setRefresh((p: number) => p + 1);
         Toast("Updated successfully.", "success");
       }
     } catch (e) {

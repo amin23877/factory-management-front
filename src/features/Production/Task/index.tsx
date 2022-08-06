@@ -12,7 +12,6 @@ import { deleteTaskList, ITaskList } from "api/taskList";
 import { ITask } from "api/task";
 import List from "app/SideUtilityList";
 import Toast from "app/Toast";
-import { mutate } from "swr";
 import AddTaskListModal from "./TasksList/AddModal";
 import { LockProvider } from "common/Lock";
 
@@ -21,7 +20,7 @@ function Index() {
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const [selectedTaskList, setSelectedTaskList] = useState<ITaskList | null>(null);
   const [addTaskListModal, setAddTaskListModal] = useState(false);
-  const [refresh, setRefresh] = useState(0);
+  const [refresh, setRefresh] = useState<number>(0);
 
   const handleDelete = () => {
     Confirm({
@@ -35,7 +34,7 @@ function Index() {
         } catch (error) {
           console.log(error);
         } finally {
-          mutate("/task");
+          setRefresh((p) => p + 1);
           setActiveTab(1);
           setSelectedTaskList(null);
         }
@@ -125,7 +124,7 @@ function Index() {
         {/* {activeTab === 2 && selectedTask && <UnitDetails unit={selectedTask} />} */}
         {activeTab === 2 && selectedTaskList && (
           <LockProvider>
-            <TasksListDetail taskList={selectedTaskList} />
+            <TasksListDetail taskList={selectedTaskList} setRefresh={setRefresh} />
           </LockProvider>
         )}
       </BasePaper>

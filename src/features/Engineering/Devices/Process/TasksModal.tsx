@@ -82,7 +82,7 @@ export default function TasksModal({ open, onClose, process, type }: IEditTaskMo
       render: ({ data }: any) => {
         return (
           <Box display="flex" alignItems="center" style={{ gap: 4 }}>
-            <div>
+            <div style={{ maxWidth: "90%", overflow: "hidden", textOverflow: "ellipsis" }}>
               <Tooltip title={data.instruction}>
                 <span>{data.instruction}</span>
               </Tooltip>
@@ -96,6 +96,7 @@ export default function TasksModal({ open, onClose, process, type }: IEditTaskMo
                   openRequestedSinglePopup({ url: `/panel/production/taskList/${data.id}` });
                 }
               }}
+              style={{ width: "20px" }}
             >
               <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
             </div>

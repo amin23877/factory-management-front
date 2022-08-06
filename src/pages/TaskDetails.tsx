@@ -10,7 +10,7 @@ import Confirm from "common/Confirm";
 import { deleteTaskList, ITaskList } from "api/taskList";
 import List from "app/SideUtilityList";
 import Toast from "app/Toast";
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 import AddTaskListModal from "features/Production/Task/TasksList/AddModal";
 import { LockProvider } from "common/Lock";
 import { useParams } from "react-router-dom";
@@ -36,7 +36,7 @@ function Index() {
         } catch (error) {
           console.log(error);
         } finally {
-          mutate("/task");
+          setRefresh((p) => p + 1);
           setActiveTab(0);
           setSelectedTaskList(null);
         }
@@ -112,7 +112,7 @@ function Index() {
         </div>
         {activeTab === 1 && selectedTaskList && (
           <LockProvider>
-            <TasksListDetail taskList={selectedTaskList} />
+            <TasksListDetail taskList={selectedTaskList} setRefresh={setRefresh} />
           </LockProvider>
         )}
       </BasePaper>
