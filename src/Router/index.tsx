@@ -15,11 +15,11 @@ export default function BaseRouter() {
   return (
     <Switch>
       <Route exact path="/">
-        {isAuthenticated ? <Redirect to="/panel" /> : <Redirect to="/login" />}
+        {isAuthenticated ? <Redirect to="/panel/home" /> : <Redirect to="/login" />}
       </Route>
       <Route path="/panel">{isAuthenticated ? <PanelRouter /> : <Redirect to="/login" />}</Route>
       <Route exact path="/login">
-        {isAuthenticated ? <Redirect to="/panel" /> : <LoginPage />}
+        {isAuthenticated ? <Redirect to="/panel/home" /> : <LoginPage />}
       </Route>
       <Route exact path="*">
         <h1>Error 404</h1>

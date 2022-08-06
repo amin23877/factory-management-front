@@ -24,7 +24,7 @@ import { useLock } from "common/Lock";
 const drawerItems = [
   {
     name: "Home",
-    link: "/panel",
+    link: "/panel/home",
     icon: (
       <svg xmlns="http://www.w3.org/2000/svg" fill="inherit" width="17" height="18" viewBox="0 0 17 18">
         <defs>
@@ -371,27 +371,27 @@ const MainDrawer = ({ width, closeThis }: { width?: number; closeThis: () => voi
           <CustomScrollbars style={{ height: 700 }}>
             <List style={{ marginBottom: "auto", paddingTop: "2px" }}>
               {drawerItems.map((item, i) => (
-                <div style={location.pathname === item.link ? adstyle : dstyle} onClick={() => setLock(true)}>
+                <div style={location.pathname.includes(item.link) ? adstyle : dstyle} onClick={() => setLock(true)}>
                   <Link key={i} to={item.link} style={{ textDecoration: "none", border: "none", outline: "none" }}>
                     <ListItem
                       style={{
                         padding: "5px 12px",
-                        color: location.pathname === item.link ? "#fff" : "#848484",
-                        fontWeight: location.pathname === item.link ? "bold" : "normal",
+                        color: location.pathname.includes(item.link) ? "#fff" : "#848484",
+                        fontWeight: location.pathname.includes(item.link) ? "bold" : "normal",
                       }}
                     >
                       <ListItemIcon
                         style={{
-                          fill: location.pathname === item.link ? "#fff" : "#8e8e8e",
+                          fill: location.pathname.includes(item.link) ? "#fff" : "#8e8e8e",
                         }}
-                        className={location.pathname === item.link ? "Active" : ""}
+                        className={location.pathname.includes(item.link) ? "Active" : ""}
                       >
                         {item.icon}
                       </ListItemIcon>
                       <ListItemText> {item.name} </ListItemText>
                     </ListItem>
                   </Link>
-                  {location.pathname === item.link ? (
+                  {location.pathname.includes(item.link) ? (
                     <div
                       style={{
                         backgroundColor: "#fff",

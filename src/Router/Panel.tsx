@@ -26,6 +26,8 @@ import { PortalProvider } from "logic/PortalContext";
 import { AppBarStation } from "logic/PortalContext/Stations";
 import { LockProvider } from "common/Lock";
 
+const Production = React.lazy(() => import("./Production"));
+
 const Home = React.lazy(() => import("../pages/home"));
 const Dashboard = React.lazy(() => import("../pages/HomeDashboard"));
 const Sales = React.lazy(() => import("../pages/Sales"));
@@ -36,7 +38,6 @@ const Projects = React.lazy(() => import("../pages/Project"));
 const Activity = React.lazy(() => import("../pages/Activity"));
 const Service = React.lazy(() => import("../pages/FieldService"));
 const Purchase = React.lazy(() => import("../pages/Purchase"));
-const Production = React.lazy(() => import("../pages/Production"));
 const ShippingAndReceiVing = React.lazy(() => import("../pages/ShippingAndReceiVing"));
 const Engineering = React.lazy(() => import("../pages/Engineering"));
 const Notification = React.lazy(() => import("../pages/Notification"));
@@ -44,8 +45,7 @@ const Page404 = React.lazy(() => import("../pages/404"));
 
 const ItemDetails = React.lazy(() => import("../pages/ItemDetails"));
 const DeviceDetails = React.lazy(() => import("../pages/DeviceDetails"));
-const UnitDetails = React.lazy(() => import("../pages/UnitDetails"));
-const TaskDetails = React.lazy(() => import("../pages/TaskDetails"));
+
 const ServiceDetails = React.lazy(() => import("../pages/ServiceDetails"));
 const QuoteDetails = React.lazy(() => import("../pages/QuoteDetails"));
 const SODetails = React.lazy(() => import("../pages/SODetails"));
@@ -247,7 +247,7 @@ export default function PanelRouter() {
               <div style={theme.mixins.toolbar as any} />
               <Suspense fallback={<MyBackdrop />}>
                 <Switch>
-                  <Route exact path="/panel" component={() => <Home handleChange={handleChange} />} />
+                  <Route exact path="/panel/home" component={() => <Home handleChange={handleChange} />} />
                   <Route exact path="/panel/dashboard" component={Dashboard} />
                   <Route exact path="/panel/sales" component={Sales} />
                   <Route exact path="/panel/inventory" component={Inventory} />
@@ -257,7 +257,6 @@ export default function PanelRouter() {
                   <Route exact path="/panel/activity" component={Activity} />
                   <Route exact path="/panel/fieldservice" component={Service} />
                   <Route exact path="/panel/purchase" component={Purchase} />
-                  <Route exact path="/panel/production" component={Production} />
                   <Route exact path="/panel/shipping" component={ShippingAndReceiVing} />
                   <Route exact path="/panel/engineering" component={Engineering} />
                   <Route exact path="/panel/notification" component={Notification} />
@@ -266,8 +265,7 @@ export default function PanelRouter() {
                   <Route exact path="/panel/engineering/:deviceId" component={DeviceDetails} />
                   <Route exact path="/panel/service/:serviceId" component={ServiceDetails} />
 
-                  <Route exact path="/panel/production/:unitNumber" component={UnitDetails} />
-                  <Route exact path="/panel/production/taskList/:taskId" component={TaskDetails} />
+                  <Route path="/panel/production" component={Production} />
 
                   <Route exact path="/panel/quote/:quoteNumber" component={QuoteDetails} />
                   <Route exact path="/panel/so/:soNumber" component={SODetails} />
