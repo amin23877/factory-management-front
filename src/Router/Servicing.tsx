@@ -9,25 +9,27 @@ import { KeyboardArrowDownRounded, KeyboardArrowUpRounded } from "@material-ui/i
 
 import MyBackdrop from "app/Backdrop";
 import { MyTabs, MyTab } from "app/Tabs";
-import { capitalizeFirstLetter } from "logic/utils";
+import { camelCaseToRegular } from "logic/utils";
 
-const Tasks = React.lazy(() => import("../features/Production/Task"));
-const Dashboard = React.lazy(() => import("../features/Production/Dashboard"));
-const Staff = React.lazy(() => import("../features/Production/Staff"));
-
-const UnitDetails = React.lazy(() => import("../pages/UnitDetails"));
-const TaskDetails = React.lazy(() => import("../pages/TaskDetails"));
+const Options = React.lazy(() => import("features/FieldService/Option"));
+const FRUs = React.lazy(() => import("features/FieldService/FRU"));
+const ServiceIndex = React.lazy(() => import("features/FieldService"));
+const Tickets = React.lazy(() => import("features/FieldService/Tickets"));
+const Tasks = React.lazy(() => import("features/FieldService/Tasks"));
+const Units = React.lazy(() => import("features/FieldService/Units"));
+const UP = React.lazy(() => import("features/FieldService/UP"));
+const Vendors = React.lazy(() => import("features/Purchase/Vendor"));
 
 export default function PanelRouter() {
   const portals = usePortal();
   const history = useHistory();
   const location = useLocation();
 
-  const tabs = ["dashboard", "tasks", "staff"];
+  const tabs = ["dashboard", "fru", "services", "tickets", "tasks", "units", "rma", "up", "vendorTech", "options"];
 
   const [activeTab, setActiveTab] = useState(tabs.indexOf(location.pathname.split("/")[3]));
   const [tabText, setTabText] = useState(
-    typeof location.pathname.split("/")[3] === "string" ? capitalizeFirstLetter(location.pathname.split("/")[3]) : ""
+    typeof location.pathname.split("/")[3] === "string" ? camelCaseToRegular(location.pathname.split("/")[3]) : ""
   );
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
@@ -41,7 +43,7 @@ export default function PanelRouter() {
 
   useEffect(() => {
     if (location.pathname.split("/")[3]) {
-      setTabText(capitalizeFirstLetter(location.pathname.split("/")[3]));
+      setTabText(camelCaseToRegular(location.pathname.split("/")[3]));
       setActiveTab(tabs.indexOf(location.pathname.split("/")[3]));
     }
   }, [location]);
@@ -91,21 +93,34 @@ export default function PanelRouter() {
             orientation="vertical"
           >
             <MyTab label="Dashboard" />
+            <MyTab label="FRU" />
+            <MyTab label="Services" />
+            <MyTab label="Tickets" />
             <MyTab label="Tasks" />
-            <MyTab label="Staff" />
+            <MyTab label="Units" />
+            <MyTab label="RMA" />
+            <MyTab label="UP" />
+            <MyTab label="Vendor Tech" />
+            <MyTab label="Options" />
           </MyTabs>
         </Popover>
       </Portal>
+
       <Suspense fallback={<MyBackdrop />}>
         <Switch>
-          <Route exact path="/panel/production">
-            <Redirect to="/panel/production/dashboard" />
+          <Route exact path="/panel/fieldservice">
+            <Redirect to="/panel/fieldservice/units" />
           </Route>
-          <Route exact path="/panel/production/dashboard" component={Dashboard} />
-          <Route exact path="/panel/production/tasks" component={Tasks} />
-          <Route exact path="/panel/production/staff" component={Staff} />
-          <Route exact path="/panel/production/:unitNumber" component={UnitDetails} />
-          <Route exact path="/panel/production/taskList/:taskId" component={TaskDetails} />
+          <Route exact path="/panel/fieldservice/fru" component={FRUs} />
+          <Route exact path="/panel/fieldservice/services" component={ServiceIndex} />
+          <Route exact path="/panel/fieldservice/tickets" component={Tickets} />
+          <Route exact path="/panel/fieldservice/tasks" component={Tasks} />
+          <Route exact path="/panel/fieldservice/units" component={Units} />
+          <Route exact path="/panel/fieldservice/up" component={UP} />
+          <Route exact path="/panel/fieldservice/vendorTech">
+            <Vendors tech={true} />
+          </Route>
+          <Route exact path="/panel/fieldservice/options" component={Options} />
         </Switch>
       </Suspense>
     </LockProvider>

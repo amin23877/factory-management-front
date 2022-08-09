@@ -27,23 +27,22 @@ import { AppBarStation } from "logic/PortalContext/Stations";
 import { LockProvider } from "common/Lock";
 
 const Production = React.lazy(() => import("./Production"));
+const Purchase = React.lazy(() => import("./Purchasing"));
+const Sales = React.lazy(() => import("./Sales"));
+const Inventory = React.lazy(() => import("./Inventory"));
+const Service = React.lazy(() => import("./Servicing"));
 
 const Home = React.lazy(() => import("../pages/home"));
 const Dashboard = React.lazy(() => import("../pages/HomeDashboard"));
-const Sales = React.lazy(() => import("../pages/Sales"));
-const Inventory = React.lazy(() => import("../pages/Inventory"));
 const Settings = React.lazy(() => import("../pages/Settings"));
 const Roles = React.lazy(() => import("../pages/Roles"));
 const Projects = React.lazy(() => import("../pages/Project"));
 const Activity = React.lazy(() => import("../pages/Activity"));
-const Service = React.lazy(() => import("../pages/FieldService"));
-const Purchase = React.lazy(() => import("../pages/Purchase"));
 const ShippingAndReceiVing = React.lazy(() => import("../pages/ShippingAndReceiVing"));
 const Engineering = React.lazy(() => import("../pages/Engineering"));
 const Notification = React.lazy(() => import("../pages/Notification"));
 const Page404 = React.lazy(() => import("../pages/404"));
 
-const ItemDetails = React.lazy(() => import("../pages/ItemDetails"));
 const DeviceDetails = React.lazy(() => import("../pages/DeviceDetails"));
 
 const ServiceDetails = React.lazy(() => import("../pages/ServiceDetails"));
@@ -248,25 +247,24 @@ export default function PanelRouter() {
               <Suspense fallback={<MyBackdrop />}>
                 <Switch>
                   <Route exact path="/panel/home" component={() => <Home handleChange={handleChange} />} />
+                  <Route exact path="/panel/notification" component={Notification} />
                   <Route exact path="/panel/dashboard" component={Dashboard} />
-                  <Route exact path="/panel/sales" component={Sales} />
-                  <Route exact path="/panel/inventory" component={Inventory} />
                   <Route exact path="/panel/settings" component={Settings} />
                   <Route exact path="/panel/roles" component={Roles} />
                   <Route exact path="/panel/projects" component={Projects} />
                   <Route exact path="/panel/activity" component={Activity} />
-                  <Route exact path="/panel/fieldservice" component={Service} />
-                  <Route exact path="/panel/purchase" component={Purchase} />
+
                   <Route exact path="/panel/shipping" component={ShippingAndReceiVing} />
                   <Route exact path="/panel/engineering" component={Engineering} />
-                  <Route exact path="/panel/notification" component={Notification} />
 
-                  <Route exact path="/panel/inventory/:itemId" component={ItemDetails} />
-                  <Route exact path="/panel/engineering/:deviceId" component={DeviceDetails} />
-                  <Route exact path="/panel/service/:serviceId" component={ServiceDetails} />
-
+                  <Route path="/panel/fieldservice" component={Service} />
+                  <Route path="/panel/inventory" component={Inventory} />
+                  <Route path="/panel/sales" component={Sales} />
+                  <Route path="/panel/purchase" component={Purchase} />
                   <Route path="/panel/production" component={Production} />
 
+                  <Route exact path="/panel/engineering/:deviceId" component={DeviceDetails} />
+                  <Route exact path="/panel/service/:serviceId" component={ServiceDetails} />
                   <Route exact path="/panel/quote/:quoteNumber" component={QuoteDetails} />
                   <Route exact path="/panel/so/:soNumber" component={SODetails} />
                   {/* TODO: change customer to client, everywhere, there are links to this page */}

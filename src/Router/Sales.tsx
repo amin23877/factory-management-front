@@ -9,25 +9,28 @@ import { KeyboardArrowDownRounded, KeyboardArrowUpRounded } from "@material-ui/i
 
 import MyBackdrop from "app/Backdrop";
 import { MyTabs, MyTab } from "app/Tabs";
-import { capitalizeFirstLetter } from "logic/utils";
+import { camelCaseToRegular } from "logic/utils";
 
-const Tasks = React.lazy(() => import("../features/Production/Task"));
-const Dashboard = React.lazy(() => import("../features/Production/Dashboard"));
-const Staff = React.lazy(() => import("../features/Production/Staff"));
-
-const UnitDetails = React.lazy(() => import("../pages/UnitDetails"));
-const TaskDetails = React.lazy(() => import("../pages/TaskDetails"));
+const Dashboard = React.lazy(() => import("features/Sales/Dashboard"));
+const Calls = React.lazy(() => import("features/Sales/Call"));
+const DevicesPanel = React.lazy(() => import("features/Engineering/Devices"));
+const Option = React.lazy(() => import("features/Engineering/Option"));
+const QuotePanel = React.lazy(() => import("features/Sales/Quote"));
+const PurchaseOrderPanel = React.lazy(() => import("features/Sales/PO"));
+const SalesOrderPanel = React.lazy(() => import("features/Sales/SO"));
+const Clients = React.lazy(() => import("features/Sales/Customer"));
+const Reps = React.lazy(() => import("features/Sales/Rep"));
 
 export default function PanelRouter() {
   const portals = usePortal();
   const history = useHistory();
   const location = useLocation();
 
-  const tabs = ["dashboard", "tasks", "staff"];
+  const tabs = ["dashboard", "calls", "devices", "options", "quotes", "customerPOs", "salesOrders", "clients", "reps"];
 
   const [activeTab, setActiveTab] = useState(tabs.indexOf(location.pathname.split("/")[3]));
   const [tabText, setTabText] = useState(
-    typeof location.pathname.split("/")[3] === "string" ? capitalizeFirstLetter(location.pathname.split("/")[3]) : ""
+    typeof location.pathname.split("/")[3] === "string" ? camelCaseToRegular(location.pathname.split("/")[3]) : ""
   );
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
@@ -41,7 +44,7 @@ export default function PanelRouter() {
 
   useEffect(() => {
     if (location.pathname.split("/")[3]) {
-      setTabText(capitalizeFirstLetter(location.pathname.split("/")[3]));
+      setTabText(camelCaseToRegular(location.pathname.split("/")[3]));
       setActiveTab(tabs.indexOf(location.pathname.split("/")[3]));
     }
   }, [location]);
@@ -91,21 +94,33 @@ export default function PanelRouter() {
             orientation="vertical"
           >
             <MyTab label="Dashboard" />
-            <MyTab label="Tasks" />
-            <MyTab label="Staff" />
+            <MyTab label="Calls" />
+            <MyTab label="Devices" />
+            <MyTab label="options" />
+            <MyTab label="Quotes" />
+            <MyTab label="Customer POs" />
+            <MyTab label="Sales Orders" />
+            <MyTab label="Clients" />
+            <MyTab label="Reps" />
           </MyTabs>
         </Popover>
       </Portal>
       <Suspense fallback={<MyBackdrop />}>
         <Switch>
-          <Route exact path="/panel/production">
-            <Redirect to="/panel/production/dashboard" />
+          <Route exact path="/panel/sales">
+            <Redirect to="/panel/sales/salesOrders" />
           </Route>
-          <Route exact path="/panel/production/dashboard" component={Dashboard} />
-          <Route exact path="/panel/production/tasks" component={Tasks} />
-          <Route exact path="/panel/production/staff" component={Staff} />
-          <Route exact path="/panel/production/:unitNumber" component={UnitDetails} />
-          <Route exact path="/panel/production/taskList/:taskId" component={TaskDetails} />
+          <Route exact path="/panel/sales/dashboard" component={Dashboard} />
+          <Route exact path="/panel/sales/calls" component={Calls} />
+          <Route exact path="/panel/sales/devices">
+            <DevicesPanel sales={true} />
+          </Route>
+          <Route exact path="/panel/sales/options" component={Option} />
+          <Route exact path="/panel/sales/quotes" component={QuotePanel} />
+          <Route exact path="/panel/sales/customerPOs" component={PurchaseOrderPanel} />
+          <Route exact path="/panel/sales/salesOrders" component={SalesOrderPanel} />
+          <Route exact path="/panel/sales/clients" component={Clients} />
+          <Route exact path="/panel/sales/reps" component={Reps} />
         </Switch>
       </Suspense>
     </LockProvider>

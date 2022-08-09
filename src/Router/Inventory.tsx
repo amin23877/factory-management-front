@@ -9,25 +9,22 @@ import { KeyboardArrowDownRounded, KeyboardArrowUpRounded } from "@material-ui/i
 
 import MyBackdrop from "app/Backdrop";
 import { MyTabs, MyTab } from "app/Tabs";
-import { capitalizeFirstLetter } from "logic/utils";
+import { camelCaseToRegular } from "logic/utils";
 
-const Tasks = React.lazy(() => import("../features/Production/Task"));
-const Dashboard = React.lazy(() => import("../features/Production/Dashboard"));
-const Staff = React.lazy(() => import("../features/Production/Staff"));
-
-const UnitDetails = React.lazy(() => import("../pages/UnitDetails"));
-const TaskDetails = React.lazy(() => import("../pages/TaskDetails"));
+const ItemDetails = React.lazy(() => import("pages/ItemDetails"));
+const Dashboard = React.lazy(() => import("features/Items/Dashboard"));
+const Items = React.lazy(() => import("features/Items"));
 
 export default function PanelRouter() {
   const portals = usePortal();
   const history = useHistory();
   const location = useLocation();
 
-  const tabs = ["dashboard", "tasks", "staff"];
+  const tabs = ["dashboard", "items"];
 
   const [activeTab, setActiveTab] = useState(tabs.indexOf(location.pathname.split("/")[3]));
   const [tabText, setTabText] = useState(
-    typeof location.pathname.split("/")[3] === "string" ? capitalizeFirstLetter(location.pathname.split("/")[3]) : ""
+    typeof location.pathname.split("/")[3] === "string" ? camelCaseToRegular(location.pathname.split("/")[3]) : ""
   );
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
@@ -41,7 +38,7 @@ export default function PanelRouter() {
 
   useEffect(() => {
     if (location.pathname.split("/")[3]) {
-      setTabText(capitalizeFirstLetter(location.pathname.split("/")[3]));
+      setTabText(camelCaseToRegular(location.pathname.split("/")[3]));
       setActiveTab(tabs.indexOf(location.pathname.split("/")[3]));
     }
   }, [location]);
@@ -91,21 +88,20 @@ export default function PanelRouter() {
             orientation="vertical"
           >
             <MyTab label="Dashboard" />
-            <MyTab label="Tasks" />
-            <MyTab label="Staff" />
+            <MyTab label="Items" />
           </MyTabs>
         </Popover>
       </Portal>
       <Suspense fallback={<MyBackdrop />}>
         <Switch>
-          <Route exact path="/panel/production">
-            <Redirect to="/panel/production/dashboard" />
+          <Route exact path="/panel/inventory">
+            <Redirect to="/panel/inventory/items" />
           </Route>
-          <Route exact path="/panel/production/dashboard" component={Dashboard} />
-          <Route exact path="/panel/production/tasks" component={Tasks} />
-          <Route exact path="/panel/production/staff" component={Staff} />
-          <Route exact path="/panel/production/:unitNumber" component={UnitDetails} />
-          <Route exact path="/panel/production/taskList/:taskId" component={TaskDetails} />
+
+          <Route exact path="/panel/inventory/dashboard" component={Dashboard} />
+          <Route exact path="/panel/inventory/items" component={Items} />
+
+          <Route exact path="/panel/inventory/:itemId" component={ItemDetails} />
         </Switch>
       </Suspense>
     </LockProvider>

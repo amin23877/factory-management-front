@@ -1,22 +1,34 @@
-import React, { useState } from "react";
-import { Box, Portal, Popover } from "@material-ui/core";
+import React, { Suspense, useEffect, useState } from "react";
+import { Switch, Route, useHistory, Redirect, useLocation } from "react-router-dom";
+
+import { LockProvider } from "common/Lock";
+import { usePortal } from "logic/PortalContext";
+
+import { Portal, Popover } from "@material-ui/core";
 import { KeyboardArrowDownRounded, KeyboardArrowUpRounded } from "@material-ui/icons";
 
+import MyBackdrop from "app/Backdrop";
 import { MyTabs, MyTab } from "app/Tabs";
 
 import PurchasePO from "features/Purchase/PO";
 import Vendors from "features/Purchase/Vendor";
 import PurchaseQuote from "features/Purchase/Quote";
 import Dashboard from "features/Purchase/Dashboard";
+import { camelCaseToRegular } from "logic/utils";
 
-import { usePortal } from "logic/PortalContext";
-import { useLock } from "common/Lock";
+export default function PanelRouter() {
+  const portals = usePortal();
+  const history = useHistory();
+  const location = useLocation();
 
-export default function Purchase() {
-  const [activeTab, setActiveTab] = useState(2);
-  const [tabText, setTabText] = useState("Purchase Order");
+  const tabs = ["dashboard", "quote", "purchaseOrder", "vendor"];
+
+  const [activeTab, setActiveTab] = useState(tabs.indexOf(location.pathname.split("/")[3]));
+  const [tabText, setTabText] = useState(
+    typeof location.pathname.split("/")[3] === "string" ? camelCaseToRegular(location.pathname.split("/")[3]) : ""
+  );
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-  const { setLock } = useLock();
+
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
@@ -25,11 +37,18 @@ export default function Purchase() {
     setAnchorEl(null);
   };
 
+  useEffect(() => {
+    if (location.pathname.split("/")[3]) {
+      setTabText(camelCaseToRegular(location.pathname.split("/")[3]));
+      setActiveTab(tabs.indexOf(location.pathname.split("/")[3]));
+    }
+  }, [location]);
+
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
-  const portals = usePortal();
+
   return (
-    <>
+    <LockProvider>
       <Portal container={portals.topAppBar ? (portals.topAppBar as any).current : null}>
         <div
           onClick={handleClick}
@@ -64,7 +83,7 @@ export default function Purchase() {
             onChange={(e: any, nv) => {
               setActiveTab(nv);
               setTabText(e.target.textContent);
-              setLock(true);
+              history.push(tabs[nv]);
               handleClose();
             }}
             orientation="vertical"
@@ -76,14 +95,17 @@ export default function Purchase() {
           </MyTabs>
         </Popover>
       </Portal>
-      <Box display="flex">
-        <Box flex={1}>
-          {activeTab === 0 && <Dashboard />}
-          {activeTab === 1 && <PurchaseQuote />}
-          {activeTab === 2 && <PurchasePO />}
-          {activeTab === 3 && <Vendors tech={false} />}
-        </Box>
-      </Box>
-    </>
+      <Suspense fallback={<MyBackdrop />}>
+        <Switch>
+          <Route exact path="/panel/purchase">
+            <Redirect to="/panel/purchase/dashboard" />
+          </Route>
+          <Route exact path="/panel/purchase/dashboard" component={Dashboard} />
+          <Route exact path="/panel/purchase/quote" component={PurchaseQuote} />
+          <Route exact path="/panel/purchase/purchaseOrder" component={PurchasePO} />
+          <Route exact path="/panel/purchase/vendor" component={Vendors} />
+        </Switch>
+      </Suspense>
+    </LockProvider>
   );
 }
