@@ -58,7 +58,7 @@ export const delete_ = async (path: string, params: AxiosRequestConfig["params"]
     if (error.response) {
       console.error("Status:", error.response.status);
       console.error("Data:", error.response.data);
-      toast.error(error.response.data.Message);
+      toast.error(error.response.data.Message || error.response.data.error);
       console.error("Headers:", error.response.headers);
     } else {
       console.error("Error Message:", error.message);
