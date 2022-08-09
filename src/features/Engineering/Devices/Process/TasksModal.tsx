@@ -66,6 +66,7 @@ export default function TasksModal({ open, onClose, process, type }: IEditTaskMo
       name: "order",
       header: "Order",
       render: ({ data }: any) => data?.majorStep + "." + data?.minorStep,
+      width: 80,
     },
     {
       editable: false,

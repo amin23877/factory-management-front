@@ -90,7 +90,6 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
         },
       },
       { name: "description", header: "Description", flex: 1 },
-      { name: "realeased", header: "Released", width: 80, type: "boolean" },
       {
         name: "realeasedDate",
         header: "Released Date",
@@ -103,6 +102,7 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
         width: 120,
         render: ({ data }: any) => formatTimestampToDate(data.revisionDate),
       },
+      { name: "realeased", header: "Released", width: 80, type: "boolean" },
     ],
     [handleDelete, lock]
   );

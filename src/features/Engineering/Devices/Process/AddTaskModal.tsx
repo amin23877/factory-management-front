@@ -242,11 +242,14 @@ export default function AddTaskModal({
               {tasks?.tasks &&
                 tasks?.tasks.map((i, idx) => (
                   <ListItem key={i.id} style={{ padding: "0px 16px", background: idx % 2 === 0 ? "white" : "#e3e3e3" }}>
-                    <ListItemText
-                      primary={i.majorStep + "." + i.minorStep + " " + i.task?.title}
-                      secondary={i.task?.instruction}
-                    />
-                    <ListItemSecondaryAction>
+                    <Box display={"flex"} justifyContent="space-between" alignItems="center" width={"100%"}>
+                      <ListItemText
+                        primary={i.majorStep + "." + i.minorStep + " " + i.task?.title}
+                        secondary={i.task?.instruction}
+                        style={{ flex: 1 }}
+                      />
+
+                      {/* <ListItemSecondaryAction> */}
                       <Box display="flex" alignItems="center">
                         <IconButton
                           edge="end"
@@ -258,7 +261,8 @@ export default function AddTaskModal({
                           <DeleteRounded />
                         </IconButton>
                       </Box>
-                    </ListItemSecondaryAction>
+                      {/* </ListItemSecondaryAction> */}
+                    </Box>
                   </ListItem>
                 ))}
             </List>
