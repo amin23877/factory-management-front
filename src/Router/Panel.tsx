@@ -31,6 +31,8 @@ const Purchase = React.lazy(() => import("./Purchasing"));
 const Sales = React.lazy(() => import("./Sales"));
 const Inventory = React.lazy(() => import("./Inventory"));
 const Service = React.lazy(() => import("./Servicing"));
+const Engineering = React.lazy(() => import("./Engineering"));
+const ShippingAndReceiVing = React.lazy(() => import("./ShippingAndReceiving"));
 
 const Home = React.lazy(() => import("../pages/home"));
 const Dashboard = React.lazy(() => import("../pages/HomeDashboard"));
@@ -38,12 +40,8 @@ const Settings = React.lazy(() => import("../pages/Settings"));
 const Roles = React.lazy(() => import("../pages/Roles"));
 const Projects = React.lazy(() => import("../pages/Project"));
 const Activity = React.lazy(() => import("../pages/Activity"));
-const ShippingAndReceiVing = React.lazy(() => import("../pages/ShippingAndReceiVing"));
-const Engineering = React.lazy(() => import("../pages/Engineering"));
 const Notification = React.lazy(() => import("../pages/Notification"));
 const Page404 = React.lazy(() => import("../pages/404"));
-
-const DeviceDetails = React.lazy(() => import("../pages/DeviceDetails"));
 
 const ServiceDetails = React.lazy(() => import("../pages/ServiceDetails"));
 const QuoteDetails = React.lazy(() => import("../pages/QuoteDetails"));
@@ -254,16 +252,14 @@ export default function PanelRouter() {
                   <Route exact path="/panel/projects" component={Projects} />
                   <Route exact path="/panel/activity" component={Activity} />
 
-                  <Route exact path="/panel/shipping" component={ShippingAndReceiVing} />
-                  <Route exact path="/panel/engineering" component={Engineering} />
-
+                  <Route path="/panel/shipping" component={ShippingAndReceiVing} />
+                  <Route path="/panel/engineering" component={Engineering} />
                   <Route path="/panel/fieldservice" component={Service} />
                   <Route path="/panel/inventory" component={Inventory} />
                   <Route path="/panel/sales" component={Sales} />
                   <Route path="/panel/purchase" component={Purchase} />
                   <Route path="/panel/production" component={Production} />
 
-                  <Route exact path="/panel/engineering/:deviceId" component={DeviceDetails} />
                   <Route exact path="/panel/service/:serviceId" component={ServiceDetails} />
                   <Route exact path="/panel/quote/:quoteNumber" component={QuoteDetails} />
                   <Route exact path="/panel/so/:soNumber" component={SODetails} />

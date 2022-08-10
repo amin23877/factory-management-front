@@ -1,19 +1,22 @@
 import React, { useCallback, useMemo, useState } from "react";
-import { Container, Typography, Box, useMediaQuery } from "@material-ui/core";
-import { SearchRounded, ClearRounded } from "@material-ui/icons";
 import { useHistory, useParams } from "react-router-dom";
+
+import { Container, Typography, Box, useMediaQuery } from "@material-ui/core";
+
+import { ReactComponent as SettingIcon } from "assets/icons/tableIcons/setting.svg";
+import { ReactComponent as DeleteIcon } from "assets/icons/tableIcons/delete.svg";
+
 import NumericEditor from "@inovua/reactdatagrid-community/NumericEditor";
 import BoolEditor from "@inovua/reactdatagrid-community/BoolEditor";
 
 import Button from "app/Button";
-
+import NewBaseDataGrid from "app/NewDataGrid";
+import Toast from "app/Toast";
 import { LockButton, useLock } from "common/Lock";
 import Confirm from "common/Confirm";
 
 import ShowBomRecordsButton from "features/BOM/ShowBomRecordsButton";
 import AddPartModal from "features/BOM/AddPart";
-import NewBaseDataGrid from "app/NewDataGrid";
-import Toast from "app/Toast";
 
 import { deleteBomRecord, updateBomRecord } from "api/bom";
 import { openRequestedSinglePopup } from "logic/window";
@@ -59,7 +62,7 @@ function Parts() {
         editable: false,
         render: ({ data }: any) => {
           return (
-            <div style={{ display: "flex", justifyContent: "end", gap: 4 }}>
+            <div style={{ display: "flex", justifyContent: "end", gap: 8, alignItems: "center" }}>
               <ShowBomRecordsButton bomRecord={data} />
               <div
                 onClick={() => {
@@ -70,7 +73,7 @@ function Parts() {
                   }
                 }}
               >
-                <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
+                <SettingIcon />
               </div>
               <div
                 onClick={() => {
@@ -79,9 +82,7 @@ function Parts() {
                   }
                 }}
               >
-                <ClearRounded
-                  style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#e71414", cursor: lock ? "auto" : "pointer" }}
-                />
+                <DeleteIcon />
               </div>
             </div>
           );
