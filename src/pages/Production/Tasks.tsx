@@ -3,8 +3,8 @@ import { AddRounded, DeleteRounded, FindInPageRounded, ListAltRounded } from "@m
 import { Tabs, Tab, Box, ListItem, IconButton } from "@material-ui/core";
 
 import TasksTable from "./Tasks";
-import TasksListTable from "./TasksList";
-import TasksListDetail from "./TasksList/Details";
+import TasksListTable from "features/Production/Task/TasksList";
+import TasksListDetail from "features/Production/Task/TasksList/Details";
 import { BasePaper } from "app/Paper";
 import Confirm from "common/Confirm";
 
@@ -12,10 +12,15 @@ import { deleteTaskList, ITaskList } from "api/taskList";
 import { ITask } from "api/task";
 import List from "app/SideUtilityList";
 import Toast from "app/Toast";
-import AddTaskListModal from "./TasksList/AddModal";
+import AddTaskListModal from "features/Production/Task/TasksList/AddModal";
 import { LockProvider } from "common/Lock";
+// import { useHistory } from "react-router-dom";
 
 function Index() {
+  //   const history = useHistory();
+
+  //   const tabs = ["tasks", "tasksList", "details"];
+
   const [activeTab, setActiveTab] = useState(0);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const [selectedTaskList, setSelectedTaskList] = useState<ITaskList | null>(null);
@@ -49,7 +54,10 @@ function Index() {
         <Box display="flex">
           <Tabs
             value={activeTab}
-            onChange={(e, nv) => setActiveTab(nv)}
+            onChange={(e, nv) => {
+              setActiveTab(nv);
+              //   history.push(tabs[nv]);
+            }}
             textColor="primary"
             style={{ marginBottom: "10px" }}
           >

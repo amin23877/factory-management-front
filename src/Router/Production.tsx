@@ -11,7 +11,7 @@ import MyBackdrop from "app/Backdrop";
 import { MyTabs, MyTab } from "app/Tabs";
 import { capitalizeFirstLetter } from "logic/utils";
 
-const Tasks = React.lazy(() => import("../features/Production/Task"));
+const Tasks = React.lazy(() => import("pages/Production/Tasks"));
 const Dashboard = React.lazy(() => import("../features/Production/Dashboard"));
 const Staff = React.lazy(() => import("../features/Production/Staff"));
 
@@ -102,10 +102,12 @@ export default function PanelRouter() {
             <Redirect to="/panel/production/dashboard" />
           </Route>
           <Route exact path="/panel/production/dashboard" component={Dashboard} />
+
           <Route exact path="/panel/production/tasks" component={Tasks} />
+          <Route exact path="/panel/production/taskList/:taskId" component={TaskDetails} />
+
           <Route exact path="/panel/production/staff" component={Staff} />
           <Route exact path="/panel/production/:unitNumber" component={UnitDetails} />
-          <Route exact path="/panel/production/taskList/:taskId" component={TaskDetails} />
         </Switch>
       </Suspense>
     </LockProvider>
