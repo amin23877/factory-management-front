@@ -56,7 +56,6 @@ function Index() {
             value={activeTab}
             onChange={(e, nv) => {
               setActiveTab(nv);
-              //   history.push(tabs[nv]);
             }}
             textColor="primary"
             style={{ marginBottom: "10px" }}
@@ -87,37 +86,27 @@ function Index() {
             />
           </Tabs>
           <div style={{ flexGrow: 1 }} />
-          {true && (
-            <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", margin: "5px" }}>
-              <>
-                <ListItem>
-                  <IconButton title="Add" onClick={() => setAddTaskListModal(true)}>
-                    <AddRounded />
-                  </IconButton>
-                </ListItem>
-                <ListItem>
-                  <IconButton
-                    title="Delete"
-                    onClick={() => selectedTaskList && selectedTaskList?.id && handleDelete()}
-                    disabled={!(selectedTask || selectedTaskList)}
-                  >
-                    <DeleteRounded />
-                  </IconButton>
-                </ListItem>
-              </>
-            </List>
-          )}
+          <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px", margin: "5px" }}>
+            <ListItem>
+              <IconButton title="Add" onClick={() => setAddTaskListModal(true)}>
+                <AddRounded />
+              </IconButton>
+            </ListItem>
+            <ListItem>
+              <IconButton
+                title="Delete"
+                onClick={() => selectedTaskList && selectedTaskList?.id && handleDelete()}
+                disabled={!(selectedTask || selectedTaskList)}
+              >
+                <DeleteRounded />
+              </IconButton>
+            </ListItem>
+          </List>
         </Box>
-        <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
+        {/* <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
           <TasksTable
-          //   onRowSelected={(u) => {
-          //     setSelectedTaskList(null);
-          //     setActiveTab(2);
-          //     setSelectedTask(u);
-          //   }}
           />
-        </div>
-
+        </div> */}
         <div style={activeTab !== 1 ? { display: "none" } : { flex: 1 }}>
           <TasksListTable
             refresh={refresh}
@@ -128,8 +117,6 @@ function Index() {
             }}
           />
         </div>
-
-        {/* {activeTab === 2 && selectedTask && <UnitDetails unit={selectedTask} />} */}
         {activeTab === 2 && selectedTaskList && (
           <LockProvider>
             <TasksListDetail taskList={selectedTaskList} setRefresh={setRefresh} />
