@@ -1,47 +1,57 @@
-import React, { useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { AddRounded, DeleteRounded, FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 import { Tabs, Tab, Box, ListItem, IconButton } from "@material-ui/core";
 
-import TasksTable from "./Tasks";
+import TasksTable from "features/Production/Task/Tasks";
 import TasksListTable from "features/Production/Task/TasksList";
-import TasksListDetail from "features/Production/Task/TasksList/Details";
+import TasksListDetail from "pages/Production/Tasks/TaskList/Details";
 import { BasePaper } from "app/Paper";
 import Confirm from "common/Confirm";
 
-import { deleteTaskList, ITaskList } from "api/taskList";
-import { ITask } from "api/task";
+import { deleteTaskList } from "api/taskList";
 import List from "app/SideUtilityList";
 import Toast from "app/Toast";
 import AddTaskListModal from "features/Production/Task/TasksList/AddModal";
 import { LockProvider } from "common/Lock";
-// import { useHistory } from "react-router-dom";
+import { Redirect, Route, Switch, useHistory, useLocation } from "react-router-dom";
+import MyBackdrop from "app/Backdrop";
 
 function Index() {
-  //   const history = useHistory();
+  const history = useHistory();
+  const location = useLocation();
 
-  //   const tabs = ["tasks", "tasksList", "details"];
+  const tabs = ["task", "tasklist", "details"];
+  const taskId = location.pathname.split("/")[5];
 
-  const [activeTab, setActiveTab] = useState(0);
-  const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
-  const [selectedTaskList, setSelectedTaskList] = useState<ITaskList | null>(null);
+  const [activeTab, setActiveTab] = useState(
+    location.pathname.split("/").length === 6 ? 2 : tabs.indexOf(location.pathname.split("/")[4])
+  );
   const [addTaskListModal, setAddTaskListModal] = useState(false);
   const [refresh, setRefresh] = useState<number>(0);
+
+  useEffect(() => {
+    if (location.pathname.split("/")[4]) {
+      if (location.pathname.split("/").length === 6) {
+        setActiveTab(2);
+      } else {
+        setActiveTab(tabs.indexOf(location.pathname.split("/")[4]));
+      }
+    }
+  }, [location]);
 
   const handleDelete = () => {
     Confirm({
       onConfirm: async () => {
         try {
-          if (selectedTaskList && selectedTaskList.id) {
-            await deleteTaskList(selectedTaskList.id);
-
+          if (taskId) {
+            await deleteTaskList(taskId);
             Toast("Record deleted", "success");
           }
         } catch (error) {
           console.log(error);
         } finally {
           setRefresh((p) => p + 1);
-          setActiveTab(1);
-          setSelectedTaskList(null);
+          history.push("/panel/production/tasks/taskList");
         }
       },
     });
@@ -56,7 +66,7 @@ function Index() {
             value={activeTab}
             onChange={(e, nv) => {
               setActiveTab(nv);
-              //   history.push(tabs[nv]);
+              history.push("/panel/production/tasks/" + tabs[nv]);
             }}
             textColor="primary"
             style={{ marginBottom: "10px" }}
@@ -78,7 +88,7 @@ function Index() {
               wrapped
             />
             <Tab
-              disabled={!(selectedTaskList || selectedTask)}
+              disabled={activeTab !== 2}
               icon={
                 <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <FindInPageRounded style={{ marginRight: "5px" }} /> Details
@@ -95,46 +105,49 @@ function Index() {
                     <AddRounded />
                   </IconButton>
                 </ListItem>
-                <ListItem>
-                  <IconButton
-                    title="Delete"
-                    onClick={() => selectedTaskList && selectedTaskList?.id && handleDelete()}
-                    disabled={!(selectedTask || selectedTaskList)}
-                  >
-                    <DeleteRounded />
-                  </IconButton>
-                </ListItem>
+                {activeTab === 2 && (
+                  <ListItem>
+                    <IconButton title="Delete" onClick={() => taskId && handleDelete()}>
+                      <DeleteRounded />
+                    </IconButton>
+                  </ListItem>
+                )}
               </>
             </List>
           )}
         </Box>
-        <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
-          <TasksTable
-          //   onRowSelected={(u) => {
-          //     setSelectedTaskList(null);
-          //     setActiveTab(2);
-          //     setSelectedTask(u);
-          //   }}
-          />
-        </div>
-
-        <div style={activeTab !== 1 ? { display: "none" } : { flex: 1 }}>
-          <TasksListTable
-            refresh={refresh}
-            onRowSelected={(t) => {
-              setSelectedTask(null);
-              setSelectedTaskList(t);
-              setActiveTab(2);
-            }}
-          />
-        </div>
-
-        {/* {activeTab === 2 && selectedTask && <UnitDetails unit={selectedTask} />} */}
-        {activeTab === 2 && selectedTaskList && (
-          <LockProvider>
-            <TasksListDetail taskList={selectedTaskList} setRefresh={setRefresh} />
-          </LockProvider>
-        )}
+        <Suspense fallback={<MyBackdrop />}>
+          <Switch>
+            <Route exact path="/panel/production/tasks">
+              <Redirect to="/panel/production/tasks/task" />
+            </Route>
+            <Route exact path="/panel/production/tasks/task">
+              <TasksTable
+              //   onRowSelected={(u) => {
+              //     setSelectedTaskList(null);
+              //     setActiveTab(2);
+              //     setSelectedTask(u);
+              //   }}
+              />
+            </Route>
+            <Route exact path="/panel/production/tasks/tasklist">
+              <TasksListTable
+                refresh={refresh}
+                onRowSelected={(t) => {
+                  history.push(`/panel/production/tasks/taskList/${t.id}`);
+                }}
+              />
+            </Route>
+            <Route exact path="/panel/production/tasks/task/:taskId">
+              {/* {activeTab === 2 && selectedTask && <UnitDetails unit={selectedTask} />} */}
+            </Route>
+            <Route exact path="/panel/production/tasks/taskList/:taskId">
+              <LockProvider>
+                <TasksListDetail setRefresh={setRefresh} />
+              </LockProvider>
+            </Route>
+          </Switch>
+        </Suspense>
       </BasePaper>
     </>
   );

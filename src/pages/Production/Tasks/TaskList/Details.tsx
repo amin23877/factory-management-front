@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Box, Tabs, Tab, Tooltip, Button, useMediaQuery } from "@material-ui/core";
+import { Box, Tabs, Tab, Tooltip, Button, useMediaQuery, LinearProgress } from "@material-ui/core";
 import { Formik, Form } from "formik";
 
-import { General } from "./Forms";
+import { General } from "features/Production/Task/TasksList/Forms";
 
 import { BasePaper } from "app/Paper";
 import Toast from "app/Toast";
@@ -13,22 +13,26 @@ import { camelCaseToRegular, getModifiedValues } from "logic/utils";
 
 import { changeTask, ITaskList } from "api/taskList";
 import { LockButton, useLock } from "common/Lock";
-import AddPartModal from "./AddPartModal";
+import AddPartModal from "features/Production/Task/TasksList/AddPartModal";
 import BaseDataGrid from "app/BaseDataGrid";
 import { GridColumns } from "@material-ui/data-grid";
 import PhotoTab from "common/PhotoTab";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { openRequestedSinglePopup } from "logic/window";
+import useSWR from "swr";
 
-function ServiceDetails({ taskList, setRefresh }: { taskList: ITaskList; setRefresh: any }) {
+function ServiceDetails({ setRefresh }: { setRefresh: any }) {
+  const { taskId } = useParams<{ taskId: string }>();
+  const { data: taskList } = useSWR<ITaskList>(taskId ? `/task/${taskId}` : null);
+
   const handleSubmit = async (data: any) => {
     try {
-      if (taskList.id) {
+      if (taskList?.id) {
         let newType = data.type;
         newType = newType.split(" ");
         newType[0] = newType[0].toLowerCase();
         data.type = newType.join("");
-        await changeTask(taskList.id, getModifiedValues(data, taskList));
+        await changeTask(taskList?.id, getModifiedValues(data, taskList));
         setRefresh((p: number) => p + 1);
         Toast("Updated successfully.", "success");
       }
@@ -42,7 +46,7 @@ function ServiceDetails({ taskList, setRefresh }: { taskList: ITaskList; setRefr
 
   const [addPart, setAddPart] = useState(false);
   const [parts, setParts] = useState<any>(null);
-  const [items, setItems] = useState<any>(taskList.relatedParts);
+  const [items, setItems] = useState<any>(taskList?.relatedParts);
 
   const history = useHistory();
   const phone = useMediaQuery("(max-width:900px)");
@@ -61,7 +65,7 @@ function ServiceDetails({ taskList, setRefresh }: { taskList: ITaskList; setRefr
       newArr.map((i) => (i.item = i));
       setParts(newArr);
     }
-  }, [taskList.relatedParts]);
+  }, [taskList?.relatedParts]);
 
   const cols = useMemo<GridColumns>(
     () => [
@@ -99,7 +103,9 @@ function ServiceDetails({ taskList, setRefresh }: { taskList: ITaskList; setRefr
     },
     [history, phone]
   );
-
+  if (!taskList) {
+    return <LinearProgress />;
+  }
   return (
     <Formik
       initialValues={{ ...taskList, type: camelCaseToRegular(taskList.type) }}

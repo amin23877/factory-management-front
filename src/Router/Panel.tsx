@@ -26,7 +26,7 @@ import { PortalProvider } from "logic/PortalContext";
 import { AppBarStation } from "logic/PortalContext/Stations";
 import { LockProvider } from "common/Lock";
 
-const Production = React.lazy(() => import("./Production"));
+const Production = React.lazy(() => import("./Production/Production"));
 const Purchase = React.lazy(() => import("./Purchasing"));
 const Sales = React.lazy(() => import("./Sales"));
 const Inventory = React.lazy(() => import("./Inventory"));

@@ -11,12 +11,11 @@ import MyBackdrop from "app/Backdrop";
 import { MyTabs, MyTab } from "app/Tabs";
 import { capitalizeFirstLetter } from "logic/utils";
 
-const Tasks = React.lazy(() => import("pages/Production/Tasks"));
-const Dashboard = React.lazy(() => import("../features/Production/Dashboard"));
-const Staff = React.lazy(() => import("../features/Production/Staff"));
+const Tasks = React.lazy(() => import("Router/Production/Tasks"));
+const Dashboard = React.lazy(() => import("features/Production/Dashboard"));
+const Staff = React.lazy(() => import("features/Production/Staff"));
 
-const UnitDetails = React.lazy(() => import("../pages/UnitDetails"));
-const TaskDetails = React.lazy(() => import("../pages/TaskDetails"));
+const UnitDetails = React.lazy(() => import("pages/UnitDetails"));
 
 export default function PanelRouter() {
   const portals = usePortal();
@@ -103,8 +102,7 @@ export default function PanelRouter() {
           </Route>
           <Route exact path="/panel/production/dashboard" component={Dashboard} />
 
-          <Route exact path="/panel/production/tasks" component={Tasks} />
-          <Route exact path="/panel/production/taskList/:taskId" component={TaskDetails} />
+          <Route path="/panel/production/tasks" component={Tasks} />
 
           <Route exact path="/panel/production/staff" component={Staff} />
           <Route exact path="/panel/production/:unitNumber" component={UnitDetails} />

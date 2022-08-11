@@ -92,9 +92,9 @@ export default function TasksModal({ open, onClose, process, type }: IEditTaskMo
             <div
               onClick={() => {
                 if (phone) {
-                  history.push(`/panel/production/taskList/${data.id}`);
+                  history.push(`/panel/production/tasks/taskList/${data.id}`);
                 } else {
-                  openRequestedSinglePopup({ url: `/panel/production/taskList/${data.id}` });
+                  openRequestedSinglePopup({ url: `/panel/production/tasks/taskList/${data.id}` });
                 }
               }}
               style={{ width: "20px" }}
