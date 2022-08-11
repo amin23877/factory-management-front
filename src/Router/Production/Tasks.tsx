@@ -39,6 +39,10 @@ function Index() {
     }
   }, [location]);
 
+  useEffect(() => {
+    console.log(window.location.search);
+  }, [window.location.search]);
+
   const handleDelete = () => {
     Confirm({
       onConfirm: async () => {

@@ -14,6 +14,7 @@ import {
 import { makeStyles } from "@material-ui/styles";
 import { CheckRounded, ClearRounded, MoreVertRounded } from "@material-ui/icons";
 import moment from "moment";
+import queryString from "query-string";
 
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
@@ -278,6 +279,16 @@ function NewDataGrid({
       }
 
       try {
+        if (window.history.pushState) {
+          var newurl =
+            window.location.protocol +
+            "//" +
+            window.location.host +
+            window.location.pathname +
+            "?" +
+            queryString.stringify(params);
+          window.history.pushState({ path: newurl }, "", newurl);
+        }
         const d = await get(url, { params });
         onDataFetched && onDataFetched(d);
         return { data: d.result, count: d.total };
