@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 import { Tabs, Tab, Box } from "@material-ui/core";
 
-import UnitTable from "./UnitList/Table";
-import UnitDetails from "./UnitList/Details";
-import ServiceTable from "./ServiceList/Table";
-import TicketDetails from "./ServiceList/Details";
+import UnitTable from "features/Production/Dashboard/UnitList/Table";
+import UnitDetails from "features/Production/Dashboard/UnitList/Details";
+import ServiceTable from "features/Production/Dashboard/ServiceList/Table";
+import TicketDetails from "features/Production/Dashboard/ServiceList/Details";
 import { BasePaper } from "app/Paper";
 
 import { IUnit } from "api/units";

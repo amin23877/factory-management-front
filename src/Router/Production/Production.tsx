@@ -12,7 +12,7 @@ import { MyTabs, MyTab } from "app/Tabs";
 import { capitalizeFirstLetter } from "logic/utils";
 
 const Tasks = React.lazy(() => import("Router/Production/Tasks"));
-const Dashboard = React.lazy(() => import("features/Production/Dashboard"));
+const Dashboard = React.lazy(() => import("Router/Production/Dashboard"));
 const Staff = React.lazy(() => import("features/Production/Staff"));
 
 const UnitDetails = React.lazy(() => import("pages/UnitDetails"));
@@ -84,7 +84,7 @@ export default function PanelRouter() {
             onChange={(e: any, nv) => {
               setActiveTab(nv);
               setTabText(e.target.textContent);
-              history.push(tabs[nv]);
+              history.push("/panel/production/" + tabs[nv]);
               handleClose();
             }}
             orientation="vertical"
@@ -100,8 +100,8 @@ export default function PanelRouter() {
           <Route exact path="/panel/production">
             <Redirect to="/panel/production/dashboard" />
           </Route>
-          <Route exact path="/panel/production/dashboard" component={Dashboard} />
 
+          <Route path="/panel/production/dashboard" component={Dashboard} />
           <Route path="/panel/production/tasks" component={Tasks} />
 
           <Route exact path="/panel/production/staff" component={Staff} />
