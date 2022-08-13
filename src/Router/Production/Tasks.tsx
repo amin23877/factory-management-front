@@ -39,10 +39,6 @@ function Index() {
     }
   }, [location]);
 
-  useEffect(() => {
-    console.log(window.location.search);
-  }, [window.location.search]);
-
   const handleDelete = () => {
     Confirm({
       onConfirm: async () => {
@@ -70,7 +66,10 @@ function Index() {
             value={activeTab}
             onChange={(e, nv) => {
               setActiveTab(nv);
-              history.push("/panel/production/tasks/" + tabs[nv]);
+              history.push({
+                pathname: "/panel/production/tasks/" + tabs[nv],
+                search: window.location.search,
+              });
             }}
             textColor="primary"
             style={{ marginBottom: "10px" }}
@@ -138,7 +137,7 @@ function Index() {
               <TasksListTable
                 refresh={refresh}
                 onRowSelected={(t) => {
-                  history.push(`/panel/production/tasks/taskList/${t.id}`);
+                  history.push(`/panel/production/tasks/taskList/${t.id}${window.location.search}`);
                 }}
               />
             </Route>

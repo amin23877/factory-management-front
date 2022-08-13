@@ -241,13 +241,36 @@ function NewDataGrid({
   }, [columnsState]);
 
   const defaultFilterValue = useMemo(() => {
-    let res = columns.map(({ name, type, defaultOperator }) => ({
-      name,
-      operator: defaultOperator || type ? "eq" : "startsWith",
-      type: type ? type : "string",
-      value: type === "date" ? "" : undefined,
-    }));
-
+    const parsedQuery = queryString.parse(window.location.search);
+    const queryKeys = Object.keys(parsedQuery);
+    const filters: any = {};
+    for (let i = 0; i < queryKeys.length; i++) {
+      let key = queryKeys[i];
+      let whereKey = key;
+      let operator = "eq";
+      if (key.includes("contain")) {
+        operator = "contains";
+        whereKey = key.substr(7);
+      } else if (key.includes("startsWith")) {
+        operator = "startsWith";
+        whereKey = key.substr(10);
+      } else if (key.includes("max")) {
+        operator = "lt";
+        whereKey = key.substr(3);
+      } else if (key.includes("min")) {
+        operator = "gt";
+        whereKey = key.substr(3);
+      }
+      filters[whereKey] = operator;
+    }
+    let res = columns.map(({ name, type, defaultOperator }) => {
+      return {
+        name,
+        operator: filters[name] ? filters[name] : defaultOperator || type ? "eq" : "startsWith",
+        type: type ? type : "string",
+        value: filters[name] ? parsedQuery[getOperator(filters[name]) + name] : type === "date" ? "" : undefined,
+      };
+    });
     return res;
   }, [columns]);
 
