@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Box, Tabs, Tab, useMediaQuery, ListItem, IconButton } from "@material-ui/core";
 import { ListAltRounded, FindInPageRounded, AddRounded } from "@material-ui/icons";
 
-import AddRep from "./AddRep";
-import Details from "./Details";
+import AddRep from "../../features/Sales/Rep/AddRep";
+import Details from "../../pages/Sales/Rep/Details";
 import { BasePaper } from "app/Paper";
 import NewDataGrid from "app/NewDataGrid";
 import List from "app/SideUtilityList";
 
-import { repType } from "api/rep";
+import { Redirect, Route, Switch, useHistory, useLocation } from "react-router-dom";
+import MyBackdrop from "app/Backdrop";
 
 const columns = [
   {
@@ -75,11 +76,21 @@ const columns = [
 ];
 
 export default function RepIndex() {
+  const history = useHistory();
+  const location = useLocation();
+
   const phone = useMediaQuery("(max-width:900px)");
-  const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(location.pathname.split("/").length === 5 ? 1 : 0);
   const [refresh, setRefresh] = useState(0);
   const [addRep, setAddRep] = useState(false);
-  const [selectedRep, setSelectedRep] = useState<repType>();
+
+  useEffect(() => {
+    if (location.pathname.split("/").length === 5) {
+      setActiveTab(1);
+    } else {
+      setActiveTab(0);
+    }
+  }, [location]);
 
   return (
     <>
@@ -88,7 +99,13 @@ export default function RepIndex() {
         <Box mb={1} display="flex" alignItems="center">
           <Tabs
             value={activeTab}
-            onChange={(e, nv) => setActiveTab(nv)}
+            onChange={(e, nv) => {
+              setActiveTab(nv);
+              history.push({
+                pathname: "/panel/sales/reps",
+                search: window.location.search,
+              });
+            }}
             textColor="primary"
             variant="scrollable"
             scrollButtons={phone ? "on" : "auto"}
@@ -109,7 +126,7 @@ export default function RepIndex() {
               wrapped
             />
             <Tab
-              disabled={!selectedRep}
+              disabled={activeTab !== 1}
               icon={
                 <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <FindInPageRounded style={{ marginRight: "5px" }} /> Details
@@ -126,18 +143,23 @@ export default function RepIndex() {
             </ListItem>
           </List>
         </Box>
-        <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
-          <NewDataGrid
-            refresh={refresh}
-            onRowSelected={(d) => {
-              setSelectedRep(d);
-              setActiveTab(1);
-            }}
-            url="/rep"
-            columns={columns}
-          />
-        </div>
-        {activeTab === 1 && selectedRep && <Details selectedRep={selectedRep} />}
+        <Suspense fallback={<MyBackdrop />}>
+          <Switch>
+            <Route exact path="/panel/sales/reps">
+              <NewDataGrid
+                refresh={refresh}
+                onRowSelected={(d) => {
+                  history.push(`/panel/sales/reps/${d.id}${window.location.search}`);
+                }}
+                url="/rep"
+                columns={columns}
+              />
+            </Route>
+            <Route exact path="/panel/sales/reps/:repId">
+              <Details />
+            </Route>
+          </Switch>
+        </Suspense>
       </BasePaper>
     </>
   );

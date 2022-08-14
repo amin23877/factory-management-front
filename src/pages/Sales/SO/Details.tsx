@@ -1,15 +1,16 @@
 import React, { useMemo, useState } from "react";
-import { Box, useMediaQuery, makeStyles } from "@material-ui/core";
+import { Box, useMediaQuery, makeStyles, LinearProgress } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import useSWR from "swr";
 import { useHistory } from "react-router";
+import { useParams } from "react-router-dom";
 
 import BaseDataGrid from "app/BaseDataGrid";
 import { BasePaper } from "app/Paper";
 
-import EditForm from "./EditForm";
+import EditForm from "features/Sales/SO/EditForm";
 
 import { ISO } from "api/so";
 
@@ -36,14 +37,15 @@ const useStyle = makeStyles({
 const groupColors = ["white", "gray"];
 
 export default function EditTab({
-  selectedSo,
   onLineItemSelected,
   onLineServiceSelected,
 }: {
-  selectedSo: ISO;
   onLineItemSelected: (a: any) => void;
   onLineServiceSelected: (a: any) => void;
 }) {
+  const { soId } = useParams<{ soId: string }>();
+  const { data: selectedSo } = useSWR<ISO>(soId ? `/so/${soId}` : null);
+
   const [activeTab, setActiveTab] = useState(0);
   const classes = useStyle();
   const history = useHistory();
@@ -171,6 +173,9 @@ export default function EditTab({
 
   const phone = useMediaQuery("(max-width:900px)");
 
+  if (!selectedSo) {
+    return <LinearProgress />;
+  }
   return (
     <Box
       display="grid"

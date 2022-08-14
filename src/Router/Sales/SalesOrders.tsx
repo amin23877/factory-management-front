@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { AddRounded, DeleteRounded, FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 import { mutate } from "swr";
 
-import Confirm from "../../Modals/Confirm";
+import Confirm from "features/Modals/Confirm";
 
-import LineItemModal from "../../LineItem";
-import LineServiceModal from "../../LineService";
-import EditTab from "./EditTab";
-import AddSOModal from "./AddSo";
+import LineItemModal from "features/LineItem";
+import LineServiceModal from "features/LineService";
+import EditTab from "pages/Sales/SO/Details";
+import AddSOModal from "features/Sales/SO/AddSo";
 
 import List from "app/SideUtilityList";
 
@@ -18,11 +18,17 @@ import { deleteSO, ISO } from "api/so";
 import { ILineItem } from "api/lineItem";
 import { ILineService } from "api/lineService";
 import { BasePaper } from "app/Paper";
-import Datagrid from "./Datagrid";
+import Datagrid from "features/Sales/SO/Datagrid";
 import { IconButton, ListItem } from "@material-ui/core";
+import { Route, Switch, useHistory, useLocation, useParams } from "react-router-dom";
+import MyBackdrop from "app/Backdrop";
 
 export default function SalesOrderPanel() {
-  const [activeTab, setActiveTab] = useState(0);
+  const history = useHistory();
+  const location = useLocation();
+  const { soId } = useParams<{ soId: string }>();
+
+  const [activeTab, setActiveTab] = useState(location.pathname.split("/").length === 5 ? 1 : 0);
 
   const [confirm, setConfirm] = useState(false);
   const [addSo, setAddSo] = useState(false);
@@ -31,19 +37,25 @@ export default function SalesOrderPanel() {
 
   const [selectedLI, setSelectedLI] = useState<ILineItem>();
   const [selectedLS, setSelectedLS] = useState<ILineService>();
-  const [selectedSO, setSelectedSO] = useState<ISO>();
 
   const [refresh, setRefresh] = useState<number>(0);
 
+  useEffect(() => {
+    if (location.pathname.split("/").length === 5) {
+      setActiveTab(1);
+    } else {
+      setActiveTab(0);
+    }
+  }, [location]);
+
   const handleDelete = async () => {
     try {
-      if (selectedSO && selectedSO.id) {
-        const resp = await deleteSO(selectedSO.id);
+      if (soId) {
+        const resp = await deleteSO(soId);
         if (resp) {
-          setActiveTab(0);
-          setSelectedSO(undefined);
           mutate("/so");
           setConfirm(false);
+          history.push(`/panel/sales/salesOrders${window.location.search}`);
         }
       }
     } catch (error) {
@@ -53,22 +65,22 @@ export default function SalesOrderPanel() {
 
   return (
     <>
-      {selectedSO && selectedSO.id && (
+      {activeTab === 1 && soId && (
         <LineItemModal
           open={lineItemModal}
           onClose={() => setLineItemModal(false)}
           record="so"
-          recordId={selectedSO.id}
+          recordId={soId}
           selectedLine={selectedLI}
           mutateField="SOId"
         />
       )}
-      {selectedSO && selectedSO.id && (
+      {activeTab === 1 && soId && (
         <LineServiceModal
           open={lineServiceModal}
           onClose={() => setLineServiceModal(false)}
           record="so"
-          recordId={selectedSO.id}
+          recordId={soId}
           selectedLine={selectedLS}
           mutateField="SOId"
         />
@@ -80,8 +92,7 @@ export default function SalesOrderPanel() {
           onDone={(createdSO) => {
             mutate("/so");
             setRefresh((prev) => prev + 1);
-            setSelectedSO(createdSO);
-            setActiveTab(1);
+            setActiveTab(0);
           }}
         />
       )}
@@ -89,14 +100,20 @@ export default function SalesOrderPanel() {
         open={confirm}
         onClose={() => setConfirm(false)}
         onConfirm={handleDelete}
-        text={`Are you sure, You are going to delete SO with number ${selectedSO?.number}`}
+        text={`Are you sure, You want to delete this selected So ?`}
       />
       <BasePaper>
         <Box my={1} display="flex" alignItems="center">
           <Tabs
             value={activeTab}
             textColor="primary"
-            onChange={(e, nv) => setActiveTab(nv)}
+            onChange={(e, nv) => {
+              setActiveTab(nv);
+              history.push({
+                pathname: "/panel/sales/salesOrders",
+                search: window.location.search,
+              });
+            }}
             style={{ marginRight: "auto" }}
           >
             <Tab
@@ -108,7 +125,7 @@ export default function SalesOrderPanel() {
               wrapped
             />
             <Tab
-              disabled={!selectedSO}
+              disabled={activeTab !== 1}
               icon={
                 <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <FindInPageRounded style={{ marginRight: "5px" }} /> Details
@@ -122,35 +139,37 @@ export default function SalesOrderPanel() {
                 <AddRounded />
               </IconButton>
             </ListItem>
-            <ListItem>
-              <IconButton title="Delete SO" disabled={!selectedSO} onClick={() => setConfirm(true)}>
-                <DeleteRounded />
-              </IconButton>
-            </ListItem>
+            {activeTab === 1 && (
+              <ListItem>
+                <IconButton title="Delete SO" onClick={() => setConfirm(true)}>
+                  <DeleteRounded />
+                </IconButton>
+              </ListItem>
+            )}
           </List>
         </Box>
-        <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
-          <Datagrid
-            refresh={refresh}
-            onRowSelected={(d) => {
-              setSelectedSO(d);
-              setActiveTab(1);
-            }}
-          />
-        </div>
-        {activeTab === 1 && selectedSO && (
-          <EditTab
-            selectedSo={selectedSO}
-            onLineServiceSelected={(d) => {
-              setSelectedLS(d);
-              // setLineServiceModal(true);
-            }}
-            onLineItemSelected={(d) => {
-              setSelectedLI(d);
-              // setLineItemModal(true);
-            }}
-          />
-        )}
+        <Suspense fallback={<MyBackdrop />}>
+          <Switch>
+            <Route exact path="/panel/sales/salesOrders">
+              <Datagrid
+                refresh={refresh}
+                onRowSelected={(d) => {
+                  history.push(`/panel/sales/salesOrders/${d.id}${window.location.search}`);
+                }}
+              />
+            </Route>
+            <Route exact path="/panel/sales/salesOrders/:soId">
+              <EditTab
+                onLineServiceSelected={(d) => {
+                  setSelectedLS(d);
+                }}
+                onLineItemSelected={(d) => {
+                  setSelectedLI(d);
+                }}
+              />
+            </Route>
+          </Switch>
+        </Suspense>
       </BasePaper>
     </>
   );

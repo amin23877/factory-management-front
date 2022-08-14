@@ -17,9 +17,9 @@ const DevicesPanel = React.lazy(() => import("features/Engineering/Devices"));
 const Option = React.lazy(() => import("features/Engineering/Option"));
 const QuotePanel = React.lazy(() => import("features/Sales/Quote"));
 const PurchaseOrderPanel = React.lazy(() => import("features/Sales/PO"));
-const SalesOrderPanel = React.lazy(() => import("features/Sales/SO"));
+const SalesOrderPanel = React.lazy(() => import("Router/Sales/SalesOrders"));
 const Clients = React.lazy(() => import("features/Sales/Customer"));
-const Reps = React.lazy(() => import("features/Sales/Rep"));
+const Reps = React.lazy(() => import("Router/Sales/Reps"));
 
 export default function PanelRouter() {
   const portals = usePortal();
@@ -118,9 +118,9 @@ export default function PanelRouter() {
           <Route exact path="/panel/sales/options" component={Option} />
           <Route exact path="/panel/sales/quotes" component={QuotePanel} />
           <Route exact path="/panel/sales/customerPOs" component={PurchaseOrderPanel} />
-          <Route exact path="/panel/sales/salesOrders" component={SalesOrderPanel} />
+          <Route path="/panel/sales/salesOrders" component={SalesOrderPanel} />
           <Route exact path="/panel/sales/clients" component={Clients} />
-          <Route exact path="/panel/sales/reps" component={Reps} />
+          <Route path="/panel/sales/reps" component={Reps} />
         </Switch>
       </Suspense>
     </LockProvider>
