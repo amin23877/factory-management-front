@@ -15,8 +15,6 @@ const Tasks = React.lazy(() => import("Router/Production/Tasks"));
 const Dashboard = React.lazy(() => import("Router/Production/Dashboard"));
 const Staff = React.lazy(() => import("features/Production/Staff"));
 
-const UnitDetails = React.lazy(() => import("pages/UnitDetails"));
-
 export default function PanelRouter() {
   const portals = usePortal();
   const history = useHistory();
@@ -105,7 +103,6 @@ export default function PanelRouter() {
           <Route path="/panel/production/tasks" component={Tasks} />
 
           <Route exact path="/panel/production/staff" component={Staff} />
-          <Route exact path="/panel/production/:unitNumber" component={UnitDetails} />
         </Switch>
       </Suspense>
     </LockProvider>

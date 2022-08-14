@@ -1,20 +1,20 @@
 import React, { useMemo, useState } from "react";
-import { Box, Tabs, Tab } from "@material-ui/core";
+import { Box, Tabs, Tab, LinearProgress } from "@material-ui/core";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import { mutate } from "swr";
 import * as Yup from "yup";
 import useSWR from "swr";
 
-import { General, UnitInfo, Warranty, BatteryInfo } from "./Forms";
-import UnitWorkFlow, { ProductionWorkFlow } from "../UnitList/WorkFlows";
+import { General, UnitInfo, Warranty, BatteryInfo } from "../../../../features/Production/Dashboard/ServiceList/Forms";
+import UnitWorkFlow, { ProductionWorkFlow } from "../../../../features/Production/Dashboard/UnitList/WorkFlows";
 
 import Button from "app/Button";
 import { BasePaper } from "app/Paper";
 import BaseDataGrid from "app/BaseDataGrid";
 import Toast from "app/Toast";
 
-import Confirm from "../../../Modals/Confirm";
+import Confirm from "../../../../features/Modals/Confirm";
 import DocumentTab from "common/Document/Tab";
 
 import { getModifiedValues } from "logic/utils";
@@ -23,14 +23,18 @@ import { getModifiedValues } from "logic/utils";
 // import { IUnit, updateUnit } from "api/units";
 import { deleteOption, IOption } from "api/options";
 import { ITicket, updateTicket } from "api/ticket";
+import { useParams } from "react-router-dom";
 
 const schema = Yup.object().shape({});
 
-function ServiceDetails({ ticket }: { ticket: ITicket }) {
+function ServiceDetails() {
+  const { serviceId } = useParams<{ serviceId: string }>();
+  const { data: ticket } = useSWR<ITicket>(serviceId ? `/ticket/${serviceId}` : null);
+
   const handleSubmit = async (data: any) => {
     try {
-      if (ticket.id) {
-        await updateTicket(ticket.id, getModifiedValues(data, ticket));
+      if (serviceId) {
+        await updateTicket(serviceId, getModifiedValues(data, ticket));
 
         await mutate("/ticket");
         Toast("Updated successfully.", "success");
@@ -47,7 +51,7 @@ function ServiceDetails({ ticket }: { ticket: ITicket }) {
 
   const handleDeleteOption = async () => {
     try {
-      if (selectedOption) {
+      if (selectedOption && ticket?.ItemId?.id) {
         const resp = await deleteOption(ticket?.ItemId?.id, selectedOption?.ItemId?.id);
         if (resp) {
           Toast("Unit updated", "success");
@@ -58,7 +62,7 @@ function ServiceDetails({ ticket }: { ticket: ITicket }) {
     }
   };
 
-  const { data: unitBoms } = useSWR(ticket.ItemId ? `/ubom?UnitId=${ticket?.ItemId?.id}` : null);
+  const { data: unitBoms } = useSWR(ticket?.ItemId ? `/ubom?UnitId=${ticket?.ItemId?.id}` : null);
 
   const bomCols = useMemo<GridColDef[]>(
     () => [
@@ -82,6 +86,9 @@ function ServiceDetails({ ticket }: { ticket: ITicket }) {
     ],
     []
   );
+  if (!ticket) {
+    return <LinearProgress />;
+  }
 
   return (
     <BasePaper>
@@ -171,7 +178,7 @@ function ServiceDetails({ ticket }: { ticket: ITicket }) {
       </Formik>
       <h1 style={{ marginLeft: "3em" }}>Unit Work Flow</h1>
       <UnitWorkFlow />
-      <ProductionWorkFlow unitId={ticket?.ItemId?.id} stepper={ticket.productionStatus} />
+      <ProductionWorkFlow unitId={ticket?.ItemId?.id} stepper={ticket?.productionStatus} />
       <BasePaper>
         <Tabs value={gridActiveTab} onChange={(e, nv) => setGridActiveTab(nv)}>
           <Tab label="Documents" />
@@ -180,7 +187,7 @@ function ServiceDetails({ ticket }: { ticket: ITicket }) {
           <Tab label="Forms" />
           <Tab label="Time logs" />
         </Tabs>
-        {gridActiveTab === 0 && <DocumentTab itemId={ticket.id} model="ticket" />}
+        {gridActiveTab === 0 && <DocumentTab itemId={serviceId} model="ticket" />}
         {gridActiveTab === 1 && (
           <BaseDataGrid
             cols={bomCols}

@@ -24,7 +24,7 @@ export default function UPCToggle() {
         }
         if (data.search("serial=")) {
             const number = data.split("serial=")[1];
-            history.push(`/panel/production/${number}`);
+            history.push(`/panel/production/dashboard/units/${number}`);
         }
         const { panel, id } = JSON.parse(data);
         history.push(`/panel/${panel}/${id}`);

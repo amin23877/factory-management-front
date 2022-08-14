@@ -1,16 +1,16 @@
 import React, { useMemo, useState, Fragment } from "react";
-import { Box, Tabs, Tab, useMediaQuery } from "@material-ui/core";
+import { Box, Tabs, Tab, useMediaQuery, LinearProgress } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 import * as Yup from "yup";
 
 import QRCode from "common/QRCode/UnitQRCode";
-import { General, UnitInfo } from "./Forms";
-import UnitWorkFlow, { ProductionWorkFlow } from "./WorkFlows";
+import { General, UnitInfo } from "features/Production/Dashboard/UnitList/Forms";
+import UnitWorkFlow, { ProductionWorkFlow } from "features/Production/Dashboard/UnitList/WorkFlows";
 
 import DocumentTab from "common/Document/Tab";
-import Confirm from "../../../Modals/Confirm";
+import Confirm from "features/Modals/Confirm";
 // import { host } from "host";
 import Button from "app/Button";
 import { BasePaper } from "app/Paper";
@@ -25,6 +25,7 @@ import { addImage, deleteImage } from "api/units";
 import { getModifiedValues } from "logic/utils";
 import { formatTimestampToDate } from "logic/date";
 import JobRecordsTable from "common/JobRecords/Table";
+import { useParams } from "react-router-dom";
 
 const schema = Yup.object().shape({
   // laborCost: Yup.number().required(),
@@ -49,13 +50,16 @@ function getUnitWorkflowStep(status: string) {
   return steps.findIndex((s) => s === status);
 }
 
-function Details({ unit }: { unit: IUnit }) {
+function Details() {
+  const { unitId } = useParams<{ unitId: string }>();
+  const { data: unit } = useSWR<IUnit>(unitId ? `/unit/${unitId}` : null);
+
   const phone = useMediaQuery("(max-width:900px)");
 
   const handleSubmit = async (data: any) => {
     try {
-      if (unit?.id) {
-        await updateUnit(unit.id, getModifiedValues(data, unit));
+      if (unitId) {
+        await updateUnit(unitId, getModifiedValues(data, unit));
         await mutate("/unit");
         Toast("Unit updated", "success");
       }
@@ -71,35 +75,35 @@ function Details({ unit }: { unit: IUnit }) {
   const [addOption, setAddOption] = useState(false);
   const [img, setImg] = useState<any>();
   const [lock, setLock] = useState(true);
-  // const { data: photo } = useSWR(`/unit/${unit.id}`);
+  // const { data: photo } = useSWR(`/unit/${unitId}`);
 
   const handleFileChange = async (e: any) => {
-    if (unit.id) {
+    if (unitId) {
       if (!(e.target.files || e.target.files[0])) {
         return;
       }
       let file = e.target.files[0];
       let url = URL.createObjectURL(file);
-      const resp = await addImage(unit.id, file);
+      const resp = await addImage(unitId, file);
       if (resp) {
         setImg(url);
-        mutate(`/unit/${unit.id}`);
+        mutate(`/unit/${unitId}`);
       }
     }
   };
   const handleFileDelete = async (url: string) => {
-    if (unit.id) {
+    if (unitId) {
       const data = { url: url };
-      const resp = await deleteImage(unit.id, data);
+      const resp = await deleteImage(unitId, data);
       if (resp) {
-        mutate(`/unit/${unit.id}`);
+        mutate(`/unit/${unitId}`);
       }
     }
   };
   const handleDeleteOption = async () => {
     try {
       if (selectedOption) {
-        const resp = await deleteOption(unit.id, selectedOption.ItemId.id);
+        const resp = await deleteOption(unitId, selectedOption.ItemId.id);
         if (resp) {
           Toast("Unit updated", "success");
         }
@@ -144,7 +148,9 @@ function Details({ unit }: { unit: IUnit }) {
     ],
     []
   );
-
+  if (!unit) {
+    return <LinearProgress />;
+  }
   return (
     <>
       <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDeleteOption} />
@@ -242,11 +248,11 @@ function Details({ unit }: { unit: IUnit }) {
         <>
           <BasePaper style={{ marginBottom: "10px" }}>
             <h1 style={{ marginLeft: "3em" }}>Unit Work Flow</h1>
-            <UnitWorkFlow step={getUnitWorkflowStep(unit.status)} />
+            <UnitWorkFlow step={getUnitWorkflowStep(unit?.status)} />
           </BasePaper>
         </>
       )}
-      <ProductionWorkFlow unitId={unit.id} stepper={unit.status} />
+      <ProductionWorkFlow unitId={unitId} stepper={unit?.status} />
       <BasePaper>
         <Tabs
           value={gridActiveTab}
@@ -270,7 +276,7 @@ function Details({ unit }: { unit: IUnit }) {
             <BaseDataGrid cols={warCols} rows={warranties?.result || []} onRowSelected={(d) => {}} />
           </Box>
         )}
-        {gridActiveTab === 1 && <DocumentTab itemId={unit.id} model="unit" />}
+        {gridActiveTab === 1 && <DocumentTab itemId={unitId} model="unit" />}
         {gridActiveTab === 2 && <JobRecordsTable unit={unit} />}
         {gridActiveTab === 3 && (
           <>

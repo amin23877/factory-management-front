@@ -1,27 +1,48 @@
-import React, { useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 import { Tabs, Tab, Box } from "@material-ui/core";
 
 import UnitTable from "features/Production/Dashboard/UnitList/Table";
-import UnitDetails from "features/Production/Dashboard/UnitList/Details";
+import UnitDetails from "pages/Production/Dashboard/Units/Details";
 import ServiceTable from "features/Production/Dashboard/ServiceList/Table";
-import TicketDetails from "features/Production/Dashboard/ServiceList/Details";
+import TicketDetails from "pages/Production/Dashboard/services/Details";
 import { BasePaper } from "app/Paper";
 
-import { IUnit } from "api/units";
-import { ITicket } from "api/ticket";
+import { Redirect, Route, Switch, useHistory, useLocation } from "react-router-dom";
+import MyBackdrop from "app/Backdrop";
 
 function Index() {
-  const [activeTab, setActiveTab] = useState(0);
-  const [selectedUnit, setSelectedUnit] = useState<IUnit | null>(null);
-  const [selectedTicket, setSelectedTicket] = useState<ITicket | null>(null);
+  const history = useHistory();
+  const location = useLocation();
+
+  const tabs = ["units", "services", "details"];
+
+  const [activeTab, setActiveTab] = useState(
+    location.pathname.split("/").length === 6 ? 2 : tabs.indexOf(location.pathname.split("/")[4])
+  );
+
+  useEffect(() => {
+    if (location.pathname.split("/")[4]) {
+      if (location.pathname.split("/").length === 6) {
+        setActiveTab(2);
+      } else {
+        setActiveTab(tabs.indexOf(location.pathname.split("/")[4]));
+      }
+    }
+  }, [location]);
 
   return (
     <BasePaper>
       <Box display="flex">
         <Tabs
           value={activeTab}
-          onChange={(e, nv) => setActiveTab(nv)}
+          onChange={(e, nv) => {
+            setActiveTab(nv);
+            history.push({
+              pathname: "/panel/production/dashboard/" + tabs[nv],
+              search: window.location.search,
+            });
+          }}
           textColor="primary"
           style={{ marginBottom: "10px" }}
         >
@@ -42,7 +63,7 @@ function Index() {
             wrapped
           />
           <Tab
-            disabled={!(selectedTicket || selectedUnit)}
+            disabled={activeTab !== 2}
             icon={
               <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <FindInPageRounded style={{ marginRight: "5px" }} /> Details
@@ -52,26 +73,33 @@ function Index() {
         </Tabs>
         <div style={{ flex: 1 }}></div>
       </Box>
-      {activeTab === 0 && (
-        <UnitTable
-          onRowSelected={(u) => {
-            setSelectedTicket(null);
-            setActiveTab(2);
-            setSelectedUnit(u);
-          }}
-        />
-      )}
-      {activeTab === 1 && (
-        <ServiceTable
-          onRowSelected={(t) => {
-            setSelectedUnit(null);
-            setSelectedTicket(t);
-            setActiveTab(2);
-          }}
-        />
-      )}
-      {activeTab === 2 && selectedUnit && <UnitDetails unit={selectedUnit} />}
-      {activeTab === 2 && selectedTicket && <TicketDetails ticket={selectedTicket} />}
+      <Suspense fallback={<MyBackdrop />}>
+        <Switch>
+          <Route exact path="/panel/production/dashboard">
+            <Redirect to="/panel/production/dashboard/units" />
+          </Route>
+          <Route exact path="/panel/production/dashboard/units">
+            <UnitTable
+              onRowSelected={(u) => {
+                history.push(`/panel/production/dashboard/units/${u.id}${window.location.search}`);
+              }}
+            />
+          </Route>
+          <Route exact path="/panel/production/dashboard/services">
+            <ServiceTable
+              onRowSelected={(t) => {
+                history.push(`/panel/production/dashboard/services/${t.id}${window.location.search}`);
+              }}
+            />
+          </Route>
+          <Route exact path="/panel/production/dashboard/units/:unitId">
+            <UnitDetails />
+          </Route>
+          <Route exact path="/panel/production/dashboard/services/:serviceId">
+            <TicketDetails />
+          </Route>
+        </Switch>
+      </Suspense>
     </BasePaper>
   );
 }

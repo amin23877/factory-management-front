@@ -224,8 +224,8 @@ export default function EditTab({
             rows={units?.result || []}
             onRowSelected={(r) => {
               phone
-                ? history.push(`/panel/production/${r.id}`)
-                : openRequestedSinglePopup({ url: `/panel/production/${r.id}` });
+                ? history.push(`/panel/production/dashboard/units/${r.id}`)
+                : openRequestedSinglePopup({ url: `/panel/production/dashboard/units/${r.id}` });
             }}
             height="calc(100% - 60px)"
           />
