@@ -14,7 +14,7 @@ import AddSOModal from "features/Sales/SO/AddSo";
 
 import List from "app/SideUtilityList";
 
-import { deleteSO, ISO } from "api/so";
+import { deleteSO } from "api/so";
 import { ILineItem } from "api/lineItem";
 import { ILineService } from "api/lineService";
 import { BasePaper } from "app/Paper";

@@ -1,11 +1,11 @@
 import React, { useMemo, useState } from "react";
-import { Tabs, Tab, Box, useMediaQuery, makeStyles } from "@material-ui/core";
+import { Tabs, Tab, Box, useMediaQuery, makeStyles, LinearProgress } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 
 import BaseDataGrid from "app/BaseDataGrid";
 import { BasePaper } from "app/Paper";
 
-import EditForm from "./EditForm";
+import EditForm from "../../../features/Sales/Quote/EditForm";
 
 import NoteTab from "common/Note/Tab";
 import DocumentTab from "common/Document/Tab";
@@ -16,15 +16,17 @@ import AuditTable from "common/Audit";
 import { lineItemType } from "components/GroupLineItemTable/useGroupedLineItems";
 import { openRequestedSinglePopup } from "logic/window";
 import useSWR from "swr";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
-export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
+export default function EditTab() {
   const phone = useMediaQuery("(max-width:900px)");
+  const { quoteId } = useParams<{ quoteId: string }>();
+  const { data: selectedQuote } = useSWR<IQuote>(quoteId ? `/quote/${quoteId}` : null);
 
   const [activeTab, setActiveTab] = useState(0);
 
   const { data: lineItems } = useSWR<{ result: lineItemType[]; total: number }>(
-    selectedQuote && selectedQuote.id && activeTab === 0 ? `/lineitem?QuoteId=${selectedQuote.id}` : null
+    quoteId && activeTab === 0 ? `/lineitem?QuoteId=${quoteId}` : null
   );
   const history = useHistory();
 
@@ -82,6 +84,9 @@ export default function EditTab({ selectedQuote }: { selectedQuote: IQuote }) {
     ],
     []
   );
+  if (!selectedQuote) {
+    return <LinearProgress />;
+  }
   return (
     <>
       <Box display="grid" gridGap={10} gridTemplateColumns={phone ? "1fr" : "3fr 4fr"}>

@@ -1,9 +1,9 @@
 import React from "react";
-import { Box, useMediaQuery } from "@material-ui/core";
+import { Box, LinearProgress, useMediaQuery } from "@material-ui/core";
 import { Formik, Form } from "formik";
-import { mutate } from "swr";
+import useSWR, { mutate } from "swr";
 
-import { GeneralForm } from "./Forms";
+import { GeneralForm } from "../../../features/Sales/Call/Forms";
 import * as Yup from "yup";
 
 import Button from "app/Button";
@@ -13,6 +13,7 @@ import Toast from "app/Toast";
 import { editCall } from "api/calls";
 
 import { getModifiedValues } from "logic/utils";
+import { useParams } from "react-router-dom";
 
 const schema = Yup.object().shape({
   address: Yup.string().required(),
@@ -28,7 +29,10 @@ const schema = Yup.object().shape({
   contactNumber: Yup.string().required(),
 });
 
-export default function Details({ callsData }: { callsData: any }) {
+export default function Details() {
+  const { callId } = useParams<{ callId: string }>();
+  const { data: callsData } = useSWR(callId ? `/so/${callId}` : null);
+
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     try {
       values.Tags[0]?.id
@@ -42,6 +46,10 @@ export default function Details({ callsData }: { callsData: any }) {
     }
   };
   const phone = useMediaQuery("(max-width:900px)");
+
+  if (!callsData) {
+    return <LinearProgress />;
+  }
 
   return (
     <Formik initialValues={callsData} onSubmit={handleSubmit} validationSchema={schema}>

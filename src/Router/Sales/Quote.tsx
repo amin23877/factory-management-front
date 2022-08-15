@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { Box, Tabs, Tab, ListItem, IconButton } from "@material-ui/core";
 import {
   FindInPageRounded,
@@ -13,18 +13,22 @@ import { BasePaper } from "app/Paper";
 import DataGrid from "app/NewDataGrid";
 import List from "app/SideUtilityList";
 
-import Confirm from "../../Modals/Confirm";
-import EditTab from "./EditTab";
-import AddQuote from "./AddQuote";
-import ReqQuoteModal from "./ReqQuote/Modals";
-import EmailModal from "../../Email/Modal";
+import Confirm from "features/Modals/Confirm";
+import EditTab from "pages/Sales/Quote/Details";
+import AddQuote from "features/Sales/Quote/AddQuote";
+import ReqQuoteModal from "features/Sales/Quote/ReqQuote/Modals";
+import EmailModal from "features/Email/Modal";
 
-import { deleteQuote, IQuote } from "api/quote";
+import { deleteQuote } from "api/quote";
+import { Route, Switch, useHistory, useLocation, useParams } from "react-router-dom";
+import MyBackdrop from "app/Backdrop";
 
 export default function QuotePanel() {
-  // interface del any
-  const [selectedQuote, setSelectedQuote] = useState<IQuote | any>();
-  const [activeTab, setActiveTab] = useState(0);
+  const history = useHistory();
+  const location = useLocation();
+  const { quoteId } = useParams<{ quoteId: string }>();
+
+  const [activeTab, setActiveTab] = useState(location.pathname.split("/").length === 5 ? 1 : 0);
   const [addQ, setAddQ] = useState(false);
   const [reqQuote, setReqQuote] = useState(false);
   const [compQ] = useState<any>();
@@ -33,16 +37,23 @@ export default function QuotePanel() {
 
   const [refresh, setRefresh] = useState<number>(0);
 
+  useEffect(() => {
+    if (location.pathname.split("/").length === 5) {
+      setActiveTab(1);
+    } else {
+      setActiveTab(0);
+    }
+  }, [location]);
+
   const handleDelete = async () => {
     try {
-      if (selectedQuote && selectedQuote.id) {
-        const resp = await deleteQuote(selectedQuote.id);
+      if (quoteId) {
+        const resp = await deleteQuote(quoteId);
         if (resp) {
           setRefresh((p) => p + 1);
         }
         setConfirm(false);
-        setSelectedQuote(undefined);
-        setActiveTab(0);
+        history.push("/panel/sales/quotes");
       }
     } catch (error) {
       console.log(error);
@@ -106,9 +117,7 @@ export default function QuotePanel() {
           onClose={() => setAddQ(false)}
           initialData={compQ || {}}
           onDone={(quote) => {
-            // setRefresh((prev) => prev + 1);
-            setSelectedQuote(quote);
-            setActiveTab(1);
+            history.push(`/panel/sales/quotes/${quote?.id}`);
           }}
         />
       )}
@@ -119,7 +128,13 @@ export default function QuotePanel() {
           <Tabs
             value={activeTab}
             textColor="primary"
-            onChange={(e, nv) => setActiveTab(nv)}
+            onChange={(e, nv) => {
+              setActiveTab(nv);
+              history.push({
+                pathname: "/panel/sales/quotes",
+                search: window.location.search,
+              });
+            }}
             style={{ marginRight: "auto" }}
           >
             <Tab
@@ -131,7 +146,7 @@ export default function QuotePanel() {
               wrapped
             />
             <Tab
-              disabled={!selectedQuote}
+              disabled={activeTab !== 1}
               icon={
                 <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <FindInPageRounded style={{ marginRight: "5px" }} /> Details
@@ -155,25 +170,33 @@ export default function QuotePanel() {
                 <EmailRounded />
               </IconButton>
             </ListItem>
-            <ListItem>
-              <IconButton title="Delete Quote" onClick={() => setConfirm(true)} disabled={!selectedQuote}>
-                <DeleteRounded />
-              </IconButton>
-            </ListItem>
+            {activeTab === 1 && (
+              <ListItem>
+                <IconButton title="Delete Quote" onClick={() => setConfirm(true)}>
+                  <DeleteRounded />
+                </IconButton>
+              </ListItem>
+            )}
           </List>
         </Box>
-        <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
-          <DataGrid
-            refresh={refresh}
-            onRowSelected={(d) => {
-              setSelectedQuote(d);
-              setActiveTab(1);
-            }}
-            url="/quote"
-            columns={columns}
-          />
-        </div>
-        {activeTab === 1 && selectedQuote && <EditTab selectedQuote={selectedQuote} />}
+        <Suspense fallback={<MyBackdrop />}>
+          <Switch>
+            <Route exact path="/panel/sales/quotes">
+              <DataGrid
+                refresh={refresh}
+                onRowSelected={(d) => {
+                  history.push(`/panel/sales/quotes/${d.id}${window.location.search}`);
+                }}
+                url="/quote"
+                columns={columns}
+              />
+            </Route>
+            <Route exact path="/panel/sales/quotes/:quoteId">
+              {" "}
+              <EditTab />
+            </Route>
+          </Switch>
+        </Suspense>
       </BasePaper>
     </>
   );

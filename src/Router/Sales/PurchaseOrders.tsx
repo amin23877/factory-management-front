@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -6,23 +6,37 @@ import ListItem from "@material-ui/core/ListItem";
 import IconButton from "@material-ui/core/IconButton";
 import { AddRounded, DeleteRounded, FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
-import Confirm from "../../Modals/Confirm";
+import Confirm from "features/Modals/Confirm";
 
 import { BasePaper } from "app/Paper";
 import DataGrid from "app/NewDataGrid";
 import List from "app/SideUtilityList";
 
-import Details from "./Details";
-import AddPOModal from "./AddPoModal";
+import Details from "pages/Sales/PO/Details";
+import AddPOModal from "features/Sales/PO/AddPoModal";
 
-import { deleteCustomerPo, customerPoType } from "api/customerPo";
+import { deleteCustomerPo } from "api/customerPo";
+import { Route, Switch, useHistory, useLocation, useParams } from "react-router-dom";
+import MyBackdrop from "app/Backdrop";
 
 export default function POPanel() {
-  const [activeTab, setActiveTab] = useState(0);
-  const [selectedPO, setSelectedPO] = useState<customerPoType>();
+  const history = useHistory();
+  const location = useLocation();
+  const { poId } = useParams<{ poId: string }>();
+
+  const [activeTab, setActiveTab] = useState(location.pathname.split("/").length === 5 ? 1 : 0);
+
   const [addPo, setAddPo] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [refresh, setRefresh] = useState(0);
+
+  useEffect(() => {
+    if (location.pathname.split("/").length === 5) {
+      setActiveTab(1);
+    } else {
+      setActiveTab(0);
+    }
+  }, [location]);
 
   const poCols = [
     {
@@ -50,10 +64,10 @@ export default function POPanel() {
 
   const handleDelete = async () => {
     try {
-      if (selectedPO && selectedPO.id) {
-        const resp = await deleteCustomerPo(selectedPO.id);
+      if (poId) {
+        const resp = await deleteCustomerPo(poId);
         if (resp) {
-          setActiveTab(0);
+          history.push("/panel/sales/customerPOs");
         }
       }
     } catch (error) {
@@ -77,7 +91,13 @@ export default function POPanel() {
           <Tabs
             value={activeTab}
             textColor="primary"
-            onChange={(e, nv) => setActiveTab(nv)}
+            onChange={(e, nv) => {
+              setActiveTab(nv);
+              history.push({
+                pathname: "/panel/sales/customerPOs",
+                search: window.location.search,
+              });
+            }}
             style={{ marginRight: "auto" }}
           >
             <Tab
@@ -89,7 +109,7 @@ export default function POPanel() {
               wrapped
             />
             <Tab
-              disabled={!selectedPO}
+              disabled={activeTab !== 1}
               icon={
                 <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <FindInPageRounded style={{ marginRight: "5px" }} /> Details
@@ -103,26 +123,30 @@ export default function POPanel() {
                 <AddRounded />
               </IconButton>
             </ListItem>
-            <ListItem>
-              <IconButton title="Delete PO" disabled={!selectedPO} onClick={() => setConfirm(true)}>
-                <DeleteRounded />
-              </IconButton>
-            </ListItem>
+            {activeTab === 1 && (
+              <ListItem>
+                <IconButton title="Delete PO" onClick={() => setConfirm(true)}>
+                  <DeleteRounded />
+                </IconButton>
+              </ListItem>
+            )}
           </List>
         </Box>
-        <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
-          <DataGrid
-            refresh={refresh}
-            url="/customerPo"
-            columns={poCols}
-            onRowSelected={(d) => {
-              setSelectedPO(d);
-              setActiveTab(1);
-            }}
-          />
-        </div>
-
-        {activeTab === 1 && selectedPO && <Details poData={selectedPO} onDone={() => {}} />}
+        <Suspense fallback={<MyBackdrop />}>
+          <Switch>
+            <Route exact path="/panel/sales/customerPOs">
+              <DataGrid
+                refresh={refresh}
+                url="/customerPo"
+                columns={poCols}
+                onRowSelected={(d) => history.push(`/panel/sales/customerPOs/${d.id}${window.location.search}`)}
+              />
+            </Route>
+            <Route exact path="/panel/sales/customerPOs/:poId">
+              <Details />
+            </Route>
+          </Switch>
+        </Suspense>
       </BasePaper>
     </Box>
   );

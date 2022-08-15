@@ -1,32 +1,45 @@
-import React, { useMemo, useState } from "react";
+import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { Box, Tabs, Tab, ListItem, IconButton } from "@material-ui/core";
 import { ListAltRounded, FindInPageRounded, MenuRounded, DeleteRounded, AddRounded } from "@material-ui/icons";
 import { mutate } from "swr";
 
-import Confirm from "../../Modals/Confirm";
+import Confirm from "../../features/Modals/Confirm";
 import OneFieldModal from "components/OneFieldModal";
 
 import { BasePaper } from "app/Paper";
 import List from "app/SideUtilityList";
 import DataGrid from "app/NewDataGrid";
 
-import Details from "./Details";
-import AddCallModal from "./CallModal";
+import Details from "pages/Sales/Call/Details";
+import AddCallModal from "features/Sales/Call/CallModal";
 
 import { deleteCall } from "api/calls";
 import { addCallsTag, deleteCallsTag, editCallsTag } from "api/callsTags";
+import { Route, Switch, useHistory, useLocation, useParams } from "react-router-dom";
+import MyBackdrop from "app/Backdrop";
 
 export default function Calls() {
-  const [activeTab, setActiveTab] = useState(0);
-  const [selectedCall, setSelectedCall] = useState<any>();
+  const history = useHistory();
+  const location = useLocation();
+  const { callId } = useParams<{ callId: string }>();
+
+  const [activeTab, setActiveTab] = useState(location.pathname.split("/").length === 5 ? 1 : 0);
   const [addCall, setAddCall] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [CTagModal, setCTagModal] = useState(false);
 
+  useEffect(() => {
+    if (location.pathname.split("/").length === 5) {
+      setActiveTab(1);
+    } else {
+      setActiveTab(0);
+    }
+  }, [location]);
+
   const handleDelete = async () => {
     try {
-      if (selectedCall && selectedCall?.id) {
-        const resp = await deleteCall(selectedCall?.id as any);
+      if (callId) {
+        const resp = await deleteCall(callId);
         if (resp) {
           mutate("/calls");
           setActiveTab(0);
@@ -90,14 +103,20 @@ export default function Calls() {
         open={confirm}
         onClose={() => setConfirm(false)}
         onConfirm={handleDelete}
-        text={`Are you sure, You are going to delete PO with number ${selectedCall?.number}`}
+        text={`Are you sure, You are going to delete a call`}
       />
       <BasePaper>
         <Box my={1} display="flex" alignItems="center">
           <Tabs
             value={activeTab}
             textColor="primary"
-            onChange={(e, nv) => setActiveTab(nv)}
+            onChange={(e, nv) => {
+              setActiveTab(nv);
+              history.push({
+                pathname: "/panel/sales/calls",
+                search: window.location.search,
+              });
+            }}
             style={{ marginRight: "auto" }}
           >
             <Tab
@@ -109,7 +128,7 @@ export default function Calls() {
               wrapped
             />
             <Tab
-              disabled={!selectedCall}
+              disabled={activeTab !== 1}
               icon={
                 <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
@@ -128,24 +147,31 @@ export default function Calls() {
                 <MenuRounded />
               </IconButton>
             </ListItem>
-            <ListItem>
-              <IconButton disabled={!selectedCall} onClick={() => setConfirm(true)}>
-                <DeleteRounded />
-              </IconButton>
-            </ListItem>
+            {activeTab === 1 && (
+              <ListItem>
+                <IconButton onClick={() => setConfirm(true)}>
+                  <DeleteRounded />
+                </IconButton>
+              </ListItem>
+            )}
           </List>
         </Box>
-        <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
-          <DataGrid
-            onRowSelected={(d) => {
-              setSelectedCall(d);
-              setActiveTab(1);
-            }}
-            url="/calls"
-            columns={columns}
-          />
-        </div>
-        {activeTab === 1 && selectedCall && <Details callsData={selectedCall} />}
+        <Suspense fallback={<MyBackdrop />}>
+          <Switch>
+            <Route exact path="/panel/sales/calls">
+              <DataGrid
+                onRowSelected={(d) => {
+                  history.push(`/panel/sales/calls/${d.id}${window.location.search}`);
+                }}
+                url="/calls"
+                columns={columns}
+              />
+            </Route>
+            <Route exact path="/panel/sales/calls/:callId">
+              <Details />
+            </Route>
+          </Switch>
+        </Suspense>
       </BasePaper>
     </Box>
   );

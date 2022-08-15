@@ -12,11 +12,11 @@ import { MyTabs, MyTab } from "app/Tabs";
 import { camelCaseToRegular } from "logic/utils";
 
 const Dashboard = React.lazy(() => import("features/Sales/Dashboard"));
-const Calls = React.lazy(() => import("features/Sales/Call"));
+const Calls = React.lazy(() => import("Router/Sales/Calls"));
 const DevicesPanel = React.lazy(() => import("features/Engineering/Devices"));
 const Option = React.lazy(() => import("features/Engineering/Option"));
-const QuotePanel = React.lazy(() => import("features/Sales/Quote"));
-const PurchaseOrderPanel = React.lazy(() => import("features/Sales/PO"));
+const QuotePanel = React.lazy(() => import("Router/Sales/Quote"));
+const PurchaseOrderPanel = React.lazy(() => import("Router/Sales/PurchaseOrders"));
 const SalesOrderPanel = React.lazy(() => import("Router/Sales/SalesOrders"));
 const Clients = React.lazy(() => import("features/Sales/Customer"));
 const Reps = React.lazy(() => import("Router/Sales/Reps"));
@@ -88,7 +88,7 @@ export default function PanelRouter() {
             onChange={(e: any, nv) => {
               setActiveTab(nv);
               setTabText(e.target.textContent);
-              history.push(tabs[nv]);
+              history.push("/panel/sales/" + tabs[nv]);
               handleClose();
             }}
             orientation="vertical"
@@ -111,13 +111,13 @@ export default function PanelRouter() {
             <Redirect to="/panel/sales/salesOrders" />
           </Route>
           <Route exact path="/panel/sales/dashboard" component={Dashboard} />
-          <Route exact path="/panel/sales/calls" component={Calls} />
+          <Route path="/panel/sales/calls" component={Calls} />
           <Route exact path="/panel/sales/devices">
             <DevicesPanel sales={true} />
           </Route>
           <Route exact path="/panel/sales/options" component={Option} />
-          <Route exact path="/panel/sales/quotes" component={QuotePanel} />
-          <Route exact path="/panel/sales/customerPOs" component={PurchaseOrderPanel} />
+          <Route path="/panel/sales/quotes" component={QuotePanel} />
+          <Route path="/panel/sales/customerPOs" component={PurchaseOrderPanel} />
           <Route path="/panel/sales/salesOrders" component={SalesOrderPanel} />
           <Route exact path="/panel/sales/clients" component={Clients} />
           <Route path="/panel/sales/reps" component={Reps} />
