@@ -13,7 +13,7 @@ import { camelCaseToRegular } from "logic/utils";
 
 const Dashboard = React.lazy(() => import("features/Sales/Dashboard"));
 const Calls = React.lazy(() => import("Router/Sales/Calls"));
-const DevicesPanel = React.lazy(() => import("features/Engineering/Devices"));
+const DevicesPanel = React.lazy(() => import("Router/Engineering/Devices"));
 const Option = React.lazy(() => import("features/Engineering/Option"));
 const QuotePanel = React.lazy(() => import("Router/Sales/Quote"));
 const PurchaseOrderPanel = React.lazy(() => import("Router/Sales/PurchaseOrders"));
@@ -112,7 +112,7 @@ export default function PanelRouter() {
           </Route>
           <Route exact path="/panel/sales/dashboard" component={Dashboard} />
           <Route path="/panel/sales/calls" component={Calls} />
-          <Route exact path="/panel/sales/devices">
+          <Route path="/panel/sales/device">
             <DevicesPanel sales={true} />
           </Route>
           <Route exact path="/panel/sales/options" component={Option} />

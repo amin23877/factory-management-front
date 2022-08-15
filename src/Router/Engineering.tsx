@@ -11,7 +11,7 @@ import MyBackdrop from "app/Backdrop";
 import { MyTabs, MyTab } from "app/Tabs";
 import { camelCaseToRegular } from "logic/utils";
 
-const DevicesPanel = React.lazy(() => import("features/Engineering/Devices"));
+const DevicesPanel = React.lazy(() => import("Router/Engineering/Devices"));
 const Project = React.lazy(() => import("features/Engineering/Projects"));
 const BOM = React.lazy(() => import("features/Engineering/BOM"));
 const Monitoring = React.lazy(() => import("features/Engineering/Monitoring"));

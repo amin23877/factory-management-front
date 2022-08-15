@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { Box, IconButton, ListItem, Tabs, Tab, useMediaQuery } from "@material-ui/core";
 import {
   AddRounded,
@@ -10,15 +10,15 @@ import {
   FindInPageRounded,
 } from "@material-ui/icons";
 
-import Confirm from "../../Modals/Confirm";
-import { AddItemModal } from "../../Items/ItemModals";
-import UnitDetails from "../../FieldService/Units/Details";
+import Confirm from "../../features/Modals/Confirm";
+import { AddItemModal } from "../../features/Items/ItemModals";
+import UnitDetails from "../../features/FieldService/Units/Details";
 
 import ClusterModal from "common/Cluster/Modal";
 
-import DetailTab from "./Details";
-import AddTaskModal, { EditTaskModal } from "./TaskModal";
-import FlagModal from "./FlagModal";
+import DetailTab from "../../features/Engineering/Devices/Details";
+import AddTaskModal, { EditTaskModal } from "../../features/Engineering/Devices/TaskModal";
+import FlagModal from "../../features/Engineering/Devices/FlagModal";
 
 import List from "app/SideUtilityList";
 import DataGrid from "app/NewDataGrid";
@@ -30,6 +30,8 @@ import AsyncCombo from "common/AsyncCombo";
 import { IUnit } from "api/units";
 import { formatTimestampToDate } from "logic/date";
 import { get } from "api";
+import { Redirect, Route, Switch, useHistory, useLocation, useParams } from "react-router-dom";
+import MyBackdrop from "app/Backdrop";
 
 /*
 const additionalLevels = [
@@ -60,9 +62,13 @@ const additionalLevels = [
 */
 
 const Devices = ({ sales }: { sales?: boolean }) => {
-  const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
-  const [selectedUnit, setSelectedUnit] = useState<IUnit>();
-  const [activeTab, setActiveTab] = useState(0);
+  const history = useHistory();
+  const location = useLocation();
+
+  const tabs = ["devices", "units", "details"];
+  const { deviceId } = useParams<{ deviceId: string }>();
+  const { unitId } = useParams<{ unitId: string }>();
+
   const [selectedStep, setSelectedStep] = useState<any>();
   const [selectedFlag, setSelectedFlag] = useState<any>();
   const [selectedCluster, setSelectedCluster] = useState<clusterType>();
@@ -76,6 +82,21 @@ const Devices = ({ sales }: { sales?: boolean }) => {
 
   const [flagModalOpen, setFlagModalOpen] = useState(false);
   const [levelModal, setLevelModal] = useState(false);
+
+  const [activeTab, setActiveTab] = useState(
+    location.pathname.split("/").length === 6 ? 2 : tabs.indexOf(location.pathname.split("/")[4])
+  );
+
+  useEffect(() => {
+    if (location.pathname.split("/")[4]) {
+      if (location.pathname.split("/").length === 6) {
+        setActiveTab(2);
+      } else {
+        setActiveTab(tabs.indexOf(location.pathname.split("/")[4]));
+      }
+    }
+  }, [location]);
+
   const phone = useMediaQuery("(max-width:900px)");
 
   const unitColumns = [
@@ -149,16 +170,16 @@ const Devices = ({ sales }: { sales?: boolean }) => {
     return res;
   }, [additionalLevels, selectedCluster]);
 
-  const handleDelete = useCallback(async () => {
+  const handleDelete = async () => {
     try {
-      if (selectedItem && selectedItem.id) {
-        await deleteAnItem(selectedItem.id);
+      if (deviceId) {
+        await deleteAnItem(deviceId);
         setDeleteItemModal(false);
       }
     } catch (error) {
       console.log(error);
     }
-  }, [selectedItem]);
+  };
 
   return (
     <BasePaper>
@@ -200,7 +221,17 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
       <ClusterModal open={levelModal} onClose={() => setLevelModal(false)} />
       <Box display="flex" justifyContent="flex-end" alignItems="center" my={1}>
-        <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
+        <Tabs
+          value={activeTab}
+          textColor="primary"
+          onChange={(e, nv) => {
+            setActiveTab(nv);
+            history.push({
+              pathname: `/panel/${sales ? "sales" : "engineering"}/device/` + tabs[nv],
+              search: window.location.search,
+            });
+          }}
+        >
           <Tab
             icon={
               <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -218,7 +249,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
             wrapped
           />
           <Tab
-            disabled={!selectedUnit && !selectedItem}
+            disabled={activeTab !== 2}
             icon={
               <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
@@ -243,7 +274,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                 </ListItem>
               </>
             )}
-            {activeTab === 1 && (
+            {activeTab === 2 && deviceId && (
               <>
                 <ListItem>
                   <IconButton title="Add Task" onClick={() => setAddStepModal(true)}>
@@ -251,10 +282,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                   </IconButton>
                 </ListItem>
                 <ListItem>
-                  <IconButton
-                    title="Delete Device"
-                    onClick={() => selectedItem && selectedItem?.id && setDeleteItemModal(true)}
-                  >
+                  <IconButton title="Delete Device" onClick={() => deviceId && setDeleteItemModal(true)}>
                     <DeleteRounded />
                   </IconButton>
                 </ListItem>
@@ -284,48 +312,59 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       )}
       <Box display="flex" alignItems="flex-start" mt={1}>
         <Box flex={1}>
-          <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
-            <DataGrid
-              style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 215px)" }}
-              url="/item"
-              initParams={{ class: "device", clusterId: selectedCluster?.id || undefined }}
-              columns={gridColumns}
-              onRowSelected={(d) => {
-                setSelectedUnit(undefined);
-                setSelectedItem(d);
-                setActiveTab(2);
-              }}
-            />
-          </div>
-          <div style={activeTab !== 1 ? { display: "none" } : { flex: 1 }}>
-            <DataGrid
-              style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 165px)" }}
-              url="/unit"
-              initParams={{ class: "device" }}
-              columns={unitColumns}
-              onRowSelected={(d) => {
-                setSelectedItem(null);
-                setSelectedUnit(d);
-                setActiveTab(2);
-              }}
-            />
-          </div>
-          {activeTab === 2 && selectedUnit && <UnitDetails unit={selectedUnit} />}
-          {activeTab === 2 && selectedItem && (
-            <DetailTab
-              sales={sales}
-              onDone={() => {}}
-              selectedRow={selectedItem}
-              onStepSelected={(d) => {
-                setSelectedStep(d);
-                setEditStepModal(true);
-              }}
-              onFlagSelected={(d) => {
-                setSelectedFlag(d);
-                setEditFlagModal(true);
-              }}
-            />
-          )}
+          <Suspense fallback={<MyBackdrop />}>
+            <Switch>
+              <Route exact path={`/panel/${sales ? "sales" : "engineering"}/device/`}>
+                <Redirect to={`/panel/${sales ? "sales" : "engineering"}/device/devices`} />
+              </Route>
+              <Route exact path={`/panel/${sales ? "sales" : "engineering"}/device/devices`}>
+                <DataGrid
+                  style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 215px)" }}
+                  url="/item"
+                  initParams={{ class: "device", clusterId: selectedCluster?.id || undefined }}
+                  columns={gridColumns}
+                  onRowSelected={(d: IItem) => {
+                    history.push(
+                      `/panel/${sales ? "sales" : "engineering"}/device/devices/${d.id}${window.location.search}`
+                    );
+                  }}
+                />
+              </Route>
+              <Route exact path={`/panel/${sales ? "sales" : "engineering"}/device/units`}>
+                <DataGrid
+                  style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 165px)" }}
+                  url="/unit"
+                  initParams={{ class: "device" }}
+                  columns={unitColumns}
+                  onRowSelected={(d) => {
+                    history.push(
+                      `/panel/${sales ? "sales" : "engineering"}/device/units/${d.id}${window.location.search}`
+                    );
+                  }}
+                />
+              </Route>
+              <Route exact path={`/panel/${sales ? "sales" : "engineering"}/device/devices/:deviceId`}>
+                {" "}
+                <DetailTab
+                  sales={sales}
+                  onDone={() => {}}
+                  selectedRow={selectedItem}
+                  onStepSelected={(d) => {
+                    setSelectedStep(d);
+                    setEditStepModal(true);
+                  }}
+                  onFlagSelected={(d) => {
+                    setSelectedFlag(d);
+                    setEditFlagModal(true);
+                  }}
+                />
+              </Route>
+              <Route exact path={`/panel/${sales ? "sales" : "engineering"}/device/units/:unitId`}>
+                {" "}
+                <UnitDetails unit={selectedUnit} />
+              </Route>
+            </Switch>
+          </Suspense>
         </Box>
       </Box>
     </BasePaper>
