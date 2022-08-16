@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Box, Grid, Tabs, Tab, useMediaQuery, ListItem, IconButton } from "@material-ui/core";
 import {
   AddRounded,
@@ -14,27 +14,46 @@ import { BasePaper } from "app/Paper";
 import Toast from "app/Toast";
 import List from "app/SideUtilityList";
 
-import { deleteClient, IClient } from "api/client";
+import { deleteClient } from "api/client";
 
-import AddCustomerModal from "./Modals";
-import CustomerTypeModal from "./CustomerType";
-import Confirm from "../../Modals/Confirm";
-import Details from "./Details";
-import CustomerDataGrid from "./DataGrid";
+import AddCustomerModal from "features/Sales/Customer/Modals";
+import CustomerTypeModal from "features/Sales/Customer/CustomerType";
+import Confirm from "features/Modals/Confirm";
+import Details from "pages/Sales/Client/Details";
+import CustomerDataGrid from "features/Sales/Customer/DataGrid";
+import { Redirect, Route, Switch, useHistory, useLocation, useParams } from "react-router-dom";
+import MyBackdrop from "app/Backdrop";
 
 export default function Customers() {
-  const [activeTab, setActiveTab] = useState(0);
+  const history = useHistory();
+  const location = useLocation();
+  const { clientId } = useParams<{ clientId: string }>();
+
+  const tabs = ["clients", "requested", "rejected", "details"];
+  const [activeTab, setActiveTab] = useState(
+    location.pathname.split("/").length === 6 ? 3 : tabs.indexOf(location.pathname.split("/")[4])
+  );
+
+  useEffect(() => {
+    if (location.pathname.split("/")[4]) {
+      if (location.pathname.split("/").length === 6) {
+        setActiveTab(3);
+      } else {
+        setActiveTab(tabs.indexOf(location.pathname.split("/")[4]));
+      }
+    }
+  }, [location]);
+
   const [addCustomerModal, setAddCustomerModal] = useState(false);
   const [cTypeModal, setCTypeModal] = useState(false);
-  const [selectedRow, setSelectedRow] = useState<IClient>();
   const [conf, setConf] = useState(false);
   const [req, setReq] = useState(false);
   const phone = useMediaQuery("(max-width:900px)");
 
   const handleDelete = async () => {
     try {
-      if (selectedRow) {
-        await deleteClient(selectedRow.id);
+      if (clientId) {
+        await deleteClient(clientId);
 
         setConf(false);
         setActiveTab(0);
@@ -61,7 +80,13 @@ export default function Customers() {
             <Box mb={1} display="flex">
               <Tabs
                 value={activeTab}
-                onChange={(e, nv) => setActiveTab(nv)}
+                onChange={(e, nv) => {
+                  setActiveTab(nv);
+                  history.push({
+                    pathname: `/panel/sales/client/` + tabs[nv],
+                    search: window.location.search,
+                  });
+                }}
                 textColor="primary"
                 variant="scrollable"
                 scrollButtons={phone ? "on" : "auto"}
@@ -111,7 +136,7 @@ export default function Customers() {
                 />
 
                 <Tab
-                  disabled={!selectedRow}
+                  disabled={activeTab !== 3}
                   icon={
                     <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                       <FindInPageRounded style={{ marginRight: "5px" }} /> Details
@@ -132,52 +157,55 @@ export default function Customers() {
                       <MenuRounded />
                     </IconButton>
                   </ListItem>
-                  <ListItem>
-                    <IconButton title="Delete Client" disabled={!selectedRow} onClick={() => setConf(true)}>
-                      <DeleteRounded />
-                    </IconButton>
-                  </ListItem>
+                  {activeTab === 3 && (
+                    <ListItem>
+                      <IconButton title="Delete Client" onClick={() => setConf(true)}>
+                        <DeleteRounded />
+                      </IconButton>
+                    </ListItem>
+                  )}
                 </List>
               </Box>
             </Box>
-            <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
-              <CustomerDataGrid
-                url="/client"
-                onRowSelected={(v) => {
-                  setSelectedRow(v);
-                  setActiveTab(3);
-                  setReq(false);
-                }}
-              />
-            </div>
-
-            <div style={activeTab !== 1 ? { display: "none" } : { flex: 1 }}>
-              <CustomerDataGrid
-                url="/client"
-                params={{ approved: "null" }}
-                onRowSelected={(v) => {
-                  setSelectedRow(v);
-                  setActiveTab(3);
-                  setReq(true);
-                }}
-              />
-            </div>
-
-            <div style={activeTab !== 2 ? { display: "none" } : { flex: 1 }}>
-              <CustomerDataGrid
-                url="/client"
-                params={{ approved: false }}
-                onRowSelected={(v) => {
-                  setSelectedRow(v);
-                  setActiveTab(3);
-                  setReq(false);
-                }}
-              />
-            </div>
-
-            {activeTab === 3 && selectedRow && (
-              <Details selectedRow={selectedRow} req={req} changeTab={(i) => setActiveTab(i)} />
-            )}
+            <Suspense fallback={<MyBackdrop />}>
+              <Switch>
+                <Route exact path={`/panel/sales/client`}>
+                  <Redirect to={`/panel/sales/client/clients`} />
+                </Route>
+                <Route exact path={`/panel/sales/client/clients`}>
+                  <CustomerDataGrid
+                    url="/client"
+                    onRowSelected={(v) => {
+                      history.push(`/panel/sales/client/clients/${v.id}${window.location.search}`);
+                      setReq(false);
+                    }}
+                  />
+                </Route>
+                <Route exact path={`/panel/sales/client/requested`}>
+                  <CustomerDataGrid
+                    url="/client"
+                    params={{ approved: "null" }}
+                    onRowSelected={(v) => {
+                      history.push(`/panel/sales/client/clients/${v.id}${window.location.search}`);
+                      setReq(true);
+                    }}
+                  />
+                </Route>
+                <Route exact path={`/panel/sales/client/rejected`}>
+                  <CustomerDataGrid
+                    url="/client"
+                    params={{ approved: false }}
+                    onRowSelected={(v) => {
+                      history.push(`/panel/sales/client/clients/${v.id}${window.location.search}`);
+                      setReq(false);
+                    }}
+                  />
+                </Route>
+                <Route exact path={`/panel/sales/client/clients/:clientId`}>
+                  <Details req={req} changeTab={(i) => setActiveTab(i)} />
+                </Route>
+              </Switch>
+            </Suspense>
           </BasePaper>
         </Grid>
       </Grid>

@@ -14,11 +14,11 @@ import { camelCaseToRegular } from "logic/utils";
 const Dashboard = React.lazy(() => import("features/Sales/Dashboard"));
 const Calls = React.lazy(() => import("Router/Sales/Calls"));
 const DevicesPanel = React.lazy(() => import("Router/Engineering/Devices"));
-const Option = React.lazy(() => import("features/Engineering/Option"));
+const Option = React.lazy(() => import("Router/Engineering/Options"));
 const QuotePanel = React.lazy(() => import("Router/Sales/Quote"));
 const PurchaseOrderPanel = React.lazy(() => import("Router/Sales/PurchaseOrders"));
 const SalesOrderPanel = React.lazy(() => import("Router/Sales/SalesOrders"));
-const Clients = React.lazy(() => import("features/Sales/Customer"));
+const Clients = React.lazy(() => import("Router/Sales/Clients"));
 const Reps = React.lazy(() => import("Router/Sales/Reps"));
 
 export default function PanelRouter() {
@@ -26,7 +26,7 @@ export default function PanelRouter() {
   const history = useHistory();
   const location = useLocation();
 
-  const tabs = ["dashboard", "calls", "device", "options", "quotes", "customerPOs", "salesOrders", "clients", "reps"];
+  const tabs = ["dashboard", "calls", "device", "option", "quotes", "customerPOs", "salesOrders", "client", "reps"];
 
   const [activeTab, setActiveTab] = useState(tabs.indexOf(location.pathname.split("/")[3]));
   const [tabText, setTabText] = useState(
@@ -115,11 +115,13 @@ export default function PanelRouter() {
           <Route path="/panel/sales/device">
             <DevicesPanel sales={true} />
           </Route>
-          <Route exact path="/panel/sales/options" component={Option} />
+          <Route path="/panel/sales/option">
+            <Option sales={true} />
+          </Route>
           <Route path="/panel/sales/quotes" component={QuotePanel} />
           <Route path="/panel/sales/customerPOs" component={PurchaseOrderPanel} />
           <Route path="/panel/sales/salesOrders" component={SalesOrderPanel} />
-          <Route exact path="/panel/sales/clients" component={Clients} />
+          <Route path="/panel/sales/client" component={Clients} />
           <Route path="/panel/sales/reps" component={Reps} />
         </Switch>
       </Suspense>

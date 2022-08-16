@@ -1,17 +1,17 @@
 import React, { useState, useMemo } from "react";
 import { GridColumns } from "@material-ui/data-grid";
-import { Box, Tabs, Tab, useMediaQuery } from "@material-ui/core";
+import { Box, Tabs, Tab, useMediaQuery, LinearProgress } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 
-import { CommissionForm, GeneralForm, MainContactForm, MoreInfoForm } from "./Forms";
+import { CommissionForm, GeneralForm, MainContactForm, MoreInfoForm } from "../../../features/Sales/Customer/Forms";
 import Button from "app/Button";
 import { BasePaper } from "app/Paper";
 import BaseDataGrid from "app/BaseDataGrid";
 
 import { editClient, IClient } from "api/client";
 
-import SOTable from "../../Items/SOTable";
+import SOTable from "../../../features/Items/SOTable";
 
 import NoteTab from "common/Note/Tab";
 import DocumentTab from "common/Document/Tab";
@@ -24,16 +24,12 @@ import { getModifiedValues } from "logic/utils";
 
 import { IActivity } from "api/activity";
 import AuditTable from "common/Audit";
+import { useParams } from "react-router-dom";
 
-export default function ClientDetails({
-  selectedRow,
-  req,
-  changeTab,
-}: {
-  selectedRow: IClient;
-  req?: any;
-  changeTab: (a: number) => void;
-}) {
+export default function ClientDetails({ req, changeTab }: { req?: any; changeTab: (a: number) => void }) {
+  const { clientId } = useParams<{ clientId: string }>();
+  const { data: selectedRow } = useSWR<IClient>(clientId ? `/client/${clientId}` : null);
+
   const [activeTab, setActiveTab] = useState(0);
   const [activeSubTab, setActiveSubTab] = useState(0);
 
@@ -41,12 +37,12 @@ export default function ClientDetails({
   const { lock } = useLock();
 
   const { data: activities } = useSWR<{ result: IActivity[]; total: number }>(
-    activeTab === 2 ? `/activity/client/${selectedRow.id}` : null
+    activeTab === 2 ? `/activity/client/${selectedRow?.id}` : null
   );
 
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     try {
-      await editClient(selectedRow.id, getModifiedValues(values, selectedRow));
+      await editClient(clientId, getModifiedValues(values, selectedRow));
       mutate("/client");
       mutate("/client?approved=false");
       setSubmitting(false);
@@ -68,7 +64,9 @@ export default function ClientDetails({
     ],
     []
   );
-
+  if (!selectedRow) {
+    return <LinearProgress />;
+  }
   return (
     <Box>
       <Formik initialValues={selectedRow} onSubmit={handleSubmit}>

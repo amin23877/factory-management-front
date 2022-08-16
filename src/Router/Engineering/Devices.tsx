@@ -67,7 +67,6 @@ const Devices = ({ sales }: { sales?: boolean }) => {
 
   const tabs = ["devices", "units", "details"];
   const { deviceId } = useParams<{ deviceId: string }>();
-  const { unitId } = useParams<{ unitId: string }>();
 
   const [selectedStep, setSelectedStep] = useState<any>();
   const [selectedFlag, setSelectedFlag] = useState<any>();

@@ -17,7 +17,7 @@ const BOM = React.lazy(() => import("features/Engineering/BOM"));
 const Monitoring = React.lazy(() => import("features/Engineering/Monitoring"));
 const Dashboard = React.lazy(() => import("features/Engineering/Dashboard"));
 const FRU = React.lazy(() => import("features/Engineering/FRU"));
-const Option = React.lazy(() => import("features/Engineering/Option"));
+const Option = React.lazy(() => import("Router/Engineering"));
 
 const DeviceDetails = React.lazy(() => import("pages/DeviceDetails"));
 

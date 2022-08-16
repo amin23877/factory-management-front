@@ -11,7 +11,7 @@ import MyBackdrop from "app/Backdrop";
 import { MyTabs, MyTab } from "app/Tabs";
 import { camelCaseToRegular } from "logic/utils";
 
-const Options = React.lazy(() => import("features/FieldService/Option"));
+const Options = React.lazy(() => import("Router/Engineering/Options"));
 const FRUs = React.lazy(() => import("features/FieldService/FRU"));
 const ServiceIndex = React.lazy(() => import("features/FieldService"));
 const Tickets = React.lazy(() => import("features/FieldService/Tickets"));
