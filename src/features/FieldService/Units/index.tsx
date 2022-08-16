@@ -4,7 +4,7 @@ import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
 import DataGrid from "app/NewDataGrid";
 import { BasePaper } from "app/Paper";
-import Details from "../../../pages/Engineering/units/Details";
+import Details from "../../../pages/Engineering/Units/Details";
 
 import { formatTimestampToDate } from "logic/date";
 import { LockProvider } from "common/Lock";

@@ -15,7 +15,7 @@ const Dashboard = React.lazy(() => import("features/Sales/Dashboard"));
 const Calls = React.lazy(() => import("Router/Sales/Calls"));
 const DevicesPanel = React.lazy(() => import("Router/Engineering/Devices"));
 const Option = React.lazy(() => import("Router/Engineering/Options"));
-const QuotePanel = React.lazy(() => import("Router/Sales/Quote"));
+const QuotePanel = React.lazy(() => import("Router/Sales/Quotes"));
 const PurchaseOrderPanel = React.lazy(() => import("Router/Sales/PurchaseOrders"));
 const SalesOrderPanel = React.lazy(() => import("Router/Sales/SalesOrders"));
 const Clients = React.lazy(() => import("Router/Sales/Clients"));

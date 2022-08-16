@@ -11,16 +11,20 @@ import MyBackdrop from "app/Backdrop";
 import { MyTabs, MyTab } from "app/Tabs";
 import { camelCaseToRegular } from "logic/utils";
 
-const ItemDetails = React.lazy(() => import("pages/ItemDetails"));
-const Dashboard = React.lazy(() => import("features/Items/Dashboard"));
-const Items = React.lazy(() => import("features/Items"));
+const DevicesPanel = React.lazy(() => import("Router/Engineering/Devices"));
+const Project = React.lazy(() => import("features/Engineering/Projects"));
+const BOM = React.lazy(() => import("Router/Engineering/BOM"));
+const Monitoring = React.lazy(() => import("features/Engineering/Monitoring"));
+const Dashboard = React.lazy(() => import("features/Engineering/Dashboard"));
+const FRU = React.lazy(() => import("features/Engineering/FRU"));
+const Option = React.lazy(() => import("Router/Engineering/Options"));
 
 export default function PanelRouter() {
   const portals = usePortal();
   const history = useHistory();
   const location = useLocation();
 
-  const tabs = ["dashboard", "items"];
+  const tabs = ["dashboard", "device", "devicesBom", "monitoring", "projects", "fru", "option"];
 
   const [activeTab, setActiveTab] = useState(tabs.indexOf(location.pathname.split("/")[3]));
   const [tabText, setTabText] = useState(
@@ -82,26 +86,33 @@ export default function PanelRouter() {
             onChange={(e: any, nv) => {
               setActiveTab(nv);
               setTabText(e.target.textContent);
-              history.push(tabs[nv]);
+              history.push("/panel/engineering/" + tabs[nv]);
               handleClose();
             }}
             orientation="vertical"
           >
             <MyTab label="Dashboard" />
-            <MyTab label="Items" />
+            <MyTab label="Device" />
+            <MyTab label="Devices BOM" />
+            <MyTab label="Monitoring" />
+            <MyTab label="Projects" />
+            <MyTab label="FRU" />
+            <MyTab label="Option" />
           </MyTabs>
         </Popover>
       </Portal>
       <Suspense fallback={<MyBackdrop />}>
         <Switch>
-          <Route exact path="/panel/inventory">
-            <Redirect to="/panel/inventory/items" />
+          <Route exact path="/panel/engineering">
+            <Redirect to="/panel/engineering/device" />
           </Route>
-
-          <Route exact path="/panel/inventory/dashboard" component={Dashboard} />
-          <Route exact path="/panel/inventory/items" component={Items} />
-
-          <Route exact path="/panel/inventory/:itemId" component={ItemDetails} />
+          <Route exact path="/panel/engineering/dashboard" component={Dashboard} />
+          <Route path="/panel/engineering/device" component={DevicesPanel} />
+          <Route path="/panel/engineering/devicesBom" component={BOM} />
+          <Route exact path="/panel/engineering/monitoring" component={Monitoring} />
+          <Route exact path="/panel/engineering/projects" component={Project} />
+          <Route exact path="/panel/engineering/fru" component={FRU} />
+          <Route path="/panel/engineering/option" component={Option} />
         </Switch>
       </Suspense>
     </LockProvider>

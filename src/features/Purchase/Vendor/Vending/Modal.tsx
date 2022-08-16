@@ -9,7 +9,6 @@ import TextField from "app/TextField";
 import Button from "app/Button";
 import LinkField from "app/Inputs/LinkFields";
 
-import { IVendor } from "api/vendor";
 import { createVending, deleteVending, updateVending } from "api/vending";
 
 const schema = Yup.object().shape({
@@ -21,12 +20,12 @@ export default function VendingModal({
   open,
   onClose,
   onDone,
-  vendor,
+  vendorId,
   initialValues,
 }: {
   initialValues?: any;
   open: boolean;
-  vendor: IVendor;
+  vendorId: string;
   onClose: () => void;
   onDone?: () => void;
 }) {
@@ -37,7 +36,7 @@ export default function VendingModal({
         if (resp) {
           onDone && onDone();
           onClose();
-          mutate(`/vendor/${vendor.id}/items`);
+          mutate(`/vendor/${vendorId}/items`);
         }
       }
     } catch (error) {
@@ -52,13 +51,13 @@ export default function VendingModal({
         if (resp) {
           onDone && onDone();
           onClose();
-          mutate(`/vendor/${vendor.id}/items`);
+          mutate(`/vendor/${vendorId}/items`);
         }
       } else {
-        await createVending({ ...d, VendorId: vendor.id });
+        await createVending({ ...d, VendorId: vendorId });
         onDone && onDone();
         onClose();
-        mutate(`/vendor/${vendor.id}/items`);
+        mutate(`/vendor/${vendorId}/items`);
       }
     } catch (error) {
       console.log(error);

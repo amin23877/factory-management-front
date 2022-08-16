@@ -47,9 +47,9 @@ export default function PartsTable({ bomId, onEdit }: { bomId: string; onEdit?: 
               <div
                 onClick={() => {
                   if (phone) {
-                    history.push(`/panel/inventory/${data?.ItemId?.id}`);
+                    history.push(`/panel/inventory/items/${data?.ItemId?.id}`);
                   } else {
-                    openRequestedSinglePopup({ url: `/panel/inventory/${data?.ItemId?.id}` });
+                    openRequestedSinglePopup({ url: `/panel/inventory/items/${data?.ItemId?.id}` });
                   }
                 }}
               >

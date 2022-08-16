@@ -105,7 +105,7 @@ export default function JobRecordsTable({
                     <EditRounded />
                   </IconButton>
                 )}
-                <Link to={`/panel/inventory/${row?.ItemId}`}>
+                <Link to={`/panel/inventory/items/${row?.ItemId}`}>
                   <IconButton>
                     <DetailsRounded />
                   </IconButton>

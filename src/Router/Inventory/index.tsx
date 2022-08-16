@@ -9,19 +9,17 @@ import { KeyboardArrowDownRounded, KeyboardArrowUpRounded } from "@material-ui/i
 
 import MyBackdrop from "app/Backdrop";
 import { MyTabs, MyTab } from "app/Tabs";
-
-import PurchasePO from "features/Purchase/PO";
-import Vendors from "features/Purchase/Vendor";
-import PurchaseQuote from "features/Purchase/Quote";
-import Dashboard from "features/Purchase/Dashboard";
 import { camelCaseToRegular } from "logic/utils";
+
+const Dashboard = React.lazy(() => import("features/Items/Dashboard"));
+const Items = React.lazy(() => import("Router/Inventory/Items"));
 
 export default function PanelRouter() {
   const portals = usePortal();
   const history = useHistory();
   const location = useLocation();
 
-  const tabs = ["dashboard", "quote", "purchaseOrder", "vendor"];
+  const tabs = ["dashboard", "items"];
 
   const [activeTab, setActiveTab] = useState(tabs.indexOf(location.pathname.split("/")[3]));
   const [tabText, setTabText] = useState(
@@ -89,21 +87,18 @@ export default function PanelRouter() {
             orientation="vertical"
           >
             <MyTab label="Dashboard" />
-            <MyTab label="Quote" />
-            <MyTab label="Purchase Order" />
-            <MyTab label="Vendor" />
+            <MyTab label="Items" />
           </MyTabs>
         </Popover>
       </Portal>
       <Suspense fallback={<MyBackdrop />}>
         <Switch>
-          <Route exact path="/panel/purchase">
-            <Redirect to="/panel/purchase/dashboard" />
+          <Route exact path="/panel/inventory">
+            <Redirect to="/panel/inventory/items" />
           </Route>
-          <Route exact path="/panel/purchase/dashboard" component={Dashboard} />
-          <Route exact path="/panel/purchase/quote" component={PurchaseQuote} />
-          <Route exact path="/panel/purchase/purchaseOrder" component={PurchasePO} />
-          <Route exact path="/panel/purchase/vendor" component={Vendors} />
+
+          <Route exact path="/panel/inventory/dashboard" component={Dashboard} />
+          <Route path="/panel/inventory/items" component={Items} />
         </Switch>
       </Suspense>
     </LockProvider>

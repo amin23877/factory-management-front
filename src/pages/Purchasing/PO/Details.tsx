@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { useMediaQuery } from "@material-ui/core";
+import { LinearProgress, useMediaQuery } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -7,10 +7,9 @@ import { GridColumns } from "@material-ui/data-grid";
 import useSWR, { mutate } from "swr";
 import { Formik } from "formik";
 
-import { AddressesForm, UpdateForm, MoreInfoForm, VendorForm } from "./Forms";
+import { AddressesForm, UpdateForm, MoreInfoForm, VendorForm } from "../../../features/Purchase/PO/Forms";
 import BaseDataGrid from "app/BaseDataGrid";
 import { BasePaper } from "app/Paper";
-import Button from "app/Button";
 import Toast from "app/Toast";
 import NotesTab from "common/Note/Tab";
 import DocumentsTab from "common/Document/Tab";
@@ -19,13 +18,18 @@ import { updatePurchasePO, IPurchasePO } from "api/purchasePO";
 import { ILineItem } from "api/lineItem";
 
 import { getModifiedValues } from "logic/utils";
-import ReceivingTab from "./Receiving";
+import ReceivingTab from "../../../features/Purchase/PO/Receiving";
 import { LockButton, LockProvider } from "common/Lock";
 import AuditTable from "common/Audit";
+import { useParams } from "react-router-dom";
 
-export default function Details({ selectedPO, onDone }: { selectedPO: IPurchasePO; onDone?: () => void }) {
+export default function Details({ onDone }: { onDone?: () => void }) {
   const phone = useMediaQuery("(max-width:900px)");
-  const { data: lines } = useSWR<{ result: ILineItem[]; total: number }>(`/polineitem?POId=${selectedPO.id}`);
+
+  const { poId } = useParams<{ poId: string }>();
+  const { data: selectedPO } = useSWR<IPurchasePO>(poId ? `/po/${poId}` : null);
+
+  const { data: lines } = useSWR<{ result: ILineItem[]; total: number }>(`/polineitem?POId=${selectedPO?.id}`);
 
   const [activeTab, setActiveTab] = useState(0);
   const [activeMoreTab, setActiveMoreTab] = useState(0);
@@ -60,8 +64,8 @@ export default function Details({ selectedPO, onDone }: { selectedPO: IPurchaseP
 
   const handleSubmit = async (d: any) => {
     try {
-      if (selectedPO.id && d.status) {
-        await updatePurchasePO(selectedPO.id, getModifiedValues(d, selectedPO));
+      if (poId && d.status) {
+        await updatePurchasePO(poId, getModifiedValues(d, selectedPO));
         Toast("Purchase Order updated.", "success");
         mutate("/po");
       }
@@ -69,6 +73,10 @@ export default function Details({ selectedPO, onDone }: { selectedPO: IPurchaseP
       console.log(error);
     }
   };
+
+  if (!selectedPO) {
+    return <LinearProgress />;
+  }
 
   return (
     <>

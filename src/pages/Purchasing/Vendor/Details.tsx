@@ -1,12 +1,12 @@
 import React, { useMemo, useState } from "react";
 import { GridColDef, GridColumns } from "@material-ui/data-grid";
-import { Box, Tab, Tabs, useMediaQuery } from "@material-ui/core";
+import { Box, LinearProgress, Tab, Tabs, useMediaQuery } from "@material-ui/core";
 import useSWR from "swr";
 
 import { BasePaper } from "app/Paper";
 import BaseDataGrid from "app/BaseDataGrid";
 
-import { UpdateVendorForm } from "./Forms";
+import { UpdateVendorForm } from "../../../features/Purchase/Vendor/Forms";
 import { formatTimestampToDate } from "logic/date";
 
 import NoteTab from "common/Note/Tab";
@@ -15,12 +15,15 @@ import ContactTab from "common/Contact/Tab";
 
 import { IVendor } from "api/vendor";
 import AuditTable from "common/Audit";
+import { useParams } from "react-router-dom";
 
-export default function VendorDetails({ vendor }: { vendor: IVendor }) {
+export default function VendorDetails() {
   const [activeTab, setActiveTab] = useState(0);
+  const { vendorId } = useParams<{ vendorId: string }>();
+  const { data: vendor } = useSWR<IVendor>(vendorId ? `/vendor/${vendorId}` : null);
 
-  const { data: items } = useSWR(activeTab === 0 ? `/vendor/${vendor.id}/items` : null);
-  const { data: POs } = useSWR(activeTab === 3 ? `/purchasepo?VendorId=${vendor.id}` : null);
+  const { data: items } = useSWR(activeTab === 0 ? `/vendor/${vendorId}/items` : null);
+  const { data: POs } = useSWR(activeTab === 3 ? `/purchasepo?VendorId=${vendorId}` : null);
 
   const itemCols: GridColDef[] = [
     { field: "ItemId", headerName: "Item NO.", valueFormatter: (r) => r.row?.ItemId?.no, width: 120 },
@@ -61,6 +64,10 @@ export default function VendorDetails({ vendor }: { vendor: IVendor }) {
   );
 
   const phone = useMediaQuery("(max-width:900px)");
+
+  if (!vendor) {
+    return <LinearProgress />;
+  }
 
   return (
     <Box display="grid" gridGap={10} gridTemplateColumns={phone ? "1fr" : "2fr 3fr"}>

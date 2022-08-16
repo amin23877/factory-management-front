@@ -9,24 +9,20 @@ import { KeyboardArrowDownRounded, KeyboardArrowUpRounded } from "@material-ui/i
 
 import MyBackdrop from "app/Backdrop";
 import { MyTabs, MyTab } from "app/Tabs";
+
 import { camelCaseToRegular } from "logic/utils";
 
-const DevicesPanel = React.lazy(() => import("Router/Engineering/Devices"));
-const Project = React.lazy(() => import("features/Engineering/Projects"));
-const BOM = React.lazy(() => import("features/Engineering/BOM"));
-const Monitoring = React.lazy(() => import("features/Engineering/Monitoring"));
-const Dashboard = React.lazy(() => import("features/Engineering/Dashboard"));
-const FRU = React.lazy(() => import("features/Engineering/FRU"));
-const Option = React.lazy(() => import("Router/Engineering"));
-
-const DeviceDetails = React.lazy(() => import("pages/DeviceDetails"));
+const Dashboard = React.lazy(() => import("features/Purchase/Dashboard"));
+const PurchasePO = React.lazy(() => import("Router/Purchasing/Purchase"));
+const Vendors = React.lazy(() => import("Router/Purchasing/Vendors"));
+const PurchaseQuote = React.lazy(() => import("Router/Purchasing/Quote"));
 
 export default function PanelRouter() {
   const portals = usePortal();
   const history = useHistory();
   const location = useLocation();
 
-  const tabs = ["dashboard", "devices", "devicesBom", "monitoring", "projects", "fru", "option"];
+  const tabs = ["dashboard", "quote", "purchaseOrder", "vendor"];
 
   const [activeTab, setActiveTab] = useState(tabs.indexOf(location.pathname.split("/")[3]));
   const [tabText, setTabText] = useState(
@@ -88,35 +84,27 @@ export default function PanelRouter() {
             onChange={(e: any, nv) => {
               setActiveTab(nv);
               setTabText(e.target.textContent);
-              history.push(tabs[nv]);
+              history.push("/panel/purchase/" + tabs[nv]);
               handleClose();
             }}
             orientation="vertical"
           >
             <MyTab label="Dashboard" />
-            <MyTab label="Devices" />
-            <MyTab label="Devices BOM" />
-            <MyTab label="Monitoring" />
-            <MyTab label="Projects" />
-            <MyTab label="FRU" />
-            <MyTab label="Option" />
+            <MyTab label="Quote" />
+            <MyTab label="Purchase Order" />
+            <MyTab label="Vendor" />
           </MyTabs>
         </Popover>
       </Portal>
       <Suspense fallback={<MyBackdrop />}>
         <Switch>
-          <Route exact path="/panel/engineering">
-            <Redirect to="/panel/engineering/devices" />
+          <Route exact path="/panel/purchase">
+            <Redirect to="/panel/purchase/dashboard" />
           </Route>
-          <Route exact path="/panel/engineering/dashboard" component={Dashboard} />
-          <Route exact path="/panel/engineering/devices" component={DevicesPanel} />
-          <Route exact path="/panel/engineering/devicesBom" component={BOM} />
-          <Route exact path="/panel/engineering/monitoring" component={Monitoring} />
-          <Route exact path="/panel/engineering/projects" component={Project} />
-          <Route exact path="/panel/engineering/fru" component={FRU} />
-          <Route exact path="/panel/engineering/option" component={Option} />
-
-          <Route exact path="/panel/engineering/:deviceId" component={DeviceDetails} />
+          <Route exact path="/panel/purchase/dashboard" component={Dashboard} />
+          <Route path="/panel/purchase/quote" component={PurchaseQuote} />
+          <Route path="/panel/purchase/purchaseOrder" component={PurchasePO} />
+          <Route path="/panel/purchase/vendor" component={Vendors} />
         </Switch>
       </Suspense>
     </LockProvider>

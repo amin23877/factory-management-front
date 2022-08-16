@@ -93,7 +93,7 @@ function ServiceDetails({ setRefresh }: { setRefresh: any }) {
 
   const handleRowSelect = useCallback(
     (r: any) => {
-      const url = `/panel/inventory/${r?.id}`;
+      const url = `/panel/inventory/items/${r?.id}`;
       if (r.id && phone) {
         history.push(url);
       } else if (r.id && !phone) {

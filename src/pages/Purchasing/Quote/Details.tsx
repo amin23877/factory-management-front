@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import { Formik, Form } from "formik";
 
 import Box from "@material-ui/core/Box";
-import { Tab, Tabs, useMediaQuery } from "@material-ui/core";
+import { LinearProgress, Tab, Tabs, useMediaQuery } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 
 import TextField from "app/TextField";
@@ -18,8 +18,13 @@ import BaseDataGrid from "app/BaseDataGrid";
 import { formatTimestampToDate } from "logic/date";
 import { LockButton, useLock } from "common/Lock";
 import AuditTable from "common/Audit";
+import useSWR from "swr";
+import { useParams } from "react-router-dom";
 
-export default function Details({ onDone, initialValues }: { onDone?: () => void; initialValues: IPurchaseQuote }) {
+export default function Details({ onDone }: { onDone?: () => void }) {
+  const { quoteId } = useParams<{ quoteId: string }>();
+  const { data: initialValues } = useSWR<IPurchaseQuote>(quoteId ? `/purchaseQuote/${quoteId}` : null);
+
   const [activeTab, setActiveTab] = useState(0);
   const { lock } = useLock();
   const LICols = useMemo<GridColumns>(
@@ -45,8 +50,8 @@ export default function Details({ onDone, initialValues }: { onDone?: () => void
 
   const handleSubmit = async (d: any) => {
     try {
-      if (initialValues.id) {
-        const resp = await updatePurchaseQuote(initialValues.id, { ...d });
+      if (quoteId) {
+        const resp = await updatePurchaseQuote(quoteId, { ...d });
         if (resp) {
           onDone && onDone();
         }
@@ -56,7 +61,9 @@ export default function Details({ onDone, initialValues }: { onDone?: () => void
     }
   };
   const phone = useMediaQuery("(max-width:900px)");
-
+  if (!initialValues) {
+    return <LinearProgress />;
+  }
   return (
     <Box display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 3fr"} gridGap={10}>
       <BasePaper>

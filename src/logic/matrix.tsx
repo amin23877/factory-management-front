@@ -55,7 +55,7 @@ export const generateDataGridColumns = (
                 <DataGridAction
                   icon="view"
                   controlledLock={false}
-                  onClick={() => openRequestedSinglePopup({ url: `/panel/inventory/${data?.DeviceId}` })}
+                  onClick={() => openRequestedSinglePopup({ url: `/panel/inventory/items/${data?.DeviceId}` })}
                 />
               </div>
             ) : (

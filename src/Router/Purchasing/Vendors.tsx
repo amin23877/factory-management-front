@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Box, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
 
 import {
@@ -11,34 +11,48 @@ import {
   FindInPageRounded,
 } from "@material-ui/icons";
 
-import List from "../../../app/SideUtilityList";
-import Toast from "../../../app/Toast";
+import List from "app/SideUtilityList";
+import Toast from "app/Toast";
 
-import Details from "./Details";
-import VendorModal from "./AddVendor";
-import Vending from "./Vending/Modal";
-import Confirm from "../../Modals/Confirm";
+import Details from "pages/Purchasing/Vendor/Details";
+import VendorModal from "features/Purchase/Vendor/AddVendor";
+import Vending from "features/Purchase/Vendor/Vending/Modal";
+import Confirm from "features/Modals/Confirm";
 
-import { deleteVendor, IVendor } from "../../../api/vendor";
-import VendorTypeModal from "./VendorType";
-import DataGrid from "../../../app/NewDataGrid";
+import { deleteVendor } from "api/vendor";
+import VendorTypeModal from "features/Purchase/Vendor/VendorType";
+import DataGrid from "app/NewDataGrid";
 import { mutate } from "swr";
-import { BasePaper } from "../../../app/Paper";
+import { BasePaper } from "app/Paper";
 import { useLock } from "common/Lock";
+import { Route, Switch, useHistory, useLocation, useParams } from "react-router-dom";
+import MyBackdrop from "app/Backdrop";
 
 export default function Vendors({ tech }: { tech: boolean }) {
-  const [activeTab, setActiveTab] = useState(0);
-  const [selectedVendor, setSelectedVendor] = useState<IVendor>();
+  const history = useHistory();
+  const location = useLocation();
+  const { vendorId } = useParams<{ vendorId: string }>();
+
+  const [activeTab, setActiveTab] = useState(location.pathname.split("/").length === 5 ? 1 : 0);
 
   const [addVendor, setAddVendor] = useState(false);
   const [addType, setAddType] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [vendingModal, setVendingModal] = useState(false);
-  const { lock, setLock } = useLock();
+  const { lock } = useLock();
+
+  useEffect(() => {
+    if (location.pathname.split("/").length === 5) {
+      setActiveTab(1);
+    } else {
+      setActiveTab(0);
+    }
+  }, [location]);
+
   const handleDelete = async () => {
     try {
-      if (selectedVendor && selectedVendor.id) {
-        await deleteVendor(selectedVendor.id);
+      if (vendorId) {
+        await deleteVendor(vendorId);
 
         mutate(`/vendor?tech=${tech}`);
         setConfirm(false);
@@ -72,14 +86,12 @@ export default function Vendors({ tech }: { tech: boolean }) {
         onDone={() => mutate(`/vendor?tech=${tech}`)}
       />
       <Confirm
-        text={`Are you sure? You are going to delete vendor ${selectedVendor?.name}`}
+        text={`Are you sure? You are going to delete a vendor `}
         open={confirm}
         onClose={() => setConfirm(false)}
         onConfirm={handleDelete}
       />
-      {selectedVendor && selectedVendor.id && (
-        <Vending open={vendingModal} onClose={() => setVendingModal(false)} vendor={selectedVendor} />
-      )}
+      {vendorId && <Vending open={vendingModal} onClose={() => setVendingModal(false)} vendorId={vendorId} />}
       <VendorTypeModal open={addType} onClose={() => setAddType(false)} />
 
       <BasePaper>
@@ -91,7 +103,10 @@ export default function Vendors({ tech }: { tech: boolean }) {
                 value={activeTab}
                 onChange={(e, nv) => {
                   setActiveTab(nv);
-                  setLock(true);
+                  history.push({
+                    pathname: "/panel/purchase/vendor",
+                    search: window.location.search,
+                  });
                 }}
                 textColor="primary"
               >
@@ -110,7 +125,7 @@ export default function Vendors({ tech }: { tech: boolean }) {
                   wrapped
                 />
                 <Tab
-                  disabled={!selectedVendor}
+                  disabled={activeTab !== 1}
                   icon={
                     <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                       <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
@@ -126,29 +141,25 @@ export default function Vendors({ tech }: { tech: boolean }) {
                       <AddRounded />
                     </IconButton>
                   </ListItem>
-                  <ListItem>
-                    <IconButton
-                      disabled={!selectedVendor || lock}
-                      onClick={() => setConfirm(true)}
-                      title="delete Vendor"
-                    >
-                      <DeleteRounded />
-                    </IconButton>
-                  </ListItem>
+                  {activeTab === 1 && (
+                    <ListItem>
+                      <IconButton disabled={lock} onClick={() => setConfirm(true)} title="delete Vendor">
+                        <DeleteRounded />
+                      </IconButton>
+                    </ListItem>
+                  )}
                   <ListItem>
                     <IconButton onClick={() => setAddType(true)} title="Add VendorType" disabled={lock}>
                       <LocalOfferRounded />
                     </IconButton>
                   </ListItem>
-                  <ListItem>
-                    <IconButton
-                      disabled={!selectedVendor || lock}
-                      onClick={() => setVendingModal(true)}
-                      title="Add Item"
-                    >
-                      <PostAdd />
-                    </IconButton>
-                  </ListItem>
+                  {activeTab === 1 && (
+                    <ListItem>
+                      <IconButton disabled={lock} onClick={() => setVendingModal(true)} title="Add Item">
+                        <PostAdd />
+                      </IconButton>
+                    </ListItem>
+                  )}
                   <ListItem>
                     <IconButton>
                       <PrintRounded />
@@ -157,20 +168,24 @@ export default function Vendors({ tech }: { tech: boolean }) {
                 </List>
               </Box>
             </Box>
-            <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
-              <DataGrid
-                style={{ minHeight: "calc(100vh - 160px)" }}
-                url="/vendor"
-                columns={cols}
-                initParams={tech ? { tech: true } : {}}
-                onRowSelected={(d) => {
-                  setSelectedVendor(d as any);
-                  setActiveTab(1);
-                }}
-              />
-            </div>
-
-            {activeTab === 1 && selectedVendor && <Details vendor={selectedVendor} />}
+            <Suspense fallback={<MyBackdrop />}>
+              <Switch>
+                <Route exact path="/panel/purchase/vendor">
+                  <DataGrid
+                    style={{ minHeight: "calc(100vh - 160px)" }}
+                    url="/vendor"
+                    columns={cols}
+                    initParams={tech ? { tech: true } : {}}
+                    onRowSelected={(d) => {
+                      history.push(`/panel/purchase/vendor/${d.id}${window.location.search}`);
+                    }}
+                  />
+                </Route>
+                <Route exact path="/panel/purchase/vendor/:vendorId">
+                  <Details />
+                </Route>
+              </Switch>
+            </Suspense>
           </Box>
         </Box>
       </BasePaper>

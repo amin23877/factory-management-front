@@ -5,28 +5,28 @@ import useSWR, { mutate } from "swr";
 
 import Button from "app/Button";
 import { BasePaper } from "app/Paper";
-import VendorsTable from "./VendorsTable";
+import VendorsTable from "../../../features/Items/VendorsTable";
 
-import { General } from "./Forms";
-import MoreInfo from "./Forms/MoreInfo";
-import Quantity from "./Forms/Quantity";
-import PricingTab from "./Forms/Pricing";
-import Shipping from "./Forms/Shipping";
-import Levels from "./Forms/Levels";
+import { General } from "../../../features/Items/Forms";
+import MoreInfo from "../../../features/Items/Forms/MoreInfo";
+import Quantity from "../../../features/Items/Forms/Quantity";
+import PricingTab from "../../../features/Items/Forms/Pricing";
+import Shipping from "../../../features/Items/Forms/Shipping";
+import Levels from "../../../features/Items/Forms/Levels";
 
-import ManualCountModal from "./ManualCountModal";
-import UpdateQuantityModal from "./Quantity";
+import ManualCountModal from "../../../features/Items/ManualCountModal";
+import UpdateQuantityModal from "../../../features/Items/Quantity";
 
 import NotesTab from "common/Note/Tab";
 import DocumentTab from "common/Document/Tab";
-import { VendorModal } from "../Modals/AddVendor";
-import Parts from "../BOM/Parts";
+import { VendorModal } from "../../../features/Modals/AddVendor";
+import Parts from "../../../features/BOM/Parts";
 
 import { IItem, updateAnItem } from "api/items";
 import { IBom } from "api/bom";
 import { exportPdf } from "logic/pdf";
 import { getModifiedValues } from "logic/utils";
-import ItemBomTable from "../BOM/ItemBomTable";
+import ItemBomTable from "../../../features/BOM/ItemBomTable";
 
 import QRCode from "app/QRCode";
 // import Confirm from "common/Confirm";
@@ -37,6 +37,7 @@ import BaseDataGrid from "app/BaseDataGrid";
 import { GridColumns } from "@material-ui/data-grid";
 import { formatTimestampToDate } from "logic/date";
 import LevelsTab from "common/Level/Tab";
+import { useParams } from "react-router-dom";
 
 const style = {
   border: "1px solid gray ",
@@ -45,15 +46,10 @@ const style = {
   margin: "0px 0px 10px 5px ",
 };
 
-function ItemsDetails({
-  selectedRow,
-  setIndexActiveTab,
-  setSelectedItem,
-}: {
-  selectedRow: IItem;
-  setIndexActiveTab: (t: number) => void;
-  setSelectedItem: (item: any) => void;
-}) {
+function ItemsDetails() {
+  const { itemId } = useParams<{ itemId: string }>();
+  const { data: selectedRow } = useSWR<IItem>(itemId ? `/item/${itemId}` : null);
+
   const qrCode = useRef<HTMLElement | null>(null);
   const [moreInfoTab, setMoreInfoTab] = useState(0);
   const [activeTab, setActiveTab] = useState(0);

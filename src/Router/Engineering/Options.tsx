@@ -7,8 +7,8 @@ import { BasePaper } from "app/Paper";
 import { formatTimestampToDate } from "logic/date";
 import DataGrid from "app/NewDataGrid";
 
-import UnitDetails from "../../pages/Engineering/units/Details";
-import DeviceDetails from "pages/Engineering/devices/Details";
+import UnitDetails from "../../pages/Engineering/Units/Details";
+import DeviceDetails from "pages/Engineering/Devices/Details";
 import { Redirect, Route, Switch, useHistory, useLocation } from "react-router-dom";
 import MyBackdrop from "app/Backdrop";
 

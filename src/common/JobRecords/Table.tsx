@@ -137,7 +137,7 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
 
   const handleRowSelect = useCallback(
     (r: any) => {
-      const url = `/panel/inventory/${r?.ItemId?._id}`;
+      const url = `/panel/inventory/items/${r?.ItemId?._id}`;
       if (r.ItemId && phone) {
         history.push(url);
       } else if (r.ItemId && !phone) {

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { Suspense, useEffect, useMemo, useState } from "react";
 import Box from "@material-ui/core/Box";
 import ListItem from "@material-ui/core/ListItem";
 import IconButton from "@material-ui/core/IconButton";
@@ -19,26 +19,43 @@ import List from "app/SideUtilityList";
 import { BasePaper } from "app/Paper";
 import DataGrid from "app/NewDataGrid";
 
-import AddPOModal from "./AddPurchasePO";
-import Details from "./Details";
+import AddPOModal from "features/Purchase/PO/AddPurchasePO";
+import Details from "pages/Purchasing/PO/Details";
 
-import PurchasePOTypeModal from "./PurchasePoType";
+import PurchasePOTypeModal from "features/Purchase/PO/PurchasePoType";
 import { deletePurchasePO, IPurchasePO } from "api/purchasePO";
 import { ILineItem } from "api/lineItem";
 import Confirm from "features/Modals/Confirm";
 import { useLock } from "common/Lock";
+import { Route, Switch, useHistory, useLocation, useParams } from "react-router-dom";
+import MyBackdrop from "app/Backdrop";
+import useSWR from "swr";
 
 function Index() {
-  const [activeTab, setActiveTab] = useState(0);
+  const history = useHistory();
+  const location = useLocation();
+
+  const { poId } = useParams<{ poId: string }>();
+  const { data: selectedPO } = useSWR<IPurchasePO>(poId ? `/po/${poId}` : null);
+
+  const [activeTab, setActiveTab] = useState(location.pathname.split("/").length === 5 ? 1 : 0);
+
   const [addPO, setAddPO] = useState(false);
   const [addType, setAddType] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [lines, setLines] = useState<ILineItem[]>([]);
   const [refresh, setRefresh] = useState(0);
 
-  const [selectedPO, setSelectedPO] = useState<IPurchasePO>();
   const [compPo, setCompPo] = useState<any>();
   const { lock, setLock } = useLock();
+
+  useEffect(() => {
+    if (location.pathname.split("/").length === 5) {
+      setActiveTab(1);
+    } else {
+      setActiveTab(0);
+    }
+  }, [location]);
 
   const cols = useMemo(
     () => [
@@ -73,8 +90,8 @@ function Index() {
 
   const handleDelete = async () => {
     try {
-      if (selectedPO && selectedPO.id) {
-        const resp = await deletePurchasePO(selectedPO.id);
+      if (poId) {
+        const resp = await deletePurchasePO(poId);
         if (resp) {
           // refreshPOs();
           setConfirm(false);
@@ -113,6 +130,10 @@ function Index() {
                 value={activeTab}
                 onChange={(e, nv) => {
                   setActiveTab(nv);
+                  history.push({
+                    pathname: "/panel/purchase/purchaseOrder",
+                    search: window.location.search,
+                  });
                   setLock(true);
                 }}
               >
@@ -133,7 +154,7 @@ function Index() {
                 />
                 <Tab
                   // label="Details"
-                  disabled={!selectedPO}
+                  disabled={activeTab !== 1}
                   icon={
                     <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                       <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
@@ -147,7 +168,6 @@ function Index() {
                   <ListItem>
                     <IconButton
                       onClick={() => {
-                        setSelectedPO(undefined);
                         setAddPO(true);
                       }}
                     >
@@ -188,19 +208,25 @@ function Index() {
                 </List>
               </Box>
             </Box>
-            <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
-              <DataGrid
-                refresh={refresh}
-                style={{ minHeight: "calc(100vh - 160px)" }}
-                columns={cols}
-                url="/po"
-                onRowSelected={(d) => {
-                  setSelectedPO(d);
-                  setActiveTab(1);
-                }}
-              />
-            </div>
-            {activeTab === 1 && selectedPO && <Details selectedPO={selectedPO} />}
+            <Suspense fallback={<MyBackdrop />}>
+              <Switch>
+                <Route exact path="/panel/purchase/purchaseOrder">
+                  <DataGrid
+                    refresh={refresh}
+                    style={{ minHeight: "calc(100vh - 160px)" }}
+                    columns={cols}
+                    url="/po"
+                    onRowSelected={(d) => {
+                      history.push(`/panel/purchase/purchaseOrder/${d.id}${window.location.search}`);
+                    }}
+                  />
+                </Route>
+                <Route exact path="/panel/purchase/purchaseOrder/:poId">
+                  {" "}
+                  <Details />
+                </Route>
+              </Switch>
+            </Suspense>
           </Box>
         </Box>
       </BasePaper>

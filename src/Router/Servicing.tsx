@@ -18,7 +18,7 @@ const Tickets = React.lazy(() => import("features/FieldService/Tickets"));
 const Tasks = React.lazy(() => import("features/FieldService/Tasks"));
 const Units = React.lazy(() => import("features/FieldService/Units"));
 const UP = React.lazy(() => import("features/FieldService/UP"));
-const Vendors = React.lazy(() => import("features/Purchase/Vendor"));
+const Vendors = React.lazy(() => import("Router/Purchasing/Vendors"));
 
 export default function PanelRouter() {
   const portals = usePortal();

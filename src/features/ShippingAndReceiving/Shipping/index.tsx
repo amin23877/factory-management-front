@@ -3,7 +3,7 @@ import { Box, Tabs, Tab } from "@material-ui/core";
 
 import { BasePaper } from "../../../app/Paper";
 
-import Details from "../../../pages/Engineering/units/Details";
+import Details from "../../../pages/Engineering/Units/Details";
 import { subMonths } from "date-fns";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 

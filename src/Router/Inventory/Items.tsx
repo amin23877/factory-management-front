@@ -1,15 +1,15 @@
-import React, { useCallback, useState } from "react";
+import React, { Suspense, useCallback, useEffect, useState } from "react";
 import { Box, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
 import { AddRounded, DeleteRounded, FindInPageRounded, ListAltRounded, PostAddRounded } from "@material-ui/icons";
 import { mutate } from "swr";
 
-import Confirm from "../Modals/Confirm";
+import Confirm from "../../features/Modals/Confirm";
 // import ConfirmDialog from "common/Confirm";
 
-import { AddItemModal } from "./ItemModals";
-import ItemsDetails from "./Details";
+import { AddItemModal } from "../../features/Items/ItemModals";
+import ItemsDetails from "../../pages/Inventory/Items/Details";
 
-import { deleteAnItem, IItem } from "api/items";
+import { deleteAnItem } from "api/items";
 
 import List from "app/SideUtilityList";
 import { BasePaper } from "app/Paper";
@@ -19,11 +19,16 @@ import { BasePaper } from "app/Paper";
 import ClusterModal from "common/Cluster/Modal";
 import { useLock } from "common/Lock";
 
-import ItemTable from "./Table";
+import ItemTable from "../../features/Items/Table";
+import { Route, Switch, useHistory, useLocation, useParams } from "react-router-dom";
+import MyBackdrop from "app/Backdrop";
 
 const Items = () => {
-  const [selectedItem, setSelectedItem] = useState<IItem | null>(null);
-  const [activeTab, setActiveTab] = useState(0);
+  const history = useHistory();
+  const location = useLocation();
+  const { itemId } = useParams<{ itemId: string }>();
+
+  const [activeTab, setActiveTab] = useState(location.pathname.split("/").length === 5 ? 1 : 0);
 
   const [addItemModal, setAddItemModal] = useState(false);
   const [deleteItemModal, setDeleteItemModal] = useState(false);
@@ -32,8 +37,8 @@ const Items = () => {
 
   const handleDelete = useCallback(async () => {
     try {
-      if (selectedItem && selectedItem.id) {
-        await deleteAnItem(selectedItem.id);
+      if (itemId) {
+        await deleteAnItem(itemId);
         mutate("/item");
 
         setDeleteItemModal(false);
@@ -41,30 +46,15 @@ const Items = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [selectedItem]);
+  }, [itemId]);
 
-  // const handleConvertItems = async () => {
-  //   try {
-  //     if (itemSelection && Object.keys(itemSelection || {}).length > 0) {
-  //       ConfirmDialog({
-  //         text: `You are going to convert ${Object.keys(itemSelection || {}).length} items to service`,
-  //         onConfirm: async () => {
-  //           try {
-  //             for (const id of Object.keys(itemSelection || {})) {
-  //               await convertToService(id);
-  //             }
-  //           } catch (error) {
-  //             console.log(error);
-  //           } finally {
-  //             setRefresh((p) => p + 1);
-  //           }
-  //         },
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  useEffect(() => {
+    if (location.pathname.split("/").length === 5) {
+      setActiveTab(1);
+    } else {
+      setActiveTab(0);
+    }
+  }, [location]);
 
   return (
     <>
@@ -80,6 +70,10 @@ const Items = () => {
             textColor="primary"
             onChange={(e, nv) => {
               setActiveTab(nv);
+              history.push({
+                pathname: "/panel/inventory/items",
+                search: window.location.search,
+              });
             }}
           >
             <Tab
@@ -91,7 +85,7 @@ const Items = () => {
               wrapped
             />
             <Tab
-              disabled={!selectedItem}
+              disabled={activeTab !== 1}
               icon={
                 <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <FindInPageRounded style={{ marginRight: "5px" }} /> Details
@@ -100,26 +94,19 @@ const Items = () => {
             />
           </Tabs>
           <div style={{ flexGrow: 1 }} />
-          {/* {itemSelection && Object.keys(itemSelection || {}).length > 0 && (
-            <Button disabled={lock} kind="add" onClick={handleConvertItems} style={{ margin: "0 8px" }}>
-              Convert Selection to Service
-            </Button>
-          )} */}
           <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
             <ListItem>
               <IconButton title="Add item" onClick={() => setAddItemModal(true)}>
                 <AddRounded />
               </IconButton>
             </ListItem>
-            <ListItem>
-              <IconButton
-                title="Delete item"
-                disabled={lock || !selectedItem}
-                onClick={() => selectedItem && selectedItem?.id && setDeleteItemModal(true)}
-              >
-                <DeleteRounded />
-              </IconButton>
-            </ListItem>
+            {activeTab === 1 && (
+              <ListItem>
+                <IconButton title="Delete item" disabled={lock} onClick={() => setDeleteItemModal(true)}>
+                  <DeleteRounded />
+                </IconButton>
+              </ListItem>
+            )}
             <ListItem>
               <IconButton title="Cluster and level" onClick={() => setClusterModal(true)}>
                 <PostAddRounded />
@@ -128,25 +115,21 @@ const Items = () => {
           </List>
         </Box>
         <Box display="flex" flex={1}>
-          <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
-            <ItemTable
-              onRowSelected={(r) => {
-                setSelectedItem(r as any);
-                setActiveTab(1);
-              }}
-            />
-          </div>
-          {selectedItem && (
-            <div style={activeTab !== 1 ? { display: "none" } : {}}>
-              <ItemsDetails
-                setSelectedItem={(r) => setSelectedItem(r)}
-                setIndexActiveTab={(t) => {
-                  setActiveTab(t);
-                }}
-                selectedRow={selectedItem}
-              />
-            </div>
-          )}
+          <Suspense fallback={<MyBackdrop />}>
+            <Switch>
+              <Route exact path="/panel/inventory/items">
+                <ItemTable
+                  onRowSelected={(r) => {
+                    history.push(`/panel/inventory/items/${r.id}${window.location.search}`);
+                  }}
+                />
+              </Route>
+              <Route exact path="/panel/inventory/items/:itemId">
+                {" "}
+                <ItemsDetails />
+              </Route>
+            </Switch>
+          </Suspense>
         </Box>
       </BasePaper>
     </>

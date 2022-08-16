@@ -6,8 +6,8 @@ import { BasePaper } from "app/Paper";
 import { formatTimestampToDate } from "logic/date";
 import DataGrid from "app/NewDataGrid";
 
-import UnitDetails from "../../../pages/Engineering/units/Details";
-import DeviceDetails from "pages/Engineering/devices/Details";
+import UnitDetails from "../../../pages/Engineering/Units/Details";
+import DeviceDetails from "pages/Engineering/Devices/Details";
 import { IUnit } from "api/units";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 

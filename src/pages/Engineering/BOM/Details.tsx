@@ -1,16 +1,24 @@
 import React, { useState } from "react";
-import { Box, Tab, Tabs } from "@material-ui/core";
+import { Box, LinearProgress, Tab, Tabs } from "@material-ui/core";
 
-import Form from "./Form";
-import Levels from "./Levels";
-import MatrixTable from "../Table";
+import Form from "features/Engineering/BOM/Details/Form";
+import Levels from "features/Engineering/BOM/Details/Levels";
+import MatrixTable from "features/Engineering/BOM/Table";
 import { BasePaper } from "app/Paper";
 import PhotoTab from "common/PhotoTab";
 
 import { clusterType } from "api/cluster";
+import useSWR from "swr";
+import { useParams } from "react-router-dom";
 
-export default function Details({ selectedRow }: { selectedRow: clusterType }) {
+export default function Details() {
   const [activeTab, setActiveTab] = useState(0);
+  const { clusterId } = useParams<{ clusterId: string }>();
+  const { data: selectedRow } = useSWR<clusterType>(clusterId ? `/cluster/${clusterId}` : null);
+
+  if (!selectedRow) {
+    return <LinearProgress />;
+  }
 
   return (
     <Box display="grid" gridTemplateColumns="2fr 10fr" style={{ gap: 8 }}>

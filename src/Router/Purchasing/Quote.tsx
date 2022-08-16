@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 
 import Box from "@material-ui/core/Box";
 import ListItem from "@material-ui/core/ListItem";
@@ -9,27 +9,34 @@ import { AddRounded, DeleteRounded, FindInPageRounded, ListAltRounded, PrintRoun
 
 import List from "app/SideUtilityList";
 import DataGrid from "app/NewDataGrid";
-import AddPQuoteModal from "./AddPQuoteModal";
-import Details from "./Details";
+import AddPQuoteModal from "features/Purchase/Quote/AddPQuoteModal";
+import Details from "pages/Purchasing/Quote/Details";
 
-import { deletePurchaseQuote, IPurchaseQuote } from "api/purchaseQuote";
-import Confirm from "../../Modals/Confirm";
+import { deletePurchaseQuote } from "api/purchaseQuote";
+import Confirm from "features/Modals/Confirm";
 
 import { BasePaper } from "app/Paper";
 import { useLock } from "common/Lock";
+import { Route, Switch, useHistory, useLocation, useParams } from "react-router-dom";
+import MyBackdrop from "app/Backdrop";
 
 function Index() {
-  const [activeTab, setActiveTab] = useState(0);
+  const history = useHistory();
+  const location = useLocation();
+  const { quoteId } = useParams<{ quoteId: string }>();
+
+  const [activeTab, setActiveTab] = useState(location.pathname.split("/").length === 5 ? 1 : 0);
   const [addPQ, setAddPQ] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const { lock, setLock } = useLock();
 
-  const [selPQ, setSelPQ] = useState<IPurchaseQuote | undefined>({
-    id: "",
-    requester: "",
-    ContactId: "",
-    VendorId: "",
-  });
+  useEffect(() => {
+    if (location.pathname.split("/").length === 5) {
+      setActiveTab(1);
+    } else {
+      setActiveTab(0);
+    }
+  }, [location]);
 
   const cols = [
     {
@@ -47,10 +54,9 @@ function Index() {
 
   const handleDelete = async () => {
     try {
-      if (selPQ && selPQ.id) {
-        const resp = await deletePurchaseQuote(selPQ.id);
+      if (quoteId) {
+        const resp = await deletePurchaseQuote(quoteId);
         if (resp) {
-          // refreshPQs();
           setConfirm(false);
         }
       }
@@ -62,12 +68,12 @@ function Index() {
   return (
     <>
       <AddPQuoteModal open={addPQ} onClose={() => setAddPQ(false)} onDone={() => {}} />
-      {selPQ && (
+      {quoteId && (
         <Confirm
           open={confirm}
           onClose={() => setConfirm(false)}
           onConfirm={handleDelete}
-          text={`Are you sure? You are going to delete purchase quote ${selPQ?.number}`}
+          text={`Are you sure? You are going to delete a purchase quote`}
         />
       )}
       <BasePaper>
@@ -80,6 +86,10 @@ function Index() {
                 value={activeTab}
                 onChange={(e, nv) => {
                   setActiveTab(nv);
+                  history.push({
+                    pathname: "/panel/purchase/quote",
+                    search: window.location.search,
+                  });
                   setLock(true);
                 }}
               >
@@ -98,7 +108,7 @@ function Index() {
                   wrapped
                 />
                 <Tab
-                  disabled={!selPQ}
+                  disabled={activeTab !== 1}
                   icon={
                     <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                       <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
@@ -113,7 +123,6 @@ function Index() {
                     <IconButton
                       onClick={() => {
                         setActiveTab(0);
-                        setSelPQ(undefined);
                         setAddPQ(true);
                       }}
                     >
@@ -133,18 +142,24 @@ function Index() {
                 </List>
               </Box>
             </Box>
-            <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
-              <DataGrid
-                style={{ minHeight: "calc(100vh - 160px)" }}
-                columns={cols}
-                url="/purchaseQuote"
-                onRowSelected={(d) => {
-                  setSelPQ(d);
-                  setActiveTab(1);
-                }}
-              />
-            </div>
-            {activeTab === 1 && selPQ && <Details initialValues={selPQ} onDone={() => {}} />}
+            <Suspense fallback={<MyBackdrop />}>
+              <Switch>
+                <Route exact path="/panel/purchase/quote">
+                  <DataGrid
+                    style={{ minHeight: "calc(100vh - 160px)" }}
+                    columns={cols}
+                    url="/purchaseQuote"
+                    onRowSelected={(d) => {
+                      history.push(`/panel/purchase/quote/${d.id}${window.location.search}`);
+                    }}
+                  />
+                </Route>
+                <Route exact path="/panel/purchase/quote/:quoteId">
+                  {" "}
+                  <Details onDone={() => {}} />
+                </Route>
+              </Switch>
+            </Suspense>
           </Box>
         </Box>
       </BasePaper>

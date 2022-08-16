@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Box, Tab, Tabs } from "@material-ui/core";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
-import Details from "./Details";
-import ClusterModal from "../../Cluster/Modal";
+import Details from "../../pages/Engineering/BOM/Details";
+import ClusterModal from "../../features/Cluster/Modal";
 
 import { BasePaper } from "app/Paper";
 import NewDataGrid from "app/NewDataGrid";
 
-import { clusterType } from "api/cluster";
+import { Route, Switch, useHistory, useLocation } from "react-router-dom";
+import MyBackdrop from "app/Backdrop";
 
 const columns = [
   { name: "clusterValue", header: "Cluster (Model)" },
@@ -18,10 +19,21 @@ const columns = [
 ];
 
 function BOM() {
-  const [activeTab, setActiveTab] = useState(0);
+  const history = useHistory();
+  const location = useLocation();
+
+  const [activeTab, setActiveTab] = useState(location.pathname.split("/").length === 5 ? 1 : 0);
+
   const [refresh, setRefresh] = useState(0);
-  const [selectedRow, setSelectedRow] = useState<clusterType>();
   const [clusterModal, setClusterModal] = useState(false);
+
+  useEffect(() => {
+    if (location.pathname.split("/").length === 5) {
+      setActiveTab(1);
+    } else {
+      setActiveTab(0);
+    }
+  }, [location]);
 
   return (
     <>
@@ -34,7 +46,13 @@ function BOM() {
         <Box mb={1} display="flex" alignItems="center">
           <Tabs
             value={activeTab}
-            onChange={(e, nv) => setActiveTab(nv)}
+            onChange={(e, nv) => {
+              setActiveTab(nv);
+              history.push({
+                pathname: "/panel/engineering/devicesBom",
+                search: window.location.search,
+              });
+            }}
             textColor="primary"
             style={{ marginRight: "auto" }}
           >
@@ -47,7 +65,7 @@ function BOM() {
               wrapped
             />
             <Tab
-              disabled={!selectedRow}
+              disabled={activeTab !== 1}
               icon={
                 <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <FindInPageRounded style={{ marginRight: "5px" }} /> Details
@@ -56,18 +74,23 @@ function BOM() {
             />
           </Tabs>
         </Box>
-        <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
-          <NewDataGrid
-            url="/cluster"
-            columns={columns}
-            refresh={refresh}
-            onRowSelected={(row) => {
-              setSelectedRow(row);
-              setActiveTab(1);
-            }}
-          />
-        </div>
-        {activeTab === 1 && selectedRow && <Details selectedRow={selectedRow} />}
+        <Suspense fallback={<MyBackdrop />}>
+          <Switch>
+            <Route exact path="/panel/engineering/devicesBom">
+              <NewDataGrid
+                url="/cluster"
+                columns={columns}
+                refresh={refresh}
+                onRowSelected={(d) => {
+                  history.push(`/panel/engineering/devicesBom/${d.id}${window.location.search}`);
+                }}
+              />
+            </Route>
+            <Route exact path="/panel/engineering/devicesBom/:clusterId">
+              <Details />
+            </Route>
+          </Switch>
+        </Suspense>
       </BasePaper>
     </>
   );
