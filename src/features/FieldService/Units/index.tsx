@@ -4,7 +4,7 @@ import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
 import DataGrid from "app/NewDataGrid";
 import { BasePaper } from "app/Paper";
-import Details from "./Details";
+import Details from "../../../pages/Engineering/units/Details";
 
 import { formatTimestampToDate } from "logic/date";
 import { LockProvider } from "common/Lock";
@@ -85,7 +85,7 @@ export default function Unit() {
             }}
           />
         </div>
-        {activeTab === 1 && selectedUnit && <Details unit={selectedUnit} />}
+        {activeTab === 1 && selectedUnit && <Details />}
       </BasePaper>
     </LockProvider>
   );

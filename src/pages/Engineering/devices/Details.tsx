@@ -4,8 +4,8 @@ import { GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR from "swr";
 
-import SalesReport from "./SalesReport";
-import { EditTaskModal } from "./TaskModal";
+import SalesReport from "../../../features/Engineering/Devices/SalesReport";
+import { EditTaskModal } from "../../../features/Engineering/Devices/TaskModal";
 import ItemBomTable from "features/BOM/ItemBomTable";
 
 import Toast from "app/Toast";
@@ -15,9 +15,9 @@ import DeviceQRCode from "app/QRCode";
 import BaseDataGrid from "app/BaseDataGrid";
 import DataGrid from "app/NewDataGrid";
 
-import { General } from "./Forms";
-import AddServiceModal from "./AddServiceModal";
-import UnitHistoryModal from "../../Unit/Modal";
+import { General } from "../../../features/Engineering/Devices/Forms";
+import AddServiceModal from "../../../features/Engineering/Devices/AddServiceModal";
+import UnitHistoryModal from "../../../features/Unit/Modal";
 
 import { IBom } from "api/bom";
 import { IUnitHistory } from "api/units";
@@ -34,21 +34,23 @@ import LevelsTab from "common/Level/Tab";
 import { LockButton } from "common/Lock";
 import AuditTable from "common/Audit";
 import { AddRounded } from "@material-ui/icons";
-import ProcessTab from "./Tabs/ProcessTab";
+import ProcessTab from "../../../features/Engineering/Devices/Tabs/ProcessTab";
+import { useParams } from "react-router-dom";
 
 function DeviceDetails({
   sales,
-  selectedRow,
   onStepSelected,
   onFlagSelected,
   onDone,
 }: {
   sales?: boolean;
-  selectedRow: any;
   onDone?: () => void;
   onStepSelected: (a: any) => void;
   onFlagSelected: (a: any) => void;
 }) {
+  const { deviceId } = useParams<{ deviceId: string }>();
+  const { data: selectedRow } = useSWR<IItem>(deviceId ? `/item/${deviceId}` : null);
+
   const qrCode = useRef<HTMLElement | null>(null);
   const [moreInfoTab, setMoreInfoTab] = useState(0);
   const [activeTab, setActiveTab] = useState(0);

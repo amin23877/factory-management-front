@@ -165,13 +165,12 @@ export default function EngineeringDashboard() {
           <div style={{ flexGrow: 1 }} />
         </Box>
         {activeTab === 0 && <Reports />}
-        {/* /panel/engineering/:deviceId */}
         {activeTab === 1 && (
           <BaseDataGrid
             rows={engAp?.result || []}
             cols={EACols}
             onRowSelected={(d) => {
-              history.push(`/panel/engineering/${d.data?.id?.id}`);
+              history.push(`/panel/engineering/device/devices/${d?.ItemId?.id}`);
             }}
             height={"78.7vh"}
           />

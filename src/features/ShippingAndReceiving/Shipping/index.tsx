@@ -3,7 +3,7 @@ import { Box, Tabs, Tab } from "@material-ui/core";
 
 import { BasePaper } from "../../../app/Paper";
 
-import Details from "../../FieldService/Units/Details";
+import Details from "../../../pages/Engineering/units/Details";
 import { subMonths } from "date-fns";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
@@ -140,7 +140,7 @@ export default function Ship({ tab }: { tab: number }) {
             />
           </>
         </div>
-        {activeTab === 1 && selectedShip && <Details unit={selectedShip} />}
+        {activeTab === 1 && selectedShip && <Details />}
       </BasePaper>
     </Box>
   );

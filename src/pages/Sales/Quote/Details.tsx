@@ -124,10 +124,16 @@ export default function EditTab() {
                 }}
                 onRowSelected={(r) => {
                   if (phone && (r.ServiceId || r.ItemId)) {
-                    history.push(r.ServiceId ? `/panel/service/${r.ServiceId}` : `/panel/engineering/${r?.ItemId?.id}`);
+                    history.push(
+                      r.ServiceId
+                        ? `/panel/service/${r.ServiceId}`
+                        : `/panel/engineering/device/devices/${r?.ItemId?.id}`
+                    );
                   } else if (!phone && (r.ServiceId || r.ItemId)) {
                     openRequestedSinglePopup({
-                      url: r.ServiceId ? `/panel/service/${r.ServiceId}` : `/panel/engineering/${r?.ItemId?.id}`,
+                      url: r.ServiceId
+                        ? `/panel/service/${r.ServiceId}`
+                        : `/panel/engineering/device/devices/${r?.ItemId?.id}`,
                     });
                   }
                 }}

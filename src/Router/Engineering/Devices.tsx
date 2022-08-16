@@ -12,11 +12,11 @@ import {
 
 import Confirm from "../../features/Modals/Confirm";
 import { AddItemModal } from "../../features/Items/ItemModals";
-import UnitDetails from "../../features/FieldService/Units/Details";
+import UnitDetails from "../../pages/Engineering/units/Details";
 
 import ClusterModal from "common/Cluster/Modal";
 
-import DetailTab from "../../features/Engineering/Devices/Details";
+import DetailTab from "../../pages/Engineering/devices/Details";
 import AddTaskModal, { EditTaskModal } from "../../features/Engineering/Devices/TaskModal";
 import FlagModal from "../../features/Engineering/Devices/FlagModal";
 
@@ -183,7 +183,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
 
   return (
     <BasePaper>
-      {selectedStep && selectedItem && selectedItem.id && (
+      {/* {selectedStep && selectedItem && selectedItem.id && (
         <EditTaskModal
           device={selectedItem}
           tab={selectedStep.tab}
@@ -211,7 +211,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       )}
       {selectedItem && selectedItem.id && (
         <FlagModal open={flagModalOpen} onClose={() => setFlagModalOpen(false)} itemId={selectedItem.id as any} />
-      )}
+      )} */}
       <AddItemModal
         device
         open={addItemModal}
@@ -348,7 +348,6 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                 <DetailTab
                   sales={sales}
                   onDone={() => {}}
-                  selectedRow={selectedItem}
                   onStepSelected={(d) => {
                     setSelectedStep(d);
                     setEditStepModal(true);
@@ -360,8 +359,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                 />
               </Route>
               <Route exact path={`/panel/${sales ? "sales" : "engineering"}/device/units/:unitId`}>
-                {" "}
-                <UnitDetails unit={selectedUnit} />
+                <UnitDetails />
               </Route>
             </Switch>
           </Suspense>

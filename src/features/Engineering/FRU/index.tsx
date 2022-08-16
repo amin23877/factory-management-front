@@ -6,8 +6,8 @@ import { BasePaper } from "app/Paper";
 import { formatTimestampToDate } from "logic/date";
 import DataGrid from "app/NewDataGrid";
 
-import UnitDetails from "../../FieldService/Units/Details";
-import DeviceDetails from "features/Engineering/Devices/Details";
+import UnitDetails from "../../../pages/Engineering/units/Details";
+import DeviceDetails from "pages/Engineering/devices/Details";
 import { IUnit } from "api/units";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
@@ -163,14 +163,9 @@ export default function FRU() {
           />
         </div>
 
-        {activeTab === 2 && selectedUnitFru && <UnitDetails unit={selectedUnitFru} />}
+        {activeTab === 2 && selectedUnitFru && <UnitDetails />}
         {activeTab === 2 && selectedItemFru && (
-          <DeviceDetails
-            onDone={() => {}}
-            selectedRow={selectedItemFru}
-            onStepSelected={(d) => {}}
-            onFlagSelected={(d) => {}}
-          />
+          <DeviceDetails onDone={() => {}} onStepSelected={(d) => {}} onFlagSelected={(d) => {}} />
         )}
       </BasePaper>
     </Box>

@@ -7,8 +7,8 @@ import { BasePaper } from "app/Paper";
 import { formatTimestampToDate } from "logic/date";
 import DataGrid from "app/NewDataGrid";
 
-import UnitDetails from "../Units/Details";
-import DeviceDetails from "features/Engineering/Devices/Details";
+import UnitDetails from "../../../pages/Engineering/units/Details";
+import DeviceDetails from "pages/Engineering/devices/Details";
 import { IUnit } from "api/units";
 
 export default function Options() {
@@ -164,14 +164,9 @@ export default function Options() {
           />
         </div>
 
-        {activeTab === 2 && selectedUnitFru && <UnitDetails unit={selectedUnitFru} />}
+        {activeTab === 2 && selectedUnitFru && <UnitDetails />}
         {activeTab === 2 && selectedItemFru && (
-          <DeviceDetails
-            onDone={() => {}}
-            selectedRow={selectedItemFru}
-            onStepSelected={(d) => {}}
-            onFlagSelected={(d) => {}}
-          />
+          <DeviceDetails onDone={() => {}} onStepSelected={(d) => {}} onFlagSelected={(d) => {}} />
         )}
       </BasePaper>
     </Box>

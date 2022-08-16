@@ -17,7 +17,7 @@ import Confirm from "features/Modals/Confirm";
 import LevelModal from "common/Level/Modal";
 import { AddItemModal } from "features/Items/ItemModals";
 
-import DetailTab from "features/Engineering/Devices/Details";
+import DetailTab from "pages/Engineering/devices/Details";
 import AddTaskModal, { EditTaskModal } from "features/Engineering/Devices/TaskModal";
 import FlagModal from "features/Engineering/Devices/FlagModal";
 
@@ -131,7 +131,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
         device
         open={addItemModal}
         onClose={() => setAddItemModal(false)}
-        initialValues={{  class : "device" } as IItem}
+        initialValues={{ class: "device" } as IItem}
       />
       <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
       <LevelModal open={levelModal} onClose={() => setLevelModal(false)} />
@@ -207,7 +207,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                   <DataGrid
                     style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 165px)" }}
                     url="/item"
-                    initParams={{  class : "device", fru: false }}
+                    initParams={{ class: "device", fru: false }}
                     onRowSelected={(r) => {
                       setSelectedItem(r as any);
                       setActiveTab(1);
@@ -224,7 +224,6 @@ const Devices = ({ sales }: { sales?: boolean }) => {
             <DetailTab
               sales={sales}
               onDone={() => {}}
-              selectedRow={selectedItem}
               onStepSelected={(d) => {
                 setSelectedStep(d);
                 setEditStepModal(true);

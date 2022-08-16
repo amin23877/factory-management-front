@@ -26,7 +26,7 @@ export default function PanelRouter() {
   const history = useHistory();
   const location = useLocation();
 
-  const tabs = ["dashboard", "calls", "devices", "options", "quotes", "customerPOs", "salesOrders", "clients", "reps"];
+  const tabs = ["dashboard", "calls", "device", "options", "quotes", "customerPOs", "salesOrders", "clients", "reps"];
 
   const [activeTab, setActiveTab] = useState(tabs.indexOf(location.pathname.split("/")[3]));
   const [tabText, setTabText] = useState(

@@ -1,11 +1,11 @@
 import React, { useMemo, useState, Fragment, useRef } from "react";
-import { Box, Tabs, Tab, useMediaQuery, Typography } from "@material-ui/core";
+import { Box, Tabs, Tab, useMediaQuery, Typography, LinearProgress } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 import useSWR, { mutate } from "swr";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 
-import { General, Status, Expense, Shipping } from "./Forms";
+import { General, Status, Expense, Shipping } from "../../../features/FieldService/Units/Forms";
 
 import Button from "app/Button";
 import { BasePaper } from "app/Paper";
@@ -17,23 +17,25 @@ import Toast from "app/Toast";
 import { formatTimestampToDate } from "logic/date";
 import { getModifiedValues } from "logic/utils";
 
-import ShipmentModal, { EditShipModal } from "../../Modals/ShipmentModal";
+import ShipmentModal, { EditShipModal } from "../../../features/Modals/ShipmentModal";
 import { IShipment } from "api/shipment";
 import LevelsTab from "common/Level/Tab";
 
 import DocumentTab from "common/Document/Tab";
 import NotesTab from "common/Note/Tab";
 import JobRecordsTable from "common/JobRecords/Table";
-import DeviceQRCode from "app/QRCode";
 
 import { useLock, LockButton, LockProvider } from "common/Lock";
-import { exportPdf } from "logic/pdf";
 import AuditTable from "common/Audit";
 import QRCode from "common/QRCode/UnitQRCode";
+import { useParams } from "react-router-dom";
 
 const schema = Yup.object().shape({});
 
-function Details({ unit }: { unit: IUnit }) {
+function Details() {
+  const { unitId } = useParams<{ unitId: string }>();
+  const { data: unit } = useSWR<IUnit>(unitId ? `/unit/${unitId}` : null);
+
   const handleSubmit = async (data: any) => {
     try {
       if (unit?.id) {
@@ -54,7 +56,7 @@ function Details({ unit }: { unit: IUnit }) {
   const [selectedShip, setSelectedShip] = useState<IShipment>();
 
   const { setLock } = useLock();
-  const { data: shipments } = useSWR(gridActiveTab === 4 ? `/shipment?UnitId=${unit.id}` : null);
+  const { data: shipments } = useSWR(gridActiveTab === 4 ? `/shipment?UnitId=${unitId}` : null);
 
   const warCols = useMemo<GridColumns>(
     () => [
@@ -103,6 +105,9 @@ function Details({ unit }: { unit: IUnit }) {
   const phone = useMediaQuery("(max-width:900px)");
   console.log(unit);
 
+  if (!unit) {
+    return <LinearProgress />;
+  }
   return (
     <>
       {unit && unit.id && <ShipmentModal open={addShipModal} onClose={() => setAddShipModal(false)} unitId={unit.id} />}
