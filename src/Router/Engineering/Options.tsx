@@ -12,7 +12,7 @@ import DeviceDetails from "pages/Engineering/Devices/Details";
 import { Redirect, Route, Switch, useHistory, useLocation } from "react-router-dom";
 import MyBackdrop from "app/Backdrop";
 
-export default function Options({ sales }: { sales?: boolean }) {
+export default function Options({ sales, fieldservice }: { sales?: boolean; fieldservice?: boolean }) {
   const history = useHistory();
   const location = useLocation();
 
@@ -132,7 +132,7 @@ export default function Options({ sales }: { sales?: boolean }) {
           onChange={(e, nv) => {
             setActiveTab(nv);
             history.push({
-              pathname: `/panel/${sales ? "sales" : "engineering"}/option/` + tabs[nv],
+              pathname: `/panel/${sales ? "sales" : fieldservice ? "fieldservice" : "engineering"}/option/` + tabs[nv],
               search: window.location.search,
             });
           }}
@@ -165,37 +165,57 @@ export default function Options({ sales }: { sales?: boolean }) {
         </Tabs>
         <Suspense fallback={<MyBackdrop />}>
           <Switch>
-            <Route exact path={`/panel/${sales ? "sales" : "engineering"}/option/`}>
-              <Redirect to={`/panel/${sales ? "sales" : "engineering"}/option/options`} />
+            <Route exact path={`/panel/${sales ? "sales" : fieldservice ? "fieldservice" : "engineering"}/option/`}>
+              <Redirect
+                to={`/panel/${sales ? "sales" : fieldservice ? "fieldservice" : "engineering"}/option/options`}
+              />
             </Route>
-            <Route exact path={`/panel/${sales ? "sales" : "engineering"}/option/options`}>
+            <Route
+              exact
+              path={`/panel/${sales ? "sales" : fieldservice ? "fieldservice" : "engineering"}/option/options`}
+            >
               <DataGrid
                 url="/item"
                 columns={optionDevicesColumns}
                 initParams={{ class: "option" }}
                 onRowSelected={(d) => {
                   history.push(
-                    `/panel/${sales ? "sales" : "engineering"}/option/options/${d.id}${window.location.search}`
+                    `/panel/${sales ? "sales" : fieldservice ? "fieldservice" : "engineering"}/option/options/${d.id}${
+                      window.location.search
+                    }`
                   );
                 }}
               />
             </Route>
-            <Route exact path={`/panel/${sales ? "sales" : "engineering"}/option/units`}>
+            <Route
+              exact
+              path={`/panel/${sales ? "sales" : fieldservice ? "fieldservice" : "engineering"}/option/units`}
+            >
               <DataGrid
                 url="/unit"
                 initParams={{ class: "option" }}
                 columns={optionUnitsColumns}
                 onRowSelected={(d) => {
                   history.push(
-                    `/panel/${sales ? "sales" : "engineering"}/option/units/${d.id}${window.location.search}`
+                    `/panel/${sales ? "sales" : fieldservice ? "fieldservice" : "engineering"}/option/units/${d.id}${
+                      window.location.search
+                    }`
                   );
                 }}
               />
             </Route>
-            <Route exact path={`/panel/${sales ? "sales" : "engineering"}/option/options/:deviceId`}>
+            <Route
+              exact
+              path={`/panel/${
+                sales ? "sales" : fieldservice ? "fieldservice" : "engineering"
+              }/option/options/:deviceId`}
+            >
               <DeviceDetails onDone={() => {}} onStepSelected={(d: any) => {}} onFlagSelected={(d: any) => {}} />{" "}
             </Route>
-            <Route exact path={`/panel/${sales ? "sales" : "engineering"}/option/units/:unitId`}>
+            <Route
+              exact
+              path={`/panel/${sales ? "sales" : fieldservice ? "fieldservice" : "engineering"}/option/units/:unitId`}
+            >
               <UnitDetails />
             </Route>
           </Switch>

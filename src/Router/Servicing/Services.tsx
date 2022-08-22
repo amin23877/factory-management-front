@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 
 import { Box, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
 import AddRounded from "@material-ui/icons/AddRounded";
@@ -12,34 +12,28 @@ import { BasePaper } from "app/Paper";
 import DataGrid from "app/NewDataGrid";
 
 import AddServiceModal from "features/FieldService/AddServiceModal";
-import FieldServiceDetails from "features/FieldService/Details";
+import FieldServiceDetails from "pages/FieldService/Servicing/Details";
 
-import { IFieldService } from "api/fieldService";
-import { get } from "api";
+import { Route, Switch, useHistory, useLocation } from "react-router-dom";
+import MyBackdrop from "app/Backdrop";
 
-export default function ServiceIndex({ serviceId }: { serviceId?: string }) {
-  const [activeTab, setActiveTab] = useState(0);
+export default function ServiceIndex() {
+  const history = useHistory();
+  const location = useLocation();
+
+  const [activeTab, setActiveTab] = useState(location.pathname.split("/").length === 5 ? 1 : 0);
+
+  useEffect(() => {
+    if (location.pathname.split("/").length === 5) {
+      setActiveTab(1);
+    } else {
+      setActiveTab(0);
+    }
+  }, [location]);
+
   const [addService, setAddService] = useState(false);
   const [serviceClassModal, setServiceClassModal] = useState(false);
   const [categoryModal, setCategoryModal] = useState(false);
-
-  const [selectedFS, setSelectedFS] = useState<IFieldService | null>(null);
-
-  useEffect(() => {
-    if (serviceId) {
-      get(`/service/${serviceId}`)
-        .then((d) => {
-          setSelectedFS(d);
-          setActiveTab(1);
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-    } else {
-      setActiveTab(0);
-      setSelectedFS(null);
-    }
-  }, [serviceId]);
 
   const cols = [
     { name: "no", header: "ID", minWidth: 200 },
@@ -65,7 +59,13 @@ export default function ServiceIndex({ serviceId }: { serviceId?: string }) {
           <Tabs
             value={activeTab}
             textColor="primary"
-            onChange={(e, nv) => setActiveTab(nv)}
+            onChange={(e, nv) => {
+              setActiveTab(nv);
+              history.push({
+                pathname: "/panel/fieldservice/services",
+                search: window.location.search,
+              });
+            }}
             style={{ marginBottom: 10 }}
           >
             <Tab
@@ -77,7 +77,7 @@ export default function ServiceIndex({ serviceId }: { serviceId?: string }) {
               wrapped
             />
             <Tab
-              disabled={!selectedFS}
+              disabled={activeTab !== 1}
               icon={
                 <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
@@ -91,7 +91,6 @@ export default function ServiceIndex({ serviceId }: { serviceId?: string }) {
                 <IconButton
                   onClick={() => {
                     setAddService(true);
-                    setSelectedFS(null);
                     setActiveTab(0);
                   }}
                 >
@@ -135,25 +134,24 @@ export default function ServiceIndex({ serviceId }: { serviceId?: string }) {
             </List>
           </Box>
         </Box>
-        <Box display="flex">
-          <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
-            <DataGrid
-              columns={cols}
-              url="/service"
-              onRowSelected={(fs) => {
-                setSelectedFS(fs);
-                setActiveTab(1);
-              }}
-            />
-          </div>
 
-          {activeTab === 1 && selectedFS && (
-            <FieldServiceDetails
-              selectedFieldService={selectedFS}
-              setIndexActiveTab={(t) => setActiveTab(t)}
-              setSelectedFieldService={(fs) => setSelectedFS(fs)}
-            />
-          )}
+        <Box display="flex">
+          <Suspense fallback={<MyBackdrop />}>
+            <Switch>
+              <Route exact path="/panel/fieldservice/services">
+                <DataGrid
+                  columns={cols}
+                  url="/service"
+                  onRowSelected={(d) => {
+                    history.push(`/panel/fieldservice/services/${d.id}${window.location.search}`);
+                  }}
+                />
+              </Route>
+              <Route exact path="/panel/fieldservice/services/:serviceId">
+                <FieldServiceDetails />
+              </Route>
+            </Switch>
+          </Suspense>
         </Box>
       </BasePaper>
     </Box>

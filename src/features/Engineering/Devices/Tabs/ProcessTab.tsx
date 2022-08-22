@@ -1,5 +1,5 @@
 import { Box, Tooltip } from "@material-ui/core";
-import { AddRounded, DeleteRounded, EditRounded, SearchRounded } from "@material-ui/icons";
+import { AddRounded } from "@material-ui/icons";
 import { deleteProcess, IProcess } from "api/process";
 import NewDataGrid from "app/NewDataGrid";
 import Button from "app/Button";
@@ -12,6 +12,10 @@ import Confirm from "common/Confirm";
 import Toast from "app/Toast";
 import { mutate } from "swr";
 import TasksModal from "../Process/TasksModal";
+
+import { ReactComponent as NarrowIcon } from "assets/icons/tableIcons/narrowDown.svg";
+import { ReactComponent as SettingIcon } from "assets/icons/tableIcons/setting.svg";
+import { ReactComponent as DeleteIcon } from "assets/icons/tableIcons/delete.svg";
 
 function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
   const { lock } = useLock();
@@ -55,7 +59,7 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
                   setSelectedProcess(data);
                 }}
               >
-                <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
+                <NarrowIcon />
               </div>
               <div
                 onClick={() => {
@@ -65,9 +69,7 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
                   }
                 }}
               >
-                <EditRounded
-                  style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#426792", cursor: lock ? "auto" : "pointer" }}
-                />
+                <SettingIcon />
               </div>
               <div
                 onClick={() => {
@@ -76,9 +78,7 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
                   }
                 }}
               >
-                <DeleteRounded
-                  style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#e71414", cursor: lock ? "auto" : "pointer" }}
-                />
+                <DeleteIcon />
               </div>
               <div>
                 <Tooltip title={data.title}>
@@ -162,7 +162,6 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
         url={`/process?ItemId=${ItemId}&type=${type}`}
         onRowSelected={() => {}}
         refresh={refresh}
-        rowHeight={42}
       />
     </>
   );

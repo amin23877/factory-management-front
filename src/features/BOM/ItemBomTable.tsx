@@ -2,13 +2,16 @@ import React, { useMemo, useState, useCallback } from "react";
 import { Tooltip, useMediaQuery } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 
-// import DataGrid from "@inovua/reactdatagrid-community";
 import DataGrid from "app/NewDataGrid";
 
 import { useStyle } from "app/NewDataGrid";
 
 import Box from "@material-ui/core/Box";
-import { AddRounded, CheckRounded, ClearRounded, DeleteRounded, EditRounded, SearchRounded } from "@material-ui/icons";
+import { AddRounded } from "@material-ui/icons";
+
+import { ReactComponent as NarrowIcon } from "assets/icons/tableIcons/narrowDown.svg";
+import { ReactComponent as SettingIcon } from "assets/icons/tableIcons/setting.svg";
+import { ReactComponent as DeleteIcon } from "assets/icons/tableIcons/delete.svg";
 
 import Button from "app/Button";
 import { deleteBom, IBom } from "api/bom";
@@ -39,6 +42,7 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
   const [bomModal, setBomModal] = useState(false);
   const [bomRecordModal, setBomRecordModal] = useState(false);
   const [selectedBom, setSelectedBom] = useState<IBom>();
+  const [refresh, setRefresh] = useState(1);
 
   const classes = useStyle();
   const history = useHistory();
@@ -80,7 +84,7 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
                   }
                 }}
               >
-                <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
+                <NarrowIcon />
               </div>
               <div
                 onClick={() => {
@@ -90,14 +94,10 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
                   }
                 }}
               >
-                <EditRounded
-                  style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#426792", cursor: lock ? "auto" : "pointer" }}
-                />
+                <SettingIcon />
               </div>
               <div onClick={() => handleDelete(data.id)}>
-                <DeleteRounded
-                  style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#e71414", cursor: lock ? "auto" : "pointer" }}
-                />
+                <DeleteIcon />
               </div>
               <div>
                 <Tooltip title={data.items}>
@@ -128,7 +128,13 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
 
   return (
     <>
-      <BomModal open={bomModal} onClose={() => setBomModal(false)} item={item} initialValues={selectedBom} />
+      <BomModal
+        open={bomModal}
+        onClose={() => setBomModal(false)}
+        item={item}
+        initialValues={selectedBom}
+        setRefresh={setRefresh}
+      />
       {selectedBom && (
         <BomRecordModal open={bomRecordModal} onClose={() => setBomRecordModal(false)} bom={selectedBom} />
       )}
@@ -147,7 +153,7 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
         </Button>
         <LockButton />
       </Box>
-      <DataGrid columns={columns} url={`/bom?ItemId=${item.id}`} onRowSelected={() => {}} rowHeight={42} />
+      <DataGrid columns={columns} url={`/bom?ItemId=${item.id}`} onRowSelected={() => {}} refresh={refresh} />
     </>
   );
 }

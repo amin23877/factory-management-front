@@ -1,17 +1,29 @@
-import React, { useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Tabs, Tab } from "@material-ui/core";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 
 import DataGrid from "app/NewDataGrid";
 import { BasePaper } from "app/Paper";
-import Details from "../../../pages/Engineering/Units/Details";
+import Details from "../../pages/Engineering/Units/Details";
 
 import { formatTimestampToDate } from "logic/date";
 import { LockProvider } from "common/Lock";
+import { Route, Switch, useHistory, useLocation } from "react-router-dom";
+import MyBackdrop from "app/Backdrop";
 
-export default function Unit() {
-  const [activeTab, setActiveTab] = useState(0);
-  const [selectedUnit, setSelectedUnit] = useState<any>();
+export default function Unit({ shipping }: { shipping?: boolean }) {
+  const history = useHistory();
+  const location = useLocation();
+
+  const [activeTab, setActiveTab] = useState(location.pathname.split("/").length === 5 ? 1 : 0);
+
+  useEffect(() => {
+    if (location.pathname.split("/").length === 5) {
+      setActiveTab(1);
+    } else {
+      setActiveTab(0);
+    }
+  }, [location]);
 
   const cols = [
     {
@@ -56,7 +68,18 @@ export default function Unit() {
   return (
     <LockProvider>
       <BasePaper style={{ height: "100%" }}>
-        <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)} style={{ marginBottom: 10 }}>
+        <Tabs
+          value={activeTab}
+          textColor="primary"
+          onChange={(e, nv) => {
+            setActiveTab(nv);
+            history.push({
+              pathname: `/panel/${shipping ? "shipping" : "fieldservice"}/units`,
+              search: window.location.search,
+            });
+          }}
+          style={{ marginBottom: 10 }}
+        >
           <Tab
             icon={
               <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -66,7 +89,7 @@ export default function Unit() {
             wrapped
           />
           <Tab
-            disabled={!selectedUnit}
+            disabled={activeTab !== 1}
             icon={
               <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
@@ -74,18 +97,25 @@ export default function Unit() {
             }
           />
         </Tabs>
-        <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
-          <DataGrid
-            url="/unit"
-            initParams={{ class: "device" }}
-            columns={cols}
-            onRowSelected={(d) => {
-              setSelectedUnit(d);
-              setActiveTab(1);
-            }}
-          />
-        </div>
-        {activeTab === 1 && selectedUnit && <Details />}
+        <Suspense fallback={<MyBackdrop />}>
+          <Switch>
+            <Route exact path={`/panel/${shipping ? "shipping" : "fieldservice"}/units`}>
+              <DataGrid
+                url="/unit"
+                initParams={{ class: "device" }}
+                columns={cols}
+                onRowSelected={(d) => {
+                  history.push(
+                    `/panel/${shipping ? "shipping" : "fieldservice"}/units/${d.id}${window.location.search}`
+                  );
+                }}
+              />
+            </Route>
+            <Route exact path={`/panel/${shipping ? "shipping" : "fieldservice"}/units/:unitId`}>
+              <Details />
+            </Route>
+          </Switch>
+        </Suspense>
       </BasePaper>
     </LockProvider>
   );

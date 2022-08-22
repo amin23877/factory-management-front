@@ -1,18 +1,16 @@
 import React from "react";
-import { Box, useMediaQuery } from "@material-ui/core";
+import { Box, LinearProgress, useMediaQuery } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
-import FieldServiceForm from "./Forms";
+import FieldServiceForm from "features/FieldService/Forms";
 import Toast from "app/Toast";
-import Button from "app/Button";
 import { BasePaper } from "app/Paper";
-// import BaseDataGrid from "app/BaseDataGrid";
-import Confirm from "common/Confirm";
 
 import { IFieldService, updateFieldService } from "api/fieldService";
-import { convertToItem } from "api/items";
 import { LockButton, LockProvider } from "common/Lock";
+import useSWR from "swr";
+import { useParams } from "react-router-dom";
 
 let schema = Yup.object().shape({
   name: Yup.string().required(),
@@ -22,21 +20,16 @@ let schema = Yup.object().shape({
   price: Yup.string().required(),
 });
 
-export default function FieldServiceDetails({
-  selectedFieldService,
-  setIndexActiveTab,
-  setSelectedFieldService,
-}: {
-  selectedFieldService: IFieldService;
-  setSelectedFieldService: (fs: IFieldService | null) => void;
-  setIndexActiveTab: (t: number) => void;
-}) {
+export default function FieldServiceDetails() {
+  const { serviceId } = useParams<{ serviceId: string }>();
+  const { data: selectedFieldService } = useSWR<IFieldService>(serviceId ? `/service/${serviceId}` : null);
+
   const phone = useMediaQuery("(max-width:900px)");
 
   const handleSubmit = async (d: any) => {
     try {
-      if (selectedFieldService.id) {
-        const resp = await updateFieldService(selectedFieldService.id, d);
+      if (serviceId) {
+        const resp = await updateFieldService(serviceId, d);
         if (resp) {
           Toast("Updated successfully !!!", "success");
         }
@@ -46,26 +39,9 @@ export default function FieldServiceDetails({
     }
   };
 
-  const handleConvertToItem = async () => {
-    try {
-      Confirm({
-        text: "You are going to convert this service to Item",
-        onConfirm: async () => {
-          try {
-            if (selectedFieldService.id) {
-              await convertToItem(selectedFieldService.id);
-              setSelectedFieldService(null);
-              setIndexActiveTab(0);
-            }
-          } catch (error) {
-            console.log(error);
-          }
-        },
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  if (!selectedFieldService) {
+    return <LinearProgress />;
+  }
 
   return (
     <Box display="flex" style={{ gap: 5 }} flex={1} flexDirection={phone ? "column" : "row"}>
@@ -88,7 +64,7 @@ export default function FieldServiceDetails({
           )}
         </Formik>
       </BasePaper>
-      <BasePaper style={{ flex: 2 }}>{/* <BaseDataGrid cols={[]} rows={[]} onRowSelected={() => {}} /> */}</BasePaper>
+      <BasePaper style={{ flex: 2 }}></BasePaper>
     </Box>
   );
 }

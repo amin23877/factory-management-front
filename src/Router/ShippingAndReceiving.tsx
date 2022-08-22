@@ -12,7 +12,7 @@ import { MyTabs, MyTab } from "app/Tabs";
 import { camelCaseToRegular } from "logic/utils";
 
 const Shipping = React.lazy(() => import("features/ShippingAndReceiving/Shipping"));
-const Units = React.lazy(() => import("features/FieldService/Units"));
+const Units = React.lazy(() => import("Router/Servicing/Units"));
 
 export default function PanelRouter() {
   const portals = usePortal();
@@ -112,8 +112,8 @@ export default function PanelRouter() {
           <Route exact path="/panel/shipping/shipped">
             <Shipping tab={2} />
           </Route>
-          <Route exact path="/panel/shipping/units">
-            <Units />
+          <Route path="/panel/shipping/units">
+            <Units shipping />
           </Route>
           <Route exact path="/panel/shipping/received"></Route>
           <Route exact path="/panel/shipping/expected"></Route>

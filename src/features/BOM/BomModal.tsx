@@ -16,22 +16,24 @@ export default function BOMModal({
   open,
   onClose,
   item,
+  setRefresh,
   initialValues,
 }: {
   item: IItem;
   open: boolean;
   onClose: () => void;
+  setRefresh: (a: any) => void;
   initialValues?: IBom;
 }) {
   const handleSubmit = async (data: any) => {
     try {
       if (!initialValues) {
         await addBom({ ...data, ItemId: item.id });
-        mutate(`/bom?ItemId=${item.id}`);
+        setRefresh((prev: any) => prev + 1);
         onClose();
       } else {
         await updateBom(initialValues.id, getModifiedValues(data, initialValues));
-        mutate(`/bom?ItemId=${item.id}`);
+        setRefresh((prev: any) => prev + 1);
         onClose();
       }
     } catch (error) {

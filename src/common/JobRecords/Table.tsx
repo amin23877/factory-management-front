@@ -3,8 +3,10 @@ import { useMediaQuery, makeStyles, Tooltip, Button, Box } from "@material-ui/co
 import { useHistory } from "react-router-dom";
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
-import { AddRounded, ClearRounded, SearchRounded, KeyboardArrowUp, KeyboardArrowDown } from "@material-ui/icons";
+import { AddRounded, ClearRounded, KeyboardArrowUp, KeyboardArrowDown } from "@material-ui/icons";
 import useSWR from "swr";
+
+import { ReactComponent as NarrowIcon } from "assets/icons/tableIcons/narrowDown.svg";
 
 import { IUnit } from "api/units";
 import { updateJobRecord, deleteJobRecord } from "api/jobrecord";
@@ -225,7 +227,7 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
               />
             </div>
             <div onClick={() => handleRowSelect(data)}>
-              <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
+              <NarrowIcon />
             </div>
             <ExpandButton data={data} expandedComponents={expandedComponents} toggleComponent={toggleComponent} />
             <Tooltip title={value}>

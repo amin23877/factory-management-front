@@ -12,11 +12,11 @@ import { MyTabs, MyTab } from "app/Tabs";
 import { camelCaseToRegular } from "logic/utils";
 
 const Options = React.lazy(() => import("Router/Engineering/Options"));
-const FRUs = React.lazy(() => import("features/FieldService/FRU"));
-const ServiceIndex = React.lazy(() => import("features/FieldService"));
-const Tickets = React.lazy(() => import("features/FieldService/Tickets"));
+const FRUs = React.lazy(() => import("Router/Engineering/FRU"));
+const ServiceIndex = React.lazy(() => import("Router/Servicing/Services"));
+const Tickets = React.lazy(() => import("Router/Servicing/Tickets"));
 const Tasks = React.lazy(() => import("features/FieldService/Tasks"));
-const Units = React.lazy(() => import("features/FieldService/Units"));
+const Units = React.lazy(() => import("Router/Servicing/Units"));
 const UP = React.lazy(() => import("features/FieldService/UP"));
 const Vendors = React.lazy(() => import("Router/Purchasing/Vendors"));
 
@@ -25,7 +25,7 @@ export default function PanelRouter() {
   const history = useHistory();
   const location = useLocation();
 
-  const tabs = ["dashboard", "fru", "services", "tickets", "tasks", "units", "rma", "up", "vendorTech", "options"];
+  const tabs = ["dashboard", "fru", "services", "tickets", "tasks", "units", "rma", "up", "vendor", "option"];
 
   const [activeTab, setActiveTab] = useState(tabs.indexOf(location.pathname.split("/")[3]));
   const [tabText, setTabText] = useState(
@@ -87,7 +87,7 @@ export default function PanelRouter() {
             onChange={(e: any, nv) => {
               setActiveTab(nv);
               setTabText(e.target.textContent);
-              history.push(tabs[nv]);
+              history.push("/panel/fieldservice/" + tabs[nv]);
               handleClose();
             }}
             orientation="vertical"
@@ -111,16 +111,20 @@ export default function PanelRouter() {
           <Route exact path="/panel/fieldservice">
             <Redirect to="/panel/fieldservice/units" />
           </Route>
-          <Route exact path="/panel/fieldservice/fru" component={FRUs} />
-          <Route exact path="/panel/fieldservice/services" component={ServiceIndex} />
-          <Route exact path="/panel/fieldservice/tickets" component={Tickets} />
+          <Route path="/panel/fieldservice/fru">
+            <FRUs fieldservice />
+          </Route>
+          <Route path="/panel/fieldservice/services" component={ServiceIndex} />
+          <Route path="/panel/fieldservice/tickets" component={Tickets} />
           <Route exact path="/panel/fieldservice/tasks" component={Tasks} />
-          <Route exact path="/panel/fieldservice/units" component={Units} />
+          <Route path="/panel/fieldservice/units" component={Units} />
           <Route exact path="/panel/fieldservice/up" component={UP} />
-          <Route exact path="/panel/fieldservice/vendorTech">
+          <Route path="/panel/fieldservice/vendor">
             <Vendors tech={true} />
           </Route>
-          <Route exact path="/panel/fieldservice/options" component={Options} />
+          <Route path="/panel/fieldservice/option">
+            <Options fieldservice />
+          </Route>
         </Switch>
       </Suspense>
     </LockProvider>

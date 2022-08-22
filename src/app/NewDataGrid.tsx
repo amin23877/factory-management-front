@@ -12,9 +12,12 @@ import {
   Tooltip,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { CheckRounded, ClearRounded, MoreVertRounded } from "@material-ui/icons";
+import { MoreVertRounded } from "@material-ui/icons";
 import moment from "moment";
 import queryString from "query-string";
+
+import { ReactComponent as Checked } from "assets/icons/tableIcons/checked.svg";
+import { ReactComponent as UnChecked } from "assets/icons/tableIcons/unchecked.svg";
 
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
@@ -195,11 +198,11 @@ function NewDataGrid({
             render: ({ data }: any) =>
               data[r.name] ? (
                 <div style={green}>
-                  <CheckRounded />
+                  <Checked />
                 </div>
               ) : (
                 <div style={red}>
-                  <ClearRounded />
+                  <UnChecked />
                 </div>
               ),
           };
@@ -220,8 +223,11 @@ function NewDataGrid({
             ...r,
             dateFormat: "x",
             filterEditor: DateFilter,
-            render: ({ value, cellProps: { dateFormat } }: { value: any; cellProps: any }) =>
-              formatTimestampToDate(value),
+            render: ({ value, cellProps: { dateFormat } }: { value: any; cellProps: any }) => (
+              <Tooltip title={formatTimestampToDate(value)}>
+                <div>{formatTimestampToDate(value)}</div>
+              </Tooltip>
+            ),
           };
         }
         if ((r.type === "string" || !r.type) && !r.render) {

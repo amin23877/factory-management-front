@@ -126,13 +126,13 @@ export default function EditTab() {
                   if (phone && (r.ServiceId || r.ItemId)) {
                     history.push(
                       r.ServiceId
-                        ? `/panel/service/${r.ServiceId}`
+                        ? `/panel/fieldservice/services/${r.ServiceId}`
                         : `/panel/engineering/device/devices/${r?.ItemId?.id}`
                     );
                   } else if (!phone && (r.ServiceId || r.ItemId)) {
                     openRequestedSinglePopup({
                       url: r.ServiceId
-                        ? `/panel/service/${r.ServiceId}`
+                        ? `/panel/fieldservice/services/${r.ServiceId}`
                         : `/panel/engineering/device/devices/${r?.ItemId?.id}`,
                     });
                   }

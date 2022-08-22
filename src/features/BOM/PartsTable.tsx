@@ -1,7 +1,10 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { useMediaQuery } from "@material-ui/core";
-import { SearchRounded, ClearRounded } from "@material-ui/icons";
+
 import { useHistory } from "react-router-dom";
+
+import { ReactComponent as NarrowIcon } from "assets/icons/tableIcons/narrowDown.svg";
+import { ReactComponent as DeleteIcon } from "assets/icons/tableIcons/delete.svg";
 
 import { deleteBomRecord } from "api/bom";
 import { openRequestedSinglePopup } from "logic/window";
@@ -53,7 +56,7 @@ export default function PartsTable({ bomId, onEdit }: { bomId: string; onEdit?: 
                   }
                 }}
               >
-                <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
+                <NarrowIcon style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
               </div>
               <div
                 style={{ margin: "0 10px" }}
@@ -63,7 +66,7 @@ export default function PartsTable({ bomId, onEdit }: { bomId: string; onEdit?: 
                   }
                 }}
               >
-                <ClearRounded
+                <DeleteIcon
                   style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#e71414", cursor: lock ? "auto" : "pointer" }}
                 />
               </div>

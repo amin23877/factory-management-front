@@ -14,9 +14,9 @@ import { camelCaseToRegular } from "logic/utils";
 const DevicesPanel = React.lazy(() => import("Router/Engineering/Devices"));
 const Project = React.lazy(() => import("features/Engineering/Projects"));
 const BOM = React.lazy(() => import("Router/Engineering/BOM"));
-const Monitoring = React.lazy(() => import("features/Engineering/Monitoring"));
+const Monitoring = React.lazy(() => import("Router/Engineering/Monitoring"));
 const Dashboard = React.lazy(() => import("features/Engineering/Dashboard"));
-const FRU = React.lazy(() => import("features/Engineering/FRU"));
+const FRU = React.lazy(() => import("Router/Engineering/FRU"));
 const Option = React.lazy(() => import("Router/Engineering/Options"));
 
 export default function PanelRouter() {
@@ -109,9 +109,9 @@ export default function PanelRouter() {
           <Route exact path="/panel/engineering/dashboard" component={Dashboard} />
           <Route path="/panel/engineering/device" component={DevicesPanel} />
           <Route path="/panel/engineering/devicesBom" component={BOM} />
-          <Route exact path="/panel/engineering/monitoring" component={Monitoring} />
+          <Route path="/panel/engineering/monitoring" component={Monitoring} />
           <Route exact path="/panel/engineering/projects" component={Project} />
-          <Route exact path="/panel/engineering/fru" component={FRU} />
+          <Route path="/panel/engineering/fru" component={FRU} />
           <Route path="/panel/engineering/option" component={Option} />
         </Switch>
       </Suspense>

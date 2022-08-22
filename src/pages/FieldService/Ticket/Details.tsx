@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Box, Tab, Tabs, useMediaQuery } from "@material-ui/core";
+import { Box, LinearProgress, Tab, Tabs, useMediaQuery } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 import useSWR, { mutate } from "swr";
 import { Form, Formik } from "formik";
@@ -7,7 +7,7 @@ import { Form, Formik } from "formik";
 import BaseDataGrid from "app/BaseDataGrid";
 import { BasePaper } from "app/Paper";
 import Snack from "app/Snack";
-import JobForm, { ContactForm, TechnicianForm, EntitiesForm } from "./Forms";
+import JobForm, { ContactForm, TechnicianForm, EntitiesForm } from "../../../features/FieldService/Tickets/Forms";
 import { ITicket, schema, updateTicket } from "api/ticket";
 
 import { getModifiedValues } from "logic/utils";
@@ -16,8 +16,12 @@ import { formatTimestampToDate } from "logic/date";
 import DocumentTab from "common/Document/Tab";
 import NotesTab from "common/Note/Tab";
 import AuditTable from "common/Audit";
+import { useParams } from "react-router-dom";
 
-export default function Details({ initialValue }: { initialValue: ITicket }) {
+export default function Details() {
+  const { ticketId } = useParams<{ ticketId: string }>();
+  const { data: initialValue } = useSWR<ITicket>(ticketId ? `/ticket/${ticketId}` : null);
+
   const [activeTab, setActiveTab] = useState(0);
   const [moreActiveTab, setMoreActiveTab] = useState(0);
   const [snack, setSnack] = useState(false);
@@ -74,7 +78,7 @@ export default function Details({ initialValue }: { initialValue: ITicket }) {
   const handleSubmit = async (d: any) => {
     try {
       const data = getModifiedValues(d, initialValue);
-      const resp = await updateTicket(initialValue.id, data);
+      const resp = await updateTicket(ticketId, data);
       if (resp) {
         setMsg("Job updated!");
         setSeverity("success");
@@ -90,6 +94,10 @@ export default function Details({ initialValue }: { initialValue: ITicket }) {
       console.log(error);
     }
   };
+
+  if (!initialValue) {
+    return <LinearProgress />;
+  }
 
   return (
     <>

@@ -2,6 +2,7 @@ import React from "react";
 
 import { ParameterType } from "logic/utils";
 import DataGrid from "app/NewDataGrid";
+import { Tooltip } from "@material-ui/core";
 
 const columns = [
   {
@@ -11,10 +12,35 @@ const columns = [
     type: "date",
   },
   { name: "number", header: "SO NO.", minWidth: 100 },
-  { name: "Client", minWidth: 100, render: ({ data }: any) => data?.ClientId?.name },
+  {
+    name: "Client",
+    minWidth: 100,
+    render: ({ data }: any) => (
+      <Tooltip title={data?.ClientId?.name}>
+        <span>{data?.ClientId?.name}</span>
+      </Tooltip>
+    ),
+  },
   { name: "description", header: "Description", minWidth: 150 },
-  { name: "Rep", minWidth: 130, render: ({ data }: any) => data?.RepId?.name },
-  { name: "state", header: "State", minWidth: 120, render: ({ data }: any) => data?.RepId?.state },
+  {
+    name: "Rep",
+    minWidth: 130,
+    render: ({ data }: any) => {
+      <Tooltip title={data?.RepId?.name}>
+        <span>{data?.RepId?.name}</span>
+      </Tooltip>;
+    },
+  },
+  {
+    name: "state",
+    header: "State",
+    minWidth: 120,
+    render: ({ data }: any) => (
+      <Tooltip title={data?.RepId?.state}>
+        <span>{data?.RepId?.state}</span>
+      </Tooltip>
+    ),
+  },
 
   {
     name: "estimatedShipDate",

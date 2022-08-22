@@ -9,13 +9,14 @@ import DataGrid from "app/NewDataGrid";
 import SubProcessModal from "./AddTaskModal";
 import Dialog from "app/Dialog";
 import { capitalizeFirstLetter } from "logic/utils";
-import { ClearRounded, SearchRounded } from "@material-ui/icons";
 import Confirm from "common/Confirm";
 import Toast from "app/Toast";
 import { LockButton, useLock } from "common/Lock";
 import { useHistory } from "react-router-dom";
 import { openRequestedSinglePopup } from "logic/window";
 
+import { ReactComponent as NarrowIcon } from "assets/icons/tableIcons/narrowDown.svg";
+import { ReactComponent as DeleteIcon } from "assets/icons/tableIcons/delete.svg";
 interface IEditTaskModal {
   open: boolean;
   process: IProcess;
@@ -99,7 +100,7 @@ export default function TasksModal({ open, onClose, process, type }: IEditTaskMo
               }}
               style={{ width: "20px" }}
             >
-              <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
+              <NarrowIcon />
             </div>
             <div
               onClick={() => {
@@ -108,9 +109,7 @@ export default function TasksModal({ open, onClose, process, type }: IEditTaskMo
                 }
               }}
             >
-              <ClearRounded
-                style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#e71414", cursor: lock ? "auto" : "pointer" }}
-              />
+              <DeleteIcon />
             </div>
           </Box>
         );

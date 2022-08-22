@@ -1,20 +1,35 @@
-import React, { useMemo, useState } from "react";
+import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
 
-import { BasePaper } from "../../../app/Paper";
+import { BasePaper } from "app/Paper";
 
-import { formatTimestampToDate } from "../../../logic/date";
-import DataGrid from "../../../app/NewDataGrid";
+import { formatTimestampToDate } from "logic/date";
+import DataGrid from "app/NewDataGrid";
 
-import UnitDetails from "../../../pages/Engineering/Units/Details";
-import DeviceDetails from "../../../pages/Engineering/Devices/Details";
-import { IUnit } from "../../../api/units";
+import UnitDetails from "../../pages/Engineering/Units/Details";
+import DeviceDetails from "pages/Engineering/Devices/Details";
 import { FindInPageRounded, ListAltRounded } from "@material-ui/icons";
+import { Redirect, Route, Switch, useHistory, useLocation } from "react-router-dom";
+import MyBackdrop from "app/Backdrop";
 
-export default function FRU() {
-  const [activeTab, setActiveTab] = useState(0);
-  const [selectedUnitFru, setSelectedUnitFru] = useState<IUnit>();
-  const [selectedItemFru, setSelectedItemFru] = useState<any>();
+export default function FRU({ fieldservice }: { fieldservice?: boolean }) {
+  const history = useHistory();
+  const location = useLocation();
+
+  const tabs = ["frus", "units", "details"];
+  const [activeTab, setActiveTab] = useState(
+    location.pathname.split("/").length === 6 ? 2 : tabs.indexOf(location.pathname.split("/")[4])
+  );
+
+  useEffect(() => {
+    if (location.pathname.split("/")[4]) {
+      if (location.pathname.split("/").length === 6) {
+        setActiveTab(2);
+      } else {
+        setActiveTab(tabs.indexOf(location.pathname.split("/")[4]));
+      }
+    }
+  }, [location]);
 
   const fruDevicesColumns = useMemo(
     () => [
@@ -98,7 +113,6 @@ export default function FRU() {
       name: "description",
       header: "FRU Description",
       flex: 1,
-      render: ({ data }: any) => data?.item?.description,
     },
     {
       name: "Lead Time",
@@ -112,11 +126,22 @@ export default function FRU() {
   return (
     <Box display="flex" height="100%">
       <BasePaper style={{ flex: 1 }}>
-        <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)} style={{ marginBottom: 10 }}>
+        <Tabs
+          value={activeTab}
+          textColor="primary"
+          onChange={(e, nv) => {
+            setActiveTab(nv);
+            history.push({
+              pathname: `/panel/${fieldservice ? "fieldservice" : "engineering"}/fru/` + tabs[nv],
+              search: window.location.search,
+            });
+          }}
+          style={{ marginBottom: 10 }}
+        >
           <Tab
             icon={
               <span style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> Devices
+                <ListAltRounded fontSize="small" style={{ marginRight: 5 }} /> FRUs
               </span>
             }
             wrapped
@@ -130,7 +155,7 @@ export default function FRU() {
             wrapped
           />
           <Tab
-            disabled={!selectedUnitFru && !selectedItemFru}
+            disabled={activeTab !== 2}
             icon={
               <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
@@ -138,36 +163,43 @@ export default function FRU() {
             }
           />
         </Tabs>
-        <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
-          <DataGrid
-            url="/item"
-            columns={fruDevicesColumns}
-            initParams={{ class: "fru" }}
-            onRowSelected={(d) => {
-              setSelectedUnitFru(undefined);
-              setSelectedItemFru(d);
-              setActiveTab(2);
-            }}
-          />
-        </div>
-
-        <div style={activeTab !== 1 ? { display: "none" } : { flex: 1 }}>
-          <DataGrid
-            url="/unit"
-            initParams={{ class: "fru" }}
-            columns={fruUnitsColumns}
-            onRowSelected={(d) => {
-              setSelectedItemFru(undefined);
-              setSelectedUnitFru(d);
-              setActiveTab(2);
-            }}
-          />
-        </div>
-
-        {activeTab === 2 && selectedUnitFru && <UnitDetails />}
-        {activeTab === 2 && selectedItemFru && (
-          <DeviceDetails onDone={() => {}} onStepSelected={(d) => {}} onFlagSelected={(d) => {}} />
-        )}
+        <Suspense fallback={<MyBackdrop />}>
+          <Switch>
+            <Route exact path={`/panel/${fieldservice ? "fieldservice" : "engineering"}/fru/`}>
+              <Redirect to={`/panel/${fieldservice ? "fieldservice" : "engineering"}/fru/frus`} />
+            </Route>
+            <Route exact path={`/panel/${fieldservice ? "fieldservice" : "engineering"}/fru/frus`}>
+              <DataGrid
+                url="/item"
+                columns={fruDevicesColumns}
+                initParams={{ class: "fru" }}
+                onRowSelected={(d) => {
+                  history.push(
+                    `/panel/${fieldservice ? "fieldservice" : "engineering"}/fru/frus/${d.id}${window.location.search}`
+                  );
+                }}
+              />
+            </Route>
+            <Route exact path={`/panel/${fieldservice ? "fieldservice" : "engineering"}/fru/units`}>
+              <DataGrid
+                url="/unit"
+                initParams={{ class: "fru" }}
+                columns={fruUnitsColumns}
+                onRowSelected={(d) => {
+                  history.push(
+                    `/panel/${fieldservice ? "fieldservice" : "engineering"}/fru/units/${d.id}${window.location.search}`
+                  );
+                }}
+              />
+            </Route>
+            <Route exact path={`/panel/${fieldservice ? "fieldservice" : "engineering"}/fru/frus/:deviceId`}>
+              <DeviceDetails onDone={() => {}} onStepSelected={(d) => {}} onFlagSelected={(d) => {}} />
+            </Route>
+            <Route exact path={`/panel/${fieldservice ? "fieldservice" : "engineering"}/fru/units/:unitId`}>
+              <UnitDetails />
+            </Route>
+          </Switch>
+        </Suspense>
       </BasePaper>
     </Box>
   );

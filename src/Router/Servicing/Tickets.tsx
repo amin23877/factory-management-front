@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Box, Tabs, Tab, ListItem, IconButton } from "@material-ui/core";
 import {
   AddRounded,
@@ -11,21 +11,37 @@ import {
   ListAltRounded,
 } from "@material-ui/icons";
 
-import Table from "./Table";
-import Details from "./Details";
+import Table from "features/FieldService/Tickets/Table";
+import Details from "pages/FieldService/Ticket/Details";
 
 import List from "app/SideUtilityList";
-import TicketModal from "./Modals";
+import TicketModal from "features/FieldService/Tickets/Modals";
 
-import { ITicket } from "api/ticket";
-import AddSOModal from "../../Sales/SO/AddSo";
-import AddQuote from "../../Sales/Quote/AddQuote";
-import AddTagModal from "./AddTag";
-import AddStatusModal from "./AddStatus";
-import AddCategoryModal from "./AddCategory";
+import AddSOModal from "features/Sales/SO/AddSo";
+import AddQuote from "features/Sales/Quote/AddQuote";
+import AddTagModal from "features/FieldService/Tickets/AddTag";
+import AddStatusModal from "features/FieldService/Tickets/AddStatus";
+import AddCategoryModal from "features/FieldService/Tickets/AddCategory";
 import { BasePaper } from "app/Paper";
+import { Route, Switch, useHistory, useLocation, useParams } from "react-router-dom";
+import MyBackdrop from "app/Backdrop";
 
 export default function Tickets() {
+  const history = useHistory();
+  const location = useLocation();
+
+  const { ticketId } = useParams<{ ticketId: string }>();
+
+  const [activeTab, setActiveTab] = useState(location.pathname.split("/").length === 5 ? 1 : 0);
+
+  useEffect(() => {
+    if (location.pathname.split("/").length === 5) {
+      setActiveTab(1);
+    } else {
+      setActiveTab(0);
+    }
+  }, [location]);
+
   const [ticketModal, setTicketModal] = useState(false);
   const [soModal, setSoModal] = useState(false);
   const [quoteModal, setQuoteModal] = useState(false);
@@ -33,24 +49,21 @@ export default function Tickets() {
   const [statusModal, setStatusModal] = useState(false);
   const [categoryModal, setCategoryModal] = useState(false);
 
-  const [selectedJob, setSelectedJob] = useState<ITicket>();
-  const [activeTab, setActiveTab] = useState(0);
-
   return (
     <>
-      {selectedJob && (
+      {ticketId && (
         <AddSOModal
           open={soModal}
           onClose={() => setSoModal(false)}
-          initialData={{ JobId: selectedJob.id } as any}
+          initialData={{ JobId: ticketId } as any}
           onDone={() => {}}
         />
       )}
-      {selectedJob && (
+      {ticketId && (
         <AddQuote
           open={quoteModal}
           onClose={() => setQuoteModal(false)}
-          initialData={{ JobId: selectedJob.id } as any}
+          initialData={{ JobId: ticketId } as any}
           onDone={() => {}}
         />
       )}
@@ -64,7 +77,13 @@ export default function Tickets() {
           <Tabs
             textColor="primary"
             value={activeTab}
-            onChange={(e, nv) => setActiveTab(nv)}
+            onChange={(e, nv) => {
+              setActiveTab(nv);
+              history.push({
+                pathname: "/panel/fieldservice/tickets",
+                search: window.location.search,
+              });
+            }}
             style={{ marginBottom: 10 }}
           >
             <Tab
@@ -76,7 +95,7 @@ export default function Tickets() {
               wrapped
             />
             <Tab
-              disabled={!selectedJob}
+              disabled={activeTab !== 1}
               icon={
                 <span style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
                   <FindInPageRounded fontSize="small" style={{ marginRight: 5 }} /> Details
@@ -125,7 +144,6 @@ export default function Tickets() {
                   </ListItem>
                 </>
               )}
-
               {activeTab === 1 && (
                 <>
                   <ListItem>
@@ -144,16 +162,20 @@ export default function Tickets() {
           </Box>
         </Box>
         <Box display="flex" height="90%">
-          <div style={activeTab !== 0 ? { display: "none" } : { flex: 1 }}>
-            <Table
-              onRowSelected={(r) => {
-                setSelectedJob(r);
-                setActiveTab(1);
-              }}
-            />
-          </div>
-
-          {activeTab === 1 && selectedJob && <Details initialValue={selectedJob} />}
+          <Suspense fallback={<MyBackdrop />}>
+            <Switch>
+              <Route exact path="/panel/fieldservice/tickets">
+                <Table
+                  onRowSelected={(d) => {
+                    history.push(`/panel/fieldservice/tickets/${d.id}${window.location.search}`);
+                  }}
+                />
+              </Route>
+              <Route exact path="/panel/fieldservice/tickets/:ticketId">
+                <Details />
+              </Route>
+            </Switch>
+          </Suspense>
         </Box>
       </BasePaper>
     </>

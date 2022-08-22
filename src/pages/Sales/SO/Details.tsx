@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Box, useMediaQuery, makeStyles, LinearProgress } from "@material-ui/core";
+import { Box, useMediaQuery, makeStyles, LinearProgress, Tooltip } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
@@ -67,13 +67,21 @@ export default function EditTab({
       {
         field: "itemNo",
         headerName: "Part Number",
-        valueFormatter: (r) => r.row?.ItemId?.no || r.row?.text || r?.row?.itemNo,
+        valueFormatter: (r) => (
+          <Tooltip title={r.row?.ItemId?.no || r.row?.text || r?.row?.itemNo}>
+            <span>{r.row?.ItemId?.no || r.row?.text || r?.row?.itemNo}</span>
+          </Tooltip>
+        ),
         width: 200,
       },
       {
         field: "description",
         headerName: "Description",
-        valueFormatter: (r) => r.row?.ItemId?.description,
+        valueFormatter: (r) => (
+          <Tooltip title={r.row?.ItemId?.description}>
+            <span>{r.row?.ItemId?.description}</span>
+          </Tooltip>
+        ),
         width: 150,
       },
       { field: "qty", headerName: "QTY", width: 90 },
@@ -82,7 +90,11 @@ export default function EditTab({
       {
         field: "total",
         headerName: "Total",
-        valueFormatter: (r) => Number(r.row?.price) * Number(r.row?.qty),
+        valueFormatter: (r) => (
+          <Tooltip title={Number(r.row?.price) * Number(r.row?.qty)}>
+            <span>{Number(r.row?.price) * Number(r.row?.qty)}</span>
+          </Tooltip>
+        ),
         width: 80,
       },
       { field: "invoice", headerName: "Invoice", width: 100 },
@@ -213,12 +225,14 @@ export default function EditTab({
               onRowSelected={(r) => {
                 if (phone && (r.ServiceId || r.ItemId)) {
                   history.push(
-                    r.ServiceId ? `/panel/service/${r.ServiceId}` : `/panel/engineering/device/devices/${r?.ItemId?.id}`
+                    r.ServiceId
+                      ? `/panel/fieldservice/services/${r.ServiceId}`
+                      : `/panel/engineering/device/devices/${r?.ItemId?.id}`
                   );
                 } else if (!phone && (r.ServiceId || r.ItemId)) {
                   openRequestedSinglePopup({
                     url: r.ServiceId
-                      ? `/panel/service/${r.ServiceId}`
+                      ? `/panel/fieldservice/services/${r.ServiceId}`
                       : `/panel/engineering/device/devices/${r?.ItemId?.id}`,
                   });
                 }

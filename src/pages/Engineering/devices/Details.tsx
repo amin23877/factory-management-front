@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useState } from "react";
-import { Box, Tabs, Tab, LinearProgress, Typography, useMediaQuery } from "@material-ui/core";
+import { Box, Tabs, Tab, LinearProgress, Typography, useMediaQuery, Tooltip } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 import { Formik, Form } from "formik";
 import useSWR from "swr";
@@ -77,7 +77,16 @@ function DeviceDetails({
   const serviceCols = useMemo<GridColumns>(
     () => [
       { field: "no", headerName: "ID", width: 150 },
-      { field: "name", headerName: "Name", flex: 1 },
+      {
+        field: "name",
+        headerName: "Name",
+        flex: 1,
+        renderCell: ({ row }) => (
+          <Tooltip title={row.name}>
+            <span>{row.name}</span>
+          </Tooltip>
+        ),
+      },
       {
         field: "class",
         headerName: "Class",

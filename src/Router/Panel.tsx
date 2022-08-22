@@ -43,7 +43,6 @@ const Activity = React.lazy(() => import("../pages/Activity"));
 const Notification = React.lazy(() => import("../pages/Notification"));
 const Page404 = React.lazy(() => import("../pages/404"));
 
-const ServiceDetails = React.lazy(() => import("../pages/ServiceDetails"));
 const QuoteDetails = React.lazy(() => import("../pages/QuoteDetails"));
 const SODetails = React.lazy(() => import("../pages/SODetails"));
 const CustomerDetails = React.lazy(() => import("../pages/CustomerDetails"));
@@ -260,7 +259,6 @@ export default function PanelRouter() {
                   <Route path="/panel/purchase" component={Purchase} />
                   <Route path="/panel/production" component={Production} />
 
-                  <Route exact path="/panel/service/:serviceId" component={ServiceDetails} />
                   <Route exact path="/panel/quote/:quoteNumber" component={QuoteDetails} />
                   <Route exact path="/panel/so/:soNumber" component={SODetails} />
                   {/* TODO: change customer to client, everywhere, there are links to this page */}

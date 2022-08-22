@@ -104,7 +104,7 @@ export default function Vendors({ tech }: { tech: boolean }) {
                 onChange={(e, nv) => {
                   setActiveTab(nv);
                   history.push({
-                    pathname: "/panel/purchase/vendor",
+                    pathname: `/panel/${tech ? "fieldservice" : "purchase"}/vendor`,
                     search: window.location.search,
                   });
                 }}
@@ -170,18 +170,20 @@ export default function Vendors({ tech }: { tech: boolean }) {
             </Box>
             <Suspense fallback={<MyBackdrop />}>
               <Switch>
-                <Route exact path="/panel/purchase/vendor">
+                <Route exact path={`/panel/${tech ? "fieldservice" : "purchase"}/vendor`}>
                   <DataGrid
                     style={{ minHeight: "calc(100vh - 160px)" }}
                     url="/vendor"
                     columns={cols}
                     initParams={tech ? { tech: true } : {}}
                     onRowSelected={(d) => {
-                      history.push(`/panel/purchase/vendor/${d.id}${window.location.search}`);
+                      history.push(
+                        `/panel/${tech ? "fieldservice" : "purchase"}/vendor/${d.id}${window.location.search}`
+                      );
                     }}
                   />
                 </Route>
-                <Route exact path="/panel/purchase/vendor/:vendorId">
+                <Route exact path={`/panel/${tech ? "fieldservice" : "purchase"}/vendor/:vendorId`}>
                   <Details />
                 </Route>
               </Switch>

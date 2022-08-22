@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 
-import { Container, Typography, Box, useMediaQuery } from "@material-ui/core";
+import { Container, Typography, Box, useMediaQuery, Tooltip } from "@material-ui/core";
 
 import { ReactComponent as SettingIcon } from "assets/icons/tableIcons/setting.svg";
 import { ReactComponent as DeleteIcon } from "assets/icons/tableIcons/delete.svg";
@@ -45,13 +45,35 @@ function Parts() {
 
   const columns = useMemo(
     () => [
-      { name: "no", header: "Item NO.", render: ({ data }: any) => data?.ItemId?.no, editable: false },
-      { name: "name", header: "Item Name", render: ({ data }: any) => data?.ItemId?.name, editable: false },
+      {
+        name: "no",
+        header: "Item NO.",
+        render: ({ data }: any) => (
+          <Tooltip title={data?.ItemId?.no}>
+            <span>{data?.ItemId?.no}</span>
+          </Tooltip>
+        ),
+        editable: false,
+      },
+      {
+        name: "name",
+        header: "Item Name",
+        render: ({ data }: any) => (
+          <Tooltip title={data?.ItemId?.name}>
+            <span>{data?.ItemId?.name}</span>
+          </Tooltip>
+        ),
+        editable: false,
+      },
       {
         name: "description",
         header: "Item Description",
         flex: 1,
-        render: ({ data }: any) => data?.ItemId?.description,
+        render: ({ data }: any) => (
+          <Tooltip title={data?.ItemId?.description}>
+            <span>{data?.ItemId?.description}</span>
+          </Tooltip>
+        ),
         editable: false,
       },
       { name: "usage", header: "Usage", defaultWidth: 100, editor: NumericEditor },
