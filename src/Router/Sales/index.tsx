@@ -20,13 +20,25 @@ const PurchaseOrderPanel = React.lazy(() => import("Router/Sales/PurchaseOrders"
 const SalesOrderPanel = React.lazy(() => import("Router/Sales/SalesOrders"));
 const Clients = React.lazy(() => import("Router/Sales/Clients"));
 const Reps = React.lazy(() => import("Router/Sales/Reps"));
+const Config = React.lazy(() => import("pages/Config"));
 
 export default function PanelRouter() {
   const portals = usePortal();
   const history = useHistory();
   const location = useLocation();
 
-  const tabs = ["dashboard", "calls", "device", "option", "quotes", "customerPOs", "salesOrders", "client", "reps"];
+  const tabs = [
+    "dashboard",
+    "calls",
+    "device",
+    "option",
+    "quotes",
+    "customerPOs",
+    "salesOrders",
+    "client",
+    "reps",
+    "config",
+  ];
 
   const [activeTab, setActiveTab] = useState(tabs.indexOf(location.pathname.split("/")[3]));
   const [tabText, setTabText] = useState(
@@ -102,6 +114,7 @@ export default function PanelRouter() {
             <MyTab label="Sales Orders" />
             <MyTab label="Clients" />
             <MyTab label="Reps" />
+            <MyTab label="Config" />
           </MyTabs>
         </Popover>
       </Portal>
@@ -123,6 +136,7 @@ export default function PanelRouter() {
           <Route path="/panel/sales/salesOrders" component={SalesOrderPanel} />
           <Route path="/panel/sales/client" component={Clients} />
           <Route path="/panel/sales/reps" component={Reps} />
+          <Route path="/panel/sales/config" component={Config} />
         </Switch>
       </Suspense>
     </LockProvider>
