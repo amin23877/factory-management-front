@@ -109,6 +109,7 @@ export default function Unit({ shipping }: { shipping?: boolean }) {
                     `/panel/${shipping ? "shipping" : "fieldservice"}/units/${d.id}${window.location.search}`
                   );
                 }}
+                setUrlFilters
               />
             </Route>
             <Route exact path={`/panel/${shipping ? "shipping" : "fieldservice"}/units/:unitId`}>

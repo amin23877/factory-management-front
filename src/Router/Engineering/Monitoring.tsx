@@ -83,6 +83,7 @@ const Monitoring = () => {
             <Switch>
               <Route exact path="/panel/engineering/monitoring">
                 <DataGrid
+                  setUrlFilters
                   url="/monitor"
                   columns={gridColumns}
                   onRowSelected={(d) => {

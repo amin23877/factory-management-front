@@ -152,6 +152,7 @@ function Index() {
                     onRowSelected={(d) => {
                       history.push(`/panel/purchase/quote/${d.id}${window.location.search}`);
                     }}
+                    setUrlFilters
                   />
                 </Route>
                 <Route exact path="/panel/purchase/quote/:quoteId">

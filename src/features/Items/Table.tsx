@@ -124,6 +124,7 @@ function ItemTable({
           columns={columns}
           url="/item"
           onRowSelected={onRowSelected}
+          setUrlFilters
         />
       ) : (
         <div style={{ width: "100%" }}>

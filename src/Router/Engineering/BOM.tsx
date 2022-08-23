@@ -81,6 +81,7 @@ function BOM() {
                 url="/cluster"
                 columns={columns}
                 refresh={refresh}
+                setUrlFilters
                 onRowSelected={(d) => {
                   history.push(`/panel/engineering/devicesBom/${d.id}${window.location.search}`);
                 }}

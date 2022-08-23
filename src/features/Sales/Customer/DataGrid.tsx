@@ -108,6 +108,7 @@ export default function CustomerDataGrid({
       columns={cols}
       url={url}
       initParams={params}
+      setUrlFilters
     />
   );
 }

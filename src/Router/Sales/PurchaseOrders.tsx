@@ -136,6 +136,7 @@ export default function POPanel() {
           <Switch>
             <Route exact path="/panel/sales/customerPOs">
               <DataGrid
+                setUrlFilters
                 refresh={refresh}
                 url="/customerPo"
                 columns={poCols}

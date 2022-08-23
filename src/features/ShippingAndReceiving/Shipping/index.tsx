@@ -137,6 +137,7 @@ export default function Ship({ tab }: { tab: number }) {
                 setSelectedShip(d);
                 setActiveTab(1);
               }}
+              setUrlFilters
             />
           </>
         </div>

@@ -162,6 +162,7 @@ function NewDataGrid({
   onEditComplete,
   editable,
   rowHeight,
+  setUrlFilters,
 }: {
   onRowSelected: (row: any) => void;
   columns: any[];
@@ -175,6 +176,7 @@ function NewDataGrid({
   onSelectionChange?: (config: TypeOnSelectionChangeArg) => void;
   onDataFetched?: (data: any) => void;
   onEditComplete?: (data: TypeEditInfo) => void;
+  setUrlFilters?: boolean;
 }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [columnsState, setColumnsState] = useState<any[]>(columns.map((c) => ({ ...c, visible: true })));
@@ -270,11 +272,19 @@ function NewDataGrid({
       filters[whereKey] = operator;
     }
     let res = columns.map(({ name, type, defaultOperator }) => {
+      if (setUrlFilters) {
+        return {
+          name,
+          operator: filters[name] ? filters[name] : defaultOperator || type ? "eq" : "startsWith",
+          type: type ? type : "string",
+          value: filters[name] ? parsedQuery[getOperator(filters[name]) + name] : type === "date" ? "" : undefined,
+        };
+      }
       return {
         name,
-        operator: filters[name] ? filters[name] : defaultOperator || type ? "eq" : "startsWith",
+        operator: defaultOperator || type ? "eq" : "startsWith",
         type: type ? type : "string",
-        value: filters[name] ? parsedQuery[getOperator(filters[name]) + name] : type === "date" ? "" : undefined,
+        value: type === "date" ? "" : undefined,
       };
     });
     return res;
@@ -308,7 +318,7 @@ function NewDataGrid({
       }
 
       try {
-        if (window.history.pushState) {
+        if (window.history.pushState && setUrlFilters) {
           var newurl =
             window.location.protocol +
             "//" +

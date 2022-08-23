@@ -170,6 +170,7 @@ export default function FRU({ fieldservice }: { fieldservice?: boolean }) {
             </Route>
             <Route exact path={`/panel/${fieldservice ? "fieldservice" : "engineering"}/fru/frus`}>
               <DataGrid
+                setUrlFilters
                 url="/item"
                 columns={fruDevicesColumns}
                 initParams={{ class: "fru" }}
@@ -182,6 +183,7 @@ export default function FRU({ fieldservice }: { fieldservice?: boolean }) {
             </Route>
             <Route exact path={`/panel/${fieldservice ? "fieldservice" : "engineering"}/fru/units`}>
               <DataGrid
+                setUrlFilters
                 url="/unit"
                 initParams={{ class: "fru" }}
                 columns={fruUnitsColumns}

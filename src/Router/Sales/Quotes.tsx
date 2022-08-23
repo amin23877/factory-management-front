@@ -189,6 +189,7 @@ export default function QuotePanel() {
                 }}
                 url="/quote"
                 columns={columns}
+                setUrlFilters
               />
             </Route>
             <Route exact path="/panel/sales/quotes/:quoteId">

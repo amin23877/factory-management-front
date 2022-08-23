@@ -165,6 +165,7 @@ export default function Calls() {
                 }}
                 url="/calls"
                 columns={columns}
+                setUrlFilters
               />
             </Route>
             <Route exact path="/panel/sales/calls/:callId">

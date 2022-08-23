@@ -318,6 +318,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
               </Route>
               <Route exact path={`/panel/${sales ? "sales" : "engineering"}/device/devices`}>
                 <DataGrid
+                  setUrlFilters
                   style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 215px)" }}
                   url="/item"
                   initParams={{ class: "device", clusterId: selectedCluster?.id || undefined }}
@@ -331,6 +332,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
               </Route>
               <Route exact path={`/panel/${sales ? "sales" : "engineering"}/device/units`}>
                 <DataGrid
+                  setUrlFilters
                   style={phone ? { minHeight: "calc(100vh - 215px)" } : { minHeight: "calc(100vh - 165px)" }}
                   url="/unit"
                   initParams={{ class: "device" }}

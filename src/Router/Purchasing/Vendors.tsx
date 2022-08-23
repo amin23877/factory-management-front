@@ -181,6 +181,7 @@ export default function Vendors({ tech }: { tech: boolean }) {
                         `/panel/${tech ? "fieldservice" : "purchase"}/vendor/${d.id}${window.location.search}`
                       );
                     }}
+                    setUrlFilters
                   />
                 </Route>
                 <Route exact path={`/panel/${tech ? "fieldservice" : "purchase"}/vendor/:vendorId`}>

@@ -72,7 +72,16 @@ function SODataGrid({
   params?: ParameterType;
   refresh: number;
 }) {
-  return <DataGrid url="/so" onRowSelected={onRowSelected} columns={columns} initParams={params} refresh={refresh} />;
+  return (
+    <DataGrid
+      url="/so"
+      onRowSelected={onRowSelected}
+      columns={columns}
+      initParams={params}
+      refresh={refresh}
+      setUrlFilters
+    />
+  );
 }
 
 export default SODataGrid;

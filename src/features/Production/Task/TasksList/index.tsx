@@ -34,7 +34,7 @@ function Table({ onRowSelected, refresh }: { onRowSelected: (row: ITaskList) => 
 
   return (
     <>
-      <DataGrid columns={tasksCols} url="/task" onRowSelected={onRowSelected} refresh={refresh} />
+      <DataGrid columns={tasksCols} url="/task" onRowSelected={onRowSelected} refresh={refresh} setUrlFilters />
     </>
   );
 }

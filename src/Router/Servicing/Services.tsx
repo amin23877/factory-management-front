@@ -145,6 +145,7 @@ export default function ServiceIndex() {
                   onRowSelected={(d) => {
                     history.push(`/panel/fieldservice/services/${d.id}${window.location.search}`);
                   }}
+                  setUrlFilters
                 />
               </Route>
               <Route exact path="/panel/fieldservice/services/:serviceId">

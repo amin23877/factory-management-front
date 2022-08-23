@@ -44,7 +44,7 @@ function Table() {
 
   return (
     <>
-      <DataGrid columns={tasksCols} url="/prodTask" onRowSelected={() => {}} />
+      <DataGrid columns={tasksCols} url="/prodTask" onRowSelected={() => {}} setUrlFilters />
     </>
   );
 }

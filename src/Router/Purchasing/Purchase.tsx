@@ -219,6 +219,7 @@ function Index() {
                     onRowSelected={(d) => {
                       history.push(`/panel/purchase/purchaseOrder/${d.id}${window.location.search}`);
                     }}
+                    setUrlFilters
                   />
                 </Route>
                 <Route exact path="/panel/purchase/purchaseOrder/:poId">

@@ -175,6 +175,7 @@ export default function Options({ sales, fieldservice }: { sales?: boolean; fiel
               path={`/panel/${sales ? "sales" : fieldservice ? "fieldservice" : "engineering"}/option/options`}
             >
               <DataGrid
+                setUrlFilters
                 url="/item"
                 columns={optionDevicesColumns}
                 initParams={{ class: "option" }}
@@ -192,6 +193,7 @@ export default function Options({ sales, fieldservice }: { sales?: boolean; fiel
               path={`/panel/${sales ? "sales" : fieldservice ? "fieldservice" : "engineering"}/option/units`}
             >
               <DataGrid
+                setUrlFilters
                 url="/unit"
                 initParams={{ class: "option" }}
                 columns={optionUnitsColumns}

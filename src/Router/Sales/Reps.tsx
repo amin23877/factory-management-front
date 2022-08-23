@@ -153,6 +153,7 @@ export default function RepIndex() {
                 }}
                 url="/rep"
                 columns={columns}
+                setUrlFilters
               />
             </Route>
             <Route exact path="/panel/sales/reps/:repId">
