@@ -136,7 +136,7 @@ export default function PanelRouter() {
           <Route path="/panel/sales/salesOrders" component={SalesOrderPanel} />
           <Route path="/panel/sales/client" component={Clients} />
           <Route path="/panel/sales/reps" component={Reps} />
-          <Route path="/panel/sales/config" component={Config} />
+          <Route exact path="/panel/sales/config" component={Config} />
         </Switch>
       </Suspense>
     </LockProvider>

@@ -5,6 +5,7 @@ export interface IConstant {
   values: string[];
   key: string;
   id: string;
+  value?: string;
 }
 
 export const updateAConstant = (id: string, data: any) => {

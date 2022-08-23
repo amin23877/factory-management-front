@@ -16,6 +16,7 @@ import TextField from "app/TextField";
 import useSWR from "swr";
 import { IConstant, updateAConstant } from "api/constant";
 import { camelCaseToRegular } from "logic/utils";
+import Toast from "app/Toast";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -59,7 +60,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Config() {
   const classes = useStyles();
 
-  const { data: constants } = useSWR<IConstant[]>("/constant");
+  const { data: constants } = useSWR<IConstant[]>(`/constant/${window.location.pathname.split("/")[2]}`);
 
   const [expanded, setExpanded] = React.useState<number | false>(0);
   const [value, setValue] = React.useState<string>("");
@@ -79,6 +80,11 @@ export default function Config() {
 
   useEffect(() => {
     if (constants && typeof expanded !== "boolean") {
+      if (constants[expanded].value) {
+        setValue(constants[expanded].value as string);
+      } else {
+        setValue("");
+      }
       setValues(constants[expanded].values);
     }
   }, [constants, expanded, refresh]);
@@ -86,6 +92,16 @@ export default function Config() {
   const handleChangeValues = async (id: string) => {
     try {
       await updateAConstant(id, { values });
+      Toast("updated successfully", "success");
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const handleChangeOneValue = async (id: string) => {
+    try {
+      await updateAConstant(id, { value });
+      Toast("updated successfully", "success");
     } catch (e) {
       console.log(e);
     }
@@ -107,18 +123,20 @@ export default function Config() {
           </AccordionSummary>
           <AccordionDetails className={classes.details}>
             <Box width={"100%"}>
-              <Formik initialValues={{}} onSubmit={handleSubmit}>
+              <Formik initialValues={{}} onSubmit={c.value ? () => {} : handleSubmit}>
                 {() => (
                   <Form>
                     <TextField
-                      label="New Value"
+                      label={c.value ? "Value" : "New Value"}
                       value={value}
                       onChange={(e) => setValue(e.target.value)}
                       style={{ marginRight: "5px" }}
                     />
-                    <Button type="submit" kind="add">
-                      ADD
-                    </Button>
+                    {!c.value && (
+                      <Button type="submit" kind="add">
+                        ADD
+                      </Button>
+                    )}
                   </Form>
                 )}
               </Formik>
@@ -138,7 +156,12 @@ export default function Config() {
             <Button size="small" onClick={() => setRefresh((p) => p + 1)}>
               Cancel
             </Button>
-            <Button size="small" color="primary" kind="edit" onClick={() => handleChangeValues(c.id)}>
+            <Button
+              size="small"
+              color="primary"
+              kind="edit"
+              onClick={c.value ? () => handleChangeOneValue(c.id) : () => handleChangeValues(c.id)}
+            >
               Save
             </Button>
           </AccordionActions>

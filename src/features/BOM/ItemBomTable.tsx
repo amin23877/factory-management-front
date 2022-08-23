@@ -63,7 +63,7 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
                     openRequestedSinglePopup({ url: `/panel/bom/${data.id}/parts` });
                   }
                 }}
-                style={{ cursor: "pointer" }}
+                style={{ cursor: lock ? "auto" : "pointer" }}
                 title="details"
               >
                 <NarrowIcon />
@@ -76,11 +76,11 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
                   }
                 }}
                 title="edit"
-                style={{ cursor: "pointer" }}
+                style={{ cursor: lock ? "auto" : "pointer" }}
               >
                 <SettingIcon />
               </div>
-              <div onClick={() => handleDelete(data.id)} title="delete" style={{ cursor: "pointer" }}>
+              <div onClick={() => handleDelete(data.id)} title="delete" style={{ cursor: lock ? "auto" : "pointer" }}>
                 <DeleteIcon />
               </div>
               <div>

@@ -13,13 +13,14 @@ import { camelCaseToRegular } from "logic/utils";
 
 const Dashboard = React.lazy(() => import("features/Items/Dashboard"));
 const Items = React.lazy(() => import("Router/Inventory/Items"));
+const Config = React.lazy(() => import("pages/Config"));
 
 export default function PanelRouter() {
   const portals = usePortal();
   const history = useHistory();
   const location = useLocation();
 
-  const tabs = ["dashboard", "items"];
+  const tabs = ["dashboard", "items", "config"];
 
   const [activeTab, setActiveTab] = useState(tabs.indexOf(location.pathname.split("/")[3]));
   const [tabText, setTabText] = useState(
@@ -88,6 +89,7 @@ export default function PanelRouter() {
           >
             <MyTab label="Dashboard" />
             <MyTab label="Items" />
+            <MyTab label="Config" />
           </MyTabs>
         </Popover>
       </Portal>
@@ -98,6 +100,7 @@ export default function PanelRouter() {
           </Route>
 
           <Route exact path="/panel/inventory/dashboard" component={Dashboard} />
+          <Route exact path="/panel/inventory/config" component={Config} />
           <Route path="/panel/inventory/items" component={Items} />
         </Switch>
       </Suspense>

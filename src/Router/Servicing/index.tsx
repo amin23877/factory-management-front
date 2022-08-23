@@ -19,13 +19,14 @@ const Tasks = React.lazy(() => import("features/FieldService/Tasks"));
 const Units = React.lazy(() => import("Router/Servicing/Units"));
 const UP = React.lazy(() => import("features/FieldService/UP"));
 const Vendors = React.lazy(() => import("Router/Purchasing/Vendors"));
+const Config = React.lazy(() => import("pages/Config"));
 
 export default function PanelRouter() {
   const portals = usePortal();
   const history = useHistory();
   const location = useLocation();
 
-  const tabs = ["dashboard", "fru", "services", "tickets", "tasks", "units", "rma", "up", "vendor", "option"];
+  const tabs = ["dashboard", "fru", "services", "tickets", "tasks", "units", "rma", "up", "vendor", "option", "config"];
 
   const [activeTab, setActiveTab] = useState(tabs.indexOf(location.pathname.split("/")[3]));
   const [tabText, setTabText] = useState(
@@ -102,6 +103,7 @@ export default function PanelRouter() {
             <MyTab label="UP" />
             <MyTab label="Vendor Tech" />
             <MyTab label="Options" />
+            <MyTab label="Config" />
           </MyTabs>
         </Popover>
       </Portal>
@@ -119,6 +121,8 @@ export default function PanelRouter() {
           <Route exact path="/panel/fieldservice/tasks" component={Tasks} />
           <Route path="/panel/fieldservice/units" component={Units} />
           <Route exact path="/panel/fieldservice/up" component={UP} />
+          <Route exact path="/panel/fieldservice/config" component={Config} />
+
           <Route path="/panel/fieldservice/vendor">
             <Vendors tech={true} />
           </Route>

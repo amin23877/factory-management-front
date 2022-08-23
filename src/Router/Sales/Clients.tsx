@@ -6,7 +6,6 @@ import {
   HelpOutlineRounded,
   ListAltRounded,
   ThumbDownAltRounded,
-  MenuRounded,
   DeleteRounded,
 } from "@material-ui/icons";
 
@@ -17,7 +16,6 @@ import List from "app/SideUtilityList";
 import { deleteClient } from "api/client";
 
 import AddCustomerModal from "features/Sales/Customer/Modals";
-import CustomerTypeModal from "features/Sales/Customer/CustomerType";
 import Confirm from "features/Modals/Confirm";
 import Details from "pages/Sales/Client/Details";
 import CustomerDataGrid from "features/Sales/Customer/DataGrid";
@@ -45,7 +43,6 @@ export default function Customers() {
   }, [location]);
 
   const [addCustomerModal, setAddCustomerModal] = useState(false);
-  const [cTypeModal, setCTypeModal] = useState(false);
   const [conf, setConf] = useState(false);
   const [req, setReq] = useState(false);
   const phone = useMediaQuery("(max-width:900px)");
@@ -72,7 +69,6 @@ export default function Customers() {
     <>
       <Confirm open={conf} onClose={() => setConf(false)} onConfirm={handleDelete} />
       <AddCustomerModal open={addCustomerModal} onClose={() => setAddCustomerModal(false)} />
-      <CustomerTypeModal open={cTypeModal} onClose={() => setCTypeModal(false)} />
 
       <Grid container style={{ marginRight: "1px" }}>
         <Grid item xs={12}>
@@ -150,11 +146,6 @@ export default function Customers() {
                   <ListItem>
                     <IconButton title="Add Client" onClick={() => setAddCustomerModal(true)}>
                       <AddRounded />
-                    </IconButton>
-                  </ListItem>
-                  <ListItem>
-                    <IconButton title="Add Type" onClick={() => setCTypeModal(true)}>
-                      <MenuRounded />
                     </IconButton>
                   </ListItem>
                   {activeTab === 3 && (
