@@ -41,18 +41,6 @@ export default function BOMModal({
     }
   };
 
-  const handleDelete = () => {
-    Confirm({
-      onConfirm: async () => {
-        try {
-          console.log("now you can delete bom");
-        } catch (error) {
-          console.log(error);
-        }
-      },
-    });
-  };
-
   return (
     <Dialog open={open} onClose={onClose} title={initialValues ? "Edit BOM" : "Add New BOM"} maxWidth="xs" fullWidth>
       <Box>
@@ -71,11 +59,6 @@ export default function BOMModal({
                 <Button kind={initialValues?.id ? "edit" : "add"} type="submit">
                   Submit
                 </Button>
-                {initialValues?.id && (
-                  <Button kind="delete" onClick={handleDelete}>
-                    Delete
-                  </Button>
-                )}
               </Box>
             </Form>
           )}

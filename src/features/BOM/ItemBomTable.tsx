@@ -4,8 +4,6 @@ import { useHistory } from "react-router-dom";
 
 import DataGrid from "app/NewDataGrid";
 
-import { useStyle } from "app/NewDataGrid";
-
 import Box from "@material-ui/core/Box";
 import { AddRounded } from "@material-ui/icons";
 
@@ -24,47 +22,29 @@ import BomRecordModal from "./BomRecordModal";
 import { useLock, LockButton, LockProvider } from "common/Lock";
 import Confirm from "common/Confirm";
 
-const defaultFilterValues = [
-  { name: "items", value: null, operator: "gt", type: "number" },
-  { name: "no", value: "", operator: "startsWith", type: "string" },
-  { name: "revDate", value: "", operator: "startsWith", type: "string" },
-  { name: "name", value: "", operator: "startsWith", type: "string" },
-  { name: "notes", value: "", operator: "startsWith", type: "string" },
-  {
-    name: "current",
-    value: "",
-    type: "boolean",
-    operator: "startsWith",
-  },
-];
-
 function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: IItem; mutateBoms: () => void }) {
   const [bomModal, setBomModal] = useState(false);
   const [bomRecordModal, setBomRecordModal] = useState(false);
   const [selectedBom, setSelectedBom] = useState<IBom>();
   const [refresh, setRefresh] = useState(1);
 
-  const classes = useStyle();
   const history = useHistory();
   const phone = useMediaQuery("(max-width:900px)");
   const { lock } = useLock();
 
-  const handleDelete = useCallback(
-    (id: string) => {
-      Confirm({
-        onConfirm: async () => {
-          try {
-            await deleteBom(id);
-          } catch (error) {
-            console.log(error);
-          } finally {
-            mutateBoms();
-          }
-        },
-      });
-    },
-    [mutateBoms]
-  );
+  const handleDelete = useCallback((id: string) => {
+    Confirm({
+      onConfirm: async () => {
+        try {
+          await deleteBom(id);
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setRefresh((p) => p + 1);
+        }
+      },
+    });
+  }, []);
 
   const columns = useMemo(
     () => [
@@ -83,6 +63,8 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
                     openRequestedSinglePopup({ url: `/panel/bom/${data.id}/parts` });
                   }
                 }}
+                style={{ cursor: "pointer" }}
+                title="details"
               >
                 <NarrowIcon />
               </div>
@@ -93,10 +75,12 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
                     setBomModal(true);
                   }
                 }}
+                title="edit"
+                style={{ cursor: "pointer" }}
               >
                 <SettingIcon />
               </div>
-              <div onClick={() => handleDelete(data.id)}>
+              <div onClick={() => handleDelete(data.id)} title="delete" style={{ cursor: "pointer" }}>
                 <DeleteIcon />
               </div>
               <div>
