@@ -31,7 +31,6 @@ import DocumentTab from "common/Document/Tab";
 import NoteTab from "common/Note/Tab";
 import PhotoTab from "common/PhotoTab";
 import LevelsTab from "common/Level/Tab";
-import { LockButton } from "common/Lock";
 import AuditTable from "common/Audit";
 import { AddRounded } from "@material-ui/icons";
 import ProcessTab from "../../../features/Engineering/Devices/Tabs/ProcessTab";
@@ -215,7 +214,6 @@ function DeviceDetails({
                     <Button style={{ display: "none", margin: "0 auto", width: "200px" }} kind="edit" type="submit">
                       Save
                     </Button>
-                    <LockButton />
                   </Box>
                 </BasePaper>
                 <BasePaper style={{ flex: 1, overflowY: "auto" }}>
@@ -356,14 +354,6 @@ function DeviceDetails({
                       <DataGrid
                         columns={unitHistoryCols}
                         url={`/unit?ItemId=${selectedRow.id}`}
-                        // rows={
-                        //   uniteHistory
-                        //     ? uniteHistory.map((item: any, i: any) => ({
-                        //         id: i,
-                        //         ...item,
-                        //       }))
-                        //     : []
-                        // }
                         onRowSelected={(d) => {
                           setSelectedUnit(d);
                           setUnitHistoryModal(true);

@@ -11,7 +11,7 @@ import BaseDataGrid from "app/BaseDataGrid";
 import { formatTimestampToDate } from "logic/date";
 import { INote } from "api/note";
 
-import { LockButton, LockProvider, useLock } from "../Lock";
+import { useLock } from "../Lock";
 
 const columns: GridColumns = [
   {
@@ -30,7 +30,7 @@ const columns: GridColumns = [
   { field: "note", headerName: "Note", flex: 1 },
 ];
 
-function NoteTabContent({ itemId, model }: { model: string; itemId: string }) {
+export default function NoteTab({ itemId, model }: { model: string; itemId: string }) {
   const { data } = useSWR(`/note/${model}/${itemId}`);
   const [addModal, setAddModal] = useState(false);
   const [selected, setSelected] = useState<INote>();
@@ -50,7 +50,6 @@ function NoteTabContent({ itemId, model }: { model: string; itemId: string }) {
           >
             Add
           </Button>
-          <LockButton />
         </Box>
         <BaseDataGrid
           cols={columns}
@@ -64,13 +63,5 @@ function NoteTabContent({ itemId, model }: { model: string; itemId: string }) {
         />
       </Box>
     </>
-  );
-}
-
-export default function NoteTab({ itemId, model }: { model: string; itemId: string }) {
-  return (
-    <LockProvider>
-      <NoteTabContent itemId={itemId} model={model} />
-    </LockProvider>
   );
 }

@@ -12,7 +12,7 @@ import { INote } from "api/note";
 import { formatTimestampToDate } from "logic/date";
 import { fileType } from "logic/fileType";
 
-import { LockButton, useLock, LockProvider } from "../Lock";
+import { useLock } from "../Lock";
 
 const columns: GridColumns = [
   {
@@ -24,7 +24,6 @@ const columns: GridColumns = [
   {
     field: "creator",
     headerName: "Creator",
-    // valueFormatter: (params) => params.row?.employee?.username,
     width: 120,
   },
   { field: "name", headerName: "Name", flex: 1 },
@@ -38,7 +37,7 @@ const columns: GridColumns = [
   },
 ];
 
-function DocumentTabContent({ itemId, model }: { model: string; itemId: string }) {
+export default function DocumentTab({ itemId, model }: { model: string; itemId: string }) {
   const { data } = useSWR(`/document/${model}/${itemId}`);
   const [addModal, setAddModal] = useState(false);
   const [selected, setSelected] = useState<INote>();
@@ -58,7 +57,6 @@ function DocumentTabContent({ itemId, model }: { model: string; itemId: string }
           >
             Add
           </Button>
-          <LockButton />
         </Box>
         <BaseDataGrid
           cols={columns}
@@ -70,13 +68,5 @@ function DocumentTabContent({ itemId, model }: { model: string; itemId: string }
         />
       </Box>
     </>
-  );
-}
-
-export default function DocumentTab({ itemId, model }: { model: string; itemId: string }) {
-  return (
-    <LockProvider>
-      <DocumentTabContent itemId={itemId} model={model} />
-    </LockProvider>
   );
 }

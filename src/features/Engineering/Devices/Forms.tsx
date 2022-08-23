@@ -5,7 +5,7 @@ import Button from "app/Button";
 import TextField from "app/TextField";
 import { addImage } from "api/items";
 import { host } from "host";
-import { useLock } from "common/Lock";
+import { LockButton, useLock } from "common/Lock";
 
 interface IForm {
   values: any;
@@ -84,6 +84,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr 1fr",
                 gap: 10,
+                alignItems: "center",
               }
             : {
                 margin: "0.5em 0",
@@ -92,6 +93,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
                 gridColumnEnd: "span 2",
                 display: "flex",
                 justifyContent: "space-between",
+                alignItems: "center",
               }
         }
       >
@@ -135,6 +137,7 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
           control={<Checkbox size="small" />}
           disabled={lock}
         />
+        <LockButton />
       </Paper>
       <TextField
         label="Device NO."

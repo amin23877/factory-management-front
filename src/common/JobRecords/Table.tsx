@@ -16,7 +16,7 @@ import { openRequestedSinglePopup } from "logic/window";
 import AddModal from "./AddModal";
 import Toast from "app/Toast";
 import Confirm from "common/Confirm";
-import { LockButton, useLock } from "common/Lock";
+import { useLock } from "common/Lock";
 
 const useStyle = makeStyles({
   root: {
@@ -116,7 +116,7 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
   const [expandedComponents, setExpandedComponents] = useState<string[]>([]);
   const [addModal, setAddModal] = useState(false);
   const [parent, setParent] = useState<{ _id: string; Component: string }>();
-  const { lock, setLock } = useLock();
+  const { lock } = useLock();
 
   const jobRecordsSorted = useMemo(
     () =>
@@ -268,16 +268,17 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
     <div style={{ display: "flex", height: "68vh", flexDirection: "column" }}>
       <AddModal parent={parent} unit={unit} open={addModal} onClose={() => setAddModal(false)} />
       <div style={{ display: "flex" }}>
-        <Button
-          disabled={lock}
-          fullWidth
-          variant="outlined"
-          startIcon={<AddRounded />}
-          onClick={() => setAddModal(true)}
-        >
-          Add
-        </Button>
-        <LockButton />
+        <Box mb={1}>
+          <Button
+            disabled={lock}
+            fullWidth
+            variant="outlined"
+            startIcon={<AddRounded />}
+            onClick={() => setAddModal(true)}
+          >
+            Add
+          </Button>
+        </Box>
       </div>
       <ReactDataGrid
         onEditComplete={({ columnId, value, data }: any) =>
@@ -290,6 +291,7 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
         rowClassName={({ data }) => getRowClassName({ row: data, jobRecords: jobRecordsSorted, unit })}
         defaultFilterValue={filterValues}
         pagination
+        rowHeight={25}
       />
     </div>
   );

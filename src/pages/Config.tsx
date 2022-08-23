@@ -13,7 +13,7 @@ import { Form, Formik } from "formik";
 import Button from "app/Button";
 import TextField from "app/TextField";
 
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 import { IConstant, updateAConstant } from "api/constant";
 import { camelCaseToRegular } from "logic/utils";
 

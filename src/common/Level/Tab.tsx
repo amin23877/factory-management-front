@@ -2,12 +2,12 @@ import React from "react";
 import { Box, Divider } from "@material-ui/core";
 
 import TextField from "app/TextField";
-import { LockButton, LockProvider, useLock } from "common/Lock";
+import { useLock } from "common/Lock";
 import AsyncCombo from "common/AsyncCombo";
 import useSWR from "swr";
 import { ILevel } from "api/level";
 
-function LevelsTabContent({
+export default function LevelsTab({
   itemType,
   values,
   handleChange,
@@ -42,7 +42,6 @@ function LevelsTabContent({
         onChange={(e, nv) => setFieldValue("clusterId", nv?.id)}
         value={values.clusterId}
       />
-      <LockButton />
       <Divider style={{ gridColumnEnd: "span 2" }} />
       {levels &&
         levels?.result.map((level) => (
@@ -58,31 +57,5 @@ function LevelsTabContent({
           />
         ))}
     </Box>
-  );
-}
-
-export default function LevelsTab({
-  values,
-  handleChange,
-  handleBlur,
-  setFieldValue,
-  itemType,
-}: {
-  values: any;
-  handleChange: any;
-  handleBlur: any;
-  setFieldValue: any;
-  itemType: string;
-}) {
-  return (
-    <LockProvider>
-      <LevelsTabContent
-        itemType={itemType}
-        values={values}
-        handleChange={handleChange}
-        handleBlur={handleBlur}
-        setFieldValue={setFieldValue}
-      />
-    </LockProvider>
   );
 }
