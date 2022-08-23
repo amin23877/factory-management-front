@@ -2,13 +2,10 @@ import React from "react";
 import { makeStyles, Box, FormControlLabel, Checkbox, Divider, Paper, useMediaQuery } from "@material-ui/core";
 
 import TextField from "app/TextField";
-import Button from "app/Button";
-import DateTimePicker from "app/DateTimePicker";
 
 import { formatTimestampToDate } from "logic/date";
 
 import { IItem } from "api/items";
-import LinkField from "app/Inputs/LinkFields";
 
 import ItemTypeCombo from "common/ItemTypeCombo";
 import { LockButton, useLock } from "common/Lock";
@@ -168,9 +165,9 @@ export const General = ({
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.bom}
+              checked={values.canBom}
               label="BOM"
-              name="bom"
+              name="canBom"
               onChange={handleChange}
               control={<Checkbox size="small" />}
               disabled={lock}

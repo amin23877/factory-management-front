@@ -35,6 +35,7 @@ export interface IItem {
   dontTrackQoh: boolean;
   dontOrderOnPOs: boolean;
   class: string;
+  canBom: boolean;
   // end detail section
 
   // start pricing section

@@ -11,8 +11,6 @@ import BaseDataGrid from "app/BaseDataGrid";
 
 import { editClient, IClient } from "api/client";
 
-import SOTable from "../../../features/Items/SOTable";
-
 import NoteTab from "common/Note/Tab";
 import DocumentTab from "common/Document/Tab";
 import ContactTab from "common/Contact/Tab";
@@ -160,7 +158,7 @@ export default function ClientDetails({ req, changeTab }: { req?: any; changeTab
                       onRowSelected={() => {}}
                     />
                   )}
-                  {activeTab === 3 && <SOTable rows={[]} />}
+                  {activeTab === 3 && <></>}
                   {activeTab === 5 && <NoteTab itemId={selectedRow.id} model="client" />}
                   {activeTab === 6 && <AddressTab model="client" itemId={selectedRow.id} />}
                   {activeTab === 7 && <AuditTable itemId={selectedRow.id} />}
