@@ -40,6 +40,14 @@ export type IPurchasePO = {
   poConf: string;
 };
 
+export type IRequiredPO = {
+  ItemId: string;
+  UnitId?: string;
+  SOId?: string;
+  qty: number;
+  expectedDate?: number;
+  type: string;
+};
 export interface IPurchasePOComplete extends IPurchasePO {
   lines: ILineItem[];
   lineServices: ILineService[];
@@ -55,6 +63,10 @@ export const createPurchasePOComplete = (data: IPurchasePOComplete) => {
 
 export const createPurchasePO = (data: IPurchasePO) => {
   return post(`/purchasePo`, data);
+};
+
+export const createRequiredPurchasePO = (data: IRequiredPO) => {
+  return post(`/requiredPo`, data);
 };
 
 export const updatePurchasePO = (id: string, data: IPurchasePO) => {
