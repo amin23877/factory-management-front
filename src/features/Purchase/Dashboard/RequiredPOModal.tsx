@@ -8,32 +8,62 @@ import Button from "app/Button";
 import { Box } from "@material-ui/core";
 import TextField from "app/TextField";
 import LinkSelect from "app/Inputs/LinkFields";
-import { createRequiredPurchasePO, IRequiredPO } from "api/purchasePO";
+import { createRequiredPurchasePO, deleteRequiredPO, IRequiredPO, updateRequiredPO } from "api/purchasePO";
 import DateTimePicker from "app/DateTimePicker";
+import Confirm from "common/Confirm";
 
 export default function AddRequiredPOModal({
   open,
   onClose,
   setRefresh,
+  selectedRPO,
 }: {
   open: boolean;
   onClose: () => void;
   setRefresh: any;
+  selectedRPO?: IRequiredPO;
 }) {
   const handleSubmit = async (data: any) => {
     try {
-      data = { ...data, type: "assetBased" };
-      await createRequiredPurchasePO(data);
-      Toast("created successfully", "success");
-      setRefresh((p: number) => p + 1);
+      if (selectedRPO) {
+        let time = new Date(data.expectedDate).getTime();
+        data = { ...data, type: "assetBased", expectedDate: time };
+        await updateRequiredPO(selectedRPO.id, data);
+        Toast("updated successfully", "success");
+        setRefresh((p: number) => p + 1);
+        onClose();
+      } else {
+        let time = new Date(data.expectedDate).getTime();
+        data = { ...data, type: "assetBased", expectedDate: time };
+        await createRequiredPurchasePO(data);
+        Toast("created successfully", "success");
+        setRefresh((p: number) => p + 1);
+        onClose();
+      }
     } catch (err) {
       console.log(err);
     }
   };
+  const handleDelete = async () => {
+    Confirm({
+      onConfirm: async () => {
+        try {
+          if (selectedRPO) {
+            await deleteRequiredPO(selectedRPO.id);
+            Toast("Deleted successfully", "success");
+            setRefresh((p: number) => p + 1);
+            onClose();
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    });
+  };
 
   return (
     <Dialog open={open} onClose={onClose} title="Add New Required PO">
-      <Formik initialValues={{} as IRequiredPO} onSubmit={handleSubmit}>
+      <Formik initialValues={selectedRPO ? selectedRPO : ({} as IRequiredPO)} onSubmit={handleSubmit}>
         {({ values, setFieldValue, getFieldProps }) => (
           <Form>
             <Box display="grid" gridTemplateColumns="1fr" style={{ gap: 10 }}>
@@ -61,9 +91,14 @@ export default function AddRequiredPOModal({
               />
             </Box>
             <Box display={"flex"} justifyContent="center" mt={5} width="100%">
-              <Button type="submit" kind="add">
-                Submit
+              <Button type="submit" kind={selectedRPO ? "edit" : "add"}>
+                {selectedRPO ? "save" : "Submit"}
               </Button>
+              {selectedRPO && (
+                <Button kind={"delete"} onClick={handleDelete}>
+                  Delete
+                </Button>
+              )}
             </Box>
           </Form>
         )}

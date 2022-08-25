@@ -41,6 +41,7 @@ export type IPurchasePO = {
 };
 
 export type IRequiredPO = {
+  id: string;
   ItemId: string;
   UnitId?: string;
   SOId?: string;
@@ -67,6 +68,12 @@ export const createPurchasePO = (data: IPurchasePO) => {
 
 export const createRequiredPurchasePO = (data: IRequiredPO) => {
   return post(`/requiredPo`, data);
+};
+export const updateRequiredPO = (id: string, data: IPurchasePO) => {
+  return patch(`/requiredPo/${id}`, data);
+};
+export const deleteRequiredPO = (id: string) => {
+  return delete_(`/requiredPo/${id}`);
 };
 
 export const updatePurchasePO = (id: string, data: IPurchasePO) => {
