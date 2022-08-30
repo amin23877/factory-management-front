@@ -24,13 +24,13 @@ import "@inovua/reactdatagrid-community/index.css";
 import NumberFilter from "@inovua/reactdatagrid-community/NumberFilter";
 import BoolFilter from "@inovua/reactdatagrid-community/BoolFilter";
 import DateFilter from "@inovua/reactdatagrid-community/DateFilter";
+import { TypeOnSelectionChangeArg } from "@inovua/reactdatagrid-community/types/TypeDataGridProps";
+import { TypeEditInfo } from "@inovua/reactdatagrid-community/types";
 
 import { get } from "../api";
 
 import { formatTimestampToDate } from "../logic/date";
 import { ParameterType } from "../logic/utils";
-import { TypeOnSelectionChangeArg } from "@inovua/reactdatagrid-community/types/TypeDataGridProps";
-import { TypeEditInfo } from "@inovua/reactdatagrid-community/types";
 
 window.moment = moment;
 
@@ -163,6 +163,7 @@ function NewDataGrid({
   editable,
   rowHeight,
   setUrlFilters,
+  selected,
 }: {
   onRowSelected: (row: any) => void;
   columns: any[];
@@ -177,6 +178,7 @@ function NewDataGrid({
   onDataFetched?: (data: any) => void;
   onEditComplete?: (data: TypeEditInfo) => void;
   setUrlFilters?: boolean;
+  selected?: any;
 }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [columnsState, setColumnsState] = useState<any[]>(columns.map((c) => ({ ...c, visible: true })));
@@ -429,6 +431,7 @@ function NewDataGrid({
         filterTypes={filterTypes}
         onEditComplete={onEditComplete}
         editable={editable}
+        selected={selected}
       />
     </Box>
   );

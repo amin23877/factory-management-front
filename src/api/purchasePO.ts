@@ -2,6 +2,7 @@ import { get, delete_, patch, post } from ".";
 
 import { ILineItem } from "./lineItem";
 import { ILineService } from "./lineService";
+import { ISO } from "./so";
 
 export type IPurchasePO = {
   id: string;
@@ -44,11 +45,20 @@ export type IRequiredPO = {
   id: string;
   ItemId: string;
   UnitId?: string;
-  SOId?: string;
+  SOId?: ISO;
   qty: number;
   expectedDate?: number;
   type: string;
 };
+
+export type IRequiredPOLineItem = {
+  requiredPoId: string;
+  quantity: number;
+  cost: number;
+  tax: boolean;
+  notes: string;
+};
+
 export interface IPurchasePOComplete extends IPurchasePO {
   lines: ILineItem[];
   lineServices: ILineService[];
@@ -64,16 +74,6 @@ export const createPurchasePOComplete = (data: IPurchasePOComplete) => {
 
 export const createPurchasePO = (data: IPurchasePO) => {
   return post(`/purchasePo`, data);
-};
-
-export const createRequiredPurchasePO = (data: IRequiredPO) => {
-  return post(`/requiredPo`, data);
-};
-export const updateRequiredPO = (id: string, data: IPurchasePO) => {
-  return patch(`/requiredPo/${id}`, data);
-};
-export const deleteRequiredPO = (id: string) => {
-  return delete_(`/requiredPo/${id}`);
 };
 
 export const updatePurchasePO = (id: string, data: IPurchasePO) => {
@@ -102,4 +102,18 @@ export const updatePurchasePOLine = (id: string, data: ILineItem) => {
 
 export const deletePurchasePOLine = (id: string) => {
   return delete_(`/lineitem/${id}`);
+};
+
+export const createRequiredPurchasePO = (data: IRequiredPO) => {
+  return post(`/requiredPo`, data);
+};
+export const updateRequiredPO = (id: string, data: IPurchasePO) => {
+  return patch(`/requiredPo/${id}`, data);
+};
+export const deleteRequiredPO = (id: string) => {
+  return delete_(`/requiredPo/${id}`);
+};
+
+export const convertRequiredPO = (data: any) => {
+  return post(`/requiredPo/convert`, data);
 };

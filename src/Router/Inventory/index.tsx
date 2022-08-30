@@ -98,7 +98,6 @@ export default function PanelRouter() {
           <Route exact path="/panel/inventory">
             <Redirect to="/panel/inventory/items" />
           </Route>
-
           <Route exact path="/panel/inventory/dashboard" component={Dashboard} />
           <Route exact path="/panel/inventory/config" component={Config} />
           <Route path="/panel/inventory/items" component={Items} />

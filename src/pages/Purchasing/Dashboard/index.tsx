@@ -1,19 +1,32 @@
 import React, { useState } from "react";
-import { Box, IconButton, ListItem, Tab, Tabs } from "@material-ui/core";
+import { Box, IconButton, ListItem, Tab, Tabs, Tooltip } from "@material-ui/core";
 import { AddRounded } from "@material-ui/icons";
 
 import { BasePaper } from "app/Paper";
 import NewDataGrid from "app/NewDataGrid";
 import List from "app/SideUtilityList";
-import RequiredPOModal from "./RequiredPOModal";
+import RequiredPOModal from "../../../features/Purchase/Dashboard/RequiredPOModal";
 
 const cols = [
-  { name: "so", header: "SO NO.", width: 120 },
-  { name: "unit", header: "Unit NO.", width: 120 },
-  { name: "itemNo", header: "Item NO.", type: "string", width: 120, render: ({ data }: any) => data?.data?.no },
-  { name: "type", header: "Type", width: 120 },
-  { name: "qty", header: "QTY", width: 120, type: "number" },
+  { name: "no", header: "NO.", width: 120 },
+  { name: "so", header: "Related SO", width: 120, render: ({ data }: any) => data?.SOId?.number },
+  { name: "unit", header: "Related Unit", width: 120, render: ({ data }: any) => data?.UnitId?.number },
+  { name: "itemNo", header: "Item NO.", type: "string", width: 120, render: ({ data }: any) => data?.ItemId?.no },
+  {
+    name: "itemNo",
+    header: "Item Name",
+    type: "string",
+    width: 120,
+    render: ({ data }: any) => (
+      <Tooltip title={data?.ItemId?.name}>
+        <span>{data?.ItemId?.name}</span>
+      </Tooltip>
+    ),
+    defaultFlex: 1,
+  },
+  { name: "qty", header: "QTY", width: 80, type: "number" },
   { name: "expectedDate", header: "Expected Date", width: 120, type: "date" },
+  { name: "type", header: "Type", width: 120 },
 ];
 
 export default function Dashboard() {
@@ -63,6 +76,11 @@ export default function Dashboard() {
             setEditRPO(true);
           }}
           refresh={refresh}
+          initParams={
+            {
+              // used: false,
+            }
+          }
         />
       )}
       {/* {activeTab === 1 && (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Formik } from "formik";
 
 import Dialog from "app/Dialog";
@@ -11,6 +11,7 @@ import LinkSelect from "app/Inputs/LinkFields";
 import { createRequiredPurchasePO, deleteRequiredPO, IRequiredPO, updateRequiredPO } from "api/purchasePO";
 import DateTimePicker from "app/DateTimePicker";
 import Confirm from "common/Confirm";
+import AddPOModal from "./AddPOModal";
 
 export default function AddRequiredPOModal({
   open,
@@ -23,6 +24,8 @@ export default function AddRequiredPOModal({
   setRefresh: any;
   selectedRPO?: IRequiredPO;
 }) {
+  const [addPo, setAddPO] = useState(false);
+
   const handleSubmit = async (data: any) => {
     try {
       if (selectedRPO) {
@@ -62,47 +65,63 @@ export default function AddRequiredPOModal({
   };
 
   return (
-    <Dialog open={open} onClose={onClose} title="Add New Required PO">
-      <Formik initialValues={selectedRPO ? selectedRPO : ({} as IRequiredPO)} onSubmit={handleSubmit}>
-        {({ values, setFieldValue, getFieldProps }) => (
-          <Form>
-            <Box display="grid" gridTemplateColumns="1fr" style={{ gap: 10 }}>
-              <LinkSelect
-                placeholder="Item"
-                value={values.ItemId}
-                choseItem={values.ItemId}
-                label="Item"
-                path="/item"
-                filterLabel="no"
-                getOptionList={(resp) => resp?.result}
-                getOptionLabel={(item) => item?.no || item?.name || "No-Name"}
-                getOptionValue={(item) => item?.id}
-                onChange={(e, nv) => {
-                  setFieldValue("ItemId", nv.id);
-                }}
-                url="/panel/engineering"
-              />
-              <TextField type="number" label="Quantity" {...getFieldProps("qty")} required />
-              <DateTimePicker
-                {...getFieldProps("expectedDate")}
-                onChange={(d) => setFieldValue("expectedDate", d?.toString())}
-                size="small"
-                label="Expected Date"
-              />
-            </Box>
-            <Box display={"flex"} justifyContent="center" mt={5} width="100%">
-              <Button type="submit" kind={selectedRPO ? "edit" : "add"}>
-                {selectedRPO ? "save" : "Submit"}
-              </Button>
-              {selectedRPO && (
-                <Button kind={"delete"} onClick={handleDelete}>
-                  Delete
+    <>
+      {selectedRPO && <AddPOModal open={addPo} onClose={() => setAddPO(false)} selectedRPO={selectedRPO} />}
+      <Dialog open={open} onClose={onClose} title="Add New Required PO">
+        <Formik initialValues={selectedRPO ? selectedRPO : ({} as IRequiredPO)} onSubmit={handleSubmit}>
+          {({ values, setFieldValue, getFieldProps }) => (
+            <Form>
+              <Box display="grid" gridTemplateColumns="1fr" style={{ gap: 10 }}>
+                <LinkSelect
+                  placeholder="Item"
+                  value={values.ItemId}
+                  choseItem={values.ItemId}
+                  label="Item"
+                  path="/item"
+                  filterLabel="no"
+                  getOptionList={(resp) => resp?.result}
+                  getOptionLabel={(item) => item?.no || item?.name || "No-Name"}
+                  getOptionValue={(item) => item?.id}
+                  onChange={(e, nv) => {
+                    setFieldValue("ItemId", nv.id);
+                  }}
+                  url="/panel/engineering"
+                />
+                <TextField type="number" label="Quantity" {...getFieldProps("qty")} required />
+                <DateTimePicker
+                  {...getFieldProps("expectedDate")}
+                  onChange={(d) => setFieldValue("expectedDate", d?.toString())}
+                  size="small"
+                  label="Expected Date"
+                />
+              </Box>
+              <Box display={"flex"} justifyContent="center" mt={5} width="100%" gridGap={"10px"}>
+                <Button type="submit" kind={selectedRPO ? "edit" : "add"}>
+                  {selectedRPO ? "save" : "Submit"}
                 </Button>
+                {selectedRPO && (
+                  <Button kind={"delete"} onClick={handleDelete}>
+                    Delete
+                  </Button>
+                )}
+              </Box>
+              {selectedRPO && (
+                <Box mt={5}>
+                  <Button
+                    kind={"add"}
+                    onClick={() => {
+                      setAddPO(true);
+                    }}
+                    style={{ width: "100%" }}
+                  >
+                    release a po with this item
+                  </Button>
+                </Box>
               )}
-            </Box>
-          </Form>
-        )}
-      </Formik>
-    </Dialog>
+            </Form>
+          )}
+        </Formik>
+      </Dialog>
+    </>
   );
 }

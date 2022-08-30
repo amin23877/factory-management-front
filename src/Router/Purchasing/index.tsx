@@ -12,7 +12,7 @@ import { MyTabs, MyTab } from "app/Tabs";
 
 import { camelCaseToRegular } from "logic/utils";
 
-const Dashboard = React.lazy(() => import("features/Purchase/Dashboard"));
+const Dashboard = React.lazy(() => import("pages/Purchasing/Dashboard"));
 const PurchasePO = React.lazy(() => import("Router/Purchasing/Purchase"));
 const Vendors = React.lazy(() => import("Router/Purchasing/Vendors"));
 const PurchaseQuote = React.lazy(() => import("Router/Purchasing/Quote"));
