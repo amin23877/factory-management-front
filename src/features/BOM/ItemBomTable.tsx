@@ -32,11 +32,12 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
   const phone = useMediaQuery("(max-width:900px)");
   const { lock } = useLock();
 
-  const handleDelete = useCallback((id: string) => {
+  const handleDelete = useCallback((data: IBom) => {
     Confirm({
+      text: `you are going to delete a BOM with name ${data.name} !`,
       onConfirm: async () => {
         try {
-          await deleteBom(id);
+          await deleteBom(data.id);
         } catch (error) {
           console.log(error);
         } finally {
@@ -80,7 +81,7 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
               >
                 <SettingIcon />
               </div>
-              <div onClick={() => handleDelete(data.id)} title="delete" style={{ cursor: lock ? "auto" : "pointer" }}>
+              <div onClick={() => handleDelete(data)} title="delete" style={{ cursor: lock ? "auto" : "pointer" }}>
                 <DeleteIcon />
               </div>
               <div>

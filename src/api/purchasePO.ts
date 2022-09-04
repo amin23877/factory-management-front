@@ -1,4 +1,5 @@
 import { get, delete_, patch, post } from ".";
+import { IItem } from "./items";
 
 import { ILineItem } from "./lineItem";
 import { ILineService } from "./lineService";
@@ -43,7 +44,7 @@ export type IPurchasePO = {
 
 export type IRequiredPO = {
   id: string;
-  ItemId: string;
+  ItemId: IItem;
   UnitId?: string;
   SOId?: ISO;
   qty: number;

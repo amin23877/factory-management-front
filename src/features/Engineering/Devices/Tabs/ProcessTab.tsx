@@ -28,6 +28,7 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
   const handleDelete = useCallback(
     (id: string) => {
       Confirm({
+        text: `you are going to delete a Process!`,
         onConfirm: async () => {
           try {
             await deleteProcess(id);

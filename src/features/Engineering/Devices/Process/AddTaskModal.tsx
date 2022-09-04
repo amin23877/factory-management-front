@@ -75,11 +75,12 @@ export default function AddTaskModal({
 
   const handleDelete = (i: ITask) => {
     Confirm({
+      text: `you are going to delete a Task with title ${i.TaskId?.title}`,
       onConfirm: async () => {
         try {
           if (ProcessId) {
             await deleteSubProcess(ProcessId, i?.majorStep, i?.minorStep);
-            Toast("Process deleted", "success");
+            Toast("task deleted", "success");
           }
         } catch (error) {
           console.log(error);

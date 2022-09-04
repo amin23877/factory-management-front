@@ -41,6 +41,7 @@ function Index() {
 
   const handleDelete = () => {
     Confirm({
+      text: `you are going to delete a Task!`,
       onConfirm: async () => {
         try {
           if (taskId) {

@@ -64,7 +64,7 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
 
   const handleDelete = () => {
     Confirm({
-      text: "Delete This Level ? ",
+      text: `You are going to delete a level with name ${values.name}!`,
       onConfirm: async () => {
         try {
           if (values?.id) {

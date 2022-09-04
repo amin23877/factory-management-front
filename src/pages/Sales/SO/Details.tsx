@@ -67,7 +67,7 @@ export default function EditTab({
       {
         field: "itemNo",
         headerName: "Part Number",
-        valueFormatter: (r) => (
+        renderCell: (r) => (
           <Tooltip title={r.row?.ItemId?.no || r.row?.text || r?.row?.itemNo}>
             <span>{r.row?.ItemId?.no || r.row?.text || r?.row?.itemNo}</span>
           </Tooltip>
@@ -77,7 +77,7 @@ export default function EditTab({
       {
         field: "description",
         headerName: "Description",
-        valueFormatter: (r) => (
+        renderCell: (r) => (
           <Tooltip title={r.row?.ItemId?.description}>
             <span>{r.row?.ItemId?.description}</span>
           </Tooltip>
@@ -90,7 +90,7 @@ export default function EditTab({
       {
         field: "total",
         headerName: "Total",
-        valueFormatter: (r) => (
+        renderCell: (r) => (
           <Tooltip title={Number(r.row?.price) * Number(r.row?.qty)}>
             <span>{Number(r.row?.price) * Number(r.row?.qty)}</span>
           </Tooltip>

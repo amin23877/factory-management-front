@@ -49,6 +49,7 @@ export default function AddRequiredPOModal({
   };
   const handleDelete = async () => {
     Confirm({
+      text: `you are going to delete an Item Requirement with number ${selectedRPO?.ItemId?.no} !`,
       onConfirm: async () => {
         try {
           if (selectedRPO) {

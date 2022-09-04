@@ -29,11 +29,12 @@ function Parts() {
   const history = useHistory();
   const { lock } = useLock();
 
-  const handleDelete = useCallback((id: string) => {
+  const handleDelete = useCallback((data: any) => {
     Confirm({
+      text: `you are going to delete a BOM Record with number ${data?.ItemId?.no} !`,
       onConfirm: async () => {
         try {
-          await deleteBomRecord(id);
+          await deleteBomRecord(data.id);
         } catch (error) {
           console.log(error);
         } finally {
@@ -100,7 +101,7 @@ function Parts() {
               <div
                 onClick={() => {
                   if (!lock) {
-                    handleDelete(data.id);
+                    handleDelete(data);
                   }
                 }}
               >

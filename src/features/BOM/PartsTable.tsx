@@ -20,11 +20,12 @@ export default function PartsTable({ bomId, onEdit }: { bomId: string; onEdit?: 
   const history = useHistory();
   const { lock } = useLock();
 
-  const handleDelete = useCallback((id: string) => {
+  const handleDelete = useCallback((data: any) => {
     Confirm({
+      text: `you are going to delete a record with number ${data.ItemId?.no} !`,
       onConfirm: async () => {
         try {
-          await deleteBomRecord(id);
+          await deleteBomRecord(data.id);
         } catch (error) {
           console.log(error);
         } finally {
@@ -62,7 +63,7 @@ export default function PartsTable({ bomId, onEdit }: { bomId: string; onEdit?: 
                 style={{ margin: "0 10px" }}
                 onClick={() => {
                   if (!lock) {
-                    handleDelete(data.id);
+                    handleDelete(data);
                   }
                 }}
               >

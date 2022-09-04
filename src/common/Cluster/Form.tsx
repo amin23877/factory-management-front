@@ -36,6 +36,7 @@ export default function ClusterForm({
 
   const handleDelete = () => {
     Confirm({
+      text: `you are going to delete a Cluster with name ${values.deviceName} !`,
       onConfirm: async () => {
         try {
           if (values && values.id) {

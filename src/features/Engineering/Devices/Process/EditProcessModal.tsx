@@ -30,6 +30,7 @@ export default function EditProcessModal({ open, onClose, ItemId, process, type 
 
   const handleDelete = () => {
     Confirm({
+      text: `you are going to delete a Process!`,
       onConfirm: async () => {
         try {
           if (process && process.id) {

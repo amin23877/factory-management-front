@@ -4,9 +4,11 @@ export default function Confirm({ text, onConfirm }: { text?: string; onConfirm:
   Swal.fire({
     title: "Are you sure?",
     text,
-    showDenyButton: true,
-    confirmButtonText: "Yes",
-    denyButtonText: "No",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Yes, delete it!",
   })
     .then((result) => {
       if (result.isConfirmed) {

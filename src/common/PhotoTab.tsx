@@ -36,6 +36,7 @@ function PhotoTabContent({ id, model }: { model: string; id: string }) {
 
   const handleDeletePhoto = async (id: string) => {
     Confirm({
+      text: `you are going to delete a Photo !`,
       onConfirm: async () => {
         try {
           await deletePhoto(id);
@@ -88,7 +89,7 @@ function PhotoTabContent({ id, model }: { model: string; id: string }) {
             justifyContent: "center",
           }}
         >
-          <UploadButton onChange={handleFileChange} accept="image/*" disabled={lock} />
+          <UploadButton onChange={handleFileChange} accept="image/*" />
         </div>
       </Box>
     </>

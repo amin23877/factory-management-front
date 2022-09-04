@@ -36,7 +36,7 @@ export default function LevelsTab({
         filterBy="clusterValue"
         getOptionLabel={(o) => o?.clusterValue || "No-Name"}
         getOptionSelected={(o, v) => o?.id === v?.id}
-        url={`/cluster?class=${itemType}`}
+        url={`/cluster`}
         disabled={lock}
         label="Cluster Value"
         onChange={(e, nv) => setFieldValue("clusterId", nv?.id)}

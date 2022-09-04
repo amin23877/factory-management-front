@@ -13,7 +13,7 @@ export interface IProcess {
 }
 export interface ITask {
   id: string;
-  TaskId: ITaskList | string;
+  TaskId: ITaskList;
   majorStep: number;
   minorStep: number;
 }

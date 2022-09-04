@@ -33,11 +33,12 @@ function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
     }
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (data: any) => {
     Confirm({
+      text: `you are going to delete a Level with name ${splitLevelName(data.name)} !`,
       onConfirm: async () => {
         try {
-          await deleteLevel(id);
+          await deleteLevel(data.id);
         } catch (error) {
           console.log(error);
         } finally {
@@ -68,7 +69,7 @@ function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
         editable: false,
         render: ({ data }: any) => (
           <div>
-            <DataGridAction icon="delete" onClick={() => data.id && handleDelete(data.id)} activeColor="red" />
+            <DataGridAction icon="delete" onClick={() => data.id && handleDelete(data)} activeColor="red" />
           </div>
         ),
       },

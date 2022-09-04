@@ -179,12 +179,12 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
   };
 
   const handleDelete = useCallback(
-    (id: string) => {
+    (data: any) => {
       Confirm({
-        text: "If you delete this record, all of it's children will be removed too",
+        text: `You are going to delete a record with number ${data.Component}. If you delete this record, all of it's children will be removed too !`,
         onConfirm: async () => {
           try {
-            await deleteJobRecord(id);
+            await deleteJobRecord(data._id);
           } catch (error) {
             console.log(error);
           } finally {
@@ -254,7 +254,7 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
         render: ({ data }: any) => (
           <Box display="flex" alignItems="center" style={{ gap: 4 }}>
             <p style={{ flexGrow: 1 }}>{data?.note}</p>
-            <div onClick={() => handleDelete(data._id)}>
+            <div onClick={() => handleDelete(data)}>
               <ClearRounded style={{ fontSize: "1.8rem", color: lock ? "#ccc" : "#e71414", cursor: "pointer" }} />
             </div>
           </Box>

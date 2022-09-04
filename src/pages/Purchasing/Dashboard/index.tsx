@@ -7,7 +7,7 @@ import NewDataGrid from "app/NewDataGrid";
 import List from "app/SideUtilityList";
 import RequiredPOModal from "../../../features/Purchase/Dashboard/RequiredPOModal";
 
-const cols = [
+const requiredCols = [
   { name: "no", header: "NO.", width: 120 },
   { name: "so", header: "Related SO", width: 120, render: ({ data }: any) => data?.SOId?.number },
   { name: "unit", header: "Related Unit", width: 120, render: ({ data }: any) => data?.UnitId?.number },
@@ -27,6 +27,26 @@ const cols = [
   { name: "qty", header: "QTY", width: 80, type: "number" },
   { name: "expectedDate", header: "Expected Date", width: 120, type: "date" },
   { name: "type", header: "Type", width: 120 },
+];
+
+const receivedCols = [
+  { name: "itemNo", header: "Item NO.", type: "string", width: 120, render: ({ data }: any) => data?.ItemId?.no },
+  {
+    name: "itemName",
+    header: "Item Name",
+    type: "string",
+    width: 120,
+    render: ({ data }: any) => (
+      <Tooltip title={data?.ItemId?.name}>
+        <span>{data?.ItemId?.name}</span>
+      </Tooltip>
+    ),
+    defaultFlex: 1,
+  },
+  { name: "unit", header: "Related Unit", width: 120, render: ({ data }: any) => data?.UnitId?.number },
+  { name: "orderedQuantity", header: "Ordered QTY", width: 120, type: "number" },
+  { name: "receivedQuantity", header: "Received QTY", width: 120, type: "number" },
+  { name: "dateExpected", header: "Expected Date", width: 120, type: "date" },
 ];
 
 export default function Dashboard() {
@@ -69,7 +89,7 @@ export default function Dashboard() {
 
       {tab === 0 && (
         <NewDataGrid
-          columns={cols}
+          columns={requiredCols}
           url="/requiredPo"
           onRowSelected={(d) => {
             setSelectedRPO(d);
@@ -83,9 +103,7 @@ export default function Dashboard() {
           }
         />
       )}
-      {/* {activeTab === 1 && (
-        <NewDataGrid columns={cols} url="/" onRowSelected={() => {}} />
-      )} */}
+      {tab === 1 && <NewDataGrid columns={receivedCols} url="/receive" onRowSelected={() => {}} />}
     </BasePaper>
   );
 }

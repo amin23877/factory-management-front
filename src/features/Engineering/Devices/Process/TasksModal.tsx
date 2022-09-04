@@ -34,6 +34,7 @@ export default function TasksModal({ open, onClose, process, type }: IEditTaskMo
 
   const handleDelete = (i: ITask) => {
     Confirm({
+      text: `you are going to delete a Task with title ${i.TaskId.title} !`,
       onConfirm: async () => {
         try {
           await deleteSubProcess(process.id, i?.majorStep, i?.minorStep);
