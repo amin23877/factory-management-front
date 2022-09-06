@@ -4,9 +4,9 @@ import useSWR from "swr";
 
 import TextField from "app/TextField";
 import AsyncCombo from "common/AsyncCombo";
-import { LockButton, LockProvider, useLock } from "common/Lock";
+import { useLock } from "common/Lock";
 
-function EntitiesContent({
+export default function Entities({
   handleChange,
   handleBlur,
   values,
@@ -32,7 +32,6 @@ function EntitiesContent({
       mt="5px"
     >
       <Box display="flex" flexDirection="column" style={{ gap: 10 }} my={1}>
-        <LockButton />
         <AsyncCombo
           label="Rep / Agency"
           filterBy="name"
@@ -134,28 +133,5 @@ function EntitiesContent({
         <TextField disabled={lock} label="24H.C. Email" value={values.twentyFourEmail} />
       </Box>
     </Box>
-  );
-}
-
-export default function Entities({
-  handleChange,
-  handleBlur,
-  values,
-  setFieldValue,
-}: {
-  values: any;
-  handleChange: (a: any) => void;
-  handleBlur: (a: any) => void;
-  setFieldValue: any;
-}) {
-  return (
-    <LockProvider>
-      <EntitiesContent
-        values={values}
-        handleChange={handleChange}
-        handleBlur={handleBlur}
-        setFieldValue={setFieldValue}
-      />
-    </LockProvider>
   );
 }

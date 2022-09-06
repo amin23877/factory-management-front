@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Box } from "@material-ui/core";
+import { Box, Tooltip } from "@material-ui/core";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
@@ -128,7 +128,7 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
             setOpen(true);
           }}
         />
-        <Box display="flex" style={{ gap: 5, width: "100%" }}>
+        <Box display="flex" style={{ gap: 5, width: "100%" }} alignItems="center">
           <Button kind={values && values.id ? "edit" : "add"} type="submit" style={{ flex: 1 }} disabled={lock}>
             save
           </Button>
@@ -173,12 +173,24 @@ const LevelsDataGrid = React.memo(
   }) => {
     const cols = useMemo(
       () => [
-        { name: "name", flex: 1, render: ({ data }: any) => data.name.split("__")[0] },
+        {
+          name: "name",
+          flex: 1,
+          render: ({ data }: any) => (
+            <Tooltip title={data.name.split("__")[0]}>
+              <span>{data.name.split("__")[0]}</span>
+            </Tooltip>
+          ),
+        },
         {
           name: "clusterValueRef",
           flex: 1,
           header: "Cluster Value",
-          render: ({ data }: any) => data?.clusterId?.clusterValue,
+          render: ({ data }: any) => (
+            <Tooltip title={data?.clusterId?.clusterValue}>
+              <span>{data?.clusterId?.clusterValue}</span>
+            </Tooltip>
+          ),
         },
         {
           name: "valid",
@@ -187,7 +199,11 @@ const LevelsDataGrid = React.memo(
           render: ({ data }: any) => {
             let temp = data.valid;
             temp = temp.map((val: IVals) => val.value + " " + val.uom);
-            return temp.join(",");
+            return (
+              <Tooltip title={temp.join(",")}>
+                <span>{temp.join(",")}</span>
+              </Tooltip>
+            );
           },
         },
       ],

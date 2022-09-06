@@ -1,5 +1,5 @@
 import { Box, useMediaQuery } from "@material-ui/core";
-import { LockButton, LockProvider, useLock } from "common/Lock";
+import { useLock } from "common/Lock";
 import React from "react";
 import TextField from "app/TextField";
 import Button from "app/Button";
@@ -12,7 +12,13 @@ interface IQForm {
   getFieldProps: any;
   setFieldValue: any;
 }
-export const Quantity = ({ handleManualCount, values, handleUpdateQuantity, getFieldProps, setFieldValue }: IQForm) => {
+export default function QuantityTab({
+  handleManualCount,
+  values,
+  handleUpdateQuantity,
+  getFieldProps,
+  setFieldValue,
+}: IQForm) {
   const phone = useMediaQuery("(max-width:900px)");
   const { lock } = useLock();
   return (
@@ -23,7 +29,6 @@ export const Quantity = ({ handleManualCount, values, handleUpdateQuantity, getF
       gridRowGap={10}
       gridColumnGap={10}
     >
-      <LockButton />
       <TextField
         label="last Used In Bom"
         value={values.lastUsedInJOB}
@@ -134,24 +139,5 @@ export const Quantity = ({ handleManualCount, values, handleUpdateQuantity, getF
         )}
       </div>
     </Box>
-  );
-};
-export default function QuantityTab({
-  handleManualCount,
-  values,
-  handleUpdateQuantity,
-  getFieldProps,
-  setFieldValue,
-}: IQForm) {
-  return (
-    <LockProvider>
-      <Quantity
-        handleManualCount={handleManualCount}
-        handleUpdateQuantity={handleUpdateQuantity}
-        getFieldProps={getFieldProps}
-        values={values}
-        setFieldValue={setFieldValue}
-      />
-    </LockProvider>
   );
 }

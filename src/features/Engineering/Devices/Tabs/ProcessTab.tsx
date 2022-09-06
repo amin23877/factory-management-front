@@ -59,6 +59,8 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
                   setOpenTasksModal(true);
                   setSelectedProcess(data);
                 }}
+                title={"Show Tasks"}
+                style={{ cursor: "pointer" }}
               >
                 <NarrowIcon />
               </div>
@@ -69,6 +71,8 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
                     setSelectedProcess(data);
                   }
                 }}
+                title={"Edit"}
+                style={{ cursor: "pointer" }}
               >
                 <SettingIcon />
               </div>
@@ -78,6 +82,8 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
                     handleDelete(data.id);
                   }
                 }}
+                title={"Delete"}
+                style={{ cursor: "pointer" }}
               >
                 <DeleteIcon />
               </div>

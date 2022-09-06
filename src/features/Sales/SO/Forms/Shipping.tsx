@@ -2,9 +2,9 @@ import React from "react";
 import { Box, Checkbox, FormControlLabel } from "@material-ui/core";
 
 import TextField from "app/TextField";
-import { LockButton, LockProvider, useLock } from "common/Lock";
+import { useLock } from "common/Lock";
 
-function ShippingContent({ getFieldProps }: { getFieldProps: any }) {
+export default function Shipping({ getFieldProps }: { getFieldProps: any }) {
   const { lock } = useLock();
 
   return (
@@ -25,15 +25,6 @@ function ShippingContent({ getFieldProps }: { getFieldProps: any }) {
         {...getFieldProps("shippingWillCall")}
         disabled={lock}
       />
-      <LockButton />
     </Box>
-  );
-}
-
-export default function Shipping({ getFieldProps }: { getFieldProps: any }) {
-  return (
-    <LockProvider>
-      <ShippingContent getFieldProps={getFieldProps} />
-    </LockProvider>
   );
 }

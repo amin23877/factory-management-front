@@ -8,7 +8,7 @@ import Button from "app/Button";
 import BaseDataGrid from "app/BaseDataGrid";
 import { IItem } from "api/items";
 
-import { LockProvider, useLock, LockButton } from "common/Lock";
+import { useLock } from "common/Lock";
 import { Box, Checkbox, FormControlLabel, useMediaQuery } from "@material-ui/core";
 
 const pricingCols = [
@@ -17,7 +17,7 @@ const pricingCols = [
   { field: "nonCommissionable", headerName: "no Com.", flex: 1, type: "boolean" },
 ];
 
-export const Pricing = ({
+export default function PricingTab({
   boms,
   itemId,
   values,
@@ -27,7 +27,7 @@ export const Pricing = ({
   values: any;
   getFieldProps: any;
   boms?: { result: any[]; total: number };
-}) => {
+}) {
   const [addPricing, setAddPricing] = useState(false);
   const [selectedPricing, setSelectedPricing] = useState<pricingType>();
   const { data } = useSWR<IItem>(`/item/${itemId}`);
@@ -58,7 +58,6 @@ export const Pricing = ({
           >
             Add Pricing
           </Button>
-          <LockButton />
         </Box>
         <BaseDataGrid
           rows={data?.pricing || []}
@@ -143,23 +142,5 @@ export const Pricing = ({
         </Box>
       </div>
     </>
-  );
-};
-
-export default function PricingTab({
-  boms,
-  itemId,
-  values,
-  getFieldProps,
-}: {
-  itemId: string;
-  values: any;
-  getFieldProps: any;
-  boms?: { result: any[]; total: number };
-}) {
-  return (
-    <LockProvider>
-      <Pricing getFieldProps={getFieldProps} values={values} itemId={itemId} boms={boms} />
-    </LockProvider>
   );
 }

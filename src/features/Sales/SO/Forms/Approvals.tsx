@@ -4,7 +4,7 @@ import { FormControlLabel, Checkbox } from "@material-ui/core";
 
 import TextField from "app/TextField";
 import AsyncCombo from "common/AsyncCombo";
-import { useLock, LockProvider, LockButton } from "common/Lock";
+import { useLock } from "common/Lock";
 
 function formatDateValue(v: any) {
   if (v) {
@@ -13,12 +13,11 @@ function formatDateValue(v: any) {
   return null;
 }
 
-function ApprovalsContent({ getFieldProps, values }: { getFieldProps: any; values?: any }) {
+export default function Approvals({ getFieldProps, values }: { getFieldProps: any; values?: any }) {
   const { lock } = useLock();
 
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" gridTemplateRows="repeat(4, 1fr)" gridGap={8}>
-      <LockButton />
       <TextField label="Customer PO#" {...getFieldProps("customerPONumber")} disabled={lock} />
       <TextField
         label="PO Received Date"
@@ -83,13 +82,5 @@ function ApprovalsContent({ getFieldProps, values }: { getFieldProps: any; value
       />
       <FormControlLabel label="Expedite" control={<Checkbox />} {...getFieldProps("expedite")} disabled={lock} />
     </Box>
-  );
-}
-
-export default function Approvals({ getFieldProps, values }: { getFieldProps: any; values?: any }) {
-  return (
-    <LockProvider>
-      <ApprovalsContent getFieldProps={getFieldProps} values={values} />
-    </LockProvider>
   );
 }

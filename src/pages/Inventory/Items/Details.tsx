@@ -5,28 +5,27 @@ import useSWR, { mutate } from "swr";
 
 import Button from "app/Button";
 import { BasePaper } from "app/Paper";
-import VendorsTable from "../../../features/Items/VendorsTable";
+import VendorsTable from "features/Items/VendorsTable";
 
-import { General } from "../../../features/Items/Forms";
-import MoreInfo from "../../../features/Items/Forms/MoreInfo";
-import Quantity from "../../../features/Items/Forms/Quantity";
-import PricingTab from "../../../features/Items/Forms/Pricing";
-import Shipping from "../../../features/Items/Forms/Shipping";
-import Levels from "../../../features/Items/Forms/Levels";
+import { General } from "features/Items/Forms";
+import MoreInfo from "features/Items/Forms/MoreInfo";
+import Quantity from "features/Items/Forms/Quantity";
+import PricingTab from "features/Items/Forms/Pricing";
+import Shipping from "features/Items/Forms/Shipping";
 
-import ManualCountModal from "../../../features/Items/ManualCountModal";
-import UpdateQuantityModal from "../../../features/Items/Quantity";
+import ManualCountModal from "features/Items/ManualCountModal";
+import UpdateQuantityModal from "features/Items/Quantity";
 
 import NotesTab from "common/Note/Tab";
 import DocumentTab from "common/Document/Tab";
-import { VendorModal } from "../../../features/Modals/AddVendor";
-import Parts from "../../../features/BOM/Parts";
+import { VendorModal } from "features/Modals/AddVendor";
+import Parts from "features/BOM/Parts";
 
 import { IItem, updateAnItem } from "api/items";
 import { IBom } from "api/bom";
 import { exportPdf } from "logic/pdf";
 import { getModifiedValues } from "logic/utils";
-import ItemBomTable from "../../../features/BOM/ItemBomTable";
+import ItemBomTable from "features/BOM/ItemBomTable";
 
 import QRCode from "app/QRCode";
 // import Confirm from "common/Confirm";
@@ -38,6 +37,7 @@ import { GridColumns } from "@material-ui/data-grid";
 import { formatTimestampToDate } from "logic/date";
 import LevelsTab from "common/Level/Tab";
 import { useParams } from "react-router-dom";
+import { LockButton } from "common/Lock";
 
 const style = {
   border: "1px solid gray ",
@@ -58,13 +58,6 @@ function ItemsDetails() {
     selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null
   );
 
-  // const { data: itemSOs } = useSWR(
-  //   activeTab === 2 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/so` : null) : null
-  // );
-
-  // const { data: itemPOs } = useSWR(
-  //   activeTab === 3 ? (selectedRow && selectedRow.id ? `/item/${selectedRow.id}/purchasepo` : null) : null
-  // );
   const { data: itemUsage } = useSWR<{ result: any[]; total: number }>(
     activeTab === 5 ? (selectedRow && selectedRow.id ? `/usage?ItemId=${selectedRow.id}` : null) : null
   );
@@ -75,62 +68,6 @@ function ItemsDetails() {
   const [bomPartsModal, setBomPartsModal] = useState(false);
   const [selectedBom] = useState<IBom>();
   const phone = useMediaQuery("(max-width:900px)");
-
-  // const poCols = useMemo<GridColDef[]>(
-  //   () => [
-  //     {
-  //       field: "Date",
-  //       valueFormatter: (params) => formatTimestampToDate(params?.row?.purchasePO.date),
-  //       width: 100,
-  //     },
-  //     {
-  //       field: "Number",
-  //       flex: 1,
-  //       valueFormatter: (params) => params.row?.purchasePO.number,
-  //     },
-  //     {
-  //       field: "Vendor",
-  //       width: 100,
-  //       valueFormatter: (params) => params?.row?.vendor.name,
-  //     },
-  //     {
-  //       field: "Qty Ord.",
-  //       width: 120,
-  //       valueFormatter: (params) => params.row?.lir.quantity,
-  //     },
-  //     {
-  //       field: "Qty Received",
-  //       width: 120,
-  //       valueFormatter: (params) => params.row?.lir?.received,
-  //     },
-  //     {
-  //       field: "Received Date",
-  //       width: 100,
-  //       valueFormatter: (params) => formatTimestampToDate(params.row?.lir.receivedDate),
-  //     },
-  //     {
-  //       field: "UOM ",
-  //       valueFormatter: (params) => params.row?.lir.uom,
-  //       width: 120,
-  //     },
-  //     {
-  //       field: "Cost",
-  //       width: 80,
-  //       valueFormatter: (params) => params.row?.lir.cost,
-  //     },
-  //     {
-  //       field: "Total Cost",
-  //       width: 100,
-  //       valueFormatter: (params) => params?.row?.lir.cost * params?.row?.lir.quantity,
-  //     },
-  //     {
-  //       field: "Status",
-  //       width: 80,
-  //       valueFormatter: (params) => params.row?.lir.status,
-  //     },
-  //   ],
-  //   []
-  // );
 
   const usageCols = useMemo<GridColumns>(
     () => [
@@ -189,26 +126,6 @@ function ItemsDetails() {
     }
   };
 
-  // const handleConvertToService = async () => {
-  //   try {
-  //     await Confirm({
-  //       text: "You are going to make this item a service",
-  //       onConfirm: async () => {
-  //         try {
-  //           await convertToService(selectedRow.id);
-  //           setSelectedItem(null);
-  //           setIndexActiveTab(0);
-  //           Toast("Item converted to Service", "success");
-  //         } catch (error) {
-  //           console.log(error);
-  //         }
-  //       },
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
   if (!selectedRow) {
     return <LinearProgress />;
   }
@@ -244,28 +161,26 @@ function ItemsDetails() {
                     submit
                   </button>
                 </BasePaper>
-                <BasePaper style={{ flex: 1, margin: 8 }}>
-                  <Tabs
-                    value={moreInfoTab}
-                    variant="scrollable"
-                    scrollButtons={phone ? "on" : "auto"}
-                    style={
-                      phone
-                        ? { marginBottom: 10, maxWidth: "calc(100vw - 63px)" }
-                        : { marginBottom: 10, maxWidth: "35vw" }
-                    }
-                    textColor="primary"
-                    onChange={(e, v) => setMoreInfoTab(v)}
-                  >
-                    <Tab label="Image" />
-                    <Tab label="UPC" />
-                    <Tab label="More Info." />
-                    <Tab label="Quantity" />
-                    <Tab label="Pricing" />
-                    <Tab label="Shipping" />
-                    <Tab label="Clusters and Levels" />
-                    {/* <Tab label="Convert" /> */}
-                  </Tabs>
+                <BasePaper style={{ flex: 1 }}>
+                  <Box display={"flex"} justifyContent="space-between" alignItems={"center"} mb={1}>
+                    <Tabs
+                      value={moreInfoTab}
+                      variant="scrollable"
+                      scrollButtons={phone ? "on" : "auto"}
+                      style={phone ? { maxWidth: "calc(100vw - 63px)" } : { maxWidth: "35vw" }}
+                      textColor="primary"
+                      onChange={(e, v) => setMoreInfoTab(v)}
+                    >
+                      <Tab label="Image" />
+                      <Tab label="UPC" />
+                      <Tab label="More Info." />
+                      <Tab label="Quantity" />
+                      <Tab label="Pricing" />
+                      <Tab label="Shipping" />
+                      <Tab label="Clusters and Levels" />
+                    </Tabs>
+                    <LockButton />
+                  </Box>
                   {moreInfoTab === 0 && <PhotoTab model="item" id={selectedRow.id} />}
                   {moreInfoTab === 1 && (
                     <Box display="flex" justifyContent="space-around" alignItems="center" maxWidth="83vw">
@@ -320,13 +235,6 @@ function ItemsDetails() {
                       setFieldValue={setFieldValue}
                     />
                   )}
-                  {/* {moreInfoTab === 7 && (
-                    <Box textAlign="center">
-                      <Button kind="add" onClick={handleConvertToService} disabled={lock}>
-                        Convert to Service
-                      </Button>
-                    </Box>
-                  )} */}
                 </BasePaper>
               </Box>
               <BasePaper style={{ height: "100%" }}>
@@ -366,15 +274,6 @@ function ItemsDetails() {
                     <ItemBomTable item={selectedRow} boms={boms?.result || []} mutateBoms={mutateBoms} />
                   </div>
                 )}
-                {/* {activeTab === 3 && itemSOs && <SOTable rows={itemSOs} />} */}
-                {/* {activeTab === 4 && (
-                  <BaseDataGrid
-                    cols={poCols}
-                    rows={itemPOs ? itemPOs.map((i: any, index: string) => ({ ...i, id: index })) : []}
-                    onRowSelected={() => {}}
-                    height={"calc(100% - 60px)"}
-                  />
-                )} */}
                 {activeTab === 5 && (
                   <BaseDataGrid
                     cols={usageCols}

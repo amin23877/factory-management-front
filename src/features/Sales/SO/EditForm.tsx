@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Tabs, Tab, Box, Typography, useMediaQuery } from "@material-ui/core";
+import React from "react";
+import { Box, Typography, useMediaQuery } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import { mutate } from "swr";
 
@@ -9,15 +9,10 @@ import { ISO, editSO } from "api/so";
 import { getModifiedValues } from "logic/utils";
 
 import { GeneralForm } from "./Forms";
-import Shipping from "./Forms/Shipping";
-import Billing from "./Forms/Billing";
-import Summary from "./Forms/Summary";
-import Approvals from "./Forms/Approvals";
-import Entities from "./Forms/Entities";
+import FormTabs from "./FormTabs";
+import { LockProvider } from "common/Lock";
 
 export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
-  const [activeTab, setActiveTab] = useState(0);
-
   const handleSubmit = async (data: ISO, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
     try {
       console.log(data);
@@ -39,7 +34,6 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
     }
   };
   const phone = useMediaQuery("(max-width:900px)");
-
   return (
     <Formik initialValues={selectedSo} onSubmit={handleSubmit}>
       {({ handleChange, handleBlur, values, setValues, getFieldProps, setFieldValue }) => (
@@ -55,73 +49,15 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
               />
             </BasePaper>
             <BasePaper style={{ flex: 1 }}>
-              <Tabs
-                textColor="primary"
-                value={activeTab}
-                onChange={(e, nv) => setActiveTab(nv)}
-                variant="scrollable"
-                style={phone ? { maxWidth: "calc(100vw - 80px)" } : { maxWidth: 700 }}
-              >
-                <Tab label="summary" />
-                <Tab label="Approvals" />
-                <Tab label="Entities" />
-                <Tab label="Shipping" />
-                <Tab label="Billing" />
-              </Tabs>
-              <Box pt={2}>
-                {activeTab === 0 && <Summary values={values} getFieldProps={getFieldProps} />}
-                {activeTab === 1 && <Approvals values={values} getFieldProps={getFieldProps} />}
-                {activeTab === 2 && (
-                  <Entities
-                    values={values}
-                    handleChange={handleChange}
-                    handleBlur={handleBlur}
-                    setFieldValue={setFieldValue}
-                  />
-                )}
-                {activeTab === 3 && <Shipping getFieldProps={getFieldProps} />}
-                {activeTab === 4 && <Billing getFieldProps={getFieldProps} />}
-                {/* {activeTab === 0 && (
-                  <ApprovalForm
-                    setFieldValue={setFieldValue}
-                    values={values}
-                    handleBlur={handleBlur}
-                    handleChange={handleChange}
-                  />
-                )}
-                {activeTab === 1 && (
-                  <AccountingForm
-                    setFieldValue={setFieldValue}
-                    values={values}
-                    handleBlur={handleBlur}
-                    handleChange={handleChange}
-                  />
-                )}
-                {activeTab === 2 && (
-                  <ShippingForm
-                    setFieldValue={setFieldValue}
-                    values={values}
-                    handleBlur={handleBlur}
-                    handleChange={handleChange}
-                  />
-                )}
-                {activeTab === 3 && (
-                  <EntitiesForm
-                    setFieldValue={setFieldValue}
-                    values={values}
-                    handleBlur={handleBlur}
-                    handleChange={handleChange}
-                  />
-                )}
-                {activeTab === 4 && (
-                  <AddressesForm
-                    setFieldValue={setFieldValue}
-                    values={values}
-                    handleBlur={handleBlur}
-                    handleChange={handleChange}
-                  />
-                )} */}
-              </Box>
+              <LockProvider>
+                <FormTabs
+                  values={values}
+                  handleBlur={handleBlur}
+                  handleChange={handleChange}
+                  setFieldValue={setFieldValue}
+                  getFieldProps={getFieldProps}
+                />
+              </LockProvider>
             </BasePaper>
           </Box>
         </Form>

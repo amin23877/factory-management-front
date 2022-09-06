@@ -1,7 +1,7 @@
 import TextField from "app/TextField";
 import LinkField from "app/Inputs/LinkFields";
 import { Box, Checkbox, FormControlLabel } from "@material-ui/core";
-import { LockProvider, useLock, LockButton } from "common/Lock";
+import { useLock } from "common/Lock";
 import React from "react";
 
 interface IForm {
@@ -10,11 +10,10 @@ interface IForm {
   setFieldValue: any;
 }
 
-export const Shipping = ({ values, setFieldValue, getFieldProps }: IForm) => {
+export default function ShippingTab({ setFieldValue, values, getFieldProps }: IForm) {
   const { lock } = useLock();
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10} mt={1}>
-      <LockButton />
       <LinkField
         label="Preferred Vendor"
         filterLabel="name"
@@ -50,21 +49,5 @@ export const Shipping = ({ values, setFieldValue, getFieldProps }: IForm) => {
         control={<Checkbox size="small" />}
       />
     </Box>
-  );
-};
-
-export default function ShippingTab({
-  setFieldValue,
-  values,
-  getFieldProps,
-}: {
-  values: any;
-  getFieldProps: any;
-  setFieldValue: any;
-}) {
-  return (
-    <LockProvider>
-      <Shipping getFieldProps={getFieldProps} values={values} setFieldValue={setFieldValue} />
-    </LockProvider>
   );
 }

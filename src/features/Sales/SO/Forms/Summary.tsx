@@ -2,16 +2,8 @@ import React from "react";
 import Box from "@material-ui/core/Box";
 
 import TextField from "app/TextField";
-import { useLock, LockProvider, LockButton } from "common/Lock";
 
-function formatDateValue(v: any) {
-  if (v) {
-    return new Date(v).toISOString().slice(0, 10);
-  }
-  return null;
-}
-
-function SummaryContent({ getFieldProps, values }: { getFieldProps: any; values?: any }) {
+export default function Summary({ getFieldProps, values }: { getFieldProps: any; values?: any }) {
   //   const { lock } = useLock();
 
   return (
@@ -26,13 +18,5 @@ function SummaryContent({ getFieldProps, values }: { getFieldProps: any; values?
       <TextField label="Total Freight" {...getFieldProps("totalFreight")} disabled />
       <TextField label="Total" {...getFieldProps("total")} disabled />
     </Box>
-  );
-}
-
-export default function Approvals({ getFieldProps, values }: { getFieldProps: any; values?: any }) {
-  return (
-    <LockProvider>
-      <SummaryContent getFieldProps={getFieldProps} values={values} />
-    </LockProvider>
   );
 }
