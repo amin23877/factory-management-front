@@ -1,42 +1,29 @@
-import React, { useState, useMemo } from "react";
-import { GridColumns } from "@material-ui/data-grid";
-import { Box, Tabs, Tab, useMediaQuery, LinearProgress } from "@material-ui/core";
+import React from "react";
+import { Box, useMediaQuery, LinearProgress } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 
-import { CommissionForm, GeneralForm, MainContactForm, MoreInfoForm } from "../../../features/Sales/Customer/Forms";
+import { GeneralForm } from "features/Sales/Customer/Forms";
 import Button from "app/Button";
 import { BasePaper } from "app/Paper";
-import BaseDataGrid from "app/BaseDataGrid";
 
 import { editClient, IClient } from "api/client";
 
-import NoteTab from "common/Note/Tab";
-import DocumentTab from "common/Document/Tab";
-import ContactTab from "common/Contact/Tab";
-import AddressTab from "common/Address/Tab";
-import { useLock, LockButton } from "common/Lock";
+import { useLock, LockButton, LockProvider } from "common/Lock";
 
 import Toast from "app/Toast";
 import { getModifiedValues } from "logic/utils";
 
-import { IActivity } from "api/activity";
-import AuditTable from "common/Audit";
 import { useParams } from "react-router-dom";
+import FormTabs from "features/Sales/Customer/FormTabs";
+import DataGridTabs from "features/Sales/Customer/DataGridTabs";
 
 export default function ClientDetails({ req, changeTab }: { req?: any; changeTab: (a: number) => void }) {
   const { clientId } = useParams<{ clientId: string }>();
   const { data: selectedRow } = useSWR<IClient>(clientId ? `/client/${clientId}` : null);
 
-  const [activeTab, setActiveTab] = useState(0);
-  const [activeSubTab, setActiveSubTab] = useState(0);
-
   const phone = useMediaQuery("(max-width:900px)");
   const { lock } = useLock();
-
-  const { data: activities } = useSWR<{ result: IActivity[]; total: number }>(
-    activeTab === 2 ? `/activity/client/${selectedRow?.id}` : null
-  );
 
   const handleSubmit = async (values: any, { setSubmitting }: any) => {
     try {
@@ -51,17 +38,6 @@ export default function ClientDetails({ req, changeTab }: { req?: any; changeTab
     }
   };
 
-  const activityCols = useMemo<GridColumns>(
-    () => [
-      { field: "startTime", headerName: "Entry Date", width: 150, type: "date" },
-      { field: "number", headerName: "Quote ID", flex: 1 },
-      { field: "project", headerName: "Project Name", flex: 1 },
-      { field: "quotedBy", headerName: "Quoted By", flex: 1 },
-      { field: "requestedBy", headerName: "Requested By", flex: 1 },
-      { field: "note", headerName: "Note" },
-    ],
-    []
-  );
   if (!selectedRow) {
     return <LinearProgress />;
   }
@@ -85,7 +61,7 @@ export default function ClientDetails({ req, changeTab }: { req?: any; changeTab
                       cId={selectedRow.id}
                       changeTab={changeTab}
                     />
-                    <Box display="flex" textAlign="center" style={{ width: "100%" }}>
+                    <Box display="flex" alignItems="center" style={{ width: "100%" }} justifyContent="center">
                       <Button type="submit" kind="edit" style={{ width: "100%", display: "none" }} disabled={lock}>
                         Save
                       </Button>
@@ -93,75 +69,24 @@ export default function ClientDetails({ req, changeTab }: { req?: any; changeTab
                     </Box>
                   </BasePaper>
                   <BasePaper style={{ height: "100%", flex: 1 }}>
-                    <Tabs
-                      textColor="primary"
-                      value={activeSubTab}
-                      onChange={(e, nv) => setActiveSubTab(nv)}
-                      variant="scrollable"
-                      scrollButtons={phone ? "on" : "auto"}
-                      style={phone ? { maxWidth: "calc(100vw - 63px)" } : {}}
-                    >
-                      <Tab label="More Info" />
-                      <Tab label="Main Contact" />
-                      <Tab label="Commission" />
-                    </Tabs>
-                    <Box>
-                      {activeSubTab === 0 && (
-                        <MoreInfoForm
-                          values={values}
-                          errors={errors}
-                          handleBlur={handleBlur}
-                          handleChange={handleChange}
-                          touched={touched}
-                        />
-                      )}
-                      {activeSubTab === 1 && <MainContactForm selectedRow={selectedRow} />}
-                      {activeSubTab === 2 && (
-                        <CommissionForm
-                          values={values}
-                          errors={errors}
-                          handleBlur={handleBlur}
-                          handleChange={handleChange}
-                          touched={touched}
-                        />
-                      )}
-                    </Box>
+                    <LockProvider>
+                      <FormTabs
+                        values={values}
+                        errors={errors}
+                        handleBlur={handleBlur}
+                        handleChange={handleChange}
+                        touched={touched}
+                        selectedRow={selectedRow}
+                      />
+                    </LockProvider>
                   </BasePaper>
                 </Box>
               </Box>
               <Box>
                 <BasePaper style={{ height: "100%" }}>
-                  <Tabs
-                    value={activeTab}
-                    textColor="primary"
-                    onChange={(e, v) => setActiveTab(v)}
-                    variant="scrollable"
-                    style={phone ? { marginBottom: "10px", maxWidth: "calc(100vw - 63px)" } : { marginBottom: "10px" }}
-                    scrollButtons={phone ? "on" : "auto"}
-                  >
-                    <Tab label="Contacts" />
-                    <Tab label="Documents" />
-                    <Tab label="Activities" />
-                    <Tab label="Sales History" />
-                    <Tab label="Work Orders" />
-                    <Tab label="Notes" />
-                    <Tab label="Addresses" />
-                    <Tab label="Auditing" />
-                  </Tabs>
-                  {activeTab === 0 && <ContactTab itemId={selectedRow.id} model="client" />}
-                  {activeTab === 1 && <DocumentTab itemId={selectedRow.id} model="client" />}
-                  {activeTab === 2 && (
-                    <BaseDataGrid
-                      height="calc(100% - 60px)"
-                      cols={activityCols}
-                      rows={activities?.result || []}
-                      onRowSelected={() => {}}
-                    />
-                  )}
-                  {activeTab === 3 && <></>}
-                  {activeTab === 5 && <NoteTab itemId={selectedRow.id} model="client" />}
-                  {activeTab === 6 && <AddressTab model="client" itemId={selectedRow.id} />}
-                  {activeTab === 7 && <AuditTable itemId={selectedRow.id} />}
+                  <LockProvider>
+                    <DataGridTabs selectedRow={selectedRow} />
+                  </LockProvider>
                 </BasePaper>
               </Box>
             </Box>

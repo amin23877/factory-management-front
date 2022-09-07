@@ -212,7 +212,7 @@ export default function Options({ sales, fieldservice }: { sales?: boolean; fiel
                 sales ? "sales" : fieldservice ? "fieldservice" : "engineering"
               }/option/options/:deviceId`}
             >
-              <DeviceDetails onDone={() => {}} onStepSelected={(d: any) => {}} onFlagSelected={(d: any) => {}} />{" "}
+              <DeviceDetails onDone={() => {}} onFlagSelected={(d: any) => {}} />{" "}
             </Route>
             <Route
               exact

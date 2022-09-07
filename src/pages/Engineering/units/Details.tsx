@@ -16,8 +16,8 @@ import { getModifiedValues } from "logic/utils";
 import { LockProvider } from "common/Lock";
 
 import { useParams } from "react-router-dom";
-import FormsTabs from "features/Engineering/Devices/FormsTabs";
-import DataGridsTabs from "features/Engineering/Devices/DataGridsTabs";
+import FormsTabs from "features/Engineering/Devices/Units/FormTabs";
+import DataGridsTabs from "features/Engineering/Devices/Units/DataGridTabs";
 
 const schema = Yup.object().shape({});
 

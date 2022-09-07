@@ -3,7 +3,7 @@ import { AddRounded } from "@material-ui/icons";
 import { deleteProcess, IProcess } from "api/process";
 import NewDataGrid from "app/NewDataGrid";
 import Button from "app/Button";
-import { LockButton, LockProvider, useLock } from "common/Lock";
+import { LockProvider, useLock } from "common/Lock";
 import { formatTimestampToDate } from "logic/date";
 import React, { useCallback, useMemo, useState } from "react";
 import AddProcessModal from "../Process/AddProcessModal";
@@ -17,7 +17,7 @@ import { ReactComponent as NarrowIcon } from "assets/icons/tableIcons/narrowDown
 import { ReactComponent as SettingIcon } from "assets/icons/tableIcons/setting.svg";
 import { ReactComponent as DeleteIcon } from "assets/icons/tableIcons/delete.svg";
 
-function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
+export default function ProcessTab({ type, ItemId }: { type: string; ItemId: string }) {
   const { lock } = useLock();
   const [addProcess, setAddProcess] = useState(false);
   const [openTasksModal, setOpenTasksModal] = useState(false);
@@ -162,7 +162,6 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
         >
           Process
         </Button>
-        <LockButton />
       </Box>
       <NewDataGrid
         columns={processCols}
@@ -171,13 +170,5 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
         refresh={refresh}
       />
     </>
-  );
-}
-
-export default function ProcessTab({ type, ItemId }: { type: string; ItemId: string }) {
-  return (
-    <LockProvider>
-      <ProcessTabContent type={type} ItemId={ItemId} />
-    </LockProvider>
   );
 }

@@ -9,7 +9,7 @@ import BaseDataGrid from "app/BaseDataGrid";
 import ContactModal from "./Modal";
 
 import { IContact } from "api/contact";
-import { LockButton, LockProvider, useLock } from "common/Lock";
+import { useLock } from "common/Lock";
 
 const columns: GridColumns = [
   { field: "firstName", headerName: "First Name", width: 110 },
@@ -23,7 +23,7 @@ const columns: GridColumns = [
   { field: "active", headerName: "Active", type: "boolean" },
 ];
 
-function ContactTabContent({ itemId, model }: { model: string; itemId: string }) {
+export default function ContactTab({ itemId, model }: { model: string; itemId: string }) {
   const { data } = useSWR(`/contact/${model}/${itemId}`);
   const { lock } = useLock();
   const [addModal, setAddModal] = useState(false);
@@ -49,7 +49,6 @@ function ContactTabContent({ itemId, model }: { model: string; itemId: string })
           >
             Add
           </Button>
-          <LockButton />
         </Box>
         <BaseDataGrid
           cols={columns}
@@ -63,13 +62,5 @@ function ContactTabContent({ itemId, model }: { model: string; itemId: string })
         />
       </Box>
     </>
-  );
-}
-
-export default function ContactTab({ itemId, model }: { model: string; itemId: string }) {
-  return (
-    <LockProvider>
-      <ContactTabContent itemId={itemId} model={model} />
-    </LockProvider>
   );
 }

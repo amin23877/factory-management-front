@@ -19,10 +19,18 @@ import { openRequestedSinglePopup } from "../../logic/window";
 
 import BomModal from "./BomModal";
 import BomRecordModal from "./BomRecordModal";
-import { useLock, LockButton, LockProvider } from "common/Lock";
+import { useLock } from "common/Lock";
 import Confirm from "common/Confirm";
 
-function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: IItem; mutateBoms: () => void }) {
+export default function ItemBomTable({
+  boms,
+  item,
+  mutateBoms,
+}: {
+  boms?: IBom[];
+  item: IItem;
+  mutateBoms: () => void;
+}) {
   const [bomModal, setBomModal] = useState(false);
   const [bomRecordModal, setBomRecordModal] = useState(false);
   const [selectedBom, setSelectedBom] = useState<IBom>();
@@ -136,25 +144,8 @@ function ItemBomTableContent({ boms, item, mutateBoms }: { boms?: IBom[]; item: 
         >
           BOM
         </Button>
-        <LockButton />
       </Box>
       <DataGrid columns={columns} url={`/bom?ItemId=${item.id}`} onRowSelected={() => {}} refresh={refresh} />
     </>
-  );
-}
-
-export default function ItemBomTable({
-  boms,
-  item,
-  mutateBoms,
-}: {
-  boms?: IBom[];
-  item: IItem;
-  mutateBoms: () => void;
-}) {
-  return (
-    <LockProvider>
-      <ItemBomTableContent boms={boms} item={item} mutateBoms={mutateBoms} />
-    </LockProvider>
   );
 }

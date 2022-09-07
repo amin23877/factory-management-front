@@ -210,7 +210,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       )}
       {selectedItem && selectedItem.id && (
         <FlagModal open={flagModalOpen} onClose={() => setFlagModalOpen(false)} itemId={selectedItem.id as any} />
-      )} */}
+      )}*/}
       <AddItemModal
         device
         open={addItemModal}
@@ -349,10 +349,6 @@ const Devices = ({ sales }: { sales?: boolean }) => {
                 <DetailTab
                   sales={sales}
                   onDone={() => {}}
-                  onStepSelected={(d) => {
-                    setSelectedStep(d);
-                    setEditStepModal(true);
-                  }}
                   onFlagSelected={(d) => {
                     setSelectedFlag(d);
                     setEditFlagModal(true);

@@ -195,7 +195,7 @@ export default function FRU({ fieldservice }: { fieldservice?: boolean }) {
               />
             </Route>
             <Route exact path={`/panel/${fieldservice ? "fieldservice" : "engineering"}/fru/frus/:deviceId`}>
-              <DeviceDetails onDone={() => {}} onStepSelected={(d) => {}} onFlagSelected={(d) => {}} />
+              <DeviceDetails onDone={() => {}} onFlagSelected={(d) => {}} />
             </Route>
             <Route exact path={`/panel/${fieldservice ? "fieldservice" : "engineering"}/fru/units/:unitId`}>
               <UnitDetails />
