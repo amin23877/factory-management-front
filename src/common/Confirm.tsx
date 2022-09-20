@@ -1,6 +1,14 @@
 import Swal from "sweetalert2";
 
-export default function Confirm({ text, onConfirm }: { text?: string; onConfirm: () => void }) {
+export default function Confirm({
+  text,
+  onConfirm,
+  confirmText,
+}: {
+  text?: string;
+  onConfirm: () => void;
+  confirmText?: string;
+}) {
   Swal.fire({
     title: "Are you sure?",
     text,
@@ -8,7 +16,7 @@ export default function Confirm({ text, onConfirm }: { text?: string; onConfirm:
     showCancelButton: true,
     confirmButtonColor: "#3085d6",
     cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!",
+    confirmButtonText: confirmText ? confirmText : "Yes, delete it!",
   })
     .then((result) => {
       if (result.isConfirmed) {

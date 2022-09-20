@@ -20,14 +20,16 @@ export default function FormTabs({
   selectedRow,
   sales,
   setFieldValue,
+  getFieldProps,
 }: {
-  boms?: { result: any[]; total: number };
   handleBlur: any;
   handleChange: any;
+  boms?: { result: any[]; total: number };
   values: any;
   selectedRow: IItem;
   sales?: boolean;
   setFieldValue: any;
+  getFieldProps: any;
 }) {
   const qrCode = useRef<HTMLElement | null>(null);
   const [moreInfoTab, setMoreInfoTab] = useState(0);
@@ -93,8 +95,7 @@ export default function FormTabs({
       {moreInfoTab === 3 && !sales && (
         <LevelsTab
           values={values}
-          handleChange={handleChange}
-          handleBlur={handleBlur}
+          getFieldProps={getFieldProps}
           setFieldValue={setFieldValue}
           itemType={selectedRow.class}
         />

@@ -18,9 +18,19 @@ interface IForm {
   unit: IUnit;
   isSubmitting?: boolean;
   device?: boolean;
+  getFieldProps: any;
 }
 
-export default function FormsTabs({ values, errors, handleChange, handleBlur, touched, unit, setFieldValue }: IForm) {
+export default function FormsTabs({
+  values,
+  errors,
+  handleChange,
+  handleBlur,
+  touched,
+  unit,
+  setFieldValue,
+  getFieldProps,
+}: IForm) {
   const { setLock } = useLock();
   const phone = useMediaQuery("(max-width:900px)");
 
@@ -95,8 +105,7 @@ export default function FormsTabs({ values, errors, handleChange, handleBlur, to
         <LevelsTab
           itemType={unit.ItemId.class}
           values={values}
-          handleChange={handleChange}
-          handleBlur={handleBlur}
+          getFieldProps={getFieldProps}
           setFieldValue={setFieldValue}
         />
       )}

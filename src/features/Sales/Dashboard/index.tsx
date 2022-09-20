@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { Box, Typography, useMediaQuery } from "@material-ui/core";
+import React, { useMemo, useState } from "react";
+import { Box, Tab, Tabs, Typography, useMediaQuery } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 import useSWR from "swr";
 
@@ -11,6 +11,7 @@ import { formatTimestampToDate } from "logic/date";
 
 export default function Dashboard() {
   const { data: inProgressSOs } = useSWR(`/unit?startsWithstatus=In Production`);
+  const [activeTab, setActiveTab] = useState(0);
 
   const cols = useMemo<GridColumns>(
     () => [
@@ -45,12 +46,6 @@ export default function Dashboard() {
       },
       { field: "invoice", headerName: "Invoice", width: 120 },
       { field: "status", headerName: "Status", width: 120 },
-      // {
-      //   field: "total",
-      //   headerName: "Total Amount",
-      //   valueFormatter: (params) => params.row?.cost * params.row?.quantity,
-      //   width: 120,
-      // },
     ],
     []
   );
@@ -59,8 +54,19 @@ export default function Dashboard() {
   return (
     <Box display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 1fr"} gridGap={10}>
       <BasePaper style={phone ? {} : { gridColumnEnd: "span 2" }}>
-        <Typography variant="subtitle1">Sales Per Week(Last 30 days)</Typography>
-        <SalesVsWeek />
+        <Tabs
+          value={activeTab}
+          textColor="primary"
+          onChange={(e, nv) => {
+            setActiveTab(nv);
+          }}
+        >
+          <Tab label="Sales Per Week" />
+          <Tab label="Quotes Per Week" />
+          <Tab label="Q/S Per Week" />
+        </Tabs>
+        {activeTab === 0 && <SalesVsWeek />}
+        {activeTab === 1 && <SalesVsWeek quote />}
       </BasePaper>
 
       <BasePaper>

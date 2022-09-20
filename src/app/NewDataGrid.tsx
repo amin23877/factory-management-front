@@ -186,7 +186,7 @@ function NewDataGrid({
   const phone = useMediaQuery("(max-width:900px)");
 
   useEffect(() => {
-    setColumnsState(columns.map((c) => ({ ...c, visible: true })));
+    setColumnsState(columns.map((c) => ({ ...c, visible: c.visible !== undefined ? c.visible : true })));
   }, [columns]);
 
   const cols = useMemo(() => {

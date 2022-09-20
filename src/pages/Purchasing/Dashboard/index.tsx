@@ -8,7 +8,15 @@ import List from "app/SideUtilityList";
 import RequiredPOModal from "../../../features/Purchase/Dashboard/RequiredPOModal";
 
 const requiredCols = [
-  { name: "no", header: "NO.", width: 120 },
+  {
+    header: "Id",
+    maxWidth: 50,
+    render: ({ rowIndex }: any) => (
+      <Tooltip title={rowIndex + 1}>
+        <span>{rowIndex + 1}</span>
+      </Tooltip>
+    ),
+  },
   { name: "so", header: "Related SO", width: 120, render: ({ data }: any) => data?.SOId?.number },
   { name: "unit", header: "Related Unit", width: 120, render: ({ data }: any) => data?.UnitId?.number },
   { name: "itemNo", header: "Item NO.", type: "string", width: 120, render: ({ data }: any) => data?.ItemId?.no },

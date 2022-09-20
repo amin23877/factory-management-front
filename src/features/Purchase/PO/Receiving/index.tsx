@@ -9,6 +9,7 @@ import BaseDataGrid from "app/BaseDataGrid";
 
 import { formatTimestampToDate } from "logic/date";
 import useSWR from "swr";
+import { useLock } from "common/Lock";
 
 const cols: GridColumns = [
   { field: "Date", valueFormatter: (r) => formatTimestampToDate(r.row?.createdAt), width: 200 },
@@ -24,6 +25,7 @@ export default function ReceivingTab({ POId }: { POId: string }) {
   const { data, mutate } = useSWR(`/receive?POId=${POId}`);
   const [modal, setModal] = useState(false);
   const [selectedReceive, setSelectedReceive] = useState<any>();
+  const { lock } = useLock();
 
   return (
     <>
@@ -43,6 +45,7 @@ export default function ReceivingTab({ POId }: { POId: string }) {
           startIcon={<AddRounded />}
           style={{ marginBottom: 8 }}
           onClick={() => setModal(true)}
+          disabled={lock}
         >
           Add
         </Button>

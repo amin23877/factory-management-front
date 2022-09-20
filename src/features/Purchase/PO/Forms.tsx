@@ -1071,7 +1071,6 @@ export const MoreInfoForm = ({
   return (
     <>
       <Box my={2} display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10}>
-        <LockButton />
         {!addForm && <TextField label="PO Date" value={formatTimestampToDate(values.date)} disabled />}
         <DateTimePicker
           size="small"
@@ -1155,7 +1154,6 @@ export const AddressesForm = ({
           <Tab label="Billing Address" />
           <Tab label="Shipping Address" />
         </Tabs>
-        <LockButton />
       </Box>
       {activeTab === 0 && (
         <Box my={1} display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr"} gridGap={10} gridRowGap={10}>
