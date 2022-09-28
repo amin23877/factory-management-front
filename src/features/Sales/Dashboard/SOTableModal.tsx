@@ -41,19 +41,19 @@ export default function SOTableModal({
       name: "Client",
       minWidth: 100,
       render: ({ data }: any) => (
-        <Tooltip title={data?.ClientId?.name}>
-          <span>{data?.ClientId?.name}</span>
+        <Tooltip title={data?.SOId?.ClientId?.name}>
+          <span>{data?.SOId?.ClientId?.name}</span>
         </Tooltip>
       ),
     },
     {
       name: "Rep",
       minWidth: 130,
-      render: ({ data }: any) => {
-        <Tooltip title={data?.RepId?.name}>
-          <span>{data?.RepId?.name}</span>
-        </Tooltip>;
-      },
+      render: ({ data }: any) => (
+        <Tooltip title={data?.SOId?.RepId?.name}>
+          <span>{data?.SOId?.RepId?.name}</span>
+        </Tooltip>
+      ),
     },
     {
       name: "state",
@@ -153,6 +153,29 @@ export function ClientOrRepSOTable({
       ) : (
         <CircularProgress />
       )}
+    </Dialog>
+  );
+}
+export function LocationSOTable({
+  open,
+  onClose,
+  selectedItem,
+}: {
+  open: boolean;
+  onClose: () => void;
+  selectedItem: any;
+}) {
+  const history = useHistory();
+
+  return (
+    <Dialog open={open} onClose={onClose} title={`List of ${selectedItem?.name} SOs`} maxWidth="lg" fullWidth>
+      <Datagrid
+        onRowSelected={(d) => {
+          history.push(`/panel/sales/salesOrders/${d.id}${window.location.search}`);
+        }}
+        params={{ location: selectedItem.name }}
+        url="/so/getBy/location"
+      />
     </Dialog>
   );
 }

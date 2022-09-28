@@ -8,10 +8,12 @@ function SODataGrid({
   onRowSelected,
   params,
   refresh,
+  url,
 }: {
   onRowSelected: (row: any) => void;
   params?: ParameterType;
   refresh?: number;
+  url?: string;
 }) {
   const columns = [
     {
@@ -74,7 +76,7 @@ function SODataGrid({
   ];
   return (
     <DataGrid
-      url={"/so"}
+      url={url || "/so"}
       onRowSelected={onRowSelected}
       columns={columns}
       initParams={params}

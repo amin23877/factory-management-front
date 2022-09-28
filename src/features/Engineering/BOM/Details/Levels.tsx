@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { Box } from "@material-ui/core";
+import { Box, Tooltip } from "@material-ui/core";
 
 import NewDataGrid from "app/NewDataGrid";
 import Button from "app/Button";
@@ -15,6 +15,8 @@ import { splitLevelName } from "logic/levels";
 import { clusterType } from "api/cluster";
 import { deleteLevel, editLevel } from "api/level";
 import { IVals } from "common/Level/Form";
+import { ReactComponent as DeleteIcon } from "assets/icons/tableIcons/delete.svg";
+import { formatTimestampToDate } from "logic/date";
 
 function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
   const [levelModal, setLevelsModal] = useState(false);
@@ -61,15 +63,20 @@ function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
         },
         flex: 1,
       },
-      { name: "createdAt", header: "Date", type: "date", editable: false },
       {
-        name: "actions",
-        header: "",
-        defaultWidth: 80,
+        name: "createdAt",
+        header: "Date",
         editable: false,
         render: ({ data }: any) => (
-          <div>
-            <DataGridAction icon="delete" onClick={() => data.id && handleDelete(data)} activeColor="red" />
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div>
+              <Tooltip title={formatTimestampToDate(data.createdAt)}>
+                <span>{formatTimestampToDate(data.createdAt)}</span>
+              </Tooltip>
+            </div>
+            <div onClick={() => data.id && handleDelete(data)} style={{ cursor: lock ? "auto" : "pointer" }}>
+              <DeleteIcon title="delete" />
+            </div>
           </div>
         ),
       },

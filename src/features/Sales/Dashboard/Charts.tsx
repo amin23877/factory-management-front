@@ -5,7 +5,7 @@ import PieChart from "app/Chart/PieChart";
 import BaseLineChart from "app/Chart/LineChart";
 
 import { post, get } from "api";
-import SOTableModal, { ClientOrRepSOTable } from "./SOTableModal";
+import SOTableModal, { ClientOrRepSOTable, LocationSOTable } from "./SOTableModal";
 
 export function SalesVsWeek({ quote }: { quote?: boolean }) {
   const [SOs, setSOs] = useState<any[]>([]);
@@ -147,6 +147,8 @@ export function ClientPie() {
 
 export function SalesLocationPie() {
   const [chartData, setChartData] = useState<any[]>([]);
+  const [SOModal, setSOModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState();
 
   useEffect(() => {
     const generate = async () => {
@@ -166,7 +168,30 @@ export function SalesLocationPie() {
     generate();
   }, []);
 
-  return <PieChart legend data={(chartData as any) || []} dataKey="count" height={250} />;
+  return (
+    <>
+      <PieChart
+        legend
+        data={(chartData as any) || []}
+        dataKey="count"
+        height={250}
+        onClick={(d: any) => {
+          setSelectedItem(d);
+          setSOModal(true);
+        }}
+      />
+      {selectedItem && (
+        <LocationSOTable
+          open={SOModal}
+          onClose={() => {
+            setSOModal(false);
+            setSelectedItem(undefined);
+          }}
+          selectedItem={selectedItem}
+        />
+      )}
+    </>
+  );
 }
 
 export function SalesRepPie() {

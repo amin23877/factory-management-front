@@ -10,6 +10,9 @@ export interface IContact {
   active: boolean;
   title: string;
   department: string;
+  phone: string;
+  email: string;
+  main: boolean;
   phones: {
     phone: string;
     phoneType: string;
