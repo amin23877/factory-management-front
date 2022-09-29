@@ -46,7 +46,7 @@ function Details() {
     <>
       <Box display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 2fr"} gridGap={10}>
         <Formik initialValues={unit as IUnit} validationSchema={schema} onSubmit={handleSubmit}>
-          {({ values, errors, handleChange, handleBlur, setFieldValue, touched }) => (
+          {({ values, errors, handleChange, handleBlur, setFieldValue, touched, getFieldProps }) => (
             <Form>
               <Box display="flex" flexDirection="column" gridGap={10} height={phone ? "" : "100%"}>
                 <BasePaper>
@@ -70,6 +70,7 @@ function Details() {
                       handleBlur={handleBlur}
                       handleChange={handleChange}
                       setFieldValue={setFieldValue}
+                      getFieldProps={getFieldProps}
                       unit={unit}
                     />
                   </LockProvider>

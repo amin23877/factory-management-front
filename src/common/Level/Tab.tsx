@@ -10,13 +10,11 @@ import { ILevel } from "api/level";
 export default function LevelsTab({
   itemType,
   values,
-  handleChange,
-  handleBlur,
+  getFieldProps,
   setFieldValue,
 }: {
   values: any;
-  handleChange: any;
-  handleBlur: any;
+  getFieldProps: any;
   setFieldValue: any;
   itemType: string;
 }) {
@@ -51,8 +49,7 @@ export default function LevelsTab({
             placeholder={level.name}
             defaultValue={values?.levels ? values?.levels[level.name] : ""}
             value={values[level.name]}
-            onBlur={handleBlur}
-            onChange={handleChange}
+            {...getFieldProps(level.name)}
             disabled={lock}
           />
         ))}

@@ -47,6 +47,15 @@ function Parts() {
   const columns = useMemo(
     () => [
       {
+        header: "Id",
+        maxWidth: 50,
+        render: ({ rowIndex }: any) => (
+          <Tooltip title={rowIndex + 1}>
+            <span>{rowIndex + 1}</span>
+          </Tooltip>
+        ),
+      },
+      {
         name: "no",
         header: "Item NO.",
         render: ({ data }: any) => (

@@ -3,7 +3,7 @@ import { PieChart, Pie, Legend, Tooltip, ResponsiveContainer, Cell } from "recha
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#F43B86", "#0F52BA", "#FF2626", "#2C394B", "#64C9CF"];
 
-const renderLegend = (props: any) => {
+const renderLegend = (props: any, onClick: any) => {
   const { payload } = props;
 
   return (
@@ -16,8 +16,12 @@ const renderLegend = (props: any) => {
             overflow: "hidden",
             textOverflow: "ellipsis",
             width: 200,
+            cursor: "pointer",
           }}
           key={`item-${index}`}
+          onClick={() => {
+            onClick({ name: entry.value });
+          }}
         >
           {entry.value}
         </li>
@@ -31,19 +35,28 @@ export default function MyPieChart({
   data,
   dataKey,
   legend,
+  onClick,
 }: {
   legend?: boolean;
   height?: number;
   data: any[];
   dataKey: string;
+  onClick?: any;
 }) {
   return (
     <ResponsiveContainer width="100%" height={height ? height : "100%"}>
       <PieChart width={750} height={750}>
-        {legend && <Legend content={renderLegend} />}
+        {legend && <Legend content={(d: any) => renderLegend(d, onClick)} />}
         <Pie isAnimationActive={false} dataKey={dataKey} data={data} innerRadius={40} outerRadius={80} fill="#82ca9d">
-          {data.map((_, index) => (
-            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          {data.map((i, index) => (
+            <Cell
+              style={{ cursor: "pointer" }}
+              key={`cell-${index}`}
+              fill={COLORS[index % COLORS.length]}
+              onClick={(d: any) => {
+                onClick(i);
+              }}
+            />
           ))}
         </Pie>
         <Tooltip />

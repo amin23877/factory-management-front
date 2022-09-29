@@ -168,7 +168,8 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
   const handleAddDevice = useCallback(
     (row: any) => {
       Confirm({
-        text: `Device Number: ${row?.fakeName}`,
+        confirmText: "yes , add it",
+        text: `Add Device with this Number: ${row?.fakeName}`,
         onConfirm: async () => {
           try {
             const data = JSON.parse(JSON.stringify(row));

@@ -54,7 +54,7 @@ function DeviceDetails({
   return (
     <>
       <Formik initialValues={selectedRow} onSubmit={handleSubmit}>
-        {({ values, errors, touched, handleChange, handleBlur, setFieldValue }) => (
+        {({ values, errors, touched, handleChange, handleBlur, setFieldValue, getFieldProps }) => (
           <Form>
             <Box display="grid" gridGap={10} gridTemplateColumns={phone ? "1fr" : "5fr 7fr"}>
               <Box display="flex" flexDirection="column" style={phone ? { gap: 10 } : { gap: 10, height: "100%" }}>
@@ -90,6 +90,7 @@ function DeviceDetails({
                       handleChange={handleChange}
                       handleBlur={handleBlur}
                       setFieldValue={setFieldValue}
+                      getFieldProps={getFieldProps}
                     />
                   </LockProvider>
                 </BasePaper>

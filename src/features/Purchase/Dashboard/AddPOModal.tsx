@@ -44,7 +44,7 @@ export default function AddPOModal({
   selectedRPO: IRequiredPO;
 }) {
   const [activeStep, setActiveStep] = useState(0);
-  const [selectedItems, setSelectedItems] = useState<any>([]);
+  const [selectedItems, setSelectedItems] = useState<any>([selectedRPO]);
 
   const handleNext = () => {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -103,15 +103,6 @@ export default function AddPOModal({
                   onRowSelected={() => {}}
                   setUrlFilters
                   style={{ minHeight: "calc(100vh - 300px)" }}
-                  initParams={
-                    selectedRPO.type === "SOBased" && selectedRPO.SOId?.id
-                      ? {
-                          SOId: selectedRPO.SOId?.id,
-                        }
-                      : {
-                          type: selectedRPO.type,
-                        }
-                  }
                 />
               )}
               {activeStep === 1 && <TableForm selectedItems={selectedItems} />}

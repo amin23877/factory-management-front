@@ -93,6 +93,24 @@ export default function ContactModal({
                   label="Last Name"
                 />
                 <TextField
+                  name="phone"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  error={Boolean(errors.phone && touched.phone)}
+                  helperText={errors.phone && touched.phone}
+                  value={values.phone}
+                  label="Phone"
+                />
+                <TextField
+                  name="email"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  error={Boolean(errors.email && touched.email)}
+                  helperText={errors.email && touched.email}
+                  value={values.email}
+                  label="Email"
+                />
+                <TextField
                   name="title"
                   onBlur={handleBlur}
                   onChange={handleChange}
@@ -115,6 +133,12 @@ export default function ContactModal({
                   onChange={handleChange}
                   label="Active"
                   control={<Checkbox checked={values.active} />}
+                />
+                <FormControlLabel
+                  name="main"
+                  onChange={handleChange}
+                  label="Main"
+                  control={<Checkbox checked={values.main} />}
                 />
                 <Button type="submit" disabled={isSubmitting} kind={data ? "edit" : "add"}>
                   Save

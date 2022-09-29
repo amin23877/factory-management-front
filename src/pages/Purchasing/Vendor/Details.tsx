@@ -16,12 +16,15 @@ import ContactTab from "common/Contact/Tab";
 import { IVendor } from "api/vendor";
 import AuditTable from "common/Audit";
 import { useParams } from "react-router-dom";
+import { LockButton, LockProvider, useLock } from "common/Lock";
 
 export default function VendorDetails() {
   const [activeTab, setActiveTab] = useState(0);
   const { vendorId } = useParams<{ vendorId: string }>();
-  const { data: vendor } = useSWR<IVendor>(vendorId ? `/vendor/${vendorId}` : null);
 
+  const { setLock } = useLock();
+
+  const { data: vendor } = useSWR<IVendor>(vendorId ? `/vendor/${vendorId}` : null);
   const { data: items } = useSWR(activeTab === 0 ? `/vendor/${vendorId}/items` : null);
   const { data: POs } = useSWR(activeTab === 3 ? `/purchasepo?VendorId=${vendorId}` : null);
 
@@ -71,23 +74,31 @@ export default function VendorDetails() {
 
   return (
     <Box display="grid" gridGap={10} gridTemplateColumns={phone ? "1fr" : "2fr 3fr"}>
-      <UpdateVendorForm initialValues={vendor} />
+      <LockProvider>
+        <UpdateVendorForm initialValues={vendor} />
+      </LockProvider>
       <BasePaper>
-        <Tabs
-          value={activeTab}
-          onChange={(e, nv) => setActiveTab(nv)}
-          textColor="primary"
-          variant="scrollable"
-          scrollButtons={phone ? "on" : "auto"}
-          style={phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "1em" } : { marginBottom: "1em" }}
-        >
-          <Tab label="Items" />
-          <Tab label="Documents" />
-          <Tab label="Contacts" />
-          <Tab label="PO History" />
-          <Tab label="Notes" />
-          <Tab label="Auditing" />
-        </Tabs>
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          <Tabs
+            value={activeTab}
+            onChange={(e, nv) => {
+              setActiveTab(nv);
+              setLock(true);
+            }}
+            textColor="primary"
+            variant="scrollable"
+            scrollButtons={phone ? "on" : "auto"}
+            style={phone ? { maxWidth: "calc(100vw - 63px)", marginBottom: "1em" } : { marginBottom: "1em" }}
+          >
+            <Tab label="Items" />
+            <Tab label="Documents" />
+            <Tab label="Contacts" />
+            <Tab label="PO History" />
+            <Tab label="Notes" />
+            <Tab label="Auditing" />
+          </Tabs>
+          <LockButton />
+        </Box>
         {activeTab === 0 && (
           <BaseDataGrid
             cols={itemCols}
