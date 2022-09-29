@@ -1,29 +1,99 @@
+
 stages:
   - build
 
-build:
+phocusimage:
   stage: build
-  image: node:16
-  rules:
-  - changes:
-      - src/*
-  before_script:
-  - apt-get -qq update && apt-get -qq install -y zip unzip sshpass
-  - npm i
+  image: docker:latest
+  services:
+    - docker:dind
   script:
-  - echo "export const host = 'https://ts.digitalphocus.ir'" > src/host.ts
-  - NODE_OPTIONS=--max_old_space_size=1000; npm run build
-  - zip -r build.zip build
-  - mkdir build
-  - ls
-  - which ssh
-  - which scp
-  - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
-  - eval $(ssh-agent -s)
-  - ssh-add <(echo "$SSH_PRIVATE_KEY")
-  - mkdir -p ~/.ssh
-  - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
-  - ssh root@185.110.191.89 "cd /home/phocus.frontend; git reset --hard; git pull; npm ci; sed -i 's/ForkTsCheckerWebpackPlugin.DEFAULT_MEMORY_LIMIT = 2048/ForkTsCheckerWebpackPlugin.DEFAULT_MEMORY_LIMIT = 512/g' node_modules/fork-ts-checker-webpack-plugin/lib/index.js"
-  - ssh root@185.110.191.89 "systemctl stop mongod"
-  - ssh root@185.110.191.89 "cd /home/phocus.frontend; node --max-old-space-size=512 node_modules/.bin/react-scripts build"
-  - ssh root@185.110.191.89 "systemctl start mongod"
+    - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - docker login -u "$registryuser" -p "$registrypass" $registryurl
+    - docker image prune -a -f
+    - ssh root@$registryserver "sed 's/IMAGENAME/phocus\/phocusnext/g' delete.sh | /bin/sh; docker exec registry bin/registry garbage-collect /etc/docker/registry/config.yml"
+    - ssh root@$registryserver "docker-compose restart"
+    - docker build --tag registry.cla99ic.ir/phocus/phocusnext:latest ./
+    - docker push registry.cla99ic.ir/phocus/phocusnext:latest
+    - docker image prune -a -f
+    - ssh root@$prodserver "cd ~; docker-compose pull; docker-compose up -d"
+  tags:
+    - docker
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "phocus"'
+
+devphocusimage:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - docker login -u "$registryuser" -p "$registrypass" $registryurl
+    - docker image prune -a -f
+    - ssh root@$registryserver "sed 's/IMAGENAME/phocus\/devphocusnext/g' delete.sh | /bin/sh; docker exec registry bin/registry garbage-collect /etc/docker/registry/config.yml"
+    - ssh root@$registryserver "docker-compose restart"
+    - docker build --tag registry.cla99ic.ir/phocus/devphocusnext:latest ./
+    - docker push registry.cla99ic.ir/phocus/devphocusnext:latest
+    - docker image prune -a -f
+    - ssh root@$devserver "cd ~; docker-compose pull; docker-compose up -d"
+  tags:
+    - docker
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "phocus-dev"'
+
+signalimage:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - docker login -u "$registryuser" -p "$registrypass" $registryurl
+    - docker image prune -a -f
+    - ssh root@$registryserver "sed 's/IMAGENAME/signal\/signalnext/g' delete.sh | /bin/sh; docker exec registry bin/registry garbage-collect /etc/docker/registry/config.yml"
+    - ssh root@$registryserver "docker-compose restart"
+    - docker build --tag registry.cla99ic.ir/signal/signalnext:latest ./
+    - docker push registry.cla99ic.ir/signal/signalnext:latest
+    - docker image prune -a -f
+    - ssh root@$prodserver "cd ~; docker-compose pull; docker-compose up -d"
+  tags:
+    - docker
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "signal"'
+
+devsignalimage:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - "which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )"
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - docker login -u "$registryuser" -p "$registrypass" $registryurl
+    - docker image prune -a -f
+    - ssh root@$registryserver "sed 's/IMAGENAME/signal\/devsignalnext/g' delete.sh | /bin/sh; docker exec registry bin/registry garbage-collect /etc/docker/registry/config.yml"
+    - ssh root@$registryserver "docker-compose restart"
+    - docker build --tag registry.cla99ic.ir/signal/devsignalnext:latest ./
+    - docker push registry.cla99ic.ir/signal/devsignalnext:latest
+    - docker image prune -a -f
+    - ssh root@$devserver "cd ~; docker-compose pull; docker-compose up -d"
+  tags:
+    - docker
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "signal-dev"'
