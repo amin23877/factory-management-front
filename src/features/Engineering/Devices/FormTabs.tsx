@@ -54,7 +54,7 @@ export default function FormTabs({
           <Tab label="Image" />
           <Tab label="UPC" />
           <Tab label="Pricing" />
-          {!sales && <Tab label="Clusters and Levels" />}
+          <Tab label="Clusters and Levels" />
         </Tabs>
         <LockButton />
       </Box>
@@ -92,7 +92,7 @@ export default function FormTabs({
           boms={boms || { result: [], total: 0 }}
         />
       )}
-      {moreInfoTab === 3 && !sales && (
+      {moreInfoTab === 3 && (
         <LevelsTab
           values={values}
           getFieldProps={getFieldProps}

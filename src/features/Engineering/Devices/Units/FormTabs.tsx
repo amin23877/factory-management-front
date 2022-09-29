@@ -104,7 +104,7 @@ export default function FormsTabs({
       {activeTab === 5 && (
         <LevelsTab
           itemType={unit.ItemId.class}
-          values={values}
+          values={unit.ItemId}
           getFieldProps={getFieldProps}
           setFieldValue={setFieldValue}
         />
