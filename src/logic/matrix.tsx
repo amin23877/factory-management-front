@@ -85,6 +85,13 @@ export const generateDataGridColumns = (
             </Button>
           </div>
         ),
+        render: ({ value, data }: any) => {
+          return (
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <span>{data[c]?.value + "" + data[c]?.uom}</span>
+            </div>
+          );
+        },
       });
     }
   });
@@ -127,6 +134,7 @@ export const extractColumns = ({
 
 export const extractLevels = (tableData: IMatrix) => {
   const levels = new Set<string>();
+
   tableData[0] && Object.keys(tableData[0]).forEach((k) => k !== "device" && levels.add(k));
 
   return Array.from(levels);

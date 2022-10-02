@@ -80,18 +80,38 @@ export default function PricingTab({
             style={{ marginBottom: 3 }}
           />
           <TextField
-            label="retail price"
-            value={values.retailPrice}
-            {...getFieldProps("retailPrice")}
-            style={{ marginBottom: 3 }}
-            disabled={lock}
-          />
-          <TextField
             label="Total Cost"
             value={values.overrideUse ? values.override : values.totalCost}
             name="totalCost"
             disabled
           />
+          <>
+            <TextField
+              label="retail price"
+              value={values.retailPrice}
+              {...getFieldProps("retailPrice")}
+              style={{ marginBottom: 3 }}
+              disabled={lock}
+            />
+            <div style={phone ? { gridColumnEnd: "span 2" } : {}}>
+              <FormControlLabel
+                style={{ fontSize: "0.7rem" }}
+                checked={values.retailPriceEstimateUse}
+                label=" "
+                {...getFieldProps("retailPriceEstimateUse")}
+                control={<Checkbox />}
+                disabled={lock}
+              />
+              <TextField
+                label=" Retail Price Estimate"
+                value={values.retailPriceEstimate}
+                {...getFieldProps("retailPriceEstimate")}
+                style={{ marginBottom: 3 }}
+                disabled={lock}
+              />
+            </div>
+          </>
+
           {!boms ? (
             <div style={phone ? { gridColumnEnd: "span 2", display: "flex" } : { display: "flex" }}>
               <FormControlLabel
@@ -114,7 +134,7 @@ export default function PricingTab({
           ) : (
             <>
               <TextField
-                label=" Bom Total Part Cost"
+                label=" Bom  Cost"
                 value={values.bomCost}
                 {...getFieldProps("bomCost")}
                 style={{ marginBottom: 3 }}
