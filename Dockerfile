@@ -4,6 +4,7 @@ ENV DISABLE_ESLINT_PLUGIN=true
 COPY package*.json ./
 RUN npm i --force
 COPY . .
-RUN npm run build
+RUN sed -i 's/ForkTsCheckerWebpackPlugin.DEFAULT_MEMORY_LIMIT = 2048/ForkTsCheckerWebpackPlugin.DEFAULT_MEMORY_LIMIT = 512/g' node_modules/fork-ts-checker-webpack-plugin/lib/index.js
+RUN node --max-old-space-size=512 node_modules/.bin/react-scripts build
 EXPOSE 3001
 CMD [ "npm", "start" ]
