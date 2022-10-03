@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, FormControlLabel, Checkbox } from "@material-ui/core";
-import { Formik, Form } from "formik";
+import { Formik, Form, FieldArray } from "formik";
 // import * as Yup from "yup";
 import { mutate } from "swr";
 
@@ -9,6 +9,7 @@ import TextField from "app/TextField";
 import Button from "app/Button";
 
 import { createAModelContact, deleteAModelContact, updateAModelContact, IContact } from "api/contact";
+import { AddRounded } from "@material-ui/icons";
 
 export default function ContactModal({
   open,
@@ -74,6 +75,18 @@ export default function ContactModal({
           {({ values, errors, touched, handleBlur, handleChange, isSubmitting }) => (
             <Form>
               <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={8} gridColumnGap={8}>
+                <FormControlLabel
+                  name="active"
+                  onChange={handleChange}
+                  label="Active"
+                  control={<Checkbox checked={values.active} />}
+                />
+                <FormControlLabel
+                  name="main"
+                  onChange={handleChange}
+                  label="Main"
+                  control={<Checkbox checked={values.main} />}
+                />
                 <TextField
                   name="firstName"
                   onBlur={handleBlur}
@@ -93,24 +106,6 @@ export default function ContactModal({
                   label="Last Name"
                 />
                 <TextField
-                  name="phone"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  error={Boolean(errors.phone && touched.phone)}
-                  helperText={errors.phone && touched.phone}
-                  value={values.phone}
-                  label="Phone"
-                />
-                <TextField
-                  name="email"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  error={Boolean(errors.email && touched.email)}
-                  helperText={errors.email && touched.email}
-                  value={values.email}
-                  label="Email"
-                />
-                <TextField
                   name="title"
                   onBlur={handleBlur}
                   onChange={handleChange}
@@ -128,18 +123,64 @@ export default function ContactModal({
                   value={values.department}
                   label="Department"
                 />
-                <FormControlLabel
-                  name="active"
-                  onChange={handleChange}
-                  label="Active"
-                  control={<Checkbox checked={values.active} />}
-                />
-                <FormControlLabel
-                  name="main"
-                  onChange={handleChange}
-                  label="Main"
-                  control={<Checkbox checked={values.main} />}
-                />
+                <Box display={"flex"} flexDirection="column">
+                  <FieldArray
+                    name="phones"
+                    render={(arrayHelpers) => (
+                      <Box style={{ borderBottom: "1px solid #eee" }} pb={1}>
+                        <TextField
+                          name="phone"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          error={Boolean(errors.phone && touched.phone)}
+                          helperText={errors.phone && touched.phone}
+                          value={values.phone}
+                          label="Phone"
+                        />
+                        <Button
+                          disabled={isSubmitting}
+                          kind={"add"}
+                          style={{ marginLeft: "5px" }}
+                          onClick={() => arrayHelpers.push(values.phone)}
+                        >
+                          Add Phone
+                        </Button>
+                      </Box>
+                    )}
+                  />
+                  {values?.phones?.map((phone) => (
+                    <Box mb={1}>{phone}</Box>
+                  ))}
+                </Box>
+                <Box display={"flex"} flexDirection="column">
+                  <FieldArray
+                    name="emails"
+                    render={(arrayHelpers) => (
+                      <Box style={{ borderBottom: "1px solid #eee" }} pb={1}>
+                        <TextField
+                          name="email"
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          error={Boolean(errors.email && touched.email)}
+                          helperText={errors.email && touched.email}
+                          value={values.email}
+                          label="Email"
+                        />
+                        <Button
+                          disabled={isSubmitting}
+                          kind={"add"}
+                          style={{ marginLeft: "5px" }}
+                          onClick={() => arrayHelpers.push(values.email)}
+                        >
+                          Add Email
+                        </Button>
+                      </Box>
+                    )}
+                  />
+                  {values?.emails?.map((email) => (
+                    <Box mb={1}>{email}</Box>
+                  ))}
+                </Box>
                 <Button type="submit" disabled={isSubmitting} kind={data ? "edit" : "add"}>
                   Save
                 </Button>

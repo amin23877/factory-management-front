@@ -4,6 +4,7 @@ import { EditRounded } from "@material-ui/icons";
 import { IMatrix } from "../api/matrix";
 import DataGridAction from "common/DataGridAction";
 import { openRequestedSinglePopup } from "./window";
+import { ReactComponent as NarrowIcon } from "assets/icons/tableIcons/narrowDown.svg";
 
 const defaultColumns = ["Device Number", "Device Description"];
 const excludeColumns = ["fakeName"];
@@ -28,7 +29,7 @@ export const generateRows = ({ levels, tableData }: { tableData: IMatrix; levels
       parts,
       DeviceId: (td.device as any)?._id || td.device?.id,
       "Device Number": td.device?.no || td?.fakeName,
-      "Device Description": td.device?.name,
+      "Device Description": td.description || td.device?.name,
     };
   });
 };
@@ -51,12 +52,8 @@ export const generateDataGridColumns = (
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <span>{value}</span>
             {data?.DeviceId ? (
-              <div style={{ height: 22 }}>
-                <DataGridAction
-                  icon="view"
-                  controlledLock={false}
-                  onClick={() => openRequestedSinglePopup({ url: `/panel/inventory/items/${data?.DeviceId}` })}
-                />
+              <div onClick={() => openRequestedSinglePopup({ url: `/panel/inventory/items/${data?.DeviceId}` })}>
+                <NarrowIcon />
               </div>
             ) : (
               <DataGridAction icon="add" controlledLock={false} onClick={() => onAddDevice(data)} />
