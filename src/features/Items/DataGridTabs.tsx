@@ -99,14 +99,14 @@ export default function DataGridTabs({
           scrollButtons={phone ? "on" : "auto"}
           style={phone ? { maxWidth: "calc(100vw - 63px)" } : {}}
         >
-          <Tab label="Document" />
-          <Tab label="Vendor" />
-          <Tab label="BOM" disabled={!values.bom} />
-          <Tab label="Sales order History" />
-          <Tab label="PO History" />
-          <Tab label="Usage" />
-          <Tab label="Note" />
-          <Tab label="Auditing" />
+          <Tab label="Document" /> 0
+          <Tab label="Vendor" /> 1
+          <Tab label="BOM" disabled={!values.bom} /> 2
+          <Tab label="Sales order History" /> 3
+          <Tab label="PO History" /> 4
+          <Tab label="Usage" /> 5
+          <Tab label="Note" /> 6
+          <Tab label="Auditing" /> 7
         </Tabs>
         <LockButton />
       </Box>

@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Checkbox, FormControlLabel, Paper } from "@material-ui/core";
 
 import TextField from "app/TextField";
-import LinkField from "app/Inputs/LinkFields";
+import LinkSelect from "app/Inputs/LinkFields";
 
 interface IForm {
   values: any;
@@ -15,12 +15,28 @@ interface IForm {
   device?: boolean;
   unlock?: boolean;
   type?: string;
+  itemId?: string;
 }
 
-export const General = ({ values, errors, handleChange, handleBlur, touched }: IForm) => {
+export const General = ({ values, errors, handleChange, handleBlur, touched, setFieldValue, itemId }: IForm) => {
   return (
     <>
       <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
+        <LinkSelect
+          value={values?.BomId}
+          label="BOM"
+          path={`/bom?ItemId=${itemId}`}
+          filterLabel="name"
+          getOptionList={(resp) => resp?.result}
+          getOptionLabel={(so) => so?.name}
+          getOptionValue={(so) => so?.id}
+          onChange={(e, nv) => {
+            setFieldValue("BomId", nv?.id);
+          }}
+          onBlur={handleBlur}
+          url="/panel/engineering"
+          choseItem={{ id: values?.BomId?.id, name: values?.BomId?.name }}
+        />
         <TextField
           label="Title"
           value={values.title}

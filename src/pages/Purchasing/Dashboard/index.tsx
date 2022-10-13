@@ -6,6 +6,7 @@ import { BasePaper } from "app/Paper";
 import NewDataGrid from "app/NewDataGrid";
 import List from "app/SideUtilityList";
 import RequiredPOModal from "../../../features/Purchase/Dashboard/RequiredPOModal";
+import { formatTimestampToDate } from "logic/date";
 
 const requiredCols = [
   {
@@ -52,9 +53,24 @@ const receivedCols = [
     defaultFlex: 1,
   },
   { name: "unit", header: "Related Unit", width: 120, render: ({ data }: any) => data?.UnitId?.number },
-  { name: "orderedQuantity", header: "Ordered QTY", width: 120, type: "number" },
-  { name: "receivedQuantity", header: "Received QTY", width: 120, type: "number" },
-  { name: "dateExpected", header: "Expected Date", width: 120, type: "date" },
+  {
+    name: "orderedQuantity",
+    header: "Ordered QTY",
+    width: 120,
+    render: ({ data }: any) => data?.POLineItemId?.orderedQuantity,
+  },
+  {
+    name: "receivedQuantity",
+    header: "Received QTY",
+    width: 120,
+    render: ({ data }: any) => data?.POLineItemId?.receivedQuantity,
+  },
+  {
+    name: "dateExpected",
+    header: "Expected Date",
+    width: 120,
+    render: ({ data }: any) => formatTimestampToDate(data?.POLineItemId?.dateExpected),
+  },
 ];
 
 export default function Dashboard() {

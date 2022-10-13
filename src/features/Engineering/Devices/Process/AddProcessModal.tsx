@@ -52,6 +52,7 @@ export default function AddProcessModal({
                 handleBlur={handleBlur}
                 handleChange={handleChange}
                 setFieldValue={setFieldValue}
+                itemId={ItemId}
               />
             </Box>
             <Box display={"flex"} justifyContent="center" mt={5} width="100%">
