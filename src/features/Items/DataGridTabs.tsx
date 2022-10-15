@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Tabs, Tab, useMediaQuery, Box } from "@material-ui/core";
+import Button from "app/Button";
 
 import AuditTable from "common/Audit";
 import BaseDataGrid from "app/BaseDataGrid";
@@ -7,11 +8,13 @@ import { GridColumns } from "@material-ui/data-grid";
 import { formatTimestampToDate } from "logic/date";
 import { VendorModal } from "features/Modals/AddVendor";
 
-import Button from "app/Button";
 import VendorsTable from "features/Items/VendorsTable";
 import NotesTab from "common/Note/Tab";
 import DocumentTab from "common/Document/Tab";
 import ItemBomTable from "features/BOM/ItemBomTable";
+import SOTab from "features/Sales/SO/Datagrid";
+import POTab from "features/Purchase/PO/Datagrid";
+
 import useSWR from "swr";
 import { IItem } from "api/items";
 import { LockButton, useLock } from "common/Lock";
@@ -128,6 +131,12 @@ export default function DataGridTabs({
         <div style={{ maxWidth: "79vw", overflow: "auto", height: "85%" }}>
           <ItemBomTable item={selectedRow} boms={boms?.result || []} mutateBoms={mutateBoms} />
         </div>
+      )}
+      {activeTab === 3 && (
+        <SOTab onRowSelected={() => {}} params={{ ItemId: selectedRow.id }} style={{ height: "64vh" }} />
+      )}
+      {activeTab === 4 && (
+        <POTab onRowSelected={() => {}} params={{ ItemId: selectedRow.id }} style={{ height: "64vh" }} />
       )}
       {activeTab === 5 && (
         <BaseDataGrid

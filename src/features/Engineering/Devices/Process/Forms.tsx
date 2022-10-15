@@ -23,19 +23,19 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, set
     <>
       <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
         <LinkSelect
-          value={values?.BomId}
+          value={values?.BOMId}
           label="BOM"
           path={`/bom?ItemId=${itemId}`}
-          filterLabel="name"
+          filterLabel="no"
           getOptionList={(resp) => resp?.result}
-          getOptionLabel={(so) => so?.name}
-          getOptionValue={(so) => so?.id}
+          getOptionLabel={(bom) => bom?.no}
+          getOptionValue={(bom) => bom?.id}
           onChange={(e, nv) => {
-            setFieldValue("BomId", nv?.id);
+            setFieldValue("BOMId", nv?.id);
           }}
           onBlur={handleBlur}
           url="/panel/engineering"
-          choseItem={{ id: values?.BomId?.id, name: values?.BomId?.name }}
+          choseItem={{ id: values?.BOMId?.id, no: values?.BOMId?.no }}
         />
         <TextField
           label="Title"

@@ -32,8 +32,15 @@ export default function QuoteDataGrid({
         header: "Client",
         minWidth: 100,
         render: ({ data }: any) => data?.ClientId?.name,
+        visible: params?.ClientId ? false : true,
       },
-      { name: "RepId", header: "Rep", minWidth: 100, render: ({ data }: any) => data.RepId?.name },
+      {
+        name: "RepId",
+        header: "Rep",
+        minWidth: 100,
+        render: ({ data }: any) => data.RepId?.name,
+        visible: params?.RepId ? false : true,
+      },
       {
         name: "RepId.state",
         header: "State",

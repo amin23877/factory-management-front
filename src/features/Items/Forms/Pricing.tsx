@@ -9,7 +9,7 @@ import BaseDataGrid from "app/BaseDataGrid";
 import { IItem } from "api/items";
 
 import { useLock } from "common/Lock";
-import { Box, Checkbox, FormControlLabel, useMediaQuery } from "@material-ui/core";
+import { Box, Checkbox, FormControlLabel, Radio, RadioGroup, useMediaQuery } from "@material-ui/core";
 
 const pricingCols = [
   { field: "label", headerName: "Label", flex: 1 },
@@ -85,32 +85,6 @@ export default function PricingTab({
             name="totalCost"
             disabled
           />
-          <>
-            <TextField
-              label="retail price"
-              value={values.retailPrice}
-              {...getFieldProps("retailPrice")}
-              style={{ marginBottom: 3 }}
-              disabled={lock}
-            />
-            <div style={phone ? { gridColumnEnd: "span 2" } : {}}>
-              <FormControlLabel
-                style={{ fontSize: "0.7rem" }}
-                checked={values.retailPriceEstimateUse}
-                label=" "
-                {...getFieldProps("retailPriceEstimateUse")}
-                control={<Checkbox />}
-                disabled={lock}
-              />
-              <TextField
-                label=" Retail Price Estimate"
-                value={values.retailPriceEstimate}
-                {...getFieldProps("retailPriceEstimate")}
-                style={{ marginBottom: 3 }}
-                disabled={lock}
-              />
-            </div>
-          </>
 
           {!boms ? (
             <div style={phone ? { gridColumnEnd: "span 2", display: "flex" } : { display: "flex" }}>
@@ -132,23 +106,19 @@ export default function PricingTab({
               />
             </div>
           ) : (
-            <>
-              <TextField
-                label=" Bom  Cost"
-                value={values.bomCost}
-                {...getFieldProps("bomCost")}
-                style={{ marginBottom: 3 }}
-                disabled={lock}
-              />
+            <RadioGroup row {...getFieldProps("bomCostEstimateUse")} value={values.bomCostEstimateUse}>
               <div style={phone ? { gridColumnEnd: "span 2" } : {}}>
-                <FormControlLabel
-                  style={{ fontSize: "0.7rem" }}
-                  checked={values.bomCostEstimateUse}
-                  label=" "
-                  {...getFieldProps("bomCostEstimateUse")}
-                  control={<Checkbox />}
+                <FormControlLabel value={"false"} control={<Radio size="small" />} label="" disabled={lock} />
+                <TextField
+                  label=" Bom  Cost"
+                  value={values.bomCost}
+                  {...getFieldProps("bomCost")}
+                  style={{ marginBottom: 3 }}
                   disabled={lock}
                 />
+              </div>
+              <div style={phone ? { gridColumnEnd: "span 2" } : {}}>
+                <FormControlLabel value={"true"} control={<Radio size="small" />} label="" disabled={lock} />
                 <TextField
                   label=" Bom Cost Estimate"
                   value={values.bomCostEstimate}
@@ -157,8 +127,31 @@ export default function PricingTab({
                   disabled={lock}
                 />
               </div>
-            </>
+            </RadioGroup>
           )}
+
+          <RadioGroup row {...getFieldProps("retailPriceEstimateUse")} value={values.retailPriceEstimateUse}>
+            <div style={phone ? { gridColumnEnd: "span 2" } : {}}>
+              <FormControlLabel value={"false"} control={<Radio size="small" />} label="" disabled={lock} />
+              <TextField
+                label="retail price"
+                value={values.retailPrice}
+                {...getFieldProps("retailPrice")}
+                style={{ marginBottom: 3 }}
+                disabled={lock}
+              />
+            </div>
+            <div style={phone ? { gridColumnEnd: "span 2" } : {}}>
+              <FormControlLabel value={"true"} control={<Radio size="small" />} label="" disabled={lock} />
+              <TextField
+                label=" Retail Price Estimate"
+                value={values.retailPriceEstimate}
+                {...getFieldProps("retailPriceEstimate")}
+                style={{ marginBottom: 3 }}
+                disabled={lock}
+              />
+            </div>
+          </RadioGroup>
         </Box>
       </div>
     </>
