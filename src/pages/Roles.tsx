@@ -6,13 +6,12 @@ import {
   Typography,
   FormControlLabel,
   Checkbox,
-  List,
   ListItem,
   Tabs,
   Tab,
 } from "@material-ui/core";
-import { DeleteRounded } from "@material-ui/icons";
-
+import { AddRounded, DeleteRounded } from "@material-ui/icons";
+import List from "app/SideUtilityList";
 import { getRoles, getEmployeesRoles } from "../api/role";
 import { IEmployee, addRoleToEmployee, deleteRoleFromEmployee, deleteEmployee } from "../api/employee";
 
@@ -33,7 +32,7 @@ export default function Roles() {
 
   const [snack, setSnack] = useState(false);
   const [msg, setMsg] = useState("");
-  const [tab, setTab] = useState(1);
+  const [tab, setTab] = useState(0);
 
   const [selectedEmp, setSelectedEmp] = useState<IEmployee>();
   const [empsAndRoles, setEmpsAndRoles] = useState<any>([]);
@@ -72,13 +71,58 @@ export default function Roles() {
     }
   };
 
-  const columns = useMemo(
+  const roleCols = useMemo(
+    () => [
+      {
+        name: "createdAt",
+        header: "Date",
+        minWidth: 110,
+        type: "date",
+        defaultFlex: 1,
+      },
+      {
+        name: "name",
+        header: "Name",
+        minWidth: 110,
+        defaultFlex: 1,
+      },
+    ],
+    []
+  );
+
+  const employeeCols = useMemo(
     () => [
       {
         name: "createdAt",
         header: "Sign Up Date",
         minWidth: 110,
         type: "date",
+        defaultFlex: 1,
+      },
+      {
+        name: "username",
+        header: "Username",
+        minWidth: 110,
+        defaultFlex: 1,
+      },
+      {
+        name: "department",
+        header: "Department",
+        minWidth: 110,
+        defaultFlex: 1,
+      },
+      {
+        name: "roles",
+        header: "Roles",
+        minWidth: 110,
+        defaultFlex: 1,
+        render: ({ data }: any) => {
+          let roles = [];
+          roles = data?.roles?.map((role: any) => {
+            return role.name;
+          });
+          return roles.join(",");
+        },
       },
     ],
     []
@@ -93,32 +137,34 @@ export default function Roles() {
       <Snack open={snack} onClose={() => setSnack(false)}>
         {msg}
       </Snack>
-      <Tabs
-        value={tab}
-        textColor="primary"
-        onChange={(e, nv) => {
-          setTab(nv);
-        }}
-      >
-        <Tab label="Employee" />
-        <Tab label="Role" />
-      </Tabs>
-      {tab === 0 && (
-        <NewDataGrid
-          url={`/employee`}
-          columns={columns}
-          onRowSelected={() => {}}
-          style={{ minHeight: "calc(100vh - 250px)" }}
-        />
-      )}
-      {tab === 1 && (
-        <NewDataGrid
-          url={`/role`}
-          columns={columns}
-          onRowSelected={() => {}}
-          style={{ minHeight: "calc(100vh - 250px)" }}
-        />
-      )}
+      <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1}>
+        <Tabs
+          value={tab}
+          textColor="primary"
+          onChange={(e, nv) => {
+            setTab(nv);
+          }}
+          style={{ marginBottom: "10px" }}
+        >
+          <Tab label="Employee" />
+          <Tab label="Role" />
+        </Tabs>
+        <div style={{ flexGrow: 1 }} />
+        <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
+          <ListItem>
+            <IconButton
+              title="Add item"
+              onClick={() => {
+                setAddEmpModal(true);
+              }}
+            >
+              <AddRounded />
+            </IconButton>
+          </ListItem>
+        </List>
+      </Box>
+      {tab === 0 && <NewDataGrid url={`/employee`} columns={employeeCols} onRowSelected={() => {}} />}
+      {tab === 1 && <NewDataGrid url={`/role`} columns={roleCols} onRowSelected={() => {}} />}
       {/* <Box>
         <Box display="flex" my={2}>
           <Button onClick={() => setAddEmpModal(true)}>Add Employee</Button>

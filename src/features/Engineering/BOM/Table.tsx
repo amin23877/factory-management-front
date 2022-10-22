@@ -195,7 +195,8 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
       const columns = generateDataGridColumns(
         extractColumns({ tableData, levels, parts }),
         handleChangePartName,
-        handleAddDevice
+        handleAddDevice,
+        levels
       );
       const rows = generateRows({ tableData, levels });
 
@@ -216,6 +217,7 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
         minWidth: 180,
         editable: false,
         sortable: false,
+        type: "string",
         header: (
           <div style={{ width: 80, display: "flex", alignItems: "center" }}>
             <Typography variant="caption">{name}</Typography>
@@ -267,7 +269,7 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
 
   const submitChanges = async () => {
     try {
-      await postMatrixData({ matrice: [...changes] });
+      await postMatrixData({ matrice: [...changes], allMatrice: tableData });
       refreshTableData();
       Toast("Submitted", "success");
       setChanges([]);

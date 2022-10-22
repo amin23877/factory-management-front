@@ -37,7 +37,8 @@ export const generateRows = ({ levels, tableData }: { tableData: IMatrix; levels
 export const generateDataGridColumns = (
   columns: string[],
   onRename: (header: string) => void,
-  onAddDevice: (d: any) => void
+  onAddDevice: (d: any) => void,
+  levels: string[]
 ) => {
   const dtCols: any = [];
 
@@ -68,7 +69,7 @@ export const generateDataGridColumns = (
         editable: false,
         header: <Typography variant="caption">{c}</Typography>,
       });
-    } else {
+    } else if (levels.includes(c)) {
       dtCols.push({
         name: c,
         minWidth: 100,
@@ -90,9 +91,30 @@ export const generateDataGridColumns = (
           );
         },
       });
+    } else {
+      dtCols.push({
+        name: c,
+        minWidth: 100,
+        editable: false,
+        sortable: false,
+        header: (
+          <div style={{ width: 80, display: "flex", alignItems: "center" }}>
+            <Typography variant="caption">{c}</Typography>
+            <Button size="small" onClick={() => onRename(c)}>
+              <EditRounded htmlColor="white" fontSize="small" />
+            </Button>
+          </div>
+        ),
+        render: ({ data }: any) => {
+          return (
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <span>{data[c]}</span>
+            </div>
+          );
+        },
+      });
     }
   });
-
   return dtCols;
 };
 
@@ -131,16 +153,13 @@ export const extractColumns = ({
 
 export const extractLevels = (tableData: IMatrix) => {
   const levels = new Set<string>();
-
   tableData[0] && Object.keys(tableData[0]).forEach((k) => k !== "device" && levels.add(k));
-
   return Array.from(levels);
 };
 
 export const extractPartNames = (tableData: any[]) => {
   const parts = new Set<string>();
   const data = tableData.map((item) => ({ ...(item?.device?.recs || []) }));
-
   data.forEach((data: any) => Object.keys(data).forEach((r: any) => parts.add(data[r].name || "No-Name")));
   return Array.from(parts);
 };

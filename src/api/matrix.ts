@@ -26,7 +26,7 @@ export const getMatrix = (productFamily: string) => {
 };
 
 export const postMatrixData = (changes: any) => {
-  return post(`/matrice`, changes);
+  return post(`/matrice/all`, changes);
 };
 
 export const renameMatrixPart = (formerName: string, newName: string) => {
