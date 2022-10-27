@@ -9,7 +9,7 @@ import Dialog from "app/Dialog";
 import NewDataGrid from "app/NewDataGrid";
 import Toast from "app/Toast";
 import LevelForm from "common/Level/Form";
-import { LockProvider, useLock } from "common/Lock";
+import { LockButton, LockProvider, useLock } from "common/Lock";
 import { ReactComponent as NarrowIcon } from "assets/icons/tableIcons/narrowDown.svg";
 
 import { clusterType, createCluster, updateCluster } from "api/cluster";
@@ -88,41 +88,40 @@ export default function ClusterModal({ open, onClose }: { open: boolean; onClose
 
   return (
     <Dialog open={open} onClose={onClose} title={activeTab === 0 ? "Cluster" : "Level"} maxWidth="lg" fullWidth>
-      <Tabs
-        value={activeTab}
-        textColor="primary"
-        onChange={(e, nv) => {
-          setLock(true);
-          setActiveTab(nv);
-        }}
-      >
-        <Tab label="Clusters" />
-        <Tab label="Levels" disabled={!selectedCluster} />
-      </Tabs>
+      <Box display="flex" justifyContent={"space-between"} alignItems="center">
+        <Tabs
+          value={activeTab}
+          textColor="primary"
+          onChange={(e, nv) => {
+            setLock(true);
+            setActiveTab(nv);
+          }}
+        >
+          <Tab label="Clusters" />
+          <Tab label="Levels" disabled={!selectedCluster} />
+        </Tabs>
+        <LockButton />
+      </Box>
       {activeTab === 0 && (
         <Formik initialValues={{ class: "device" } as Partial<clusterType>} onSubmit={handleSubmit}>
           {({ getFieldProps, values, setFieldValue, resetForm, setValues }) => (
             <Form>
               <Box my={2}>
-                <LockProvider>
-                  <ClusterForm
-                    values={values}
-                    getFieldProps={getFieldProps}
-                    resetForm={resetForm}
-                    setFieldValue={setFieldValue}
-                    onDone={() => setRefresh((p) => p + 1)}
-                  />
-                </LockProvider>
-              </Box>
-              <LockProvider>
-                <NewDataGrid
-                  style={{ height: 400 }}
-                  url="/cluster"
-                  columns={columns}
-                  onRowSelected={(r) => setValues(r)}
-                  refresh={refresh}
+                <ClusterForm
+                  values={values}
+                  getFieldProps={getFieldProps}
+                  resetForm={resetForm}
+                  setFieldValue={setFieldValue}
+                  onDone={() => setRefresh((p) => p + 1)}
                 />
-              </LockProvider>
+              </Box>
+              <NewDataGrid
+                style={{ height: 400 }}
+                url="/cluster"
+                columns={columns}
+                onRowSelected={(r) => setValues(r)}
+                refresh={refresh}
+              />
             </Form>
           )}
         </Formik>

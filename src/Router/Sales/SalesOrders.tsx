@@ -156,6 +156,7 @@ export default function SalesOrderPanel() {
                 onRowSelected={(d) => {
                   history.push(`/panel/sales/salesOrders/${d.id}${window.location.search}`);
                 }}
+                setUrlFilters
               />
             </Route>
             <Route exact path="/panel/sales/salesOrders/:soId">

@@ -134,6 +134,7 @@ export default function GroupLineItemTable({
           type: "service",
           price: 0,
           qty: 1,
+          service: true,
         });
       }
     } catch (error) {

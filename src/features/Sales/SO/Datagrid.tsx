@@ -9,11 +9,15 @@ function SODataGrid({
   params,
   refresh,
   url,
+  style,
+  setUrlFilters,
 }: {
   onRowSelected: (row: any) => void;
   params?: ParameterType;
   refresh?: number;
   url?: string;
+  style?: any;
+  setUrlFilters?: boolean;
 }) {
   const columns = [
     {
@@ -76,12 +80,13 @@ function SODataGrid({
   ];
   return (
     <DataGrid
+      style={style}
       url={url || "/so"}
       onRowSelected={onRowSelected}
       columns={columns}
       initParams={params}
       refresh={refresh}
-      setUrlFilters
+      setUrlFilters={setUrlFilters}
     />
   );
 }

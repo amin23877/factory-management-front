@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { Status, Expense, Shipping } from "../../../FieldService/Units/Forms";
-import LevelsTab from "common/Level/Tab";
+import { UnitsLevelsTab } from "common/Level/Tab";
 import QRCode from "common/QRCode/UnitQRCode";
 
 import { Box, Tab, Tabs, useMediaQuery } from "@material-ui/core";
@@ -101,14 +101,7 @@ export default function FormsTabs({
           setFieldValue={setFieldValue}
         />
       )}
-      {activeTab === 5 && (
-        <LevelsTab
-          itemType={unit.ItemId.class}
-          values={unit.ItemId}
-          getFieldProps={getFieldProps}
-          setFieldValue={setFieldValue}
-        />
-      )}
+      {activeTab === 5 && <UnitsLevelsTab values={unit} getFieldProps={getFieldProps} setFieldValue={setFieldValue} />}
     </>
   );
 }

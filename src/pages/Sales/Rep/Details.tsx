@@ -4,6 +4,8 @@ import { Box, Grid, LinearProgress, Tab, Tabs } from "@material-ui/core";
 import ContactTab from "common/Contact/Tab";
 import NoteTab from "common/Note/Tab";
 import DocumentTab from "common/Document/Tab";
+import SOTab from "features/Sales/SO/Datagrid";
+import QuoteTab from "features/Sales/Quote/Datagrid";
 
 import Form from "../../../features/Sales/Rep/Details/Form";
 import { BasePaper } from "app/Paper";
@@ -42,20 +44,26 @@ export default function RepDetails() {
                 setLock(true);
               }}
             >
-              <Tab label="Contacts" />
-              <Tab label="Notes" />
-              <Tab label="Documents" />
-              <Tab label="Activities" />
-              <Tab label="Sales" />
-              <Tab label="Work Orders" />
-              <Tab label="Leads" />
-              <Tab label="Auditing" />
+              <Tab label="Contacts" /> 0
+              <Tab label="Notes" /> 1
+              <Tab label="Documents" /> 2
+              <Tab label="Activities" /> 3
+              <Tab label="Sales" /> 4
+              <Tab label="Work Orders" /> 5
+              <Tab label="Leads" /> 6
+              <Tab label="Auditing" /> 8
             </Tabs>
             <LockButton />
           </Box>
           {activeTab === 0 && <ContactTab model="rep" itemId={selectedRep.id} />}
           {activeTab === 1 && <NoteTab model="rep" itemId={selectedRep.id} />}
           {activeTab === 2 && <DocumentTab model="rep" itemId={selectedRep.id} />}
+          {activeTab === 4 && (
+            <SOTab onRowSelected={() => {}} params={{ RepId: selectedRep.id }} style={{ height: "64vh" }} />
+          )}
+          {activeTab === 5 && (
+            <QuoteTab onRowSelected={() => {}} params={{ RepId: selectedRep.id }} style={{ height: "64vh" }} />
+          )}
         </BasePaper>
       </Grid>
     </Grid>

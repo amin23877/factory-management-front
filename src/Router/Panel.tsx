@@ -247,9 +247,9 @@ export default function PanelRouter() {
                   <Route exact path="/panel/notification" component={Notification} />
                   <Route exact path="/panel/dashboard" component={Dashboard} />
                   <Route exact path="/panel/settings" component={Settings} />
-                  <Route exact path="/panel/roles" component={Roles} />
                   <Route exact path="/panel/projects" component={Projects} />
                   <Route exact path="/panel/activity" component={Activity} />
+                  <Route exact path="/panel/roles" component={Roles} />
 
                   <Route path="/panel/shipping" component={ShippingAndReceiVing} />
                   <Route path="/panel/engineering" component={Engineering} />

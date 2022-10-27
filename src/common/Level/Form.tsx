@@ -132,7 +132,6 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
           <Button kind={values && values.id ? "edit" : "add"} type="submit" style={{ flex: 1 }} disabled={lock}>
             save
           </Button>
-          <LockButton />
         </Box>
         {values && values.id && (
           <Button kind="delete" disabled={lock} onClick={handleDelete}>
