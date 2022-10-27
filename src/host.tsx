@@ -1,1 +1,1 @@
-export const host = "https://api.signalphocus.ir";
+export const host = "https://erp.signalkala.com";
