@@ -1,4 +1,4 @@
-import { get, post, delete_ } from ".";
+import { get, post, delete_, patch } from ".";
 
 export interface ILogedinEmployee {
   employee: IEmployee;
@@ -6,9 +6,13 @@ export interface ILogedinEmployee {
 }
 
 export interface IEmployee {
-  id?: string;
+  id: string;
   username: string;
   password: string;
+  email?: string;
+  department?: string;
+  roles: any[];
+  role?: string;
 }
 
 export const getMe = () => {
@@ -33,6 +37,9 @@ export const getEmployeeRoles = (id: string) => {
 
 export const deleteEmployee = (id: string) => {
   return delete_(`/employee/${id}`);
+};
+export const updateEmployee = (id: string, emp: any) => {
+  return patch(`/employee/${id}`, emp);
 };
 
 export const addRoleToEmployee = (empId: string, role: string) => {

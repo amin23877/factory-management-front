@@ -269,7 +269,7 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
 
   const submitChanges = async () => {
     try {
-      await postMatrixData({ matrice: [...changes], allMatrice: tableData });
+      await postMatrixData({ matrice: [...changes] });
       refreshTableData();
       Toast("Submitted", "success");
       setChanges([]);

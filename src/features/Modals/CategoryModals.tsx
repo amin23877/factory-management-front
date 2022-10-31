@@ -9,17 +9,17 @@ import { createType, deleteType, getTypes, updateType } from "../../api/types";
 import { createFamily, deleteFamily, getFamilies, updateFamily } from "../../api/family";
 
 export default function CatTypeFamilyModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-    const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(0);
 
-    return (
-        <Dialog open={open} onClose={onClose} title={`Manage Categories - Types - Families`}>
-            <Box>
-                <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
-                    <Tab label="Category" />
-                    <Tab label="Type" />
-                    <Tab label="Family" />
-                </Tabs>
-                {activeTab === 0 && (
+  return (
+    <Dialog open={open} onClose={onClose} title={`Manage Categories - Types - Families`}>
+      <Box>
+        <Tabs value={activeTab} onChange={(e, nv) => setActiveTab(nv)}>
+          <Tab label="Category" />
+          <Tab label="Type" />
+          <Tab label="Family" />
+        </Tabs>
+        {/* {activeTab === 0 && (
                     <GeneralForm
                         type="Category"
                         addRecord={createCategory}
@@ -45,8 +45,8 @@ export default function CatTypeFamilyModal({ open, onClose }: { open: boolean; o
                         getRecord={getFamilies}
                         updateRecord={updateFamily}
                     />
-                )}
-            </Box>
-        </Dialog>
-    );
+                )} */}
+      </Box>
+    </Dialog>
+  );
 }
