@@ -10,15 +10,15 @@ import {
   FindInPageRounded,
 } from "@material-ui/icons";
 
-import Confirm from "../../features/Modals/Confirm";
-import { AddItemModal } from "../../features/Items/ItemModals";
-import UnitDetails from "../../pages/Engineering/Units/Details";
+import Confirm from "features/Modals/Confirm";
+import { AddItemModal } from "features/Items/ItemModals";
+import UnitDetails from "pages/Engineering/Units/Details";
 
 import ClusterModal from "common/Cluster/Modal";
 
-import DetailTab from "../../pages/Engineering/Devices/Details";
-import AddTaskModal, { EditTaskModal } from "../../features/Engineering/Devices/TaskModal";
-import FlagModal from "../../features/Engineering/Devices/FlagModal";
+import DetailTab from "pages/Engineering/Devices/Details";
+import AddTaskModal, { EditTaskModal } from "features/Engineering/Devices/TaskModal";
+import FlagModal from "features/Engineering/Devices/FlagModal";
 
 import List from "app/SideUtilityList";
 import DataGrid from "app/NewDataGrid";

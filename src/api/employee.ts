@@ -13,6 +13,8 @@ export interface IEmployee {
   department?: string;
   roles: any[];
   role?: string;
+  name?: string;
+  lastName?: string;
 }
 
 export const getMe = () => {
@@ -38,8 +40,13 @@ export const getEmployeeRoles = (id: string) => {
 export const deleteEmployee = (id: string) => {
   return delete_(`/employee/${id}`);
 };
+
 export const updateEmployee = (id: string, emp: any) => {
   return patch(`/employee/${id}`, emp);
+};
+
+export const updateEmployeePassword = (id: string, emp: any) => {
+  return patch(`/employee/${id}/password`, emp);
 };
 
 export const addRoleToEmployee = (empId: string, role: string) => {
