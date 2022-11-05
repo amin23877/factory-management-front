@@ -1,40 +1,29 @@
-import React, { useState, useEffect, useMemo } from "react";
-import {
-  Box,
-  Button,
-  IconButton,
-  Typography,
-  FormControlLabel,
-  Checkbox,
-  ListItem,
-  Tabs,
-  Tab,
-} from "@material-ui/core";
+import React, { useState, useMemo } from "react";
+import { Box, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
 import { AddRounded, DeleteRounded } from "@material-ui/icons";
 import List from "app/SideUtilityList";
-import { getRoles, getEmployeesRoles } from "../api/role";
-import { IEmployee, addRoleToEmployee, deleteRoleFromEmployee, deleteEmployee } from "../api/employee";
+import { IEmployee, addRoleToEmployee, deleteRoleFromEmployee } from "../api/employee";
 
-import Confirm from "../features/Modals/Confirm";
-import { AddEmployeeModal } from "../features/Modals/EmployeeModal";
-import { AddRoleModal } from "../features/Modals/RoleModals";
-import RoleManagement from "../features/Modals/RoleManagement";
+import { AddEmployeeModal } from "features/Modals/EmployeeModal";
+import { AddRoleModal } from "features/Modals/RoleModals";
 
-import { BasePaper } from "../app/Paper";
-import Snack from "../app/Snack";
+import { BasePaper } from "app/Paper";
+import Snack from "app/Snack";
 import NewDataGrid from "app/NewDataGrid";
 
 export default function Roles() {
   const [addEmpModal, setAddEmpModal] = useState(false);
+  const [editEmpModal, setEditEmpModal] = useState(false);
   const [addRoleModal, setAddRoleModal] = useState(false);
-  const [confirm, setConfirm] = useState(false);
-  const [roleManagement, setRoleManagement] = useState(false);
+  const [editRoleModal, setEditRoleModal] = useState(false);
 
   const [snack, setSnack] = useState(false);
   const [msg, setMsg] = useState("");
   const [tab, setTab] = useState(0);
+  const [refresh, setRefresh] = useState(0);
 
   const [selectedEmp, setSelectedEmp] = useState<IEmployee>();
+  const [selectedRole, setSelectedRole] = useState<IEmployee>();
   const [empsAndRoles, setEmpsAndRoles] = useState<any>([]);
 
   const toggleRole = async (id: string, role: string, v: boolean) => {
@@ -54,17 +43,6 @@ export default function Roles() {
           setMsg("Sorry, You can't have employee with no role");
           setSnack(true);
         }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      if (selectedEmp && selectedEmp?.id) {
-        await deleteEmployee(selectedEmp?.id);
-        setConfirm(false);
       }
     } catch (error) {
       console.log(error);
@@ -129,11 +107,24 @@ export default function Roles() {
   );
   return (
     <BasePaper>
-      <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
-      <AddEmployeeModal open={addEmpModal} onClose={() => setAddEmpModal(false)} onDone={() => {}} />
-      <AddRoleModal open={addRoleModal} onClose={() => setAddRoleModal(false)} />
-      <RoleManagement open={roleManagement} onClose={() => setRoleManagement(false)} />
-
+      <AddEmployeeModal open={addEmpModal} onClose={() => setAddEmpModal(false)} setRefresh={setRefresh} />
+      {selectedEmp && (
+        <AddEmployeeModal
+          setRefresh={setRefresh}
+          open={editEmpModal}
+          onClose={() => setEditEmpModal(false)}
+          initialVals={{ ...selectedEmp, role: selectedEmp?.roles[0] }}
+        />
+      )}
+      <AddRoleModal open={addRoleModal} onClose={() => setAddRoleModal(false)} setRefresh={setRefresh} />
+      {selectedRole && (
+        <AddRoleModal
+          open={editRoleModal}
+          onClose={() => setEditRoleModal(false)}
+          setRefresh={setRefresh}
+          initialVals={selectedRole}
+        />
+      )}
       <Snack open={snack} onClose={() => setSnack(false)}>
         {msg}
       </Snack>
@@ -155,7 +146,8 @@ export default function Roles() {
             <IconButton
               title="Add item"
               onClick={() => {
-                setAddEmpModal(true);
+                if (tab === 0) setAddEmpModal(true);
+                else setAddRoleModal(true);
               }}
             >
               <AddRounded />
@@ -163,8 +155,28 @@ export default function Roles() {
           </ListItem>
         </List>
       </Box>
-      {tab === 0 && <NewDataGrid url={`/employee`} columns={employeeCols} onRowSelected={() => {}} />}
-      {tab === 1 && <NewDataGrid url={`/role`} columns={roleCols} onRowSelected={() => {}} />}
+      {tab === 0 && (
+        <NewDataGrid
+          url={`/employee`}
+          columns={employeeCols}
+          onRowSelected={(r) => {
+            setEditEmpModal(true);
+            setSelectedEmp(r);
+          }}
+          refresh={refresh}
+        />
+      )}
+      {tab === 1 && (
+        <NewDataGrid
+          url={`/role`}
+          columns={roleCols}
+          onRowSelected={(r) => {
+            setEditRoleModal(true);
+            setSelectedRole(r);
+          }}
+          refresh={refresh}
+        />
+      )}
       {/* <Box>
         <Box display="flex" my={2}>
           <Button onClick={() => setAddEmpModal(true)}>Add Employee</Button>

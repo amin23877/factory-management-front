@@ -1,196 +1,152 @@
-import React, { useState, useEffect } from "react";
-import { Box, Accordion, AccordionSummary, AccordionDetails, MenuItem } from "@material-ui/core";
-import { ExpandMoreRounded } from "@material-ui/icons";
-
-import Snackbar from "./Snack";
+import React, { useEffect, useState } from "react";
+import { Box, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import TextField from "./TextField";
+
 import Button from "./Button";
-import { BaseSelect } from "./Inputs";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { Formik, Form, FieldArray } from "formik";
+import { getApis } from "api/api";
+import { assignApiToRole, deleteRole, updateRole } from "api/role";
 
 export const GeneralForm = ({
-    type,
-    getRecord,
-    addRecord,
-    updateRecord,
-    deleteRecord,
-    onDone,
+  type,
+  addRecord,
+  setRefresh,
+  onClose,
+  initialVals,
 }: {
-    type: string;
-    addRecord: (v: string) => Promise<any>;
-    getRecord: () => Promise<any>;
-    updateRecord: (id: string, v: string) => Promise<any>;
-    deleteRecord: (id: string) => Promise<any>;
-    onDone?: () => void;
+  type: string;
+  addRecord: (v: string) => Promise<any>;
+  setRefresh?: any;
+  onClose: () => void;
+  initialVals?: any;
 }) => {
-    const [data, setData] = useState([]);
-    const [dis, setDis] = useState(false);
-    const [showSnack, setShowSnack] = useState(false);
-    const [snackMsg, setSnackMsg] = useState("");
+  const useStyles = makeStyles({
+    root: {
+      width: "100%",
+    },
+  });
+  const classes = useStyles();
+  const [apis, setApis] = useState<any>();
 
-    const [addName, setAddName] = useState("");
-    const [editName, setEditName] = useState("");
-    const [selectedData, setSelectedData] = useState<string>();
+  const getData = async () => {
+    try {
+      const resp = await getApis();
+      if (resp) {
+        setApis(resp);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  useEffect(() => {
+    getData();
+  }, []);
 
-    const showMsg = (d: any) => {
-        setShowSnack(true);
-        if (d.error) {
-            setSnackMsg(d.error);
-        } else {
-            setSnackMsg("Request Successful...");
-        }
-    };
+  const handleAdd = async (values: any) => {
+    try {
+      if (!initialVals) {
+        const resp = await addRecord(values.name);
+        await assignApiToRole(resp.id, values.apis);
+      } else {
+        await updateRole(initialVals.id, values);
+      }
+      setRefresh((p: any) => p + 1);
+      onClose();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    const refreshData = async () => {
-        try {
-            const data = await getRecord();
-            setData(data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+  const handleDelete = async () => {
+    try {
+      await deleteRole(initialVals.id);
+      setRefresh((p: any) => p + 1);
+      onClose();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    useEffect(() => {
-        refreshData();
-    }, []);
-
-    const handleAdd = async () => {
-        setDis(true);
-        try {
-            if (addName) {
-                const resp = await addRecord(addName);
-                resp && setDis(false);
-                refreshData();
-                showMsg(resp);
-                onDone && onDone();
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-    const handleEdit = async () => {
-        setDis(true);
-        try {
-            if (selectedData && editName) {
-                const resp = await updateRecord(selectedData, editName);
-                resp && setDis(false);
-                refreshData();
-                showMsg(resp);
-                onDone && onDone();
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-    const handleDelete = async () => {
-        setDis(true);
-        try {
-            if (selectedData) {
-                const resp = await deleteRecord(selectedData);
-                resp && setDis(false);
-                refreshData();
-                showMsg(resp);
-                onDone && onDone();
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
-    return (
-        <>
-            <Snackbar onClose={() => setShowSnack(false)} open={showSnack}>
-                {snackMsg}
-            </Snackbar>
-
-            <Box m={2} p={2}>
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMoreRounded />}>Add</AccordionSummary>
+  return (
+    <>
+      <Box m={2} p={2}>
+        <Formik initialValues={initialVals ? initialVals : { name: "", apis: [] }} onSubmit={handleAdd}>
+          {({ values, handleChange, isSubmitting }) => (
+            <Form>
+              <Box width="100%" display="flex" justifyContent="space-between" alignItems="center" mb={1} gridGap={1}>
+                <TextField
+                  fullWidth
+                  name="name"
+                  value={values.name}
+                  onChange={handleChange}
+                  placeholder={`name`}
+                  style={{ marginRight: "8px", flex: 1 }}
+                />
+                {!initialVals ? (
+                  <Button type="submit" kind="add" disabled={isSubmitting}>
+                    Add
+                  </Button>
+                ) : (
+                  <>
+                    <Button kind="edit" disabled={isSubmitting} type="submit">
+                      Save
+                    </Button>
+                    <Button kind="delete" disabled={isSubmitting} onClick={handleDelete}>
+                      Delete
+                    </Button>
+                  </>
+                )}
+              </Box>
+              <div className={classes.root}>
+                {apis?.result?.map((api: any) => (
+                  <Accordion>
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-label="Expand"
+                      aria-controls="additional-actions1-content"
+                      id="additional-actions1-header"
+                    >
+                      <Typography>{api.name}</Typography>
+                    </AccordionSummary>
                     <AccordionDetails>
-                        <form
-                            onSubmit={(e: any) => {
-                                e.preventDefault();
-                                handleAdd();
-                            }}
-                            style={{ width: "100%" }}
-                        >
-                            <Box width="100%" display="flex" justifyContent="space-between" alignItems="flex-end">
-                                <TextField
-                                    fullWidth
-                                    value={addName}
-                                    onChange={(e) => setAddName(e.target.value)}
-                                    placeholder={`${type} name`}
-                                    style={{ marginRight: "8px", flex: 1 }}
-                                />
-                                <Button type="submit" kind="add" disabled={dis} style={{ marginBottom: "8px" }}>
-                                    Add
-                                </Button>
-                            </Box>
-                        </form>
+                      <FieldArray
+                        name="apis"
+                        render={(arrayHelpers) => (
+                          <Box display={"flex"} flexDirection="column">
+                            {api?.items?.map((item: any) => (
+                              <FormControlLabel
+                                aria-label="Acknowledge"
+                                onClick={(event) => event.stopPropagation()}
+                                onFocus={(event) => event.stopPropagation()}
+                                control={<Checkbox />}
+                                label={item.name}
+                                onChange={(e: any) => {
+                                  if (e.target.checked) {
+                                    arrayHelpers.push(item.id);
+                                  } else {
+                                    arrayHelpers.remove(item.id);
+                                  }
+                                }}
+                              />
+                            ))}
+                          </Box>
+                        )}
+                      />
                     </AccordionDetails>
-                </Accordion>
-                <Accordion defaultExpanded>
-                    <AccordionSummary expandIcon={<ExpandMoreRounded />}>Edit</AccordionSummary>
-                    <AccordionDetails>
-                        <form
-                            onSubmit={(e: any) => {
-                                e.preventDefault();
-                                handleEdit();
-                            }}
-                            style={{ width: "100%" }}
-                        >
-                            <Box width="100%" display="flex" alignItems="center">
-                                <TextField
-                                    fullWidth
-                                    label="new name"
-                                    value={editName}
-                                    onChange={(e) => setEditName(e.target.value)}
-                                    style={{ flex: 1, margin: "0px 0px 5px 0px" }}
-                                    placeholder={`New ${type} name`}
-                                />
-                            </Box>
-
-                            <Box width="100%" display="flex" alignItems="center">
-                                <BaseSelect fullWidth value={selectedData} onChange={(e: any) => setSelectedData(e.target.value)}>
-                                    {data.map((cat: { id: string; name: string }) => (
-                                        <MenuItem key={cat.id} value={cat.id}>
-                                            {cat.name}
-                                        </MenuItem>
-                                    ))}
-                                </BaseSelect>
-
-                                <Button type="submit" disabled={dis} kind="edit" style={{ margin: "0 0.5em" }}>
-                                    Save
-                                </Button>
-                            </Box>
-                        </form>
-                    </AccordionDetails>
-                </Accordion>
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMoreRounded />}>Delete</AccordionSummary>
-                    <AccordionDetails>
-                        <form
-                            onSubmit={(e: any) => {
-                                e.preventDefault();
-                                handleDelete();
-                            }}
-                            style={{ width: "100%" }}
-                        >
-                            <Box width="100%" display="flex" alignItems="center">
-                                <BaseSelect value={selectedData} onChange={(e: any) => setSelectedData(e.target.value)} fullWidth>
-                                    {data.map((cat: { id: string; name: string }) => (
-                                        <MenuItem key={cat.id} value={cat.id}>
-                                            {cat.name}
-                                        </MenuItem>
-                                    ))}
-                                </BaseSelect>
-                                <Button type="submit" disabled={dis} kind="delete" style={{ margin: "0 0.5em" }}>
-                                    Delete
-                                </Button>
-                            </Box>
-                        </form>
-                    </AccordionDetails>
-                </Accordion>
-            </Box>
-        </>
-    );
+                  </Accordion>
+                ))}
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </Box>
+    </>
+  );
 };
