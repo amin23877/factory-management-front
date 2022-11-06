@@ -49,13 +49,14 @@ export const GeneralForm = ({
     getData();
   }, []);
 
-  const handleAdd = async (values: any) => {
+  const handleSubmit = async (values: any) => {
     try {
       if (!initialVals) {
         const resp = await addRecord(values.name);
-        await assignApiToRole(resp.id, values.apis);
+        await assignApiToRole(resp.id, { apis: values.apis });
       } else {
-        await updateRole(initialVals.id, values);
+        await updateRole(initialVals.id, { name: values.name });
+        await assignApiToRole(initialVals.id, { apis: values.apis });
       }
       setRefresh((p: any) => p + 1);
       onClose();
@@ -77,7 +78,7 @@ export const GeneralForm = ({
   return (
     <>
       <Box m={2} p={2}>
-        <Formik initialValues={initialVals ? initialVals : { name: "", apis: [] }} onSubmit={handleAdd}>
+        <Formik initialValues={initialVals ? initialVals : { name: "", apis: [] }} onSubmit={handleSubmit}>
           {({ values, handleChange, isSubmitting }) => (
             <Form>
               <Box width="100%" display="flex" justifyContent="space-between" alignItems="center" mb={1} gridGap={1}>
@@ -134,6 +135,7 @@ export const GeneralForm = ({
                                     arrayHelpers.remove(item.id);
                                   }
                                 }}
+                                checked={values.apis.includes(item.id)}
                               />
                             ))}
                           </Box>

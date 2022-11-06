@@ -9,7 +9,7 @@ export const addRole = (name: string) => {
   return post("/role", { name });
 };
 
-export const assignApiToRole = (roleId: string, apis: string[]) => {
+export const assignApiToRole = (roleId: string, apis: any) => {
   return post(`/role/${roleId}/api`, apis);
 };
 export const deassignApiToRole = (roleId: string, apiId: string) => {
