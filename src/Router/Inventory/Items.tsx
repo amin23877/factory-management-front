@@ -1,15 +1,22 @@
 import React, { Suspense, useCallback, useEffect, useState } from "react";
 import { Box, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
-import { AddRounded, DeleteRounded, FindInPageRounded, ListAltRounded, PostAddRounded } from "@material-ui/icons";
-import { mutate } from "swr";
+import {
+  AddRounded,
+  DeleteRounded,
+  FindInPageRounded,
+  ListAltRounded,
+  PostAddRounded,
+  ControlPointDuplicateRounded,
+} from "@material-ui/icons";
+import useSWR, { mutate } from "swr";
 
-import Confirm from "../../features/Modals/Confirm";
+import Confirm from "features/Modals/Confirm";
 // import ConfirmDialog from "common/Confirm";
 
-import { AddItemModal } from "../../features/Items/ItemModals";
-import ItemsDetails from "../../pages/Inventory/Items/Details";
+import { AddItemModal, DuplicateModal } from "features/Items/ItemModals";
+import ItemsDetails from "pages/Inventory/Items/Details";
 
-import { deleteAnItem } from "api/items";
+import { deleteAnItem, IItem } from "api/items";
 
 import List from "app/SideUtilityList";
 import { BasePaper } from "app/Paper";
@@ -19,7 +26,7 @@ import { BasePaper } from "app/Paper";
 import ClusterModal from "common/Cluster/Modal";
 import { useLock } from "common/Lock";
 
-import ItemTable from "../../features/Items/Table";
+import ItemTable from "features/Items/Table";
 import { Route, Switch, useHistory, useLocation, useParams } from "react-router-dom";
 import MyBackdrop from "app/Backdrop";
 
@@ -32,6 +39,7 @@ const Items = () => {
 
   const [addItemModal, setAddItemModal] = useState(false);
   const [deleteItemModal, setDeleteItemModal] = useState(false);
+  const [duplicateItemModal, setDuplicateItemModal] = useState(false);
   const [clusterModal, setClusterModal] = useState(false);
   const { lock } = useLock();
 
@@ -58,11 +66,10 @@ const Items = () => {
 
   return (
     <>
+      <DuplicateModal open={duplicateItemModal} onClose={() => setDuplicateItemModal(false)} />
       <AddItemModal open={addItemModal} onClose={() => setAddItemModal(false)} />
       <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
-      {/* <LevelsModal open={levelsModal} onClose={() => setLevelsModal(false)} /> */}
       <ClusterModal open={clusterModal} onClose={() => setClusterModal(false)} />
-
       <BasePaper style={{ height: "100%" }}>
         <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1}>
           <Tabs
@@ -100,6 +107,13 @@ const Items = () => {
                 <AddRounded />
               </IconButton>
             </ListItem>
+            {activeTab === 1 && (
+              <ListItem>
+                <IconButton title="Duplicate item" onClick={() => setDuplicateItemModal(true)}>
+                  <ControlPointDuplicateRounded />
+                </IconButton>
+              </ListItem>
+            )}
             {activeTab === 1 && (
               <ListItem>
                 <IconButton title="Delete item" disabled={lock} onClick={() => setDeleteItemModal(true)}>

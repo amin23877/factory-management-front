@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import { Formik, Form } from "formik";
-import { mutate } from "swr";
+import useSWR, { mutate } from "swr";
 
 import Button from "../../app/Button";
 import Dialog from "../../app/Dialog";
@@ -10,6 +10,9 @@ import MoreInfo from "./Forms/MoreInfo";
 import Shipping from "./Forms/Shipping";
 
 import { createItem, IItem } from "../../api/items";
+import TextField from "app/TextField";
+import { useParams } from "react-router-dom";
+import { get } from "api";
 
 export const AddItemModal = ({
   open,
@@ -81,6 +84,51 @@ export const AddItemModal = ({
                   {activeTab === 2 && (
                     <Shipping getFieldProps={getFieldProps} setFieldValue={setFieldValue} values={values} />
                   )}
+                </Box>
+              </Box>
+            </Form>
+          )}
+        </Formik>
+      </Box>
+    </Dialog>
+  );
+};
+
+export const DuplicateModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+  const itemId = window.location.pathname.split("/")[4];
+  const { data: selectedRow } = useSWR<IItem>(itemId ? `/item/${itemId}` : null);
+
+  useEffect(() => {
+    console.log(selectedRow);
+  }, [selectedRow]);
+
+  const handleSubmit = async (data: any, { setSubmitting }: any) => {
+    setSubmitting(true);
+    try {
+      const resp = await createItem(data);
+      if (resp) {
+        setSubmitting(false);
+        mutate("/item?class=device");
+        mutate("/item");
+        onClose();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  return (
+    <Dialog open={open} onClose={onClose} title="Duplicate item">
+      <Box p={1}>
+        <Formik initialValues={selectedRow ? selectedRow : ({ class: "device" } as IItem)} onSubmit={handleSubmit}>
+          {({ values, errors, handleChange, handleBlur, touched, isSubmitting, setFieldValue, getFieldProps }) => (
+            <Form>
+              <TextField {...getFieldProps("no")} label="Item NO." />
+              <Box display="flex">
+                <Box flex={2}>
+                  <Button disabled={isSubmitting} style={{ marginTop: "1.3em" }} kind="add" type="submit">
+                    Save
+                  </Button>
                 </Box>
               </Box>
             </Form>
