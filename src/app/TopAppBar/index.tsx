@@ -8,6 +8,7 @@ import { logout } from "features/Session/sessionsSlice";
 
 import UPCToggle from "../../components/UPC";
 import NotificationButton from "./Notification/Button";
+import ProfileButton from "./Profile/Button";
 
 export const TopAppBar = ({
   isChatOpen,
@@ -34,6 +35,7 @@ export const TopAppBar = ({
         </IconButton>
       )}
       <NotificationButton />
+      <ProfileButton />
       {!phone && (
         <Button size="small" color="inherit">
           <TvRounded style={{ marginRight: 3 }} />

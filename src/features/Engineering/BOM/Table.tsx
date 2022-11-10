@@ -367,7 +367,7 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
           <Button variant="outlined" style={{ margin: "0.5em 0" }} onClick={() => setAddPart(true)}>
             Add part
           </Button>
-          <Button kind="add" disabled={changes.length < 1} style={{ margin: "0.5em" }} onClick={submitChanges}>
+          <Button kind="add" style={{ margin: "0.5em" }} onClick={submitChanges}>
             Submit changes
           </Button>
 

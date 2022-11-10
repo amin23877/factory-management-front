@@ -39,11 +39,13 @@ export const AddEmployeeModal = ({
   onClose,
   initialVals,
   setRefresh,
+  initTab,
 }: {
   open: boolean;
   onClose: () => void;
   initialVals?: IEmployee;
-  setRefresh: any;
+  setRefresh?: any;
+  initTab?: number;
 }) => {
   const [tab, setTab] = useState(0);
 
@@ -59,11 +61,11 @@ export const AddEmployeeModal = ({
       title="Add new employee"
     >
       <Box m={2}>
-        {tab === 0 && (
+        {tab === 0 && !initTab && (
           <GeneralForm onClose={onClose} setRefresh={setRefresh} initialVals={initialVals} setTab={setTab} />
         )}
-        {tab === 1 && <RoleForm onClose={onClose} initialVals={initialVals} setRefresh={setRefresh} />}
-        {tab === 2 && <PasswordForm onClose={onClose} setTab={setTab} initialVals={initialVals} />}
+        {tab === 1 && !initTab && <RoleForm onClose={onClose} initialVals={initialVals} setRefresh={setRefresh} />}
+        {(tab === 2 || initTab) && <PasswordForm onClose={onClose} setTab={setTab} initialVals={initialVals} />}
       </Box>
     </Dialog>
   );
