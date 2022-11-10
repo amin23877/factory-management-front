@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
@@ -11,8 +11,6 @@ import Shipping from "./Forms/Shipping";
 
 import { createItem, IItem } from "../../api/items";
 import TextField from "app/TextField";
-import { useParams } from "react-router-dom";
-import { get } from "api";
 
 export const AddItemModal = ({
   open,
@@ -97,10 +95,6 @@ export const AddItemModal = ({
 export const DuplicateModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   const itemId = window.location.pathname.split("/")[4];
   const { data: selectedRow } = useSWR<IItem>(itemId ? `/item/${itemId}` : null);
-
-  useEffect(() => {
-    console.log(selectedRow);
-  }, [selectedRow]);
 
   const handleSubmit = async (data: any, { setSubmitting }: any) => {
     setSubmitting(true);
