@@ -157,6 +157,12 @@ export const extractLevels = (tableData: IMatrix) => {
   return Array.from(levels);
 };
 
+export const extractEmptyColumns = (newCols: any) => {
+  const emptyCols = new Set<string>();
+  newCols[0] && newCols.forEach((k: any) => emptyCols.add(k.name));
+  return Array.from(emptyCols);
+};
+
 export const extractPartNames = (tableData: any[]) => {
   const parts = new Set<string>();
   const data = tableData.map((item) => ({ ...(item?.device?.recs || []) }));

@@ -29,6 +29,14 @@ export const postMatrixData = (changes: any) => {
   return post(`/matrice`, changes);
 };
 
+export const postColumn = (productFamily: string, name: string) => {
+  return post(`/column/${productFamily}`, { name: name });
+};
+
+export const getColumns = (productFamily: string) => {
+  return get(`/column?clusterId=${productFamily}`);
+};
+
 export const renameMatrixPart = (formerName: string, newName: string) => {
   return patch("/matrice/rename", { formerName, newName });
 };
