@@ -14,6 +14,7 @@ import AsyncCombo from "common/AsyncCombo";
 
 import { get } from "api";
 import { IItem } from "api/items";
+import AddUsageModal from "./AddUsageModal";
 
 function ChangePartModal({
   open,
@@ -22,6 +23,8 @@ function ChangePartModal({
   onClose,
   onDone,
   onDelete,
+  addUsage,
+  setAddUsage,
 }: {
   row: any;
   partName: string;
@@ -29,6 +32,8 @@ function ChangePartModal({
   onClose: () => void;
   onDone: (data: any, part: any) => void;
   onDelete: (data: any) => void;
+  addUsage: boolean;
+  setAddUsage: (data: boolean) => void;
 }) {
   const [clusterId, setClusterId] = useState<string>();
   const [itemClass, setItemClass] = useState<string>("part");
@@ -44,6 +49,8 @@ function ChangePartModal({
   const [fixedQty, setFixedQty] = useState(false);
   const [items, setItems] = useState<{ result: IItem[]; total: number }>();
   const [page, setPage] = useState<number>(1);
+
+  const [selectedItem, setSelectedItem] = useState<any>();
 
   const handleSubmit = useCallback(
     (d: any) => {
@@ -64,6 +71,11 @@ function ChangePartModal({
     },
     [onDone, partName, row]
   );
+
+  const handleAddUsageModal = useCallback((d: any) => {
+    setSelectedItem(d);
+    setAddUsage(true);
+  }, []);
 
   const handleDelete = () => {
     const data = {
@@ -124,7 +136,7 @@ function ChangePartModal({
               variant="contained"
               style={{ marginLeft: "auto" }}
               onClick={() => {
-                handleSubmit({ usage, fixedQty, ItemId: p?.row?.id, _itemNo: p?.row?.no });
+                handleAddUsageModal({ usage, fixedQty, ItemId: p?.row?.id, _itemNo: p?.row?.no });
               }}
             >
               {prevPart ? "Set" : "Add"}
@@ -133,7 +145,7 @@ function ChangePartModal({
         ),
       },
     ],
-    [fixedQty, handleSubmit, prevPart, usage]
+    [prevPart, handleAddUsageModal, usage, fixedQty]
   );
 
   useEffect(() => {
@@ -152,6 +164,15 @@ function ChangePartModal({
 
   return (
     <>
+      {selectedItem && (
+        <AddUsageModal
+          open={addUsage}
+          onClose={() => setAddUsage(false)}
+          onDone={(usage) => {
+            handleSubmit({ ...selectedItem, usage: usage });
+          }}
+        />
+      )}
       <LevelsMenu
         onClose={() => setAnchorEl(undefined)}
         anchorEl={anchorEl}
