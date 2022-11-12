@@ -72,10 +72,13 @@ function ChangePartModal({
     [onDone, partName, row]
   );
 
-  const handleAddUsageModal = useCallback((d: any) => {
-    setSelectedItem(d);
-    setAddUsage(true);
-  }, []);
+  const handleAddUsageModal = useCallback(
+    (d: any) => {
+      setSelectedItem(d);
+      setAddUsage(true);
+    },
+    [setAddUsage]
+  );
 
   const handleDelete = () => {
     const data = {
@@ -171,6 +174,7 @@ function ChangePartModal({
           onDone={(usage) => {
             handleSubmit({ ...selectedItem, usage: usage });
           }}
+          prevPart={prevPart}
         />
       )}
       <LevelsMenu
@@ -180,44 +184,14 @@ function ChangePartModal({
         levelFilters={levelFilters}
         setLevelFilters={setLevelFilters}
       />
-      <Dialog open={open} onClose={onClose} title="Add part" fullWidth maxWidth="md">
+      <Dialog open={open} onClose={onClose} title={prevPart ? "Edit Part" : "Add part"} fullWidth maxWidth="md">
         <Box height="80vh" display="flex" flexDirection="column" style={{ gap: 8 }}>
           <Paper style={{ flex: 1, padding: "1em" }}>
-            <Box display="grid" gridTemplateColumns="1fr 1fr 150px" style={{ gap: 8 }}>
-              <TextField label="Part number" disabled value={row["Device Number"]} fullWidth />
-              <TextField
-                type="number"
-                name="usage"
-                placeholder="usage"
-                label="Usage"
-                value={usage}
-                onChange={(e) => setUsage(Number(e.target.value))}
-                InputLabelProps={{ shrink: true }}
-                fullWidth
-              />
-              <FormControlLabel
-                style={{ margin: 0 }}
-                name="fixedQty"
-                placeholder="Fixed QTY"
-                label="Fixed QTY"
-                checked={fixedQty}
-                onChange={(e, c) => setFixedQty(c)}
-                control={<Checkbox />}
-              />
+            <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gap: 8 }}>
               <TextField label="Item Name" value={itemName} onChange={(e) => setItemName(e.target.value)} />
               <TextField label="Item Number" value={itemNo} onChange={(e) => setItemNo(e.target.value)} />
               <TextField label="Keywords" value={keywords} onChange={(e) => setKeywords(e.target.value)} />
-              <ObjectSelect
-                label="Class"
-                itemTitleField="label"
-                itemValueField="value"
-                items={[
-                  { label: "Part", value: "part" },
-                  { label: "Assembly", value: "assembly" },
-                ]}
-                value={itemClass}
-                onChange={(e) => setItemClass(e.target.value)}
-              />
+              <TextField label="Part number" disabled value={row["Device Number"]} fullWidth />
               <AsyncCombo
                 label="Cluster"
                 filterBy="clusterValue"
@@ -238,6 +212,28 @@ function ChangePartModal({
               >
                 Levels
               </Button>
+
+              <ObjectSelect
+                label="Class"
+                itemTitleField="label"
+                itemValueField="value"
+                items={[
+                  { label: "Part", value: "part" },
+                  { label: "Assembly", value: "assembly" },
+                ]}
+                value={itemClass}
+                onChange={(e) => setItemClass(e.target.value)}
+              />
+              <FormControlLabel
+                style={{ margin: 0 }}
+                name="fixedQty"
+                placeholder="Fixed QTY"
+                label="Fixed QTY"
+                checked={fixedQty}
+                onChange={(e, c) => setFixedQty(c)}
+                control={<Checkbox />}
+              />
+
               {prevPart && (
                 <Button kind="delete" onClick={handleDelete} style={{ gridColumn: "span 3" }}>
                   Delete

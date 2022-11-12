@@ -14,14 +14,20 @@ function AddUsageModal({
   open,
   onClose,
   onDone,
+  prevPart,
 }: {
   open: boolean;
   onClose: () => void;
   onDone: (usage: string) => void;
+  prevPart: any;
 }) {
   return (
-    <Dialog open={open} onClose={onClose} title="Add Usage">
-      <Formik initialValues={{} as { usage: string }} validationSchema={schema} onSubmit={(d) => onDone(d.usage)}>
+    <Dialog open={open} onClose={onClose} title={prevPart ? "Edit Usage" : "Add Usage"}>
+      <Formik
+        initialValues={{ usage: prevPart?.usage } as { usage: string }}
+        validationSchema={schema}
+        onSubmit={(d) => onDone(d.usage)}
+      >
         {({ values, errors, handleChange, handleBlur }) => (
           <Form>
             <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
@@ -34,7 +40,7 @@ function AddUsageModal({
                 onBlur={handleBlur}
                 error={Boolean(errors.usage)}
               />
-              <Button kind="add" type="submit">
+              <Button kind={prevPart ? "edit" : "add"} type="submit">
                 Submit
               </Button>
             </Box>
