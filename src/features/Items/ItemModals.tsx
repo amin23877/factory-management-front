@@ -8,6 +8,7 @@ import Dialog from "../../app/Dialog";
 import { General, Pricing } from "./Forms";
 import MoreInfo from "./Forms/MoreInfo";
 import Shipping from "./Forms/Shipping";
+import Quantity from "./Forms/Quantity";
 
 import { createItem, IItem } from "../../api/items";
 import TextField from "app/TextField";
@@ -56,6 +57,7 @@ export const AddItemModal = ({
                     setFieldValue={setFieldValue}
                     isSubmitting={isSubmitting}
                     device={device}
+                    add={!initialValues}
                   />
                   <Button disabled={isSubmitting} style={{ marginTop: "1.3em" }} kind="add" type="submit">
                     Save
@@ -66,8 +68,9 @@ export const AddItemModal = ({
                     <Tab label="More info" />
                     <Tab label="Pricing" />
                     <Tab label="Shipping" />
+                    <Tab label="Quantity" />
                   </Tabs>
-                  {activeTab === 0 && <MoreInfo getFieldProps={getFieldProps} values={values} />}
+                  {activeTab === 0 && <MoreInfo getFieldProps={getFieldProps} values={values} add={!initialValues} />}
                   {activeTab === 1 && (
                     <Pricing
                       errors={errors}
@@ -77,10 +80,24 @@ export const AddItemModal = ({
                       touched={touched}
                       values={values}
                       isSubmitting={isSubmitting}
+                      add={!initialValues}
                     />
                   )}
                   {activeTab === 2 && (
-                    <Shipping getFieldProps={getFieldProps} setFieldValue={setFieldValue} values={values} />
+                    <Shipping
+                      getFieldProps={getFieldProps}
+                      setFieldValue={setFieldValue}
+                      values={values}
+                      add={!initialValues}
+                    />
+                  )}
+                  {activeTab === 3 && (
+                    <Quantity
+                      getFieldProps={getFieldProps}
+                      setFieldValue={setFieldValue}
+                      values={values}
+                      add={!initialValues}
+                    />
                   )}
                 </Box>
               </Box>
