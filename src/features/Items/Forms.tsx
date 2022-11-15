@@ -225,7 +225,6 @@ export const General = ({
           disabled={!add && lock}
         />
         <TextField
-          style={{ gridColumnEnd: "span 2" }}
           label="no"
           value={values.no}
           name="no"
@@ -236,7 +235,6 @@ export const General = ({
           disabled={!add && lock}
         />
         <TextField
-          style={{ gridColumnEnd: "span 2" }}
           label="Item name"
           placeholder="Item name"
           name="name"
@@ -246,26 +244,7 @@ export const General = ({
           value={values.name}
           disabled={!add && lock}
         />
-        <TextField
-          label="Manufacturer"
-          placeholder="Manufacturer"
-          name="manufacturer"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={Boolean(errors.manufacturer && touched.manufacturer)}
-          value={values.manufacturer}
-          disabled={!add && lock}
-        />
-        <TextField
-          label="Manufacturer Product Number"
-          placeholder="Manufacturer Product Number"
-          name="manufacturerProductNumber"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={Boolean(errors.manufacturerProductNumber && touched.manufacturerProductNumber)}
-          value={values.manufacturerProductNumber}
-          disabled={!add && lock}
-        />
+
         <AsyncCombo
           label="Cluster"
           filterBy="clusterValue"
