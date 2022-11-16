@@ -5,7 +5,7 @@ export interface ILevel {
   name: string;
   clusterValueRef: string;
   clusterId: string;
-  valid: string[];
+  valid: { value: string; uom: string }[];
   createdAt: number;
   updatedAt: number;
   __v: number;

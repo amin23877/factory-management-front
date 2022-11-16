@@ -107,6 +107,10 @@ export interface IItem {
   testTime: number;
   laborCost: number;
 
+  bomCheck?: boolean;
+  vendorCheck?: boolean;
+  docCheck?: boolean;
+
   services: any[];
 }
 
@@ -114,6 +118,9 @@ export const AddItemInitialValues = {};
 
 export const createItem = (itemData: any) => {
   return post("/item", itemData);
+};
+export const duplicateItem = (itemId: string, itemData: any) => {
+  return post(`/item/${itemId}/duplicate`, itemData);
 };
 export const addImage = (itemId: string, file: any) => {
   const data = new FormData();
