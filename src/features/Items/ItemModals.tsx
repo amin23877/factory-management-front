@@ -251,12 +251,10 @@ export const DuplicateModal = ({ open, onClose }: { open: boolean; onClose: () =
                   onChange={handleChange}
                   control={<Checkbox size="small" />}
                 />
-                <Box display="flex">
-                  <Box flex={2}>
-                    <Button disabled={isSubmitting} style={{ marginTop: "1.3em" }} kind="add" type="submit">
-                      Save
-                    </Button>
-                  </Box>
+                <Box display="flex" justifyContent={"center"}>
+                  <Button disabled={isSubmitting} style={{ marginTop: "1.3em" }} kind="add" type="submit">
+                    Save
+                  </Button>
                 </Box>
               </Box>
             </Form>

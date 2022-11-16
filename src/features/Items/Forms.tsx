@@ -234,6 +234,7 @@ export const General = ({
           error={Boolean(errors.no && touched.no)}
           placeholder="no"
           disabled={!add && lock}
+          style={add ? { gridColumnEnd: "span 2" } : {}}
         />
         <TextField
           label="Item name"
@@ -244,31 +245,35 @@ export const General = ({
           error={Boolean(errors.name && touched.name)}
           value={values.name}
           disabled={!add && lock}
+          style={add ? { gridColumnEnd: "span 2" } : {}}
         />
-
-        <AsyncCombo
-          label="Cluster"
-          filterBy="clusterValue"
-          getOptionLabel={(o) => o?.clusterValue || "No-Name"}
-          getOptionSelected={(o, v) => o?.id === v?.id}
-          url="/cluster"
-          defaultParams={{ class: values.class }}
-          value={clusterId}
-          onChange={(e, nv) => {
-            nv?.id && setClusterId(nv?.id);
-            setFieldValue("ClusterId", nv?.id);
-          }}
-        />
-        <Button
-          startIcon={<MenuRounded />}
-          color="secondary"
-          disabled={!clusterId}
-          onClick={(e) => {
-            setAnchorEl(e.currentTarget);
-          }}
-        >
-          Levels
-        </Button>
+        {add && (
+          <>
+            <AsyncCombo
+              label="Cluster"
+              filterBy="clusterValue"
+              getOptionLabel={(o) => o?.clusterValue || "No-Name"}
+              getOptionSelected={(o, v) => o?.id === v?.id}
+              url="/cluster"
+              defaultParams={{ class: values.class }}
+              value={clusterId}
+              onChange={(e, nv) => {
+                nv?.id && setClusterId(nv?.id);
+                setFieldValue("ClusterId", nv?.id);
+              }}
+            />
+            <Button
+              startIcon={<MenuRounded />}
+              color="secondary"
+              disabled={!clusterId}
+              onClick={(e) => {
+                setAnchorEl(e.currentTarget);
+              }}
+            >
+              Levels
+            </Button>
+          </>
+        )}
         <TextField
           multiline
           style={{ gridColumnEnd: "span 4" }}
