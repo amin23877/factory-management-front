@@ -1,5 +1,15 @@
 import React, { useState } from "react";
-import { Box, Tabs, Tab, Stepper, Step, StepLabel, CircularProgress } from "@material-ui/core";
+import {
+  Box,
+  Tabs,
+  Tab,
+  Stepper,
+  Step,
+  StepLabel,
+  CircularProgress,
+  FormControlLabel,
+  Checkbox,
+} from "@material-ui/core";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 
@@ -10,7 +20,7 @@ import MoreInfo from "./Forms/MoreInfo";
 import Shipping from "./Forms/Shipping";
 import Quantity from "./Forms/Quantity";
 
-import { createItem, IItem } from "../../api/items";
+import { createItem, duplicateItem, IItem } from "../../api/items";
 import TextField from "app/TextField";
 import Toast from "app/Toast";
 import PhotoTab from "common/PhotoTab";
@@ -197,7 +207,7 @@ export const DuplicateModal = ({ open, onClose }: { open: boolean; onClose: () =
   const handleSubmit = async (data: any, { setSubmitting }: any) => {
     setSubmitting(true);
     try {
-      const resp = await createItem(data);
+      const resp = await duplicateItem(itemId, data);
       if (resp) {
         setSubmitting(false);
         mutate("/item?class=device");
@@ -213,14 +223,40 @@ export const DuplicateModal = ({ open, onClose }: { open: boolean; onClose: () =
     <Dialog open={open} onClose={onClose} title="Duplicate item">
       <Box p={1}>
         <Formik initialValues={selectedRow ? selectedRow : ({ class: "device" } as IItem)} onSubmit={handleSubmit}>
-          {({ isSubmitting, getFieldProps }) => (
+          {({ handleChange, isSubmitting, getFieldProps, values }) => (
             <Form>
-              <TextField {...getFieldProps("no")} label="Item NO." />
-              <Box display="flex">
-                <Box flex={2}>
-                  <Button disabled={isSubmitting} style={{ marginTop: "1.3em" }} kind="add" type="submit">
-                    Save
-                  </Button>
+              <Box display={"grid"} gridTemplateColumns="1fr">
+                <TextField {...getFieldProps("no")} label="Item NO." />
+                <FormControlLabel
+                  style={{ fontSize: "0.7rem" }}
+                  checked={values.bomCheck}
+                  label="Duplicate BOM"
+                  name="bomCheck"
+                  onChange={handleChange}
+                  control={<Checkbox size="small" />}
+                />
+                <FormControlLabel
+                  style={{ fontSize: "0.7rem" }}
+                  checked={values.vendorCheck}
+                  label="Duplicate Preferred Vendor"
+                  name="vendorCheck"
+                  onChange={handleChange}
+                  control={<Checkbox size="small" />}
+                />
+                <FormControlLabel
+                  style={{ fontSize: "0.7rem" }}
+                  checked={values.docCheck}
+                  label="Duplicate Documents"
+                  name="docCheck"
+                  onChange={handleChange}
+                  control={<Checkbox size="small" />}
+                />
+                <Box display="flex">
+                  <Box flex={2}>
+                    <Button disabled={isSubmitting} style={{ marginTop: "1.3em" }} kind="add" type="submit">
+                      Save
+                    </Button>
+                  </Box>
                 </Box>
               </Box>
             </Form>

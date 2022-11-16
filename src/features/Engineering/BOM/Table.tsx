@@ -180,7 +180,8 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
             delete data.id;
             delete data.DeviceId;
             data.name = row["Device Description"];
-            await createItem({ ...data, no: data["Device Number"], class: "device", clusterId: cluster.id });
+            data.action = true;
+            await createItem({ ...data, number: data["Device Number"], class: "device", clusterId: cluster.id });
             Toast("Item created successfully", "success");
             refreshTableData();
           } catch (error) {

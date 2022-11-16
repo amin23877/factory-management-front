@@ -88,6 +88,7 @@ export const General = ({
         clusterId={clusterId}
         levelFilters={levelFilters}
         setLevelFilters={setLevelFilters}
+        setFieldValue={setFieldValue}
       />
       <Box display="grid" gridTemplateColumns={"1fr 1fr 1fr 1fr"} gridRowGap={10} gridColumnGap={10}>
         <Paper
@@ -253,7 +254,10 @@ export const General = ({
           url="/cluster"
           defaultParams={{ class: values.class }}
           value={clusterId}
-          onChange={(e, nv) => nv?.id && setClusterId(nv?.id)}
+          onChange={(e, nv) => {
+            nv?.id && setClusterId(nv?.id);
+            setFieldValue("ClusterId", nv?.id);
+          }}
         />
         <Button
           startIcon={<MenuRounded />}
