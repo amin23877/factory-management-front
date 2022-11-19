@@ -79,7 +79,6 @@ export default function ClusterForm({
         disabled={lock}
       />
       <Box display="flex" alignItems="center" style={{ gap: 8 }}>
-        <LockButton />
         <Button kind={values && values?.id ? "edit" : "add"} type="submit" disabled={lock}>
           Save
         </Button>

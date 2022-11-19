@@ -25,17 +25,17 @@ export default function NotificationMenu({
   anchorEl: HTMLElement | null;
   onClose: () => void;
 }) {
-  const { data: notifications, mutate } =
-    useSWR<{ result: notificationType[]; total: number }>("/notification?unseen=true");
+  // const { data: notifications, mutate } =
+  //   useSWR<{ result: notificationType[]; total: number }>("/notification?unseen=true");
 
-  const handleSeen = async (id: string) => {
-    try {
-      await toggleSeenNotification(id);
-      mutate();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const handleSeen = async (id: string) => {
+  //   try {
+  //     await toggleSeenNotification(id);
+  //     mutate();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <Popover
@@ -54,7 +54,7 @@ export default function NotificationMenu({
     >
       <Box p={1} width={200} height={400} overflow="auto">
         <h1>Notifications</h1>
-        {!notifications && <LinearProgress />}
+        {/* {!notifications && <LinearProgress />}
         <List>
           {notifications &&
             notifications.result.slice(0, 4).map((n, i) => (
@@ -67,7 +67,7 @@ export default function NotificationMenu({
                 </ListItemSecondaryAction>
               </ListItem>
             ))}
-        </List>
+        </List> */}
         <Link to="/panel/notification">
           <Button variant="outlined" fullWidth>
             See More

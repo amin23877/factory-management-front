@@ -6,6 +6,9 @@ import NoteTab from "common/Note/Tab";
 import DocumentTab from "common/Document/Tab";
 import ContactTab from "common/Contact/Tab";
 import AddressTab from "common/Address/Tab";
+// import SOTab from "common/SOHistory/Tab";
+import SOTab from "features/Sales/SO/Datagrid";
+import QuoteTab from "features/Sales/Quote/Datagrid";
 import AuditTable from "common/Audit";
 
 import { IActivity } from "api/activity";
@@ -49,14 +52,14 @@ export default function DataGridTabs({ selectedRow }: { selectedRow: IClient }) 
           style={phone ? { maxWidth: "calc(100vw - 63px)" } : {}}
           scrollButtons={phone ? "on" : "auto"}
         >
-          <Tab label="Contacts" />
-          <Tab label="Documents" />
-          <Tab label="Activities" />
-          <Tab label="Sales History" />
-          <Tab label="Work Orders" />
-          <Tab label="Notes" />
-          <Tab label="Addresses" />
-          <Tab label="Auditing" />
+          <Tab label="Contacts" /> 0
+          <Tab label="Documents" /> 1
+          <Tab label="Activities" /> 2
+          <Tab label="Sales History" /> 3
+          <Tab label="Work Orders" /> 4
+          <Tab label="Notes" /> 5
+          <Tab label="Addresses" /> 6
+          <Tab label="Auditing" /> 7
         </Tabs>
         <LockButton />
       </Box>
@@ -70,7 +73,12 @@ export default function DataGridTabs({ selectedRow }: { selectedRow: IClient }) 
           onRowSelected={() => {}}
         />
       )}
-      {activeTab === 3 && <></>}
+      {activeTab === 3 && (
+        <SOTab onRowSelected={() => {}} params={{ ClientId: selectedRow.id }} style={{ height: "64vh" }} />
+      )}
+      {activeTab === 4 && (
+        <QuoteTab onRowSelected={() => {}} params={{ ClientId: selectedRow.id }} style={{ height: "64vh" }} />
+      )}
       {activeTab === 5 && <NoteTab itemId={selectedRow.id} model="client" />}
       {activeTab === 6 && <AddressTab model="client" itemId={selectedRow.id} />}
       {activeTab === 7 && <AuditTable itemId={selectedRow.id} />}

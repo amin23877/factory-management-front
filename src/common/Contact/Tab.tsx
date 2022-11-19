@@ -16,7 +16,7 @@ const columns: GridColumns = [
   { field: "lastName", headerName: "Last Name" },
   { field: "phone", headerName: "Phone", valueFormatter: ({ row }) => row?.phones[0]?.phone },
   { field: "ext", headerName: "Ext", valueFormatter: ({ row }) => row?.phones[0]?.ext },
-  { field: "email", headerName: "Email", flex: 1, valueFormatter: ({ row }) => row?.emails[0]?.email },
+  { field: "email", headerName: "Email", valueFormatter: ({ row }) => row?.emails[0]?.email },
   { field: "title", headerName: "Title" },
   { field: "department", headerName: "Department", width: 120 },
   { field: "main", headerName: "Main", type: "boolean" },
@@ -54,10 +54,8 @@ export default function ContactTab({ itemId, model }: { model: string; itemId: s
           cols={columns}
           rows={data || []}
           onRowSelected={(r) => {
-            if (!lock) {
-              setSelectedContact(r);
-              setAddModal(true);
-            }
+            setSelectedContact(r);
+            setAddModal(true);
           }}
         />
       </Box>

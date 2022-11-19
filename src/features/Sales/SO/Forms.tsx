@@ -8,7 +8,6 @@ import {
   Paper,
   makeStyles,
   useMediaQuery,
-  ButtonGroup,
   Button,
 } from "@material-ui/core";
 
@@ -31,7 +30,6 @@ import { formatTimestampToDate } from "logic/date";
 import SOCus from "PDFTemplates/SOCus";
 import SORep from "PDFTemplates/SORep";
 import SOAcc from "PDFTemplates/SOAcc";
-import { LockOpenRounded } from "@material-ui/icons";
 // import { getPO } from "api/po";
 
 const useStyles = makeStyles({
@@ -56,7 +54,7 @@ export const GeneralForm = ({
   const classes = useStyles();
   const phone = useMediaQuery("(max-width:900px)");
   const tablet = useMediaQuery("(max-width:1500px)");
-  const { lock, setLock } = useLock();
+  const { lock } = useLock();
 
   return (
     <>
@@ -152,7 +150,7 @@ export const GeneralForm = ({
           />
         </Paper>
         <Box style={{ gridColumnEnd: tablet ? "span 3" : "span 4", textAlign: "center" }}>
-          {!lock && (
+          {/* {!lock && (
             <ButtonGroup variant="contained" color="primary" aria-label="split button">
               <Button type="submit">save</Button>
               <Button
@@ -173,8 +171,8 @@ export const GeneralForm = ({
             //   <Button type="submit">Save</Button>
             //   <LockButton />
             // </ButtonGroup>
-          )}
-          {lock && <LockButton />}
+          )} */}
+          <LockButton />
         </Box>
       </Box>
     </>

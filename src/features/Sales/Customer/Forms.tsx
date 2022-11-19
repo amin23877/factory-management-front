@@ -30,6 +30,7 @@ export const GeneralForm = ({
   req,
   cId,
   changeTab,
+  add,
 }: {
   values: any;
   errors: any;
@@ -39,6 +40,7 @@ export const GeneralForm = ({
   req?: any;
   cId: string;
   changeTab: (a: number) => void;
+  add?: boolean;
 }) => {
   const { lock } = useLock();
   const phone = useMediaQuery("(max-width:900px)");
@@ -80,14 +82,14 @@ export const GeneralForm = ({
           label="Active"
           onChange={handleChange}
           onBlur={handleBlur}
-          disabled={lock}
+          disabled={!add && lock}
         />
         {req ? (
           <Fragment>
-            <Button kind="add" onClick={handleApprove} disabled={lock}>
+            <Button kind="add" onClick={handleApprove} disabled={!add && lock}>
               Approve
             </Button>
-            <Button kind="delete" onClick={handleReject} disabled={lock}>
+            <Button kind="delete" onClick={handleReject} disabled={!add && lock}>
               Reject
             </Button>
           </Fragment>
@@ -99,7 +101,7 @@ export const GeneralForm = ({
             label="Approved"
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!add && lock}
           />
         )}
         <FormControl
@@ -116,9 +118,9 @@ export const GeneralForm = ({
         >
           <FormLabel style={{ marginRight: "10px" }}>Size</FormLabel>
           <RadioGroup row name="size" value={values.size} onChange={handleChange}>
-            <FormControlLabel value="small" control={<Radio size="small" />} label="Small" disabled={lock} />
-            <FormControlLabel value="medium" control={<Radio size="small" />} label="Medium" disabled={lock} />
-            <FormControlLabel value="large" control={<Radio size="small" />} label="Large" disabled={lock} />
+            <FormControlLabel value="small" control={<Radio size="small" />} label="Small" disabled={!add && lock} />
+            <FormControlLabel value="medium" control={<Radio size="small" />} label="Medium" disabled={!add && lock} />
+            <FormControlLabel value="large" control={<Radio size="small" />} label="Large" disabled={!add && lock} />
           </RadioGroup>
         </FormControl>
       </Paper>
@@ -140,18 +142,20 @@ export const GeneralForm = ({
           onChange={handleChange}
           value={typeof values.CustomerTypeId === "string" ? values.CustomerTypeId : values.CustomerTypeId?.id}
           error={Boolean(errors.CustomerTypeId)}
-          disabled={lock}
+          disabled={!add && lock}
         />
-        <TextField
-          name="number"
-          value={values.number}
-          onBlur={handleBlur}
-          onChange={handleChange}
-          error={Boolean(errors.number && touched.number)}
-          helperText={touched.number && errors.number && String(errors.number)}
-          label="Customer NO."
-          disabled
-        />
+        {!add && (
+          <TextField
+            name="number"
+            value={values.number}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            error={Boolean(errors.number && touched.number)}
+            helperText={touched.number && errors.number && String(errors.number)}
+            label="Customer NO."
+            disabled
+          />
+        )}
         <TextField
           name="name"
           value={values.name}
@@ -160,7 +164,7 @@ export const GeneralForm = ({
           error={Boolean(errors.name && touched.name)}
           helperText={touched.name && errors.name && String(errors.name)}
           label="Name"
-          disabled={lock}
+          disabled={!add && lock}
         />
         <TextField
           name="qbid"
@@ -170,7 +174,7 @@ export const GeneralForm = ({
           error={Boolean(errors.qbid && touched.qbid)}
           helperText={touched.qbid && errors.qbid && String(errors.qbid)}
           label="Quick Book ID"
-          disabled={lock}
+          disabled={!add && lock}
         />
         <TextField
           name="location"
@@ -181,7 +185,7 @@ export const GeneralForm = ({
           helperText={touched.location && errors.location && String(errors.location)}
           label="Location"
           style={{ gridColumn: "span 2" }}
-          disabled={lock}
+          disabled={!add && lock}
         />
         <TextField
           name="phone"
@@ -191,7 +195,7 @@ export const GeneralForm = ({
           error={Boolean(errors.phone && touched.phone)}
           helperText={touched.phone && errors.phone && String(errors.phone)}
           label="Phone"
-          disabled={lock}
+          disabled={!add && lock}
         />
         <TextField
           name="ext"
@@ -201,7 +205,7 @@ export const GeneralForm = ({
           error={Boolean(errors.ext && touched.ext)}
           helperText={touched.ext && errors.ext && String(errors.ext)}
           label="Ext"
-          disabled={lock}
+          disabled={!add && lock}
         />
       </Box>
     </>
@@ -214,12 +218,14 @@ export const MoreInfoForm = ({
   errors,
   handleBlur,
   handleChange,
+  add,
 }: {
   values: any;
   errors: any;
   touched: any;
   handleBlur: any;
   handleChange: any;
+  add?: boolean;
 }) => {
   const { lock } = useLock();
   const phone = useMediaQuery("(max-width:900px)");
@@ -240,7 +246,7 @@ export const MoreInfoForm = ({
         error={Boolean(errors.website && touched.website)}
         helperText={touched.website && errors.website && String(errors.website)}
         label="website"
-        disabled={lock}
+        disabled={!add && lock}
       />
       <TextField
         name="linkedIn"
@@ -250,7 +256,7 @@ export const MoreInfoForm = ({
         error={Boolean(errors.linkedIn && touched.linkedIn)}
         helperText={touched.linkedIn && errors.linkedIn && String(errors.linkedIn)}
         label="linkedIn"
-        disabled={lock}
+        disabled={!add && lock}
       />
       <TextField
         name="facebook"
@@ -260,7 +266,7 @@ export const MoreInfoForm = ({
         error={Boolean(errors.facebook && touched.facebook)}
         helperText={touched.facebook && errors.facebook && String(errors.facebook)}
         label="facebook"
-        disabled={lock}
+        disabled={!add && lock}
       />
       <TextField
         name="instagram"
@@ -270,7 +276,7 @@ export const MoreInfoForm = ({
         error={Boolean(errors.instagram && touched.instagram)}
         helperText={touched.instagram && errors.instagram && String(errors.instagram)}
         label="instagram"
-        disabled={lock}
+        disabled={!add && lock}
       />
       <TextField
         name="fax"
@@ -280,7 +286,7 @@ export const MoreInfoForm = ({
         error={Boolean(errors.fax && touched.fax)}
         helperText={touched.fax && errors.fax && String(errors.fax)}
         label="fax"
-        disabled={lock}
+        disabled={!add && lock}
       />
       <CacheFieldSelect
         url="/client"
@@ -293,7 +299,7 @@ export const MoreInfoForm = ({
         onChange={handleChange}
         value={typeof values.parent === "string" ? values.parent : values.parent?.id}
         error={Boolean(errors.parent)}
-        disabled={lock}
+        disabled={!add && lock}
       />
       <TextField
         name="refferedBy"
@@ -303,7 +309,7 @@ export const MoreInfoForm = ({
         error={Boolean(errors.refferedBy && touched.refferedBy)}
         helperText={touched.refferedBy && errors.refferedBy && String(errors.refferedBy)}
         label="referred By"
-        disabled={lock}
+        disabled={!add && lock}
       />
     </Box>
   );
@@ -331,12 +337,14 @@ export const CommissionForm = ({
   errors,
   handleBlur,
   handleChange,
+  add,
 }: {
   values: any;
   errors: any;
   touched: any;
   handleBlur: any;
   handleChange: any;
+  add?: boolean;
 }) => {
   const { lock } = useLock();
 
@@ -355,7 +363,7 @@ export const CommissionForm = ({
         }
         label=" Regular Commision Percentage"
         type="number"
-        disabled={lock}
+        disabled={!add && lock}
       />
       <TextField
         name="overageCommissionPercentage"
@@ -370,7 +378,7 @@ export const CommissionForm = ({
         }
         label="Overage Commission Percentage"
         type="number"
-        disabled={lock}
+        disabled={!add && lock}
       />
     </Box>
   );

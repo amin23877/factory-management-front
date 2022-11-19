@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from "react";
 import { Tabs, Tab, useMediaQuery, Box } from "@material-ui/core";
+import Button from "app/Button";
 
 import AuditTable from "common/Audit";
 import BaseDataGrid from "app/BaseDataGrid";
@@ -7,11 +8,13 @@ import { GridColumns } from "@material-ui/data-grid";
 import { formatTimestampToDate } from "logic/date";
 import { VendorModal } from "features/Modals/AddVendor";
 
-import Button from "app/Button";
 import VendorsTable from "features/Items/VendorsTable";
 import NotesTab from "common/Note/Tab";
 import DocumentTab from "common/Document/Tab";
 import ItemBomTable from "features/BOM/ItemBomTable";
+import SOTab from "features/Sales/SO/Datagrid";
+import POTab from "features/Purchase/PO/Datagrid";
+
 import useSWR from "swr";
 import { IItem } from "api/items";
 import { LockButton, useLock } from "common/Lock";
@@ -99,14 +102,14 @@ export default function DataGridTabs({
           scrollButtons={phone ? "on" : "auto"}
           style={phone ? { maxWidth: "calc(100vw - 63px)" } : {}}
         >
-          <Tab label="Document" />
-          <Tab label="Vendor" />
-          <Tab label="BOM" disabled={!values.bom} />
-          <Tab label="Sales order History" />
-          <Tab label="PO History" />
-          <Tab label="Usage" />
-          <Tab label="Note" />
-          <Tab label="Auditing" />
+          <Tab label="Document" /> 0
+          <Tab label="Vendor" /> 1
+          <Tab label="BOM" disabled={!values.bom} /> 2
+          <Tab label="Sales order History" /> 3
+          <Tab label="PO History" /> 4
+          <Tab label="Usage" /> 5
+          <Tab label="Note" /> 6
+          <Tab label="Auditing" /> 7
         </Tabs>
         <LockButton />
       </Box>
@@ -128,6 +131,12 @@ export default function DataGridTabs({
         <div style={{ maxWidth: "79vw", overflow: "auto", height: "85%" }}>
           <ItemBomTable item={selectedRow} boms={boms?.result || []} mutateBoms={mutateBoms} />
         </div>
+      )}
+      {activeTab === 3 && (
+        <SOTab onRowSelected={() => {}} params={{ ItemId: selectedRow.id }} style={{ height: "64vh" }} />
+      )}
+      {activeTab === 4 && (
+        <POTab onRowSelected={() => {}} params={{ ItemId: selectedRow.id }} style={{ height: "64vh" }} />
       )}
       {activeTab === 5 && (
         <BaseDataGrid

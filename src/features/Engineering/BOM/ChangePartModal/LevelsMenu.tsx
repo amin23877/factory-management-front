@@ -11,12 +11,14 @@ export default function LevelsMenu({
   levelFilters,
   setLevelFilters,
   onClose,
+  setFieldValue,
 }: {
   anchorEl?: HTMLElement;
   clusterId?: string;
   levelFilters: any;
   setLevelFilters: any;
   onClose: () => void;
+  setFieldValue?: any;
 }) {
   const { data: levels } = useSWR<{ result: ILevel[]; total: number }>(
     clusterId ? `/level?clusterId=${clusterId}` : null
@@ -47,9 +49,13 @@ export default function LevelsMenu({
             <ArraySelect
               key={l.id}
               label={l.name}
-              items={l.valid || []}
+              items={l.valid.map((val) => val.value + "‌" + val.uom) || []}
               value={levelFilters && levelFilters[l.name]}
-              onChange={(e) => setLevelFilters((p: any) => ({ ...(p || {}), [l.name]: e.target.value }))}
+              onChange={(e) => {
+                setLevelFilters((p: any) => ({ ...(p || {}), [l.name]: e.target.value }));
+                if (setFieldValue)
+                  setFieldValue(l.name, { value: e.target.value.split("‌")[0], uom: e.target.value.split("‌")[1] });
+              }}
             />
           ))}
         </Box>

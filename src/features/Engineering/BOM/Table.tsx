@@ -12,7 +12,7 @@ import RenamePart from "./RenamePart";
 import Button from "app/Button";
 import Toast from "app/Toast";
 
-import { getMatrix, postMatrixData, IMatrix } from "api/matrix";
+import { getMatrix, postMatrixData, IMatrix, postColumn, getColumns } from "api/matrix";
 import {
   extractLevels,
   extractColumns,
@@ -20,6 +20,7 @@ import {
   generateDataGridColumns,
   generateDataGridFilterValues,
   generateRows,
+  extractEmptyColumns,
 } from "logic/matrix";
 import { clusterType } from "api/cluster";
 import Confirm from "common/Confirm";
@@ -52,7 +53,7 @@ type ITableChangeRow = {
 
 export default function MatrixTable({ cluster }: { cluster: clusterType }) {
   const [tableData, setTableData] = useState<IMatrix>();
-
+  const [newColumns, setNewColumns] = useState();
   const classes = useStyles();
 
   const [addPart, setAddPart] = useState(false);
@@ -63,6 +64,7 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
   const [selectedPart, setSelectedPart] = useState<{ formerName: string; newName: string }>();
   const [selectedRowName, setSelectedRowName] = useState<string>();
   const [changes, setChanges] = useState<ITableChangeRow[]>([]);
+  const [addUsage, setAddUsage] = useState<boolean>(false);
 
   const [tableColumns, setTableColumns] = useState<any[]>([]);
   const [tableRows, setTableRows] = useState<any[]>([]);
@@ -85,6 +87,8 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
   const refreshTableData = useCallback(async () => {
     try {
       const resp = await getMatrix(cluster.id);
+      const res = await getColumns(cluster.id);
+      setNewColumns(res.result);
       setTableData(resp);
     } catch (error) {
       console.log(error);
@@ -169,14 +173,21 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
     (row: any) => {
       Confirm({
         confirmText: "yes , add it",
-        text: `Add Device with this Number: ${row?.fakeName}`,
+        text: `Add Device with this Number: ${row["Device Number"]}`,
         onConfirm: async () => {
           try {
             const data = JSON.parse(JSON.stringify(row));
             delete data.id;
             delete data.DeviceId;
-            await createItem({ ...data, no: data["Device Number"], class: "device", clusterId: cluster.id });
-
+            data.name = row["Device Description"];
+            data.action = true;
+            await createItem({
+              ...data,
+              number: data["Device Number"],
+              class: "device",
+              clusterId: cluster.id,
+              no: data["Device Number"],
+            });
             Toast("Item created successfully", "success");
             refreshTableData();
           } catch (error) {
@@ -191,11 +202,14 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
   useEffect(() => {
     if (tableData) {
       const levels = extractLevels(tableData);
-      const parts = extractPartNames(tableData);
+      let parts = extractPartNames(tableData);
+      const emptyColumns = extractEmptyColumns(newColumns);
+      parts = parts.concat(emptyColumns);
       const columns = generateDataGridColumns(
         extractColumns({ tableData, levels, parts }),
         handleChangePartName,
-        handleAddDevice
+        handleAddDevice,
+        levels
       );
       const rows = generateRows({ tableData, levels });
 
@@ -205,36 +219,14 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
       setTableRows(rows);
       setTableDefaultFilters(defaultFilterValues);
     }
-  }, [handleAddDevice, handleChangePartName, tableData]);
+  }, [handleAddDevice, handleChangePartName, tableData, newColumns]);
 
-  const handleAddPart = (name: string) => {
-    setTableColumns((prev) => {
-      const temp = prev.concat();
-      temp.push({
-        name,
-        render: ({ data }: any) => data[name]?.ItemId?.no,
-        minWidth: 180,
-        editable: false,
-        sortable: false,
-        header: (
-          <div style={{ width: 80, display: "flex", alignItems: "center" }}>
-            <Typography variant="caption">{name}</Typography>
-            <Button size="small" onClick={() => handleChangePartName(name)}>
-              <EditRounded htmlColor="white" fontSize="small" />
-            </Button>
-          </div>
-        ),
-      });
-
-      return temp;
-    });
-    setTableDefaultFilters((prev: any) => {
-      const temp = prev?.concat();
-      temp.push({ name, operator: "startsWith", type: "string", value: "" });
-
-      return temp;
-    });
-    setAddPart(false);
+  const handleAddPart = async (name: string) => {
+    const resp = await postColumn(cluster.id, name);
+    if (resp) {
+      refreshTableData();
+      setAddPart(false);
+    }
   };
 
   const handleChangePart = (d: ITableChangeRow, part: any) => {
@@ -247,7 +239,6 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
       } else {
         clone[index].cells = [...clone[index].cells, ...d.cells];
       }
-
       return clone;
     });
 
@@ -263,6 +254,7 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
     });
 
     setChangePart(false);
+    setAddUsage(false);
   };
 
   const submitChanges = async () => {
@@ -319,6 +311,7 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
     });
 
     setChangePart(false);
+    setAddUsage(false);
   }, []);
 
   useEffect(() => {
@@ -351,21 +344,26 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
       <AddPartModal open={addPart} onClose={() => setAddPart(false)} onDone={handleAddPart} />
       {selectedRowName !== undefined && (
         <ChangePartModal
+          addUsage={addUsage}
+          setAddUsage={setAddUsage}
           row={selectedRow}
           open={changePart}
           partName={selectedRowName}
           onDone={handleChangePart}
           onDelete={handleDeleteCell}
-          onClose={() => setChangePart(false)}
+          onClose={() => {
+            setChangePart(false);
+            setAddUsage(false);
+          }}
         />
       )}
 
       <Box display="flex" alignItems="flex-top" width="100%">
         <Box width="100%">
           <Button variant="outlined" style={{ margin: "0.5em 0" }} onClick={() => setAddPart(true)}>
-            Add part
+            Add Column
           </Button>
-          <Button kind="add" disabled={changes.length < 1} style={{ margin: "0.5em" }} onClick={submitChanges}>
+          <Button kind="add" style={{ margin: "0.5em" }} onClick={submitChanges} disabled={changes.length < 1}>
             Submit changes
           </Button>
 
@@ -374,7 +372,6 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
               className={classes.root}
               rowHeight={20}
               columns={tableColumns}
-              // dataSource={[]}
               dataSource={tableRows}
               defaultFilterValue={tableDefaultFilters}
               pagination

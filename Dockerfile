@@ -5,5 +5,6 @@ COPY package*.json ./
 RUN npm i --force
 COPY . .
 RUN npm run build
-EXPOSE 3001
-CMD [ "npm", "start" ]
+RUN npm install -g serve
+EXPOSE 3000
+CMD [ "serve", "-s", "build", "-l", "3001" ]

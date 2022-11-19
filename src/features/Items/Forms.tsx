@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles, Box, FormControlLabel, Checkbox, Divider, Paper, useMediaQuery } from "@material-ui/core";
 
 import TextField from "app/TextField";
+import Button from "app/Button";
 
 import { formatTimestampToDate } from "logic/date";
 
@@ -9,6 +10,10 @@ import { IItem } from "api/items";
 
 import ItemTypeCombo from "common/ItemTypeCombo";
 import { LockButton, useLock } from "common/Lock";
+
+import AsyncCombo from "common/AsyncCombo";
+import { MenuRounded } from "@material-ui/icons";
+import LevelsMenu from "features/Engineering/BOM/ChangePartModal/LevelsMenu";
 
 const useStyles = makeStyles({
   label: {
@@ -25,6 +30,7 @@ interface IForm {
   isSubmitting?: boolean;
   device?: boolean;
   boms?: boolean;
+  add?: boolean;
 }
 
 interface IQForm extends IForm {
@@ -50,10 +56,15 @@ export const General = ({
   touched,
   setFieldValue,
   device,
+  add,
 }: IForm) => {
   const classes = useStyles();
   const phone = useMediaQuery("(max-width:900px)");
   const { lock } = useLock();
+  const [clusterId, setClusterId] = useState<string>();
+  const [anchorEl, setAnchorEl] = useState<HTMLElement>();
+  const [levelFilters, setLevelFilters] = useState<{ [key: string]: string }>();
+
   // const itemTypes = types.map((t) => (values as any)[t.value] && { value: t.value, title: t.title }).filter((t) => t);
 
   // const handleItemTypeChange: ((e: any, nv: { value: string }[]) => void) | undefined = (e, nv) => {
@@ -71,6 +82,14 @@ export const General = ({
   // };
   return (
     <>
+      <LevelsMenu
+        onClose={() => setAnchorEl(undefined)}
+        anchorEl={anchorEl}
+        clusterId={clusterId}
+        levelFilters={levelFilters}
+        setLevelFilters={setLevelFilters}
+        setFieldValue={setFieldValue}
+      />
       <Box display="grid" gridTemplateColumns={"1fr 1fr 1fr 1fr"} gridRowGap={10} gridColumnGap={10}>
         <Paper
           style={{
@@ -89,7 +108,7 @@ export const General = ({
               onChange={handleChange}
               classes={{ label: classes.label }}
               control={<Checkbox size="small" />}
-              disabled={lock}
+              disabled={!add && lock}
             />
             <FormControlLabel
               classes={{ label: classes.label }}
@@ -99,7 +118,7 @@ export const General = ({
               name="engineeringApproval"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-              disabled={lock}
+              disabled={!add && lock}
             />
             <FormControlLabel
               classes={{ label: classes.label }}
@@ -109,7 +128,7 @@ export const General = ({
               name="obsolete"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-              disabled={lock}
+              disabled={!add && lock}
             />
             <FormControlLabel
               classes={{ label: classes.label }}
@@ -119,7 +138,7 @@ export const General = ({
               name="nonInventoryItem"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-              disabled={lock}
+              disabled={!add && lock}
             />
             <FormControlLabel
               classes={{ label: classes.label }}
@@ -129,7 +148,7 @@ export const General = ({
               name="rndOnly"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-              disabled={lock}
+              disabled={!add && lock}
             />
             <FormControlLabel
               classes={{ label: classes.label }}
@@ -138,7 +157,7 @@ export const General = ({
               label="Don't Track QOH"
               name="dontTrackQoh"
               onChange={handleChange}
-              disabled={lock}
+              disabled={!add && lock}
               control={<Checkbox size="small" />}
             />
             <FormControlLabel
@@ -149,7 +168,7 @@ export const General = ({
               name="dontOrderOnPOs"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-              disabled={lock}
+              disabled={!add && lock}
             />
             <FormControlLabel
               classes={{ label: classes.label }}
@@ -159,7 +178,7 @@ export const General = ({
               name="taxable"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-              disabled={lock}
+              disabled={!add && lock}
             />
 
             <FormControlLabel
@@ -170,7 +189,7 @@ export const General = ({
               name="canBom"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-              disabled={lock}
+              disabled={!add && lock}
             />
             <div style={{ display: "flex", gridColumnEnd: "span 2", alignItems: "center" }}>
               <FormControlLabel
@@ -181,7 +200,7 @@ export const General = ({
                 name="archived"
                 onChange={handleChange}
                 control={<Checkbox size="small" />}
-                disabled={lock}
+                disabled={!add && lock}
               />
               {values.archived && (
                 <TextField
@@ -204,10 +223,9 @@ export const General = ({
           value={types.find((t) => t.value === values.class)}
           onChange={(e, nv) => nv && setFieldValue("class", nv.value)}
           style={{ gridColumnEnd: "span 4" }}
-          disabled={lock}
+          disabled={!add && lock}
         />
         <TextField
-          style={{ gridColumnEnd: "span 2" }}
           label="no"
           value={values.no}
           name="no"
@@ -215,10 +233,10 @@ export const General = ({
           onBlur={handleBlur}
           error={Boolean(errors.no && touched.no)}
           placeholder="no"
-          disabled={lock}
+          disabled={!add && lock}
+          style={add ? { gridColumnEnd: "span 2" } : {}}
         />
         <TextField
-          style={{ gridColumnEnd: "span 2" }}
           label="Item name"
           placeholder="Item name"
           name="name"
@@ -226,8 +244,36 @@ export const General = ({
           onBlur={handleBlur}
           error={Boolean(errors.name && touched.name)}
           value={values.name}
-          disabled={lock}
+          disabled={!add && lock}
+          style={add ? { gridColumnEnd: "span 2" } : {}}
         />
+        {add && (
+          <>
+            <AsyncCombo
+              label="Cluster"
+              filterBy="clusterValue"
+              getOptionLabel={(o) => o?.clusterValue || "No-Name"}
+              getOptionSelected={(o, v) => o?.id === v?.id}
+              url="/cluster"
+              defaultParams={{ class: values.class }}
+              value={clusterId}
+              onChange={(e, nv) => {
+                nv?.id && setClusterId(nv?.id);
+                setFieldValue("ClusterId", nv?.id);
+              }}
+            />
+            <Button
+              startIcon={<MenuRounded />}
+              color="secondary"
+              disabled={!clusterId}
+              onClick={(e) => {
+                setAnchorEl(e.currentTarget);
+              }}
+            >
+              Levels
+            </Button>
+          </>
+        )}
         <TextField
           multiline
           style={{ gridColumnEnd: "span 4" }}
@@ -238,7 +284,7 @@ export const General = ({
           onChange={handleChange}
           onBlur={handleBlur}
           value={values.description}
-          disabled={lock}
+          disabled={!add && lock}
         />
       </Box>
       <div
@@ -250,13 +296,13 @@ export const General = ({
           marginTop: 8,
         }}
       >
-        <LockButton />
+        {!add && <LockButton />}
       </div>
     </>
   );
 };
 
-export const Pricing = ({ values, errors, handleChange, handleBlur, touched, boms }: IForm) => {
+export const Pricing = ({ values, errors, handleChange, handleBlur, touched, boms, add }: IForm) => {
   const phone = useMediaQuery("(max-width:900px)");
   const { lock } = useLock();
 
@@ -270,7 +316,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
         onBlur={handleBlur}
         onChange={handleChange}
         style={{ marginBottom: 3 }}
-        disabled={lock}
+        disabled={!add && lock}
       />
       <TextField
         label="retail price"
@@ -280,13 +326,13 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
         onBlur={handleBlur}
         onChange={handleChange}
         style={{ marginBottom: 3 }}
-        disabled={lock}
+        disabled={!add && lock}
       />
       <TextField
         label="Total Cost"
         value={values.overrideUse ? values.override : values.totalCost}
         name="totalCost"
-        disabled
+        disabled={!add && lock}
       />
       {!boms ? (
         <div style={phone ? { gridColumnEnd: "span 2", display: "flex" } : { display: "flex" }}>
@@ -297,7 +343,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
             label=" "
             onChange={handleChange}
             control={<Checkbox />}
-            disabled={lock}
+            disabled={!add && lock}
           />
           <TextField
             type="number"
@@ -308,7 +354,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
             onBlur={handleBlur}
             onChange={handleChange}
             style={{ marginBottom: 3 }}
-            disabled={!values.overrideUse || lock}
+            disabled={!add && (!values.overrideUse || lock)}
           />
         </div>
       ) : (
@@ -321,7 +367,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
             onBlur={handleBlur}
             onChange={handleChange}
             style={{ marginBottom: 3 }}
-            disabled={lock}
+            disabled={!add && lock}
           />
           <div style={phone ? { gridColumnEnd: "span 2" } : {}}>
             <FormControlLabel
@@ -331,7 +377,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
               label=" "
               onChange={handleChange}
               control={<Checkbox />}
-              disabled={lock}
+              disabled={!add && lock}
             />
             <TextField
               label=" Bom Cost Estimate"
@@ -341,7 +387,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
               onBlur={handleBlur}
               onChange={handleChange}
               style={{ marginBottom: 3 }}
-              disabled={lock}
+              disabled={!add && lock}
             />
           </div>
         </>

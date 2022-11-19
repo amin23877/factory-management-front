@@ -7,11 +7,11 @@ import { GeneralForm } from "../../app/Forms";
 import { delete_, fetcher, patch, post } from "../../api";
 
 export default function CatTypeFamilyModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-    const [activeTab, setActiveTab] = useState(0);
+  const [activeTab, setActiveTab] = useState(0);
 
-    return (
-        <Dialog open={open} onClose={onClose} title={`Manage Category - Satatus - Priority`}>
-            <Box>
+  return (
+    <Dialog open={open} onClose={onClose} title={`Manage Category - Satatus - Priority`}>
+      {/* <Box>
                 <Tabs value={activeTab} textColor="primary" onChange={(e, nv) => setActiveTab(nv)}>
                     <Tab label="Category" />
                     <Tab label="Status" />
@@ -44,7 +44,7 @@ export default function CatTypeFamilyModal({ open, onClose }: { open: boolean; o
                         updateRecord={(id, data) => patch("/activitypriority/" + id, { name: data })}
                     />
                 )}
-            </Box>
-        </Dialog>
-    );
+            </Box> */}
+    </Dialog>
+  );
 }

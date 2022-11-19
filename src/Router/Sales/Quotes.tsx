@@ -10,7 +10,6 @@ import {
 } from "@material-ui/icons";
 
 import { BasePaper } from "app/Paper";
-import DataGrid from "app/NewDataGrid";
 import List from "app/SideUtilityList";
 
 import Confirm from "features/Modals/Confirm";
@@ -18,6 +17,7 @@ import EditTab from "pages/Sales/Quote/Details";
 import AddQuote from "features/Sales/Quote/AddQuote";
 import ReqQuoteModal from "features/Sales/Quote/ReqQuote/Modals";
 import EmailModal from "features/Email/Modal";
+import DataGrid from "features/Sales/Quote/Datagrid";
 
 import { deleteQuote } from "api/quote";
 import { Route, Switch, useHistory, useLocation, useParams } from "react-router-dom";
@@ -59,54 +59,6 @@ export default function QuotePanel() {
       console.log(error);
     }
   };
-
-  const columns = useMemo(
-    () => [
-      {
-        name: "createdAt",
-        header: "Date",
-        type: "date",
-        minWidth: 100,
-      },
-      { name: "number", header: "Quote ID", minWidth: 100 },
-      {
-        name: "ClientId",
-        header: "Client",
-        minWidth: 100,
-        render: ({ data }: any) => data?.ClientId?.name,
-      },
-      { name: "RepId", header: "Rep", minWidth: 100, render: ({ data }: any) => data.RepId?.name },
-      {
-        name: "RepId.state",
-        header: "State",
-        minWidth: 100,
-        render: ({ data }: any) => data.RepId?.state,
-      },
-      {
-        name: "requester",
-        header: "Requester",
-        render: ({ data }: any) => `${data.requester?.firstName || ""} ${data.requester?.lastName || ""}`,
-        minWidth: 100,
-      },
-      {
-        name: "ProjectId",
-        header: "Project Name",
-        minWidth: 100,
-        render: ({ data }: any) => data.ProjectId?.name,
-      },
-      {
-        name: "salesPerson",
-        type: "string",
-        header: "Quoted By",
-        minWidth: 100,
-        render: ({ data }: any) => data.salesPerson?.username,
-      },
-      { name: "SOId", header: "SO", minWidth: 100, render: ({ data }) => data.SOId?.number },
-      { name: "status", header: "Status", minWidth: 100 },
-      { name: "total", header: "Total Amount", minWidth: 100, type: "number" },
-    ],
-    []
-  );
 
   return (
     <>
@@ -188,7 +140,6 @@ export default function QuotePanel() {
                   history.push(`/panel/sales/quotes/${d.id}${window.location.search}`);
                 }}
                 url="/quote"
-                columns={columns}
                 setUrlFilters
               />
             </Route>

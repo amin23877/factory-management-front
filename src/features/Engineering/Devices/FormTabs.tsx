@@ -3,9 +3,9 @@ import { Box, Tabs, Tab, Typography, useMediaQuery } from "@material-ui/core";
 
 import DeviceQRCode from "app/QRCode";
 import { exportPdf } from "logic/pdf";
-import PricingTab from "common/Pricing";
 import PhotoTab from "common/PhotoTab";
 import LevelsTab from "common/Level/Tab";
+import PricingTab from "features/Items/Forms/Pricing";
 
 import Button from "app/Button";
 
@@ -84,13 +84,7 @@ export default function FormTabs({
         </Box>
       )}
       {moreInfoTab === 2 && (
-        <PricingTab
-          handleBlur={handleBlur}
-          handleChange={handleChange}
-          itemId={selectedRow.id}
-          values={values}
-          boms={boms || { result: [], total: 0 }}
-        />
+        <PricingTab itemId={selectedRow.id} boms={boms} values={values} getFieldProps={getFieldProps} />
       )}
       {moreInfoTab === 3 && (
         <LevelsTab

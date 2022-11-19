@@ -16,6 +16,7 @@ import { useParams } from "react-router-dom";
 import { LockProvider } from "common/Lock";
 import FormTabs from "features/Engineering/Devices/FormTabs";
 import DataGridsTabs from "features/Engineering/Devices/DataGridTabs";
+import { IBom } from "api/bom";
 
 function DeviceDetails({
   sales,
@@ -30,7 +31,9 @@ function DeviceDetails({
   const { data: selectedRow } = useSWR<IItem>(deviceId ? `/item/${deviceId}` : null);
 
   const phone = useMediaQuery("(max-width:900px)");
-
+  const { data: boms } = useSWR<{ result: IBom[]; total: number }>(
+    selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null
+  );
   const handleSubmit = async (data: any, { setSubmitting }: any) => {
     try {
       if (selectedRow) {
@@ -91,6 +94,7 @@ function DeviceDetails({
                       handleBlur={handleBlur}
                       setFieldValue={setFieldValue}
                       getFieldProps={getFieldProps}
+                      boms={boms}
                     />
                   </LockProvider>
                 </BasePaper>

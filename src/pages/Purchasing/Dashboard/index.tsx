@@ -6,6 +6,7 @@ import { BasePaper } from "app/Paper";
 import NewDataGrid from "app/NewDataGrid";
 import List from "app/SideUtilityList";
 import RequiredPOModal from "../../../features/Purchase/Dashboard/RequiredPOModal";
+import { formatTimestampToDate } from "logic/date";
 
 const requiredCols = [
   {
@@ -52,9 +53,55 @@ const receivedCols = [
     defaultFlex: 1,
   },
   { name: "unit", header: "Related Unit", width: 120, render: ({ data }: any) => data?.UnitId?.number },
-  { name: "orderedQuantity", header: "Ordered QTY", width: 120, type: "number" },
-  { name: "receivedQuantity", header: "Received QTY", width: 120, type: "number" },
-  { name: "dateExpected", header: "Expected Date", width: 120, type: "date" },
+  {
+    name: "orderedQuantity",
+    header: "Ordered QTY",
+    width: 120,
+    render: ({ data }: any) => data?.POLineItemId?.orderedQuantity,
+  },
+  {
+    name: "receivedQuantity",
+    header: "Received QTY",
+    width: 120,
+    render: ({ data }: any) => data?.POLineItemId?.receivedQuantity,
+  },
+  {
+    name: "dateExpected",
+    header: "Expected Date",
+    width: 120,
+    render: ({ data }: any) => formatTimestampToDate(data?.POLineItemId?.dateExpected),
+  },
+];
+const preferredCols = [
+  { name: "itemNo", header: "Item NO.", type: "string", width: 120, render: ({ data }: any) => data?.ItemId?.no },
+  {
+    name: "itemName",
+    header: "Item Name",
+    type: "string",
+    width: 120,
+    render: ({ data }: any) => (
+      <Tooltip title={data?.ItemId?.name}>
+        <span>{data?.ItemId?.name}</span>
+      </Tooltip>
+    ),
+    defaultFlex: 1,
+  },
+  {
+    name: "receiveCount",
+    header: "Received QTY",
+    width: 120,
+  },
+  {
+    name: "preferredCount",
+    header: "Preferred QTY",
+    width: 120,
+  },
+  {
+    name: "NonPreferredCount",
+    header: "Non-Preferred QTY",
+    width: 120,
+    render: ({ data }: any) => data?.receiveCount - data?.preferredCount,
+  },
 ];
 
 export default function Dashboard() {
@@ -79,6 +126,7 @@ export default function Dashboard() {
         <Tabs textColor="primary" value={tab} onChange={(e, nv) => setTab(nv)}>
           <Tab label="Purchasing Required List" />
           <Tab label="Fulfillment List" />
+          <Tab label="Purchase Analysis" />
         </Tabs>
         <div style={{ flexGrow: 1 }} />
         <List style={{ boxShadow: "rgba(0, 0, 0, 0.08) 0px 4px 12px" }}>
@@ -112,6 +160,7 @@ export default function Dashboard() {
         />
       )}
       {tab === 1 && <NewDataGrid columns={receivedCols} url="/receive" onRowSelected={() => {}} />}
+      {tab === 2 && <NewDataGrid columns={preferredCols} url="/receive/preferred/item" onRowSelected={() => {}} />}
     </BasePaper>
   );
 }
