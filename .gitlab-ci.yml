@@ -44,7 +44,7 @@ devphocusimage:
     - docker build --tag registry.cla99ic.ir/phocus/devphocusnext:latest ./
     - docker push registry.cla99ic.ir/phocus/devphocusnext:latest
     - docker image prune -a -f
-    - ssh root@$devserver "cd ~; docker-compose pull; docker-compose up -d"
+    - ssh root@$prodserver "cd ~; docker-compose pull; docker-compose up -d"
   tags:
     - docker
   rules:
