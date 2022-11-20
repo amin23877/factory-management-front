@@ -25,6 +25,7 @@ import TextField from "app/TextField";
 import Toast from "app/Toast";
 import PhotoTab from "common/PhotoTab";
 import DocumentTab from "common/Document/Tab";
+import { useHistory } from "react-router-dom";
 
 export const AddItemModal = ({
   open,
@@ -203,6 +204,7 @@ export const AddItemModal = ({
 export const DuplicateModal = ({ open, onClose }: { open: boolean; onClose: () => void }) => {
   const itemId = window.location.pathname.split("/")[4];
   const { data: selectedRow } = useSWR<IItem>(itemId ? `/item/${itemId}` : null);
+  const history = useHistory();
 
   const handleSubmit = async (data: any, { setSubmitting }: any) => {
     setSubmitting(true);
@@ -212,7 +214,9 @@ export const DuplicateModal = ({ open, onClose }: { open: boolean; onClose: () =
         setSubmitting(false);
         mutate("/item?class=device");
         mutate("/item");
+        Toast("item duplicated successfully", "success");
         onClose();
+        history.push(`/panel/inventory/items/${resp.id}`);
       }
     } catch (error) {
       console.log(error);
