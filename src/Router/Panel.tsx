@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import { useHistory } from "react-router";
 import { Box, CssBaseline, useTheme } from "@material-ui/core";
@@ -145,7 +145,13 @@ export default function PanelRouter() {
 
   const [mainDrawerOpen, setMainDrawerOpen] = useState(false);
   const [chatDrawerOpen, setChatDrawerOpen] = useState(false);
-  const [openEmailModal, setOpenEmailModal] = useState<boolean>(!Boolean(session?.session?.email));
+  const [openEmailModal, setOpenEmailModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (session.session && !session?.session?.email) {
+      setOpenEmailModal(true);
+    }
+  }, [session]);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
     setValue(newValue);

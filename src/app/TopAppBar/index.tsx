@@ -36,13 +36,14 @@ export const TopAppBar = ({
       )}
       <NotificationButton />
       <ProfileButton />
-      {!phone && (
+      {/* {!phone && (
         <Button size="small" color="inherit">
           <TvRounded style={{ marginRight: 3 }} />
           Phazify
           <ArrowDropDownRounded />
         </Button>
-      )}
+      )} */}
+
       {!isChatOpen && (
         <IconButton size="small" color="inherit" onClick={onOpenChatClicked}>
           <ChatRounded style={{ marginRight: 3 }} />
