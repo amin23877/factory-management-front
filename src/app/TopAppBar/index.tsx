@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, IconButton, Box } from "@material-ui/core";
-import { ArrowDropDownRounded, HelpOutline, TvRounded, ChatRounded, ExitToAppRounded } from "@material-ui/icons";
+import { IconButton, Box } from "@material-ui/core";
+import { HelpOutline, ChatRounded, ExitToAppRounded } from "@material-ui/icons";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useDispatch } from "react-redux";
 

@@ -101,17 +101,24 @@ function ChangePartModal({
         clusterId,
         ...(levelFilters || {}),
         ...(itemClass && { class: itemClass }),
-        ...(itemNo && { startsWithno: itemNo }),
+        ...(itemNo && { no: itemNo }),
         ...(itemName && { startsWithname: itemName }),
         ...(keywords && { containDescription: keywords }),
         page: String(page),
       },
     })
       .then((d) => {
-        setItems(d);
+        let usage: IItem[] = d.result.map((i: IItem) => {
+          if (prevPart && i.id === prevPart?.ItemId.id) {
+            return { ...i, usage: prevPart.usage };
+          } else {
+            return i;
+          }
+        });
+        setItems({ result: usage, total: d.total });
       })
       .catch((e) => console.log(e));
-  }, [clusterId, itemClass, itemName, itemNo, keywords, levelFilters, page]);
+  }, [clusterId, itemClass, itemName, itemNo, keywords, levelFilters, page, prevPart]);
 
   const cols = useMemo<GridColumns>(
     () => [
@@ -128,17 +135,16 @@ function ChangePartModal({
         ),
       },
       { field: "no", headerName: "Component", width: 140 },
-      { field: "usage", headerName: "Usage", width: 140, editable: true },
       {
         field: "description",
         flex: 1,
+        headerName: "Description",
+      },
+      { field: "usage", headerName: "Usage", width: 140, editable: true },
+      {
+        field: "",
         renderCell: (p: any) => (
           <Box display="flex" alignItems="center" flex={1}>
-            <Tooltip title={String(p.value)} style={{ flexGrow: 1 }}>
-              <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 200 }}>
-                {String(p.value)}
-              </span>
-            </Tooltip>
             <Button
               color={prevPart ? "primary" : "secondary"}
               variant="contained"

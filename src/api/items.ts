@@ -112,6 +112,7 @@ export interface IItem {
   docCheck?: boolean;
 
   services: any[];
+  usage?: number;
 }
 
 export const AddItemInitialValues = {};
