@@ -14,7 +14,6 @@ import AsyncCombo from "common/AsyncCombo";
 
 import { get } from "api";
 import { IItem } from "api/items";
-import AddUsageModal from "./AddUsageModal";
 
 function ChangePartModal({
   open,
@@ -45,12 +44,25 @@ function ChangePartModal({
   const [levelFilters, setLevelFilters] = useState<{ [key: string]: string }>();
   const prevPart = row?.parts?.find((p: any) => p.name === partName) || null;
 
-  const [usage, setUsage] = useState(0);
   const [fixedQty, setFixedQty] = useState(false);
   const [items, setItems] = useState<{ result: IItem[]; total: number }>();
   const [page, setPage] = useState<number>(1);
 
-  const [selectedItem, setSelectedItem] = useState<any>();
+  const handleCellEditCommit = React.useCallback(
+    (params, event) => {
+      if (items) {
+        let newArray: IItem[] = items.result.map((row: IItem) => {
+          if (row.id === params.id) {
+            return { ...row, usage: params.props.value };
+          } else {
+            return row;
+          }
+        });
+        setItems((prev) => ({ result: newArray, total: prev?.total || 0 }));
+      }
+    },
+    [items]
+  );
 
   const handleSubmit = useCallback(
     (d: any) => {
@@ -70,14 +82,6 @@ function ChangePartModal({
       onDone(res, { ...d, name: partName, rowId: row.id, partName });
     },
     [onDone, partName, row]
-  );
-
-  const handleAddUsageModal = useCallback(
-    (d: any) => {
-      setSelectedItem(d);
-      setAddUsage(true);
-    },
-    [setAddUsage]
   );
 
   const handleDelete = () => {
@@ -124,6 +128,7 @@ function ChangePartModal({
         ),
       },
       { field: "no", headerName: "Component", width: 140 },
+      { field: "usage", headerName: "Usage", width: 140, editable: true },
       {
         field: "description",
         flex: 1,
@@ -139,7 +144,7 @@ function ChangePartModal({
               variant="contained"
               style={{ marginLeft: "auto" }}
               onClick={() => {
-                handleAddUsageModal({ usage, fixedQty, ItemId: p?.row?.id, _itemNo: p?.row?.no });
+                handleSubmit({ usage: p?.row?.usage, fixedQty, ItemId: p?.row?.id, _itemNo: p?.row?.no });
               }}
             >
               {prevPart ? "Set" : "Add"}
@@ -148,17 +153,15 @@ function ChangePartModal({
         ),
       },
     ],
-    [prevPart, handleAddUsageModal, usage, fixedQty]
+    [prevPart, handleSubmit, fixedQty]
   );
 
   useEffect(() => {
     if (!open) {
-      setUsage(0);
       setFixedQty(false);
       setItemName(undefined);
       setItemNo(undefined);
     } else if (prevPart) {
-      setUsage(prevPart.usage);
       setFixedQty(prevPart.fixedQty);
       setItemName(prevPart.ItemId?.name);
       setItemNo(prevPart.ItemId?.no);
@@ -167,16 +170,6 @@ function ChangePartModal({
 
   return (
     <>
-      {selectedItem && (
-        <AddUsageModal
-          open={addUsage}
-          onClose={() => setAddUsage(false)}
-          onDone={(usage) => {
-            handleSubmit({ ...selectedItem, usage: usage });
-          }}
-          prevPart={prevPart}
-        />
-      )}
       <LevelsMenu
         onClose={() => setAnchorEl(undefined)}
         anchorEl={anchorEl}
@@ -250,6 +243,7 @@ function ChangePartModal({
                 paginationMode="server"
                 rowCount={items?.total || 0}
                 onPageChange={({ page }) => setPage(page + 1)}
+                onEditCellChangeCommitted={handleCellEditCommit}
               />
             </div>
           </Paper>

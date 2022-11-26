@@ -6,7 +6,7 @@ import DataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
 
 import AddPartModal from "./AddPartModal";
-import ChangePartModal from "./ChangePartModal";
+import ChangePartModal from "./ChangePartModal/table";
 import RenamePart from "./RenamePart";
 
 import Button from "app/Button";
