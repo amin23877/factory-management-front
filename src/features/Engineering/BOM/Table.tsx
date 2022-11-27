@@ -337,8 +337,9 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
           open={renamePart}
           onClose={() => setRenamePart(false)}
           initialValue={selectedPart}
-          onDone={handleRenamePart}
+          onDone={refreshTableData}
           onDelete={handleDeletePart}
+          newColumns={newColumns}
         />
       )}
       <AddPartModal open={addPart} onClose={() => setAddPart(false)} onDone={handleAddPart} />

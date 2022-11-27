@@ -14,6 +14,7 @@ import AsyncCombo from "common/AsyncCombo";
 
 import { get } from "api";
 import { IItem } from "api/items";
+import Toast from "app/Toast";
 
 function ChangePartModal({
   open,
@@ -150,7 +151,11 @@ function ChangePartModal({
               variant="contained"
               style={{ marginLeft: "auto" }}
               onClick={() => {
-                handleSubmit({ usage: p?.row?.usage, fixedQty, ItemId: p?.row?.id, _itemNo: p?.row?.no });
+                if (p.row.usage > 0) {
+                  handleSubmit({ usage: p?.row?.usage, fixedQty, ItemId: p?.row?.id, _itemNo: p?.row?.no });
+                } else {
+                  Toast("Double click on usage cell to change amount before submit", "error");
+                }
               }}
             >
               {prevPart ? "Set" : "Add"}

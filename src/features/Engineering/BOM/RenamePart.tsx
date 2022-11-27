@@ -7,73 +7,83 @@ import Dialog from "../../../app/Dialog";
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
 import Confirm from "../../Modals/Confirm";
+import { renameColumn } from "api/matrix";
 
 const schema = Yup.object().shape({
-    newName: Yup.string().required(),
+  newName: Yup.string().required(),
 });
 function RenamePart({
-    initialValue,
-    open,
-    onClose,
-    onDone,
-    onDelete,
+  initialValue,
+  open,
+  onClose,
+  onDone,
+  onDelete,
+  newColumns,
 }: {
-    open: boolean;
-    initialValue: { formerName: string; newName: string };
-    onClose: () => void;
-    onDone: (data: { formerName: string; newName: string }) => void;
-    onDelete: (name: string) => void;
+  open: boolean;
+  initialValue: { formerName: string; newName: string };
+  onClose: () => void;
+  onDone: any;
+  onDelete: (name: string) => void;
+  newColumns: any;
 }) {
-    const [confirm, setConfirm] = useState(false);
-    const handleSubmit = (d: any) => {
-        onDone({ newName: d.newName, formerName: initialValue.formerName });
-    };
+  const [confirm, setConfirm] = useState(false);
+  const handleSubmit = (d: any) => {
+    newColumns.map(async (i: any) => {
+      if (i.name === initialValue.formerName) {
+        await renameColumn(i.id, d.newName);
+        onDone();
+        onClose();
+      }
+      return 0;
+    });
+  };
 
-    return (
-        <>
-            <Confirm
-                open={confirm}
-                onClose={() => setConfirm(false)}
-                onConfirm={() => {
-                    onDelete(initialValue.formerName);
-                    setConfirm(false);
-                }}
-                text="If you delete a column(Part) all Bom Records with that name will be removed from all devices of this family"
-            />
-            <Dialog open={open} onClose={onClose} title="Add part">
-                <Formik initialValues={initialValue} validationSchema={schema} onSubmit={handleSubmit}>
-                    {({ values, errors, handleChange, handleBlur }) => (
-                        <Form>
-                            <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
-                                <TextField
-                                    disabled
-                                    name="formerName"
-                                    placeholder="formerName"
-                                    label="formerName"
-                                    value={values.formerName}
-                                />
-                                <TextField
-                                    name="newName"
-                                    placeholder="newName"
-                                    label="newName"
-                                    value={values.newName}
-                                    onChange={handleChange}
-                                    onBlur={handleBlur}
-                                    error={Boolean(errors.newName)}
-                                />
-                                <Button kind="add" type="submit">
-                                    Submit
-                                </Button>
-                                <Button onClick={() => setConfirm(true)} kind="delete">
-                                    Delete
-                                </Button>
-                            </Box>
-                        </Form>
-                    )}
-                </Formik>
-            </Dialog>
-        </>
-    );
+  return (
+    <>
+      <Confirm
+        open={confirm}
+        onClose={() => setConfirm(false)}
+        onConfirm={() => {
+          onDelete(initialValue.formerName);
+          setConfirm(false);
+        }}
+        text="If you delete a column(Part) all Bom Records with that name will be removed from all devices of this family"
+      />
+      <Dialog open={open} onClose={onClose} title="Add part">
+        <Formik initialValues={initialValue} validationSchema={schema} onSubmit={handleSubmit}>
+          {({ values, errors, handleChange, handleBlur }) => (
+            <Form>
+              <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
+                <TextField
+                  disabled
+                  name="formerName"
+                  placeholder="formerName"
+                  label="formerName"
+                  value={values.formerName}
+                />
+                <TextField
+                  name="newName"
+                  placeholder="newName"
+                  label="newName"
+                  value={values.newName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  error={Boolean(errors.newName)}
+                />
+                <Button kind="add" type="submit">
+                  Submit
+                </Button>
+                <Button onClick={() => setConfirm(true)} kind="delete">
+                  Delete
+                </Button>
+              </Box>
+            </Form>
+          )}
+        </Formik>
+      </Dialog>
+    </>
+  );
 }
 
 export default RenamePart;
