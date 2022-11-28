@@ -25,6 +25,7 @@ function ChangePartModal({
   onDelete,
   addUsage,
   setAddUsage,
+  newColumns,
 }: {
   row: any;
   partName: string;
@@ -34,6 +35,7 @@ function ChangePartModal({
   onDelete: (data: any) => void;
   addUsage: boolean;
   setAddUsage: (data: boolean) => void;
+  newColumns: any;
 }) {
   const [clusterId, setClusterId] = useState<string>();
   const [itemClass, setItemClass] = useState<string>("part");
@@ -73,16 +75,23 @@ function ChangePartModal({
         usage: p.usage,
       }));
       const index = prevCells.findIndex((p: any) => p.name === partName);
+      let columnId = "";
+      newColumns.map((i: any) => {
+        if (i.name === partName) {
+          columnId = i.id;
+        }
+        return 0;
+      });
       if (index !== -1) {
-        prevCells[index] = { ...d, name: partName };
+        prevCells[index] = { ...d, name: partName, columnId };
       } else {
-        prevCells.push({ ...d, name: partName });
+        prevCells.push({ ...d, name: partName, columnId });
       }
       const res = { device: row.DeviceId, cells: prevCells };
 
-      onDone(res, { ...d, name: partName, rowId: row.id, partName });
+      onDone(res, { ...d, name: partName, rowId: row.id, partName, columnId });
     },
-    [onDone, partName, row]
+    [onDone, partName, row, newColumns]
   );
 
   const handleDelete = () => {

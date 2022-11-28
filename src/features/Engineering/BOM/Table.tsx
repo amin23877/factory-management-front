@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
-import { LinearProgress, Box, makeStyles, Typography } from "@material-ui/core";
-import { EditRounded } from "@material-ui/icons";
+import { LinearProgress, Box, makeStyles } from "@material-ui/core";
 
 import DataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
@@ -103,71 +102,6 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
     setSelectedPart({ formerName: header, newName: "" });
     setRenamePart(true);
   }, []);
-
-  const handleRenamePart = ({ formerName, newName }: { formerName: string; newName: string }) => {
-    const changedRows = tableRows
-      .filter((td) => td[formerName] && td.DeviceId)
-      .map((td) => ({
-        device: td.DeviceId,
-        cells: td.parts.map((p: any) => ({
-          ItemId: p.ItemId._id || p.ItemId.id,
-          usage: p.usage || 1,
-          name: p.name === formerName ? newName : p.name,
-        })),
-      }));
-    setChanges(changedRows);
-
-    setTableColumns((prev) => {
-      const temp = prev.concat();
-      let index = temp.findIndex((c: any) => c.name === formerName);
-      if (index > -1) {
-        temp[index] = {
-          name: newName,
-          render: ({ data }: any) => data[newName]?.ItemId?.no,
-          minWidth: 180,
-          editable: false,
-          sortable: false,
-          header: (
-            <div style={{ width: 80, display: "flex", alignItems: "center" }}>
-              <Typography variant="caption">{newName}</Typography>
-              <Button size="small" onClick={() => handleChangePartName(newName)}>
-                <EditRounded htmlColor="white" fontSize="small" />
-              </Button>
-            </div>
-          ),
-        };
-      }
-
-      return temp;
-    });
-
-    setTableRows((prev) => {
-      let tempRow: any;
-      let temp = prev.concat();
-      temp = temp.map((tr) => {
-        tempRow = JSON.parse(JSON.stringify(tr));
-        if (tempRow[formerName]) {
-          tempRow[newName] = tempRow[formerName];
-          delete tempRow[formerName];
-        }
-        return tempRow;
-      });
-
-      return temp;
-    });
-
-    setTableDefaultFilters((prev: any) => {
-      const temp = prev?.concat();
-      let index = temp.findIndex((c: any) => c.name === formerName);
-      if (index > -1) {
-        temp[index] = { name: newName, operator: "startsWith", type: "string", value: "" };
-      }
-
-      return temp;
-    });
-
-    setRenamePart(false);
-  };
 
   const handleAddDevice = useCallback(
     (row: any) => {
@@ -356,6 +290,7 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
             setChangePart(false);
             setAddUsage(false);
           }}
+          newColumns={newColumns}
         />
       )}
 
