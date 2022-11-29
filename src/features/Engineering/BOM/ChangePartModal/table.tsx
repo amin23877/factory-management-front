@@ -213,7 +213,7 @@ function ChangePartModal({
                 url="/cluster"
                 defaultParams={{ class: itemClass }}
                 value={clusterId}
-                onChange={(e, nv) => nv?.id && setClusterId(nv?.id)}
+                onChange={(e, nv) => setClusterId(nv?.id)}
               />
               <Button
                 startIcon={<MenuRounded />}
