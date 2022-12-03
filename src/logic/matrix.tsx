@@ -19,7 +19,7 @@ export const generateRows = ({ levels, tableData }: { tableData: IMatrix; levels
     });
     parts = td.device?.recs || [];
     parts.forEach((p: any) => {
-      tdParts[p.name] = p?.ItemId?.no || p?.ItemNo || "";
+      tdParts[p.columnId?.name] = p?.ItemId?.no || p?.ItemNo || "";
     });
 
     return {
@@ -166,6 +166,6 @@ export const extractEmptyColumns = (newCols: any) => {
 export const extractPartNames = (tableData: any[]) => {
   const parts = new Set<string>();
   const data = tableData.map((item) => ({ ...(item?.device?.recs || []) }));
-  data.forEach((data: any) => Object.keys(data).forEach((r: any) => parts.add(data[r].name || "No-Name")));
+  data.forEach((data: any) => Object.keys(data).forEach((r: any) => parts.add(data[r]?.columnId?.name || "No-Name")));
   return Array.from(parts);
 };
