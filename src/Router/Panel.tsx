@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import { useHistory } from "react-router";
 import { Box, CssBaseline, useTheme } from "@material-ui/core";
@@ -22,9 +22,13 @@ import BottomNav from "app/BottomNav";
 
 import ChatDrawer from "features/Chat/Drawer";
 
+import { useSelector } from "react-redux";
+import { selectSession } from "features/Session/sessionsSlice";
+import { VerifyEmail } from "features/Modals/VerifyEmail";
 import { PortalProvider } from "logic/PortalContext";
 import { AppBarStation } from "logic/PortalContext/Stations";
 import { LockProvider } from "common/Lock";
+import Toast from "app/Toast";
 
 const Production = React.lazy(() => import("./Production"));
 const Purchase = React.lazy(() => import("./Purchasing"));
@@ -135,11 +139,19 @@ export default function PanelRouter() {
   const theme = useTheme();
   const classes = useStyles();
   const history = useHistory();
+  const session = useSelector(selectSession);
 
   const [value, setValue] = React.useState("/panel/");
 
   const [mainDrawerOpen, setMainDrawerOpen] = useState(false);
   const [chatDrawerOpen, setChatDrawerOpen] = useState(false);
+  const [openEmailModal, setOpenEmailModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (session.session && !session?.session?.email) {
+      setOpenEmailModal(true);
+    }
+  }, [session]);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
     setValue(newValue);
@@ -159,6 +171,16 @@ export default function PanelRouter() {
       <PortalProvider>
         <div style={{ display: "flex" }} className={classes.root}>
           <CssBaseline />
+          <VerifyEmail
+            open={openEmailModal}
+            onClose={() => {
+              Toast("You must add an email before continue!", "error");
+            }}
+            onDone={() => {
+              setOpenEmailModal(false);
+            }}
+            employeeId={session?.session?.id}
+          />
           <AppBar
             position="fixed"
             className={clsx(classes.appBar, {

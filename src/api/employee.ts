@@ -46,7 +46,7 @@ export const updateEmployee = (id: string, emp: any) => {
 };
 
 export const updateEmployeePassword = (id: string, emp: any) => {
-  return patch(`/employee/${id}/password`, emp);
+  return post(`/employee/${id}/changepassword`, emp);
 };
 
 export const addRoleToEmployee = (empId: string, role: string) => {

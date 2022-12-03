@@ -8,7 +8,7 @@ import {
   PostAddRounded,
   ControlPointDuplicateRounded,
 } from "@material-ui/icons";
-import useSWR, { mutate } from "swr";
+import { mutate } from "swr";
 
 import Confirm from "features/Modals/Confirm";
 // import ConfirmDialog from "common/Confirm";
@@ -16,7 +16,7 @@ import Confirm from "features/Modals/Confirm";
 import { AddItemModal, DuplicateModal } from "features/Items/ItemModals";
 import ItemsDetails from "pages/Inventory/Items/Details";
 
-import { deleteAnItem, IItem } from "api/items";
+import { deleteAnItem } from "api/items";
 
 import List from "app/SideUtilityList";
 import { BasePaper } from "app/Paper";

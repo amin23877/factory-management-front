@@ -82,6 +82,7 @@ const PasswordForm = ({
 }) => {
   const handleChangePass = async (data: any, { setSubmitting }: { setSubmitting: (v: boolean) => void }) => {
     try {
+      setSubmitting(true);
       if (initialVals && initialVals.id) {
         const resp = await updateEmployeePassword(initialVals.id, data);
         if (resp) {
@@ -90,6 +91,8 @@ const PasswordForm = ({
           onClose();
           setTab(0);
         }
+      } else {
+        Toast("employee is undefined", "error");
       }
     } catch (error) {
       console.log(data);

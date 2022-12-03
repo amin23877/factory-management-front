@@ -14,7 +14,7 @@ import AsyncCombo from "common/AsyncCombo";
 
 import { get } from "api";
 import { IItem } from "api/items";
-import AddUsageModal from "./AddUsageModal";
+import Toast from "app/Toast";
 
 function ChangePartModal({
   open,
@@ -25,6 +25,7 @@ function ChangePartModal({
   onDelete,
   addUsage,
   setAddUsage,
+  newColumns,
 }: {
   row: any;
   partName: string;
@@ -34,6 +35,7 @@ function ChangePartModal({
   onDelete: (data: any) => void;
   addUsage: boolean;
   setAddUsage: (data: boolean) => void;
+  newColumns: any;
 }) {
   const [clusterId, setClusterId] = useState<string>();
   const [itemClass, setItemClass] = useState<string>("part");
@@ -45,12 +47,25 @@ function ChangePartModal({
   const [levelFilters, setLevelFilters] = useState<{ [key: string]: string }>();
   const prevPart = row?.parts?.find((p: any) => p.name === partName) || null;
 
-  const [usage, setUsage] = useState(0);
   const [fixedQty, setFixedQty] = useState(false);
   const [items, setItems] = useState<{ result: IItem[]; total: number }>();
   const [page, setPage] = useState<number>(1);
 
-  const [selectedItem, setSelectedItem] = useState<any>();
+  const handleCellEditCommit = React.useCallback(
+    (params, event) => {
+      if (items) {
+        let newArray: IItem[] = items.result.map((row: IItem) => {
+          if (row.id === params.id) {
+            return { ...row, usage: params.props.value };
+          } else {
+            return row;
+          }
+        });
+        setItems((prev) => ({ result: newArray, total: prev?.total || 0 }));
+      }
+    },
+    [items]
+  );
 
   const handleSubmit = useCallback(
     (d: any) => {
@@ -60,24 +75,23 @@ function ChangePartModal({
         usage: p.usage,
       }));
       const index = prevCells.findIndex((p: any) => p.name === partName);
+      let columnId = "";
+      newColumns.map((i: any) => {
+        if (i.name === partName) {
+          columnId = i.id;
+        }
+        return 0;
+      });
       if (index !== -1) {
-        prevCells[index] = { ...d, name: partName };
+        prevCells[index] = { ...d, name: partName, columnId };
       } else {
-        prevCells.push({ ...d, name: partName });
+        prevCells.push({ ...d, name: partName, columnId });
       }
       const res = { device: row.DeviceId, cells: prevCells };
 
-      onDone(res, { ...d, name: partName, rowId: row.id, partName });
+      onDone(res, { ...d, name: partName, rowId: row.id, partName, columnId });
     },
-    [onDone, partName, row]
-  );
-
-  const handleAddUsageModal = useCallback(
-    (d: any) => {
-      setSelectedItem(d);
-      setAddUsage(true);
-    },
-    [setAddUsage]
+    [onDone, partName, row, newColumns]
   );
 
   const handleDelete = () => {
@@ -97,17 +111,24 @@ function ChangePartModal({
         clusterId,
         ...(levelFilters || {}),
         ...(itemClass && { class: itemClass }),
-        ...(itemNo && { startsWithno: itemNo }),
+        ...(itemNo && { no: itemNo }),
         ...(itemName && { startsWithname: itemName }),
         ...(keywords && { containDescription: keywords }),
         page: String(page),
       },
     })
       .then((d) => {
-        setItems(d);
+        let usage: IItem[] = d.result.map((i: IItem) => {
+          if (prevPart && i.id === prevPart?.ItemId.id) {
+            return { ...i, usage: prevPart.usage };
+          } else {
+            return i;
+          }
+        });
+        setItems({ result: usage, total: d.total });
       })
       .catch((e) => console.log(e));
-  }, [clusterId, itemClass, itemName, itemNo, keywords, levelFilters, page]);
+  }, [clusterId, itemClass, itemName, itemNo, keywords, levelFilters, page, prevPart]);
 
   const cols = useMemo<GridColumns>(
     () => [
@@ -127,19 +148,23 @@ function ChangePartModal({
       {
         field: "description",
         flex: 1,
+        headerName: "Description",
+      },
+      { field: "usage", headerName: "Usage", width: 140, editable: true },
+      {
+        field: "",
         renderCell: (p: any) => (
           <Box display="flex" alignItems="center" flex={1}>
-            <Tooltip title={String(p.value)} style={{ flexGrow: 1 }}>
-              <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: 200 }}>
-                {String(p.value)}
-              </span>
-            </Tooltip>
             <Button
               color={prevPart ? "primary" : "secondary"}
               variant="contained"
               style={{ marginLeft: "auto" }}
               onClick={() => {
-                handleAddUsageModal({ usage, fixedQty, ItemId: p?.row?.id, _itemNo: p?.row?.no });
+                if (p.row.usage > 0) {
+                  handleSubmit({ usage: p?.row?.usage, fixedQty, ItemId: p?.row?.id, _itemNo: p?.row?.no });
+                } else {
+                  Toast("Double click on usage cell to change amount before submit", "error");
+                }
               }}
             >
               {prevPart ? "Set" : "Add"}
@@ -148,17 +173,15 @@ function ChangePartModal({
         ),
       },
     ],
-    [prevPart, handleAddUsageModal, usage, fixedQty]
+    [prevPart, handleSubmit, fixedQty]
   );
 
   useEffect(() => {
     if (!open) {
-      setUsage(0);
       setFixedQty(false);
       setItemName(undefined);
       setItemNo(undefined);
     } else if (prevPart) {
-      setUsage(prevPart.usage);
       setFixedQty(prevPart.fixedQty);
       setItemName(prevPart.ItemId?.name);
       setItemNo(prevPart.ItemId?.no);
@@ -167,16 +190,6 @@ function ChangePartModal({
 
   return (
     <>
-      {selectedItem && (
-        <AddUsageModal
-          open={addUsage}
-          onClose={() => setAddUsage(false)}
-          onDone={(usage) => {
-            handleSubmit({ ...selectedItem, usage: usage });
-          }}
-          prevPart={prevPart}
-        />
-      )}
       <LevelsMenu
         onClose={() => setAnchorEl(undefined)}
         anchorEl={anchorEl}
@@ -200,7 +213,7 @@ function ChangePartModal({
                 url="/cluster"
                 defaultParams={{ class: itemClass }}
                 value={clusterId}
-                onChange={(e, nv) => nv?.id && setClusterId(nv?.id)}
+                onChange={(e, nv) => setClusterId(nv?.id)}
               />
               <Button
                 startIcon={<MenuRounded />}
@@ -250,6 +263,7 @@ function ChangePartModal({
                 paginationMode="server"
                 rowCount={items?.total || 0}
                 onPageChange={({ page }) => setPage(page + 1)}
+                onEditCellChangeCommitted={handleCellEditCommit}
               />
             </div>
           </Paper>

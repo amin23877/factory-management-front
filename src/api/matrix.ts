@@ -37,6 +37,10 @@ export const getColumns = (productFamily: string) => {
   return get(`/column?clusterId=${productFamily}`);
 };
 
+export const renameColumn = (id: string, newName: string) => {
+  return patch(`/column/${id}`, { name: newName });
+};
+
 export const renameMatrixPart = (formerName: string, newName: string) => {
   return patch("/matrice/rename", { formerName, newName });
 };

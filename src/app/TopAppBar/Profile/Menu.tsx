@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Box, Popover } from "@material-ui/core";
 import Button from "app/Button";
 import { AddEmployeeModal } from "features/Modals/EmployeeModal";
+import { EditProfile } from "./EditProfile";
+import { useSelector } from "react-redux";
+import { selectSession } from "features/Session/sessionsSlice";
 
 export default function NotificationMenu({
   open,
@@ -12,11 +15,19 @@ export default function NotificationMenu({
   anchorEl: HTMLElement | null;
   onClose: () => void;
 }) {
-  const [editProfile, setEditProfile] = useState(false);
+  const [changePass, setChangePass] = useState(false);
+  const [editProf, setEditProf] = useState(false);
+  const session = useSelector(selectSession);
 
   return (
     <>
-      <AddEmployeeModal open={editProfile} onClose={() => setEditProfile(false)} initTab={2} />
+      <EditProfile open={editProf} onClose={() => setEditProf(false)} />
+      <AddEmployeeModal
+        open={changePass}
+        onClose={() => setChangePass(false)}
+        initTab={2}
+        initialVals={session?.session}
+      />
       <Popover
         id="notification-menu"
         open={open}
@@ -34,11 +45,20 @@ export default function NotificationMenu({
         <Box p={2} width={200} overflow="auto">
           <Button
             onClick={() => {
-              setEditProfile(true);
+              setChangePass(true);
               onClose();
             }}
           >
             Change Password
+          </Button>
+          <Button
+            onClick={() => {
+              setEditProf(true);
+              onClose();
+            }}
+            fullWidth
+          >
+            Edit Profile
           </Button>
         </Box>
       </Popover>
