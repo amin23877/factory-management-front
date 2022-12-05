@@ -45,7 +45,7 @@ function ChangePartModal({
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement>();
   const [levelFilters, setLevelFilters] = useState<{ [key: string]: string }>();
-  const prevPart = row?.parts?.find((p: any) => p.name === partName) || null;
+  const prevPart = row?.parts?.find((p: any) => p?.columnId?.name === partName) || null;
 
   const [fixedQty, setFixedQty] = useState(false);
   const [items, setItems] = useState<{ result: IItem[]; total: number }>();
