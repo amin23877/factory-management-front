@@ -43,7 +43,16 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
     try {
       if (data.id) {
         const modified = getModifiedValues(data, selectedLevel);
-        await editLevel(data.id, { ...modified, add: addArray, delete: deleteArray });
+        let newAddArray;
+        let newDeleteArray;
+        deleteArray.forEach((element: any) => {
+          newAddArray = addArray.filter((p: any) => p?.value !== element?.value && p?.uom !== element?.uom);
+        });
+        addArray.forEach((element: any) => {
+          newDeleteArray = deleteArray.filter((p: any) => p?.value !== element?.value && p?.uom !== element?.uom);
+        });
+
+        await editLevel(data.id, { ...modified, add: newAddArray, delete: newDeleteArray });
         Toast("Level updated.", "success");
       } else {
         await createLevel(data);
