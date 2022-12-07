@@ -1,4 +1,4 @@
-import React, { Suspense, useEffect, useMemo, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Box, Tabs, Tab, ListItem, IconButton } from "@material-ui/core";
 import {
   FindInPageRounded,

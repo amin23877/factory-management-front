@@ -26,6 +26,7 @@ function ChangePartModal({
   addUsage,
   setAddUsage,
   newColumns,
+  changes,
 }: {
   row: any;
   partName: string;
@@ -36,6 +37,7 @@ function ChangePartModal({
   addUsage: boolean;
   setAddUsage: (data: boolean) => void;
   newColumns: any;
+  changes?: any;
 }) {
   const [clusterId, setClusterId] = useState<string>();
   const [itemClass, setItemClass] = useState<string>("part");
@@ -45,7 +47,10 @@ function ChangePartModal({
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement>();
   const [levelFilters, setLevelFilters] = useState<{ [key: string]: string }>();
-  const prevPart = row?.parts?.find((p: any) => p.name === partName) || null;
+
+  const prevPart = row?.parts?.find((p: any) => p?.columnId?.name === partName) || null;
+  const partChanges = changes?.find((p: any) => p?.device === row?.DeviceId);
+  const newUsage = partChanges?.cells?.find((p: any) => p?.name === partName);
 
   const [fixedQty, setFixedQty] = useState(false);
   const [items, setItems] = useState<{ result: IItem[]; total: number }>();
@@ -120,7 +125,7 @@ function ChangePartModal({
       .then((d) => {
         let usage: IItem[] = d.result.map((i: IItem) => {
           if (prevPart && i.id === prevPart?.ItemId.id) {
-            return { ...i, usage: prevPart.usage };
+            return { ...i, usage: newUsage?.usage ? newUsage?.usage : prevPart?.usage };
           } else {
             return i;
           }
@@ -128,7 +133,7 @@ function ChangePartModal({
         setItems({ result: usage, total: d.total });
       })
       .catch((e) => console.log(e));
-  }, [clusterId, itemClass, itemName, itemNo, keywords, levelFilters, page, prevPart]);
+  }, [clusterId, itemClass, itemName, itemNo, keywords, levelFilters, newUsage, page, prevPart]);
 
   const cols = useMemo<GridColumns>(
     () => [

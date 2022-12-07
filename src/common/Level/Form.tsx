@@ -34,6 +34,8 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
   const [refresh, setRefresh] = useState(0);
   const [selectedLevel, setSelectedLevel] = useState<ILevel>();
   const [vals, setVals] = useState<IVals[]>([]);
+  const [addArray, setAddArray] = useState([]);
+  const [deleteArray, setDeleteArray] = useState([]);
 
   const { lock } = useLock();
 
@@ -41,7 +43,7 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
     try {
       if (data.id) {
         const modified = getModifiedValues(data, selectedLevel);
-        await editLevel(data.id, modified);
+        await editLevel(data.id, { ...modified, add: addArray, delete: deleteArray });
         Toast("Level updated.", "success");
       } else {
         await createLevel(data);
@@ -51,6 +53,8 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
       Toast("An error ocurred", "error");
     } finally {
       setRefresh((p) => p + 1);
+      setAddArray([]);
+      setDeleteArray([]);
     }
   };
 
@@ -86,7 +90,15 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
   return (
     <form onSubmit={handleSubmit}>
       <LockProvider>
-        <ValidValuesForm open={open} onClose={() => setOpen(false)} setValuesParent={setValues} valuesParent={values} />
+        <ValidValuesForm
+          open={open}
+          onClose={() => setOpen(false)}
+          setValuesParent={setValues}
+          valuesParent={values}
+          setAddArray={setAddArray}
+          setDeleteArray={setDeleteArray}
+          addArray={addArray}
+        />
       </LockProvider>
       <Box display="grid" gridTemplateColumns={values.id ? "1fr 1fr 1fr 1fr 1fr 1fr" : "1fr 1fr 1fr 1fr"} gridGap={5}>
         <TextField

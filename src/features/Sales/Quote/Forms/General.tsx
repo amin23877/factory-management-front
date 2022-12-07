@@ -23,7 +23,7 @@ export default function General({
       />
       <TextField
         type="datetime-local"
-        label="Entry Date"
+        label="Expire Date"
         InputLabelProps={{ shrink: true }}
         {...getFieldProps("expireDate")}
       />

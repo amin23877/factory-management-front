@@ -13,18 +13,18 @@ function formatDateValue(v: any) {
   return null;
 }
 
-export default function Approvals({ getFieldProps, values }: { getFieldProps: any; values?: any }) {
+export default function Approvals({ getFieldProps, values, add }: { getFieldProps: any; values?: any; add?: boolean }) {
   const { lock } = useLock();
 
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" gridTemplateRows="repeat(4, 1fr)" gridGap={8}>
-      <TextField label="Customer PO#" {...getFieldProps("customerPONumber")} disabled={lock} />
+      <TextField label="Customer PO#" {...getFieldProps("customerPONumber")} disabled={!add && lock} />
       <TextField
         label="PO Received Date"
         type="date"
         InputLabelProps={{ shrink: true }}
         value={formatDateValue(values?.poReceivedDate)}
-        disabled={lock}
+        disabled={!add && lock}
       />
       <AsyncCombo
         label="PO Received By"
@@ -33,7 +33,7 @@ export default function Approvals({ getFieldProps, values }: { getFieldProps: an
         getOptionSelected={(o, v) => o.id === v.id}
         url="/employee"
         value={values?.poReceivedBy}
-        disabled={lock}
+        disabled={!add && lock}
       />
       <AsyncCombo
         label="SO Issued By"
@@ -42,45 +42,50 @@ export default function Approvals({ getFieldProps, values }: { getFieldProps: an
         getOptionSelected={(o, v) => o.id === v.id}
         url="/employee"
         value={values?.soIssuedBy}
-        disabled={lock}
+        disabled={!add && lock}
       />
-      <TextField label="status" {...getFieldProps("status")} disabled={lock} />
+      <TextField label="status" {...getFieldProps("status")} disabled={!add && lock} />
       <TextField
         label="Estimated Ship Date"
         type="date"
         InputLabelProps={{ shrink: true }}
         value={formatDateValue(values?.estimatedShipDate)}
-        disabled={lock}
+        disabled={!add && lock}
       />
       <TextField
         label="Original Ship Date"
         type="date"
         InputLabelProps={{ shrink: true }}
         value={formatDateValue(values?.originalShipDate)}
-        disabled={lock}
+        disabled={!add && lock}
       />
       <TextField
         label="Actual Ship Date"
         type="date"
         InputLabelProps={{ shrink: true }}
         value={formatDateValue(values?.actualShipDate)}
-        disabled={lock}
+        disabled={!add && lock}
       />
       <TextField
         label="Released Date"
         type="date"
         InputLabelProps={{ shrink: true }}
         value={formatDateValue(values?.releasedToProductionDate)}
-        disabled={lock}
+        disabled={!add && lock}
       />
       <TextField
         label="To Be InvoicedDate"
         type="date"
         InputLabelProps={{ shrink: true }}
         value={formatDateValue(values?.toBeInvoicedDate)}
-        disabled={lock}
+        disabled={!add && lock}
       />
-      <FormControlLabel label="Expedite" control={<Checkbox />} {...getFieldProps("expedite")} disabled={lock} />
+      <FormControlLabel
+        label="Expedite"
+        control={<Checkbox />}
+        {...getFieldProps("expedite")}
+        disabled={!add && lock}
+      />
     </Box>
   );
 }

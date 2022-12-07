@@ -17,6 +17,7 @@ export default function MainForm({
   setValues,
   setFieldValue,
   getFieldProps,
+  add,
 }: {
   values: any;
   handleChange: any;
@@ -24,6 +25,7 @@ export default function MainForm({
   setValues: any;
   setFieldValue: any;
   getFieldProps: any;
+  add?: boolean;
 }) {
   const [activeTab, setActiveTab] = useState(0);
 
@@ -36,6 +38,7 @@ export default function MainForm({
           handleChange={handleChange}
           handleBlur={handleBlur}
           setFieldValue={setFieldValue}
+          add={add}
         />
       </Box>
       <Box>
@@ -45,12 +48,18 @@ export default function MainForm({
           <Tab label="Shipping" />
           <Tab label="Billing" />
         </Tabs>
-        {activeTab === 0 && <Approvals getFieldProps={getFieldProps} />}
+        {activeTab === 0 && <Approvals getFieldProps={getFieldProps} add={add} />}
         {activeTab === 1 && (
-          <Entities values={values} handleChange={handleChange} handleBlur={handleBlur} setFieldValue={setFieldValue} />
+          <Entities
+            values={values}
+            handleChange={handleChange}
+            handleBlur={handleBlur}
+            setFieldValue={setFieldValue}
+            add={add}
+          />
         )}
-        {activeTab === 2 && <Shipping getFieldProps={getFieldProps} />}
-        {activeTab === 3 && <Billing getFieldProps={getFieldProps} />}
+        {activeTab === 2 && <Shipping getFieldProps={getFieldProps} add={add} />}
+        {activeTab === 3 && <Billing getFieldProps={getFieldProps} add={add} />}
       </Box>
     </Box>
   );

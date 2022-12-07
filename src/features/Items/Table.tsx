@@ -20,24 +20,10 @@ function ItemTable({
       { name: "no", header: "Number", minWidth: 100 },
       { name: "name", header: "Name", minWidth: 100 },
       { name: "description", header: "Description", defaultWidth: 180 },
-      {
-        name: "approvedForSale",
-        header: "Sales Ap.",
-        type: "boolean",
-        defaultWidth: 100,
-      },
-      {
-        name: "engineeringApproval",
-        header: "Eng. Ap.",
-        type: "boolean",
-        defaultWidth: 100,
-      },
-      {
-        name: "shippingApproved",
-        header: "Ship Ap.",
-        type: "boolean",
-        defaultWidth: 100,
-      },
+      { name: "approvedForSale", header: "Sales Ap.", type: "boolean", defaultWidth: 100 },
+      { name: "engineeringApproval", header: "Eng. Ap.", type: "boolean", defaultWidth: 100 },
+      { name: "shippingApproved", header: "Ship Ap.", type: "boolean", defaultWidth: 100 },
+      { name: "bom", header: "BOM", type: "boolean", defaultWidth: 100 },
       {
         name: "prefVendor",
         header: "Preferred Vendor",
@@ -83,26 +69,10 @@ function ItemTable({
         render: ({ data }: any) => data?.cost * data?.qtyOnHand,
         type: "number",
       },
-      {
-        name: "uom",
-        header: "UOM",
-        minWidth: 100,
-      },
-      {
-        name: "obsolete",
-        header: "Obsolete",
-        type: "boolean",
-      },
-      {
-        name: "nonInventoryItem",
-        header: "NON Inv.",
-        type: "boolean",
-      },
-      {
-        name: "rndOnly",
-        header: "R&D",
-        type: "boolean",
-      },
+      { name: "uom", header: "UOM", minWidth: 100 },
+      { name: "obsolete", header: "Obsolete", type: "boolean" },
+      { name: "nonInventoryItem", header: "NON Inv.", type: "boolean" },
+      { name: "rndOnly", header: "R&D", type: "boolean" },
     ];
 
     // if (fields && clusters) {

@@ -23,9 +23,7 @@ export default function ClusterModal({ open, onClose }: { open: boolean; onClose
   const handleSubmit = async (data: any) => {
     try {
       if (data && data.id) {
-        const modified = getModifiedValues(data, data);
-        await updateCluster(data.id, modified);
-
+        await updateCluster(data.id, data);
         setRefresh((p) => p + 1);
         Toast("Record updated", "success");
       } else {

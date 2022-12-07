@@ -195,6 +195,7 @@ export default function AddSOModal({
                 setFieldValue={setFieldValue}
                 setValues={setValues}
                 getFieldProps={getFieldProps}
+                add
               />
               <Box>
                 <GroupLineItemTable groups={values.lines || []} setGroups={(g) => setFieldValue("lines", g)} />
