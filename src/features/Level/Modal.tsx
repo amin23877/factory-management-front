@@ -61,7 +61,7 @@ export default function LevelModal({
   const [openModal, setOpenModal] = useState(false);
 
   const selectedClusterName = allClusters?.result.find((i: any) => i.clusterId.id === clusterId);
-  console.log("selectedClusterName: ", selectedClusterName);
+  // console.log("selectedClusterName: ", selectedClusterName);
 
   const { handleChange, handleBlur, handleSubmit, getFieldProps, values, setValues, touched, errors } = useFormik({
     validationSchema: schema,
@@ -72,21 +72,24 @@ export default function LevelModal({
       valid: level?.valid || [],
     },
     onSubmit: async (data, { setSubmitting }) => {
+      console.log("dataKhodm1: ", data);
+
       setSubmitting(true);
       try {
-        if (initialValues) {
-          const modified = getModifiedValues(data, selectedLevel);
-          await editLevel(clusterId, { ...modified, add: addArray, delete: deleteArray });
+        if (level?.id) {
+          await editLevel(level?.id, { ...data, add: addArray, delete: deleteArray });
           Toast("Level updated successfully", "success");
+          onClose();
+          console.log("dataKhodm2: ", data);
         } else {
           await createLevelTwo(data);
           Toast("Level created successfully", "success");
+          onClose();
+          console.log("dataKhodm3: ", data);
         }
       } catch (error) {
         console.log(error);
       } finally {
-        onDone && onDone();
-        onClose();
         setSubmitting(false);
       }
     },
