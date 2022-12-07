@@ -4,11 +4,9 @@ import { Box, Tooltip } from "@material-ui/core";
 
 import NewDataGrid from "app/NewDataGrid";
 import Button from "app/Button";
-import DataGridAction from "common/DataGridAction";
 import { LockButton, LockProvider } from "common/Lock";
 import Confirm from "common/Confirm";
 import { useLock } from "common/Lock";
-import Toast from "app/Toast";
 
 import LevelModal from "../../../Level/Modal";
 
@@ -19,15 +17,31 @@ import { IVals } from "common/Level/Form";
 import { ReactComponent as DeleteIcon } from "assets/icons/tableIcons/delete.svg";
 import { formatTimestampToDate } from "logic/date";
 
+type dataType = {
+  // clusterId: { id: string; clusterValue: string };
+  // createdAt: number;
+  // id: string;
+  // name: string;
+  // updatedAt: number;
+  // valid: { value: string; uom: string; id: string };
+  rowIndex: number;
+  columnIndex: number;
+  rowId: string;
+  columnId: string;
+  value?: any;
+};
+
 function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
-  const [levelModal, setLevelsModal] = useState(false);
-  const [level, setLevel] = useState();
-  const [refresh, setRefresh] = useState(0);
+  const [levelModal, setLevelsModal] = useState<boolean>(false);
+  const [level, setLevel] = useState<dataType | null>();
+  const [edit, setEdit] = useState<boolean>(false);
+  const [refresh, setRefresh] = useState<number>(0);
   const { lock } = useLock();
 
-  const handleEdit = async (data: any) => {
+  const handleEdit = (data: dataType) => {
     setLevelsModal(true);
     setLevel(data);
+    setEdit(true);
   };
 
   const handleDelete = (data: any) => {
@@ -90,10 +104,19 @@ function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
         open={levelModal}
         onClose={() => setLevelsModal(false)}
         onDone={() => setRefresh((p) => p + 1)}
+        edit={edit}
       />
       <Box display="flex" alignItems="center">
         <div style={{ marginBottom: 8, marginRight: "auto" }} />
-        <Button kind="add" onClick={() => setLevelsModal(true)} disabled={lock}>
+        <Button
+          kind="add"
+          onClick={() => {
+            setLevelsModal(true);
+            setLevel(null);
+            setEdit(false);
+          }}
+          disabled={lock}
+        >
           Add Level
         </Button>
         <LockButton />

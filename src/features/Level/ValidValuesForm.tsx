@@ -33,8 +33,6 @@ export default function ValidValuesForm({
   setDeleteArray: any;
 }) {
   const [selectedValue, setSelectedValue] = useState<ILevel>();
-  console.log("selectedValue: ", selectedValue);
-
   const [validValues, setValidValues] = useState<IVals[]>(valuesParent.valid);
   const [refresh, setRefresh] = useState(0);
   const { lock } = useLock();
@@ -50,7 +48,6 @@ export default function ValidValuesForm({
       setValidValues(temp);
       setValuesParent((p: any) => ({ ...p, valid: temp }));
       setRefresh((p) => p + 1);
-      onClose && onClose();
     } else {
       setAddArray((prev: any) => [...prev, data]);
       let temp = validValues ? validValues : [];
@@ -58,7 +55,6 @@ export default function ValidValuesForm({
       setValidValues(temp);
       setValuesParent((p: any) => ({ ...p, valid: temp }));
       setRefresh((p) => p + 1);
-      onClose && onClose();
     }
   };
 
