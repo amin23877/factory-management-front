@@ -25,6 +25,10 @@ export const createLevel = (data: ILevel) => {
   return post("/level", data);
 };
 
+export const createLevelTwo = (data: { name: string; clusterId: string; valid: any }) => {
+  return post("/level", data);
+};
+
 export const editLevel = (id: string, data: Partial<ILevel>) => {
   return patch(`/level/${id}`, data);
 };
