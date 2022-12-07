@@ -40,6 +40,8 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
   const { lock } = useLock();
 
   const handleFormSubmit = async (data: any) => {
+    console.log("data: ", data);
+
     try {
       if (data.id) {
         const modified = getModifiedValues(data, selectedLevel);
