@@ -43,16 +43,7 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
     try {
       if (data.id) {
         const modified = getModifiedValues(data, selectedLevel);
-        let newAddArray;
-        let newDeleteArray;
-        deleteArray.forEach((element: any) => {
-          newAddArray = addArray.filter((p: any) => p?.value !== element?.value && p?.uom !== element?.uom);
-        });
-        addArray.forEach((element: any) => {
-          newDeleteArray = deleteArray.filter((p: any) => p?.value !== element?.value && p?.uom !== element?.uom);
-        });
-
-        await editLevel(data.id, { ...modified, add: newAddArray, delete: newDeleteArray });
+        await editLevel(data.id, { ...modified, add: addArray, delete: deleteArray });
         Toast("Level updated.", "success");
       } else {
         await createLevel(data);
@@ -62,6 +53,8 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
       Toast("An error ocurred", "error");
     } finally {
       setRefresh((p) => p + 1);
+      setAddArray([]);
+      setDeleteArray([]);
     }
   };
 
@@ -104,6 +97,7 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
           valuesParent={values}
           setAddArray={setAddArray}
           setDeleteArray={setDeleteArray}
+          addArray={addArray}
         />
       </LockProvider>
       <Box display="grid" gridTemplateColumns={values.id ? "1fr 1fr 1fr 1fr 1fr 1fr" : "1fr 1fr 1fr 1fr"} gridGap={5}>

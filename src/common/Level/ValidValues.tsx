@@ -24,6 +24,7 @@ export default function ValidValuesForm({
   setValuesParent,
   setAddArray,
   setDeleteArray,
+  addArray,
 }: {
   open: boolean;
   onClose: () => void;
@@ -31,6 +32,7 @@ export default function ValidValuesForm({
   setValuesParent: any;
   setAddArray: any;
   setDeleteArray: any;
+  addArray: any;
 }) {
   const [selectedValue, setSelectedValue] = useState<ILevel>();
   const [validValues, setValidValues] = useState<IVals[]>(valuesParent.valid);
@@ -66,11 +68,20 @@ export default function ValidValuesForm({
 
   const handleDelete = (val: any) => {
     let temp = validValues;
+    let addTemp: any = addArray;
     let newArr = temp.filter(function (value, index, arr) {
       return index !== val?.index;
     });
-    console.log(val);
-    setDeleteArray((prev: any) => [...prev, { value: val.val.value, uom: val.val.uom }]);
+    let newAddArray = addTemp.filter(function (value: any, index: number, arr: any[]) {
+      return value.value !== val?.val.value && value.uom !== val.val.uom;
+    });
+    let dontAddArray = addTemp.filter(function (value: any, index: number, arr: any[]) {
+      return value.value === val?.val.value && value.uom === val.val.uom;
+    });
+    setAddArray(newAddArray);
+    if (dontAddArray.length === 0) {
+      setDeleteArray((prev: any) => [...prev, { value: val.val.value, uom: val.val.uom }]);
+    }
     setValidValues(newArr);
     setValuesParent((p: any) => ({ ...p, valid: newArr }));
     setRefresh((p) => p + 1);
