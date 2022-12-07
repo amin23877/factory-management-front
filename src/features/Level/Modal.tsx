@@ -66,7 +66,7 @@ export default function LevelModal({
     enableReinitialize: true,
     initialValues: {
       name: level?.name || "",
-      clusterId: level?.clusterId?.clusterValue || filteredCluster[0].clusterId.clusterValue,
+      clusterId: level?.clusterId?.clusterValue || filteredCluster[0]?.clusterId.clusterValue,
       valid: level?.valid || [],
     },
     onSubmit: async (data, { setSubmitting }) => {
@@ -76,18 +76,16 @@ export default function LevelModal({
           const modified = getModifiedValues(data, selectedLevel);
           await editLevel(clusterId, { ...modified, add: addArray, delete: deleteArray });
           Toast("Level updated successfully", "success");
-          console.log("edit");
         } else {
           await createLevelTwo(data);
           Toast("Level created successfully", "success");
-          console.log("add");
         }
       } catch (error) {
         console.log(error);
       } finally {
-        setSubmitting(false);
         onDone && onDone();
         onClose();
+        setSubmitting(false);
       }
     },
   });
