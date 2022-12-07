@@ -51,11 +51,12 @@ export default function GeneralStep({
               handleChange={handleChange}
               handleBlur={handleBlur}
               setFieldValue={setFieldValue}
+              add
             />
           )}
-          {activeTab === 1 && <Addresses getFieldProps={getFieldProps} />}
-          {activeTab === 2 && <Status getFieldProps={getFieldProps} />}
-          {activeTab === 3 && <Metrics values={values} getFieldProps={getFieldProps} />}
+          {activeTab === 1 && <Addresses getFieldProps={getFieldProps} add />}
+          {activeTab === 2 && <Status getFieldProps={getFieldProps} add />}
+          {activeTab === 3 && <Metrics values={values} getFieldProps={getFieldProps} add />}
         </BasePaper>
       </Box>
       <div>

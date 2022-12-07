@@ -291,6 +291,7 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
             setAddUsage(false);
           }}
           newColumns={newColumns}
+          changes={changes}
         />
       )}
 
