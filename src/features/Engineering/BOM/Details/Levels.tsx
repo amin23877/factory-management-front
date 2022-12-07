@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import { EditRounded } from "@material-ui/icons";
 import { Box, Tooltip } from "@material-ui/core";
 
 import NewDataGrid from "app/NewDataGrid";
@@ -13,26 +14,20 @@ import LevelModal from "../../../Level/Modal";
 
 import { splitLevelName } from "logic/levels";
 import { clusterType } from "api/cluster";
-import { deleteLevel, editLevel } from "api/level";
+import { deleteLevel } from "api/level";
 import { IVals } from "common/Level/Form";
 import { ReactComponent as DeleteIcon } from "assets/icons/tableIcons/delete.svg";
 import { formatTimestampToDate } from "logic/date";
 
 function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
   const [levelModal, setLevelsModal] = useState(false);
+  const [level, setLevel] = useState();
   const [refresh, setRefresh] = useState(0);
   const { lock } = useLock();
 
-  const handleEdit = async ({ columnId, value, data }: any) => {
-    try {
-      await editLevel(data.id, { [columnId]: value });
-
-      Toast("Record updated", "success");
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setRefresh((p) => p + 1);
-    }
+  const handleEdit = async (data: any) => {
+    setLevelsModal(true);
+    setLevel(data);
   };
 
   const handleDelete = (data: any) => {
@@ -74,6 +69,9 @@ function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
                 <span>{formatTimestampToDate(data.createdAt)}</span>
               </Tooltip>
             </div>
+            <div onClick={() => data.id && handleEdit(data)} style={{ cursor: lock ? "auto" : "pointer" }}>
+              <EditRounded />
+            </div>
             <div onClick={() => data.id && handleDelete(data)} style={{ cursor: lock ? "auto" : "pointer" }}>
               <DeleteIcon title="delete" />
             </div>
@@ -87,6 +85,7 @@ function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
   return (
     <>
       <LevelModal
+        level={level}
         cluster={selectedRow}
         open={levelModal}
         onClose={() => setLevelsModal(false)}
