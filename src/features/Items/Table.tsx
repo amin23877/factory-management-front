@@ -20,10 +20,10 @@ function ItemTable({
       { name: "no", header: "Number", minWidth: 100 },
       { name: "name", header: "Name", minWidth: 100 },
       { name: "description", header: "Description", defaultWidth: 180 },
-      { name: "bom", header: "Bom", type: "boolean", defaultWidth: 100 },
       { name: "approvedForSale", header: "Sales Ap.", type: "boolean", defaultWidth: 100 },
       { name: "engineeringApproval", header: "Eng. Ap.", type: "boolean", defaultWidth: 100 },
       { name: "shippingApproved", header: "Ship Ap.", type: "boolean", defaultWidth: 100 },
+      { name: "bom", header: "BOM", type: "boolean", defaultWidth: 100 },
       {
         name: "prefVendor",
         header: "Preferred Vendor",
