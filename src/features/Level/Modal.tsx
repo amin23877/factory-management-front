@@ -59,14 +59,14 @@ export default function LevelModal({
   const [deleteArray, setDeleteArray] = useState([]);
   const [openModal, setOpenModal] = useState(false);
 
-  const filteredCluster = allClusters?.result.filter((i: any) => i.clusterId.id === clusterId);
+  const selectedClusterName = allClusters?.result.find((i: any) => i.clusterId.id === clusterId);
 
   const { handleChange, handleBlur, handleSubmit, getFieldProps, values, setValues, touched, errors } = useFormik({
     validationSchema: schema,
     enableReinitialize: true,
     initialValues: {
       name: level?.name || "",
-      clusterId: level?.clusterId?.clusterValue || filteredCluster[0]?.clusterId.clusterValue,
+      clusterId: level?.clusterId?.clusterValue || selectedClusterName?.clusterId.clusterValue,
       valid: level?.valid || [],
     },
     onSubmit: async (data, { setSubmitting }) => {
