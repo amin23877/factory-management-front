@@ -4,11 +4,9 @@ import { Box, Tooltip } from "@material-ui/core";
 
 import NewDataGrid from "app/NewDataGrid";
 import Button from "app/Button";
-import DataGridAction from "common/DataGridAction";
 import { LockButton, LockProvider } from "common/Lock";
 import Confirm from "common/Confirm";
 import { useLock } from "common/Lock";
-import Toast from "app/Toast";
 
 import LevelModal from "../../../Level/Modal";
 
@@ -20,14 +18,16 @@ import { ReactComponent as DeleteIcon } from "assets/icons/tableIcons/delete.svg
 import { formatTimestampToDate } from "logic/date";
 
 function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
-  const [levelModal, setLevelsModal] = useState(false);
+  const [levelModal, setLevelsModal] = useState<boolean>(false);
   const [level, setLevel] = useState();
-  const [refresh, setRefresh] = useState(0);
+  const [edit, setEdit] = useState<boolean>(false);
+  const [refresh, setRefresh] = useState<number>(0);
   const { lock } = useLock();
 
   const handleEdit = async (data: any) => {
     setLevelsModal(true);
     setLevel(data);
+    setEdit(!edit);
   };
 
   const handleDelete = (data: any) => {
@@ -90,6 +90,7 @@ function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
         open={levelModal}
         onClose={() => setLevelsModal(false)}
         onDone={() => setRefresh((p) => p + 1)}
+        edit={edit}
       />
       <Box display="flex" alignItems="center">
         <div style={{ marginBottom: 8, marginRight: "auto" }} />

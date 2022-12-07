@@ -8,6 +8,7 @@ import Dialog from "app/Dialog";
 import TextField from "app/TextField";
 import Button from "app/Button";
 import Toast from "app/Toast";
+import useSWR from "swr";
 
 import { getModifiedValues } from "logic/utils";
 import { ILevel, createLevel, createLevelTwo, editLevel } from "api/level";
@@ -26,12 +27,13 @@ export interface IVals {
 }
 
 const schema = Yup.object({
-  name: Yup.string().required(""),
+  name: Yup.string().required("Name is required."),
   clusterId: Yup.string().required(""),
 });
 
 export default function LevelModal({
   level,
+  edit,
   open,
   cluster,
   initialValues,
@@ -39,6 +41,7 @@ export default function LevelModal({
   onDone,
 }: {
   level: any;
+  edit: boolean;
   open: boolean;
   cluster: clusterType;
   initialValues?: ILevel;
@@ -48,48 +51,58 @@ export default function LevelModal({
   const cls = useStyles();
   const { lock } = useLock();
   const { clusterId } = useParams<{ clusterId: string }>();
-  const [refresh, setRefresh] = useState(0);
+  const { data: allClusters } = useSWR("/level");
+  console.log("allClusters: ", allClusters);
+
   const [selectedLevel, setSelectedLevel] = useState<ILevel>();
   const [addArray, setAddArray] = useState([]);
   const [deleteArray, setDeleteArray] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+
+  const filteredCluster = allClusters?.result.filter((i: any) => i.clusterId.id === clusterId);
 
   const { handleChange, handleBlur, handleSubmit, getFieldProps, values, setValues, touched, errors } = useFormik({
     validationSchema: schema,
     enableReinitialize: true,
     initialValues: {
       name: level?.name || "",
-      clusterId: clusterId,
+      clusterId: level?.clusterId?.clusterValue || filteredCluster[0].clusterId.clusterValue,
       valid: level?.valid || [],
     },
     onSubmit: async (data, { setSubmitting }) => {
       setSubmitting(true);
       try {
         if (initialValues) {
-          await editLevel(clusterId, data);
+          const modified = getModifiedValues(data, selectedLevel);
+          await editLevel(clusterId, { ...modified, add: addArray, delete: deleteArray });
           Toast("Level updated successfully", "success");
-          onDone && onDone();
-          onClose();
+          console.log("edit");
         } else {
           await createLevelTwo(data);
           Toast("Level created successfully", "success");
-          onDone && onDone();
-          onClose();
+          console.log("add");
         }
       } catch (error) {
         console.log(error);
       } finally {
         setSubmitting(false);
+        onDone && onDone();
+        onClose();
       }
     },
   });
 
   return (
-    <Dialog open={open} onClose={onClose} title="Level">
+    <Dialog open={open} onClose={onClose} title={edit ? "Edit Level" : "Level"}>
       <form onSubmit={handleSubmit}>
         <Box className={cls.formContainer}>
-          <TextField className={cls.inp} label="Name" {...getFieldProps("name")} />
-          <TextField className={cls.inp} disabled label="ClusterId" {...getFieldProps("clusterId")} />
+          <TextField
+            className={cls.inp}
+            label="Name"
+            {...getFieldProps("name")}
+            helperText={values.name === "" ? "Name is required." : null}
+          />
+          <TextField className={cls.inp} disabled label="Cluster" {...getFieldProps("clusterId")} />
           <TextField
             className={cls.inp}
             name="valid"
@@ -110,8 +123,8 @@ export default function LevelModal({
               setOpenModal(true);
             }}
           />
-          <Button kind={initialValues?.name ? "edit" : "add"} type="submit">
-            Add
+          <Button kind={edit ? "edit" : "add"} type="submit" disabled={values.name === "" ? true : false}>
+            {edit ? "Save" : "Add"}
           </Button>
         </Box>
         <Box mt={1}>
