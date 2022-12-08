@@ -86,7 +86,7 @@ export default function PricingTab({
             disabled
           />
 
-          {!values.canBom ? (
+          {!values.bom ? (
             <div style={phone ? { gridColumnEnd: "span 2", display: "flex" } : { display: "flex" }}>
               <FormControlLabel
                 style={{ fontSize: "0.7rem" }}
