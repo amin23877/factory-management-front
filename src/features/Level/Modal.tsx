@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box } from "@material-ui/core";
 import { Form, Formik, useFormik } from "formik";
 import { useParams } from "react-router-dom";
@@ -19,11 +19,12 @@ import { LockButton, LockProvider, useLock } from "common/Lock";
 import ValidValuesForm from "./ValidValuesForm";
 import ValidValuesDataGrid from "./ValidValuesDataGrid";
 import useStyles from "./styles";
+import AsyncCombo from "common/AsyncCombo";
 
 export interface IVals {
   value: string;
   uom: string;
-  // id?: string;
+  id?: string;
 }
 
 const schema = Yup.object({
@@ -35,35 +36,26 @@ export default function LevelModal({
   level,
   edit,
   open,
-  cluster,
-  initialValues,
   onClose,
   onDone,
 }: {
   level: any;
   edit: boolean;
   open: boolean;
-  cluster: clusterType;
-  initialValues?: ILevel;
   onClose: () => void;
   onDone?: () => void;
 }) {
-  console.log("level: ", level);
-
   const cls = useStyles();
   const { lock } = useLock();
   const { clusterId } = useParams<{ clusterId: string }>();
   const { data: allClusters } = useSWR("/level");
-
-  const [selectedLevel, setSelectedLevel] = useState<ILevel>();
   const [addArray, setAddArray] = useState([]);
   const [deleteArray, setDeleteArray] = useState([]);
   const [openModal, setOpenModal] = useState(false);
 
   const selectedClusterName = allClusters?.result.find((i: any) => i.clusterId.id === clusterId);
-  // console.log("selectedClusterName: ", selectedClusterName);
 
-  const { handleChange, handleBlur, handleSubmit, getFieldProps, values, setValues, touched, errors } = useFormik({
+  const { handleChange, handleBlur, handleSubmit, values, setValues } = useFormik({
     validationSchema: schema,
     enableReinitialize: true,
     initialValues: {
@@ -72,20 +64,18 @@ export default function LevelModal({
       valid: level?.valid || [],
     },
     onSubmit: async (data, { setSubmitting }) => {
-      console.log("dataKhodm1: ", data);
-
       setSubmitting(true);
       try {
         if (level?.id) {
           await editLevel(level?.id, { ...data, add: addArray, delete: deleteArray });
           Toast("Level updated successfully", "success");
           onClose();
-          console.log("dataKhodm2: ", data);
+          onDone && onDone();
         } else {
           await createLevelTwo(data);
           Toast("Level created successfully", "success");
           onClose();
-          console.log("dataKhodm3: ", data);
+          onDone && onDone();
         }
       } catch (error) {
         console.log(error);
@@ -100,10 +90,14 @@ export default function LevelModal({
       <form onSubmit={handleSubmit}>
         <Box className={cls.formContainer}>
           <TextField
-            className={cls.inp}
-            label="Name"
-            {...getFieldProps("name")}
+            name="name"
+            value={values.name}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            label="Level Name"
+            placeholder="Name"
             helperText={values.name === "" ? "Name is required." : null}
+            InputLabelProps={{ shrink: true }}
           />
           <TextField className={cls.inp} disabled label="Cluster" value={selectedClusterName?.clusterId.clusterValue} />
           <TextField
@@ -122,6 +116,8 @@ export default function LevelModal({
             disabled={lock}
             onClick={() => setOpenModal(true)}
             onKeyDown={(e) => {
+              console.log("e: ", e);
+
               e.preventDefault();
               setOpenModal(true);
             }}
