@@ -45,20 +45,14 @@ export default function ValidValuesForm({
       let temp = validValues;
       temp[selectedValue.index].uom = data.uom;
       temp[selectedValue.index].value = data.value;
-      // console.log("temp: ", temp);
-
       setValidValues(temp);
       setValuesParent((p: any) => ({ ...p, valid: temp }));
-      setRefresh((p) => p + 1);
     } else {
       setAddArray((prev: any) => [...prev, data]);
       let temp = validValues ? validValues : [];
-      // console.log("temp: ", temp);
-
       temp.push({ ...data, id: temp.length });
       setValidValues(temp);
       setValuesParent((p: any) => ({ ...p, valid: temp }));
-      setRefresh((p) => p + 1);
     }
   };
 
@@ -77,7 +71,6 @@ export default function ValidValuesForm({
     setDeleteArray((prev: any) => [...prev, { value: val.val.value, uom: val.val.uom }]);
     setValidValues(newArr);
     setValuesParent((p: any) => ({ ...p, valid: newArr }));
-    setRefresh((p) => p + 1);
   };
 
   return (

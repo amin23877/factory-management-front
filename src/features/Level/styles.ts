@@ -10,7 +10,13 @@ export default makeStyles(({ breakpoints: BP }) => ({
   },
 
   inp: {
+    width: "300px",
+    margin: "10px 0",
+  },
+
+  inp2: {
     width: "200px",
+    height: "300px",
     margin: "10px 0",
   },
 }));
