@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box } from "@material-ui/core";
-import { Form, Formik, useFormik } from "formik";
+import { Formik, Form } from "formik";
 import { useParams } from "react-router-dom";
 import * as Yup from "yup";
 
@@ -10,16 +10,12 @@ import Button from "app/Button";
 import Toast from "app/Toast";
 import useSWR from "swr";
 
-import { getModifiedValues } from "logic/utils";
-import { ILevel, createLevel, createLevelTwo, editLevel } from "api/level";
+import { createLevelTwo, editLevel } from "api/level";
 // import AsyncCombo from "common/AsyncCombo";
-import { clusterType } from "api/cluster";
-import { LockButton, LockProvider, useLock } from "common/Lock";
+import { LockProvider, useLock } from "common/Lock";
 
 import ValidValuesForm from "./ValidValuesForm";
-import ValidValuesDataGrid from "./ValidValuesDataGrid";
 import useStyles from "./styles";
-import AsyncCombo from "common/AsyncCombo";
 
 export interface IVals {
   value: string;
@@ -54,91 +50,95 @@ export default function LevelModal({
   const [openModal, setOpenModal] = useState(false);
 
   const selectedClusterName = allClusters?.result.find((i: any) => i.clusterId.id === clusterId);
-
-  const { handleChange, handleBlur, handleSubmit, values, setValues } = useFormik({
-    validationSchema: schema,
-    enableReinitialize: true,
-    initialValues: {
-      name: level?.name || "",
-      clusterId: level?.clusterId?.id || selectedClusterName?.clusterId.id,
-      valid: level?.valid || [],
-    },
-    onSubmit: async (data, { setSubmitting }) => {
-      setSubmitting(true);
-      try {
-        if (level?.id) {
-          await editLevel(level?.id, { ...data, add: addArray, delete: deleteArray });
-          Toast("Level updated successfully", "success");
-          onClose();
-          onDone && onDone();
-        } else {
-          await createLevelTwo(data);
-          Toast("Level created successfully", "success");
-          onClose();
-          onDone && onDone();
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setSubmitting(false);
+  const handleSubmit = async (data: any, { setSubmitting }: any) => {
+    setSubmitting(true);
+    try {
+      if (level?.id) {
+        await editLevel(level?.id, { ...data, add: addArray, delete: deleteArray });
+        Toast("Level updated successfully", "success");
+        onClose();
+        onDone && onDone();
+      } else {
+        await createLevelTwo(data);
+        Toast("Level created successfully", "success");
+        onClose();
+        onDone && onDone();
       }
-    },
-  });
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
     <Dialog open={open} onClose={onClose} title={edit ? "Edit Level" : "Level"}>
-      <form onSubmit={handleSubmit}>
-        <Box className={cls.formContainer}>
-          <TextField
-            name="name"
-            value={values.name}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            label="Level Name"
-            placeholder="Name"
-            helperText={values.name === "" ? "Name is required." : null}
-            InputLabelProps={{ shrink: true }}
-          />
-          <TextField className={cls.inp} disabled label="Cluster" value={selectedClusterName?.clusterId.clusterValue} />
-          <TextField
-            className={cls.inp}
-            name="valid"
-            value={
-              Array.isArray(values.valid)
-                ? values?.valid?.map((val: IVals) => val.value + " " + val.uom).join(" , ")
-                : ""
-            }
-            onChange={handleChange}
-            onBlur={handleBlur}
-            placeholder="Valid Values"
-            label="Valid Values"
-            InputLabelProps={{ shrink: true }}
-            disabled={lock}
-            onClick={() => setOpenModal(true)}
-            onKeyDown={(e) => {
-              console.log("e: ", e);
-
-              e.preventDefault();
-              setOpenModal(true);
-            }}
-          />
-          <Button kind={edit ? "edit" : "add"} type="submit" disabled={values.name === "" ? true : false}>
-            {edit ? "Save" : "Add"}
-          </Button>
-        </Box>
-        <Box mt={1}>
-          <LockProvider>
-            <ValidValuesForm
-              open={openModal}
-              onClose={() => setOpenModal(false)}
-              setValuesParent={setValues}
-              valuesParent={values}
-              setAddArray={setAddArray}
-              setDeleteArray={setDeleteArray}
-            />
-          </LockProvider>
-        </Box>
-      </form>
+      <Formik
+        initialValues={{
+          name: level?.name || "",
+          clusterId: level?.clusterId?.id || selectedClusterName?.clusterId.id,
+          valid: level?.valid || [],
+        }}
+        onSubmit={handleSubmit}
+        validationSchema={schema}
+      >
+        {({ handleChange, handleBlur, values, setValues, touched, errors }) => (
+          <Form>
+            <Box className={cls.formContainer}>
+              <TextField
+                name="name"
+                value={values.name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                label="Level Name"
+                helperText={touched.name && errors.name}
+                InputLabelProps={{ shrink: true }}
+              />
+              <TextField
+                className={cls.inp}
+                disabled
+                label="Cluster"
+                value={selectedClusterName?.clusterId.clusterValue}
+              />
+              <TextField
+                className={cls.inp}
+                name="valid"
+                value={
+                  Array.isArray(values.valid)
+                    ? values?.valid?.map((val: IVals) => val.value + " " + val.uom).join(" , ")
+                    : ""
+                }
+                onChange={handleChange}
+                onBlur={handleBlur}
+                placeholder="Valid Values"
+                label="Valid Values"
+                InputLabelProps={{ shrink: true }}
+                disabled={lock}
+                onClick={() => setOpenModal(true)}
+                onKeyDown={(e) => {
+                  e.preventDefault();
+                  setOpenModal(true);
+                }}
+              />
+              <Button kind={edit ? "edit" : "add"} type="submit" disabled={values.name === "" ? true : false}>
+                {edit ? "Save" : "Add"}
+              </Button>
+            </Box>
+            <Box mt={1}>
+              <LockProvider>
+                <ValidValuesForm
+                  open={openModal}
+                  onClose={() => setOpenModal(false)}
+                  setValuesParent={setValues}
+                  valuesParent={values}
+                  setAddArray={setAddArray}
+                  setDeleteArray={setDeleteArray}
+                />
+              </LockProvider>
+            </Box>
+          </Form>
+        )}
+      </Formik>
     </Dialog>
   );
 }
