@@ -48,43 +48,48 @@ export default function LevelModal({
   onClose: () => void;
   onDone?: () => void;
 }) {
+  console.log("level: ", level);
+
   const cls = useStyles();
   const { lock } = useLock();
   const { clusterId } = useParams<{ clusterId: string }>();
   const { data: allClusters } = useSWR("/level");
-  console.log("allClusters: ", allClusters);
 
   const [selectedLevel, setSelectedLevel] = useState<ILevel>();
   const [addArray, setAddArray] = useState([]);
   const [deleteArray, setDeleteArray] = useState([]);
   const [openModal, setOpenModal] = useState(false);
 
-  const filteredCluster = allClusters?.result.filter((i: any) => i.clusterId.id === clusterId);
+  const selectedClusterName = allClusters?.result.find((i: any) => i.clusterId.id === clusterId);
+  // console.log("selectedClusterName: ", selectedClusterName);
 
   const { handleChange, handleBlur, handleSubmit, getFieldProps, values, setValues, touched, errors } = useFormik({
     validationSchema: schema,
     enableReinitialize: true,
     initialValues: {
       name: level?.name || "",
-      clusterId: level?.clusterId?.clusterValue || filteredCluster[0]?.clusterId.clusterValue,
+      clusterId: level?.clusterId?.id || selectedClusterName?.clusterId.id,
       valid: level?.valid || [],
     },
     onSubmit: async (data, { setSubmitting }) => {
+      console.log("dataKhodm1: ", data);
+
       setSubmitting(true);
       try {
-        if (initialValues) {
-          const modified = getModifiedValues(data, selectedLevel);
-          await editLevel(clusterId, { ...modified, add: addArray, delete: deleteArray });
+        if (level?.id) {
+          await editLevel(level?.id, { ...data, add: addArray, delete: deleteArray });
           Toast("Level updated successfully", "success");
+          onClose();
+          console.log("dataKhodm2: ", data);
         } else {
           await createLevelTwo(data);
           Toast("Level created successfully", "success");
+          onClose();
+          console.log("dataKhodm3: ", data);
         }
       } catch (error) {
         console.log(error);
       } finally {
-        onDone && onDone();
-        onClose();
         setSubmitting(false);
       }
     },
@@ -100,7 +105,7 @@ export default function LevelModal({
             {...getFieldProps("name")}
             helperText={values.name === "" ? "Name is required." : null}
           />
-          <TextField className={cls.inp} disabled label="Cluster" {...getFieldProps("clusterId")} />
+          <TextField className={cls.inp} disabled label="Cluster" value={selectedClusterName?.clusterId.clusterValue} />
           <TextField
             className={cls.inp}
             name="valid"
