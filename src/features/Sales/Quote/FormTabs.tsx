@@ -8,6 +8,7 @@ import Billing from "./../SO/Forms/Billing";
 import Entities from "./../SO/Forms/Entities";
 
 import { useLock, LockButton } from "common/Lock";
+import Summary from "../SO/Forms/Summary";
 
 export default function FormTabs({
   handleChange,
@@ -40,6 +41,7 @@ export default function FormTabs({
         >
           {/* <Tab label="Entities" />
                 <Tab label="Addresses" />*/}
+          <Tab label="Summary" />
           <Tab label="Entities" />
           <Tab label="Shipping" />
           <Tab label="Billing" />
@@ -52,13 +54,15 @@ export default function FormTabs({
                 <Entities values={values} setFieldValue={setFieldValue} getFieldProps={getFieldProps} />
                 )}
               {activeTab === 1 && <Addresses getFieldProps={getFieldProps} />} */}
-      {activeTab === 0 && (
+      {activeTab === 0 && <Summary values={values} getFieldProps={getFieldProps} />}
+
+      {activeTab === 1 && (
         <Entities setFieldValue={setFieldValue} values={values} handleBlur={handleBlur} handleChange={handleChange} />
       )}
-      {activeTab === 1 && <Shipping getFieldProps={getFieldProps} />}
-      {activeTab === 2 && <Billing getFieldProps={getFieldProps} />}
-      {activeTab === 3 && <Status getFieldProps={getFieldProps} />}
-      {activeTab === 4 && <Metrics values={values} getFieldProps={getFieldProps} />}
+      {activeTab === 2 && <Shipping getFieldProps={getFieldProps} />}
+      {activeTab === 3 && <Billing getFieldProps={getFieldProps} />}
+      {activeTab === 4 && <Status getFieldProps={getFieldProps} />}
+      {activeTab === 5 && <Metrics values={values} getFieldProps={getFieldProps} />}
     </>
   );
 }

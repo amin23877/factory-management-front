@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box } from "@material-ui/core";
-import { useFormik } from "formik";
+import { Form, Formik } from "formik";
 import * as Yup from "yup";
 
 import Button from "app/Button";
@@ -34,99 +34,89 @@ export default function ValidValuesForm({
 }) {
   const [selectedValue, setSelectedValue] = useState<ILevel>();
   const [validValues, setValidValues] = useState<IVals[]>(valuesParent.valid);
-  const [refresh, setRefresh] = useState(0);
   const { lock } = useLock();
   useEffect(() => {
     setValidValues(valuesParent.valid);
   }, [valuesParent]);
 
-  const handleFormSubmit = (data: any) => {
+  const handleSubmit = (data: any, { resetForm }: any) => {
     if (selectedValue) {
       let temp = validValues;
       temp[selectedValue.index].uom = data.uom;
       temp[selectedValue.index].value = data.value;
-      // console.log("temp: ", temp);
-
       setValidValues(temp);
       setValuesParent((p: any) => ({ ...p, valid: temp }));
-      setRefresh((p) => p + 1);
+      resetForm();
     } else {
       setAddArray((prev: any) => [...prev, data]);
       let temp = validValues ? validValues : [];
-      // console.log("temp: ", temp);
-
       temp.push({ ...data, id: temp.length });
       setValidValues(temp);
       setValuesParent((p: any) => ({ ...p, valid: temp }));
-      setRefresh((p) => p + 1);
+      resetForm();
     }
   };
-
-  const { values, handleChange, handleBlur, handleSubmit, setValues } = useFormik({
-    validationSchema: schema,
-    initialValues: {} as any,
-    onSubmit: handleFormSubmit,
-  });
 
   const handleDelete = (val: any) => {
     let temp = validValues;
     let newArr = temp.filter(function (value, index, arr) {
       return index !== val?.index;
     });
-    console.log(val);
     setDeleteArray((prev: any) => [...prev, { value: val.val.value, uom: val.val.uom }]);
     setValidValues(newArr);
     setValuesParent((p: any) => ({ ...p, valid: newArr }));
-    setRefresh((p) => p + 1);
   };
 
   return (
     <MyDialog open={open} onClose={onClose} title="Valid Values" maxWidth="sm" fullWidth>
-      <form onSubmit={handleSubmit}>
-        <Box
-          display="grid"
-          gridTemplateColumns={values.id ? "1fr 1fr 1fr 1fr 1fr" : "1fr 1fr 1fr"}
-          gridGap={5}
-          p={2}
-          pb={0}
-        >
-          <TextField
-            name="value"
-            value={values?.value?.split("__")[0]}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            label="Value"
-            placeholder="value"
-            InputLabelProps={{ shrink: true }}
-            disabled={lock}
-          />
-          <TextField
-            name="uom"
-            value={values.uom}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            placeholder="UOM"
-            label="UOM"
-            InputLabelProps={{ shrink: true }}
-            disabled={lock}
-          />
-          <Box display="flex" style={{ gap: 5, width: "100%", alignItems: "center" }}>
-            <Button kind={"add"} type="submit" style={{ flex: 1 }} disabled={lock}>
-              add
-            </Button>
-            <LockButton />
-          </Box>
-        </Box>
-        <Box mt={1}>
-          <ValidValuesDataGrid
-            valuesParent={validValues}
-            setValues={setValues}
-            setSelectedValue={setSelectedValue}
-            refresh={refresh}
-            handleDelete={handleDelete}
-          />
-        </Box>
-      </form>
+      <Formik initialValues={{ value: "", uom: "" } as any} onSubmit={handleSubmit} validationSchema={schema}>
+        {({ handleChange, handleBlur, values, setValues, resetForm }) => (
+          <Form>
+            <Box
+              display="grid"
+              gridTemplateColumns={values.id ? "1fr 1fr 1fr 1fr 1fr" : "1fr 1fr 1fr"}
+              gridGap={5}
+              p={2}
+              pb={0}
+            >
+              <TextField
+                name="value"
+                value={values?.value?.split("__")[0]}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                label="Value"
+                placeholder="value"
+                InputLabelProps={{ shrink: true }}
+                disabled={lock}
+              />
+              <TextField
+                name="uom"
+                value={values.uom}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                placeholder="UOM"
+                label="UOM"
+                InputLabelProps={{ shrink: true }}
+                disabled={lock}
+              />
+              <Box display="flex" style={{ gap: 5, width: "100%", alignItems: "center" }}>
+                <Button kind={"add"} type="submit" style={{ flex: 1 }} disabled={lock}>
+                  add
+                </Button>
+                <LockButton />
+              </Box>
+            </Box>
+            <Box mt={1}>
+              <ValidValuesDataGrid
+                valuesParent={validValues}
+                setValues={setValues}
+                setSelectedValue={setSelectedValue}
+                handleDelete={handleDelete}
+              />
+            </Box>
+          </Form>
+        )}
+      </Formik>
     </MyDialog>
   );
 }
@@ -135,13 +125,11 @@ const ValidValuesDataGrid = React.memo(
   ({
     valuesParent,
     setSelectedValue,
-    refresh,
     setValues,
     handleDelete,
   }: {
     setSelectedValue: any;
     valuesParent: IVals[];
-    refresh: any;
     setValues: (v: any) => void;
     handleDelete: any;
   }) => {

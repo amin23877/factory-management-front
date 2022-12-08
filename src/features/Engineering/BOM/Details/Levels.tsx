@@ -100,7 +100,6 @@ function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
     <>
       <LevelModal
         level={level}
-        cluster={selectedRow}
         open={levelModal}
         onClose={() => setLevelsModal(false)}
         onDone={() => setRefresh((p) => p + 1)}
