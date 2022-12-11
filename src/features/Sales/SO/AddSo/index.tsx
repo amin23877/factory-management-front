@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Box, Step, StepLabel, Stepper } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { useFormik } from "formik";
 
 import Dialog from "app/Dialog";
@@ -15,6 +15,7 @@ import { exportPdf } from "logic/pdf";
 
 import GroupLineItemTable from "components/GroupLineItemTable";
 import { get } from "api";
+import Stepper from "app/Stepper";
 
 export default function AddSOModal({
   open,
@@ -174,17 +175,9 @@ export default function AddSOModal({
       fullScreen
     >
       <Box p={2} height={600}>
-        <Stepper activeStep={step}>
-          <Step>
-            <StepLabel>General information</StepLabel>
-          </Step>
-          <Step>
-            <StepLabel>Final</StepLabel>
-          </Step>
-          <Step>
-            <StepLabel>Document</StepLabel>
-          </Step>
-        </Stepper>
+        <Box mb={2}>
+          <Stepper step={step} setStep={setStep} steps={["General Information", "Final", "Document"]} />
+        </Box>
         <Box height="95%">
           {step === 0 && (
             <Box display="grid" gridTemplateColumns="2fr 3fr" gridGap={10} my={1}>
@@ -214,7 +207,13 @@ export default function AddSOModal({
             />
           )}
         </Box>
-        <Box display="flex" alignItems="center" justifyContent="space-between">
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
+          width={"50%"}
+          style={{ marginLeft: "auto", marginRight: "auto" }}
+        >
           <Button variant="contained" disabled={isSubmitting || step === 0} onClick={() => setStep((p) => p - 1)}>
             Back
           </Button>

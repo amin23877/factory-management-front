@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Box, Button, Step, StepLabel, Stepper, useMediaQuery } from "@material-ui/core";
+import { Box, Button, useMediaQuery } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import { useSelector } from "react-redux";
 
@@ -13,6 +13,7 @@ import { selectSession } from "../../../Session/sessionsSlice";
 import { createQuoteComplete, IQuote } from "api/quote";
 import { createAModelDocument } from "api/document";
 import { exportPdf } from "logic/pdf";
+import Stepper from "app/Stepper";
 
 export default function AddQuote({
   open,
@@ -84,19 +85,11 @@ export default function AddQuote({
   return (
     <Dialog onClose={onClose} closeOnClickOut={false} open={open} title="Add New Quote" fullScreen maxWidth="md">
       <Box px={phone ? 0 : 2} height={activeStep !== 2 ? "100%" : "90vh"} display="flex" flexDirection="column">
-        <Stepper activeStep={activeStep}>
-          <Step>
-            <StepLabel>{phone ? "" : "General Information"}</StepLabel>
-          </Step>
-          <Step>
-            <StepLabel>{phone ? "" : "Final"}</StepLabel>
-          </Step>
-          <Step>
-            <StepLabel>{phone ? "" : "Document"}</StepLabel>
-          </Step>
-        </Stepper>
+        <Box mb={2}>
+          <Stepper step={activeStep} setStep={setActiveStep} steps={["General Information", "Final", "Document"]} />
+        </Box>
         <Formik
-          initialValues={{ ...initialData, salesPerson: session.session.id, lines: [] } as IQuote}
+          initialValues={{ ...initialData, salesPerson: session?.session?.id, lines: [] } as IQuote}
           onSubmit={handleSubmit}
         >
           {({ getFieldProps, values, setFieldValue, isSubmitting, handleSubmit, handleBlur, handleChange }) => (

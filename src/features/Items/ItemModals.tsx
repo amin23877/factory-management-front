@@ -1,15 +1,5 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Tabs,
-  Tab,
-  Stepper,
-  Step,
-  StepLabel,
-  CircularProgress,
-  FormControlLabel,
-  Checkbox,
-} from "@material-ui/core";
+import { Box, Tabs, Tab, CircularProgress, FormControlLabel, Checkbox } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import useSWR, { mutate } from "swr";
 
@@ -27,6 +17,7 @@ import PhotoTab from "common/PhotoTab";
 import DocumentTab from "common/Document/Tab";
 import { useHistory } from "react-router-dom";
 import { IDocument } from "api/document";
+import Stepper from "app/Stepper";
 
 export const AddItemModal = ({
   open,
@@ -75,17 +66,9 @@ export const AddItemModal = ({
           }) => (
             <Form>
               <Box height={600}>
-                <Stepper activeStep={step}>
-                  <Step>
-                    <StepLabel>General information</StepLabel>
-                  </Step>
-                  <Step>
-                    <StepLabel>Add Photo</StepLabel>
-                  </Step>
-                  <Step>
-                    <StepLabel>Add Document</StepLabel>
-                  </Step>
-                </Stepper>
+                <Box mb={2}>
+                  <Stepper step={step} steps={["General Information", "Add Photo", "Add Document"]} setStep={setStep} />
+                </Box>
                 <Box height="80%">
                   {step === 0 && (
                     <>
