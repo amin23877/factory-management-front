@@ -6,15 +6,16 @@ import TextField from "app/TextField";
 
 import Button from "app/Button";
 import BaseDataGrid from "app/BaseDataGrid";
+import NewDataGrid from "app/NewDataGrid";
 import { IItem } from "api/items";
 
 import { useLock } from "common/Lock";
 import { Box, Checkbox, FormControlLabel, Radio, RadioGroup, useMediaQuery } from "@material-ui/core";
 
 const pricingCols = [
-  { field: "label", headerName: "Label", flex: 1 },
-  { field: "price", headerName: "Price", flex: 1 },
-  { field: "nonCommissionable", headerName: "no Com.", flex: 1, type: "boolean" },
+  { name: "label", header: "Label", flex: 1 },
+  { name: "price", header: "Price", flex: 1 },
+  { name: "nonCommissionable", header: "no Com.", flex: 1, type: "boolean" },
 ];
 
 export default function PricingTab({
@@ -30,7 +31,9 @@ export default function PricingTab({
 }) {
   const [addPricing, setAddPricing] = useState(false);
   const [selectedPricing, setSelectedPricing] = useState<pricingType>();
-  const { data } = useSWR<IItem>(`/item/${itemId}`);
+  const { data } = useSWR<IItem>(`/items/${itemId}`);
+  console.log("data: ", data);
+
   const { lock } = useLock();
   const phone = useMediaQuery("(max-width:900px)");
 
@@ -59,7 +62,7 @@ export default function PricingTab({
             Add Pricing
           </Button>
         </Box>
-        <BaseDataGrid
+        {/* <BaseDataGrid
           rows={data?.pricing || []}
           cols={pricingCols}
           height={220}
@@ -70,6 +73,17 @@ export default function PricingTab({
               setAddPricing(true);
             }
           }}
+        /> */}
+        <NewDataGrid
+          columns={pricingCols}
+          url={`/items/${itemId}`}
+          onRowSelected={(r) => {
+            if (!lock) {
+              setSelectedPricing(r);
+              setAddPricing(true);
+            }
+          }}
+          style={{ marginBottom: "10px" }}
         />
         <Box mt={1} display="grid" gridTemplateColumns="auto auto" gridColumnGap={10} gridRowGap={10}>
           <TextField
