@@ -5,7 +5,6 @@ import AddPricing, { pricingType } from "../AddPricing";
 import TextField from "app/TextField";
 
 import Button from "app/Button";
-import BaseDataGrid from "app/BaseDataGrid";
 import NewDataGrid from "app/NewDataGrid";
 import { IItem } from "api/items";
 
@@ -32,8 +31,6 @@ export default function PricingTab({
   const [addPricing, setAddPricing] = useState(false);
   const [selectedPricing, setSelectedPricing] = useState<pricingType>();
   const { data } = useSWR<IItem>(`/items/${itemId}`);
-  console.log("data: ", data);
-
   const { lock } = useLock();
   const phone = useMediaQuery("(max-width:900px)");
 
@@ -62,18 +59,6 @@ export default function PricingTab({
             Add Pricing
           </Button>
         </Box>
-        {/* <BaseDataGrid
-          rows={data?.pricing || []}
-          cols={pricingCols}
-          height={220}
-          pagination
-          onRowSelected={(r) => {
-            if (!lock) {
-              setSelectedPricing(r);
-              setAddPricing(true);
-            }
-          }}
-        /> */}
         <NewDataGrid
           columns={pricingCols}
           url={`/items/${itemId}`}

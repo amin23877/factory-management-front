@@ -6,6 +6,7 @@ import useSWR from "swr";
 
 import DocumentModal from "./Modal";
 import Button from "app/Button";
+import NewDataGrid from "app/NewDataGrid";
 import BaseDataGrid from "app/BaseDataGrid";
 
 import { INote } from "api/note";
@@ -14,31 +15,33 @@ import { fileType } from "logic/fileType";
 
 import { useLock } from "../Lock";
 
-const columns: GridColumns = [
+const columns = [
   {
-    field: "date",
-    headerName: "Date",
-    valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
+    name: "date",
+    header: "Date",
+    // valueFormatter: (params) => formatTimestampToDate(params.row?.createdAt),
     width: 120,
   },
   {
-    field: "creator",
-    headerName: "Creator",
+    name: "creator",
+    header: "Creator",
     width: 120,
   },
-  { field: "name", headerName: "Name", flex: 1 },
-  { field: "number", headerName: "Number", width: 100 },
-  { field: "description", headerName: "Description", flex: 1 },
+  { name: "name", header: "Name", flex: 1 },
+  { name: "number", header: "Number", width: 100 },
+  { name: "description", header: "Description", flex: 1 },
   {
-    field: "type",
-    headerName: "File Type",
-    valueFormatter: (params) => fileType(params.row?.path),
+    name: "type",
+    header: "File Type",
+    // valueFormatter: (params) => fileType(params.row?.path),
     width: 120,
   },
 ];
 
 export default function DocumentTab({ itemId, model }: { model: string; itemId: string }) {
   const { data } = useSWR(`/document/${model}/${itemId}`);
+  console.log("data: ", data);
+
   const [addModal, setAddModal] = useState(false);
   const [selected, setSelected] = useState<INote>();
   const { lock } = useLock();
@@ -58,13 +61,24 @@ export default function DocumentTab({ itemId, model }: { model: string; itemId: 
             Add
           </Button>
         </Box>
-        <BaseDataGrid
+        {/* <BaseDataGrid
           cols={columns}
           rows={data || []}
           onRowSelected={(r) => {
             setSelected(r);
             setAddModal(true);
           }}
+        /> */}
+        <NewDataGrid
+          columns={columns}
+          url={`/documents/${model}/${itemId}`}
+          onRowSelected={(r) => {
+            if (!lock) {
+              setSelected(r);
+              setAddModal(true);
+            }
+          }}
+          // style={{ marginBottom: "10px" }}
         />
       </Box>
     </>
