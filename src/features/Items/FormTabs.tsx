@@ -29,9 +29,10 @@ export default function FormTabs({
   values: any;
   getFieldProps: any;
   boms?: { result: any[]; total: number };
-  selectedRow: IItem;
+  selectedRow: any;
   setFieldValue: any;
 }) {
+  const selected = selectedRow?.result?.find(() => true);
   const qrCode = useRef<HTMLElement | null>(null);
 
   const [moreInfoTab, setMoreInfoTab] = useState(0);
@@ -43,7 +44,6 @@ export default function FormTabs({
   const phone = useMediaQuery("(max-width:900px)");
   return (
     <>
-      {" "}
       <ManualCountModal open={manualCountModal} onClose={() => setManualCountModal(false)} itemId={selectedRow.id} />
       <UpdateQuantityModal open={quantityModal} onClose={() => setQuantityModal(false)} itemId={selectedRow.id} />
       <Box display={"flex"} justifyContent="space-between" alignItems={"center"} mb={1}>
@@ -108,7 +108,7 @@ export default function FormTabs({
         </>
       )}
       {moreInfoTab === 4 && (
-        <PricingTab itemId={selectedRow.id} boms={boms} values={values} getFieldProps={getFieldProps} />
+        <PricingTab itemId={selected.id} boms={boms} values={values} getFieldProps={getFieldProps} />
       )}
       {moreInfoTab === 5 && <Shipping values={values} getFieldProps={getFieldProps} setFieldValue={setFieldValue} />}
       {moreInfoTab === 6 && (

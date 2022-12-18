@@ -5,16 +5,21 @@ import AddPricing, { pricingType } from "../AddPricing";
 import TextField from "app/TextField";
 
 import Button from "app/Button";
-import NewDataGrid from "app/NewDataGrid";
-import { IItem } from "api/items";
+import BaseDataGrid from "app/BaseDataGrid";
 
 import { useLock } from "common/Lock";
 import { Box, Checkbox, FormControlLabel, Radio, RadioGroup, useMediaQuery } from "@material-ui/core";
 
 const pricingCols = [
-  { name: "label", header: "Label", flex: 1 },
-  { name: "price", header: "Price", flex: 1 },
-  { name: "nonCommissionable", header: "no Com.", flex: 1, type: "boolean" },
+  { field: "label", headerName: "Label", flex: 1 },
+  { field: "price", headerName: "Price", flex: 1 },
+  {
+    field: "nonCommissionable",
+    headerName: "no Com.",
+    valueFormatter: (params: any) => params?.row?.nonCommissionable,
+    flex: 1,
+    type: "boolean",
+  },
 ];
 
 export default function PricingTab({
@@ -30,7 +35,8 @@ export default function PricingTab({
 }) {
   const [addPricing, setAddPricing] = useState(false);
   const [selectedPricing, setSelectedPricing] = useState<pricingType>();
-  const { data } = useSWR<IItem>(`/items/${itemId}`);
+  const { data } = useSWR<any>(`/item/${itemId}`);
+  const selected = data?.result?.find(() => true);
   const { lock } = useLock();
   const phone = useMediaQuery("(max-width:900px)");
 
@@ -46,7 +52,6 @@ export default function PricingTab({
       )}
       <div style={{ maxWidth: "83vw" }}>
         <Box display="flex" justifyContent="space-between">
-          {" "}
           <Button
             variant="outlined"
             style={{ marginBottom: 10 }}
@@ -59,16 +64,17 @@ export default function PricingTab({
             Add Pricing
           </Button>
         </Box>
-        <NewDataGrid
-          columns={pricingCols}
-          url={`/items/${itemId}`}
+        <BaseDataGrid
+          rows={selected?.pricing || []}
+          cols={pricingCols}
+          height={220}
+          pagination
           onRowSelected={(r) => {
             if (!lock) {
               setSelectedPricing(r);
               setAddPricing(true);
             }
           }}
-          style={{ marginBottom: "10px" }}
         />
         <Box mt={1} display="grid" gridTemplateColumns="auto auto" gridColumnGap={10} gridRowGap={10}>
           <TextField
