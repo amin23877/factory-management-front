@@ -65,33 +65,31 @@ export default function EmployeeList({
         </IconButton>
       </Box>
       <List>
-        {
-          // users.map(
-          //     (user) =>
-          //         user.username !== username && (
-          //             <ListItem
-          //                 key={user.userID}
-          //                 button
-          //                 selected={user.username === value}
-          //                 onClick={() => onChange(user)}
-          //                 classes={{ selected: classes.selected }}
-          //             >
-          //                 <ListItemAvatar>
-          //                     <Badge color="primary" variant="dot" invisible={!Boolean(user.hasNewMessages)}>
-          //                         <Avatar>{user.username[0]}</Avatar>
-          //                     </Badge>
-          //                 </ListItemAvatar>
-          //                 <ListItemText>
-          //                     <Typography>{user.username}</Typography>
-          //                     <Typography variant="caption">test text</Typography>
-          //                 </ListItemText>
-          //                 <ListItemSecondaryAction>
-          //                     <Typography variant="caption">8:15</Typography>
-          //                 </ListItemSecondaryAction>
-          //             </ListItem>
-          //         )
-          // )
-        }
+        {users.map(
+          (user) =>
+            user.username !== username && (
+              <ListItem
+                key={user.userID}
+                button
+                selected={user.username === value}
+                onClick={() => onChange(user)}
+                classes={{ selected: classes.selected }}
+              >
+                <ListItemAvatar>
+                  <Badge color="primary" variant="dot" invisible={!Boolean(user.hasNewMessages)}>
+                    <Avatar>{user.username[0]}</Avatar>
+                  </Badge>
+                </ListItemAvatar>
+                <ListItemText>
+                  <Typography>{user.username}</Typography>
+                  <Typography variant="caption">test text</Typography>
+                </ListItemText>
+                <ListItemSecondaryAction>
+                  <Typography variant="caption">8:15</Typography>
+                </ListItemSecondaryAction>
+              </ListItem>
+            )
+        )}
       </List>
     </Box>
     // </CustomScrollbars>

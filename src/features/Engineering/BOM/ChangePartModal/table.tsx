@@ -77,6 +77,7 @@ function ChangePartModal({
       const prevCells = row?.parts?.map((p: any) => ({
         name: p?.name || undefined,
         ItemId: (p?.ItemId as any)?._id || p?.ItemId?.id,
+        columnId: (p?.columnId as any)?._id || p?.columnId?.id,
         usage: p.usage,
       }));
       const index = prevCells.findIndex((p: any) => p.name === partName);

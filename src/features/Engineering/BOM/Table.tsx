@@ -43,6 +43,7 @@ type ITableChangeCell = {
   location?: string;
   uom?: string;
   fixedQty?: boolean;
+  columnId: string;
 };
 
 type ITableChangeRow = {
@@ -164,14 +165,16 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
   };
 
   const handleChangePart = (d: ITableChangeRow, part: any) => {
+    let row = { ...d };
+    row.cells = d.cells.filter((i) => i.columnId !== part.columnId);
+    row.cells.push(part);
     setChanges((prev) => {
       let clone = prev?.concat();
-      const index = clone.findIndex((i) => i.device === d.device);
-
+      const index = clone.findIndex((i) => i.device === row.device);
       if (index < 0) {
-        clone.push(d);
+        clone.push(row);
       } else {
-        clone[index].cells = [...clone[index].cells, ...d.cells];
+        clone[index].cells = [...clone[index].cells, ...row.cells];
       }
       return clone;
     });

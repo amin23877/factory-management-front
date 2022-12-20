@@ -218,8 +218,8 @@ export default function PanelRouter() {
               <TopAppBar
                 isChatOpen={chatDrawerOpen}
                 onOpenChatClicked={() => {
-                  // setChatDrawerOpen(true);
-                  // setMainDrawerOpen(false);
+                  setChatDrawerOpen(true);
+                  setMainDrawerOpen(false);
                 }}
               />
             </Toolbar>

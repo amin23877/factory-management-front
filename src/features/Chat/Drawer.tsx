@@ -52,6 +52,8 @@ export default function ChatDrawer({ onClose, open }: { open: boolean; onClose: 
 
   const { ChatSocket, messages, users, selectedUser, setUsers, setSelectedUser, setMessages, sendPrivateMessage } =
     chatSocket;
+  console.log(users);
+
   return (
     <Drawer
       anchor="right"
