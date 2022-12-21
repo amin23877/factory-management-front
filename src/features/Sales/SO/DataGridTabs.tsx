@@ -7,6 +7,7 @@ import useSWR from "swr";
 import { useHistory } from "react-router";
 
 import BaseDataGrid from "app/BaseDataGrid";
+import NewDataGrid from "app/NewDataGrid";
 import { BasePaper } from "app/Paper";
 
 import { ISO } from "api/so";
@@ -57,63 +58,67 @@ export default function DataGridTabs({
     selectedSo && selectedSo.id && activeTab === 2 ? `/document/so/${selectedSo.id}` : null
   );
 
-  const LICols = useMemo<GridColumns>(
+  const LICols = useMemo(
     () => [
-      { field: "group", headerName: "Group", width: 80 },
-      { field: "line", headerName: "Sort", width: 70 },
+      { name: "group", header: "Group", width: 80 },
+      { name: "line", header: "Sort", width: 70 },
       {
-        field: "itemNo",
-        headerName: "Part Number",
-        renderCell: (r) => (
-          <Tooltip title={r.row?.ItemId?.no || r.row?.text || r?.row?.itemNo}>
-            <span>{r.row?.ItemId?.no || r.row?.text || r?.row?.itemNo}</span>
+        name: "itemNo",
+        header: "Part Number",
+        render: (r: any) => (
+          <Tooltip title={r?.data?.ItemId?.no || r.row?.text || r?.row?.itemNo}>
+            <span>{r?.data?.ItemId?.no || r.row?.text || r?.row?.itemNo}</span>
           </Tooltip>
         ),
         width: 200,
       },
       {
-        field: "description",
-        headerName: "Description",
-        renderCell: (r) => (
+        name: "description",
+        header: "Description",
+        render: (r: any) => (
           <Tooltip title={r.row?.ItemId?.description}>
             <span>{r.row?.ItemId?.description}</span>
           </Tooltip>
         ),
         width: 150,
       },
-      { field: "qty", headerName: "QTY", width: 90 },
-      { field: "price", headerName: "Price", width: 100 },
-      { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
+      { name: "qty", header: "QTY", width: 90 },
+      { name: "price", header: "Price", width: 100 },
+      { name: "tax", header: "Tax", type: "boolean", width: 80 },
       {
-        field: "total",
-        headerName: "Total",
-        renderCell: (r) => (
-          <Tooltip title={Number(r.row?.price) * Number(r.row?.qty)}>
-            <span>{Number(r.row?.price) * Number(r.row?.qty)}</span>
+        name: "total",
+        header: "Total",
+        render: (r: any) => (
+          <Tooltip title={Number(r.data?.price) * Number(r.data?.qty)}>
+            <span>{Number(r.data?.price) * Number(r.data?.qty)}</span>
           </Tooltip>
         ),
         width: 80,
       },
-      { field: "invoice", headerName: "Invoice", width: 100 },
+      { name: "invoice", header: "Invoice", width: 100 },
     ],
     []
   );
 
-  const unitCols: GridColumns = useMemo(
+  const unitCols = useMemo(
     () => [
-      { field: "number", headerName: "Unit ID", width: 100 },
+      { name: "number", header: "Unit ID", width: 100 },
       {
-        field: "number",
-        headerName: "Unit Serial No.",
+        name: "number",
+        header: "Unit Serial No.",
         width: 130,
       },
-      { field: "description", headerName: "Description", flex: 1 },
-      { field: "model", headerName: "Model", width: 120 },
+      { name: "description", header: "Description", flex: 1 },
+      { name: "model", header: "Model", width: 120 },
       {
-        field: "shipDate",
-        headerName: "Estimated SD.",
+        name: "shipDate",
+        header: "Estimated SD.",
         width: 150,
-        valueFormatter: (params) => formatTimestampToDate(params.row?.SOId?.estimatedShipDate),
+        render: (r: any) => {
+          // valueFormatter: (params) => formatTimestampToDate(params.row?.SOId?.estimatedShipDate),
+          const date = r?.data?.so.find(() => true);
+          return formatTimestampToDate(date?.estimatedShipDate);
+        },
       },
     ],
     []
@@ -206,7 +211,7 @@ export default function DataGridTabs({
       </Box>
       {activeTab === 0 && (
         <div className={classes.root}>
-          <BaseDataGrid
+          {/* <BaseDataGrid
             cols={LICols}
             rows={lineItems?.result || []}
             getRowClassName={({ row }) => {
@@ -229,19 +234,48 @@ export default function DataGridTabs({
               }
             }}
             height="calc(100% - 60px)"
+          /> */}
+          <NewDataGrid
+            columns={LICols}
+            url={`/lineitem?SOId=${selectedSo.id}`}
+            onRowSelected={(r) => {
+              if (phone && (r.ServiceId || r.ItemId)) {
+                history.push(
+                  r.ServiceId
+                    ? `/panel/fieldservice/services/${r.ServiceId}`
+                    : `/panel/engineering/device/devices/${r?.ItemId?.id}`
+                );
+              } else if (!phone && (r.ServiceId || r.ItemId)) {
+                openRequestedSinglePopup({
+                  url: r.ServiceId
+                    ? `/panel/fieldservice/services/${r.ServiceId}`
+                    : `/panel/engineering/device/devices/${r?.ItemId?.id}`,
+                });
+              }
+            }}
           />
         </div>
       )}
       {activeTab === 1 && (
-        <BaseDataGrid
-          cols={unitCols}
-          rows={units?.result || []}
+        // <BaseDataGrid
+        //   cols={unitCols}
+        //   rows={units?.result || []}
+        //   onRowSelected={(r) => {
+        //     phone
+        //       ? history.push(`/panel/production/dashboard/units/${r.id}`)
+        //       : openRequestedSinglePopup({ url: `/panel/production/dashboard/units/${r.id}` });
+        //   }}
+        //   height="calc(100% - 60px)"
+        // />
+        <NewDataGrid
+          columns={unitCols}
+          url={`/unit?SOId=${selectedSo.id}`}
           onRowSelected={(r) => {
             phone
               ? history.push(`/panel/production/dashboard/units/${r.id}`)
               : openRequestedSinglePopup({ url: `/panel/production/dashboard/units/${r.id}` });
           }}
-          height="calc(100% - 60px)"
+          style={{ height: "calc(100% - 60px)" }}
         />
       )}
       {activeTab === 2 && <DocumentTab itemId={selectedSo.id} model="so" />}

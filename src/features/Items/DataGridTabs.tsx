@@ -35,8 +35,6 @@ export default function DataGridTabs({
   values: any;
   mutateBoms: any;
 }) {
-  console.log("selectedRoweUSAGE: ", selectedRow);
-
   const [activeTab, setActiveTab] = useState(0);
   const [addVendorModal, setAddVendorModal] = useState(false);
   const { setLock } = useLock();
