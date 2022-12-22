@@ -103,7 +103,7 @@ function ChangePartModal({
   const handleDelete = () => {
     const data = {
       device: row.DeviceId,
-      cells: row?.parts?.filter((p: any) => p?.name !== partName),
+      cells: row?.parts?.filter((p: any) => p?.columnId?.name !== partName),
       rowId: row.id,
       partName,
     };

@@ -38,12 +38,12 @@ const useStyles = makeStyles({
 });
 
 type ITableChangeCell = {
-  ItemId: string;
+  ItemId: any;
   usage: number;
   location?: string;
   uom?: string;
   fixedQty?: boolean;
-  columnId: string;
+  columnId: any;
 };
 
 type ITableChangeRow = {
@@ -237,7 +237,12 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
       } else {
         clone[index].cells = data.cells;
       }
-
+      clone.forEach((element) => {
+        element.cells.forEach((i) => {
+          i.ItemId = i.ItemId?.id;
+          i.columnId = i.columnId?.id;
+        });
+      });
       return clone;
     });
     setTableRows((p: any) => {
