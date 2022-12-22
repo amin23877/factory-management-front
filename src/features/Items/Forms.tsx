@@ -234,7 +234,7 @@ export const General = ({
           error={Boolean(errors.no && touched.no)}
           placeholder="no"
           disabled={!add && lock}
-          style={add ? { gridColumnEnd: "span 2" } : {}}
+          style={{ gridColumnEnd: "span 4" }}
         />
         <TextField
           label="Item name"
@@ -245,7 +245,7 @@ export const General = ({
           error={Boolean(errors.name && touched.name)}
           value={values.name}
           disabled={!add && lock}
-          style={add ? { gridColumnEnd: "span 2" } : {}}
+          style={{ gridColumnEnd: "span 4" }}
         />
         {add && (
           <>

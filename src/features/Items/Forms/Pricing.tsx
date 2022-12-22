@@ -6,7 +6,6 @@ import TextField from "app/TextField";
 
 import Button from "app/Button";
 import BaseDataGrid from "app/BaseDataGrid";
-import { IItem } from "api/items";
 
 import { useLock } from "common/Lock";
 import { Box, Checkbox, FormControlLabel, Radio, RadioGroup, useMediaQuery } from "@material-ui/core";
@@ -14,7 +13,13 @@ import { Box, Checkbox, FormControlLabel, Radio, RadioGroup, useMediaQuery } fro
 const pricingCols = [
   { field: "label", headerName: "Label", flex: 1 },
   { field: "price", headerName: "Price", flex: 1 },
-  { field: "nonCommissionable", headerName: "no Com.", flex: 1, type: "boolean" },
+  {
+    field: "nonCommissionable",
+    headerName: "no Com.",
+    valueFormatter: (params: any) => params?.row?.nonCommissionable,
+    flex: 1,
+    type: "boolean",
+  },
 ];
 
 export default function PricingTab({
@@ -30,7 +35,8 @@ export default function PricingTab({
 }) {
   const [addPricing, setAddPricing] = useState(false);
   const [selectedPricing, setSelectedPricing] = useState<pricingType>();
-  const { data } = useSWR<IItem>(`/item/${itemId}`);
+  const { data } = useSWR<any>(`/item/${itemId}`);
+  const selected = data?.result?.find(() => true);
   const { lock } = useLock();
   const phone = useMediaQuery("(max-width:900px)");
 
@@ -46,7 +52,6 @@ export default function PricingTab({
       )}
       <div style={{ maxWidth: "83vw" }}>
         <Box display="flex" justifyContent="space-between">
-          {" "}
           <Button
             variant="outlined"
             style={{ marginBottom: 10 }}
@@ -60,7 +65,7 @@ export default function PricingTab({
           </Button>
         </Box>
         <BaseDataGrid
-          rows={data?.pricing || []}
+          rows={selected?.pricing || []}
           cols={pricingCols}
           height={220}
           pagination
