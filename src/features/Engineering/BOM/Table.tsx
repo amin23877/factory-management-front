@@ -24,6 +24,7 @@ import {
 import { clusterType } from "api/cluster";
 import Confirm from "common/Confirm";
 import { createItem } from "api/items";
+import { LockProvider } from "common/Lock";
 
 const useStyles = makeStyles({
   root: {
@@ -286,21 +287,23 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
       )}
       <AddPartModal open={addPart} onClose={() => setAddPart(false)} onDone={handleAddPart} />
       {selectedRowName !== undefined && (
-        <ChangePartModal
-          addUsage={addUsage}
-          setAddUsage={setAddUsage}
-          row={selectedRow}
-          open={changePart}
-          partName={selectedRowName}
-          onDone={handleChangePart}
-          onDelete={handleDeleteCell}
-          onClose={() => {
-            setChangePart(false);
-            setAddUsage(false);
-          }}
-          newColumns={newColumns}
-          changes={changes}
-        />
+        <LockProvider>
+          <ChangePartModal
+            addUsage={addUsage}
+            setAddUsage={setAddUsage}
+            row={selectedRow}
+            open={changePart}
+            partName={selectedRowName}
+            onDone={handleChangePart}
+            onDelete={handleDeleteCell}
+            onClose={() => {
+              setChangePart(false);
+              setAddUsage(false);
+            }}
+            newColumns={newColumns}
+            changes={changes}
+          />
+        </LockProvider>
       )}
 
       <Box display="flex" alignItems="flex-top" width="100%">
