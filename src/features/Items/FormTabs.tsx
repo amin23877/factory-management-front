@@ -17,7 +17,6 @@ import ManualCountModal from "features/Items/ManualCountModal";
 import UpdateQuantityModal from "features/Items/Quantity";
 
 import { exportPdf } from "logic/pdf";
-import { IItem } from "api/items";
 
 export default function FormTabs({
   boms,

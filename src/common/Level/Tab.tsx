@@ -6,7 +6,6 @@ import { useLock } from "common/Lock";
 import AsyncCombo from "common/AsyncCombo";
 import useSWR from "swr";
 import { ILevel } from "api/level";
-import { IItem } from "api/items";
 
 export default function LevelsTab({
   itemType,
@@ -35,7 +34,7 @@ export default function LevelsTab({
         filterBy="clusterValue"
         getOptionLabel={(o) => o?.clusterValue || "No-Name"}
         getOptionSelected={(o, v) => o?.id === v?.id}
-        url={`/cluster`}
+        url={values?.result[0]?.class ? `/cluster?class=${values?.result[0]?.class}` : "/cluster"}
         disabled={lock}
         label="Cluster Value"
         onChange={(e, nv) => setFieldValue("clusterId", nv?.id)}
