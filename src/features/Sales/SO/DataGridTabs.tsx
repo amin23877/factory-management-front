@@ -124,63 +124,67 @@ export default function DataGridTabs({
     []
   );
 
-  const FSCols = useMemo<GridColumns>(
+  const FSCols = useMemo(
     () => [
       {
-        field: "date",
-        headerName: "Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
+        name: "date",
+        header: "Date",
+        // valueFormatter: (params) => formatTimestampToDate(params.row?.date),
+        render: ({ data }: any) => formatTimestampToDate(data?.date),
         width: 120,
       },
-      { field: "number", headerName: "Ticket ID", width: 130 },
-      { field: "subject", headerName: "Subject", flex: 1 },
+      { name: "number", header: "Ticket ID", width: 130 },
+      { name: "subject", header: "Subject", flex: 1 },
       {
-        field: "unit",
-        headerName: "Unit",
-        valueFormatter: (params) => params.row?.unit?.number,
+        name: "unit",
+        header: "Unit",
+        // valueFormatter: (params) => params.row?.unit?.number,
+        render: ({ data }: any) => data?.unit?.number,
         width: 120,
       },
-      { field: "AssignedTo", headerName: "Assigned To", width: 120 },
-      { field: "contact", headerName: "Contact", width: 120 },
-      { field: "status", headerName: "Status", width: 120 },
+      { name: "AssignedTo", header: "Assigned To", width: 120 },
+      { name: "contact", header: "Contact", width: 120 },
+      { name: "status", header: "Status", width: 120 },
     ],
     []
   );
 
-  const activityCols = useMemo<GridColumns>(
+  const activityCols = useMemo(
     () => [
-      { field: "startTime", headerName: "Entry Date", width: 150, type: "date" },
-      { field: "number", headerName: "Quote ID", flex: 1 },
-      { field: "project", headerName: "Project Name", flex: 1 },
-      { field: "quotedBy", headerName: "Quoted By", flex: 1 },
-      { field: "requestedBy", headerName: "Requested By", flex: 1 },
-      { field: "note", headerName: "Note" },
+      { name: "startTime", header: "Entry Date", width: 150, type: "date" },
+      { name: "number", header: "Quote ID", flex: 1 },
+      { name: "project", header: "Project Name", flex: 1 },
+      { name: "quotedBy", header: "Quoted By", flex: 1 },
+      { name: "requestedBy", header: "Requested By", flex: 1 },
+      { name: "note", header: "Note" },
     ],
     []
   );
 
-  const shipCols = useMemo<GridColumns>(
+  const shipCols = useMemo(
     () => [
       {
-        field: "date",
-        headerName: "Target Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
+        name: "date",
+        header: "Target Date",
+        // valueFormatter: (params) => formatTimestampToDate(params.row?.date),
+        render: ({ data }: any) => formatTimestampToDate(data?.date),
         flex: 1,
       },
       {
-        field: "actualDate",
+        name: "actualDate",
         headerName: "Actual Date",
         flex: 1,
-        valueFormatter: (params) => formatTimestampToDate(params.row?.date),
+        // valueFormatter: (params) => formatTimestampToDate(params.row?.date),
+        render: ({ data }: any) => formatTimestampToDate(data?.date),
       },
-      { field: "number", headerName: "Shipment No.", flex: 2 },
+      { name: "number", headerName: "Shipment No.", flex: 2 },
       {
-        field: "carrier",
+        name: "carrier",
         headerName: "Carrier",
         flex: 1,
       },
-      { field: "deliveryMethod", headerName: "Delivery Method", flex: 1 },
-      { field: "trackingNumber", headerName: "Tracking No.", flex: 1 },
+      { name: "deliveryMethod", headerName: "Delivery Method", flex: 1 },
+      { name: "trackingNumber", headerName: "Tracking No.", flex: 1 },
     ],
     []
   );
@@ -280,13 +284,26 @@ export default function DataGridTabs({
       )}
       {activeTab === 2 && <DocumentTab itemId={selectedSo.id} model="so" />}
       {activeTab === 3 && (
-        <BaseDataGrid cols={activityCols} rows={documents || []} onRowSelected={() => {}} height="calc(100% - 60px)" />
+        // <BaseDataGrid cols={activityCols} rows={documents || []} onRowSelected={() => {}} height="calc(100% - 60px)" />
+        <NewDataGrid
+          columns={activityCols}
+          url={`/document/so/${selectedSo.id}`}
+          onRowSelected={() => {}}
+          style={{ height: "calc(100% - 60px)" }}
+        />
       )}
       {activeTab === 4 && (
-        <BaseDataGrid cols={shipCols} rows={[]} onRowSelected={() => {}} height="calc(100% - 60px)" />
+        // <BaseDataGrid cols={shipCols} rows={[]} onRowSelected={() => {}} height="calc(100% - 60px)" />
+        <NewDataGrid columns={shipCols} url={``} onRowSelected={() => {}} style={{ height: "calc(100% - 60px)" }} />
       )}
       {activeTab === 5 && (
-        <BaseDataGrid cols={FSCols} rows={[]} onRowSelected={onLineServiceSelected} height="calc(100% - 60px)" />
+        // <BaseDataGrid cols={FSCols} rows={[]} onRowSelected={onLineServiceSelected} height="calc(100% - 60px)" />
+        <NewDataGrid
+          columns={FSCols}
+          url={``}
+          onRowSelected={onLineServiceSelected}
+          style={{ height: "calc(100% - 60px)" }}
+        />
       )}
       {activeTab === 6 && <NoteTab itemId={selectedSo.id} model="so" />}
       {activeTab === 7 && <AuditTable itemId={selectedSo.id} />}
