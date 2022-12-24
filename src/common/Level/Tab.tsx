@@ -29,6 +29,9 @@ export default function LevelsTab({
     clusterIdString ? `/level?clusterId=${clusterIdString}` : null
   );
 
+  const { data: type } = useSWR(`/cluster?class=${clusterIdString}`);
+  const selected = values.result.find(() => true);
+
   return (
     <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
       <AsyncCombo

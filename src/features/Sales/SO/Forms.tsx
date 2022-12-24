@@ -53,6 +53,8 @@ export const GeneralForm = ({
   setFieldValue: any;
   add?: boolean;
 }) => {
+  console.log("values: ", values);
+
   const classes = useStyles();
   const phone = useMediaQuery("(max-width:900px)");
   const tablet = useMediaQuery("(max-width:1500px)");

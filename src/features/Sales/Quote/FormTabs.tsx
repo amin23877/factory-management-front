@@ -26,6 +26,8 @@ export default function FormTabs({
   const { setLock } = useLock();
   const [activeTab, setActiveTab] = useState(0);
 
+  console.log("quoteValues: ", values);
+
   return (
     <>
       <Box display={"flex"} justifyContent="space-between" alignItems={"center"}>

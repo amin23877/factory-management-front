@@ -33,8 +33,8 @@ export default function FormTabs({
   setFieldValue: any;
 }) {
   const selected = selectedRow?.result?.find(() => true);
-  const qrCode = useRef<HTMLElement | null>(null);
 
+  const qrCode = useRef<HTMLElement | null>(null);
   const [moreInfoTab, setMoreInfoTab] = useState(0);
   const [manualCountModal, setManualCountModal] = useState(false);
   const [quantityModal, setQuantityModal] = useState(false);
@@ -44,8 +44,8 @@ export default function FormTabs({
   const phone = useMediaQuery("(max-width:900px)");
   return (
     <>
-      <ManualCountModal open={manualCountModal} onClose={() => setManualCountModal(false)} itemId={selectedRow.id} />
-      <UpdateQuantityModal open={quantityModal} onClose={() => setQuantityModal(false)} itemId={selectedRow.id} />
+      <ManualCountModal open={manualCountModal} onClose={() => setManualCountModal(false)} itemId={selected.id} />
+      <UpdateQuantityModal open={quantityModal} onClose={() => setQuantityModal(false)} itemId={selected.id} />
       <Box display={"flex"} justifyContent="space-between" alignItems={"center"} mb={1}>
         <Tabs
           value={moreInfoTab}
@@ -68,7 +68,7 @@ export default function FormTabs({
         </Tabs>
         <LockButton />
       </Box>
-      {moreInfoTab === 0 && <PhotoTab model="item" id={selectedRow.id} />}
+      {moreInfoTab === 0 && <PhotoTab model="item" id={selected.id} />}
       {moreInfoTab === 1 && (
         <Box display="flex" justifyContent="space-around" alignItems="center" maxWidth="83vw">
           <div ref={(e) => (qrCode.current = e)}>
@@ -76,12 +76,12 @@ export default function FormTabs({
               value={JSON.stringify({
                 type: "item",
                 panel: "inventory",
-                no: selectedRow.no,
-                id: selectedRow.id,
+                no: selected.no,
+                id: selected.id,
               })}
             />
-            <Typography variant="subtitle1">Device Number: {selectedRow.no}</Typography>
-            <Typography variant="subtitle1">Device Name: {selectedRow.name}</Typography>
+            <Typography variant="subtitle1">Device Number: {selected.no}</Typography>
+            <Typography variant="subtitle1">Device Name: {selected.name}</Typography>
           </div>
           <Button
             variant="contained"
@@ -113,7 +113,7 @@ export default function FormTabs({
       {moreInfoTab === 5 && <Shipping values={values} getFieldProps={getFieldProps} setFieldValue={setFieldValue} />}
       {moreInfoTab === 6 && (
         <LevelsTab
-          itemType={selectedRow.class}
+          itemType={selected.class}
           values={values}
           getFieldProps={getFieldProps}
           setFieldValue={setFieldValue}

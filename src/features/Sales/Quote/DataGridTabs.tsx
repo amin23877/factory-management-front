@@ -40,14 +40,14 @@ export default function DataGridTabs({ selectedQuote }: { selectedQuote: IQuote 
   const classes = useStyle();
   const groupColors = ["white", "gray"];
 
-  const quoteHistoryCols = useMemo<GridColumns>(
+  const quoteHistoryCols = useMemo(
     () => [
-      { field: "startTime", headerName: "Entry Date", width: 150, type: "date" },
-      { field: "number", headerName: "Quote ID", flex: 1 },
-      { field: "project", headerName: "Project Name", flex: 1 },
-      { field: "quotedBy", headerName: "Quoted By", flex: 1 },
-      { field: "requestedBy", headerName: "Requested By", flex: 1 },
-      { field: "note", headerName: "Note" },
+      { name: "startTime", header: "Entry Date", width: 150, type: "date" },
+      { name: "number", header: "Quote ID", flex: 1 },
+      { name: "project", header: "Project Name", flex: 1 },
+      { name: "quotedBy", header: "Quoted By", flex: 1 },
+      { name: "requestedBy", header: "Requested By", flex: 1 },
+      { name: "note", header: "Note" },
     ],
     []
   );
@@ -162,7 +162,13 @@ export default function DataGridTabs({ selectedQuote }: { selectedQuote: IQuote 
       )}
       {activeTab === 1 && <DocumentTab itemId={selectedQuote.id} model="quote" />}
       {activeTab === 2 && (
-        <BaseDataGrid cols={quoteHistoryCols} rows={[]} onRowSelected={() => {}} height=" calc(100% - 57px)" />
+        // <BaseDataGrid cols={quoteHistoryCols} rows={[]} onRowSelected={() => {}} height=" calc(100% - 57px)" />
+        <NewDataGrid
+          columns={quoteHistoryCols}
+          url={``}
+          onRowSelected={() => {}}
+          style={{ height: "calc(100% - 57px)" }}
+        />
       )}
       {activeTab === 3 && <NoteTab itemId={selectedQuote.id} model="quote" />}
       {activeTab === 4 && <AuditTable itemId={selectedQuote.id} />}
