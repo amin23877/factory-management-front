@@ -14,6 +14,7 @@ export default function EditTab() {
   const phone = useMediaQuery("(max-width:900px)");
   const { quoteId } = useParams<{ quoteId: string }>();
   const { data: selectedQuote } = useSWR<IQuote>(quoteId ? `/quote/${quoteId}` : null);
+  console.log("selectedQuote: ", selectedQuote);
 
   if (!selectedQuote) {
     return <LinearProgress />;
