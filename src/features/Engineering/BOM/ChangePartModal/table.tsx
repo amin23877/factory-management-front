@@ -15,6 +15,7 @@ import AsyncCombo from "common/AsyncCombo";
 import { get } from "api";
 import { IItem } from "api/items";
 import Toast from "app/Toast";
+import { LockButton, useLock } from "common/Lock";
 
 function ChangePartModal({
   open,
@@ -39,6 +40,8 @@ function ChangePartModal({
   newColumns: any;
   changes?: any;
 }) {
+  const { lock } = useLock();
+
   const [clusterId, setClusterId] = useState<string>();
   const [itemClass, setItemClass] = useState<string>("part");
   const [itemName, setItemName] = useState<string>();
@@ -77,6 +80,7 @@ function ChangePartModal({
       const prevCells = row?.parts?.map((p: any) => ({
         name: p?.name || undefined,
         ItemId: (p?.ItemId as any)?._id || p?.ItemId?.id,
+        columnId: (p?.columnId as any)?._id || p?.columnId?.id,
         usage: p.usage,
       }));
       const index = prevCells.findIndex((p: any) => p.name === partName);
@@ -102,7 +106,7 @@ function ChangePartModal({
   const handleDelete = () => {
     const data = {
       device: row.DeviceId,
-      cells: row?.parts?.filter((p: any) => p?.name !== partName),
+      cells: row?.parts?.filter((p: any) => p?.columnId?.name !== partName),
       rowId: row.id,
       partName,
     };
@@ -155,7 +159,7 @@ function ChangePartModal({
         flex: 1,
         headerName: "Description",
       },
-      { field: "usage", headerName: "Usage", width: 140, editable: true },
+      { field: "usage", headerName: "Usage", width: 140, editable: lock ? false : true },
       {
         field: "",
         renderCell: (p: any) => (
@@ -164,6 +168,7 @@ function ChangePartModal({
               color={prevPart ? "primary" : "secondary"}
               variant="contained"
               style={{ marginLeft: "auto" }}
+              disabled={lock}
               onClick={() => {
                 if (p.row.usage > 0) {
                   handleSubmit({ usage: p?.row?.usage, fixedQty, ItemId: p?.row?.id, _itemNo: p?.row?.no });
@@ -178,7 +183,7 @@ function ChangePartModal({
         ),
       },
     ],
-    [prevPart, handleSubmit, fixedQty]
+    [prevPart, handleSubmit, fixedQty, lock]
   );
 
   useEffect(() => {
@@ -206,9 +211,24 @@ function ChangePartModal({
         <Box height="80vh" display="flex" flexDirection="column" style={{ gap: 8 }}>
           <Paper style={{ flex: 1, padding: "1em" }}>
             <Box display="grid" gridTemplateColumns="1fr 1fr 1fr" style={{ gap: 8 }}>
-              <TextField label="Item Name" value={itemName} onChange={(e) => setItemName(e.target.value)} />
-              <TextField label="Item Number" value={itemNo} onChange={(e) => setItemNo(e.target.value)} />
-              <TextField label="Keywords" value={keywords} onChange={(e) => setKeywords(e.target.value)} />
+              <TextField
+                label="Item Name"
+                value={itemName}
+                onChange={(e) => setItemName(e.target.value)}
+                disabled={lock}
+              />
+              <TextField
+                label="Item Number"
+                value={itemNo}
+                onChange={(e) => setItemNo(e.target.value)}
+                disabled={lock}
+              />
+              <TextField
+                label="Keywords"
+                value={keywords}
+                onChange={(e) => setKeywords(e.target.value)}
+                disabled={lock}
+              />
               <TextField label="Part number" disabled value={row["Device Number"]} fullWidth />
               <AsyncCombo
                 label="Cluster"
@@ -219,11 +239,12 @@ function ChangePartModal({
                 defaultParams={{ class: itemClass }}
                 value={clusterId}
                 onChange={(e, nv) => setClusterId(nv?.id)}
+                disabled={lock}
               />
               <Button
                 startIcon={<MenuRounded />}
                 color="secondary"
-                disabled={!clusterId}
+                disabled={!clusterId || lock}
                 onClick={(e) => {
                   setAnchorEl(e.currentTarget);
                 }}
@@ -241,6 +262,7 @@ function ChangePartModal({
                 ]}
                 value={itemClass}
                 onChange={(e) => setItemClass(e.target.value)}
+                disabled={lock}
               />
               <FormControlLabel
                 style={{ margin: 0 }}
@@ -250,10 +272,13 @@ function ChangePartModal({
                 checked={fixedQty}
                 onChange={(e, c) => setFixedQty(c)}
                 control={<Checkbox />}
+                disabled={lock}
               />
-
+              <Box display={"flex"} alignItems="center" justifyContent={"center"}>
+                <LockButton />
+              </Box>
               {prevPart && (
-                <Button kind="delete" onClick={handleDelete} style={{ gridColumn: "span 3" }}>
+                <Button kind="delete" onClick={handleDelete} style={{ gridColumn: "span 3" }} disabled={lock}>
                   Delete
                 </Button>
               )}

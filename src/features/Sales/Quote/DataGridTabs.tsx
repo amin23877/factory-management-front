@@ -3,6 +3,7 @@ import { Tabs, Tab, makeStyles, useMediaQuery, Box } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 
 import BaseDataGrid from "app/BaseDataGrid";
+import NewDataGrid from "app/NewDataGrid";
 import { BasePaper } from "app/Paper";
 
 import NoteTab from "common/Note/Tab";
@@ -39,43 +40,46 @@ export default function DataGridTabs({ selectedQuote }: { selectedQuote: IQuote 
   const classes = useStyle();
   const groupColors = ["white", "gray"];
 
-  const quoteHistoryCols = useMemo<GridColumns>(
+  const quoteHistoryCols = useMemo(
     () => [
-      { field: "startTime", headerName: "Entry Date", width: 150, type: "date" },
-      { field: "number", headerName: "Quote ID", flex: 1 },
-      { field: "project", headerName: "Project Name", flex: 1 },
-      { field: "quotedBy", headerName: "Quoted By", flex: 1 },
-      { field: "requestedBy", headerName: "Requested By", flex: 1 },
-      { field: "note", headerName: "Note" },
+      { name: "startTime", header: "Entry Date", width: 150, type: "date" },
+      { name: "number", header: "Quote ID", flex: 1 },
+      { name: "project", header: "Project Name", flex: 1 },
+      { name: "quotedBy", header: "Quoted By", flex: 1 },
+      { name: "requestedBy", header: "Requested By", flex: 1 },
+      { name: "note", header: "Note" },
     ],
     []
   );
-  const LICols = useMemo<GridColumns>(
+  const LICols = useMemo(
     () => [
-      { field: "group", headerName: "Group", width: 80 },
-      { field: "line", headerName: "Sort", width: 70 },
+      { name: "group", header: "Group", width: 80 },
+      { name: "line", header: "Sort", width: 70 },
       {
-        field: "itemNo",
-        headerName: "Part Number",
-        valueFormatter: (r) => r.row?.ItemId?.no || r.row?.text || r?.row?.itemNo,
+        name: "itemNo",
+        header: "Part Number",
+        render: ({ data }: any) => data?.ItemId?.no || data?.text || data?.itemNo,
+        // valueFormatter: (r) => r.row?.ItemId?.no || r.row?.text || r?.row?.itemNo,
         width: 200,
       },
       {
-        field: "description",
-        headerName: "Description",
-        valueFormatter: (r) => r.row?.ItemId?.description,
+        name: "description",
+        header: "Description",
+        render: ({ data }: any) => data?.description,
+        // valueFormatter: (r) => r.row?.ItemId?.description,
         width: 150,
       },
-      { field: "qty", headerName: "QTY", width: 90 },
-      { field: "price", headerName: "Price", width: 100 },
-      { field: "tax", headerName: "Tax", type: "boolean", width: 80 },
+      { name: "qty", header: "QTY", width: 90 },
+      { name: "price", header: "Price", width: 100 },
+      { name: "tax", header: "Tax", type: "boolean", width: 80 },
       {
-        field: "total",
-        headerName: "Total",
-        valueFormatter: (r) => Number(r.row?.price) * Number(r.row?.qty),
+        name: "total",
+        header: "Total",
+        render: ({ data }: any) => Number(data?.price) * Number(data?.qty),
+        // valueFormatter: (r) => Number(r.row?.price) * Number(r.row?.qty),
         width: 80,
       },
-      { field: "invoice", headerName: "Invoice", width: 100 },
+      { name: "invoice", header: "Invoice", width: 100 },
     ],
     []
   );
@@ -111,7 +115,7 @@ export default function DataGridTabs({ selectedQuote }: { selectedQuote: IQuote 
         //   }}
         // />
         <div className={classes.root}>
-          <BaseDataGrid
+          {/* <BaseDataGrid
             cols={LICols}
             rows={lineItems?.result || []}
             getRowClassName={({ row }) => {
@@ -134,12 +138,37 @@ export default function DataGridTabs({ selectedQuote }: { selectedQuote: IQuote 
               }
             }}
             height="calc(100% - 60px)"
+          /> */}
+          <NewDataGrid
+            columns={LICols}
+            url={`/lineitem?QuoteId=${selectedQuote.id}`}
+            onRowSelected={(r) => {
+              if (phone && (r.ServiceId || r.ItemId)) {
+                history.push(
+                  r.ServiceId
+                    ? `/panel/fieldservice/services/${r.ServiceId}`
+                    : `/panel/engineering/device/devices/${r?.ItemId?.id}`
+                );
+              } else if (!phone && (r.ServiceId || r.ItemId)) {
+                openRequestedSinglePopup({
+                  url: r.ServiceId
+                    ? `/panel/fieldservice/services/${r.ServiceId}`
+                    : `/panel/engineering/device/devices/${r?.ItemId?.id}`,
+                });
+              }
+            }}
           />
         </div>
       )}
       {activeTab === 1 && <DocumentTab itemId={selectedQuote.id} model="quote" />}
       {activeTab === 2 && (
-        <BaseDataGrid cols={quoteHistoryCols} rows={[]} onRowSelected={() => {}} height=" calc(100% - 57px)" />
+        // <BaseDataGrid cols={quoteHistoryCols} rows={[]} onRowSelected={() => {}} height=" calc(100% - 57px)" />
+        <NewDataGrid
+          columns={quoteHistoryCols}
+          url={``}
+          onRowSelected={() => {}}
+          style={{ height: "calc(100% - 57px)" }}
+        />
       )}
       {activeTab === 3 && <NoteTab itemId={selectedQuote.id} model="quote" />}
       {activeTab === 4 && <AuditTable itemId={selectedQuote.id} />}

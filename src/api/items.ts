@@ -177,3 +177,16 @@ export const convertToItem = (serviceId: string) => {
 export const convertToService = (itemId: string) => {
   return patch(`/item/${itemId}/convert`, {});
 };
+
+export const patchItem = (
+  itemId: string,
+  data: {
+    lastCountDate: any;
+    lastCount: number;
+    usedInQuarterAdj: number;
+    usedInHalfAdj: number;
+    usedInYearAdj: number;
+  }
+) => {
+  return patch(`/item/${itemId}`, data);
+};

@@ -3,6 +3,7 @@ import { Box, Tabs, Tab, useMediaQuery, Tooltip } from "@material-ui/core";
 
 import { IBom } from "api/bom";
 import BaseDataGrid from "app/BaseDataGrid";
+import NewDataGrid from "app/NewDataGrid";
 import Button from "app/Button";
 import DataGrid from "app/NewDataGrid";
 import { GridColumns } from "@material-ui/data-grid";
@@ -31,73 +32,73 @@ export default function DataGridsTabs({
   sales,
   onFlagSelected,
 }: {
-  selectedRow: IItem;
+  selectedRow: any;
   sales?: boolean;
   onFlagSelected: (a: any) => void;
 }) {
+  console.log("selectedRowDevices: ", selectedRow);
+  const selected = selectedRow?.result?.find(() => true);
+  console.log("selectedDevices: ", selected);
+
   const phone = useMediaQuery("(max-width:900px)");
   const { setLock, lock } = useLock();
-
   const [activeTab, setActiveTab] = useState(0);
   const [AddService, setAddService] = useState(false);
-
   const [unitHistoryModal, setUnitHistoryModal] = useState(false);
-
   const [selectedStep] = useState<any>();
   const [selectedUnit, setSelectedUnit] = useState<IUnitHistory>();
   const [selectedService, setSelectedService] = useState<any>();
-
   const [stepModal, setStepModal] = useState(false);
 
   const { data: boms, mutate: mutateBoms } = useSWR<{ result: IBom[]; total: number }>(
-    selectedRow && selectedRow.id ? `/bom?ItemId=${selectedRow.id}` : null
+    selectedRow && selected.id ? `/bom?ItemId=${selected.id}` : null
   );
 
-  const { data: itemObject } = useSWR<IItem>(selectedRow && selectedRow.id ? `/item/${selectedRow.id}` : null);
+  const { data: itemObject } = useSWR<IItem>(selectedRow && selected.id ? `/item/${selected.id}` : null);
+  // console.log("itemObject123: ", itemObject);
 
-  const { data: flags } = useSWR(
-    activeTab === 10 ? (selectedRow && selectedRow.id ? `/qccase/item/${selectedRow.id}` : null) : null
-  );
+  // const { data: flags } = useSWR(
+  //   activeTab === 10 ? (selectedRow && selected.id ? `/qccase/item/${selected.id}` : null) : null
+  // );
+  const { data: flags } = useSWR(`/qccase/item/${selected.id}`);
+  console.log("flags: ", flags);
 
-  const serviceCols = useMemo<GridColumns>(
-    () => [
-      { field: "no", headerName: "ID", width: 150 },
-      {
-        field: "name",
-        headerName: "Name",
-        flex: 1,
-        renderCell: ({ row }) => (
-          <Tooltip title={row.name}>
-            <span>{row.name}</span>
-          </Tooltip>
-        ),
-      },
-      {
-        field: "class",
-        headerName: "Class",
-        width: 120,
-      },
-      {
-        field: "type",
-        headerName: "Type",
+  const serviceCols = [
+    { name: "no", header: "ID", width: 150 },
+    {
+      name: "name",
+      header: "Name",
+      flex: 1,
+      // renderCell: ({ row }) => (
+      //   <Tooltip title={row.name}>
+      //     <span>{row.name}</span>
+      //   </Tooltip>
+      // ),
+    },
+    {
+      name: "class",
+      header: "Class",
+      width: 120,
+    },
+    {
+      name: "type",
+      header: "Type",
 
-        width: 120,
-      },
-      { field: "price", headerName: "Price", width: 90 },
-    ],
-    []
-  );
+      width: 120,
+    },
+    { name: "price", header: "Price", width: 90 },
+  ];
 
   const flagCols = useMemo(
     () => [
-      { field: "date", headerName: "Date", flex: 2 },
-      { field: "number", headerName: "Flag ID", flex: 2 },
-      { field: "name", headerName: "Name", flex: 4 },
-      { field: "serial", headerName: "Serial", flex: 2 },
-      { field: "section", headerName: "Section", flex: 2 },
-      { field: "id", headerName: "ID", flex: 2 },
-      { field: "note", headerName: "Note", flex: 4 },
-      { field: "auditing", headerName: "Auditing", flex: 2 },
+      { name: "date", header: "Date", flex: 2 },
+      { name: "number", header: "Flag ID", flex: 2 },
+      { name: "name", header: "Name", flex: 4 },
+      { name: "serial", header: "Serial", flex: 2 },
+      { name: "section", header: "Section", flex: 2 },
+      { name: "id", header: "ID", flex: 2 },
+      { name: "note", header: "Note", flex: 4 },
+      { name: "auditing", header: "Auditing", flex: 2 },
     ],
     []
   );
@@ -129,12 +130,12 @@ export default function DataGridsTabs({
 
   return (
     <>
-      {selectedStep && selectedRow && selectedRow.id && (
+      {selectedStep && selectedRow && selected.id && (
         <EditTaskModal
           device={selectedRow}
           tab={selectedStep.tab}
           task={selectedStep}
-          itemId={selectedRow.id as any}
+          itemId={selected.id as any}
           open={stepModal}
           onClose={() => setStepModal(false)}
         />
@@ -201,7 +202,7 @@ export default function DataGridsTabs({
       </Box>
       {!sales ? (
         <>
-          {activeTab === 0 && <DocumentTab itemId={selectedRow.id} model="item" />}
+          {activeTab === 0 && <DocumentTab itemId={selected.id} model="item" />}
           {activeTab === 1 && (
             <div style={{ maxWidth: "79vw", overflow: "auto" }}>
               <ItemBomTable item={selectedRow} boms={boms?.result || []} mutateBoms={mutateBoms} />
@@ -218,7 +219,7 @@ export default function DataGridsTabs({
               >
                 Service
               </Button>
-              <BaseDataGrid
+              {/* <BaseDataGrid
                 height={"calc(100% - 100px)"}
                 cols={serviceCols}
                 rows={itemObject?.services || []}
@@ -226,17 +227,26 @@ export default function DataGridsTabs({
                   setSelectedService(d);
                   setAddService(true);
                 }}
+              /> */}
+              <NewDataGrid
+                columns={serviceCols}
+                url={`/item/${selected.id}`}
+                onRowSelected={(d) => {
+                  setSelectedService(d);
+                  setAddService(true);
+                }}
+                // style={{ marginBottom: "10px" }}
               />
             </>
           )}
-          {activeTab === 3 && <ProcessTab type={"manufacturing"} ItemId={selectedRow.id} />}
-          {activeTab === 4 && <ProcessTab type={"evaluation"} ItemId={selectedRow.id} />}
-          {activeTab === 5 && <ProcessTab type={"test"} ItemId={selectedRow.id} />}
-          {activeTab === 6 && <ProcessTab type={"fieldStartUp"} ItemId={selectedRow.id} />}
+          {activeTab === 3 && <ProcessTab type={"manufacturing"} ItemId={selected.id} />}
+          {activeTab === 4 && <ProcessTab type={"evaluation"} ItemId={selected.id} />}
+          {activeTab === 5 && <ProcessTab type={"test"} ItemId={selected.id} />}
+          {activeTab === 6 && <ProcessTab type={"fieldStartUp"} ItemId={selected.id} />}
           {activeTab === 8 && (
             <DataGrid
               columns={unitHistoryCols}
-              url={`/unit?ItemId=${selectedRow.id}`}
+              url={`/unit?ItemId=${selected.id}`}
               onRowSelected={(d) => {
                 setSelectedUnit(d);
                 setUnitHistoryModal(true);
@@ -245,19 +255,25 @@ export default function DataGridsTabs({
           )}
           {activeTab === 9 && <SalesReport />}
           {activeTab === 10 && (
-            <BaseDataGrid
-              height={"calc()100% - 60px"}
-              cols={flagCols}
-              rows={flags || []}
+            // <BaseDataGrid
+            //   height={"calc()100% - 60px"}
+            //   cols={flagCols}
+            //   rows={flags || []}
+            //   onRowSelected={onFlagSelected}
+            // />
+            <NewDataGrid
+              columns={flagCols}
+              url={`/qccase/item/${selected.id}`}
               onRowSelected={onFlagSelected}
+              // style={{ marginBottom: "10px" }}
             />
           )}
-          {activeTab === 11 && <NoteTab itemId={selectedRow.id} model="item" />}
-          {activeTab === 12 && <AuditTable itemId={selectedRow.id} />}
+          {activeTab === 11 && <NoteTab itemId={selected.id} model="item" />}
+          {activeTab === 12 && <AuditTable itemId={selected.id} />}
         </>
       ) : (
         <>
-          {activeTab === 0 && <DocumentTab itemId={selectedRow.id} model="item" />}
+          {activeTab === 0 && <DocumentTab itemId={selected.id} model="item" />}
           {activeTab === 1 && (
             <>
               <BaseDataGrid
@@ -269,8 +285,8 @@ export default function DataGridsTabs({
             </>
           )}
           {activeTab === 2 && <SalesReport />}
-          {activeTab === 3 && <NoteTab itemId={selectedRow.id} model="item" />}
-          {activeTab === 4 && <AuditTable itemId={selectedRow.id} />}
+          {activeTab === 3 && <NoteTab itemId={selected.id} model="item" />}
+          {activeTab === 4 && <AuditTable itemId={selected.id} />}
         </>
       )}
     </>

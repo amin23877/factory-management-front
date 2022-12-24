@@ -26,11 +26,12 @@ export default function FormTabs({
   handleChange: any;
   boms?: { result: any[]; total: number };
   values: any;
-  selectedRow: IItem;
+  selectedRow: any;
   sales?: boolean;
   setFieldValue: any;
   getFieldProps: any;
 }) {
+  const selected = selectedRow?.result?.find(() => true);
   const qrCode = useRef<HTMLElement | null>(null);
   const [moreInfoTab, setMoreInfoTab] = useState(0);
 
@@ -58,18 +59,18 @@ export default function FormTabs({
         </Tabs>
         <LockButton />
       </Box>
-      {moreInfoTab === 0 && <PhotoTab model="item" id={selectedRow.id} />}
+      {moreInfoTab === 0 && <PhotoTab model="item" id={selected.id} />}
       {moreInfoTab === 1 && (
         <Box display="flex" justifyContent="space-around" alignItems="center" maxWidth="83vw">
           <div ref={(e) => (qrCode.current = e)}>
             <DeviceQRCode
               value={JSON.stringify({
                 type: "device",
-                no: selectedRow.no,
+                no: selected.no,
               })}
             />
-            <Typography variant="subtitle1">Device Number: {selectedRow.no}</Typography>
-            <Typography variant="subtitle1">Device Name: {selectedRow.name}</Typography>
+            <Typography variant="subtitle1">Device Number: {selected.no}</Typography>
+            <Typography variant="subtitle1">Device Name: {selected.name}</Typography>
           </div>
           <Button
             variant="contained"
@@ -84,14 +85,14 @@ export default function FormTabs({
         </Box>
       )}
       {moreInfoTab === 2 && (
-        <PricingTab itemId={selectedRow.id} boms={boms} values={values} getFieldProps={getFieldProps} />
+        <PricingTab itemId={selected.id} boms={boms} values={values} getFieldProps={getFieldProps} />
       )}
       {moreInfoTab === 3 && (
         <LevelsTab
           values={values}
           getFieldProps={getFieldProps}
           setFieldValue={setFieldValue}
-          itemType={selectedRow.class}
+          itemType={selected.class}
         />
       )}
     </>

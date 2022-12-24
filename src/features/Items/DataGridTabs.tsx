@@ -3,8 +3,7 @@ import { Tabs, Tab, useMediaQuery, Box } from "@material-ui/core";
 import Button from "app/Button";
 
 import AuditTable from "common/Audit";
-import BaseDataGrid from "app/BaseDataGrid";
-import { GridColumns } from "@material-ui/data-grid";
+import NewDataGrid from "app/NewDataGrid";
 import { formatTimestampToDate } from "logic/date";
 import { VendorModal } from "features/Modals/AddVendor";
 
@@ -16,7 +15,6 @@ import SOTab from "features/Sales/SO/Datagrid";
 import POTab from "features/Purchase/PO/Datagrid";
 
 import useSWR from "swr";
-import { IItem } from "api/items";
 import { LockButton, useLock } from "common/Lock";
 
 const style = {
@@ -32,53 +30,38 @@ export default function DataGridTabs({
   mutateBoms,
   values,
 }: {
-  selectedRow: IItem;
+  selectedRow: any;
   boms?: { result: any[]; total: number };
   values: any;
   mutateBoms: any;
 }) {
   const [activeTab, setActiveTab] = useState(0);
   const [addVendorModal, setAddVendorModal] = useState(false);
-
   const { setLock } = useLock();
-
+  const selected = selectedRow?.result?.find(() => true);
   const { data: itemUsage } = useSWR<{ result: any[]; total: number }>(
-    activeTab === 5 ? (selectedRow && selectedRow.id ? `/usage?ItemId=${selectedRow.id}` : null) : null
+    activeTab === 5 ? (selectedRow && selected.id ? `/usage?ItemId=${selected.id}` : null) : null
   );
 
-  const usageCols = useMemo<GridColumns>(
+  const usageCols = useMemo(
     () => [
+      { name: "soNumber", header: "SO NO.", render: ({ data }: any) => data?.SOId?.number, flex: 1 },
+      { name: "unit", header: "Unit NO.", render: ({ data }: any) => data?.UnitId?.number, flex: 1 },
       {
-        field: "soNumber",
-        headerName: "SO NO.",
-        valueFormatter: (params) => params.row?.SOId?.number,
-        flex: 1,
-      },
-      {
-        field: "unit",
-        headerName: "Unit NO.",
-        valueFormatter: (params) => params.row?.UnitId?.number,
-        flex: 1,
-      },
-      {
-        field: "unitName",
-        headerName: "Device NO.",
-        valueFormatter: (params) => {
-          let serial = params.row?.UnitId?.serial.split("-");
+        name: "unitName",
+        header: "Device NO.",
+        render: ({ data }: any) => {
+          let serial = data?.UnitId?.serial.split("-");
           serial.pop();
           return serial.join("-");
         },
         flex: 1,
       },
+      { name: "count", header: "Usage", flex: 1 },
       {
-        field: "count",
-        headerName: "Usage",
-        flex: 1,
-      },
-      {
-        field: "soDate",
-        headerName: "SO Date",
-        valueFormatter: (params) => formatTimestampToDate(params.row?.SOId?.createdAt),
+        name: "soDate",
+        header: "SO Date",
+        render: ({ data }: any) => formatTimestampToDate(data?.SOId?.createdAt),
         flex: 1,
       },
     ],
@@ -139,12 +122,7 @@ export default function DataGridTabs({
         <POTab onRowSelected={() => {}} params={{ ItemId: selectedRow.id }} style={{ height: "64vh" }} />
       )}
       {activeTab === 5 && (
-        <BaseDataGrid
-          cols={usageCols}
-          rows={itemUsage?.result || []}
-          onRowSelected={() => {}}
-          height={"calc(100% - 60px)"}
-        />
+        <NewDataGrid columns={usageCols} url={`/usage?ItemId=${selected.id}`} onRowSelected={(r) => {}} />
       )}
       {activeTab === 6 && <NotesTab itemId={selectedRow.id} model="item" />}
       {activeTab === 7 && <AuditTable itemId={selectedRow.id} />}

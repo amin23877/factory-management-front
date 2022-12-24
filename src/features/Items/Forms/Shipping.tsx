@@ -12,6 +12,8 @@ interface IForm {
 }
 
 export default function ShippingTab({ setFieldValue, values, getFieldProps, add }: IForm) {
+  const selected = values.result.find(() => true);
+
   const { lock } = useLock();
   return (
     <Box display="grid" gridTemplateColumns="1fr 1fr" gridColumnGap={10} gridRowGap={10} mt={1}>
@@ -22,34 +24,34 @@ export default function ShippingTab({ setFieldValue, values, getFieldProps, add 
         getOptionList={(r) => r?.result || []}
         getOptionValue={(i) => i.id}
         path="/vendor"
-        choseItem={values.preferredVendor}
-        value={values.preferredVendor}
+        choseItem={selected.preferredVendor}
+        value={selected.preferredVendor}
         disabled={!add && lock}
         onChange={(e, nv) => setFieldValue("preferredVendor", nv.id)}
       />
       <TextField
         type="number"
         label="Weight"
-        value={values.weight}
+        value={selected.weight}
         {...getFieldProps("weight")}
         disabled={!add && lock}
       />
       <FormControlLabel
-        checked={values.notShippable}
+        checked={selected.notShippable}
         label="Not Shippable"
         {...getFieldProps("notShippable")}
         disabled={!add && lock}
         control={<Checkbox size="small" />}
       />
       <FormControlLabel
-        checked={values.shippingChecklistRequired}
+        checked={selected.shippingChecklistRequired}
         label="Shipping Checklist Required"
         {...getFieldProps("shippingChecklistRequired")}
         disabled={!add && lock}
         control={<Checkbox size="small" />}
       />
       <FormControlLabel
-        checked={values.shippableOnBOM}
+        checked={selected.shippableOnBOM}
         label="Shippable On BOM"
         {...getFieldProps("shippableOnBOM")}
         disabled={!add && lock}

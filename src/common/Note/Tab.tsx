@@ -7,31 +7,32 @@ import useSWR from "swr";
 import NoteModal from "./Modal";
 import Button from "app/Button";
 import BaseDataGrid from "app/BaseDataGrid";
+import NewDataGrid from "app/NewDataGrid";
 
 import { formatTimestampToDate } from "logic/date";
 import { INote } from "api/note";
 
 import { useLock } from "../Lock";
 
-const columns: GridColumns = [
+const columns = [
   {
-    field: "date",
-    headerName: "Date",
-    valueFormatter: (params) => formatTimestampToDate(params.row?.date),
+    name: "date",
+    header: "Date",
+    // valueFormatter: (params) => formatTimestampToDate(params.row?.date),
     width: 120,
   },
   {
-    field: "creator",
-    headerName: "Creator",
+    name: "creator",
+    header: "Creator",
     width: 180,
-    valueFormatter: (params) => params.row?.EmployeeId?.username,
+    // valueFormatter: (params) => params.row?.EmployeeId?.username,
   },
-  { field: "subject", headerName: "Subject", width: 300 },
-  { field: "note", headerName: "Note", flex: 1 },
+  { name: "subject", header: "Subject", width: 300 },
+  { name: "note", header: "Note", flex: 1 },
 ];
 
 export default function NoteTab({ itemId, model }: { model: string; itemId: string }) {
-  const { data } = useSWR(`/note/${model}/${itemId}`);
+  // const { data } = useSWR(`/note/${model}/${itemId}`);
   const [addModal, setAddModal] = useState(false);
   const [selected, setSelected] = useState<INote>();
   const { lock } = useLock();
@@ -51,9 +52,19 @@ export default function NoteTab({ itemId, model }: { model: string; itemId: stri
             Add
           </Button>
         </Box>
-        <BaseDataGrid
+        {/* <BaseDataGrid
           cols={columns}
           rows={data || []}
+          onRowSelected={(r) => {
+            if (!lock) {
+              setSelected(r);
+              setAddModal(true);
+            }
+          }}
+        /> */}
+        <NewDataGrid
+          columns={columns}
+          url={`/notes/${model}/${itemId}`}
           onRowSelected={(r) => {
             if (!lock) {
               setSelected(r);
