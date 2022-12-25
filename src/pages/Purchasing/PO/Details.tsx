@@ -17,6 +17,7 @@ import { LockButton, LockProvider } from "common/Lock";
 import { useParams } from "react-router-dom";
 import FormTabs from "features/Purchase/PO/FormTabs";
 import DataGridTabs from "features/Purchase/PO/DataGridTabs";
+import Button from "app/Button";
 
 export default function Details({ onDone }: { onDone?: () => void }) {
   const phone = useMediaQuery("(max-width:900px)");
@@ -50,6 +51,9 @@ export default function Details({ onDone }: { onDone?: () => void }) {
                 <BasePaper>
                   <UpdateForm values={values} errors={errors} handleBlur={handleBlur} handleChange={handleChange} />
                   <Box display="flex" width="100%" justifyContent="center" alignItems="center" mt={1}>
+                    <Button type="submit" kind="edit">
+                      Save
+                    </Button>
                     <LockButton />
                   </Box>
                 </BasePaper>

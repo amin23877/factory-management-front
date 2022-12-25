@@ -7,7 +7,6 @@ import Tab from "@material-ui/core/Tab";
 import {
   AddRounded,
   DeleteRounded,
-  PrintRounded,
   LocalOfferRounded,
   PostAddRounded,
   ListAltRounded,
@@ -144,7 +143,7 @@ function Index() {
                     </IconButton>
                   </ListItem>
                   <ListItem>
-                    <IconButton onClick={() => setConfirm(true)} disabled={lock}>
+                    <IconButton onClick={() => setConfirm(true)} disabled={lock} title="delete this po">
                       <DeleteRounded />
                     </IconButton>
                   </ListItem>
@@ -169,11 +168,6 @@ function Index() {
                       </ListItem>
                     </>
                   )}
-                  <ListItem>
-                    <IconButton>
-                      <PrintRounded />
-                    </IconButton>
-                  </ListItem>
                 </List>
               </Box>
             </Box>
