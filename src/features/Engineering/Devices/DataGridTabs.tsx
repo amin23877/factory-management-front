@@ -36,9 +36,7 @@ export default function DataGridsTabs({
   sales?: boolean;
   onFlagSelected: (a: any) => void;
 }) {
-  console.log("selectedRowDevices: ", selectedRow);
   const selected = selectedRow?.result?.find(() => true);
-  console.log("selectedDevices: ", selected);
 
   const phone = useMediaQuery("(max-width:900px)");
   const { setLock, lock } = useLock();
@@ -61,7 +59,6 @@ export default function DataGridsTabs({
   //   activeTab === 10 ? (selectedRow && selected.id ? `/qccase/item/${selected.id}` : null) : null
   // );
   const { data: flags } = useSWR(`/qccase/item/${selected.id}`);
-  console.log("flags: ", flags);
 
   const serviceCols = [
     { name: "no", header: "ID", width: 150 },
