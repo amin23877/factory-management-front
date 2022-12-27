@@ -1,4 +1,4 @@
-import React, { Suspense, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Switch, Route } from "react-router-dom";
 import { useHistory } from "react-router";
 import { Box, CssBaseline, useTheme } from "@material-ui/core";
@@ -22,9 +22,13 @@ import BottomNav from "app/BottomNav";
 
 import ChatDrawer from "features/Chat/Drawer";
 
+import { useSelector } from "react-redux";
+import { selectSession } from "features/Session/sessionsSlice";
+import { VerifyEmail } from "features/Modals/VerifyEmail";
 import { PortalProvider } from "logic/PortalContext";
 import { AppBarStation } from "logic/PortalContext/Stations";
 import { LockProvider } from "common/Lock";
+import Toast from "app/Toast";
 
 const Production = React.lazy(() => import("./Production"));
 const Purchase = React.lazy(() => import("./Purchasing"));
@@ -43,7 +47,6 @@ const Activity = React.lazy(() => import("../pages/Activity"));
 const Notification = React.lazy(() => import("../pages/Notification"));
 const Page404 = React.lazy(() => import("../pages/404"));
 
-const ServiceDetails = React.lazy(() => import("../pages/ServiceDetails"));
 const QuoteDetails = React.lazy(() => import("../pages/QuoteDetails"));
 const SODetails = React.lazy(() => import("../pages/SODetails"));
 const CustomerDetails = React.lazy(() => import("../pages/CustomerDetails"));
@@ -136,11 +139,19 @@ export default function PanelRouter() {
   const theme = useTheme();
   const classes = useStyles();
   const history = useHistory();
+  const session = useSelector(selectSession);
 
   const [value, setValue] = React.useState("/panel/");
 
   const [mainDrawerOpen, setMainDrawerOpen] = useState(false);
   const [chatDrawerOpen, setChatDrawerOpen] = useState(false);
+  const [openEmailModal, setOpenEmailModal] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (session.session && !session?.session?.email) {
+      setOpenEmailModal(true);
+    }
+  }, [session]);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
     setValue(newValue);
@@ -160,6 +171,16 @@ export default function PanelRouter() {
       <PortalProvider>
         <div style={{ display: "flex" }} className={classes.root}>
           <CssBaseline />
+          <VerifyEmail
+            open={openEmailModal}
+            onClose={() => {
+              Toast("You must add an email before continue!", "error");
+            }}
+            onDone={() => {
+              setOpenEmailModal(false);
+            }}
+            employeeId={session?.session?.id}
+          />
           <AppBar
             position="fixed"
             className={clsx(classes.appBar, {
@@ -197,8 +218,8 @@ export default function PanelRouter() {
               <TopAppBar
                 isChatOpen={chatDrawerOpen}
                 onOpenChatClicked={() => {
-                  // setChatDrawerOpen(true);
-                  // setMainDrawerOpen(false);
+                  setChatDrawerOpen(true);
+                  setMainDrawerOpen(false);
                 }}
               />
             </Toolbar>
@@ -248,9 +269,9 @@ export default function PanelRouter() {
                   <Route exact path="/panel/notification" component={Notification} />
                   <Route exact path="/panel/dashboard" component={Dashboard} />
                   <Route exact path="/panel/settings" component={Settings} />
-                  <Route exact path="/panel/roles" component={Roles} />
                   <Route exact path="/panel/projects" component={Projects} />
                   <Route exact path="/panel/activity" component={Activity} />
+                  <Route exact path="/panel/roles" component={Roles} />
 
                   <Route path="/panel/shipping" component={ShippingAndReceiVing} />
                   <Route path="/panel/engineering" component={Engineering} />
@@ -260,7 +281,6 @@ export default function PanelRouter() {
                   <Route path="/panel/purchase" component={Purchase} />
                   <Route path="/panel/production" component={Production} />
 
-                  <Route exact path="/panel/service/:serviceId" component={ServiceDetails} />
                   <Route exact path="/panel/quote/:quoteNumber" component={QuoteDetails} />
                   <Route exact path="/panel/so/:soNumber" component={SODetails} />
                   {/* TODO: change customer to client, everywhere, there are links to this page */}

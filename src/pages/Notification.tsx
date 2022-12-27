@@ -37,7 +37,7 @@ function getNotificationBody(notification: notificationType) {
 
 function getNotificationLink(notification: notificationType) {
   if (notification.type === "Engineering Approval" && notification?.data?.id) {
-    return `/panel/inventory/${notification?.data?.id?.id}`;
+    return `/panel/inventory/items/${notification?.data?.id?.id}`;
   } else if (notification.type === "Purchasing Required") {
     return `/panel/purchase`;
   }

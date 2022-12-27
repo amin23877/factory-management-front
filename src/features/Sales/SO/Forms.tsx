@@ -8,7 +8,6 @@ import {
   Paper,
   makeStyles,
   useMediaQuery,
-  ButtonGroup,
   Button,
 } from "@material-ui/core";
 
@@ -31,7 +30,6 @@ import { formatTimestampToDate } from "logic/date";
 import SOCus from "PDFTemplates/SOCus";
 import SORep from "PDFTemplates/SORep";
 import SOAcc from "PDFTemplates/SOAcc";
-import { LockOpenRounded } from "@material-ui/icons";
 // import { getPO } from "api/po";
 
 const useStyles = makeStyles({
@@ -46,17 +44,21 @@ export const GeneralForm = ({
   onChangeInit,
   values,
   setFieldValue,
+  add,
 }: {
   values: any;
   handleChange: (a: any) => void;
   handleBlur: (a: any) => void;
   onChangeInit: (data: any) => void;
   setFieldValue: any;
+  add?: boolean;
 }) => {
+  console.log("values: ", values);
+
   const classes = useStyles();
   const phone = useMediaQuery("(max-width:900px)");
   const tablet = useMediaQuery("(max-width:1500px)");
-  const { lock, setLock } = useLock();
+  const { lock } = useLock();
 
   return (
     <>
@@ -72,7 +74,7 @@ export const GeneralForm = ({
           label="SO NO."
           onChange={handleChange}
           onBlur={handleBlur}
-          disabled={lock}
+          disabled={!add && lock}
         />
         <AsyncCombo
           url="/quote"
@@ -81,7 +83,7 @@ export const GeneralForm = ({
           filterBy="number"
           getOptionLabel={(q) => q?.number}
           getOptionSelected={(o, v) => o.id === v.id}
-          disabled={lock}
+          disabled={!add && lock}
         />
         <TextField
           value={values.invoiceNumber}
@@ -89,7 +91,7 @@ export const GeneralForm = ({
           label={values.invoiceLabel || "Invoice"}
           onChange={handleChange}
           onBlur={handleBlur}
-          disabled={lock}
+          disabled={!add && lock}
         />
         <AsyncCombo
           url="/service"
@@ -98,9 +100,9 @@ export const GeneralForm = ({
           filterBy="name"
           getOptionLabel={(q) => q?.name}
           getOptionSelected={(o, v) => o.id === v.id}
-          disabled={lock}
+          disabled={!add && lock}
         />
-        <TextField value={formatTimestampToDate(values.date)} name="date" label="SO Date" disabled={lock} />
+        <TextField value={formatTimestampToDate(values.date)} name="date" label="SO Date" disabled={!add && lock} />
 
         <AsyncCombo
           url="/project"
@@ -109,30 +111,41 @@ export const GeneralForm = ({
           filterBy="name"
           getOptionLabel={(q) => q?.name}
           getOptionSelected={(o, v) => o.id === v.id}
-          disabled={lock}
+          disabled={!add && lock}
         />
-        <TextField value={values.ProjectId?.location} name="projectLocation" label="Project Loc." disabled={lock} />
-        <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} disabled={lock} />
+        <TextField
+          value={values.ProjectId?.location}
+          name="projectLocation"
+          label="Project Loc."
+          disabled={!add && lock}
+        />
+        <TextField
+          value={values.leadTime}
+          name="leadTime"
+          label="Lead Time"
+          onChange={handleChange}
+          disabled={!add && lock}
+        />
         <TextField
           value={values.acknowledgeDate}
           name="acknowledgeDate"
           label="Date Ack."
           onChange={handleChange}
-          disabled={lock}
+          disabled={!add && lock}
         />
         <TextField
           value={values.paymentTerms}
           name="paymentTerms"
           label="Payment Term"
           onChange={handleChange}
-          disabled={lock}
+          disabled={!add && lock}
         />
         <TextField
           value={values.freightTerms}
           name="freightTerms"
           label="Freight Terms"
           onChange={handleChange}
-          disabled={lock}
+          disabled={!add && lock}
         />
         <Paper
           style={{
@@ -148,11 +161,11 @@ export const GeneralForm = ({
             classes={{ label: classes.checkboxLabel }}
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!add && lock}
           />
         </Paper>
         <Box style={{ gridColumnEnd: tablet ? "span 3" : "span 4", textAlign: "center" }}>
-          {!lock && (
+          {/* {!lock && (
             <ButtonGroup variant="contained" color="primary" aria-label="split button">
               <Button type="submit">save</Button>
               <Button
@@ -173,8 +186,8 @@ export const GeneralForm = ({
             //   <Button type="submit">Save</Button>
             //   <LockButton />
             // </ButtonGroup>
-          )}
-          {lock && <LockButton />}
+          )} */}
+          {!add && <LockButton />}
         </Box>
       </Box>
     </>

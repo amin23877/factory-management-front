@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { Box, LinearProgress, Step, StepLabel, Stepper, Typography } from "@material-ui/core";
+import { Box, LinearProgress, Typography } from "@material-ui/core";
 import { useFormik } from "formik";
 
 import Dialog from "app/Dialog";
@@ -11,6 +11,7 @@ import LineItems from "./LineItems";
 import { createPO } from "api/po";
 import { exportPdf } from "logic/pdf";
 import { createAModelDocument } from "api/document";
+import Stepper from "app/Stepper";
 
 export default function AddPOModal({
   open,
@@ -63,17 +64,9 @@ export default function AddPOModal({
   return (
     <Dialog open={open} title="Add new purchase order" fullScreen onClose={onClose}>
       <Box p={2} height={600}>
-        <Stepper activeStep={step}>
-          <Step>
-            <StepLabel>General information</StepLabel>
-          </Step>
-          <Step>
-            <StepLabel>Final</StepLabel>
-          </Step>
-          <Step>
-            <StepLabel>Document</StepLabel>
-          </Step>
-        </Stepper>
+        <Box mb={2}>
+          <Stepper step={step} setStep={setStep} steps={["General Information", "Final", "Document"]} />
+        </Box>
         {step === 0 && (
           <Box display="flex" justifyContent="center" px={5}>
             <Box flex={1}>

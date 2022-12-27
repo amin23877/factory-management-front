@@ -1,0 +1,100 @@
+import React, { useRef, useState } from "react";
+import { Box, Tabs, Tab, Typography, useMediaQuery } from "@material-ui/core";
+
+import DeviceQRCode from "app/QRCode";
+import { exportPdf } from "logic/pdf";
+import PhotoTab from "common/PhotoTab";
+import LevelsTab from "common/Level/Tab";
+import PricingTab from "features/Items/Forms/Pricing";
+
+import Button from "app/Button";
+
+import { IItem } from "api/items";
+import { LockButton, useLock } from "common/Lock";
+
+export default function FormTabs({
+  boms,
+  handleBlur,
+  handleChange,
+  values,
+  selectedRow,
+  sales,
+  setFieldValue,
+  getFieldProps,
+}: {
+  handleBlur: any;
+  handleChange: any;
+  boms?: { result: any[]; total: number };
+  values: any;
+  selectedRow: any;
+  sales?: boolean;
+  setFieldValue: any;
+  getFieldProps: any;
+}) {
+  const selected = selectedRow?.result?.find(() => true);
+  const qrCode = useRef<HTMLElement | null>(null);
+  const [moreInfoTab, setMoreInfoTab] = useState(0);
+
+  const phone = useMediaQuery("(max-width:900px)");
+  const { setLock } = useLock();
+
+  return (
+    <>
+      <Box display={"flex"} alignItems="center" mb={2} justifyContent="space-between">
+        <Tabs
+          value={moreInfoTab}
+          variant="scrollable"
+          scrollButtons={phone ? "on" : "auto"}
+          style={phone ? { maxWidth: "calc(100vw - 63px)" } : {}}
+          textColor="primary"
+          onChange={(e, v) => {
+            setMoreInfoTab(v);
+            setLock(true);
+          }}
+        >
+          <Tab label="Image" />
+          <Tab label="UPC" />
+          <Tab label="Pricing" />
+          <Tab label="Clusters and Levels" />
+        </Tabs>
+        <LockButton />
+      </Box>
+      {moreInfoTab === 0 && <PhotoTab model="item" id={selected.id} />}
+      {moreInfoTab === 1 && (
+        <Box display="flex" justifyContent="space-around" alignItems="center" maxWidth="83vw">
+          <div ref={(e) => (qrCode.current = e)}>
+            <DeviceQRCode
+              value={JSON.stringify({
+                type: "device",
+                no: selected.no,
+              })}
+            />
+            <Typography variant="subtitle1">Device Number: {selected.no}</Typography>
+            <Typography variant="subtitle1">Device Name: {selected.name}</Typography>
+          </div>
+          <Button
+            variant="contained"
+            onClick={async () => {
+              if (qrCode.current) {
+                await exportPdf(qrCode.current);
+              }
+            }}
+          >
+            Print
+          </Button>
+        </Box>
+      )}
+      {moreInfoTab === 2 && (
+        <PricingTab itemId={selected.id} boms={boms} values={values} getFieldProps={getFieldProps} />
+      )}
+      {moreInfoTab === 3 && (
+        <LevelsTab
+          values={values}
+          getFieldProps={getFieldProps}
+          setFieldValue={setFieldValue}
+          itemType={selected.class}
+        />
+      )}
+    </>
+  );
+}

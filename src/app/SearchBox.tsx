@@ -77,7 +77,7 @@ export const UnitSearchBox = () => {
           disabled={!number}
           variant="contained"
           color="primary"
-          onClick={() => unit && history.push(`/panel/production/${unit.id}`)}
+          onClick={() => unit && history.push(`/panel/production/dashboard/units/${unit.id}`)}
         >
           Redirect
         </Button>

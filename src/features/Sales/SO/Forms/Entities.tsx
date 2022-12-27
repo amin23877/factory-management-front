@@ -4,18 +4,20 @@ import useSWR from "swr";
 
 import TextField from "app/TextField";
 import AsyncCombo from "common/AsyncCombo";
-import { LockButton, LockProvider, useLock } from "common/Lock";
+import { useLock } from "common/Lock";
 
-function EntitiesContent({
+export default function Entities({
   handleChange,
   handleBlur,
   values,
   setFieldValue,
+  add,
 }: {
   values: any;
   handleChange: (a: any) => void;
   handleBlur: (a: any) => void;
   setFieldValue: any;
+  add?: boolean;
 }) {
   const phone = useMediaQuery("(max-width:900px)");
   const tablet = useMediaQuery("(max-width:1500px)");
@@ -32,7 +34,6 @@ function EntitiesContent({
       mt="5px"
     >
       <Box display="flex" flexDirection="column" style={{ gap: 10 }} my={1}>
-        <LockButton />
         <AsyncCombo
           label="Rep / Agency"
           filterBy="name"
@@ -43,7 +44,7 @@ function EntitiesContent({
           onChange={(e, nv) => {
             setFieldValue("RepId", nv?.id);
           }}
-          disabled={lock}
+          disabled={!add && lock}
         />
         <TextField disabled label="Email" value={values?.RepId?.email} />
         <TextField disabled label="Phone" value={values?.RepId?.phone} />
@@ -52,18 +53,6 @@ function EntitiesContent({
       </Box>
 
       <Box display="flex" flexDirection="column" style={{ gap: 10 }} my={1}>
-        <AsyncCombo
-          label="Rep / Agency"
-          filterBy="name"
-          getOptionLabel={(o) => o?.name}
-          getOptionSelected={(o, v) => o.id === v.id}
-          url="/rep"
-          value={values.RepId}
-          onChange={(e, nv) => {
-            setFieldValue("RepId", nv?.id);
-          }}
-          disabled={lock}
-        />
         <TextField value={values.RepId?.address} label="Address" disabled />
         <TextField
           value={values.RepId?.city}
@@ -101,7 +90,7 @@ function EntitiesContent({
           onChange={(e, nv) => {
             setFieldValue("ClientId", nv?.id);
           }}
-          disabled={lock}
+          disabled={!add && lock}
         />
         <TextField
           value={contact ? `${contact?.firstName} ${contact?.lastName}` : ""}
@@ -129,33 +118,10 @@ function EntitiesContent({
         style={{ gap: 10, gridColumnEnd: phone ? "span 1" : tablet ? "span 3" : "span 1" }}
         my={1}
       >
-        <TextField label="24 Hour Contact" value={values.twentyFourContact} disabled={lock} />
-        <TextField disabled={lock} label="24H.C. Print" value={values.twentyFourContactPrint} />
-        <TextField disabled={lock} label="24H.C. Email" value={values.twentyFourEmail} />
+        <TextField label="24 Hour Contact" value={values.twentyFourContact} disabled={!add && lock} />
+        <TextField disabled={!add && lock} label="24H.C. Print" value={values.twentyFourContactPrint} />
+        <TextField disabled={!add && lock} label="24H.C. Email" value={values.twentyFourEmail} />
       </Box>
     </Box>
-  );
-}
-
-export default function Entities({
-  handleChange,
-  handleBlur,
-  values,
-  setFieldValue,
-}: {
-  values: any;
-  handleChange: (a: any) => void;
-  handleBlur: (a: any) => void;
-  setFieldValue: any;
-}) {
-  return (
-    <LockProvider>
-      <EntitiesContent
-        values={values}
-        handleChange={handleChange}
-        handleBlur={handleBlur}
-        setFieldValue={setFieldValue}
-      />
-    </LockProvider>
   );
 }

@@ -36,6 +36,7 @@ export default function ClusterForm({
 
   const handleDelete = () => {
     Confirm({
+      text: `you are going to delete a Cluster with name ${values.deviceName} !`,
       onConfirm: async () => {
         try {
           if (values && values.id) {
@@ -78,7 +79,6 @@ export default function ClusterForm({
         disabled={lock}
       />
       <Box display="flex" alignItems="center" style={{ gap: 8 }}>
-        <LockButton />
         <Button kind={values && values?.id ? "edit" : "add"} type="submit" disabled={lock}>
           Save
         </Button>

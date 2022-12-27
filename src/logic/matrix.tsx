@@ -4,6 +4,7 @@ import { EditRounded } from "@material-ui/icons";
 import { IMatrix } from "../api/matrix";
 import DataGridAction from "common/DataGridAction";
 import { openRequestedSinglePopup } from "./window";
+import { ReactComponent as NarrowIcon } from "assets/icons/tableIcons/narrowDown.svg";
 
 const defaultColumns = ["Device Number", "Device Description"];
 const excludeColumns = ["fakeName"];
@@ -18,7 +19,7 @@ export const generateRows = ({ levels, tableData }: { tableData: IMatrix; levels
     });
     parts = td.device?.recs || [];
     parts.forEach((p: any) => {
-      tdParts[p.name] = p?.ItemId?.no || p?.ItemNo || "";
+      tdParts[p.columnId?.name] = p?.ItemId?.no || p?.ItemNo || "";
     });
 
     return {
@@ -28,7 +29,7 @@ export const generateRows = ({ levels, tableData }: { tableData: IMatrix; levels
       parts,
       DeviceId: (td.device as any)?._id || td.device?.id,
       "Device Number": td.device?.no || td?.fakeName,
-      "Device Description": td.device?.name,
+      "Device Description": td.description || td.device?.name,
     };
   });
 };
@@ -36,7 +37,8 @@ export const generateRows = ({ levels, tableData }: { tableData: IMatrix; levels
 export const generateDataGridColumns = (
   columns: string[],
   onRename: (header: string) => void,
-  onAddDevice: (d: any) => void
+  onAddDevice: (d: any) => void,
+  levels: string[]
 ) => {
   const dtCols: any = [];
 
@@ -51,12 +53,8 @@ export const generateDataGridColumns = (
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <span>{value}</span>
             {data?.DeviceId ? (
-              <div style={{ height: 22 }}>
-                <DataGridAction
-                  icon="view"
-                  controlledLock={false}
-                  onClick={() => openRequestedSinglePopup({ url: `/panel/inventory/${data?.DeviceId}` })}
-                />
+              <div onClick={() => openRequestedSinglePopup({ url: `/panel/inventory/items/${data?.DeviceId}` })}>
+                <NarrowIcon />
               </div>
             ) : (
               <DataGridAction icon="add" controlledLock={false} onClick={() => onAddDevice(data)} />
@@ -70,6 +68,28 @@ export const generateDataGridColumns = (
         minWidth: 120,
         editable: false,
         header: <Typography variant="caption">{c}</Typography>,
+      });
+    } else if (levels.includes(c)) {
+      dtCols.push({
+        name: c,
+        minWidth: 100,
+        editable: false,
+        sortable: false,
+        header: (
+          <div style={{ width: 80, display: "flex", alignItems: "center" }}>
+            <Typography variant="caption">{c}</Typography>
+            <Button size="small" onClick={() => onRename(c)}>
+              <EditRounded htmlColor="white" fontSize="small" />
+            </Button>
+          </div>
+        ),
+        render: ({ value, data }: any) => {
+          return (
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <span>{data[c]?.value + "" + data[c]?.uom}</span>
+            </div>
+          );
+        },
       });
     } else {
       dtCols.push({
@@ -85,10 +105,16 @@ export const generateDataGridColumns = (
             </Button>
           </div>
         ),
+        render: ({ data }: any) => {
+          return (
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <span>{data[c]}</span>
+            </div>
+          );
+        },
       });
     }
   });
-
   return dtCols;
 };
 
@@ -128,14 +154,18 @@ export const extractColumns = ({
 export const extractLevels = (tableData: IMatrix) => {
   const levels = new Set<string>();
   tableData[0] && Object.keys(tableData[0]).forEach((k) => k !== "device" && levels.add(k));
-
   return Array.from(levels);
+};
+
+export const extractEmptyColumns = (newCols: any) => {
+  const emptyCols = new Set<string>();
+  newCols[0] && newCols.forEach((k: any) => emptyCols.add(k.name));
+  return Array.from(emptyCols);
 };
 
 export const extractPartNames = (tableData: any[]) => {
   const parts = new Set<string>();
   const data = tableData.map((item) => ({ ...(item?.device?.recs || []) }));
-
-  data.forEach((data: any) => Object.keys(data).forEach((r: any) => parts.add(data[r].name || "No-Name")));
+  data.forEach((data: any) => Object.keys(data).forEach((r: any) => parts.add(data[r]?.columnId?.name || "No-Name")));
   return Array.from(parts);
 };

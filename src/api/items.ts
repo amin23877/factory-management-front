@@ -35,6 +35,7 @@ export interface IItem {
   dontTrackQoh: boolean;
   dontOrderOnPOs: boolean;
   class: string;
+  canBom: boolean;
   // end detail section
 
   // start pricing section
@@ -106,13 +107,21 @@ export interface IItem {
   testTime: number;
   laborCost: number;
 
+  bomCheck?: boolean;
+  vendorCheck?: boolean;
+  docCheck?: boolean;
+
   services: any[];
+  usage?: number;
 }
 
 export const AddItemInitialValues = {};
 
 export const createItem = (itemData: any) => {
   return post("/item", itemData);
+};
+export const duplicateItem = (itemId: string, itemData: any) => {
+  return post(`/item/${itemId}/duplicate`, itemData);
 };
 export const addImage = (itemId: string, file: any) => {
   const data = new FormData();
@@ -167,4 +176,17 @@ export const convertToItem = (serviceId: string) => {
 
 export const convertToService = (itemId: string) => {
   return patch(`/item/${itemId}/convert`, {});
+};
+
+export const patchItem = (
+  itemId: string,
+  data: {
+    lastCountDate: any;
+    lastCount: number;
+    usedInQuarterAdj: number;
+    usedInHalfAdj: number;
+    usedInYearAdj: number;
+  }
+) => {
+  return patch(`/item/${itemId}`, data);
 };

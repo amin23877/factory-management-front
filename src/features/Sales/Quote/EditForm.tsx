@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Tabs, Tab, Box, Typography, LinearProgress, useMediaQuery } from "@material-ui/core";
+import React from "react";
+import { Box, Typography, LinearProgress, useMediaQuery } from "@material-ui/core";
 import { Form, Formik } from "formik";
 import { mutate } from "swr";
 
@@ -10,18 +10,13 @@ import Button from "app/Button";
 import { GeneralForm } from "./Forms";
 // import Entities from "./Forms/Entities";
 // import Addresses from "./Forms/Addresses";
-import Status from "./Forms/Status";
-import Metrics from "./Forms/Metrics";
-import Shipping from "./../SO/Forms/Shipping";
-import Billing from "./../SO/Forms/Billing";
-import Entities from "./../SO/Forms/Entities";
 
 import { IQuote, updateQuote } from "api/quote";
 import { getModifiedValues } from "logic/utils";
-import { LockButton } from "common/Lock";
+import { LockButton, LockProvider } from "common/Lock";
+import FormTabs from "./FormTabs";
 
 export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
-  const [activeTab, setActiveTab] = useState(0);
   const phone = useMediaQuery("(max-width:900px)");
 
   const handleSubmit = async (data: IQuote, { setSubmitting }: { setSubmitting: (a: boolean) => void }) => {
@@ -58,38 +53,15 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
               </Box>
             </BasePaper>
             <BasePaper style={{ flex: 1 }}>
-              <Tabs
-                value={activeTab}
-                textColor="primary"
-                onChange={(e, nv) => setActiveTab(nv)}
-                variant="scrollable"
-                style={{ maxWidth: 700 , marginBottom:"10px" }}
-              >
-                {/* <Tab label="Entities" />
-                <Tab label="Addresses" />*/}
-                <Tab label="Entities" />
-                <Tab label="Shipping" />
-                <Tab label="Billing" />
-                <Tab label="Status" />
-                <Tab label="Metrics" />
-              </Tabs>
-
-              {/* {activeTab === 0 && (
-                <Entities values={values} setFieldValue={setFieldValue} getFieldProps={getFieldProps} />
-              )}
-              {activeTab === 1 && <Addresses getFieldProps={getFieldProps} />} */}
-              {activeTab === 0 && (
-                <Entities
+              <LockProvider>
+                <FormTabs
                   setFieldValue={setFieldValue}
                   values={values}
                   handleBlur={handleBlur}
                   handleChange={handleChange}
+                  getFieldProps={getFieldProps}
                 />
-              )}
-              {activeTab === 1 && <Shipping getFieldProps={getFieldProps} />}
-              {activeTab === 2 && <Billing getFieldProps={getFieldProps} />}
-              {activeTab === 3 && <Status getFieldProps={getFieldProps} />}
-              {activeTab === 4 && <Metrics values={values} getFieldProps={getFieldProps} />}
+              </LockProvider>
             </BasePaper>
           </Box>
         </Form>

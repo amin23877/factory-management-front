@@ -1,77 +1,140 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box } from "@material-ui/core";
-import { Form, Formik } from "formik";
+import { Formik, Form } from "formik";
+import { useParams } from "react-router-dom";
+import * as Yup from "yup";
 
 import Dialog from "app/Dialog";
 import TextField from "app/TextField";
 import Button from "app/Button";
 import Toast from "app/Toast";
+import useSWR from "swr";
 
-import { getModifiedValues } from "logic/utils";
-import { ILevel, createLevel, editLevel } from "api/level";
+import { createLevelTwo, editLevel } from "api/level";
 // import AsyncCombo from "common/AsyncCombo";
-import { clusterType } from "api/cluster";
+import { LockProvider, useLock } from "common/Lock";
+
+import ValidValuesForm from "./ValidValuesForm";
+import useStyles from "./styles";
+
+export interface IVals {
+  value: string;
+  uom: string;
+  id?: string;
+}
+
+const schema = Yup.object({
+  name: Yup.string().required("Name is required."),
+  clusterId: Yup.string().required(""),
+});
 
 export default function LevelModal({
+  level,
+  edit,
   open,
-  cluster,
-  initialValues,
   onClose,
   onDone,
 }: {
+  level: any;
+  edit: boolean;
   open: boolean;
-  cluster: clusterType;
-  initialValues?: ILevel;
   onClose: () => void;
   onDone?: () => void;
 }) {
-  const handleSubmit = async (data: any) => {
+  const cls = useStyles();
+  const { lock } = useLock();
+  const { clusterId } = useParams<{ clusterId: string }>();
+  const { data: allClusters } = useSWR("/level");
+  const [addArray, setAddArray] = useState([]);
+  const [deleteArray, setDeleteArray] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+
+  const selectedClusterName = allClusters?.result.find((i: any) => i.clusterId.id === clusterId);
+  const handleSubmit = async (data: any, { setSubmitting }: any) => {
+    setSubmitting(true);
     try {
-      if (initialValues && initialValues.id) {
-        const modified = getModifiedValues(data, initialValues.id);
-        await editLevel(initialValues.id, modified);
-
+      if (level?.id) {
+        await editLevel(level?.id, { ...data, add: addArray, delete: deleteArray });
         Toast("Level updated successfully", "success");
-        onDone && onDone();
         onClose();
+        onDone && onDone();
       } else {
-        await createLevel({ ...data, clusterId: cluster.id });
-
+        await createLevelTwo(data);
         Toast("Level created successfully", "success");
-        onDone && onDone();
         onClose();
+        onDone && onDone();
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
-    <Dialog open={open} onClose={onClose} title="Level">
-      <Formik initialValues={initialValues || ({} as ILevel)} onSubmit={handleSubmit}>
-        {({ getFieldProps, setFieldValue, values }) => (
+    <Dialog open={open} onClose={onClose} title={edit ? "Edit Level" : "Level"}>
+      <Formik
+        initialValues={{
+          name: level?.name || "",
+          clusterId: level?.clusterId?.id || selectedClusterName?.clusterId.id,
+          valid: level?.valid || [],
+        }}
+        onSubmit={handleSubmit}
+        validationSchema={schema}
+      >
+        {({ handleChange, handleBlur, values, setValues, touched, errors }) => (
           <Form>
-            <Box display="flex" flexDirection="column" style={{ gap: 8 }}>
-              <TextField label="Name" {...getFieldProps("name")} />
-              {/* <AsyncCombo
-                url="cluster"
-                filterBy="clusterValue"
-                getOptionLabel={(o) => o?.clusterValue || "No-Name"}
-                getOptionSelected={(o, v) => o?.id === v?.id}
-                label="Cluster"
-                onChange={(e, nv) => setFieldValue("clusterId", nv?.id)}
-                value={values.clusterId}
-              /> */}
+            <Box className={cls.formContainer}>
               <TextField
-                label="Valid Values"
-                {...getFieldProps("valid")}
-                multiline
-                rows={3}
-                helperText="Comma separated values"
+                name="name"
+                value={values.name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                label="Level Name"
+                helperText={touched.name && errors.name}
+                InputLabelProps={{ shrink: true }}
               />
-              <Button kind={initialValues?.id ? "edit" : "add"} type="submit">
-                Add
+              <TextField
+                className={cls.inp}
+                disabled
+                label="Cluster"
+                value={selectedClusterName?.clusterId.clusterValue}
+              />
+              <TextField
+                className={cls.inp}
+                name="valid"
+                value={
+                  Array.isArray(values.valid)
+                    ? values?.valid?.map((val: IVals) => val.value + " " + val.uom).join(" , ")
+                    : ""
+                }
+                onChange={handleChange}
+                onBlur={handleBlur}
+                placeholder="Valid Values"
+                label="Valid Values"
+                InputLabelProps={{ shrink: true }}
+                disabled={lock}
+                onClick={() => setOpenModal(true)}
+                onKeyDown={(e) => {
+                  e.preventDefault();
+                  setOpenModal(true);
+                }}
+              />
+              <Button kind={edit ? "edit" : "add"} type="submit" disabled={values.name === "" ? true : false}>
+                {edit ? "Save" : "Add"}
               </Button>
+            </Box>
+            <Box mt={1}>
+              <LockProvider>
+                <ValidValuesForm
+                  open={openModal}
+                  onClose={() => setOpenModal(false)}
+                  setValuesParent={setValues}
+                  valuesParent={values}
+                  setAddArray={setAddArray}
+                  setDeleteArray={setDeleteArray}
+                />
+              </LockProvider>
             </Box>
           </Form>
         )}

@@ -22,17 +22,21 @@ export const General = ({ values, errors, handleChange, handleBlur, touched }: I
   return (
     <>
       <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10} pr={1}>
-        <TextField
-          label="Unit name"
-          placeholder="Unit name"
-          name="name"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={Boolean(errors.name && touched.name)}
-          value={values?.name}
-          style={{ gridColumnEnd: "span 2" }}
-          disabled={lock}
-        />
+        <Box display={"flex"} style={{ gridColumnEnd: "span 2", alignItems: "center" }}>
+          <TextField
+            label="Unit name"
+            placeholder="Unit name"
+            name="name"
+            onChange={handleChange}
+            onBlur={handleBlur}
+            error={Boolean(errors.name && touched.name)}
+            value={values?.name}
+            style={{ flex: 1 }}
+            disabled={lock}
+          />
+          <LockButton />
+        </Box>
+
         <TextField
           multiline
           style={{ gridColumnEnd: "span 2" }}
@@ -105,7 +109,6 @@ export const Status = ({
   return (
     <>
       <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
-        <LockButton />
         <DateTimePicker
           size="small"
           value={values.warrantyExpDate}
@@ -172,7 +175,6 @@ export const Expense = ({
   return (
     <>
       <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
-        <LockButton />
         <TextField
           label="Item Labor Time"
           value={values.itemLaborTime}
@@ -232,7 +234,6 @@ export const Shipping = ({
   return (
     <>
       <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" style={{ gap: 10 }}>
-        <LockButton />
         <TextField
           label="Entity"
           value={values.entity}

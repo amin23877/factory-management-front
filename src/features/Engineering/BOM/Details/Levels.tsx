@@ -1,43 +1,55 @@
 import React, { useMemo, useState } from "react";
-import { Box } from "@material-ui/core";
+import { EditRounded } from "@material-ui/icons";
+import { Box, Tooltip } from "@material-ui/core";
 
 import NewDataGrid from "app/NewDataGrid";
 import Button from "app/Button";
-import DataGridAction from "common/DataGridAction";
 import { LockButton, LockProvider } from "common/Lock";
 import Confirm from "common/Confirm";
 import { useLock } from "common/Lock";
-import Toast from "app/Toast";
 
 import LevelModal from "../../../Level/Modal";
 
 import { splitLevelName } from "logic/levels";
 import { clusterType } from "api/cluster";
-import { deleteLevel, editLevel } from "api/level";
+import { deleteLevel } from "api/level";
 import { IVals } from "common/Level/Form";
+import { ReactComponent as DeleteIcon } from "assets/icons/tableIcons/delete.svg";
+import { formatTimestampToDate } from "logic/date";
+
+type dataType = {
+  // clusterId: { id: string; clusterValue: string };
+  // createdAt: number;
+  // id: string;
+  // name: string;
+  // updatedAt: number;
+  // valid: { value: string; uom: string; id: string };
+  rowIndex: number;
+  columnIndex: number;
+  rowId: string;
+  columnId: string;
+  value?: any;
+};
 
 function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
-  const [levelModal, setLevelsModal] = useState(false);
-  const [refresh, setRefresh] = useState(0);
+  const [levelModal, setLevelsModal] = useState<boolean>(false);
+  const [level, setLevel] = useState<dataType | null>();
+  const [edit, setEdit] = useState<boolean>(false);
+  const [refresh, setRefresh] = useState<number>(0);
   const { lock } = useLock();
 
-  const handleEdit = async ({ columnId, value, data }: any) => {
-    try {
-      await editLevel(data.id, { [columnId]: value });
-
-      Toast("Record updated", "success");
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setRefresh((p) => p + 1);
-    }
+  const handleEdit = (data: dataType) => {
+    setLevelsModal(true);
+    setLevel(data);
+    setEdit(true);
   };
 
-  const handleDelete = (id: string) => {
+  const handleDelete = (data: any) => {
     Confirm({
+      text: `you are going to delete a Level with name ${splitLevelName(data.name)} !`,
       onConfirm: async () => {
         try {
-          await deleteLevel(id);
+          await deleteLevel(data.id);
         } catch (error) {
           console.log(error);
         } finally {
@@ -60,15 +72,23 @@ function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
         },
         flex: 1,
       },
-      { name: "createdAt", header: "Date", type: "date", editable: false },
       {
-        name: "actions",
-        header: "",
-        defaultWidth: 80,
+        name: "createdAt",
+        header: "Date",
         editable: false,
         render: ({ data }: any) => (
-          <div>
-            <DataGridAction icon="delete" onClick={() => data.id && handleDelete(data.id)} activeColor="red" />
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div>
+              <Tooltip title={formatTimestampToDate(data.createdAt)}>
+                <span>{formatTimestampToDate(data.createdAt)}</span>
+              </Tooltip>
+            </div>
+            <div onClick={() => data.id && handleEdit(data)} style={{ cursor: lock ? "auto" : "pointer" }}>
+              <EditRounded />
+            </div>
+            <div onClick={() => data.id && handleDelete(data)} style={{ cursor: lock ? "auto" : "pointer" }}>
+              <DeleteIcon title="delete" />
+            </div>
           </div>
         ),
       },
@@ -79,14 +99,23 @@ function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
   return (
     <>
       <LevelModal
-        cluster={selectedRow}
+        level={level}
         open={levelModal}
         onClose={() => setLevelsModal(false)}
         onDone={() => setRefresh((p) => p + 1)}
+        edit={edit}
       />
       <Box display="flex" alignItems="center">
         <div style={{ marginBottom: 8, marginRight: "auto" }} />
-        <Button kind="add" onClick={() => setLevelsModal(true)} disabled={lock}>
+        <Button
+          kind="add"
+          onClick={() => {
+            setLevelsModal(true);
+            setLevel(null);
+            setEdit(false);
+          }}
+          disabled={lock}
+        >
           Add Level
         </Button>
         <LockButton />

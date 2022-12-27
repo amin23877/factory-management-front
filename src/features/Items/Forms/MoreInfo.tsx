@@ -1,11 +1,21 @@
 import { Box, useMediaQuery } from "@material-ui/core";
-import { LockButton, LockProvider, useLock } from "common/Lock";
+import { useLock } from "common/Lock";
 import React from "react";
 import TextField from "app/TextField";
 
-export const MoreInfo = ({ getFieldProps, values }: { getFieldProps: any; values?: any }) => {
+export default function MoreInfoTab({
+  getFieldProps,
+  values,
+  add,
+}: {
+  getFieldProps: any;
+  values?: any;
+  add?: boolean;
+}) {
   const phone = useMediaQuery("(max-width:900px)");
   const { lock } = useLock();
+  const selected = values?.result?.find(() => true);
+
   return (
     <Box
       mt={1}
@@ -14,22 +24,63 @@ export const MoreInfo = ({ getFieldProps, values }: { getFieldProps: any; values
       gridColumnGap={10}
       gridRowGap={10}
     >
-      <LockButton />
-      <TextField label="Manufacturer" {...getFieldProps("manufacturer")} disabled={lock} />
-      <TextField label="Man. No." {...getFieldProps("manufacturerProductNumber")} disabled={lock} />
-      <TextField label="Lead Time" {...getFieldProps("leadTime")} disabled={lock} />
-      <TextField label="Quickbook ID" {...getFieldProps("qbId")} disabled={lock} />
-      <TextField label="QB Type" {...getFieldProps("qbType")} disabled={lock} />
-      <TextField label="Type" {...getFieldProps("type")} disabled={lock} />
-      <TextField label="Category" {...getFieldProps("category")} disabled={lock} />
+      <TextField
+        name="manufacturingTime"
+        label="Manufacturer"
+        value={selected.manufacturingTime}
+        placeholder="Manufacturer"
+        disabled={!add && lock}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
+      />
+      <TextField
+        name="manufacturerProductNumber"
+        label="Man. No."
+        value={selected.manufacturerProductNumber}
+        disabled={!add && lock}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
+      />
+      <TextField
+        name="leadTime"
+        label="Lead Time"
+        value={selected.leadTime}
+        disabled={!add && lock}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
+      />
+      <TextField
+        name="qbId"
+        label="Quickbook ID"
+        value={selected.qbId}
+        disabled={!add && lock}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
+      />
+      <TextField
+        name="qbType"
+        label="QB Type"
+        value={selected.qbType}
+        disabled={!add && lock}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
+      />
+      <TextField
+        name="type"
+        label="Type"
+        value={selected.type}
+        disabled={!add && lock}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
+      />
+      <TextField
+        name="category"
+        label="Category"
+        value={selected.category}
+        disabled={!add && lock}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
+      />
     </Box>
-  );
-};
-
-export default function MoreInfoTab({ getFieldProps, values }: { getFieldProps: any; values?: any }) {
-  return (
-    <LockProvider>
-      <MoreInfo getFieldProps={getFieldProps} values={values} />
-    </LockProvider>
   );
 }

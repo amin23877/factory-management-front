@@ -8,10 +8,10 @@ import { addPhoto, deletePhoto, photoType } from "api/photo";
 import Confirm from "./Confirm";
 import UploadButton from "app/UploadButton";
 
-import { LockButton, LockProvider, useLock } from "common/Lock";
+import { useLock } from "common/Lock";
 import Toast from "app/Toast";
 
-function PhotoTabContent({ id, model }: { model: string; id: string }) {
+export default function PhotoTab({ id, model }: { model: string; id: string }) {
   const { data: photos, mutate: mutatePhotos } = useSWR<photoType[]>(`/photo/${model}/${id}`);
   const [img, setImg] = useState<any>();
   const { lock } = useLock();
@@ -36,6 +36,7 @@ function PhotoTabContent({ id, model }: { model: string; id: string }) {
 
   const handleDeletePhoto = async (id: string) => {
     Confirm({
+      text: `you are going to delete a Photo !`,
       onConfirm: async () => {
         try {
           await deletePhoto(id);
@@ -52,9 +53,6 @@ function PhotoTabContent({ id, model }: { model: string; id: string }) {
 
   return (
     <>
-      <Box display="flex" justifyContent="start">
-        <LockButton />
-      </Box>
       <Box mt={1} display="flex" justifyContent="center" alignItems="center" flexDirection="column" gridGap={10}>
         <Box display="flex" justifyContent="center" alignItems="center" gridGap={10} width="100%" flexWrap={"wrap"}>
           {photos &&
@@ -88,17 +86,9 @@ function PhotoTabContent({ id, model }: { model: string; id: string }) {
             justifyContent: "center",
           }}
         >
-          <UploadButton onChange={handleFileChange} accept="image/*" disabled={lock} />
+          <UploadButton onChange={handleFileChange} accept="image/*" />
         </div>
       </Box>
     </>
-  );
-}
-
-export default function PhotoTab({ id, model }: { model: string; id: string }) {
-  return (
-    <LockProvider>
-      <PhotoTabContent id={id} model={model} />
-    </LockProvider>
   );
 }

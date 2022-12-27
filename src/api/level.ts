@@ -5,7 +5,7 @@ export interface ILevel {
   name: string;
   clusterValueRef: string;
   clusterId: string;
-  valid: string[];
+  valid: { value: string; uom: string }[];
   createdAt: number;
   updatedAt: number;
   __v: number;
@@ -22,6 +22,10 @@ export const getLevel = (id: string) => {
 };
 
 export const createLevel = (data: ILevel) => {
+  return post("/level", data);
+};
+
+export const createLevelTwo = (data: { name: string; clusterId: string; valid: any }) => {
   return post("/level", data);
 };
 

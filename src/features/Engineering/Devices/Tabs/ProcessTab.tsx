@@ -1,19 +1,23 @@
 import { Box, Tooltip } from "@material-ui/core";
-import { AddRounded, DeleteRounded, EditRounded, SearchRounded } from "@material-ui/icons";
+import { AddRounded } from "@material-ui/icons";
 import { deleteProcess, IProcess } from "api/process";
 import NewDataGrid from "app/NewDataGrid";
 import Button from "app/Button";
-import { LockButton, LockProvider, useLock } from "common/Lock";
+import { LockProvider, useLock } from "common/Lock";
 import { formatTimestampToDate } from "logic/date";
 import React, { useCallback, useMemo, useState } from "react";
 import AddProcessModal from "../Process/AddProcessModal";
 import EditProcessModal from "../Process/EditProcessModal";
 import Confirm from "common/Confirm";
 import Toast from "app/Toast";
-import { mutate } from "swr";
+import useSWR, { mutate } from "swr";
 import TasksModal from "../Process/TasksModal";
 
-function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
+import { ReactComponent as NarrowIcon } from "assets/icons/tableIcons/narrowDown.svg";
+import { ReactComponent as SettingIcon } from "assets/icons/tableIcons/setting.svg";
+import { ReactComponent as DeleteIcon } from "assets/icons/tableIcons/delete.svg";
+
+export default function ProcessTab({ type, ItemId }: { type: string; ItemId: string }) {
   const { lock } = useLock();
   const [addProcess, setAddProcess] = useState(false);
   const [openTasksModal, setOpenTasksModal] = useState(false);
@@ -24,6 +28,7 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
   const handleDelete = useCallback(
     (id: string) => {
       Confirm({
+        text: `you are going to delete a Process!`,
         onConfirm: async () => {
           try {
             await deleteProcess(id);
@@ -54,8 +59,10 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
                   setOpenTasksModal(true);
                   setSelectedProcess(data);
                 }}
+                title={"Show Tasks"}
+                style={{ cursor: "pointer" }}
               >
-                <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
+                <NarrowIcon />
               </div>
               <div
                 onClick={() => {
@@ -64,10 +71,10 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
                     setSelectedProcess(data);
                   }
                 }}
+                title={"Edit"}
+                style={{ cursor: "pointer" }}
               >
-                <EditRounded
-                  style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#426792", cursor: lock ? "auto" : "pointer" }}
-                />
+                <SettingIcon />
               </div>
               <div
                 onClick={() => {
@@ -75,10 +82,10 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
                     handleDelete(data.id);
                   }
                 }}
+                title={"Delete"}
+                style={{ cursor: "pointer" }}
               >
-                <DeleteRounded
-                  style={{ fontSize: "1.6rem", color: lock ? "#ccc" : "#e71414", cursor: lock ? "auto" : "pointer" }}
-                />
+                <DeleteIcon />
               </div>
               <div>
                 <Tooltip title={data.title}>
@@ -155,23 +162,13 @@ function ProcessTabContent({ type, ItemId }: { type: string; ItemId: string }) {
         >
           Process
         </Button>
-        <LockButton />
       </Box>
       <NewDataGrid
         columns={processCols}
         url={`/process?ItemId=${ItemId}&type=${type}`}
         onRowSelected={() => {}}
         refresh={refresh}
-        rowHeight={42}
       />
     </>
-  );
-}
-
-export default function ProcessTab({ type, ItemId }: { type: string; ItemId: string }) {
-  return (
-    <LockProvider>
-      <ProcessTabContent type={type} ItemId={ItemId} />
-    </LockProvider>
   );
 }

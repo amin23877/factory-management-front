@@ -1,22 +1,20 @@
 import React from "react";
-import { Box, Divider } from "@material-ui/core";
+import { Box, CircularProgress, Divider } from "@material-ui/core";
 
 import TextField from "app/TextField";
-import { LockButton, LockProvider, useLock } from "common/Lock";
+import { useLock } from "common/Lock";
 import AsyncCombo from "common/AsyncCombo";
 import useSWR from "swr";
 import { ILevel } from "api/level";
 
-function LevelsTabContent({
+export default function LevelsTab({
   itemType,
   values,
-  handleChange,
-  handleBlur,
+  getFieldProps,
   setFieldValue,
 }: {
   values: any;
-  handleChange: any;
-  handleBlur: any;
+  getFieldProps: any;
   setFieldValue: any;
   itemType: string;
 }) {
@@ -36,13 +34,12 @@ function LevelsTabContent({
         filterBy="clusterValue"
         getOptionLabel={(o) => o?.clusterValue || "No-Name"}
         getOptionSelected={(o, v) => o?.id === v?.id}
-        url={`/cluster?class=${itemType}`}
+        url={values?.class ? `/cluster?class=${values?.class}` : "/cluster"}
         disabled={lock}
         label="Cluster Value"
         onChange={(e, nv) => setFieldValue("clusterId", nv?.id)}
         value={values.clusterId}
       />
-      <LockButton />
       <Divider style={{ gridColumnEnd: "span 2" }} />
       {levels &&
         levels?.result.map((level) => (
@@ -52,8 +49,7 @@ function LevelsTabContent({
             placeholder={level.name}
             defaultValue={values?.levels ? values?.levels[level.name] : ""}
             value={values[level.name]}
-            onBlur={handleBlur}
-            onChange={handleChange}
+            {...getFieldProps(level.name)}
             disabled={lock}
           />
         ))}
@@ -61,28 +57,51 @@ function LevelsTabContent({
   );
 }
 
-export default function LevelsTab({
+export function UnitsLevelsTab({
   values,
-  handleChange,
-  handleBlur,
+  getFieldProps,
   setFieldValue,
-  itemType,
 }: {
   values: any;
-  handleChange: any;
-  handleBlur: any;
+  getFieldProps: any;
   setFieldValue: any;
-  itemType: string;
 }) {
+  const { data: item } = useSWR<any>(`/item/${values?.ItemId?.id}`);
+  const clusterIdString = item?.clusterId
+    ? typeof item?.clusterId === "string"
+      ? item?.clusterId
+      : item?.clusterId?.id
+    : null;
+  const { data: levels } = useSWR<{ result: ILevel[]; total: number }>(
+    clusterIdString ? `/level?clusterId=${clusterIdString}` : null
+  );
+  if (!item) return <CircularProgress />;
+
   return (
-    <LockProvider>
-      <LevelsTabContent
-        itemType={itemType}
-        values={values}
-        handleChange={handleChange}
-        handleBlur={handleBlur}
-        setFieldValue={setFieldValue}
+    <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
+      <AsyncCombo
+        filterBy="clusterValue"
+        getOptionLabel={(o) => o?.clusterValue || "No-Name"}
+        getOptionSelected={(o, v) => o?.id === v?.id}
+        url={`/cluster`}
+        disabled
+        label="Cluster Value"
+        onChange={(e, nv) => setFieldValue("clusterId", nv?.id)}
+        value={item?.clusterId}
       />
-    </LockProvider>
+      <Divider style={{ gridColumnEnd: "span 2" }} />
+      {levels &&
+        levels?.result.map((level) => (
+          <TextField
+            label={level.name}
+            name={level.name}
+            placeholder={level.name}
+            defaultValue={item?.levels ? item?.levels[level.name] : ""}
+            value={item[level.name]}
+            {...getFieldProps(level.name)}
+            disabled
+          />
+        ))}
+    </Box>
   );
 }

@@ -1,5 +1,5 @@
 import { Box, useMediaQuery } from "@material-ui/core";
-import { LockButton, LockProvider, useLock } from "common/Lock";
+import { useLock } from "common/Lock";
 import React from "react";
 import TextField from "app/TextField";
 import Button from "app/Button";
@@ -11,10 +11,21 @@ interface IQForm {
   values: any;
   getFieldProps: any;
   setFieldValue: any;
+  add?: boolean;
 }
-export const Quantity = ({ handleManualCount, values, handleUpdateQuantity, getFieldProps, setFieldValue }: IQForm) => {
+export default function QuantityTab({
+  handleManualCount,
+  values,
+  handleUpdateQuantity,
+  getFieldProps,
+  setFieldValue,
+  add,
+}: IQForm) {
   const phone = useMediaQuery("(max-width:900px)");
   const { lock } = useLock();
+
+  const selected = values.result.find(() => true);
+
   return (
     <Box
       mt={1}
@@ -23,135 +34,142 @@ export const Quantity = ({ handleManualCount, values, handleUpdateQuantity, getF
       gridRowGap={10}
       gridColumnGap={10}
     >
-      <LockButton />
+      {!add && (
+        <>
+          <TextField
+            name="lastUsedInJOB"
+            label="last Used In Bom"
+            value={selected.lastUsedInJOB}
+            disabled={lock}
+            // onChange={handleChange}
+            // onBlur={handleBlur}
+          />
+          <DateTimePicker
+            name="lastCount"
+            label="lastCount"
+            value={selected.lastCount}
+            disabled={lock}
+            format="yyyy-mm-dd"
+            onChange={(lastCount) => setFieldValue("lastCount", lastCount)}
+            // onBlur={handleBlur}
+          />
+          <TextField
+            name="usedInQuarter"
+            label="last used in 90 days"
+            value={selected.usedInQuarter}
+            disabled={lock}
+            // onChange={handleChange}
+            // onBlur={handleBlur}
+          />
+          <TextField
+            name="usedInHalf"
+            label="last used in 180 days"
+            value={selected.usedInHalf}
+            disabled={lock}
+            // onChange={handleChange}
+            // onBlur={handleBlur}
+          />
+          <TextField
+            name="usedInYear"
+            label="last used in 360 days"
+            value={selected.usedInYear}
+            disabled={lock}
+            // onChange={handleChange}
+            // onBlur={handleBlur}
+          />
+          <TextField
+            name="total"
+            label="Total Quantity"
+            placeholder="Total Quantity"
+            value={selected.onHandQty + selected.onOrderQty}
+            disabled
+          />
+        </>
+      )}
       <TextField
-        label="last Used In Bom"
-        value={values.lastUsedInJOB}
-        {...getFieldProps("lastUsedInJOB")}
-        disabled={lock}
-      />
-      <DateTimePicker
-        value={values.lastCount}
-        label="lastCount"
-        {...getFieldProps("lastCount")}
-        disabled={lock}
-        onChange={(lastCount) => setFieldValue("lastCount", lastCount)}
-        format="yyyy-mm-dd"
-      />
-      <TextField
-        {...getFieldProps("usedInQuarter")}
-        disabled={lock}
-        label="last used in 90 days"
-        value={values.usedInQuarter}
-      />
-      <TextField
-        {...getFieldProps("usedInHalf")}
-        disabled={lock}
-        label="last used in 180 days"
-        value={values.usedInHalf}
-      />
-      <TextField
-        label="last used in 360 days"
-        value={values.usedInYear}
-        {...getFieldProps("usedInYear")}
-        disabled={lock}
-      />
-      <TextField
-        label="Total Quantity"
-        placeholder="Total Quantity"
-        name="total"
-        value={values.onHandQty + values.onOrderQty}
-        disabled
-      />
-      <TextField
+        name="onHandQty"
         label="Quantity on hand"
         placeholder="Quantity on hand"
-        name="onHandQty"
-        value={values.onHandQty}
-        disabled
+        value={selected.onHandQty}
+        disabled={!add}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
       />
-      <TextField
-        label="Quantity Available"
-        placeholder="Quantity Available"
-        name="qtyAvailable"
-        value={values.onHandQty - values.allocatedQty}
-        disabled
-      />
-      <TextField
-        label="Quantity on order"
-        placeholder="Quantity on order"
-        name="onOrderQty"
-        value={values.onOrderQty}
-        disabled
-      />
-      <TextField
-        label="Quantity allocated"
-        placeholder="Quantity allocated"
-        name="allocatedQty"
-        value={values.allocatedQty}
-        disabled
-      />
+      {!add && (
+        <>
+          <TextField
+            name="qtyAvailable"
+            label="Quantity Available"
+            placeholder="Quantity Available"
+            value={selected.onHandQty - selected.allocatedQty}
+            disabled
+          />
+          <TextField
+            name="onOrderQty"
+            label="Quantity on order"
+            placeholder="Quantity on order"
+            value={selected.onOrderQty}
+            disabled
+          />
+          <TextField
+            name="allocatedQty"
+            label="Quantity allocated"
+            placeholder="Quantity allocated"
+            value={selected.allocatedQty}
+            disabled
+          />
+        </>
+      )}
 
       <TextField
+        name="triggerQty"
         label="Trigger Quantity"
-        value={values.triggerQty}
+        value={selected.triggerQty}
         style={{ marginBottom: 3 }}
-        {...getFieldProps("triggerQty")}
-        disabled={lock}
+        disabled={!add && lock}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
       />
       <TextField
+        name="reorderQty"
         label="Reorder Quantity"
-        value={values.reorderQty}
+        value={selected.reorderQty}
         style={{ marginBottom: 3 }}
-        {...getFieldProps("reorderQty")}
-        disabled={lock}
+        disabled={!add && lock}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
       />
 
-      <TextField
-        label="QOH Value"
-        name="qohVal"
-        placeholder="QOH Value"
-        value={values.totalCost * values.onHandQty}
-        disabled
-        style={{ marginBottom: 3 }}
-      />
-      <div
-        style={
-          phone
-            ? { gridColumnEnd: "span 2", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }
-            : { gridColumnEnd: "span 3", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }
-        }
-      >
-        {handleUpdateQuantity && (
-          <Button kind="edit" onClick={handleUpdateQuantity} disabled={lock}>
-            Update quantity
-          </Button>
-        )}
-        {handleManualCount && (
-          <Button kind="add" disabled={lock} onClick={handleManualCount}>
-            Adjust manual count
-          </Button>
-        )}
-      </div>
+      {!add && (
+        <>
+          <TextField
+            name="qohVal"
+            label="QOH Value"
+            placeholder="QOH Value"
+            value={selected.totalCost * selected.onHandQty}
+            disabled
+            style={{ marginBottom: 3 }}
+          />
+          <div
+            style={
+              phone
+                ? { gridColumnEnd: "span 2", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }
+                : { gridColumnEnd: "span 3", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }
+            }
+          >
+            {handleUpdateQuantity && (
+              <Button kind="edit" onClick={handleUpdateQuantity} disabled={lock}>
+                Update quantity
+              </Button>
+            )}
+            {handleManualCount && (
+              <Button kind="add" disabled={lock} onClick={handleManualCount}>
+                Adjust manual count
+              </Button>
+            )}
+          </div>
+        </>
+      )}
     </Box>
-  );
-};
-export default function QuantityTab({
-  handleManualCount,
-  values,
-  handleUpdateQuantity,
-  getFieldProps,
-  setFieldValue,
-}: IQForm) {
-  return (
-    <LockProvider>
-      <Quantity
-        handleManualCount={handleManualCount}
-        handleUpdateQuantity={handleUpdateQuantity}
-        getFieldProps={getFieldProps}
-        values={values}
-        setFieldValue={setFieldValue}
-      />
-    </LockProvider>
   );
 }

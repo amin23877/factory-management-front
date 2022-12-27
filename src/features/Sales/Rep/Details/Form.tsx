@@ -78,8 +78,7 @@ export default function EditForm({ initialValues }: { initialValues: repType }) 
               onChange={(c, nv) => setFieldValue("salesPerson", nv.id)}
               disabled={lock}
             />
-
-            <Box display="flex" style={{ gridColumnEnd: "span 2" }}>
+            <Box display="flex" style={{ gridColumnEnd: "span 2" }} justifyContent="center">
               <Button type="submit" kind="edit" disabled={lock} fullWidth style={{ display: "none" }}>
                 Submit
               </Button>

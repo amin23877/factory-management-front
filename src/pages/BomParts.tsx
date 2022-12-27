@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 
-import { Container, Typography, Box, useMediaQuery } from "@material-ui/core";
+import { Container, Typography, Box, useMediaQuery, Tooltip } from "@material-ui/core";
 
 import { ReactComponent as SettingIcon } from "assets/icons/tableIcons/setting.svg";
 import { ReactComponent as DeleteIcon } from "assets/icons/tableIcons/delete.svg";
@@ -29,11 +29,12 @@ function Parts() {
   const history = useHistory();
   const { lock } = useLock();
 
-  const handleDelete = useCallback((id: string) => {
+  const handleDelete = useCallback((data: any) => {
     Confirm({
+      text: `you are going to delete a BOM Record with number ${data?.ItemId?.no} !`,
       onConfirm: async () => {
         try {
-          await deleteBomRecord(id);
+          await deleteBomRecord(data.id);
         } catch (error) {
           console.log(error);
         } finally {
@@ -45,13 +46,44 @@ function Parts() {
 
   const columns = useMemo(
     () => [
-      { name: "no", header: "Item NO.", render: ({ data }: any) => data?.ItemId?.no, editable: false },
-      { name: "name", header: "Item Name", render: ({ data }: any) => data?.ItemId?.name, editable: false },
+      {
+        header: "Id",
+        maxWidth: 50,
+        render: ({ rowIndex }: any) => (
+          <Tooltip title={rowIndex + 1}>
+            <span>{rowIndex + 1}</span>
+          </Tooltip>
+        ),
+      },
+      {
+        name: "no",
+        header: "Item NO.",
+        render: ({ data }: any) => (
+          <Tooltip title={data?.ItemId?.no}>
+            <span>{data?.ItemId?.no}</span>
+          </Tooltip>
+        ),
+        editable: false,
+      },
+      {
+        name: "name",
+        header: "Item Name",
+        render: ({ data }: any) => (
+          <Tooltip title={data?.ItemId?.name}>
+            <span>{data?.ItemId?.name}</span>
+          </Tooltip>
+        ),
+        editable: false,
+      },
       {
         name: "description",
         header: "Item Description",
         flex: 1,
-        render: ({ data }: any) => data?.ItemId?.description,
+        render: ({ data }: any) => (
+          <Tooltip title={data?.ItemId?.description}>
+            <span>{data?.ItemId?.description}</span>
+          </Tooltip>
+        ),
         editable: false,
       },
       { name: "usage", header: "Usage", defaultWidth: 100, editor: NumericEditor },
@@ -67,9 +99,9 @@ function Parts() {
               <div
                 onClick={() => {
                   if (phone) {
-                    history.push(`/panel/inventory/${data?.ItemId?.id}`);
+                    history.push(`/panel/inventory/items/${data?.ItemId?.id}`);
                   } else {
-                    openRequestedSinglePopup({ url: `/panel/inventory/${data?.ItemId?.id}` });
+                    openRequestedSinglePopup({ url: `/panel/inventory/items/${data?.ItemId?.id}` });
                   }
                 }}
               >
@@ -78,7 +110,7 @@ function Parts() {
               <div
                 onClick={() => {
                   if (!lock) {
-                    handleDelete(data.id);
+                    handleDelete(data);
                   }
                 }}
               >

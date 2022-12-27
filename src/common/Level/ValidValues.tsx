@@ -10,6 +10,7 @@ import { LockButton, useLock } from "common/Lock";
 import { ILevel } from "api/level";
 import MyDialog from "app/Dialog";
 import { IVals } from "./Form";
+import { DeleteRounded } from "@material-ui/icons";
 
 const schema = Yup.object().shape({
   value: Yup.string().required(),
@@ -21,11 +22,17 @@ export default function ValidValuesForm({
   onClose,
   valuesParent,
   setValuesParent,
+  setAddArray,
+  setDeleteArray,
+  addArray,
 }: {
   open: boolean;
   onClose: () => void;
   valuesParent: any;
   setValuesParent: any;
+  setAddArray: any;
+  setDeleteArray: any;
+  addArray: any;
 }) {
   const [selectedValue, setSelectedValue] = useState<ILevel>();
   const [validValues, setValidValues] = useState<IVals[]>(valuesParent.valid);
@@ -44,6 +51,7 @@ export default function ValidValuesForm({
       setValuesParent((p: any) => ({ ...p, valid: temp }));
       setRefresh((p) => p + 1);
     } else {
+      setAddArray((prev: any) => [...prev, data]);
       let temp = validValues ? validValues : [];
       temp.push({ ...data, id: temp.length });
       setValidValues(temp);
@@ -52,17 +60,28 @@ export default function ValidValuesForm({
     }
   };
 
-  const { values, handleChange, handleBlur, handleSubmit, resetForm, setValues } = useFormik({
+  const { values, handleChange, handleBlur, handleSubmit, setValues } = useFormik({
     validationSchema: schema,
     initialValues: {} as any,
     onSubmit: handleFormSubmit,
   });
 
-  const handleDelete = () => {
+  const handleDelete = (val: any) => {
     let temp = validValues;
+    let addTemp: any = addArray;
     let newArr = temp.filter(function (value, index, arr) {
-      return index !== selectedValue?.index;
+      return index !== val?.index;
     });
+    let newAddArray = addTemp.filter(function (value: any, index: number, arr: any[]) {
+      return value.value !== val?.val.value && value.uom !== val.val.uom;
+    });
+    let dontAddArray = addTemp.filter(function (value: any, index: number, arr: any[]) {
+      return value.value === val?.val.value && value.uom === val.val.uom;
+    });
+    setAddArray(newAddArray);
+    if (dontAddArray.length === 0) {
+      setDeleteArray((prev: any) => [...prev, { value: val.val.value, uom: val.val.uom }]);
+    }
     setValidValues(newArr);
     setValuesParent((p: any) => ({ ...p, valid: newArr }));
     setRefresh((p) => p + 1);
@@ -98,30 +117,12 @@ export default function ValidValuesForm({
             InputLabelProps={{ shrink: true }}
             disabled={lock}
           />
-          <Box display="flex" style={{ gap: 5, width: "100%" }}>
-            <Button kind={selectedValue ? "edit" : "add"} type="submit" style={{ flex: 1 }} disabled={lock}>
+          <Box display="flex" style={{ gap: 5, width: "100%", alignItems: "center" }}>
+            <Button kind={"add"} type="submit" style={{ flex: 1 }} disabled={lock}>
               add
             </Button>
             <LockButton />
           </Box>
-          {selectedValue && (
-            <Button kind="delete" disabled={lock} onClick={handleDelete} style={{ padding: "2px 10px" }}>
-              Delete
-            </Button>
-          )}
-          {selectedValue && (
-            <Button
-              variant="outlined"
-              onClick={() => {
-                resetForm({
-                  values: { value: "", uom: "" },
-                });
-                setSelectedValue(undefined);
-              }}
-            >
-              Cancel
-            </Button>
-          )}
         </Box>
         <Box mt={1}>
           <ValidValuesDataGrid
@@ -129,6 +130,7 @@ export default function ValidValuesForm({
             setValues={setValues}
             setSelectedValue={setSelectedValue}
             refresh={refresh}
+            handleDelete={handleDelete}
           />
         </Box>
       </form>
@@ -142,11 +144,13 @@ const ValidValuesDataGrid = React.memo(
     setSelectedValue,
     refresh,
     setValues,
+    handleDelete,
   }: {
     setSelectedValue: any;
     valuesParent: IVals[];
     refresh: any;
     setValues: (v: any) => void;
+    handleDelete: any;
   }) => {
     return (
       <Box m={2} style={{ maxHeight: "450px", overflowY: "scroll" }}>
@@ -159,23 +163,23 @@ const ValidValuesDataGrid = React.memo(
             {Array.isArray(valuesParent) &&
               valuesParent.map((val, index) => (
                 <tr>
-                  <td
-                    onClick={() => {
-                      setSelectedValue({ ...val, index: index });
-                      setValues(val);
-                    }}
-                    style={{ padding: "10px", border: "1px solid #eee", cursor: "pointer" }}
-                  >
-                    {val.value}
-                  </td>
-                  <td
-                    onClick={() => {
-                      setSelectedValue({ ...val, index: index });
-                      setValues(val);
-                    }}
-                    style={{ padding: "10px", border: "1px solid #eee", cursor: "pointer" }}
-                  >
-                    {val.uom}
+                  <td style={{ padding: "10px", border: "1px solid #eee" }}>{val.value}</td>
+                  <td style={{ padding: "10px", border: "1px solid #eee" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <span style={{ flex: 1 }}>{val.uom}</span>
+                      <span
+                        style={{ color: "red", cursor: "pointer" }}
+                        onClick={() => handleDelete({ val, index: index })}
+                      >
+                        <DeleteRounded />
+                      </span>
+                    </div>
                   </td>
                 </tr>
               ))}

@@ -9,21 +9,21 @@ import BaseDataGrid from "app/BaseDataGrid";
 import ContactModal from "./Modal";
 
 import { IContact } from "api/contact";
-import { LockButton, LockProvider, useLock } from "common/Lock";
+import { useLock } from "common/Lock";
 
 const columns: GridColumns = [
   { field: "firstName", headerName: "First Name", width: 110 },
   { field: "lastName", headerName: "Last Name" },
   { field: "phone", headerName: "Phone", valueFormatter: ({ row }) => row?.phones[0]?.phone },
   { field: "ext", headerName: "Ext", valueFormatter: ({ row }) => row?.phones[0]?.ext },
-  { field: "email", headerName: "Email", flex: 1, valueFormatter: ({ row }) => row?.emails[0]?.email },
+  { field: "email", headerName: "Email", valueFormatter: ({ row }) => row?.emails[0]?.email },
   { field: "title", headerName: "Title" },
   { field: "department", headerName: "Department", width: 120 },
   { field: "main", headerName: "Main", type: "boolean" },
   { field: "active", headerName: "Active", type: "boolean" },
 ];
 
-function ContactTabContent({ itemId, model }: { model: string; itemId: string }) {
+export default function ContactTab({ itemId, model }: { model: string; itemId: string }) {
   const { data } = useSWR(`/contact/${model}/${itemId}`);
   const { lock } = useLock();
   const [addModal, setAddModal] = useState(false);
@@ -49,27 +49,16 @@ function ContactTabContent({ itemId, model }: { model: string; itemId: string })
           >
             Add
           </Button>
-          <LockButton />
         </Box>
         <BaseDataGrid
           cols={columns}
           rows={data || []}
           onRowSelected={(r) => {
-            if (!lock) {
-              setSelectedContact(r);
-              setAddModal(true);
-            }
+            setSelectedContact(r);
+            setAddModal(true);
           }}
         />
       </Box>
     </>
-  );
-}
-
-export default function ContactTab({ itemId, model }: { model: string; itemId: string }) {
-  return (
-    <LockProvider>
-      <ContactTabContent itemId={itemId} model={model} />
-    </LockProvider>
   );
 }

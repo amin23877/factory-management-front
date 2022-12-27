@@ -12,21 +12,25 @@ import {
   Tooltip,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { CheckRounded, ClearRounded, MoreVertRounded } from "@material-ui/icons";
+import { MoreVertRounded } from "@material-ui/icons";
 import moment from "moment";
+import queryString from "query-string";
+
+import { ReactComponent as Checked } from "assets/icons/tableIcons/checked.svg";
+import { ReactComponent as UnChecked } from "assets/icons/tableIcons/unchecked.svg";
 
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
 import NumberFilter from "@inovua/reactdatagrid-community/NumberFilter";
 import BoolFilter from "@inovua/reactdatagrid-community/BoolFilter";
 import DateFilter from "@inovua/reactdatagrid-community/DateFilter";
+import { TypeOnSelectionChangeArg } from "@inovua/reactdatagrid-community/types/TypeDataGridProps";
+import { TypeEditInfo } from "@inovua/reactdatagrid-community/types";
 
 import { get } from "../api";
 
 import { formatTimestampToDate } from "../logic/date";
 import { ParameterType } from "../logic/utils";
-import { TypeOnSelectionChangeArg } from "@inovua/reactdatagrid-community/types/TypeDataGridProps";
-import { TypeEditInfo } from "@inovua/reactdatagrid-community/types";
 
 window.moment = moment;
 
@@ -158,6 +162,8 @@ function NewDataGrid({
   onEditComplete,
   editable,
   rowHeight,
+  setUrlFilters,
+  selected,
 }: {
   onRowSelected: (row: any) => void;
   columns: any[];
@@ -171,6 +177,8 @@ function NewDataGrid({
   onSelectionChange?: (config: TypeOnSelectionChangeArg) => void;
   onDataFetched?: (data: any) => void;
   onEditComplete?: (data: TypeEditInfo) => void;
+  setUrlFilters?: boolean;
+  selected?: any;
 }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [columnsState, setColumnsState] = useState<any[]>(columns.map((c) => ({ ...c, visible: true })));
@@ -178,7 +186,7 @@ function NewDataGrid({
   const phone = useMediaQuery("(max-width:900px)");
 
   useEffect(() => {
-    setColumnsState(columns.map((c) => ({ ...c, visible: true })));
+    setColumnsState(columns.map((c) => ({ ...c, visible: c.visible !== undefined ? c.visible : true })));
   }, [columns]);
 
   const cols = useMemo(() => {
@@ -194,11 +202,11 @@ function NewDataGrid({
             render: ({ data }: any) =>
               data[r.name] ? (
                 <div style={green}>
-                  <CheckRounded />
+                  <Checked />
                 </div>
               ) : (
                 <div style={red}>
-                  <ClearRounded />
+                  <UnChecked />
                 </div>
               ),
           };
@@ -219,8 +227,11 @@ function NewDataGrid({
             ...r,
             dateFormat: "x",
             filterEditor: DateFilter,
-            render: ({ value, cellProps: { dateFormat } }: { value: any; cellProps: any }) =>
-              formatTimestampToDate(value),
+            render: ({ value, cellProps: { dateFormat } }: { value: any; cellProps: any }) => (
+              <Tooltip title={formatTimestampToDate(value)}>
+                <div>{formatTimestampToDate(value)}</div>
+              </Tooltip>
+            ),
           };
         }
         if ((r.type === "string" || !r.type) && !r.render) {
@@ -240,13 +251,44 @@ function NewDataGrid({
   }, [columnsState]);
 
   const defaultFilterValue = useMemo(() => {
-    let res = columns.map(({ name, type, defaultOperator }) => ({
-      name,
-      operator: defaultOperator || type ? "eq" : "startsWith",
-      type: type ? type : "string",
-      value: type === "date" ? "" : undefined,
-    }));
-
+    const parsedQuery = queryString.parse(window.location.search);
+    const queryKeys = Object.keys(parsedQuery);
+    const filters: any = {};
+    for (let i = 0; i < queryKeys.length; i++) {
+      let key = queryKeys[i];
+      let whereKey = key;
+      let operator = "eq";
+      if (key.includes("contain")) {
+        operator = "contains";
+        whereKey = key.substr(7);
+      } else if (key.includes("startsWith")) {
+        operator = "startsWith";
+        whereKey = key.substr(10);
+      } else if (key.includes("max")) {
+        operator = "lt";
+        whereKey = key.substr(3);
+      } else if (key.includes("min")) {
+        operator = "gt";
+        whereKey = key.substr(3);
+      }
+      filters[whereKey] = operator;
+    }
+    let res = columns.map(({ name, type, defaultOperator }) => {
+      if (setUrlFilters) {
+        return {
+          name,
+          operator: filters[name] ? filters[name] : defaultOperator || type ? "eq" : "startsWith",
+          type: type ? type : "string",
+          value: filters[name] ? parsedQuery[getOperator(filters[name]) + name] : type === "date" ? "" : undefined,
+        };
+      }
+      return {
+        name,
+        operator: defaultOperator || type ? "eq" : "startsWith",
+        type: type ? type : "string",
+        value: type === "date" ? "" : undefined,
+      };
+    });
     return res;
   }, [columns]);
 
@@ -278,6 +320,16 @@ function NewDataGrid({
       }
 
       try {
+        if (window.history.pushState && setUrlFilters) {
+          var newurl =
+            window.location.protocol +
+            "//" +
+            window.location.host +
+            window.location.pathname +
+            "?" +
+            queryString.stringify(params);
+          window.history.pushState({ path: newurl }, "", newurl);
+        }
         const d = await get(url, { params });
         onDataFetched && onDataFetched(d);
         return { data: d.result, count: d.total };
@@ -379,6 +431,7 @@ function NewDataGrid({
         filterTypes={filterTypes}
         onEditComplete={onEditComplete}
         editable={editable}
+        selected={selected}
       />
     </Box>
   );

@@ -2,51 +2,93 @@ import React from "react";
 
 import { ParameterType } from "logic/utils";
 import DataGrid from "app/NewDataGrid";
-
-const columns = [
-  {
-    name: "createdAt",
-    header: "Date",
-    minWidth: 100,
-    type: "date",
-  },
-  { name: "number", header: "SO NO.", minWidth: 100 },
-  { name: "Client", minWidth: 100, render: ({ data }: any) => data?.ClientId?.name },
-  { name: "description", header: "Description", minWidth: 150 },
-  { name: "Rep", minWidth: 130, render: ({ data }: any) => data?.RepId?.name },
-  { name: "state", header: "State", minWidth: 120, render: ({ data }: any) => data?.RepId?.state },
-
-  {
-    name: "estimatedShipDate",
-    header: "Estimated SD.",
-    minWidth: 120,
-    type: "date",
-  },
-  {
-    name: "actualShipDate",
-    header: "Actual SD.",
-    minWidth: 120,
-    type: "date",
-  },
-  { name: "status", header: "Status", minWidth: 120 },
-  {
-    name: "totalOrder",
-    header: "Total Amount",
-    minWidth: 120,
-    type: "number",
-  },
-];
+import { Tooltip } from "@material-ui/core";
 
 function SODataGrid({
   onRowSelected,
   params,
   refresh,
+  url,
+  style,
+  setUrlFilters,
 }: {
   onRowSelected: (row: any) => void;
   params?: ParameterType;
-  refresh: number;
+  refresh?: number;
+  url?: string;
+  style?: any;
+  setUrlFilters?: boolean;
 }) {
-  return <DataGrid url="/so" onRowSelected={onRowSelected} columns={columns} initParams={params} refresh={refresh} />;
+  const columns = [
+    {
+      name: "createdAt",
+      header: "Date",
+      minWidth: 100,
+      type: "date",
+    },
+    { name: "number", header: "SO NO.", minWidth: 100 },
+    {
+      name: "Client",
+      minWidth: 100,
+      render: ({ data }: any) => (
+        <Tooltip title={data?.ClientId?.name}>
+          <span>{data?.ClientId?.name}</span>
+        </Tooltip>
+      ),
+      visible: params?.ClientId ? false : true,
+    },
+    {
+      name: "Rep",
+      minWidth: 130,
+      render: ({ data }: any) => (
+        <Tooltip title={data?.RepId?.name}>
+          <span>{data?.RepId?.name}</span>
+        </Tooltip>
+      ),
+      visible: params?.RepId ? false : true,
+    },
+    {
+      name: "state",
+      header: "State",
+      minWidth: 120,
+      render: ({ data }: any) => (
+        <Tooltip title={data?.RepId?.state}>
+          <span>{data?.RepId?.state}</span>
+        </Tooltip>
+      ),
+    },
+
+    {
+      name: "estimatedShipDate",
+      header: "Estimated SD.",
+      minWidth: 120,
+      type: "date",
+    },
+    {
+      name: "actualShipDate",
+      header: "Actual SD.",
+      minWidth: 120,
+      type: "date",
+    },
+    { name: "status", header: "Status", minWidth: 120 },
+    {
+      name: "totalOrder",
+      header: "Total Amount",
+      minWidth: 120,
+      type: "number",
+    },
+  ];
+  return (
+    <DataGrid
+      style={style}
+      url={url || "/so"}
+      onRowSelected={onRowSelected}
+      columns={columns}
+      initParams={params}
+      refresh={refresh}
+      setUrlFilters={setUrlFilters}
+    />
+  );
 }
 
 export default SODataGrid;

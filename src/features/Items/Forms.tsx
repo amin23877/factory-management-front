@@ -1,17 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles, Box, FormControlLabel, Checkbox, Divider, Paper, useMediaQuery } from "@material-ui/core";
 
 import TextField from "app/TextField";
 import Button from "app/Button";
-import DateTimePicker from "app/DateTimePicker";
 
 import { formatTimestampToDate } from "logic/date";
 
 import { IItem } from "api/items";
-import LinkField from "app/Inputs/LinkFields";
 
 import ItemTypeCombo from "common/ItemTypeCombo";
 import { LockButton, useLock } from "common/Lock";
+
+import AsyncCombo from "common/AsyncCombo";
+import { MenuRounded } from "@material-ui/icons";
+import LevelsMenu from "features/Engineering/BOM/ChangePartModal/LevelsMenu";
 
 const useStyles = makeStyles({
   label: {
@@ -19,7 +21,7 @@ const useStyles = makeStyles({
   },
 });
 interface IForm {
-  values: IItem;
+  values: any;
   errors: any;
   touched: any;
   handleChange: (e: any) => void;
@@ -28,6 +30,7 @@ interface IForm {
   isSubmitting?: boolean;
   device?: boolean;
   boms?: boolean;
+  add?: boolean;
 }
 
 interface IQForm extends IForm {
@@ -53,10 +56,17 @@ export const General = ({
   touched,
   setFieldValue,
   device,
+  add,
 }: IForm) => {
   const classes = useStyles();
   const phone = useMediaQuery("(max-width:900px)");
   const { lock } = useLock();
+  const [clusterId, setClusterId] = useState<string>();
+  const [anchorEl, setAnchorEl] = useState<HTMLElement>();
+  const [levelFilters, setLevelFilters] = useState<{ [key: string]: string }>();
+
+  const selected = values?.result?.find(() => true);
+
   // const itemTypes = types.map((t) => (values as any)[t.value] && { value: t.value, title: t.title }).filter((t) => t);
 
   // const handleItemTypeChange: ((e: any, nv: { value: string }[]) => void) | undefined = (e, nv) => {
@@ -74,6 +84,14 @@ export const General = ({
   // };
   return (
     <>
+      <LevelsMenu
+        onClose={() => setAnchorEl(undefined)}
+        anchorEl={anchorEl}
+        clusterId={clusterId}
+        levelFilters={levelFilters}
+        setLevelFilters={setLevelFilters}
+        setFieldValue={setFieldValue}
+      />
       <Box display="grid" gridTemplateColumns={"1fr 1fr 1fr 1fr"} gridRowGap={10} gridColumnGap={10}>
         <Paper
           style={{
@@ -86,105 +104,105 @@ export const General = ({
           <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"} gridColumnGap={10}>
             <FormControlLabel
               style={{ fontSize: "0.1rem" }}
-              checked={values.approvedForSale}
+              checked={selected?.approvedForSale}
               label="Sales Ap."
               name="approvedForSale"
               onChange={handleChange}
               classes={{ label: classes.label }}
               control={<Checkbox size="small" />}
-              disabled={lock}
+              disabled={!add && lock}
             />
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.engineeringApproval}
+              checked={selected?.engineeringApproval}
               label="En. Ap."
               name="engineeringApproval"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-              disabled={lock}
+              disabled={!add && lock}
             />
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.obsolete}
+              checked={selected?.obsolete}
               label="Obsolete"
               name="obsolete"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-              disabled={lock}
+              disabled={!add && lock}
             />
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.nonInventoryItem}
+              checked={selected?.nonInventoryItem}
               label="Non-Inventory Item"
               name="nonInventoryItem"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-              disabled={lock}
+              disabled={!add && lock}
             />
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.rndOnly}
+              checked={selected?.rndOnly}
               label="R&D Only"
               name="rndOnly"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-              disabled={lock}
+              disabled={!add && lock}
             />
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.dontTrackQoh}
+              checked={selected?.dontTrackQoh}
               label="Don't Track QOH"
               name="dontTrackQoh"
               onChange={handleChange}
-              disabled={lock}
+              disabled={!add && lock}
               control={<Checkbox size="small" />}
             />
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.dontOrderOnPOs}
+              checked={selected?.dontOrderOnPOs}
               label="Don't order on POs"
               name="dontOrderOnPOs"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-              disabled={lock}
+              disabled={!add && lock}
             />
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.taxable}
+              checked={selected?.taxable}
               label="Taxable"
               name="taxable"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-              disabled={lock}
+              disabled={!add && lock}
             />
 
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.bom}
+              checked={selected?.canBom}
               label="BOM"
-              name="bom"
+              name="canBom"
               onChange={handleChange}
               control={<Checkbox size="small" />}
-              disabled={lock}
+              disabled={!add && lock}
             />
             <div style={{ display: "flex", gridColumnEnd: "span 2", alignItems: "center" }}>
               <FormControlLabel
                 classes={{ label: classes.label }}
                 style={{ fontSize: "0.7rem" }}
-                checked={values.archived}
+                checked={selected?.archived}
                 label="Archive"
                 name="archived"
                 onChange={handleChange}
                 control={<Checkbox size="small" />}
-                disabled={lock}
+                disabled={!add && lock}
               />
               {values.archived && (
                 <TextField
@@ -204,33 +222,60 @@ export const General = ({
         </Paper>
         <ItemTypeCombo
           // value={itemTypes}
-          value={types.find((t) => t.value === values.class)}
+          value={types.find((t) => t.value === selected.class)}
           onChange={(e, nv) => nv && setFieldValue("class", nv.value)}
           style={{ gridColumnEnd: "span 4" }}
-          disabled={lock}
+          disabled={!add && lock}
         />
         <TextField
-          style={{ gridColumnEnd: "span 2" }}
           label="no"
-          value={values.no}
+          value={selected.no}
           name="no"
           onChange={handleChange}
           onBlur={handleBlur}
           error={Boolean(errors.no && touched.no)}
           placeholder="no"
-          disabled={lock}
+          disabled={!add && lock}
+          style={{ gridColumnEnd: "span 4" }}
         />
         <TextField
-          style={{ gridColumnEnd: "span 2" }}
           label="Item name"
           placeholder="Item name"
           name="name"
           onChange={handleChange}
           onBlur={handleBlur}
           error={Boolean(errors.name && touched.name)}
-          value={values.name}
-          disabled={lock}
+          value={selected.name}
+          disabled={!add && lock}
+          style={{ gridColumnEnd: "span 4" }}
         />
+        {add && (
+          <>
+            <AsyncCombo
+              label="Cluster"
+              filterBy="clusterValue"
+              getOptionLabel={(o) => o?.clusterValue || "No-Name"}
+              getOptionSelected={(o, v) => o?.id === v?.id}
+              url="/cluster"
+              defaultParams={{ class: values.class }}
+              value={clusterId}
+              onChange={(e, nv) => {
+                nv?.id && setClusterId(nv?.id);
+                setFieldValue("ClusterId", nv?.id);
+              }}
+            />
+            <Button
+              startIcon={<MenuRounded />}
+              color="secondary"
+              disabled={!clusterId}
+              onClick={(e) => {
+                setAnchorEl(e.currentTarget);
+              }}
+            >
+              Levels
+            </Button>
+          </>
+        )}
         <TextField
           multiline
           style={{ gridColumnEnd: "span 4" }}
@@ -240,8 +285,8 @@ export const General = ({
           name="description"
           onChange={handleChange}
           onBlur={handleBlur}
-          value={values.description}
-          disabled={lock}
+          value={selected.description}
+          disabled={!add && lock}
         />
       </Box>
       <div
@@ -253,13 +298,13 @@ export const General = ({
           marginTop: 8,
         }}
       >
-        <LockButton />
+        {!add && <LockButton />}
       </div>
     </>
   );
 };
 
-export const Pricing = ({ values, errors, handleChange, handleBlur, touched, boms }: IForm) => {
+export const Pricing = ({ values, errors, handleChange, handleBlur, touched, boms, add }: IForm) => {
   const phone = useMediaQuery("(max-width:900px)");
   const { lock } = useLock();
 
@@ -273,7 +318,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
         onBlur={handleBlur}
         onChange={handleChange}
         style={{ marginBottom: 3 }}
-        disabled={lock}
+        disabled={!add && lock}
       />
       <TextField
         label="retail price"
@@ -283,13 +328,13 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
         onBlur={handleBlur}
         onChange={handleChange}
         style={{ marginBottom: 3 }}
-        disabled={lock}
+        disabled={!add && lock}
       />
       <TextField
         label="Total Cost"
         value={values.overrideUse ? values.override : values.totalCost}
         name="totalCost"
-        disabled
+        disabled={!add && lock}
       />
       {!boms ? (
         <div style={phone ? { gridColumnEnd: "span 2", display: "flex" } : { display: "flex" }}>
@@ -300,7 +345,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
             label=" "
             onChange={handleChange}
             control={<Checkbox />}
-            disabled={lock}
+            disabled={!add && lock}
           />
           <TextField
             type="number"
@@ -311,7 +356,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
             onBlur={handleBlur}
             onChange={handleChange}
             style={{ marginBottom: 3 }}
-            disabled={!values.overrideUse || lock}
+            disabled={!add && (!values.overrideUse || lock)}
           />
         </div>
       ) : (
@@ -324,7 +369,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
             onBlur={handleBlur}
             onChange={handleChange}
             style={{ marginBottom: 3 }}
-            disabled={lock}
+            disabled={!add && lock}
           />
           <div style={phone ? { gridColumnEnd: "span 2" } : {}}>
             <FormControlLabel
@@ -334,7 +379,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
               label=" "
               onChange={handleChange}
               control={<Checkbox />}
-              disabled={lock}
+              disabled={!add && lock}
             />
             <TextField
               label=" Bom Cost Estimate"
@@ -344,7 +389,7 @@ export const Pricing = ({ values, errors, handleChange, handleBlur, touched, bom
               onBlur={handleBlur}
               onChange={handleChange}
               style={{ marginBottom: 3 }}
-              disabled={lock}
+              disabled={!add && lock}
             />
           </div>
         </>

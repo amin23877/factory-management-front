@@ -80,8 +80,8 @@ function LineItemsContent({ quote, onAddLineItem }: { quote: IQuote; onAddLineIt
           onRowSelected={(r) => {
             if (r?.ItemId?.id) {
               phone
-                ? history.push(`/panel/inventory/${r?.ItemId?.id}`)
-                : openRequestedSinglePopup({ url: `/panel/inventory/${r?.ItemId?.id}` });
+                ? history.push(`/panel/inventory/items//${r?.ItemId?.id}`)
+                : openRequestedSinglePopup({ url: `/panel/inventory/items/${r?.ItemId?.id}` });
             }
           }}
         />

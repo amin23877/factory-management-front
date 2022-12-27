@@ -140,7 +140,7 @@ function Table({ onRowSelected }: { onRowSelected: (row: IUnit) => void }) {
         </Button>
         <div style={{ marginLeft: "auto" }} />
       </Box>
-      <DataGrid columns={unitCols} url="/unit?status=In Production" onRowSelected={onRowSelected} />
+      <DataGrid columns={unitCols} url="/unit?status=In Production" onRowSelected={onRowSelected} setUrlFilters />
     </>
   );
 }

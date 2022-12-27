@@ -7,31 +7,33 @@ import useSWR from "swr";
 import NoteModal from "./Modal";
 import Button from "app/Button";
 import BaseDataGrid from "app/BaseDataGrid";
+import NewDataGrid from "app/NewDataGrid";
 
 import { formatTimestampToDate } from "logic/date";
 import { INote } from "api/note";
 
-import { LockButton, LockProvider, useLock } from "../Lock";
+import { useLock } from "../Lock";
 
-const columns: GridColumns = [
+const columns = [
   {
     field: "date",
     headerName: "Date",
-    valueFormatter: (params) => formatTimestampToDate(params.row?.date),
+    valueFormatter: (params: any) => formatTimestampToDate(params.row?.date),
     width: 120,
   },
   {
     field: "creator",
     headerName: "Creator",
     width: 180,
-    valueFormatter: (params) => params.row?.EmployeeId?.username,
+    valueFormatter: (params: any) => params.row?.EmployeeId?.username,
   },
   { field: "subject", headerName: "Subject", width: 300 },
   { field: "note", headerName: "Note", flex: 1 },
 ];
 
-function NoteTabContent({ itemId, model }: { model: string; itemId: string }) {
+export default function NoteTab({ itemId, model }: { model: string; itemId: string }) {
   const { data } = useSWR(`/note/${model}/${itemId}`);
+
   const [addModal, setAddModal] = useState(false);
   const [selected, setSelected] = useState<INote>();
   const { lock } = useLock();
@@ -50,7 +52,6 @@ function NoteTabContent({ itemId, model }: { model: string; itemId: string }) {
           >
             Add
           </Button>
-          <LockButton />
         </Box>
         <BaseDataGrid
           cols={columns}
@@ -62,15 +63,17 @@ function NoteTabContent({ itemId, model }: { model: string; itemId: string }) {
             }
           }}
         />
+        {/* <NewDataGrid
+          columns={columns}
+          url={`/notes/${model}/${itemId}`}
+          onRowSelected={(r) => {
+            if (!lock) {
+              setSelected(r);
+              setAddModal(true);
+            }
+          }}
+        /> */}
       </Box>
     </>
-  );
-}
-
-export default function NoteTab({ itemId, model }: { model: string; itemId: string }) {
-  return (
-    <LockProvider>
-      <NoteTabContent itemId={itemId} model={model} />
-    </LockProvider>
   );
 }

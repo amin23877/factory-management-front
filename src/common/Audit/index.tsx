@@ -32,5 +32,12 @@ const columns = [
 ];
 
 export default function AuditTable({ itemId }: { itemId: string }) {
-  return <NewDataGrid url={`/audit?docId=${itemId}`} columns={columns} onRowSelected={() => {}} />;
+  return (
+    <NewDataGrid
+      url={`/audit?docId=${itemId}`}
+      columns={columns}
+      onRowSelected={() => {}}
+      style={{ minHeight: "calc(100vh - 250px)" }}
+    />
+  );
 }

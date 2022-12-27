@@ -21,5 +21,5 @@ const cols = [
 ];
 
 export default function Table({ onRowSelected }: { onRowSelected: (row: ITicket) => void }) {
-  return <DataGrid columns={cols} url="/service" onRowSelected={onRowSelected} />;
+  return <DataGrid columns={cols} url="/service" onRowSelected={onRowSelected} setUrlFilters />;
 }

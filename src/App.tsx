@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { CssBaseline, ThemeProvider } from "@material-ui/core";
 import { BrowserRouter } from "react-router-dom";
 import DateFnsUtils from "@date-io/date-fns";
@@ -18,11 +18,11 @@ import BaseRouter from "./Router";
 // Delete this after using baseurl somewhere
 import * as config from "./api/config";
 import { get } from "./api";
+import { ChatSocketProvider } from "logic/Chat/ChatContext";
 console.log(config.BaseUrl);
 // ---------------------------
 
 function App() {
-  // const session = useSelector(selectSession);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -37,13 +37,14 @@ function App() {
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <SWRConfig value={{ fetcher: get, errorRetryCount: 3 }}>
         <BrowserRouter>
-          <ThemeProvider theme={theme}>
-            <CssBaseline />
-
-            <SocketProvider>
-              <BaseRouter />
-            </SocketProvider>
-          </ThemeProvider>
+          <ChatSocketProvider>
+            <ThemeProvider theme={theme}>
+              <CssBaseline />
+              <SocketProvider>
+                <BaseRouter />
+              </SocketProvider>
+            </ThemeProvider>
+          </ChatSocketProvider>
         </BrowserRouter>
       </SWRConfig>
     </MuiPickersUtilsProvider>

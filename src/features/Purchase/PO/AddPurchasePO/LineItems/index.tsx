@@ -4,6 +4,7 @@ import { GridColumns } from "@material-ui/data-grid";
 import BaseDataGrid from "app/BaseDataGrid";
 import Button from "app/Button";
 import AddLineItem from "./AddLineItem";
+import { Box } from "@material-ui/core";
 
 export type lineItemType = {
   ItemId: string;
@@ -24,6 +25,8 @@ export default function LineItems({
   setFieldValue: any;
 }) {
   const [addLineItemModal, setAddLineItemModal] = useState(false);
+  const [error, setError] = useState(false);
+
   const cols = useMemo<GridColumns>(
     () => [
       { field: "Item No.", valueFormatter: (p) => p.row?.ItemObject?.no, width: 120 },
@@ -49,14 +52,16 @@ export default function LineItems({
           }}
         />
       )}
-      <Button
-        disabled={!vendorId}
-        style={{ marginBottom: "0.5em" }}
-        variant="outlined"
-        onClick={() => setAddLineItemModal(true)}
-      >
-        Add Line Item
-      </Button>
+      <Box>
+        <Button
+          style={{ marginBottom: "0.5em", marginRight: "0.5em" }}
+          variant="outlined"
+          onClick={vendorId ? () => setAddLineItemModal(true) : () => setError(true)}
+        >
+          Add Line Item
+        </Button>
+        {!vendorId && error && <span style={{ color: "red" }}>Choose a vendor first!</span>}
+      </Box>
       <BaseDataGrid cols={cols} rows={lines ? lines.map((l, i) => ({ ...l, id: i })) : []} />
     </>
   );

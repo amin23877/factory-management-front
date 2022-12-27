@@ -8,9 +8,9 @@ import ClusterForm from "./Form";
 import Dialog from "app/Dialog";
 import NewDataGrid from "app/NewDataGrid";
 import Toast from "app/Toast";
-import DataGridAction from "common/DataGridAction";
 import LevelForm from "common/Level/Form";
-import { useLock } from "common/Lock";
+import { LockButton, LockProvider, useLock } from "common/Lock";
+import { ReactComponent as NarrowIcon } from "assets/icons/tableIcons/narrowDown.svg";
 
 import { clusterType, createCluster, updateCluster } from "api/cluster";
 import { getModifiedValues } from "logic/utils";
@@ -23,9 +23,7 @@ export default function ClusterModal({ open, onClose }: { open: boolean; onClose
   const handleSubmit = async (data: any) => {
     try {
       if (data && data.id) {
-        const modified = getModifiedValues(data, data);
-        await updateCluster(data.id, modified);
-
+        await updateCluster(data.id, data);
         setRefresh((p) => p + 1);
         Toast("Record updated", "success");
       } else {
@@ -70,14 +68,16 @@ export default function ClusterModal({ open, onClose }: { open: boolean; onClose
         header: "",
         defaultWidth: 80,
         render: ({ data }: any) => (
-          <DataGridAction
-            icon="view"
-            controlledLock={false}
+          <div
             onClick={() => {
               setSelectedCluster(data);
               setActiveTab(1);
             }}
-          />
+            title="Show Levels"
+            style={{ cursor: "pointer" }}
+          >
+            <NarrowIcon />
+          </div>
         ),
       },
     ],
@@ -86,17 +86,20 @@ export default function ClusterModal({ open, onClose }: { open: boolean; onClose
 
   return (
     <Dialog open={open} onClose={onClose} title={activeTab === 0 ? "Cluster" : "Level"} maxWidth="lg" fullWidth>
-      <Tabs
-        value={activeTab}
-        textColor="primary"
-        onChange={(e, nv) => {
-          setLock(true);
-          setActiveTab(nv);
-        }}
-      >
-        <Tab label="Clusters" />
-        <Tab label="Levels" disabled={!selectedCluster} />
-      </Tabs>
+      <Box display="flex" justifyContent={"space-between"} alignItems="center">
+        <Tabs
+          value={activeTab}
+          textColor="primary"
+          onChange={(e, nv) => {
+            setLock(true);
+            setActiveTab(nv);
+          }}
+        >
+          <Tab label="Clusters" />
+          <Tab label="Levels" disabled={!selectedCluster} />
+        </Tabs>
+        <LockButton />
+      </Box>
       {activeTab === 0 && (
         <Formik initialValues={{ class: "device" } as Partial<clusterType>} onSubmit={handleSubmit}>
           {({ getFieldProps, values, setFieldValue, resetForm, setValues }) => (

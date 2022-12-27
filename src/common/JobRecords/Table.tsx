@@ -3,8 +3,10 @@ import { useMediaQuery, makeStyles, Tooltip, Button, Box } from "@material-ui/co
 import { useHistory } from "react-router-dom";
 import ReactDataGrid from "@inovua/reactdatagrid-community";
 import "@inovua/reactdatagrid-community/index.css";
-import { AddRounded, ClearRounded, SearchRounded, KeyboardArrowUp, KeyboardArrowDown } from "@material-ui/icons";
+import { AddRounded, ClearRounded, KeyboardArrowUp, KeyboardArrowDown } from "@material-ui/icons";
 import useSWR from "swr";
+
+import { ReactComponent as NarrowIcon } from "assets/icons/tableIcons/narrowDown.svg";
 
 import { IUnit } from "api/units";
 import { updateJobRecord, deleteJobRecord } from "api/jobrecord";
@@ -14,7 +16,7 @@ import { openRequestedSinglePopup } from "logic/window";
 import AddModal from "./AddModal";
 import Toast from "app/Toast";
 import Confirm from "common/Confirm";
-import { LockButton, useLock } from "common/Lock";
+import { useLock } from "common/Lock";
 
 const useStyle = makeStyles({
   root: {
@@ -114,7 +116,7 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
   const [expandedComponents, setExpandedComponents] = useState<string[]>([]);
   const [addModal, setAddModal] = useState(false);
   const [parent, setParent] = useState<{ _id: string; Component: string }>();
-  const { lock, setLock } = useLock();
+  const { lock } = useLock();
 
   const jobRecordsSorted = useMemo(
     () =>
@@ -137,7 +139,7 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
 
   const handleRowSelect = useCallback(
     (r: any) => {
-      const url = `/panel/inventory/${r?.ItemId?._id}`;
+      const url = `/panel/inventory/items/${r?.ItemId?._id}`;
       if (r.ItemId && phone) {
         history.push(url);
       } else if (r.ItemId && !phone) {
@@ -177,12 +179,12 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
   };
 
   const handleDelete = useCallback(
-    (id: string) => {
+    (data: any) => {
       Confirm({
-        text: "If you delete this record, all of it's children will be removed too",
+        text: `You are going to delete a record with number ${data.Component}. If you delete this record, all of it's children will be removed too !`,
         onConfirm: async () => {
           try {
-            await deleteJobRecord(id);
+            await deleteJobRecord(data._id);
           } catch (error) {
             console.log(error);
           } finally {
@@ -225,7 +227,7 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
               />
             </div>
             <div onClick={() => handleRowSelect(data)}>
-              <SearchRounded style={{ fontSize: "1.6rem", color: "#426792", cursor: "pointer" }} />
+              <NarrowIcon />
             </div>
             <ExpandButton data={data} expandedComponents={expandedComponents} toggleComponent={toggleComponent} />
             <Tooltip title={value}>
@@ -252,7 +254,7 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
         render: ({ data }: any) => (
           <Box display="flex" alignItems="center" style={{ gap: 4 }}>
             <p style={{ flexGrow: 1 }}>{data?.note}</p>
-            <div onClick={() => handleDelete(data._id)}>
+            <div onClick={() => handleDelete(data)}>
               <ClearRounded style={{ fontSize: "1.8rem", color: lock ? "#ccc" : "#e71414", cursor: "pointer" }} />
             </div>
           </Box>
@@ -266,16 +268,17 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
     <div style={{ display: "flex", height: "68vh", flexDirection: "column" }}>
       <AddModal parent={parent} unit={unit} open={addModal} onClose={() => setAddModal(false)} />
       <div style={{ display: "flex" }}>
-        <Button
-          disabled={lock}
-          fullWidth
-          variant="outlined"
-          startIcon={<AddRounded />}
-          onClick={() => setAddModal(true)}
-        >
-          Add
-        </Button>
-        <LockButton />
+        <Box mb={1}>
+          <Button
+            disabled={lock}
+            fullWidth
+            variant="outlined"
+            startIcon={<AddRounded />}
+            onClick={() => setAddModal(true)}
+          >
+            Add
+          </Button>
+        </Box>
       </div>
       <ReactDataGrid
         onEditComplete={({ columnId, value, data }: any) =>
@@ -288,6 +291,7 @@ export default function JobRecordsTable({ unit }: { unit: IUnit }) {
         rowClassName={({ data }) => getRowClassName({ row: data, jobRecords: jobRecordsSorted, unit })}
         defaultFilterValue={filterValues}
         pagination
+        rowHeight={25}
       />
     </div>
   );

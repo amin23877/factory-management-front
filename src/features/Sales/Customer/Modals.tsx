@@ -67,6 +67,7 @@ export default function AddCustomerModal({
                   touched={touched}
                   cId={""}
                   changeTab={() => {}}
+                  add
                 />
               )}
               {activeStep === 1 && (
@@ -76,6 +77,7 @@ export default function AddCustomerModal({
                   handleBlur={handleBlur}
                   handleChange={handleChange}
                   touched={touched}
+                  add
                 />
               )}
               {activeStep === 2 && (
@@ -85,6 +87,7 @@ export default function AddCustomerModal({
                   handleBlur={handleBlur}
                   handleChange={handleChange}
                   touched={touched}
+                  add
                 />
               )}
             </Box>
