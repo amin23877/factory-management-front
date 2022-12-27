@@ -80,12 +80,12 @@ export default function Config() {
 
   useEffect(() => {
     if (constants && typeof expanded !== "boolean") {
-      if (constants[expanded].value) {
+      if (constants[expanded]?.value) {
         setValue(constants[expanded].value as string);
       } else {
         setValue("");
       }
-      setValues(constants[expanded].values);
+      setValues(constants[expanded]?.values);
     }
   }, [constants, expanded, refresh]);
 

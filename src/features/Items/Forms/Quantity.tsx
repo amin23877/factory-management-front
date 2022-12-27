@@ -24,7 +24,7 @@ export default function QuantityTab({
   const phone = useMediaQuery("(max-width:900px)");
   const { lock } = useLock();
 
-  const selected = values.result.find(() => true);
+  const selected = values.result?.find(() => true);
 
   return (
     <Box
@@ -39,7 +39,7 @@ export default function QuantityTab({
           <TextField
             name="lastUsedInJOB"
             label="last Used In Bom"
-            value={selected.lastUsedInJOB}
+            value={selected?.lastUsedInJOB}
             disabled={lock}
             // onChange={handleChange}
             // onBlur={handleBlur}
@@ -47,7 +47,7 @@ export default function QuantityTab({
           <DateTimePicker
             name="lastCount"
             label="lastCount"
-            value={selected.lastCount}
+            value={selected?.lastCount}
             disabled={lock}
             format="yyyy-mm-dd"
             onChange={(lastCount) => setFieldValue("lastCount", lastCount)}
@@ -56,7 +56,7 @@ export default function QuantityTab({
           <TextField
             name="usedInQuarter"
             label="last used in 90 days"
-            value={selected.usedInQuarter}
+            value={selected?.usedInQuarter}
             disabled={lock}
             // onChange={handleChange}
             // onBlur={handleBlur}
@@ -64,7 +64,7 @@ export default function QuantityTab({
           <TextField
             name="usedInHalf"
             label="last used in 180 days"
-            value={selected.usedInHalf}
+            value={selected?.usedInHalf}
             disabled={lock}
             // onChange={handleChange}
             // onBlur={handleBlur}
@@ -72,7 +72,7 @@ export default function QuantityTab({
           <TextField
             name="usedInYear"
             label="last used in 360 days"
-            value={selected.usedInYear}
+            value={selected?.usedInYear}
             disabled={lock}
             // onChange={handleChange}
             // onBlur={handleBlur}
@@ -81,7 +81,7 @@ export default function QuantityTab({
             name="total"
             label="Total Quantity"
             placeholder="Total Quantity"
-            value={selected.onHandQty + selected.onOrderQty}
+            value={selected?.onHandQty + selected?.onOrderQty}
             disabled
           />
         </>
@@ -90,7 +90,7 @@ export default function QuantityTab({
         name="onHandQty"
         label="Quantity on hand"
         placeholder="Quantity on hand"
-        value={selected.onHandQty}
+        value={selected?.onHandQty}
         disabled={!add}
         // onChange={handleChange}
         // onBlur={handleBlur}
@@ -101,21 +101,21 @@ export default function QuantityTab({
             name="qtyAvailable"
             label="Quantity Available"
             placeholder="Quantity Available"
-            value={selected.onHandQty - selected.allocatedQty}
+            value={selected?.onHandQty - selected?.allocatedQty}
             disabled
           />
           <TextField
             name="onOrderQty"
             label="Quantity on order"
             placeholder="Quantity on order"
-            value={selected.onOrderQty}
+            value={selected?.onOrderQty}
             disabled
           />
           <TextField
             name="allocatedQty"
             label="Quantity allocated"
             placeholder="Quantity allocated"
-            value={selected.allocatedQty}
+            value={selected?.allocatedQty}
             disabled
           />
         </>
@@ -124,7 +124,7 @@ export default function QuantityTab({
       <TextField
         name="triggerQty"
         label="Trigger Quantity"
-        value={selected.triggerQty}
+        value={selected?.triggerQty}
         style={{ marginBottom: 3 }}
         disabled={!add && lock}
         // onChange={handleChange}
@@ -133,7 +133,7 @@ export default function QuantityTab({
       <TextField
         name="reorderQty"
         label="Reorder Quantity"
-        value={selected.reorderQty}
+        value={selected?.reorderQty}
         style={{ marginBottom: 3 }}
         disabled={!add && lock}
         // onChange={handleChange}
@@ -146,7 +146,7 @@ export default function QuantityTab({
             name="qohVal"
             label="QOH Value"
             placeholder="QOH Value"
-            value={selected.totalCost * selected.onHandQty}
+            value={selected?.totalCost * selected?.onHandQty}
             disabled
             style={{ marginBottom: 3 }}
           />

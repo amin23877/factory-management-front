@@ -222,14 +222,14 @@ export const General = ({
         </Paper>
         <ItemTypeCombo
           // value={itemTypes}
-          value={types.find((t) => t.value === selected.class)}
+          value={types.find((t) => t.value === selected?.class)}
           onChange={(e, nv) => nv && setFieldValue("class", nv.value)}
           style={{ gridColumnEnd: "span 4" }}
           disabled={!add && lock}
         />
         <TextField
           label="no"
-          value={selected.no}
+          value={selected?.no}
           name="no"
           onChange={handleChange}
           onBlur={handleBlur}
@@ -245,7 +245,7 @@ export const General = ({
           onChange={handleChange}
           onBlur={handleBlur}
           error={Boolean(errors.name && touched.name)}
-          value={selected.name}
+          value={selected?.name}
           disabled={!add && lock}
           style={{ gridColumnEnd: "span 4" }}
         />
@@ -285,7 +285,7 @@ export const General = ({
           name="description"
           onChange={handleChange}
           onBlur={handleBlur}
-          value={selected.description}
+          value={selected?.description}
           disabled={!add && lock}
         />
       </Box>

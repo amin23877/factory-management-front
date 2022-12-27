@@ -40,7 +40,7 @@ export const MaterialFieldSelect = ({
   const [findValue, setFindValue] = useState<any>();
 
   useEffect(() => {
-    const t = options.find((o) => getOptionValue(o) === value);
+    const t = options?.find((o) => getOptionValue(o) === value);
     setFindValue(t);
   }, [value, options, getOptionValue]);
 
@@ -48,9 +48,9 @@ export const MaterialFieldSelect = ({
     request()
       .then((data) => {
         if (limit && limit > 0) {
-          setOptions(data.slice(0, limit));
+          setOptions((data.length ? data : data.result).slice(0, limit));
         } else {
-          setOptions(data);
+          setOptions(data.length ? data : data.result);
         }
       })
       .catch((e) => console.log(e));
@@ -80,7 +80,7 @@ interface IOS extends StandardTextFieldProps {
 }
 export const ObjectSelect = ({ inputStyle, items, itemTitleField, itemValueField, keyField, ...props }: IOS) => {
   const classes = useStyle();
-  
+
   return (
     <TextField
       {...props}

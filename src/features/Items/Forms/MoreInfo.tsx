@@ -27,7 +27,7 @@ export default function MoreInfoTab({
       <TextField
         name="manufacturingTime"
         label="Manufacturer"
-        value={selected.manufacturingTime}
+        value={selected?.manufacturingTime}
         placeholder="Manufacturer"
         disabled={!add && lock}
         // onChange={handleChange}
@@ -36,7 +36,7 @@ export default function MoreInfoTab({
       <TextField
         name="manufacturerProductNumber"
         label="Man. No."
-        value={selected.manufacturerProductNumber}
+        value={selected?.manufacturerProductNumber}
         disabled={!add && lock}
         // onChange={handleChange}
         // onBlur={handleBlur}
@@ -44,7 +44,7 @@ export default function MoreInfoTab({
       <TextField
         name="leadTime"
         label="Lead Time"
-        value={selected.leadTime}
+        value={selected?.leadTime}
         disabled={!add && lock}
         // onChange={handleChange}
         // onBlur={handleBlur}
@@ -52,7 +52,7 @@ export default function MoreInfoTab({
       <TextField
         name="qbId"
         label="Quickbook ID"
-        value={selected.qbId}
+        value={selected?.qbId}
         disabled={!add && lock}
         // onChange={handleChange}
         // onBlur={handleBlur}
@@ -60,7 +60,7 @@ export default function MoreInfoTab({
       <TextField
         name="qbType"
         label="QB Type"
-        value={selected.qbType}
+        value={selected?.qbType}
         disabled={!add && lock}
         // onChange={handleChange}
         // onBlur={handleBlur}
@@ -68,7 +68,7 @@ export default function MoreInfoTab({
       <TextField
         name="type"
         label="Type"
-        value={selected.type}
+        value={selected?.type}
         disabled={!add && lock}
         // onChange={handleChange}
         // onBlur={handleBlur}
@@ -76,7 +76,7 @@ export default function MoreInfoTab({
       <TextField
         name="category"
         label="Category"
-        value={selected.category}
+        value={selected?.category}
         disabled={!add && lock}
         // onChange={handleChange}
         // onBlur={handleBlur}
