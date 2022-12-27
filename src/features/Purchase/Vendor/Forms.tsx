@@ -103,12 +103,12 @@ export const AddVendorForm = ({ onDone, tech }: { initialValues?: any; onDone: (
                   error={Boolean(errors.state)}
                 />
                 <TextField
-                  name="zipcode"
+                  name="zip"
                   label="Zip code"
-                  value={values.zipcode}
+                  value={values.zip}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  error={Boolean(errors.zipcode)}
+                  error={Boolean(errors.zip)}
                 />
                 <TextField
                   name="website"
