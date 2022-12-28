@@ -8,7 +8,7 @@ import Button from "app/Button";
 import BaseDataGrid from "app/BaseDataGrid";
 
 import { useLock } from "common/Lock";
-import { Box, Checkbox, FormControlLabel, Radio, RadioGroup, useMediaQuery } from "@material-ui/core";
+import { Box, Checkbox, CircularProgress, FormControlLabel, Radio, RadioGroup, useMediaQuery } from "@material-ui/core";
 
 const pricingCols = [
   { field: "label", headerName: "Label", flex: 1 },
@@ -37,10 +37,12 @@ export default function PricingTab({
   const [selectedPricing, setSelectedPricing] = useState<pricingType>();
   const { data } = useSWR<any>(`/item/${itemId}`);
 
-  const selected = data?.result?.find(() => true);
-
   const { lock } = useLock();
   const phone = useMediaQuery("(max-width:900px)");
+
+  if (!data) {
+    return <CircularProgress />;
+  }
 
   return (
     <>
@@ -67,7 +69,7 @@ export default function PricingTab({
           </Button>
         </Box>
         <BaseDataGrid
-          rows={selected?.pricing || []}
+          rows={data?.pricing || []}
           cols={pricingCols}
           height={220}
           pagination
@@ -81,7 +83,7 @@ export default function PricingTab({
         <Box mt={1} display="grid" gridTemplateColumns="auto auto" gridColumnGap={10} gridRowGap={10}>
           <TextField
             label="Labor Cost"
-            value={selected.laborCost}
+            value={data.laborCost}
             disabled={lock}
             style={{ marginBottom: 3 }}
             // onChange={handleChange}
@@ -90,16 +92,16 @@ export default function PricingTab({
           <TextField
             name="totalCost"
             label="Total Cost"
-            value={selected.overrideUse ? selected.override : selected.totalCost}
+            value={data.overrideUse ? data.override : data.totalCost}
             disabled
           />
 
-          {!selected.bom ? (
+          {!data.bom ? (
             <div style={phone ? { gridColumnEnd: "span 2", display: "flex" } : { display: "flex" }}>
               <FormControlLabel
                 name="overrideUse"
                 label=" "
-                checked={selected.overrideUse}
+                checked={data.overrideUse}
                 control={<Checkbox />}
                 disabled={lock}
                 style={{ fontSize: "0.7rem" }}
@@ -108,19 +110,19 @@ export default function PricingTab({
                 name="override"
                 label="Override"
                 type="number"
-                value={selected.override}
+                value={data.override}
                 style={{ marginBottom: 3 }}
-                disabled={!selected.overrideUse || lock}
+                disabled={!data.overrideUse || lock}
               />
             </div>
           ) : (
-            <RadioGroup row value={selected.bomCostEstimateUse}>
+            <RadioGroup row value={data.bomCostEstimateUse}>
               <div style={phone ? { gridColumnEnd: "span 2" } : {}}>
                 <FormControlLabel value={"false"} control={<Radio size="small" />} label="" disabled={lock} />
                 <TextField
                   name="bomCost"
                   label=" Bom  Cost"
-                  value={selected.bomCost}
+                  value={data.bomCost}
                   style={{ marginBottom: 3 }}
                   disabled={lock}
                 />
@@ -130,7 +132,7 @@ export default function PricingTab({
                 <TextField
                   name="bomCostEstimate"
                   label=" Bom Cost Estimate"
-                  value={selected.bomCostEstimate}
+                  value={data.bomCostEstimate}
                   style={{ marginBottom: 3 }}
                   disabled={lock}
                 />
@@ -138,13 +140,13 @@ export default function PricingTab({
             </RadioGroup>
           )}
 
-          <RadioGroup row value={selected.retailPriceEstimateUse}>
+          <RadioGroup row value={data.retailPriceEstimateUse}>
             <div style={phone ? { gridColumnEnd: "span 2" } : {}}>
               <FormControlLabel value={"false"} control={<Radio size="small" />} label="" disabled={lock} />
               <TextField
                 name="retailPrice"
                 label="retail price"
-                value={selected.retailPrice}
+                value={data.retailPrice}
                 style={{ marginBottom: 3 }}
                 disabled={lock}
               />
@@ -154,7 +156,7 @@ export default function PricingTab({
               <TextField
                 name="retailPriceEstimate"
                 label=" Retail Price Estimate"
-                value={selected.retailPriceEstimate}
+                value={data.retailPriceEstimate}
                 style={{ marginBottom: 3 }}
                 disabled={lock}
               />

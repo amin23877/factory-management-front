@@ -1,1 +1,1 @@
-export const host = "https://erp.phocuss.com";
+export const host = "https://digitalphocus.ir";

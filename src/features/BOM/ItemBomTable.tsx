@@ -13,7 +13,6 @@ import { ReactComponent as DeleteIcon } from "assets/icons/tableIcons/delete.svg
 
 import Button from "app/Button";
 import { deleteBom, IBom } from "api/bom";
-import { IItem } from "api/items";
 import { formatTimestampToDate } from "../../logic/date";
 import { openRequestedSinglePopup } from "../../logic/window";
 
@@ -31,8 +30,6 @@ export default function ItemBomTable({ boms, item, mutateBoms }: { boms?: IBom[]
   const history = useHistory();
   const phone = useMediaQuery("(max-width:900px)");
   const { lock } = useLock();
-
-  const selected = item?.result?.find(() => true);
 
   const handleDelete = useCallback((data: IBom) => {
     Confirm({
@@ -139,7 +136,7 @@ export default function ItemBomTable({ boms, item, mutateBoms }: { boms?: IBom[]
           BOM
         </Button>
       </Box>
-      <DataGrid columns={columns} url={`/bom?ItemId=${selected.id}`} onRowSelected={() => {}} refresh={refresh} />
+      <DataGrid columns={columns} url={`/bom?ItemId=${item?.id}`} onRowSelected={() => {}} refresh={refresh} />
     </>
   );
 }
