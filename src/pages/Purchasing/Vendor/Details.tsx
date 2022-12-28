@@ -102,7 +102,7 @@ export default function VendorDetails() {
         {activeTab === 0 && (
           <BaseDataGrid
             cols={itemCols}
-            rows={(items && items.map((r: any, i: number) => ({ ...r, id: i }))) || []}
+            rows={items?.result?.map((r: any, i: number) => ({ ...r, id: i })) || []}
             onRowSelected={() => {}}
             height="calc(100% - 60px)"
           />

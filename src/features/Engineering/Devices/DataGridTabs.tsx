@@ -125,6 +125,9 @@ export default function DataGridsTabs({
     []
   );
 
+  const { data: qs } = useSWR(`/qccase/item/${selected.id}`);
+  // console.log("qs: ", qs);
+
   return (
     <>
       {selectedStep && selectedRow && selected.id && (
@@ -241,7 +244,7 @@ export default function DataGridsTabs({
           {activeTab === 5 && <ProcessTab type={"test"} ItemId={selected.id} />}
           {activeTab === 6 && <ProcessTab type={"fieldStartUp"} ItemId={selected.id} />}
           {activeTab === 8 && (
-            <DataGrid
+            <NewDataGrid
               columns={unitHistoryCols}
               url={`/unit?ItemId=${selected.id}`}
               onRowSelected={(d) => {

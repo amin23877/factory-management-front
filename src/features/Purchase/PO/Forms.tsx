@@ -39,6 +39,7 @@ import "styles/main.css";
 import PurchasePO from "PDFTemplates/PurchasePO";
 import LinkField from "app/Inputs/LinkFields";
 import { useLock } from "common/Lock";
+import AsyncCombo from "common/AsyncCombo";
 
 export const DocumentForm = ({
   data,
@@ -905,6 +906,7 @@ export const CreateForm = ({
           <Box>
             {activeMoreTab === 0 && (
               <MoreInfoForm
+                lock={false}
                 errors={errors}
                 values={values}
                 handleBlur={handleBlur}
@@ -928,11 +930,13 @@ export const UpdateForm = ({
   errors,
   handleBlur,
   handleChange,
+  setFieldValue,
 }: {
   values: any;
   handleChange: any;
   handleBlur: any;
   errors: any;
+  setFieldValue: (n: string, v: any) => void;
 }) => {
   const phone = useMediaQuery("(max-width:900px)");
   const { lock } = useLock();
@@ -948,8 +952,16 @@ export const UpdateForm = ({
           onBlur={handleBlur}
           disabled={lock}
         />
-        <TextField label="So Number" value={values.SOId?.number} fullWidth disabled />
-        <TextField label="Vendor" value={values.VendorId?.name} fullWidth disabled />
+        <TextField label="So Number" value={values._soNumber} fullWidth disabled InputLabelProps={{ shrink: true }} />
+        <AsyncCombo
+          url="/vendor"
+          filterBy="name"
+          getOptionLabel={(o) => o.name || ""}
+          getOptionSelected={(o, v) => o.id === v.id}
+          value={values.VendorId}
+          onChange={(e, nv) => setFieldValue("VendorId", nv?.id)}
+          disabled={lock}
+        />
         <TextField label="Approved By" value={values.approvedBy?.username} fullWidth disabled />
         <ArraySelect
           items={[
@@ -1040,6 +1052,7 @@ export const MoreInfoForm = ({
   handleChange,
   setFieldValue,
   addForm,
+  lock,
 }: {
   values: any;
   handleChange: any;
@@ -1047,8 +1060,8 @@ export const MoreInfoForm = ({
   errors: any;
   setFieldValue: any;
   addForm?: boolean;
+  lock: boolean;
 }) => {
-  const { lock } = useLock();
   return (
     <>
       <Box my={2} display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10}>

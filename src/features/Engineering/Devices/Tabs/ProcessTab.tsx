@@ -10,7 +10,7 @@ import AddProcessModal from "../Process/AddProcessModal";
 import EditProcessModal from "../Process/EditProcessModal";
 import Confirm from "common/Confirm";
 import Toast from "app/Toast";
-import { mutate } from "swr";
+import useSWR, { mutate } from "swr";
 import TasksModal from "../Process/TasksModal";
 
 import { ReactComponent as NarrowIcon } from "assets/icons/tableIcons/narrowDown.svg";

@@ -8,7 +8,7 @@ import { useHistory } from "react-router-dom";
 import TextField from "app/TextField";
 import { get } from "api";
 
-const useValue = ({ initial, url }: { initial?: string | any; url: string }) => {
+const useValue = ({ initial, url }: { initial: string | any; url: string }) => {
   const [value, setValue] = useState(initial);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function AsyncCombo({
   getOptionLabel: (o: any) => string;
   getOptionSelected: (o: any, v: any) => boolean;
 }) {
-  const [selectedValue, setSelectedValue] = useValue({ initial: value, url: valueUrl || url });
+  const [selectedValue, setSelectedValue] = useValue({ initial: value || null, url: valueUrl || url });
   const [inputValue, setInputValue] = useState<string>();
   const [open, setOpen] = useState(false);
   const [options, setOptions] = useState<any[]>([]);
@@ -74,7 +74,7 @@ export default function AsyncCombo({
         const response = await get(url, { params: { [`startsWith${filterBy}`]: inputValue, ...defaultParams } });
 
         if (active) {
-          setOptions(response?.result || response);
+          setOptions((response?.result?.length ? response?.result : []) || (response?.length ? response : []) || []);
         }
       } catch (error) {
         console.log(error);

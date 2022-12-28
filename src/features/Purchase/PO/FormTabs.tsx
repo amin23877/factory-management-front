@@ -17,7 +17,7 @@ export default function FormTabs({
   setFieldValue: any;
 }) {
   const phone = useMediaQuery("(max-width:900px)");
-  const { setLock } = useLock();
+  const { lock, setLock } = useLock();
 
   const [activeMoreTab, setActiveMoreTab] = useState(0);
 
@@ -44,6 +44,7 @@ export default function FormTabs({
       <Box>
         {activeMoreTab === 0 && (
           <MoreInfoForm
+            lock={lock}
             errors={errors}
             values={values}
             handleBlur={handleBlur}
