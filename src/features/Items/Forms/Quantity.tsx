@@ -23,6 +23,9 @@ export default function QuantityTab({
 }: IQForm) {
   const phone = useMediaQuery("(max-width:900px)");
   const { lock } = useLock();
+
+  const selected = values.result.find(() => true);
+
   return (
     <Box
       mt={1}
@@ -34,101 +37,116 @@ export default function QuantityTab({
       {!add && (
         <>
           <TextField
+            name="lastUsedInJOB"
             label="last Used In Bom"
-            value={values.lastUsedInJOB}
-            {...getFieldProps("lastUsedInJOB")}
+            value={selected.lastUsedInJOB}
             disabled={lock}
+            // onChange={handleChange}
+            // onBlur={handleBlur}
           />
           <DateTimePicker
-            value={values.lastCount}
+            name="lastCount"
             label="lastCount"
-            {...getFieldProps("lastCount")}
+            value={selected.lastCount}
             disabled={lock}
-            onChange={(lastCount) => setFieldValue("lastCount", lastCount)}
             format="yyyy-mm-dd"
+            onChange={(lastCount) => setFieldValue("lastCount", lastCount)}
+            // onBlur={handleBlur}
           />
           <TextField
-            {...getFieldProps("usedInQuarter")}
-            disabled={lock}
+            name="usedInQuarter"
             label="last used in 90 days"
-            value={values.usedInQuarter}
+            value={selected.usedInQuarter}
+            disabled={lock}
+            // onChange={handleChange}
+            // onBlur={handleBlur}
           />
           <TextField
-            {...getFieldProps("usedInHalf")}
-            disabled={lock}
+            name="usedInHalf"
             label="last used in 180 days"
-            value={values.usedInHalf}
-          />
-          <TextField
-            label="last used in 360 days"
-            value={values.usedInYear}
-            {...getFieldProps("usedInYear")}
+            value={selected.usedInHalf}
             disabled={lock}
+            // onChange={handleChange}
+            // onBlur={handleBlur}
           />
           <TextField
+            name="usedInYear"
+            label="last used in 360 days"
+            value={selected.usedInYear}
+            disabled={lock}
+            // onChange={handleChange}
+            // onBlur={handleBlur}
+          />
+          <TextField
+            name="total"
             label="Total Quantity"
             placeholder="Total Quantity"
-            name="total"
-            value={values.onHandQty + values.onOrderQty}
+            value={selected.onHandQty + selected.onOrderQty}
             disabled
           />
         </>
       )}
       <TextField
+        name="onHandQty"
         label="Quantity on hand"
         placeholder="Quantity on hand"
-        name="onHandQty"
-        value={values.onHandQty}
+        value={selected.onHandQty}
         disabled={!add}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
       />
       {!add && (
         <>
           <TextField
+            name="qtyAvailable"
             label="Quantity Available"
             placeholder="Quantity Available"
-            name="qtyAvailable"
-            value={values.onHandQty - values.allocatedQty}
+            value={selected.onHandQty - selected.allocatedQty}
             disabled
           />
           <TextField
+            name="onOrderQty"
             label="Quantity on order"
             placeholder="Quantity on order"
-            name="onOrderQty"
-            value={values.onOrderQty}
+            value={selected.onOrderQty}
             disabled
           />
           <TextField
+            name="allocatedQty"
             label="Quantity allocated"
             placeholder="Quantity allocated"
-            name="allocatedQty"
-            value={values.allocatedQty}
+            value={selected.allocatedQty}
             disabled
           />
         </>
       )}
 
       <TextField
+        name="triggerQty"
         label="Trigger Quantity"
-        value={values.triggerQty}
+        value={selected.triggerQty}
         style={{ marginBottom: 3 }}
-        {...getFieldProps("triggerQty")}
         disabled={!add && lock}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
       />
       <TextField
+        name="reorderQty"
         label="Reorder Quantity"
-        value={values.reorderQty}
+        value={selected.reorderQty}
         style={{ marginBottom: 3 }}
-        {...getFieldProps("reorderQty")}
         disabled={!add && lock}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
       />
 
       {!add && (
         <>
           <TextField
-            label="QOH Value"
             name="qohVal"
+            label="QOH Value"
             placeholder="QOH Value"
-            value={values.totalCost * values.onHandQty}
+            value={selected.totalCost * selected.onHandQty}
             disabled
             style={{ marginBottom: 3 }}
           />

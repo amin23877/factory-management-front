@@ -21,7 +21,7 @@ const useStyles = makeStyles({
   },
 });
 interface IForm {
-  values: IItem;
+  values: any;
   errors: any;
   touched: any;
   handleChange: (e: any) => void;
@@ -65,7 +65,7 @@ export const General = ({
   const [anchorEl, setAnchorEl] = useState<HTMLElement>();
   const [levelFilters, setLevelFilters] = useState<{ [key: string]: string }>();
 
-  // const selected = values?.result?.find(() => true);
+  const selected = values?.result?.find(() => true);
 
   // const itemTypes = types.map((t) => (values as any)[t.value] && { value: t.value, title: t.title }).filter((t) => t);
 
@@ -104,7 +104,7 @@ export const General = ({
           <Box display="grid" gridTemplateColumns={phone ? "1fr 1fr" : "1fr 1fr 1fr 1fr"} gridColumnGap={10}>
             <FormControlLabel
               style={{ fontSize: "0.1rem" }}
-              checked={values.approvedForSale}
+              checked={selected?.approvedForSale}
               label="Sales Ap."
               name="approvedForSale"
               onChange={handleChange}
@@ -115,7 +115,7 @@ export const General = ({
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.engineeringApproval}
+              checked={selected?.engineeringApproval}
               label="En. Ap."
               name="engineeringApproval"
               onChange={handleChange}
@@ -125,7 +125,7 @@ export const General = ({
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.obsolete}
+              checked={selected?.obsolete}
               label="Obsolete"
               name="obsolete"
               onChange={handleChange}
@@ -135,7 +135,7 @@ export const General = ({
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.nonInventoryItem}
+              checked={selected?.nonInventoryItem}
               label="Non-Inventory Item"
               name="nonInventoryItem"
               onChange={handleChange}
@@ -145,7 +145,7 @@ export const General = ({
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.rndOnly}
+              checked={selected?.rndOnly}
               label="R&D Only"
               name="rndOnly"
               onChange={handleChange}
@@ -155,7 +155,7 @@ export const General = ({
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.dontTrackQoh}
+              checked={selected?.dontTrackQoh}
               label="Don't Track QOH"
               name="dontTrackQoh"
               onChange={handleChange}
@@ -165,7 +165,7 @@ export const General = ({
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.dontOrderOnPOs}
+              checked={selected?.dontOrderOnPOs}
               label="Don't order on POs"
               name="dontOrderOnPOs"
               onChange={handleChange}
@@ -175,7 +175,7 @@ export const General = ({
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.taxable}
+              checked={selected?.taxable}
               label="Taxable"
               name="taxable"
               onChange={handleChange}
@@ -186,7 +186,7 @@ export const General = ({
             <FormControlLabel
               classes={{ label: classes.label }}
               style={{ fontSize: "0.7rem" }}
-              checked={values.canBom}
+              checked={selected?.canBom}
               label="BOM"
               name="canBom"
               onChange={handleChange}
@@ -197,7 +197,7 @@ export const General = ({
               <FormControlLabel
                 classes={{ label: classes.label }}
                 style={{ fontSize: "0.7rem" }}
-                checked={values.archived}
+                checked={selected?.archived}
                 label="Archive"
                 name="archived"
                 onChange={handleChange}
@@ -222,14 +222,14 @@ export const General = ({
         </Paper>
         <ItemTypeCombo
           // value={itemTypes}
-          value={types.find((t) => t.value === values.class)}
+          value={types.find((t) => t.value === selected.class)}
           onChange={(e, nv) => nv && setFieldValue("class", nv.value)}
           style={{ gridColumnEnd: "span 4" }}
           disabled={!add && lock}
         />
         <TextField
           label="no"
-          value={values.no}
+          value={selected.no}
           name="no"
           onChange={handleChange}
           onBlur={handleBlur}
@@ -245,7 +245,7 @@ export const General = ({
           onChange={handleChange}
           onBlur={handleBlur}
           error={Boolean(errors.name && touched.name)}
-          value={values.name}
+          value={selected.name}
           disabled={!add && lock}
           style={{ gridColumnEnd: "span 4" }}
         />
@@ -285,7 +285,7 @@ export const General = ({
           name="description"
           onChange={handleChange}
           onBlur={handleBlur}
-          value={values.description}
+          value={selected.description}
           disabled={!add && lock}
         />
       </Box>

@@ -14,6 +14,7 @@ export default function MoreInfoTab({
 }) {
   const phone = useMediaQuery("(max-width:900px)");
   const { lock } = useLock();
+  const selected = values?.result?.find(() => true);
 
   return (
     <Box
@@ -23,13 +24,63 @@ export default function MoreInfoTab({
       gridColumnGap={10}
       gridRowGap={10}
     >
-      <TextField label="Manufacturer" {...getFieldProps("manufacturer")} disabled={!add && lock} />
-      <TextField label="Man. No." {...getFieldProps("manufacturerProductNumber")} disabled={!add && lock} />
-      <TextField label="Lead Time" {...getFieldProps("leadTime")} disabled={!add && lock} />
-      <TextField label="Quickbook ID" {...getFieldProps("qbId")} disabled={!add && lock} />
-      <TextField label="QB Type" {...getFieldProps("qbType")} disabled={!add && lock} />
-      <TextField label="Type" {...getFieldProps("type")} disabled={!add && lock} />
-      <TextField label="Category" {...getFieldProps("category")} disabled={!add && lock} />
+      <TextField
+        name="manufacturingTime"
+        label="Manufacturer"
+        value={selected.manufacturingTime}
+        placeholder="Manufacturer"
+        disabled={!add && lock}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
+      />
+      <TextField
+        name="manufacturerProductNumber"
+        label="Man. No."
+        value={selected.manufacturerProductNumber}
+        disabled={!add && lock}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
+      />
+      <TextField
+        name="leadTime"
+        label="Lead Time"
+        value={selected.leadTime}
+        disabled={!add && lock}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
+      />
+      <TextField
+        name="qbId"
+        label="Quickbook ID"
+        value={selected.qbId}
+        disabled={!add && lock}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
+      />
+      <TextField
+        name="qbType"
+        label="QB Type"
+        value={selected.qbType}
+        disabled={!add && lock}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
+      />
+      <TextField
+        name="type"
+        label="Type"
+        value={selected.type}
+        disabled={!add && lock}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
+      />
+      <TextField
+        name="category"
+        label="Category"
+        value={selected.category}
+        disabled={!add && lock}
+        // onChange={handleChange}
+        // onBlur={handleBlur}
+      />
     </Box>
   );
 }
