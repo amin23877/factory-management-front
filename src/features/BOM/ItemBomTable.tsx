@@ -22,7 +22,15 @@ import BomRecordModal from "./BomRecordModal";
 import { useLock } from "common/Lock";
 import Confirm from "common/Confirm";
 
-export default function ItemBomTable({ boms, item, mutateBoms }: { boms?: IBom[]; item: any; mutateBoms: () => void }) {
+export default function ItemBomTable({
+  boms,
+  item,
+  mutateBoms,
+}: {
+  boms?: IBom[];
+  item: IItem;
+  mutateBoms: () => void;
+}) {
   const [bomModal, setBomModal] = useState(false);
   const [bomRecordModal, setBomRecordModal] = useState(false);
   const [selectedBom, setSelectedBom] = useState<IBom>();
@@ -31,8 +39,6 @@ export default function ItemBomTable({ boms, item, mutateBoms }: { boms?: IBom[]
   const history = useHistory();
   const phone = useMediaQuery("(max-width:900px)");
   const { lock } = useLock();
-
-  const selected = item?.result?.find(() => true);
 
   const handleDelete = useCallback((data: IBom) => {
     Confirm({
@@ -139,7 +145,7 @@ export default function ItemBomTable({ boms, item, mutateBoms }: { boms?: IBom[]
           BOM
         </Button>
       </Box>
-      <DataGrid columns={columns} url={`/bom?ItemId=${selected.id}`} onRowSelected={() => {}} refresh={refresh} />
+      <DataGrid columns={columns} url={`/bom?ItemId=${item.id}`} onRowSelected={() => {}} refresh={refresh} />
     </>
   );
 }
