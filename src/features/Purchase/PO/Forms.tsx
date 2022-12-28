@@ -912,7 +912,7 @@ export const CreateForm = ({
               />
             )}
             {activeMoreTab === 1 && (
-              <AddressesForm values={values} handleBlur={handleBlur} handleChange={handleChange} />
+              <AddressesForm values={values} handleBlur={handleBlur} handleChange={handleChange} addForm={true} />
             )}
           </Box>
         </BasePaper>
@@ -1056,7 +1056,7 @@ export const MoreInfoForm = ({
           size="small"
           value={values.acknowledgeDate}
           name="acknowledgeDate"
-          label="َAck. Date"
+          label="Ack. Date"
           onChange={(date) => setFieldValue(" acknowledgeDate", date)}
           onBlur={handleBlur}
           disabled={!addForm && lock}
@@ -1118,10 +1118,12 @@ export const AddressesForm = ({
   handleChange,
   handleBlur,
   values,
+  addForm,
 }: {
   values: any;
   handleChange: (a: any) => void;
   handleBlur: (a: any) => void;
+  addForm?: boolean;
 }) => {
   const [activeTab, setActiveTab] = useState(0);
   const phone = useMediaQuery("(max-width:900px)");
@@ -1152,7 +1154,7 @@ export const AddressesForm = ({
             label="Company"
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!addForm && lock}
           />
           <TextField
             value={values.billingAttn}
@@ -1160,7 +1162,7 @@ export const AddressesForm = ({
             label="Attn"
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!addForm && lock}
           />
 
           <TextField
@@ -1169,7 +1171,7 @@ export const AddressesForm = ({
             label="Address"
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!addForm && lock}
           />
           <TextField
             value={values.billingCity}
@@ -1177,7 +1179,7 @@ export const AddressesForm = ({
             label="City"
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!addForm && lock}
           />
           <TextField
             value={values.billingState}
@@ -1185,7 +1187,7 @@ export const AddressesForm = ({
             label="State"
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!addForm && lock}
           />
           <TextField
             value={values.billingZipcode}
@@ -1193,7 +1195,7 @@ export const AddressesForm = ({
             label="Zip Code"
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!addForm && lock}
           />
           <TextField
             value={values.billingCountry}
@@ -1201,7 +1203,7 @@ export const AddressesForm = ({
             label="Country"
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!addForm && lock}
           />
           <TextField
             value={values.billingPhone}
@@ -1209,7 +1211,7 @@ export const AddressesForm = ({
             label="Phone"
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!addForm && lock}
           />
           <TextField
             value={values.billingEmail}
@@ -1217,7 +1219,7 @@ export const AddressesForm = ({
             label="Email"
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!addForm && lock}
 
             // style={{ gridColumnEnd: "span 2" }}
           />
@@ -1238,7 +1240,7 @@ export const AddressesForm = ({
             label="Company"
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!addForm && lock}
           />
           <TextField
             value={values.shippingAttn}
@@ -1246,7 +1248,7 @@ export const AddressesForm = ({
             label="Attn"
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!addForm && lock}
           />
           <TextField
             value={values.shippingAddress}
@@ -1254,7 +1256,7 @@ export const AddressesForm = ({
             name="shippingAddress"
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!addForm && lock}
           />
           <TextField
             value={values.shippingCity}
@@ -1262,7 +1264,7 @@ export const AddressesForm = ({
             label="City"
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!addForm && lock}
           />
           <TextField
             value={values.shippingState}
@@ -1270,7 +1272,7 @@ export const AddressesForm = ({
             label="State"
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!addForm && lock}
           />
           <TextField
             value={values.shippingZipcode}
@@ -1278,7 +1280,7 @@ export const AddressesForm = ({
             label="Zip Code"
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!addForm && lock}
           />
           <TextField
             value={values.shippingCountry}
@@ -1286,7 +1288,7 @@ export const AddressesForm = ({
             label="Country"
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!addForm && lock}
           />
           <TextField
             value={values.shippingPhone}
@@ -1294,7 +1296,7 @@ export const AddressesForm = ({
             label="Phone"
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!addForm && lock}
           />
           <TextField
             value={values.shippingEmail}
@@ -1302,7 +1304,7 @@ export const AddressesForm = ({
             label="Email"
             onChange={handleChange}
             onBlur={handleBlur}
-            disabled={lock}
+            disabled={!addForm && lock}
 
             // style={{ gridColumnEnd: "span 2" }}
           />
