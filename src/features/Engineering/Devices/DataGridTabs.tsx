@@ -24,6 +24,7 @@ import ItemBomTable from "features/BOM/ItemBomTable";
 import { useLock, LockButton } from "common/Lock";
 import { IItem } from "api/items";
 import useSWR from "swr";
+import { GridColumns } from "@material-ui/data-grid";
 
 export default function DataGridsTabs({
   selectedRow,
@@ -56,32 +57,27 @@ export default function DataGridsTabs({
   // const { data: flags } = useSWR(
   //   activeTab === 10 ? (selectedRow && selectedRow?.id ? `/qccase/item/${selectedRow?.id}` : null) : null
   // );
-  const { data: flags } = useSWR(`/qccase/item/${selectedRow?.id}`);
+  // const { data: flags } = useSWR(`/qccase/item/${selectedRow?.id}`);
 
-  const serviceCols = [
-    { name: "no", header: "ID", width: 150 },
+  const serviceCols: GridColumns = [
+    { field: "no", headerName: "ID", width: 150 },
     {
-      name: "name",
-      header: "Name",
+      field: "name",
+      headerName: "Name",
       flex: 1,
-      // renderCell: ({ row }) => (
-      //   <Tooltip title={row.name}>
-      //     <span>{row.name}</span>
-      //   </Tooltip>
-      // ),
     },
     {
-      name: "class",
-      header: "Class",
+      field: "class",
+      headerName: "Class",
       width: 120,
     },
     {
-      name: "type",
-      header: "Type",
+      field: "type",
+      headerName: "Type",
 
       width: 120,
     },
-    { name: "price", header: "Price", width: 90 },
+    { field: "price", headerName: "Price", width: 90 },
   ];
 
   const flagCols = useMemo(
@@ -123,8 +119,7 @@ export default function DataGridsTabs({
     []
   );
 
-  const { data: qs } = useSWR(`/qccase/item/${selectedRow?.id}`);
-  // console.log("qs: ", qs);
+  // const { data: qs } = useSWR(`/qccase/item/${selectedRow?.id}`);
 
   return (
     <>
@@ -217,6 +212,12 @@ export default function DataGridsTabs({
               >
                 Service
               </Button>
+              <BaseDataGrid
+                height={"calc(100% - 100px)"}
+                cols={serviceCols}
+                rows={itemObject?.services || []}
+                onRowSelected={(d) => {}}
+              />
               {/* <BaseDataGrid
                 height={"calc(100% - 100px)"}
                 cols={serviceCols}
@@ -226,15 +227,14 @@ export default function DataGridsTabs({
                   setAddService(true);
                 }}
               /> */}
-              <NewDataGrid
+              {/* <NewDataGrid
                 columns={serviceCols}
                 url={`/item/${selectedRow?.id}`}
                 onRowSelected={(d) => {
                   setSelectedService(d);
                   setAddService(true);
                 }}
-                // style={{ marginBottom: "10px" }}
-              />
+              /> */}
             </>
           )}
           {activeTab === 3 && <ProcessTab type={"manufacturing"} ItemId={selectedRow?.id} />}

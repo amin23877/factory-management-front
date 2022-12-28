@@ -145,7 +145,6 @@ export default function DataGridTabs({
           onRowSelected={() => {}}
           height={"calc(100% - 60px)"}
         />
-        // <NewDataGrid columns={usageCols} url={`/usage?ItemId=${selected.id}`} onRowSelected={(r) => {}} />
       )}
       {activeTab === 6 && <NotesTab itemId={selectedRow.id} model="item" />}
       {activeTab === 7 && <AuditTable itemId={selectedRow.id} />}

@@ -113,7 +113,7 @@ export default function FormTabs({
       {moreInfoTab === 6 && (
         <LevelsTab
           itemType={selectedRow?.class}
-          values={values.result[0]}
+          values={values}
           getFieldProps={getFieldProps}
           setFieldValue={setFieldValue}
         />
