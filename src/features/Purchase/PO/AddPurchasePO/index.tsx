@@ -31,6 +31,8 @@ export default function AddPOModal({
   const [createdPo, setCreatedPo] = useState<IPurchasePOComplete>();
 
   const handleSubmit = async (data: any, { setSubmitting }: { setSubmitting: any }) => {
+    console.log("submitting");
+
     try {
       setStatus("Creating PO");
       setProgress(0);
@@ -61,7 +63,7 @@ export default function AddPOModal({
   return (
     <Dialog open={open} title="Add new purchase order" fullScreen onClose={onClose}>
       <Formik initialValues={{} as any} onSubmit={handleSubmit}>
-        {({ values, touched, errors, handleChange, handleBlur, isSubmitting, setFieldValue }) => (
+        {({ values, errors, handleChange, handleBlur, isSubmitting, setFieldValue, setSubmitting }) => (
           <Form>
             <Box p={2} height={600}>
               <Box mb={2}>
@@ -106,24 +108,17 @@ export default function AddPOModal({
                 width="100%"
                 gridGap={10}
               >
-                <Button variant="contained" disabled={step === 0} onClick={() => setStep((p) => p - 1)}>
+                <Button variant="contained" disabled={step === 0 || step === 2} onClick={() => setStep((p) => p - 1)}>
                   Back
                 </Button>
-                {step === 1 ? (
-                  <Button variant="contained" color="primary" type="submit" disabled={isSubmitting}>
-                    Submit
-                  </Button>
-                ) : (
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={() => setStep((p) => p + 1)}
-                    disabled={isSubmitting}
-                  >
-                    {" "}
-                    {step === 2 ? "Finalize" : "Next"}
-                  </Button>
-                )}
+                <Button
+                  variant="contained"
+                  color="primary"
+                  disabled={isSubmitting}
+                  onClick={step === 1 ? () => handleSubmit(values, { setSubmitting }) : () => setStep((p) => p + 1)}
+                >
+                  {step === 1 ? "Finalize" : "Next"}
+                </Button>
               </Box>
             </Box>
           </Form>
