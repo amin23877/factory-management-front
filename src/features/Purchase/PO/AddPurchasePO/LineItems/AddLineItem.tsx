@@ -34,7 +34,7 @@ export default function AddLineItem({
                 <LinkField
                   filterLabel="no"
                   getOptionLabel={(item) => item?.ItemId?.no || item?.ItemId?.name || "No-Number"}
-                  getOptionList={(resp) => resp || []}
+                  getOptionList={(resp) => resp?.result || []}
                   getOptionValue={(item) => item._id}
                   path={`/vendor/${vendorId}/items`}
                   value={values.ItemId}
