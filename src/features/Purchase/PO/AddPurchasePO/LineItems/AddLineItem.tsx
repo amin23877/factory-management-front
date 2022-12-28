@@ -47,7 +47,7 @@ export default function AddLineItem({
                 <TextField type="number" label="Quantity" {...getFieldProps("quantity")} />
                 <TextField type="number" label="Cost" {...getFieldProps("cost")} />
                 <TextField
-                  type="datetime-local"
+                  type="date"
                   label="Vendor ETA"
                   {...getFieldProps("vendorETA")}
                   InputLabelProps={{ shrink: true }}

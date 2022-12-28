@@ -5,13 +5,7 @@ import { FormControlLabel, Checkbox } from "@material-ui/core";
 import TextField from "app/TextField";
 import AsyncCombo from "common/AsyncCombo";
 import { useLock } from "common/Lock";
-
-function formatDateValue(v: any) {
-  if (v) {
-    return new Date(v).toISOString().slice(0, 10);
-  }
-  return null;
-}
+import { formatDateValue } from "logic/date";
 
 export default function Approvals({ getFieldProps, values, add }: { getFieldProps: any; values?: any; add?: boolean }) {
   const { lock } = useLock();

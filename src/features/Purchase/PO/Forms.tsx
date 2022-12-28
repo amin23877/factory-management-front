@@ -22,7 +22,6 @@ import { BasePaper } from "app/Paper";
 import TextField from "app/TextField";
 import { FieldSelect, ArraySelect } from "app/Inputs";
 import Button from "app/Button";
-import DateTimePicker from "app/DateTimePicker";
 import LinkSelect from "app/Inputs/LinkFields";
 import Dialog from "app/Dialog";
 
@@ -39,7 +38,7 @@ import "styles/main.css";
 
 import PurchasePO from "PDFTemplates/PurchasePO";
 import LinkField from "app/Inputs/LinkFields";
-import { LockButton, useLock } from "common/Lock";
+import { useLock } from "common/Lock";
 
 export const DocumentForm = ({
   data,
@@ -865,26 +864,6 @@ export const CreateForm = ({
             url="/panel/purchase/vendor"
           />
           <TextField label="Approved By" value={values.approvedBy?.username} fullWidth disabled />
-          <ArraySelect
-            items={[
-              "Quoted",
-              "Pending",
-              "Printed",
-              "Closed",
-              "Acknowledged",
-              "Shipped",
-              "Received",
-              "Canceled",
-              "On Hold",
-            ]}
-            name="status"
-            label="PO Status"
-            value={values.status}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            error={Boolean(errors.status)}
-            fullWidth
-          />
           <TextField
             name="terms"
             label="Terms"
@@ -1072,53 +1051,63 @@ export const MoreInfoForm = ({
     <>
       <Box my={2} display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={10} gridColumnGap={10}>
         {!addForm && <TextField label="PO Date" value={formatTimestampToDate(values.date)} disabled />}
-        <DateTimePicker
+        <TextField
+          type="date"
           size="small"
           value={values.acknowledgeDate}
           name="acknowledgeDate"
           label="َAck. Date"
           onChange={(date) => setFieldValue(" acknowledgeDate", date)}
           onBlur={handleBlur}
-          disabled={lock}
+          disabled={!addForm && lock}
+          InputLabelProps={{ shrink: true }}
         />
-        <DateTimePicker
+        <TextField
+          type="date"
           size="small"
           value={values.estShipDate}
           name="estShipDate"
           label="Estimated ship date"
           onChange={(date) => setFieldValue("estShipDate", date)}
           onBlur={handleBlur}
-          disabled={lock}
+          disabled={!addForm && lock}
+          InputLabelProps={{ shrink: true }}
         />
-        <DateTimePicker
+        <TextField
+          type="date"
           size="small"
           value={values.actShipDate}
           name="actShipDate"
           label="Actual ship date"
           onChange={(date) => setFieldValue("actShipDate", date)}
           onBlur={handleBlur}
-          disabled={lock}
+          disabled={!addForm && lock}
+          InputLabelProps={{ shrink: true }}
         />
         {!addForm && (
           <TextField label="Approved Date" value={formatTimestampToDate(values.approvedDate)} fullWidth disabled />
         )}
-        <DateTimePicker
+        <TextField
           size="small"
           value={values.requiredBy}
           name="requiredBy"
           label="Required By"
           onChange={(date) => setFieldValue("requiredBy", date)}
           onBlur={handleBlur}
-          disabled={lock}
+          disabled={!addForm && lock}
+          type="date"
+          InputLabelProps={{ shrink: true }}
         />
-        <DateTimePicker
+        <TextField
           size="small"
           value={values.sentDate}
           name="sentDate"
           label="Date Sent"
           onChange={(date) => setFieldValue("sentDate", date)}
           onBlur={handleBlur}
-          disabled={lock}
+          disabled={!addForm && lock}
+          type="date"
+          InputLabelProps={{ shrink: true }}
         />
       </Box>
     </>
