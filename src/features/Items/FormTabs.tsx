@@ -114,11 +114,7 @@ export default function FormTabs({
       {moreInfoTab === 5 && <Shipping values={values} getFieldProps={getFieldProps} setFieldValue={setFieldValue} />}
       {moreInfoTab === 6 && (
         <LevelsTab
-<<<<<<< Updated upstream
-          itemType={selected.class}
-=======
           itemType={selectedRow.class}
->>>>>>> Stashed changes
           values={values}
           getFieldProps={getFieldProps}
           setFieldValue={setFieldValue}

@@ -46,7 +46,7 @@ export default function DataGridTabs({
     activeTab === 5 ? (selectedRow && selectedRow.id ? `/usage?ItemId=${selectedRow.id}` : null) : null
   );
 
-  const usageCols = useMemo(
+  const usageCols = useMemo<GridColumns>(
     () => [
       {
         field: "soNumber",
