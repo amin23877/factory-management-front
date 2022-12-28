@@ -83,46 +83,45 @@ export default function PricingTab({
         <Box mt={1} display="grid" gridTemplateColumns="auto auto" gridColumnGap={10} gridRowGap={10}>
           <TextField
             label="Labor Cost"
-            value={data.laborCost}
+            value={values.laborCost}
+            {...getFieldProps("laborCost")}
             disabled={lock}
             style={{ marginBottom: 3 }}
-            // onChange={handleChange}
-            // onBlur={handleBlur}
           />
           <TextField
-            name="totalCost"
             label="Total Cost"
-            value={data.overrideUse ? data.override : data.totalCost}
+            value={values.overrideUse ? values.override : values.totalCost}
+            name="totalCost"
             disabled
           />
 
-          {!data.bom ? (
+          {!values.bom ? (
             <div style={phone ? { gridColumnEnd: "span 2", display: "flex" } : { display: "flex" }}>
               <FormControlLabel
-                name="overrideUse"
+                style={{ fontSize: "0.7rem" }}
+                checked={values.overrideUse}
                 label=" "
-                checked={data.overrideUse}
+                {...getFieldProps("overrideUse")}
                 control={<Checkbox />}
                 disabled={lock}
-                style={{ fontSize: "0.7rem" }}
               />
               <TextField
-                name="override"
-                label="Override"
                 type="number"
-                value={data.override}
+                label="Override"
+                value={values.override}
+                {...getFieldProps("override")}
                 style={{ marginBottom: 3 }}
-                disabled={!data.overrideUse || lock}
+                disabled={!values.overrideUse || lock}
               />
             </div>
           ) : (
-            <RadioGroup row value={data.bomCostEstimateUse}>
+            <RadioGroup row {...getFieldProps("bomCostEstimateUse")} value={values.bomCostEstimateUse}>
               <div style={phone ? { gridColumnEnd: "span 2" } : {}}>
                 <FormControlLabel value={"false"} control={<Radio size="small" />} label="" disabled={lock} />
                 <TextField
-                  name="bomCost"
                   label=" Bom  Cost"
-                  value={data.bomCost}
+                  value={values.bomCost}
+                  {...getFieldProps("bomCost")}
                   style={{ marginBottom: 3 }}
                   disabled={lock}
                 />
@@ -130,9 +129,9 @@ export default function PricingTab({
               <div style={phone ? { gridColumnEnd: "span 2" } : {}}>
                 <FormControlLabel value={"true"} control={<Radio size="small" />} label="" disabled={lock} />
                 <TextField
-                  name="bomCostEstimate"
                   label=" Bom Cost Estimate"
-                  value={data.bomCostEstimate}
+                  value={values.bomCostEstimate}
+                  {...getFieldProps("bomCostEstimate")}
                   style={{ marginBottom: 3 }}
                   disabled={lock}
                 />
@@ -140,13 +139,13 @@ export default function PricingTab({
             </RadioGroup>
           )}
 
-          <RadioGroup row value={data.retailPriceEstimateUse}>
+          <RadioGroup row {...getFieldProps("retailPriceEstimateUse")} value={values.retailPriceEstimateUse}>
             <div style={phone ? { gridColumnEnd: "span 2" } : {}}>
               <FormControlLabel value={"false"} control={<Radio size="small" />} label="" disabled={lock} />
               <TextField
-                name="retailPrice"
                 label="retail price"
-                value={data.retailPrice}
+                value={values.retailPrice}
+                {...getFieldProps("retailPrice")}
                 style={{ marginBottom: 3 }}
                 disabled={lock}
               />
@@ -154,9 +153,9 @@ export default function PricingTab({
             <div style={phone ? { gridColumnEnd: "span 2" } : {}}>
               <FormControlLabel value={"true"} control={<Radio size="small" />} label="" disabled={lock} />
               <TextField
-                name="retailPriceEstimate"
                 label=" Retail Price Estimate"
-                value={data.retailPriceEstimate}
+                value={values.retailPriceEstimate}
+                {...getFieldProps("retailPriceEstimate")}
                 style={{ marginBottom: 3 }}
                 disabled={lock}
               />

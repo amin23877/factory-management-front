@@ -32,6 +32,7 @@ export default function FormTabs({
   setFieldValue: any;
 }) {
   const qrCode = useRef<HTMLElement | null>(null);
+
   const [moreInfoTab, setMoreInfoTab] = useState(0);
   const [manualCountModal, setManualCountModal] = useState(false);
   const [quantityModal, setQuantityModal] = useState(false);
@@ -42,8 +43,8 @@ export default function FormTabs({
 
   return (
     <>
-      <ManualCountModal open={manualCountModal} onClose={() => setManualCountModal(false)} itemId={selectedRow?.id} />
-      <UpdateQuantityModal open={quantityModal} onClose={() => setQuantityModal(false)} itemId={selectedRow?.id} />
+      <ManualCountModal open={manualCountModal} onClose={() => setManualCountModal(false)} itemId={selectedRow.id} />
+      <UpdateQuantityModal open={quantityModal} onClose={() => setQuantityModal(false)} itemId={selectedRow.id} />
       <Box display={"flex"} justifyContent="space-between" alignItems={"center"} mb={1}>
         <Tabs
           value={moreInfoTab}

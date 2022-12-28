@@ -12,6 +12,7 @@ import { LockButton, useLock } from "common/Lock";
 import AsyncCombo from "common/AsyncCombo";
 import { MenuRounded } from "@material-ui/icons";
 import LevelsMenu from "features/Engineering/BOM/ChangePartModal/LevelsMenu";
+import { IItem } from "api/items";
 
 const useStyles = makeStyles({
   label: {
@@ -19,7 +20,7 @@ const useStyles = makeStyles({
   },
 });
 interface IForm {
-  values: any;
+  values: IItem;
   errors: any;
   touched: any;
   handleChange: (e: any) => void;
@@ -62,6 +63,8 @@ export const General = ({
   const [clusterId, setClusterId] = useState<string>();
   const [anchorEl, setAnchorEl] = useState<HTMLElement>();
   const [levelFilters, setLevelFilters] = useState<{ [key: string]: string }>();
+
+  // const selected = values?.result?.find(() => true);
 
   // const itemTypes = types.map((t) => (values as any)[t.value] && { value: t.value, title: t.title }).filter((t) => t);
 

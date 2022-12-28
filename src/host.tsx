@@ -1,1 +1,1 @@
-export const host = "https://digitalphocus.ir";
+export const host = "https://ts.digitalphocus.ir";

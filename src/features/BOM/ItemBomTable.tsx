@@ -20,8 +20,17 @@ import BomModal from "./BomModal";
 import BomRecordModal from "./BomRecordModal";
 import { useLock } from "common/Lock";
 import Confirm from "common/Confirm";
+import { IItem } from "api/items";
 
-export default function ItemBomTable({ boms, item, mutateBoms }: { boms?: IBom[]; item: any; mutateBoms: () => void }) {
+export default function ItemBomTable({
+  boms,
+  item,
+  mutateBoms,
+}: {
+  boms?: IBom[];
+  item: IItem;
+  mutateBoms: () => void;
+}) {
   const [bomModal, setBomModal] = useState(false);
   const [bomRecordModal, setBomRecordModal] = useState(false);
   const [selectedBom, setSelectedBom] = useState<IBom>();
