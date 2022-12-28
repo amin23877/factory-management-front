@@ -47,6 +47,8 @@ export const DocumentForm = ({
   data: IPurchasePOComplete;
   divToPrint: React.MutableRefObject<HTMLElement | null>;
 }) => {
+  console.log(data);
+
   return (
     <Box>
       <Typography>We made a pdf from your PO, now you can save it</Typography>
