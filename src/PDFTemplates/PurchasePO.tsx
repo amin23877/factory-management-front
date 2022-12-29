@@ -1,19 +1,7 @@
+import { formatTimestampToDate } from "logic/date";
 import React from "react";
 
-import { IContact } from "../api/contact";
-import { IVendor } from "../api/vendor";
-
-export default function PurchasePO({
-  contact,
-  lines,
-  sum,
-  vendor,
-}: {
-  vendor: IVendor;
-  contact: IContact;
-  lines: any;
-  sum: any;
-}) {
+export default function PurchasePO({ lines, sum, data }: { data: any; lines: any; sum: any }) {
   return (
     <div>
       <div
@@ -59,8 +47,8 @@ export default function PurchasePO({
           <th>Ship to: </th>
         </tr>
         <tr className="minHeight">
-          <td>{vendor?.name}</td>
-          <td>{`${contact?.firstName} ${contact?.lastName}`}</td>
+          <td>{typeof data.VendorId !== "string" ? data?.VendorId?.name : ""}</td>
+          <td>{data.shippingCompany}</td>
         </tr>
       </table>
       <table
@@ -90,9 +78,9 @@ export default function PurchasePO({
           <th>Required By Date</th>
         </tr>
         <tr>
-          <td style={{ borderRight: "2px solid #416364 " }}></td>
-          <td style={{ borderRight: "2px solid #416364 ", width: "20%" }}></td>
-          <td style={{ width: "34%" }}></td>
+          <td style={{ borderRight: "2px solid #416364 " }}>we need help to fill this</td>
+          <td style={{ borderRight: "2px solid #416364 ", width: "20%" }}>{data.terms}</td>
+          <td style={{ width: "34%" }}>{data?.requiredBy && formatTimestampToDate(data?.requiredBy)}</td>
           {/* <td>123 456 789</td>
                             <td>123 456 789</td>
                             <td>123 456 789</td>
@@ -128,7 +116,7 @@ export default function PurchasePO({
           <th style={{ width: "17%" }}>Cost</th>
           <th style={{ width: "17%" }}>Amount</th>
         </tr>
-        {lines.map((l: any, index: any) => (
+        {lines?.map((l: any, index: any) => (
           <tr
             key={index}
             style={{
