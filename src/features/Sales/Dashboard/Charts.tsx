@@ -6,6 +6,7 @@ import BaseLineChart from "app/Chart/LineChart";
 
 import { post, get } from "api";
 import SOTableModal, { ClientOrRepSOTable, LocationSOTable } from "./SOTableModal";
+import { Typography } from "@material-ui/core";
 
 export function SalesVsWeek({ quote }: { quote?: boolean }) {
   const [SOs, setSOs] = useState<any[]>([]);
@@ -14,28 +15,31 @@ export function SalesVsWeek({ quote }: { quote?: boolean }) {
     const fetchData = async () => {
       const date = new Date();
       const nowDate = Number(date);
-      const endThreeMonthDate = Number(date.setDate(date.getDate() - 90));
+      const endThreeMonthDate = Number(date.setDate(date.getDate() - 365));
       try {
         const resp = await get(
           quote
-            ? `/so?mindate=${endThreeMonthDate}&maxdate=${nowDate}&pageSize=10000`
-            : `/so?mindate=${endThreeMonthDate}&maxdate=${nowDate}&pageSize=10000`
+            ? `/so?mindate=${endThreeMonthDate}&maxdate=${nowDate}&pageSize=150`
+            : `/so?mindate=${endThreeMonthDate}&maxdate=${nowDate}&pageSize=150`
         );
-        const chartData = resp.result.reduce((prev: any, cur: any) => {
-          if (cur.date) {
-            const week = getWeekOfMonth(cur.date);
-            const index = prev.findIndex((i: any) => i.name === week);
-            if (index > -1) {
-              let temp = prev.concat();
-              temp[index] = { name: week, count: prev[index].count + 1 };
-              return temp;
+        const chartData = resp.result
+          .reduce((prev: any, cur: any) => {
+            if (cur.date) {
+              const week = getWeekOfMonth(cur.date);
+              const index = prev.findIndex((i: any) => i.name === week);
+              if (index > -1) {
+                let temp = prev.concat();
+                temp[index] = { name: week, count: prev[index].count + 1 };
+                return temp;
+              } else {
+                return prev.concat({ name: week, count: 0 });
+              }
             } else {
-              return prev.concat({ name: week, count: 0 });
+              return prev;
             }
-          } else {
-            return prev;
-          }
-        }, []);
+          }, [])
+          .sort((a: any, b: any) => a.name - b.name);
+
         setSOs(chartData);
       } catch (error) {
         console.log(error);
@@ -43,9 +47,14 @@ export function SalesVsWeek({ quote }: { quote?: boolean }) {
     };
 
     fetchData();
-  }, []);
+  }, [quote]);
 
-  return <BaseLineChart height={250} data={SOs} xDataKey="name" barDataKey="count" />;
+  return (
+    <>
+      <Typography style={{ textAlign: "center" }}>For past year</Typography>
+      <BaseLineChart height={250} data={SOs} xDataKey="name" barDataKey="count" />
+    </>
+  );
 }
 export function DevicesPie() {
   const [chartData, setChartData] = useState<any[]>([]);
