@@ -31,8 +31,6 @@ export default function AddPOModal({
   const [createdPo, setCreatedPo] = useState<IPurchasePOComplete>();
 
   const handleSubmit = async (data: any, { setSubmitting }: { setSubmitting: any }) => {
-    console.log("submitting");
-
     try {
       setStatus("Creating PO");
       setProgress(0);

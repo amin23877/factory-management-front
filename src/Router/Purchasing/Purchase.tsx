@@ -4,14 +4,7 @@ import ListItem from "@material-ui/core/ListItem";
 import IconButton from "@material-ui/core/IconButton";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import {
-  AddRounded,
-  DeleteRounded,
-  LocalOfferRounded,
-  PostAddRounded,
-  ListAltRounded,
-  FindInPageRounded,
-} from "@material-ui/icons";
+import { AddRounded, DeleteRounded, PostAddRounded, ListAltRounded, FindInPageRounded } from "@material-ui/icons";
 
 import List from "app/SideUtilityList";
 
@@ -21,7 +14,6 @@ import AddPOModal from "features/Purchase/PO/AddPurchasePO";
 import DataGrid from "features/Purchase/PO/Datagrid";
 import Details from "pages/Purchasing/PO/Details";
 
-import PurchasePOTypeModal from "features/Purchase/PO/PurchasePoType";
 import { deletePurchasePO, IPurchasePO } from "api/purchasePO";
 import { ILineItem } from "api/lineItem";
 import Confirm from "features/Modals/Confirm";
@@ -40,7 +32,6 @@ function Index() {
   const [activeTab, setActiveTab] = useState(location.pathname.split("/").length === 5 ? 1 : 0);
 
   const [addPO, setAddPO] = useState(false);
-  const [addType, setAddType] = useState(false);
   const [confirm, setConfirm] = useState(false);
   const [lines, setLines] = useState<ILineItem[]>([]);
   const [refresh, setRefresh] = useState(0);
@@ -86,7 +77,6 @@ function Index() {
           }}
         />
       )}
-      <PurchasePOTypeModal open={addType} onClose={() => setAddType(false)} />
 
       <BasePaper>
         <Box display="flex">
@@ -145,11 +135,6 @@ function Index() {
                   <ListItem>
                     <IconButton onClick={() => setConfirm(true)} disabled={lock} title="delete this po">
                       <DeleteRounded />
-                    </IconButton>
-                  </ListItem>
-                  <ListItem>
-                    <IconButton onClick={() => setAddType(true)} title="Add PO Types" disabled={lock}>
-                      <LocalOfferRounded />
                     </IconButton>
                   </ListItem>
                   {activeTab === 1 && (
