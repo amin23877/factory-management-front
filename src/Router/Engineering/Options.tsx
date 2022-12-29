@@ -37,13 +37,13 @@ export default function Options({ sales, fieldservice }: { sales?: boolean; fiel
       { name: "name", header: "Name", minWidth: 180 },
       { name: "description", header: "Description", minWidth: 200 },
       {
-        name: "salesApproved",
+        name: "approvedForSale",
         header: "Sales Ap.",
         type: "boolean",
         defaultWidth: 100,
       },
       {
-        name: "engineeringApproved",
+        name: "engineeringApproval",
         header: "Eng. Ap.",
         type: "boolean",
         defaultWidth: 100,

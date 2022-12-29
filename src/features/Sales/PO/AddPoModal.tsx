@@ -15,7 +15,9 @@ import { createCustomerPo, customerPoType } from "api/customerPo";
 import { createAModelDocument } from "api/document";
 
 const schema = Yup.object().shape({
-  // name: Yup.string().required(),
+  file: Yup.mixed().required(),
+  number: Yup.string().required(),
+  QuoteId: Yup.string().required(),
 });
 
 export default function AddPOModal({
@@ -73,6 +75,7 @@ export default function AddPOModal({
                     }}
                   />
                   {fileName && <Typography variant="caption">{fileName}</Typography>}
+                  {(errors as any).file && <Typography>{(errors as any).file}</Typography>}
                 </Box>
                 <TextField
                   name="number"
@@ -101,6 +104,7 @@ export default function AddPOModal({
                   onChange={(e, nv) => setFieldValue("QuoteId", nv?.id)}
                   value={values?.QuoteId}
                 />
+                {(errors as any).QuoteId && <Typography>{(errors as any).QuoteId}</Typography>}
                 {/* <AsyncCombo
                   label="Rep"
                   url="/rep"

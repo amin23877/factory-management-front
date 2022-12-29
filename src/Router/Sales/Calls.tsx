@@ -91,7 +91,7 @@ export default function Calls() {
     <Box>
       <OneFieldModal
         title="Add/Edit Calls Tags"
-        getUrl="/callsTags"
+        getUrl="/callTags"
         open={CTagModal}
         onClose={() => setCTagModal(false)}
         postRecord={addCallsTag}

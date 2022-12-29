@@ -25,7 +25,6 @@ import MyBackdrop from "app/Backdrop";
 export default function Customers() {
   const history = useHistory();
   const location = useLocation();
-  const { clientId } = useParams<{ clientId: string }>();
 
   const tabs = ["clients", "requested", "rejected", "details"];
   const [activeTab, setActiveTab] = useState(
@@ -47,27 +46,12 @@ export default function Customers() {
   const [req, setReq] = useState(false);
   const phone = useMediaQuery("(max-width:900px)");
 
-  const handleDelete = async () => {
-    try {
-      if (clientId) {
-        await deleteClient(clientId);
-
-        setConf(false);
-        setActiveTab(0);
-        Toast("Record deleted");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   // TODO: Refactor, Add and Test Approved functionality
   // TODO: Refactor, Add and Test ClientType functionality
   // TODO: Refactor, Add and Test Add and Edit Client functionality
 
   return (
     <>
-      <Confirm open={conf} onClose={() => setConf(false)} onConfirm={handleDelete} />
       <AddCustomerModal open={addCustomerModal} onClose={() => setAddCustomerModal(false)} />
 
       <Grid container style={{ marginRight: "1px" }}>
@@ -193,7 +177,12 @@ export default function Customers() {
                   />
                 </Route>
                 <Route exact path={`/panel/sales/client/clients/:clientId`}>
-                  <Details req={req} changeTab={(i) => setActiveTab(i)} />
+                  <Details
+                    confirm={conf}
+                    onConfirmClose={() => setConf(false)}
+                    req={req}
+                    changeTab={(i) => setActiveTab(i)}
+                  />
                 </Route>
               </Switch>
             </Suspense>

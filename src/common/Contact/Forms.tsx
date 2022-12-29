@@ -26,7 +26,7 @@ export default function ContactForm({ values, errors, handleChange, handleBlur, 
           onBlur={handleBlur}
           onChange={handleChange}
           error={Boolean(errors.firstName && touched.firstName)}
-          helperText={errors.firstName && touched.firstName}
+          helperText={errors.firstName}
           value={values.firstName}
           label="First Name"
         />
@@ -35,7 +35,7 @@ export default function ContactForm({ values, errors, handleChange, handleBlur, 
           onBlur={handleBlur}
           onChange={handleChange}
           error={Boolean(errors.lastName && touched.lastName)}
-          helperText={errors.lastName && touched.lastName}
+          helperText={errors.lastName}
           value={values.lastName}
           label="Last Name"
         />
@@ -44,7 +44,7 @@ export default function ContactForm({ values, errors, handleChange, handleBlur, 
           onBlur={handleBlur}
           onChange={handleChange}
           error={Boolean(errors.title && touched.title)}
-          helperText={errors.title && touched.title}
+          helperText={errors.title}
           value={values.title}
           label="Title"
         />
@@ -53,7 +53,7 @@ export default function ContactForm({ values, errors, handleChange, handleBlur, 
           onBlur={handleBlur}
           onChange={handleChange}
           error={Boolean(errors.department && touched.department)}
-          helperText={errors.department && touched.department}
+          helperText={errors.department}
           value={values.department}
           label="Department"
         />

@@ -46,7 +46,7 @@ export default function AddServiceModal({
   device: any;
   initialValues?: any;
 }) {
-  const { data } = useSWR("/constants");
+  const { data } = useSWR("/constants/serviceTypes");
 
   const handleSubmit = async (data: any) => {
     try {

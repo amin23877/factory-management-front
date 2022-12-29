@@ -40,7 +40,7 @@ export default function POPanel() {
 
   const poCols = [
     {
-      name: "date",
+      name: "createdAt",
       header: "Date",
       minWidth: 110,
       type: "date",
@@ -62,30 +62,9 @@ export default function POPanel() {
     { name: "status", headerName: "Status", minWidth: 110 },
   ];
 
-  const handleDelete = async () => {
-    try {
-      if (poId) {
-        const resp = await deleteCustomerPo(poId);
-        if (resp) {
-          history.push("/panel/sales/customerPOs");
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setConfirm(false);
-    }
-  };
-
   return (
     <Box>
       <AddPOModal open={addPo} onClose={() => setAddPo(false)} onDone={() => setRefresh((p) => p + 1)} />
-      <Confirm
-        open={confirm}
-        onClose={() => setConfirm(false)}
-        onConfirm={handleDelete}
-        text={`Are you sure, You are going to delete this Customer PO`}
-      />
       <BasePaper>
         <Box my={1} display="flex" alignItems="center">
           <Tabs
@@ -144,7 +123,7 @@ export default function POPanel() {
               />
             </Route>
             <Route exact path="/panel/sales/customerPOs/:poId">
-              <Details />
+              <Details confirm={confirm} onClose={() => setConfirm(false)} />
             </Route>
           </Switch>
         </Suspense>

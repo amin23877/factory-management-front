@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import { Formik, Form, FieldArray } from "formik";
-// import * as Yup from "yup";
+import * as Yup from "yup";
 import { mutate } from "swr";
 
 import Dialog from "app/Dialog";
@@ -12,6 +12,13 @@ import AddPhone, { AddEmail } from "./AddPhone";
 import ContactForm from "./Forms";
 import BaseDataGrid from "app/BaseDataGrid";
 import { GridColumns } from "@material-ui/data-grid";
+
+const schema = Yup.object({
+  firstName: Yup.string().required(),
+  lastName: Yup.string().required(),
+  title: Yup.string().required(),
+  department: Yup.string().required(),
+});
 
 const phoneColumns: GridColumns = [
   { field: "phone", headerName: "Phone", width: 110 },
@@ -92,7 +99,11 @@ export default function ContactModal({
         fullWidth
       >
         <Box m={3}>
-          <Formik initialValues={data?.id ? data : ({} as IContact)} onSubmit={handleSubmit}>
+          <Formik
+            initialValues={data?.id ? data : ({ active: false, main: false } as IContact)}
+            validationSchema={schema}
+            onSubmit={handleSubmit}
+          >
             {({ values, errors, touched, handleBlur, handleChange, isSubmitting, setFieldValue }) => (
               <Form>
                 <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={8} gridColumnGap={8}>

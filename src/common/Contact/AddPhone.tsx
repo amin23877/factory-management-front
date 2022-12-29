@@ -69,7 +69,7 @@ export default function AddPhone({
               setFieldValue("phone", "");
               setFieldValue("phoneType", "mobile");
               setFieldValue("ext", "");
-              setFieldValue("main", false);
+              // setFieldValue("main", false);
             }}
           >
             Add Phone

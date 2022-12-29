@@ -44,7 +44,10 @@ export default function ContactTab({ itemId, model }: { model: string; itemId: s
             variant="outlined"
             startIcon={<AddRounded />}
             style={{ margin: "4px 0", marginRight: "auto" }}
-            onClick={() => setAddModal(true)}
+            onClick={() => {
+              setSelectedContact(undefined);
+              setAddModal(true);
+            }}
             disabled={lock}
           >
             Add

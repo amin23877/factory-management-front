@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme: Theme) =>
 export default function Config() {
   const classes = useStyles();
 
-  const { data: constants } = useSWR<IConstant[]>(`/constant/${window.location.pathname.split("/")[2]}`);
+  const { data: constants } = useSWR<IConstant[]>(`/constants/${window.location.pathname.split("/")[2]}`);
 
   const [expanded, setExpanded] = React.useState<number | false>(0);
   const [value, setValue] = React.useState<string>("");

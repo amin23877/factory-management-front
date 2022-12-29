@@ -162,7 +162,7 @@ const Devices = ({ sales }: { sales?: boolean }) => {
       { name: "description", header: "Description", flex: 2, minWidth: 200 },
       { name: "bom", header: "BOM", type: "boolean", defaultFilterValue: undefined, defaultWidth: 80 },
       ...(selectedCluster && additionalLevels ? additionalLevels : []),
-      { name: "leadTime", header: "Lead Time", minWidth: 120 },
+      { name: "leadTime", header: "Lead Time", defaultOperator: "eq", minWidth: 120 },
       { name: "retailPrice", header: "Price", minWidth: 120, type: "number" },
     ];
 
