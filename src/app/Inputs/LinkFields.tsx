@@ -119,7 +119,7 @@ export default function LinkField({
       }}
       style={props.style as any}
       getOptionLabel={getOptionLabel}
-      options={options}
+      options={disabled ? [] : options}
       onChange={onChange}
       onBlur={props.onBlur}
       value={selectValue}

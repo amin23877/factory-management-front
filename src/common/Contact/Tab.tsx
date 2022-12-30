@@ -27,7 +27,7 @@ export default function ContactTab({ itemId, model }: { model: string; itemId: s
   const { data } = useSWR(`/contact/${model}/${itemId}`);
   const { lock } = useLock();
   const [addModal, setAddModal] = useState(false);
-  const [selectedContact, setSelectedContact] = useState<IContact>();
+  const [selectedContactId, setSelectedContactId] = useState<string>();
 
   return (
     <>
@@ -36,8 +36,9 @@ export default function ContactTab({ itemId, model }: { model: string; itemId: s
         onClose={() => setAddModal(false)}
         model={model}
         itemId={itemId}
-        data={selectedContact}
+        contactId={selectedContactId}
       />
+
       <Box>
         <Box display="flex" alignItems="center">
           <Button
@@ -45,7 +46,7 @@ export default function ContactTab({ itemId, model }: { model: string; itemId: s
             startIcon={<AddRounded />}
             style={{ margin: "4px 0", marginRight: "auto" }}
             onClick={() => {
-              setSelectedContact(undefined);
+              setSelectedContactId(undefined);
               setAddModal(true);
             }}
             disabled={lock}
@@ -57,7 +58,7 @@ export default function ContactTab({ itemId, model }: { model: string; itemId: s
           cols={columns}
           rows={data || []}
           onRowSelected={(r) => {
-            setSelectedContact(r);
+            setSelectedContactId(r?.id);
             setAddModal(true);
           }}
         />

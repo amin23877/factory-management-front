@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import { Box, Tabs, Tab } from "@material-ui/core";
 import { Formik, Form, FieldArray } from "formik";
 import * as Yup from "yup";
-import { mutate } from "swr";
+import useSWR, { mutate } from "swr";
 
 import Dialog from "app/Dialog";
 import Button from "app/Button";
 
 import { createAModelContact, deleteAModelContact, updateAModelContact, IContact } from "api/contact";
-import AddPhone, { AddEmail } from "./AddPhone";
+import { AddEmail } from "./AddPhone";
 import ContactForm from "./Forms";
 import BaseDataGrid from "app/BaseDataGrid";
 import { GridColumns } from "@material-ui/data-grid";
+import PhoneTab from "./Phone";
 
 const schema = Yup.object({
   firstName: Yup.string().required(),
@@ -20,12 +21,6 @@ const schema = Yup.object({
   department: Yup.string().required(),
 });
 
-const phoneColumns: GridColumns = [
-  { field: "phone", headerName: "Phone", width: 110 },
-  { field: "phoneType", headerName: "Phone Type", width: 110 },
-  { field: "ext", headerName: "EXT", width: 90 },
-  { field: "main", headerName: "Main", type: "boolean" },
-];
 const emialColumns: GridColumns = [
   { field: "email", headerName: "Email", width: 110 },
   { field: "emailType", headerName: "Email Type", width: 110 },
@@ -34,28 +29,27 @@ const emialColumns: GridColumns = [
 
 export default function ContactModal({
   open,
-  onClose,
   model,
   itemId,
-  data,
+  contactId,
   onDone,
+  onClose,
 }: {
   open: boolean;
-  onClose: () => void;
   model: string;
   itemId: string;
-  data?: IContact;
+  contactId?: string;
   onDone?: () => void;
+  onClose: () => void;
 }) {
-  const [selectedPhone, setSelectedPhone] = useState(false);
+  const { data: contact } = useSWR<IContact>(contactId ? `/contact/${contactId}` : null);
   const [selectedEmail, setSelectedEmail] = useState(false);
-  const [addPhone, setAddPhone] = useState(false);
   const [addEmail, setAddEmail] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
 
   const handleDelete = () => {
-    if (data?.id) {
-      deleteAModelContact(data.id)
+    if (contact?._id) {
+      deleteAModelContact(contact._id)
         .then(() => {
           onClose();
           onDone && onDone();
@@ -66,10 +60,9 @@ export default function ContactModal({
   };
 
   const handleSubmit = (values: any, { setSubmitting }: any) => {
-    if (data?.id) {
-      updateAModelContact(data?.id, values)
-        .then((d: any) => {
-          console.log(d);
+    if (contact?._id) {
+      updateAModelContact(contact?._id, values)
+        .then(() => {
           onDone && onDone();
           setSubmitting(false);
           onClose();
@@ -78,8 +71,7 @@ export default function ContactModal({
         .catch((e) => console.log(e));
     } else {
       createAModelContact(model, itemId, values)
-        .then((d: any) => {
-          console.log(d);
+        .then(() => {
           onDone && onDone();
           setSubmitting(false);
           onClose();
@@ -94,15 +86,16 @@ export default function ContactModal({
       <Dialog
         open={open}
         onClose={onClose}
-        title={`${data?.id ? "Edit" : "Add"} a Contact to ${model}`}
+        title={`${contact?._id ? "Edit" : "Add"} a Contact to ${model}`}
         maxWidth="md"
         fullWidth
       >
         <Box m={3}>
           <Formik
-            initialValues={data?.id ? data : ({ active: false, main: false } as IContact)}
+            initialValues={contact?._id ? contact : ({ active: false, main: false } as IContact)}
             validationSchema={schema}
             onSubmit={handleSubmit}
+            enableReinitialize
           >
             {({ values, errors, touched, handleBlur, handleChange, isSubmitting, setFieldValue }) => (
               <Form>
@@ -116,10 +109,10 @@ export default function ContactModal({
                       handleChange={handleChange}
                     />
                     <Box display={"flex"} mt={1} justifyContent="space-around" gridGap={2}>
-                      <Button type="submit" disabled={isSubmitting} kind={data ? "edit" : "add"}>
+                      <Button type="submit" disabled={isSubmitting} kind={contact ? "edit" : "add"}>
                         Save
                       </Button>
-                      {data?.id && (
+                      {contact?._id && (
                         <Button kind="delete" onClick={handleDelete}>
                           Delete
                         </Button>
@@ -138,50 +131,7 @@ export default function ContactModal({
                       <Tab label="Phone" />
                       <Tab label="Email" />
                     </Tabs>
-                    {activeTab === 0 && (
-                      <Box>
-                        <FieldArray
-                          name="phones"
-                          render={(arrayHelpers) => (
-                            <Box pb={1}>
-                              <AddPhone
-                                open={addPhone}
-                                onClose={() => setAddPhone(false)}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                                errors={errors}
-                                values={values}
-                                setFieldValue={setFieldValue}
-                                arrayHelpers={arrayHelpers}
-                                touched={touched}
-                                selectedPhone={selectedPhone}
-                              />
-                              <Button
-                                disabled={isSubmitting}
-                                variant="outlined"
-                                onClick={() => {
-                                  setAddPhone(true);
-                                }}
-                              >
-                                Add Phone Number
-                              </Button>
-                            </Box>
-                          )}
-                        />
-                        <BaseDataGrid
-                          cols={phoneColumns}
-                          rows={values.phones?.map((i, ind) => ({ ...i, id: ind })) || []}
-                          onRowSelected={(r) => {
-                            setSelectedPhone(r);
-                            setFieldValue("phone", r.phone);
-                            setFieldValue("phoneType", r.phoneType);
-                            setFieldValue("ext", r.ext);
-                            setFieldValue("main", r.main);
-                            setAddPhone(true);
-                          }}
-                        />
-                      </Box>
-                    )}
+                    {activeTab === 0 && contact && <PhoneTab contact={contact} />}
                     {activeTab === 1 && (
                       <Box>
                         <FieldArray

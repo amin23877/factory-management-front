@@ -1,6 +1,7 @@
 import { get, post, patch, delete_ } from ".";
 
 export interface IContact {
+  _id: string;
   id: string;
   firstName: string;
   lastName: string;
@@ -14,6 +15,7 @@ export interface IContact {
   email: string;
   main: boolean;
   phones: {
+    _id?: string;
     phone: string;
     phoneType: string;
     ext: string;
@@ -40,7 +42,7 @@ export const createAModelContact = (model: string, id: string, data: IContact) =
   return post(`/contact/${model}/${id}`, data);
 };
 
-export const updateAModelContact = (id: string, data: IContact) => {
+export const updateAModelContact = (id: string, data: Partial<IContact>) => {
   return patch(`/contact/${id}`, data);
 };
 

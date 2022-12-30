@@ -12,14 +12,12 @@ import {
 import { BasePaper } from "app/Paper";
 import List from "app/SideUtilityList";
 
-import Confirm from "features/Modals/Confirm";
 import EditTab from "pages/Sales/Quote/Details";
 import AddQuote from "features/Sales/Quote/AddQuote";
 import ReqQuoteModal from "features/Sales/Quote/ReqQuote/Modals";
 import EmailModal from "features/Email/Modal";
 import DataGrid from "features/Sales/Quote/Datagrid";
 
-import { deleteQuote } from "api/quote";
 import { Route, Switch, useHistory, useLocation, useParams } from "react-router-dom";
 import MyBackdrop from "app/Backdrop";
 
@@ -45,24 +43,8 @@ export default function QuotePanel() {
     }
   }, [location]);
 
-  const handleDelete = async () => {
-    try {
-      if (quoteId) {
-        const resp = await deleteQuote(quoteId);
-        if (resp) {
-          setRefresh((p) => p + 1);
-        }
-        setConfirm(false);
-        history.push("/panel/sales/quotes");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <>
-      <Confirm open={confirm} onClose={() => setConfirm(false)} onConfirm={handleDelete} />
       {addQ && (
         <AddQuote
           open={addQ}
@@ -144,8 +126,7 @@ export default function QuotePanel() {
               />
             </Route>
             <Route exact path="/panel/sales/quotes/:quoteId">
-              {" "}
-              <EditTab />
+              <EditTab deleteConfirm={confirm} deleteConfirmOnClose={() => setConfirm(false)} />
             </Route>
           </Switch>
         </Suspense>

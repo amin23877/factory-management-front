@@ -233,7 +233,7 @@ export const GeneralForm = ({
           value={values.entryDate}
           name="entryDate"
           label="Entry Date"
-          onChange={(date) => setFieldValue("entryDate", date)}
+          onChange={(date) => setFieldValue("entryDate", Number(date))}
           onBlur={handleBlur}
           disabled={lock}
         />
@@ -243,7 +243,7 @@ export const GeneralForm = ({
           value={values.expireDate}
           name="expireDate"
           label="Expire Date"
-          onChange={(date) => setFieldValue("expireDate", date)}
+          onChange={(date) => setFieldValue("expireDate", Number(date))}
           onBlur={handleBlur}
           disabled={lock}
         />
@@ -293,7 +293,6 @@ export const GeneralForm = ({
             gridColumnEnd: "span 3",
           }}
         >
-          {" "}
           <FormControlLabel label="No Tax Client" control={<Checkbox />} disabled={lock} />
           <FormControlLabel label="Call 24 hours before delivery" control={<Checkbox />} disabled={lock} />
         </Paper>

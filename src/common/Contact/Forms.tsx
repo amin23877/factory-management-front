@@ -29,6 +29,7 @@ export default function ContactForm({ values, errors, handleChange, handleBlur, 
           helperText={errors.firstName}
           value={values.firstName}
           label="First Name"
+          InputLabelProps={{ shrink: true }}
         />
         <TextField
           name="lastName"
@@ -38,6 +39,7 @@ export default function ContactForm({ values, errors, handleChange, handleBlur, 
           helperText={errors.lastName}
           value={values.lastName}
           label="Last Name"
+          InputLabelProps={{ shrink: true }}
         />
         <TextField
           name="title"
@@ -47,6 +49,7 @@ export default function ContactForm({ values, errors, handleChange, handleBlur, 
           helperText={errors.title}
           value={values.title}
           label="Title"
+          InputLabelProps={{ shrink: true }}
         />
         <TextField
           name="department"
@@ -56,6 +59,7 @@ export default function ContactForm({ values, errors, handleChange, handleBlur, 
           helperText={errors.department}
           value={values.department}
           label="Department"
+          InputLabelProps={{ shrink: true }}
         />
       </Box>
     </>

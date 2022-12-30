@@ -53,8 +53,8 @@ export default function DataGridTabs({ selectedQuote }: { selectedQuote: IQuote 
   );
   const LICols = useMemo(
     () => [
-      { name: "group", header: "Group", width: 80 },
-      { name: "line", header: "Sort", width: 70 },
+      { name: "group", header: "Group", defaultOperator: "eq", width: 80 },
+      { name: "line", header: "Sort", defaultOperator: "eq", width: 70 },
       {
         name: "itemNo",
         header: "Part Number",
@@ -69,14 +69,14 @@ export default function DataGridTabs({ selectedQuote }: { selectedQuote: IQuote 
         // valueFormatter: (r) => r.row?.ItemId?.description,
         width: 150,
       },
-      { name: "qty", header: "QTY", width: 90 },
-      { name: "price", header: "Price", width: 100 },
+      { name: "qty", header: "QTY", defaultOperator: "eq", width: 90 },
+      { name: "price", header: "Price", defaultOperator: "eq", width: 100 },
       { name: "tax", header: "Tax", type: "boolean", width: 80 },
       {
         name: "total",
         header: "Total",
+        defaultOperator: "eq",
         render: ({ data }: any) => Number(data?.price) * Number(data?.qty),
-        // valueFormatter: (r) => Number(r.row?.price) * Number(r.row?.qty),
         width: 80,
       },
       { name: "invoice", header: "Invoice", width: 100 },

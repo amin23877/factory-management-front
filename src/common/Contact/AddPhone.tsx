@@ -16,6 +16,7 @@ export default function AddPhone({
   arrayHelpers,
   touched,
   selectedPhone,
+  index,
 }: any) {
   return (
     <Dialog open={open} onClose={onClose} maxWidth="xs" fullWidth title="Add Phone To A Contact">
@@ -23,7 +24,7 @@ export default function AddPhone({
         <ArraySelect
           items={["mobile", "landline"]}
           defaultValue="mobile"
-          value={values.phoneType}
+          value={values.phones?.[index]?.phoneType}
           name="phoneType"
           label="Phone Type"
           onChange={handleChange}
@@ -35,7 +36,7 @@ export default function AddPhone({
           onChange={handleChange}
           error={Boolean(errors.phone && touched.phone)}
           helperText={errors.phone && touched.phone}
-          value={values.phone}
+          value={values.phones?.[index]?.phone}
           label="Phone"
         />
         {values.phoneType === "landline" && (
@@ -45,15 +46,16 @@ export default function AddPhone({
             onChange={handleChange}
             error={Boolean(errors.ext && touched.ext)}
             helperText={errors.ext && touched.ext}
-            value={values.ext}
+            value={values.phones?.[index]?.ext}
             label="EXT"
           />
         )}
         <FormControlLabel
-          name="main"
+          name={`phones[${index}].main`}
+          checked={values.phones?.[index]?.main}
           onChange={handleChange}
           label="Main"
-          control={<Checkbox checked={values.main} />}
+          control={<Checkbox />}
         />
         {!selectedPhone && (
           <Button
@@ -61,15 +63,15 @@ export default function AddPhone({
             style={{ marginLeft: "5px" }}
             onClick={() => {
               arrayHelpers.push({
-                phone: values.phone,
-                ext: values.ext,
-                phoneType: values.phoneType,
-                main: values.main,
+                phone: values.phones?.[index]?.phone,
+                ext: values.phones?.[index]?.ext,
+                phoneType: values.phones?.[index]?.phoneType,
+                main: values.phones?.[index]?.main,
               });
-              setFieldValue("phone", "");
-              setFieldValue("phoneType", "mobile");
-              setFieldValue("ext", "");
-              // setFieldValue("main", false);
+              setFieldValue(`phones[${index}].phone`, "");
+              setFieldValue(`phones[${index}].phoneType`, "mobile");
+              setFieldValue(`phones[${index}].ext`, "");
+              setFieldValue(`phones[${index}].main`, false);
             }}
           >
             Add Phone
@@ -81,10 +83,10 @@ export default function AddPhone({
               kind={"edit"}
               onClick={() => {
                 arrayHelpers.replace(selectedPhone.id, {
-                  phone: values.phone,
-                  ext: values.ext,
-                  phoneType: values.phoneType,
-                  main: values.main,
+                  phone: values.phones?.[index]?.phone,
+                  ext: values.phones?.[index]?.ext,
+                  phoneType: values.phones?.[index]?.phoneType,
+                  main: values.phones?.[index]?.main,
                 });
                 onClose();
               }}
