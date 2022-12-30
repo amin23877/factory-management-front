@@ -31,8 +31,6 @@ export default function AddPOModal({
   const [createdPo, setCreatedPo] = useState<IPurchasePOComplete>();
 
   const handleSubmit = async (data: any, { setSubmitting }: { setSubmitting: any }) => {
-    console.log("submitting");
-
     try {
       setStatus("Creating PO");
       setProgress(0);
@@ -51,7 +49,6 @@ export default function AddPOModal({
           name: `PO_${resp.number}.pdf`,
         });
         onDone();
-        onClose();
       }
     } catch (error) {
       console.log(error);
@@ -92,7 +89,9 @@ export default function AddPOModal({
                 </Box>
               )}
               {step === 1 && <FinalForm />}
-              {step === 2 && createdPo && <DocumentForm divToPrint={divToPrint} data={createdPo} />}
+              {step === 2 && createdPo && (
+                <DocumentForm divToPrint={divToPrint} data={createdPo} lines={values.lines} />
+              )}
               {step === 2 && isSubmitting && (
                 <Box>
                   <Typography style={{ textAlign: "center", margin: "0.5em 0" }}>{status}</Typography>
@@ -115,9 +114,15 @@ export default function AddPOModal({
                   variant="contained"
                   color="primary"
                   disabled={isSubmitting}
-                  onClick={step === 1 ? () => handleSubmit(values, { setSubmitting }) : () => setStep((p) => p + 1)}
+                  onClick={
+                    step === 1
+                      ? () => handleSubmit(values, { setSubmitting })
+                      : step === 2
+                      ? () => onClose()
+                      : () => setStep((p) => p + 1)
+                  }
                 >
-                  {step === 1 ? "Finalize" : "Next"}
+                  {step === 1 ? "Finalize" : step === 2 ? "Close" : "Next"}
                 </Button>
               </Box>
             </Box>

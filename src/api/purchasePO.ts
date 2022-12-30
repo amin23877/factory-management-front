@@ -4,13 +4,14 @@ import { IItem } from "./items";
 import { ILineItem } from "./lineItem";
 import { ILineService } from "./lineService";
 import { ISO } from "./so";
+import { IVendor } from "./vendor";
 
 export type IPurchasePO = {
   id: string;
   type: string;
   status: string;
   description: string;
-  VendorId: string;
+  VendorId: string | IVendor;
   vendorEmail: string;
   publicNote: string;
   date: number;

@@ -40,16 +40,17 @@ import PurchasePO from "PDFTemplates/PurchasePO";
 import LinkField from "app/Inputs/LinkFields";
 import { useLock } from "common/Lock";
 import AsyncCombo from "common/AsyncCombo";
+import { lineItemType } from "./AddPurchasePO/LineItems";
 
 export const DocumentForm = ({
+  lines,
   data,
   divToPrint,
 }: {
+  lines: lineItemType[];
   data: IPurchasePOComplete;
   divToPrint: React.MutableRefObject<HTMLElement | null>;
 }) => {
-  console.log(data);
-
   return (
     <Box>
       <Typography>We made a pdf from your PO, now you can save it</Typography>
@@ -67,12 +68,7 @@ export const DocumentForm = ({
             minHeight: "1200px",
           }}
         >
-          <PurchasePO
-            vendor={{ name: "test vendor" } as any}
-            contact={{ firstName: "test", lastName: "testtest" } as any}
-            lines={data.lines}
-            sum={0}
-          />
+          <PurchasePO data={data} lines={lines} sum={0} />
         </div>
       </div>
     </Box>
