@@ -66,7 +66,6 @@ export default function DataGridTabs({ selectedQuote }: { selectedQuote: IQuote 
       { name: "price", header: "Price", defaultOperator: "eq", width: 100 },
       { name: "tax", header: "Tax", type: "boolean", width: 80 },
       {
-        name: "total",
         header: "Total",
         defaultOperator: "eq",
         render: ({ data }: any) => Number(data?.price) * Number(data?.qty),
