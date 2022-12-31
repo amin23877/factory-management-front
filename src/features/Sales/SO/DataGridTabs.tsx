@@ -3,10 +3,8 @@ import { Box, useMediaQuery, makeStyles, Tooltip } from "@material-ui/core";
 import { GridColumns } from "@material-ui/data-grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import useSWR from "swr";
 import { useHistory } from "react-router";
 
-import BaseDataGrid from "app/BaseDataGrid";
 import NewDataGrid from "app/NewDataGrid";
 import { BasePaper } from "app/Paper";
 
@@ -17,7 +15,7 @@ import NoteTab from "common/Note/Tab";
 import DocumentTab from "common/Document/Tab";
 
 import { openRequestedSinglePopup } from "logic/window";
-import { lineItemType } from "components/GroupLineItemTable/useGroupedLineItems";
+
 import AuditTable from "common/Audit";
 import { LockButton, useLock } from "common/Lock";
 
@@ -33,8 +31,6 @@ const useStyle = makeStyles({
   },
 });
 
-const groupColors = ["white", "gray"];
-
 export default function DataGridTabs({
   selectedSo,
   onLineServiceSelected,
@@ -48,20 +44,10 @@ export default function DataGridTabs({
   const { setLock } = useLock();
   const phone = useMediaQuery("(max-width:900px)");
 
-  const { data: lineItems } = useSWR<{ result: lineItemType[]; total: number }>(
-    selectedSo && selectedSo.id && activeTab === 0 ? `/lineitem?SOId=${selectedSo.id}` : null
-  );
-
-  const { data: units } = useSWR(selectedSo && selectedSo.id && activeTab === 1 ? `/unit?SOId=${selectedSo.id}` : null);
-
-  const { data: documents } = useSWR(
-    selectedSo && selectedSo.id && activeTab === 2 ? `/document/so/${selectedSo.id}` : null
-  );
-
   const LICols = useMemo(
     () => [
-      { name: "group", header: "Group", width: 80 },
-      { name: "line", header: "Sort", width: 70 },
+      { name: "group", header: "Group", width: 80, defaultOperator: "eq" },
+      { name: "line", header: "Sort", width: 70, defaultOperator: "eq" },
       {
         name: "itemNo",
         header: "Part Number",
@@ -82,8 +68,8 @@ export default function DataGridTabs({
         ),
         width: 150,
       },
-      { name: "qty", header: "QTY", width: 90 },
-      { name: "price", header: "Price", width: 100 },
+      { name: "qty", header: "QTY", width: 90, defaultOperator: "eq" },
+      { name: "price", header: "Price", width: 100, defaultOperator: "eq" },
       { name: "tax", header: "Tax", type: "boolean", width: 80 },
       {
         name: "total",

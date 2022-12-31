@@ -135,6 +135,7 @@ export default function GroupLineItemTable({
           price: 0,
           qty: 1,
           service: true,
+          serviceId: resp?.services[0]?.id,
         });
       }
     } catch (error) {

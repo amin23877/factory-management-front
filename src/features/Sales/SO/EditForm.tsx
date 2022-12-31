@@ -36,9 +36,18 @@ export default function EditForm({ selectedSo }: { selectedSo: ISO }) {
   const phone = useMediaQuery("(max-width:900px)");
   return (
     <Formik initialValues={selectedSo} onSubmit={handleSubmit}>
-      {({ handleChange, handleBlur, values, setValues, getFieldProps, setFieldValue }) => (
+      {({ handleChange, handleBlur, values, setValues, getFieldProps, setFieldValue, setSubmitting }) => (
         <Form>
-          <Box display="flex" flexDirection="column" style={phone ? { gap: 10 } : { gap: 10, height: "100%" }}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            style={phone ? { gap: 10 } : { gap: 10, height: "100%" }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSubmit(values, { setSubmitting });
+              }
+            }}
+          >
             <BasePaper>
               <GeneralForm
                 onChangeInit={setValues}
