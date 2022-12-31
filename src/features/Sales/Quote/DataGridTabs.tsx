@@ -1,10 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { Tabs, Tab, makeStyles, useMediaQuery, Box } from "@material-ui/core";
-import { GridColumns } from "@material-ui/data-grid";
 
-import BaseDataGrid from "app/BaseDataGrid";
 import NewDataGrid from "app/NewDataGrid";
-import { BasePaper } from "app/Paper";
 
 import NoteTab from "common/Note/Tab";
 import DocumentTab from "common/Document/Tab";
@@ -12,18 +9,15 @@ import DocumentTab from "common/Document/Tab";
 import { IQuote } from "api/quote";
 
 import AuditTable from "common/Audit";
-import { lineItemType } from "components/GroupLineItemTable/useGroupedLineItems";
 import { openRequestedSinglePopup } from "logic/window";
-import useSWR from "swr";
 import { useHistory } from "react-router-dom";
 import { LockButton, useLock } from "common/Lock";
+import { BasePaper } from "app/Paper";
 export default function DataGridTabs({ selectedQuote }: { selectedQuote: IQuote }) {
   const [activeTab, setActiveTab] = useState(0);
   const phone = useMediaQuery("(max-width:900px)");
   const { setLock } = useLock();
-  const { data: lineItems } = useSWR<{ result: lineItemType[]; total: number }>(
-    selectedQuote.id && activeTab === 0 ? `/lineitem?QuoteId=${selectedQuote.id}` : null
-  );
+
   const history = useHistory();
 
   const useStyle = makeStyles({
@@ -38,7 +32,6 @@ export default function DataGridTabs({ selectedQuote }: { selectedQuote: IQuote 
     },
   });
   const classes = useStyle();
-  const groupColors = ["white", "gray"];
 
   const quoteHistoryCols = useMemo(
     () => [

@@ -18,13 +18,12 @@ import ReqQuoteModal from "features/Sales/Quote/ReqQuote/Modals";
 import EmailModal from "features/Email/Modal";
 import DataGrid from "features/Sales/Quote/Datagrid";
 
-import { Route, Switch, useHistory, useLocation, useParams } from "react-router-dom";
+import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import MyBackdrop from "app/Backdrop";
 
 export default function QuotePanel() {
   const history = useHistory();
   const location = useLocation();
-  const { quoteId } = useParams<{ quoteId: string }>();
 
   const [activeTab, setActiveTab] = useState(location.pathname.split("/").length === 5 ? 1 : 0);
   const [addQ, setAddQ] = useState(false);

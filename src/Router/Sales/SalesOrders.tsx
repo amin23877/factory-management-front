@@ -5,8 +5,6 @@ import Tab from "@material-ui/core/Tab";
 import { AddRounded, DeleteRounded, FindInPageRounded, ListAltRounded } from "@material-ui/icons";
 import { mutate } from "swr";
 
-import Confirm from "features/Modals/Confirm";
-
 import LineItemModal from "features/LineItem";
 import LineServiceModal from "features/LineService";
 import EditTab from "pages/Sales/SO/Details";
@@ -14,7 +12,6 @@ import AddSOModal from "features/Sales/SO/AddSo";
 
 import List from "app/SideUtilityList";
 
-import { deleteSO } from "api/so";
 import { ILineItem } from "api/lineItem";
 import { ILineService } from "api/lineService";
 import { BasePaper } from "app/Paper";
@@ -48,21 +45,6 @@ export default function SalesOrderPanel() {
     }
   }, [location]);
 
-  const handleDelete = async () => {
-    try {
-      if (soId) {
-        const resp = await deleteSO(soId);
-        if (resp) {
-          mutate("/so");
-          setConfirm(false);
-          history.push(`/panel/sales/salesOrders${window.location.search}`);
-        }
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <>
       {activeTab === 1 && soId && (
@@ -92,16 +74,14 @@ export default function SalesOrderPanel() {
           onDone={(createdSO) => {
             mutate("/so");
             setRefresh((prev) => prev + 1);
-            setActiveTab(0);
+            history.push({
+              pathname: `/panel/sales/salesOrders/${createdSO.id}`,
+              search: window.location.search,
+            });
           }}
         />
       )}
-      <Confirm
-        open={confirm}
-        onClose={() => setConfirm(false)}
-        onConfirm={handleDelete}
-        text={`Are you sure, You want to delete this selected So ?`}
-      />
+
       <BasePaper>
         <Box my={1} display="flex" alignItems="center">
           <Tabs
@@ -167,6 +147,8 @@ export default function SalesOrderPanel() {
                 onLineItemSelected={(d) => {
                   setSelectedLI(d);
                 }}
+                deleteConfirm={confirm}
+                deleteConfirmOnClose={() => setConfirm(false)}
               />
             </Route>
           </Switch>
