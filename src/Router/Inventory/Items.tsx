@@ -1,4 +1,4 @@
-import React, { Suspense, useCallback, useEffect, useState } from "react";
+import React, { Suspense, useState } from "react";
 import { Box, IconButton, ListItem, Tabs, Tab } from "@material-ui/core";
 import {
   AddRounded,
@@ -8,32 +8,22 @@ import {
   PostAddRounded,
   ControlPointDuplicateRounded,
 } from "@material-ui/icons";
-import { mutate } from "swr";
-
-import Confirm from "features/Modals/Confirm";
-// import ConfirmDialog from "common/Confirm";
+import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 
 import { AddItemModal, DuplicateModal } from "features/Items/ItemModals";
 import ItemsDetails from "pages/Inventory/Items/Details";
 
-import { deleteAnItem } from "api/items";
-
 import List from "app/SideUtilityList";
 import { BasePaper } from "app/Paper";
-// import Button from "app/Button";
-
-// import LevelsModal from "common/Level/Modal";
 import ClusterModal from "common/Cluster/Modal";
 import { useLock } from "common/Lock";
 
 import ItemTable from "features/Items/Table";
-import { Route, Switch, useHistory, useLocation, useParams } from "react-router-dom";
 import MyBackdrop from "app/Backdrop";
 
 const Items = () => {
   const history = useHistory();
   const location = useLocation();
-  const { itemId } = useParams<{ itemId: string }>();
 
   const [activeTab, setActiveTab] = useState(location.pathname.split("/").length === 5 ? 1 : 0);
 
@@ -43,32 +33,10 @@ const Items = () => {
   const [clusterModal, setClusterModal] = useState(false);
   const { lock } = useLock();
 
-  const handleDelete = useCallback(async () => {
-    try {
-      if (itemId) {
-        await deleteAnItem(itemId);
-        mutate("/item");
-
-        setDeleteItemModal(false);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }, [itemId]);
-
-  useEffect(() => {
-    if (location.pathname.split("/").length === 5) {
-      setActiveTab(1);
-    } else {
-      setActiveTab(0);
-    }
-  }, [location]);
-
   return (
     <>
       <DuplicateModal open={duplicateItemModal} onClose={() => setDuplicateItemModal(false)} />
       <AddItemModal open={addItemModal} onClose={() => setAddItemModal(false)} />
-      <Confirm open={deleteItemModal} onClose={() => setDeleteItemModal(false)} onConfirm={handleDelete} />
       <ClusterModal open={clusterModal} onClose={() => setClusterModal(false)} />
       <BasePaper style={{ height: "100%" }}>
         <Box display="flex" justifyContent="flex-end" alignItems="center" mb={1}>
@@ -139,8 +107,7 @@ const Items = () => {
                 />
               </Route>
               <Route exact path="/panel/inventory/items/:itemId">
-                {" "}
-                <ItemsDetails />
+                <ItemsDetails deleteConfirm={deleteItemModal} onCloseDeleteConfirm={() => setDeleteItemModal(false)} />
               </Route>
             </Switch>
           </Suspense>

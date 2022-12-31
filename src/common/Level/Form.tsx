@@ -9,7 +9,7 @@ import TextField from "app/TextField";
 import NewDataGrid from "app/NewDataGrid";
 import Confirm from "common/Confirm";
 import AsyncCombo from "common/AsyncCombo";
-import { LockButton, LockProvider, useLock } from "common/Lock";
+import { LockProvider, useLock } from "common/Lock";
 
 import { clusterType } from "api/cluster";
 import { createLevel, editLevel, deleteLevel, ILevel } from "api/level";
@@ -33,7 +33,6 @@ export interface IVals {
 export default function LevelForm({ cluster }: { cluster?: clusterType }) {
   const [refresh, setRefresh] = useState(0);
   const [selectedLevel, setSelectedLevel] = useState<ILevel>();
-  const [vals, setVals] = useState<IVals[]>([]);
   const [addArray, setAddArray] = useState([]);
   const [deleteArray, setDeleteArray] = useState([]);
 
@@ -75,7 +74,7 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
             await deleteLevel(values.id);
             Toast("Level Deleted.", "success");
             resetForm({
-              values: { id: undefined, name: "", clusterValueRef: "", valid: "" },
+              values: { id: undefined, name: "", clusterId: cluster?.id, valid: "" },
             });
           }
         } catch (error) {
@@ -155,7 +154,7 @@ export default function LevelForm({ cluster }: { cluster?: clusterType }) {
             variant="outlined"
             onClick={() => {
               resetForm({
-                values: { id: undefined, name: "", clusterValueRef: "", valid: "" },
+                values: { id: undefined, name: "", clusterId: cluster?.id, valid: "" },
               });
             }}
           >

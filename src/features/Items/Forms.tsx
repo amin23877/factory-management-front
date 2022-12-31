@@ -260,7 +260,7 @@ export const General = ({
               value={clusterId}
               onChange={(e, nv) => {
                 nv?.id && setClusterId(nv?.id);
-                setFieldValue("ClusterId", nv?.id);
+                setFieldValue("clusterId", nv?.id);
               }}
             />
             <Button

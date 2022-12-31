@@ -46,9 +46,11 @@ export default function ContactModal({
   const [selectedEmail, setSelectedEmail] = useState(false);
   const [addEmail, setAddEmail] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
+  const [deleting, setDeleting] = useState(false);
 
   const handleDelete = () => {
     if (contact?._id) {
+      setDeleting(true);
       deleteAModelContact(contact._id)
         .then(() => {
           onClose();
@@ -99,7 +101,12 @@ export default function ContactModal({
           >
             {({ values, errors, touched, handleBlur, handleChange, isSubmitting, setFieldValue }) => (
               <Form>
-                <Box display="grid" gridTemplateColumns="1fr 1fr" gridRowGap={8} gridColumnGap={8}>
+                <Box
+                  display="grid"
+                  gridTemplateColumns={contactId ? "1fr 1fr" : "1fr"}
+                  gridRowGap={8}
+                  gridColumnGap={8}
+                >
                   <Box>
                     <ContactForm
                       values={values}
@@ -113,69 +120,71 @@ export default function ContactModal({
                         Save
                       </Button>
                       {contact?._id && (
-                        <Button kind="delete" onClick={handleDelete}>
+                        <Button kind="delete" onClick={handleDelete} disabled={deleting}>
                           Delete
                         </Button>
                       )}
                     </Box>
                   </Box>
-                  <Box>
-                    <Tabs
-                      value={activeTab}
-                      textColor="primary"
-                      onChange={(e, nv) => {
-                        setActiveTab(nv);
-                      }}
-                      style={{ marginBottom: "10px" }}
-                    >
-                      <Tab label="Phone" />
-                      <Tab label="Email" />
-                    </Tabs>
-                    {activeTab === 0 && contact && <PhoneTab contact={contact} />}
-                    {activeTab === 1 && (
-                      <Box>
-                        <FieldArray
-                          name="emails"
-                          render={(arrayHelpers) => (
-                            <Box pb={1}>
-                              <AddEmail
-                                open={addEmail}
-                                onClose={() => setAddEmail(false)}
-                                handleBlur={handleBlur}
-                                handleChange={handleChange}
-                                errors={errors}
-                                values={values}
-                                setFieldValue={setFieldValue}
-                                arrayHelpers={arrayHelpers}
-                                touched={touched}
-                                selectedEmail={selectedEmail}
-                              />
-                              <Button
-                                disabled={isSubmitting}
-                                variant="outlined"
-                                onClick={() => {
-                                  setAddEmail(true);
-                                }}
-                              >
-                                Add Email Address
-                              </Button>
-                            </Box>
-                          )}
-                        />
-                        <BaseDataGrid
-                          cols={emialColumns}
-                          rows={values.emails?.map((i, ind) => ({ ...i, id: ind })) || []}
-                          onRowSelected={(r) => {
-                            setSelectedEmail(r);
-                            setFieldValue("email", r.email);
-                            setFieldValue("emailType", r.emailType);
-                            setFieldValue("main", r.main);
-                            setAddEmail(true);
-                          }}
-                        />
-                      </Box>
-                    )}
-                  </Box>
+                  {contactId && (
+                    <Box>
+                      <Tabs
+                        value={activeTab}
+                        textColor="primary"
+                        onChange={(e, nv) => {
+                          setActiveTab(nv);
+                        }}
+                        style={{ marginBottom: "10px" }}
+                      >
+                        <Tab label="Phone" />
+                        <Tab label="Email" />
+                      </Tabs>
+                      {activeTab === 0 && contact && <PhoneTab contact={contact} />}
+                      {activeTab === 1 && (
+                        <Box>
+                          <FieldArray
+                            name="emails"
+                            render={(arrayHelpers) => (
+                              <Box pb={1}>
+                                <AddEmail
+                                  open={addEmail}
+                                  onClose={() => setAddEmail(false)}
+                                  handleBlur={handleBlur}
+                                  handleChange={handleChange}
+                                  errors={errors}
+                                  values={values}
+                                  setFieldValue={setFieldValue}
+                                  arrayHelpers={arrayHelpers}
+                                  touched={touched}
+                                  selectedEmail={selectedEmail}
+                                />
+                                <Button
+                                  disabled={isSubmitting}
+                                  variant="outlined"
+                                  onClick={() => {
+                                    setAddEmail(true);
+                                  }}
+                                >
+                                  Add Email Address
+                                </Button>
+                              </Box>
+                            )}
+                          />
+                          <BaseDataGrid
+                            cols={emialColumns}
+                            rows={values.emails?.map((i, ind) => ({ ...i, id: ind })) || []}
+                            onRowSelected={(r) => {
+                              setSelectedEmail(r);
+                              setFieldValue("email", r.email);
+                              setFieldValue("emailType", r.emailType);
+                              setFieldValue("main", r.main);
+                              setAddEmail(true);
+                            }}
+                          />
+                        </Box>
+                      )}
+                    </Box>
+                  )}
                 </Box>
               </Form>
             )}

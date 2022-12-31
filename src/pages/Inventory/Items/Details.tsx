@@ -16,12 +16,20 @@ import { getModifiedValues } from "logic/utils";
 // import Confirm from "common/Confirm";
 import Toast from "app/Toast";
 
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { LockProvider } from "common/Lock";
 import FormTabs from "features/Items/FormTabs";
 import DataGridTabs from "features/Items/DataGridTabs";
+import DeleteConfirm from "common/DeleteConfirm";
 
-function ItemsDetails() {
+function ItemsDetails({
+  deleteConfirm,
+  onCloseDeleteConfirm,
+}: {
+  deleteConfirm: boolean;
+  onCloseDeleteConfirm: () => void;
+}) {
+  const history = useHistory();
   const { itemId } = useParams<{ itemId: string }>();
   const { data: selectedRow } = useSWR<IItem>(itemId ? `/item/${itemId}` : null);
 
@@ -57,6 +65,12 @@ function ItemsDetails() {
 
   return (
     <>
+      <DeleteConfirm
+        url={`/item/${itemId}`}
+        open={deleteConfirm}
+        onClose={() => onCloseDeleteConfirm()}
+        onDone={() => history.push("/panel/inventory/items")}
+      />
       {selectedBom && <Parts open={bomPartsModal} onClose={() => setBomPartsModal(false)} bom={selectedBom} />}
       <Formik initialValues={selectedRow} onSubmit={handleSubmit}>
         {({ values, errors, touched, handleChange, handleBlur, setFieldValue, getFieldProps }) => (

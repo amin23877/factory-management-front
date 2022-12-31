@@ -293,8 +293,22 @@ export const GeneralForm = ({
             gridColumnEnd: "span 3",
           }}
         >
-          <FormControlLabel label="No Tax Client" control={<Checkbox />} disabled={lock} />
-          <FormControlLabel label="Call 24 hours before delivery" control={<Checkbox />} disabled={lock} />
+          <FormControlLabel
+            label="No Tax Client"
+            name="noTaxClient"
+            checked={values.noTaxClient}
+            onChange={handleChange}
+            control={<Checkbox />}
+            disabled={lock}
+          />
+          <FormControlLabel
+            label="Call 24 hours before delivery"
+            name="a24HourCallFirst"
+            checked={values.a24HourCallFirst}
+            onChange={handleChange}
+            control={<Checkbox />}
+            disabled={lock}
+          />
         </Paper>
       </Box>
     </>
