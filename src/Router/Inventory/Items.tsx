@@ -102,6 +102,7 @@ const Items = () => {
               <Route exact path="/panel/inventory/items">
                 <ItemTable
                   onRowSelected={(r) => {
+                    setActiveTab(1);
                     history.push(`/panel/inventory/items/${r.id}${window.location.search}`);
                   }}
                 />

@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import { Tabs, Tab, useMediaQuery, Box } from "@material-ui/core";
+import { Tabs, Tab, useMediaQuery, Box, setRef } from "@material-ui/core";
 import Button from "app/Button";
 
 import AuditTable from "common/Audit";
@@ -39,8 +39,9 @@ export default function DataGridTabs({
 }) {
   const [activeTab, setActiveTab] = useState(0);
   const [addVendorModal, setAddVendorModal] = useState(false);
+  const [vendorRefresh, setVendorRefresh] = useState(0);
 
-  const { setLock } = useLock();
+  const { lock, setLock } = useLock();
 
   const { data: itemUsage } = useSWR<{ result: any[]; total: number }>(
     activeTab === 5 ? (selectedRow && selectedRow.id ? `/usage?ItemId=${selectedRow.id}` : null) : null
@@ -89,7 +90,12 @@ export default function DataGridTabs({
 
   return (
     <>
-      <VendorModal open={addVendorModal} onClose={() => setAddVendorModal(false)} itemId={selectedRow.id as any} />
+      <VendorModal
+        open={addVendorModal}
+        onClose={() => setAddVendorModal(false)}
+        itemId={selectedRow.id as any}
+        onDone={() => setVendorRefresh((p) => p + 1)}
+      />
       <Box display="flex" mb={1} alignItems="center" justifyContent={"space-between"}>
         <Tabs
           value={activeTab}
@@ -104,7 +110,7 @@ export default function DataGridTabs({
         >
           <Tab label="Document" /> 0
           <Tab label="Vendor" /> 1
-          <Tab label="BOM" disabled={!values.bom} /> 2
+          <Tab label="BOM" disabled={!values.canBom} /> 2
           <Tab label="Sales order History" /> 3
           <Tab label="PO History" /> 4
           <Tab label="Usage" /> 5
@@ -120,14 +126,15 @@ export default function DataGridTabs({
             onClick={() => {
               setAddVendorModal(true);
             }}
+            disabled={lock}
             style={style}
           >
             + Add Vendor
           </Button>
-          <VendorsTable selectedItem={selectedRow} />
+          <VendorsTable refresh={vendorRefresh} selectedItem={selectedRow} />
         </div>
       )}
-      {activeTab === 2 && boms && (
+      {activeTab === 2 && (
         <div style={{ maxWidth: "79vw", overflow: "auto", height: "85%" }}>
           <ItemBomTable item={selectedRow} boms={boms?.result || []} mutateBoms={mutateBoms} />
         </div>

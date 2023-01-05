@@ -25,7 +25,7 @@ const columns = [
       if (typeof data.change?.before === "boolean") {
         return data.change?.before ? <CheckRounded /> : <ClearRounded />;
       }
-      return <span>{data.change.before}</span>;
+      return <span>{JSON.stringify(data.change.before)}</span>;
     },
   },
   {
@@ -35,7 +35,7 @@ const columns = [
       if (typeof data.change?.after === "boolean") {
         return data.change?.after ? <CheckRounded /> : <ClearRounded />;
       }
-      return <span>{data.change?.after}</span>;
+      return <span>{JSON.stringify(data.change?.after)}</span>;
     },
   },
 ];
