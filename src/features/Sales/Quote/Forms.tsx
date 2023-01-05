@@ -271,6 +271,9 @@ export const GeneralForm = ({
           url="/employee"
           value={values.salesPerson}
           disabled={lock}
+          onChange={(e, nv) => {
+            setFieldValue("salesPerson", nv?.id);
+          }}
         />
         <TextField value={values.leadTime} name="leadTime" label="Lead Time" onChange={handleChange} disabled={lock} />
         <Button variant="outlined" onClick={() => setAddPo(true)} disabled={lock}>

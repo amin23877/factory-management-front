@@ -39,13 +39,12 @@ export default function QuantityTab({
             {...getFieldProps("lastUsedInJOB")}
             disabled={lock}
           />
-          <DateTimePicker
-            value={values.lastCount}
+          <TextField
             label="lastCount"
+            value={values.lastCount}
+            type="number"
             {...getFieldProps("lastCount")}
             disabled={lock}
-            onChange={(lastCount) => setFieldValue("lastCount", lastCount)}
-            format="yyyy-mm-dd"
           />
           <TextField
             {...getFieldProps("usedInQuarter")}

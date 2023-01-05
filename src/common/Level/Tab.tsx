@@ -6,6 +6,7 @@ import { useLock } from "common/Lock";
 import AsyncCombo from "common/AsyncCombo";
 import useSWR from "swr";
 import { ILevel } from "api/level";
+import { Autocomplete } from "@material-ui/lab";
 
 export default function LevelsTab({
   itemType,
@@ -32,7 +33,7 @@ export default function LevelsTab({
     <Box mt={1} display="grid" gridTemplateColumns="1fr 1fr" gridGap={10}>
       <AsyncCombo
         filterBy="clusterValue"
-        getOptionLabel={(o) => o?.clusterValue || "No-Name"}
+        getOptionLabel={(o) => o?.clusterValue || ""}
         getOptionSelected={(o, v) => o?.id === v?.id}
         defaultParams={{ ...(values?.class && { class: values?.class }) }}
         url="/cluster"
@@ -44,15 +45,24 @@ export default function LevelsTab({
       <Divider style={{ gridColumnEnd: "span 2" }} />
       {levels &&
         levels?.result.map((level) => (
-          <TextField
-            label={level.name}
-            name={level.name}
-            placeholder={level.name}
-            defaultValue={values?.levels ? values?.levels[level.name] : ""}
+          <Autocomplete
+            options={level.valid}
+            getOptionLabel={(o) => (o.uom ? o.value + " " + o.uom : o.value || "")}
+            defaultValue={values?.levels && values?.levels[level.name] ? { value: values?.levels[level.name] } : ""}
             value={values[level.name]}
-            {...getFieldProps(level.name)}
+            onChange={(e, nv) => setFieldValue(level.name, nv)}
+            renderInput={(p) => <TextField label={level.name} {...p} />}
             disabled={lock}
           />
+          // <TextField
+          //   label={level.name}
+          //   name={level.name}
+          //   placeholder={level.name}
+          //   defaultValue={values?.levels ? values?.levels[level.name] : ""}
+          //   value={values[level.name]}
+          //   {...getFieldProps(level.name)}
+          //   disabled={lock}
+          // />
         ))}
     </Box>
   );
