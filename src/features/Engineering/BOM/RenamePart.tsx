@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box } from "@material-ui/core";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -6,7 +6,6 @@ import * as Yup from "yup";
 import Dialog from "../../../app/Dialog";
 import TextField from "../../../app/TextField";
 import Button from "../../../app/Button";
-import Confirm from "../../Modals/Confirm";
 import { renameColumn } from "api/matrix";
 
 const schema = Yup.object().shape({
@@ -17,18 +16,16 @@ function RenamePart({
   open,
   onClose,
   onDone,
-  onDelete,
   newColumns,
 }: {
   open: boolean;
   initialValue: { formerName: string; newName: string };
   onClose: () => void;
   onDone: any;
-  onDelete: (name: string) => void;
   newColumns: any;
 }) {
-  const [confirm, setConfirm] = useState(false);
-  const handleSubmit = (d: any) => {
+  const handleSubmit = (d: any, { setSubmitting }: { setSubmitting: any }) => {
+    setSubmitting(true);
     newColumns.map(async (i: any) => {
       if (i.name === initialValue.formerName) {
         await renameColumn(i.id, d.newName);
@@ -37,22 +34,14 @@ function RenamePart({
       }
       return 0;
     });
+    setSubmitting(false);
   };
 
   return (
     <>
-      <Confirm
-        open={confirm}
-        onClose={() => setConfirm(false)}
-        onConfirm={() => {
-          onDelete(initialValue.formerName);
-          setConfirm(false);
-        }}
-        text="If you delete a column(Part) all Bom Records with that name will be removed from all devices of this family"
-      />
-      <Dialog open={open} onClose={onClose} title="Add part">
+      <Dialog open={open} onClose={onClose} title="Edit column">
         <Formik initialValues={initialValue} validationSchema={schema} onSubmit={handleSubmit}>
-          {({ values, errors, handleChange, handleBlur }) => (
+          {({ values, errors, handleChange, handleBlur, isSubmitting }) => (
             <Form>
               <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
                 <TextField
@@ -71,11 +60,8 @@ function RenamePart({
                   onBlur={handleBlur}
                   error={Boolean(errors.newName)}
                 />
-                <Button kind="add" type="submit">
+                <Button kind="add" type="submit" disabled={isSubmitting}>
                   Submit
-                </Button>
-                <Button onClick={() => setConfirm(true)} kind="delete">
-                  Delete
                 </Button>
               </Box>
             </Form>

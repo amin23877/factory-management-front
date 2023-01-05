@@ -66,6 +66,7 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
   const [selectedRowName, setSelectedRowName] = useState<string>();
   const [changes, setChanges] = useState<ITableChangeRow[]>([]);
   const [addUsage, setAddUsage] = useState<boolean>(false);
+  const [isSubmitting, setSubmitting] = useState<boolean>(false);
 
   const [tableColumns, setTableColumns] = useState<any[]>([]);
   const [tableRows, setTableRows] = useState<any[]>([]);
@@ -197,36 +198,16 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
 
   const submitChanges = async () => {
     try {
+      setSubmitting(true);
       await postMatrixData({ matrice: [...changes] });
       refreshTableData();
       Toast("Submitted", "success");
       setChanges([]);
+      setSubmitting(false);
     } catch (error) {
       console.log(error);
     }
   };
-
-  const handleDeletePart = useCallback(
-    (name: string) => {
-      const changedRows = tableRows
-        .filter((tr) => tr[name])
-        .map((tr) => ({
-          device: tr.DeviceId,
-          cells: tr.parts
-            .filter((p: any) => p.name !== name)
-            .map((p: any) => ({
-              ItemId: p.ItemId._id || p.ItemId.id,
-              usage: p.usage || 1,
-              name: p.name,
-            })),
-        }));
-      setChanges(changedRows);
-
-      setTableColumns((prev) => prev.filter((c) => c.name !== name));
-      setRenamePart(false);
-    },
-    [tableRows]
-  );
 
   const handleDeleteCell = useCallback((data: ITableChangeRow & { rowId: number; partName: string }) => {
     setChanges((prev) => {
@@ -281,7 +262,6 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
           onClose={() => setRenamePart(false)}
           initialValue={selectedPart}
           onDone={refreshTableData}
-          onDelete={handleDeletePart}
           newColumns={newColumns}
         />
       )}
@@ -311,7 +291,12 @@ export default function MatrixTable({ cluster }: { cluster: clusterType }) {
           <Button variant="outlined" style={{ margin: "0.5em 0" }} onClick={() => setAddPart(true)}>
             Add Column
           </Button>
-          <Button kind="add" style={{ margin: "0.5em" }} onClick={submitChanges} disabled={changes.length < 1}>
+          <Button
+            kind="add"
+            style={{ margin: "0.5em" }}
+            onClick={submitChanges}
+            disabled={changes.length < 1 || isSubmitting}
+          >
             Submit changes
           </Button>
 
