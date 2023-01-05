@@ -27,7 +27,7 @@ function ItemTable({
       {
         name: "prefVendor",
         header: "Preferred Vendor",
-        render: ({ data }: any) => data?.prefVendor?.name,
+        render: ({ data }: any) => data?.preferredVendor?.name,
         defaultWidth: 140,
       },
       { name: "vendorPartNumber", header: "V. Part NO.", minWidth: 100 },
@@ -60,7 +60,7 @@ function ItemTable({
       { name: "qtyRemain", header: " Remain", minWidth: 80, type: "number" },
       { name: "qtyOnOrder", header: "on Order", minWidth: 80, type: "number" },
       { name: "qtyAllocated", header: "Allocated", minWidth: 80, type: "number" },
-      { name: "usedInLastQuarter", header: "Used 90", minWidth: 80, type: "number" },
+      { name: "usedInQuarter", header: "Used 90", minWidth: 80, type: "number" },
       { name: "fifo", header: "FIFO Val.", minWidth: 80, type: "number" },
       {
         name: "qohVal",
