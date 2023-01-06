@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from "react";
 import { Box, useMediaQuery, makeStyles, Tooltip } from "@material-ui/core";
-import { GridColumns } from "@material-ui/data-grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { useHistory } from "react-router";

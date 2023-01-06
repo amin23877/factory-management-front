@@ -20,9 +20,17 @@ function AddPartModal({
   onDone: (name: string) => void;
 }) {
   return (
-    <Dialog open={open} onClose={onClose} title="Add part">
-      <Formik initialValues={{} as { name: string }} validationSchema={schema} onSubmit={(d) => onDone(d.name)}>
-        {({ values, errors, handleChange, handleBlur }) => (
+    <Dialog open={open} onClose={onClose} title="Add Column">
+      <Formik
+        initialValues={{} as { name: string }}
+        validationSchema={schema}
+        onSubmit={(d, { setSubmitting }) => {
+          setSubmitting(true);
+          onDone(d.name);
+          setSubmitting(false);
+        }}
+      >
+        {({ values, errors, handleChange, handleBlur, isSubmitting }) => (
           <Form>
             <Box display="grid" gridTemplateColumns="1fr" gridGap={10}>
               <TextField
@@ -34,7 +42,7 @@ function AddPartModal({
                 onBlur={handleBlur}
                 error={Boolean(errors.name)}
               />
-              <Button kind="add" type="submit">
+              <Button kind="add" type="submit" disabled={isSubmitting}>
                 Submit
               </Button>
             </Box>
