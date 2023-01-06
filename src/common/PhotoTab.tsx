@@ -53,24 +53,25 @@ export default function PhotoTab({ id, model }: { model: string; id: string }) {
 
   return (
     <>
-      <Box mt={1} display="flex" justifyContent="center" alignItems="center" flexDirection="column" gridGap={10}>
+      <Box mt={1} display="flex" justifyContent="center" alignItems="center" flexDirection="row" gridGap={10}>
         <Box display="flex" justifyContent="center" alignItems="center" gridGap={10} width="100%" flexWrap={"wrap"}>
           {photos &&
             photos.length > 0 &&
             photos.map((photo) => (
               <Box position="relative">
-                <IconButton
-                  onClick={() => handleDeletePhoto(photo.id)}
-                  style={{ position: "absolute", background: "#dbdbdb", right: 0, padding: 4 }}
-                  disabled={lock}
-                >
-                  <DeleteRounded />
-                </IconButton>
+                {!lock && (
+                  <IconButton
+                    onClick={() => handleDeletePhoto(photo.id)}
+                    style={{ position: "absolute", background: "#dbdbdb", right: 0, padding: 4 }}
+                  >
+                    <DeleteRounded />
+                  </IconButton>
+                )}
                 <img
                   style={{
                     maxWidth: "100%",
                     height: "auto",
-                    maxHeight: 100,
+                    maxHeight: 200,
                     margin: "0px auto",
                   }}
                   alt=""
@@ -79,15 +80,17 @@ export default function PhotoTab({ id, model }: { model: string; id: string }) {
               </Box>
             ))}
         </Box>
-        <div
-          style={{
-            display: "flex",
-            width: "100%",
-            justifyContent: "center",
-          }}
-        >
-          <UploadButton onChange={handleFileChange} accept="image/*" />
-        </div>
+        {!lock && (
+          <div
+            style={{
+              display: "flex",
+              width: "100%",
+              justifyContent: "center",
+            }}
+          >
+            <UploadButton onChange={handleFileChange} accept="image/*" />
+          </div>
+        )}
       </Box>
     </>
   );

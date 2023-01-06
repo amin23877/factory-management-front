@@ -47,22 +47,12 @@ export default function LevelsTab({
         levels?.result.map((level) => (
           <Autocomplete
             options={level.valid}
-            getOptionLabel={(o) => (o.uom ? o.value + " " + o.uom : o.value || "")}
-            defaultValue={values?.levels && values?.levels[level.name] ? { value: values?.levels[level.name] } : ""}
-            value={values[level.name]}
+            getOptionLabel={(o) => (o.uom ? String(o.value) + " " + o.uom : String(o.value) || "")}
+            value={values[level.name] || (values?.levels?.[level?.name] ? { value: values?.levels[level.name] } : null)}
             onChange={(e, nv) => setFieldValue(level.name, nv)}
             renderInput={(p) => <TextField label={level.name} {...p} />}
             disabled={lock}
           />
-          // <TextField
-          //   label={level.name}
-          //   name={level.name}
-          //   placeholder={level.name}
-          //   defaultValue={values?.levels ? values?.levels[level.name] : ""}
-          //   value={values[level.name]}
-          //   {...getFieldProps(level.name)}
-          //   disabled={lock}
-          // />
         ))}
     </Box>
   );
