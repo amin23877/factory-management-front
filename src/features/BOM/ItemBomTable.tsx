@@ -89,7 +89,11 @@ export default function ItemBomTable({
               >
                 <SettingIcon />
               </div>
-              <div onClick={() => handleDelete(data)} title="delete" style={{ cursor: lock ? "auto" : "pointer" }}>
+              <div
+                onClick={() => !lock && handleDelete(data)}
+                title="delete"
+                style={{ cursor: lock ? "auto" : "pointer" }}
+              >
                 <DeleteIcon />
               </div>
               <div>

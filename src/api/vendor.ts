@@ -1,35 +1,47 @@
 import { get, post, patch, delete_ } from ".";
 
 export type IVendor = {
-    id: string;
-    name: string;
-    description: string;
+  id: string;
+  name: string;
+  description: string;
 };
 
 export const createVendor = (data: IVendor) => {
-    return post("/vendor", data);
+  return post("/vendor", data);
 };
 
 export const getVendors = () => {
-    return get("/vendor");
+  return get("/vendor");
 };
 
 export const updateVendor = (id: string, data: IVendor) => {
-    return patch(`/vendor/${id}`, data);
+  return patch(`/vendor/${id}`, data);
 };
 
 export const deleteVendor = (id: string) => {
-    return delete_(`/vendor/${id}`);
+  return delete_(`/vendor/${id}`);
 };
 
 export const getVendorItems = (vendorId: string) => {
-    return get(`/vendor/${vendorId}/items`);
+  return get(`/vendor/${vendorId}/items`);
 };
 
 export const getItemVendors = (itemId: string) => {
-    return get(`/item/${itemId}/vendors`);
+  return get(`/item/${itemId}/vendors`);
 };
 
 export const getVendorVendings = (vendorId: string) => {
-    return get(`/vending`, { params: { vendorId } });
+  return get(`/vending`, { params: { vendorId } });
+};
+
+export const addVendorToItem = ({
+  itemId,
+  vendorId,
+  preferred,
+}: {
+  vendorId: string;
+  itemId: string;
+  preferred?: boolean;
+}) => {
+  return post(`/vendor/${vendorId}/item/${itemId}`, { preferred });
 };

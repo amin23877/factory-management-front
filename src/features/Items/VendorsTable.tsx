@@ -12,12 +12,13 @@ const columns = [
   { name: "preferred", header: "Preferred", type: "boolean", maxWidth: 100 },
 ];
 
-export default function VendorsTable({ selectedItem }: { selectedItem: IItem }) {
+export default function VendorsTable({ selectedItem, refresh }: { refresh?: number; selectedItem: IItem }) {
   return (
     <NewDataGrid
       url={`/item/${selectedItem.id}/vendors`}
       columns={columns}
       onRowSelected={() => {}}
+      refresh={refresh}
       style={{ minHeight: "calc(100vh - 250px)" }}
     />
   );

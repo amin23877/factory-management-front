@@ -45,11 +45,11 @@ export default function EditForm({ selectedQuote }: { selectedQuote: IQuote }) {
                 handleBlur={handleBlur}
                 handleChange={handleChange}
               />
-              <Box display="flex" justifyContent="center" mt={1} style={{ width: "100%" }}>
-                <LockButton />
-                <Button type="submit" kind="edit" style={{ width: "100%", display: "none" }}>
+              <Box display="flex" justifyContent="center" mt={1} style={{ width: "100%" }} alignItems="center">
+                <Button type="submit" kind="edit" style={{}}>
                   Save
                 </Button>
+                <LockButton />
               </Box>
             </BasePaper>
             <BasePaper style={{ flex: 1 }}>

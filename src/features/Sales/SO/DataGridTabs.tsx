@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from "react";
 import { Box, useMediaQuery, makeStyles, Tooltip } from "@material-ui/core";
-import { GridColumns } from "@material-ui/data-grid";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import { useHistory } from "react-router";
@@ -72,7 +71,6 @@ export default function DataGridTabs({
       { name: "price", header: "Price", width: 100, defaultOperator: "eq" },
       { name: "tax", header: "Tax", type: "boolean", width: 80 },
       {
-        name: "total",
         header: "Total",
         render: (r: any) => (
           <Tooltip title={Number(r.data?.price) * Number(r.data?.qty)}>
