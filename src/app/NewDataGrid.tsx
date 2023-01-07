@@ -164,6 +164,7 @@ function NewDataGrid({
   rowHeight,
   setUrlFilters,
   selected,
+  notFilterable,
 }: {
   onRowSelected: (row: any) => void;
   columns: any[];
@@ -179,6 +180,7 @@ function NewDataGrid({
   onEditComplete?: (data: TypeEditInfo) => void;
   setUrlFilters?: boolean;
   selected?: any;
+  notFilterable?: boolean;
 }) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [columnsState, setColumnsState] = useState<any[]>(columns.map((c) => ({ ...c, visible: true })));
@@ -432,6 +434,7 @@ function NewDataGrid({
         onEditComplete={onEditComplete}
         editable={editable}
         selected={selected}
+        enableFiltering={notFilterable ? false : true}
       />
     </Box>
   );
