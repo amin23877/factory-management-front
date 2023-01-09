@@ -58,9 +58,9 @@ export default function ItemBomTable({
   const columns = useMemo(
     () => [
       {
-        name: "items",
-        header: "Items",
-        defaultWidth: 180,
+        name: "",
+        header: "",
+        defaultWidth: 60,
         render: ({ data }: any) => {
           return (
             <Box display="flex" alignItems="center" style={{ gap: 4 }}>
@@ -96,23 +96,19 @@ export default function ItemBomTable({
               >
                 <DeleteIcon />
               </div>
-              <div>
-                <Tooltip title={data.items}>
-                  <span>{data.items}</span>
-                </Tooltip>
-              </div>
             </Box>
           );
         },
       },
+      { header: "Items", name: "items", type: "number", defaultWidth: 100 },
       { header: "Rev No.", name: "no", defaultWidth: 100 },
       {
         header: "Revision Date",
-        name: "revDate",
-        render: ({ data }: any) => formatTimestampToDate(data.updatedAt) || "",
+        name: "updatedAt",
+        type: "date",
       },
       { header: "Name", name: "name" },
-      { header: "Note", name: "notes", flex: 1 },
+      { header: "Note", name: "notes", flex: 1, minWidth: 120 },
       {
         header: "Current",
         name: "current",
@@ -149,7 +145,13 @@ export default function ItemBomTable({
           BOM
         </Button>
       </Box>
-      <DataGrid columns={columns} url={`/bom?ItemId=${item?.id}`} onRowSelected={() => {}} refresh={refresh} />
+      <DataGrid
+        columns={columns}
+        url={`/bom?ItemId=${item?.id}`}
+        onRowSelected={() => {}}
+        refresh={refresh}
+        style={{ marginBottom: "10px", height: "calc(100vh - 300px)" }}
+      />
     </>
   );
 }

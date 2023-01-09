@@ -79,6 +79,7 @@ function Parts() {
         name: "description",
         header: "Item Description",
         flex: 1,
+        minWidth: 120,
         render: ({ data }: any) => (
           <Tooltip title={data?.ItemId?.description}>
             <span>{data?.ItemId?.description}</span>
