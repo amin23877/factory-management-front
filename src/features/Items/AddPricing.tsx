@@ -62,17 +62,17 @@ export default function AddPricing({
   };
 
   return (
-    <Dialog title="Add Pricing" open={open} onClose={onClose}>
+    <Dialog title={initialValues ? "Edit Pricing" : "Add Pricing"} open={open} onClose={onClose}>
       <Box m={2}>
         <Formik initialValues={initialValues || ({} as pricingType)} onSubmit={handleSubmit}>
-          {({ getFieldProps }) => (
+          {({ getFieldProps, values }) => (
             <Form>
               <Box display="flex" flexDirection="column" style={{ gap: 8 }}>
                 <TextField label="Label" {...getFieldProps("label")} />
                 <TextField type="number" label="Price" {...getFieldProps("price")} />
                 <FormControlLabel
                   label="Non Commissionable"
-                  control={<Checkbox />}
+                  control={<Checkbox checked={values.nonCommissionable} />}
                   {...getFieldProps("nonCommissionable")}
                 />
                 <Button kind={initialValues?.id ? "edit" : "add"} type="submit">
