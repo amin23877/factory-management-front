@@ -97,6 +97,7 @@ export default function AddPartModal({
 
   const cols = useMemo<GridColumns>(
     () => [
+      { field: "no", headerName: "Component", width: 140 },
       {
         headerName: "Component Name",
         field: "name",
@@ -109,7 +110,6 @@ export default function AddPartModal({
           </Tooltip>
         ),
       },
-      { field: "no", headerName: "Component", width: 140 },
       {
         field: "description",
         flex: 1,
@@ -144,14 +144,14 @@ export default function AddPartModal({
             <TextField
               disabled={creating}
               style={{ flex: 1 }}
-              label="Item Name"
-              onChange={(e) => setItemName(e.target.value)}
+              label="Item Number"
+              onChange={(e) => setItemNo(e.target.value)}
             />
             <TextField
               disabled={creating}
               style={{ flex: 1 }}
-              label="Item Number"
-              onChange={(e) => setItemNo(e.target.value)}
+              label="Item Name"
+              onChange={(e) => setItemName(e.target.value)}
             />
             <TextField
               disabled={creating}

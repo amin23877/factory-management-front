@@ -64,9 +64,6 @@ export default function EditProcessModal({ open, onClose, ItemId, process, type 
               <Button type="submit" disabled={isSubmitting} kind={"edit"} style={{ alignSelf: "center" }}>
                 Save
               </Button>
-              <Button onClick={handleDelete} kind="delete" disabled={isSubmitting} style={{ alignSelf: "center" }}>
-                Delete
-              </Button>
             </Box>
           </Form>
         )}

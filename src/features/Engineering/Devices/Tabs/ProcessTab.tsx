@@ -59,8 +59,8 @@ export default function ProcessTab({ type, ItemId }: { type: string; ItemId: str
                   setOpenTasksModal(true);
                   setSelectedProcess(data);
                 }}
-                title={"Show Tasks"}
-                style={{ cursor: "pointer" }}
+                title={lock ? "Locked" : "Show Tasks"}
+                style={lock ? { cursor: "not-allowed" } : { cursor: "pointer" }}
               >
                 <NarrowIcon />
               </div>
@@ -71,8 +71,8 @@ export default function ProcessTab({ type, ItemId }: { type: string; ItemId: str
                     setSelectedProcess(data);
                   }
                 }}
-                title={"Edit"}
-                style={{ cursor: "pointer" }}
+                title={lock ? "Locked" : "Edit"}
+                style={lock ? { cursor: "not-allowed" } : { cursor: "pointer" }}
               >
                 <SettingIcon />
               </div>
@@ -82,8 +82,8 @@ export default function ProcessTab({ type, ItemId }: { type: string; ItemId: str
                     handleDelete(data.id);
                   }
                 }}
-                title={"Delete"}
-                style={{ cursor: "pointer" }}
+                title={lock ? "Locked" : "Delete"}
+                style={lock ? { cursor: "not-allowed" } : { cursor: "pointer" }}
               >
                 <DeleteIcon />
               </div>
@@ -101,13 +101,13 @@ export default function ProcessTab({ type, ItemId }: { type: string; ItemId: str
         name: "realeasedDate",
         header: "Released Date",
         width: 120,
-        render: ({ data }: any) => formatTimestampToDate(data.realeasedDate),
+        type: "date",
       },
       {
         name: "revisionDate",
         header: "Rev. Date",
         width: 120,
-        render: ({ data }: any) => formatTimestampToDate(data.revisionDate),
+        type: "date",
       },
       { name: "realeased", header: "Released", width: 80, type: "boolean" },
     ],
@@ -168,6 +168,7 @@ export default function ProcessTab({ type, ItemId }: { type: string; ItemId: str
         url={`/process?ItemId=${ItemId}&type=${type}`}
         onRowSelected={() => {}}
         refresh={refresh}
+        style={{ height: "calc(100vh - 300px)" }}
       />
     </>
   );
