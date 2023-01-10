@@ -5,6 +5,7 @@ export interface INote {
     subject: string;
     note: string;
     url?: string;
+    path?: string;
 }
 
 export const getAllModelNotes = (model: string, id: string) => {

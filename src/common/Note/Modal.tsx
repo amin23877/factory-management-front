@@ -86,12 +86,12 @@ export default function NoteModal({ open, onClose, model, itemId, data, onDone }
                   label="subject"
                 />
                 <TextField
-                  name="url"
+                  name="path"
                   onBlur={handleBlur}
                   onChange={handleChange}
-                  value={values.url}
-                  error={Boolean(errors.url && touched.url)}
-                  helperText={errors.url && touched.url}
+                  value={values.path}
+                  error={Boolean(errors.path && touched.path)}
+                  helperText={errors.path && touched.path}
                   label="url"
                 />
                 <TextField
