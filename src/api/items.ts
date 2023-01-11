@@ -190,3 +190,19 @@ export const patchItem = (
 ) => {
   return patch(`/item/${itemId}`, data);
 };
+
+export const changeQuantity = (data: {
+  itemId: string;
+  SOId?: string;
+  POId?: string;
+  comment?: string;
+  onOrderQty?: number;
+  onHandQty?: number;
+  allocatedQty?: number;
+  availableQty?: number;
+  totalQty?: number;
+  triggerQty?: number;
+  reorderQty?: number;
+}) => {
+  return post(`/item/${data.itemId}/qty`, data);
+};
