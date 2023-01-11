@@ -297,6 +297,11 @@ export const General = ({
           marginTop: 8,
         }}
       >
+        {!add && (
+          <Button type="submit" kind="edit">
+            Save
+          </Button>
+        )}
         {!add && <LockButton />}
       </div>
     </>

@@ -92,9 +92,7 @@ function ItemsDetails({
                     errors={errors}
                     touched={touched}
                   />
-                  <button type="submit" style={{ display: "none" }}>
-                    submit
-                  </button>
+                  <input type="submit" hidden />
                 </BasePaper>
                 <BasePaper style={{ flex: 1 }}>
                   <LockProvider>
