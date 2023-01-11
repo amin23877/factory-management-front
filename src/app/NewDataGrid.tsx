@@ -218,8 +218,8 @@ function NewDataGrid({
             ...r,
             filterEditor: NumberFilter,
             render: ({ value = "" }: { value: any }) => (
-              <Tooltip title={value || ""}>
-                <div>{value || ""}</div>
+              <Tooltip title={value ? value : value === 0 ? "0" : ""}>
+                <div>{value ? value : value === 0 ? "0" : ""}</div>
               </Tooltip>
             ),
           };

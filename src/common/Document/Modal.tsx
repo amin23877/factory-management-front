@@ -20,13 +20,14 @@ interface IDocumentModal {
   data?: any;
   onDone?: () => void;
   onClose: () => void;
+  setRefresh: any;
 }
 
 const mutateDocuments = (type: string, id: string) => {
   return mutate(`/document/${type}/${id}`);
 };
 
-function DocumentModalContent({ open, onClose, model, itemId, onDone, data }: IDocumentModal) {
+function DocumentModalContent({ open, onClose, model, itemId, onDone, data, setRefresh }: IDocumentModal) {
   const fileUploader = useRef<HTMLInputElement | null>();
   const phone = useMediaQuery("(max-width:900px)");
   const { lock } = useLock();
@@ -40,6 +41,8 @@ function DocumentModalContent({ open, onClose, model, itemId, onDone, data }: ID
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setRefresh((prev: any) => prev + 1);
     }
   };
 
@@ -62,12 +65,19 @@ function DocumentModalContent({ open, onClose, model, itemId, onDone, data }: ID
       console.log(error);
     } finally {
       setSubmitting(false);
+      setRefresh((prev: any) => prev + 1);
     }
   };
 
   return (
-    <Dialog open={open} onClose={onClose} fullScreen title={`${data ? "Edit" : "Add"} Document`}>
-      <Box height="82vh" m={3} display="grid" gridTemplateColumns={phone ? "1fr" : "1fr 300px"} gridColumnGap={10}>
+    <Dialog open={open} onClose={onClose} fullScreen={Boolean(data)} title={`${data ? "Edit" : "Add"} Document`}>
+      <Box
+        height={data ? "82vh" : "auto"}
+        m={3}
+        display="grid"
+        gridTemplateColumns={phone ? "1fr" : "1fr 300px"}
+        gridColumnGap={10}
+      >
         <Box>{data?.path && <PDFPreview height="100%" pdf={host + data?.path} />}</Box>
         <Formik initialValues={data ? data : ({} as IDocument)} onSubmit={handleSubmit}>
           {({ values, handleBlur, handleChange, setFieldValue, isSubmitting }) => (
@@ -83,13 +93,13 @@ function DocumentModalContent({ open, onClose, model, itemId, onDone, data }: ID
                   color="primary"
                   style={{
                     backgroundColor: "#fff",
-                    color: lock ? "#ccc" : "rgb(43,140,255) ",
-                    border: lock ? "1px solid #ccc" : "1px solid rgb(43,140,255) ",
+                    color: data && lock ? "#ccc" : "rgb(43,140,255) ",
+                    border: data && lock ? "1px solid #ccc" : "1px solid rgb(43,140,255) ",
                     width: "100%",
                   }}
                   variant="contained"
                   onClick={() => fileUploader.current?.click()}
-                  disabled={lock}
+                  disabled={data && lock}
                 >
                   <PhotoSizeSelectActualOutlinedIcon style={{ marginRight: "7px" }} />
                   Upload file
@@ -121,7 +131,7 @@ function DocumentModalContent({ open, onClose, model, itemId, onDone, data }: ID
                   label="Name"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  disabled={lock}
+                  disabled={data && lock}
                 />
                 <TextField
                   style={{ marginBottom: "20px" }}
@@ -131,7 +141,7 @@ function DocumentModalContent({ open, onClose, model, itemId, onDone, data }: ID
                   label="Number"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  disabled={lock}
+                  disabled={data && lock}
                 />
                 <TextField
                   style={{ marginBottom: "20px" }}
@@ -143,13 +153,13 @@ function DocumentModalContent({ open, onClose, model, itemId, onDone, data }: ID
                   rows={4}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  disabled={lock}
+                  disabled={data && lock}
                 />
                 <Box style={{ display: "flex", width: "100%" }}>
                   <Button
                     type="submit"
                     kind={data ? "edit" : "add"}
-                    disabled={isSubmitting || lock}
+                    disabled={isSubmitting || (data && lock)}
                     style={{ flex: 1 }}
                   >
                     Save
@@ -165,9 +175,11 @@ function DocumentModalContent({ open, onClose, model, itemId, onDone, data }: ID
                     </Button>
                   )}
                 </Box>
-                <Box display={"flex"} justifyContent="center" alignItems={"center"} width="100%" mt={1}>
-                  <LockButton />
-                </Box>
+                {data && (
+                  <Box display={"flex"} justifyContent="center" alignItems={"center"} width="100%" mt={1}>
+                    <LockButton />
+                  </Box>
+                )}
               </Box>
             </Form>
           )}
@@ -177,10 +189,18 @@ function DocumentModalContent({ open, onClose, model, itemId, onDone, data }: ID
   );
 }
 
-export default function DocumentModal({ open, onClose, model, itemId, onDone, data }: IDocumentModal) {
+export default function DocumentModal({ open, onClose, model, itemId, onDone, data, setRefresh }: IDocumentModal) {
   return (
     <LockProvider>
-      <DocumentModalContent open={open} onClose={onClose} model={model} itemId={itemId} onDone={onDone} data={data} />
+      <DocumentModalContent
+        open={open}
+        onClose={onClose}
+        model={model}
+        itemId={itemId}
+        onDone={onDone}
+        data={data}
+        setRefresh={setRefresh}
+      />
     </LockProvider>
   );
 }

@@ -122,17 +122,17 @@ export const General = ({ values, errors, handleChange, handleBlur, touched, sal
           disabled={lock}
         />
         <FormControlLabel
-          checked={values.salesApproved}
+          checked={values.approvedForSale}
           label="S. Ap."
-          name="salesApproved"
+          name="approvedForSale"
           onChange={handleChange}
           control={<Checkbox size="small" />}
           disabled={lock}
         />
         <FormControlLabel
-          checked={values.engineeringApproved}
+          checked={values.engineeringApproval}
           label="En. Ap."
-          name="engineeringApproved"
+          name="engineeringApproval"
           onChange={handleChange}
           control={<Checkbox size="small" />}
           disabled={lock}

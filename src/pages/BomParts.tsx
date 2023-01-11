@@ -79,6 +79,7 @@ function Parts() {
         name: "description",
         header: "Item Description",
         flex: 1,
+        minWidth: 120,
         render: ({ data }: any) => (
           <Tooltip title={data?.ItemId?.description}>
             <span>{data?.ItemId?.description}</span>
@@ -86,10 +87,11 @@ function Parts() {
         ),
         editable: false,
       },
-      { name: "usage", header: "Usage", defaultWidth: 100, editor: NumericEditor },
-      { name: "fixedQty", header: "Fixed Qty", type: "boolean", defaultWidth: 100, editor: BoolEditor },
+      { name: "usage", header: "Usage", defaultWidth: 100, type: "number" },
+      { name: "fixedQty", header: "Fixed Qty", type: "boolean", defaultWidth: 100 },
       {
-        name: "actions",
+        defaultWidth: 70,
+        name: "",
         header: "",
         editable: false,
         render: ({ data }: any) => {

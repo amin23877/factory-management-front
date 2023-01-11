@@ -46,8 +46,6 @@ export default function AddServiceModal({
   device: any;
   initialValues?: any;
 }) {
-  const { data } = useSWR("/constants/serviceTypes");
-
   const handleSubmit = async (data: any) => {
     try {
       if (initialValues && initialValues.id) {
@@ -109,13 +107,6 @@ export default function AddServiceModal({
           {({ values, errors, handleChange, handleBlur, setFieldValue }) => (
             <Form>
               <Box display="grid" gridTemplateColumns="1fr" gridRowGap={10}>
-                <ArraySelect
-                  label="Type"
-                  name="type"
-                  value={values.type}
-                  items={data?.serviceTypes || []}
-                  onChange={(e) => setFieldValue("type", e.target.value)}
-                />
                 <TextField
                   label="Class"
                   name="class"

@@ -48,7 +48,6 @@ export default function BOMModal({
           {({ getFieldProps, values }) => (
             <Form>
               <Box display="flex" flexDirection="column" style={{ gap: 8 }}>
-                <TextField label="NO" {...getFieldProps("no")} />
                 <TextField label="Name" {...getFieldProps("name")} />
                 <TextField label="Notes" {...getFieldProps("notes")} />
                 <FormControlLabel

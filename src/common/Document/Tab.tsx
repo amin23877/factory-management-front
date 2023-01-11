@@ -14,7 +14,7 @@ import { fileType } from "logic/fileType";
 import { useLock } from "../Lock";
 
 const columns = [
-  { name: "date", header: "Date", render: ({ data }: any) => formatTimestampToDate(data?.createdAt), width: 120 },
+  { name: "createdAt", header: "Date", type: "date", width: 120 },
   { name: "creator", header: "Creator", width: 120 },
   { name: "name", header: "Name", flex: 1 },
   { name: "number", header: "Number", width: 100 },
@@ -25,11 +25,22 @@ const columns = [
 export default function DocumentTab({ itemId, model }: { model: string; itemId: string }) {
   const [addModal, setAddModal] = useState(false);
   const [selected, setSelected] = useState<INote>();
+  const [refresh, setRefresh] = useState(0);
   const { lock } = useLock();
 
   return (
     <>
-      <DocumentModal open={addModal} onClose={() => setAddModal(false)} model={model} itemId={itemId} data={selected} />
+      <DocumentModal
+        open={addModal}
+        onClose={() => {
+          setAddModal(false);
+          setSelected(undefined);
+        }}
+        model={model}
+        itemId={itemId}
+        data={selected}
+        setRefresh={setRefresh}
+      />
       <Box>
         <Box display="flex" alignItems="center">
           <Button
@@ -51,7 +62,8 @@ export default function DocumentTab({ itemId, model }: { model: string; itemId: 
               setAddModal(true);
             }
           }}
-          style={{ marginBottom: "10px" }}
+          refresh={refresh}
+          style={{ marginBottom: "10px" , height:"calc(100vh - 300px)" }}
         />
       </Box>
     </>
