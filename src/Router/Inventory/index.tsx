@@ -13,6 +13,7 @@ import { camelCaseToRegular } from "logic/utils";
 
 const Dashboard = React.lazy(() => import("features/Items/Dashboard"));
 const Items = React.lazy(() => import("Router/Inventory/Items"));
+const QRCode = React.lazy(() => import("pages/Inventory/QRCode"));
 const Config = React.lazy(() => import("pages/Config"));
 
 export default function PanelRouter() {
@@ -20,7 +21,7 @@ export default function PanelRouter() {
   const history = useHistory();
   const location = useLocation();
 
-  const tabs = ["dashboard", "items", "config"];
+  const tabs = ["dashboard", "items", "config", "/panel/inventory/qrcode"];
 
   const [activeTab, setActiveTab] = useState(tabs.indexOf(location.pathname.split("/")[3]));
   const [tabText, setTabText] = useState(
@@ -90,6 +91,7 @@ export default function PanelRouter() {
             <MyTab label="Dashboard" />
             <MyTab label="Items" />
             <MyTab label="Config" />
+            <MyTab label="QR Code" />
           </MyTabs>
         </Popover>
       </Portal>
@@ -101,6 +103,7 @@ export default function PanelRouter() {
           <Route exact path="/panel/inventory/dashboard" component={Dashboard} />
           <Route exact path="/panel/inventory/config" component={Config} />
           <Route path="/panel/inventory/items" component={Items} />
+          <Route path="/panel/inventory/qrcode" component={QRCode} />
         </Switch>
       </Suspense>
     </LockProvider>

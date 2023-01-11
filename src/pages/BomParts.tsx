@@ -60,7 +60,7 @@ function Parts() {
         header: "Item NO.",
         render: ({ data }: any) => (
           <Tooltip title={data?.ItemId?.no}>
-            <span>{data?.ItemId?.no}</span>
+            <span style={{ userSelect: "all" }}>{data?.ItemId?.no}</span>
           </Tooltip>
         ),
         editable: false,
@@ -70,7 +70,7 @@ function Parts() {
         header: "Item Name",
         render: ({ data }: any) => (
           <Tooltip title={data?.ItemId?.name}>
-            <span>{data?.ItemId?.name}</span>
+            <span style={{ userSelect: "all" }}>{data?.ItemId?.name}</span>
           </Tooltip>
         ),
         editable: false,
@@ -81,7 +81,7 @@ function Parts() {
         flex: 1,
         render: ({ data }: any) => (
           <Tooltip title={data?.ItemId?.description}>
-            <span>{data?.ItemId?.description}</span>
+            <span style={{ userSelect: "all" }}>{data?.ItemId?.description}</span>
           </Tooltip>
         ),
         editable: false,
