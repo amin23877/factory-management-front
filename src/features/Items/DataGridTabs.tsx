@@ -56,13 +56,13 @@ export default function DataGridTabs({
         flex: 1,
       },
       {
-        name: "unitName",
-        header: "Device NO.",
-        render: ({ data }: any) => {
-          let serial = data?.UnitId?.serial.split("-");
-          serial.pop();
-          return serial.join("-");
-        },
+        field: "unitName",
+        headerName: "Device NO.",
+        // valueFormatter: (params: any) => {
+        //   let serial = params.row?.UnitId?.serial.split("-");
+        //   serial.pop();
+        //   return serial.join("-");
+        // },
         flex: 1,
       },
       {
