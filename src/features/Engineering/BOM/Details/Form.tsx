@@ -8,34 +8,55 @@ import Toast from "app/Toast";
 import { LockButton, useLock } from "common/Lock";
 
 import { clusterType, updateCluster } from "api/cluster";
-import { getModifiedValues } from "logic/utils";
+import { ArraySelect } from "app/Inputs";
 
 export default function Form({ initialValues }: { initialValues: clusterType }) {
   const { lock } = useLock();
 
-  const handleUpdate = async (data: any) => {
+  const handleUpdate = async (data: any, { setSubmitting }: any) => {
     try {
-      const modified = getModifiedValues(data, initialValues);
-      await updateCluster(initialValues.id, modified);
+      setSubmitting(true);
+      await updateCluster(initialValues.id, data);
 
       Toast("Record updated", "success");
     } catch (error) {
       console.log(error);
+    } finally {
+      setSubmitting(false);
     }
   };
 
   return (
     <Formik initialValues={initialValues} onSubmit={handleUpdate}>
-      {({ getFieldProps }) => (
+      {({ getFieldProps, values, setSubmitting, isSubmitting }) => (
         <FormikForm>
-          <Box display="flex" flexDirection="column" style={{ gap: 8 }}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            style={{ gap: 8 }}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleUpdate(values, { setSubmitting });
+              }
+            }}
+          >
+            <ArraySelect
+              items={["option", "device", "assembly", "part", "fru"]}
+              label="Phone Type"
+              {...getFieldProps("class")}
+              disabled={lock}
+            />
             <TextField label="Cluster Value" {...getFieldProps("clusterValue")} disabled={lock} />
             <TextField label="Device Name" {...getFieldProps("deviceName")} disabled={lock} />
             <TextField label="Description" {...getFieldProps("description")} multiline rows={3} disabled={lock} />
-            <Button kind="add" type="submit" style={{ display: "none" }}>
-              Update
-            </Button>
-            <LockButton />
+            {
+              <Box display={"flex"} gridGap={1} alignItems="center" justifyContent={"center"}>
+                <Button kind="edit" type="submit" disabled={lock || isSubmitting}>
+                  Save
+                </Button>
+                <LockButton />
+              </Box>
+            }
           </Box>
         </FormikForm>
       )}

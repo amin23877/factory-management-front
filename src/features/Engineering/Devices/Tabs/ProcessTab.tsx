@@ -4,13 +4,12 @@ import { deleteProcess, IProcess } from "api/process";
 import NewDataGrid from "app/NewDataGrid";
 import Button from "app/Button";
 import { LockProvider, useLock } from "common/Lock";
-import { formatTimestampToDate } from "logic/date";
 import React, { useCallback, useMemo, useState } from "react";
 import AddProcessModal from "../Process/AddProcessModal";
 import EditProcessModal from "../Process/EditProcessModal";
 import Confirm from "common/Confirm";
 import Toast from "app/Toast";
-import useSWR, { mutate } from "swr";
+import { mutate } from "swr";
 import TasksModal from "../Process/TasksModal";
 
 import { ReactComponent as NarrowIcon } from "assets/icons/tableIcons/narrowDown.svg";

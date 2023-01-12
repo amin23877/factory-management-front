@@ -68,6 +68,8 @@ export default function LevelModal({
       console.log(error);
     } finally {
       setSubmitting(false);
+      setAddArray([]);
+      setDeleteArray([]);
     }
   };
 

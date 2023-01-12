@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from "react";
 import { EditRounded } from "@material-ui/icons";
-import { Box, Tooltip } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 
 import NewDataGrid from "app/NewDataGrid";
 import Button from "app/Button";
@@ -15,7 +15,6 @@ import { clusterType } from "api/cluster";
 import { deleteLevel } from "api/level";
 import { IVals } from "common/Level/Form";
 import { ReactComponent as DeleteIcon } from "assets/icons/tableIcons/delete.svg";
-import { formatTimestampToDate } from "logic/date";
 
 type dataType = {
   // clusterId: { id: string; clusterValue: string };
@@ -75,25 +74,35 @@ function LevelsContent({ selectedRow }: { selectedRow: clusterType }) {
       {
         name: "createdAt",
         header: "Date",
+        type: "date",
+        editable: false,
+      },
+      {
+        name: "",
+        header: "",
+        type: "",
+        width: 60,
         editable: false,
         render: ({ data }: any) => (
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-            <div>
-              <Tooltip title={formatTimestampToDate(data.createdAt)}>
-                <span>{formatTimestampToDate(data.createdAt)}</span>
-              </Tooltip>
-            </div>
-            <div onClick={() => data.id && handleEdit(data)} style={{ cursor: lock ? "auto" : "pointer" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+            <div
+              onClick={() => !lock && data.id && handleEdit(data)}
+              title="edit"
+              style={lock ? { cursor: "not-allowed" } : { cursor: "pointer" }}
+            >
               <EditRounded />
             </div>
-            <div onClick={() => data.id && handleDelete(data)} style={{ cursor: lock ? "auto" : "pointer" }}>
+            <div
+              onClick={() => !lock && data.id && handleDelete(data)}
+              style={lock ? { cursor: "not-allowed" } : { cursor: "pointer" }}
+            >
               <DeleteIcon title="delete" />
             </div>
           </div>
         ),
       },
     ],
-    []
+    [lock]
   );
 
   return (
