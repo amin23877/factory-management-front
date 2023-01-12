@@ -64,11 +64,11 @@ export default function DataGridTabs({
       {
         field: "unitName",
         headerName: "Device NO.",
-        valueFormatter: (params: any) => {
-          let serial = params.row?.UnitId?.serial.split("-");
-          serial.pop();
-          return serial.join("-");
-        },
+        // valueFormatter: (params: any) => {
+        //   let serial = params.row?.UnitId?.serial.split("-");
+        //   serial.pop();
+        //   return serial.join("-");
+        // },
         flex: 1,
       },
       {
