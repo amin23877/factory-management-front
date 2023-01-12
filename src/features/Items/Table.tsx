@@ -31,7 +31,7 @@ function ItemTable({
         defaultWidth: 140,
       },
       { name: "vendorPartNumber", header: "V. Part NO.", minWidth: 100 },
-      { name: "cost", header: "Cost", minWidth: 80, type: "number" },
+      { name: "totalCost", header: "Cost", minWidth: 80, type: "number" },
       { name: "location", header: "Location", minWidth: 100 },
       {
         name: "class",
@@ -56,10 +56,10 @@ function ItemTable({
         //   return itemTypes?.find((t) => t)?.value || "";
         // },
       },
-      { name: "qtyOnHand", header: "QOH.", minWidth: 80, type: "number" },
+      { name: "onHandQty", header: "QOH.", minWidth: 80, type: "number" },
       { name: "qtyRemain", header: " Remain", minWidth: 80, type: "number" },
-      { name: "qtyOnOrder", header: "on Order", minWidth: 80, type: "number" },
-      { name: "qtyAllocated", header: "Allocated", minWidth: 80, type: "number" },
+      { name: "onOrderQty", header: "on Order", minWidth: 80, type: "number" },
+      { name: "allocatedQty", header: "Allocated", minWidth: 80, type: "number" },
       { name: "usedInQuarter", header: "Used 90", minWidth: 80, type: "number" },
       { name: "fifo", header: "FIFO Val.", minWidth: 80, type: "number" },
       {
