@@ -10,12 +10,7 @@ const columns = [
   {
     name: "change",
     header: "Change",
-    render: ({ data }: any) =>
-      camelCaseToRegular(
-        Object.keys(data.change)
-          .filter((k) => k !== "id")
-          .join(",")
-      ),
+    render: ({ data }: any) => camelCaseToRegular(data?.change?.field),
   },
   {
     name: "before",
