@@ -12,6 +12,7 @@ import { createRequiredPurchasePO, deleteRequiredPO, IRequiredPO, updateRequired
 import DateTimePicker from "app/DateTimePicker";
 import Confirm from "common/Confirm";
 import AddPOModal from "./AddPOModal";
+import { getModifiedValues } from "logic/utils";
 
 export default function AddRequiredPOModal({
   open,
@@ -31,7 +32,7 @@ export default function AddRequiredPOModal({
       if (selectedRPO) {
         let time = new Date(data.expectedDate).getTime();
         data = { ...data, type: "assetBased", expectedDate: time };
-        await updateRequiredPO(selectedRPO.id, data);
+        await updateRequiredPO(selectedRPO.id, getModifiedValues(data, selectedRPO));
         Toast("updated successfully", "success");
         setRefresh((p: number) => p + 1);
         onClose();
@@ -47,6 +48,7 @@ export default function AddRequiredPOModal({
       console.log(err);
     }
   };
+
   const handleDelete = async () => {
     Confirm({
       text: `you are going to delete an Item Requirement with number ${selectedRPO?.ItemId?.no} !`,
@@ -68,7 +70,7 @@ export default function AddRequiredPOModal({
   return (
     <>
       {selectedRPO && <AddPOModal open={addPo} onClose={() => setAddPO(false)} selectedRPO={selectedRPO} />}
-      <Dialog open={open} onClose={onClose} title="Add New Required PO">
+      <Dialog open={open} onClose={onClose} title={selectedRPO ? "Edit Required PO" : "Add New Required PO"}>
         <Formik initialValues={selectedRPO ? selectedRPO : ({} as IRequiredPO)} onSubmit={handleSubmit}>
           {({ values, setFieldValue, getFieldProps }) => (
             <Form>

@@ -18,11 +18,10 @@ const requiredCols = [
       </Tooltip>
     ),
   },
-  { name: "so", header: "Related SO", width: 120, render: ({ data }: any) => data?.SOId?.number },
-  { name: "unit", header: "Related Unit", width: 120, render: ({ data }: any) => data?.UnitId?.number },
-  { name: "itemNo", header: "Item NO.", type: "string", width: 120, render: ({ data }: any) => data?.ItemId?.no },
+  { header: "Related SO", width: 120, render: ({ data }: any) => data?.SOId?.number },
+  { header: "Related Unit", width: 120, render: ({ data }: any) => data?.UnitId?.number },
+  { header: "Item NO.", type: "string", width: 120, render: ({ data }: any) => data?.ItemId?.no },
   {
-    name: "itemNo",
     header: "Item Name",
     type: "string",
     width: 120,
@@ -39,9 +38,8 @@ const requiredCols = [
 ];
 
 const receivedCols = [
-  { name: "itemNo", header: "Item NO.", type: "string", width: 120, render: ({ data }: any) => data?.ItemId?.no },
+  { header: "Item NO.", type: "string", width: 120, render: ({ data }: any) => data?.ItemId?.no },
   {
-    name: "itemName",
     header: "Item Name",
     type: "string",
     width: 120,
@@ -52,30 +50,26 @@ const receivedCols = [
     ),
     defaultFlex: 1,
   },
-  { name: "unit", header: "Related Unit", width: 120, render: ({ data }: any) => data?.UnitId?.number },
+  { header: "Related Unit", width: 120, render: ({ data }: any) => data?.UnitId?.number },
   {
-    name: "orderedQuantity",
     header: "Ordered QTY",
     width: 120,
     render: ({ data }: any) => data?.POLineItemId?.orderedQuantity,
   },
   {
-    name: "receivedQuantity",
     header: "Received QTY",
     width: 120,
     render: ({ data }: any) => data?.POLineItemId?.receivedQuantity,
   },
   {
-    name: "dateExpected",
     header: "Expected Date",
     width: 120,
     render: ({ data }: any) => formatTimestampToDate(data?.POLineItemId?.dateExpected),
   },
 ];
 const preferredCols = [
-  { name: "itemNo", header: "Item NO.", type: "string", width: 120, render: ({ data }: any) => data?.ItemId?.no },
+  { header: "Item NO.", type: "string", width: 120, render: ({ data }: any) => data?.ItemId?.no },
   {
-    name: "itemName",
     header: "Item Name",
     type: "string",
     width: 120,
@@ -90,14 +84,15 @@ const preferredCols = [
     name: "receiveCount",
     header: "Received QTY",
     width: 120,
+    type: "number",
   },
   {
     name: "preferredCount",
     header: "Preferred QTY",
     width: 120,
+    type: "number",
   },
   {
-    name: "NonPreferredCount",
     header: "Non-Preferred QTY",
     width: 120,
     render: ({ data }: any) => data?.receiveCount - data?.preferredCount,
@@ -159,7 +154,7 @@ export default function Dashboard() {
           }
         />
       )}
-      {tab === 1 && <NewDataGrid columns={receivedCols} url="/receive" onRowSelected={() => {}} />}
+      {tab === 1 && <NewDataGrid columns={receivedCols} url="/receive" onRowSelected={() => {}} notFilterable />}
       {tab === 2 && <NewDataGrid columns={preferredCols} url="/receive/preferred/item" onRowSelected={() => {}} />}
     </BasePaper>
   );
